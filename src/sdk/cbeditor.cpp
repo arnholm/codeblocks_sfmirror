@@ -821,6 +821,8 @@ void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
     SetEditorStyleBeforeFileOpen();
     m_IsOK = Open();
     SetEditorStyleAfterFileOpen();
+    if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/folding/fold_all_on_open"), false))
+        FoldAll();
 
     // if !m_IsOK then it's a new file, so set the modified flag ON
     if (!m_IsOK || filename.IsEmpty())
@@ -1223,7 +1225,6 @@ void cbEditor::SetEditorStyleBeforeFileOpen()
         InternalSetEditorStyleBeforeFileOpen(m_pControl2);
 
     SetFoldingIndicator(mgr->ReadInt(_T("/folding/indicator"), 2));
-    UnderlineFoldedLines(mgr->ReadBool(_T("/folding/underline_folded_line"), true));
 
     SetLanguage( HL_AUTO );
 }
@@ -1235,6 +1236,8 @@ void cbEditor::SetEditorStyleAfterFileOpen()
         InternalSetEditorStyleAfterFileOpen(m_pControl2);
 
     ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("editor"));
+
+    UnderlineFoldedLines(mgr->ReadBool(_T("/folding/underline_folded_line"), true));
 
     // line numbers
     if (mgr->ReadBool(_T("/show_line_numbers"), true))
@@ -1412,13 +1415,14 @@ void cbEditor::InternalSetEditorStyleAfterFileOpen(cbStyledTextCtrl* control)
     control->SetProperty(_T("lexer.cpp.track.preprocessor"), mgr->ReadBool(_T("/track_preprocessor"), false) ? _T("1") : _T("0"));
 
 // code folding
-    control->SetProperty(_T("fold"), mgr->ReadBool(_T("/folding/show_folds"), true) ? _T("1") : _T("0"));
-    control->SetProperty(_T("fold.html"), mgr->ReadBool(_T("/folding/fold_xml"), true) ? _T("1") : _T("0"));
-    control->SetProperty(_T("fold.comment"), mgr->ReadBool(_T("/folding/fold_comments"), false) ? _T("1") : _T("0"));
-    control->SetProperty(_T("fold.compact"), _T("0"));
-    control->SetProperty(_T("fold.preprocessor"), mgr->ReadBool(_T("/folding/fold_preprocessor"), false) ? _T("1") : _T("0"));
     if (mgr->ReadBool(_T("/folding/show_folds"), true))
     {
+        control->SetProperty(_T("fold"), _T("1"));
+        control->SetProperty(_T("fold.html"), mgr->ReadBool(_T("/folding/fold_xml"), true) ? _T("1") : _T("0"));
+        control->SetProperty(_T("fold.comment"), mgr->ReadBool(_T("/folding/fold_comments"), false) ? _T("1") : _T("0"));
+        control->SetProperty(_T("fold.compact"), _T("0"));
+        control->SetProperty(_T("fold.preprocessor"), mgr->ReadBool(_T("/folding/fold_preprocessor"), false) ? _T("1") : _T("0"));
+
         control->Colourise(0, -1);
         control->SetFoldFlags(16);
         control->SetMarginType(foldingMargin, wxSCI_MARGIN_SYMBOL);
@@ -1430,7 +1434,10 @@ void cbEditor::InternalSetEditorStyleAfterFileOpen(cbStyledTextCtrl* control)
 
     }
     else
+    {
+        control->SetProperty(_T("fold"), _T("0"));
         control->SetMarginWidth(foldingMargin, 0);
+    }
 
 // line numbering
     control->SetMarginType(lineMargin, wxSCI_MARGIN_NUMBER);
@@ -1626,10 +1633,6 @@ bool cbEditor::Open(bool detectEncoding)
     // mark the file read-only, if applicable
     bool read_only = !wxFile::Access(m_Filename.c_str(), wxFile::write);
     m_pControl->SetReadOnly(read_only);
-//    SetLanguage(HL_AUTO); // bottleneck !!! no need to set it here, it's already done in SetEditorStyleBeforeFileOpen
-
-    if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/folding/fold_all_on_open"), false))
-        FoldAll();
 
     wxFileName fname(m_Filename);
     m_LastModified = fname.GetModificationTime();
@@ -2628,7 +2631,8 @@ void cbEditor::AddToContextMenu(wxMenu* popup,ModuleType type,bool pluginsdone)
             insert = CreateContextSubMenu(idInsert);
             editsubmenu = CreateContextSubMenu(idEdit);
             bookmarks = CreateContextSubMenu(idBookmarks);
-            folding = CreateContextSubMenu(idFolding);
+            if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/folding/show_folds"), false))
+                folding = CreateContextSubMenu(idFolding);
         }
         if(insert)
         {

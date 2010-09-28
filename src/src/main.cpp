@@ -3834,7 +3834,8 @@ void MainFrame::OnEditMenuUpdateUI(wxUpdateUIEvent& event)
     mbar->Enable(idEditHighlightMode, ed);
     mbar->Enable(idEditSelectAll, canSelAll);
     mbar->Enable(idEditBookmarks, ed);
-    mbar->Enable(idEditFolding, ed);
+    mbar->Enable(idEditFolding, ed &&
+                                Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/folding/show_folds"), false));
     mbar->Enable(idEditEOLMode, ed);
     mbar->Enable(idEditEncoding, ed);
     mbar->Enable(idEditSpecialCommands, ed);
