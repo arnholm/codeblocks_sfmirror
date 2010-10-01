@@ -231,7 +231,7 @@ int CppCheck::Execute()
     }
 
     wxString CommandLine = m_CppCheckApp + _T(" --verbose --all --style --xml --file-list=") + InputFileName;
-    if(IncludeList.IsEmpty())
+    if(!IncludeList.IsEmpty())
     {
 		CommandLine += _T(" ") + IncludeList.Trim();
     }
@@ -244,7 +244,7 @@ int CppCheck::Execute()
         long pid = wxExecute(CommandLine, Output, Errors, wxEXEC_SYNC);
         if (pid==-1)
         {
-            wxString msg = _("Failed to lauch cppcheck.\nMake sure the application is in the path!");
+            wxString msg = _("Failed to launch cppcheck.\nMake sure the application is in the path!");
             AppendToLog(msg);
             cbMessageBox(msg, _("Error"), wxICON_ERROR | wxOK, Manager::Get()->GetAppWindow());
             ::wxRemoveFile(InputFileName);
