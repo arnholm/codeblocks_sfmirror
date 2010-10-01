@@ -153,7 +153,7 @@ bool CppCheck::DoCppCheckVersion()
     if (pid==-1)
     {
         bool failed = true;
-        if (cbMessageBox(_("Failed to lauch cppcheck.\nDo you want to select the cppcheck executable?"),
+        if (cbMessageBox(_("Failed to launch cppcheck.\nDo you want to select the cppcheck executable?"),
                          _("Question"), wxICON_QUESTION | wxYES_NO, Manager::Get()->GetAppWindow()) == wxID_YES)
         {
             wxString filename = wxFileSelector(_("Select the cppcheck executable"));
@@ -175,8 +175,8 @@ bool CppCheck::DoCppCheckVersion()
         }
         if (failed)
         {
-            AppendToLog(_("Failed to lauch cppcheck."));
-            cbMessageBox(_("Failed to lauch cppcheck."), _("Error"), wxICON_ERROR | wxOK, Manager::Get()->GetAppWindow());
+            AppendToLog(_("Failed to launch cppcheck."));
+            cbMessageBox(_("Failed to launch cppcheck."), _("Error"), wxICON_ERROR | wxOK, Manager::Get()->GetAppWindow());
             return false;
         }
     }
