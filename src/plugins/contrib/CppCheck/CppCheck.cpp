@@ -204,12 +204,14 @@ int CppCheck::Execute()
     }
 
     cbProject* Project = Manager::Get()->GetProjectManager()->GetActiveProject();
-    ::wxSetWorkingDirectory(Project->GetBasePath());
     const long Files = Project->GetFilesCount();
     if(!Files)
     {
     	return 0;
     }
+    const wxString Basepath = Project->GetBasePath();
+    ::wxSetWorkingDirectory(Basepath);
+    AppendToLog(_T("switching working directory to : ") + Basepath);
     wxFile Input;
     const wxString InputFileName = _T("CppCheckInput.txt");
     if(!Input.Create(InputFileName, true))
@@ -241,7 +243,7 @@ int CppCheck::Execute()
         wxWindowDisabler disableAll;
         wxBusyInfo running(_("Running cppcheck... please wait (this may take several minutes)..."),
                            Manager::Get()->GetAppWindow());
-        long pid = wxExecute(CommandLine, Output, Errors, wxEXEC_SYNC);
+        const long pid = wxExecute(CommandLine, Output, Errors, wxEXEC_SYNC);
         if (pid==-1)
         {
             wxString msg = _("Failed to launch cppcheck.\nMake sure the application is in the path!");
