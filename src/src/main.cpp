@@ -650,7 +650,7 @@ void MainFrame::CreateIDE()
     // script console
     m_pScriptConsole = new ScriptConsole(this, -1);
     m_LayoutManager.AddPane(m_pScriptConsole, wxAuiPaneInfo().Name(wxT("ScriptConsole")).
-                            Caption(_("Scripting console")).Float().MinSize(100,100));
+                            Caption(_("Scripting console")).Float().MinSize(100,100).FloatingPosition(300, 200));
 
     DoUpdateLayout();
     DoUpdateLayoutColours();
@@ -4331,32 +4331,33 @@ void MainFrame::OnRequestDockWindow(CodeBlocksDockEvent& event)
     wxString name = event.name;
     if (name.IsEmpty())
     {
-        static int idx = 1;
-        name = wxString::Format(_T("UntitledPane%d"), idx++);
+        static int idx = 0;
+        name = wxString::Format(_T("UntitledPane%d"), ++idx);
     }
 // TODO (mandrav##): Check for existing pane with the same name
-    info = info.Name(name);
-    info = info.Caption(event.title.IsEmpty() ? name : event.title);
+    info.Name(name);
+    info.Caption(event.title.IsEmpty() ? name : event.title);
     switch (event.dockSide)
     {
-        case CodeBlocksDockEvent::dsLeft: info = info.Left(); break;
-        case CodeBlocksDockEvent::dsRight: info = info.Right(); break;
-        case CodeBlocksDockEvent::dsTop: info = info.Top(); break;
-        case CodeBlocksDockEvent::dsBottom: info = info.Bottom(); break;
-        case CodeBlocksDockEvent::dsFloating: info = info.Float(); break;
-
+        case CodeBlocksDockEvent::dsLeft: info.Left(); break;
+        case CodeBlocksDockEvent::dsRight: info.Right(); break;
+        case CodeBlocksDockEvent::dsTop: info.Top(); break;
+        case CodeBlocksDockEvent::dsBottom: info.Bottom(); break;
+        case CodeBlocksDockEvent::dsFloating: info.Float(); break;
         default: break;
     }
-    info = info.Show(event.shown);
-    info = info.BestSize(event.desiredSize);
-    info = info.FloatingSize(event.floatingSize);
-    info = info.MinSize(event.minimumSize);
-    info = info.Layer(event.stretch ? 1 : 0);
+    info.Show(event.shown);
+    info.BestSize(event.desiredSize);
+    info.FloatingSize(event.floatingSize);
+    info.FloatingPosition(event.floatingPos);
+    info.MinSize(event.minimumSize);
+    info.Layer(event.stretch ? 1 : 0);
+
     if (event.row != -1)
-        info = info.Row(event.row);
+        info.Row(event.row);
     if (event.column != -1)
-        info = info.Position(event.column);
-    info = info.CloseButton(event.hideable ? true : false);
+        info.Position(event.column);
+    info.CloseButton(event.hideable ? true : false);
     m_LayoutManager.AddPane(event.pWindow, info);
     DoUpdateLayout();
 }
