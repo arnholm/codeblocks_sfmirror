@@ -326,6 +326,9 @@ extern EVTIMPORT const wxEventType cbEVT_HIDE_DOCK_WINDOW;
 // to actually find out its state use IsWindowReallyShown(event.pWindow);
 extern EVTIMPORT const wxEventType cbEVT_DOCK_WINDOW_VISIBILITY;
 #define EVT_DOCK_WINDOW_VISIBILITY(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DOCK_WINDOW_VISIBILITY, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+// force update current view layout
+extern EVTIMPORT const wxEventType cbEVT_UPDATE_VIEW_LAYOUT;
+#define EVT_UPDATE_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_UPDATE_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
 // ask which is the current view layout
 extern EVTIMPORT const wxEventType cbEVT_QUERY_VIEW_LAYOUT;
 #define EVT_QUERY_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_QUERY_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
