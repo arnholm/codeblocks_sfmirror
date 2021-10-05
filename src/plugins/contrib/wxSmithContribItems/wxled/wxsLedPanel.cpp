@@ -22,19 +22,19 @@ namespace
         false);
 
     static const long    Values[] = { wxLED_COLOUR_RED, wxLED_COLOUR_CYAN, wxLED_COLOUR_MAGENTA, wxLED_COLOUR_BLUE, wxLED_COLOUR_GREEN, wxLED_COLOUR_YELLOW, wxLED_COLOUR_GREY };
-    static const wxChar* Names[]  = { _("Rot"), _("Cyan"), _("Magenta"), _("Blau"), _("Gruen"), _("Gelb"), _("Grau"), NULL }; // Must end with NULL entry
+    static const wxChar* Names[]  = { _("Red"), _("Cyan"), _("Magenta"), _("Blue"), _("Green"), _("Yellow"), _("Grey"), nullptr }; // Must end with NULL entry
 
     static const long    ValuesDirection[] = { wxALIGN_RIGHT, wxALIGN_LEFT, wxALIGN_CENTER, wxALIGN_TOP, wxALIGN_BOTTOM };
-    static const wxChar* NamesDirection[]  = { _T("Rechts"), _T("Links"), _T("Mittig"), _T("Oben"), _T("Unten"), NULL };
+    static const wxChar* NamesDirection[]  = { _("Right"), _("Left"), _("Center"), _("Top"), _("Bottom"), nullptr };
 
     static const long    ValuesContent[] = { wxALIGN_CENTER_VERTICAL, wxALIGN_CENTER_HORIZONTAL, wxALIGN_CENTER};
-    static const wxChar* NamesContent[]  = { _T("Mittig vertical"), _T("Mittig Horizontal"), _T( "Mittig"), NULL};
+    static const wxChar* NamesContent[]  = { _("Center Vertical"), _("Center Horizontal"), _("Center"), nullptr};
 
     static const long    ValuesScroll[] = { 0, wxLEFT, wxRIGHT, wxUP, wxDOWN};
-    static const wxChar* NamesScroll[]  = { _("Kein Scroll"), _("Links"), _("Rechts"), _("Hoch"), _("Runter"), NULL};
+    static const wxChar* NamesScroll[]  = { _("No Scroll"), _("Left"), _("Right"), _("Up"), _("Down"), nullptr};
 }
 
-wxsLedPanel::wxsLedPanel(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, NULL, NULL, flId | flVariable)
+wxsLedPanel::wxsLedPanel(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, nullptr, nullptr, flId | flVariable)
 {
     //ctor
     LedMatrixSize.X      = 4;
@@ -45,7 +45,7 @@ wxsLedPanel::wxsLedPanel(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, NUL
     Colour               = wxLED_COLOUR_RED;
     Invert               = false;
     Inactiv              = true;
-    Text                 = _("");
+    Text                 = _T("");
     TextPlace            = 1;
     Bold                 = false;
     Align                = wxALIGN_CENTER;
