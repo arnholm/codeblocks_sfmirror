@@ -3145,6 +3145,18 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
     while (GetEventHandler() != this)
         PopEventHandler(false);
 
+    #if   defined ( __WIN32__ ) || defined ( _WIN64 )
+    // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
+    // crashes in Manager::Shutdown();
+    wxAuiPaneInfoArray& all_panes = m_LayoutManager.GetAllPanes();
+    for(size_t ii = 0; ii < all_panes.Count(); ++ii)
+    {
+        wxAuiPaneInfo paneInfo = all_panes[ii];
+        if (paneInfo.IsShown() and paneInfo.IsFloating())
+            m_LayoutManager.ClosePane(paneInfo);
+    }
+    #endif
+
     // Hide the window
     Hide();
 
