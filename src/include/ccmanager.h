@@ -44,7 +44,7 @@ class wxScintillaEvent;
  * list or the doxygen popup, the scroll event is instead sent there (and skipped for the editor
  * window).
  */
-class DLLIMPORT CCManager : public Mgr<CCManager>, wxEvtHandler
+class DLLIMPORT CCManager : public Mgr<CCManager>, public wxEvtHandler
 {
     public:
         friend class Mgr<CCManager>;
