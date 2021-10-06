@@ -155,7 +155,6 @@ wxObject* wxsStdDialogButtonSizer::OnBuildPreview(wxWindow* Parent,long PreviewF
         Sizer->Fit(NewParent);
         Sizer->SetSizeHints(NewParent);
         wxSizer* OutSizer = new wxBoxSizer(wxHORIZONTAL);
-        OutSizer->Add(NewParent,1,wxEXPAND,0);
         Parent->SetSizer(OutSizer);
         OutSizer->SetSizeHints(Parent);
         return NewParent;
