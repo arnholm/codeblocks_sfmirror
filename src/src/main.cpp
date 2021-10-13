@@ -2475,6 +2475,10 @@ void MainFrame::DoUpdateLayoutColours()
     art->SetColour(wxAUI_DOCKART_INACTIVE_CAPTION_GRADIENT_COLOUR, cfg->ReadColour(_T("/environment/aui/inactive_caption_gradient_colour"), art->GetColour(wxAUI_DOCKART_INACTIVE_CAPTION_GRADIENT_COLOUR)));
     art->SetColour(wxAUI_DOCKART_INACTIVE_CAPTION_TEXT_COLOUR,     cfg->ReadColour(_T("/environment/aui/inactive_caption_text_colour"), art->GetColour(wxAUI_DOCKART_INACTIVE_CAPTION_TEXT_COLOUR)));
 
+    wxFont font = art->GetFont(wxAUI_DOCKART_CAPTION_FONT);
+    font.SetPointSize(cfg->ReadInt(_T("/environment/aui/header_font_size"), art->GetFont(wxAUI_DOCKART_CAPTION_FONT).GetPointSize()));
+    art->SetFont(wxAUI_DOCKART_CAPTION_FONT, font);
+
     DoUpdateLayout();
 }
 

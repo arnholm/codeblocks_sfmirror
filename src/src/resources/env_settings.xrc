@@ -797,6 +797,19 @@
 											<flag>wxALIGN_TOP</flag>
 										</object>
 										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT77">
+												<label>Caption font size:</label>
+											</object>
+											<flag>wxALIGN_CENTER_VERTICAL</flag>
+										</object>
+										<object class="sizeritem">
+											<object class="wxSpinCtrl" name="spnAuiHeaderFontSize">
+												<value>17</value>
+												<min>4</min>
+											</object>
+											<flag>wxALIGN_TOP</flag>
+										</object>
+										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT12">
 												<label>Active caption colour:</label>
 											</object>
