@@ -50,9 +50,11 @@ private:
 
   /// Load all settings (envvar sets) from global C::B config
   void LoadSettings();
-  /// Save all settings (envvar sets) to global C::B config
+  /// Save all settings (envvar sets) from selected set to global C::B config
   void SaveSettings();
-  /// Save settings (of specific active envvar set) to global C::B config
+  /// Save all settings (envvar sets) from specified set to global C::B config
+  void SaveSettings(const wxString& active_set);
+  /// Save active set to global C::B config
   void SaveSettingsActiveSet(wxString active_set);
 
   /// Fires when a (new) envvar set is selected
@@ -81,6 +83,7 @@ private:
   bool VerifySetUnique(const wxChoice* choSet, wxString set);
 
   EnvVars* m_plugin;
+  wxString m_active_set;
 
   DECLARE_EVENT_TABLE()
 };

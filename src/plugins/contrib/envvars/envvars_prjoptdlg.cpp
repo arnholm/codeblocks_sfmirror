@@ -11,11 +11,12 @@
 
 #include "sdk.h"
 #ifndef CB_PRECOMP
-  #include <wx/xrc/xmlres.h>
-  #include <wx/checkbox.h>
-  #include <wx/choice.h>
+    #include <wx/xrc/xmlres.h>
+    #include <wx/checkbox.h>
+    #include <wx/choice.h>
 
-  #include "cbproject.h"
+    #include "cbproject.h"
+    #include "logmanager.h"
 #endif
 
 #include "envvars.h"
@@ -28,7 +29,7 @@
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 BEGIN_EVENT_TABLE(EnvVarsProjectOptionsDlg, wxPanel)
-  EVT_UPDATE_UI(-1, EnvVarsProjectOptionsDlg::OnUpdateUI)
+    EVT_UPDATE_UI(-1, EnvVarsProjectOptionsDlg::OnUpdateUI)
 END_EVENT_TABLE()
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -36,33 +37,33 @@ END_EVENT_TABLE()
 EnvVarsProjectOptionsDlg::EnvVarsProjectOptionsDlg(wxWindow* parent, cbProject* project) :
   m_pProject(project)
 {
-  wxXmlResource::Get()->LoadPanel(this, parent, _T("pnlProjectEnvVarsOptions"));
+    wxXmlResource::Get()->LoadPanel(this, parent, "pnlProjectEnvVarsOptions");
 
-  wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
-  if (!choice_control) return;
+    wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
+    if (!choice_control)
+        return;
 
-  choice_control->Clear();
-  wxArrayString envvar_sets = nsEnvVars::GetEnvvarSetNames();
-  for (size_t i = 0; i < envvar_sets.GetCount(); ++i)
-    choice_control->Append(envvar_sets[i]);
+    wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
+    if (!checkbox_control)
+        return;
 
-  wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
-  if (checkbox_control && choice_control->GetCount())
-  {
-    wxString envvar_set = EnvVars::ParseProjectEnvvarSet(project);
-    if (envvar_set.IsEmpty())
+    choice_control->Set(nsEnvVars::GetEnvvarSetNames());
+    if (!choice_control->IsEmpty())
     {
-      checkbox_control->SetValue(false);
-      choice_control->SetSelection(0);
-      choice_control->Disable();
+        const wxString envvar_set(EnvVars::ParseProjectEnvvarSet(project));
+        if (envvar_set.empty())
+        {
+            checkbox_control->SetValue(false);
+            choice_control->SetSelection(0);
+            choice_control->Disable();
+        }
+        else
+        {
+            checkbox_control->SetValue(true);
+            choice_control->SetStringSelection(envvar_set);
+            choice_control->Enable();
+        }
     }
-    else
-    {
-      checkbox_control->SetValue(true);
-      choice_control->SetStringSelection(envvar_set);
-      choice_control->Enable();
-    }
-  }
 }// EnvVarsProjectOptionsDlg
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -76,17 +77,18 @@ EnvVarsProjectOptionsDlg::~EnvVarsProjectOptionsDlg()
 void EnvVarsProjectOptionsDlg::OnUpdateUI(wxUpdateUIEvent& event)
 {
 #if defined(TRACE_ENVVARS)
-  Manager::Get()->GetLogManager()->DebugLog(F(_T("OnUpdateUI")));
+    Manager::Get()->GetLogManager()->DebugLog("OnUpdateUI");
 #endif
 
-  wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
-  if (checkbox_control)
-  {
-    wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
-    if (choice_control)
-      choice_control->Enable(checkbox_control->IsChecked());
-  }
-  event.Skip();
+    wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
+    if (checkbox_control)
+    {
+        wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
+        if (choice_control)
+            choice_control->Enable(checkbox_control->IsChecked());
+    }
+
+    event.Skip();
 }// OnUpdateUI
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -94,20 +96,25 @@ void EnvVarsProjectOptionsDlg::OnUpdateUI(wxUpdateUIEvent& event)
 void EnvVarsProjectOptionsDlg::OnApply()
 {
 #if defined(TRACE_ENVVARS)
-  Manager::Get()->GetLogManager()->DebugLog(F(_T("OnApply")));
+    Manager::Get()->GetLogManager()->DebugLog("OnApply");
 #endif
 
-  wxString envvarSet;
+    const wxString current_envvar_set(EnvVars::ParseProjectEnvvarSet(m_pProject));
 
-  wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
-  if (checkbox_control && checkbox_control->IsChecked())
-  {
-    wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
-    if (choice_control)
+    wxString new_envvar_set;
+    wxCheckBox* checkbox_control = XRCCTRL(*this, "chkEnvvarSet", wxCheckBox);
+    if (checkbox_control && checkbox_control->IsChecked())
     {
-      envvarSet = choice_control->GetStringSelection();
+        wxChoice* choice_control = XRCCTRL(*this, "choEnvvarSets", wxChoice);
+        if (choice_control)
+            new_envvar_set = choice_control->GetStringSelection();
     }
-  }
 
-  EnvVars::SaveProjectEnvvarSet(*m_pProject, envvarSet);
+    if (current_envvar_set != new_envvar_set)
+    {
+        EV_DBGLOG("Changing envvars set from '%s' to '%s'.", current_envvar_set, new_envvar_set);
+        nsEnvVars::EnvvarSetDiscard(current_envvar_set);
+        nsEnvVars::EnvvarSetApply(new_envvar_set, true);
+        EnvVars::SaveProjectEnvvarSet(m_pProject, new_envvar_set);
+    }
 }// OnApply
