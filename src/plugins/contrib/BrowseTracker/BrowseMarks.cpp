@@ -264,15 +264,23 @@ void BrowseMarks::RecordMarksFrom(BrowseMarks& otherBrowse_Marks)
 // ----------------------------------------------------------------------------
 {
     // get editor by filename in case the editor was close/opened again
-    //-EditorBase* eb = m_pEditorBase;
+
     EditorBase* eb = m_pEdMgr->GetEditor(m_filePath);
+    // Let's get paranoid here, since a crash was reported Nov. 2021
+    // https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
+    cbAssertNonFatal(eb != nullptr);
     #if defined(LOGGING)
-    if (not eb) asm("int3"); /*trap*/
+        if (not eb) asm("int3"); /*trap*/
     #endif
     if (not eb) return;
+
     cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
+    cbAssertNonFatal(cbed != nullptr);
     if (not cbed) return;
+
     cbStyledTextCtrl* control = cbed->GetControl();
+    if (not control) return; //2021/11/27 avoid possible crash
+
     for (int i=0; i<MaxEntries; ++i)
     {
         int posn = otherBrowse_Marks.GetMark(i);

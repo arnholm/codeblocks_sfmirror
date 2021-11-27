@@ -1500,10 +1500,21 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
 
     if (IsAttached() && m_InitDone) do
     {
-
         EditorBase* eb = event.GetEditor();
+        if (not eb) return;
         wxString editorFullPath = eb->GetFilename();
         cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
+        if (not cbed)
+        {
+            // Since wxAuiNotebook added, there's no cbEditor associated during
+            // an initial cbEVT_EDITOR_ACTIVATED event. So we ignore the inital
+            // call and get OnEditorOpened() to re-issue OnEditorActivated() when
+            // it does have a cbEditor, but no cbProject associated;
+            #if defined(LOGGING)
+            LOGIT( _T("BT [OnEditorActivated ignored:no cbEditor[%s]"), editorFullPath.c_str());
+            #endif
+            return;
+        }
 
         if ( m_bProjectIsLoading )
         {
@@ -1520,23 +1531,10 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
              return;
         }
 
-        if (not cbed)
-        {
-            // Since wxAuiNotebook added, there's no cbEditor associated during
-            // an initial cbEVT_EDITOR_ACTIVATED event. So we ignore the inital
-            // call and get OnEditorOpened() to re-issue OnEditorActivated() when
-            // it does have a cbEditor, but no cbProject associated;
-            #if defined(LOGGING)
-            LOGIT( _T("BT [OnEditorActivated ignored:no cbEditor[%s]"), editorFullPath.c_str());
-            #endif
-            return;
-        }
-
         #if defined(LOGGING)
         cbProject* pcbProject = GetProject( eb );
         LOGIT( _T("BT Editor Activated[%p]proj[%p][%s]"), eb, pcbProject, eb->GetShortName().c_str() );
         #endif
-
 
         // New editor, append to circular queue
         // remove previous entries for this editor first
@@ -1570,7 +1568,11 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
         {   // new editor
             if (cbed)
             {
-                HashAddBrowse_Marks( eb->GetFilename() ); //create hashs and book/browse marks arrays
+                // Careful here! On the initial editor activation, EditorManager will not give us the EditorBase by way of the filename.
+                // It means the Editor is not ready for prime time and not fully registered with the EditorManager.
+                wxString fullPath = eb->GetFilename();
+                if (not m_pEdMgr->GetEditor(fullPath)) return;  // 2021/11/27
+                HashAddBrowse_Marks(eb); //create hashs and book/browse marks arrays
 
                 // Debugging statements
                 //DumpHash(wxT("BrowseMarks"));
@@ -1579,6 +1581,7 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                 //m_pActiveProjectData->DumpHash(wxT("BookMarks"));
 
                 cbStyledTextCtrl* control = cbed->GetControl();
+                if (not control) return;
                 // Setting the initial browsemark(s)
                 //Connect to mouse to see user setting/clearing browse marks
                 control->GetEventHandler()->Connect(wxEVT_LEFT_UP,
@@ -1628,7 +1631,18 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                         //LOGIT( _T("BT Project Data[%s]"),pProjectData->GetProjectFilename().c_str() );
                         //pBrowse_MarksArc->Dump();
                         //#endif
-                    if (pBrowse_MarksArc)
+                    if (pBrowse_MarksArc) switch (1)
+                    {
+                        default:
+                        // Let's get paranoid here, since a crash was reported Nov. 2021
+                        // https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
+                        // Note: when eb does not exist in the hash in which case
+                        // wxWidgets will automatically enter it along with a default (0) BrowseMarks ptr.
+                        // HashAddBrowse_Marks() should have added it above and also allocated a BrowseMarks* map;
+                        cbAssertNonFatal(m_EbBrowse_MarksHash.find(eb) != m_EbBrowse_MarksHash.end());
+                        cbAssertNonFatal(m_EbBrowse_MarksHash[eb] != nullptr);
+                        if (m_EbBrowse_MarksHash.find(eb) == m_EbBrowse_MarksHash.end()) break;
+                        if (not m_EbBrowse_MarksHash[eb]) break; //avoid a possible crash here
                         m_EbBrowse_MarksHash[eb]->RecordMarksFrom( *pBrowse_MarksArc);
                             //LOGIT( _T("BT Dumping CURRENT data for[%s]"), eb->GetFilename().c_str());
                             //m_EbBrowse_MarksHash[eb]->Dump();
@@ -1639,6 +1653,7 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                         //m_pActiveProjectData->DumpBrowse_Marks(wxT("BrowseMarks"));
                         //pBrowse_MarksArc->Dump();
                         //m_pActiveProjectData->DumpHash(wxT("BookMarks"));
+                    }
 
                 }//if project
 
@@ -1994,14 +2009,19 @@ void BrowseTracker::AddEditor(EditorBase* eb)
     #endif
 }
 // ----------------------------------------------------------------------------
-BrowseMarks* BrowseTracker::HashAddBrowse_Marks( const wxString fullPath)
+BrowseMarks* BrowseTracker::HashAddBrowse_Marks( const EditorBase* pEdBase)
 // ----------------------------------------------------------------------------
 {
     // EditorManager calls fail during the OnEditorClose event
     // eg,EditorBase* eb = Manager::Get()->GetEditorManager()->GetEditor(filename);
 
-    EditorBase* eb = m_pEdMgr->GetEditor(fullPath);
-    if (not eb) return 0;
+    //-EditorBase* eb = m_pEdMgr->GetEditor(fullPath);
+    EditorBase* eb = (EditorBase*)pEdBase;
+    if (not eb) return nullptr;
+
+    wxString fullPath = eb->GetFilename();
+    if (fullPath.empty()) return nullptr;
+
     // don't add duplicates
     EbBrowse_MarksHash& hash = m_EbBrowse_MarksHash;
     BrowseMarks* pBrowse_Marks = GetBrowse_MarksFromHash( eb);

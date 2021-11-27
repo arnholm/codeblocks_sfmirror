@@ -279,7 +279,11 @@ AppVersion::~AppVersion()
 //  1.2.111  2021/06/19
 //           Implemented EditorManager's stack based switching into BrowseTracker
 //           Linux support, support for stack based editor switching
-//
+// 1.2.112   2021/11/27
+//           Fixed crash when using the EditorManager to get the EditorBase* in OnEditorActivated().
+//           Something has changed such that the EditorManager no longer knows the EditorBase* with:
+//           ProjectManager::GetEditor(filename) during the Editor activated event.
+//           Cf., https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
 // ----------------------------------------------------------------------------
 //  //FIXME: Bugs
 //      01) Requires CB to be restarted after Install before Alt-Left/Right work.

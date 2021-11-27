@@ -282,10 +282,8 @@ class BrowseTracker : public cbPlugin
         void MarkerPrevious(cbStyledTextCtrl* pControl);
         void MarkLine(cbStyledTextCtrl* pControl, int line);
         void MarkRemove(cbStyledTextCtrl* pControl, int line);
-        BrowseMarks* HashAddBrowse_Marks( const wxString fullPath);
+        BrowseMarks* HashAddBrowse_Marks( const EditorBase* pEdBase);
         void SetBrowseMarksStyle( int userStyle);
-        //-int  GetBrowseMarkerId(){return gBrowse_MarkerId;}
-        //-int  GetBrowseMarkerStyle(){return gBrowse_MarkerStyle;}
 
         BrowseMarks* GetBrowse_MarksFromHash( EditorBase* eb);
         BrowseMarks* GetBrowse_MarksFromHash( wxString filePath);
@@ -309,11 +307,9 @@ class BrowseTracker : public cbPlugin
         wxToolBar*      m_pToolBar;
 
         wxString        m_ConfigFolder;
-        //-wxString        m_ExecuteFolder;
         wxString        m_AppName;
         wxString        TrackerCfgFullPath;
         bool            m_bProjectIsLoading;
-        //-cbProject*      m_pLoadingProject;
 
         wxString        m_LoadingProjectFilename;
         int             m_ProjectHookId; // project loader hook ID
