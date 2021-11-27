@@ -175,7 +175,7 @@
       <object class="separator"/>
       <object class="wxMenuItem" name="idEditSwapHeaderSource">
         <label>S&amp;wap header/source</label>
-        <accel>F11</accel>
+        <accel>F7</accel>
         <help>Swap between header and source file pair</help>
       </object>
       <object class="separator"/>
@@ -579,7 +579,7 @@
       <object class="separator"/>
       <object class="wxMenuItem" name="idViewFullScreen">
         <label>F&amp;ull screen</label>
-        <accel>SHIFT-F11</accel>
+        <accel>SHIFT-F12</accel>
         <help>Switch to full screen view</help>
         <checkable>1</checkable>
         <enabled>1</enabled>

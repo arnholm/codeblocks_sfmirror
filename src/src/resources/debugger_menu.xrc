@@ -8,7 +8,7 @@
     <object class="wxMenuItem" name="idDebuggerMenuDebug">
       <label>&amp;Start / Continue</label>
       <bitmap stock_id="core/dbg/run"/>
-      <accel>F8</accel>
+      <accel>F5</accel>
       <help>Run current project in debugger</help>
     </object>
     <object class="wxMenuItem" name="idDebuggerMenuBreak">
@@ -32,19 +32,19 @@
     <object class="wxMenuItem" name="idDebuggerMenuNext">
       <label>Next line</label>
       <bitmap stock_id="core/dbg/next"/>
-      <accel>F7</accel>
+      <accel>F10</accel>
       <help>Execute the next line of code</help>
     </object>
     <object class="wxMenuItem" name="idDebuggerMenuStep">
       <label>Step into</label>
       <bitmap stock_id="core/dbg/step"/>
-      <accel>Shift-F7</accel>
+      <accel>F11</accel>
       <help>Execute the next line of code, but step inside functions</help>
     </object>
     <object class="wxMenuItem" name="idDebuggerMenuStepOut">
       <label>Step out</label>
       <bitmap stock_id="core/dbg/step_out"/>
-      <accel>Ctrl-F7</accel>
+      <accel>Shift-F11</accel>
       <help>Continue execution until the current frame exits</help>
     </object>
     <object class="wxMenuItem" name="idDebuggerMenuNextInstr">
@@ -66,7 +66,7 @@
     <object class="separator"/>
     <object class="wxMenuItem" name="idDebuggerMenuToggleBreakpoint">
       <label>Toggle breakpoint</label>
-      <accel>F5</accel>
+      <accel>F8</accel>
       <help>Toggle breakpoint in current line</help>
     </object>
     <object class="wxMenuItem" name="idDebuggerMenuRemoveAllBreakpoints">
