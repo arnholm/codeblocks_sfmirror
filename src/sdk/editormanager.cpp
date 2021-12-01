@@ -278,12 +278,15 @@ void EditorManager::RecreateOpenEditorStyles()
         cbEditor* ed = InternalGetBuiltinEditor(i);
         if (ed)
         {
-            bool saveSuccess = ed->SaveFoldState(); //First Save the old fold levels
+            const wxFontEncoding currentEncoding(ed->GetEncoding()); //Second save current encoding
+            const bool saveSuccess = ed->SaveFoldState(); //First save the old fold levels
             ed->SetEditorStyle();
             if (saveSuccess)
-            {
                 ed->FixFoldState(); //Compare old fold levels with new and change the bugs
-            }
+
+            const bool wasModified = ed->GetModified();
+            ed->SetEncoding(currentEncoding); //Restore encoding, may set modified flag
+            ed->SetModified(wasModified);
         }
     }
 }
