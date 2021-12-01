@@ -2649,8 +2649,9 @@ void CompilerGCC::PreprocessJob(cbProject* project, const wxString& targetName)
         if (!prj->SupportsCurrentPlatform())
         {
             wxString msg;
-            msg.Printf(_T("\"%s\" does not support the current platform. Skipping..."),
-                        prj->GetTitle().wx_str());
+            msg.Printf("\"%s\" does not support the current platform. Skipping...",
+                       prj->GetTitle());
+
             Manager::Get()->GetLogManager()->LogWarning(msg, m_PageIndex);
             continue;
         }
@@ -2658,26 +2659,35 @@ void CompilerGCC::PreprocessJob(cbProject* project, const wxString& targetName)
         ExpandTargets(prj, targetName, tlist);
 
         if (tlist.GetCount() == 0)
-            Manager::Get()->GetLogManager()->LogWarning(F(_T("Warning: No target named '%s' in project '%s'. Project will not be built..."), targetName.wx_str(), prj->GetTitle().wx_str()));
+        {
+            wxString msg;
+            msg.Printf("Warning: No target named '%s' in project '%s'. Project will not be built...",
+                       targetName, prj->GetTitle());
+
+            Manager::Get()->GetLogManager()->LogWarning(msg);
+        }
 
         // add all matching targets in the job list
         for (size_t x = 0; x < tlist.GetCount(); ++x)
         {
             ProjectBuildTarget* tgt = prj->GetBuildTarget(tlist[x]);
-            CompilerValidResult result = CompilerValid(tgt);
-            if (!result.isValid)
-            {
-                PrintInvalidCompiler(tgt, result.compiler, _T("Skipping..."));
-                continue;
-            }
-            else if (!tgt->SupportsCurrentPlatform())
+            if (!tgt->SupportsCurrentPlatform())
             {
                 wxString msg;
-                msg.Printf(_T("\"%s - %s\" does not support the current platform. Skipping..."),
-                            prj->GetTitle().wx_str(), tlist[x].wx_str());
+                msg.Printf("\"%s - %s\" does not support the current platform. Skipping...",
+                           prj->GetTitle(), tlist[x]);
+
                 Manager::Get()->GetLogManager()->LogWarning(msg, m_PageIndex);
                 continue;
             }
+
+            CompilerValidResult result = CompilerValid(tgt);
+            if (!result.isValid)
+            {
+                PrintInvalidCompiler(tgt, result.compiler, "Skipping...");
+                continue;
+            }
+
             BuildJobTarget bjt;
             bjt.project = prj;
             bjt.targetName = tlist[x];
