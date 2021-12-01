@@ -1186,8 +1186,14 @@ void cbEditor::Split(cbEditor::SplitType split)
     m_pSplitter = new wxSplitterWindow(this, wxNewId(), wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER | wxSP_LIVE_UPDATE);
     m_pSplitter->SetMinimumPaneSize(32);
 
+    // save current encoding
+    const wxFontEncoding currentEncoding(m_pData->m_encoding);
+
     // create the right control
     m_pControl2 = CreateEditor();
+
+    // restore encoding
+    m_pData->m_encoding = currentEncoding;
 
     // update controls' look'n'feel
     // do it here (before) document is attached, speeds up syntaxhighlighting
