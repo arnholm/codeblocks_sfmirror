@@ -70,6 +70,8 @@ class CompilerOptionsDlg : public cbConfigurationPanel
         wxListBox* GetDirsListBox();
         CompileOptionsBase* GetVarsOwner();
         void ProjectTargetCompilerAdjust(); //!< checks if compiler changed for project/target and takes actions accordingly
+        void SwapItems(wxListBox* listBox, int a, int b);
+        void Reselect(wxListBox* listBox, const wxArrayInt& selected, int offset);
 
         void OnRealApply(); // user clicked the "Apply" button (so not the Ok button !!!)
         void OnTreeSelectionChange(wxTreeEvent& event);

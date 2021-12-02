@@ -2516,6 +2516,25 @@ void CompilerOptionsDlg::OnIgnoreRemoveClick(cb_unused wxCommandEvent& event)
     }
 } // OnIgnoreRemoveClick
 
+void CompilerOptionsDlg::SwapItems(wxListBox* listBox, int a, int b)
+{
+    const wxString tmp(listBox->GetString(a));
+    listBox->SetString(a, listBox->GetString(b));
+    listBox->SetString(b, tmp);
+}
+
+void CompilerOptionsDlg::Reselect(wxListBox* listBox, const wxArrayInt& selected, int offset)
+{
+    const unsigned int len = listBox->GetCount();
+    for (unsigned int i = 0; i < len; ++i)
+    {
+        if (selected.Index(i+offset) != wxNOT_FOUND)
+            listBox->SetSelection(i);
+        else
+            listBox->Deselect(i);
+    }
+}
+
 void CompilerOptionsDlg::OnMoveLibUpClick(cb_unused wxCommandEvent& event)
 {
     wxListBox* lstLibs = XRCCTRL(*this, "lstLibs", wxListBox);
@@ -2523,26 +2542,24 @@ void CompilerOptionsDlg::OnMoveLibUpClick(cb_unused wxCommandEvent& event)
         return;
 
     wxArrayInt sels;
-    int num = lstLibs->GetSelections(sels);
-    if (num == 0)
+    const int num = lstLibs->GetSelections(sels);
+    if ((num == 0) || (sels[0] == 0))
         return;
 
-    // moving upwards: need to start from the first element
-    // starting at second element, the first one cannot be moved upwards
-    for (size_t i=1; i<lstLibs->GetCount(); ++i)
+    lstLibs->Freeze();
+
+    // Move
+    for (int i = 0; i < num; ++i)
     {
-        // do not move upwards if the lib before is selected, too
-        if (lstLibs->IsSelected(i) && !lstLibs->IsSelected(i-1))
-        {
-            wxString lib = lstLibs->GetString(i);
-            lstLibs->Delete(i);
-
-            lstLibs->InsertItems(1, &lib, i - 1);
-            lstLibs->SetSelection(i - 1);
-
-            m_bDirty = true;
-        }
+        const int n = sels[i];
+        SwapItems(lstLibs, n, n-1);
     }
+
+    // Reselect
+    Reselect(lstLibs, sels, 1);
+
+    lstLibs->Thaw();
+    m_bDirty = true;
 } // OnMoveLibUpClick
 
 void CompilerOptionsDlg::OnMoveLibDownClick(cb_unused wxCommandEvent& event)
@@ -2552,80 +2569,78 @@ void CompilerOptionsDlg::OnMoveLibDownClick(cb_unused wxCommandEvent& event)
         return;
 
     wxArrayInt sels;
-    int num = lstLibs->GetSelections(sels);
-    if (num == 0)
+    const int num = lstLibs->GetSelections(sels);
+    if ((num == 0) || (sels.Last() == int(lstLibs->GetCount())-1))
         return;
 
-    // moving downwards: need to start from the last element
-    // starting at pre-last element, the last one cannot be moved downwards
-    for (size_t i=lstLibs->GetCount()-1; i>0; --i)
+    lstLibs->Freeze();
+
+    // Move
+    for (int i = num-1; i >= 0; --i)
     {
-        // do not move downwards if the lib after is selected, too
-        // notice here: as started with index+1 (due to GetCount)...
-        // ... subtract 1 all the way to achieve the real index operated on
-        if (lstLibs->IsSelected(i-1) && !lstLibs->IsSelected(i))
-        {
-            wxString lib = lstLibs->GetString(i-1);
-            lstLibs->Delete(i-1);
-
-            lstLibs->InsertItems(1, &lib, i);
-            lstLibs->SetSelection(i);
-
-            m_bDirty = true;
-        }
+        const int n = sels[i];
+        SwapItems(lstLibs, n, n+1);
     }
+
+    // Reselect
+    Reselect(lstLibs, sels, -1);
+
+    lstLibs->Thaw();
+    m_bDirty = true;
 } // OnMoveLibDownClick
 
 void CompilerOptionsDlg::OnMoveDirUpClick(cb_unused wxCommandEvent& event)
 {
-    wxListBox* lst = GetDirsListBox();
-    wxArrayInt sels;
-    if (!lst || lst->GetSelections(sels) < 1)
+    wxListBox* lstDirs = GetDirsListBox();
+    if (!lstDirs)
         return;
 
-    // moving upwards: need to start from the first element
-    // starting at second element, the first one cannot be moved upwards
-    for (size_t i=1; i<lst->GetCount(); ++i)
+    wxArrayInt sels;
+    const int num = lstDirs->GetSelections(sels);
+    if ((num == 0) || (sels[0] == 0))
+        return;
+
+    lstDirs->Freeze();
+
+    // Move
+    for (int i = 0; i < num; ++i)
     {
-        // do not move upwards if the dir before is selected, too
-        if (lst->IsSelected(i) && !lst->IsSelected(i-1))
-        {
-            wxString dir = lst->GetString(i);
-            lst->Delete(i);
-
-            lst->InsertItems(1, &dir, i - 1);
-            lst->SetSelection(i - 1);
-
-            m_bDirty = true;
-        }
+        const int n = sels[i];
+        SwapItems(lstDirs, n, n-1);
     }
+
+    // Reselect
+    Reselect(lstDirs, sels, 1);
+
+    lstDirs->Thaw();
+    m_bDirty = true;
 } // OnMoveDirUpClick
 
 void CompilerOptionsDlg::OnMoveDirDownClick(cb_unused wxCommandEvent& event)
 {
-    wxListBox* lst = GetDirsListBox();
-    wxArrayInt sels;
-    if (!lst || lst->GetSelections(sels) < 1)
+    wxListBox* lstDirs = GetDirsListBox();
+    if (!lstDirs)
         return;
 
-    // moving downwards: need to start from the last element
-    // starting at pre-last element, the last one cannot be moved downwards
-    for (size_t i=lst->GetCount()-1; i>0; --i)
+    wxArrayInt sels;
+    const int num = lstDirs->GetSelections(sels);
+    if ((num == 0) || (sels.Last() == int(lstDirs->GetCount())-1))
+        return;
+
+    lstDirs->Freeze();
+
+    // Move
+    for (int i = num-1; i >= 0; --i)
     {
-        // do not move downwards if the dir after is selected, too
-        // notice here: as started with index+1 (due to GetCount)...
-        // ... subtract 1 all the way to achieve the real index operated on
-        if (lst->IsSelected(i-1) && !lst->IsSelected(i))
-        {
-            wxString dir = lst->GetString(i-1);
-            lst->Delete(i-1);
-
-            lst->InsertItems(1, &dir, i);
-            lst->SetSelection(i);
-
-            m_bDirty = true;
-        }
+        const int n = sels[i];
+        SwapItems(lstDirs, n, n+1);
     }
+
+    // Reselect
+    Reselect(lstDirs, sels, -1);
+
+    lstDirs->Thaw();
+    m_bDirty = true;
 } // OnMoveDirDownClick
 
 void CompilerOptionsDlg::OnMasterPathClick(cb_unused wxCommandEvent& event)
