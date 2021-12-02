@@ -54,6 +54,10 @@ namespace
     WXS_EV_BEGIN(wxsFrameEvents)
         WXS_EVI(EVT_CLOSE,wxEVT_CLOSE_WINDOW,wxCloseEvent,Close)
         WXS_EVI(EVT_ACTIVATE,wxEVT_ACTIVATE,wxActivateEvent,Activate)
+        WXS_EVI(EVT_ICONIZE,wxEVT_ICONIZE,wxIconizeEvent,Iconize)
+        WXS_EVI(EVT_MENU_OPEN,wxEVT_MENU_OPEN,wxMenuEvent,MenuOpen)
+        WXS_EVI(EVT_MENU_CLOSE,wxEVT_MENU_CLOSE,wxMenuEvent,MenuClose)
+        WXS_EVI(EVT_MENU_HIGHLIGHT_ALL,wxEVT_MENU_HIGHLIGHT,wxMenuEvent,MenuHighlightAll)
         WXS_EV_DEFAULTS()
     WXS_EV_END()
 
