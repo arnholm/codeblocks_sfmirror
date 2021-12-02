@@ -35,13 +35,13 @@
                 additionalLibs="-flto"
                 checkAgainst="-g -ggdb"
                 checkMessage="Combining -flto with -g is currently experimental and expected to produce wrong results."/>
-        <Option name="    "
+        <Option name="Linker output optimization (level 1)"
                 additionalLibs="-O1"
                 supersedes="-O -O2 -O3 -Os"/>
-        <Option name="    "
+        <Option name="Linker output optimization (level 2)"
                 additionalLibs="-O2"
                 supersedes="-O -O1 -O3 -Os"/>
-        <Option name="    "
+        <Option name="Linker output optimization (level 3)"
                 additionalLibs="-O3"
                 supersedes="-O -O1 -O2 -Os"/>
         <Option name="Expensive optimizations"
