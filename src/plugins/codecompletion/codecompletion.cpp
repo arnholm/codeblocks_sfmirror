@@ -231,7 +231,7 @@ namespace CodeCompletionHelper
             cbStyledTextCtrl* control = ed->GetControl();
             const int pos = control->GetCurrentPos();
             const wxString line = control->GetLine(control->LineFromPosition(pos));
-            const wxRegEx reg(_T("^[ \t]*#[ \t]*include[ \t]+[\"<]([^\">]+)[\">]"));
+            const wxRegEx reg("^[[:blank:]]*#[[:blank:]]*include[[:blank:]]+[\"<]([^\">]+)[\">]");
             wxString inc;
             if (reg.Matches(line))
                 inc = reg.GetMatch(line, 1);
@@ -1277,8 +1277,8 @@ void CodeCompletion::DoAutocomplete(const CCToken& token, cbEditor* ed)
         }
         if (addComment) // search backwards for the #if*
         {
-            wxRegEx ppIf(wxT("^[ \t]*#[ \t]*if"));
-            wxRegEx ppEnd(wxT("^[ \t]*#[ \t]*endif"));
+            wxRegEx ppIf("^[[:blank:]]*#[[:blank:]]*if");
+            wxRegEx ppEnd("^[[:blank:]]*#[[:blank:]]*endif");
             int depth = -1;
             for (int ppLine = stc->GetCurrentLine() - 1; ppLine >= 0; --ppLine)
             {
@@ -1291,7 +1291,7 @@ void CodeCompletion::DoAutocomplete(const CCToken& token, cbEditor* ed)
                 }
                 if (depth == 0)
                 {
-                    wxRegEx pp(wxT("^[ \t]*#[ \t]*[a-z]*([ \t]+([a-zA-Z0-9_]+)|())"));
+                    wxRegEx pp("^[[:blank:]]*#[[:blank:]]*[a-z]*([[:blank:]]+([a-zA-Z0-9_]+)|())");
                     pp.Matches(stc->GetLine(ppLine));
                     if (!pp.GetMatch(stc->GetLine(ppLine), 2).IsEmpty())
                         itemText.Append(wxT(" // ") + pp.GetMatch(stc->GetLine(ppLine), 2));
