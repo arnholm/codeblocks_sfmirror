@@ -21,7 +21,9 @@
     #include <wx/intl.h>
     #include <wx/notebook.h>
     #include <wx/radiobox.h>
+    #include <wx/regex.h>
     #include <wx/sizer.h>
+    #include <wx/stattext.h>
     #include <wx/textctrl.h>
     #include <wx/xrc/xmlres.h>
 
@@ -266,12 +268,12 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
 
     if (findMode)
     {
-        SetTitle(_T("Find"));
+        SetTitle(_("Find"));
         XRCCTRL(*this, "nbReplaceSingle",        wxPanel)->Hide();
         XRCCTRL(*this, "nbReplaceInFilesSingle", wxPanel)->Hide();
-        XRCCTRL(*this, "nbReplace",              wxNotebook)->SetPageText(0,_T("Find"));
-        XRCCTRL(*this, "nbReplace",              wxNotebook)->SetPageText(1,_T("Find in files"));
-        XRCCTRL(*this, "wxID_OK",                wxButton)->SetLabel(_T("&Find"));
+        XRCCTRL(*this, "nbReplace",              wxNotebook)->SetPageText(0, _("Find"));
+        XRCCTRL(*this, "nbReplace",              wxNotebook)->SetPageText(1, _("Find in files"));
+        XRCCTRL(*this, "wxID_OK",                wxButton)->SetLabel(_("&Find"));
         XRCCTRL(*this, "chkFixEOLs1",            wxCheckBox)->Hide();
         XRCCTRL(*this, "chkFixEOLs2",            wxCheckBox)->Hide();
         XRCCTRL(*this, "chkDelOldSearchRes2",    wxCheckBox)->Show();
