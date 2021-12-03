@@ -59,12 +59,15 @@ class DLLIMPORT FindReplaceDlg : public FindReplaceBase
         void OnSearchProject(wxCommandEvent& event);
         void OnDeferredFocus(wxCommandEvent& event);
         void OnSelectTarget(wxCommandEvent& event);
+        void OnSettingsChange(wxCommandEvent& event);
 
     private:
+        void CheckFindValue();
         void FillComboWithLastValues(wxComboBox* combo, const wxString& configKey);
         void SaveComboValues(wxComboBox* combo, const wxString& configKey);
         bool m_findReplaceInFilesActive;
         bool m_findMode;
+        bool m_advancedRegex;
         wxWindow *m_findPage;
 
         DECLARE_EVENT_TABLE()

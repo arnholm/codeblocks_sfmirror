@@ -213,14 +213,6 @@ int FindReplace::ShowFindDialog(bool replace, bool explicitly_find_in_files)
         return -2;
     }
 
-    // Don't look for empty strings:
-    if (dlg->GetFindString().empty())
-    {
-        dlg->Destroy();
-        cbMessageBox(_("Can't look for an empty search criterion!"), _("Error"), wxOK | wxICON_EXCLAMATION, Manager::Get()->GetAppWindow());
-        return -2;
-    }
-
     if (!m_LastFindReplaceData)
         m_LastFindReplaceData = new cbFindReplaceData;
 
@@ -269,16 +261,6 @@ int FindReplace::ShowFindDialog(bool replace, bool explicitly_find_in_files)
         m_LastFindReplaceData->SearchInSelectionEnd = control->GetSelectionEnd();
     }
     dlg->Destroy();
-
-    if ( m_LastFindReplaceData->regEx )
-    {
-        // Match nasty regexes
-        if ( m_LastFindReplaceData->findText.IsSameAs('^') || m_LastFindReplaceData->findText.IsSameAs('$') )
-        {
-            cbMessageBox(_T("Bad regex entered!\nPlease correct regex and try again!"), _T("Error!"), wxICON_ERROR);
-            return 0;
-        }
-    }
 
     int ReturnValue = 0;
     if (!replace)

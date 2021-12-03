@@ -622,6 +622,15 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
+				<object class="wxStaticText" name="stStatus">
+					<label></label>
+					<fg>#FF0000</fg>
+					<style>wxST_NO_AUTORESIZE|wxNO_FULL_REPAINT_ON_RESIZE</style>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
 				<object class="wxBoxSizer">
 					<object class="sizeritem">
 						<object class="wxButton" name="wxID_OK">

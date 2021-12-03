@@ -46,6 +46,9 @@ DEFINE_EVENT_TYPE(wxDEFERRED_FOCUS_EVENT)
 BEGIN_EVENT_TABLE(FindReplaceDlg, wxScrollingDialog)
     EVT_ACTIVATE(                        FindReplaceDlg::OnActivate)
     EVT_CHECKBOX(XRCID("chkRegEx1"),     FindReplaceDlg::OnRegEx)
+    EVT_CHECKBOX(XRCID("chkRegEx2"),     FindReplaceDlg::OnSettingsChange)
+    EVT_CHECKBOX(XRCID("chkMatchCase1"), FindReplaceDlg::OnSettingsChange)
+    EVT_CHECKBOX(XRCID("chkMatchCase2"), FindReplaceDlg::OnSettingsChange)
 
     // Special events for Find/Replace
     EVT_CHECKBOX(XRCID("chkMultiLine1"), FindReplaceDlg::OnMultiChange)
@@ -56,6 +59,10 @@ BEGIN_EVENT_TABLE(FindReplaceDlg, wxScrollingDialog)
     EVT_BUTTON(XRCID("btnBrowsePath"),   FindReplaceDlg::OnBrowsePath)
     EVT_BUTTON(XRCID("btnSelectTarget"), FindReplaceDlg::OnSelectTarget)
     EVT_CHOICE(XRCID("chProject"),       FindReplaceDlg::OnSearchProject)
+    EVT_TEXT(XRCID("cmbFind1"),          FindReplaceDlg::OnSettingsChange)
+    EVT_TEXT(XRCID("cmbFind2"),          FindReplaceDlg::OnSettingsChange)
+    EVT_TEXT(XRCID("txtMultiLineFind1"), FindReplaceDlg::OnSettingsChange)
+    EVT_TEXT(XRCID("txtMultiLineFind2"), FindReplaceDlg::OnSettingsChange)
 
     EVT_COMMAND(wxID_ANY, wxDEFERRED_FOCUS_EVENT, FindReplaceDlg::OnDeferredFocus)
 END_EVENT_TABLE()
@@ -68,7 +75,7 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
 {
     wxXmlResource::Get()->LoadObject(this, parent, _T("dlgFindReplace"),_T("wxScrollingDialog"));
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
-
+    m_advancedRegex = cfg->ReadBool(_T("/use_advanced_regexes"), false);
 
     // load last searches
     FillComboWithLastValues(XRCCTRL(*this, "cmbFind1",    wxComboBox), CONF_GROUP _T("/last"));
@@ -292,6 +299,8 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
 
     // NOTE (jens#1#): Dynamically connect these events, to avoid asserts in debug-mode
     Connect(XRCID("nbReplace"), wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(FindReplaceDlg::OnReplaceChange));
+
+    CheckFindValue();
 }
 
 FindReplaceDlg::~FindReplaceDlg()
@@ -649,6 +658,7 @@ void FindReplaceDlg::OnReplaceChange(wxNotebookEvent& event)
 
     wxCommandEvent e(wxDEFERRED_FOCUS_EVENT,wxID_ANY);
     AddPendingEvent(e);
+    CheckFindValue();
     event.Skip();
 }
 
@@ -671,6 +681,7 @@ void FindReplaceDlg::OnDeferredFocus(cb_unused wxCommandEvent& event)
 void FindReplaceDlg::OnRegEx(cb_unused wxCommandEvent& event)
 {
     XRCCTRL(*this, "rbDirection", wxRadioBox)->Enable(!XRCCTRL(*this, "chkRegEx1", wxCheckBox)->GetValue());
+    CheckFindValue();
 }
 
 void FindReplaceDlg::OnActivate(wxActivateEvent& event)
@@ -744,6 +755,7 @@ void FindReplaceDlg::OnMultiChange(wxCommandEvent& event)
         (XRCCTRL(*this, "nbReplace", wxNotebook)->GetPage(1))->Layout();
 
     Refresh();
+    CheckFindValue();
     event.Skip();
 }
 
@@ -839,3 +851,64 @@ bool FindReplaceDlg::GetHasToOpenFirstResult() const
            (XRCCTRL(*this, "chkAutoOpen2", wxCheckBox)->GetValue());
 }
 
+void FindReplaceDlg::OnSettingsChange(wxCommandEvent& event)
+{
+    CheckFindValue();
+    event.Skip();
+}
+
+void FindReplaceDlg::CheckFindValue()
+{
+    wxString statusText;
+    const wxString value(GetFindString());
+    if (value.empty())
+    {
+        statusText = _("Search string cannot be empty");
+    }
+#ifdef wxHAS_REGEX_ADVANCED
+    else if (GetRegEx())
+    {
+        if (m_advancedRegex)
+        {
+            int flags = wxRE_ADVANCED;
+            if (!GetMultiLine())
+                flags |= wxRE_NEWLINE;
+
+            if (!GetMatchCase())
+                flags |= wxRE_ICASE;
+
+            wxRegEx r(value, flags);
+            if (!r.IsValid())
+                statusText = _("Invalid advanced regular expression");
+        }
+    }
+#endif
+
+    XRCCTRL(*this, "stStatus", wxStaticText)->SetLabel(statusText);
+    const bool isOk = statusText.empty();
+    XRCCTRL(*this, "wxID_OK", wxButton)->Enable(isOk);
+
+    // Colours
+    const wxColour bg(isOk ? wxNullColour : *wxRED);
+    const wxColour fg(isOk ? wxNullColour : *wxWHITE);
+
+    wxComboBox *cb1 = XRCCTRL(*this, "cmbFind1", wxComboBox);
+    cb1->SetBackgroundColour(bg);
+    cb1->SetForegroundColour(fg);
+    cb1->Refresh();
+
+    wxComboBox *cb2 = XRCCTRL(*this, "cmbFind2", wxComboBox);
+    cb2->SetBackgroundColour(bg);
+    cb2->SetForegroundColour(fg);
+    cb2->Refresh();
+
+    wxTextCtrl *tc1 = XRCCTRL(*this, "txtMultiLineFind1", wxTextCtrl);
+    tc1->SetBackgroundColour(bg);
+    tc1->SetForegroundColour(fg);
+    tc1->Refresh();
+
+    wxTextCtrl *tc2 = XRCCTRL(*this, "txtMultiLineFind2", wxTextCtrl);
+    tc2->SetBackgroundColour(bg);
+    tc2->SetForegroundColour(fg);
+    tc2->Refresh();
+}
