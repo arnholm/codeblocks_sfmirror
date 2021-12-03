@@ -11,7 +11,7 @@
 				<object class="wxStaticText" name="ID_3">
 					<label>Regular expression:</label>
 				</object>
-				<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>10</border>
 			</object>
 			<object class="sizeritem">
@@ -22,30 +22,38 @@
 				<border>10</border>
 			</object>
 			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT2">
+					<label>C-escaped regular expression:</label>
+				</object>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>10</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
 				<object class="wxTextCtrl" name="ID_QUOTED">
 					<size>80,-1</size>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 				<border>10</border>
 			</object>
 			<object class="sizeritem">
 				<object class="wxBoxSizer">
 					<object class="sizeritem">
 						<object class="wxStaticText" name="ID_1">
-							<label>Regex library:</label>
+							<label>Regex syntax:</label>
 						</object>
 						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>10</border>
 					</object>
 					<object class="sizeritem">
-						<object class="wxChoice" name="ID_LIBRARY">
+						<object class="wxChoice" name="ID_SYNTAX">
 							<content>
-								<item>wxWidgets (wxRE_EXTENDED)</item>
-								<item>wxWidgets (wxRE_ADVANCED)</item>
-								<item>wxWidgets (wxRE_BASIC)</item>
+								<item>wxRE_EXTENDED</item>
+								<item>wxRE_ADVANCED</item>
+								<item>wxRE_BASIC</item>
 							</content>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>10</border>
 					</object>
 					<object class="sizeritem">
