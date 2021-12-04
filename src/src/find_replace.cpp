@@ -746,22 +746,31 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
         }
     }
     else if (data->scope == 3) // replace in custom search path and mask
-     {
-        // fill the search list with the files found under the search path
-        int flags = wxDIR_FILES |
-                    (data->recursiveSearch ? wxDIR_DIRS : 0) |
-                    (data->hiddenSearch ? wxDIR_HIDDEN : 0);
-        wxArrayString masks = GetArrayFromString(data->searchMask);
-        if (!masks.GetCount())
-            masks.Add(_T("*"));
-        unsigned int count = masks.GetCount();
+    {
         wxLogNull ln; // no logging
-        for (unsigned int i = 0; i < count; ++i)
+
+        // Calling wxDir::GetAllFiles() with an empty or invalid path has no sense
+        // and generates assertions on Linux (see ticket #951)
+        if (!data->searchPath.empty() && wxDir::Exists(data->searchPath))
         {
-            // wxDir::GetAllFiles() does *not* clear the array, so it suits us just fine ;)
-            wxDir::GetAllFiles(data->searchPath, &filesList, masks[i], flags);
+            // fill the search list with the files found under the search path
+            const int flags = wxDIR_FILES |
+                              (data->recursiveSearch ? wxDIR_DIRS : 0) |
+                              (data->hiddenSearch ? wxDIR_HIDDEN : 0);
+
+            wxArrayString masks = GetArrayFromString(data->searchMask);
+            if (!masks.GetCount())
+                masks.Add("*");
+
+            const size_t maskCount = masks.GetCount();
+            for (size_t i = 0; i < maskCount; ++i)
+            {
+                // wxDir::GetAllFiles() does *not* clear the array, so it suits us just fine ;)
+                wxDir::GetAllFiles(data->searchPath, &filesList, masks[i], flags);
+            }
         }
     }
+
     // if the list is empty, leave
     int filesCount = filesList.GetCount();
     if (filesCount == 0)
