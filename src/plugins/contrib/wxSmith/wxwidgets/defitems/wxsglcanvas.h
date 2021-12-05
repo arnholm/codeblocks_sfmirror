@@ -52,6 +52,8 @@ class wxsGLCanvas: public wxsWidget
         int         mMinAccumGreen;
         int         mMinAccumBlue;
         int         mMinAccumAlpha;
+        int         mSampleBuffers;
+        int         mSamples;
 
 };
 

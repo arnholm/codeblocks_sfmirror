@@ -98,6 +98,8 @@ wxsGLCanvas::wxsGLCanvas(wxsItemResData* Data):
     mMinAccumGreen   = 0;
     mMinAccumBlue    = 0;
     mMinAccumAlpha   = 0;
+    mSampleBuffers   = 0;
+    mSamples         = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -198,13 +200,33 @@ void wxsGLCanvas::OnBuildCreatingCode()
                 Codef( _T("\tWX_GL_MIN_ACCUM_ALPHA, %d,\n"), mMinAccumAlpha );
             }
 
+            if (( mSampleBuffers > 0) || ( mSamples > 0 ))  // Add the check only if mSampleBuffers or mSamples is not equal to 0
+            {
+                Codef(_T("#if wxCHECK_VERSION(3,0,0)\n"));  // Only if wxWidgets version in target is >= 3.0.0. Before, WX_GL_SAMPLE_BUFFERS and WX_GL_SAMPLES are not defined
+            }
+
+            if ( mSampleBuffers > 0 )
+            {
+                Codef( _T("\tWX_GL_SAMPLE_BUFFERS,  %d,\n"), mSampleBuffers );
+            }
+
+            if ( mSamples > 0 )
+            {
+                Codef( _T("\tWX_GL_SAMPLES,         %d,\n"), mSamples );
+            }
+
+            if (( mSampleBuffers > 0 ) || ( mSamples > 0 )) // Close the check only if mSampleBuffers or mSamples is not equal to 0
+            {
+                Codef(_T("#endif // wxCHECK_VERSION\n"));   // Only if wxWidgets version in target is >= 3.0.0. Close the check version
+            }
+
             // We padd the attributes table with two zeros instead of one
             // just to be sure that messy code (ours or from wxWidgets)
             // don't crash because of lack of second argument
             Codef( _T("\t0, 0 };\n") );
 
             // Now we can create our window
-            Codef(_T("#if wxCHECK_VERSION(3,0,0)\n"));
+            Codef(_T("#if wxCHECK_VERSION(3,0,0)\n"));  // Check wxWidgets version because the order of parameters in GLCanvas has changed with this version
             Codef(_T("\t%C(%W, %I, %v, %P, %S, %T, %N);\n"),aname.wx_str());
             Codef(_T("#else\n"));
             Codef(_T("\t%C(%W, %I, %P, %S, %T, %N, %v);\n"),aname.wx_str());
@@ -256,24 +278,26 @@ void wxsGLCanvas::OnEnumWidgetProperties(cb_unused long Flags)
 {
 //    mContextVarName = GetVarName() + _("RC");
 //
-//    WXS_BOOL(wxsGLCanvas, mInternalContext, _("Use Internal Context"), _T("mInternalContext"), true)
-//    WXS_BOOL(wxsGLCanvas, mContextVar,      _("Declare Context"),      _T("mContextVar"),      true)
+//    WXS_BOOL(wxsGLCanvas, mInternalContext, _("Use Internal Context"), "mInternalContext", true)
+//    WXS_BOOL(wxsGLCanvas, mContextVar,      _("Declare Context"),      "mContextVar",      true)
 //
-//    WXS_SHORT_STRING(wxsGLCanvas, mContextVarName, _("Context Var Name"), _T("mContextVarName"),  mContextVarName, true)
-    WXS_BOOL(wxsGLCanvas, mRGBA,          _("Use True Color"),               _T("mRGBA"),          true)
-    WXS_LONG(wxsGLCanvas, mBufferSize,    _("Bits for buffer "),             _T("mBufferSize"),    0)
-    WXS_LONG(wxsGLCanvas, mLevel,         _("Main Buffer"),                  _T("mLevel"),         0)
-    WXS_BOOL(wxsGLCanvas, mDoubleBuffer,  _("Use doublebuffer"),             _T("mDoubleBuffer"),  true)
-    WXS_BOOL(wxsGLCanvas, mStereo,        _("Stereoscopic display"),         _T("mStereo"),        false)
-    WXS_LONG(wxsGLCanvas, mAuxBuffers,    _("Auxiliary buffers count"),      _T("mAuxBuffers"),    0)
-    WXS_LONG(wxsGLCanvas, mMinRed,        _("Red color bits"),               _T("mMinRed"),        0)
-    WXS_LONG(wxsGLCanvas, mMinGreen,      _("Green color bits"),             _T("mMinGreen"),      0)
-    WXS_LONG(wxsGLCanvas, mMinBlue,       _("Blue color bits"),              _T("mMinBlue"),       0)
-    WXS_LONG(wxsGLCanvas, mMinAlpha,      _("Alpha bits"),                   _T("mMinAlpha"),      0)
-    WXS_LONG(wxsGLCanvas, mDepthSize,     _("Bits for Z-buffer (0,16,32)"),  _T("mDepthSize"),     0)
-    WXS_LONG(wxsGLCanvas, mStencilSize,   _("Bits for stencil buffer "),     _T("mStencilSize"),   0)
-    WXS_LONG(wxsGLCanvas, mMinAccumRed,   _("Accumulator Red color bits"),   _T("mMinAccumRed"),   0)
-    WXS_LONG(wxsGLCanvas, mMinAccumGreen, _("Accumulator Green color bits"), _T("mMinAccumGreen"), 0)
-    WXS_LONG(wxsGLCanvas, mMinAccumBlue,  _("Accumulator Blue color bits"),  _T("mMinAccumBlue"),  0)
-    WXS_LONG(wxsGLCanvas, mMinAccumAlpha, _("Accumulator Alpha bits"),       _T("mMinAccumAlpha"), 0)
+//    WXS_SHORT_STRING(wxsGLCanvas, mContextVarName, _("Context Var Name"), "mContextVarName",  mContextVarName, true)
+    WXS_BOOL(wxsGLCanvas,   mRGBA,            _("Use True Color"),               "mRGBA",          true)
+    WXS_LONG(wxsGLCanvas,   mBufferSize,      _("Bits for buffer "),             "mBufferSize",    0)
+    WXS_LONG(wxsGLCanvas,   mLevel,           _("Main Buffer"),                  "mLevel",         0)
+    WXS_BOOL(wxsGLCanvas,   mDoubleBuffer,    _("Use doublebuffer"),             "mDoubleBuffer",  true)
+    WXS_BOOL(wxsGLCanvas,   mStereo,          _("Stereoscopic display"),         "mStereo",        false)
+    WXS_LONG(wxsGLCanvas,   mAuxBuffers,      _("Auxiliary buffers count"),      "mAuxBuffers",    0)
+    WXS_LONG(wxsGLCanvas,   mMinRed,          _("Red color bits"),               "mMinRed",        0)
+    WXS_LONG(wxsGLCanvas,   mMinGreen,        _("Green color bits"),             "mMinGreen",      0)
+    WXS_LONG(wxsGLCanvas,   mMinBlue,         _("Blue color bits"),              "mMinBlue",       0)
+    WXS_LONG(wxsGLCanvas,   mMinAlpha,        _("Alpha bits"),                   "mMinAlpha",      0)
+    WXS_LONG(wxsGLCanvas,   mDepthSize,       _("Bits for Z-buffer (0,16,32)"),  "mDepthSize",     0)
+    WXS_LONG(wxsGLCanvas,   mStencilSize,     _("Bits for stencil buffer "),     "mStencilSize",   0)
+    WXS_LONG(wxsGLCanvas,   mMinAccumRed,     _("Accumulator Red color bits"),   "mMinAccumRed",   0)
+    WXS_LONG(wxsGLCanvas,   mMinAccumGreen,   _("Accumulator Green color bits"), "mMinAccumGreen", 0)
+    WXS_LONG(wxsGLCanvas,   mMinAccumBlue,    _("Accumulator Blue color bits"),  "mMinAccumBlue",  0)
+    WXS_LONG(wxsGLCanvas,   mMinAccumAlpha,   _("Accumulator Alpha bits"),       "mMinAccumAlpha", 0)
+    WXS_LONG_T(wxsGLCanvas, mSampleBuffers,   _("Multisampling support"),        "mSampleBuffers", 0, _("1 for multisampling support (antialiasing)"))
+    WXS_LONG_T(wxsGLCanvas, mSamples,         _("Antialiasing supersampling"),   "mSamples",       0, _("4 for 2x2 antialiasing supersampling"))
 }
