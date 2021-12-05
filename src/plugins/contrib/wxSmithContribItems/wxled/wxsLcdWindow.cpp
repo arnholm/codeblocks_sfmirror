@@ -30,7 +30,7 @@ wxsLcdWindow::wxsLcdWindow(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, N
     //ctor
 
     NumberOfDigits    = 8;
-    Content           = _("");
+    Content           = wxString();
     ColourLight       = wxColour( 0, 255, 0);
     ColourGray        = wxColour( 0, 64, 0);
     BackGround        = wxColour( 0, 0, 0);

@@ -19,11 +19,11 @@
 * You should have received a copy of the GNU General Public License
 * along with wxSmith; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
-* 
+*
 * Ron Collins
 * rcoll@theriver.com
 * 4-Feb-2010
-* 
+*
 */
 
 #include "wx/defs.h"
@@ -70,7 +70,7 @@ virtual    ~wxSpeedButton();
 
             wxSpeedButton(  wxWindow       *inParent,                               // parent window
                             wxWindowID      inID,                                   // id of this button
-                            const wxString &inLabel         = _(""),                // button text
+                            const wxString &inLabel         = wxString(),           // button text
                             const wxBitmap &inGlyph         = wxNullBitmap,         // bitmaps displayed on button
                             int             inGlyphCount    = 0,                    // number of images in inGlyph
                             int             inMargin        = 2,                    // area around image and text
@@ -86,8 +86,8 @@ virtual    ~wxSpeedButton();
 
             wxSpeedButton( wxWindow        *inParent,                               // parent window
                             wxWindowID      inID,                                   // id of this button
-                            const wxString &inLabel         = _(""),                // button text
-                            const wxString &inGlyphFile     = _(""),                // bitmaps displayed on button
+                            const wxString &inLabel         = wxString(),           // button text
+                            const wxString &inGlyphFile     = wxString(),           // bitmaps displayed on button
                             int             inGlyphCount    = 0,                    // number of images in inGlyph
                             int             inMargin        = 2,                    // area around image and tex
                             int             inGroupIndex    = 0,                    // ident of a group of buttons
@@ -104,7 +104,7 @@ virtual    ~wxSpeedButton();
 
             bool Create( wxWindow          *inParent        = NULL,                 // parent window
                             wxWindowID      inID            = wxNewId(),            // id of this button
-                            const wxString &inLabel         = _(""),                // button text
+                            const wxString &inLabel         = wxString(),           // button text
                             const wxBitmap &inGlyph         = wxNullBitmap,         // bitmaps displayed on button
                             int             inGlyphCount    = 0,                    // number of images in inGlyph
                             int             inMargin        = 1,                    // area around image and text

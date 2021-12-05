@@ -108,7 +108,7 @@ namespace
 void wxsAuiPaneInfoExtra::OnEnumProperties(long /*Flags*/)
 {
     //Name
-    WXS_SHORT_STRING_P(wxsAuiPaneInfoExtra,m_Name,_("AUI Name"),_T("name"),_(""),false,1002);
+    WXS_SHORT_STRING_P(wxsAuiPaneInfoExtra,m_Name,_("AUI Name"),_T("name"),wxString(),false,1002);
 
     //Standard pane type
     static const long    StandardPaneValues[] = { 0, DefaultPane, CenterPane, ToolbarPane, 0 };
@@ -116,7 +116,7 @@ void wxsAuiPaneInfoExtra::OnEnumProperties(long /*Flags*/)
     WXS_ENUM_P(wxsAuiPaneInfoExtra,m_StandardPane,_("AUI Standard pane type"),_T("standardpanetype"),StandardPaneValues,StandardPaneNames,0,1001)
 
     //Caption and caption bar buttons
-    WXS_SHORT_STRING_P(wxsAuiPaneInfoExtra,m_Caption,_("AUI Caption"),_T("caption"),_(""),false,1000)
+    WXS_SHORT_STRING_P(wxsAuiPaneInfoExtra,m_Caption,_("AUI Caption"),_T("caption"),wxString(),false,1000)
     WXS_BOOL_P(wxsAuiPaneInfoExtra,m_CaptionVisible,_("AUI Caption Visible"),_T("captionvisible"),true,990)
     WXS_BOOL_P(wxsAuiPaneInfoExtra,m_MinimizeButton,_("AUI Minimize button"),_T("minimizebutton"),true,989)
     WXS_BOOL_P(wxsAuiPaneInfoExtra,m_MaximizeButton,_("AUI Maximize button"),_T("maximizebutton"),true,988)

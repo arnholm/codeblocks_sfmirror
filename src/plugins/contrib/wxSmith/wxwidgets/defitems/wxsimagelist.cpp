@@ -203,7 +203,7 @@ void wxsImageList::StoreXpmData(void)
     // go thru entire array, pulling out one XPM at a time into a single string
     n = 0;
     i = 2;
-    tt = _("");
+    tt = wxString();
     while(i < (int)m_ImageData.GetCount()){
         ss = m_ImageData.Item(i);
         i += 1;

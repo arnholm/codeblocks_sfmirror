@@ -544,7 +544,7 @@ public:
 //MonData implementations
 MonData::MonData()
 {
-    m_path=_("");
+    m_path=wxString();
     m_monitor=NULL;
     m_changedata=NULL;
     m_handle=NULL;

@@ -77,7 +77,7 @@ wxsSpeedButton::wxsSpeedButton(wxsItemResData* Data):
 
 // start with a clean slate
 
-    mLabel      = _("");
+    mLabel      = wxString();
     mGlyphCount = 0;
     mMargin     = 2;
     mUseInclude = true;

@@ -643,10 +643,10 @@ bool ThreadSearch::BuildToolBar(wxToolBar* toolBar)
                                                      wxBITMAP_TYPE_PNG, scaleFactor);
 
     toolBar->AddControl(m_pCboSearchExpr);
-    toolBar->AddTool(controlIDs.Get(ControlIDs::idBtnSearch), _(""),
+    toolBar->AddTool(controlIDs.Get(ControlIDs::idBtnSearch), wxString(),
                      bmpFind, bmpFindDisabled,
                      wxITEM_NORMAL, _("Run search"));
-    toolBar->AddTool(controlIDs.Get(ControlIDs::idBtnOptions), _(""),
+    toolBar->AddTool(controlIDs.Get(ControlIDs::idBtnOptions), wxString(),
                      bmpOptions, bmpOptionsDisabled,
                      wxITEM_NORMAL, _("Show options window"));
     m_pThreadSearchView->UpdateOptionsButtonImage(m_FindData);

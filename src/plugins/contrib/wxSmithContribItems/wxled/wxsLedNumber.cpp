@@ -31,7 +31,7 @@ namespace
 wxsLedNumber::wxsLedNumber(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, NULL, NULL, flVariable | flId | flPosition | flSize | flColours | flMinMaxSize | flExtraCode)
 {
     //ctor
-    Content      = _("");
+    Content      = wxString();
     Align        = wxLED_ALIGN_LEFT;
     Faded        = true;
     GetBaseProps()->m_Fg = wxColour( 0, 255, 0);

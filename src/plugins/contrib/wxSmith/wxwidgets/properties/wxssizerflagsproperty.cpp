@@ -65,13 +65,13 @@ void wxsSizerFlagsProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGrid
     PGRegister(Object,Grid,ID1,BORDERIND);
 
     wxPGChoices PGC2;
-    PGC2.Add(_(""),AlignNot);
+    PGC2.Add(wxString(),AlignNot);
     PGC2.Add(_("Center"),AlignCMask);
     wxPGId ID2 = Grid->AppendIn(Parent,new wxEnumProperty(_("Center align"),wxPG_LABEL,PGC2,FLAGS&AlignCMask));
     PGRegister(Object,Grid,ID2,ALIGNCIND);
 
     wxPGChoices PGC3;
-    PGC3.Add(_(""),AlignNot);
+    PGC3.Add(wxString(),AlignNot);
     PGC3.Add(_("Left"),AlignLeft);
     PGC3.Add(_("Center"),AlignCenterHorizontal);
     PGC3.Add(_("Right"),AlignRight);
@@ -79,7 +79,7 @@ void wxsSizerFlagsProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGrid
     PGRegister(Object,Grid,ID3,ALIGNHIND);
 
     wxPGChoices PGC4;
-    PGC4.Add(_(""),AlignNot);
+    PGC4.Add(wxString(),AlignNot);
     PGC4.Add(_("Top"),AlignTop);
     PGC4.Add(_("Center"),AlignCenterVertical);
     PGC4.Add(_("Bottom"),AlignBottom);
