@@ -37,7 +37,10 @@ wxsLongProperty::wxsLongProperty(const wxString& PGName, const wxString& DataNam
 
 void wxsLongProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridManager* Grid,wxPGId Parent)
 {
-    PGRegister(Object,Grid,Grid->AppendIn(Parent,new wxIntProperty(GetPGName(),wxPG_LABEL,VALUE)));
+    wxIntProperty* Property = new wxIntProperty(GetPGName(), wxPG_LABEL,VALUE);
+    Property->SetHelpString(m_HelpString);
+    wxPGId ID = Grid->AppendIn(Parent, Property);
+    PGRegister(Object, Grid, ID);
 }
 
 bool wxsLongProperty::PGRead(wxsPropertyContainer* Object, wxPropertyGridManager* Grid,

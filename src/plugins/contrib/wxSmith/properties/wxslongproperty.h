@@ -77,9 +77,37 @@ class wxsLongProperty: public wxsProperty
  *  \param PGName name used in property grid
  *  \param DataName name used in Xml / Data Streams
  *  \param Default value applied on read errors / validation failures
+ *  \param Priority priority of this property
  */
 #define WXS_LONG_P(ClassName,VarName,PGName,DataName,Default,Priority) \
     { static wxsLongProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),Default,Priority); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring long integer property with help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_LONG_T(ClassName,VarName,PGName,DataName,Default,HelpString) \
+    { static wxsLongProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),Default); \
+      _Property.SetHelpString(HelpString); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring long integer property with custom priority and help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param Priority priority of this property
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_LONG_PT(ClassName,VarName,PGName,DataName,Default,Priority,HelpString) \
+    { static wxsLongProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),Default,Priority); \
+      _Property.SetHelpString(HelpString); \
       Property(_Property); }
 
 /** \} */
