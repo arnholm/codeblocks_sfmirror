@@ -76,18 +76,6 @@ class wxsStringProperty: public wxsProperty
     { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),false,XmlStoreEmpty,Default); \
       Property(_Property); }
 
-/** \brief Macro automatically declaring multiline wxString property with custom priority
- *  \param ClassName name of class holding this property
- *  \param VarName name of variable inside class
- *  \param PGName name used in property grid
- *  \param DataName name used in Xml / Data Streams
- *  \param Default value applied on read errors / validation failures
- *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
- */
-#define WXS_STRING(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty) \
-    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),true,XmlStoreEmpty,Default); \
-      Property(_Property); }
-
 /** \brief Macro automatically declaring one-line wxString property with custom priority
  *  \param ClassName name of class holding this property
  *  \param VarName name of variable inside class
@@ -101,6 +89,47 @@ class wxsStringProperty: public wxsProperty
     { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),false,XmlStoreEmpty,Default,Priority); \
       Property(_Property); }
 
+/** \brief Macro automatically declaring one-line wxString property with help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_SHORT_STRING_T(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty,HelpString) \
+    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),false,XmlStoreEmpty,Default); \
+      _Property.SetHelpString(HelpString); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring one-line wxString property with custom priority and help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
+ *  \param Priority priority of this property
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_SHORT_STRING_PT(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty,Priority,HelpString) \
+    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),false,XmlStoreEmpty,Default,Priority); \
+      _Property.SetHelpString(HelpString); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring multiline wxString property
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
+ */
+#define WXS_STRING(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty) \
+    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),true,XmlStoreEmpty,Default); \
+      Property(_Property); }
+
 /** \brief Macro automatically declaring multiline wxString property with custom priority
  *  \param ClassName name of class holding this property
  *  \param VarName name of variable inside class
@@ -112,6 +141,35 @@ class wxsStringProperty: public wxsProperty
  */
 #define WXS_STRING_P(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty,Priority) \
     { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),true,XmlStoreEmpty,Default,Priority); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring multiline wxString property with help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_STRING_T(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty,HelpString) \
+    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),true,XmlStoreEmpty,Default); \
+      _Property.SetHelpString(HelpString); \
+      Property(_Property); }
+
+/** \brief Macro automatically declaring multiline wxString property with custom priority and help string (tooltip)
+ *  \param ClassName name of class holding this property
+ *  \param VarName name of variable inside class
+ *  \param PGName name used in property grid
+ *  \param DataName name used in Xml / Data Streams
+ *  \param Default value applied on read errors / validation failures
+ *  \param XmlStoreEmpty true if strings equal to default value should be written to xml structure, false otherwise
+ *  \param Priority priority of this property
+ *  \param HelpString string to show in the tooltip
+ */
+#define WXS_STRING_PT(ClassName,VarName,PGName,DataName,Default,XmlStoreEmpty,Priority,HelpString) \
+    { static wxsStringProperty _Property(PGName,DataName,wxsOFFSET(ClassName,VarName),true,XmlStoreEmpty,Default,Priority); \
+      _Property.SetHelpString(HelpString); \
       Property(_Property); }
 
 /** \} */

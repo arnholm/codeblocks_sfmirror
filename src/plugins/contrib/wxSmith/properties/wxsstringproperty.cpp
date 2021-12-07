@@ -40,20 +40,25 @@ wxsStringProperty::wxsStringProperty(const wxString& PGName, const wxString& Dat
 {}
 
 
-void wxsStringProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridManager* Grid,wxPGId Parent)
+void wxsStringProperty::PGCreate(wxsPropertyContainer* Object, wxPropertyGridManager* Grid, wxPGId Parent)
 {
     wxString Fixed = VALUE;
     Fixed.Replace(_T("\n"),_T("\\n"));
     wxPGId Id;
-    if ( IsLongString )
+    if (IsLongString)
     {
-        Id = Grid->AppendIn(Parent,new wxLongStringProperty(GetPGName(),wxPG_LABEL,Fixed));
+        wxLongStringProperty* Property = new wxLongStringProperty(GetPGName(), wxPG_LABEL, Fixed);
+        Property->SetHelpString(m_HelpString);
+        Id = Grid->AppendIn(Parent, Property);
     }
     else
     {
-        Id = Grid->AppendIn(Parent,new wxStringProperty(GetPGName(),wxPG_LABEL,Fixed));
+        wxStringProperty* Property = new wxStringProperty(GetPGName(), wxPG_LABEL, Fixed);
+        Property->SetHelpString(m_HelpString);
+        Id = Grid->AppendIn(Parent, Property);
     }
-    PGRegister(Object,Grid,Id);
+
+    PGRegister(Object, Grid, Id);
 }
 
 bool wxsStringProperty::PGRead(cb_unused wxsPropertyContainer* Object,
