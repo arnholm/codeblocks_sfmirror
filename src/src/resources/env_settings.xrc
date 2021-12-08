@@ -683,6 +683,7 @@
 										<object class="sizeritem">
 											<object class="wxListBox" name="lstColours">
 												<default>-1</default>
+												<style>wxLB_SORT</style>
 											</object>
 											<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 											<border>4</border>
