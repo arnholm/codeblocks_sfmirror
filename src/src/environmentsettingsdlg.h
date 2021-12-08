@@ -50,6 +50,7 @@ class EnvironmentSettingsDlg : public wxScrollingDialog, public cbConfigurationP
         void OnClickAppColourDefault(wxCommandEvent &event);
     private:
         void AddPluginPanels();
+        void DoChooseAppColourItem(int index);
         void LoadListbookImages();
         void UpdateListbookImages();
 

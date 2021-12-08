@@ -785,7 +785,7 @@ static void CreateAndSetBitmap(wxStaticBitmap &control, const wxColour &colour)
     dc.SetPen(*wxBLACK_PEN);
     dc.SetBrush(wxBrush(colour));
     dc.DrawRectangle(wxRect(0, 0, width, height));
-
+    dc.SelectObject(wxNullBitmap);
     control.SetBitmap(bmp);
 }
 
@@ -825,13 +825,15 @@ void EnvironmentSettingsDlg::FillApplicationColours()
             categories->Append(*it);
     }
 
-    wxCommandEvent tempEvent;
     if (list->GetCount() > 0)
     {
         list->SetSelection(0);
-        tempEvent.SetClientObject(list->GetClientObject(0));
+        DoChooseAppColourItem(0);
     }
-    OnChooseAppColourItem(tempEvent);
+    else
+    {
+        DoChooseAppColourItem(-1);
+    }
 }
 
 void EnvironmentSettingsDlg::OnChooseAppColourCategory(cb_unused wxCommandEvent &event)
@@ -839,14 +841,19 @@ void EnvironmentSettingsDlg::OnChooseAppColourCategory(cb_unused wxCommandEvent 
     FillApplicationColours();
 }
 
-
 void EnvironmentSettingsDlg::OnChooseAppColourItem(wxCommandEvent &event)
+{
+    DoChooseAppColourItem(event.GetSelection());
+}
+
+void EnvironmentSettingsDlg::DoChooseAppColourItem(int index)
 {
     wxColourPickerCtrl *picker = XRCCTRL(*this, "colourPicker", wxColourPickerCtrl);
     wxButton *btnDefault = XRCCTRL(*this, "btnDefaultColour", wxButton);
     wxStaticBitmap *bmpDefaultColour = XRCCTRL(*this, "bmpDefaultColour", wxStaticBitmap);
+    wxListBox *list = XRCCTRL(*this, "lstColours", wxListBox);
 
-    const AppColoursClientData *data = static_cast<AppColoursClientData*>(event.GetClientObject());
+    const AppColoursClientData *data = (index < 0) ? nullptr : static_cast <AppColoursClientData *> (list->GetClientObject(index));
     if (!data)
     {
         picker->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
@@ -866,6 +873,7 @@ void EnvironmentSettingsDlg::OnChooseAppColourItem(wxCommandEvent &event)
             activeColour = colourIt->second;
         else
             activeColour = it->second.value;
+
         picker->SetColour(activeColour);
         picker->Enable(true);
 
