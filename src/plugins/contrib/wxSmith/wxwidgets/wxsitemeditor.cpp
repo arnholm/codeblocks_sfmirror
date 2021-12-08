@@ -598,8 +598,8 @@ void wxsItemEditor::RebuildInsTypeIcons()
 
 void wxsItemEditor::BuildInsTypeIcon(wxBitmapButton* Btn,const wxImage& Original,int ButtonType)
 {
-    bool Selected = (m_InsType & ButtonType) != 0;
-    bool Enabled = (m_InsTypeMask & ButtonType) != 0;
+    const bool Selected = (m_InsType & ButtonType) != 0;
+    const bool Enabled = (m_InsTypeMask & ButtonType) != 0;
 
     if ( !Enabled || !Selected )
     {
@@ -607,10 +607,11 @@ void wxsItemEditor::BuildInsTypeIcon(wxBitmapButton* Btn,const wxImage& Original
     }
     else
     {
-        wxBitmap Copy = Original;
+        wxBitmap Copy(Original);
         wxMemoryDC DC;
         DC.SelectObject(Copy);
-        DC.DrawBitmap(m_SelectedImg,0,0);
+        DC.DrawBitmap(m_SelectedImg, 0, 0);
+        DC.SelectObject(wxNullBitmap);
         Btn->SetBitmapLabel(Copy);
     }
 
