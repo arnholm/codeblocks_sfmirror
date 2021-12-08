@@ -71,6 +71,8 @@ BEGIN_EVENT_TABLE(EditorConfigurationDlg, wxScrollingDialog)
     EVT_BUTTON(XRCID("btnColoursReset"),               EditorConfigurationDlg::OnColoursReset)
     EVT_BUTTON(XRCID("btnColoursCopy"),                EditorConfigurationDlg::OnColoursCopyFrom)
     EVT_BUTTON(XRCID("btnColoursCopyAll"),             EditorConfigurationDlg::OnColoursCopyAllFrom)
+    EVT_BUTTON(XRCID("btnSavedColour"),                EditorConfigurationDlg::OnChooseColour)
+    EVT_BUTTON(XRCID("btnUnsavedColour"),              EditorConfigurationDlg::OnChooseColour)
     EVT_BUTTON(XRCID("btnCaretColour"),                EditorConfigurationDlg::OnChooseColour)
     EVT_BUTTON(XRCID("btnGutterColour"),               EditorConfigurationDlg::OnChooseColour)
     EVT_BUTTON(XRCID("btnColoursFore"),                EditorConfigurationDlg::OnChooseColour)
@@ -115,7 +117,10 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     UpdateSampleFont(false);
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
+    ColourManager* colours = Manager::Get()->GetColourManager();
 
+    const wxColour savedColour(colours->GetColour(wxT("changebar_saved")));
+    const wxColour unsavedColour(colours->GetColour(wxT("changebar_unsaved")));
     XRCCTRL(*this, "chkAutoIndent",               wxCheckBox)->SetValue(cfg->ReadBool(_T("/auto_indent"),                true));
     XRCCTRL(*this, "chkSmartIndent",              wxCheckBox)->SetValue(cfg->ReadBool(_T("/smart_indent"),               true));
     XRCCTRL(*this, "chkBraceCompletion",          wxCheckBox)->SetValue(cfg->ReadBool(_T("/brace_completion"),           true));
@@ -125,6 +130,8 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "chkScrollWidthTracking",      wxCheckBox)->SetValue(m_EnableScrollWidthTracking);
     m_EnableChangebar = cfg->ReadBool(_T("/margin/use_changebar"), true);
     XRCCTRL(*this, "chkUseChangebar",             wxCheckBox)->SetValue(m_EnableChangebar);
+    XRCCTRL(*this, "btnSavedColour",              wxButton)->SetBackgroundColour(savedColour);
+    XRCCTRL(*this, "btnUnsavedColour",            wxButton)->SetBackgroundColour(unsavedColour);
     XRCCTRL(*this, "chkShowIndentGuides",         wxCheckBox)->SetValue(cfg->ReadBool(_T("/show_indent_guides"),         false));
     XRCCTRL(*this, "chkBraceSmartIndent",         wxCheckBox)->SetValue(cfg->ReadBool(_T("/brace_smart_indent"),         true));
     XRCCTRL(*this, "chkSelectionBraceCompletion", wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection_brace_completion"), false));
@@ -181,8 +188,8 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "cmbEOLMode",             wxChoice)->SetSelection(cfg->ReadInt(_T("/eol/eolmode"),                  platform::windows ? wxSCI_EOL_CRLF : wxSCI_EOL_LF)); // Windows takes CR+LF, other platforms LF only
 
     //caret
-    wxColour caretColour = Manager::Get()->GetColourManager()->GetColour(wxT("editor_caret"));
-    int caretStyle = cfg->ReadInt(_T("/caret/style"), wxSCI_CARETSTYLE_LINE);
+    const wxColour caretColour(colours->GetColour(wxT("editor_caret")));
+    const int caretStyle = cfg->ReadInt(_T("/caret/style"), wxSCI_CARETSTYLE_LINE);
     XRCCTRL(*this, "lstCaretStyle",  wxChoice)->SetSelection(caretStyle);
     XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/caret/width"), 1));
     XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->Enable(caretStyle == wxSCI_CARETSTYLE_LINE);
@@ -190,13 +197,13 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "slCaretPeriod",  wxSlider)->SetValue(cfg->ReadInt(_T("/caret/period"), 500));
 
     // whitespace colour
-    wxColour whiteSpaceColour = Manager::Get()->GetColourManager()->GetColour(wxT("editor_whitespace"));
+    const wxColour whiteSpaceColour(colours->GetColour(wxT("editor_whitespace")));
     XRCCTRL(*this, "btnWSColour", wxButton)->SetBackgroundColour(whiteSpaceColour);
 
     //selections
     XRCCTRL(*this, "chkEnableVirtualSpace",     wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection/use_vspace"),      false));
     XRCCTRL(*this, "chkEnableRectVirtualSpace", wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection/use_rect_vspace"), false));
-    bool multiSelectEnabled = cfg->ReadBool(_T("/selection/multi_select"), false);
+    const bool multiSelectEnabled = cfg->ReadBool(_T("/selection/multi_select"), false);
     XRCCTRL(*this, "chkEnableMultipleSelections",        wxCheckBox)->SetValue(multiSelectEnabled);
     XRCCTRL(*this, "chkEnableAdditionalSelectionTyping", wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection/multi_typing"), false));
     XRCCTRL(*this, "chkEnableAdditionalSelectionTyping", wxCheckBox)->Enable(multiSelectEnabled);
@@ -213,7 +220,7 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "spnFoldLimitLevel",      wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/folding/limit_level"),            1));
 
     //gutter
-    wxColour gutterColour = Manager::Get()->GetColourManager()->GetColour(wxT("editor_gutter"));
+    const wxColour gutterColour(colours->GetColour(wxT("editor_gutter")));
     XRCCTRL(*this, "lstGutterMode",   wxChoice)->SetSelection(cfg->ReadInt(_T("/gutter/mode"), 0));
     XRCCTRL(*this, "btnGutterColour", wxButton)->SetBackgroundColour(gutterColour);
     XRCCTRL(*this, "spnGutterColumn", wxSpinCtrl)->SetRange(1, 500);
@@ -1038,6 +1045,7 @@ void EditorConfigurationDlg::EndModal(int retCode)
     if (retCode == wxID_OK)
     {
         ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
+        ColourManager* colours = Manager::Get()->GetColourManager();
 
         cfg->Write(_T("/font"), XRCCTRL(*this, "lblEditorFont", wxStaticText)->GetFont().GetNativeFontInfoDesc());
 
@@ -1099,12 +1107,12 @@ void EditorConfigurationDlg::EndModal(int retCode)
         cfg->Write(_T("/caret/style"),                         XRCCTRL(*this, "lstCaretStyle",  wxChoice)->GetSelection());
         cfg->Write(_T("/caret/width"),                         XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->GetValue());
         wxColour caretColour = XRCCTRL(*this, "btnCaretColour", wxButton)->GetBackgroundColour();
-        Manager::Get()->GetColourManager()->SetColour(wxT("editor_caret"), caretColour);
+        colours->SetColour(wxT("editor_caret"), caretColour);
         cfg->Write(_T("/caret/period"),                        XRCCTRL(*this, "slCaretPeriod",  wxSlider)->GetValue());
 
         // whitespace colour
         wxColour wsColour = XRCCTRL(*this, "btnWSColour", wxButton)->GetBackgroundColour();
-        Manager::Get()->GetColourManager()->SetColour(wxT("editor_whitespace"), wsColour);
+        colours->SetColour(wxT("editor_whitespace"), wsColour);
 
         //folding
         bool enableFolding = XRCCTRL(*this, "chkEnableFolding", wxCheckBox)->GetValue();
@@ -1141,7 +1149,7 @@ void EditorConfigurationDlg::EndModal(int retCode)
         //gutter
         cfg->Write(_T("/gutter/mode"),                     XRCCTRL(*this, "lstGutterMode",   wxChoice)->GetSelection());
         wxColour gutterColour = XRCCTRL(*this, "btnGutterColour", wxButton)->GetBackgroundColour();
-        Manager::Get()->GetColourManager()->SetColour(wxT("editor_gutter"), gutterColour);
+        colours->SetColour(wxT("editor_gutter"), gutterColour);
         cfg->Write(_T("/gutter/column"),                   XRCCTRL(*this, "spnGutterColumn", wxSpinCtrl)->GetValue());
 
         //margin
@@ -1178,6 +1186,10 @@ void EditorConfigurationDlg::EndModal(int retCode)
                 }
             }
         }
+
+        colours->SetColour(wxT("changebar_saved"), XRCCTRL(*this, "btnSavedColour", wxButton)->GetBackgroundColour());
+        colours->SetColour(wxT("changebar_unsaved"), XRCCTRL(*this, "btnUnsavedColour", wxButton)->GetBackgroundColour());
+
         // default code : first update what's in the current txtCtrl,
         // and then write them all to the config file (even if unmodified)
         int sel = XRCCTRL(*this, "cmbDefCodeFileType", wxChoice)->GetSelection();
@@ -1226,7 +1238,7 @@ void EditorConfigurationDlg::EndModal(int retCode)
         }
 
         // save the colours manager here, just in case there are duplicate colour controls
-        Manager::Get()->GetColourManager()->Save();
+        colours->Save();
     }
     else
     {

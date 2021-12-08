@@ -925,18 +925,19 @@
 													<object class="wxSpinCtrl" name="spnMarginWidth">
 														<value>48</value>
 													</object>
-													<flag>wxEXPAND</flag>
+													<flag>wxALIGN_LEFT</flag>
 													<border>4</border>
 												</object>
 												<object class="sizeritem">
 													<object class="wxCheckBox" name="chkDynamicWidth">
 														<label>Dynamic setting</label>
 													</object>
-													<flag>wxALIGN_CENTER_VERTICAL</flag>
-													<border>10</border>
+													<flag>wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
+													<border>20</border>
+													<option>1</option>
 												</object>
 											</object>
-											<flag>wxALL|wxEXPAND</flag>
+											<flag>wxALL</flag>
 											<border>4</border>
 										</object>
 										<object class="sizeritem">
@@ -958,8 +959,46 @@
 												<label>Use changebar</label>
 												<checked>1</checked>
 											</object>
-											<flag>wxBOTTOM|wxLEFT|wxEXPAND</flag>
+											<flag>wxLEFT|wxEXPAND</flag>
 											<border>4</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxFlexGridSizer">
+												<cols>2</cols>
+												<rows>2</rows>
+												<vgap>4</vgap>
+												<hgap>4</hgap>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT15">
+														<label>Saved colour:</label>
+													</object>
+													<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+													<border>20</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="btnSavedColour" />
+													<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT16">
+														<label>Unsaved colour:</label>
+													</object>
+													<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+													<border>20</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="btnUnsavedColour" />
+													<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL</flag>
+											<border>5</border>
 										</object>
 									</object>
 									<flag>wxLEFT|wxEXPAND</flag>
