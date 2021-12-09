@@ -561,56 +561,58 @@ void SmartIndentCpp::DoBraceCompletion(cbStyledTextCtrl* control, const wxChar& 
     if (!control)
         return;
 
-    int pos = control->GetCurrentPos();
-    int style = control->GetStyleAt(pos);
+    const int pos = control->GetCurrentPos();
+    const int style = control->GetStyleAt(pos);
 
     // match preprocessor commands
-    if ( (ch == _T('\n')) || ( (control->GetEOLMode() == wxSCI_EOL_CR) && (ch == _T('\r')) ) )
+    if ((ch == '\n') || ((control->GetEOLMode() == wxSCI_EOL_CR) && (ch == '\r')))
     {
-        wxRegEx ppIf(wxT("^[ \t]*#[ \t]*if"));
-        wxRegEx ppElse(wxT("^[ \t]*#[ \t]*el"));
-        wxRegEx ppEnd(wxT("^[ \t]*#[ \t]*endif"));
-        wxRegEx pp(wxT("^([ \t]*#[ \t]*)[a-z]*([ \t]+([a-zA-Z0-9_]+)|())")); // generic match to extract parts
+        wxRegEx ppIf("^[[:blank:]]*#[[:blank:]]*if");
+        wxRegEx ppElse("^[[:blank:]]*#[[:blank:]]*el");
+        wxRegEx ppEnd("^[[:blank:]]*#[[:blank:]]*endif");
+        wxRegEx pp("^([[:blank:]]*#[[:blank:]]*)[a-z]*([[:blank:]]+([a-zA-Z0-9_]+)|())"); // generic match to extract parts
         const int ppLine = control->GetCurrentLine() - 1;
         if (ppIf.Matches(control->GetLine(ppLine)) || ppElse.Matches(control->GetLine(ppLine)))
         {
             int depth = 1;
             for (int i = ppLine + 1; i < control->GetLineCount(); ++i)
             {
-                if (control->GetLine(i).Find(wxT('#')) != wxNOT_FOUND) // limit testing due to performance cost
+                if (control->GetLine(i).Find('#') != wxNOT_FOUND) // limit testing due to performance cost
                 {
                     if (ppIf.Matches(control->GetLine(i))) // ignore else's, elif's, ...
                         ++depth;
                     else if (ppEnd.Matches(control->GetLine(i)))
                         --depth;
                 }
+
                 if (depth == 0)
                     break;
             }
+
             if (depth > 0)
             {
-                wxString endIf = wxT("endif");
+                wxString endIf("endif");
                 if (pp.Matches(control->GetLine(ppLine)))
                 {
                     endIf.Prepend(pp.GetMatch(control->GetLine(ppLine), 1));
                     if (!pp.GetMatch(control->GetLine(ppLine), 3).IsEmpty())
-                        endIf.Append(wxT(" // ") + pp.GetMatch(control->GetLine(ppLine), 3));
+                        endIf.Append(" // " + pp.GetMatch(control->GetLine(ppLine), 3));
                 }
                 else
-                    endIf.Prepend(wxT("#"));
+                    endIf.Prepend("#");
                 control->InsertText(pos, GetEOLStr(control->GetEOLMode()) + endIf);
                 return;
             }
         }
     }
 
-    if ( control->IsComment(style) || control->IsPreprocessor(style) )
+    if (control->IsComment(style) || control->IsPreprocessor(style))
         return;
 
-    if (ch == _T('\'') || ch == _T('"'))
+    if ((ch == '\'') || (ch == '"'))
     {
         if (   (control->GetCharAt(pos) == ch)
-            && (control->GetCharAt(pos - 2) != _T('\\')) )
+            && (control->GetCharAt(pos - 2) != '\\') )
         {
             control->DeleteBack();
             control->GotoPos(pos);
@@ -621,26 +623,28 @@ void SmartIndentCpp::DoBraceCompletion(cbStyledTextCtrl* control, const wxChar& 
             const wxChar right = control->GetCharAt(pos);
             if (   control->IsCharacter(style)
                 || control->IsString(style)
-                || left == _T('\\')
-                || (   (left > _T(' '))
-                    && (left != _T('('))
-                    && (left != _T('=')) )
-                || (   (right > _T(' '))
-                    && (right != _T(')')) ) )
+                || (left == '\\')
+                || (   (left > ' ')
+                    && (left != '(')
+                    && (left != '=') )
+                || (   (right > ' ')
+                    && (right != ')') ) )
             {
                 return;
             }
+
             control->AddText(ch);
             control->GotoPos(pos);
         }
+
         return;
     }
 
-    if ( control->IsCharacter(style) || control->IsString(style) )
+    if (control->IsCharacter(style) || control->IsString(style))
         return;
 
-    const wxString leftBrace(_T("([{"));
-    const wxString rightBrace(_T(")]}"));
+    const wxString leftBrace("([{");
+    const wxString rightBrace(")]}");
 
     if ((ch == ' ') && Manager::Get()->GetConfigManager("editor")->ReadBool("/spaces_around_braces", false))
     {
@@ -656,13 +660,13 @@ void SmartIndentCpp::DoBraceCompletion(cbStyledTextCtrl* control, const wxChar& 
     }
 
     int index = leftBrace.Find(ch);
-    const wxString unWant(_T(");\n\r\t\b "));
+    const wxString unWant(");\n\r\t\b ");
     const wxChar nextChar = control->GetCharAt(pos);
     if ((index != wxNOT_FOUND) && ((unWant.Find(wxUniChar(nextChar)) != wxNOT_FOUND) || (pos == control->GetLength())))
     {
         control->AddText(rightBrace.GetChar(index));
         control->GotoPos(pos);
-        if (ch == _T('{'))
+        if (ch == '{')
         {
             const int curLine = control->GetCurrentLine();
             int keyLine = curLine;
@@ -674,14 +678,14 @@ void SmartIndentCpp::DoBraceCompletion(cbStyledTextCtrl* control, const wxChar& 
                 int end = control->WordEndPosition(keyPos, true);
                 text = control->GetTextRange(start, end);
             }
-            while (   (text.IsEmpty() || text == _T("public") || text == _T("protected") || text == _T("private"))
+            while (   (text.IsEmpty() || text == "public" || text == "protected" || text == "private")
                    && (text != _T("namespace"))
                    && (--keyLine >= 0) );
 
-            if (text == _T("class") || text == _T("struct") || text == _T("enum") || text == _T("union"))
-                control->InsertText(control->GetLineEndPosition(curLine), _T(";"));
+            if (text == "class" || text == "struct" || text == "enum" || text == "union")
+                control->InsertText(control->GetLineEndPosition(curLine), ";");
 
-            const wxRegEx reg(_T("^[ \t]*{}[ \t]*"));
+            const wxRegEx reg("^[[:blank:]]*{}[[:blank:]]*");
             if (reg.Matches(control->GetCurLine()))
             {
                 control->NewLine();
