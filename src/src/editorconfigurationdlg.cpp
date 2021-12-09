@@ -92,6 +92,7 @@ BEGIN_EVENT_TABLE(EditorConfigurationDlg, wxScrollingDialog)
     EVT_CHECKBOX(XRCID("chkDynamicWidth"),             EditorConfigurationDlg::OnDynamicCheck)
     EVT_CHECKBOX(XRCID("chkEnableMultipleSelections"), EditorConfigurationDlg::OnMultipleSelections)
     EVT_CHOICE(XRCID("lstCaretStyle"),                 EditorConfigurationDlg::OnCaretStyle)
+    EVT_CHECKBOX(XRCID("chkSmartIndent"),              EditorConfigurationDlg::OnSmartIndent)
 
     EVT_LISTBOOK_PAGE_CHANGING(XRCID("nbMain"),        EditorConfigurationDlg::OnPageChanging)
     EVT_LISTBOOK_PAGE_CHANGED(XRCID("nbMain"),         EditorConfigurationDlg::OnPageChanged)
@@ -123,8 +124,8 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     const wxColour unsavedColour(colours->GetColour(wxT("changebar_unsaved")));
     XRCCTRL(*this, "chkAutoIndent",               wxCheckBox)->SetValue(cfg->ReadBool(_T("/auto_indent"),                true));
     XRCCTRL(*this, "chkSmartIndent",              wxCheckBox)->SetValue(cfg->ReadBool(_T("/smart_indent"),               true));
-    XRCCTRL(*this, "chkBraceCompletion",          wxCheckBox)->SetValue(cfg->ReadBool(_T("/brace_completion"),           true));
     XRCCTRL(*this, "chkSpacesAroundBraces",       wxCheckBox)->SetValue(cfg->ReadBool(_T("/spaces_around_braces"),       false));
+    XRCCTRL(*this, "chkBraceCompletion",          wxCheckBox)->SetValue(cfg->ReadBool(_T("/brace_completion"),           true));
     XRCCTRL(*this, "chkDetectIndent",             wxCheckBox)->SetValue(cfg->ReadBool(_T("/detect_indent"),              false));
     XRCCTRL(*this, "chkUseTab",                   wxCheckBox)->SetValue(cfg->ReadBool(_T("/use_tab"),                    false));
     m_EnableScrollWidthTracking = cfg->ReadBool(_T("/margin/scroll_width_tracking"), false);
@@ -157,7 +158,11 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "chkEnableMiddleMousePaste",   wxCheckBox)->SetValue(cfg->ReadBool(_T("/enable_middle_mouse_paste"),  false));
     XRCCTRL(*this, "spnTabSize",                  wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/tab_size"),                    4));
     XRCCTRL(*this, "cmbViewWS",                   wxChoice)->SetSelection(cfg->ReadInt(_T("/view_whitespace"),           0));
-    XRCCTRL(*this, "cmbCaretBuffer", wxChoice)->SetSelection(cfg->ReadInt(wxT("/caret_buffer"), 2));
+    XRCCTRL(*this, "cmbCaretBuffer",              wxChoice)->SetSelection(cfg->ReadInt(wxT("/caret_buffer"),             2));
+
+    // chkSpacesAroundBraces must be enabled only when chkSmartIndent is checked
+    const bool smartIndentEnabled = XRCCTRL(*this, "chkSmartIndent", wxCheckBox)->GetValue();
+    XRCCTRL(*this, "chkSpacesAroundBraces", wxCheckBox)->Enable(smartIndentEnabled);
 
     wxChoice *cmbTechnology = XRCCTRL(*this, "cmbTechnology", wxChoice);
     wxChoice *cmbFontQuality = XRCCTRL(*this, "cmbFontQuality", wxChoice);
@@ -1039,6 +1044,11 @@ void EditorConfigurationDlg::OnBoldItalicUline(cb_unused wxCommandEvent& event)
 void EditorConfigurationDlg::OnDynamicCheck(wxCommandEvent& event)
 {
     XRCCTRL(*this, "spnMarginWidth", wxSpinCtrl)->Enable(!event.IsChecked());
+}
+
+void EditorConfigurationDlg::OnSmartIndent(wxCommandEvent& event)
+{
+    XRCCTRL(*this, "chkSpacesAroundBraces", wxCheckBox)->Enable(event.IsChecked());
 }
 
 void EditorConfigurationDlg::EndModal(int retCode)

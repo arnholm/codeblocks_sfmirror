@@ -47,6 +47,7 @@ class EditorConfigurationDlg : public wxScrollingDialog
         void UpdateSampleFont(bool askForNewFont);
         void OnCaretStyle(wxCommandEvent& event);
         void OnUpdateUIFontQuality(wxUpdateUIEvent& event);
+        void OnSmartIndent(wxCommandEvent& event);
 
         void EndModal(int retCode) override;
     private:
