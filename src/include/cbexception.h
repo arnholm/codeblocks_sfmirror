@@ -46,6 +46,8 @@ class DLLIMPORT cbException
 
 #ifndef cbDEBUG
     #define cbAssert(expr)
+    #define cbAssertMessage(expr)
+    #define cbAssertNonFatal(expr)
 #else
     // In unix we use kill to terminate the application, that makes gdb
     // keep it alive which makes debugging easier.
