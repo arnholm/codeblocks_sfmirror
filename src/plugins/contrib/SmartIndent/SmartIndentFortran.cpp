@@ -150,10 +150,26 @@ void SmartIndentFortran::DoBraceCompletion(cbStyledTextCtrl* control, const wxCh
         }
         return;
     }
+
     if (control->IsCharacter(style) || control->IsString(style))
         return;
+
     const wxString leftBrace(_T("([{"));
     const wxString rightBrace(_T(")]}"));
+
+    if ((ch == ' ') && Manager::Get()->GetConfigManager("editor")->ReadBool("/spaces_around_braces", false))
+    {
+        const wxChar left = control->GetCharAt(pos - 2);
+        const wxChar right = control->GetCharAt(pos);
+        const int index = leftBrace.Find(left);
+        if (index != wxNOT_FOUND && right == rightBrace.GetChar(index))
+        {
+            control->AddText(' ');
+            control->GotoPos(pos);
+            return;
+        }
+    }
+
     int index = leftBrace.Find(ch);
     const wxString unWant(_T(");\n\r\t\b "));
     const wxChar nextChar = control->GetCharAt(pos);
