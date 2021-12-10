@@ -37,9 +37,10 @@
 												<label>Block Comment Sample</label>
 												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
-													<object class="wxTextCtrl" name="ID_TEXTCTRL_BLOCKCOMMENT" subclass="cbStyledTextCtrl" variable="TextCtrlBlockComment" member="yes">
-														<tooltip>Sample code using the selected block comment style.</tooltip>
-														<extra_code>// wxSmith doesn&apos;t handle cbStyledTextCtrl initialisation properly. Replace the line above with the commented one below.&#x0A;// You will need to do this every time wxSmith rewrites this entry.&#x0A;// TextCtrlBlockComment = new cbStyledTextCtrl(Panel2, ID__TEXTCTRL__BLOCKCOMMENT, wxDefaultPosition, wxSize(150,150));&#x0A;</extra_code>
+													<object class="Custom" name="ID_TEXTCTRL_BLOCKCOMMENT" subclass="cbStyledTextCtrl" variable="TextCtrlBlockComment" member="yes">
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+														<include_file>cbstyledtextctrl.h</include_file>
+														<style></style>
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
@@ -80,9 +81,10 @@
 												<label>Line Comment Sample</label>
 												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
-													<object class="wxTextCtrl" name="ID_TEXTCTRL_LINECOMMENT" subclass="cbStyledTextCtrl" variable="TextCtrlLineComment" member="yes">
-														<tooltip>Sample code using the selected line comment style.</tooltip>
-														<extra_code>// wxSmith doesn&apos;t handle cbStyledTextCtrl initialisation properly. Replace the line above with the commented one below.&#x0A;// You will need to do this every time wxSmith rewrites this entry.&#x0A;// TextCtrlLineComment = new cbStyledTextCtrl(Panel2, ID__TEXTCTRL__LINECOMMENT, wxDefaultPosition, wxSize(150,150));&#x0A;</extra_code>
+													<object class="Custom" name="ID_TEXTCTRL_LINECOMMENT" subclass="cbStyledTextCtrl" variable="TextCtrlLineComment" member="yes">
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+														<include_file>cbstyledtextctrl.h</include_file>
+														<style></style>
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>

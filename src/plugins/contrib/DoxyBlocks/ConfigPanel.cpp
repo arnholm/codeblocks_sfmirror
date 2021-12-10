@@ -108,10 +108,6 @@ END_EVENT_TABLE()
 ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/,const wxPoint& /*pos*/,const wxSize& /*size*/) :
     m_pOwnerClass(pOwner)
 {
-    // ********************************************************************************************
-    // I don't use XRC for this plug-in because cbStyledTextCtrl isn't handled properly.
-    // This method still requires some adjustments. See below.
-    // ********************************************************************************************
     //(*Initialize(ConfigPanel)
     wxBoxSizer* BoxSizer10;
     wxBoxSizer* BoxSizer11;
@@ -169,48 +165,38 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     wxString __wxRadioBoxChoices_1[6] =
     {
-    	_("C/JavaDoc"),
-    	_("C++ Exclamation"),
-    	_("C++ Slash"),
-    	_("Qt"),
-    	_("Visible C Style"),
-    	_("Visible C++ Style")
+      _("C/JavaDoc"),
+      _("C++ Exclamation"),
+      _("C++ Slash"),
+      _("Qt"),
+      _("Visible C Style"),
+      _("Visible C++ Style")
     };
     RadioBoxBlockComments = new wxRadioBox(Panel2, ID_RADIOBOX_BLOCKCOMMENTS, _("Block Comment Style"), wxDefaultPosition, wxDefaultSize, 6, __wxRadioBoxChoices_1, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, _T("ID_RADIOBOX_BLOCKCOMMENTS"));
     RadioBoxBlockComments->SetToolTip(_("Select your preferred block comment style."));
     BoxSizer2->Add(RadioBoxBlockComments, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("Block Comment Sample"));
-    TextCtrlBlockComment = new cbStyledTextCtrl(Panel2, ID_TEXTCTRL_BLOCKCOMMENT, wxDefaultPosition, wxSize(150,150));
-    TextCtrlBlockComment->SetToolTip(_("Sample code using the selected block comment style."));
-    // wxSmith doesn't handle cbStyledTextCtrl initialisation properly. Replace the line above with the commented one below.
-    // You will need to do this every time wxSmith rewrites this entry.
-    // TextCtrlBlockComment = new cbStyledTextCtrl(Panel2, ID_TEXTCTRL_BLOCKCOMMENT, wxDefaultPosition, wxSize(150,150));
+    TextCtrlBlockComment = new cbStyledTextCtrl(Panel2,ID_TEXTCTRL_BLOCKCOMMENT,wxDefaultPosition,wxDefaultSize);
     StaticBoxSizer1->Add(TextCtrlBlockComment, 1, wxALL|wxEXPAND, 5);
     BoxSizer2->Add(StaticBoxSizer1, 3, wxALL|wxEXPAND, 5);
     BoxSizer6->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     wxString __wxRadioBoxChoices_2[4] =
     {
-    	_("C/JavaDoc"),
-    	_("C++ Exclamation"),
-    	_("C++ Slash"),
-    	_("Qt")
+      _("C/JavaDoc"),
+      _("C++ Exclamation"),
+      _("C++ Slash"),
+      _("Qt")
     };
     RadioBoxLineComments = new wxRadioBox(Panel2, ID_RADIOBOX_LINECOMMENTS, _("Line Comment Style"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_2, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, _T("ID_RADIOBOX_LINECOMMENTS"));
     RadioBoxLineComments->SetToolTip(_("Select your preferred line comment style."));
     BoxSizer10->Add(RadioBoxLineComments, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("Line Comment Sample"));
-    TextCtrlLineComment = new cbStyledTextCtrl(Panel2, ID_TEXTCTRL_LINECOMMENT, wxDefaultPosition, wxSize(150,150));
-    TextCtrlLineComment->SetToolTip(_("Sample code using the selected line comment style."));
-    // wxSmith doesn't handle cbStyledTextCtrl initialisation properly. Replace the line above with the commented one below.
-    // You will need to do this every time wxSmith rewrites this entry.
-    // TextCtrlLineComment = new cbStyledTextCtrl(Panel2, ID_TEXTCTRL_LINECOMMENT, wxDefaultPosition, wxSize(150,150));
+    TextCtrlLineComment = new cbStyledTextCtrl(Panel2,ID_TEXTCTRL_LINECOMMENT,wxDefaultPosition,wxDefaultSize);
     StaticBoxSizer3->Add(TextCtrlLineComment, 1, wxALL|wxEXPAND, 5);
     BoxSizer10->Add(StaticBoxSizer3, 3, wxALL|wxEXPAND, 5);
     BoxSizer6->Add(BoxSizer10, 1, wxALL|wxEXPAND, 5);
     Panel2->SetSizer(BoxSizer6);
-    BoxSizer6->Fit(Panel2);
-    BoxSizer6->SetSizeHints(Panel2);
     Panel3 = new wxPanel(NotebookPrefs, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, Panel3, _("Project"));
@@ -321,8 +307,6 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     StaticBoxSizer6->Add(CheckBoxAlphabeticalIndex, 1, wxALL|wxALIGN_LEFT, 5);
     BoxSizer4->Add(StaticBoxSizer6, 0, wxALL|wxEXPAND, 5);
     Panel3->SetSizer(BoxSizer4);
-    BoxSizer4->Fit(Panel3);
-    BoxSizer4->SetSizeHints(Panel3);
     Panel4 = new wxPanel(NotebookPrefs, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
     BoxSizer16 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer7 = new wxStaticBoxSizer(wxVERTICAL, Panel4, _("Output"));
@@ -392,8 +376,6 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     StaticBoxSizer9->Add(CheckBoxHaveDot, 1, wxALL, 5);
     BoxSizer16->Add(StaticBoxSizer9, 0, wxEXPAND, 5);
     Panel4->SetSizer(BoxSizer16);
-    BoxSizer16->Fit(Panel4);
-    BoxSizer16->SetSizeHints(Panel4);
     Panel1 = new wxPanel(NotebookPrefs, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer7 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer4 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("Paths"));
@@ -485,16 +467,12 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     StaticBoxSizer12->Add(CheckBoxRunCHM, 1, wxALL, 5);
     BoxSizer7->Add(StaticBoxSizer12, 0, wxEXPAND, 5);
     Panel1->SetSizer(BoxSizer7);
-    BoxSizer7->Fit(Panel1);
-    BoxSizer7->SetSizeHints(Panel1);
     NotebookPrefs->AddPage(Panel2, _("Comment Style"), false);
     NotebookPrefs->AddPage(Panel3, _("Doxyfile Defaults"), false);
     NotebookPrefs->AddPage(Panel4, _("Doxyfile Defaults 2"), false);
     NotebookPrefs->AddPage(Panel1, _("General"), false);
     BoxSizer1->Add(NotebookPrefs, 1, wxALL|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
-    BoxSizer1->SetSizeHints(this);
 
     Connect(ID_RADIOBOX_BLOCKCOMMENTS,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&ConfigPanel::OnRadioBoxBlockCommentsSelect);
     Connect(ID_RADIOBOX_LINECOMMENTS,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&ConfigPanel::OnRadioBoxLineCommentsSelect);
@@ -509,7 +487,6 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     Connect(ID_CHECKBOX_OVERWRITEDOXYFILE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&ConfigPanel::OnCheckBoxOverwriteDoxyfileClick);
     Connect(ID_CHECKBOX_USEATINTAGS,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&ConfigPanel::OnCheckBoxUseAtInTagsClick);
     //*)
-
 }
 
 /*! \brief Destructor
