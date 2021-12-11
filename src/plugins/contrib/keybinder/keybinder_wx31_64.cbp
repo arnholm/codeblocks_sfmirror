@@ -21,7 +21,8 @@
 					<Add option="-fexceptions" />
 					<Add option="-Wno-unused-local-typedefs" />
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="-DNOPCH" />
+					<Add option="-Winvalid-pch" />
+					<Add option="-DCB_PRECOMP" />
 					<Add option="-DHAVE_W32API_H" />
 					<Add option="-D__WXMSW__" />
 					<Add option="-D_WIN64" />
