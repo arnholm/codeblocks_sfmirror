@@ -224,8 +224,8 @@ bool FileExplorerUpdater::GetCurrentState(const wxString &path)
         flags|=wxDIR_HIDDEN;
     VCSstatearray sa;
     bool is_vcs=false;
-    bool is_cvs=false;
-    bool is_git=false;
+    //bool is_cvs=false;
+    //bool is_git=false;
 
     //If we are browsing a repo we get the tree for the requested commit
     if (m_vcs_type != wxEmptyString && m_vcs_commit_string != _T("Working copy") &&
@@ -305,7 +305,7 @@ bool FileExplorerUpdater::GetCurrentState(const wxString &path)
         if (ParseGITChanges(path,sa))
         {
             is_vcs=true;
-            is_git=true;
+            //is_git=true;
             m_vcs_type = _T("GIT");
         }
     if (m_fe->m_parse_svn)
