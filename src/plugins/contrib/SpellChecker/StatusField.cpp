@@ -114,7 +114,6 @@ static wxBitmap LoadImageInPath(const wxString &path, wxString fileName,
     return bmp;
 }
 
-//void SpellCheckerStatusField::SetLanguage(const wxString &language)
 void SpellCheckerStatusField::Update()
 {
     wxString name;
@@ -123,30 +122,35 @@ void SpellCheckerStatusField::Update()
     if (m_sccfg->GetEnableOnlineChecker())
     {
         name = m_sccfg->GetDictionaryName();
-        fileName = name + _T(".png");
+        fileName = name + ".png";
     }
     else
     {
         name = _("off");
-        fileName = _T("disabled.png");
+        fileName = "disabled.png";
     }
 
     m_text->SetLabel(name);
 
-    wxBitmap bm;
-    {
-        wxString bmpPath = m_sccfg->GetRawBitmapPath();
-        Manager::Get()->GetMacrosManager()->ReplaceEnvVars(bmpPath);
-        bm = LoadImageInPath(bmpPath, fileName, *this);
-    }
+    wxString bmpPath(m_sccfg->GetRawBitmapPath());
+    Manager::Get()->GetMacrosManager()->ReplaceEnvVars(bmpPath);
+    wxBitmap bm(LoadImageInPath(bmpPath, fileName, *this));
 
+    // Not found?. If name.png is not found and name.length() == 2 try name_NAME.png
     if (!bm.IsOk())
     {
-        const wxString bmpPath = m_plugin->GetOnlineCheckerConfigPath();
-        bm = LoadImageInPath(bmpPath, fileName, *this);
+        const wxString languageCode(fileName.BeforeLast('.'));
+        if (languageCode.length() == 2)
+        {
+            const wxString newFileName(languageCode.Lower()+"_"+languageCode.Upper()+".png");
+            bm = LoadImageInPath(bmpPath, newFileName, *this);
+        }
     }
 
-    bool imgOK = false;
+    // Still not found?. Try in another place
+    if (!bm.IsOk())
+        bm = LoadImageInPath(m_plugin->GetOnlineCheckerConfigPath(), fileName, *this);
+
     if (bm.IsOk())
     {
         m_text->Hide();
@@ -163,14 +167,12 @@ void SpellCheckerStatusField::Update()
                               wxMouseEventHandler(SpellCheckerStatusField::OnPressed), nullptr,
                               this);
         }
-
-        imgOK = true;
     }
-
-    if (!imgOK)
+    else
     {
         if (m_bitmap)
             m_bitmap->Hide();
+
         m_text->Show();
     }
 
