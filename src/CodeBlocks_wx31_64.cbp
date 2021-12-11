@@ -85,7 +85,6 @@
 				<Option output="devel31_64/codeblocks" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="devel31_64" />
 				<Option object_output=".objs31_64" />
-				<Option external_deps="" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance --verbose -p debug" />
@@ -634,18 +633,19 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=gnu++11" />
+			<Add option="-m64" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
-			<Add option="-m64" />
 			<Add option="-fmessage-length=0" />
 			<Add option="-fexceptions" />
-			<Add option="-std=gnu++11" />
+			<Add option="-Winvalid-pch" />
 			<Add option="-DHAVE_W32API_H" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
 			<Add option="-DcbDEBUG" />
-			<Add option="-DNOPCH" />
+			<Add option="-DCB_PRECOMP" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-D_WIN64" />
 			<Add directory="$(#WX31_64.include)" />
@@ -658,6 +658,7 @@
 			<Add directory="$(#WX31_64)/lib/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 		</ResourceCompiler>
 		<Linker>
+			<Add option="-m64" />
 			<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
 			<Add directory="$(#WX31_64.lib)/gcc_dll$(WX_CFG)" />
 			<Add directory="devel31_64" />
@@ -987,6 +988,7 @@
 			<Option target="sdk" />
 		</Unit>
 		<Unit filename="include/sdk.h">
+			<Option compile="1" />
 			<Option weight="1" />
 			<Option target="src" />
 		</Unit>
@@ -997,6 +999,7 @@
 			<Option target="sdk" />
 		</Unit>
 		<Unit filename="include/sdk_precomp.h">
+			<Option compile="1" />
 			<Option weight="0" />
 			<Option target="sdk" />
 		</Unit>
@@ -4262,8 +4265,6 @@
 			<Option target="src" />
 		</Unit>
 		<Extensions>
-			<code_completion />
-			<envvars />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
 				<resources>
@@ -4286,7 +4287,6 @@
 					<wxDialog wxs="plugins/codecompletion/wxsmith/goto_function.wxs" src="plugins/codecompletion/gotofunctiondlg.cpp" hdr="plugins/codecompletion/gotofunctiondlg.h" fwddecl="1" i18n="1" name="GotoFunctionDlg" language="CPP" />
 				</resources>
 			</wxsmith>
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
