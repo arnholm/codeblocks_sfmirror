@@ -82,19 +82,20 @@ void wxsCustomWidget::OnBuildCreatingCode()
     BuildSetupWindowCode();
 }
 
-wxObject* wxsCustomWidget::OnBuildPreview(wxWindow* Parent,cb_unused long Flags)
+wxObject* wxsCustomWidget::OnBuildPreview(wxWindow* Parent, cb_unused long Flags)
 {
-    wxPanel* Background = new wxPanel(Parent,-1,Pos(Parent),wxDefaultSize);
-    wxStaticText* Wnd = new wxStaticText(Background, -1, "???", wxDefaultPosition,
+    wxPanel* Background = new wxPanel(Parent, wxID_ANY, Pos(Parent), wxDefaultSize);
+    const wxString Label(GetUserClass().empty() ? wxString("???") : GetUserClass());
+    wxStaticText* Wnd = new wxStaticText(Background, wxID_ANY, Label, wxDefaultPosition,
                                          Size(Parent), wxST_NO_AUTORESIZE|wxALIGN_CENTRE);
     wxSizer* Sizer = new wxBoxSizer(wxHORIZONTAL);
-    Sizer->Add(Wnd,1,wxEXPAND,0);
+    Sizer->Add(Wnd, 1, wxEXPAND, 0);
     Background->SetSizer(Sizer);
     Sizer->SetSizeHints(Background);
-    Wnd->SetBackgroundColour(wxColour(0,0,0));
-    Wnd->SetForegroundColour(wxColour(0xFF,0xFF,0xFF));
-    Background->SetBackgroundColour(wxColour(0,0,0));
-    Background->SetForegroundColour(wxColour(0xFF,0xFF,0xFF));
+    Wnd->SetBackgroundColour(wxColour(0, 0, 0));
+    Wnd->SetForegroundColour(wxColour(0xFF, 0xFF, 0xFF));
+    Background->SetBackgroundColour(wxColour(0, 0, 0));
+    Background->SetForegroundColour(wxColour(0xFF, 0xFF, 0xFF));
     return Background;
 }
 
