@@ -45,7 +45,7 @@ namespace
 
 wxsCustomWidget::wxsCustomWidget(wxsItemResData* Data):
     wxsWidget(Data,&Reg.Info,wxsCustomWidgetEvents),
-    m_CreatingCode("$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),wxDefaultValidator,$(NAME));"),
+    m_CreatingCode("$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(VALIDATOR),$(NAME));"),
     m_Style("0"),
     m_IncludeIsLocal(false)
 {
@@ -70,14 +70,15 @@ void wxsCustomWidget::OnBuildCreatingCode()
     if (Style.empty())
         Style = "0";
 
-    Result.Replace("$(POS)",    Codef(GetCoderContext(), _T("%P")));
-    Result.Replace("$(SIZE)",   Codef(GetCoderContext(), _T("%S")));
-    Result.Replace("$(STYLE)",  Style);
-    Result.Replace("$(ID)",     GetIdName());
-    Result.Replace("$(THIS)",   GetVarName());
-    Result.Replace("$(PARENT)", GetCoderContext()->m_WindowParent);
-    Result.Replace("$(NAME)",   Codef(GetCoderContext(), _T("%N")));
-    Result.Replace("$(CLASS)",  GetUserClass());
+    Result.Replace("$(POS)",       Codef(GetCoderContext(), _T("%P")));
+    Result.Replace("$(SIZE)",      Codef(GetCoderContext(), _T("%S")));
+    Result.Replace("$(STYLE)",     Style);
+    Result.Replace("$(ID)",        GetIdName());
+    Result.Replace("$(THIS)",      GetVarName());
+    Result.Replace("$(PARENT)",    GetCoderContext()->m_WindowParent);
+    Result.Replace("$(NAME)",      Codef(GetCoderContext(), _T("%N")));
+    Result.Replace("$(CLASS)",     GetUserClass());
+    Result.Replace("$(VALIDATOR)", Codef(GetCoderContext(), _T("%V")));
     AddBuildingCode(Result+"\n");
     BuildSetupWindowCode();
 }
