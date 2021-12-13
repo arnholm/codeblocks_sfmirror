@@ -48,9 +48,15 @@
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_SYNTAX">
 							<content>
-								<item>wxRE_EXTENDED</item>
-								<item>wxRE_ADVANCED</item>
-								<item>wxRE_BASIC</item>
+								<item>wxRegEx(wxRE_EXTENDED)</item>
+								<item>wxRegEx(wxRE_ADVANCED)</item>
+								<item>wxRegEx(wxRE_BASIC)</item>
+								<item>std::regex(ECMAScript)</item>
+								<item>std::regex(basic)</item>
+								<item>std::regex(extended)</item>
+								<item>std::regex(awk)</item>
+								<item>std::regex(grep)</item>
+								<item>std::regex(egrep)</item>
 							</content>
 						</object>
 						<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>

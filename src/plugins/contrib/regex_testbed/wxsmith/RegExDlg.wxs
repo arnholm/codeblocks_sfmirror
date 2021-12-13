@@ -12,7 +12,7 @@
 		</object>
 		<object name="ID_1" class="wxStaticText" variable="StaticText2" member="no" />
 		<object name="ID_SYNTAX" class="wxChoice" variable="m_syntax" member="yes">
-			<handler function="OnOptionChanged" entry="EVT_CHOICE" />
+			<handler function="OnSyntaxSelect" entry="EVT_CHOICE" />
 		</object>
 		<object name="ID_NOCASE" class="wxCheckBox" variable="m_nocase" member="yes">
 			<handler function="OnOptionChanged" entry="EVT_CHECKBOX" />

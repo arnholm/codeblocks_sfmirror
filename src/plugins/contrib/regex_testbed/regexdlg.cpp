@@ -18,6 +18,21 @@
     #include <configmanager.h>
 #endif
 
+#include <regex>
+
+namespace
+{
+    const std::regex::flag_type syntax_types[] =
+    {
+        std::regex::ECMAScript,
+        std::regex::basic,
+        std::regex::extended,
+        std::regex::awk,
+        std::regex::grep,
+        std::regex::egrep
+    };
+}
+
 //(*InternalHeaders(RegExDlg)
 #include <wx/xrc/xmlres.h>
 //*)
@@ -45,7 +60,7 @@ RegExDlg::RegExDlg(wxWindow* parent,wxWindowID /*id*/)
 
     Connect(XRCID("ID_REGEX"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnValueChanged);
     Connect(XRCID("ID_QUOTED"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnQuoteChanged);
-    Connect(XRCID("ID_SYNTAX"),wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
+    Connect(XRCID("ID_SYNTAX"),wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&RegExDlg::OnSyntaxSelect);
     Connect(XRCID("ID_NOCASE"),wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
     Connect(XRCID("ID_NEWLINES"),wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
     Connect(XRCID("ID_TEXT"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
@@ -69,6 +84,9 @@ RegExDlg::RegExDlg(wxWindow* parent,wxWindowID /*id*/)
     m_output->SetBorders(0);
 
     m_visible_dialogs.insert(this);
+
+    // Force showing "No matches"
+    Reevaluate();
 }
 
 RegExDlg::~RegExDlg()
@@ -127,6 +145,18 @@ void RegExDlg::OnQuoteChanged(cb_unused wxCommandEvent& event)
     Reevaluate();
 }
 
+void RegExDlg::OnSyntaxSelect(wxCommandEvent& event)
+{
+#if wxCHECK_VERSION(3, 1, 6)
+    const int regex_base = 2;
+#else
+    const int regex_base = 3;
+#endif
+
+    m_newlines->Enable(event.GetSelection() < regex_base);
+    Reevaluate();
+}
+
 void RegExDlg::OnOptionChanged(cb_unused wxCommandEvent& event)
 {
     Reevaluate();
@@ -163,37 +193,91 @@ wxArrayString RegExDlg::GetBuiltinMatches(const wxString& text)
 {
     wxArrayString ret;
 
-#if wxCHECK_VERSION(3, 1, 6)
-    // wxRE_ADVANCED is a synonym of wxRE_EXTENDED, so it has been deleted from the choice
-    int flags = m_syntax->GetSelection() ? wxRE_BASIC : wxRE_EXTENDED;
-#else
-    int flags = m_syntax->GetSelection();
-#endif
-
-    if (m_newlines->IsChecked())
-        flags |= wxRE_NEWLINE;
-
-    if (m_nocase->IsChecked())
-        flags |= wxRE_ICASE;
-
-    if (!m_wxre.Compile(m_regex->GetValue(), flags))
+    if (m_regex->GetValue().empty())
     {
-        m_regex->SetForegroundColour(*wxWHITE);
-        m_regex->SetBackgroundColour(*wxRED);
-        m_regex->GetParent()->Refresh();
+        ShowError(false);
         return ret;
     }
 
-    m_regex->SetForegroundColour(wxNullColour);
-    m_regex->SetBackgroundColour(wxNullColour);
-    m_regex->GetParent()->Refresh();
+#if wxCHECK_VERSION(3, 1, 6)
+    const int regex_base = 2;
+#else
+    const int regex_base = 3;
+#endif
 
-    if (!text.empty() && m_wxre.Matches(text))
+    const int selection = m_syntax->GetSelection();
+    if (selection >= regex_base)  // use std::regex
     {
-        const size_t matchCount = m_wxre.GetMatchCount();
-        for (size_t i = 0; i < matchCount; ++i)
-            ret.Add(m_wxre.GetMatch(text, i));
+        std::regex::flag_type flags = syntax_types[selection-regex_base];
+        if (m_nocase->IsChecked())
+            flags |= std::regex::icase;
+
+        try
+        {
+            std::wregex stdre(m_regex->GetValue().ToStdWstring(), flags);
+            ShowError(false);
+            if (!text.empty())
+            {
+            std::wsmatch wsm;
+
+            if (std::regex_match(text.ToStdWstring(), wsm, stdre))
+                for (const std::wstring &v : wsm)
+                    ret.Add(v);
+            }
+        }
+        catch (std::regex_error& e)
+        {
+            ShowError(true);
+            return ret;
+        }
+    }
+    else  // use wxRegEx
+    {
+        wxRegEx wxre;
+
+#if wxCHECK_VERSION(3, 1, 6)
+        // wxRE_ADVANCED is a synonym of wxRE_EXTENDED, so it has been deleted from the choice
+        int flags = selection ? wxRE_BASIC : wxRE_EXTENDED;
+#else
+        int flags = selection;
+#endif
+
+        if (m_newlines->IsChecked())
+            flags |= wxRE_NEWLINE;
+
+        if (m_nocase->IsChecked())
+            flags |= wxRE_ICASE;
+
+        if (!wxre.Compile(m_regex->GetValue(), flags))
+        {
+            ShowError(true);
+            return ret;
+        }
+
+        ShowError(false);
+        if (!text.empty() && wxre.Matches(text))
+        {
+            const size_t matchCount = wxre.GetMatchCount();
+            for (size_t i = 0; i < matchCount; ++i)
+                ret.Add(wxre.GetMatch(text, i));
+        }
     }
 
     return ret;
+}
+
+void RegExDlg::ShowError(bool Error)
+{
+    if (Error)
+    {
+        m_regex->SetForegroundColour(*wxWHITE);
+        m_regex->SetBackgroundColour(*wxRED);
+    }
+    else
+    {
+        m_regex->SetForegroundColour(wxNullColour);
+        m_regex->SetBackgroundColour(wxNullColour);
+    }
+
+    m_regex->GetParent()->Refresh();
 }

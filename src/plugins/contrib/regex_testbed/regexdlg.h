@@ -48,12 +48,14 @@ class RegExDlg: public wxScrollingDialog
 		void OnValueChanged(wxCommandEvent& event);
 		void OnQuoteChanged(wxCommandEvent& event);
 		void OnOptionChanged(wxCommandEvent& event);
+		void OnSyntaxSelect(wxCommandEvent& event);
 		//*)
 
 	private:
 
         wxArrayString GetBuiltinMatches(const wxString& text);
         void Reevaluate();
+        void ShowError(bool Error);
 
         //(*Declarations(RegExDlg)
         wxCheckBox* m_newlines;
@@ -65,8 +67,6 @@ class RegExDlg: public wxScrollingDialog
         wxTextCtrl* m_regex;
         wxTextCtrl* m_text;
         //*)
-
-        wxRegEx m_wxre;
 
         typedef std::set<RegExDlg*> VisibleDialogs;
         static VisibleDialogs m_visible_dialogs;
