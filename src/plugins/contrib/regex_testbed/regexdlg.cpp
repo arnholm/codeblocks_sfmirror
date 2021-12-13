@@ -218,11 +218,11 @@ wxArrayString RegExDlg::GetBuiltinMatches(const wxString& text)
             ShowError(false);
             if (!text.empty())
             {
-            std::wsmatch wsm;
+                std::wsmatch wsm;
 
-            if (std::regex_match(text.ToStdWstring(), wsm, stdre))
-                for (const std::wstring &v : wsm)
-                    ret.Add(v);
+                if (std::regex_match(text.ToStdWstring(), wsm, stdre))
+                    for (const std::wstring &v : wsm)
+                        ret.Add(v);
             }
         }
         catch (std::regex_error& e)
