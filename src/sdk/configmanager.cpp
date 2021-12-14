@@ -39,11 +39,7 @@
 #endif
 
 #ifdef __WXMAC__
-#if wxCHECK_VERSION(3, 0, 0)
 #include "wx/osx/core/cfstring.h"
-#else
-#include "wx/mac/corefoundation/cfstring.h"
-#endif
 #include "wx/intl.h"
 
 #include <CoreFoundation/CFBundle.h>
@@ -124,11 +120,7 @@ namespace
             CFRelease(resourcesURL);
             CFStringRef cfStrPath = CFURLCopyFileSystemPath(absoluteURL,kCFURLPOSIXPathStyle);
             CFRelease(absoluteURL);
-            #if wxCHECK_VERSION(3, 0, 0)
-              wxString str = wxCFStringRef(cfStrPath).AsString(wxLocale::GetSystemEncoding());
-            #else
-              wxString str = wxMacCFStringHolder(cfStrPath).AsString(wxLocale::GetSystemEncoding());
-            #endif
+            wxString str = wxCFStringRef(cfStrPath).AsString(wxLocale::GetSystemEncoding());
             if (!str.Contains(wxString(_T("/Resources"))))
                return ::DetermineExecutablePath() + _T("/.."); // not a bundle, use relative path
             return str;
@@ -239,9 +231,7 @@ static void handleConfigError(TiXmlDocument &doc, const wxString &fileName, cons
     wxMessageDialog dlg(Manager::Get()->GetAppWindow(),
                         message + _("\n\nDiscard old config file?"), _("Config file read error"),
                         wxSTAY_ON_TOP|wxCENTRE|wxYES|wxNO|wxNO_DEFAULT|wxICON_ERROR);
-#if wxCHECK_VERSION(3, 0, 0)
     dlg.SetYesNoLabels(_("&Discard"), _("&Close"));
-#endif
     if (dlg.ShowModal() != wxID_YES)
         cbThrow(message);
 
@@ -337,15 +327,8 @@ void CfgMgrBldr::SwitchToR(const wxString& absFileName)
         {
             size_t size = is->GetSize();
             wxString str;
-            #if wxCHECK_VERSION(3, 0, 0)
             wxChar* c = wxStringBuffer(str, size);
-            #else
-            wxChar* c = str.GetWriteBuf(size);
-            #endif
             is->Read(c, size);
-            #if !wxCHECK_VERSION(3, 0, 0)
-            str.UngetWriteBuf(size);
-            #endif
 
             doc = new TiXmlDocument();
 
@@ -493,13 +476,8 @@ wxString CfgMgrBldr::GetConfigFile() const
 */
 inline void to_upper(wxString& s)
 {
-    #if wxCHECK_VERSION(3, 0, 0)
     wxStringCharType *p = const_cast<wxStringCharType*>(s.wx_str());
     wxStringCharType q;
-    #else
-    wxChar *p = (wxChar*) s.c_str();
-    wxChar q;
-    #endif
     size_t len = s.length()+1;
     for (;--len;++p)
     {
@@ -511,13 +489,8 @@ inline void to_upper(wxString& s)
 
 inline void to_lower(wxString& s)
 {
-    #if wxCHECK_VERSION(3, 0, 0)
     wxStringCharType *p = const_cast<wxStringCharType*>(s.wx_str());
     wxStringCharType q;
-    #else
-    wxChar *p = (wxChar*) s.c_str();
-    wxChar q;
-    #endif
     size_t len = s.length()+1;
     for (;--len;++p)
     {
@@ -1239,11 +1212,7 @@ wxArrayString ConfigManager::EnumerateSubPaths(const wxString& path)
     {
         while (e->IterateChildren(curr) && (curr = e->IterateChildren(curr)->ToElement()))
         {
-            #if wxCHECK_VERSION(3, 0, 0)
             wxUniChar c = cbC2U(curr->Value())[0];
-            #else
-            wxChar c = *(cbC2U(curr->Value()));
-            #endif
             if (c < _T('A') || c > _T('Z')) // first char must be a letter, uppercase letters are key names
                 ret.Add(cbC2U(curr->Value()));
         }
@@ -1325,11 +1294,7 @@ wxArrayString ConfigManager::EnumerateKeys(const wxString& path)
     {
         while (e->IterateChildren(curr) && (curr = e->IterateChildren(curr)->ToElement()))
         {
-            #if wxCHECK_VERSION(3, 0, 0)
             wxUniChar c = cbC2U(curr->Value())[0];
-            #else
-            wxChar c = *(cbC2U(curr->Value()));
-            #endif
             if (c >= _T('A') && c <= _T('Z')) // opposite of the above
                 ret.Add(cbC2U(curr->Value()));
         }

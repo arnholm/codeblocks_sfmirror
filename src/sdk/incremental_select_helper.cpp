@@ -195,10 +195,6 @@ void IncrementalSelectHandler::FilterItems()
     FilterItemsFinalize(*m_list, *m_iterator);
 }
 
-#if !wxCHECK_VERSION(3, 0, 0)
-    typedef int wxStandardID;
-#endif
-
 static wxStandardID KeyDownAction(wxKeyEvent& event, int &selected, int selectedMax)
 {
     // now, adjust position from key input

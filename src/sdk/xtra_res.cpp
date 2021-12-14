@@ -100,11 +100,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
             return stockArt;
     }
 
-#if wxCHECK_VERSION(3, 0, 0)
     const wxString name = GetParamValue(paramNode);
-#else
-    const wxString name = GetParamValue(param);
-#endif
     if (name.empty())
         return wxArtProvider::GetBitmap(wxT("sdk/missing_icon"), wxART_TOOLBAR, size * scaleFactor);
 
@@ -186,19 +182,10 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         if (GetPosition() != wxDefaultPosition)
         {
             m_toolbar->AddTool(GetID(),
-            #if wxCHECK_VERSION(3, 0, 0)
                                wxEmptyString,
-            #endif
                                GetCenteredBitmap(_T("bitmap"), bitmapSize, scaleFactor),
                                GetCenteredBitmap(_T("bitmap2"), bitmapSize, scaleFactor),
-            #if !wxCHECK_VERSION(3, 0, 0)
-                               GetBool(_T("toggle")),
-                               GetPosition().x,
-                               GetPosition().y,
-                               NULL,
-            #else
                                wxITEM_NORMAL,
-            #endif
                                GetText(_T("tooltip")),
                                GetText(_T("longhelp")));
         }
@@ -332,15 +319,9 @@ bool wxToolBarAddOnXmlHandler::CanHandle(wxXmlNode *node)
 //
 // Don't ask me why... >:-|
 
-    #if wxCHECK_VERSION(3, 0, 0)
     bool istbar = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("wxToolBarAddOn"));
     bool istool = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("tool"));
     bool issep = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("separator"));
-    #else
-    bool istbar = node->GetPropVal(wxT("class"), wxEmptyString).Matches(_T("wxToolBarAddOn"));
-    bool istool = node->GetPropVal(wxT("class"), wxEmptyString).Matches(_T("tool"));
-    bool issep = node->GetPropVal(wxT("class"), wxEmptyString).Matches(_T("separator"));
-    #endif
 
     return ((!m_isInside && istbar) ||
             (m_isInside && istool) ||

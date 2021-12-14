@@ -1537,11 +1537,7 @@ long Compiler::Execute(const wxString &cmd, wxArrayString &output)
     // Loads the wxArrayString with the task output (returned in a wxInputStream)
     wxInputStream *inputStream = process.GetInputStream();
     wxTextInputStream text(*inputStream);
-#if wxCHECK_VERSION(3, 0, 0)
     while (!text.GetInputStream().Eof())
-#else
-    while (!inputStream->Eof())
-#endif
     {
         output.Add(text.ReadLine());
     }
@@ -1556,13 +1552,9 @@ long Compiler::Execute(const wxString &cmd, wxArrayString &output)
 {
     wxLogNull logNo; // do not warn if execution fails
     int flags = wxEXEC_SYNC;
-    #if wxCHECK_VERSION(3, 0, 0)
-        // Stop event-loop while wxExecute runs, to avoid a deadlock on startup,
-        // that occurs from time to time on wx3
-        flags |= wxEXEC_NOEVENTS;
-    #else
-        flags |= wxEXEC_NODISABLE;
-    #endif
+    // Stop event-loop while wxExecute runs, to avoid a deadlock on startup,
+    // that occurs from time to time on wx3
+    flags |= wxEXEC_NOEVENTS;
     return wxExecute(cmd, output, flags);
 }
 #endif // __WXMSW__

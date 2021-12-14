@@ -303,15 +303,7 @@ namespace ScriptBindings
                     if (id != wxNOT_FOUND)
                     {
                         wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, id);
-                        #if wxCHECK_VERSION(3, 0, 0)
                         mbar->GetEventHandler()->ProcessEvent(evt);
-                        #else
-                        if ( !mbar->ProcessEvent(evt) )
-                        {
-                            wxString msg; msg.Printf(_("Calling the menu '%s' with ID %d failed."), menuPath.wx_str(), id);
-                            cbMessageBox(msg, _("Script error"), wxICON_WARNING);
-                        }
-                        #endif
                         // done
                     }
                     break;

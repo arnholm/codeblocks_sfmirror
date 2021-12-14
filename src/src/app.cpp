@@ -94,12 +94,8 @@ class DDEConnection : public wxConnection
 {
     public:
         DDEConnection(MainFrame* frame) : m_Frame(frame) { ; }
-#if wxCHECK_VERSION(3, 0, 0)
         bool OnExecute(const wxString& topic, const void *data, size_t size,
                        wxIPCFormat format) override;
-#else
-        bool OnExecute(const wxString& topic, wxChar *data, int size, wxIPCFormat format) override;
-#endif
         bool OnDisconnect() override;
     private:
         MainFrame* m_Frame;
@@ -110,17 +106,10 @@ wxConnectionBase* DDEServer::OnAcceptConnection(const wxString& topic)
     return topic == DDE_TOPIC ? new DDEConnection(m_Frame) : nullptr;
 }
 
-#if wxCHECK_VERSION(3, 0, 0)
 bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data, size_t size,
                               wxIPCFormat format)
 {
     const wxString strData = wxConnection::GetTextFromData(data, size, format);
-#else
-bool DDEConnection::OnExecute(cb_unused const wxString& topic, wxChar *data, int size,
-                              wxIPCFormat format)
-{
-    const wxString strData((wxChar*)data);
-#endif
 
     if (strData.StartsWith(_T("[IfExec_Open(\"")))
         return false; // let Shell Open handle the request as we *know* that we have registered the Shell Open command, too
@@ -220,11 +209,7 @@ class DDEClient: public wxClient {
 };
 
 #if wxUSE_CMDLINE_PARSER
-#if wxCHECK_VERSION(3, 0, 0)
 #define CMD_ENTRY(X) X
-#else
-#define CMD_ENTRY(X) _T(X)
-#endif
 const wxCmdLineEntryDesc cmdLineDesc[] =
 {
     { wxCMD_LINE_SWITCH, CMD_ENTRY("h"),  CMD_ENTRY("help"),                  CMD_ENTRY("show this help message"),
@@ -330,21 +315,10 @@ class cbMessageOutputNull : public wxMessageOutput
 {
 public:
 
-#if wxCHECK_VERSION(3, 0, 0)
     virtual void Output(const wxString &str) override;
-#else
-    #ifdef WX_ATTRIBUTE_PRINTF
-    virtual void Printf(const wxChar* format, ...)  WX_ATTRIBUTE_PRINTF_2;
-    #else
-    void Printf(const wxChar* format, ...) override  ATTRIBUTE_PRINTF_2;
-    #endif
-#endif // wxCHECK_VERSION
 };
-#if wxCHECK_VERSION(3, 0, 0)
+
 void cbMessageOutputNull::Output(cb_unused const wxString &str){}
-#else
-void cbMessageOutputNull::Printf(cb_unused const wxChar* format, ...){}
-#endif
 } // namespace
 
 IMPLEMENT_APP(CodeBlocksApp) // TODO: This gives a "redundant declaration" warning, though I think it's false. Dig through macro and check.
@@ -355,11 +329,7 @@ BEGIN_EVENT_TABLE(CodeBlocksApp, wxApp)
 END_EVENT_TABLE()
 
 #ifdef __WXMAC__
-#if wxCHECK_VERSION(3, 0, 0)
 #include "wx/osx/core/cfstring.h"
-#else
-#include "wx/mac/corefoundation/cfstring.h"
-#endif
 #include "wx/intl.h"
 
 #include <CoreFoundation/CFBundle.h>
@@ -374,11 +344,7 @@ static wxString GetResourcesDir()
     CFRelease(resourcesURL);
     CFStringRef cfStrPath = CFURLCopyFileSystemPath(absoluteURL,kCFURLPOSIXPathStyle);
     CFRelease(absoluteURL);
-    #if wxCHECK_VERSION(3, 0, 0)
       return wxCFStringRef(cfStrPath).AsString(wxLocale::GetSystemEncoding());
-    #else
-      return wxMacCFStringHolder(cfStrPath).AsString(wxLocale::GetSystemEncoding());
-    #endif
 }
 #endif
 

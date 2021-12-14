@@ -32,9 +32,7 @@
 
 #include "annoyingdialog.h"
 
-#if wxCHECK_VERSION(3, 0, 0)
 #include <wx/unichar.h>
-#endif
 
 #include <ctype.h>
 
@@ -637,11 +635,7 @@ void UsrGlblMgrEditDialog::Sanitise(wxString& s)
     }
 
     for (unsigned int i = 0; i < s.length(); ++i)
-#if wxCHECK_VERSION(3, 0, 0)
         s[i] = wxIsalnum(s.GetChar(i)) ? s.GetChar(i) : wxUniChar('_');
-#else
-        s[i] = wxIsalnum(s.GetChar(i)) ? s.GetChar(i) : _T('_');
-#endif
 
     if (s.GetChar(0) == _T('_'))
         s.Prepend(_T("set"));

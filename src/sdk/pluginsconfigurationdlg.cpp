@@ -65,11 +65,7 @@ static wxString GetInitialInfo()
     return initialInfo;
 }
 
-#if wxCHECK_VERSION(3, 0, 0)
 inline int wxCALLBACK sortByTitle(wxIntPtr item1, wxIntPtr item2, cb_unused wxIntPtr sortData)
-#else
-inline int wxCALLBACK sortByTitle(long item1, long item2, cb_unused long sortData)
-#endif
 {
     const PluginElement* elem1 = (const PluginElement*)item1;
     const PluginElement* elem2 = (const PluginElement*)item2;

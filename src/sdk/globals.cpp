@@ -1186,11 +1186,7 @@ wxBitmap cbLoadBitmapScaled(const wxString& filename, wxBitmapType bitmapType, d
 
 double cbGetContentScaleFactor(const wxWindow &window)
 {
-#if wxCHECK_VERSION(3, 0, 0)
     return window.GetContentScaleFactor();
-#else
-    return 1.0;
-#endif // wxCHECK_VERSION(3, 0, 0)
 }
 
 #ifdef __WXGTK__
@@ -1200,31 +1196,12 @@ double cbGetContentScaleFactor(const wxWindow &window)
 // For other platforms the value returned by GetContentScalingFactor seems adequate.
 double cbGetActualContentScaleFactor(cb_unused const wxWindow &window)
 {
-#if wxCHECK_VERSION(3, 0, 0)
     // It is possible to use the window to find a display, but unfortunately this doesn't work well,
     // because we call this function mostly on windows which haven't been shown. This leads to
     // warnings in the log about ClientToScreen failures.
     // If there are problems on multi-monitor setups we should think about some other solution. :(
     const wxSize ppi = wxGetDisplayPPI();
     return ppi.y / 96.0;
-#else // wxCHECK_VERSION(3, 0, 0)
-    // This code is the simplest version which works in the most common case.
-    // If people complain that multi-monitor setups behave strangely, this should be revised with
-    // direct calls to GTK/GDK functions.
-
-    // This function might return bad results for multi screen setups.
-    const wxSize mm = wxGetDisplaySizeMM();
-    if (mm.x == 0 || mm.y == 0)
-        return 1.0;
-    const wxSize pixels = wxGetDisplaySize();
-
-    const double ppiX = wxRound((pixels.x * inches2mm) / mm.x);
-    const double ppiY = wxRound((pixels.y * inches2mm) / mm.y);
-
-    // My guess is that smaller scaling factor would look better. Probably it has effect only in
-    // multi monitor setups where there are monitors with different dpi.
-    return std::min(ppiX / 96.0, ppiY /96.0);
-#endif // wxCHECK_VERSION(3, 0, 0)
 }
 #else // __WXGTK__
 double cbGetActualContentScaleFactor(const wxWindow &window)
@@ -1323,11 +1300,7 @@ void SetSettingsIconsStyle(wxListCtrl* lc, SettingsIconsStyle style)
     long flags = lc->GetWindowStyleFlag();
     switch (style)
     {
-#if wxCHECK_VERSION(3, 0, 0)
         case sisNoIcons: flags = (flags & ~wxLC_MASK_TYPE) | wxLC_LIST; break;
-#else
-        case sisNoIcons: flags = (flags & ~wxLC_MASK_TYPE) | wxLC_SMALL_ICON; break;
-#endif
         default: flags = (flags & ~wxLC_MASK_TYPE) | wxLC_ICON; break;
     }
     lc->SetWindowStyleFlag(flags);
@@ -1713,11 +1686,7 @@ DLLIMPORT wxArrayInt cbGetMultiChoiceDialog(const wxString& message, const wxStr
         return wxArrayInt();
 }
 
-#if wxCHECK_VERSION(3, 0, 0)
 const char* cbGetTextFromUserPromptStr = wxGetTextFromUserPromptStr;
-#else
-const wxChar* cbGetTextFromUserPromptStr = wxGetTextFromUserPromptStr;
-#endif // wxCHECK_VERSION
 
 wxString cbGetTextFromUser(const wxString& message, const wxString& caption, const wxString& defaultValue,
                            wxWindow *parent, wxCoord x, wxCoord y, bool centre)
