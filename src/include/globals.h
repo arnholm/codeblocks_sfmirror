@@ -441,11 +441,7 @@ extern DLLIMPORT wxArrayInt cbGetMultiChoiceDialog(const wxString& message, cons
                                      const wxSize& size = wxSize(300, 300),
                                      const wxArrayInt& initialSelection = wxArrayInt());
 
-#if wxCHECK_VERSION(3, 0, 0)
 extern DLLIMPORT const char *cbGetTextFromUserPromptStr;
-#else
-extern DLLIMPORT const wxChar *cbGetTextFromUserPromptStr;
-#endif // wxCHECK_VERSION
 
 extern DLLIMPORT wxString cbGetTextFromUser(const wxString &message,
                                             const wxString &caption = cbGetTextFromUserPromptStr,

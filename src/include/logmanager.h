@@ -21,7 +21,7 @@
     {
         va_list arg_list;
         va_start(arg_list, msg);
-#if wxCHECK_VERSION(3, 0, 0) && wxUSE_UNICODE
+#if wxUSE_UNICODE
 // in wx >=  3.0 unicode-build (default) we need the %ls here, or the strings get
 // cut after the first character
         ::temp_string = msg;
@@ -38,7 +38,7 @@
     {
         va_list arg_list;
         va_start(arg_list, msg);
-#if wxCHECK_VERSION(2,9,0) && wxUSE_UNICODE
+#if wxUSE_UNICODE
 // in wx >=  2.9 unicode-build (default) we need the %ls here, or the strings get
 // cut after the first character
         ::temp_string = msg;

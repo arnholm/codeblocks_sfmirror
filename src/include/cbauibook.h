@@ -78,25 +78,6 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
          * \return int the visible position
          */
         int GetTabPositionFromIndex(int index);
-#if !wxCHECK_VERSION(3, 0, 0)
-        /** \brief Set a tab tooltip
-         *
-         * Sets the tooltip for the tab belonging to win.
-         * Starts the dwell timer and the stopwatch if it is not already done.
-         * \param idx the index of the pane that belongs to the tab
-         * \param text the tooltip
-         * @remarks Uses the name of the wxWindow to store the message
-         * \return bool true if tooltip was updated
-         */
-        bool SetPageToolTip(size_t idx, const wxString & text );
-        /** \brief Get a tab tooltip
-         *
-         * Returns the tooltip for the tab label of the page.
-         * @remarks Uses the name of the wxWindow to store the message
-         * \return wxString the tooltip of the page with the given index
-         */
-        wxString GetPageToolTip(size_t idx	);
-#endif // !wxCHECK_VERSION(3, 0, 0)
         /** \brief Minmize free horizontal page
          *
          * Moves the active tab of all tabCtrl's to the rightmost place,
@@ -205,25 +186,12 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
          * \param event
          * @remarks Works not reliable, due to OS/wxWidgets-limitations
          */
-#if wxCHECK_VERSION(3, 0, 0)
         void OnNavigationKeyNotebook(wxNavigationKeyEvent& event);
-#else
-        void OnNavigationKey(wxNavigationKeyEvent& event);
-#endif // wxCHECK_VERSION(3, 0, 0)
         /** \brief OnIdle
          *
          * \param event unused
          */
         void OnIdle(cb_unused wxIdleEvent& event);
-#if !wxCHECK_VERSION(3, 0, 0)
-        /** \brief Catch mousemotion-events
-         *
-         * Needed for the backport of tabtooltip from wx2.9
-         *
-         * \param event holds the wxTabCtrl, that sends the event
-         */
-        void OnMotion(wxMouseEvent& event);
-#endif // !wxCHECK_VERSION(3, 0, 0)
         /** \brief Catch doubleclick-events from wxTabCtrl
          *
          * Sends cbEVT_CBAUIBOOK_LEFT_DCLICK, if doubleclick was on a tab,
@@ -318,15 +286,6 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
          */
         long m_LastId;
 #endif // __WXMSW__
-#if !wxCHECK_VERSION(3, 0, 0)
-        /** \brief If false, tooltips are not shown
-         *
-         * Needed to only show tooltips, if they have been explicitely set.
-         * We store the tooltip-text in the tabs name, without this flag, we
-         * get the wxWidgets default-names as tooltips.
-         */
-        bool m_HasToolTip;
-#endif // !wxCHECK_VERSION(3, 0, 0)
         /** \brief If true, zoom for all editors
          * is set in next OnIdle-call
          */
