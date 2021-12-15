@@ -117,7 +117,7 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[[][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+\.o:([][{}()[:blank:]#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[[:blank:]](undefined reference.*)]]>
+        <![CDATA[[][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+\.o:([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]](undefined reference.*)]]>
     </RegEx>
     <RegEx name="Compiler error (2)"
            type="error"
