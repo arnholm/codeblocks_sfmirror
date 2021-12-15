@@ -2716,7 +2716,7 @@ void CompilerOptionsDlg::OnAdvancedClick(cb_unused wxCommandEvent& event)
     }
 } // OnAdvancedClick
 
-static void UpdateUIListBoxAndButtons(wxListBox &list, wxButton &edit, wxButton &del, wxButton &clear, wxButton &copy,
+static void UpdateUIListBoxAndButtons(wxListBox &list, bool hasProject, wxButton &edit, wxButton &del, wxButton &clear, wxButton &copy,
                                       wxButton &up, wxButton &down)
 {
     wxArrayInt selections;
@@ -2727,7 +2727,7 @@ static void UpdateUIListBoxAndButtons(wxListBox &list, wxButton &edit, wxButton 
     edit.Enable(num == 1);
     del.Enable(en);
     clear.Enable(itemCount != 0);
-    copy.Enable(en);
+    copy.Enable(en && hasProject);
 
     if (en)
     {
@@ -2751,11 +2751,12 @@ static void UpdateUIListBoxAndButtons(wxListBox &list, wxButton &edit, wxButton 
 void CompilerOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
 {
     bool en = false;
+    const bool hasProject = m_pProject;
 
     wxListBox* control = GetDirsListBox();
     if (control)
     {
-        UpdateUIListBoxAndButtons(*control, *XRCCTRL(*this, "btnEditDir",  wxButton),
+        UpdateUIListBoxAndButtons(*control, hasProject, *XRCCTRL(*this, "btnEditDir",  wxButton),
                                   *XRCCTRL(*this, "btnDelDir",   wxButton), *XRCCTRL(*this, "btnClearDir", wxButton),
                                   *XRCCTRL(*this, "btnCopyDirs", wxButton), *XRCCTRL(*this, "btnMoveDirUp", wxButton),
                                   *XRCCTRL(*this, "btnMoveDirDown", wxButton));
@@ -2765,14 +2766,14 @@ void CompilerOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     wxListBox* lstLibs = XRCCTRL(*this, "lstLibs", wxListBox);
     if (lstLibs)
     {
-        UpdateUIListBoxAndButtons(*lstLibs, *XRCCTRL(*this, "btnEditLib",  wxButton),
+        UpdateUIListBoxAndButtons(*lstLibs, hasProject, *XRCCTRL(*this, "btnEditLib",  wxButton),
                                   *XRCCTRL(*this, "btnDelLib",   wxButton), *XRCCTRL(*this, "btnClearLib", wxButton),
                                   *XRCCTRL(*this, "btnCopyLibs", wxButton), *XRCCTRL(*this, "btnMoveLibUp", wxButton),
                                   *XRCCTRL(*this, "btnMoveLibDown", wxButton));
     }
 
     // edit/delete/clear/copy/moveup/movedown extra path
-    if (!m_pProject)
+    if (!hasProject)
     {
         en = XRCCTRL(*this, "lstExtraPaths", wxListBox)->GetSelection() >= 0;
         XRCCTRL(*this, "btnExtraEdit",   wxButton)->Enable(en);
@@ -2797,7 +2798,7 @@ void CompilerOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     XRCCTRL(*this, "cmbResDirsPolicy",  wxChoice)->Enable(en);
 
     // compiler set buttons
-    if (!m_pProject)
+    if (!hasProject)
     {
         en = !data; // global options selected
         int idx   = XRCCTRL(*this, "cmbCompiler", wxChoice)->GetSelection();
