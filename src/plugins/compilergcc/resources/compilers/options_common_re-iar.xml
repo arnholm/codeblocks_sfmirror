@@ -4,35 +4,35 @@
     <RegEx name="Internal error"
            type="error"
            msg="1">
-        <![CDATA[[Ii]nternal [Ee]rror:[ \t]*(.*)]]>
+        <![CDATA[[Ii]nternal [Ee]rror:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Compiler remark"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}() \t#%$~[:alnum:]&_:+/\.-]+)"?,([0-9]+)[ \t]+([Rr]emark\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Rr]emark\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}() \t#%$~[:alnum:]&_:+/\.-]+)"?,([0-9]+)[ \t]+([Ww]arning\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ww]arning\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}() \t#%$~[:alnum:]&_:+/\.-]+)"?,([0-9]+)[ \t]+([Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler fatal error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}() \t#%$~[:alnum:]&_:+/\.-]+)"?,([0-9]+)[ \t]+([Ff]atal[ \t]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ff]atal[[:blank:]]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Linker warning"
            type="warning"
@@ -47,6 +47,6 @@
     <RegEx name="Linker fatal "
            type="error"
            msg="1">
-        <![CDATA[([Ff]atal[ \t]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA[([Ff]atal[[:blank:]]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

@@ -193,35 +193,35 @@
     <RegEx name="Fatal error"
            type="error"
            msg="1">
-        <![CDATA[FATAL:[ \t]*(.*)]]>
+        <![CDATA[FATAL:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Compiler warning (.h)"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[0-9:]+[ \t]([Ww]arning[: \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9:]+[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[ \t]([Ww]arning[: \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[ \t](.*[Ee]rror[: \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]](.*[Ee]rror[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error (2)"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[0-9:]+ (.*: No such .*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9:]+ (.*: No such .*)]]>
     </RegEx>
     <RegEx name="Linker warning"
            type="warning"

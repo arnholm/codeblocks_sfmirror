@@ -199,23 +199,23 @@
            msg="1;4"
            file="2"
            line="3">
-        <![CDATA[(^Warning[ \t]W[0-9]+)[ \t]([][{}() \t#%$~[:alnum:]&_:+/\.-]+)[ \t]([0-9]+)(:[ \t].*)]]>
+        <![CDATA[(^Warning[[:blank:]]W[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="1;4"
            file="2"
            line="3">
-        <![CDATA[(^Error[ \t]E[0-9]+)[ \t]([][{}() \t#%$~[:alnum:]&_:+/\.-]+)[ \t]([0-9]+)(:[ \t].*)]]>
+        <![CDATA[(^Error[[:blank:]]E[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Unknown error"
            type="error"
            msg="1">
-        <![CDATA[(^Error[ \t]+E[0-9]+:.*)]]>
+        <![CDATA[(^Error[[:blank:]]+E[0-9]+:.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
            msg="1">
-        <![CDATA[Fatal:[ \t]+(.*)]]>
+        <![CDATA[Fatal:[[:blank:]]+(.*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

@@ -190,25 +190,25 @@
            type="error"
            msg="2"
            file="1">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)[ \t]+:[ \t]+(.*error LNK[0-9]+.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]+:[[:blank:]]+(.*error LNK[0-9]+.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+)\)[ \t]*:[ \t]*[Ww][Aa][Rr][Nn][Ii][Nn][Gg][ \t]*(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*[Ww][Aa][Rr][Nn][Ii][Nn][Gg][[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+)\)[ \t]*:[ \t]*(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
            msg="1">
-        <![CDATA[Fatal error:[ \t](.*)]]>
+        <![CDATA[Fatal error:[[:blank:]](.*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

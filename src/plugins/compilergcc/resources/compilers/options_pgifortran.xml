@@ -211,65 +211,65 @@
            msg="1"
            file="2"
            line="3">
-        <![CDATA[(.*-S-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+):[ \t]*([0-9]+)).*]]>
+        <![CDATA[(.*-S-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]]*([0-9]+)).*]]>
     </RegEx>
     <RegEx name="Severe error(2)"
            type="error"
            msg="1"
            file="2">
-        <![CDATA[(.*-S-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+)).*]]>
+        <![CDATA[(.*-S-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)).*]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
            msg="1"
            file="2"
            line="3">
-        <![CDATA[(.*-F-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+):[ \t]*([0-9]+)).*]]>
+        <![CDATA[(.*-F-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]]*([0-9]+)).*]]>
     </RegEx>
     <RegEx name="Fatal error(2)"
            type="error"
            msg="1"
            file="2">
-        <![CDATA[(.*-F-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+)).*]]>
+        <![CDATA[(.*-F-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)).*]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="1"
            file="2"
            line="3">
-        <![CDATA[(.*-V-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+):[ \t]*([0-9]+)).*]]>
+        <![CDATA[(.*-V-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]]*([0-9]+)).*]]>
     </RegEx>
     <RegEx name="Compiler error(2)"
            type="error"
            msg="1"
            file="2">
-        <![CDATA[(.*-V-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+)).*]]>
+        <![CDATA[(.*-V-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)).*]]>
     </RegEx>
     <RegEx name="Warning"
            type="warning"
            msg="1"
            file="2"
            line="3">
-        <![CDATA[(.*-W-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+):[ \t]*([0-9]+)).*]]>
+        <![CDATA[(.*-W-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]]*([0-9]+)).*]]>
     </RegEx>
     <RegEx name="Warning(2)"
            type="warning"
            msg="1"
            file="2">
-        <![CDATA[(.*-W-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+)).*]]>
+        <![CDATA[(.*-W-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)).*]]>
     </RegEx>
     <RegEx name="Info line"
            type="warning"
            msg="1"
            file="2"
            line="3">
-        <![CDATA[(.*-I-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+):[ \t]*([0-9]+)).*]]>
+        <![CDATA[(.*-I-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]]*([0-9]+)).*]]>
     </RegEx>
     <RegEx name="Info line(2)"
            type="warning"
            msg="1"
            file="2">
-        <![CDATA[(.*-I-[0-9]+-.*)\(([][{}() \t#%$~[:alnum:]&_:+/\.-]+)).*]]>
+        <![CDATA[(.*-I-[0-9]+-.*)\(([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)).*]]>
     </RegEx>
     <RegEx name="Error"
            type="error"
@@ -281,18 +281,18 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[ \t](undefined reference.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]](undefined reference.*)]]>
     </RegEx>
     <RegEx name="Linker error (lib not found)"
            type="error"
            msg="2"
            file="1">
-        <![CDATA[.*(ld.*):[ \t](cannot find.*)]]>
+        <![CDATA[.*(ld.*):[[:blank:]](cannot find.*)]]>
     </RegEx>
     <RegEx name="Linker error (cannot open output file)"
            type="error"
            msg="2;3"
            file="1">
-        <![CDATA[.*(ld.*):[ \t](cannot open output file.*):[ \t](.*)]]>
+        <![CDATA[.*(ld.*):[[:blank:]](cannot open output file.*):[[:blank:]](.*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

@@ -128,14 +128,14 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[warning - ([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+)\):[ \t](.*)]]>
+        <![CDATA[warning - ([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\):[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+)\):[ \t](.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\):[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Linker error"
            type="error"

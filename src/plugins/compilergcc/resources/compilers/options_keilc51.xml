@@ -219,23 +219,23 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[\\*\\*\\*[ \t]+WARNING[ \t]+C[0-9]+[ \t]+IN[ \t]+LINE[ \t]+([0-9]+)[ \t]+OF[ \t]+([][{}() \t#%$~[:alnum:]&_:+/\\.-]+)[ \t]*:[ \t]*(.*)]]>
+        <![CDATA[\\*\\*\\*[[:blank:]]+WARNING[[:blank:]]+C[0-9]+[[:blank:]]+IN[[:blank:]]+LINE[[:blank:]]+([0-9]+)[[:blank:]]+OF[[:blank:]]+([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\.-]+)[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[\\*\\*\\*[ \t]+ERROR[ \t]+C[0-9]+[ \t]+IN[ \t]+LINE[ \t]+([0-9]+)[ \t]+OF[ \t]+([][{}() \t#%$~[:alnum:]&_:+/\\.-]+)[ \t]*:[ \t]*(.*)]]>
+        <![CDATA[\\*\\*\\*[[:blank:]]+ERROR[[:blank:]]+C[0-9]+[[:blank:]]+IN[[:blank:]]+LINE[[:blank:]]+([0-9]+)[[:blank:]]+OF[[:blank:]]+([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\.-]+)[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Linker warning"
            type="warning"
            msg="1">
-        <![CDATA[\\*\\*\\*[ \t]+WARNING[ \t]+L[0-9]+[ \t]*:[ \t]*(.*)]]>
+        <![CDATA[\\*\\*\\*[[:blank:]]+WARNING[[:blank:]]+L[0-9]+[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Linker error"
            type="error"
            msg="1">
-        <![CDATA[\\*\\*\\*[ \t]+ERROR[ \t]+L[0-9]+[ \t]*:[ \t]*(.*)]]>
+        <![CDATA[\\*\\*\\*[[:blank:]]+ERROR[[:blank:]]+L[0-9]+[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

@@ -400,37 +400,37 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+).:[ \t]([Rr]emark[ \t]#[0-9]+:[ \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+).:[[:blank:]]([Rr]emark[[:blank:]]#[0-9]+:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="OpenMP remark"
            type="info"
            msg="4"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+)\):[ \t]\(col. ([0-9]+)\)[ \t]([Rr]emark:[ \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\):[[:blank:]]\(col. ([0-9]+)\)[[:blank:]]([Rr]emark:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compilation warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+).:[ \t]([Ww]arning[ \t]#[0-9]+:[ \t].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+).:[[:blank:]]([Ww]arning[[:blank:]]#[0-9]+:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compilation error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+)\(([0-9]+).:[ \t](.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+).:[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="General warning"
            type="warning"
            msg="1">
-        <![CDATA[([Ww]arning:[ \t].*)]]>
+        <![CDATA[([Ww]arning:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="General error"
            type="error"
            msg="1">
-        <![CDATA[([Ee]rror:[ \t].*)]]>
+        <![CDATA[([Ee]rror:[[:blank:]].*)]]>
     </RegEx>
 </CodeBlocks_compiler_options>

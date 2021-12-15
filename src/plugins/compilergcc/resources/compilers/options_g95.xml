@@ -200,19 +200,19 @@
            msg="4;5"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+)\.([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)\.([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
            msg="1">
-        <![CDATA[[ \t]*(Fatal Error:.*)]]>
+        <![CDATA[[[:blank:]]*(Fatal Error:.*)]]>
     </RegEx>
     <RegEx name="Info line"
            type="info"
            msg="1;2;4"
            file="2"
            line="3">
-        <![CDATA[(In file) ([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+)(\.[0-9]+.*:)*]]>
+        <![CDATA[(In file) ([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)(\.[0-9]+.*:)*]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
@@ -234,28 +234,28 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+): (undefined reference.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+): (undefined reference.*)]]>
     </RegEx>
     <RegEx name="Compiler warning (2)"
            type="warning"
            msg="1;5"
            file="3"
            line="2">
-        <![CDATA[(.*Warning.*:[ \t]Line)[ \t]+([0-9]+)[ \t]+of[ \t]+([.period.]*[][{}() \t#%$~A-Za-z0-9_:+/\-]+([.period.]f[a-zA-Z0-9]*[^[:space:]]){1}){1}(.*)]]>
+        <![CDATA[(.*Warning.*:[[:blank:]]Line)[[:blank:]]+([0-9]+)[[:blank:]]+of[[:blank:]]+([.period.]*[][{}()[:blank:]#%$~A-Za-z0-9_:+/\-]+([.period.]f[a-zA-Z0-9]*[^[:space:]]){1}){1}(.*)]]>
     </RegEx>
     <RegEx name="Note"
            type="info"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):[ \t]([Nn]ote:.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Nn]ote:.*)]]>
     </RegEx>
     <RegEx name="Info line (2)"
            type="info"
            msg="1"
            file="1"
            line="2">
-        <![CDATA[([][{}() \t#%$~[:alnum:]&_:+/\.-]+):([0-9]+):]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):]]>
     </RegEx>
     <RegEx name="Internal compiler error"
            type="error"
@@ -265,7 +265,7 @@
     <RegEx name="Unrecognized option"
            type="warning"
            msg="1">
-        <![CDATA[[ \t]*(g95: unrecognized option.*)]]>
+        <![CDATA[[[:blank:]]*(g95: unrecognized option.*)]]>
     </RegEx>
     <Common name="re-gf"/>
 </CodeBlocks_compiler_options>
