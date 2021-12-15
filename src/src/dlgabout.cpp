@@ -20,9 +20,7 @@
     #include <wx/string.h>
     #include <wx/textctrl.h>
     #include <wx/xrc/xmlres.h>
-    #if wxCHECK_VERSION(3, 0, 0)
-        #include <wx/versioninfo.h>
-    #endif // wxCHECK_VERSION
+    #include <wx/versioninfo.h>
 
     #include "licenses.h"
     #include "configmanager.h"
@@ -146,15 +144,11 @@ dlgAbout::dlgAbout(wxWindow* parent)
     wxTextCtrl *txtLicense = XRCCTRL(*this, "txtLicense", wxTextCtrl);
     txtLicense->SetValue(LICENSE_GPL);
 
-#if wxCHECK_VERSION(3, 0, 0)
     const wxVersionInfo scintillaVersion = wxScintilla::GetLibraryVersionInfo();
     const wxString scintillaStr = wxString::Format(wxT("%d.%d.%d"),
                                                    scintillaVersion.GetMajor(),
                                                    scintillaVersion.GetMinor(),
                                                    scintillaVersion.GetMicro());
-#else
-    const wxString scintillaStr = wxSCINTILLA_VERSION;
-#endif // wxCHECK_VERSION
 
     struct Item
     {
@@ -218,9 +212,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
         information += wxT(": ") + item.value + wxT("\n");
     }
 
-#if wxCHECK_VERSION(3, 0, 0)
     information += wxT("\n") + wxGetLibraryVersionInfo().GetDescription();
-#endif // wxCHECK_VERSION(3, 0, 0)
 
     wxTextCtrl *txtInformation = XRCCTRL(*this, "txtInformation", wxTextCtrl);
     txtInformation->SetValue(information);

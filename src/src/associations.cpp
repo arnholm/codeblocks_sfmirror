@@ -201,11 +201,7 @@ void Associations::DoClearAssociation(const wxString& ext)
     if (key.Exists())
     {
         wxString s;
-        #if wxCHECK_VERSION(3, 0, 0)
         if (key.QueryValue(wxEmptyString, s) && s.StartsWith(_T("CodeBlocks")))
-        #else
-        if (key.QueryValue(NULL, s) && s.StartsWith(_T("CodeBlocks")))
-        #endif
             key.DeleteSelf();
     }
 

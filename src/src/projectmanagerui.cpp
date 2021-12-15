@@ -1875,11 +1875,7 @@ struct cbStringHash
 {
     size_t operator()(const wxString& s) const
     {
-#if wxCHECK_VERSION(3, 0, 0)
         return std::hash<std::wstring>()(s.ToStdWstring());
-#else
-        return std::hash<std::wstring>()(s.wc_str());
-#endif // wxCHECK_VERSION
     }
 };
 

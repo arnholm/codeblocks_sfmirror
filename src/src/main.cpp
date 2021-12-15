@@ -2075,11 +2075,7 @@ void MainFrame::DoSelectLayout(const wxString& name)
         {
             if (!items[i]->IsCheckable())
                 continue;
-#if wxCHECK_VERSION(3, 0, 0)
             items[i]->Check(items[i]->GetItemLabel().IsSameAs(name));
-#else
-            items[i]->Check(items[i]->GetText().IsSameAs(name));
-#endif
         }
 
         if (!m_LastLayoutIsTemp)
@@ -2401,12 +2397,7 @@ void MainFrame::DoUpdateEditorStyle(cbAuiNotebook* target, const wxString& prefi
             break;
 
         default: // default style
-            #if defined(__WXGTK__) && (USE_GTK_NOTEBOOK) && !wxCHECK_VERSION(3, 0, 0)
-            target->SetArtProvider(new NbStyleGTK());
-            #else
             target->SetArtProvider(new wxAuiDefaultTabArt());
-            #endif
-            break;
     }
 
     target->SetTabCtrlHeight(-1);
@@ -4801,13 +4792,9 @@ void MainFrame::OnEditorUpdateUI(CodeBlocksEvent& event)
 
     if (Manager::Get()->GetEditorManager() && event.GetEditor() == Manager::Get()->GetEditorManager()->GetActiveEditor())
     {
-#if wxCHECK_VERSION(3, 0, 0)
         // Execute the code to update the status bar outside of the paint event for scintilla.
         // Executing this function directly in the event handler causes redraw problems on Windows.
         CallAfter(&MainFrame::DoUpdateStatusBar);
-#else
-        DoUpdateStatusBar();
-#endif // defined(__wxMSW__) && wxCHECK_VERSION(3, 0, 0)
     }
 
     event.Skip();
