@@ -135,11 +135,11 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "stahta01            : Misc. patches for several enhancements\n"
         "\n"
         "All contributors that provided patches.\n"
-        "The wxWidgets project (http://www.wxwidgets.org).\n"
-        "wxScintilla (http://sourceforge.net/projects/wxscintilla).\n"
+        "The wxWidgets project (https://www.wxwidgets.org).\n"
+        "wxScintilla (https://sourceforge.net/projects/wxscintilla).\n"
         "TinyXML parser (http://www.grinninglizard.com/tinyxml).\n"
         "Squirrel scripting language (http://www.squirrel-lang.org).\n"
-        "The GNU Software Foundation (http://www.gnu.org).\n"
+        "The GNU Software Foundation (https://www.gnu.org).\n"
         "Last, but not least, the open-source community."));
     wxTextCtrl *txtLicense = XRCCTRL(*this, "txtLicense", wxTextCtrl);
     txtLicense->SetValue(LICENSE_GPL);
