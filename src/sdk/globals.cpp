@@ -1186,7 +1186,11 @@ wxBitmap cbLoadBitmapScaled(const wxString& filename, wxBitmapType bitmapType, d
 
 double cbGetContentScaleFactor(const wxWindow &window)
 {
+#if wxCHECK_VERSION(3, 1, 4)
+    return window.GetDPIScaleFactor();
+#else
     return window.GetContentScaleFactor();
+#endif
 }
 
 #ifdef __WXGTK__

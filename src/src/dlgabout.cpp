@@ -101,6 +101,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "Damien Moore        : Developer\n"
         "Micah Ng            : Developer\n"
         "BlueHazzard         : Developer\n"
+        "Miguel Gimenez      : Developer\n"
         "Ricardo Garcia      : All-hands person\n"
         "Paul A. Jimenez     : Help and AStyle plugins\n"
         "Thomas Lorblanches  : CodeStat and Profiler plugins\n"
@@ -132,7 +133,6 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "Alexandr Efremo     : Providing OpenSuSe packages\n"
         "Huki                : Misc. Code-Completion improvements\n"
         "stahta01            : Misc. patches for several enhancements\n"
-        "Miguel Gimenez      : Misc. patches for several enhancements\n"
         "\n"
         "All contributors that provided patches.\n"
         "The wxWidgets project (http://www.wxwidgets.org).\n"
@@ -171,7 +171,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
     if (!desktopEnv.empty())
         items.push_back({_("Desktop environment"), desktopEnv });
 
-    items.push_back({_("Scaling factor"), wxString::Format("%f", GetContentScaleFactor())});
+    items.push_back({_("Scaling factor"), wxString::Format("%f", cbGetContentScaleFactor(*this))});
     items.push_back({_("Detected scaling factor"),
                      wxString::Format("%f", cbGetActualContentScaleFactor(*this))});
     const wxSize displayPPI = wxGetDisplayPPI();
