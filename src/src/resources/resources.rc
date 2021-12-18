@@ -138,8 +138,13 @@ VS_VERSION_INFO    VERSIONINFO
     wxMANIFEST_ID RT_MANIFEST "ia64.manifest"
     #warning Manifest: ia64.manifest
   #elif defined(WX_CPU_X86)
-    wxMANIFEST_ID RT_MANIFEST "x86.manifest"
-    #warning Manifest: x86.manifest
+    #if defined(cbDPI_AWARE_ON)
+        wxMANIFEST_ID RT_MANIFEST "x86_dpi_aware_on.manifest"
+        #warning Manifest: x86_dpi_aware_on.manifest
+    #else
+        wxMANIFEST_ID RT_MANIFEST "x86.manifest"
+        #warning Manifest: x86.manifest
+    #endif
   #else
     #error No platform defined! Unable to embed manifest file.
   #endif
