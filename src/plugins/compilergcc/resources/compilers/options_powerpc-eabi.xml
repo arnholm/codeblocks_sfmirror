@@ -61,6 +61,7 @@
     </else>
 
     <Common name="warnings"/>
+    
     <Category name="General Options">
         <Option name="Output an error if same variable is declared without extern in different modules"
                 option="-fno-common"/>
@@ -68,8 +69,6 @@
                 option="-save-temps"/>
     </Category>
 
-    <!-- warnings -->
-    <Common name="warnings"/>
     <Category name="Warnings">
         <Option name="Enable Effective-C++ warnings (thanks Scott Meyers)"
                 option="-Weffc++"/>
