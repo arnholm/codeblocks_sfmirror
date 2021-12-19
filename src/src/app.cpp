@@ -712,7 +712,7 @@ bool CodeBlocksApp::OnInit()
         m_Frame = frame;
 
         {
-            const double scalingFactor = frame->GetContentScaleFactor();
+            const double scalingFactor = cbGetContentScaleFactor(*frame);
             const double actualScalingFactor = cbGetActualContentScaleFactor(*frame);
             log->Log(wxString::Format("Initial scaling factor is %.3f (actual: %.3f)",
                                       scalingFactor, actualScalingFactor));

@@ -317,19 +317,15 @@ void SurfaceImpl::InitPixMap(int width, int height, Surface *surface, WindowID w
     hdcOwned = true;
     if (width < 1) width = 1;
     if (height < 1) height = 1;
-#ifdef __WXMSW__
-    bitmap = new wxBitmap(width, height);
-    wxUnusedVar(winid);
-#else
 /* C::B begin */
-#if wxCHECK_VERSION(3, 0, 0)
     bitmap = new wxBitmap();
-    bitmap->CreateScaled(width, height,wxBITMAP_SCREEN_DEPTH,((wxWindow*)winid)->GetContentScaleFactor());
+#if wxCHECK_VERSION(3, 1, 4)
+    const double scaleFactor = ((wxWindow*)winid)->GetDPIScaleFactor();
 #else
-    bitmap = new wxBitmap(width, height);
+    const double scaleFactor = ((wxWindow*)winid)->GetContentScaleFactor();
 #endif // wxCHECK_VERSION
+    bitmap->CreateScaled(width, height,wxBITMAP_SCREEN_DEPTH, scaleFactor);
 /* C::B end */
-#endif // __WXMSW__
     ((wxMemoryDC*)hdc)->SelectObject(*bitmap);
 }
 
