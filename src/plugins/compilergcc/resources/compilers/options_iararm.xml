@@ -53,8 +53,6 @@
             checkMessage="--strict and -e are mutually exclusive"/>
     <Option name="Treat Warnings as Errors"
             option="--warnings_are_errors"/>
-    <Option name="Treat Warnings as Errors"
-            option="--warnings_are_errors"/>
     <Option name="Discard unused public functions and variables"
             option="--discard_unused_publics"/>
     <Option name="Insert debug info in object file"
@@ -279,8 +277,6 @@
                 option="--cpu=ARM940T"/>
         <Option name="ARM920T"
                 option="--cpu=ARM920T"/>
-        <Option name="ARM922T"
-                option="--cpu=ARM922T"/>
         <Option name="ARM922T"
                 option="--cpu=ARM922T"/>
         <Option name="ARM9TDMI"
