@@ -3145,6 +3145,8 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
         for (size_t i = 0; i < m_Options.GetCount(); ++i)
         {
             CompOption* opt = m_Options.GetOption(i);
+            if (!opt)
+                break;
             bool known = false;
             for (size_t j = 0; j < categ.GetCount(); ++j)
             {
@@ -3160,12 +3162,13 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
         if (categ.IsEmpty())
             categ.Add(wxT("General"));
         CompOption copt;
-        if (m_MenuOption == FMO_Modify)
-            copt = *m_Options.GetOptionByName(property->GetLabel());
 
         wxString categoryName;
         if (property)
         {
+            if (m_MenuOption == FMO_Modify)
+                copt = *m_Options.GetOptionByName(property->GetLabel());
+
             // If we have a selected property try to find the name of the category.
             if (property->IsCategory())
                 categoryName = property->GetLabel();
@@ -3210,21 +3213,24 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
         }
         else
         {
-            CompOption* opt = m_Options.GetOptionByName(property->GetLabel());
-            wxString name = copt.name + wxT("  [");
-            if (copt.option.IsEmpty())
-                name += copt.additionalLibs;
-            else
-                name += copt.option;
-            name += wxT("]");
-            opt->name           = name;
-            opt->option         = copt.option;
-            opt->additionalLibs = copt.additionalLibs;
-            opt->category       = copt.category;
-            opt->checkAgainst   = copt.checkAgainst;
-            opt->checkMessage   = copt.checkMessage;
-            opt->supersedes     = copt.supersedes;
-            opt->exclusive      = copt.exclusive;
+            if (property)
+            {
+                CompOption* opt = m_Options.GetOptionByName(property->GetLabel());
+                wxString name = copt.name + wxT("  [");
+                if (copt.option.IsEmpty())
+                    name += copt.additionalLibs;
+                else
+                    name += copt.option;
+                name += wxT("]");
+                opt->name           = name;
+                opt->option         = copt.option;
+                opt->additionalLibs = copt.additionalLibs;
+                opt->category       = copt.category;
+                opt->checkAgainst   = copt.checkAgainst;
+                opt->checkMessage   = copt.checkMessage;
+                opt->supersedes     = copt.supersedes;
+                opt->exclusive      = copt.exclusive;
+            }
         }
     }
     DoFillOptions();
