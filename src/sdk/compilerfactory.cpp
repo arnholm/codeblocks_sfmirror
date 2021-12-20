@@ -296,40 +296,48 @@ void CompilerFactory::LoadSettings()
 
 Compiler* CompilerFactory::SelectCompilerUI(const wxString& message, const wxString& preselectedID)
 {
+    const size_t compCount = Compilers.GetCount();
+    if (!compCount)
+        return nullptr;
+
+    // first build a list of valid compilers
     int selected = -1;
-    const wxString lid = preselectedID.Lower();
-
-    // first build a list of available compilers
-    std::unique_ptr<wxString[]> comps(new wxString[Compilers.GetCount()]);
-
-    for (size_t i = 0; i < Compilers.GetCount(); ++i)
+    const wxString lid(preselectedID.Lower());
+    wxArrayString comps;
+    comps.Alloc(compCount);
+    for (size_t i = 0; i < compCount; ++i)
     {
-        comps[i] = Compilers[i]->GetName();
-        if (selected == -1)
+        if (Compilers[i]->IsValid())
         {
-            if (lid.IsEmpty())
+            const size_t pos = comps.Add(Compilers[i]->GetName());
+            if (selected == -1)
             {
-                if (Compilers[i] == s_DefaultCompiler)
-                    selected = i;
-            }
-            else
-            {
-                if (Compilers[i]->GetID().IsSameAs(lid))
-                    selected = i;
+                if (lid.empty())
+                {
+                    if (Compilers[i] == s_DefaultCompiler)
+                        selected = pos;
+                }
+                else
+                {
+                    if (Compilers[i]->GetID() == lid)
+                        selected = pos;
+                }
             }
         }
     }
+
+    // sort it alphabetically
+    comps.Sort();
+
     // now display a choice dialog
     wxSingleChoiceDialog dlg(nullptr,
                              message,
                              _("Compiler selection"),
-                             CompilerFactory::Compilers.GetCount(),
-                             comps.get());
+                             comps);
+
     dlg.SetSelection(selected);
     PlaceWindow(&dlg);
-    if (dlg.ShowModal() == wxID_OK)
-        return Compilers[dlg.GetSelection()];
-    return nullptr;
+    return (dlg.ShowModal() == wxID_OK) ? GetCompilerByName(dlg.GetStringSelection()) : nullptr;
 }
 
 wxString CompilerFactory::GetCompilerVersionString(const wxString& Id)
