@@ -58,9 +58,9 @@ END_EVENT_TABLE()
 
 ToDoListView::ToDoListView(const wxArrayString& titles_in, const wxArrayInt& widths_in, const wxArrayString& Types) :
     ListCtrlLogger(titles_in, widths_in, false),
-    m_pPanel(0),
-    m_pSource(0L),
-    m_pUser(0L),
+    m_pPanel(nullptr),
+    m_pSource(nullptr),
+    m_pUser(nullptr),
     m_pTotal(nullptr),
     m_Types(Types),
     m_LastFile(wxEmptyString),
@@ -114,7 +114,7 @@ wxWindow* ToDoListView::CreateControl(wxWindow* parent)
 
     hbs->Add(new wxStaticText(m_pPanel, wxID_ANY, _("User:")), 0, wxTOP, 4);
 
-    m_pUser = new wxComboBox(m_pPanel, idUser, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0L, wxCB_READONLY);
+    m_pUser = new wxComboBox(m_pPanel, idUser, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_READONLY);
     m_pUser->Append(_("<All users>"));
     m_pUser->SetSelection(0);
     hbs->Add(m_pUser, 0, wxLEFT, 4);

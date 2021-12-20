@@ -160,7 +160,7 @@ int ProjectsImporter::LoadProject(const wxString& filename)
         wxBusyCursor wait;
 
         Manager::Get()->GetLogManager()->Log(F(_("Importing %s: "), filename.wx_str()));
-        IBaseLoader* loader = 0L;
+        IBaseLoader* loader = nullptr;
         FileType ft = FileTypeOf(filename);
         switch (ft)
         {

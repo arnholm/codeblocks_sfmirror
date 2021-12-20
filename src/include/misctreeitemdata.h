@@ -16,14 +16,14 @@
 class DLLIMPORT MiscTreeItemData : public wxTreeItemData
 {
     public:
-        MiscTreeItemData():m_owner(0L) {}
+        MiscTreeItemData() : m_owner(nullptr) {}
         wxEvtHandler *GetOwner() { return m_owner; }
-        static bool OwnerCheck(wxTreeEvent& event,wxTreeCtrl *tree,wxEvtHandler *handler,bool strict=false);
-        ~MiscTreeItemData() override { m_owner=0L; }
+        static bool OwnerCheck(wxTreeEvent& event, wxTreeCtrl* tree, wxEvtHandler* handler, bool strict = false);
+        ~MiscTreeItemData() override { m_owner = nullptr; }
     protected:
-        void SetOwner(wxEvtHandler *owner) { m_owner=owner; }
+        void SetOwner(wxEvtHandler *owner) { m_owner = owner; }
     private:
-        wxEvtHandler *m_owner;
+        wxEvtHandler* m_owner;
 };
 
 #endif // MISCTREEITEMDATA_H

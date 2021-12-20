@@ -158,13 +158,13 @@ END_EVENT_TABLE()
 DebuggerGDB::DebuggerGDB() :
     cbDebuggerPlugin(wxT("GDB/CDB debugger"), wxT("gdb_debugger")),
     m_State(this),
-    m_pProcess(0L),
+    m_pProcess(nullptr),
     m_LastExitCode(0),
     m_Pid(0),
     m_PidToAttach(0),
     m_NoDebugInfo(false),
     m_StoppedOnSignal(false),
-    m_pProject(0),
+    m_pProject(nullptr),
     m_bIsConsole(false),
     m_stopDebuggerConsoleClosed(false),
     m_nConsolePid(0),
@@ -1926,7 +1926,7 @@ void DebuggerGDB::OnGDBTerminated(wxCommandEvent& event)
     m_TimerPollDebugger.Stop();
     m_LastExitCode = event.GetInt();
     //the process deletes itself
-//    m_pProcess = 0L;
+//    m_pProcess = nullptr;
 
     ClearActiveMarkFromAllEditors();
     m_State.StopDriver();

@@ -28,7 +28,7 @@ class wxUpdateUIEvent;
 class CompilerOptionsDlg : public cbConfigurationPanel
 {
     public:
-        CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, cbProject* project = 0L, ProjectBuildTarget* target = 0L);
+        CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, cbProject* project = nullptr, ProjectBuildTarget* target = nullptr);
         ~CompilerOptionsDlg() override;
 
         wxString GetTitle() const override { return _("Global compiler settings"); }

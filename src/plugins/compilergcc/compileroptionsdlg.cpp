@@ -375,7 +375,7 @@ CompilerOptionsDlg::CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, 
                      "If you click \"Cancel\", the project/target will remain configured for\n"
                      "that compiler and consequently can not be configured and will not be built."),
                     CompilerId.wx_str());
-        Compiler* comp = 0;
+        Compiler* comp = nullptr;
         if ((m_pTarget && m_pTarget->SupportsCurrentPlatform()) || (!m_pTarget && m_pProject))
             comp = CompilerFactory::SelectCompilerUI(msg);
 
@@ -571,7 +571,7 @@ void CompilerOptionsDlg::DoFillVars()
     if (!lst)
         return;
     lst->Clear();
-    const StringHash* vars = 0;
+    const StringHash* vars = nullptr;
     const CompileOptionsBase* base = GetVarsOwner();
     if (base)
     {
@@ -666,7 +666,7 @@ void CompilerOptionsDlg::DoFillTree()
     {
         // project settings
         // in case you wonder : the delete of data will be done by the wxTreeCtrl
-        ScopeTreeData* data = new ScopeTreeData(m_pProject, 0L);
+        ScopeTreeData* data = new ScopeTreeData(m_pProject, nullptr);
         root = tc->AddRoot(m_pProject->GetTitle(), -1, -1, data);
         selectedItem = root;
         for (int x = 0; x < m_pProject->GetBuildTargetsCount(); ++x)
@@ -681,7 +681,7 @@ void CompilerOptionsDlg::DoFillTree()
     // normally the target should be found in the targets of the project
     // in case it is not, we will reset m_pTarget to 0 (in sync with tree selection)
     if (selectedItem == root)
-        m_pTarget = 0;
+        m_pTarget = nullptr;
 
     tc->Expand(root);
     tc->SelectItem(selectedItem);
@@ -1604,7 +1604,7 @@ void CompilerOptionsDlg::OnTreeSelectionChange(wxTreeEvent& event)
                     "Please choose the compiler you want to use instead and click \"OK\".\n"
                     "If you click \"Cancel\", the project/target will remain configured for that compiler and consequently can not be configured and will not be built."),
                     CompilerId.wx_str());
-        Compiler* compiler = 0;
+        Compiler* compiler = nullptr;
         if (m_pTarget && m_pTarget->SupportsCurrentPlatform())
             compiler = CompilerFactory::SelectCompilerUI(msg);
 
@@ -2208,7 +2208,7 @@ void CompilerOptionsDlg::OnAddCompilerClick(cb_unused wxCommandEvent& event)
     if (!value.IsEmpty())
     {
         // make a copy of current compiler
-        Compiler* newC = 0;
+        Compiler* newC = nullptr;
         try
         {
             newC = CompilerFactory::CreateCompilerCopy(CompilerFactory::GetCompiler(m_CurrentCompilerIdx), value);
@@ -2217,7 +2217,7 @@ void CompilerOptionsDlg::OnAddCompilerClick(cb_unused wxCommandEvent& event)
         {
             // usually throws because of non-unique ID
             e.ShowErrorMessage(false);
-            newC = 0; // just to be sure
+            newC = nullptr; // just to be sure
         }
 
         if (!newC)
@@ -2731,7 +2731,7 @@ void CompilerOptionsDlg::OnAutoDetectClick(cb_unused wxCommandEvent& event)
 void CompilerOptionsDlg::OnSelectProgramClick(wxCommandEvent& event)
 {
     // see who called us
-    wxTextCtrl* obj = 0L;
+    wxTextCtrl* obj = nullptr;
     if (event.GetId() == XRCID("btnCcompiler"))
         obj = XRCCTRL(*this, "txtCcompiler", wxTextCtrl);
     else if (event.GetId() == XRCID("btnCPPcompiler"))

@@ -321,9 +321,9 @@ private:
      * @return current function line number
      */
     int FindCurrentFunctionStart(ccSearchData* searchData,
-                                 wxString*     nameSpace = 0L,
-                                 wxString*     procName = 0L,
-                                 int*          functionIndex = 0L,
+                                 wxString*     nameSpace = nullptr,
+                                 wxString*     procName = nullptr,
+                                 int*          functionIndex = nullptr,
                                  int           caretPos = -1);
 
     /** used in CodeCompletion suggestion list to boost the performance, we use a cache */

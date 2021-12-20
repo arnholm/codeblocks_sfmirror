@@ -618,7 +618,7 @@ void ParserThread::DoParse()
 
             case ParserConsts::clbrace_chr:
                 {
-                    m_LastParent = 0L;
+                    m_LastParent = nullptr;
                     m_LastScope = tsUndefined;
                     m_Str.Clear();
                     // the only time we get to find a } is when recursively called by e.g. HandleClass
@@ -815,7 +815,7 @@ void ParserThread::DoParse()
                             break;
                     }
                     if (    !m_Str.IsEmpty()
-                         && m_LastParent != 0L
+                         && m_LastParent != nullptr
                          && m_LastParent->m_Index != -1
                          && m_LastParent->m_TokenKind == tkNamespace )
                     {
@@ -2709,7 +2709,7 @@ void ParserThread::HandleEnum()
     }
 
     // the token is now the expected enum name
-    Token* newEnum = 0L;
+    Token* newEnum = nullptr;
     unsigned int level = 0;
     if (   wxIsalpha(token.GetChar(0))
         || (token.GetChar(0) == ParserConsts::underscore_chr) )

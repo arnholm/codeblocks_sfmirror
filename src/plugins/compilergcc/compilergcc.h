@@ -98,16 +98,16 @@ class CompilerGCC : public cbCompilerPlugin
         bool BuildToolBar(wxToolBar* toolBar) override;
         int GetToolBarPriority() override { return 1; }
 
-        int Run(ProjectBuildTarget* target = 0L) override;
+        int Run(ProjectBuildTarget* target = nullptr) override;
         int Run(const wxString& target) override;
         virtual int RunSingleFile(const wxString& filename);
         int Clean(const wxString& target) override;
-        int Clean(ProjectBuildTarget* target = 0L) override;
-        int DistClean(ProjectBuildTarget* target = 0L) override;
+        int Clean(ProjectBuildTarget* target = nullptr) override;
+        int DistClean(ProjectBuildTarget* target = nullptr) override;
         int DistClean(const wxString& target) override;
-        int Build(ProjectBuildTarget* target = 0L) override;
+        int Build(ProjectBuildTarget* target = nullptr) override;
         int Build(const wxString& target) override;
-        int Rebuild(ProjectBuildTarget* target = 0L) override;
+        int Rebuild(ProjectBuildTarget* target = nullptr) override;
         int Rebuild(const wxString& target) override;
         int CleanWorkspace(const wxString& target = wxEmptyString) override;
         int BuildWorkspace(const wxString& target = wxEmptyString) override;

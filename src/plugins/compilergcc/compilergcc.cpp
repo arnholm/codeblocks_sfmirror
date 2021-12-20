@@ -288,23 +288,23 @@ CompilerGCC::CompilerGCC() :
     m_RealTargetIndex(0),
     m_PageIndex(-1),
     m_ListPageIndex(-1),
-    m_Menu(0L),
-    m_TargetMenu(0L),
+    m_Menu(nullptr),
+    m_TargetMenu(nullptr),
     m_TargetIndex(-1),
-    m_pErrorsMenu(0L),
-    m_pProject(0L),
-    m_pTbar(0L),
-    m_pLog(0L),
-    m_pListLog(0L),
-    m_pToolTarget(0L),
+    m_pErrorsMenu(nullptr),
+    m_pProject(nullptr),
+    m_pTbar(nullptr),
+    m_pLog(nullptr),
+    m_pListLog(nullptr),
+    m_pToolTarget(nullptr),
     m_RunAfterCompile(false),
     m_LastExitCode(0),
     m_NotifiedMaxErrors(false),
-    m_pBuildingProject(0),
+    m_pBuildingProject(nullptr),
     m_BuildJob(bjIdle),
     m_NextBuildState(bsNone),
-    m_pLastBuildingProject(0),
-    m_pLastBuildingTarget(0),
+    m_pLastBuildingProject(nullptr),
+    m_pLastBuildingTarget(nullptr),
     m_Clean(false),
     m_Build(false),
     m_LastBuildStep(true),
@@ -329,23 +329,23 @@ void CompilerGCC::OnAttach()
     m_RealTargetIndex = 0;
     m_PageIndex = -1;
     m_ListPageIndex = -1;
-    m_Menu = 0L;
-    m_TargetMenu = 0L;
+    m_Menu = nullptr;
+    m_TargetMenu = nullptr;
     m_TargetIndex = -1;
-    m_pErrorsMenu = 0L;
-    m_pProject = 0L;
-    m_pTbar = 0L;
-    m_pLog = 0L;
-    m_pListLog = 0L;
-    m_pToolTarget = 0L;
+    m_pErrorsMenu = nullptr;
+    m_pProject = nullptr;
+    m_pTbar = nullptr;
+    m_pLog = nullptr;
+    m_pListLog = nullptr;
+    m_pToolTarget = nullptr;
     m_RunAfterCompile = false;
     m_LastExitCode = 0;
     m_NotifiedMaxErrors = false;
-    m_pBuildingProject = 0;
+    m_pBuildingProject = nullptr;
     m_BuildJob = bjIdle;
     m_NextBuildState = bsNone;
-    m_pLastBuildingProject = 0;
-    m_pLastBuildingTarget = 0;
+    m_pLastBuildingProject = nullptr;
+    m_pLastBuildingTarget = nullptr;
     m_RunTargetPostBuild = false;
     m_RunProjectPostBuild = false;
     m_Clean = false;
@@ -1064,7 +1064,7 @@ bool CompilerGCC::CheckProject()
     else if (!m_pProject && m_CompilerId != CompilerFactory::GetDefaultCompilerID())
         SwitchCompiler(CompilerFactory::GetDefaultCompilerID());
 
-    return (m_pProject != 0L);
+    return (m_pProject != nullptr);
 }
 
 void CompilerGCC::AskForActiveProject()
@@ -1673,7 +1673,7 @@ void CompilerGCC::NotifyCleanWorkspace()
 ProjectBuildTarget* CompilerGCC::DoAskForTarget()
 {
     if (!CheckProject())
-        return 0L;
+        return nullptr;
 
     return m_pProject->GetBuildTarget(m_RealTargetIndex);
 }
