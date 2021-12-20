@@ -272,7 +272,7 @@ bool PluginManager::InstallPlugin(const wxString& pluginName, bool forAllUsers, 
         resourceDir = ConfigManager::GetFolder(sdDataUser);
     }
 
-    wxProgressDialog pd(_("Installing: ") + basename, _T("A description wide enough for the dialog ;)"), 5);
+    wxProgressDialog pd(_("Installing: ") + basename, wxString(L'\u00a0', 150), 5);
 
     wxString localName = basename + FileFilters::DYNAMICLIB_DOT_EXT;
     wxString resourceName = basename + _T(".zip");
@@ -417,7 +417,7 @@ bool PluginManager::UninstallPlugin(cbPlugin* plugin, bool removeFiles)
 //    Manager::Get()->GetLogManager()->DebugLog(F(_T("Plugin resources: ") + resourceFilename));
 
     wxProgressDialog pd(wxString::Format(_("Uninstalling %s"), title.c_str()),
-                        _T("A description wide enough for the dialog ;)"), 3);
+                        wxString(L'\u00a0', 150), 3);
 
     pd.Update(1, _("Detaching plugin"));
     DetachPlugin(plugin);
