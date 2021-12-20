@@ -66,22 +66,44 @@ void ProjectsImporter::BuildMenu(wxMenuBar* menuBar)
         return;
 
     wxMenu* fileMenu = menuBar->GetMenu(0);
-    if (fileMenu)
+    if (!fileMenu)
+        return;
+
+    wxMenuItem* importMenuItem;
+    const int importMenuId = fileMenu->FindItem(_("&Import project"));
+    if (importMenuId == wxNOT_FOUND)
     {
-        int menuId = 0, id = 0;
         wxMenuItemList menuItems = fileMenu->GetMenuItems();
-        menuId = fileMenu->FindItem(_("R&ecent files"));
+        const int menuId = fileMenu->FindItem(_("R&ecent files"));
         wxMenuItem* recentFileItem = fileMenu->FindItem(menuId);
-        id = menuItems.IndexOf(recentFileItem);
+        int id = menuItems.IndexOf(recentFileItem);
         if (id == wxNOT_FOUND)
             id = 7;
         else
             ++id;
 
         // The position is hard-coded to "Recent Files" menu. Please adjust it if necessary
-        fileMenu->Insert(++id, wxNewId(), _("&Import project"), m_Menu);
+        importMenuItem = fileMenu->Insert(++id, wxNewId(), _("&Import project"), new wxMenu());
         fileMenu->InsertSeparator(++id);
     }
+    else
+    {
+        importMenuItem = fileMenu->FindItem(importMenuId);
+    }
+
+    if (!importMenuItem)
+        return;
+
+    if (!importMenuItem->IsSubMenu())
+        importMenuItem->SetSubMenu(new wxMenu());
+
+    wxMenu* importSubMenu = importMenuItem->GetSubMenu();
+    if (importSubMenu->GetMenuItemCount())
+        importSubMenu->AppendSeparator();
+
+    wxMenuItemList m_List = m_Menu->GetMenuItems();
+    for (wxMenuItemList::iterator it = m_List.begin(); it != m_List.end(); ++it)
+        importSubMenu->Append(*it);
 }
 
 bool ProjectsImporter::CanHandleFile(const wxString& filename) const
