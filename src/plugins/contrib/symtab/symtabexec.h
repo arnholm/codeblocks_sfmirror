@@ -48,8 +48,8 @@ public:
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
               SymTabExecDlg(wxWindow* parent_in) :
                 parent(parent_in), SymTabExecDlgLoaded(false),
-                m_ListCtrl(0L), m_TextHelp(0L),
-                m_TextMisc(0L) {}
+                m_ListCtrl(nullptr), m_TextHelp(nullptr),
+                m_TextMisc(nullptr) {}
   virtual    ~SymTabExecDlg();
 
   int         Execute  (struct_config config);

@@ -211,7 +211,7 @@ bool MANFrame::Decompress(const wxString& filename, const wxString& tmpfile)
 
     // open BZIP2 stream
     int bzerror;
-    BZFILE* bz = BZ2_bzReadOpen(&bzerror, f, 0, 0, 0L, 0);
+    BZFILE* bz = BZ2_bzReadOpen(&bzerror, f, 0, 0, nullptr, 0);
     if (!bz || bzerror != BZ_OK)
     {
         fclose(f);

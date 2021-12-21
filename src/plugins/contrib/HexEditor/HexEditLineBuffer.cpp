@@ -34,9 +34,9 @@ HexEditLineBuffer::HexEditLineBuffer( unsigned length )
     }
     else
     {
-        m_Buffer = 0L;
-        m_Position = 0L;
-        m_End = 0L;
+        m_Buffer = nullptr;
+        m_Position = nullptr;
+        m_End = nullptr;
     }
     Reset();
 }

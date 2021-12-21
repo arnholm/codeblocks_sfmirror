@@ -97,7 +97,7 @@ int CBProfiler::Execute()
         return -1;
     }
 
-    ProjectBuildTarget* target = 0L;
+    ProjectBuildTarget* target = nullptr;
     if (project->GetBuildTargetsCount() > 1)
     {
         // more than one executable target? ask...

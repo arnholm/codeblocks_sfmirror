@@ -40,7 +40,7 @@ namespace
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-SymTab::SymTab() : CfgDlg(0L), ExeDlg(0L)
+SymTab::SymTab() : CfgDlg(nullptr), ExeDlg(nullptr)
 {
   //ctor
   if(!Manager::LoadResource(_T("SymTab.zip")))
@@ -77,8 +77,8 @@ void SymTab::OnRelease(bool /*appShutDown*/)
   // which means you must not use any of the SDK Managers
   // NOTE: after this function, the inherited member variable
   // IsAttached() will be FALSE...
-  if (CfgDlg) {CfgDlg->Destroy(); CfgDlg = 0L;}
-  if (ExeDlg) {ExeDlg->Destroy(); ExeDlg = 0L;}
+  if (CfgDlg) {CfgDlg->Destroy(); CfgDlg = nullptr;}
+  if (ExeDlg) {ExeDlg->Destroy(); ExeDlg = nullptr;}
 }// OnRelease
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */

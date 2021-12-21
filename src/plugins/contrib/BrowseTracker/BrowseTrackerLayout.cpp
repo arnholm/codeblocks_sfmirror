@@ -124,7 +124,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
         if (fname.IsEmpty())
         {
             //pMsg->DebugLog(_T("'File' node exists, but no filename?!?"));
-            pf = 0L;
+            pf = nullptr;
         }
         else
             pf = m_pProject->GetFileByFilename(fname);
@@ -227,7 +227,7 @@ bool BrowseTrackerLayout::Save(const wxString& filename, FileBrowse_MarksHash& m
     TiXmlElement* tgtidx = static_cast<TiXmlElement*>(rootnode->InsertEndChild(TiXmlElement("ActiveTarget")));
     tgtidx->SetAttribute("name", cbU2C(m_pProject->GetActiveBuildTarget()));
 
-    ProjectFile* active = 0L;
+    ProjectFile* active = nullptr;
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (ed)
         active = ed->GetProjectFile();
