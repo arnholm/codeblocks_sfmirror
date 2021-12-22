@@ -41,7 +41,7 @@ void wxSwitcherItem::Init()
     m_breakColumn = false;
     m_rowPos = 0;
     m_colPos = 0;
-    m_window = NULL;
+    m_window = nullptr;
 }
 
 void wxSwitcherItem::Copy(const wxSwitcherItem& item)
@@ -918,8 +918,8 @@ bool wxSwitcherDialog::Create( const wxSwitcherItems& items, wxWindow *parent, w
 
 void wxSwitcherDialog::Init()
 {
-    m_listCtrl = NULL;
-    m_descriptionCtrl = NULL;
+    m_listCtrl = nullptr;
+    m_descriptionCtrl = nullptr;
     m_closing = false;
     m_switcherBorderStyle = 0;
 

@@ -831,8 +831,8 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
     int read_only_files_skipped = 0;
     for (int i = 0; i<filesCount && !stop; ++i)
     {
-        cbEditor*         ed      = NULL;
-        cbStyledTextCtrl* control = NULL;
+        cbEditor*         ed      = nullptr;
+        cbStyledTextCtrl* control = nullptr;
         bool fileWasNotOpen = false;
 
         if (progress)
@@ -857,7 +857,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
             if (ed) control = ed->GetControl();
         }
 
-        //If it's still NULL, open a new editor
+        //If it's still nullptr, open a new editor
         if (!control)
         {
             wxFile file(filesList[i]);
@@ -886,7 +886,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
             ed = editorMgr->Open(filesList[i]);
             if (ed) control = ed->GetControl();
         }
-        //Still NULL?
+        //Still nullptr?
         if (!control || !ed)
             continue;
 

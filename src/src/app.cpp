@@ -450,7 +450,7 @@ void CodeBlocksApp::InitDebugConsole()
     COORD co = {80,2000};
     SetConsoleScreenBufferSize(myhandle, co);
     fprintf(stdout,"CONSOLE DEBUG ACTIVATED\n");
-    // wxLogWindow *myerr = new wxLogWindow(NULL,"debug");
+    // wxLogWindow *myerr = new wxLogWindow(nullptr,"debug");
     #endif
 #endif
 }

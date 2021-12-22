@@ -1414,12 +1414,12 @@ void MainFrame::CreateToolbars()
     m_pToolbar->Realize();
 
     // Right click on the main toolbar will popup a context menu
-    m_pToolbar->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED, wxCommandEventHandler(MainFrame::OnToolBarRightClick), NULL, this);
+    m_pToolbar->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED, wxCommandEventHandler(MainFrame::OnToolBarRightClick), nullptr, this);
 
     m_pToolbar->SetInitialSize();
 
     // Right click on the debugger toolbar will popup a context menu
-    m_debuggerToolbarHandler->GetToolbar()->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED, wxCommandEventHandler(MainFrame::OnToolBarRightClick), NULL, this );
+    m_debuggerToolbarHandler->GetToolbar()->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED, wxCommandEventHandler(MainFrame::OnToolBarRightClick), nullptr, this );
 
     std::vector<ToolbarInfo> toolbars;
 
@@ -1441,7 +1441,7 @@ void MainFrame::CreateToolbars()
                 toolbars.push_back(info);
                 // support showing context menu of the plugins' toolbar
                 info.toolbar->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED,
-                                      wxCommandEventHandler(MainFrame::OnToolBarRightClick), NULL, this );
+                                      wxCommandEventHandler(MainFrame::OnToolBarRightClick), nullptr, this );
             }
         }
     }
@@ -2199,7 +2199,7 @@ void MainFrame::DoAddPlugin(cbPlugin* plugin)
                 m_LayoutManager.AddPane(toolbarInfo.toolbar, paneInfo. ToolbarPane().Top().Row(row).Position(position));
                 // Add the event handler for mouse right click
                 toolbarInfo.toolbar->Connect(wxID_ANY, wxEVT_COMMAND_TOOL_RCLICKED,
-                                             wxCommandEventHandler(MainFrame::OnToolBarRightClick), NULL, this);
+                                             wxCommandEventHandler(MainFrame::OnToolBarRightClick), nullptr, this);
 
                 DoUpdateLayout();
             }
@@ -2628,7 +2628,7 @@ void MainFrame::TerminateRecentFilesHistory()
 wxString MainFrame::GetEditorDescription(EditorBase* eb)
 {
     wxString descr = wxEmptyString;
-    cbProject* prj = NULL;
+    cbProject* prj = nullptr;
     if (eb && eb->IsBuiltinEditor())
     {
         ProjectFile* prjf = ((cbEditor*)eb)->GetProjectFile();
@@ -4926,7 +4926,7 @@ void MainFrame::OnSwitchTabs(cb_unused wxCommandEvent& event)
     {   // Switch tabs editor with last used order
         int index = 0;
         cbNotebookStack* body;
-        for (body = Manager::Get()->GetEditorManager()->GetNotebookStack(); body != NULL; body = body->next)
+        for (body = Manager::Get()->GetEditorManager()->GetNotebookStack(); body != nullptr; body = body->next)
         {
             index = nb->GetPageIndex(body->window);
             if (index == wxNOT_FOUND)
@@ -4971,7 +4971,7 @@ void MainFrame::OnToggleStartPage(cb_unused wxCommandEvent& event)
 {
 
     int toggle=-1;
-    if(Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle)==NULL)
+    if(Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle)==nullptr)
     {
         toggle=1;
     }

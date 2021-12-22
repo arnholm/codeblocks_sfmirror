@@ -27,7 +27,7 @@ inline void CrashHandlerSaveEditorFiles(wxString& buf)
 {
     wxString path;
     //get the "My Files" folder
-    HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, wxStringBuffer(path, MAX_PATH));
+    HRESULT result = SHGetFolderPath(nullptr, CSIDL_PERSONAL, nullptr, 0, wxStringBuffer(path, MAX_PATH));
     if (FAILED(result))
     {   //get at least the profiles folder
         path = ConfigManager::GetHomeFolder();

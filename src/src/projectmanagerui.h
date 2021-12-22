@@ -132,7 +132,7 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
           * @param tree The wxTreeCtrl to use.
           * @param root The tree item to use as root. The project is built as a child of this item.
           * @param ptvs The visual style of the project tree
-          * @param fgam If not NULL, use these file groups and masks for virtual folders.
+          * @param fgam If not nullptr, use these file groups and masks for virtual folders.
           */
         void BuildProjectTree(cbProject* project, cbTreeCtrl* tree, const wxTreeItemId& root,
                               int ptvs, FilesGroupsAndMasks* fgam);

@@ -70,7 +70,7 @@ class MainFrame : public wxFrame
                                         bool checkSelection=false);
     public:
 
-        MainFrame(wxWindow* parent = (wxWindow*)NULL);
+        MainFrame(wxWindow* parent = nullptr);
         ~MainFrame();
 
         bool Open(const wxString& filename, bool addToHistory = true);

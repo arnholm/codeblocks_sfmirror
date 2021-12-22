@@ -220,15 +220,15 @@ int InfoPane::GetCurrentPage(bool &is_logger)
 Logger* InfoPane::GetLogger(int index)
 {
     if (index < 0 || (size_t)index > m_Pages.GetCount())
-        return NULL;
-    return m_Pages.Item(index)->islogger ? m_Pages.Item(index)->logger : NULL;
+        return nullptr;
+    return m_Pages.Item(index)->islogger ? m_Pages.Item(index)->logger : nullptr;
 }
 
 wxWindow* InfoPane::GetWindow(int index)
 {
     if (index < 0 || (size_t)index > m_Pages.GetCount())
-        return NULL;
-    return !m_Pages.Item(index)->islogger ? m_Pages.Item(index)->window : NULL;
+        return nullptr;
+    return !m_Pages.Item(index)->islogger ? m_Pages.Item(index)->window : nullptr;
 }
 
 void InfoPane::Show(size_t i)
