@@ -430,7 +430,7 @@ HighlightLanguage EditorColourSet::GetLanguageForFilename(const wxString& filena
             line = text.ReadLine();
         if (!line.IsEmpty())
         {
-            wxRegEx reSheBang(wxT("#![ \t]*([a-zA-Z/]+)[ \t]*([a-zA-Z/]*)"));
+            wxRegEx reSheBang("#![[:blank:]]*([a-zA-Z/]+)[[:blank:]]*([a-zA-Z/]*)");
             if (reSheBang.Matches(line))
             {
                 wxString prog = reSheBang.GetMatch(line, 1);

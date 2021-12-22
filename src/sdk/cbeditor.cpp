@@ -2716,10 +2716,10 @@ void cbEditor::GotoMatchingBrace()
     // else look for a matching preprocessor command
     if (matchingBrace == wxSCI_INVALID_POSITION)
     {
-        wxRegEx ppIf(wxT("^[ \t]*#[ \t]*if"));
-        wxRegEx ppElse(wxT("^[ \t]*#[ \t]*el"));
-        wxRegEx ppEnd(wxT("^[ \t]*#[ \t]*endif"));
-        wxRegEx pp(wxT("^[ \t]*#[ \t]*[a-z]*")); // generic match to get length
+        wxRegEx ppIf("^[[:blank:]]*#[[:blank:]]*if");
+        wxRegEx ppElse("^[[:blank:]]*#[[:blank:]]*el");
+        wxRegEx ppEnd("^[[:blank:]]*#[[:blank:]]*endif");
+        wxRegEx pp("^[[:blank:]]*#[[:blank:]]*[a-z]*"); // generic match to get length
         if (ppIf.Matches(control->GetCurLine()) || ppElse.Matches(control->GetCurLine()))
         {
             int depth = 1; // search forwards
