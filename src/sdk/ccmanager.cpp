@@ -229,10 +229,10 @@ void UnfocusablePopupWindow::DoSetSize(int x, int y,
 {
     // convert coords to screen coords since we're a top-level window
     if (x != wxDefaultCoord)
-        GetParent()->ClientToScreen(&x, NULL);
+        GetParent()->ClientToScreen(&x, nullptr);
 
     if (y != wxDefaultCoord)
-        GetParent()->ClientToScreen(NULL, &y);
+        GetParent()->ClientToScreen(nullptr, &y);
 
     BaseClass::DoSetSize(x, y, width, height, sizeFlags);
 }

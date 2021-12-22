@@ -83,7 +83,7 @@ void TemplateManager::LoadUserTemplates()
 
 cbProject* TemplateManager::New(TemplateOutputType initial, wxString* pFilename)
 {
-    cbProject* prj = NULL;
+    cbProject* prj = nullptr;
 
     LoadUserTemplates();
     NewFromTemplateDlg dlg(initial, m_UserTemplates);
@@ -100,7 +100,7 @@ cbProject* TemplateManager::New(TemplateOutputType initial, wxString* pFilename)
 
 cbProject* TemplateManager::NewFromTemplate(NewFromTemplateDlg& dlg, wxString* pFilename)
 {
-    cbProject* prj = NULL;
+    cbProject* prj = nullptr;
     cbWizardPlugin* wiz = dlg.GetWizard();
     if (wiz)
     {
@@ -121,11 +121,11 @@ cbProject* TemplateManager::NewFromTemplate(NewFromTemplateDlg& dlg, wxString* p
 
 cbProject* TemplateManager::NewProjectFromUserTemplate(NewFromTemplateDlg& dlg, wxString* pFilename)
 {
-    cbProject* prj = NULL;
+    cbProject* prj = nullptr;
     if (!dlg.SelectedUserTemplate())
     {
         Manager::Get()->GetLogManager()->DebugLog(_T("TemplateManager::NewProjectFromUserTemplate() called when no user template was selected ?!?"));
-        return NULL;
+        return nullptr;
     }
 
     wxString path = Manager::Get()->GetConfigManager(_T("template_manager"))->Read(_T("/projects_path"));
@@ -134,7 +134,7 @@ cbProject* TemplateManager::NewProjectFromUserTemplate(NewFromTemplateDlg& dlg, 
     path = ChooseDirectory(nullptr, _("Choose a directory to create the new project"),
                         path, _T(""), false, true);
     if (path.IsEmpty())
-        return NULL;
+        return nullptr;
     else if (path.Mid(path.Length() - 1) == wxFILE_SEP_PATH)
         path.RemoveLast();
 
@@ -161,7 +161,7 @@ cbProject* TemplateManager::NewProjectFromUserTemplate(NewFromTemplateDlg& dlg, 
     if (!wxDirExists(templ))
     {
         Manager::Get()->GetLogManager()->DebugLog(F(_T("Cannot open user-template source path '%s'!"), templ.wx_str()));
-        return NULL;
+        return nullptr;
     }
 
     // copy files

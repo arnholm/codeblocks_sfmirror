@@ -1157,7 +1157,7 @@ ProjectFile* cbProject::GetFile(int index)
     }
 
     if (index < 0 || index >= static_cast<int>(m_Files.size()))
-        return NULL;
+        return nullptr;
 
     return m_FileArray.Item(index);
 }

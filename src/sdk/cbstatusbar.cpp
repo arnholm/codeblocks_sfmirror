@@ -79,7 +79,7 @@ void cbStatusBar::AddField(cbPlugin* plugin, wxWindow* ctrl, int width)
 }
 void cbStatusBar::AddField(cbPlugin* plugin, int width)
 {
-    return AddField(plugin, (wxControl*)NULL, width);
+    return AddField(plugin, nullptr, width);
 }
 
 void cbStatusBar::RemoveField(cbPlugin* plugin)

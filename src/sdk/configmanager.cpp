@@ -1583,14 +1583,14 @@ void ConfigManager::MigrateFolders()
 
     // ConfigManager::config_folder might be the portable-path but we want to migrate the standard-conform folder,
     // but only if it not already exists
-    wxString newConfigFolder = wxString::FromUTF8(g_build_filename (g_get_user_config_dir(), "codeblocks", NULL));
+    wxString newConfigFolder = wxString::FromUTF8(g_build_filename (g_get_user_config_dir(), "codeblocks", nullptr));
     // if the new config folder already exist, we step out immediately
     if (wxDirExists(newConfigFolder))
         return;
 
     wxString oldConfigFolder = wxStandardPaths::Get().GetUserDataDir();
     wxString oldDataFolder = oldConfigFolder + wxFILE_SEP_PATH + _T("share") + wxFILE_SEP_PATH + _T("codeblocks");
-    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), NULL)) + wxFILE_SEP_PATH + _T("codeblocks");
+    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), nullptr)) + wxFILE_SEP_PATH + _T("codeblocks");
     wxString msg;
     msg = F(_("The places where the configuration files and user-data files are stored\n"
               "have been changed to be more standard-conform.\n"

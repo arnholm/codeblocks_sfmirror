@@ -173,7 +173,7 @@ ProjectFile* ProjectBuildTarget::GetFile(int index)
     }
 
     if (index < 0 || static_cast<size_t>(index) >= m_FileArray.GetCount())
-        return NULL;
+        return nullptr;
 
     return m_FileArray.Item(index);
 }

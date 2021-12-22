@@ -128,10 +128,10 @@ void EditorHooks::CallHooks(cbEditor* editor, wxScintillaEvent& event)
             const char *p = functor->GetTypeName();
             int   status;
             char *realname;
-            realname = abi::__cxa_demangle(p, 0, 0, &status);
+            realname = abi::__cxa_demangle(p, nullptr, nullptr, &status);
             wxString txt;
-            // if the demangled C++ function name success, then realname is not NULL
-            if (realname != 0)
+            // if the demangled C++ function name success, then realname is not nullptr
+            if (realname != nullptr)
             {
                 txt = wxString::FromUTF8(realname);
                 free(realname);

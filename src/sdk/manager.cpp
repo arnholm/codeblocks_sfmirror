@@ -274,11 +274,11 @@ bool Manager::ProcessEvent(CodeBlocksEvent& event)
                 const char *p = (*it)->GetTypeName();
                 int   status;
                 char *realname;
-                realname = abi::__cxa_demangle(p, 0, 0, &status);
+                realname = abi::__cxa_demangle(p, nullptr, nullptr, &status);
                 wxString msg;
 
-                // if the demangled C++ function name success, then realname is not NULL
-                if (realname != 0)
+                // if the demangled C++ function name success, then realname is not nullptr
+                if (realname != nullptr)
                 {
                     msg = wxString::FromUTF8(realname);
                     free(realname);

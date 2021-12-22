@@ -1360,7 +1360,7 @@ cbChildWindowPlacement cbGetChildWindowPlacement(ConfigManager &appConfig)
 void PlaceWindow(wxTopLevelWindow *w, cbPlaceDialogMode mode, bool enforce)
 {
     if (!w)
-        cbThrow(_T("Passed NULL pointer to PlaceWindow."));
+        cbThrow(_T("Passed nullptr pointer to PlaceWindow."));
 
     int the_mode = int(mode);
 
@@ -1631,7 +1631,7 @@ int cbMessageBox(const wxString& message, const wxString& caption, int style, wx
     if (!parent)
         parent = Manager::Get()->GetAppWindow();
 
-    // Cannot create a wxMessageDialog with a NULL as parent
+    // Cannot create a wxMessageDialog with a nullptr as parent
     if (!parent)
     {
       // wxMessage*Box* returns any of: wxYES, wxNO, wxCANCEL, wxOK.

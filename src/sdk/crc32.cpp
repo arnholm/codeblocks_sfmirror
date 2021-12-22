@@ -63,7 +63,7 @@ wxUint32 wxCrc32::FromFile(const wxString& file)
 
 wxUint32 wxCrc32::FromString(const wxString& text)
 {
-    static wxUint32 *crc_table = NULL;
+    static wxUint32 *crc_table = nullptr;
     wxUint32 crc = 0;
     unsigned int i = 0;
 
@@ -89,7 +89,7 @@ wxUint32 wxCrc32::FromString(const wxString& text)
 
     // Set it to a null pointer, the have it (re)created on next calls to this
     // function
-    crc_table = NULL;
+    crc_table = nullptr;
 
     // Return the checksum result
     return( crc ) ;

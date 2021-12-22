@@ -1492,7 +1492,7 @@ wxString Compiler::GetExecName(const wxString& name)
 class ExecProcess : public wxProcess
 {
     public:
-          ExecProcess(cb_unused wxEvtHandler *parent = NULL, cb_unused int id = -1)
+          ExecProcess(cb_unused wxEvtHandler *parent = nullptr, cb_unused int id = -1)
           {
               m_status = 0;
           }

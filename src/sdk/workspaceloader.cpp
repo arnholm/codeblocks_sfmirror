@@ -65,7 +65,7 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
     // If I click close AFTER pMan and pMsg are calculated,
     // I get a segfault.
     // I modified classes projectmanager and logmanager,
-    // so that when self==NULL, they do nothing
+    // so that when self==nullptr, they do nothing
     // (constructors, destructors and static functions excempted from this)
     // This way, we'll use the *manager::Get() functions to check for nulls.
 
@@ -277,7 +277,7 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
         return false; // Can't load XML file?!
 
     if ( ! GetpMan() || ! GetpMsg() )
-        return false; // GetpMan or GetpMsg returns NULL?!
+        return false; // GetpMan or GetpMsg returns nullptr?!
 
     TiXmlElement* root = doc.FirstChildElement("CodeBlocks_workspace_layout_file");
     if (!root)

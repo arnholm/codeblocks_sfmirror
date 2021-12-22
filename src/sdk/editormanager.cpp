@@ -214,7 +214,7 @@ cbNotebookStack* EditorManager::GetNotebookStack()
             {
                 wnd = m_pNotebook->GetPage(i);
                 found = false;
-                for (body = m_pNotebookStackHead->next; body != NULL; body = body->next)
+                for (body = m_pNotebookStackHead->next; body != nullptr; body = body->next)
                 {
                     if (wnd == body->window)
                     {
@@ -232,7 +232,7 @@ cbNotebookStack* EditorManager::GetNotebookStack()
         }
         if (m_nNotebookStackSize > m_pNotebook->GetPageCount())
         {
-            for (prev_body = m_pNotebookStackHead, body = prev_body->next; body != NULL; prev_body = body, body = body->next)
+            for (prev_body = m_pNotebookStackHead, body = prev_body->next; body != nullptr; prev_body = body, body = body->next)
             {
                 if (m_pNotebook->GetPageIndex(body->window) == wxNOT_FOUND)
                 {

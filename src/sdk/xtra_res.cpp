@@ -33,7 +33,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 wxToolBarAddOnXmlHandler::wxToolBarAddOnXmlHandler() :
-    m_isInside(FALSE), m_isAddon(false), m_toolbar(NULL), m_ImageSize(0)
+    m_isInside(FALSE), m_isAddon(false), m_toolbar(nullptr), m_ImageSize(0)
 {
     XRC_ADD_STYLE(wxTB_FLAT);
     XRC_ADD_STYLE(wxTB_DOCKABLE);
@@ -167,10 +167,10 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
 
 wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
 {
-    wxToolBar* toolbar=NULL;
+    wxToolBar* toolbar=nullptr;
     if (m_class == _T("tool"))
     {
-        wxCHECK_MSG(m_toolbar, NULL, _("Incorrect syntax of XRC resource: tool not within a toolbar!"));
+        wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: tool not within a toolbar!"));
 
         const wxSize bitmapSize = m_toolbar->GetToolBitmapSize();
 #ifdef __WXMSW__
@@ -212,14 +212,14 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         if (GetBool(_T("disabled")))
             m_toolbar->EnableTool(GetID(),false);
 
-        return m_toolbar; // must return non-NULL
+        return m_toolbar; // must return non-nullptr
     }
 
     else if (m_class == _T("separator"))
     {
-        wxCHECK_MSG(m_toolbar, NULL, _("Incorrect syntax of XRC resource: separator not within a toolbar!"));
+        wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: separator not within a toolbar!"));
         m_toolbar->AddSeparator();
-        return m_toolbar; // must return non-NULL
+        return m_toolbar; // must return non-nullptr
     }
     else /*<object class="wxToolBar">*/
     {
@@ -263,7 +263,7 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         if (!children_node)
            children_node = GetParamNode(_T("object_ref"));
 
-        if (children_node == NULL) return toolbar;
+        if (children_node == nullptr) return toolbar;
 
         m_isInside = TRUE;
         m_toolbar = toolbar;
@@ -275,11 +275,11 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
             if ((n->GetType() == wxXML_ELEMENT_NODE) &&
                 (n->GetName() == _T("object") || n->GetName() == _T("object_ref")))
             {
-                wxObject *created = CreateResFromNode(n, toolbar, NULL);
+                wxObject *created = CreateResFromNode(n, toolbar, nullptr);
                 wxControl *control = wxDynamicCast(created, wxControl);
                 if (!IsOfClass(n, _T("tool")) &&
                     !IsOfClass(n, _T("separator")) &&
-                    control != NULL &&
+                    control != nullptr &&
                     control != toolbar)
                 {
                     //Manager::Get()->GetLogManager()->DebugLog(F(_T("control=%p, parent=%p, toolbar=%p"), control, control->GetParent(), toolbar));
@@ -292,7 +292,7 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         toolbar->Realize();
 
         m_isInside = FALSE;
-        m_toolbar = NULL;
+        m_toolbar = nullptr;
 
         if(!m_isAddon)
         {
