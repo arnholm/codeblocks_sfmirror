@@ -588,10 +588,10 @@ void AutoVersioning::UpdateVersionHeader()
     wxFileName filename(cbC2U(GetConfig().Settings.HeaderPath.c_str()));
     wxString headerGuard;
 
-    if(cbC2U(GetConfig().Code.HeaderGuard.c_str()) == _T(""))
+    if (cbC2U(GetConfig().Code.HeaderGuard.c_str()).empty())
     {
-        headerGuard = filename.GetName() + _T("_") + filename.GetExt();
-        headerGuard.Replace(_T(" "), _T("_"), true);
+        headerGuard = filename.GetName() + "_" + filename.GetExt();
+        headerGuard.Replace(" ", "_", true);
         headerGuard.UpperCase();
     }
     else
@@ -600,118 +600,120 @@ void AutoVersioning::UpdateVersionHeader()
     }
 
     wxString prefix = cbC2U(GetConfig().Code.Prefix.c_str());
-    wxString def_define_char = _T("");
-    wxString def_define_long = _T("");
-    wxString def_equal = _T("");
-    wxString def_array = _T("");
-    wxString def_end = _T("");
+    wxString def_define_char;
+    wxString def_define_long;
+    wxString def_equal;
+    wxString def_array;
+    wxString def_end;
 
-    if(prefix != _T(""))
+    if (!prefix.empty())
     {
-        prefix = prefix + _T("_");
+        prefix = prefix + "_";
     }
 
-    wxString headerOutput = _T("");
-    headerOutput << _T("#ifndef ") << headerGuard << _T("\n");
-    headerOutput << _T("#define ") << headerGuard  << _T("\n");
-    headerOutput << _T("\n");
+    wxString headerOutput;
+    headerOutput << "#ifndef " << headerGuard << '\n';
+    headerOutput << "#define " << headerGuard << '\n';
+    headerOutput << '\n';
 
-    if(cbC2U(GetConfig().Settings.Language.c_str()) == _T("C++"))
+    if (cbC2U(GetConfig().Settings.Language.c_str()) == "C++")
     {
-        headerOutput << _T("namespace ") << cbC2U(GetConfig().Code.NameSpace.c_str()) << _T("{") << _T("\n");
-        headerOutput << _T("\t") << _T("\n");
+        headerOutput << "namespace " << cbC2U(GetConfig().Code.NameSpace.c_str()) << '{' << '\n';
+        headerOutput << '\n';
     }
-    if(GetConfig().Settings.UseDefine)
+
+    if (GetConfig().Settings.UseDefine)
     {
-        def_define_char << _T("#define ");
+        def_define_char << "#define ";
         def_define_long << def_define_char;
-        def_equal << _T(" ");
-        def_array << _T("");
-        def_end << _T("");
+        def_equal << ' ';
+        //def_array << "";
+        //def_end << "";
     }
     else
     {
-        def_define_char << _T("static const char ");
-        def_define_long << _T("static const long ");
-        def_equal << _T(" = ");
-        def_array << _T("[]");
-        def_end << _T(";");
+        def_define_char << "static const char ";
+        def_define_long << "static const long ";
+        def_equal << " = ";
+        def_array << "[]";
+        def_end << ';';
     }
 
-    if(GetConfig().Settings.DateDeclarations)
+    if (GetConfig().Settings.DateDeclarations)
     {
         wxDateTime actualDate = wxDateTime::Now();
-        headerOutput << _T("\t") << _T("//Date Version Types") << _T("\n");
-        headerOutput << _T("\t") << def_define_char << prefix << _T("DATE") << def_array << def_equal << actualDate.Format(_T("\"%d\"")) << def_end << _T("\n");
-        headerOutput << _T("\t") << def_define_char << prefix << _T("MONTH") << def_array << def_equal << actualDate.Format(_T("\"%m\"")) << def_end << _T("\n");
-        headerOutput << _T("\t") << def_define_char << prefix << _T("YEAR") << def_array << def_equal << actualDate.Format(_T("\"%Y\"")) << def_end << _T("\n");
+        headerOutput << '\t' << "//Date Version Types" << '\n';
+        headerOutput << '\t' << def_define_char << prefix << "DATE"  << def_array << def_equal << actualDate.Format("\"%d\"") << def_end << '\n';
+        headerOutput << '\t' << def_define_char << prefix << "MONTH" << def_array << def_equal << actualDate.Format("\"%m\"") << def_end << '\n';
+        headerOutput << '\t' << def_define_char << prefix << "YEAR"  << def_array << def_equal << actualDate.Format("\"%Y\"") << def_end << '\n';
         long ubuntuYearNumber = 0;
-        actualDate.Format(_T("%y")).ToLong(&ubuntuYearNumber);
+        actualDate.Format("%y").ToLong(&ubuntuYearNumber);
         wxString ubuntuYear;
-        ubuntuYear.Printf(_T("%ld"),ubuntuYearNumber);
-        headerOutput << _T("\t") << def_define_char << prefix << _T("UBUNTU_VERSION_STYLE") << def_array << def_equal << _T(" \"") << ubuntuYear << actualDate.Format(_T(".%m")) << _T("\"") << def_end << _T("\n");
-        headerOutput << _T("\t") << _T("\n");
+        ubuntuYear.Printf("%ld", ubuntuYearNumber);
+        headerOutput << '\t' << def_define_char << prefix << "UBUNTU_VERSION_STYLE" << def_array << def_equal << " \"" << ubuntuYear << actualDate.Format(".%m") << '"' << def_end << '\n';
+        headerOutput << '\n';
     }
 
-    headerOutput << _T("\t") << _T("//Software Status") << _T("\n");
-    headerOutput << _T("\t") << def_define_char << prefix << _T("STATUS") << def_array << def_equal << _T(" \"") << cbC2U(GetVersionState().Status.SoftwareStatus.c_str()) << _T("\"") << def_end << _T("\n");
-    headerOutput << _T("\t") << def_define_char << prefix << _T("STATUS_SHORT") << def_array << def_equal << _T(" \"") << cbC2U(GetVersionState().Status.Abbreviation.c_str()) << _T("\"") << def_end << _T("\n");
-    headerOutput << _T("\t") << _T("\n");
+    headerOutput << '\t' << "//Software Status" << '\n';
+    headerOutput << '\t' << def_define_char << prefix << "STATUS"       << def_array << def_equal << " \"" << cbC2U(GetVersionState().Status.SoftwareStatus.c_str()) << '"' << def_end << '\n';
+    headerOutput << '\t' << def_define_char << prefix << "STATUS_SHORT" << def_array << def_equal << " \"" << cbC2U(GetVersionState().Status.Abbreviation.c_str())   << '"' << def_end << '\n';
+    headerOutput << '\n';
 
     wxString myPrintf;
-    headerOutput << _T("\t") << _T("//Standard Version Type") << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().Values.Major);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("MAJOR ") << def_equal << myPrintf << def_end << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().Values.Minor);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("MINOR ") << def_equal << myPrintf << def_end << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().Values.Build);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("BUILD ") << def_equal << myPrintf << def_end << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().Values.Revision);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("REVISION ") << def_equal << myPrintf << def_end << _T("\n");
-    headerOutput << _T("\t") << _T("\n");
+    headerOutput << '\t' << "//Standard Version Type" << '\n';
+    myPrintf.Printf("%ld", GetVersionState().Values.Major);
+    headerOutput << '\t' << def_define_long << prefix << "MAJOR " << def_equal << myPrintf << def_end << '\n';
+    myPrintf.Printf("%ld", GetVersionState().Values.Minor);
+    headerOutput << '\t' << def_define_long << prefix << "MINOR " << def_equal << myPrintf << def_end << '\n';
+    myPrintf.Printf("%ld", GetVersionState().Values.Build);
+    headerOutput << '\t' << def_define_long << prefix << "BUILD " << def_equal << myPrintf << def_end << '\n';
+    myPrintf.Printf("%ld", GetVersionState().Values.Revision);
+    headerOutput << '\t' << def_define_long << prefix << "REVISION " << def_equal << myPrintf << def_end << '\n';
+    headerOutput << '\n';
 
-    headerOutput << _T("\t") << _T("//Miscellaneous Version Types") << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().Values.BuildCount);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("BUILDS_COUNT ") << def_equal << myPrintf << def_end <<_T("\n");
+    headerOutput << '\t' << "//Miscellaneous Version Types" << '\n';
+    myPrintf.Printf("%ld", GetVersionState().Values.BuildCount);
+    headerOutput << '\t' << def_define_long << prefix << "BUILDS_COUNT " << def_equal << myPrintf << def_end <<'\n';
 
-    myPrintf.Printf(_T("%ld,%ld,%ld,%ld"), GetVersionState().Values.Major, GetVersionState().Values.Minor,
+    myPrintf.Printf("%ld,%ld,%ld,%ld", GetVersionState().Values.Major, GetVersionState().Values.Minor,
             GetVersionState().Values.Build, GetVersionState().Values.Revision);
-    headerOutput << _T("\t") << _T("#define ") << prefix << _T("RC_FILEVERSION ") << myPrintf << _T("\n");
+    headerOutput << '\t' << "#define " << prefix << "RC_FILEVERSION " << myPrintf << '\n';
 
-    myPrintf.Printf(_T("\"%ld, %ld, %ld, %ld\\0\""), GetVersionState().Values.Major, GetVersionState().Values.Minor,
+    myPrintf.Printf("\"%ld, %ld, %ld, %ld\\0\"", GetVersionState().Values.Major, GetVersionState().Values.Minor,
             GetVersionState().Values.Build, GetVersionState().Values.Revision);
-    headerOutput << _T("\t") << _T("#define ") << prefix << _T("RC_FILEVERSION_STRING ") << myPrintf << _T("\n");
+    headerOutput << '\t' << "#define " << prefix << "RC_FILEVERSION_STRING " << myPrintf << '\n';
 
-    myPrintf.Printf(_T("\"%ld.%ld.%ld.%ld\""), GetVersionState().Values.Major, GetVersionState().Values.Minor,
+    myPrintf.Printf("\"%ld.%ld.%ld.%ld\"", GetVersionState().Values.Major, GetVersionState().Values.Minor,
             GetVersionState().Values.Build, GetVersionState().Values.Revision);
-    headerOutput << _T("\t") << def_define_char << prefix << _T("FULLVERSION_STRING ") << def_array << def_equal << myPrintf << def_end << _T("\n");
+    headerOutput << '\t' << def_define_char << prefix << "FULLVERSION_STRING " << def_array << def_equal << myPrintf << def_end << '\n';
 
-    if(GetConfig().Settings.Svn)
+    if (GetConfig().Settings.Svn)
     {
         wxString revision,date;
         if (!QuerySvn(cbC2U(GetConfig().Settings.SvnDirectory.c_str()), revision, date))
             wxMessageBox(_("Possible Causes:\n-You don't have SVN installed.\n-Incompatible version of SVN.\n-SVN configuration files not found.\n\nVerify the Autoversioning SVN directory."),_("SVN Error"),wxICON_ERROR);
-        headerOutput << _T("\t") << _T("\n");
-        headerOutput << _T("\t") << _T("//SVN Version") << _T("\n");
-        headerOutput << _T("\t") << def_define_char << prefix << _T("SVN_REVISION") << def_array << def_equal << _T("\"") + revision + _T("\"")<< def_end << _T("\n");
-        headerOutput << _T("\t") << def_define_char << prefix << _T("SVN_DATE") << def_array << def_equal << _T("\"") + date + _T("\"")<< def_end << _T("\n");
+
+        headerOutput << '\n';
+        headerOutput << '\t' << "//SVN Version" << '\n';
+        headerOutput << '\t' << def_define_char << prefix << "SVN_REVISION" << def_array << def_equal << '"' + revision + '"' << def_end << '\n';
+        headerOutput << '\t' << def_define_char << prefix << "SVN_DATE"     << def_array << def_equal << '"' + date +     '"' << def_end << '\n';
     }
 
-    headerOutput << _T("\t") << _T("\n");
-    headerOutput << _T("\t") << _T("//These values are to keep track of your versioning state, don't modify them.") << _T("\n");
-    myPrintf.Printf(_T("%ld"), GetVersionState().BuildHistory);
-    headerOutput << _T("\t") << def_define_long << prefix << _T("BUILD_HISTORY ") << def_equal << myPrintf << def_end << _T("\n");
+    headerOutput << '\n';
+    headerOutput << '\t' << "//These values are to keep track of your versioning state, don't modify them." << '\n';
+    myPrintf.Printf("%ld", GetVersionState().BuildHistory);
+    headerOutput << '\t' << def_define_long << prefix << "BUILD_HISTORY " << def_equal << myPrintf << def_end << '\n';
 
-    headerOutput << _T("\t") << _T("\n\n");
+    headerOutput << '\n';
 
-    if(cbC2U(GetConfig().Settings.Language.c_str()) == _T("C++"))
+    if (cbC2U(GetConfig().Settings.Language.c_str()) == "C++")
     {
-        headerOutput << _T("}") << _T("\n");
+        headerOutput << '}' << '\n';
     }
 
-    headerOutput << _T("#endif //") << headerGuard << _T("\n");
+    headerOutput << "#endif //" << headerGuard << '\n';
 
-    m_versionHeaderPath = FileNormalize(cbC2U(GetConfig().Settings.HeaderPath.c_str()),m_Project->GetBasePath());
+    m_versionHeaderPath = FileNormalize(cbC2U(GetConfig().Settings.HeaderPath.c_str()), m_Project->GetBasePath());
     wxFile versionHeaderFile(m_versionHeaderPath, wxFile::write);
     versionHeaderFile.Write(headerOutput);
     versionHeaderFile.Close();
