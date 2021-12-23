@@ -23,8 +23,8 @@
 #include "cbstyledtextctrl.h"
 #include "fileanalysis.h"
 
-const wxString reInclude = _T("^[ \t]*#[ \t]*include[ \t]+[\"<]([^\">]+)[\">]");
-const wxString reFwdDecl = _T("class[ \\t]*([A-Za-z]+[A-Za-z0-9_]*);");
+const wxString reInclude = _T("^[[:blank:]]*#[[:blank:]]*include[[:blank:]]+[\"<]([^\">]+)[\">]");
+const wxString reFwdDecl = _T("class[[:blank:]]*([A-Za-z]+[A-Za-z0-9_]*);");
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
