@@ -2211,7 +2211,8 @@ void MainFrame::DoAddPlugin(cbPlugin* plugin)
 bool MainFrame::Open(const wxString& filename, bool addToHistory)
 {
     wxFileName fn(filename);
-    fn.Normalize(); // really important so that two same files with different names are not loaded twice
+    // really important so that two same files with different names are not loaded twice
+    fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
     wxString name = fn.GetFullPath();
     LogManager *logger = Manager::Get()->GetLogManager();
     logger->DebugLog(_T("Opening file ") + name);

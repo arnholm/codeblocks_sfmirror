@@ -149,7 +149,7 @@ int CBProfiler::Execute()
         exename = target->GetOutputFilename();
         Manager::Get()->GetMacrosManager()->ReplaceEnvVars(exename);
         wxFileName ename(exename);
-        ename.Normalize(wxPATH_NORM_ALL, project->GetBasePath());
+        ename.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, project->GetBasePath());
         exename = ename.GetFullPath();
 
         wxChar separator = wxFileName::GetPathSeparator();
@@ -179,7 +179,8 @@ int CBProfiler::Execute()
             wxString workname = target->GetWorkingDir();
             Manager::Get()->GetMacrosManager()->ReplaceEnvVars(workname);
             wxFileName wname(workname);
-            wname.Normalize(wxPATH_NORM_ALL, project->GetBasePath());
+            wname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT,
+                            project->GetBasePath());
             workname = wname.GetFullPath();
 
             dataname=workname.BeforeLast(separator);

@@ -46,7 +46,7 @@ EditArrayFileDlg::EditArrayFileDlg(wxWindow* parent, wxArrayString& array, bool 
         wxFileName fname;
         fname.Assign(m_Array[i]);
         if (!m_UseRelativePaths && fname.IsRelative())
-            fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_BasePath);
+            fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_BasePath);
         else if (m_UseRelativePaths && fname.IsAbsolute())
             fname.MakeRelativeTo(m_BasePath);
         m_Array[i] = fname.GetFullPath();

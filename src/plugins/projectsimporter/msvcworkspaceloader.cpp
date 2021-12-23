@@ -119,7 +119,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
     cbProject* project = 0;
     cbProject* firstproject = 0;
     wxFileName wfname = filename;
-    wfname.Normalize();
+    wfname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
     Manager::Get()->GetLogManager()->DebugLog(_T("Workspace dir: ") + wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
 
     while (!file.Eof())
@@ -180,7 +180,8 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
             }
 
             wxFileName fname(UnixFilename(prjFile));
-            fname.Normalize(wxPATH_NORM_ALL, wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), wxPATH_NATIVE);
+            fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT,
+                            wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), wxPATH_NATIVE);
             if (!fname.FileExists())
             {
                 Manager::Get()->GetLogManager()->DebugLog(F(_T("Project '%s' from '%s' not found."), prjTitle.wx_str(), fname.GetFullPath().wx_str()));

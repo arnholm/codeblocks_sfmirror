@@ -805,7 +805,7 @@ void ProjectOptionsDlg::OnBrowseDirClick(wxCommandEvent& event)
         return;
 
     wxFileName fname(targettext->GetValue() + wxFileName::GetPathSeparator());
-    fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_Project->GetBasePath());
+    fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_Project->GetBasePath());
 
     wxString path = ChooseDirectory(this,
                                     _("Select directory"),
@@ -824,7 +824,7 @@ void ProjectOptionsDlg::OnBrowseOutputFilenameClick(cb_unused wxCommandEvent& ev
 {
     wxFileName fname;
     fname.Assign(XRCCTRL(*this, "txtOutputFilename", wxTextCtrl)->GetValue());
-    fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_Project->GetBasePath());
+    fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_Project->GetBasePath());
     wxFileDialog dlg(this,
                      _("Select output filename"),
                      fname.GetPath(),
@@ -844,7 +844,7 @@ void ProjectOptionsDlg::OnBrowseImportLibraryFilenameClick(cb_unused wxCommandEv
 {
     wxFileName fname;
     fname.Assign(XRCCTRL(*this, "txtImportLibraryFilename", wxTextCtrl)->GetValue());
-    fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_Project->GetBasePath());
+    fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_Project->GetBasePath());
     wxFileDialog dlg(this,
                      _("Select import library filename"),
                      fname.GetPath(),
@@ -864,7 +864,7 @@ void ProjectOptionsDlg::OnBrowseDefinitionFileFilenameClick(cb_unused wxCommandE
 {
     wxFileName fname;
     fname.Assign(XRCCTRL(*this, "txtDefinitionFileFilename", wxTextCtrl)->GetValue());
-    fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_Project->GetBasePath());
+    fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_Project->GetBasePath());
     wxFileDialog dlg(this,
                      _("Select definition file filename"),
                      fname.GetPath(),
@@ -1088,7 +1088,7 @@ void ProjectOptionsDlg::OnAddScript(cb_unused wxCommandEvent& event)
         fname.Assign(ctrl->GetStringSelection());
     else if (ctrl->GetCount())
         fname.Assign(ctrl->GetString(ctrl->GetCount() - 1));
-    fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, m_Project->GetBasePath());
+    fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, m_Project->GetBasePath());
 
     EditPathDlg dlg(this,
                     fname.GetFullName(),

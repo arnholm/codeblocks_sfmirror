@@ -95,7 +95,7 @@ int WindowsXPLookNFeel::Execute()
 		wxString filename = target->GetOutputFilename();
 		filename << _T(".Manifest");
 		wxFileName fname(filename);
-		fname.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, project->GetBasePath());
+		fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, project->GetBasePath());
 		filename = fname.GetFullPath();
 		Manager::Get()->GetLogManager()->DebugLog(F(_T("WindowsXPLookNFeel: Creating Manifest '%s'"), filename.wx_str()));
 

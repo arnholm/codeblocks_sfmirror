@@ -293,7 +293,7 @@ void CCTestFrame::Start()
     if (!m_MainFile.IsEmpty())
     {
         wxFileName fn(m_MainFile);
-        fn.Normalize(); // cwd is used
+        fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT); // cwd is used
         wxString absFilePath = fn.GetFullPath();
         CCTestAppGlobal::s_fileQueue.Add(absFilePath);
     }

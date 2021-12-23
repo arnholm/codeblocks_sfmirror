@@ -971,7 +971,7 @@ bool NormalizePath(wxFileName& f,const wxString& base)
     bool result = true;
 //    if (!f.IsAbsolute())
     {
-        f.Normalize(wxPATH_NORM_ALL & ~wxPATH_NORM_CASE, base);
+        f.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, base);
         result = f.IsOk();
     }
     return result;

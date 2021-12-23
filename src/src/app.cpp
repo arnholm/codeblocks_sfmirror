@@ -1137,7 +1137,7 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
                 // Really important so that two same files with different names are not loaded
                 // twice. Use the CurrentWorkingDirectory of the client instance to restore the
                 // absolute path to the file.
-                fn.Normalize(wxPATH_NORM_ALL, CWD);
+                fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, CWD);
                 const wxString &paramFullPath = fn.GetFullPath();
 
                 // Is it a project/workspace?
@@ -1275,7 +1275,8 @@ void CodeBlocksApp::LoadDelayedFiles(MainFrame *const frame)
         if (!filePart.empty())
         {
             wxFileName fn(filePart);
-            fn.Normalize(); // really important so that two same files with different names are not loaded twice
+            // really important so that two same files with different names are not loaded twice
+            fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
             if (frame->Open(fn.GetFullPath(), false))
             {
                 EditorBase* eb = Manager::Get()->GetEditorManager()->GetEditor(fn.GetFullPath());

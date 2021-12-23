@@ -738,7 +738,7 @@ bool DoxyBlocks::DoRunDoxywizard()
     }
     wxString sCfgBaseFile = wxT("doxyfile");
     wxFileName fnDoxyfile(sPathDoxyfile + wxFileName::GetPathSeparator() + sCfgBaseFile);
-    fnDoxyfile.Normalize();
+    fnDoxyfile.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
     if(!sPathDoxyfile.IsEmpty()){
         wxString fullpath = fnDoxyfile.GetFullPath();
         QuoteStringIfNeeded(fullpath);
@@ -978,7 +978,7 @@ wxString DoxyBlocks::GetDocPath() const
     }
     sDoxygenDir = sDoxygenDir + wxFileName::GetPathSeparator();
     wxFileName fnDoxygenDir(sDoxygenDir);
-    fnDoxygenDir.Normalize();
+    fnDoxygenDir.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
     return fnDoxygenDir.GetPathWithSep();
 }
 

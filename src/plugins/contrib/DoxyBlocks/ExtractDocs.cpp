@@ -539,9 +539,9 @@ int DoxyBlocks::GenerateDocuments(cbProject *prj)
     wxFileName fnOutput(sDoxygenDir, wxT(""));
     wxFileName fnDoxyfile(sDoxygenDir + wxFileName::GetPathSeparator() + sCfgBaseFile);
     wxFileName fnDoxygenLog(sDoxygenDir + wxFileName::GetPathSeparator() + sLogFile);
-    fnOutput.Normalize();
-    fnDoxyfile.Normalize();
-    fnDoxygenLog.Normalize();
+    fnOutput.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
+    fnDoxyfile.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
+    fnDoxygenLog.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
 
     if (!fnOutput.Mkdir(0777, wxPATH_MKDIR_FULL)){
         const wxString sMsg = _("Failed. ") + fnOutput.GetFullPath() + _(" was not created.");

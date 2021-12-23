@@ -2285,7 +2285,7 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
         }
 
         wxFileName fname(path, wxEmptyString);
-        fname.Normalize();
+        fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
         fname.SetVolume(fname.GetVolume().MakeUpper());
         if (!fname.DirExists())
             break;

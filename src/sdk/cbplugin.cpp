@@ -440,10 +440,10 @@ void cbDebuggerPlugin::OnEditorOpened(CodeBlocksEvent& event)
             GetCurrentPosition(filename, line);
 
             wxFileName edFileName(ed->GetFilename());
-            edFileName.Normalize();
+            edFileName.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
 
             wxFileName dbgFileName(filename);
-            dbgFileName.Normalize();
+            dbgFileName.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
             if (dbgFileName.GetFullPath().IsSameAs(edFileName.GetFullPath()) && line != -1)
             {
                 editor->SetDebugLine(line - 1);
