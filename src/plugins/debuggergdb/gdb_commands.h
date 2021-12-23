@@ -120,36 +120,36 @@ namespace
 //#31 0x004076ca in main () at C:/Devel/wxWidgets-2.6.1/include/wx/intl.h:555
 //#50  0x00410c8c in one::~one() (this=0x3d24c8) at main.cpp:14
 //#11  0x00406810 in main ()
-static wxRegEx reBT0(_T("#([0-9]+)[ \t]+(.+)[ \t]at[ \t](.+):([0-9]+)")); // case #0
-static wxRegEx reBT1(_T("#([0-9]+)[ \t]+0x([A-Fa-f0-9]+)[ \t]+in[ \t]+(.+)[ \t]+(\\([^)]*\\))[ \t]")); // all other cases (gdb 6.3)
-static wxRegEx reBTX(_T("#([0-9]+)[ \t]+0x([A-Fa-f0-9]+)[ \t]+in[ \t]+([^(]+)[ \t]*(\\([^)]*\\)[ \t]*\\([^)]*\\))")); // all other cases (gdb 5.2)
-static wxRegEx reBT2(_T("\\)[ \t]+[atfrom]+[ \t]+(.*):([0-9]+)"));
-static wxRegEx reBT3(_T("\\)[ \t]+[atfrom]+[ \t]+(.*)"));
-static wxRegEx reBT4(_T("#([0-9]+)[ \\t]+(.+)[ \\t]in[ \\t](.+)")); // case #11
+static wxRegEx reBT0(_T("#([0-9]+)[[:blank:]]+(.+)[[:blank:]]at[[:blank:]](.+):([0-9]+)")); // case #0
+static wxRegEx reBT1(_T("#([0-9]+)[[:blank:]]+0x([A-Fa-f0-9]+)[[:blank:]]+in[[:blank:]]+(.+)[[:blank:]]+(\\([^)]*\\))[[:blank:]]")); // all other cases (gdb 6.3)
+static wxRegEx reBTX(_T("#([0-9]+)[[:blank:]]+0x([A-Fa-f0-9]+)[[:blank:]]+in[[:blank:]]+([^(]+)[[:blank:]]*(\\([^)]*\\)[[:blank:]]*\\([^)]*\\))")); // all other cases (gdb 5.2)
+static wxRegEx reBT2(_T("\\)[[:blank:]]+[atfrom]+[[:blank:]]+(.*):([0-9]+)"));
+static wxRegEx reBT3(_T("\\)[[:blank:]]+[atfrom]+[[:blank:]]+(.*)"));
+static wxRegEx reBT4(_T("#([0-9]+)[[:blank:]]+(.+)[[:blank:]]in[[:blank:]](.+)")); // case #11
 // Breakpoint 1 at 0x4013d6: file main.cpp, line 8.
 static wxRegEx reBreakpoint(_T("Breakpoint ([0-9]+) at (0x[0-9A-Fa-f]+)"));
 // GDB7.4 and before will return:
 // Breakpoint 1 ("/home/jens/codeblocks-build/codeblocks-1.0svn/src/plugins/debuggergdb/gdb_commands.h:125) pending.
 // GDB7.5 and later will return:
 // Breakpoint 4 ("E:/code/cb/test_code/DebugDLLTest/TestDLL/dllmain.cpp:29") pending.
-static wxRegEx rePendingBreakpoint(_T("Breakpoint ([0-9]+)[ \t]\\(\"(.+):([0-9]+)(\"?)\\)[ \t]pending\\."));
+static wxRegEx rePendingBreakpoint(_T("Breakpoint ([0-9]+)[[:blank:]]\\(\"(.+):([0-9]+)(\"?)\\)[[:blank:]]pending\\."));
 // Hardware assisted breakpoint 1 at 0x4013d6: file main.cpp, line 8.
 static wxRegEx reHWBreakpoint(_T("Hardware assisted breakpoint ([0-9]+) at (0x[0-9A-Fa-f]+)"));
 // Hardware watchpoint 1: expr
 static wxRegEx reDataBreakpoint(_T("Hardware watchpoint ([0-9]+):.*"));
 // Temporary breakpoint 2 at 0x401203: file /home/obfuscated/projects/tests/_cb_dbg/watches/main.cpp, line 115.
-static wxRegEx reTemporaryBreakpoint(wxT("^[Tt]emporary[ \t]breakpoint[ \t]([0-9]+)[ \t]at.*"));
+static wxRegEx reTemporaryBreakpoint(wxT("^[Tt]emporary[[:blank:]]breakpoint[[:blank:]]([0-9]+)[[:blank:]]at.*"));
 // eax            0x40e66666       1088841318
-static wxRegEx reRegisters(_T("([A-z0-9]+)[ \t]+(0x[0-9A-Fa-f]+)[ \t]+(.*)"));
+static wxRegEx reRegisters(_T("([A-z0-9]+)[[:blank:]]+(0x[0-9A-Fa-f]+)[[:blank:]]+(.*)"));
 // wayne registers
-//static wxRegEx reRegisters(_T("(R[0-9]+)[ \t]+(0x[0-9A-Fa-f]+)"));
+//static wxRegEx reRegisters(_T("(R[0-9]+)[[:blank:]]+(0x[0-9A-Fa-f]+)"));
 // 0x00401390 <main+0>:    push   ebp
-static wxRegEx reDisassembly(_T("(0x[0-9A-Za-z]+)[ \t]+<.*>:[ \t]+(.*)"));
+static wxRegEx reDisassembly(_T("(0x[0-9A-Za-z]+)[[:blank:]]+<.*>:[[:blank:]]+(.*)"));
 // 9           if(argc > 1)
 // 10              strcpy(filename, argv[1]) ;
 // 11          else
 // 12          strcpy(filename, "c:\\dev\\wxwidgets\\wxWidgets-2.8.10\\build\\msw\\../../src/something.c") ;
-static wxRegEx reDisassemblySource(_T("([0-9]+)[ \t](.*)"));
+static wxRegEx reDisassemblySource(_T("([0-9]+)[[:blank:]](.*)"));
 //Stack level 0, frame at 0x22ff80:
 // eip = 0x401497 in main (main.cpp:16); saved eip 0x4011e7
 // source language c++.
@@ -157,9 +157,9 @@ static wxRegEx reDisassemblySource(_T("([0-9]+)[ \t](.*)"));
 // Locals at 0x22ff78, Previous frame's sp is 0x22ff80
 // Saved registers:
 //  ebx at 0x22ff6c, ebp at 0x22ff78, esi at 0x22ff70, edi at 0x22ff74, eip at 0x22ff7c
-static wxRegEx reDisassemblyInit(_T("^[ \t]*Stack level [0-9]+, frame at (0x[A-Fa-f0-9]+):"));
+static wxRegEx reDisassemblyInit(_T("^[[:blank:]]*Stack level [0-9]+, frame at (0x[A-Fa-f0-9]+):"));
 //  rip = 0x400931 in Bugtest<int> (/src/_cb_dbg/disassembly/main.cpp:6);
-static wxRegEx reDisassemblyInitSymbol(_T("[ \t]*[er]ip[ \t]+=[ \t]+0x[0-9a-f]+[ \t]+in[ \t]+(.+)\\((.+):([0-9]+)\\);"));
+static wxRegEx reDisassemblyInitSymbol(_T("[[:blank:]]*[er]ip[[:blank:]]+=[[:blank:]]+0x[0-9a-f]+[[:blank:]]+in[[:blank:]]+(.+)\\((.+):([0-9]+)\\);"));
 static wxRegEx reDisassemblyInitFunc(_T("eip = (0x[A-Fa-f0-9]+) in ([^;]*)"));
 // or32 variant
 #ifdef __WXMSW__
@@ -169,14 +169,14 @@ static wxRegEx reDisassemblyInitFuncOR32(_T("PC = (0x[A-Fa-f0-9]+) in ([^;]*)"))
 // if(platform::windows && m_disassemblyFlavor == _T("set disassembly-flavor or32")) blabla
 static wxRegEx reDisassemblyInitFuncOR32(_T("PC = (0x[A-Fa-f0-9]+) in ([^;]*)"));
 #endif
-static wxRegEx reDisassemblyCurPC(_T("=>[ \t]+(0x[A-Fa-f0-9]+)"));
+static wxRegEx reDisassemblyCurPC(_T("=>[[:blank:]]+(0x[A-Fa-f0-9]+)"));
 //    Using the running image of child Thread 46912568064384 (LWP 7051).
-static wxRegEx reInfoProgramThread(_T("\\(LWP[ \t]([0-9]+)\\)"));
+static wxRegEx reInfoProgramThread(_T("\\(LWP[[:blank:]]([0-9]+)\\)"));
 //    Using the running image of child process 10011.
 static wxRegEx reInfoProgramProcess(_T("child process ([0-9]+)"));
 //  2 Thread 1082132832 (LWP 8017)  0x00002aaaac5a2aca in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
 //* 1 Thread 46912568064384 (LWP 7926)  0x00002aaaac76e612 in poll () from /lib/libc.so.6
-static wxRegEx reInfoThreads(_T("(\\**)[ \t]*([0-9]+)[ \t](.*)"));
+static wxRegEx reInfoThreads(_T("(\\**)[[:blank:]]*([0-9]+)[[:blank:]](.*)"));
 static wxRegEx reGenericHexAddress(_T("(0x[A-Fa-f0-9]+)"));
 
 //mi output from 'nexti' is:
@@ -634,7 +634,7 @@ class GdbCmd_SetCatch : public DebuggerCmd
             DebuggerCmd(driver),
             m_type(type),
             m_resultIndex(resultIndex),
-            m_regExp(wxT("^Catchpoint[ \\t]([0-9]+)[ \\t]\\(") + type + wxT("\\)$"), wxRE_ADVANCED)
+            m_regExp(wxT("^Catchpoint[[:blank:]]([0-9]+)[[:blank:]]\\(") + type + wxT("\\)$"), wxRE_ADVANCED)
         {
             m_Cmd = wxT("catch ") + type;
         }

@@ -67,7 +67,7 @@ struct Token
     bool hasRepeatedChar;
 };
 
-wxRegEx regexRepeatedChars(wxT("^((\\\\'.{1,6}\\\\')|('.{1,6}'))[ \\t](<repeats[ \\t][0-9]+[ \\t]times>)"),
+wxRegEx regexRepeatedChars(wxT("^((\\\\'.{1,6}\\\\')|('.{1,6}'))[[:blank:]](<repeats[[:blank:]][0-9]+[[:blank:]]times>)"),
 #ifndef __WXMAC__
                            wxRE_ADVANCED);
 #else
@@ -332,7 +332,7 @@ inline cb::shared_ptr<GDBWatch> AddChild(cb::shared_ptr<GDBWatch> parent, wxStri
     return child;
 }
 
-wxRegEx regexRepeatedChar(wxT(".+[ \\t](<repeats[ \\t][0-9]+[ \\t]times>)$"));
+wxRegEx regexRepeatedChar(wxT(".+[[:blank:]](<repeats[[:blank:]][0-9]+[[:blank:]]times>)$"));
 wxRegEx regexFortranArray(wxT("^\\([0-9,]+\\)$"));
 
 inline bool ParseGDBWatchValue(cb::shared_ptr<GDBWatch> watch, wxString const &value, int &start, int length)
@@ -930,7 +930,7 @@ bool ParseCDBWatchValue(cb::shared_ptr<GDBWatch> watch, wxString const &value)
         if (set_type)
             watch->SetType(tokens[1]);
 
-        static wxRegEx class_line(wxT("[ \\t]*\\+(0x[0-9a-f]+)[ \\t]([a-zA-Z0-9_]+)[ \\t]+:[ \\t]+(.+)"));
+        static wxRegEx class_line(wxT("[[:blank:]]*\\+(0x[0-9a-f]+)[[:blank:]]([a-zA-Z0-9_]+)[[:blank:]]+:[[:blank:]]+(.+)"));
         if (!class_line.IsValid())
         {
             int *p = NULL;
@@ -1023,7 +1023,7 @@ void TokenizeGDBLocals(std::vector<GDBLocalVariable> &results, wxString const &v
     results.push_back(GDBLocalVariable(value, start, value.length() - start));
 }
 
-const wxRegEx reExamineMemoryLine(wxT("[ \t]*(0x[0-9a-f]+)[ \t]<.+>:[ \t]+(.+)"));
+const wxRegEx reExamineMemoryLine(wxT("[[:blank:]]*(0x[0-9a-f]+)[[:blank:]]<.+>:[[:blank:]]+(.+)"));
 
 bool ParseGDBExamineMemoryLine(wxString &resultAddr, std::vector<uint8_t> &resultValues,
                                const wxString &outputLine)

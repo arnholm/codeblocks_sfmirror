@@ -30,8 +30,8 @@
 #define FULL_GDB_PROMPT _T(">>>>>>") GDB_PROMPT
 
 //[Switching to thread 2 (Thread 1082132832 (LWP 12298))]#0  0x00002aaaac5a2aca in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
-static wxRegEx reThreadSwitch(_T("^\\[Switching to thread .*\\]#0[ \t]+(0x[A-Fa-f0-9]+) in (.*) from (.*)"));
-static wxRegEx reThreadSwitch2(_T("^\\[Switching to thread .*\\]#0[ \t]+(0x[A-Fa-f0-9]+) in (.*) from (.*):([0-9]+)"));
+static wxRegEx reThreadSwitch(_T("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*)"));
+static wxRegEx reThreadSwitch2(_T("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*):([0-9]+)"));
 
 // Regular expresion for breakpoint. wxRegEx don't want to recognize '?' command, so a bit more general rule is used
 // here.
@@ -53,26 +53,26 @@ static wxRegEx reCatchThrowNoFile(_T("^Catchpoint ([0-9]+) \\(exception thrown\\
 
 // Pending breakpoint "C:/Devel/libs/irr_svn/source/Irrlicht/CSceneManager.cpp:1077" resolved
 #ifdef __WXMSW__
-static wxRegEx rePendingFound(_T("^Pending[ \t]+breakpoint[ \t]+[\"]+([A-Za-z]:)([^:]+):([0-9]+)\".*"));
+static wxRegEx rePendingFound(_T("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([A-Za-z]:)([^:]+):([0-9]+)\".*"));
 #else
-static wxRegEx rePendingFound(_T("^Pending[ \t]+breakpoint[ \t]+[\"]+([^:]+):([0-9]+)\".*"));
+static wxRegEx rePendingFound(_T("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([^:]+):([0-9]+)\".*"));
 #endif
 // Breakpoint 2, irr::scene::CSceneManager::getSceneNodeFromName (this=0x3fa878, name=0x3fbed8 "MainLevel", start=0x3fa87c) at CSceneManager.cpp:1077
-static wxRegEx rePendingFound1(_T("^Breakpoint[ \t]+([0-9]+),.*"));
+static wxRegEx rePendingFound1(_T("^Breakpoint[[:blank:]]+([0-9]+),.*"));
 
 // Temporary breakpoint 2, main () at /path/projects/tests/main.cpp:136
-static wxRegEx reTempBreakFound(wxT("^[Tt]emporary[ \t]breakpoint[ \t]([0-9]+),.*"));
+static wxRegEx reTempBreakFound(wxT("^[Tt]emporary[[:blank:]]breakpoint[[:blank:]]([0-9]+),.*"));
 
 
 // [Switching to Thread -1234655568 (LWP 18590)]
 // [New Thread -1234655568 (LWP 18590)]
-static wxRegEx reChildPid1(_T("Thread[ \t]+[xA-Fa-f0-9-]+[ \t]+\\(LWP ([0-9]+)\\)]"));
+static wxRegEx reChildPid1(_T("Thread[[:blank:]]+[xA-Fa-f0-9-]+[[:blank:]]+\\(LWP ([0-9]+)\\)]"));
 // MinGW GDB 6.8 and later
 // [New Thread 2684.0xf40] or [New thread 2684.0xf40]
-static wxRegEx reChildPid2(_T("\\[New [tT]hread[ \t]+[0-9]+\\.[xA-Fa-f0-9-]+\\]"));
+static wxRegEx reChildPid2(_T("\\[New [tT]hread[[:blank:]]+[0-9]+\\.[xA-Fa-f0-9-]+\\]"));
 
-static wxRegEx reInferiorExited(wxT("^\\[Inferior[ \\t].+[ \\t]exited normally\\]$"), wxRE_EXTENDED);
-static wxRegEx reInferiorExitedWithCode(wxT("^\\[[Ii]nferior[ \\t].+[ \\t]exited[ \\t]with[ \\t]code[ \\t]([0-9]+)\\]$"), wxRE_EXTENDED);
+static wxRegEx reInferiorExited(wxT("^\\[Inferior[[:blank:]].+[[:blank:]]exited normally\\]$"), wxRE_EXTENDED);
+static wxRegEx reInferiorExitedWithCode(wxT("^\\[[Ii]nferior[[:blank:]].+[[:blank:]]exited[[:blank:]]with[[:blank:]]code[[:blank:]]([0-9]+)\\]$"), wxRE_EXTENDED);
 
 GDB_driver::GDB_driver(DebuggerGDB* plugin) :
     DebuggerDriver(plugin),
@@ -486,7 +486,7 @@ void GDB_driver::AddBreakpoint(cb::shared_ptr<DebuggerBreakpoint> bp)
     {
         if (bp->func.IsEmpty() && !bp->lineText.IsEmpty())
         {
-            wxRegEx reCtorDtor(_T("([0-9A-z_]+)::([~]?)([0-9A-z_]+)[ \t\(]*"));
+            wxRegEx reCtorDtor(_T("([0-9A-z_]+)::([~]?)([0-9A-z_]+)[[:blank:]\(]*"));
             if (reCtorDtor.Matches(bp->lineText))
             {
                 wxString strBase = reCtorDtor.GetMatch(bp->lineText, 1);

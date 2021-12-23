@@ -17,7 +17,7 @@
 #include "debuggermanager.h"
 #include "parsewatchvalue.h"
 
-static wxRegEx reProcessInf(_T("id:[ \t]+([A-Fa-f0-9]+)[ \t]+create"));
+static wxRegEx reProcessInf(_T("id:[[:blank:]]+([A-Fa-f0-9]+)[[:blank:]]+create"));
 // For 64-bit:
 //  # Child-SP          RetAddr           Call Site
 // 00 00000042`85cffde0 00007ff6`4bcbfa3e 111!HELLO+0x24 [C:\tmp\111\main.f90 @ 5]
@@ -25,28 +25,28 @@ static wxRegEx reBT1(_T("([0-9]+) ([A-Fa-f0-9`]+) ([A-Fa-f0-9`]+) ([^[]*)"));
 
 // Match lines like:
 // 0018ff38 004013ef dbgtest!main+0x3 [main.cpp @ 8]
-static wxRegEx reBT2(_T("\\[(.+)[ \\t]@[ \\t]([0-9]+)\\][ \\t]*"));
+static wxRegEx reBT2(_T("\\[(.+)[[:blank:]]@[[:blank:]]([0-9]+)\\][[:blank:]]*"));
 
 //    15 00401020 55               push    ebp
 //    61 004010f9 ff15dcc24000  call dword ptr [Win32GUI!_imp__GetMessageA (0040c2dc)]
 //    71 0040111f c21000           ret     0x10
 // For 64-bit:
 //     2 00007ff6`4bbf921d 4881ec90000000  sub     rsp,90h
-static wxRegEx reDisassembly(_T("^[0-9]+[ \t]+([A-Fa-f0-9`]+)[ \t]+[A-Fa-f0-9]+[ \t]+(.*)$"));
+static wxRegEx reDisassembly(_T("^[0-9]+[[:blank:]]+([A-Fa-f0-9`]+)[[:blank:]]+[A-Fa-f0-9]+[[:blank:]]+(.*)$"));
 //  # ChildEBP RetAddr
 // 00 0012fe98 00401426 Win32GUI!WinMain+0x89 [c:\devel\tmp\win32 test\main.cpp @ 55]
 // For 64-bit:
 //  # Child-SP          RetAddr           Call Site
 // 00 00000042`85cffde0 00007ff6`4bcbfa3e 111!HELLO+0x24 [C:\tmp\111\main.f90 @ 5]
 // (00007ff6`4bbf921c)   111!HELLO+0x24   |  (00007ff6`4bbf92d0)   111!for_set_reentrancy
-static wxRegEx reDisassemblyFile(_T("[0-9]+[ \t]+([A-Fa-f0-9`]+)[ \t]+[A-Fa-f0-9`]+[ \t]+(.*)\\[([A-z]:)(.*) @ ([0-9]+)\\]"));
-static wxRegEx reDisassemblyFunc(_T("^\\(([A-Fa-f0-9`]+)\\)[ \t]+"));
+static wxRegEx reDisassemblyFile(_T("[0-9]+[[:blank:]]+([A-Fa-f0-9`]+)[[:blank:]]+[A-Fa-f0-9`]+[[:blank:]]+(.*)\\[([A-z]:)(.*) @ ([0-9]+)\\]"));
+static wxRegEx reDisassemblyFunc(_T("^\\(([A-Fa-f0-9`]+)\\)[[:blank:]]+"));
 
 // 01 0012ff68 00404168 cdb_test!main+0xae [c:\dev\projects\tests\cdb_test\main.cpp @ 21]
 // For 64-bit:
 //  # Child-SP          RetAddr           Call Site
 // 00 000000ab`710dfac0 00007ff6`4bcbfa3e 111!HELLO+0x24 [C:\tmp\111\main.f90 @ 5]
-static wxRegEx reSwitchFrame(wxT("[ \\t]*([0-9]+)[ \\t]([0-9a-z`]+)[ \\t](.+)[ \\t]\\[(.+)[ \\t]@[ \\t]([0-9]+)\\][ \\t]*"));
+static wxRegEx reSwitchFrame(wxT("[[:blank:]]*([0-9]+)[[:blank:]]([0-9a-z`]+)[[:blank:]](.+)[[:blank:]]\\[(.+)[[:blank:]]@[[:blank:]]([0-9]+)\\][[:blank:]]*"));
 
 // 0012ff74  00 00 00 00 c0 ff 12 00-64 13 40 00 01 00 00 00  ........d.@.....
 static wxRegEx reExamineMemoryLine(wxT("([0-9a-f`]+) ((( |-)[0-9a-f]{2}){1,16})"));

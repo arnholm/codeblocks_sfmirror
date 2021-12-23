@@ -37,7 +37,7 @@ static wxRegEx reBP(_T("Breakpoint ([0-9]+) hit"));
 // one stack frame (to access current file; is there another way???)
 //  # ChildEBP RetAddr
 // 00 0012fe98 00401426 Win32GUI!WinMain+0x89 [c:\devel\tmp\win32 test\main.cpp @ 55]
-static wxRegEx reFile(_T("[ \t]([A-z]+.*)[ \t]+\\[([A-z]:)(.*) @ ([0-9]+)\\]"));
+static wxRegEx reFile(_T("[[:blank:]]([A-z]+.*)[[:blank:]]+\\[([A-z]:)(.*) @ ([0-9]+)\\]"));
 
 CDB_driver::CDB_driver(DebuggerGDB* plugin)
     : DebuggerDriver(plugin),
