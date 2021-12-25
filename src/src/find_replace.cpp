@@ -1524,7 +1524,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
             Manager::Get()->ProcessEvent(evtSwitch);
             Manager::Get()->ProcessEvent(evtShow);
         }
-        if(data->hasToOpenAfterFind)
+        if (data->hasToOpenAfterFind)
             m_pSearchLog->FocusEntry(oldcount);
     }
     else

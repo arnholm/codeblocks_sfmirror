@@ -29,7 +29,7 @@
 				<Option host_application="../../../devel31_64/codeblocks.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<Compiler>
-                    <Add option="-DNOPCH" />
+					<Add option="-DNOPCH" />
 				</Compiler>
 			</Target>
 			<Environment>
