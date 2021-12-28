@@ -397,7 +397,7 @@
 																<selection>0</selection>
 																<help>This option controls which executable would be used for linking. Auto detect means that C++ compiler would be used for C++ projects and C compiler for C projects.</help>
 															</object>
-															<flag>wxALIGN_LEFT</flag>
+															<flag>wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
 															<option>1</option>
 														</object>
