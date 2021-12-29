@@ -3328,7 +3328,7 @@ void CompilerGCC::OnClean(wxCommandEvent& event)
         // let's check the selected project...
         DoSwitchProjectTemporarily();
     }
-    ProjectBuildTarget* target = 0;
+    ProjectBuildTarget* target = nullptr;
     Clean(target);
     m_RealTargetIndex = bak;
 }
@@ -3338,7 +3338,7 @@ void CompilerGCC::OnProjectCompilerOptions(cb_unused wxCommandEvent& event)
     ProjectManager* manager = Manager::Get()->GetProjectManager();
     wxTreeCtrl* tree = manager->GetUI().GetTree();
     wxTreeItemId sel = manager->GetUI().GetTreeSelection();
-    FileTreeData* ftd = sel.IsOk() ? (FileTreeData*)tree->GetItemData(sel) : 0;
+    FileTreeData* ftd = sel.IsOk() ? (FileTreeData*)tree->GetItemData(sel) : nullptr;
     if (ftd)
     {
         // 'configure' selected target, if other than 'All'
@@ -3346,7 +3346,7 @@ void CompilerGCC::OnProjectCompilerOptions(cb_unused wxCommandEvent& event)
         cbProject *currentProject = ftd->GetProject();
         if (m_RealTargetIndex != -1 && !m_Targets.empty())
         {
-            const wxString &targetName = m_Targets[m_RealTargetIndex];
+            const wxString &targetName = m_Targets[m_TargetIndex];
             if (currentProject == m_pProject)
             {
                 target = m_pProject->GetBuildTarget(targetName);
@@ -3382,7 +3382,7 @@ void CompilerGCC::OnTargetCompilerOptions(cb_unused wxCommandEvent& event)
     // let's check the selected project...
     DoSwitchProjectTemporarily();
 
-    ProjectBuildTarget* target = 0;
+    ProjectBuildTarget* target = nullptr;
     m_RealTargetIndex = bak;
     Configure(m_pProject, target, Manager::Get()->GetAppWindow());
 }
