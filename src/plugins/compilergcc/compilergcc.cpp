@@ -101,7 +101,7 @@ class BuildLogger : public TextCtrlLogger
 public:
     wxGauge* progress;
 
-    BuildLogger() : TextCtrlLogger(true), panel(0), sizer(0), progress(0) {}
+    BuildLogger() : TextCtrlLogger(true), panel(nullptr), sizer(nullptr), progress(nullptr) {}
 
     void UpdateSettings() override
     {
@@ -431,7 +431,7 @@ void CompilerGCC::OnAttach()
     {
         // register compiler's script functions
         // make sure the VM is initialized
-        ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
+        ScriptingManager* scriptMgr = Manager::Get()->GetScriptingManager();
         HSQUIRRELVM vm = scriptMgr->GetVM();
         if (vm)
         {
@@ -463,7 +463,7 @@ void CompilerGCC::OnRelease(bool appShutDown)
 
     SaveOptions();
     Manager::Get()->GetConfigManager(_T("compiler"))->Write(_T("/default_compiler"), CompilerFactory::GetDefaultCompilerID());
-    LogManager *logManager = Manager::Get()->GetLogManager();
+    LogManager* logManager = Manager::Get()->GetLogManager();
     if (logManager)
     {
         // for batch builds, the log is deleted by the manager
@@ -506,7 +506,7 @@ void CompilerGCC::OnRelease(bool appShutDown)
     m_pArtProvider = nullptr;
 }
 
-int CompilerGCC::Configure(cbProject* project, ProjectBuildTarget* target, wxWindow *parent)
+int CompilerGCC::Configure(cbProject* project, ProjectBuildTarget* target, wxWindow* parent)
 {
     cbConfigurationDialog dlg(parent, wxID_ANY, _("Project build options"));
     cbConfigurationPanel* panel = new CompilerOptionsDlg(&dlg, this, project, target);
@@ -553,7 +553,7 @@ void CompilerGCC::BuildMenu(wxMenuBar* menuBar)
     m_Menu = Manager::Get()->LoadMenu(_T("compiler_menu"),true);
 
     // target selection menu
-    wxMenuItem *tmpitem=m_Menu->FindItem(idMenuSelectTarget,NULL);
+    wxMenuItem* tmpitem=m_Menu->FindItem(idMenuSelectTarget, nullptr);
     m_TargetMenu = tmpitem ? tmpitem->GetSubMenu() : new wxMenu(_T(""));
     DoRecreateTargetMenu();
     //m_Menu->Append(idMenuSelectTarget, _("Select target..."), m_TargetMenu);
@@ -630,7 +630,7 @@ void CompilerGCC::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fil
         menu->AppendSeparator();
         menu->Append(idMenuProjectCompilerOptionsFromProjectManager, _("Build options..."));
 
-        cbPlugin *otherRunning = Manager::Get()->GetProjectManager()->GetIsRunning();
+        cbPlugin* otherRunning = Manager::Get()->GetProjectManager()->GetIsRunning();
         if (IsRunning() || (otherRunning && otherRunning != this))
         {
             menu->Enable(idMenuCompileFromProjectManager, false);
@@ -722,7 +722,7 @@ void CompilerGCC::Dispatcher(wxCommandEvent& event)
         OnConfig(event);
 
     // Return focus to current editor
-    cbEditor* ed = 0;
+    cbEditor* ed = nullptr;
     if ( (ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor()) )
         ed->GetControl()->SetFocus();
 }
@@ -859,7 +859,7 @@ void CompilerGCC::SetupEnvironment()
 
 bool CompilerGCC::StopRunningDebugger()
 {
-    cbDebuggerPlugin *dbg = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
+    cbDebuggerPlugin* dbg = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
     // is the debugger running?
     if (dbg && dbg->IsRunning())
     {
@@ -1139,7 +1139,7 @@ FileTreeData* CompilerGCC::DoSwitchProjectTemporarily()
 
 void CompilerGCC::AddToCommandQueue(const wxArrayString& commands)
 {
-    ProjectBuildTarget* bt = m_pBuildingProject ? m_pBuildingProject->GetBuildTarget(GetTargetIndexFromName(m_pBuildingProject, m_BuildingTargetName)) : 0;
+    ProjectBuildTarget* bt = m_pBuildingProject ? m_pBuildingProject->GetBuildTarget(GetTargetIndexFromName(m_pBuildingProject, m_BuildingTargetName)) : nullptr;
     m_CurrentProgress = 0;
     m_MaxProgress = 0;
     bool isLink = false;
@@ -1436,7 +1436,7 @@ void CompilerGCC::DoClearTargetMenu()
         wxMenuItemList& items = m_TargetMenu->GetMenuItems();
         for (wxMenuItemList::iterator it = items.begin(); it != items.end(); )
         {
-            wxMenuItem *item = *it;
+            wxMenuItem* item = *it;
             // Make sure we increment valid iterator (Delete will invalidate it).
             ++it;
             if (item)
@@ -1610,7 +1610,7 @@ void CompilerGCC::UpdateProjectTargets(cbProject* project)
 
     for (int i = 0; i < project->GetBuildTargetsCount(); ++i)
     {
-        ProjectBuildTarget *tgt = project->GetBuildTarget(i);
+        ProjectBuildTarget* tgt = project->GetBuildTarget(i);
         if ( tgt->SupportsCurrentPlatform() )
             m_Targets.Add( tgt->GetTitle() );
     }
@@ -1725,7 +1725,7 @@ auto CompilerGCC::CompilerValid(ProjectBuildTarget* target) -> CompilerValidResu
     return result;
 }
 
-void CompilerGCC::PrintInvalidCompiler(ProjectBuildTarget *target, Compiler *compiler, const wxString &finalMessage)
+void CompilerGCC::PrintInvalidCompiler(ProjectBuildTarget *target, Compiler* compiler, const wxString &finalMessage)
 {
     wxString compilerName, compilerName2(wxT("unknown"));
     if (compiler)
@@ -1749,7 +1749,7 @@ void CompilerGCC::PrintInvalidCompiler(ProjectBuildTarget *target, Compiler *com
                _T(" and fix the compiler's setup.\n"),
                title.wx_str(), compilerName.wx_str(), compilerName2.wx_str());
 
-    LogManager *logger = Manager::Get()->GetLogManager();
+    LogManager* logger = Manager::Get()->GetLogManager();
     logger->LogError(msg, m_PageIndex);
     if (compiler)
         logger->LogError(compiler->MakeInvalidCompilerMessages(), m_PageIndex);
@@ -1786,7 +1786,7 @@ void CompilerGCC::PrintBanner(BuildAction action, cbProject* prj, ProjectBuildTa
     }
 
     wxString compilerName(_("unknown"));
-    Compiler *compiler = CompilerFactory::GetCompiler(GetCurrentCompilerID(target));
+    Compiler* compiler = CompilerFactory::GetCompiler(GetCurrentCompilerID(target));
     if (compiler)
         compilerName = compiler->GetName();
 
@@ -2150,7 +2150,7 @@ int CompilerGCC::Clean(const wxString& target)
     return DoBuild(target, true, false);
 }
 
-static inline wxString getBuildTargetName(const ProjectBuildTarget *bt)
+static inline wxString getBuildTargetName(const ProjectBuildTarget* bt)
 {
     return bt ? bt->GetTitle() : wxString(_("<all targets>"));
 }
@@ -2961,7 +2961,7 @@ int CompilerGCC::KillProcess()
 
     m_CommandQueue.Clear();
 
-    ProjectManager *projectManager = Manager::Get()->GetProjectManager();
+    ProjectManager* projectManager = Manager::Get()->GetProjectManager();
     bool isRunning = projectManager->GetIsRunning() == this;
 
     for (CompilerProcess &p : m_CompilerProcessList)
@@ -3075,7 +3075,7 @@ int CompilerGCC::CompileFile(const wxString& file)
     DoClearErrors();
     DoPrepareQueue(false);
 
-    ProjectFile* pf = m_pProject ? m_pProject->GetFileByFilename(file, true, false) : 0;
+    ProjectFile* pf = m_pProject ? m_pProject->GetFileByFilename(file, true, false) : nullptr;
     ProjectBuildTarget* bt = GetBuildTargetForFile(pf);
 
     PrintBanner(baBuildFile, m_pProject, bt);
@@ -3166,7 +3166,7 @@ void CompilerGCC::OnRun(cb_unused wxCommandEvent& event)
 
 void CompilerGCC::OnCompileAndRun(cb_unused wxCommandEvent& event)
 {
-    ProjectBuildTarget* target = 0;
+    ProjectBuildTarget* target = nullptr;
     m_RunAfterCompile = true;
     Build(target);
 }
@@ -3180,7 +3180,7 @@ void CompilerGCC::OnCompile(wxCommandEvent& event)
         // let's check the selected project...
         DoSwitchProjectTemporarily();
     }
-    ProjectBuildTarget* target = 0;
+    ProjectBuildTarget* target = nullptr;
     Build(target);
     m_RealTargetIndex = bak;
 }
@@ -3214,7 +3214,7 @@ void CompilerGCC::OnCleanFile(wxCommandEvent& event)
         if (!compiler)
             return;
 
-        if ( !CheckProject() ) // ensures m_pProject is not NULL
+        if (!CheckProject()) // ensures m_pProject is not nullptr
           return;
 
         wxSetWorkingDirectory(m_pProject->GetBasePath());
@@ -3258,7 +3258,7 @@ void CompilerGCC::OnRebuild(wxCommandEvent& event)
         // let's check the selected project...
         DoSwitchProjectTemporarily();
     }
-    ProjectBuildTarget* target = 0;
+    ProjectBuildTarget* target = nullptr;
     Rebuild(target);
     m_RealTargetIndex = bak;
 }
@@ -3343,7 +3343,7 @@ void CompilerGCC::OnProjectCompilerOptions(cb_unused wxCommandEvent& event)
     {
         // 'configure' selected target, if other than 'All'
         ProjectBuildTarget* target = nullptr;
-        cbProject *currentProject = ftd->GetProject();
+        cbProject* currentProject = ftd->GetProject();
         if (m_RealTargetIndex != -1 && !m_Targets.empty())
         {
             const wxString &targetName = m_Targets[m_TargetIndex];
@@ -3459,8 +3459,8 @@ void CompilerGCC::OnUpdateUI(wxUpdateUIEvent& event)
         return;
     }
 
-    ProjectManager *projectManager = Manager::Get()->GetProjectManager();
-    cbPlugin *runningPlugin = projectManager->GetIsRunning();
+    ProjectManager* projectManager = Manager::Get()->GetProjectManager();
+    cbPlugin* runningPlugin = projectManager->GetIsRunning();
     if (runningPlugin && runningPlugin != this)
     {
         event.Enable(false);
@@ -3547,7 +3547,7 @@ void CompilerGCC::OnCompileFileRequest(CodeBlocksEvent& event)
         return;
     }
 
-    ProjectBuildTarget* bt = 0;
+    ProjectBuildTarget* bt = nullptr;
     if (pf->buildTargets.GetCount() == 1)
         bt = prj->GetBuildTarget(pf->buildTargets[0]);
     else // belongs to two or more build targets, but maybe a valid virtual target is selected
@@ -4057,7 +4057,7 @@ void CompilerGCC::NotifyJobDone(bool showNothingToBeDone)
 
     if (!IsProcessRunning())
     {
-        ProjectManager *manager = Manager::Get()->GetProjectManager();
+        ProjectManager* manager = Manager::Get()->GetProjectManager();
 
         // Check if this was a run operation and the application has been closed.
         // If this is the case we don't need to send cbEVT_COMPILER_FINISHED event.
