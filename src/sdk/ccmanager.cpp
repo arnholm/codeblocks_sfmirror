@@ -1110,6 +1110,12 @@ void CCManager::OnDeferredCallTipCancel(wxCommandEvent& WXUNUSED(event))
 #ifdef __WXMSW__
 void CCManager::OnPopupScroll(wxMouseEvent& event)
 {
+    if (!m_pLastEditor)
+    {
+        event.Skip();
+        return;
+    }
+
     const wxPoint& pos = m_pLastEditor->GetControl()->ClientToScreen(event.GetPosition());
     if (m_pPopup->GetScreenRect().Contains(pos))
         m_pHtml->GetEventHandler()->ProcessEvent(event);
