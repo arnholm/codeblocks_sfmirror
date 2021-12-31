@@ -13,7 +13,7 @@
 #include "cygwin.h"
 
 CompilerCYGWIN::CompilerCYGWIN()
-    : CompilerMINGW(_("Cygwin GCC"), _T("cygwin"))
+    : CompilerMINGW(_("Cygwin GCC"), "cygwin")
 {
     m_Weight = 32;
     Reset();
@@ -30,13 +30,22 @@ Compiler * CompilerCYGWIN::CreateCopy()
 
 AutoDetectResult CompilerCYGWIN::AutoDetectInstallationDir()
 {
-    if (platform::windows && cbIsDetectedCygwinCompiler())
+    if (platform::windows)
     {
-        m_MasterPath = cbGetCygwinCompilerPathRoot();
-        return adrDetected;
+        if (cbIsDetectedCygwinCompiler())
+        {
+            m_MasterPath = cbGetCygwinCompilerPathRoot();
+            return adrDetected;
+        }
+        else
+        {
+            m_MasterPath = "C:\\cygwin64";
+            return adrGuessed;
+        }
     }
     else
     {
+        m_MasterPath = cbGetCygwinCompilerPathRoot();
         return adrGuessed;
     }
 }
