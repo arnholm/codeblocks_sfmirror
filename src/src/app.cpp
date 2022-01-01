@@ -576,6 +576,7 @@ bool CodeBlocksApp::OnInit()
     m_HasWorkSpace         = false;
     m_SafeMode             = false;
     m_BatchWindowAutoClose = true;
+    m_pSingleInstance      = nullptr;
 
     wxTheClipboard->Flush();
 
@@ -629,7 +630,7 @@ bool CodeBlocksApp::OnInit()
         PluginManager::SetSafeMode(m_SafeMode);
 
         // If not in batch mode, and no startup-script defined, initialise XRC
-        if(!m_Batch && m_Script.IsEmpty() && !InitXRCStuff())
+        if (!m_Batch && m_Script.IsEmpty() && !InitXRCStuff())
             return false;
 
         InitLocale();
@@ -638,7 +639,7 @@ bool CodeBlocksApp::OnInit()
         if (m_DDE && !m_Batch && appCfg->ReadBool("/environment/use_ipc", true))
         {
             // Create a new client
-            DDEClient *client = new DDEClient;
+            DDEClient* client = new DDEClient;
             DDEConnection* connection = nullptr;
             wxLogNull ln; // own error checking implemented -> avoid debug warnings
             connection = (DDEConnection *)client->MakeConnection("localhost",
@@ -663,6 +664,7 @@ bool CodeBlocksApp::OnInit()
                 // On Linux, C::B has to be raised explicitly if it's wanted
                 if (appCfg->ReadBool("/environment/raise_via_ipc", true))
                     connection->Execute("[Raise]");
+
                 connection->Disconnect();
                 delete connection;
                 delete client;
@@ -672,17 +674,11 @@ bool CodeBlocksApp::OnInit()
                 // return false to end the application
                 return false;
             }
+
             // free memory DDE-/IPC-clients, if we are here connection could not be established and there is no need to free it
             delete client;
         }
-        // Now we can start the DDE-/IPC-Server, if we did it earlier we would connect to ourselves
-        if (m_DDE && !m_Batch)
-        {
-            g_DDEServer = new DDEServer(nullptr);
-            g_DDEServer->Create(F(DDE_SERVICE, wxGetUserId().wx_str()));
-        }
 
-        m_pSingleInstance = nullptr;
         if (appCfg->ReadBool("/environment/single_instance", true)
             && !parser.Found("multiple-instance"))
         {
@@ -697,6 +693,13 @@ bool CodeBlocksApp::OnInit()
                              "Code::Blocks", wxOK | wxICON_ERROR);
                 return false;
             }
+        }
+
+        // Now we can start the DDE-/IPC-Server, if we did it earlier we would connect to ourselves
+        if (m_DDE && !m_Batch)
+        {
+            g_DDEServer = new DDEServer(nullptr);
+            g_DDEServer->Create(wxString::Format(DDE_SERVICE, wxGetUserId()));
         }
 
         // Splash screen moved to this place, otherwise it would be short visible, even if we only pass filenames via DDE/IPC
