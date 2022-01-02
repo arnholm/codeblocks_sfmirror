@@ -27,8 +27,7 @@ class BatchLogWindow : public wxScrollingDialog
         {
             // allowed to close?
             // find compiler plugin
-            bool hasRunning = cbHasRunningCompilers(Manager::Get()->GetPluginManager());
-            if (hasRunning)
+            if (cbHasRunningCompilers(Manager::Get()->GetPluginManager()))
             {
                 if (cbMessageBox(_("The build is in progress. Are you sure you want to abort it?"),
                                 _("Abort build?"),

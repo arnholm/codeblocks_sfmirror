@@ -931,7 +931,7 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         // but not for mixed selection, or any other project items
         if (ftd->GetKind() == FileTreeData::ftdkFile)
         {
-                fileList.Add(ftd->GetProjectFile()->file.GetLongPath());
+            fileList.Add(ftd->GetProjectFile()->file.GetLongPath());
         }
         else if (ftd->GetKind() == FileTreeData::ftdkProject)
         {
@@ -2346,7 +2346,7 @@ void ProjectManagerUI::OnUpdateUI(wxUpdateUIEvent& event)
     if (event.GetId() == idMenuFileProperties)
     {
         EditorManager *editorManager = Manager::Get()->GetEditorManager();
-        bool enableProperties;
+        bool enableProperties = false;
         if (editorManager)
         {
             EditorBase *editor = editorManager->GetActiveEditor();
@@ -2356,8 +2356,6 @@ void ProjectManagerUI::OnUpdateUI(wxUpdateUIEvent& event)
             if (enableProperties)
                 enableProperties = !cbHasRunningCompilers(Manager::Get()->GetPluginManager());
         }
-        else
-            enableProperties = false;
 
         event.Enable(enableProperties);
     }
@@ -2376,10 +2374,7 @@ void ProjectManagerUI::OnUpdateUI(wxUpdateUIEvent& event)
             if (!project)
                 event.Enable(false);
             else
-            {
-                bool enable = !cbHasRunningCompilers(Manager::Get()->GetPluginManager());
-                event.Enable(enable);
-            }
+                event.Enable(!cbHasRunningCompilers(Manager::Get()->GetPluginManager()));
         }
     }
     else
@@ -2926,7 +2921,7 @@ static bool ProjectCanDragNode(cbProject* project, wxTreeCtrl* tree, wxTreeItemI
     if (ftd->GetProject() != project)
         return false;
 
-    // allow only if it is a file or a virtual folder or project file(.cbp)
+    // allow only if it is a file or a virtual folder or project file (.cbp)
     return (   (ftd->GetKind() == FileTreeData::ftdkFile)
             || (ftd->GetKind() == FileTreeData::ftdkVirtualFolder)
             || (ftd->GetKind() == FileTreeData::ftdkProject) );

@@ -1507,7 +1507,7 @@ void PluginManager::SetupLocaleDomain(const wxString& DomainName)
     int i = 1;
     for (; i <= catalogNum; ++i)
     {
-        wxString catalogName=Manager::Get()->GetConfigManager(_T("app"))->Read(wxString::Format(_T("/locale/Domain%d"), i), wxEmptyString);
+        wxString catalogName = Manager::Get()->GetConfigManager(_T("app"))->Read(wxString::Format(_T("/locale/Domain%d"), i), wxEmptyString);
         if (catalogName.Cmp(DomainName) == 0)
             break;
     }
@@ -1536,9 +1536,9 @@ void PluginManager::NotifyPlugins(CodeBlocksLayoutEvent& event)
 
 bool cbHasRunningCompilers(const PluginManager *manager)
 {
-    for (const cbCompilerPlugin *p : manager->GetCompilerPlugins())
+    for (const cbCompilerPlugin *compiler : manager->GetCompilerPlugins())
     {
-        if (p && p->IsRunning())
+        if (compiler && compiler->IsRunning())
             return true;
     }
     return false;

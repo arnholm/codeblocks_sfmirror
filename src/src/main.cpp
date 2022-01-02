@@ -3082,10 +3082,10 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
 
     {
         // Check if any compiler plugin is building and ask the user if he/she wants to stop it.
-        bool hasRunning = cbHasRunningCompilers(Manager::Get()->GetPluginManager());
-        if (hasRunning)
+        if (cbHasRunningCompilers(Manager::Get()->GetPluginManager()))
         {
-            int result = cbMessageBox(_("Currently compiling. Stop compilation and exit?"),
+            int result = cbMessageBox(_("Code::Blocks is currently compiling or running an application.\n"
+                                        "Do you want to stop the action and exit?"),
                                       _("Question"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION,
                                       this);
             if (result == wxID_YES)
