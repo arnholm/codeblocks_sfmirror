@@ -71,6 +71,8 @@ public:
 		case 950:
 		case 1361:
 			encodingType = encDBCS;
+		default:
+		  break;
 		}
 	}
 	char operator[](Sci_Position position) {

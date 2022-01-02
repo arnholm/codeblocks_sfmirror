@@ -234,7 +234,7 @@ bool wxScintilla::Create(wxWindow *parent,
 
     // Rely on native double buffering by default, except under Mac where it
     // doesn't work for some reason, see #18085.
-#if wxALWAYS_NATIVE_DOUBLE_BUFFER && !defined(__WXMAC__)
+#if defined(wxALWAYS_NATIVE_DOUBLE_BUFFER) && wxALWAYS_NATIVE_DOUBLE_BUFFER && !defined(__WXMAC__)
     SetBufferedDraw(false);
 #else
     SetBufferedDraw(true);
@@ -4956,6 +4956,7 @@ void wxScintilla::DoSetValue(const wxString& value, int flags)
 //    if ( flags & SetValue_SelectionOnly )
 //        ReplaceSelection(value);
 //    else
+    wxUnusedVar(flags);
 /* C::B end */
     SetText(value);
 

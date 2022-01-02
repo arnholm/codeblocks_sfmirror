@@ -2022,6 +2022,7 @@ void Window::SetCursor(Cursor curs) {
     case cursorHand:
         cursorId = wxCURSOR_HAND;
         break;
+    case cursorInvalid: // fall-through
     default:
         cursorId = wxCURSOR_ARROW;
         break;
@@ -2125,7 +2126,7 @@ public:
     wxSCIListBoxWin(wxWindow* parent, wxWindowID id, Point WXUNUSED(location)) :
         wxPopupWindow(parent, wxBORDER_SIMPLE)
     {
-        
+
 /* C::B begin */
 #ifdef __WXMSW__
         SetExtraStyle(GetExtraStyle() & ~wxWS_EX_BLOCK_EVENTS);

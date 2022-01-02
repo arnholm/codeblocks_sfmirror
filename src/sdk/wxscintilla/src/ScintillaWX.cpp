@@ -1247,6 +1247,8 @@ int  ScintillaWX::DoKeyDown(const wxKeyEvent& evt, bool* consumed)
                 *consumed = false;
             return 0;
         }
+    default:
+      break;
     }
 
     int rv = KeyDownWithModifiers
