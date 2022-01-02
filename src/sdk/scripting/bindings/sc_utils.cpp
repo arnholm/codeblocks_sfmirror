@@ -71,23 +71,13 @@ std::string MakeStringFromSquirrelValue(HSQUIRRELVM vm, const int stackIdx)
             break;
         }
         case OT_TABLE:
-        {
-            const void *ptr;
-            //sq_getvoidptr(vm, stackIdx, &ptr);
-            ptr = (void*)0x01020304;
             line+=GetItemString(vm, stackIdx);
             line+="; Table";
             break;
-        }
         case OT_ARRAY:
-        {
-            const void *ptr;
-            //sq_getvoidptr(vm, stackIdx, &ptr);
-            ptr = (void*)0x01020304;
             line+=GetItemString(vm, stackIdx);
             line+="; Array";
             break;
-        }
         case OT_USERDATA:
             line+="UserData";
             break;
