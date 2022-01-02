@@ -43,6 +43,7 @@
  * 01/08/01 (seiwald) - closure param for file_dirscan/file_archscan
  * 11/04/02 (seiwald) - const-ing for string literals
  * 01/23/03 (seiwald) - long long handles for NT IA64
+ * 03/29/21 (gd_on)   - replace FINDTYPE by intptr_t (it's the compiler which set it's length correctly for 32/64 bits)
  */
 
 # include "jam.h"
