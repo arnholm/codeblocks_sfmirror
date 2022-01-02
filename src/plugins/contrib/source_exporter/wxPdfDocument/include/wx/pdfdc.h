@@ -80,7 +80,7 @@ public:
   wxPrintData& GetPrintData() { return m_printData; }
 
   void SetResolution(int ppi);
-  int GetResolution() const;
+  virtual int GetResolution() const wxOVERRIDE;
 
   void SetImageType(wxBitmapType bitmapType, int quality = 75);
 
@@ -268,6 +268,8 @@ private:
 
   bool             m_inTransform;
   wxAffineMatrix2D m_matrix;
+  wxPen            m_pdfPenSaved;
+  wxBrush          m_pdfBrushSaved;
 
   bool m_jpegFormat;
   int  m_jpegQuality;

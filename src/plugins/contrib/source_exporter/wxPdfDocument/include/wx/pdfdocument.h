@@ -348,6 +348,17 @@ public:
                               wxPdfLayout layout = wxPDF_LAYOUT_CONTINUOUS,
                               double zoomFactor = 100.);
 
+  /// Defines the paper handling when printing (simplex / duplex).
+  /**
+  * The paper handling option that shall be used when printing the file from the print dialog.
+  * \param paperHandling Can be one of the following values:
+  *   \li wxPDF_PAPERHANDLING_DEFAULT: use the default of the viewer app
+  *   \li wxPDF_PAPERHANDLING_SIMPLEX: print single-sided
+  *   \li wxPDF_PAPERHANDLING_DUPLEX_FLIP_SHORT_EDGE: duplex and flip at the short edge of the sheet
+  *   \li wxPDF_PAPERHANDLING_DUPLEX_FLIP_LONG_EDGE: duplex and flip at the long edge of the sheet
+  */
+  virtual void SetPaperHandling(wxPdfPaperHandling paperHandling);
+
   /// Enable or disable kerning.
   /**
   * When enabled, kerning is applied to text output.
@@ -374,6 +385,7 @@ public:
   *   \li wxPDF_VIEWER_FITWINDOW:       Fit window to page size
   *   \li wxPDF_VIEWER_CENTERWINDOW:    Center window on screen
   *   \li wxPDF_VIEWER_DISPLAYDOCTITLE: Display document title in title bar
+  *   \li wxPDF_VIEWER_NOPRINTSCALING:  Set page scaling to none when printing
   */
   virtual void SetViewerPreferences(int preferences = 0);
 
@@ -515,13 +527,35 @@ public:
 
   /// Add an image pattern
   /**
-  * Add a pattern which can be reference in draw or fill pattern methods
+  * Add an image pattern which can be referenced in draw or fill pattern methods
   * \param patternName the name of the pattern (case sensitive)
-  * \param image the image to use for the pattern
-  * \param width the display width
-  * \param height the display height
+  * \param image the image to be used as a pattern
+  * \param width the display width of the pattern
+  * \param height the display height of the pattern
   */
   virtual bool AddPattern(const wxString& patternName, const wxImage& image, double width, double height);
+
+  /// Add a template based pattern
+  /**
+  * Add a template based pattern which can be referenced in draw or fill pattern methods
+  * \param patternName the name of the pattern (case sensitive)
+  * \param templateId the id of the template to be used as a pattern
+  * \param width the display width of the pattern
+  * \param height the display height of the pattern
+  */
+  virtual bool AddPattern(const wxString& patternName, int templateId, double width, double height);
+
+  /// Add a hatched pattern
+  /**
+  * Add a hatched pattern which can be referenced in draw or fill pattern methods
+  * \param patternName the name of the pattern (case sensitive)
+  * \param patternStyle the pattern style to be used as a pattern
+  * \param width the display width
+  * \param height the display height
+  * \param drawColour the foreground colour used for hatching
+  * \param fillColour the background colour to fill the pattern background (optional)
+  */
+  virtual bool AddPattern(const wxString& patternName, wxPdfPatternStyle patternStyle, double width, double height, const wxColour& drawColour, const wxColour& fillColour = wxColour());
 
   /// Defines the colour used for all drawing operations.
   /**
@@ -787,6 +821,7 @@ public:
   /**
   * A font must be selected.
   * \param s The string whose length is to be computed
+  * \param charSpacing Extra amount of spacing between characters (optional)
   * \return int
   */
   virtual double GetStringWidth(const wxString& s, double charSpacing = 0);
@@ -2578,6 +2613,7 @@ protected:
   /**
   * A font must be selected.
   * \param s The string whose length is to be computed
+  * \param charSpacing Extra amount of spacing between characters (optional)
   * \return int
   * \note This method expects the text already to be preprocessed in respect to visual layout.
   */
@@ -2648,6 +2684,9 @@ protected:
 
   /// Add spot colours
   virtual void PutSpotColours();
+
+  /// Initialize object ids of patterns
+  virtual void InitPatternIds();
 
   /// Add patterns
   virtual void PutPatterns();
@@ -2809,6 +2848,9 @@ private:
   /// Return a string key by a font name and a font encoding
   wxString MakeFontKey(const wxString& fontName, const wxString& fontEncoding);
 
+  /// Apply viewport for image tag in markup handling
+  wxArrayDouble ApplyViewport(const wxString& viewport, double width, double height);
+
 private:
   bool                 m_yAxisOriginTop;      ///< flag whether the origin of the y axis resides at the top (or bottom) of the page
   int                  m_page;                ///< current page number
@@ -2829,7 +2871,9 @@ private:
   wxSize               m_defPageSize;         ///< default page width
   wxSize               m_curPageSize;         ///< current page width
   wxPdfPageSizeMap*    m_pageSizes;           ///< array indicating page size changes
+  wxXmlNode*           m_xmlRoot;             ///< root node of current markup tree
 
+  wxString             m_userUnit;            ///< string representation of user unit
   double               m_k;                   ///< scale factor (number of points in user unit)
   double               m_fwPt;                ///< width of page format in points
   double               m_fhPt;                ///< height of page format in points
@@ -2904,6 +2948,7 @@ private:
   wxPdfZoom            m_zoomMode;            ///< zoom display mode
   double               m_zoomFactor;          ///< zoom factor
   wxPdfLayout          m_layoutMode;          ///< layout display mode
+  wxPdfPaperHandling   m_paperHandling;       ///< simplex / duplex printing
   int                  m_viewerPrefs;         ///< viewer preferences
 
   wxString             m_title;               ///< title

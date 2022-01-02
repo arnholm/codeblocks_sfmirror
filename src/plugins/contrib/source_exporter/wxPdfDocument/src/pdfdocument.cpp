@@ -20,6 +20,12 @@
 #include <wx/wx.h>
 #endif
 
+#include <wx/filesys.h>
+//#include <wx/filefn.h>
+//#include <wx/filename.h>
+#include <wx/uri.h>
+#include <wx/url.h>
+
 #include <wx/image.h>
 #include <wx/paper.h>
 #include <wx/wfstream.h>
@@ -77,6 +83,7 @@ wxPdfDocument::wxPdfDocument(int orientation, double pageWidth, double pageHeigh
 void
 wxPdfDocument::SetScaleFactor(const wxString& unit)
 {
+  m_userUnit = unit;
   // Scale factor
   if (unit == wxS("pt"))
   {
@@ -93,6 +100,7 @@ wxPdfDocument::SetScaleFactor(const wxString& unit)
   else // if (unit == "mm") or unknown
   {
     m_k = 72. / 25.4;
+    m_userUnit = "mm";
   }
 }
 
@@ -235,6 +243,12 @@ wxPdfDocument::Initialize(int orientation)
   // Full width display mode
   SetDisplayMode(wxPDF_ZOOM_FULLWIDTH);
   m_zoomFactor = 100.;
+
+  // Default layout mode
+  m_layoutMode = wxPDF_LAYOUT_CONTINUOUS;
+
+  // Default paper handling
+  m_paperHandling = wxPDF_PAPERHANDLING_DEFAULT;
 
   // Default viewer preferences
   m_viewerPrefs = 0;
@@ -1652,10 +1666,26 @@ wxPdfDocument::WriteGlyphArray(wxPdfArrayDouble& x, wxPdfArrayDouble& y, wxPdfAr
 }
 
 wxSize
-wxPdfDocument::GetImageSize(const wxString& file, const wxString& mimeType)
+wxPdfDocument::GetImageSize(const wxString& fileName, const wxString& mimeType)
 {
   wxSize imageSize(0, 0);
   wxImage image;
+
+  wxFileSystem fs;
+  wxString fileURL = fileName;
+  wxURI uri(fileName);
+  if (!uri.HasScheme())
+  {
+    fileURL = wxFileSystem::FileNameToURL(fileName);
+  }
+  wxFSFile* imageFile = fs.OpenFile(fileURL);
+  if (imageFile != NULL)
+  {
+    wxString mimeType = imageFile->GetMimeType();
+    image.LoadFile(*imageFile->GetStream(), mimeType);
+    delete imageFile;
+  }
+#if 0
   if (mimeType.IsEmpty())
   {
     // Auto detect image type
@@ -1666,6 +1696,7 @@ wxPdfDocument::GetImageSize(const wxString& file, const wxString& mimeType)
     // Use mimetype as specified
     image.LoadFile(file, mimeType);
   }
+#endif
   if (image.IsOk())
   {
     imageSize = image.GetSize();
@@ -2064,6 +2095,10 @@ wxPdfDocument::SetViewerPreferences(int preferences)
   {
     m_PDFVersion = wxS("1.4");
   }
+  if (((m_viewerPrefs & wxPDF_VIEWER_NOPRINTSCALING) != 0) && (m_PDFVersion < wxS("1.6")))
+  {
+    m_PDFVersion = wxS("1.6");
+  }
 }
 
 void
@@ -2232,6 +2267,27 @@ wxPdfDocument::SetDisplayMode(wxPdfZoom zoom, wxPdfLayout layout, double zoomFac
       break;
     default:
       m_layoutMode = wxPDF_LAYOUT_CONTINUOUS;
+      break;
+  }
+}
+
+void
+wxPdfDocument::SetPaperHandling(wxPdfPaperHandling paperHandling)
+{
+  switch (paperHandling)
+  {
+    case wxPDF_PAPERHANDLING_SIMPLEX:
+    case wxPDF_PAPERHANDLING_DUPLEX_FLIP_SHORT_EDGE:
+    case wxPDF_PAPERHANDLING_DUPLEX_FLIP_LONG_EDGE:
+      m_paperHandling = paperHandling;
+      if (m_PDFVersion < wxS("1.7"))
+      {
+        m_PDFVersion = wxS("1.7");
+      }
+      break;
+    case wxPDF_PAPERHANDLING_DEFAULT:
+    default:
+      m_paperHandling = wxPDF_PAPERHANDLING_DEFAULT;
       break;
   }
 }
@@ -2481,6 +2537,75 @@ wxPdfDocument::AddPattern(const wxString& patternName, const wxImage& image, dou
   return isValid;
 }
 
+bool
+wxPdfDocument::AddPattern(const wxString& patternName, int templateId, double width, double height)
+{
+  bool isValid = true;
+  wxPdfPatternMap::iterator patternIter = m_patterns->find(patternName);
+  if (patternIter == m_patterns->end())
+  {
+    wxPdfTemplatesMap::iterator templateIter = m_templates->find(templateId);
+
+    if (templateIter != m_templates->end() && width > 0 && height > 0)
+    {
+
+      // Register new pattern
+      wxPdfPattern* pattern;
+      int i = (int)m_patterns->size() + 1;
+      pattern = new wxPdfPattern(i, width, height, templateId);
+      (*m_patterns)[patternName] = pattern;
+    }
+    else
+    {
+      isValid = false;
+      if (templateIter == m_templates->end())
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString(_("Invalid template id.")));
+      }
+      else
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString::Format(_("Invalid width (%.1f) and/or height (%.1f)."), width, height));
+      }
+    }
+  }
+  return isValid;
+}
+
+bool
+wxPdfDocument::AddPattern(const wxString& patternName, wxPdfPatternStyle patternStyle, double width, double height, const wxColour& drawColour, const wxColour& fillColour)
+{
+  bool isValid = true;
+  wxPdfPatternMap::iterator patternIter = m_patterns->find(patternName);
+  if (patternIter == m_patterns->end())
+  {
+    if (patternStyle >= wxPDF_PATTERNSTYLE_FIRST_HATCH && patternStyle <= wxPDF_PATTERNSTYLE_LAST_HATCH && width > 0 && height > 0)
+    {
+      // Register new pattern
+      wxPdfPattern* pattern;
+      int i = (int) m_patterns->size() + 1;
+      pattern = new wxPdfPattern(i, width, height, patternStyle, drawColour, fillColour);
+      (*m_patterns)[patternName] = pattern;
+    }
+    else
+    {
+      isValid = false;
+      if (!(patternStyle >= wxPDF_PATTERNSTYLE_FIRST_HATCH && patternStyle <= wxPDF_PATTERNSTYLE_LAST_HATCH))
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString(_("Invalid pattern style.")));
+      }
+      if (width <= 0 || height <= 0)
+      {
+        wxLogError(wxString(wxS("wxPdfDocument::AddPattern: ")) +
+          wxString::Format(_("Invalid width (%.1f) and/or height (%.1f)."), width, height));
+      }
+    }
+  }
+  return isValid;
+}
+
 void
 wxPdfDocument::SetDrawColour(const wxColour& colour)
 {
@@ -2556,6 +2681,10 @@ wxPdfDocument::SetDrawPattern(const wxString& name)
     if (m_page > 0)
     {
       OutAscii(m_drawColour.GetColour(true));
+    }
+    if (m_inTemplate)
+    {
+      (*(m_currentTemplate->m_patterns))[pattern->first] = pattern->second;
     }
   }
   else
@@ -2651,6 +2780,10 @@ wxPdfDocument::SetFillPattern(const wxString& name)
     if (m_page > 0)
     {
       OutAscii(m_fillColour.GetColour(false));
+    }
+    if (m_inTemplate)
+    {
+      (*(m_currentTemplate->m_patterns))[pattern->first] = pattern->second;
     }
   }
   else
