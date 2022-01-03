@@ -1229,7 +1229,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxButton" name="btnKeywords">
-														<label>User keywords...</label>
+														<label>Keywords...</label>
 													</object>
 													<flag>wxALIGN_TOP</flag>
 												</object>
