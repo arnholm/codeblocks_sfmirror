@@ -18,18 +18,23 @@ class EditKeywordsDlg : public wxScrollingDialog
     public:
         EditKeywordsDlg(wxWindow* parent, EditorColourSet* theme, HighlightLanguage lang, const wxArrayString& descr);
         ~EditKeywordsDlg();
+
     protected:
+        void OnExit(wxCommandEvent& event);
         void OnSetChange(wxSpinEvent& event);
 
         wxSpinCtrl* spnSet;
-    public:
+        wxTextCtrl* txtKeywords;
+
+    private:
+        void SaveKeywords(int index);
+        void UpdateDlg();
+
         EditorColourSet* m_pTheme;
         HighlightLanguage m_Lang;
-        wxTextCtrl* txtKeywords;
         int m_LastSet;
-    private:
-        void UpdateDlg();
         const wxArrayString& descriptions;
+
         DECLARE_EVENT_TABLE()
 };
 

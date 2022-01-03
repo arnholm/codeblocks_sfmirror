@@ -24,11 +24,13 @@
 
 BEGIN_EVENT_TABLE(EditKeywordsDlg, wxScrollingDialog)
     EVT_SPINCTRL(wxID_ANY, EditKeywordsDlg::OnSetChange)
+    EVT_BUTTON(wxID_OK, EditKeywordsDlg::OnExit)
 END_EVENT_TABLE()
 
 EditKeywordsDlg::EditKeywordsDlg(wxWindow* parent, EditorColourSet* theme, HighlightLanguage lang, const wxArrayString& descr)
     : m_pTheme(theme),
     m_Lang(lang),
+    m_LastSet(0),
     descriptions(descr)
 {
     //ctor
@@ -45,19 +47,34 @@ EditKeywordsDlg::~EditKeywordsDlg()
     //dtor
 }
 
+void EditKeywordsDlg::OnExit(wxCommandEvent& event)
+{
+    SaveKeywords(m_LastSet);
+    event.Skip();
+}
+
 void EditKeywordsDlg::OnSetChange(cb_unused wxSpinEvent& event)
 {
-    m_pTheme->SetKeywords(m_Lang, m_LastSet, txtKeywords->GetValue());
+    SaveKeywords(m_LastSet);
+    m_LastSet = event.GetPosition()-1;
     UpdateDlg();
+}
+
+void EditKeywordsDlg::SaveKeywords(int index)
+{
+    if (txtKeywords->IsModified())
+    {
+        m_pTheme->SetKeywords(m_Lang, index, txtKeywords->GetValue());
+        txtKeywords->DiscardEdits();
+    }
 }
 
 void EditKeywordsDlg::UpdateDlg()
 {
-    m_LastSet = spnSet->GetValue() - 1;
     txtKeywords->SetValue(m_pTheme->GetKeywords(m_Lang, m_LastSet));
     wxStaticText* txtDescription = XRCCTRL(*this, "txtDescription", wxStaticText);
-    if (descriptions.GetCount() > (size_t)m_LastSet)
-        txtDescription->SetLabel(descriptions[m_LastSet] + wxT(":"));
+    if ((size_t)m_LastSet < descriptions.GetCount())
+        txtDescription->SetLabel(descriptions[m_LastSet] + ":");
     else
-        txtDescription->SetLabel(wxT("Keywords:"));
+        txtDescription->SetLabel(_("Not highlighted keywords") + ":");
 }

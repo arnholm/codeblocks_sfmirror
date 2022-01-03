@@ -799,12 +799,11 @@ void EditorConfigurationDlg::OnEditKeywords(cb_unused wxCommandEvent& event)
     {
         wxArrayString descriptions;
         if (m_TextColourControl)
-            descriptions = GetArrayFromString(m_TextColourControl->DescribeKeyWordSets(), wxT("\n"));
+            descriptions = GetArrayFromString(m_TextColourControl->DescribeKeyWordSets(), "\n");
+
         EditKeywordsDlg dlg(nullptr, m_Theme, m_Lang, descriptions);
         PlaceWindow(&dlg);
         dlg.ShowModal();
-
-        dlg.m_pTheme->SetKeywords(dlg.m_Lang, dlg.m_LastSet, dlg.txtKeywords->GetValue());
     }
 }
 
