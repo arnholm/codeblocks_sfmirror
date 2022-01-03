@@ -3,7 +3,7 @@
 	<object class="wxScrollingDialog" name="dlgEditLangKeywords">
 		<title>Edit keywords</title>
 		<centered>1</centered>
-		<style>wxRESIZE_BORDER</style>
+		<style>wxCAPTION|wxRESIZE_BORDER</style>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
@@ -38,7 +38,7 @@
 			<object class="sizeritem">
 				<object class="wxTextCtrl" name="txtKeywords">
 					<value>Text</value>
-					<size>240,192</size>
+					<size>360,192</size>
 					<style>wxTE_MULTILINE</style>
 				</object>
 				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
