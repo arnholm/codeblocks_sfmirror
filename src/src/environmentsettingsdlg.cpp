@@ -100,6 +100,7 @@ BEGIN_EVENT_TABLE(EnvironmentSettingsDlg, wxScrollingDialog)
     EVT_LISTBOX(XRCID("lstColours"), EnvironmentSettingsDlg::OnChooseAppColourItem)
     EVT_COLOURPICKER_CHANGED(XRCID("colourPicker"), EnvironmentSettingsDlg::OnClickAppColour)
     EVT_BUTTON(XRCID("btnDefaultColour"), EnvironmentSettingsDlg::OnClickAppColourDefault)
+    EVT_BUTTON(XRCID("btnResetAll"), EnvironmentSettingsDlg::OnClickAppResetAll)
 END_EVENT_TABLE()
 
 EnvironmentSettingsDlg::EnvironmentSettingsDlg(wxWindow* parent, wxAuiDockArt* art)
@@ -889,12 +890,17 @@ void EnvironmentSettingsDlg::DoChooseAppColourItem(int index)
     }
 }
 
-static bool GetSelectedColourDefinitionFromList(wxString *id, ColourManager::ColourDef *def, wxListBox *list)
+static bool GetColourDefinitionFromList(wxString* id, ColourManager::ColourDef* def, wxListBox* list, int index = wxNOT_FOUND)
 {
-    if (list->GetSelection() == wxNOT_FOUND)
-        return false;
-    const AppColoursClientData *data;
-    data = static_cast<AppColoursClientData*>(list->GetClientObject(list->GetSelection()));
+    if (index == wxNOT_FOUND)
+    {
+        index = list->GetSelection();
+        if (index == wxNOT_FOUND)
+            return false;
+    }
+
+    const AppColoursClientData* data;
+    data = static_cast <AppColoursClientData *> (list->GetClientObject(index));
     if (!data)
         return false;
 
@@ -910,25 +916,25 @@ static bool GetSelectedColourDefinitionFromList(wxString *id, ColourManager::Col
 
 void EnvironmentSettingsDlg::OnClickAppColour(wxColourPickerEvent &event)
 {
-    wxListBox *list = XRCCTRL(*this, "lstColours", wxListBox);
+    wxListBox* list = XRCCTRL(*this, "lstColours", wxListBox);
     wxString id;
     ColourManager::ColourDef colourDef;
-    if (!GetSelectedColourDefinitionFromList(&id, &colourDef, list))
+    if (!GetColourDefinitionFromList(&id, &colourDef, list))
         return;
 
-    const wxColour newColour = event.GetColour();
+    const wxColour newColour(event.GetColour());
     m_ChangedAppColours[id] = newColour;
 
-    wxButton *btnDefault = XRCCTRL(*this, "btnDefaultColour", wxButton);
+    wxButton* btnDefault = XRCCTRL(*this, "btnDefaultColour", wxButton);
     btnDefault->Enable(newColour != colourDef.defaultValue);
 }
 
-void EnvironmentSettingsDlg::OnClickAppColourDefault(cb_unused wxCommandEvent &event)
+void EnvironmentSettingsDlg::OnClickAppColourDefault(cb_unused wxCommandEvent& event)
 {
-    wxListBox *list = XRCCTRL(*this, "lstColours", wxListBox);
+    wxListBox* list = XRCCTRL(*this, "lstColours", wxListBox);
     wxString id;
     ColourManager::ColourDef colourDef;
-    if (!GetSelectedColourDefinitionFromList(&id, &colourDef, list))
+    if (!GetColourDefinitionFromList(&id, &colourDef, list))
         return;
 
     m_ChangedAppColours[id] = colourDef.defaultValue;
@@ -937,6 +943,28 @@ void EnvironmentSettingsDlg::OnClickAppColourDefault(cb_unused wxCommandEvent &e
 
     wxButton *btnDefault = XRCCTRL(*this, "btnDefaultColour", wxButton);
     btnDefault->Enable(false);
+}
+
+void EnvironmentSettingsDlg::OnClickAppResetAll(cb_unused wxCommandEvent& event)
+{
+    wxListBox* list = XRCCTRL(*this, "lstColours", wxListBox);
+    const int count = list->GetCount();
+    const int selected = list->GetSelection();
+    for (int index = 0; index < count; ++index)
+    {
+        wxString id;
+        ColourManager::ColourDef colourDef;
+
+        if (!GetColourDefinitionFromList(&id, &colourDef, list, index))
+            continue;
+
+        m_ChangedAppColours[id] = colourDef.defaultValue;
+        if (index == selected)
+        {
+            wxColourPickerCtrl *picker = XRCCTRL(*this, "colourPicker", wxColourPickerCtrl);
+            picker->SetColour(colourDef.defaultValue);
+        }
+    }
 }
 
 void EnvironmentSettingsDlg::WriteApplicationColours()
