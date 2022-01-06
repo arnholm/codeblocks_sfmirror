@@ -26,14 +26,13 @@
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1">
 										<sashpos>-1</sashpos>
-										<minsize>100</minsize>
 										<style>wxSP_3DSASH|wxSP_LIVE_UPDATE</style>
 										<object class="wxListCtrl" name="lstFlatProfile">
 											<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
 										</object>
 										<object class="wxTextCtrl" name="txtHelpFlatProfile">
 											<bg>wxSYS_COLOUR_MENU</bg>
-											<style>wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER|wxHSCROLL</style>
+											<style>wxTE_MULTILINE|wxTE_READONLY|wxBORDER_NONE|wxHSCROLL</style>
 										</object>
 									</object>
 									<flag>wxEXPAND</flag>
@@ -51,14 +50,13 @@
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW2">
 										<sashpos>-1</sashpos>
-										<minsize>100</minsize>
 										<style>wxSP_3D|wxSP_LIVE_UPDATE</style>
 										<object class="wxListCtrl" name="lstCallGraph">
 											<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
 										</object>
 										<object class="wxTextCtrl" name="txtHelpCallGraph">
 											<bg>wxSYS_COLOUR_MENU</bg>
-											<style>wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER|wxHSCROLL</style>
+											<style>wxTE_MULTILINE|wxTE_READONLY|wxBORDER_NONE|wxHSCROLL</style>
 										</object>
 									</object>
 									<flag>wxEXPAND</flag>
@@ -76,7 +74,7 @@
 								<object class="sizeritem">
 									<object class="wxTextCtrl" name="txtMisc">
 										<size>600,400</size>
-										<style>wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER|wxHSCROLL</style>
+										<style>wxTE_MULTILINE|wxTE_READONLY|wxBORDER_NONE|wxHSCROLL</style>
 									</object>
 									<flag>wxEXPAND</flag>
 									<border>5</border>
