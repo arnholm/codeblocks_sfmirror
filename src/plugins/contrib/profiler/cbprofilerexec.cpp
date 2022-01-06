@@ -87,7 +87,7 @@ int CBProfilerExecDlg::Execute(wxString exename, wxString dataname, struct_confi
     else
         ShowOutput(gprof_errors, true);
 
-    return (exitCode == 0) ? 0 : -1;
+    return 0;
 }
 
 void CBProfilerExecDlg::ShowOutput(const wxArrayString& msg, bool error)
