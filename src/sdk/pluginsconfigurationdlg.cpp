@@ -193,6 +193,7 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
     int count = 0;
     long sel = -1;
     bool skip = false;
+    wxString failure;
     while (true)
     {
         sel = list->GetNextItem(sel, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -207,6 +208,12 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
                         &skip);
             if (skip)
                 break;
+
+            if (elem->plugin->IsAttached() and (not elem->plugin->CanDetach()))
+            {
+                failure << elem->info.title << _T('\n');
+                continue;
+            }
 
             if (!isEnable && elem->plugin->IsAttached())
                 Manager::Get()->GetPluginManager()->DetachPlugin(elem->plugin);
@@ -233,6 +240,8 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
             Manager::Get()->GetConfigManager(_T("plugins"))->Write(baseKey, elem->plugin->IsAttached());
         }
     }
+    if (!failure.IsEmpty())                                                     //(ph 2021/07/15)
+        cbMessageBox(_("One or more plugins were not enabled/disabled successfully:\n\n") + failure, _("Warning"), wxICON_WARNING, this); //(ph 2021/07/15)
 }
 
 void PluginsConfigurationDlg::OnInstall(cb_unused wxCommandEvent& event)
@@ -286,8 +295,9 @@ void PluginsConfigurationDlg::OnUninstall(cb_unused wxCommandEvent& event)
         const PluginElement* elem = (const PluginElement*)list->GetItemData(sel);
         if (elem && elem->plugin)
         {
+            wxString title = elem->info.title; //fetch info before uninstalling
             if (!Manager::Get()->GetPluginManager()->UninstallPlugin(elem->plugin))
-                failure << elem->info.title << _T('\n');
+                failure << title << _T('\n');
         }
     }
 

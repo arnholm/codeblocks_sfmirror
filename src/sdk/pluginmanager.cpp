@@ -370,6 +370,9 @@ bool PluginManager::UninstallPlugin(cbPlugin* plugin, bool removeFiles)
     wxString settingsOffFilename;
     wxArrayString extrafiles;
 
+    if (not plugin->CanDetach())
+        return false;
+
     // find the plugin element
     for (size_t i = 0; i < m_Plugins.GetCount(); ++i)
     {
