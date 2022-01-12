@@ -151,23 +151,22 @@ void BacktraceDlg::OnJump(cb_unused wxCommandEvent& event)
         return;
 
     // find selected item index
-    int index = m_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const int index = m_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
     wxListItem info;
-    info.m_itemId = index;
-    info.m_mask = wxLIST_MASK_TEXT;
-    info.m_col = 3;
-    wxString file = m_list->GetItem(info) ? info.m_text : _T("");
-    info.m_col = 4;
-    wxString line = m_list->GetItem(info) ? info.m_text : _T("");
-    if (!file.IsEmpty() && !line.IsEmpty())
+    info.SetId(index);
+    info.SetMask(wxLIST_MASK_TEXT);
+    info.SetColumn(3);
+    const wxString file(m_list->GetItem(info) ? info.GetText() : wxString());
+    info.SetColumn(4);
+    const wxString line(m_list->GetItem(info) ? info.GetText() : wxString());
+    if (!file.empty() && !line.empty())
     {
         long line_number;
         line.ToLong(&line_number, 10);
 
-
         cbDebuggerPlugin *plugin = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
-        if(plugin)
+        if (plugin)
             plugin->SyncEditor(file, line_number, false);
     }
 }
@@ -219,23 +218,24 @@ void BacktraceDlg::OnSave(cb_unused wxCommandEvent& event)
     for (int ii = 0; ii < m_list->GetItemCount(); ++ii)
     {
         wxListItem info;
-        info.m_itemId = ii;
-        info.m_col = 1;
-        info.m_mask = wxLIST_MASK_TEXT;
-        wxString addr = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 2;
-        wxString func = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 3;
-        wxString file = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 4;
-        wxString line = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
+        info.SetId(ii);
+        info.SetColumn(1);
+        info.SetMask(wxLIST_MASK_TEXT);
+        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(2);
+        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(3);
+        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(4);
+        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
 
-        text << _T('#') << m_list->GetItemText(ii) << _T(' ')
-            << addr << _T('\t')
-            << func << _T(' ')
-            << _T('(') << file << _T(':') << line << _T(')')
-            << _T('\n');
+        text << '#' << m_list->GetItemText(ii) << ' '
+             << addr << '\t'
+             << func << ' '
+             << '(' << file << ':' << line << ')'
+             << '\n';
     }
+
     cbMessageBox(_("File saved"), _("Result"), wxICON_INFORMATION);
 }
 
@@ -245,23 +245,24 @@ void BacktraceDlg::OnCopyToClipboard(cb_unused wxCommandEvent& event)
     for (int ii = 0; ii < m_list->GetItemCount(); ++ii)
     {
         wxListItem info;
-        info.m_itemId = ii;
-        info.m_col = 1;
-        info.m_mask = wxLIST_MASK_TEXT;
-        wxString addr = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 2;
-        wxString func = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 3;
-        wxString file = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
-        info.m_col = 4;
-        wxString line = m_list->GetItem(info) && !info.m_text.IsEmpty() ? info.m_text : _T("??");
+        info.SetId(ii);
+        info.SetColumn(1);
+        info.SetMask(wxLIST_MASK_TEXT);
+        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(2);
+        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(3);
+        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        info.SetColumn(4);
+        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
 
-        text << _T('#') << m_list->GetItemText(ii) << _T(' ')
-            << addr << _T('\t')
-            << func << _T(' ')
-            << _T('(') << file << _T(':') << line << _T(')')
-            << _T('\n');
+        text << '#' << m_list->GetItemText(ii) << ' '
+             << addr << '\t'
+             << func << ' '
+             << '(' << file << ':' << line << ')'
+             << '\n';
     }
+
     wxTextDataObject *object = new wxTextDataObject(text);
     if(wxTheClipboard->Open())
     {

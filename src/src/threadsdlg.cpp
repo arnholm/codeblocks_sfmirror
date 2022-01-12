@@ -126,21 +126,18 @@ void ThreadsDlg::OnSwitchThread(cb_unused wxCommandEvent& event)
     // find selected item index
     int index = m_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
-    wxString thread;
     wxListItem info;
-    info.m_itemId = index;
-    info.m_col = 1;
-    info.m_mask = wxLIST_MASK_TEXT;
-    if (m_list->GetItem(info))
-        thread = info.m_text;
-    else
+    info.SetId(index);
+    info.SetColumn(1);
+    info.SetMask(wxLIST_MASK_TEXT);
+    if (!m_list->GetItem(info))
         return;
 
     unsigned long thread_num;
-    if (thread.ToULong(&thread_num, 10))
+    if (info.GetText().ToULong(&thread_num, 10))
     {
         cbDebuggerPlugin *plugin = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
-        if(plugin)
+        if (plugin)
             plugin->SwitchToThread(thread_num);
     }
 }

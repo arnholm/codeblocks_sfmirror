@@ -75,13 +75,13 @@ void CppCheckListLog::SyncEditor(int SelIndex)
     File = Filename.GetFullPath();
 
     wxListItem li;
-    li.m_itemId = SelIndex;
-    li.m_col = 1;
-    li.m_mask = wxLIST_MASK_TEXT;
+    li.SetId(SelIndex);
+    li.SetColumn(1);
+    li.SetMask(wxLIST_MASK_TEXT);
     control->GetItem(li);
 
     long Line = 0;
-    li.m_text.ToLong(&Line);
+    li.GetText().ToLong(&Line);
     cbEditor* Editor = Manager::Get()->GetEditorManager()->Open(File);
     if (!Line || !Editor)
         return;

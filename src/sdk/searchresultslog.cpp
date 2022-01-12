@@ -71,12 +71,12 @@ void cbSearchResultsLog::SyncEditor(int selIndex)
     file = filename.GetFullPath();
 
     wxListItem li;
-    li.m_itemId = selIndex;
-    li.m_col = 1;
-    li.m_mask = wxLIST_MASK_TEXT;
+    li.SetId(selIndex);
+    li.SetColumn(1);
+    li.SetMask(wxLIST_MASK_TEXT);
     control->GetItem(li);
     long line = 0;
-    li.m_text.ToLong(&line);
+    li.GetText().ToLong(&line);
     cbEditor* ed = Manager::Get()->GetEditorManager()->Open(file);
     if (!line || !ed)
         return;

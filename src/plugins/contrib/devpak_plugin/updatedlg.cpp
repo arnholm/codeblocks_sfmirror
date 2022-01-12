@@ -132,10 +132,10 @@ void UpdateDlg::SetListColumnText(int idx, int col, const wxString& text)
     wxListCtrl* lst = XRCCTRL(*this, "lvFiles", wxListCtrl);
     int index = idx == -1 ? lst->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED) : idx;
     wxListItem it;
-    it.m_itemId = index;
-    it.m_col = col;
-    it.m_mask = wxLIST_MASK_TEXT;
-    it.m_text = text;
+    it.SetId(index);
+    it.SetColumn(col);
+    it.SetMask(wxLIST_MASK_TEXT);
+    it.SetText(text);
     lst->SetItem(it);
 }
 

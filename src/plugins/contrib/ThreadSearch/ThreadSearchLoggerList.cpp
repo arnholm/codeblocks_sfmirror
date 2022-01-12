@@ -142,9 +142,9 @@ bool ThreadSearchLoggerList::GetFileLineFromListEvent(wxListEvent& /*event*/, wx
 
         // First, gets file dir
         wxString filedir;
-        listItem.m_itemId = index;
-        listItem.m_col    = ListColumns::FilePath;
-        listItem.m_mask   = wxLIST_MASK_TEXT;
+        listItem.SetId(index);
+        listItem.SetColumn(ListColumns::FilePath);
+        listItem.SetMask(wxLIST_MASK_TEXT);
 
         if ( m_pListLog->GetItem(listItem) == false ) break;
 
@@ -178,9 +178,9 @@ bool ThreadSearchLoggerList::IsLineResultLine(long index /* -1 */)
 
         // First, gets file dir
         wxString filedir;
-        listItem.m_itemId = index;
-        listItem.m_col    = ListColumns::FilePath;
-        listItem.m_mask   = wxLIST_MASK_TEXT;
+        listItem.SetId(index);
+        listItem.SetColumn(ListColumns::FilePath);
+        listItem.SetMask(wxLIST_MASK_TEXT);
 
         if ( m_pListLog->GetItem(listItem) == false ) break;
 
