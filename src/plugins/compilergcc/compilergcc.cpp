@@ -1383,8 +1383,8 @@ int CompilerGCC::DoRunQueue()
         // piping and other shell features can be evaluated.
         if (!platform::windows)
         {
-            wxString shell = Manager::Get()->GetConfigManager(_T("app"))->Read(_T("/console_shell"), DEFAULT_CONSOLE_SHELL);
-            cmd->command = shell + _T(" '") + cmd->command + _T("'");
+            const wxString shell(Manager::Get()->GetConfigManager("app")->Read("/console_shell", DEFAULT_CONSOLE_SHELL));
+            cmd->command = shell + " '" + cmd->command + "'";
         }
     }
 
@@ -2165,10 +2165,11 @@ bool CompilerGCC::DoCleanWithMake(ProjectBuildTarget* bt)
                    cltError);
         return false;
     }
+
     Compiler* tgtCompiler = CompilerFactory::GetCompiler(bt->GetCompilerID());
     if (!tgtCompiler)
     {
-        const wxString &message = F(_("Invalid compiler selected for target '%s'!"), getBuildTargetName(bt).wx_str());
+        const wxString message = wxString::Format(_("Invalid compiler selected for target '%s'!"), getBuildTargetName(bt));
 
         LogMessage(COMPILER_ERROR_LOG + message, cltError);
         return false;
@@ -2180,8 +2181,16 @@ bool CompilerGCC::DoCleanWithMake(ProjectBuildTarget* bt)
     wxSetWorkingDirectory(m_pBuildingProject->GetExecutionDir());
 
     cbExpandBackticks(cmd);
+
+    // Run the clean command in the same shell used for building
+    if (!platform::windows)
+    {
+        const wxString shell(Manager::Get()->GetConfigManager("app")->Read("/console_shell", DEFAULT_CONSOLE_SHELL));
+        cmd = shell + " '" + cmd + "'";
+    }
+
     if (showOutput)
-        LogMessage(F(_("Executing clean command: %s"), cmd.wx_str()), cltNormal);
+        LogMessage(wxString::Format(_("Executing clean command: %s"), cmd), cltNormal);
 
     long result = wxExecute(cmd, output, errors, wxEXEC_SYNC);
     if (showOutput)
