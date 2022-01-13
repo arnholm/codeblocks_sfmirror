@@ -190,7 +190,7 @@ void wxsBitmapComboBox::OnEnumWidgetProperties(cb_unused long Flags) {
     if (n > 127)
         n = 127;
 
-    for (int i = 0; i < n; ++i++)
+    for (int i = 0; i < n; ++i)
     {
         ss = aa.Item(i);
         sImageNames[i] = ss;
