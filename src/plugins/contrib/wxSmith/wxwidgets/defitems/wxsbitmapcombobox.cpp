@@ -180,22 +180,24 @@ void wxsBitmapComboBox::OnEnumWidgetProperties(cb_unused long Flags) {
     static wxString         sImageNames[128];
     static const wxChar    *pImageNames[128];
 
-    int                     i,n;
     wxString                ss, tt;
     wxArrayString           aa;
 
 // find available image lists and store them in our local static arrays
 
     FindAllImageLists(aa);
-    n = aa.GetCount();
-    if (n > 127) n = 127;
+    int n = aa.GetCount();
+    if (n > 127)
+        n = 127;
 
-    for(i=0; i<n; i++) {
+    for (int i = 0; i < n; ++i++)
+    {
         ss = aa.Item(i);
         sImageNames[i] = ss;
-        pImageNames[i] = (const wxChar *) sImageNames[i];
-    };
-    pImageNames[n] = NULL;
+        pImageNames[i] = sImageNames[i].wx_str();
+    }
+
+    pImageNames[n] = nullptr;
 
     WXS_EDITENUM(wxsBitmapComboBox, mImageList, _("Image List"), _("mImageList"), pImageNames, _("<none>"))
 

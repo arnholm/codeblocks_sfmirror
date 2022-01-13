@@ -74,7 +74,7 @@ namespace
         _("Listbox"),
         _("Hot light"),
         _("Gradient of active caption"),
-        _("Gradnent of inactive caption"),
+        _("Gradient of inactive caption"),
         _("Selected menu item"),
         _("Menu bar"),
         0
