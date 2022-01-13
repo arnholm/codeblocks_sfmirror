@@ -149,9 +149,9 @@ END_EVENT_TABLE()
 IncrementalSearch::IncrementalSearch():
         m_SearchText(wxEmptyString),
         m_textCtrlBG_Default( wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW) ),
-        m_pToolbar(0l),
-        m_pTextCtrl(0l),
-        m_pEditor(0l),
+        m_pToolbar(nullptr),
+        m_pTextCtrl(nullptr),
+        m_pEditor(nullptr),
         m_NewPos(-1),
         m_OldPos(-1),
         m_SelStart(-1),

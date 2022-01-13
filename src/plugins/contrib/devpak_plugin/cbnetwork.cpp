@@ -52,7 +52,7 @@ void cbNetwork::Notify(cbNetEvent event, const wxString& msg, int integer)
 
 bool cbNetwork::IsConnected()
 {
-    return m_pStream != 0;
+    return m_pStream != nullptr;
 }
 
 bool cbNetwork::IsBusy()
@@ -76,11 +76,11 @@ void cbNetwork::Disconnect()
     m_Abort = false;
     if (m_pStream)
         delete m_pStream;
-    m_pStream = 0;
+    m_pStream = nullptr;
 
     if (m_pURL)
         delete m_pURL;
-    m_pURL = 0;
+    m_pURL = nullptr;
 }
 
 bool cbNetwork::Connect(const wxString& remote)

@@ -91,8 +91,8 @@ void MouseSap::OnAttach()
 	// is FALSE, it means that the application did *not* "load"
 	// (see: does not need) this plugin...
 
-    m_pMyLog = NULL;
-    m_pMMSapEvents = 0;
+    m_pMyLog = nullptr;
+    m_pMMSapEvents = nullptr;
 
     wxWindow* pcbWindow = Manager::Get()->GetAppWindow();
     m_pMS_Window = pcbWindow;
@@ -144,7 +144,7 @@ void MouseSap::OnRelease(bool /*appShutDown*/)
 
     if (m_pMMSapEvents)
         delete m_pMMSapEvents;
-    m_pMMSapEvents = 0;
+    m_pMMSapEvents = nullptr;
     m_bMouseSapEnabled = false;
 }
 // ----------------------------------------------------------------------------

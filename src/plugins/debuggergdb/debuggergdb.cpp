@@ -620,28 +620,28 @@ int DebuggerGDB::LaunchProcess(const wxString& cmd, const wxString& cwd)
     if (!m_Pid)
     {
         delete m_pProcess;
-        m_pProcess = 0;
+        m_pProcess = nullptr;
         Log(_("failed"), Logger::error);
         return -1;
     }
     else if (!m_pProcess->GetOutputStream())
     {
         delete m_pProcess;
-        m_pProcess = 0;
+        m_pProcess = nullptr;
         Log(_("failed (to get debugger's stdin)"), Logger::error);
         return -2;
     }
     else if (!m_pProcess->GetInputStream())
     {
         delete m_pProcess;
-        m_pProcess = 0;
+        m_pProcess = nullptr;
         Log(_("failed (to get debugger's stdout)"), Logger::error);
         return -2;
     }
     else if (!m_pProcess->GetErrorStream())
     {
         delete m_pProcess;
-        m_pProcess = 0;
+        m_pProcess = nullptr;
         Log(_("failed (to get debugger's stderr)"), Logger::error);
         return -2;
     }
@@ -666,7 +666,7 @@ bool DebuggerGDB::Debug(bool breakOnEntry)
     if (m_pProcess || WaitingCompilerToFinish())
         return false;
 
-    m_pProject = 0;
+    m_pProject = nullptr;
     m_NoDebugInfo = false;
 
     // can only debug projects or attach to processes
@@ -710,8 +710,8 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
     ProjectManager* prjMan = Manager::Get()->GetProjectManager();
 
     // select the build target to debug
-    ProjectBuildTarget* target = 0;
-    Compiler* actualCompiler = 0;
+    ProjectBuildTarget* target = nullptr;
+    Compiler* actualCompiler = nullptr;
     if ( (m_PidToAttach == 0) && m_pProject)
     {
         Log(_("Selecting target: "));

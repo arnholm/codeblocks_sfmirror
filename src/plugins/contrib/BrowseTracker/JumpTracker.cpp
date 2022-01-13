@@ -75,7 +75,7 @@ JumpTracker::JumpTracker()
     m_IsAttached = false;
     m_bJumpInProgress = false;
     m_bWrapJumpEntries = false;
-    m_pToolBar = 0;
+    m_pToolBar = nullptr;
 }
 // ----------------------------------------------------------------------------
 JumpTracker::~JumpTracker()

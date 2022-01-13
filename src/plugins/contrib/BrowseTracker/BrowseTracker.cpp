@@ -204,7 +204,7 @@ BrowseTracker::BrowseTracker()
     m_nBrowseMarkNextSentry = 0;
     m_nBrowsedEditorCount = 0;
 
-    m_pCfgFile = 0;
+    m_pCfgFile = nullptr;
 
     m_MouseDownTime = 0;
     m_ToggleKey = Left_Mouse;
@@ -212,7 +212,7 @@ BrowseTracker::BrowseTracker()
     m_ClearAllKey = ClearAllOnSingleClick;
     m_IsMouseDoubleClick = false;
     m_UpdateUIEditorIndex = 0;
-    m_pJumpTracker = 0;
+    m_pJumpTracker = nullptr;
     m_bProjectClosing = false;
     m_bAppShutdown = false;
     m_nProjectClosingFileCount = 0;
@@ -232,8 +232,8 @@ BrowseTracker::~BrowseTracker()
 {
     //dtor
     m_bProjectClosing = false;
-    m_pMenuBar = 0;
-    m_pToolBar = 0;
+    m_pMenuBar = nullptr;
+    m_pToolBar = nullptr;
 
     // Activated editor stack maintenance //(2021/06/19)
     DeleteNotebookStack();
@@ -398,7 +398,7 @@ void BrowseTracker::OnRelease(bool appShutDown)
         m_pJumpTracker->OnRelease(appShutDown);
         m_pJumpTracker->m_IsAttached = false;
         delete m_pJumpTracker; //causes crash on CB exit (heap area already freed)
-        m_pJumpTracker = 0;
+        m_pJumpTracker = nullptr;
         m_ToolbarIsShown = IsViewToolbarEnabled();
     }
 

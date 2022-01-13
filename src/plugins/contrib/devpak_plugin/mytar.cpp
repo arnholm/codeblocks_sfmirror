@@ -15,7 +15,7 @@
 WX_DEFINE_OBJARRAY(ReplacersArray);
 
 TAR::TAR(const wxString& filename)
-    : m_pFile(0),
+    : m_pFile(nullptr),
     m_SkipBytes(0),
     m_Size(0)
 {
@@ -48,8 +48,11 @@ bool TAR::Open(const wxString& filename)
 void TAR::Close()
 {
     if (m_pFile)
+    {
         fclose(m_pFile);
-    m_pFile = 0;
+        m_pFile = nullptr;
+    }
+
     Reset();
     m_Size = 0;
 }

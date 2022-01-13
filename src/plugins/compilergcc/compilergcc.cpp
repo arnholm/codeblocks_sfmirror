@@ -484,12 +484,12 @@ void CompilerGCC::OnRelease(bool appShutDown)
             slot.icon = nullptr;
         }
 
-        m_pLog = 0;
+        m_pLog = nullptr;
 
         CodeBlocksLogEvent evt(cbEVT_REMOVE_LOG_WINDOW, m_pListLog);
         m_pListLog->DestroyControls();
         Manager::Get()->ProcessEvent(evt);
-        m_pListLog = 0;
+        m_pListLog = nullptr;
     }
 
     // let wx handle this on shutdown ( if we return here Valgrind will be sad :'( )
@@ -2246,9 +2246,9 @@ void CompilerGCC::InitBuildState(BuildJob job, const wxString& target)
     m_BuildJob             = job;
     m_BuildState           = bsNone;
     m_NextBuildState       = bsProjectPreBuild;
-    m_pBuildingProject     = 0;
-    m_pLastBuildingProject = 0;
-    m_pLastBuildingTarget  = 0;
+    m_pBuildingProject     = nullptr;
+    m_pLastBuildingProject = nullptr;
+    m_pLastBuildingTarget  = nullptr;
     m_BuildingTargetName   = target;
     m_CommandQueue.Clear();
 }
@@ -2264,11 +2264,11 @@ void CompilerGCC::ResetBuildState()
     m_BuildJob = bjIdle;
     m_BuildState = bsNone;
     m_NextBuildState = bsNone;
-    m_pBuildingProject = 0;
+    m_pBuildingProject = nullptr;
     m_BuildingTargetName.Clear();
 
-    m_pLastBuildingProject = 0;
-    m_pLastBuildingTarget = 0;
+    m_pLastBuildingProject = nullptr;
+    m_pLastBuildingTarget = nullptr;
 
     m_CommandQueue.Clear();
 
@@ -2584,14 +2584,14 @@ void CompilerGCC::BuildStateManagement()
             if (m_RunProjectPostBuild || m_pBuildingProject->GetAlwaysRunPostBuildSteps())
                 cmds = dc.GetPostBuildCommands(0);
             // reset
-            m_pLastBuildingTarget = 0;
+            m_pLastBuildingTarget = nullptr;
             m_RunProjectPostBuild = false;
             break;
         }
 
         case bsProjectDone:
         {
-            m_pLastBuildingProject = 0;
+            m_pLastBuildingProject = nullptr;
             break;
         }
 
@@ -3518,7 +3518,7 @@ void CompilerGCC::OnProjectUnloaded(CodeBlocksEvent& event)
 {
     // just make sure we don't keep an invalid pointer around
     if (m_pProject == event.GetProject())
-        m_pProject = 0;
+        m_pProject = nullptr;
 }
 
 void CompilerGCC::OnWorkspaceClosed(cb_unused CodeBlocksEvent& event)

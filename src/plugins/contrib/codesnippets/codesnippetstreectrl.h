@@ -174,7 +174,7 @@ class CodeSnippetsTreeCtrl : public wxTreeCtrl
         bool     IsFileLinkSnippet (wxTreeItemId treeItemId  );
         wxString GetFileLinkExt (wxTreeItemId treeItemId  );
 
-        bool IsTreeBusy(){return (m_pPropertiesDialog != 0);}
+        bool IsTreeBusy(){return (m_pPropertiesDialog != nullptr);}
 
         void            SetSnippetImage(wxTreeItemId itemId);
         wxTreeItemId    GetAssociatedItemID(){return m_MnuAssociatedItemID;}

@@ -87,7 +87,7 @@ CodeSnippetsTreeCtrl::CodeSnippetsTreeCtrl(wxWindow *parent, const wxWindowID id
 {
     m_fileChanged = false;
     m_bMouseExitedWindow = false;
-    m_pPropertiesDialog = 0;
+    m_pPropertiesDialog = nullptr;
     m_bShutDown = false;
     m_mimeDatabase = 0;
     m_bBeginInternalDrag = false;
@@ -1816,7 +1816,7 @@ int CodeSnippetsTreeCtrl::ExecuteDialog(SnippetProperty* pdlg, wxSemaphore& wait
         if ( GetConfig()->IsPlugin() )
             GetConfig()->GetMenuBar()->Enable(idViewSnippets, true);
 
-        m_pPropertiesDialog = 0;
+        m_pPropertiesDialog = nullptr;
 
         return retcode;
 }

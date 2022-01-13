@@ -96,7 +96,7 @@ cbDragScroll::~cbDragScroll()
 {
 	//dtor
 	delete m_pMouseEventsHandler;
-	m_pMouseEventsHandler = 0;
+	m_pMouseEventsHandler = nullptr;
 }
 
 // ----------------------------------------------------------------------------

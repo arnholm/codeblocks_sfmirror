@@ -16,7 +16,7 @@
 #include <wx/msgdlg.h>
 
 DevPakInstaller::DevPakInstaller()
-    : m_pDlg(0)
+    : m_pDlg(nullptr)
 {
 	//ctor
 }
@@ -39,7 +39,7 @@ void DevPakInstaller::EndProgressDialog()
 {
 	if (m_pDlg)
         m_pDlg->Destroy();
-    m_pDlg = 0;
+    m_pDlg = nullptr;
 }
 
 void DevPakInstaller::UpdateProgress(int val, const wxString& newtext)
