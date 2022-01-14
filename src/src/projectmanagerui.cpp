@@ -1494,15 +1494,52 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
     }
     else if (event.GetId() == idMenuRemoveFilePopup)
     {
-        if ( ProjectFile* pf = ftd->GetProjectFile() )
+        wxArrayTreeItemIds selections;
+        std::map <cbProject*, wxArrayTreeItemIds> projectMap;
+
+        // Classify selected files by project
+        const size_t fileCount = m_pTree->GetSelections(selections);
+        for (size_t i = 0; i < fileCount; ++i)
         {
-            // remove single file
-            prj->BeginRemoveFiles();
-            pm->RemoveFileFromProject(pf, prj);
-            prj->CalculateCommonTopLevelPath();
-            if (prj->GetCommonTopLevelPath() == oldpath)
-                m_pTree->Delete(sel);
-            prj->EndRemoveFiles();
+            if (!selections[i].IsOk())
+                continue;
+
+            FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(selections[i]);
+            if (!ftd)
+                continue;
+
+            cbProject* prj = ftd->GetProject();
+            if (!prj)
+                continue;
+
+            projectMap.insert(std::pair <cbProject*, wxArrayTreeItemIds> (prj, wxArrayTreeItemIds())).first->second.Add(selections[i]);
+        }
+
+        if (!projectMap.empty())
+        {
+            // Remove files project by project
+            for (std::map <cbProject*, wxArrayTreeItemIds>::const_iterator it = projectMap.begin(); it != projectMap.end(); ++it)
+            {
+                cbProject* prj = it->first;
+                prj->BeginRemoveFiles();
+                const size_t idCount = it->second.GetCount();
+                for (size_t i = 0; i < idCount; ++i)
+                {
+                    FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(it->second[i]);
+                    ProjectFile* pf = ftd->GetProjectFile();
+                    if (!pf)
+                        continue;
+
+                    const wxString topLevelPath(prj->GetCommonTopLevelPath());
+                    pm->RemoveFileFromProject(pf, prj);
+                    prj->CalculateCommonTopLevelPath();
+                    if (prj->GetCommonTopLevelPath() == topLevelPath)
+                        m_pTree->Delete(selections[i]);
+                }
+
+                prj->EndRemoveFiles();
+            }
+
             RebuildTree();
         }
     }
