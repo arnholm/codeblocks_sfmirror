@@ -210,33 +210,30 @@ void wxsImagePanel::OnEnumContainerProperties(cb_unused long Flags)
 {
     static wxString      sImageNames[128];
     static const wxChar *pImageNames[128];
-    int                  i,n,k;
-    wxsItemResData      *res;
-    wxsTool             *tool;
-    wxString             ss, tt;
 
 // find available images, and pointer to current imagelist
 
-    res = GetResourceData();
-    n = 0;
-    sImageNames[n] = _("<none>");
-    pImageNames[n] = (const wxChar *) sImageNames[n];
-    n += 1;
-    k = res->GetToolsCount();
-    for (i=0; i<k; i++)
-    {
-        tool = res->GetTool(i);
-        ss = tool->GetUserClass();
+    wxsItemResData* res = GetResourceData();
+    sImageNames[0] = _("<none>");
+    pImageNames[0] = sImageNames[0].wx_str();
 
-        if ((ss == _T("wxImage")) && (n < 127))
+    int n = 1;
+    const int k = res->GetToolsCount();
+    for (int i = 0; i < k; ++i)
+    {
+        wxsTool* tool = res->GetTool(i);
+        wxString ss(tool->GetUserClass());
+
+        if ((ss == "wxImage") && (n < 127))
         {
             ss = tool->GetVarName();
             sImageNames[n] = ss;
-            pImageNames[n] = (const wxChar *) sImageNames[n];
-            n += 1;
+            pImageNames[n] = sImageNames[n].wx_str();
+            n++;
         }
     }
-    pImageNames[n] = NULL;
+
+    pImageNames[n] = nullptr;
 
     WXS_EDITENUM(wxsImagePanel, mImage, _("Image"), _T("image"), pImageNames, _("<none>"))
 

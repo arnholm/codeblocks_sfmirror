@@ -180,52 +180,56 @@ wxObject* wxsImageButton::OnBuildPreview(wxWindow* Parent,long Flags) {
 //------------------------------------------------------------------------------
 
 void wxsImageButton::OnEnumWidgetProperties(cb_unused long Flags) {
-static wxString         sImageNames[128];
-static const wxChar    *pImageNames[128];
-static wxString         sIndexNames[1024];
-static const wxChar    *pIndexNames[1024];
+    static wxString         sImageNames[128];
+    static const wxChar    *pImageNames[128];
+    static wxString         sIndexNames[1024];
+    static const wxChar    *pIndexNames[1024];
 
 // find available images, and pointer to current imagelist
 
-    wxsImageList* ilist = NULL;
+    wxsImageList* ilist = nullptr;
     wxsItemResData* res = GetResourceData();
-    int n = 0;
-    sImageNames[n] = _("<none>");
-    pImageNames[n] = (const wxChar *) sImageNames[n];
-    n += 1;
+    sImageNames[0] = _("<none>");
+    pImageNames[0] = sImageNames[0].wx_str();
+    int n = 1;
     int k = res->GetToolsCount();
-    for(int i=0; i < k; ++i) {
+    for (int i = 0; i < k; ++i)
+    {
         wxsTool* tool = res->GetTool(i);
-        wxString ss = tool->GetUserClass();
-
-        if ((ss == _T("wxImageList")) && (n < 127)) {
+        wxString ss(tool->GetUserClass());
+        if ((ss == "wxImageList") && (n < 127))
+        {
             ss = tool->GetVarName();
             sImageNames[n] = ss;
-            pImageNames[n] = (const wxChar *) sImageNames[n];
-            n += 1;
+            pImageNames[n] = sImageNames[n].wx_str();
+            ++n;
 
-            if (ss == mImageList) ilist = (wxsImageList *) tool;
-        };
-    };
-    pImageNames[n] = NULL;
+            if (ss == mImageList)
+                ilist = (wxsImageList *)tool;
+        }
+    }
+
+    pImageNames[n] = nullptr;
 
     WXS_EDITENUM(wxsImageButton, mImageList, _("Image List"), _T("image_list"), pImageNames, _("<none>"))
 
 // make drop-down list for image index selection
 
-    n = 0;
-    sIndexNames[n] = _("<none>");
-    pIndexNames[n] = (const wxChar *) sIndexNames[n];
-    n += 1;
-    if (ilist == NULL) k = 0;
-    else               k = ilist->GetCount();
+    sIndexNames[0] = _("<none>");
+    pIndexNames[0] = sIndexNames[0].wx_str();
+    n = 1;
+    if (ilist)
+    {
+        k = ilist->GetCount();
+        for (int i = 0; i < k; ++i)
+        {
+            sIndexNames[n].Printf("%d", i);
+            pIndexNames[n] = sIndexNames[n].wx_str();
+            ++n;
+        }
+    }
 
-    for(int i = 0; i < k; ++i) {
-        sIndexNames[n].Printf(_("%d"), i);
-        pIndexNames[n] = (const wxChar *) sIndexNames[n];
-        n += 1;
-    };
-    pIndexNames[n] = NULL;
+    pIndexNames[n] = nullptr;
 
     WXS_EDITENUM(wxsImageButton, mLabelIndex,    _("Label Index"),    _T("label_index"),    pIndexNames, _("<none>"));
     WXS_EDITENUM(wxsImageButton, mDisabledIndex, _("Disabled Index"), _T("disabled_index"), pIndexNames, _("<none>"));
@@ -240,9 +244,8 @@ static const wxChar    *pIndexNames[1024];
 //------------------------------------------------------------------------------
 // declare the var as a simple wxPanel
 
-void wxsImageButton::OnBuildDeclarationsCode() {
-wxString    vname;
-
-    vname = GetVarName();
-    AddDeclaration(_T("wxBitmapButton        *") + vname + _T(";"));
+void wxsImageButton::OnBuildDeclarationsCode()
+{
+    const wxString vname(GetVarName());
+    AddDeclaration("wxBitmapButton        *" + vname + ";");
 }

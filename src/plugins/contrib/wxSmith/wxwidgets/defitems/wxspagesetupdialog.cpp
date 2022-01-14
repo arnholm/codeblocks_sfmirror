@@ -237,8 +237,14 @@ void wxsPageSetupDialog::OnEnumToolProperties(cb_unused long Flags)
         wxPAPER_FANFOLD_STD_GERMAN,
         wxPAPER_FANFOLD_LGL_GERMAN
     };
+
     /*! \brief Paper ID names.
      */
+
+#pragma push_macro("_")
+#undef _
+#define _(x)   L##x
+
     static const wxChar* PaperIDNames[]  = {
         _("Use specific dimensions"),
         _("Letter, 8 1/2 by 11 inches"),
@@ -282,9 +288,10 @@ void wxsPageSetupDialog::OnEnumToolProperties(cb_unused long Flags)
         _("US Std Fanfold, 14 7/8 by 11 inches"),
         _("German Std Fanfold, 8 1/2 by 12 inches"),
         _("German Legal Fanfold, 8 1/2 by 13 inches"),
-        NULL
+        nullptr
     };
 
+#pragma pop_macro("_")
 
     // These functions are Windows only.
     if((wxPlatformInfo::Get().GetOperatingSystemId() & wxOS_WINDOWS) > 0){

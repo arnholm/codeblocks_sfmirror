@@ -63,16 +63,22 @@ void wxsAuiToolBarItem::OnEnumItemProperties(long Flags)
     WXS_SHORT_STRING(wxsAuiToolBarItem, m_ShortHelp, _("Short help"), _T("shorthelp"), wxEmptyString, false)
     WXS_STRING(wxsAuiToolBarItem, m_LongHelp, _("Long help"), _T("longhelp"), wxEmptyString, false)
 
-    static const long    ItemKindValues[] =
+    static const long ItemKindValues[] =
         { wxITEM_NORMAL,
           wxITEM_CHECK,
           wxITEM_RADIO,
           0 };
-    static const wxChar* ItemKindNames[]  =
+
+#pragma push_macro("_")
+#undef _
+#define _(x)   L##x
+    static const wxChar* ItemKindNames[] =
         { _("Normal"),
           _("Check"),
           _("Radio"),
-          0 };
+          nullptr };
+#pragma pop_macro("_")
+
     WXS_ENUM(wxsAuiToolBarItem, m_ItemKind, _("Item kind"), _T("itemkind"), ItemKindValues, ItemKindNames, wxITEM_NORMAL)
 
     WXS_BOOL(wxsAuiToolBarItem,m_DropDown,_("DropDown"),_T("dropdown"),false);

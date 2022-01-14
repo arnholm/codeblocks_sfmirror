@@ -324,7 +324,7 @@ wxObject *wxsTreeCtrl::OnBuildPreview(wxWindow *Parent, long Flags)
  */
 void wxsTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
 {
-    static wxString     sImageNames[128];
+    static wxString      sImageNames[128];
     static const wxChar *pImageNames[128];
 
     wxString            ss, tt;

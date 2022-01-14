@@ -39,9 +39,14 @@ using namespace wxsFlags;
 
 namespace
 {
+#pragma push_macro("_")
+#undef _
+
 #if wxCHECK_VERSION(3, 1, 0)
+#define _(x)   x
     static const char* wxsColourLabels[] = {
 #else
+#define _(x)   L##x
     static const wxChar* wxsColourLabels[] = {
 #endif // wxCHECK_VERSION
         _("Default"),
@@ -77,10 +82,10 @@ namespace
         _("Gradient of inactive caption"),
         _("Selected menu item"),
         _("Menu bar"),
-        0
+        nullptr
     };
 
-    const int wxsColourCount = (sizeof(wxsColourLabels) / sizeof(wxsColourLabels[0])) - 1;
+#pragma pop_macro("_")
 
     static const long wxsColourValues[] = {
         wxsCOLOUR_DEFAULT,

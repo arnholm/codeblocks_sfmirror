@@ -173,8 +173,12 @@ wxObject *wxsBmpCheckbox::OnBuildPreview(wxWindow *parent, long flags)
  */
 void wxsBmpCheckbox::OnEnumWidgetProperties(cb_unused long Flags)
 {
-    static const long         arrBorderStyles[] = {wxSOLID, wxDOT, wxLONG_DASH, wxSHORT_DASH, wxDOT_DASH};                                                            //!< Border styles array.
-    static const wxChar    *arrStyleNames[]  = { _("wxSOLID"), _("wxDOT"), _("wxLONG_DASH"), _("wxSHORT_DASH"), _("wxDOT_DASH"), NULL };        //!< Border style names array.
+    static const long    arrBorderStyles[] = {wxSOLID, wxDOT, wxLONG_DASH, wxSHORT_DASH, wxDOT_DASH};  //!< Border styles array.
+#pragma push_macro("_")
+#undef _
+#define _(x)   L##x
+    static const wxChar* arrStyleNames[] = { _("wxSOLID"), _("wxDOT"), _("wxLONG_DASH"), _("wxSHORT_DASH"), _("wxDOT_DASH"), NULL };  //!< Border style names array.
+#pragma pop_macro("_")
 
     WXS_BOOL(wxsBmpCheckbox, m_bBorder, _("Show Border"), _T("show_border"), true)
     WXS_ENUM(wxsBmpCheckbox, m_iBorderStyle, _("Border Style"), _T("border_style"), arrBorderStyles, arrStyleNames, wxDOT);

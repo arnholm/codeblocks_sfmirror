@@ -21,6 +21,9 @@ namespace
         wxBitmap(wxLedPanel16_xpm),
         false);
 
+#pragma push_macro("_")
+#undef _
+#define _(x)   L##x
     static const long    Values[] = { wxLED_COLOUR_RED, wxLED_COLOUR_CYAN, wxLED_COLOUR_MAGENTA, wxLED_COLOUR_BLUE, wxLED_COLOUR_GREEN, wxLED_COLOUR_YELLOW, wxLED_COLOUR_GREY };
     static const wxChar* Names[]  = { _("Red"), _("Cyan"), _("Magenta"), _("Blue"), _("Green"), _("Yellow"), _("Grey"), nullptr }; // Must end with NULL entry
 
@@ -32,6 +35,7 @@ namespace
 
     static const long    ValuesScroll[] = { 0, wxLEFT, wxRIGHT, wxUP, wxDOWN};
     static const wxChar* NamesScroll[]  = { _("No Scroll"), _("Left"), _("Right"), _("Up"), _("Down"), nullptr};
+#pragma pop_macro("_")
 }
 
 wxsLedPanel::wxsLedPanel(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, nullptr, nullptr, flId | flVariable)

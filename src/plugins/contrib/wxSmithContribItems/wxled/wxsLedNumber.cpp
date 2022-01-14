@@ -25,17 +25,22 @@ namespace
         false);
 
         static const long    Values[] = { wxLED_ALIGN_LEFT, wxLED_ALIGN_CENTER, wxLED_ALIGN_RIGHT};
-        static const wxChar* Names[]  = { _("Left"), _("Center"), _("Right"), NULL }; // Must end with NULL entry
+
+#pragma push_macro("_")
+#undef _
+#define _(x)   L##x
+        static const wxChar* Names[]  = { _("Left"), _("Center"), _("Right"), nullptr }; // Must end with nullptr entry
+#pragma pop_macro("_")
 }
 
-wxsLedNumber::wxsLedNumber(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, NULL, NULL, flVariable | flId | flPosition | flSize | flColours | flMinMaxSize | flExtraCode)
+wxsLedNumber::wxsLedNumber(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, nullptr, nullptr, flVariable | flId | flPosition | flSize | flColours | flMinMaxSize | flExtraCode)
 {
     //ctor
     Content      = wxString();
     Align        = wxLED_ALIGN_LEFT;
     Faded        = true;
     GetBaseProps()->m_Fg = wxColour( 0, 255, 0);
-    GetBaseProps()->m_Bg = wxColor( 0 ,0 ,0);
+    GetBaseProps()->m_Bg = wxColour( 0,   0, 0);
 }
 
 wxsLedNumber::~wxsLedNumber()

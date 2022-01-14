@@ -52,10 +52,10 @@ namespace
 
     const wxChar* NamesPtr[ResourcesCount] =
     {
-        _("wxDialog"),
-        _("wxScrollingDialog"),
-        _("wxFrame"),
-        _("wxPanel")
+        wxT("wxDialog"),
+        wxT("wxScrollingDialog"),
+        wxT("wxFrame"),
+        wxT("wxPanel")
     };
 
     wxArrayString Names(ResourcesCount,NamesPtr);
