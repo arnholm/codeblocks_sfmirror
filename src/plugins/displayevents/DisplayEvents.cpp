@@ -79,6 +79,7 @@ void DisplayEvents::OnAttach()
     pm->RegisterEventSink(cbEVT_PROJECT_END_REMOVE_FILES, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
     pm->RegisterEventSink(cbEVT_PROJECT_FILE_ADDED, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
     pm->RegisterEventSink(cbEVT_PROJECT_FILE_REMOVED, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
+    pm->RegisterEventSink(cbEVT_PROJECT_FILE_RENAMED, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
     pm->RegisterEventSink(cbEVT_PROJECT_FILE_CHANGED, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
     pm->RegisterEventSink(cbEVT_PROJECT_POPUP_MENU, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
     pm->RegisterEventSink(cbEVT_PROJECT_TARGETS_MODIFIED, new cbEventFunctor<DisplayEvents, CodeBlocksEvent>(this, &DisplayEvents::OnEventOccured));
@@ -181,6 +182,7 @@ void DisplayEvents::OnEventOccured(CodeBlocksEvent& event)
     else if(type==cbEVT_PROJECT_END_REMOVE_FILES) msg.Append(_("cbEVT_PROJECT_END_REMOVE_FILES"));
     else if(type==cbEVT_PROJECT_FILE_ADDED) msg.Append(_("cbEVT_PROJECT_FILE_ADDED"));
     else if(type==cbEVT_PROJECT_FILE_REMOVED) msg.Append(_("cbEVT_PROJECT_FILE_REMOVED"));
+    else if(type==cbEVT_PROJECT_FILE_RENAMED) msg.Append(_("cbEVT_PROJECT_FILE_RENAMED"));
     else if(type==cbEVT_PROJECT_POPUP_MENU) msg.Append(_("cbEVT_PROJECT_POPUP_MENU"));
     else if(type==cbEVT_PROJECT_TARGETS_MODIFIED) msg.Append(_("cbEVT_PROJECT_TARGETS_MODIFIED"));
     else if(type==cbEVT_PROJECT_RENAMED) msg.Append(_("cbEVT_PROJECT_RENAMED"));

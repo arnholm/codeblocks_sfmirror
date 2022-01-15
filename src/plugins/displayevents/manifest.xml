@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_plugin_manifest_file>
-    <SdkVersion major="1" minor="36"  release="0" />
+    <SdkVersion major="2" minor="7"  release="0" />
     <Plugin name="DisplayEvents">
         <Value title="DisplayEvents" />
-        <Value version="0.5" />
+        <Value version="0.6" />
         <Value description="Display events, that are registered with RegisterEventSink, in 'Code::Blocks Debug' log" />
         <Value author="Jens Lody" />
         <Value authorEmail="debian@jenslody.de" />
