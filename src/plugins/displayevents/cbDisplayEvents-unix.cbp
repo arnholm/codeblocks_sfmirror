@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="cbDisplayEvents (Unix)" />
+		<Option platforms="Unix;Mac;" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="../../devel/share/codeblocks/plugins/libDisplayEvents.so" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../../.objs/plugins/DisplayEvents" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option parameters="--debug-log --multiple-instance -ns -ni" />
+				<Option host_application="../../devel/codeblocks" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-Ulinux" />
+					<Add option="-Uunix" />
+					<Add option="`wx-config --cflags`" />
+					<Add option="-Winvalid-pch" />
+					<Add option="-fexceptions" />
+					<Add option="-fPIC" />
+					<Add option="-DCB_PRECOMP" />
+					<Add option="-DcbDEBUG" />
+					<Add directory="../../include" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs`" />
+					<Add library="codeblocks" />
+					<Add directory="../../devel" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="zip -jq9 ../../devel/share/codeblocks/DisplayEvents.zip manifest.xml" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="default;" />
+		</VirtualTargets>
+		<Unit filename="DisplayEvents.cpp" />
+		<Unit filename="DisplayEvents.h" />
+		<Unit filename="Makefile.am" />
+		<Unit filename="manifest.xml" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
