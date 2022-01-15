@@ -164,7 +164,7 @@ void ExpressionTester::OnButton1Click(wxCommandEvent& /*event*/)
             }
             else
             {
-                m_Result->SetLabel( _("???") );
+                m_Result->SetLabel("???");
             }
         }
         else

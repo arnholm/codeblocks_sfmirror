@@ -1004,7 +1004,7 @@ NassiBrick *NassiView::GenerateNewBrick(NassiTools tool)
         case NASSI_TOOL_RETURN:
             brick = new NassiReturnBrick();
             brick->SetTextByNumber( _("returning 0"), 0);
-            brick->SetTextByNumber( _("NULL"), 1);
+            brick->SetTextByNumber( "NULL", 1);
             break;
         case NASSI_TOOL_WHILE:
             brick = new NassiWhileBrick();

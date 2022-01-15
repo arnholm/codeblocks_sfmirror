@@ -83,11 +83,11 @@ int CB_Koders::Execute()
       wxString query;
       if ( language.IsEmpty() )
       {
-        query.Printf(_("http://code.openhub.net/search?s=%s"), search.c_str());
+        query.Printf("http://code.openhub.net/search?s=%s", search.c_str());
       }
       else
       {
-        query.Printf(_("http://code.openhub.net/search?s=%s&fl=%s"),
+        query.Printf("http://code.openhub.net/search?s=%s&fl=%s",
                      search.c_str(), language.c_str());
       }
 

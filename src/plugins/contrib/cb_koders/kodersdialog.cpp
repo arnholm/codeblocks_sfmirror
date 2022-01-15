@@ -115,7 +115,7 @@ wxString KodersDialog::GetSearch() const
 
 wxString KodersDialog::GetLanguage() const
 {
-  wxString language(_("*"));
+  wxString language("*");
 
   if (choLanguages && (choLanguages->GetStringSelection() != _("All Languages")))
     language = choLanguages->GetStringSelection();

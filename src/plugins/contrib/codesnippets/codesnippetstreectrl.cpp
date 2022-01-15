@@ -1928,7 +1928,7 @@ void CodeSnippetsTreeCtrl::OnIdle()
         // avoid excessive refresh
         wxString currentValue = GetItemText(GetRootItem());
         if (currentValue != nameOnly)
-            SetItemText( GetRootItem(), wxString::Format(_("%s"), nameOnly.GetData()));
+            SetItemText( GetRootItem(), wxString::Format("%s", nameOnly.GetData()));
     }
 
     ////event.Skip(); this routine is called from another OnIdle which does the

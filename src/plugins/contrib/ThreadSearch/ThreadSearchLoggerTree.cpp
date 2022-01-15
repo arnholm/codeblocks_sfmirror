@@ -338,7 +338,7 @@ void ThreadSearchLoggerTree::OnSearchBegin(const ThreadSearchFindData& findData)
         m_IndexManager.Reset();
         m_FirstItemProcessed = false;
         m_FilesParentId = m_pTreeLog->AppendItem(m_pTreeLog->GetRootItem(),
-                wxString::Format(_("=> %s"), findData.GetFindText().c_str()));
+                wxString::Format("=> %s", findData.GetFindText().c_str()));
     }
 }
 

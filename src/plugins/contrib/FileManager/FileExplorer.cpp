@@ -1504,7 +1504,7 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
     wxArrayString as=GetSelectedPaths();
     wxString prompt=_("Your are about to delete\n\n");
     for(unsigned int i=0;i<as.Count();i++)
-        prompt+=as[i]+_("\n");
+        prompt+=as[i]+'\n';
     prompt+=_("\nAre you sure?");
     if(MessageBox(m_Tree,prompt,_("Delete"),wxYES_NO)!=wxID_YES)
         return;

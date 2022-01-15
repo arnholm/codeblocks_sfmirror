@@ -2196,9 +2196,9 @@ bool CompilerGCC::DoCleanWithMake(ProjectBuildTarget* bt)
     if (showOutput)
     {
         for(size_t i = 0; i < output.GetCount(); i++)
-            LogMessage(F(_("%s"), output[i].wx_str()), cltNormal);
+            LogMessage(output[i], cltNormal);
         for(size_t i = 0; i < errors.GetCount(); i++)
-            LogMessage(F(_("%s"), errors[i].wx_str()), cltNormal);
+            LogMessage(errors[i], cltNormal);
     }
 
     return (result == 0);
@@ -3878,7 +3878,7 @@ void CompilerGCC::SaveBuildLog()
 
     Manager::Get()->GetLogManager()->Log(_("Build log saved as: "), m_PageIndex);
     wxString tempBuildLogFilename = m_BuildLogFilename;
-    tempBuildLogFilename.Replace(_("\\"), _("/"));
+    tempBuildLogFilename.Replace("\\", "/");
     wxURI tmpFilename = tempBuildLogFilename;
 
     Manager::Get()->GetLogManager()->Log(F(_T("file://%s"), tmpFilename.BuildURI().wx_str()), m_PageIndex, Logger::warning);
@@ -3971,7 +3971,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
         {
             if ( !IsProcessRunning() )
             {
-                msg = wxString::Format(_("%s (%s)"), GetErrWarnStr().wx_str(), GetMinSecStr().wx_str());
+                msg = wxString::Format("%s (%s)", GetErrWarnStr(), GetMinSecStr());
                 success = (m_LastExitCode >= 0) && (m_LastExitCode <= compiler->GetSwitches().statusSuccess);
                 LogMessage(msg, success ? cltWarning : cltError, ltAll, !success);
                 LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,

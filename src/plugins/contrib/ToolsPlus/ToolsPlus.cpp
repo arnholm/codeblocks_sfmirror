@@ -343,11 +343,11 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         setdir=false;
 
     // substitute user prompted values in the format: $inputstr{Enter your message}
-    int promptind=commandstr.Find(_("$inputstr{"));
+    int promptind=commandstr.Find("$inputstr{");
     wxString substitution;
     while (promptind>=0)
     {
-        int promptend=commandstr.Mid(promptind+10).Find(_("}"));
+        int promptend=commandstr.Mid(promptind+10).Find("}");
         if (promptend<=0)
         {
             cbMessageBox(_("Malformed $inputstr in command line -- no closing '}' found: ")+commandstr);
@@ -363,17 +363,17 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         else
             return;
         commandstr=commandstr.Left(promptind)+substitution+commandstr.Mid(promptind+10+promptend);
-        int nextind=commandstr.Mid(promptind+substitution.Len()).Find(_("$inputstr"));
+        int nextind=commandstr.Mid(promptind+substitution.Len()).Find("$inputstr");
         if (nextind>=0)
             promptind+=nextind+substitution.Len();
         else
             promptind=-1;
     }
 
-    commandstr.Replace(_("$interpreter"),wxFileName(m_ic.interps[m_interpnum].command).GetShortPath());
-    workingdir.Replace(_("$parentdir"),wxFileName(m_RunTarget).GetPath());
+    commandstr.Replace("$interpreter",wxFileName(m_ic.interps[m_interpnum].command).GetShortPath());
+    workingdir.Replace("$parentdir",wxFileName(m_RunTarget).GetPath());
     if (wxFileName::DirExists(m_RunTarget))
-        workingdir.Replace(_("$dir"),wxFileName(m_RunTarget).GetFullPath());
+        workingdir.Replace("$dir",wxFileName(m_RunTarget).GetFullPath());
 
     if (Manager::Get()->GetMacrosManager())
     {
@@ -505,16 +505,16 @@ void ToolsPlus::CreateMenu()
     for (i = 0; i < m_ic.interps.size(); i++)
     {
         wxString tail;
-        if (m_ic.interps[i].command.Find(_("$file"))>0||
-            m_ic.interps[i].command.Find(_("$relfile"))>0||
-            m_ic.interps[i].command.Find(_("$dir"))>0||
-            m_ic.interps[i].command.Find(_("$dir"))>0||
-            m_ic.interps[i].command.Find(_("$reldir"))>0||
-            m_ic.interps[i].command.Find(_("$path"))>0||
-            m_ic.interps[i].command.Find(_("$relpath"))>0||
-            m_ic.interps[i].command.Find(_("$fname"))>0||
-            m_ic.interps[i].command.Find(_("$fext"))>0||
-            m_ic.interps[i].command.Find(_("$mpaths"))>0)
+        if (m_ic.interps[i].command.Find("$file")>0||
+            m_ic.interps[i].command.Find("$relfile")>0||
+            m_ic.interps[i].command.Find("$dir")>0||
+            m_ic.interps[i].command.Find("$dir")>0||
+            m_ic.interps[i].command.Find("$reldir")>0||
+            m_ic.interps[i].command.Find("$path")>0||
+            m_ic.interps[i].command.Find("$relpath")>0||
+            m_ic.interps[i].command.Find("$fname")>0||
+            m_ic.interps[i].command.Find("$fext")>0||
+            m_ic.interps[i].command.Find("$mpaths")>0)
             tail=_T("...");
         wxString menuloc=m_ic.interps[i].menu;
         if (menuloc.StartsWith(_T(".")))
@@ -686,11 +686,11 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                     if (WildCardListMatch(m_ic.interps[i].wildcards,name))
                     {
                         m_RunTarget=filename;
-                        if (m_ic.interps[i].command.Find(_("$dir"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$reldir"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$path"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$relpath"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                        if (m_ic.interps[i].command.Find("$dir")>=0 ||
+                            m_ic.interps[i].command.Find("$reldir")>=0 ||
+                            m_ic.interps[i].command.Find("$path")>=0 ||
+                            m_ic.interps[i].command.Find("$relpath")>=0 ||
+                            m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
                             wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
@@ -716,13 +716,13 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                         if (WildCardListMatch(m_ic.interps[i].wildcards,name))
                         {
                             m_RunTarget=filename;
-                            if (m_ic.interps[i].command.Find(_("$file"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$relfile"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$fname"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$fext"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$path"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$relpath"))>=0 ||
-                                m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                            if (m_ic.interps[i].command.Find("$file")>=0 ||
+                                m_ic.interps[i].command.Find("$relfile")>=0 ||
+                                m_ic.interps[i].command.Find("$fname")>=0 ||
+                                m_ic.interps[i].command.Find("$fext")>=0 ||
+                                m_ic.interps[i].command.Find("$path")>=0 ||
+                                m_ic.interps[i].command.Find("$relpath")>=0 ||
+                                m_ic.interps[i].command.Find("$mpaths")>=0)
                             {
                                 wxString menutext=m_ic.interps[i].name;
                                 m_contextvec.Add(i);
@@ -749,13 +749,13 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
             if (WildCardListMatch(m_ic.interps[i].wildcards,name))
             {
                 m_RunTarget=filename;
-                    if (m_ic.interps[i].command.Find(_("$file"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$relfile"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$fname"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$fext"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$path"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$relpath"))>=0 ||
-                        m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                    if (m_ic.interps[i].command.Find("$file")>=0 ||
+                        m_ic.interps[i].command.Find("$relfile")>=0 ||
+                        m_ic.interps[i].command.Find("$fname")>=0 ||
+                        m_ic.interps[i].command.Find("$fext")>=0 ||
+                        m_ic.interps[i].command.Find("$path")>=0 ||
+                        m_ic.interps[i].command.Find("$relpath")>=0 ||
+                        m_ic.interps[i].command.Find("$mpaths")>=0)
                     {
                         wxString menutext=m_ic.interps[i].name;
                         m_contextvec.Add(i);
@@ -781,13 +781,13 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                     if (WildCardListMatch(m_ic.interps[i].wildcards,name))
                     {
                         m_RunTarget=filename;
-                        if (m_ic.interps[i].command.Find(_("$file"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$relfile"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$fname"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$fext"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$path"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$relpath"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                        if (m_ic.interps[i].command.Find("$file")>=0 ||
+                            m_ic.interps[i].command.Find("$relfile")>=0 ||
+                            m_ic.interps[i].command.Find("$fname")>=0 ||
+                            m_ic.interps[i].command.Find("$fext")>=0 ||
+                            m_ic.interps[i].command.Find("$path")>=0 ||
+                            m_ic.interps[i].command.Find("$relpath")>=0 ||
+                            m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
                             wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
@@ -807,11 +807,11 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                     if (WildCardListMatch(m_ic.interps[i].wildcards,name))
                     {
                         m_RunTarget=filename;
-                        if (m_ic.interps[i].command.Find(_("$dir"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$reldir"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$path"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$relpath"))>=0 ||
-                            m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                        if (m_ic.interps[i].command.Find("$dir")>=0 ||
+                            m_ic.interps[i].command.Find("$reldir")>=0 ||
+                            m_ic.interps[i].command.Find("$path")>=0 ||
+                            m_ic.interps[i].command.Find("$relpath")>=0 ||
+                            m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
                             wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
@@ -844,7 +844,7 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                     {
                         m_RunTarget=paths;
                         //TODO: need a m_TargetParent to allow the FileExplorer to define the parent of a selection (usually the root of the fileexplorer view?)
-                        if (m_ic.interps[i].command.Find(_("$mpaths"))>=0)
+                        if (m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
                             wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);

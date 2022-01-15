@@ -266,22 +266,22 @@ void CodeStatExecDlg::ShowResults(int index) {
     ProjectCodeStats& stat = m_cache[index];
 
     wxStaticText* txt_num_files = XRCCTRL(*this, "txt_num_files", wxStaticText);
-    txt_num_files->SetLabel(wxString::Format(_("%ld"), stat.numFiles));
+    txt_num_files->SetLabel(wxString::Format("%ld", stat.numFiles));
     wxStaticText* txt_skipped_files = XRCCTRL(*this, "txt_skipped_files", wxStaticText);
-    txt_skipped_files->SetLabel(wxString::Format(_("%ld"), stat.numSkippedFiles));
+    txt_skipped_files->SetLabel(wxString::Format("%ld", stat.numSkippedFiles));
     wxStaticText* txt_files_not_found = XRCCTRL(*this, "txt_files_not_found", wxStaticText);
-    txt_files_not_found->SetLabel(wxString::Format(_("%ld"), stat.numFilesNotFound));
+    txt_files_not_found->SetLabel(wxString::Format("%ld", stat.numFilesNotFound));
 
     wxStaticText* txt_Code = XRCCTRL(*this, "txt_Code", wxStaticText);
-    txt_Code->SetLabel(wxString::Format(_("%ld"), stat.codeLines));
+    txt_Code->SetLabel(wxString::Format("%ld", stat.codeLines));
     wxStaticText* txt_Empty = XRCCTRL(*this, "txt_Empty", wxStaticText);
-    txt_Empty->SetLabel(wxString::Format(_("%ld"), stat.emptyLines));
+    txt_Empty->SetLabel(wxString::Format("%ld", stat.emptyLines));
     wxStaticText* txt_Comments = XRCCTRL(*this, "txt_Comments", wxStaticText);
-    txt_Comments->SetLabel(wxString::Format(_("%ld"), stat.commentLines));
+    txt_Comments->SetLabel(wxString::Format("%ld", stat.commentLines));
     wxStaticText* txt_Code_Comments = XRCCTRL(*this, "txt_Code_Comments", wxStaticText);
-    txt_Code_Comments->SetLabel(wxString::Format(_("%ld"), stat.codeAndCommentLines));
+    txt_Code_Comments->SetLabel(wxString::Format("%ld", stat.codeAndCommentLines));
     wxStaticText* txt_Total = XRCCTRL(*this, "txt_Total", wxStaticText);
-    txt_Total->SetLabel(wxString::Format(_("%ld"), stat.totalLines));
+    txt_Total->SetLabel(wxString::Format("%ld", stat.totalLines));
 
     // If the project is not empty, display the main dialog box
     if(stat.totalLines) // avoid division by zero on empty document
