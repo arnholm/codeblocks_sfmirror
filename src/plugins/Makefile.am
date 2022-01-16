@@ -84,7 +84,7 @@ DIST_SUBDIRS = abbreviations \
 		compilergcc \
 		debuggergdb \
 		defaultmimehandler \
-    displayevents \
+		displayevents \
 		openfileslist \
 		occurrenceshighlighting \
 		projectsimporter \
