@@ -247,20 +247,20 @@ cbTool* ToolsManager::GetToolByIndex(int index)
 
 void ToolsManager::LoadTools()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("tools"));
-    wxArrayString list = cfg->EnumerateSubPaths(_("/"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("tools");
+    wxArrayString list = cfg->EnumerateSubPaths("/");
     for (unsigned int i = 0; i < list.GetCount(); ++i)
     {
         cbTool tool;
-        tool.SetName( cfg->Read(_T("/") + list[i] + _T("/name")));
-        if (tool.GetName().IsEmpty())
+        tool.SetName( cfg->Read("/" + list[i] + "/name"));
+        if (tool.GetName().empty())
             continue;
-        tool.SetCommand(cfg->Read(_T("/") + list[i] + _T("/command")));
-        if (tool.GetCommand().IsEmpty())
+        tool.SetCommand(cfg->Read("/" + list[i] + "/command"));
+        if (tool.GetCommand().empty())
             continue;
-        tool.SetParams(cfg->Read(_T("/") + list[i] + _T("/params")));
-        tool.SetWorkingDir(cfg->Read(_T("/") + list[i] + _T("/workingDir")));
-        tool.SetLaunchOption(static_cast<cbTool::eLaunchOption>(cfg->ReadInt(_T("/") + list[i] + _T("/launchOption"))));
+        tool.SetParams(cfg->Read("/" + list[i] + "/params"));
+        tool.SetWorkingDir(cfg->Read("/" + list[i] + "/workingDir"));
+        tool.SetLaunchOption(static_cast<cbTool::eLaunchOption>(cfg->ReadInt("/" + list[i] + "/launchOption")));
 
         AddTool(&tool, false);
     }
@@ -269,8 +269,8 @@ void ToolsManager::LoadTools()
 
 void ToolsManager::SaveTools()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("tools"));
-    wxArrayString list = cfg->EnumerateSubPaths(_("/"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("tools");
+    wxArrayString list = cfg->EnumerateSubPaths("/");
     for (unsigned int i = 0; i < list.GetCount(); ++i)
     {
         cfg->DeleteSubPath(list[i]);
@@ -286,12 +286,12 @@ void ToolsManager::SaveTools()
         wxString tmp;
         tmp.Printf(_T("tool%2.2d"), count++);
 
-        elem << _T("/") << tmp  << _T("/");
-        cfg->Write(elem + _T("name"), tool->GetName());
-        cfg->Write(elem + _T("command"), tool->GetCommand());
-        cfg->Write(elem + _T("params"), tool->GetParams());
-        cfg->Write(elem + _T("workingDir"), tool->GetWorkingDir());
-        cfg->Write(elem + _T("launchOption"), static_cast<int>(tool->GetLaunchOption()));
+        elem << '/' << tmp << '/';
+        cfg->Write(elem + "name", tool->GetName());
+        cfg->Write(elem + "command", tool->GetCommand());
+        cfg->Write(elem + "params", tool->GetParams());
+        cfg->Write(elem + "workingDir", tool->GetWorkingDir());
+        cfg->Write(elem + "launchOption", static_cast<int>(tool->GetLaunchOption()));
     }
 }
 

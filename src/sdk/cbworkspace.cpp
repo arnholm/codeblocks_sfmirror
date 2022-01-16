@@ -62,15 +62,15 @@ cbWorkspace::~cbWorkspace()
 void cbWorkspace::Load()
 {
     wxString fname = m_Filename.GetFullPath();
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("Loading workspace \"%s\""), fname.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Loading workspace \"%s\"", fname));
 
     if (!m_Filename.FileExists())
     {
-        Manager::Get()->GetLogManager()->DebugLog(_T("File does not exist."));
+        Manager::Get()->GetLogManager()->DebugLog("File does not exist.");
         if (!m_IsDefault)
         {
             wxString msg;
-            msg.Printf(_("Workspace '%s' does not exist..."), fname.c_str());
+            msg.Printf(_("Workspace '%s' does not exist..."), fname);
             cbMessageBox(msg, _("Error"), wxOK | wxCENTRE | wxICON_ERROR);
             // workspace wasn't loaded successfully
             m_IsOK = false;

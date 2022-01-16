@@ -204,7 +204,7 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
         if (elem && elem->plugin)
         {
             pd.Update(++count,
-                        wxString::Format(_("%s \"%s\"..."), isEnable ? _("Enabling") : _("Disabling"), elem->info.title.c_str()),
+                        wxString::Format("%s \"%s\"...", isEnable ? _("Enabling") : _("Disabling"), elem->info.title),
                         &skip);
             if (skip)
                 break;
@@ -344,7 +344,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         const PluginElement* elem = (const PluginElement*)list->GetItemData(sel);
         if (!elem || !elem->plugin)
         {
-            failure << list->GetItemText(sel) << _T('\n');
+            failure << list->GetItemText(sel) << '\n';
             continue;
         }
 
@@ -355,23 +355,23 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
 
         // normalize version
         wxString version = elem->info.version;
-        version.Replace(_T("/"), _T("_"), true);
-        version.Replace(_T("\\"), _T("_"), true);
-        version.Replace(_T("?"), _T("_"), true);
-        version.Replace(_T("*"), _T("_"), true);
-        version.Replace(_T(">"), _T("_"), true);
-        version.Replace(_T("<"), _T("_"), true);
-        version.Replace(_T(" "), _T("_"), true);
-        version.Replace(_T("\t"), _T("_"), true);
-        version.Replace(_T("|"), _T("_"), true);
+        version.Replace("/",  "_", true);
+        version.Replace("\\", "_", true);
+        version.Replace("?",  "_", true);
+        version.Replace("*",  "_", true);
+        version.Replace(">",  "_", true);
+        version.Replace("<",  "_", true);
+        version.Replace(" ",  "_", true);
+        version.Replace("\t", "_", true);
+        version.Replace("|",  "_", true);
 
         wxFileName fname;
         fname.SetPath(dd.GetPath());
-        fname.SetName(wxFileName(elem->fileName).GetName() + _T('-') + version);
+        fname.SetName(wxFileName(elem->fileName).GetName() + "-" + version);
         fname.SetExt(_T("cbplugin"));
 
         pd.Update(++count,
-                    wxString::Format(_("Exporting \"%s\"..."), elem->info.title.c_str()),
+                    wxString::Format(_("Exporting \"%s\"..."), elem->info.title),
                     &skip);
         if (skip)
             break;

@@ -103,12 +103,12 @@ void wxsImagePanel::OnBuildCreatingCode()
     else
     {
         iname  = image->GetVarName();
-        iname += _("_BMP");
+        iname += "_BMP";
     }
 
 // include files
 
-    AddHeader(_("\"wx/wxImagePanel.h\""), GetInfo().ClassName, 0);
+    AddHeader("\"wx/wxImagePanel.h\"", GetInfo().ClassName, 0);
 
 // create the panel
 

@@ -47,10 +47,10 @@ wxsImage::wxsImage(wxsItemResData *Data) :
     fn = Data->GetSrcFileName();
     ss = fn.GetPath((wxPATH_GET_VOLUME + wxPATH_GET_SEPARATOR));
     n  = ss.Len();
-    ss = ss + _("wximages") + ss[n-1];
+    ss = ss + "wximages" + ss[n-1];
 
     m_IDir = ss;
-    m_RDir = _("./wximages/");
+    m_RDir = "./wximages/";
     m_Base = fn.GetName();
 }
 
@@ -78,10 +78,10 @@ void wxsImage::OnBuildCreatingCode()
         case wxsCPP:
             {
                 vname = GetVarName();
-                bname = vname + _("_BMP");
-                xname = vname + _("_XPM");
-                AddHeader(_("<wx/image.h>"), GetInfo().ClassName, 0);
-                AddHeader(_("<wx/bitmap.h>"), GetInfo().ClassName, 0);
+                bname = vname + "_BMP";
+                xname = vname + "_XPM";
+                AddHeader("<wx/image.h>", GetInfo().ClassName, 0);
+                AddHeader("<wx/bitmap.h>", GetInfo().ClassName, 0);
 
                 // store the XPM data someplace
                 StoreXpmData();

@@ -114,12 +114,12 @@ wxString wxsGridBagSizerExtra::AllParamsCode(wxsCoderContext* Ctx)
 		case wxsCPP:
 		{
 			wxString str;
-			str = wxString::Format(_("wxGBPosition(%ld, %ld), "), row, col);
+			str = wxString::Format("wxGBPosition(%ld, %ld), ", row, col);
 			if (rowspan == 1 && colspan == 1)
-				str += _("wxDefaultSpan, ");
+				str += "wxDefaultSpan, ";
 			else
-				str += wxString::Format(_("wxGBSpan(%ld, %ld), "), rowspan, colspan);
-			str += wxsSizerFlagsProperty::GetString(Flags) + _T(", ") << Border.GetPixelsCode(Ctx);
+				str += wxString::Format("wxGBSpan(%ld, %ld), ", rowspan, colspan);
+			str += wxsSizerFlagsProperty::GetString(Flags) + ", " << Border.GetPixelsCode(Ctx);
 			return str;
 		}
 		case wxsUnknownLanguage: // fall-though

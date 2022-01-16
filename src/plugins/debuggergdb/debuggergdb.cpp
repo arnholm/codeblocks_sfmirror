@@ -1819,9 +1819,9 @@ void DebuggerGDB::SetupToolsMenu(wxMenu &menu)
     wxMenu *menuPrint = new wxMenu;
     menuPrint->AppendRadioItem(idMenuInfoPrintElementsUnlimited, _("Unlimited"),
                                _("The full arrays are printed (could lead to lock-ups if uninitialised data is printed)"));
-    menuPrint->AppendRadioItem(idMenuInfoPrintElements20, _("20"));
-    menuPrint->AppendRadioItem(idMenuInfoPrintElements50, _("50"));
-    menuPrint->AppendRadioItem(idMenuInfoPrintElements100, _("100"));
+    menuPrint->AppendRadioItem(idMenuInfoPrintElements20, "20");
+    menuPrint->AppendRadioItem(idMenuInfoPrintElements50, "50");
+    menuPrint->AppendRadioItem(idMenuInfoPrintElements100, "100");
     menuPrint->AppendRadioItem(idMenuInfoPrintElements200, _("200 (default)"));
     menu.AppendSubMenu(menuPrint, _("Print Elements"), _("Set limit on string chars or array elements to print"));
     menu.AppendCheckItem(idMenuInfoCatchThrow, _("Catch throw"),

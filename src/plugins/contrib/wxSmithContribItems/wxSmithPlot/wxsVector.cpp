@@ -140,9 +140,9 @@ wxString    s;
 
 // define the arrays
 
-    dtext = _("std::vector<double>  ") + xname + _(";");
+    dtext = "std::vector<double>  " + xname + ";";
     AddDeclaration(dtext);
-    dtext = _("std::vector<double>  ") + yname + _(";");
+    dtext = "std::vector<double>  " + yname + ";";
     AddDeclaration(dtext);
 
 // assign the data

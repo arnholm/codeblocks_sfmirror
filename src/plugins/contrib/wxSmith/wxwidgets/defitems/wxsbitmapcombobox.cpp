@@ -289,7 +289,7 @@ wxString    ss, tt;
 
 // a "," separates the image index from the text of the item
 
-    i = ss.Find(_(","));
+    i = ss.Find(",");
 
 // if a "," was found, parse the index from the text
 // if no ",", then no index and the entire string is text

@@ -449,10 +449,11 @@ bool wxsImageListEditorDlg::Execute(wxString &inName, wxArrayString &aImageData)
     wxString    ss;
 
     // need default sizes?
-    if(aImageData.GetCount() < 2){
+    if(aImageData.GetCount() < 2)
+    {
         aImageData.Clear();
-        aImageData.Add(_("16"));
-        aImageData.Add(_("16"));
+        aImageData.Add("16");
+        aImageData.Add("16");
     }
 
     // read image data into list
@@ -985,7 +986,7 @@ void wxsImageListEditorDlg::OnPanel12Paint(cb_unused wxPaintEvent &event)
             bmp = m_ImageList.GetBitmap(m_PreviewSelect);
 
     // the label
-    ss.Printf(_("%d"), m_PreviewSelect);
+    ss.Printf("%d", m_PreviewSelect);
     StaticText28->SetLabel(ss);
 
     // draw it

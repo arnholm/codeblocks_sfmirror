@@ -200,7 +200,7 @@ ProjectFileOptionsDlg::ProjectFileOptionsDlg(wxWindow* parent, const wxString& f
     m_FileName(),
     m_LastBuildStageCompilerSel(-1)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgProjectFileOptions"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgProjectFileOptions", "wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     FillGeneralProperties();
@@ -209,7 +209,7 @@ ProjectFileOptionsDlg::ProjectFileOptionsDlg(wxWindow* parent, const wxString& f
     // This must be always hidden for non-project files.
     XRCCTRL(*this, "lblAutoGen", wxStaticText)->Show(false);
 
-    SetTitle(_("Properties of ") + wxString(_("\"")) + m_FileNameStr + wxString(_("\"")));
+    SetTitle(wxString::Format(_("Properties of \"%s\""), m_FileNameStr));
 }
 
 ProjectFileOptionsDlg::~ProjectFileOptionsDlg()

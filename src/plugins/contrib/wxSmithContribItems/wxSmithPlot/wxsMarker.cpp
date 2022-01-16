@@ -70,9 +70,9 @@ wxsMarker::wxsMarker(wxsItemResData* Data):
         wxsMarkerEvents,
         wxsMarkerStyles)
 {
-    mLabel = _("*");
-    mXpos  = _("0.0");
-    mYpos  = _("0.0");
+    mLabel = "*";
+    mXpos  = "0.0";
+    mYpos  = "0.0";
 }
 
 //------------------------------------------------------------------------------
@@ -182,11 +182,11 @@ double          xp, yp;
 
     if (! mXpos.ToDouble(&xp)) {
         xp = 0.0;
-        mXpos = _("0.0");
+        mXpos = "0.0";
     };
     if (! mYpos.ToDouble(&yp)) {
         yp = 0.0;
-        mYpos = _("0.0");
+        mYpos = "0.0";
     };
 
 // the actual marker
@@ -224,9 +224,9 @@ void wxsMarker::OnBuildDeclarationsCode() {
 
 void wxsMarker::OnEnumWidgetProperties(cb_unused long Flags) {
 
-    WXS_SHORT_STRING(wxsMarker, mLabel,      _("Marker Text"),     _("mLabelText"),  _("*"), true);
-    WXS_SHORT_STRING(wxsMarker, mXpos,       _("X Position"),      _("mXpos"),       _("0.0"), true);
-    WXS_SHORT_STRING(wxsMarker, mYpos,       _("Y Position"),      _("mYpos"),       _("0.0"), true);
-    WXS_COLOUR(      wxsMarker, mPenColour,  _("Pen Colour"),      _("mPenColour"));
-    WXS_FONT(        wxsMarker, mPenFont,    _("Pen Font"),        _("mPenFont"));
+    WXS_SHORT_STRING(wxsMarker, mLabel,     _("Marker Text"), "mLabelText", "*",   true);
+    WXS_SHORT_STRING(wxsMarker, mXpos,      _("X Position"),  "mXpos",      "0.0", true);
+    WXS_SHORT_STRING(wxsMarker, mYpos,      _("Y Position"),  "mYpos",      "0.0", true);
+    WXS_COLOUR(      wxsMarker, mPenColour, _("Pen Colour"),  "mPenColour");
+    WXS_FONT(        wxsMarker, mPenFont,   _("Pen Font"),    "mPenFont");
 }
