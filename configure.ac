@@ -417,6 +417,7 @@ AC_CONFIG_FILES([Makefile
 	src/plugins/debuggergdb/resources/Makefile
 	src/plugins/defaultmimehandler/Makefile
 	src/plugins/defaultmimehandler/resources/Makefile
+	src/plugins/displayevents/Makefile
 	src/plugins/openfileslist/Makefile
 	src/plugins/occurrenceshighlighting/Makefile
 	src/plugins/occurrenceshighlighting/resources/Makefile

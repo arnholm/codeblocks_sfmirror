@@ -212,6 +212,17 @@ else
 	AC_MSG_RESULT(no)
 fi
 
+AC_MSG_CHECKING(whether to build the displayevents plugin)
+dsplayevents_default="yes"
+AC_ARG_ENABLE(displayevents, [AC_HELP_STRING([--enable-displayevents], [build the displayevents plugin (default YES)])],,
+                       enable_displayevents=$displayevents_default)
+AM_CONDITIONAL([BUILD_DISPLAYEVENTS], [test "x$enable_displayevents" = "xyes"])
+if test "x$enable_displayevents" = "xyes"; then
+	AC_MSG_RESULT(yes)
+else
+	AC_MSG_RESULT(no)
+fi
+
 AC_MSG_CHECKING(whether to build the open files list plugin)
 openfiles_default="yes"
 AC_ARG_ENABLE(open-files-list, [AC_HELP_STRING([--enable-open-files-list], [build the open files list plugin (default YES)])],,
