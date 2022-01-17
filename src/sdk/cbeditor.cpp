@@ -823,6 +823,82 @@ cbEditor::~cbEditor()
     delete m_pData;
 }
 
+
+/** \brief Local class used for opening files if they are dropped on an editor
+ */
+class EditorDropTarget :  public wxDropTarget
+{
+    cbEditor* editor;
+public:
+
+    EditorDropTarget(cbEditor* ed)
+    {
+        editor = ed;
+
+        wxDataObjectComposite* dataobj = new wxDataObjectComposite();
+        dataobj->Add(new wxTextDataObject(), true);
+        dataobj->Add(new wxFileDataObject());
+        SetDataObject(dataobj);
+    }
+
+    wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult) override
+    {
+        GetData();
+        wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
+        wxDataFormat format = dataobjComp->GetReceivedFormat();
+        wxDataObject *dataobj = dataobjComp->GetObject(format);
+        switch ( format.GetType() )
+        {
+        case wxDF_TEXT:
+        case wxDF_UNICODETEXT:
+        {
+            // Normal text is handled with editor default handler
+            wxTextDataObject *dataobjTxt = static_cast<wxTextDataObject *>(dataobj);
+            if (!dataobjTxt)
+                return wxDragError;
+
+            editor->GetControl()->DoDropText(x, y, dataobjTxt->GetText());
+            return wxDragMove;
+        }
+        break;
+        case wxDF_FILENAME:
+        {
+            // In case a file is dropped, the file is opened
+            wxFileDataObject *
+            dataobjFile = static_cast<wxFileDataObject *>(dataobj);
+            if (Manager::Get()->GetEditorManager() == nullptr)
+                return wxDragError;
+
+            // go trough all files and open them in editor
+            for (const wxString& file : dataobjFile->GetFilenames())
+                Manager::Get()->GetEditorManager()->Open(file);
+
+            return wxDragCopy;
+        }
+        break;
+        default:
+            wxFAIL_MSG( "unexpected data object format" );
+        }
+        return wxDragNone;
+    }
+
+    wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def)
+    {
+        return editor->GetControl()->DoDragEnter(x, y, def);
+    }
+
+    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
+    {
+        return editor->GetControl()->DoDragOver(x, y, def);
+    }
+
+    void  OnLeave()
+    {
+        editor->GetControl()->DoDragLeave();
+    }
+};
+
+
 void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
 {
     // first thing to do!
@@ -857,6 +933,8 @@ void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
     m_pControl = CreateEditor();
     m_pSizer->Add(m_pControl, 1, wxEXPAND);
     SetSizer(m_pSizer);
+
+    GetControl()->SetDropTarget(new EditorDropTarget(this));
 
     // the following two lines make the editors behave strangely in linux:
     // when resizing other docked windows, the editors do NOT resize too

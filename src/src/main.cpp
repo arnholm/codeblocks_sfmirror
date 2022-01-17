@@ -1035,8 +1035,6 @@ void MainFrame::CreateIDE()
     DoUpdateEditorStyle();
 
     m_pEdMan->GetNotebook()->SetDropTarget(new cbFileDropTarget(this));
-    if (m_pPrjManUI->GetNotebook())
-        m_pPrjManUI->GetNotebook()->SetDropTarget(new cbFileDropTarget(this));
 
     Manager::Get()->GetColourManager()->Load();
 }

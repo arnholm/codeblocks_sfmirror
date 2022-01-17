@@ -13,6 +13,76 @@ class cbProject;
 class cbAuiNotebook;
 class FilesGroupsAndMasks;
 class wxAuiNotebookEvent;
+class ProjectManagerUI;
+
+/** \brief Class for handling d&d operation in the tree ctrl. Basically it is an empty class
+ * we do not support dragging objects from one codeblocks instance to an other instance. This
+ * this probably fails terrible.
+ */
+class TreeDNDObject : public wxDataObjectSimple
+{
+
+    struct DNDData {
+        wxThreadIdType m_mainPID;
+    };
+
+    public:
+    TreeDNDObject() : wxDataObjectSimple(wxDataFormat("ProjectTreeObject"))
+    {
+
+    }
+
+    bool GetDataHere(void *buf) const override
+    {
+        DNDData* data = (DNDData*) buf;
+        data->m_mainPID = wxThread::GetMainId();    // Store the current codeblocks instance id
+        return true;
+    }
+
+    size_t GetDataSize() const override
+    {
+        return sizeof(DNDData);
+    }
+
+    bool SetData(size_t len, const void *buf) override
+    {
+        if(buf == nullptr || len != sizeof(DNDData))
+            return false;
+
+        DNDData* data = (DNDData*) buf;
+        // We support dnd of tree objects only inside the same codeblocks instance
+        if (data->m_mainPID != wxThread::GetMainId())
+            return false;
+
+        return true;
+    }
+
+};
+
+
+/** \brief local class for adding a file to current active project by drag and drop and also handling dragging tree items
+ * outside the tree ctrl and then back in. This does not trigger the default drag & drop handling, but the external
+ */
+class ProjectTreeDropTarget :  public wxDropTarget
+{
+    cbTreeCtrl* m_treeCtrl;
+    ProjectManagerUI* m_ui;
+
+    wxTreeItemId oldItem;   /**< Save the currently highlighted object when dragged over it. This is needed to de-highlight it when the mouse moves on*/
+
+public:
+
+    ProjectTreeDropTarget(cbTreeCtrl* ctrl, ProjectManagerUI* ui);
+    wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult) override;
+
+    /** \brief Function is called when the user moves the mouse while dragging an object
+     *
+     * If the mouse cursor is over an item label, we highlight it and store the item id.
+     * if the user moves the mouse more, we have to de-highlight the old object, and highlight the new one
+     */
+    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult defResult) override;
+};
+
 
 class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
 {
@@ -57,6 +127,8 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void ConfigureProjectDependencies(cbProject* base, wxWindow *parent) override;
         void CheckForExternallyModifiedProjects();
 
+
+
     private:
         void InitPane();
         void SwitchToProjectsPage() override;
@@ -69,13 +141,26 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void OpenFilesRecursively(wxTreeItemId& sel_id);
     private:
 
+
         void OnTabContextMenu(wxAuiNotebookEvent& event);
         void OnTabPosition(wxCommandEvent& event);
         void OnProjectFileActivated(wxTreeEvent& event);
         void OnExecParameters(wxCommandEvent& event);
         void OnTreeItemRightClick(wxTreeEvent& event);
         void OnTreeBeginDrag(wxTreeEvent& event);
-        void OnTreeEndDrag(wxTreeEvent& event);
+
+         /** \brief This function handles dropping tree items, previously collected with OnTreeBeginDrag, on the 'to' item
+         *
+         * \param to tree item on what the previously collected items should be dropped
+         */
+        bool HandleDropOnItem(const wxTreeItemId& to);
+
+        /** \brief This function tests if dropping selected tree items is allowed
+         *
+         * \param to tree item on what the previously collected items should be dropped
+         */
+        bool TestDropOnItem(const wxTreeItemId& to) const;
+
         void OnRightClick(wxCommandEvent& event);
         void OnRenameWorkspace(wxCommandEvent& event);
         void OnSaveWorkspace(wxCommandEvent& event);
@@ -150,6 +235,8 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
 
     private:
         DECLARE_EVENT_TABLE()
+
+    friend ProjectTreeDropTarget;
 };
 
 /// Almost empty implementation used in batch mode.

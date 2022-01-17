@@ -122,6 +122,10 @@ const int idNB_TabBottom = wxNewId();
 namespace
 {
 static bool ProjectCanDragNode(cbProject* project, wxTreeCtrl* tree, wxTreeItemId node);
+static bool TestProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, const wxArrayTreeItemIds& fromArray,
+                                    wxTreeItemId to);
+static bool TestProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wxTreeItemId from,
+                                             wxTreeItemId to);
 static bool ProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, wxArrayTreeItemIds& fromArray,
                         wxTreeItemId to);
 static bool ProjectVirtualFolderAdded(cbProject* project, wxTreeCtrl* tree,
@@ -135,9 +139,94 @@ static bool ProjectShowOptions(cbProject* project);
 } // anonymous namespace
 
 
+ProjectTreeDropTarget::ProjectTreeDropTarget(cbTreeCtrl* ctrl, ProjectManagerUI* ui) : m_treeCtrl(ctrl), m_ui(ui)
+{
+    wxDataObjectComposite* dataobj = new wxDataObjectComposite();
+    dataobj->Add(new TreeDNDObject(), true);
+    dataobj->Add(new wxFileDataObject());
+    SetDataObject(dataobj);
+}
+
+wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult)
+{
+
+    GetData();
+    wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
+    wxDataFormat format = dataobjComp->GetReceivedFormat();
+    wxDataObject *dataobj = dataobjComp->GetObject(format);
+
+    // Bluehazzard: I am not quite sure if this is the correct way to handle this
+    // wxWidgets documentation is not really helpful here
+    // My approach is to first check if the dropped object is a filename
+    // if it is not a filename, try to cast it to a TreeDNDObject because it is probably dropping an item from the tree
+    // This is triggered, when the item is dragged outside of the tree ctrl and then back in. This does not trigger
+    // the tree ctrl internal d&d handling
+    if (format.GetType() == wxDF_FILENAME)
+    {
+        ProjectManager* mgr = Manager::Get()->GetProjectManager();
+        if (!mgr || !m_treeCtrl)
+            return wxDragNone;
+
+        cbProject* activeProject = mgr->GetActiveProject();
+        if (activeProject == nullptr)
+        {
+            cbMessageBox(_("No project active to add files"), _("No project active"));
+            return wxDragNone;
+        }
+
+        wxFileDataObject *dataobjFile = static_cast<wxFileDataObject *>(dataobj);
+        mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), activeProject);
+        mgr->GetUI().RebuildTree();
+        return wxDragCopy;
+    }
+    else
+    {
+        TreeDNDObject* tt = dynamic_cast<TreeDNDObject*>(dataobjComp->GetObject(wxDataFormat("ProjectTreeObject")));
+        if (tt != nullptr)
+        {
+            int flag = 0;
+            wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
+
+            if (item.IsOk())
+            {
+                oldItem = wxTreeItemId();
+                if (m_ui->HandleDropOnItem(item))
+                    return wxDragMove;
+                return wxDragNone;
+            }
+        }
+    }
+    return wxDragNone;
+}
+
+wxDragResult ProjectTreeDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResult defResult)
+{
+    int flag = 0;
+    const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
+    bool allowDrop = false;
+    if (item.IsOk() && m_ui->TestDropOnItem(item))
+        allowDrop = true;
+
+    if (item != oldItem)
+    {
+        if (oldItem.IsOk())
+            m_treeCtrl->SetItemDropHighlight(oldItem, false);
+
+        oldItem = item;
+
+        if (item.IsOk() && allowDrop)
+            m_treeCtrl->SetItemDropHighlight(item, true);
+    }
+
+    if (!allowDrop)
+        return wxDragNone;
+
+    return defResult;
+}
+
+
 BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_TREE_BEGIN_DRAG(ID_ProjectManager,       ProjectManagerUI::OnTreeBeginDrag)
-    EVT_TREE_END_DRAG(ID_ProjectManager,         ProjectManagerUI::OnTreeEndDrag)
 
     EVT_TREE_BEGIN_LABEL_EDIT(ID_ProjectManager, ProjectManagerUI::OnBeginEditNode)
     EVT_TREE_END_LABEL_EDIT(ID_ProjectManager,   ProjectManagerUI::OnEndEditNode)
@@ -263,6 +352,8 @@ void ProjectManagerUI::InitPane()
         return;
 
     m_pTree = new cbTreeCtrl(m_pNotebook, ID_ProjectManager);
+    // Set drop target for adding files, and dragging tree items
+    m_pTree->SetDropTarget(new ProjectTreeDropTarget(m_pTree, this));
 
     m_pImages = cbProjectTreeImages::MakeImageList(16, *m_pNotebook);
     m_pTree->SetImageList(m_pImages.get());
@@ -927,7 +1018,7 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         if (!ProjectCanDragNode(prj, m_pTree, id))
             continue;
 
-        // We allow drag and drop for normal files or projects,
+        // We allow drag and drop for normal files, projects, or virtual folders,
         // but not for mixed selection, or any other project items
         if (ftd->GetKind() == FileTreeData::ftdkFile)
         {
@@ -937,89 +1028,96 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         {
             fileList.Add(ftd->GetProject()->GetFilename());
         }
-    }
-
-    // wxTreeCtrl Internal vs External DragAndDrop are incompatible.
-    // To do an external DnD here, we have to test the mouse position
-    // and verify that the cursor is outside the wxTreeCtrl
-    m_pTree->SetCursor(wxCursor(wxCURSOR_HAND)); //show feedback to user
-    bool isExternalDrag = false;
-    for (int ii=0; ii<8; ++ii)
-    {
-        // wait max 800 milliseconds for cursor move outside the tree
-        wxMilliSleep(100); //wait awhile for possible mouse move outside tree ctrl
-        wxWindow* pWin = ::wxFindWindowAtPoint(wxGetMousePosition());
-        wxString winName = pWin ? pWin->GetName().Lower(): _T("unkwn");
-        if (!pWin || (_T("treectrl") != winName))
+        else if(ftd->GetKind() == FileTreeData::ftdkVirtualFolder)
         {
-            isExternalDrag = true;
-            break;
+            fileList.Add(ftd->GetFolder());
         }
-        if (!wxGetMouseState().LeftIsDown())
-            break; //internal tree drag
     }
-    if (!fileList.empty() && isExternalDrag)
+    if (!fileList.empty())
     {
+        m_pTree->SetCursor(wxCursor(wxCURSOR_HAND)); //show feedback to user
         // create a drop object of file paths
-        wxTextDataObject dropObject( GetStringFromArray(fileList , wxT("\n"), false));
+        wxTextDataObject textObject( GetStringFromArray(fileList , wxT("\n"), false));
+
+        // create a composite data object, to make it possible
+        // drag objects in text editor and also fix bug, where a user drags an items
+        // outside the control and then back in. This triggers this part of code,
+        // and with the composite TreeDNDObject we know that this is from the tree in
+        // the drop code
+        wxDataObjectComposite dropObject;
+        dropObject.Add(new wxTextDataObject(GetStringFromArray(fileList , wxT("\n"), false)));
+        dropObject.Add(new TreeDNDObject());
+
         wxDropSource dragSource(m_pTree);
         dragSource.SetData(dropObject);
         dragSource.DoDragDrop();
         m_pTree->SetCursor(wxCursor(wxNullCursor));
         return;
     }
-
-    m_pTree->SetCursor(wxCursor(wxNullCursor));
-
-    // allowed
-    event.Allow();
 }
 
-void ProjectManagerUI::OnTreeEndDrag(wxTreeEvent& event)
+bool ProjectManagerUI::TestDropOnItem(const wxTreeItemId& to) const
 {
-    m_pTree->SetCursor(wxCursor(wxNullCursor));
-
-    wxTreeItemId to = event.GetItem();
-
     // is the drag target valid?
     if (!to.IsOk())
-        return;
+        return false;
 
     // if no data associated with any of them, disallow
     FileTreeData* ftdTo = (FileTreeData*)m_pTree->GetItemData(to);
     if (!ftdTo)
-        return;
+        return false;
 
     // if no project or different projects, disallow
     cbProject* prjTo = ftdTo->GetProject();
     if (!prjTo)
-        return;
+        return false;
 
-    size_t count = m_DraggingSelection.Count();
+    const size_t count = m_DraggingSelection.Count();
     for (size_t i = 0; i < count; i++)
     {
         wxTreeItemId from = m_DraggingSelection[i];
 
         // is the item valid?
         if (!from.IsOk())
-            return;
+            return false;
 
         // if no data associated with any of them, disallow
         FileTreeData* ftdFrom = (FileTreeData*)m_pTree->GetItemData(from);
         if (!ftdFrom)
-            return;
+            return false;
 
         // if no project or different projects, disallow
         cbProject* prjFrom = ftdTo->GetProject();
         if (prjFrom != prjTo)
-            return;
+            return false;
     }
+
+    if (!TestProjectNodeDragged(prjTo, m_pTree, m_DraggingSelection, to))
+        return false;
+
+    return true;
+}
+
+bool ProjectManagerUI::HandleDropOnItem(const wxTreeItemId& to)
+{
+
+    if (!TestDropOnItem(to))
+        return false;
+
+    FileTreeData* ftdTo = (FileTreeData*)m_pTree->GetItemData(to);
+    if (!ftdTo)
+        return false;
+
+    cbProject* prjTo = ftdTo->GetProject();
+    if (!prjTo)
+        return false;
+
 
     // allow only if the project approves
     if (!ProjectNodeDragged(prjTo, m_pTree, m_DraggingSelection, to))
-        return;
+        return false;
 
-    event.Allow();
+    return true;
 }
 
 void ProjectManagerUI::OnProjectFileActivated(wxTreeEvent& event)
@@ -3000,6 +3098,59 @@ static void ProjectCopyTreeNodeRecursively(wxTreeCtrl* tree, const wxTreeItemId&
         ftd_moved->GetProjectFile()->virtual_path = GetRelativeFolderPath(tree, new_parent);
 }
 
+static bool TestProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wxTreeItemId from,
+                                        wxTreeItemId to)
+{
+    FileTreeData* ftdFrom = static_cast<FileTreeData*>(tree->GetItemData(from));
+    FileTreeData* ftdTo   = static_cast<FileTreeData*>(tree->GetItemData(to)  );
+    if (!ftdFrom || !ftdTo)
+        return false;
+
+    wxString sep = wxString(wxFileName::GetPathSeparator());
+    wxChar sepChar = wxFileName::GetPathSeparator();
+    wxString fromFolderPath = ftdFrom->GetFolder();
+    wxString toFolderPath = ftdTo->GetFolder();
+
+    wxString fromFolder = fromFolderPath;
+    fromFolder = fromFolder.RemoveLast();
+    fromFolder = fromFolder.AfterLast(sepChar) + sep;
+    wxString toFolder = toFolderPath;
+    toFolder = toFolder.RemoveLast();
+    toFolder = toFolder.AfterLast(sepChar) + sep;
+
+    if (ftdFrom->GetKind() == FileTreeData::ftdkVirtualFolder && ftdTo->GetKind() == FileTreeData::ftdkVirtualFolder)
+    {
+        const wxArrayString &oldArray = project->GetVirtualFolders();
+        for (size_t i = 0; i < oldArray.GetCount(); ++i)
+        {
+            if (!toFolderPath.StartsWith(fromFolderPath.BeforeFirst(sepChar)))
+            {
+                const wxString& item = oldArray[i];
+                // A virtual folder has been dropped from a different place
+                if (item.Find(toFolderPath + fromFolder) != wxNOT_FOUND)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+    else if (ftdFrom->GetKind() == FileTreeData::ftdkVirtualFolder && ftdTo->GetKind() == FileTreeData::ftdkProject)
+    {
+        const wxArrayString &oldArray = project->GetVirtualFolders();
+        for (size_t i = 0; i < oldArray.GetCount(); ++i)
+        {
+            const wxString& item = oldArray[i];
+            if (item.StartsWith(fromFolder))
+            {
+                // We can't overwrite an existing folder
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
 static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wxTreeItemId from,
                                         wxTreeItemId to)
 {
@@ -3030,7 +3181,7 @@ static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wx
             wxString toFolderStr;
             if (toFolderPath.StartsWith(fromFolderPath.BeforeFirst(sepChar)))
             {
-                // The virtual folder is drageed under same root
+                // The virtual folder is dragged under same root
                 int posFrom = item.Find(fromFolderPath);
                 if (posFrom != wxNOT_FOUND)
                 {
@@ -3127,8 +3278,8 @@ static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wx
     return true;
 }
 
-static bool ProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, wxArrayTreeItemIds& fromArray,
-                               wxTreeItemId to)
+static bool TestProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, const wxArrayTreeItemIds& fromArray,
+                                    wxTreeItemId to)
 {
     // what items did we drag?
     if (!to.IsOk())
@@ -3157,7 +3308,7 @@ static bool ProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, wxArrayTree
     size_t count = fromArray.Count();
     for (size_t i = 0; i < count; i++)
     {
-        wxTreeItemId from = fromArray[i];
+        const wxTreeItemId from = fromArray[i];
         if (!from.IsOk())
             return false;
 
@@ -3192,15 +3343,47 @@ static bool ProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, wxArrayTree
                     return false;
                 toParent = tree->GetItemParent(toParent);
             }
-            if (!ProjectVirtualFolderDragged(project, tree, from, to))
+            if (!TestProjectVirtualFolderDragged(project, tree, from, to))
                 return false;
         }
     }
+    return true;
+}
 
+static bool ProjectNodeDragged(cbProject* project, wxTreeCtrl* tree, wxArrayTreeItemIds& fromArray,
+                               wxTreeItemId to)
+{
+    if (!TestProjectNodeDragged(project, tree, fromArray, to))
+        return false;
+
+    FileTreeData* ftdTo = (FileTreeData*) tree->GetItemData(to);
+    if (!ftdTo)
+        return false;
+
+    wxTreeItemId parentTo = ftdTo->GetKind() == FileTreeData::ftdkFile ? tree->GetItemParent(to) : to;
+    size_t count = fromArray.Count();
     // now that we have successfully done the checking, do the moving
     for (size_t i = 0; i < count; i++)
     {
         wxTreeItemId from = fromArray[i];
+        FileTreeData* ftdFrom = (FileTreeData*)tree->GetItemData(from);
+
+         // A special check for virtual folders.
+        if (   (ftdFrom->GetKind() == FileTreeData::ftdkVirtualFolder)
+            || (ftdTo->GetKind()   == FileTreeData::ftdkVirtualFolder) )
+        {
+            wxTreeItemId root = tree->GetRootItem();
+            wxTreeItemId toParent = tree->GetItemParent(to);
+            while (toParent != root)
+            {
+                if (toParent == from)
+                    return false;
+                toParent = tree->GetItemParent(toParent);
+            }
+            if (!ProjectVirtualFolderDragged(project, tree, from, to))
+                return false;
+        }
+
         // finally; make the move
         ProjectCopyTreeNodeRecursively(tree, from, parentTo);
         // remove old node
@@ -3375,7 +3558,8 @@ void ProjectManagerUI::BuildProjectTree(cbProject* project, cbTreeCtrl* tree,
 
     // add our project's root item
     FileTreeData* ftd = new FileTreeData(project, FileTreeData::ftdkProject);
-    project->SetProjectNode(tree->AppendItem(root, project->GetTitle(), prjIdx, prjIdx, ftd));
+    project->SetProjectNode(tree->AppendItem(
+                                             root, project->GetTitle(), prjIdx, prjIdx, ftd));
     wxTreeItemId  others, generated;
     others = generated = project->GetProjectNode();
     wxTreeItemId* pGroupNodes = nullptr; // file group nodes (if enabled)
