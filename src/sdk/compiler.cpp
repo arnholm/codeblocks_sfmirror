@@ -1315,39 +1315,38 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
         wxArrayString cmd = GetArrayFromString(test, wxT(" "));
         if (cmd.IsEmpty())
             return false;
-        wxString path;
-        wxGetEnv(wxT("PATH"), &path);
-        const wxString origPath = path;
+
+        wxString origPath;
+        wxGetEnv("PATH", &origPath);  // save path
+
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("compiler");
+        wxString masterPath;
+        wxString loc = (m_ParentID.IsEmpty() ? "/sets/" : "/user_sets/") + m_ID;
+        wxArrayString extraPaths;
+        if (cfg->Exists(loc + "/name"))
         {
-            ConfigManager* cfg = Manager::Get()->GetConfigManager(wxT("compiler"));
-            wxString masterPath;
-            wxString loc = (m_ParentID.IsEmpty() ? wxT("/sets/") : wxT("/user_sets/")) + m_ID;
-            wxArrayString extraPaths;
-            if (cfg->Exists(loc + wxT("/name")))
-            {
-                masterPath = cfg->Read(loc + wxT("/master_path"), wxString());
-                extraPaths = MakeUniqueArray(GetArrayFromString(cfg->Read(loc + wxT("/extra_paths"),
-                                                                          wxString())),
-                                             true);
-            }
-
-            for (size_t i = 0; i < extraPaths.GetCount(); ++i)
-                path.Prepend(extraPaths[i] + wxPATH_SEP);
-
-            if (!masterPath.IsEmpty())
-                path.Prepend(masterPath + wxPATH_SEP + masterPath + wxFILE_SEP_PATH + wxT("bin") + wxPATH_SEP);
+            masterPath = cfg->Read(loc + "/master_path", wxString());
+            extraPaths = MakeUniqueArray(GetArrayFromString(cfg->Read(loc + "/extra_paths", "")), true);
         }
-        wxSetEnv(wxT("PATH"), path);
+
+        wxString path;
+        if (!masterPath.empty())
+            path = masterPath + wxPATH_SEP + masterPath + wxFILE_SEP_PATH + "bin" + wxPATH_SEP;
+
+        for (size_t i = 0; i < extraPaths.GetCount(); ++i)
+            path << extraPaths[i] << wxPATH_SEP;
+
+        wxSetEnv("PATH", path);
         cmd[0] = GetExecName(cmd[0]);
 
         long ret = -1;
         if (!cmd[0].IsEmpty()) // should never be empty
-            ret = Execute(GetStringFromArray(cmd, wxT(" "), false), cmd);
+            ret = Execute(GetStringFromArray(cmd, " ", false), cmd);
 
-        wxSetEnv(wxT("PATH"), origPath); // restore path
+        wxSetEnv("PATH", origPath); // restore path
 
         if (ret != 0) // execution failed
-            return (node->GetAttribute(wxT("default"), wxString()) == wxT("true"));
+            return (node->GetAttribute("default", wxString()) == "true");
 
         // If multiple tests are specified they will be ANDed; as soon as one fails the loop ends
         val = true;
