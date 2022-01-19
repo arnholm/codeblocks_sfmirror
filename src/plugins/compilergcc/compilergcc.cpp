@@ -1620,6 +1620,7 @@ void CompilerGCC::UpdateProjectTargets(cbProject* project)
 
     // actually rebuild menu and combo
     DoRecreateTargetMenu();
+    m_pTbar->Fit();
 }
 
 wxString CompilerGCC::GetTargetString(int index)
