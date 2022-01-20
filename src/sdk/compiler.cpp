@@ -1312,21 +1312,18 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
     }
     else if (node->GetAttribute(wxT("exec"), &test))
     {
-        wxArrayString cmd = GetArrayFromString(test, wxT(" "));
+        wxArrayString cmd = GetArrayFromString(test, " ");
         if (cmd.IsEmpty())
             return false;
 
-        wxString origPath;
-        wxGetEnv("PATH", &origPath);  // save path
-
-        ConfigManager* cfg = Manager::Get()->GetConfigManager("compiler");
         wxString masterPath;
-        wxString loc = (m_ParentID.IsEmpty() ? "/sets/" : "/user_sets/") + m_ID;
         wxArrayString extraPaths;
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("compiler");
+        const wxString loc((m_ParentID.empty() ? "/sets/" : "/user_sets/") + m_ID);
         if (cfg->Exists(loc + "/name"))
         {
             masterPath = cfg->Read(loc + "/master_path", wxString());
-            extraPaths = MakeUniqueArray(GetArrayFromString(cfg->Read(loc + "/extra_paths", "")), true);
+            extraPaths = MakeUniqueArray(GetArrayFromString(cfg->Read(loc + "/extra_paths", wxString())), true);
         }
 
         wxString path;
@@ -1336,12 +1333,15 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
         for (size_t i = 0; i < extraPaths.GetCount(); ++i)
             path << extraPaths[i] << wxPATH_SEP;
 
-        wxSetEnv("PATH", path);
+        wxString origPath;
+        wxGetEnv("PATH", &origPath);  // save path
+        wxSetEnv("PATH", path);       // change path
         cmd[0] = GetExecName(cmd[0]);
 
         long ret = -1;
-        if (!cmd[0].IsEmpty()) // should never be empty
-            ret = Execute(GetStringFromArray(cmd, " ", false), cmd);
+        wxArrayString output;
+        if (!cmd[0].empty()) // should never be empty
+            ret = Execute(GetStringFromArray(cmd, " ", false), output);
 
         wxSetEnv("PATH", origPath); // restore path
 
@@ -1364,14 +1364,15 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
                 if (re.Compile(attr->GetValue()))
                 {
                     bool found = false;
-                    for (size_t i = 0; i < cmd.GetCount(); ++i)
+                    for (size_t i = 0; i < output.GetCount(); ++i)
                     {
-                        if (re.Matches(cmd[i]))
+                        if (re.Matches(output[i]))
                         {
                             found = true;
                             break;
                         }
                     }
+
                     val = found;
                 }
                 else
@@ -1390,60 +1391,66 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
                 if (name == "version_greater")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check > 0);
                     else
                         val = false;
+
                     continue;
                 }
 
                 if (name == "version_greater_equal")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check >= 0);
                     else
                         val = false;
+
                     continue;
                 }
 
                 if (name == "version_equal")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check == 0);
                     else
                         val = false;
+
                     continue;
                 }
 
                 if (name == "version_not_equal")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check != 0);
                     else
                         val = false;
+
                     continue;
                 }
 
                 if (name == "version_less_equal")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check <= 0);
                     else
                         val = false;
+
                     continue;
                 }
 
                 if (name == "version_less")
                 {
                     int check;
-                    if (CmpVersion(check, cmd[0], attr->GetValue()))
+                    if (CmpVersion(check, output[0], attr->GetValue()))
                         val = (check < 0);
                     else
                         val = false;
+
                     continue;
                 }
             }
@@ -1455,6 +1462,7 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
                                             name));
         }
     }
+
     return val;
 }
 
