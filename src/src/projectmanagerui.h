@@ -21,13 +21,17 @@ class ProjectManagerUI;
  */
 class TreeDNDObject : public wxDataObjectSimple
 {
-
+    // Data object to store current running codeblocks PID
     struct DNDData {
         wxThreadIdType m_mainPID;
     };
 
     public:
-    TreeDNDObject() : wxDataObjectSimple(wxDataFormat("ProjectTreeObject"))
+
+    // With c++17 we could use inline... But this should be fine too for a "fake" static member variable
+    static wxDataFormat GetDnDDataFormat() { static wxDataFormat format("ProjectTreeObject"); return format; }
+
+    TreeDNDObject() : wxDataObjectSimple(GetDnDDataFormat())
     {
 
     }

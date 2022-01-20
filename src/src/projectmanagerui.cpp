@@ -136,6 +136,7 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
 static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wxTreeItemId from,
                                         wxTreeItemId to);
 static bool ProjectShowOptions(cbProject* project);
+static wxString GetRelativeFolderPath(wxTreeCtrl* tree, wxTreeItemId parent);
 } // anonymous namespace
 
 
@@ -149,47 +150,71 @@ ProjectTreeDropTarget::ProjectTreeDropTarget(cbTreeCtrl* ctrl, ProjectManagerUI*
 
 wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult)
 {
-
+    int flag = 0;
+    wxUnusedVar(flag);
     GetData();
     wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
-    wxDataFormat format = dataobjComp->GetReceivedFormat();
-    wxDataObject *dataobj = dataobjComp->GetObject(format);
+    const wxDataFormat format = dataobjComp->GetReceivedFormat();
+    const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
 
-    // Bluehazzard: I am not quite sure if this is the correct way to handle this
-    // wxWidgets documentation is not really helpful here
-    // My approach is to first check if the dropped object is a filename
-    // if it is not a filename, try to cast it to a TreeDNDObject because it is probably dropping an item from the tree
-    // This is triggered, when the item is dragged outside of the tree ctrl and then back in. This does not trigger
-    // the tree ctrl internal d&d handling
-    if (format.GetType() == wxDF_FILENAME)
+    // When the format is a file we add it to the project, or if no project is open, we simply open the file in the editor
+    if (format == wxDF_FILENAME)
     {
+        wxFileDataObject *dataobjFile = static_cast<wxFileDataObject *>(dataobjComp->GetObject(wxDF_FILENAME));
         ProjectManager* mgr = Manager::Get()->GetProjectManager();
-        if (!mgr || !m_treeCtrl)
+        if (!mgr || !m_treeCtrl || !dataobjFile)
             return wxDragNone;
 
-        cbProject* activeProject = mgr->GetActiveProject();
-        if (activeProject == nullptr)
+        if (item.IsOk())
         {
-            cbMessageBox(_("No project active to add files"), _("No project active"));
-            return wxDragNone;
+            // Drop point is  valid tree item, so we add the files to a specific user selected project
+            FileTreeData* ftd = (FileTreeData*) m_treeCtrl->GetItemData(item);
+            if (ftd)
+            {
+                cbProject* prj = ftd->GetProject();
+                mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject());   // project found, add files
+
+                if (ftd->GetKind() == FileTreeData::ftdkVirtualFolder)
+                {
+                    // The files are dropped on a virtual folder, so we try to move them to it
+                    for (const wxString& filename : dataobjFile->GetFilenames())
+                    {
+                        // first find the files again with the non relative paths
+                        ProjectFile* file = prj->GetFileByFilename(filename, false);
+                        if (file)
+                        {
+                            file->virtual_path = GetRelativeFolderPath(m_treeCtrl, item);
+                        }
+                    }
+                }
+                mgr->GetUI().RebuildTree();
+            }
+        }
+        else if(mgr->GetActiveProject())
+        {
+            // if the files are not dropped on a project tree item, but there is an active project:
+            // add them to the current active project
+            mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject());
+            mgr->GetUI().RebuildTree();
+        }
+        else
+        {
+            // if no (active) project is found, we simply open the file in the editor
+            for (const wxString& file : dataobjFile->GetFilenames())
+                Manager::Get()->GetEditorManager()->Open(file);
         }
 
-        wxFileDataObject *dataobjFile = static_cast<wxFileDataObject *>(dataobj);
-        mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), activeProject);
-        mgr->GetUI().RebuildTree();
+        // Return result is not so important?
         return wxDragCopy;
     }
-    else
+    else if (format == TreeDNDObject::GetDnDDataFormat())
     {
-        TreeDNDObject* tt = dynamic_cast<TreeDNDObject*>(dataobjComp->GetObject(wxDataFormat("ProjectTreeObject")));
-        if (tt != nullptr)
+        // The dnd object is an internal tree dnd
+        TreeDNDObject* tt = dynamic_cast<TreeDNDObject*>(dataobjComp->GetObject(TreeDNDObject::GetDnDDataFormat()));
+        if (tt != nullptr) // This checks if the source of the tt object is this codeblock instance, if not tt would be nullptr
         {
-            int flag = 0;
-            wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
-
             if (item.IsOk())
             {
-                oldItem = wxTreeItemId();
                 if (m_ui->HandleDropOnItem(item))
                     return wxDragMove;
                 return wxDragNone;
@@ -202,11 +227,34 @@ wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult de
 wxDragResult ProjectTreeDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResult defResult)
 {
     int flag = 0;
+    wxUnusedVar(flag);
+    GetData();
+    const wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
+    const wxDataFormat format = dataobjComp->GetReceivedFormat();
     const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
     bool allowDrop = false;
-    if (item.IsOk() && m_ui->TestDropOnItem(item))
-        allowDrop = true;
 
+    if (format == wxDF_FILENAME) // format.GetType() == wxDF_FILENAME
+    {
+        // For files we allow always dropping,
+        // if it is over a valid tree item, we get the project
+        // to add the file from the item, if the drop is over no
+        // valid tree item, we use the current active project
+        allowDrop = true;
+        defResult = wxDragCopy;
+    }
+    else if (format == TreeDNDObject::GetDnDDataFormat())
+    {
+        // For tree internal data we make a hit testing
+        if (item.IsOk() && m_ui->TestDropOnItem(item))
+        {
+            // this is a drag and drop item from the tree
+            allowDrop = true;
+        }
+    }
+
+    // for user feedback we color the current active item, but
+    // we also have to reset the old item
     if (item != oldItem)
     {
         if (oldItem.IsOk())
@@ -1036,9 +1084,6 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
     if (!fileList.empty())
     {
         m_pTree->SetCursor(wxCursor(wxCURSOR_HAND)); //show feedback to user
-        // create a drop object of file paths
-        wxTextDataObject textObject( GetStringFromArray(fileList , wxT("\n"), false));
-
         // create a composite data object, to make it possible
         // drag objects in text editor and also fix bug, where a user drags an items
         // outside the control and then back in. This triggers this part of code,
@@ -1046,7 +1091,7 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         // the drop code
         wxDataObjectComposite dropObject;
         dropObject.Add(new wxTextDataObject(GetStringFromArray(fileList , wxT("\n"), false)));
-        dropObject.Add(new TreeDNDObject());
+        dropObject.Add(new TreeDNDObject(), true);
 
         wxDropSource dragSource(m_pTree);
         dragSource.SetData(dropObject);
