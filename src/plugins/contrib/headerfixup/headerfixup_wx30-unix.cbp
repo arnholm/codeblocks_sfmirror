@@ -48,7 +48,6 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 		</Compiler>
@@ -72,8 +71,7 @@
 		<Unit filename="wxsmith/execution.wxs" />
 		<Unit filename="wxsmith/protocol.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
+			<SVNInside Login="" Password="" ConnectStatus="1" NeedsPassword="0" />
 			<wxsmith version="1">
 				<resources>
 					<wxPanel wxs="wxsmith/configuration.wxs" src="configuration.cpp" hdr="configuration.h" fwddecl="0" i18n="1" name="Configuration" language="CPP" />
@@ -81,8 +79,6 @@
 					<wxScrollingDialog wxs="wxsmith/protocol.wxs" src="protocol.cpp" hdr="protocol.h" fwddecl="0" i18n="1" name="Protocol" language="CPP" />
 				</resources>
 			</wxsmith>
-			<SVNInside Login="" Password="" ConnectStatus="1" NeedsPassword="0" />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

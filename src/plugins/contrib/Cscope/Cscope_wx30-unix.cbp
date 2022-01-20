@@ -45,10 +45,9 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="CscopeConfig.cpp" />
 		<Unit filename="CscopeConfig.h" />
@@ -71,9 +70,6 @@
 		<Unit filename="manifest.xml" />
 		<Unit filename="wxsmith/CscopeConfigPanel.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
 				<resources>

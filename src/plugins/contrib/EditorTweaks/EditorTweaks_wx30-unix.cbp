@@ -15,8 +15,6 @@
 				<Option host_application="../../../devel30/codeblocks" />
 				<Option run_host_application_in_terminal="0" />
 				<Compiler>
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
 					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="`$(WX_CONFIG) --cflags`" />
 					<Add option="-Winvalid-pch" />
@@ -45,8 +43,9 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-Wall" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="EditorTweaks.cpp" />
 		<Unit filename="EditorTweaks.h" />
@@ -55,9 +54,6 @@
 		<Unit filename="manifest.xml" />
 		<Unit filename="wxsmith/EditorTweaksConfDlg.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<wxsmith version="1">
 				<resources>
 					<wxPanel wxs="wxsmith/EditorTweaksConfDlg.wxs" src="EditorTweaksConfDlg.cpp" hdr="EditorTweaksConfDlg.h" xrc="EditorTweaksConfDlg.xrc" fwddecl="0" i18n="1" name="EditorTweaksConfDlg" language="CPP" />

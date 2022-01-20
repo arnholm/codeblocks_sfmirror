@@ -15,8 +15,6 @@
 				<Option host_application="../../../devel30/codeblocks" />
 				<Option run_host_application_in_terminal="0" />
 				<Compiler>
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
 					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="`$(WX_CONFIG) --cflags`" />
 					<Add option="-Winvalid-pch" />
@@ -46,8 +44,9 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-Wall" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="ReopenEditor.cpp" />
 		<Unit filename="ReopenEditor.h" />
@@ -60,10 +59,6 @@
 		</Unit>
 		<Unit filename="wxsmith/ReopenEditorConfDLg.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-			<lib_finder disable_auto="1" />
 			<DoxyBlocks>
 				<comment_style block="0" line="0" />
 				<doxyfile_project />
@@ -73,6 +68,7 @@
 				<doxyfile_dot />
 				<general />
 			</DoxyBlocks>
+			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
 				<resources>
 					<wxPanel wxs="wxsmith/ReopenEditorConfDLg.wxs" src="./ReopenEditorConfDLg.cpp" hdr="./ReopenEditorConfDLg.h" xrc="./ReopenEditorConfDLg.xrc" fwddecl="1" i18n="1" name="ReopenEditorConfDLg" language="CPP" />

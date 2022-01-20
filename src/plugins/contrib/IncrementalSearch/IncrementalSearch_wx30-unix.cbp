@@ -15,8 +15,6 @@
 				<Option host_application="../../../devel30/codeblocks" />
 				<Option run_host_application_in_terminal="0" />
 				<Compiler>
-					<Add option="-Wextra" />
-					<Add option="-Wall" />
 					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="`$(WX_CONFIG) --cflags`" />
 					<Add option="-Winvalid-pch" />
@@ -50,8 +48,9 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=c++11" />
+			<Add option="-Wall" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="IncrementalSearch.cpp" />
 		<Unit filename="IncrementalSearch.h" />
@@ -61,9 +60,6 @@
 		<Unit filename="IncrementalSearchToolbar.xrc" />
 		<Unit filename="manifest.xml" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

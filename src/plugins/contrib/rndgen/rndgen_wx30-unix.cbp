@@ -23,10 +23,9 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
 			<Add option="-fPIC" />
+			<Add option="-std=c++11" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
 			<Add option="`$(WX_CONFIG) --cflags`" />
 			<Add option="-Winvalid-pch" />
@@ -50,10 +49,6 @@
 		<Unit filename="manifest.xml" />
 		<Unit filename="rndgen.cpp" />
 		<Unit filename="rndgen.h" />
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
