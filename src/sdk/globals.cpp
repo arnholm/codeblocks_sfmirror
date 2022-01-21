@@ -1538,7 +1538,11 @@ namespace platform
         int Major = 0;
         int Minor = 0;
         int Micro = 0;
+#if wxCHECK_VERSION(3, 1, 1)
         switch (wxGetOsVersion(&Major, &Minor, &Micro))
+#else
+        switch (wxGetOsVersion(&Major, &Minor))
+#endif
         {
             case wxOS_WINDOWS_9X:
                 version = winver_Windows9598ME;
