@@ -119,7 +119,7 @@ ChartValue wxChart::GetMaxX() const
     if ( valRes == 0 )
         valRes = 10;
 
-	return ( valRes );
+    return valRes;
 }
 
 //+++-S-cf-------------------------------------------------------------------

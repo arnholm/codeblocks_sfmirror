@@ -42,17 +42,17 @@ kwxLCDDisplay::kwxLCDDisplay( wxWindow *parent, const wxPoint& pos, const wxSize
     if(!wxWindow::Create(parent, -1, pos, size, wxSUNKEN_BORDER))
         return false;
 
-	mSegmentLen = 40;
-	mSegmentWidth = 10;
-	mSpace = 5;
+    mSegmentLen = 40;
+    mSegmentWidth = 10;
+    mSpace = 5;
 
-	mNumberDigits = 6;
+    mNumberDigits = 6;
 
-	mLightColour = wxColour( 0, 255, 0 );
-	mGrayColour = wxColour( 0, 64, 0 );
+    mLightColour = wxColour( 0, 255, 0 );
+    mGrayColour = wxColour( 0, 64, 0 );
 
-	SetBackgroundColour( wxColour( 0, 0, 0 ) );
-	return true;
+    SetBackgroundColour( wxColour( 0, 0, 0 ) );
+    return true;
 }
 
 kwxLCDDisplay::~kwxLCDDisplay()

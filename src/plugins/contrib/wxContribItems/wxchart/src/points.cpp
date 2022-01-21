@@ -171,7 +171,7 @@ ChartValue wxPoints::GetXVal(
     if ( num > n )
         return m_vPoints.Item( n ).m_xval;
 
-	return ( 0 );
+    return 0;
 
 }
 
@@ -190,7 +190,7 @@ ChartValue wxPoints::GetYVal(
     if ( num > n )
         return m_vPoints.Item( n ).m_yval;
 
-	return ( 0 );
+    return 0;
 }
 
 //+++-S-cf-------------------------------------------------------------------
@@ -208,7 +208,7 @@ ChartColor wxPoints::GetColor(
     if ( num > n )
         return m_vPoints.Item( n ).m_col;
 
-	return ( 0 );
+    return 0;
 }
 
 //+++-S-cf-------------------------------------------------------------------
@@ -251,7 +251,7 @@ ChartValue wxPoints::GetMinX() const
     if ( n > 0 )
         return m_vPoints.Item( 0 ).m_xval;
 
-	return 0;
+    return 0;
 }
 
 //+++-S-cf-------------------------------------------------------------------

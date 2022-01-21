@@ -1934,13 +1934,21 @@ bool mpWindow::UpdateBBox()
             if (first)
             {
                 first = FALSE;
-                m_minX = f->GetMinX(); m_maxX=f->GetMaxX();
-                m_minY = f->GetMinY(); m_maxY=f->GetMaxY();
+                m_minX = f->GetMinX();
+                m_maxX=f->GetMaxX();
+                m_minY = f->GetMinY();
+                m_maxY=f->GetMaxY();
             }
             else
             {
-                if (f->GetMinX()<m_minX) m_minX=f->GetMinX(); if (f->GetMaxX()>m_maxX) m_maxX=f->GetMaxX();
-                if (f->GetMinY()<m_minY) m_minY=f->GetMinY(); if (f->GetMaxY()>m_maxY) m_maxY=f->GetMaxY();
+                if (f->GetMinX() < m_minX)
+                    m_minX = f->GetMinX();
+                if (f->GetMaxX() > m_maxX)
+                    m_maxX = f->GetMaxX();
+                if (f->GetMinY() < m_minY)
+                    m_minY=f->GetMinY();
+                if (f->GetMaxY() > m_maxY)
+                    m_maxY=f->GetMaxY();
             }
         }
         //node = node->GetNext();
