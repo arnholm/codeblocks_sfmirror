@@ -1519,11 +1519,9 @@ class ExecProcess : public wxProcess
 
 // Emulates wxExecute() in synchronous mode using asynchronous mode
 
-long Compiler::Execute(const wxString &cmd, wxArrayString &output)
+long Compiler::Execute(const wxString& cmd, wxArrayString& output)
 {
     wxLogNull logNo; // do not warn if execution fails
-
-    output.Clear();
 
     ExecProcess process;
     process.Redirect(); // capture task input/output streams
@@ -1555,7 +1553,7 @@ long Compiler::Execute(const wxString &cmd, wxArrayString &output)
 
 #else // __WXMSW__
 
-long Compiler::Execute(const wxString &cmd, wxArrayString &output)
+long Compiler::Execute(const wxString& cmd, wxArrayString& output)
 {
     wxLogNull logNo; // do not warn if execution fails
     int flags = wxEXEC_SYNC;
