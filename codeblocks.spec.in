@@ -286,6 +286,7 @@ wxSmith-plugins and to use the wxContribItems in own programs.
 %{plugindir}/libcompiler.so
 %{plugindir}/libdebugger.so
 %{plugindir}/libdefaultmimehandler.so
+%{plugindir}/libDisplayEvents.so
 %{plugindir}/liboccurrenceshighlighting.so
 %{plugindir}/libopenfileslist.so
 %{plugindir}/libprojectsimporter.so
@@ -314,6 +315,7 @@ wxSmith-plugins and to use the wxContribItems in own programs.
 %{pkgdatadir}/compiler.zip
 %{pkgdatadir}/debugger.zip
 %{pkgdatadir}/defaultmimehandler.zip
+%{pkgdatadir}/DisplayEvents.zip
 %{pkgdatadir}/manager_resources.zip
 %{pkgdatadir}/occurrenceshighlighting.zip
 %{pkgdatadir}/openfileslist.zip

@@ -185,6 +185,7 @@ fi
 %{plugindir}/libcompiler.so
 %{plugindir}/libdebugger.so
 %{plugindir}/libdefaultmimehandler.so
+%{plugindir}/libDisplayEvents.so
 %{plugindir}/liboccurrenceshighlighting.so
 %{plugindir}/libopenfileslist.so
 %{plugindir}/libprojectsimporter.so
@@ -213,6 +214,7 @@ fi
 %{pkgdatadir}/compiler.zip
 %{pkgdatadir}/debugger.zip
 %{pkgdatadir}/defaultmimehandler.zip
+%{pkgdatadir}/DisplayEvents.zip
 %{pkgdatadir}/manager_resources.zip
 %{pkgdatadir}/occurrenceshighlighting.zip
 %{pkgdatadir}/openfileslist.zip
