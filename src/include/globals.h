@@ -484,7 +484,8 @@ namespace platform
         winver_WindowsVista,
         winver_Windows7,
         winver_Windows8,
-        winver_Windows10
+        winver_Windows10,
+        winver_Windows11
     } windows_version_t;
 
     extern DLLIMPORT windows_version_t WindowsVersion();
