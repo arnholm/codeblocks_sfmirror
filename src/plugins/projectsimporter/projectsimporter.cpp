@@ -61,8 +61,8 @@ void ProjectsImporter::BuildMenu(wxMenuBar* menuBar)
     if (!IsAttached() || !menuBar)
         return;
 
-    m_Menu = Manager::Get()->LoadMenu(_T("project_import_menu"), false);
-    if (!m_Menu)
+    wxMenu* menu = Manager::Get()->LoadMenu("project_import_menu", false);
+    if (!menu)
         return;
 
     wxMenu* fileMenu = menuBar->GetMenu(0);
@@ -101,9 +101,11 @@ void ProjectsImporter::BuildMenu(wxMenuBar* menuBar)
     if (importSubMenu->GetMenuItemCount())
         importSubMenu->AppendSeparator();
 
-    wxMenuItemList m_List = m_Menu->GetMenuItems();
+    wxMenuItemList m_List = menu->GetMenuItems();
     for (wxMenuItemList::iterator it = m_List.begin(); it != m_List.end(); ++it)
-        importSubMenu->Append(*it);
+        importSubMenu->Append(menu->Remove(*it));
+
+    delete menu;
 }
 
 bool ProjectsImporter::CanHandleFile(const wxString& filename) const

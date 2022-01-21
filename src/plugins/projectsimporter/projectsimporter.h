@@ -20,8 +20,6 @@ class ProjectsImporter : public cbMimePlugin
     private:
         int LoadProject(const wxString& filename);
         int LoadWorkspace(const wxString& filename);
-
-        wxMenu* m_Menu;
 };
 
 #endif // PROJECTSIMPORTER_H
