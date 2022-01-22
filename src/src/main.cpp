@@ -2335,6 +2335,10 @@ bool MainFrame::DoOpenProject(const wxString& filename, bool addToHistory)
     cbProject* prj = Manager::Get()->GetProjectManager()->LoadProject(filename, true);
     if (prj)
     {
+        // Target selection wxChoice may be wider than before, fit the toolbars so the compiler
+        // toolbar does not cover the one on the right
+        FitToolbars(m_LayoutManager, this);
+        DoUpdateLayout();
         if (addToHistory)
             m_projectsHistory.AddToHistory(prj->GetFilename());
         return true;
