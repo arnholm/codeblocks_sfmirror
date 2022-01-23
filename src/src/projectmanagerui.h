@@ -9,6 +9,9 @@
 
 #include "projectmanager.h"
 
+#include <wx/dnd.h>
+#include <wx/dataobj.h>
+
 class cbProject;
 class cbAuiNotebook;
 class FilesGroupsAndMasks;

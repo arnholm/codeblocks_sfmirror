@@ -150,12 +150,22 @@ ProjectTreeDropTarget::ProjectTreeDropTarget(cbTreeCtrl* ctrl, ProjectManagerUI*
 
 wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult)
 {
+    // We dropped on an item, clean up highlighting before we do anything,
+    // because old item may be invalid after we are finished with
+    // this function and so we can not use it in OnDragOver
+    if(oldItem.IsOk())
+    {
+        m_treeCtrl->SetItemDropHighlight(oldItem, false);
+        oldItem.Unset();   // invalidate old item
+    }
+
     int flag = 0;
     wxUnusedVar(flag);
     GetData();
     wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
     const wxDataFormat format = dataobjComp->GetReceivedFormat();
     const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
+    wxArrayInt emptyTargets;
 
     // When the format is a file we add it to the project, or if no project is open, we simply open the file in the editor
     if (format == wxDF_FILENAME)
@@ -172,7 +182,7 @@ wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult de
             if (ftd)
             {
                 cbProject* prj = ftd->GetProject();
-                mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject());   // project found, add files
+                mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject(), emptyTargets);   // project found, add files
 
                 if (ftd->GetKind() == FileTreeData::ftdkVirtualFolder)
                 {
@@ -194,7 +204,7 @@ wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult de
         {
             // if the files are not dropped on a project tree item, but there is an active project:
             // add them to the current active project
-            mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject());
+            mgr->AddMultipleFilesToProject(dataobjFile->GetFilenames(), mgr->GetActiveProject(), emptyTargets);
             mgr->GetUI().RebuildTree();
         }
         else
@@ -226,31 +236,44 @@ wxDragResult ProjectTreeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult de
 
 wxDragResult ProjectTreeDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResult defResult)
 {
+
+    bool allowDrop = false;
     int flag = 0;
     wxUnusedVar(flag);
-    GetData();
-    const wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
-    const wxDataFormat format = dataobjComp->GetReceivedFormat();
     const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
-    bool allowDrop = false;
 
-    if (format == wxDF_FILENAME) // format.GetType() == wxDF_FILENAME
+    // GetData in OnDragOver seems only to work in windows...
+    if (GetData())
     {
-        // For files we allow always dropping,
-        // if it is over a valid tree item, we get the project
-        // to add the file from the item, if the drop is over no
-        // valid tree item, we use the current active project
-        allowDrop = true;
-        defResult = wxDragCopy;
-    }
-    else if (format == TreeDNDObject::GetDnDDataFormat())
-    {
-        // For tree internal data we make a hit testing
-        if (item.IsOk() && m_ui->TestDropOnItem(item))
+        // If we get any data, we can check the target and give user feedback if he can drop the item here...
+
+        const wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
+        const wxDataFormat format = dataobjComp->GetReceivedFormat();
+        if (format == wxDF_FILENAME)
         {
-            // this is a drag and drop item from the tree
+            // For files we allow always dropping,
+            // if it is over a valid tree item, we get the project
+            // to add the file from the item, if the drop is over no
+            // valid tree item, we use the current active project
             allowDrop = true;
+            defResult = wxDragCopy;
         }
+        else if (format == TreeDNDObject::GetDnDDataFormat())
+        {
+            // For tree internal data we make a hit testing
+            if (item.IsOk() && m_ui->TestDropOnItem(item))
+            {
+                // this is a drag and drop item from the tree
+                allowDrop = true;
+            }
+        }
+    }
+    else
+    {
+        // If we get no data/format information we allow dropping always,
+        // give no feedback and check in the OnData function if the drop was
+        // allowed
+        allowDrop = true;
     }
 
     // for user feedback we color the current active item, but
