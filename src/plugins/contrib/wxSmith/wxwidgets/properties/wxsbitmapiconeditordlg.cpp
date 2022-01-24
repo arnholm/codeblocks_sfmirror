@@ -90,7 +90,10 @@ static const wxChar* PredefinedIds[] =
     _T("wxART_FULL_SCREEN"),
     _T("wxART_EDIT"),
 #endif
-    0
+#if wxCHECK_VERSION(3, 1, 6)
+    _T("wxART_WX_LOGO"),
+#endif
+    nullptr
 };
 
 static const wxChar* PredefinedClients[] =
@@ -103,7 +106,7 @@ static const wxChar* PredefinedClients[] =
     _T("wxART_HELP_BROWSER"),
     _T("wxART_MESSAGE_BOX"),
     _T("wxART_OTHER"),
-    0
+    nullptr
 };
 
 
@@ -130,7 +133,7 @@ BEGIN_EVENT_TABLE(wxsBitmapIconEditorDlg,wxScrollingDialog)
 END_EVENT_TABLE()
 
 wxsBitmapIconEditorDlg::wxsBitmapIconEditorDlg(wxWindow* parent,wxsBitmapIconData& _Data,const wxString& _DefaultClient):
-    Timer1(0),
+    Timer1(nullptr),
     DefaultClient(_DefaultClient),
     Data(_Data)
 {
