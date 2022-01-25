@@ -1334,8 +1334,8 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
             path << extraPaths[i] << wxPATH_SEP;
 
         wxString origPath;
-        wxGetEnv("PATH", &origPath);  // save path
-        wxSetEnv("PATH", path);       // change path
+        wxGetEnv("PATH", &origPath);     // save path
+        wxSetEnv("PATH", path+origPath); // change path
         cmd[0] = GetExecName(cmd[0]);
 
         long ret = -1;
