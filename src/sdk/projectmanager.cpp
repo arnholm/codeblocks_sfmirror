@@ -750,7 +750,9 @@ int ProjectManager::AddFileToProject(const wxString& filename, cbProject* projec
         project = GetActiveProject();
 
     wxArrayInt targets;
-    targets.Add(target);
+    if(target != -1)
+        targets.Add(target);
+
     if (AddFileToProject(filename, project, targets) == 1)
         return targets[0];
     return -1;
@@ -778,7 +780,9 @@ int ProjectManager::AddMultipleFilesToProject(const wxArrayString& filelist, cbP
         project = GetActiveProject();
 
     wxArrayInt targets;
-    targets.Add(target);
+    if(target != -1)
+        targets.Add(target);
+
     if (AddMultipleFilesToProject(filelist, project, targets) == 1)
         return targets[0];
     return -1;
