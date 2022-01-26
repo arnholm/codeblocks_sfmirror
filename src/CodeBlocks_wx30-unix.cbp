@@ -419,6 +419,7 @@
 				</Linker>
 			</Target>
 			<Environment>
+				<Variable name="GTK_VERSION" value="gtk+-3.0" />
 				<Variable name="WX_CFG" value="" />
 				<Variable name="WX_CONFIG" value="wx-config --version=3.0" />
 				<Variable name="WX_SUFFIX" value="u" />
@@ -432,6 +433,7 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-std=c90" />
 			<Add option="-fPIC" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
@@ -439,8 +441,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-Winvalid-pch" />
 			<Add option="`$(WX_CONFIG) --cflags`" />
-			<Add option="`pkg-config --cflags gtk+-3.0`" />
-			<Add option="-std=c++11" />
+			<Add option="`pkg-config --cflags $(GTK_VERSION)`" />
 			<Add option="-DcbDEBUG" />
 			<Add option="-DCB_PRECOMP" />
 			<Add directory="sdk/wxscintilla/include" />
@@ -448,7 +449,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="`$(WX_CONFIG) --libs std,aui,propgrid`" />
-			<Add option="`pkg-config --libs gtk+-3.0`" />
+			<Add option="`pkg-config --libs $(GTK_VERSION)`" />
 			<Add option="-Wl,--no-undefined" />
 			<Add directory="devel30" />
 		</Linker>
