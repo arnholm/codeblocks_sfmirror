@@ -423,14 +423,12 @@ bool wxsEventsEditor::CreateNewFunction(const wxsEventDesc* Event,const wxString
                 return false;
             }
 
+            const wxString EOL(GetEOLStr());
             wxString NewFunctionCode;
-            NewFunctionCode <<
-                _T("\n")
-                _T("void ") << m_Class << _T("::") << NewFunctionName << _T("(") << Event->ArgType << _T("& event)\n")
-                _T("{\n")
-                _T("}\n");
-
-            // TODO: Replace line endings with propert string
+            NewFunctionCode << EOL <<
+                "void " << m_Class << "::" << NewFunctionName << '(' << Event->ArgType << "& event)" << EOL <<
+                '{' << EOL <<
+                '}' << EOL;
 
             cbStyledTextCtrl* Ctrl = Editor->GetControl();
             int LineNumber = Ctrl->GetLineCount();
