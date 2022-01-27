@@ -423,14 +423,27 @@ bool wxsEventsEditor::CreateNewFunction(const wxsEventDesc* Event,const wxString
                 return false;
             }
 
-            const wxString EOL(GetEOLStr());
+            cbStyledTextCtrl* Ctrl = Editor->GetControl();
+
+            wxString EOL;
+            switch (Ctrl->GetEOLMode())
+            {
+                case wxSCI_EOL_CRLF:
+                    EOL = "\r\n";
+                    break;
+                case wxSCI_EOL_CR:
+                    EOL = "\r";
+                    break;
+                default:
+                    EOL = "\n";
+            }
+
             wxString NewFunctionCode;
             NewFunctionCode << EOL <<
                 "void " << m_Class << "::" << NewFunctionName << '(' << Event->ArgType << "& event)" << EOL <<
                 '{' << EOL <<
                 '}' << EOL;
 
-            cbStyledTextCtrl* Ctrl = Editor->GetControl();
             int LineNumber = Ctrl->GetLineCount();
             Ctrl->DocumentEnd();
             Ctrl->AddText(NewFunctionCode);

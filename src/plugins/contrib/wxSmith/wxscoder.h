@@ -91,6 +91,9 @@ class wxsCoder: public wxEvtHandler
         /** \brief Function getting singleton object from system */
         static wxsCoder* Get() { return Singleton; }
 
+        /** \brief Rebuilding code to support current editor settings */
+        static wxString RebuildCode(wxString& BaseIndentation,const wxChar* Code,int CodeLen,wxString& EOL);
+
     private:
 
         /** \brief Structure which contains one data change */
@@ -146,9 +149,6 @@ class wxsCoder: public wxEvtHandler
 
         /** \brief Flush timer procedure */
         void FlushTimerEvent(wxTimerEvent& event);
-
-        /** \brief Rebuilding code to support current editor settings */
-        wxString RebuildCode(wxString& BaseIndentation,const wxChar* Code,int CodeLen,wxString& EOL);
 
         /** \brief Cutting off given number of spaces at every new line */
         wxString CutSpaces(wxString Code,int Count);
