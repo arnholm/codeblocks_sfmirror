@@ -3135,15 +3135,7 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
     m_LayoutManager.DetachPane(m_pInfoPane);
     m_LayoutManager.DetachPane(Manager::Get()->GetEditorManager()->GetNotebook());
 
-    m_LayoutManager.UnInit();
-    TerminateRecentFilesHistory();
-
-    // remove all other event handlers from this window
-    // this stops it from crashing, when no plugins are loaded
-    while (GetEventHandler() != this)
-        PopEventHandler(false);
-
-    #if   defined ( __WIN32__ ) || defined ( _WIN64 )
+    #if defined ( __WIN32__ ) || defined ( _WIN64 )
     // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
     // crashes in Manager::Shutdown();
     wxAuiPaneInfoArray& all_panes = m_LayoutManager.GetAllPanes();
@@ -3154,6 +3146,15 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
             m_LayoutManager.ClosePane(paneInfo);
     }
     #endif
+
+    m_LayoutManager.UnInit();
+
+    TerminateRecentFilesHistory();
+
+    // remove all other event handlers from this window
+    // this stops it from crashing, when no plugins are loaded
+    while (GetEventHandler() != this)
+        PopEventHandler(false);
 
     // Hide the window
     Hide();
