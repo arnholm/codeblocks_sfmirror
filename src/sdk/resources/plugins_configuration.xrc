@@ -20,7 +20,7 @@
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
 								<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1">
-									<minpanesize>10</minpanesize>
+									<minsize>10</minsize>
 									<style>wxSP_3D|wxSP_3DSASH</style>
 									<object class="wxListCtrl" name="lstPlugins">
 										<pos>-16,-95</pos>

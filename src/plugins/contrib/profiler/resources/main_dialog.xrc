@@ -26,6 +26,7 @@
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1">
 										<sashpos>-1</sashpos>
+										<minsize>100</minsize>
 										<style>wxSP_3DSASH|wxSP_LIVE_UPDATE</style>
 										<object class="wxListCtrl" name="lstFlatProfile">
 											<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
@@ -50,6 +51,7 @@
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW2">
 										<sashpos>-1</sashpos>
+										<minsize>100</minsize>
 										<style>wxSP_3D|wxSP_LIVE_UPDATE</style>
 										<object class="wxListCtrl" name="lstCallGraph">
 											<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
