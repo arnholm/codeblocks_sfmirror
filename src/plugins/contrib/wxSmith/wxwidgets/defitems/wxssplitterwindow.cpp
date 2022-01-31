@@ -50,7 +50,7 @@ namespace
 }
 
 wxsSplitterWindow::wxsSplitterWindow(wxsItemResData* Data):
-    wxsContainer(Data,&Reg.Info,wxsSplitterWindowEvents,wxsSplitterWindowStyles),
+    wxsContainer(Data,&Reg.Info,wxsSplitterWindowEvents,wxsSplitterWindowStyles, flContainer & ~flMinMaxSize),
     SashPos(0),
     MinPaneSize(10),
     Orientation(wxHORIZONTAL),
@@ -142,7 +142,7 @@ void wxsSplitterWindow::OnEnumContainerProperties(cb_unused long Flags)
 
     WXS_LONG(wxsSplitterWindow,SashPos,_("Sash position"),_T("sashpos"),0);
     WXS_FLOAT(wxsSplitterWindow,SashGravity,_("Sash gravity"), _T("sashgravity"), 0.5);
-    WXS_LONG(wxsSplitterWindow,MinPaneSize,_("Min. pane size"),_T("minpanesize"),-1);
+    WXS_LONG(wxsSplitterWindow,MinPaneSize,_("Min. pane size"),_T("minsize"),-1);
     WXS_ENUM(wxsSplitterWindow,Orientation,_("Orientation"),_T("orientation"),OrientValues,OrientNames,wxHORIZONTAL);
 }
 
