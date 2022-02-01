@@ -1796,10 +1796,10 @@ void CompilerGCC::PrintBanner(BuildAction action, cbProject* prj, ProjectBuildTa
     wxString projectName = prj ? prj->GetTitle() : wxString(_("\"no project\""));
 
     wxString banner;
-    banner.Printf(_("%s: %s in %s (compiler: %s)"),
-                  Action.wx_str(), targetName.wx_str(), projectName.wx_str(), compilerName.wx_str());
-    LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString, wxT("=== ") + banner + wxT(" ==="));
-    LogMessage(wxT("-------------- ") + banner + wxT("---------------"), cltNormal, ltAll, false, true);
+    banner.Printf(_("%s: %s in %s (compiler: %s)"), Action, targetName, projectName, compilerName);
+    Manager::Get()->GetMacrosManager()->ReplaceMacros(banner);
+    LogWarningOrError(cltNormal, 0, wxString(), wxString(), "=== " + banner + " ===");
+    LogMessage("-------------- " + banner + "---------------", cltNormal, ltAll, false, true);
     m_pListLog->AutoFitColumns(2);
 }
 
