@@ -1023,6 +1023,7 @@ void ClassBrowser::TreeOperation(ETreeOperator op, CCTreeItem* item)
     switch (op)
       {
       case OpClear:
+          m_targetTreeCtrl->Disable();
           m_targetTreeCtrl->Freeze();
           m_targetTreeCtrl->DeleteAllItems();
           m_targetNode.Unset();
@@ -1080,6 +1081,7 @@ void ClassBrowser::TreeOperation(ETreeOperator op, CCTreeItem* item)
           break;
       case OpEnd:
           m_targetTreeCtrl->Thaw();
+          m_targetTreeCtrl->Enable();
       }
 }
 
