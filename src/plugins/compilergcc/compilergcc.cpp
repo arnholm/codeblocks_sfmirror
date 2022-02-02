@@ -2476,14 +2476,16 @@ void CompilerGCC::BuildStateManagement()
 
             if (result)
             {
-                const wxString &message = F(_("Cleaned \"%s - %s\""), m_pBuildingProject->GetTitle().wx_str(),
-                                            getBuildTargetName(bt).wx_str());
+                wxString message;
+                message.Printf(_("Cleaned \"%s - %s\""), m_pBuildingProject->GetTitle(), getBuildTargetName(bt));
+                Manager::Get()->GetMacrosManager()->ReplaceMacros(message);
                 LogMessage(message, cltNormal);
             }
             else
             {
-                const wxString &message = F(_("Error cleaning \"%s - %s\""), m_pBuildingProject->GetTitle().wx_str(),
-                                            getBuildTargetName(bt).wx_str());
+                wxString message;
+                message.Printf(_("Error cleaning \"%s - %s\""), m_pBuildingProject->GetTitle(), getBuildTargetName(bt));
+                Manager::Get()->GetMacrosManager()->ReplaceMacros(message);
                 LogMessage(COMPILER_ERROR_LOG + message, cltError);
             }
             break;
