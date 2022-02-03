@@ -95,11 +95,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON1" variable="m_Col1" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL1" variable="m_Col1" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>
@@ -117,11 +116,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON2" variable="m_Col3" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL2" variable="m_Col3" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>
@@ -139,11 +137,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON3" variable="m_Col5" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL3" variable="m_Col5" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>
@@ -156,11 +153,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON4" variable="m_Col2" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL4" variable="m_Col2" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>
@@ -178,11 +174,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON5" variable="m_Col4" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL5" variable="m_Col4" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>
@@ -200,11 +195,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON6" variable="m_Col6" member="yes">
-									<style>wxBU_EXACTFIT</style>
-									<handler function="ColChangeClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL6" variable="m_Col6" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>4</border>
 								<option>1</option>
 							</object>

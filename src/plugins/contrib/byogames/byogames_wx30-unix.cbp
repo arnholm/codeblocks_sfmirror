@@ -62,6 +62,8 @@
 		<Unit filename="byosnake.cpp" />
 		<Unit filename="byosnake.h" />
 		<Unit filename="manifest.xml" />
+		<Unit filename="wxsmith/byoConf.wxs" />
+		<Unit filename="wxsmith/byoGameSelect.wxs" />
 		<Extensions>
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
