@@ -25,7 +25,6 @@ private:
     wxString GetBitmapBaseName() const { return _T("incsearch"); }
     void OnApply() { SaveSettings(); }
     void OnCancel() {}
-    void OnChooseColour(wxCommandEvent& event);
     void SaveSettings();
 
     DECLARE_EVENT_TABLE()

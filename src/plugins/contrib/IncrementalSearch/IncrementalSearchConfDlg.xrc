@@ -18,10 +18,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="btnIncSearchConfColourFound">
-									<label>...</label>
+								<object class="wxColourPickerCtrl" name="cpIncSearchConfColourFound">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -34,10 +34,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="btnIncSearchConfColourHighlight">
-									<label>...</label>
+								<object class="wxColourPickerCtrl" name="cpIncSearchConfColourHighlight">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -65,10 +65,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="btnIncSearchConfNotFoundBG">
-									<label>...</label>
+								<object class="wxColourPickerCtrl" name="cpIncSearchConfNotFoundBG">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -81,10 +81,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="btnIncSearchConfWrappedBG">
-									<label>...</label>
+								<object class="wxColourPickerCtrl" name="cpIncSearchConfWrappedBG">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>

@@ -16,19 +16,16 @@
     #include <wx/button.h>
     #include <wx/checkbox.h>
     #include <wx/choice.h>
-    #include <wx/colordlg.h>
     #include <configmanager.h>
 #endif
 
 #include <wx/spinctrl.h>
+#include <wx/clrpicker.h>
+
 #include "IncrementalSearchConfDlg.h"
 #include "IncrementalSearch.h"
 
 BEGIN_EVENT_TABLE(IncrementalSearchConfDlg,wxPanel)
-    EVT_BUTTON(XRCID("btnIncSearchConfColourFound"),IncrementalSearchConfDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnIncSearchConfColourHighlight"),IncrementalSearchConfDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnIncSearchConfNotFoundBG"),IncrementalSearchConfDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnIncSearchConfWrappedBG"),IncrementalSearchConfDlg::OnChooseColour)
 END_EVENT_TABLE()
 
 IncrementalSearchConfDlg::IncrementalSearchConfDlg(wxWindow* parent)
@@ -38,10 +35,10 @@ IncrementalSearchConfDlg::IncrementalSearchConfDlg(wxWindow* parent)
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
 
     // initialise colour-values
-    XRCCTRL(*this, "btnIncSearchConfColourFound", wxButton)->SetBackgroundColour(cfg->ReadColour(_T("/incremental_search/text_found_colour"), wxColour(160, 32, 240)));
-    XRCCTRL(*this, "btnIncSearchConfColourHighlight", wxButton)->SetBackgroundColour(cfg->ReadColour(_T("/incremental_search/highlight_colour"), wxColour(255, 165, 0)));
-    XRCCTRL(*this, "btnIncSearchConfNotFoundBG", wxButton)->SetBackgroundColour(cfg->ReadColour(_T("/incremental_search/text_not_found_colour"), wxColour(255, 127, 127)));
-    XRCCTRL(*this, "btnIncSearchConfWrappedBG", wxButton)->SetBackgroundColour(cfg->ReadColour(_T("/incremental_search/wrapped_colour"), wxColour(127, 127, 255)));
+    XRCCTRL(*this, "cpIncSearchConfColourFound", wxColourPickerCtrl)->SetColour(cfg->ReadColour(_T("/incremental_search/text_found_colour"), wxColour(160, 32, 240)));
+    XRCCTRL(*this, "cpIncSearchConfColourHighlight", wxColourPickerCtrl)->SetColour(cfg->ReadColour(_T("/incremental_search/highlight_colour"), wxColour(255, 165, 0)));
+    XRCCTRL(*this, "cpIncSearchConfNotFoundBG", wxColourPickerCtrl)->SetColour(cfg->ReadColour(_T("/incremental_search/text_not_found_colour"), wxColour(255, 127, 127)));
+    XRCCTRL(*this, "cpIncSearchConfWrappedBG", wxColourPickerCtrl)->SetColour(cfg->ReadColour(_T("/incremental_search/wrapped_colour"), wxColour(127, 127, 255)));
 
     // get value from conf-file or predefine them with default value
     XRCCTRL(*this, "chkIncSearchConfCenterText", wxCheckBox)->SetValue(cfg->ReadBool(_T("/incremental_search/center_found_text_on_screen"),true));
@@ -56,21 +53,6 @@ IncrementalSearchConfDlg::IncrementalSearchConfDlg(wxWindow* parent)
 
 IncrementalSearchConfDlg::~IncrementalSearchConfDlg()
 {
-}
-
-void IncrementalSearchConfDlg::OnChooseColour(wxCommandEvent& event)
-{
-    wxColourData data;
-    wxWindow* sender = FindWindowById(event.GetId());
-    data.SetColour(sender->GetBackgroundColour());
-
-    wxColourDialog dlg(this, &data);
-    PlaceWindow(&dlg);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        wxColour colour = dlg.GetColourData().GetColour();
-        sender->SetBackgroundColour(colour);
-    }
 }
 
 void IncrementalSearchConfDlg::SaveSettings()
@@ -91,9 +73,9 @@ void IncrementalSearchConfDlg::SaveSettings()
 
 
     // save colour-values
-    cfg->Write(_T("/incremental_search/text_found_colour"),             XRCCTRL(*this, "btnIncSearchConfColourFound", wxButton)->GetBackgroundColour());
-    cfg->Write(_T("/incremental_search/highlight_colour"),              XRCCTRL(*this, "btnIncSearchConfColourHighlight", wxButton)->GetBackgroundColour());
-    cfg->Write(_T("/incremental_search/text_not_found_colour"),         XRCCTRL(*this, "btnIncSearchConfNotFoundBG", wxButton)->GetBackgroundColour());
-    cfg->Write(_T("/incremental_search/wrapped_colour"),                XRCCTRL(*this, "btnIncSearchConfWrappedBG", wxButton)->GetBackgroundColour());
+    cfg->Write(_T("/incremental_search/text_found_colour"),             XRCCTRL(*this, "cpIncSearchConfColourFound", wxColourPickerCtrl)->GetColour());
+    cfg->Write(_T("/incremental_search/highlight_colour"),              XRCCTRL(*this, "cpIncSearchConfColourHighlight", wxColourPickerCtrl)->GetColour());
+    cfg->Write(_T("/incremental_search/text_not_found_colour"),         XRCCTRL(*this, "cpIncSearchConfNotFoundBG", wxColourPickerCtrl)->GetColour());
+    cfg->Write(_T("/incremental_search/wrapped_colour"),                XRCCTRL(*this, "cpIncSearchConfWrappedBG", wxColourPickerCtrl)->GetColour());
 }
 
