@@ -595,12 +595,10 @@
 													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnDocBgColor">
-														<size>40,18</size>
-														<bg>wxSYS_COLOUR_INFOBK</bg>
-														<style>wxBU_EXACTFIT</style>
+													<object class="wxColourPickerCtrl" name="cpDocBgColor">
+														<colour>#000000</colour>
 													</object>
-													<flag>wxTOP|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxTOP|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -613,12 +611,10 @@
 													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnDocTextColor">
-														<size>40,18</size>
-														<bg>wxSYS_COLOUR_INFOTEXT</bg>
-														<style>wxBU_EXACTFIT</style>
+													<object class="wxColourPickerCtrl" name="cpDocTextColor">
+														<colour>#000000</colour>
 													</object>
-													<flag>wxTOP|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxTOP|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -631,12 +627,10 @@
 													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnDocLinkColor">
-														<size>40,18</size>
-														<bg>wxSYS_COLOUR_HIGHLIGHT</bg>
-														<style>wxBU_EXACTFIT</style>
+													<object class="wxColourPickerCtrl" name="cpDocLinkColor">
+														<colour>#000000</colour>
 													</object>
-													<flag>wxTOP|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxTOP|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>

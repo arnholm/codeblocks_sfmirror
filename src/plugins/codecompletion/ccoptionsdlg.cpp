@@ -12,7 +12,6 @@
 #ifndef CB_PRECOMP
     #include <wx/button.h>
     #include <wx/checkbox.h>
-    #include <wx/colordlg.h>
     #include <wx/combobox.h>
     #include <wx/intl.h>
     #include <wx/listbox.h>
@@ -30,6 +29,8 @@
     #include <logmanager.h>
     #include <manager.h>
 #endif
+
+#include <wx/clrpicker.h>
 
 #include <editpairdlg.h>
 
@@ -79,11 +80,7 @@ static const wxString g_SampleClasses =
 
 BEGIN_EVENT_TABLE(CCOptionsDlg, wxPanel)
     EVT_UPDATE_UI(-1,                       CCOptionsDlg::OnUpdateUI)
-    EVT_BUTTON(XRCID("btnColour"),          CCOptionsDlg::OnChooseColour)
     EVT_COMMAND_SCROLL(XRCID("sldCCDelay"), CCOptionsDlg::OnCCDelayScroll)
-    EVT_BUTTON(XRCID("btnDocBgColor"),      CCOptionsDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnDocTextColor"),    CCOptionsDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnDocLinkColor"),    CCOptionsDlg::OnChooseColour)
 END_EVENT_TABLE()
 
 CCOptionsDlg::CCOptionsDlg(wxWindow* parent, NativeParser* np, CodeCompletion* cc, DocumentationHelper* dh) :
@@ -171,9 +168,9 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, NativeParser* np, CodeCompletion* c
     XRCCTRL(*this, "chkDocumentation",      wxCheckBox)->SetValue(m_Documentation->IsEnabled());
 
     ColourManager *colours = Manager::Get()->GetColourManager();
-    XRCCTRL(*this, "btnDocBgColor",         wxButton)->SetBackgroundColour(colours->GetColour(wxT("cc_docs_back")));
-    XRCCTRL(*this, "btnDocTextColor",       wxButton)->SetBackgroundColour(colours->GetColour(wxT("cc_docs_fore")));
-    XRCCTRL(*this, "btnDocLinkColor",       wxButton)->SetBackgroundColour(colours->GetColour(wxT("cc_docs_link")));
+    XRCCTRL(*this, "cpDocBgColor",          wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_back")));
+    XRCCTRL(*this, "cpDocTextColor",        wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_fore")));
+    XRCCTRL(*this, "cpDocLinkColor",        wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_link")));
 
 //    m_Parser.ParseBuffer(g_SampleClasses, true);
 //    m_Parser.BuildTree(*XRCCTRL(*this, "treeClasses", wxTreeCtrl));
@@ -242,9 +239,9 @@ void CCOptionsDlg::OnApply()
 
     // Page "Documentation"
     cfg->Write(_T("/use_documentation_helper"), (bool) XRCCTRL(*this, "chkDocumentation", wxCheckBox)->GetValue());
-    cfg->Write(_T("/documentation_helper_background_color"), (wxColour) XRCCTRL(*this, "btnDocBgColor",   wxButton)->GetBackgroundColour());
-    cfg->Write(_T("/documentation_helper_text_color"),       (wxColour) XRCCTRL(*this, "btnDocTextColor", wxButton)->GetBackgroundColour());
-    cfg->Write(_T("/documentation_helper_link_color"),       (wxColour) XRCCTRL(*this, "btnDocLinkColor", wxButton)->GetBackgroundColour());
+    cfg->Write(_T("/documentation_helper_background_color"), (wxColour) XRCCTRL(*this, "cpDocBgColor",   wxColourPickerCtrl)->GetColour());
+    cfg->Write(_T("/documentation_helper_text_color"),       (wxColour) XRCCTRL(*this, "cpDocTextColor", wxColourPickerCtrl)->GetColour());
+    cfg->Write(_T("/documentation_helper_link_color"),       (wxColour) XRCCTRL(*this, "cpDocLinkColor", wxColourPickerCtrl)->GetColour());
     // -----------------------------------------------------------------------
     // Handle all options that are being be read by m_Parser.ReadOptions():
     // -----------------------------------------------------------------------
@@ -276,11 +273,11 @@ void CCOptionsDlg::OnApply()
     m_Documentation->SetEnabled(               XRCCTRL(*this, "chkDocumentation",  wxCheckBox)->GetValue() );
 
     ColourManager *colours = Manager::Get()->GetColourManager();
-    wxColor colour = XRCCTRL(*this, "btnDocBgColor",   wxButton)->GetBackgroundColour();
+    wxColor colour = XRCCTRL(*this, "cpDocBgColor", wxColourPickerCtrl)->GetColour();
     colours->SetColour(wxT("cc_docs_back"), colour);
-    colour = XRCCTRL(*this, "btnDocTextColor",   wxButton)->GetBackgroundColour();
+    colour = XRCCTRL(*this, "cpDocTextColor", wxColourPickerCtrl)->GetColour();
     colours->SetColour(wxT("cc_docs_text"), colour);
-    colour = XRCCTRL(*this, "btnDocLinkColor",   wxButton)->GetBackgroundColour();
+    colour = XRCCTRL(*this, "cpDocLinkColor", wxColourPickerCtrl)->GetColour();
     colours->SetColour(wxT("cc_docs_link"), colour);
 
     // Now write the parser options and re-read them again to make sure they are up-to-date
@@ -288,21 +285,6 @@ void CCOptionsDlg::OnApply()
     m_NativeParser->RereadParserOptions();
     m_Documentation->WriteOptions(cfg);
     m_CodeCompletion->RereadOptions();
-}
-
-void CCOptionsDlg::OnChooseColour(wxCommandEvent& event)
-{
-    wxColourData data;
-    wxWindow* sender = FindWindowById(event.GetId());
-    data.SetColour(sender->GetBackgroundColour());
-
-    wxColourDialog dlg(this, &data);
-    PlaceWindow(&dlg);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        wxColour colour = dlg.GetColourData().GetColour();
-        sender->SetBackgroundColour(colour);
-    }
 }
 
 void CCOptionsDlg::OnCCDelayScroll(cb_unused wxScrollEvent& event)
@@ -373,9 +355,9 @@ void CCOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
 
     // Page "Documentation"
     en = XRCCTRL(*this, "chkDocumentation",   wxCheckBox)->GetValue();
-    XRCCTRL(*this, "btnDocBgColor",           wxButton)->Enable(en);
-    XRCCTRL(*this, "btnDocTextColor",         wxButton)->Enable(en);
-    XRCCTRL(*this, "btnDocLinkColor",         wxButton)->Enable(en);
+    XRCCTRL(*this, "cpDocBgColor",            wxColourPickerCtrl)->Enable(en);
+    XRCCTRL(*this, "cpDocTextColor",          wxColourPickerCtrl)->Enable(en);
+    XRCCTRL(*this, "cpDocLinkColor",          wxColourPickerCtrl)->Enable(en);
 }
 
 void CCOptionsDlg::UpdateCCDelayLabel()

@@ -27,7 +27,6 @@ public:
     void OnCancel() override {}
 
 protected:
-    void OnChooseColour(wxCommandEvent& event);
     void OnCCDelayScroll(wxScrollEvent& event);
 
     void OnUpdateUI(wxUpdateUIEvent& event);
