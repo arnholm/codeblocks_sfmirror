@@ -24,13 +24,11 @@
     #include <logmanager.h>
 #endif
 
+#include <wx/clrpicker.h>
+
 #include "cbcolourmanager.h"
 
 BEGIN_EVENT_TABLE(OccurrencesHighlightingConfigurationPanel, cbConfigurationPanel)
-    EVT_BUTTON(XRCID("btnHighlightColour"),            OccurrencesHighlightingConfigurationPanel::OnChooseColour)
-    EVT_BUTTON(XRCID("btnHighlightTextColour"),        OccurrencesHighlightingConfigurationPanel::OnChooseColour)
-    EVT_BUTTON(XRCID("btnHighlightPermanentlyColour"), OccurrencesHighlightingConfigurationPanel::OnChooseColour)
-    EVT_BUTTON(XRCID("btnHighlightPermanentlyTextColour"), OccurrencesHighlightingConfigurationPanel::OnChooseColour)
     EVT_CHECKBOX(XRCID("chkHighlightOccurrences"),     OccurrencesHighlightingConfigurationPanel::OnCheck)
     EVT_CHECKBOX(XRCID("chkHighlightOccurrencesOverrideText"), OccurrencesHighlightingConfigurationPanel::OnCheck)
     EVT_CHECKBOX(XRCID("chkHighlightPermanentlyOccurrencesOverrideText"), OccurrencesHighlightingConfigurationPanel::OnCheck)
@@ -58,13 +56,13 @@ OccurrencesHighlightingConfigurationPanel::OccurrencesHighlightingConfigurationP
     XRCCTRL(*this, "chkHighlightOccurrencesOverrideText",  wxCheckBox)->SetValue(cfg->ReadBool(_T("/highlight_occurrence/override_text"), false));
 
     wxColour highlightColour = colourManager->GetColour(wxT("editor_highlight_occurrence"));
-    XRCCTRL(*this, "btnHighlightColour", wxButton)->SetBackgroundColour(highlightColour);
+    XRCCTRL(*this, "cpHighlightColour", wxColourPickerCtrl)->SetColour(highlightColour);
 
     XRCCTRL(*this, "spnHighlightAlpha", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/highlight_occurrence/alpha"), 100));
     XRCCTRL(*this, "spnHighlightBorderAlpha", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/highlight_occurrence/border_alpha"), 255));
 
     highlightColour = colourManager->GetColour(wxT("editor_highlight_occurrence_text"));
-    XRCCTRL(*this, "btnHighlightTextColour", wxButton)->SetBackgroundColour(highlightColour);
+    XRCCTRL(*this, "cpHighlightTextColour", wxColourPickerCtrl)->SetColour(highlightColour);
 
     wxSpinCtrl *minLength = XRCCTRL(*this, "spnHighlightLength", wxSpinCtrl);
     minLength->SetValue(cfg->ReadInt(_T("/highlight_occurrence/min_length"), 3));
@@ -77,14 +75,14 @@ OccurrencesHighlightingConfigurationPanel::OccurrencesHighlightingConfigurationP
 
     //XRCCTRL(*this, "chkHighlightOccurrencesPermanentlyWholeWord",     wxCheckBox)->Enable(true);
     highlightColour = colourManager->GetColour(wxT("editor_highlight_occurrence_permanently"));
-    XRCCTRL(*this, "btnHighlightPermanentlyColour", wxButton)->SetBackgroundColour(highlightColour);
+    XRCCTRL(*this, "cpHighlightPermanentlyColour", wxColourPickerCtrl)->SetColour(highlightColour);
     XRCCTRL(*this, "spnHighlightPermanentlyAlpha", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/highlight_occurrence/alpha_permanently"), 100));
     XRCCTRL(*this, "spnHighlightPermanentlyBorderAlpha", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/highlight_occurrence/border_alpha_permanently"), 255));
 
     highlightColour = colourManager->GetColour(wxT("editor_highlight_occurrence_permanently_text"));
-    XRCCTRL(*this, "btnHighlightPermanentlyTextColour", wxButton)->SetBackgroundColour(highlightColour);
+    XRCCTRL(*this, "cpHighlightPermanentlyTextColour", wxColourPickerCtrl)->SetColour(highlightColour);
     //XRCCTRL(*this, "stHighlightPermanentlyColour",                    wxStaticText)->Enable(permanentlyHighlightEnabled);
-    //XRCCTRL(*this, "btnHighlightPermanentlyColour",                   wxButton)->Enable(permanentlyHighlightEnabled);
+    //XRCCTRL(*this, "cpHighlightPermanentlyColour",                    wxColourPickerCtrl)->Enable(permanentlyHighlightEnabled);
 
     UpdateUI();
 }
@@ -103,26 +101,26 @@ void OccurrencesHighlightingConfigurationPanel::OnApply()
     cfg->Write(_T("/highlight_occurrence/case_sensitive"), XRCCTRL(*this, "chkHighlightOccurrencesCaseSensitive", wxCheckBox)->GetValue());
     cfg->Write(_T("/highlight_occurrence/whole_word"),     XRCCTRL(*this, "chkHighlightOccurrencesWholeWord",     wxCheckBox)->GetValue());
     cfg->Write(_T("/highlight_occurrence/override_text"),     XRCCTRL(*this, "chkHighlightOccurrencesOverrideText",  wxCheckBox)->GetValue());
-    wxColour highlightColour = XRCCTRL(*this, "btnHighlightColour", wxButton)->GetBackgroundColour();
+    wxColour highlightColour = XRCCTRL(*this, "cpHighlightColour", wxColourPickerCtrl)->GetColour();
     colourManager->SetColour(wxT("editor_highlight_occurrence"), highlightColour);
     cfg->Write(_T("/highlight_occurrence/min_length"),     XRCCTRL(*this, "spnHighlightLength",                   wxSpinCtrl)->GetValue());
 
     cfg->Write(_T("/highlight_occurrence/alpha"), XRCCTRL(*this, "spnHighlightAlpha", wxSpinCtrl)->GetValue());
     cfg->Write(_T("/highlight_occurrence/border_alpha"), XRCCTRL(*this, "spnHighlightBorderAlpha", wxSpinCtrl)->GetValue());
 
-    highlightColour = XRCCTRL(*this, "btnHighlightTextColour", wxButton)->GetBackgroundColour();
+    highlightColour = XRCCTRL(*this, "cpHighlightTextColour", wxColourPickerCtrl)->GetColour();
     colourManager->SetColour(wxT("editor_highlight_occurrence_text"), highlightColour);
 
     cfg->Write(_T("/highlight_occurrence/case_sensitive_permanently"), XRCCTRL(*this, "chkHighlightOccurrencesPermanentlyCaseSensitive", wxCheckBox)->GetValue());
     cfg->Write(_T("/highlight_occurrence/whole_word_permanently"),     XRCCTRL(*this, "chkHighlightOccurrencesPermanentlyWholeWord",     wxCheckBox)->GetValue());
     cfg->Write(_T("/highlight_occurrence/override_text_permanently"),  XRCCTRL(*this, "chkHighlightPermanentlyOccurrencesOverrideText",  wxCheckBox)->GetValue());
-    highlightColour = XRCCTRL(*this, "btnHighlightPermanentlyColour", wxButton)->GetBackgroundColour();
+    highlightColour = XRCCTRL(*this, "cpHighlightPermanentlyColour", wxColourPickerCtrl)->GetColour();
     colourManager->SetColour(wxT("editor_highlight_occurrence_permanently"), highlightColour);
 
     cfg->Write(_T("/highlight_occurrence/alpha_permanently"), XRCCTRL(*this, "spnHighlightPermanentlyAlpha", wxSpinCtrl)->GetValue());
     cfg->Write(_T("/highlight_occurrence/border_alpha_permanently"), XRCCTRL(*this, "spnHighlightPermanentlyBorderAlpha", wxSpinCtrl)->GetValue());
 
-    highlightColour = XRCCTRL(*this, "btnHighlightPermanentlyTextColour", wxButton)->GetBackgroundColour();
+    highlightColour = XRCCTRL(*this, "cpHighlightPermanentlyTextColour", wxColourPickerCtrl)->GetColour();
     colourManager->SetColour(wxT("editor_highlight_occurrence_permanently_text"), highlightColour);
 }
 
@@ -140,22 +138,6 @@ wxString OccurrencesHighlightingConfigurationPanel::GetBitmapBaseName() const
     return _T("occurrenceshighlighting");
 }
 
-void OccurrencesHighlightingConfigurationPanel::OnChooseColour(wxCommandEvent& event)
-{
-    wxColourData data;
-    wxWindow* sender = FindWindowById(event.GetId());
-    data.SetColour(sender->GetBackgroundColour());
-
-    wxColourDialog dlg(this, &data);
-    PlaceWindow(&dlg);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        wxColour colour = dlg.GetColourData().GetColour();
-        sender->SetBackgroundColour(colour);
-        sender->SetLabel(wxEmptyString);
-    }
-}
-
 void OccurrencesHighlightingConfigurationPanel::OnCheck(cb_unused wxCommandEvent& event)
 {
     UpdateUI();
@@ -171,13 +153,13 @@ void OccurrencesHighlightingConfigurationPanel::UpdateUI()
     XRCCTRL(*this, "chkHighlightOccurrencesWholeWord",     wxCheckBox)->Enable(enabled);
     overrideTextColour->Enable(enabled);
     XRCCTRL(*this, "stHighlightColour",  wxStaticText)->Enable(enabled);
-    XRCCTRL(*this, "btnHighlightColour", wxButton)->Enable(enabled);
+    XRCCTRL(*this, "cpHighlightColour", wxColourPickerCtrl)->Enable(enabled);
     XRCCTRL(*this, "stHighlightAlpha", wxStaticText)->Enable(enabled);
     XRCCTRL(*this, "spnHighlightAlpha", wxSpinCtrl)->Enable(enabled);
     XRCCTRL(*this, "stHighlightBorderAlpha", wxStaticText)->Enable(enabled);
     XRCCTRL(*this, "spnHighlightBorderAlpha", wxSpinCtrl)->Enable(enabled);
     XRCCTRL(*this, "stHighlightColourText", wxStaticText)->Enable(enabled && overrideText);
-    XRCCTRL(*this, "btnHighlightTextColour", wxButton)->Enable(enabled && overrideText);
+    XRCCTRL(*this, "cpHighlightTextColour", wxColourPickerCtrl)->Enable(enabled && overrideText);
     XRCCTRL(*this, "spnHighlightLength", wxSpinCtrl)->Enable(enabled);
     XRCCTRL(*this, "stHighlightLength", wxStaticText)->Enable(enabled);
 
@@ -185,6 +167,6 @@ void OccurrencesHighlightingConfigurationPanel::UpdateUI()
     const bool permOverrideText = permOverrideTextColour->GetValue();
 
     XRCCTRL(*this, "stHighlightPermanentlyColourText", wxStaticText)->Enable(permOverrideText);
-    XRCCTRL(*this, "btnHighlightPermanentlyTextColour", wxButton)->Enable(permOverrideText);
+    XRCCTRL(*this, "cpHighlightPermanentlyTextColour", wxColourPickerCtrl)->Enable(permOverrideText);
 }
 

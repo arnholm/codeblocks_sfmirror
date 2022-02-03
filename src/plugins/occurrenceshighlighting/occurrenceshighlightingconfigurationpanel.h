@@ -29,7 +29,6 @@ public:
     void OnCancel() override;
 
 private:
-    void OnChooseColour(wxCommandEvent& event);
     void OnCheck(wxCommandEvent& event);
 
     void UpdateUI();
