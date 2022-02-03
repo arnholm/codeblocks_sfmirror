@@ -830,8 +830,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiActiveCaptionColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT13">
@@ -840,8 +844,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiActiveCaptionGradientColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionGradientColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT14">
@@ -850,8 +858,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiActiveCaptionTextColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionTextColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT15">
@@ -860,8 +872,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiInactiveCaptionColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT16">
@@ -870,8 +886,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiInactiveCaptionGradientColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionGradientColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT17">
@@ -880,8 +900,12 @@
 											<flag>wxALIGN_CENTER_VERTICAL</flag>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="btnAuiInactiveCaptionTextColour" />
-											<flag>wxALIGN_TOP</flag>
+											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionTextColour">
+												<colour>#000000</colour>
+											</object>
+											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
 										</object>
 									</object>
 									<flag>wxLEFT|wxEXPAND</flag>
