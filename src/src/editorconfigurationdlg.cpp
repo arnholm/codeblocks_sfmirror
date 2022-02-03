@@ -13,7 +13,6 @@
     #include <wx/button.h>
     #include <wx/checkbox.h>
     #include <wx/choice.h>
-    #include <wx/colordlg.h>
     #include <wx/imaglist.h>
     #include <wx/listbox.h>
     #include <wx/listctrl.h>

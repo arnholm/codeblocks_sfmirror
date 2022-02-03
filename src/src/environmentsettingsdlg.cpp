@@ -22,7 +22,6 @@
     #include <wx/checklst.h>
     #include <wx/radiobox.h>
     #include <wx/spinctrl.h>
-    #include <wx/colordlg.h>
     #include <wx/msgdlg.h>
     #include <wx/imaglist.h>
     #include <wx/settings.h>
