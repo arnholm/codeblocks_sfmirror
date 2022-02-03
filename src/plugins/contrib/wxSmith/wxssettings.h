@@ -27,9 +27,9 @@
 #include <configurationpanel.h>
 
 //(*Headers(wxsSettings)
-#include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
+#include <wx/clrpicker.h>
 #include <wx/combobox.h>
 #include <wx/panel.h>
 #include <wx/radiobut.h>
@@ -49,8 +49,6 @@ protected:
     wxString GetBitmapBaseName() const { return _T("wxsmith"); }
 
     //(*Handlers(wxsSettings)
-    void OnDragTargetColClick(wxCommandEvent& event);
-    void OnDragParentColClick(wxCommandEvent& event);
     void OnUseGridClick(wxCommandEvent& event);
     //*)
 
@@ -62,8 +60,8 @@ private:
     static const long ID_CHECKBOX11;
     static const long ID_CHOICE2;
     static const long ID_COMBOBOX1;
-    static const long ID_BUTTON1;
-    static const long ID_BUTTON2;
+    static const long ID_COLOURPICKERCTRL1;
+    static const long ID_COLOURPICKERCTRL2;
     static const long ID_CHECKBOX7;
     static const long ID_SPINCTRL1;
     static const long ID_CHECKBOX9;
@@ -91,8 +89,6 @@ private:
 
     //(*Declarations(wxsSettings)
     wxBoxSizer* BoxSizer2;
-    wxButton* m_DragParentCol;
-    wxButton* m_DragTargetCol;
     wxCheckBox* m_BorderBottom;
     wxCheckBox* m_BorderDU;
     wxCheckBox* m_BorderLeft;
@@ -107,6 +103,8 @@ private:
     wxCheckBox* m_UseI18N;
     wxChoice* m_BrowserPlacements;
     wxChoice* m_Placement;
+    wxColourPickerCtrl* m_DragParentCol;
+    wxColourPickerCtrl* m_DragTargetCol;
     wxComboBox* m_DragAssistType;
     wxFlexGridSizer* FlexGridSizer6;
     wxRadioButton* m_Icons16;

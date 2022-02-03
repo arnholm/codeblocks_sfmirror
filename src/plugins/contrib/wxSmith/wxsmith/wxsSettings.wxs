@@ -92,7 +92,7 @@
 									</content>
 									<style>wxCB_READONLY</style>
 								</object>
-								<flag>wxLEFT|wxEXPAND</flag>
+								<flag>wxLEFT</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -104,11 +104,10 @@
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON1" variable="m_DragTargetCol" member="yes">
-									<label>...</label>
-									<handler function="OnDragTargetColClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL1" variable="m_DragTargetCol" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -120,11 +119,10 @@
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON2" variable="m_DragParentCol" member="yes">
-									<label>...</label>
-									<handler function="OnDragParentColClick" entry="EVT_BUTTON" />
+								<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL2" variable="m_DragParentCol" member="yes">
+									<colour>#000000</colour>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -141,7 +139,7 @@
 									<value>8</value>
 									<min>2</min>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>

@@ -39,8 +39,8 @@
 const long wxsSettings::ID_CHECKBOX11 = wxNewId();
 const long wxsSettings::ID_CHOICE2 = wxNewId();
 const long wxsSettings::ID_COMBOBOX1 = wxNewId();
-const long wxsSettings::ID_BUTTON1 = wxNewId();
-const long wxsSettings::ID_BUTTON2 = wxNewId();
+const long wxsSettings::ID_COLOURPICKERCTRL1 = wxNewId();
+const long wxsSettings::ID_COLOURPICKERCTRL2 = wxNewId();
 const long wxsSettings::ID_CHECKBOX7 = wxNewId();
 const long wxsSettings::ID_SPINCTRL1 = wxNewId();
 const long wxsSettings::ID_CHECKBOX9 = wxNewId();
@@ -135,21 +135,21 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     m_DragAssistType->Append(_("None"));
     m_DragAssistType->Append(_("Simple"));
     m_DragAssistType->Append(_("Colour Mix"));
-    FlexGridSizer2->Add(m_DragAssistType, 1, wxLEFT|wxEXPAND, 5);
+    FlexGridSizer2->Add(m_DragAssistType, 1, wxLEFT, 5);
     StaticText3 = new wxStaticText(this, wxID_ANY, _("Drag target colour:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     FlexGridSizer2->Add(StaticText3, 0, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
-    m_DragTargetCol = new wxButton(this, ID_BUTTON1, _("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-    FlexGridSizer2->Add(m_DragTargetCol, 1, wxTOP|wxLEFT|wxEXPAND, 5);
+    m_DragTargetCol = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL1, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL1"));
+    FlexGridSizer2->Add(m_DragTargetCol, 1, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticText4 = new wxStaticText(this, wxID_ANY, _("Drag parent colour:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     FlexGridSizer2->Add(StaticText4, 0, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
-    m_DragParentCol = new wxButton(this, ID_BUTTON2, _("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    FlexGridSizer2->Add(m_DragParentCol, 1, wxTOP|wxLEFT|wxEXPAND, 5);
+    m_DragParentCol = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL2, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL2"));
+    FlexGridSizer2->Add(m_DragParentCol, 1, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     m_UseGrid = new wxCheckBox(this, ID_CHECKBOX7, _("Snap to grid:"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX7"));
     m_UseGrid->SetValue(false);
     FlexGridSizer2->Add(m_UseGrid, 0, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
     m_GridSize = new wxSpinCtrl(this, ID_SPINCTRL1, _T("8"), wxDefaultPosition, wxDefaultSize, 0, 2, 100, 8, _T("ID_SPINCTRL1"));
     m_GridSize->SetValue(_T("8"));
-    FlexGridSizer2->Add(m_GridSize, 1, wxTOP|wxLEFT|wxEXPAND, 5);
+    FlexGridSizer2->Add(m_GridSize, 1, wxTOP|wxLEFT, 5);
     StaticText1 = new wxStaticText(this, wxID_ANY, _("Add new items continously:"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("wxID_ANY"));
     FlexGridSizer2->Add(StaticText1, 0, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
     m_Continous = new wxCheckBox(this, ID_CHECKBOX9, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX9"));
@@ -263,8 +263,6 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     FlexGridSizer6->Add(StaticBoxSizer4, 1, wxEXPAND, 5);
     SetSizer(FlexGridSizer6);
 
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsSettings::OnDragTargetColClick);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsSettings::OnDragParentColClick);
     Connect(ID_CHECKBOX7,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsSettings::OnUseGridClick);
     //*)
 
@@ -277,8 +275,8 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     long ColTarget = cfg->ReadInt(_T("/dragtargetcol"),0x608CDFL);;
     long ColParent = cfg->ReadInt(_T("/dragparentcol"),0x0D177BL);;
     m_DragAssistType->SetSelection(cfg->ReadInt(_T("/dragassisttype"),2));
-    m_DragTargetCol->SetBackgroundColour(wxColour((ColTarget>>16)&0xFF,(ColTarget>>8)&0xFF,ColTarget&0xFF));
-    m_DragParentCol->SetBackgroundColour(wxColour((ColParent>>16)&0xFF,(ColParent>>8)&0xFF,ColParent&0xFF));
+    m_DragTargetCol->SetColour(wxColour((ColTarget>>16)&0xFF,(ColTarget>>8)&0xFF,ColTarget&0xFF));
+    m_DragParentCol->SetColour(wxColour((ColParent>>16)&0xFF,(ColParent>>8)&0xFF,ColParent&0xFF));
 
     if ( cfg->ReadInt(_T("/tooliconsize"),32L) == 16 )
     {
@@ -394,28 +392,10 @@ wxsSettings::~wxsSettings()
     //*)
 }
 
-void wxsSettings::OnDragTargetColClick(cb_unused wxCommandEvent& event)
-{
-    wxColour Col = ::wxGetColourFromUser(this,m_DragTargetCol->GetBackgroundColour());
-    if ( Col.Ok() )
-    {
-        m_DragTargetCol->SetBackgroundColour(Col);
-    }
-}
-
-void wxsSettings::OnDragParentColClick(cb_unused wxCommandEvent& event)
-{
-    wxColour Col = ::wxGetColourFromUser(this,m_DragParentCol->GetBackgroundColour());
-    if ( Col.Ok() )
-    {
-        m_DragParentCol->SetBackgroundColour(Col);
-    }
-}
-
 void wxsSettings::OnApply()
 {
-    wxColour ColTarget = m_DragTargetCol->GetBackgroundColour();
-    wxColour ColParent = m_DragParentCol->GetBackgroundColour();
+    wxColour ColTarget = m_DragTargetCol->GetColour();
+    wxColour ColParent = m_DragParentCol->GetColour();
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("wxsmith"));
 
