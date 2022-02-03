@@ -71,12 +71,6 @@ BEGIN_EVENT_TABLE(EditorConfigurationDlg, wxScrollingDialog)
     EVT_BUTTON(XRCID("btnColoursReset"),               EditorConfigurationDlg::OnColoursReset)
     EVT_BUTTON(XRCID("btnColoursCopy"),                EditorConfigurationDlg::OnColoursCopyFrom)
     EVT_BUTTON(XRCID("btnColoursCopyAll"),             EditorConfigurationDlg::OnColoursCopyAllFrom)
-    EVT_BUTTON(XRCID("btnSavedColour"),                EditorConfigurationDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnUnsavedColour"),              EditorConfigurationDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnCaretColour"),                EditorConfigurationDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnGutterColour"),               EditorConfigurationDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnColoursFore"),                EditorConfigurationDlg::OnChooseColour)
-    EVT_BUTTON(XRCID("btnColoursBack"),                EditorConfigurationDlg::OnChooseColour)
     EVT_BUTTON(XRCID("btnForeSetDefault"),             EditorConfigurationDlg::OnSetDefaultColour)
     EVT_BUTTON(XRCID("btnBackSetDefault"),             EditorConfigurationDlg::OnSetDefaultColour)
     EVT_BUTTON(XRCID("btnColoursAddTheme"),            EditorConfigurationDlg::OnAddColourTheme)
@@ -94,9 +88,11 @@ BEGIN_EVENT_TABLE(EditorConfigurationDlg, wxScrollingDialog)
     EVT_CHOICE(XRCID("lstCaretStyle"),                 EditorConfigurationDlg::OnCaretStyle)
     EVT_CHECKBOX(XRCID("chkSmartIndent"),              EditorConfigurationDlg::OnSmartIndent)
 
+    EVT_COLOURPICKER_CHANGED(XRCID("cpColoursFore"),   EditorConfigurationDlg::OnChooseColour)
+    EVT_COLOURPICKER_CHANGED(XRCID("cpColoursBack"),   EditorConfigurationDlg::OnChooseColour)
+
     EVT_LISTBOOK_PAGE_CHANGING(XRCID("nbMain"),        EditorConfigurationDlg::OnPageChanging)
     EVT_LISTBOOK_PAGE_CHANGED(XRCID("nbMain"),         EditorConfigurationDlg::OnPageChanged)
-    EVT_BUTTON(XRCID("btnWSColour"),                   EditorConfigurationDlg::OnChooseColour)
 
     EVT_UPDATE_UI(XRCID("cmbFontQuality"),             EditorConfigurationDlg::OnUpdateUIFontQuality)
 END_EVENT_TABLE()
@@ -132,8 +128,8 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "chkScrollWidthTracking",      wxCheckBox)->SetValue(m_EnableScrollWidthTracking);
     m_EnableChangebar = cfg->ReadBool(_T("/margin/use_changebar"), true);
     XRCCTRL(*this, "chkUseChangebar",             wxCheckBox)->SetValue(m_EnableChangebar);
-    XRCCTRL(*this, "btnSavedColour",              wxButton)->SetBackgroundColour(savedColour);
-    XRCCTRL(*this, "btnUnsavedColour",            wxButton)->SetBackgroundColour(unsavedColour);
+    XRCCTRL(*this, "cpSavedColour",               wxColourPickerCtrl)->SetColour(savedColour);
+    XRCCTRL(*this, "cpUnsavedColour",             wxColourPickerCtrl)->SetColour(unsavedColour);
     XRCCTRL(*this, "chkShowIndentGuides",         wxCheckBox)->SetValue(cfg->ReadBool(_T("/show_indent_guides"),         false));
     XRCCTRL(*this, "chkBraceSmartIndent",         wxCheckBox)->SetValue(cfg->ReadBool(_T("/brace_smart_indent"),         true));
     XRCCTRL(*this, "chkSelectionBraceCompletion", wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection_brace_completion"), false));
@@ -199,12 +195,12 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "lstCaretStyle",  wxChoice)->SetSelection(caretStyle);
     XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/caret/width"), 1));
     XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->Enable(caretStyle == wxSCI_CARETSTYLE_LINE);
-    XRCCTRL(*this, "btnCaretColour", wxButton)->SetBackgroundColour(caretColour);
+    XRCCTRL(*this, "cpCaretColour",  wxColourPickerCtrl)->SetColour(caretColour);
     XRCCTRL(*this, "slCaretPeriod",  wxSlider)->SetValue(cfg->ReadInt(_T("/caret/period"), 500));
 
     // whitespace colour
     const wxColour whiteSpaceColour(colours->GetColour(wxT("editor_whitespace")));
-    XRCCTRL(*this, "btnWSColour", wxButton)->SetBackgroundColour(whiteSpaceColour);
+    XRCCTRL(*this, "cpWSColour", wxColourPickerCtrl)->SetColour(whiteSpaceColour);
 
     //selections
     XRCCTRL(*this, "chkEnableVirtualSpace",     wxCheckBox)->SetValue(cfg->ReadBool(_T("/selection/use_vspace"),      false));
@@ -228,7 +224,7 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     //gutter
     const wxColour gutterColour(colours->GetColour(wxT("editor_gutter")));
     XRCCTRL(*this, "lstGutterMode",   wxChoice)->SetSelection(cfg->ReadInt(_T("/gutter/mode"), 0));
-    XRCCTRL(*this, "btnGutterColour", wxButton)->SetBackgroundColour(gutterColour);
+    XRCCTRL(*this, "cpGutterColour",  wxColourPickerCtrl)->SetColour(gutterColour);
     XRCCTRL(*this, "spnGutterColumn", wxSpinCtrl)->SetRange(1, 500);
     XRCCTRL(*this, "spnGutterColumn", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/gutter/column"), 80));
 
@@ -511,32 +507,32 @@ void EditorConfigurationDlg::UpdateColourControls(const OptionColour *opt)
         wxColour c = opt->fore;
         if (c == wxNullColour)
         {
-            XRCCTRL(*this, "btnColoursFore", wxButton)->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-            XRCCTRL(*this, "btnColoursFore", wxButton)->SetLabel(_("\"Default\""));
+            XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+            XRCCTRL(*this, "stForeground", wxStaticText)->SetLabel(_("Foreground (default):"));
         }
         else
         {
-            XRCCTRL(*this, "btnColoursFore", wxButton)->SetBackgroundColour(c);
-            XRCCTRL(*this, "btnColoursFore", wxButton)->SetLabel(_T(""));
+            XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->SetColour(c);
+            XRCCTRL(*this, "stForeground", wxStaticText)->SetLabel(_("Foreground:"));
         }
 
         c = opt->back;
         if (c == wxNullColour)
         {
-            XRCCTRL(*this, "btnColoursBack", wxButton)->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-            XRCCTRL(*this, "btnColoursBack", wxButton)->SetLabel(_("\"Default\""));
+            XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+            XRCCTRL(*this, "stBackground", wxStaticText)->SetLabel(_("Background (default):"));
         }
         else
         {
-            XRCCTRL(*this, "btnColoursBack", wxButton)->SetBackgroundColour(c);
-            XRCCTRL(*this, "btnColoursBack", wxButton)->SetLabel(_T(""));
+            XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->SetColour(c);
+            XRCCTRL(*this, "stBackground", wxStaticText)->SetLabel(_("Background:"));
         }
 
         XRCCTRL(*this, "chkColoursBold", wxCheckBox)->SetValue(opt->bold);
         XRCCTRL(*this, "chkColoursItalics", wxCheckBox)->SetValue(opt->italics);
         XRCCTRL(*this, "chkColoursUnderlined", wxCheckBox)->SetValue(opt->underlined);
 
-//          XRCCTRL(*this, "btnColorsFore", wxButton)->Enable(opt->isStyle);
+//          XRCCTRL(*this, "cpColorsFore", wxColourPickerCtrl)->Enable(opt->isStyle);
         XRCCTRL(*this, "chkColoursBold", wxCheckBox)->Enable(opt->isStyle);
         XRCCTRL(*this, "chkColoursItalics", wxCheckBox)->Enable(opt->isStyle);
         XRCCTRL(*this, "chkColoursUnderlined", wxCheckBox)->Enable(opt->isStyle);
@@ -555,22 +551,26 @@ void EditorConfigurationDlg::WriteColours()
         OptionColour* opt = m_Theme->GetOptionByName(m_Lang, colours->GetStringSelection());
         if (opt)
         {
-            wxColour c = XRCCTRL(*this, "btnColoursFore", wxButton)->GetBackgroundColour();
+            wxColour c = XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->GetColour();
             if (c != wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
                 opt->fore = c;
             else
                 opt->fore = wxNullColour;
-            c = XRCCTRL(*this, "btnColoursBack", wxButton)->GetBackgroundColour();
+
+            c = XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->GetColour();
             if (c != wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
                 opt->back = c;
             else
                 opt->back = wxNullColour;
+
             opt->bold = XRCCTRL(*this, "chkColoursBold", wxCheckBox)->GetValue();
             opt->italics = XRCCTRL(*this, "chkColoursItalics", wxCheckBox)->GetValue();
             opt->underlined = XRCCTRL(*this, "chkColoursUnderlined", wxCheckBox)->GetValue();
             m_Theme->UpdateOptionsWithSameName(m_Lang, opt);
+            UpdateColourControls(opt);
         }
     }
+
     ApplyColours();
     m_ThemeModified = true;
 }
@@ -991,37 +991,18 @@ void EditorConfigurationDlg::OnChangeDefCodeFileType(cb_unused wxCommandEvent& e
     }
 }
 
-void EditorConfigurationDlg::OnChooseColour(wxCommandEvent& event)
+void EditorConfigurationDlg::OnChooseColour(wxColourPickerEvent& event)
 {
-    wxColourData data;
-    wxWindow* sender = FindWindowById(event.GetId());
-    data.SetColour(sender->GetBackgroundColour());
-
-    wxColourDialog dlg(this, &data);
-    PlaceWindow(&dlg);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        wxColour colour = dlg.GetColourData().GetColour();
-        sender->SetBackgroundColour(colour);
-        sender->SetLabel(wxEmptyString);
-    }
-
-    if (event.GetId() == XRCID("btnColoursFore") ||
-        event.GetId() == XRCID("btnColoursBack"))
-        WriteColours();
+    WriteColours();
 }
 
 void EditorConfigurationDlg::OnSetDefaultColour(wxCommandEvent& event)
 {
-    wxWindow *button = nullptr;
     if (event.GetId() == XRCID("btnForeSetDefault"))
-        button = FindWindowById(XRCID("btnColoursFore"));
+        XRCCTRL(*this, "cpColoursFore",  wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
     else if (event.GetId() == XRCID("btnBackSetDefault"))
-        button = FindWindowById(XRCID("btnColoursBack"));
-    if (!button)
-        return;
-    button->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-    button->SetLabel(_("\"Default\""));
+        XRCCTRL(*this, "cpColoursBack",  wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+
     WriteColours();
 }
 
@@ -1117,12 +1098,12 @@ void EditorConfigurationDlg::EndModal(int retCode)
         //caret
         cfg->Write(_T("/caret/style"),                         XRCCTRL(*this, "lstCaretStyle",  wxChoice)->GetSelection());
         cfg->Write(_T("/caret/width"),                         XRCCTRL(*this, "spnCaretWidth",  wxSpinCtrl)->GetValue());
-        wxColour caretColour = XRCCTRL(*this, "btnCaretColour", wxButton)->GetBackgroundColour();
+        wxColour caretColour = XRCCTRL(*this, "cpCaretColour", wxColourPickerCtrl)->GetColour();
         colours->SetColour(wxT("editor_caret"), caretColour);
         cfg->Write(_T("/caret/period"),                        XRCCTRL(*this, "slCaretPeriod",  wxSlider)->GetValue());
 
         // whitespace colour
-        wxColour wsColour = XRCCTRL(*this, "btnWSColour", wxButton)->GetBackgroundColour();
+        wxColour wsColour = XRCCTRL(*this, "cpWSColour", wxColourPickerCtrl)->GetColour();
         colours->SetColour(wxT("editor_whitespace"), wsColour);
 
         //folding
@@ -1159,7 +1140,7 @@ void EditorConfigurationDlg::EndModal(int retCode)
 
         //gutter
         cfg->Write(_T("/gutter/mode"),                     XRCCTRL(*this, "lstGutterMode",   wxChoice)->GetSelection());
-        wxColour gutterColour = XRCCTRL(*this, "btnGutterColour", wxButton)->GetBackgroundColour();
+        wxColour gutterColour = XRCCTRL(*this, "cpGutterColour", wxColourPickerCtrl)->GetColour();
         colours->SetColour(wxT("editor_gutter"), gutterColour);
         cfg->Write(_T("/gutter/column"),                   XRCCTRL(*this, "spnGutterColumn", wxSpinCtrl)->GetValue());
 
@@ -1198,8 +1179,8 @@ void EditorConfigurationDlg::EndModal(int retCode)
             }
         }
 
-        colours->SetColour(wxT("changebar_saved"), XRCCTRL(*this, "btnSavedColour", wxButton)->GetBackgroundColour());
-        colours->SetColour(wxT("changebar_unsaved"), XRCCTRL(*this, "btnUnsavedColour", wxButton)->GetBackgroundColour());
+        colours->SetColour(wxT("changebar_saved"), XRCCTRL(*this, "cpSavedColour", wxColourPickerCtrl)->GetColour());
+        colours->SetColour(wxT("changebar_unsaved"), XRCCTRL(*this, "cpUnsavedColour", wxColourPickerCtrl)->GetColour());
 
         // default code : first update what's in the current txtCtrl,
         // and then write them all to the config file (even if unmodified)

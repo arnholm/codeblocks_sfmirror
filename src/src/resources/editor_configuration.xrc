@@ -552,8 +552,10 @@
 																				<option>1</option>
 																			</object>
 																			<object class="sizeritem">
-																				<object class="wxButton" name="btnWSColour" />
-																				<flag>wxBOTTOM|wxEXPAND</flag>
+																				<object class="wxColourPickerCtrl" name="cpWSColour">
+																					<colour>#000000</colour>
+																				</object>
+																				<flag>wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																				<border>5</border>
 																				<option>1</option>
 																			</object>
@@ -984,8 +986,10 @@
 													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnSavedColour" />
-													<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<object class="wxColourPickerCtrl" name="cpSavedColour">
+														<colour>#000000</colour>
+													</object>
+													<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -998,8 +1002,10 @@
 													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnUnsavedColour" />
-													<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<object class="wxColourPickerCtrl" name="cpUnsavedColour">
+														<colour>#000000</colour>
+													</object>
+													<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -1044,8 +1050,11 @@
 													<flag>wxALIGN_CENTER_VERTICAL</flag>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnGutterColour" />
-													<flag>wxALIGN_TOP</flag>
+													<object class="wxColourPickerCtrl" name="cpGutterColour">
+														<colour>#000000</colour>
+													</object>
+													<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticText" name="ID_STATICTEXT6">
@@ -1114,8 +1123,12 @@
 													<flag>wxALIGN_CENTER_VERTICAL</flag>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="btnCaretColour" />
-													<flag>wxALIGN_TOP</flag>
+													<object class="wxColourPickerCtrl" name="cpCaretColour">
+														<colour>#000000</colour>
+													</object>
+													<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticText" name="ID_STATICTEXT26">
@@ -1263,7 +1276,7 @@
 															<object class="wxBoxSizer">
 																<orient>wxVERTICAL</orient>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT9">
+																	<object class="wxStaticText" name="stForeground">
 																		<label>Foreground:</label>
 																	</object>
 																	<flag>wxALIGN_LEFT</flag>
@@ -1271,13 +1284,15 @@
 																<object class="sizeritem">
 																	<object class="wxBoxSizer">
 																		<object class="sizeritem">
-																			<object class="wxButton" name="btnColoursFore" />
-																			<flag>wxEXPAND</flag>
-																			<border>4</border>
+																			<object class="wxColourPickerCtrl" name="cpColoursFore">
+																				<colour>#000000</colour>
+																			</object>
+																			<flag>wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
 																		</object>
 																		<object class="sizeritem">
 																			<object class="wxButton" name="btnForeSetDefault">
-																				<label>D</label>
+																				<label>Default</label>
 																				<style>wxBU_EXACTFIT</style>
 																			</object>
 																			<flag>wxLEFT|wxEXPAND</flag>
@@ -1289,7 +1304,7 @@
 																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT10">
+																	<object class="wxStaticText" name="stBackground">
 																		<label>Background:</label>
 																	</object>
 																	<flag>wxTOP|wxALIGN_LEFT</flag>
@@ -1298,13 +1313,15 @@
 																<object class="sizeritem">
 																	<object class="wxBoxSizer">
 																		<object class="sizeritem">
-																			<object class="wxButton" name="btnColoursBack" />
-																			<flag>wxEXPAND</flag>
-																			<border>4</border>
+																			<object class="wxColourPickerCtrl" name="cpColoursBack">
+																				<colour>#000000</colour>
+																			</object>
+																			<flag>wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
 																		</object>
 																		<object class="sizeritem">
 																			<object class="wxButton" name="btnBackSetDefault">
-																				<label>D</label>
+																				<label>Default</label>
 																				<style>wxBU_EXACTFIT</style>
 																			</object>
 																			<flag>wxLEFT|wxEXPAND</flag>
@@ -1363,6 +1380,7 @@
 																<label>Reset defaults</label>
 															</object>
 															<flag>wxALIGN_TOP</flag>
+															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxButton" name="btnColoursCopy">
@@ -1370,6 +1388,7 @@
 															</object>
 															<flag>wxALIGN_TOP</flag>
 															<border>5</border>
+															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxButton" name="btnColoursCopyAll">
@@ -1377,6 +1396,7 @@
 															</object>
 															<flag>wxALIGN_TOP</flag>
 															<border>5</border>
+															<option>1</option>
 														</object>
 													</object>
 													<flag>wxALIGN_LEFT</flag>

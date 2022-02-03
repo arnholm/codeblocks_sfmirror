@@ -9,6 +9,7 @@
 #include <map>
 #include "scrollingdialog.h"
 #include <wx/arrstr.h>
+#include <wx/clrpicker.h>
 #include "settings.h"
 
 // forward decls
@@ -24,7 +25,7 @@ class EditorConfigurationDlg : public wxScrollingDialog
 
     private:
         void OnChooseFont(wxCommandEvent& event);
-        void OnChooseColour(wxCommandEvent& event);
+        void OnChooseColour(wxColourPickerEvent& event);
         void OnSetDefaultColour(wxCommandEvent& event);
         void OnBoldItalicUline(wxCommandEvent& event);
         void OnColourTheme(wxCommandEvent& event);
