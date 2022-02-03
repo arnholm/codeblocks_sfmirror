@@ -20,7 +20,6 @@
 * $HeadURL$
 */
 
-#include <wx/colordlg.h>
 #include "wxssettings.h"
 #include "wxwidgets/wxssizer.h"
 #include "wxwidgets/wxsitemeditor.h"
@@ -266,37 +265,29 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     Connect(ID_CHECKBOX7,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsSettings::OnUseGridClick);
     //*)
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("wxsmith"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
 
-    m_UniqueIDsOnly->SetValue(cfg->ReadBool(_T("/uniqueids"),true));
-    m_InitialPlacement = cfg->ReadInt(_T("/browserplacements"),0);
+    m_UniqueIDsOnly->SetValue(cfg->ReadBool("/uniqueids", true));
+    m_InitialPlacement = cfg->ReadInt("/browserplacements", 0);
     m_BrowserPlacements->SetSelection(m_InitialPlacement);
 
-    long ColTarget = cfg->ReadInt(_T("/dragtargetcol"),0x608CDFL);;
-    long ColParent = cfg->ReadInt(_T("/dragparentcol"),0x0D177BL);;
-    m_DragAssistType->SetSelection(cfg->ReadInt(_T("/dragassisttype"),2));
-    m_DragTargetCol->SetColour(wxColour((ColTarget>>16)&0xFF,(ColTarget>>8)&0xFF,ColTarget&0xFF));
-    m_DragParentCol->SetColour(wxColour((ColParent>>16)&0xFF,(ColParent>>8)&0xFF,ColParent&0xFF));
+    const long ColTarget = cfg->ReadInt("/dragtargetcol", 0x608CDFL);
+    const long ColParent = cfg->ReadInt("/dragparentcol", 0x0D177BL);
+    m_DragAssistType->SetSelection(cfg->ReadInt("/dragassisttype", 2));
+    m_DragTargetCol->SetColour(wxColour((ColTarget >> 16) & 0xFF, (ColTarget >> 8) & 0xFF, ColTarget & 0xFF));
+    m_DragParentCol->SetColour(wxColour((ColParent >> 16) & 0xFF, (ColParent >> 8) & 0xFF, ColParent & 0xFF));
 
-    if ( cfg->ReadInt(_T("/tooliconsize"),32L) == 16 )
-    {
+    if ( cfg->ReadInt("/tooliconsize", 32L) == 16 )
         m_TIcons16->SetValue(true);
-    }
     else
-    {
         m_TIcons32->SetValue(true);
-    }
 
-    if ( cfg->ReadInt(_T("/paletteiconsize"),16L) == 16 )
-    {
+    if ( cfg->ReadInt("/paletteiconsize", 16L) == 16 )
         m_Icons16->SetValue(true);
-    }
     else
-    {
         m_Icons32->SetValue(true);
-    }
 
-    int GridSize = cfg->ReadInt(_T("/gridsize"),8);
+    const int GridSize = cfg->ReadInt("/gridsize", 8);
     if ( GridSize > 1 )
     {
         m_UseGrid->SetValue(true);
@@ -304,24 +295,32 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     }
     else
     {
-        if ( GridSize<-1 )
-        {
+        if ( GridSize < -1 )
             m_GridSize->SetValue(-GridSize);
-        }
+
         m_GridSize->Disable();
     }
 
-    m_Continous->SetValue(cfg->ReadBool(_T("/continousinsert"),false));
-    m_RemovePrefix->SetValue(cfg->ReadBool(_T("/removeprefix"),false));
+    m_Continous->SetValue(cfg->ReadBool("/continousinsert", false));
+    m_RemovePrefix->SetValue(cfg->ReadBool("/removeprefix", false));
 
-    m_UseI18N->SetValue(cfg->ReadBool(_T("/useI18N"),true));
-    switch (cfg->ReadInt(_T("/noneI18N"),0))
+    m_UseI18N->SetValue(cfg->ReadBool("/useI18N", true));
+    switch (cfg->ReadInt("/noneI18N", 0))
     {
-      case 0: m_NoneI18N_T->SetValue(true);  break;
-      case 1: m_NoneI18NwxT->SetValue(true); break;
-      case 2: m_NoneI18N->SetValue(true);    break;
-      case 3: m_NoneI18NwxS->SetValue(true); break;
-      default:                               break;
+        case 0:
+            m_NoneI18N_T->SetValue(true);
+            break;
+        case 1:
+            m_NoneI18NwxT->SetValue(true);
+            break;
+        case 2:
+            m_NoneI18N->SetValue(true);
+            break;
+        case 3:
+            m_NoneI18NwxS->SetValue(true);
+            break;
+        default:
+            break;
     }
 
     // Creating wxsSizerExtra structure which will be filled with used data
@@ -339,47 +338,29 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     if ( Extra.Flags & wxsSizerFlagsProperty::AlignBottom )
     {
         if ( Extra.Flags & wxsSizerFlagsProperty::AlignRight )
-        {
             m_Placement->SetSelection(8);
-        }
         else if ( Extra.Flags & wxsSizerFlagsProperty::AlignCenterHorizontal )
-        {
             m_Placement->SetSelection(7);
-        }
         else
-        {
             m_Placement->SetSelection(6);
-        }
     }
     else if ( Extra.Flags & wxsSizerFlagsProperty::AlignCenterVertical )
     {
         if ( Extra.Flags & wxsSizerFlagsProperty::AlignRight )
-        {
             m_Placement->SetSelection(5);
-        }
         else if ( Extra.Flags & wxsSizerFlagsProperty::AlignCenterHorizontal )
-        {
             m_Placement->SetSelection(4);
-        }
         else
-        {
             m_Placement->SetSelection(3);
-        }
     }
     else
     {
         if ( Extra.Flags & wxsSizerFlagsProperty::AlignRight )
-        {
             m_Placement->SetSelection(2);
-        }
         else if ( Extra.Flags & wxsSizerFlagsProperty::AlignCenterHorizontal )
-        {
             m_Placement->SetSelection(1);
-        }
         else
-        {
             m_Placement->SetSelection(0);
-        }
     }
 
     m_Border->SetValue(Extra.Border.Value);
@@ -397,36 +378,37 @@ void wxsSettings::OnApply()
     wxColour ColTarget = m_DragTargetCol->GetColour();
     wxColour ColParent = m_DragParentCol->GetColour();
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("wxsmith"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
 
-    cfg->Write(_T("/uniqueids"),(bool)m_UniqueIDsOnly->GetValue());
-    cfg->Write(_T("/browserplacements"),(int)(m_BrowserPlacements->GetSelection()));
-    cfg->Write(_T("/dragtargetcol"),(int)((((int)ColTarget.Red())<<16) + (((long)ColTarget.Green())<<8) + (long)ColTarget.Blue()));
-    cfg->Write(_T("/dragparentcol"),(int)((((int)ColParent.Red())<<16) + (((long)ColParent.Green())<<8) + (long)ColParent.Blue()));
-    cfg->Write(_T("/dragassisttype"),(int)m_DragAssistType->GetSelection());
-    cfg->Write(_T("/paletteiconsize"),(int)(m_Icons16->GetValue()?16:32));
-    cfg->Write(_T("/tooliconsize"),(int)(m_TIcons16->GetValue()?16:32));
+    cfg->Write("/uniqueids", (bool)m_UniqueIDsOnly->GetValue());
+    cfg->Write("/browserplacements", (int)(m_BrowserPlacements->GetSelection()));
+    cfg->Write("/dragtargetcol", (int)((((int)ColTarget.Red()) << 16) + (((long)ColTarget.Green()) << 8) + (long)ColTarget.Blue()));
+    cfg->Write("/dragparentcol", (int)((((int)ColParent.Red()) << 16) + (((long)ColParent.Green()) << 8) + (long)ColParent.Blue()));
+    cfg->Write("/dragassisttype", (int)m_DragAssistType->GetSelection());
+    cfg->Write("/paletteiconsize", (int)(m_Icons16->GetValue() ? 16 : 32));
+    cfg->Write("/tooliconsize", (int)(m_TIcons16->GetValue() ? 16 : 32));
 
     int GridSize = m_GridSize->GetValue();
-    if ( GridSize<2 ) GridSize = 2;
+    if ( GridSize < 2 )
+        GridSize = 2;
 
     if ( m_UseGrid->GetValue() )
-    {
         cfg->Write(_T("/gridsize"),GridSize);
-    }
     else
-    {
         cfg->Write(_T("/gridsize"),-GridSize);
-    }
 
-    cfg->Write(_T("/continousinsert"),m_Continous->GetValue());
-    cfg->Write(_T("/removeprefix"),m_RemovePrefix->GetValue());
+    cfg->Write("/continousinsert", m_Continous->GetValue());
+    cfg->Write("/removeprefix", m_RemovePrefix->GetValue());
 
-    cfg->Write(_T("/useI18N"),m_UseI18N->GetValue());
-    if      (m_NoneI18N_T->GetValue())  cfg->Write(_T("/noneI18N"),0);
-    else if (m_NoneI18NwxT->GetValue()) cfg->Write(_T("/noneI18N"),1);
-    else if (m_NoneI18N->GetValue())    cfg->Write(_T("/noneI18N"),2);
-    else if (m_NoneI18NwxS->GetValue()) cfg->Write(_T("/noneI18N"),3);
+    cfg->Write("/useI18N", m_UseI18N->GetValue());
+    if (m_NoneI18N_T->GetValue())
+        cfg->Write("/noneI18N", 0);
+    else if (m_NoneI18NwxT->GetValue())
+        cfg->Write("/noneI18N", 1);
+    else if (m_NoneI18N->GetValue())
+        cfg->Write("/noneI18N", 2);
+    else if (m_NoneI18NwxS->GetValue())
+        cfg->Write("/noneI18N", 3);
 
     int Flags =  (m_BorderLeft->IsChecked()   ? wxsSizerFlagsProperty::BorderLeft   : 0) |
                  (m_BorderRight->IsChecked()  ? wxsSizerFlagsProperty::BorderRight  : 0) |
@@ -437,31 +419,41 @@ void wxsSettings::OnApply()
 
     switch ( m_Placement->GetSelection() )
     {
-        case 0: Flags |= wxsSizerFlagsProperty::AlignLeft |
-                         wxsSizerFlagsProperty::AlignTop; break;
-        case 1: Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal |
-                         wxsSizerFlagsProperty::AlignTop; break;
-        case 2: Flags |= wxsSizerFlagsProperty::AlignRight |
-                         wxsSizerFlagsProperty::AlignTop; break;
-        case 3: Flags |= wxsSizerFlagsProperty::AlignLeft |
-                         wxsSizerFlagsProperty::AlignCenterVertical; break;
-        case 4: Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal |
-                         wxsSizerFlagsProperty::AlignCenterVertical; break;
-        case 5: Flags |= wxsSizerFlagsProperty::AlignRight |
-                         wxsSizerFlagsProperty::AlignCenterVertical; break;
-        case 6: Flags |= wxsSizerFlagsProperty::AlignLeft |
-                         wxsSizerFlagsProperty::AlignBottom; break;
-        case 7: Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal |
-                         wxsSizerFlagsProperty::AlignBottom; break;
-        case 8: Flags |= wxsSizerFlagsProperty::AlignRight |
-                         wxsSizerFlagsProperty::AlignBottom; break;
-        default: break;
+        case 0:
+            Flags |= wxsSizerFlagsProperty::AlignLeft | wxsSizerFlagsProperty::AlignTop;
+            break;
+        case 1:
+            Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal | wxsSizerFlagsProperty::AlignTop;
+            break;
+        case 2:
+            Flags |= wxsSizerFlagsProperty::AlignRight | wxsSizerFlagsProperty::AlignTop;
+            break;
+        case 3:
+            Flags |= wxsSizerFlagsProperty::AlignLeft | wxsSizerFlagsProperty::AlignCenterVertical;
+            break;
+        case 4:
+            Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal | wxsSizerFlagsProperty::AlignCenterVertical;
+            break;
+        case 5:
+            Flags |= wxsSizerFlagsProperty::AlignRight | wxsSizerFlagsProperty::AlignCenterVertical;
+            break;
+        case 6:
+            Flags |= wxsSizerFlagsProperty::AlignLeft | wxsSizerFlagsProperty::AlignBottom;
+            break;
+        case 7:
+            Flags |= wxsSizerFlagsProperty::AlignCenterHorizontal | wxsSizerFlagsProperty::AlignBottom;
+            break;
+        case 8:
+            Flags |= wxsSizerFlagsProperty::AlignRight | wxsSizerFlagsProperty::AlignBottom;
+            break;
+        default:
+            break;
     }
 
-    cfg->Write(_T("/defsizer/proportion"), (int)m_Proportion->GetValue());
-    cfg->Write(_T("/defsizer/flags"),      Flags);
-    cfg->Write(_T("/defsizer/border"),     (int)m_Border->GetValue());
-    cfg->Write(_T("/defsizer/borderdu"),   (bool)m_BorderDU->GetValue());
+    cfg->Write("/defsizer/proportion", (int)m_Proportion->GetValue());
+    cfg->Write("/defsizer/flags",      Flags);
+    cfg->Write("/defsizer/border",     (int)m_Border->GetValue());
+    cfg->Write("/defsizer/borderdu",   (bool)m_BorderDU->GetValue());
 
     wxsItemEditor::ConfigChanged();
 }
