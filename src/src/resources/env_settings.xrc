@@ -833,7 +833,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -847,7 +847,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionGradientColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -861,7 +861,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiActiveCaptionTextColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -875,7 +875,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -889,7 +889,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionGradientColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -903,7 +903,7 @@
 											<object class="wxColourPickerCtrl" name="cpAuiInactiveCaptionTextColour">
 												<colour>#000000</colour>
 											</object>
-											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>

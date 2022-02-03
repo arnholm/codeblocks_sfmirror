@@ -989,7 +989,7 @@
 													<object class="wxColourPickerCtrl" name="cpSavedColour">
 														<colour>#000000</colour>
 													</object>
-													<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -1005,7 +1005,7 @@
 													<object class="wxColourPickerCtrl" name="cpUnsavedColour">
 														<colour>#000000</colour>
 													</object>
-													<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
