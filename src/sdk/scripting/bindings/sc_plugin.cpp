@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include "sdk.h"
+#include <sdk_precomp.h>
 #include <wx/dynarray.h>
 #include "scripting/bindings/sc_utils.h"
 #include "scripting/bindings/sc_typeinfo_all.h"
