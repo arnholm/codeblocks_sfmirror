@@ -42,6 +42,11 @@ struct Item
     wxString name, value;
 };
 
+static bool IsLess(const Item& a, const Item& b)
+{
+    return a.name.CmpNoCase(b.name) < 0;
+}
+
 static wxString FormatItems(const std::vector <Item> & items)
 {
     int maxNameLength = 0;
@@ -245,7 +250,10 @@ dlgAbout::dlgAbout(wxWindow* parent)
         if (plugins.empty())
             txtPlugins->SetValue(_("There are no active plugins")+'\n');
         else
+        {
+            std::sort(plugins.begin(), plugins.end(), IsLess);
             txtPlugins->SetValue(FormatItems(plugins));
+        }
     }
 
 #ifdef __WXMAC__
