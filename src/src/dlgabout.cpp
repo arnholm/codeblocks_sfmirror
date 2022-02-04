@@ -37,11 +37,33 @@
 #include "configmanager.h"
 #include "splashscreen.h"
 
+struct Item
+{
+    wxString name, value;
+};
+
+static wxString FormatItems(const std::vector <Item> & items)
+{
+    int maxNameLength = 0;
+    for (const Item& item : items)
+        maxNameLength = std::max(maxNameLength, int(item.name.length()));
+
+    wxString information;
+    for (const Item& item : items)
+    {
+        information += item.name;
+        information += wxString(' ', maxNameLength - int(item.name.length()));
+        information += ": " + item.value + '\n';
+    }
+
+    return information;
+}
+
 // class constructor
 
 dlgAbout::dlgAbout(wxWindow* parent)
 {
-    if (!wxXmlResource::Get()->LoadObject(this, parent, _T("dlgAbout"), _T("wxScrollingDialog")))
+    if (!wxXmlResource::Get()->LoadObject(this, parent, "dlgAbout", "wxScrollingDialog"))
     {
         cbMessageBox(_("There was an error loading the \"About\" dialog from XRC file."),
                      _("Information"), wxICON_EXCLAMATION);
@@ -62,7 +84,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
                                    "any kind of functionality to the core program, through the use of "
                                    "plugins...\n");
 
-    wxString file = ConfigManager::ReadDataPath() + _T("/images/splash_1312.png");
+    wxString file = ConfigManager::ReadDataPath() + "/images/splash_1312.png";
 
     wxImage im;
     im.LoadFile(file, wxBITMAP_TYPE_PNG);
@@ -82,6 +104,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
     wxTextCtrl *txtDescription = XRCCTRL(*this, "txtDescription", wxTextCtrl);
     txtDescription->SetValue(description);
 
+    // Thanks tab
     wxTextCtrl *txtThanksTo = XRCCTRL(*this, "txtThanksTo", wxTextCtrl);
     // Note: Keep this is sync with the AUTHORS file in SVN.
     txtThanksTo->SetValue(_(
@@ -141,20 +164,19 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "Squirrel scripting language (http://www.squirrel-lang.org).\n"
         "The GNU Software Foundation (https://www.gnu.org).\n"
         "Last, but not least, the open-source community."));
+
+    // License tab
     wxTextCtrl *txtLicense = XRCCTRL(*this, "txtLicense", wxTextCtrl);
     txtLicense->SetValue(LICENSE_GPL);
 
+    // Information tab
     const wxVersionInfo scintillaVersion = wxScintilla::GetLibraryVersionInfo();
-    const wxString scintillaStr = wxString::Format(wxT("%d.%d.%d"),
+    const wxString scintillaStr = wxString::Format("%d.%d.%d",
                                                    scintillaVersion.GetMajor(),
                                                    scintillaVersion.GetMinor(),
                                                    scintillaVersion.GetMicro());
 
-    struct Item
-    {
-        wxString name, value;
-    };
-    std::vector<Item> items;
+    std::vector <Item> items;
     items.push_back({_("Name"), appglobals::AppName});
     items.push_back({_("Version"), appglobals::AppActualVersion});
     items.push_back({_("SDK Version"), appglobals::AppSDKVersion});
@@ -198,24 +220,33 @@ dlgAbout::dlgAbout(wxWindow* parent)
         items.push_back(item);
     }
 
-    int maxNameLength = 0;
-    for (const Item &item : items)
-    {
-        maxNameLength = std::max(maxNameLength, int(item.name.length()));
-    }
-
-    wxString information;
-    for (const Item &item : items)
-    {
-        information += item.name;
-        information += wxString(wxT(' '), maxNameLength - int(item.name.length()));
-        information += wxT(": ") + item.value + wxT("\n");
-    }
-
-    information += wxT("\n") + wxGetLibraryVersionInfo().GetDescription();
+    wxString information(FormatItems(items));
+    information += "\n" + wxGetLibraryVersionInfo().GetDescription();
 
     wxTextCtrl *txtInformation = XRCCTRL(*this, "txtInformation", wxTextCtrl);
     txtInformation->SetValue(information);
+
+    // Plugins tab
+    PluginManager *plugman = Manager::Get()->GetPluginManager();
+    if (plugman)
+    {
+        std::vector <Item> plugins;
+        const PluginElementsArray &pluginlist = plugman->GetPlugins();
+        const size_t numplugins = pluginlist.GetCount();
+        for (size_t i = 0; i < numplugins; ++i)
+        {
+            const wxString name(pluginlist[i]->info.name);
+            const bool active = Manager::Get()->GetConfigManager("plugins")->ReadBool("/"+name, true);
+            if (active)
+                plugins.push_back({pluginlist[i]->info.title, pluginlist[i]->info.version});
+        }
+
+        wxTextCtrl *txtPlugins = XRCCTRL(*this, "txtPlugins", wxTextCtrl);
+        if (plugins.empty())
+            txtPlugins->SetValue(_("There are no active plugins")+'\n');
+        else
+            txtPlugins->SetValue(FormatItems(plugins));
+    }
 
 #ifdef __WXMAC__
     // Courier 8 point is not readable on Mac OS X, increase font size:

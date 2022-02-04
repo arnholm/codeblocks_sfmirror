@@ -69,6 +69,24 @@
 						<label>Information</label>
 					</object>
 					<object class="notebookpage">
+						<object class="wxPanel" name="tabPlugins">
+							<object class="wxBoxSizer">
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="txtPlugins">
+										<font>
+											<size>8</size>
+											<family>modern</family>
+										</font>
+										<style>wxTE_MULTILINE|wxTE_READONLY|wxBORDER_NONE</style>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Plugins</label>
+					</object>
+					<object class="notebookpage">
 						<object class="wxPanel" name="tabThanksTo">
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
