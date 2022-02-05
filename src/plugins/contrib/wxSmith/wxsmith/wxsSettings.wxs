@@ -44,7 +44,7 @@
 										<item>Two dockable panes (each browser on it&apos;s pane)</item>
 									</content>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -186,7 +186,7 @@
 										<option>1</option>
 									</object>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -218,7 +218,7 @@
 										<option>1</option>
 									</object>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -250,7 +250,7 @@
 								<object class="wxSpinCtrl" name="ID_SPINCTRL2" variable="m_Proportion" member="yes">
 									<value>0</value>
 								</object>
-								<flag>wxLEFT|wxEXPAND</flag>
+								<flag>wxLEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -328,6 +328,11 @@
 										<border>5</border>
 										<option>1</option>
 									</object>
+									<object class="spacer">
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>2</option>
+									</object>
 								</object>
 								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 								<border>5</border>
@@ -353,7 +358,7 @@
 										<item>Right-Bottom</item>
 									</content>
 								</object>
-								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -379,7 +384,7 @@
 										</object>
 										<flag>wxLEFT|wxEXPAND</flag>
 										<border>5</border>
-										<option>1</option>
+										<option>3</option>
 									</object>
 								</object>
 								<flag>wxTOP|wxLEFT|wxEXPAND</flag>
@@ -402,7 +407,6 @@
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="ID_CHECKBOX10" variable="m_RemovePrefix" member="yes">
 							<label>Auto remove variable prefix for event handler function</label>
-							<size>323,14</size>
 						</object>
 						<flag>wxEXPAND</flag>
 						<border>5</border>
