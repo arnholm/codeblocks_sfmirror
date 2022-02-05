@@ -70,7 +70,7 @@ inline int wxCALLBACK sortByTitle(wxIntPtr item1, wxIntPtr item2, cb_unused wxIn
     const PluginElement* elem1 = (const PluginElement*)item1;
     const PluginElement* elem2 = (const PluginElement*)item2;
 
-    return elem1->info.title.CompareTo(elem2->info.title.wx_str());
+    return elem1->info.title.CmpNoCase(elem2->info.title);
 }
 
 BEGIN_EVENT_TABLE(PluginsConfigurationDlg, wxScrollingDialog)
