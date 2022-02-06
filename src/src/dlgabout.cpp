@@ -35,6 +35,7 @@
 #include "appglobals.h"
 #include "dlgabout.h" // class's header file
 #include "configmanager.h"
+#include "pluginmanager.h"
 #include "splashscreen.h"
 
 struct Item
