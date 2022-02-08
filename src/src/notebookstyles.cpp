@@ -68,8 +68,9 @@ void NbStyleVC71::DrawTab(wxDC& dc, wxWindow* wnd,
     int clip_width = tab_width;
     if (tab_x + clip_width > in_rect.x + in_rect.width - 4)
         clip_width = (in_rect.x + in_rect.width) - tab_x - 4;
+
     dc.SetClippingRegion(tab_x, tab_y, clip_width + 1, tab_height - 3);
-    if(m_flags & wxAUI_NB_BOTTOM)
+    if (m_flags & wxAUI_NB_BOTTOM)
         tab_y--;
 
     dc.SetPen((page.active) ? wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DHIGHLIGHT)) : wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW)));
@@ -143,7 +144,7 @@ void NbStyleVC71::DrawTab(wxDC& dc, wxWindow* wnd,
 #endif
         text_offset += 3; // bitmap padding
     }
-     else
+    else
     {
         text_offset = tab_x + 8;
     }
@@ -197,6 +198,7 @@ void NbStyleVC71::DrawTab(wxDC& dc, wxWindow* wnd,
             rect.x++;
             rect.y++;
         }
+
         dc.DrawBitmap(bmp, rect.x, rect.y, true);
         *out_button_rect = rect;
     }
@@ -255,10 +257,11 @@ void NbStyleFF2::DrawTab(wxDC& dc, wxWindow* wnd,
     int clip_width = tab_width;
     if (tab_x + clip_width > in_rect.x + in_rect.width - 4)
         clip_width = (in_rect.x + in_rect.width) - tab_x - 4;
+
     dc.SetClippingRegion(tab_x, tab_y, clip_width + 1, tab_height - 3);
 
-	wxPoint tabPoints[7];
-	int adjust = 0;
+    wxPoint tabPoints[7];
+    int adjust = 0;
     if (!page.active)
     {
         adjust = 1;
@@ -288,9 +291,9 @@ void NbStyleFF2::DrawTab(wxDC& dc, wxWindow* wnd,
 //    dc.SetBrush((page.active) ? wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)) : wxBrush(wxAuiStepColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE),85)));
     dc.SetBrush((page.active) ? wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)) : wxBrush(*wxTRANSPARENT_BRUSH));
 
-	dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW)));
+    dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW)));
 
-	dc.DrawPolygon(7, tabPoints);
+    dc.DrawPolygon(7, tabPoints);
 
     dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)));
     if (page.active)
@@ -327,7 +330,7 @@ void NbStyleFF2::DrawTab(wxDC& dc, wxWindow* wnd,
 #endif
         text_offset += 3; // bitmap padding
     }
-     else
+    else
     {
         text_offset = tab_x + 8;
     }
@@ -380,6 +383,7 @@ void NbStyleFF2::DrawTab(wxDC& dc, wxWindow* wnd,
             rect.x++;
             rect.y++;
         }
+
         dc.DrawBitmap(bmp, rect.x, rect.y, true);
         *out_button_rect = rect;
     }
