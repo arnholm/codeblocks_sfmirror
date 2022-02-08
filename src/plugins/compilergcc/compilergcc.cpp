@@ -1408,7 +1408,9 @@ int CompilerGCC::DoRunQueue()
                 LogMessage(msg, cltError, ltAll, true);
                 LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,
                                   wxString::Format(_("=== Build failed: %s ==="), msg.wx_str()));
-                m_pListLog->AutoFitColumns(2);
+                if (!Manager::IsBatchBuild())
+                    m_pListLog->AutoFitColumns(2);
+
                 SaveBuildLog();
             }
             if (!Manager::IsBatchBuild() && m_pLog->progress)
@@ -1800,7 +1802,8 @@ void CompilerGCC::PrintBanner(BuildAction action, cbProject* prj, ProjectBuildTa
     Manager::Get()->GetMacrosManager()->ReplaceMacros(banner);
     LogWarningOrError(cltNormal, 0, wxString(), wxString(), "=== " + banner + " ===");
     LogMessage("-------------- " + banner + "---------------", cltNormal, ltAll, false, true);
-    m_pListLog->AutoFitColumns(2);
+    if (!Manager::IsBatchBuild())
+        m_pListLog->AutoFitColumns(2);
 }
 
 void CompilerGCC::DoGotoNextError()
@@ -3981,7 +3984,9 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
                 LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,
                                   wxString::Format(_("=== Build %s: %s ==="),
                                                    wxString(m_LastExitCode == 0 ? _("finished") : _("failed")).wx_str(), msg.wx_str()));
-                m_pListLog->AutoFitColumns(2);
+                if (!Manager::IsBatchBuild())
+                    m_pListLog->AutoFitColumns(2);
+
                 SaveBuildLog();
             }
             if (!Manager::IsBatchBuild() && m_pLog->progress)
