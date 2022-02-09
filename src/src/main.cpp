@@ -1078,10 +1078,6 @@ void MainFrame::SetupGUILogging(int uiSize16)
         m_pInfoPane = new InfoPane(m_pBatchBuildDialog);
         s->Add(m_pInfoPane, 1, wxEXPAND);
         m_pBatchBuildDialog->SetSizer(s);
-
-        // setting &g_null_log causes the app to crash on exit for some reason...
-        mgr->SetLog(new NullLogger, LogManager::app_log);
-        mgr->SetLog(new NullLogger, LogManager::debug_log);
     }
 
     mgr->NotifyUpdate();
