@@ -840,7 +840,15 @@ bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
                 if (value->Attribute("version"))
                     infoOut->version = cbC2U(value->Attribute("version"));
                 if (value->Attribute("description"))
-                    infoOut->description = cbC2U(value->Attribute("description"));
+                {
+                    wxString tmp = cbC2U(value->Attribute("description"));
+                    // Most manifest*.xml files contain a description item formatted for Windows (with \r\n)
+                    // Remove all \r so that poedit works without complaining
+                    tmp.Replace("\r", "");
+                    // Use the _() macro to be able to translate the tmp string
+                    infoOut->description = _(tmp);
+                }
+
                 if (value->Attribute("author"))
                     infoOut->author = cbC2U(value->Attribute("author"));
                 if (value->Attribute("authorEmail"))
