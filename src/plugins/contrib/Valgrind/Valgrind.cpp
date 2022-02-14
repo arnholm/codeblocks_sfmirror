@@ -270,7 +270,7 @@ bool CheckRequirements(wxString& ExeTarget, wxString &WorkDir, wxString& Command
     {
         if (Target->GetHostApplication().IsEmpty())
         {
-            wxString msg = _("You must select a host application to \"run\" a library wuth Valgrind");
+            wxString msg = _("You must select a host application to \"run\" a library with Valgrind");
             cbMessageBox(msg, _("Error"), wxICON_ERROR | wxOK, Manager::Get()->GetAppWindow());
             Manager::Get()->GetLogManager()->DebugLog(msg);
             return false;
