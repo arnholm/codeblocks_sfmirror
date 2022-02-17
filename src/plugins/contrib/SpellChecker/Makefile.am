@@ -80,6 +80,7 @@ dist_onlinecheckerconfig_16_DATA = \
 	rc/16x16/en_GB.png \
 	rc/16x16/en_NZ.png \
 	rc/16x16/en_US.png \
+	rc/16x16/es_ES.png \
 	rc/16x16/fr_FR.png \
 	rc/16x16/ru_RU.png
 
@@ -94,6 +95,7 @@ dist_onlinecheckerconfig_20_DATA = \
 	rc/20x20/en_GB.png \
 	rc/20x20/en_NZ.png \
 	rc/20x20/en_US.png \
+	rc/20x20/es_ES.png \
 	rc/20x20/fr_FR.png \
 	rc/20x20/ru_RU.png
 
@@ -108,6 +110,7 @@ dist_onlinecheckerconfig_24_DATA = \
 	rc/24x24/en_GB.png \
 	rc/24x24/en_NZ.png \
 	rc/24x24/en_US.png \
+	rc/24x24/es_ES.png \
 	rc/24x24/fr_FR.png \
 	rc/24x24/ru_RU.png
 
@@ -122,6 +125,7 @@ dist_onlinecheckerconfig_28_DATA = \
 	rc/28x28/en_GB.png \
 	rc/28x28/en_NZ.png \
 	rc/28x28/en_US.png \
+	rc/28x28/es_ES.png \
 	rc/28x28/fr_FR.png \
 	rc/28x28/ru_RU.png
 
@@ -136,6 +140,7 @@ dist_onlinecheckerconfig_32_DATA = \
 	rc/32x32/en_GB.png \
 	rc/32x32/en_NZ.png \
 	rc/32x32/en_US.png \
+	rc/32x32/es_ES.png \
 	rc/32x32/fr_FR.png \
 	rc/32x32/ru_RU.png
 
@@ -150,6 +155,7 @@ dist_onlinecheckerconfig_40_DATA = \
 	rc/40x40/en_GB.png \
 	rc/40x40/en_NZ.png \
 	rc/40x40/en_US.png \
+	rc/40x40/es_ES.png \
 	rc/40x40/fr_FR.png \
 	rc/40x40/ru_RU.png
 
@@ -164,6 +170,7 @@ dist_onlinecheckerconfig_48_DATA = \
 	rc/48x48/en_GB.png \
 	rc/48x48/en_NZ.png \
 	rc/48x48/en_US.png \
+	rc/48x48/es_ES.png \
 	rc/48x48/fr_FR.png \
 	rc/48x48/ru_RU.png
 
@@ -178,6 +185,7 @@ dist_onlinecheckerconfig_56_DATA = \
 	rc/56x56/en_GB.png \
 	rc/56x56/en_NZ.png \
 	rc/56x56/en_US.png \
+	rc/56x56/es_ES.png \
 	rc/56x56/fr_FR.png \
 	rc/56x56/ru_RU.png
 
@@ -192,5 +200,6 @@ dist_onlinecheckerconfig_64_DATA = \
 	rc/64x64/en_GB.png \
 	rc/64x64/en_NZ.png \
 	rc/64x64/en_US.png \
+	rc/64x64/es_ES.png \
 	rc/64x64/fr_FR.png \
 	rc/64x64/ru_RU.png
