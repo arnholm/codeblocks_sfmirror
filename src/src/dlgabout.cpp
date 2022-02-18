@@ -32,6 +32,8 @@
 #include <wx/display.h>
 #include <wx/statbmp.h>
 
+#include <algorithm>        // for std::sort only
+
 #include "appglobals.h"
 #include "dlgabout.h" // class's header file
 #include "configmanager.h"
