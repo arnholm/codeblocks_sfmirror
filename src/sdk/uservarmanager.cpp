@@ -18,6 +18,7 @@
     #include "manager.h"
     #include "cbexception.h"
     #include "infowindow.h"
+    #include <tinyxml.h>
 
     #include <wx/button.h>
     #include "scrollingdialog.h"
@@ -31,9 +32,10 @@
 #endif
 
 #include "annoyingdialog.h"
+#include "filemanager.h"
 
+#include <wx/filedlg.h>
 #include <wx/unichar.h>
-
 #include <ctype.h>
 
 template<> UserVariableManager* Mgr<UserVariableManager>::instance   = nullptr;

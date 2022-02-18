@@ -27,27 +27,30 @@
 #include <wx/stdpaths.h>
 #include <wx/xrc/xmlres.h>
 
-#include <cbexception.h>
-#include <configmanager.h>
-#include <debuggermanager.h>
-#include <editormanager.h>
-#include <globals.h>
-#include <loggers.h>
-#include <logmanager.h>
-#include <manager.h>
-#include <personalitymanager.h>
-#include <pluginmanager.h>
-#include <projectmanager.h>
-#include <scriptingmanager.h>
-#include <sdk_events.h>
-
 #include "appglobals.h"
 #include "associations.h"
 #include "cbauibook.h"
+#include "cbexception.h"
 #include "cbstyledtextctrl.h"
+#include "configmanager.h"
+#include "compiler.h"
+#include "compilerfactory.h"
 #include "crashhandler.h"
+#include "debuggermanager.h"
+#include "editormanager.h"
+#include "globals.h"
+#include "loggers.h"
+#include "logmanager.h"
+#include "macrosmanager.h"
+#include "manager.h"
+#include "personalitymanager.h"
+#include "pluginmanager.h"
+#include "projectmanager.h"
 #include "projectmanagerui.h"
+#include "scriptingmanager.h"
+#include "sdk_events.h"
 #include "splashscreen.h"
+#include "uservarmanager.h"
 
 #if defined(__APPLE__) && defined(__MACH__)
     #include <sys/param.h>

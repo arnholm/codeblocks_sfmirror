@@ -43,6 +43,7 @@
 #include "confirmreplacedlg.h"
 #include "filefilters.h"
 #include "filegroupsandmasks.h"
+#include "macrosmanager.h"
 #include "multiselectdlg.h"
 #include "projectdepsdlg.h"
 #include "projectfileoptionsdlg.h"

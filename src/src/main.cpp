@@ -9,28 +9,55 @@
 
 #include <sdk.h>
 
+#include "main.h"
+
+#include "annoyingdialog.h"
 #include "app.h"
 #include "appglobals.h"
 #include "batchbuild.h"
 #include "cbart_provider.h"
 #include "cbauibook.h"
+#include "cbcolourmanager.h"
+#include "cbexception.h"
+#include "cbplugin.h"
+#include "cbproject.h"
+#include "cbstatusbar.h"
 #include "cbstyledtextctrl.h"
+#include "cbworkspace.h"
+#include "ccmanager.h"
 #include "compilersettingsdlg.h"
+#include "configmanager.h"
+#include "debugger_interface_creator.h"
+#include "debuggermanager.h"
+#include "debuggermenu.h"
 #include "debuggersettingsdlg.h"
 #include "dlgabout.h"
 #include "dlgaboutplugin.h"
+#include "editorcolourset.h"
+#include "editorconfigurationdlg.h"
+#include "editormanager.h"
 #include "environmentsettingsdlg.h"
+#include "filefilters.h"
+#include "globals.h"
 #include "infopane.h"
 #include "infowindow.h"
-#include "main.h"
+#include "loggers.h"
+#include "logmanager.h"
 #include "notebookstyles.h"
+#include "personalitymanager.h"
+#include "pluginmanager.h"
 #include "printdlg.h"
+#include "projectmanager.h"
+#include "projectmanagerui.h"
 #include "scriptconsole.h"
+#include "scriptingmanager.h"
 #include "scriptingsettingsdlg.h"
+#include "sdk_events.h"
 #include "startherepage.h"
 #include "switcherdlg.h"
-#include "cbstatusbar.h"
-#include "loggers.h"
+#include "templatemanager.h"
+#include "toolsmanager.h"
+#include "uservarmanager.h"
 
 #include <wx/display.h>
 #include <wx/dnd.h>
@@ -42,35 +69,6 @@
 #include <wx/tipdlg.h>
 #include <wx/tokenzr.h>
 #include <wx/xrc/xmlres.h>
-
-#include <annoyingdialog.h>
-#include <cbexception.h>
-#include <cbplugin.h>
-#include <cbproject.h>
-#include <cbworkspace.h>
-#include <ccmanager.h>
-#include <configmanager.h>
-#include <debuggermanager.h>
-#include <editorcolourset.h>
-#include <editormanager.h>
-#include <filefilters.h>
-#include <globals.h>
-#include <logmanager.h>
-#include <personalitymanager.h>
-#include <pluginmanager.h>
-#include <projectmanager.h>
-#include <scriptingmanager.h>
-#include <sdk_events.h>
-#include <templatemanager.h>
-#include <toolsmanager.h>
-#include <uservarmanager.h>
-
-#include "debugger_interface_creator.h"
-#include "debuggermenu.h"
-
-#include "cbcolourmanager.h"
-#include "editorconfigurationdlg.h"
-#include "projectmanagerui.h"
 
 #include "scripting/bindings/sc_utils.h"
 #include "scripting/bindings/sc_typeinfo_all.h"
