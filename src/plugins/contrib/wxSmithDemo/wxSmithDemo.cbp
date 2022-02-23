@@ -33,7 +33,6 @@
 				<Linker>
 					<Add option="-mthreads" />
 					<Add option="-Wl,--enable-auto-image-base" />
-					<Add option="-Wl,--export-all-symbols" />
 					<Add option="-Wl,--enable-auto-import" />
 					<Add library="wxpropgrid" />
 					<Add library="codeblocks" />

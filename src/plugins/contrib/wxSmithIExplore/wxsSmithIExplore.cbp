@@ -78,7 +78,6 @@
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,--enable-auto-image-base" />
-			<Add option="-Wl,--export-all-symbols" />
 			<Add option="-Wl,--enable-auto-import" />
 			<Add library="wxmsw28$(WX_SUFFIX)" />
 			<Add directory="$(#wx.lib)\gcc_dll$(WX_CFG)" />
