@@ -36,6 +36,7 @@
 
 #include <tinyxml.h>
 #include <prep.h>
+#include <cbplugin.h>
 
 #include "wxspropertystream.h"
 
@@ -73,7 +74,7 @@ class wxsPropertyContainer;
  * of data (good example is wxsStyleProperty, where styles are not stored like
  * they are in wxWidgets)
  */
-class wxsProperty
+class PLUGIN_EXPORT wxsProperty
 {
     public:
 

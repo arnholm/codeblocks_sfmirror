@@ -25,8 +25,10 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Base boolean property */
-class wxsBoolProperty: public wxsProperty
+class PLUGIN_EXPORT wxsBoolProperty: public wxsProperty
 {
     public:
 

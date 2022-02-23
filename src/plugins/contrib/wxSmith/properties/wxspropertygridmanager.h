@@ -34,6 +34,7 @@
 #include <wx/propgrid/manager.h>
 
 #include <prep.h>
+#include <cbplugin.h>
 
 #define wxPGId wxPGProperty*
 
@@ -47,7 +48,7 @@ class wxsProperty;
  * This object is singleton and always one and not more than one should
  * be created at one time.
  */
-class wxsPropertyGridManager: public wxPropertyGridManager
+class PLUGIN_EXPORT wxsPropertyGridManager: public wxPropertyGridManager
 {
     DECLARE_CLASS(wxsPropertyGridManager)
 

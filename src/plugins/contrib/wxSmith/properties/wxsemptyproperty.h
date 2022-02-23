@@ -25,6 +25,8 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Empty property with no meaning
  *
  * This property is used to avoid failures when 0 pointers are supplied.
@@ -33,7 +35,7 @@
  *
  * To get an instance, use Get() function
  */
-class wxsEmptyProperty: public wxsProperty
+class PLUGIN_EXPORT wxsEmptyProperty: public wxsProperty
 {
     public:
 

@@ -29,6 +29,7 @@
 #include "wxsflags.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 using namespace wxsFlags;
 
@@ -44,7 +45,7 @@ using namespace wxsFlags;
  *  \li Override BuildPreview function (also declared in wxsItem)
  *
  */
-class wxsWidget: public wxsItem
+class PLUGIN_EXPORT wxsWidget: public wxsItem
 {
     public:
 

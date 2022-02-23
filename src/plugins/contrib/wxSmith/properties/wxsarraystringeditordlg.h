@@ -29,8 +29,9 @@
 #include <wx/textctrl.h>
 //*)
 
+#include <cbplugin.h>
 
-class wxsArrayStringEditorDlg: public wxScrollingDialog
+class PLUGIN_EXPORT wxsArrayStringEditorDlg: public wxScrollingDialog
 {
     public:
 

@@ -23,11 +23,13 @@
 #ifndef WXSADVQPPCHILD_H
 #define WXSADVQPPCHILD_H
 
+#include <cbplugin.h>
+
 #include <wx/panel.h>
 #include "wxsadvqpp.h"
 
 /** \brief Child of advanced quick props panel */
-class wxsAdvQPPChild : public wxPanel
+class PLUGIN_EXPORT wxsAdvQPPChild : public wxPanel
 {
     public:
 

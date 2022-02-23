@@ -26,6 +26,7 @@
 #include "wxsitem.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 /** \brief This class represents widget with child items
  *
@@ -36,7 +37,7 @@
  * xml data since this will be used.
  *
  */
-class wxsParent: public wxsItem
+class PLUGIN_EXPORT wxsParent: public wxsItem
 {
     public:
 

@@ -26,9 +26,10 @@
 #include "wxscodercontext.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 /** \brief Base class for items which generate source code */
-class wxsCodeGenerator
+class PLUGIN_EXPORT wxsCodeGenerator
 {
     public:
 

@@ -24,13 +24,15 @@
 #ifndef wxsIMAGELIST_H
 #define wxsIMAGELIST_H
 
+#include <cbplugin.h>
+
 #include    "../wxsitemresdata.h"
 #include "../wxstool.h"
 
 /** \brief Class for the wxsImageList widget
  *    \note For reasons unknown, GCC emits warnings that the images are declared but not used when "Use Include File" is set.
  */
-class wxsImageList : public wxsTool
+class PLUGIN_EXPORT wxsImageList : public wxsTool
 {
     public:
 

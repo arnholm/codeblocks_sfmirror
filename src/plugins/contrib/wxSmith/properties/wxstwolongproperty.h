@@ -23,6 +23,8 @@
 #ifndef WXSTWOLONGPROPERTY_H
 #define WXSTWOLONGPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "wxsproperties.h"
 
 struct wxsTwoLongData
@@ -66,7 +68,7 @@ struct wxsTwoLongData
 };
 
 /** \brief Dimension property (long integer value which may be in pixel or dialog units) */
-class wxsTwoLongProperty: public wxsProperty
+class PLUGIN_EXPORT wxsTwoLongProperty: public wxsProperty
 {
     public:
         /** \brief Ctor

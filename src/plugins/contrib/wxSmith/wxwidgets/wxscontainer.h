@@ -29,13 +29,14 @@
 #include "wxsflags.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 using namespace wxsFlags;
 
 /** \brief Container is a class which represents widget that can
  *         have child items or one of root items
  */
-class wxsContainer: public wxsParent
+class PLUGIN_EXPORT wxsContainer: public wxsParent
 {
     public:
 

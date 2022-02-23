@@ -24,10 +24,12 @@
 #define WXSAUTORESOURCETREEIMAGE_H
 /** \brief This class helps automatically loading images into resource browser */
 
+#include <cbplugin.h>
+
 class wxString;
 class wxBitmap;
 
-class wxsAutoResourceTreeImage
+class PLUGIN_EXPORT wxsAutoResourceTreeImage
 {
     public:
 

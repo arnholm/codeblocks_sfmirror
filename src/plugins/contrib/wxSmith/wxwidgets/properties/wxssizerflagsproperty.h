@@ -23,6 +23,8 @@
 #ifndef WXSSIZERFLAGSPROPERTY_H
 #define WXSSIZERFLAGSPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 
 /** \brief Property responsible for editing sizer flags;
@@ -32,7 +34,7 @@
  *
  * \note This property uses standard names for property grid / data.
  */
-class wxsSizerFlagsProperty: public wxsProperty
+class PLUGIN_EXPORT wxsSizerFlagsProperty: public wxsProperty
 {
     public:
 

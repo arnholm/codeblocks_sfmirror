@@ -26,7 +26,7 @@
 #include <cbplugin.h>
 
 /** \brief Helper plugin dealing with mime types */
-class wxSmithMime : public cbMimePlugin
+class PLUGIN_EXPORT wxSmithMime : public cbMimePlugin
 {
     public:
 

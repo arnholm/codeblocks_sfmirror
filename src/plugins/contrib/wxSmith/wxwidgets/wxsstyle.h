@@ -31,6 +31,8 @@
 #include <wx/dynarray.h>
 #include <wx/arrstr.h>
 
+#include <cbplugin.h>
+
 // TODO: Think about non-macro implementation
 
 /* ************************************************************************** */
@@ -76,7 +78,7 @@ struct wxsStyle
  * item. It means that item must have extra long variables to remember style
  * settings.
  */
-class wxsStyleSet
+class PLUGIN_EXPORT wxsStyleSet
 {
     public:
 

@@ -27,11 +27,12 @@
 #include "wxsflags.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 using namespace wxsFlags;
 
 /** \brief Structure containing additional parameters for each widget insidee sizer */
-class wxsSizerExtra: public wxsPropertyContainer
+class PLUGIN_EXPORT wxsSizerExtra: public wxsPropertyContainer
 {
     public:
         long Proportion;                ///< \brief Proportion param (see wxW documentation for details)
@@ -70,7 +71,7 @@ class wxsSizerExtra: public wxsPropertyContainer
  *       extra information it requires, random identifier will be generated
  *       for it when editing in source mode.
  */
-class wxsSizer: public wxsParent
+class PLUGIN_EXPORT wxsSizer: public wxsParent
 {
     public:
 

@@ -25,6 +25,8 @@
 
 #include <wx/string.h>
 
+#include <cbplugin.h>
+
 /** \brief This enumeration contains all coding languages supported in wxSmith */
 enum wxsCodingLang
 {
@@ -65,7 +67,7 @@ namespace wxsCodeMarks
     bool ValidateIdentifier(wxsCodingLang Lang,const wxString& Identifier);
 
     /** \brief Posting notification message about unknown coding language */
-    void Unknown(const wxString& Function,wxsCodingLang Lang);
+    PLUGIN_EXPORT void Unknown(const wxString& Function,wxsCodingLang Lang);
 }
 
 #endif

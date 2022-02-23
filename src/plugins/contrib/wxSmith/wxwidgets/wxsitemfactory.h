@@ -32,6 +32,7 @@
 #include <wx/imaglist.h>
 
 #include <configmanager.h>
+#include <cbplugin.h>
 
 #if defined(__WXMSW__) && defined(LoadImage)
     // Fix Windows winuser.h Header define of LoadImage.
@@ -52,7 +53,7 @@ class wxsItemResData;
  * Adding new supported item to factory is done by deriving other class from
  * this one and writing it's
  */
-class wxsItemFactory
+class PLUGIN_EXPORT wxsItemFactory
 {
     public:
 

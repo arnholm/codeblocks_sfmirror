@@ -5,9 +5,10 @@
 #include "wxsproperty.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 /** \brief Class which may be used to create properties with custom editor */
-class wxsCustomEditorProperty : public wxsProperty
+class PLUGIN_EXPORT wxsCustomEditorProperty : public wxsProperty
 {
     public:
 

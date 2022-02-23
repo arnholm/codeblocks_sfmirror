@@ -25,13 +25,15 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Property with flags
  *
  * Enum property works almost the same as long property but it uses
  * predefined values from given set usd as bit fields in this value.
  * Note that this class is abstract and should be used as base class for others.
  */
-class wxsFlagsProperty: public wxsProperty
+class PLUGIN_EXPORT wxsFlagsProperty: public wxsProperty
 {
     public:
 

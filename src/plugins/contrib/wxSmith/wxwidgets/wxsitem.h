@@ -37,6 +37,7 @@
 #include <stdarg.h>
 
 #include <prep.h>
+#include <cbplugin.h>
 
 class wxsItemResData;
 class wxsParent;
@@ -69,7 +70,7 @@ class wxWindow;
  * \note Parent of item is automatically set up when adding item to wxsParentClass
  *       using wxsParent::AddChild
  */
-class wxsItem: public wxsPropertyContainer, public wxsCodeGenerator
+class PLUGIN_EXPORT wxsItem: public wxsPropertyContainer, public wxsCodeGenerator
 {
     public:
 

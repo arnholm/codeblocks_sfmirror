@@ -29,6 +29,8 @@
 #include <wx/hashset.h>
 #include "../wxscodinglang.h"
 
+#include <cbplugin.h>
+
 /** \brief This struct is responsible for keeping current code context while generating resource
  *
  * This struct keeps information needed to properly generate and store source code.
@@ -36,7 +38,7 @@
  * It may also contain other data stored between generation of code in different items
  * in form of wxString->wxString map.
  */
-struct wxsCoderContext
+struct PLUGIN_EXPORT wxsCoderContext
 {
     WX_DECLARE_STRING_HASH_MAP(wxString,ExtraMap);
     WX_DECLARE_HASH_SET(wxString,wxStringHash,wxStringEqual,wxStringSet);

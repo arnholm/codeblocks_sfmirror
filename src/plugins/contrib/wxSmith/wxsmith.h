@@ -47,7 +47,7 @@ class wxsResource;
  * This class is a singleton, is registered in OnAttach and unregistered in
  * OnRelease.
  */
-class wxSmith : public cbPlugin
+class PLUGIN_EXPORT wxSmith : public cbPlugin
 {
     public:
 

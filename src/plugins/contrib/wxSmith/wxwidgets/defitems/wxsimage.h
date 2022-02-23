@@ -24,13 +24,15 @@
 #ifndef WXSIMAGE_H
 #define WXSIMAGE_H
 
+#include <cbplugin.h>
+
 #include "../wxstool.h"
 #include "../wxsitemresdata.h"
 
 /*! \brief Class for the wxsImage tool.
  *    \note For reasons unknown, GCC emits a warning that the image is declared but not used when "Use Include File" is set.
  */
-class wxsImage : public wxsTool
+class PLUGIN_EXPORT wxsImage : public wxsTool
 {
     public:
 

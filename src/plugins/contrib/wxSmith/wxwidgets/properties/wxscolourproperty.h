@@ -23,6 +23,8 @@
 #ifndef WXSCOLOURPROPERTY_H
 #define WXSCOLOURPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 #include "../wxscodercontext.h"
 
@@ -33,7 +35,7 @@
 #define wxsCOLOUR_DEFAULT   (wxPG_COLOUR_CUSTOM - 1)
 
 /** \brief Class handling colour data for wxSmith */
-class wxsColourData: public wxColourPropertyValue
+class PLUGIN_EXPORT wxsColourData: public wxColourPropertyValue
 {
     public:
 
@@ -58,7 +60,7 @@ class wxsColourData: public wxColourPropertyValue
  *  This property uses wxColourPropertyValue to keep data
  *
  */
-class wxsColourProperty: public wxsProperty
+class PLUGIN_EXPORT wxsColourProperty: public wxsProperty
 {
     public:
 

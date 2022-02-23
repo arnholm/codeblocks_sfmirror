@@ -23,11 +23,13 @@
 #ifndef WXSFONTPROPERTY_H
 #define WXSFONTPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 #include "../wxscodercontext.h"
 
 /** \brief Structure holding font configuration */
-struct wxsFontData
+struct PLUGIN_EXPORT wxsFontData
 {
     long Size;
     wxFontStyle Style;
@@ -79,7 +81,7 @@ struct wxsFontData
 
 /** \brief Property for editing font properties
  */
-class wxsFontProperty: public wxsCustomEditorProperty
+class PLUGIN_EXPORT wxsFontProperty: public wxsCustomEditorProperty
 {
     public:
 

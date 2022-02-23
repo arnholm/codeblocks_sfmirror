@@ -23,6 +23,8 @@
 #ifndef WXSADVQPP_H
 #define WXSADVQPP_H
 
+#include <cbplugin.h>
+
 #include "properties/wxsquickpropspanel.h"
 #include <wx/button.h>
 #include <wx/sizer.h>
@@ -38,7 +40,7 @@ class wxsAdvQPPChild;
  *
  * Each property group has it's title and can be hidden when it's unnecessary.
  */
-class wxsAdvQPP : public wxsQuickPropsPanel
+class PLUGIN_EXPORT wxsAdvQPP : public wxsQuickPropsPanel
 {
     public:
         /** \brief Ctor

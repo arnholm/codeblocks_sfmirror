@@ -23,11 +23,13 @@
 #ifndef WXSPOSITIONSIZEPROPERTY_H
 #define WXSPOSITIONSIZEPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 #include "../wxscodercontext.h"
 
 /** \brief Structure holding informations about size or position and functions operating on them */
-struct wxsPositionSizeData
+struct PLUGIN_EXPORT wxsPositionSizeData
 {
     bool IsDefault;
     long X;
@@ -136,7 +138,7 @@ typedef wxsPositionSizeData wxsSizeData;
  * "default" flag is turned on, dimensions are both -1, using dialog units
  * is set to false.
  */
-class wxsPositionSizeProperty: public wxsProperty
+class PLUGIN_EXPORT wxsPositionSizeProperty: public wxsProperty
 {
     public:
 

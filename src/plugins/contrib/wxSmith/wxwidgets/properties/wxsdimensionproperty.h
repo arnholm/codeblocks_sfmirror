@@ -23,11 +23,13 @@
 #ifndef WXSDIMENSIONPROPERTY_H
 #define WXSDIMENSIONPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 #include "../../wxscodinglang.h"
 #include "../wxscodercontext.h"
 
-struct wxsDimensionData
+struct PLUGIN_EXPORT wxsDimensionData
 {
     long Value;
     bool DialogUnits;
@@ -74,7 +76,7 @@ struct wxsDimensionData
 };
 
 /** \brief Dimension property (long integer value which may be in pixel or dialog units) */
-class wxsDimensionProperty: public wxsProperty
+class PLUGIN_EXPORT wxsDimensionProperty: public wxsProperty
 {
     public:
 

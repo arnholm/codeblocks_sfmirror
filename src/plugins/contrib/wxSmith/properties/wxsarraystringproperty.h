@@ -25,12 +25,14 @@
 
 #include "wxscustomeditorproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Property for wxArrayString class
  *
  * \note This property doesn't take any default value.
  *       By default array is cleared.
  */
-class wxsArrayStringProperty: public wxsCustomEditorProperty
+class PLUGIN_EXPORT wxsArrayStringProperty: public wxsCustomEditorProperty
 {
     public:
 

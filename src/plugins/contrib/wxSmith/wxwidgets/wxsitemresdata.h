@@ -23,6 +23,8 @@
 #ifndef WXSITEMRESDATA_H
 #define WXSITEMRESDATA_H
 
+#include <cbplugin.h>
+
 #include "wxsitem.h"
 #include "wxsparent.h"
 #include "wxsitemres.h"
@@ -35,7 +37,7 @@ class wxsTool;
 class wxsItemEditor;
 
 /** \brief Class holding data for item resources and operating on it */
-class wxsItemResData
+class PLUGIN_EXPORT wxsItemResData
 {
     public:
 

@@ -23,6 +23,8 @@
 #ifndef WXSBITMAPICONPROPERTY_H
 #define WXSBITMAPICONPROPERTY_H
 
+#include <cbplugin.h>
+
 #include "../../properties/wxsproperties.h"
 #include "../wxscodercontext.h"
 
@@ -34,7 +36,7 @@
  * if both Id and FileName are empty, no bitmap is given
  */
 
-struct wxsBitmapIconData
+struct PLUGIN_EXPORT wxsBitmapIconData
 {
     wxString Id;
     wxString Client;
@@ -62,7 +64,7 @@ typedef wxsBitmapIconData wxsIconData;
  * \note This property doesn't take any default value.
  *       By default array is cleared.
  */
-class wxsBitmapIconProperty: public wxsCustomEditorProperty
+class PLUGIN_EXPORT wxsBitmapIconProperty: public wxsCustomEditorProperty
 {
     public:
 

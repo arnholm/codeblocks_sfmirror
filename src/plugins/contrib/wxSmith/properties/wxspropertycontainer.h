@@ -27,6 +27,7 @@
 #include "wxsquickpropspanel.h"
 
 #include <prep.h>
+#include <cbplugin.h>
 
 class wxsPropertyGridManager;
 
@@ -35,7 +36,7 @@ class wxsPropertyGridManager;
  * This class is responsible for operating on properties.
  * It also creates property window.
  */
-class wxsPropertyContainer
+class PLUGIN_EXPORT wxsPropertyContainer
 {
     public:
 

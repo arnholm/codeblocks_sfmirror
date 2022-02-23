@@ -23,6 +23,8 @@
 #ifndef WXSQUICKPROPSPANEL_H
 #define WXSQUICKPROPSPANEL_H
 
+#include <cbplugin.h>
+
 #include <wx/panel.h>
 
 class wxsPropertyContainer;
@@ -43,7 +45,7 @@ class wxsPropertyContainer;
  *
  * Note that NotifyChange() must be called any time value of property changes.
  */
-class wxsQuickPropsPanel: public wxPanel
+class PLUGIN_EXPORT wxsQuickPropsPanel: public wxPanel
 {
     public:
 

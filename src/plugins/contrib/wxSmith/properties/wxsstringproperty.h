@@ -25,8 +25,10 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Base string property (working on wxString class) */
-class wxsStringProperty: public wxsProperty
+class PLUGIN_EXPORT wxsStringProperty: public wxsProperty
 {
     public:
 

@@ -25,8 +25,10 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Base float property */
-class wxsFloatProperty: public wxsProperty
+class PLUGIN_EXPORT wxsFloatProperty: public wxsProperty
 {
     public:
 

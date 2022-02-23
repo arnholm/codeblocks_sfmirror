@@ -26,13 +26,15 @@
 #include "wxsproperties.h"
 #include "../wxwidgets/wxscodercontext.h"
 
+#include <cbplugin.h>
+
 /** \brief Property with enumerated values and editable field.
  *
  * Enum property works almost the same as long property but it uses
  * predefined values from given set.
  * Note that this class is abstract and should be used as base class for others.
  */
-class wxsEditEnumProperty: public wxsProperty
+class PLUGIN_EXPORT wxsEditEnumProperty: public wxsProperty
 {
     public:
 

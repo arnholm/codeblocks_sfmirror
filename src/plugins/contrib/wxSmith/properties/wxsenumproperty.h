@@ -25,13 +25,15 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Property with enumerated values
  *
  * Enum property works almost the same as long property but it uses
  * predefined values from given set.
  * Note that this class is abstract and should be used as base class for others.
  */
-class wxsEnumProperty: public wxsProperty
+class PLUGIN_EXPORT wxsEnumProperty: public wxsProperty
 {
     public:
 

@@ -24,6 +24,7 @@
 #ifndef WXSIMAGELISTEDITORDLG_H
 #define WXSIMAGELISTEDITORDLG_H
 
+#include <cbplugin.h>
 
 //(*Headers(wxsImageListEditorDlg)
 #include <wx/sizer.h>
@@ -46,7 +47,7 @@
 class wxsItem;
 
 /*! \brief Class for wxsImageListEditorDlg. */
-class wxsImageListEditorDlg: public wxScrollingDialog
+class PLUGIN_EXPORT wxsImageListEditorDlg: public wxScrollingDialog
 {
     public:
 

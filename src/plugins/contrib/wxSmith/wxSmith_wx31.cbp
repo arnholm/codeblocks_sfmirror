@@ -40,12 +40,12 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=gnu++11" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
 			<Add option="-fmessage-length=0" />
 			<Add option="-fexceptions" />
-			<Add option="-std=gnu++11" />
 			<Add option="-DHAVE_W32API_H" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
@@ -65,7 +65,6 @@
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-Wl,--enable-auto-image-base" />
-			<Add option="-Wl,--export-all-symbols" />
 			<Add option="-Wl,--add-stdcall-alias" />
 			<Add option="-Wl,--enable-auto-import" />
 			<Add option="-mthreads" />
@@ -419,10 +418,10 @@
 		<Unit filename="wxwidgets/defitems/wxsdataviewctrl.h">
 			<Option target="wxSmithLib" />
 		</Unit>
-		<Unit filename="wxwidgets/defitems/wxsdataviewlistctrl.cpp" >
+		<Unit filename="wxwidgets/defitems/wxsdataviewlistctrl.cpp">
 			<Option target="wxSmithLib" />
 		</Unit>
-		<Unit filename="wxwidgets/defitems/wxsdataviewlistctrl.h" >
+		<Unit filename="wxwidgets/defitems/wxsdataviewlistctrl.h">
 			<Option target="wxSmithLib" />
 		</Unit>
 		<Unit filename="wxwidgets/defitems/wxsdataviewtreectrl.cpp">
@@ -1269,7 +1268,6 @@
 			<Option target="wxSmithLib" />
 		</Unit>
 		<Extensions>
-			<code_completion />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
 				<resources>
@@ -1295,8 +1293,6 @@
 					<wxScrollingDialog wxs="wxsmith/wxsDeleteItemRes.wxs" src="wxwidgets/wxsdeleteitemres.cpp" hdr="wxwidgets/wxsdeleteitemres.h" fwddecl="0" i18n="1" name="wxsDeleteItemRes" language="CPP" />
 				</resources>
 			</wxsmith>
-			<envvars />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

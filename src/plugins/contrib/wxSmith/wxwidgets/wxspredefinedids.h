@@ -25,6 +25,8 @@
 
 #include <wx/string.h>
 
+#include <cbplugin.h>
+
 /** \brief Class managing predefined identifiers
  *
  * There are two types of predefined ids - first is set of identifiers
@@ -33,7 +35,7 @@
  *
  * \note This class contains static functions only - there's no instance of it.
  */
-class wxsPredefinedIDs
+class PLUGIN_EXPORT wxsPredefinedIDs
 {
     public:
 

@@ -25,8 +25,10 @@
 
 #include "wxsproperty.h"
 
+#include <cbplugin.h>
+
 /** \brief Base long integer property */
-class wxsLongProperty: public wxsProperty
+class PLUGIN_EXPORT wxsLongProperty: public wxsProperty
 {
     public:
 
