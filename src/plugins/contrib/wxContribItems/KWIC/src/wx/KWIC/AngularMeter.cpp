@@ -38,13 +38,13 @@ kwxAngularMeter::kwxAngularMeter(wxWindow* parent, const wxWindowID id, const wx
 	: wxWindow(parent, id, pos, size, 0)
 {
 
-  if (parent)
-    SetBackgroundColour(parent->GetBackgroundColour());
-  else
-    SetBackgroundColour(*wxLIGHT_GREY);
+	if (parent)
+		SetBackgroundColour(parent->GetBackgroundColour());
+	else
+		SetBackgroundColour(*wxLIGHT_GREY);
 
-    //SetSize(size);
-    SetAutoLayout(TRUE);
+	//SetSize(size);
+	SetAutoLayout(TRUE);
 	Refresh();
 
 	m_id = id;
@@ -70,17 +70,17 @@ kwxAngularMeter::kwxAngularMeter(wxWindow* parent, const wxWindowID id, const wx
 
 	membitmap = new wxBitmap(size.GetWidth(), size.GetHeight()) ;
 
-    m_BackgroundDc.SelectObject(*membitmap);
-    m_BackgroundDc.SetBackground(parent->GetBackgroundColour());
-    m_BackgroundDc.Clear();
-    m_BackgroundDc.SetPen(*wxRED_PEN);
-    //m_BackgroundDc.SetBrush(*wxTRANSPARENT_BRUSH);
-    m_BackgroundDc.SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxRED, wxBRUSHSTYLE_SOLID));
+	m_BackgroundDc.SelectObject(*membitmap);
+	m_BackgroundDc.SetBackground(parent->GetBackgroundColour());
+	m_BackgroundDc.Clear();
+	m_BackgroundDc.SetPen(*wxRED_PEN);
+	//m_BackgroundDc.SetBrush(*wxTRANSPARENT_BRUSH);
+	m_BackgroundDc.SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxRED, wxBRUSHSTYLE_SOLID));
 
-    int w,h ;
-    GetClientSize(&w,&h);
+	int w,h ;
+	GetClientSize(&w,&h);
 
-    ///////////////////
+	///////////////////
 
 	//Rectangle
 
@@ -94,27 +94,24 @@ kwxAngularMeter::kwxAngularMeter(wxWindow* parent, const wxWindowID id, const wx
 	if (m_nTick > 0)
 		DrawTicks(m_BackgroundDc);
 
-
-
-    //m_BackgroundDc.DrawRectangle(wxRect(10, 10, 100, 100));
+	//m_BackgroundDc.DrawRectangle(wxRect(10, 10, 100, 100));
 
 	/////////////// TODO : Test for BMP image loading /////////////////
 /*
 
 	m_pPreviewBmp = NULL ;
 
-    wxBitmap bitmap( 300, 300 );
-    wxImage image = bitmap.ConvertToImage();
+	wxBitmap bitmap( 300, 300 );
+	wxImage image = bitmap.ConvertToImage();
 
-    image.Destroy();
+	image.Destroy();
 
-    if ( !image.LoadFile( "thumbnail.bmp", wxBITMAP_TYPE_BMP ) )
-        wxLogError(wxT("Can't load BMP image"));
-    else
-        m_pPreviewBmp = new wxBitmap( image );
+	if ( !image.LoadFile( "thumbnail.bmp", wxBITMAP_TYPE_BMP ) )
+		wxLogError(wxT("Can't load BMP image"));
+	else
+		m_pPreviewBmp = new wxBitmap( image );
 */
-    m_bNeedRedrawBackground = false;
-
+	m_bNeedRedrawBackground = false;
 }
 
 kwxAngularMeter::~kwxAngularMeter()
@@ -147,16 +144,16 @@ void kwxAngularMeter::OnPaint(wxPaintEvent &WXUNUSED(event))
 	/////////////////
 
 	if (m_bNeedRedrawBackground)
-    {
-        ConstructBackground();
-        m_bNeedRedrawBackground = false;
-    }
+	{
+		ConstructBackground();
+		m_bNeedRedrawBackground = false;
+	}
 
 
 	// Create a memory DC
-    wxMemoryDC dc;
-    wxBitmap a(w,h);
-    dc.SelectObject(a);
+	wxMemoryDC dc;
+	wxBitmap a(w,h);
+	dc.SelectObject(a);
 //
 //dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(m_cBackColour,wxSOLID));
 //dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(m_cBackColour,wxSOLID));
@@ -164,11 +161,11 @@ void kwxAngularMeter::OnPaint(wxPaintEvent &WXUNUSED(event))
 
 
 /*
-    if (m_pPreviewBmp && m_pPreviewBmp->Ok())
+	if (m_pPreviewBmp && m_pPreviewBmp->Ok())
 		dc.DrawBitmap( *m_pPreviewBmp, 1, 1 );
 */
 
-    dc.Blit(0, 0, w, h, &m_BackgroundDc, 0, 0);
+	dc.Blit(0, 0, w, h, &m_BackgroundDc, 0, 0);
 
 
 	//Indicator needle
@@ -244,7 +241,6 @@ void kwxAngularMeter::DrawNeedle(wxDC &dc)
 
 /////////////////////////
 
-
 	dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(m_cNeedleColour,wxBRUSHSTYLE_SOLID));
 
 	dc.DrawPolygon(6, ppoint, 0, 0, wxODDEVEN_RULE);
@@ -292,8 +288,6 @@ void kwxAngularMeter::DrawSectors(wxDC &dc)
 		endarc += ((m_nAngleEnd - m_nAngleStart) / (double)m_nSec);
 	}
 
-
-
 	val = (m_nAngleStart * m_dPI) / 180.0;
 	dx = cos(val) * h / 2.0;
 	dy = sin(val) * h / 2.0;
@@ -305,7 +299,6 @@ void kwxAngularMeter::DrawSectors(wxDC &dc)
 	dy = sin(val) * h / 2.0;
 
 	dc.DrawLine(w / 2, h / 2, (w / 2) - dx, (h / 2) - dy);	//right line
-
 }
 
 void kwxAngularMeter::DrawTicks(wxDC &dc)
@@ -356,24 +349,24 @@ void kwxAngularMeter::DrawTicks(wxDC &dc)
 		dc.DrawRotatedText(s,(w / 2) - tx, (h / 2) - ty, 90 - valint);
 
 
-        //draw SubTick (Do not draw subticks after the last Tick)
-        if (n==m_nTick+1)
-            continue;
+		//draw SubTick (Do not draw subticks after the last Tick)
+		if (n==m_nTick+1)
+			continue;
 
-        double stepSubtick  = intervallo*m_dPI/5.0/180.0;
-        double beginSubtick = valint*m_dPI/180.0+stepSubtick;
+		double stepSubtick  = intervallo*m_dPI/5.0/180.0;
+		double beginSubtick = valint*m_dPI/180.0+stepSubtick;
 		for (int i = 0; i<4; i++)
-        {
-            dc.SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxPENSTYLE_SOLID));
+		{
+			dc.SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxPENSTYLE_SOLID));
 
-            dx = cos(beginSubtick) * (h/2);	//point on the circle
-            dy = sin(beginSubtick) * (h/2);
-            tx = cos(beginSubtick) * ((h / 2) - 5);	//point in the circle
-            ty = sin(beginSubtick) * ((h / 2) - 5);
+			dx = cos(beginSubtick) * (h/2);	//point on the circle
+			dy = sin(beginSubtick) * (h/2);
+			tx = cos(beginSubtick) * ((h / 2) - 5);	//point in the circle
+			ty = sin(beginSubtick) * ((h / 2) - 5);
 
-            dc.DrawLine((w / 2) - tx, (h / 2) - ty, (w / 2) - dx, (h / 2) - dy);
-            beginSubtick += stepSubtick;
-        }
+			dc.DrawLine((w / 2) - tx, (h / 2) - ty, (w / 2) - dx, (h / 2) - dy);
+			beginSubtick += stepSubtick;
+		}
 
 		valint = valint + intervallo;
 	}
@@ -388,17 +381,17 @@ void kwxAngularMeter::SetSectorColor(int nSector, wxColour colour)
 
 void kwxAngularMeter::ConstructBackground()
 {
-    m_BackgroundDc.SelectObject(*membitmap);
-    m_BackgroundDc.SetBackground(GetBackgroundColour());
-    m_BackgroundDc.Clear();
-    m_BackgroundDc.SetPen(*wxRED_PEN);
-    //m_BackgroundDc.SetBrush(*wxTRANSPARENT_BRUSH);
-    m_BackgroundDc.SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxRED, wxBRUSHSTYLE_SOLID));
+	m_BackgroundDc.SelectObject(*membitmap);
+	m_BackgroundDc.SetBackground(GetBackgroundColour());
+	m_BackgroundDc.Clear();
+	m_BackgroundDc.SetPen(*wxRED_PEN);
+	//m_BackgroundDc.SetBrush(*wxTRANSPARENT_BRUSH);
+	m_BackgroundDc.SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxRED, wxBRUSHSTYLE_SOLID));
 
-    int w,h ;
-    GetClientSize(&w,&h);
+	int w,h ;
+	GetClientSize(&w,&h);
 
-    ///////////////////
+	///////////////////
 
 	//Rectangle
 
