@@ -322,6 +322,14 @@ else
 	AC_MSG_RESULT(no)
 fi
 
+AC_MSG_CHECKING(whether to CodeBlocks installer documentation directory found)
+if test -f "windows_installer/Documentation/manual_codeblocks_en.chm" ; then
+    AM_CONDITIONAL([CODEBLOCKS_INSTALLERDOCS_FOUND], true)
+    AC_MSG_RESULT(yes)
+else
+    AM_CONDITIONAL([CODEBLOCKS_INSTALLERDOCS_FOUND], false)
+    AC_MSG_RESULT(no)
+fi
 
 case $host in
 	*-*-cygwin* | *-*-mingw*)

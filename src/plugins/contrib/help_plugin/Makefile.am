@@ -70,6 +70,17 @@ resources_forZIP = \
 	images/64x64/zoomin.png \
 	images/64x64/zoomout.png
 
+docdatadir = $(datadir)/@PACKAGE@/docs
+if CODEBLOCKS_INSTALLERDOCS_FOUND
+docdata_DATA = \
+			$(top_srcdir)/windows_installer/Documentation/index.ini \
+			$(top_srcdir)/windows_installer/Documentation/*.pdf \
+			$(top_srcdir)/windows_installer/Documentation/*.chm
+else
+docdata_DATA = \
+			index.ini
+endif
+
 EXTRA_DIST = $(srcdir)/*.cbp \
 			Readme.txt \
 			$(resources_forZIP)
