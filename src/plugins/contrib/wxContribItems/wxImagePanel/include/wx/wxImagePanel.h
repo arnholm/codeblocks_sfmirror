@@ -18,18 +18,24 @@
 *
 */
 
-
 #ifndef _IMAGEPANEL_H_
 #define _IMAGEPANEL_H_
 
-#include    <wx/object.h>
-#include    <wx/panel.h>
-#include    <wx/image.h>
-#include    <wx/bitmap.h>
-#include    <wx/dcclient.h>
+#include <wx/object.h>
+#include <wx/panel.h>
+#include <wx/image.h>
+#include <wx/bitmap.h>
+#include <wx/dcclient.h>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
-class wxImagePanel : public wxPanel
+class DLLEXPORT wxImagePanel : public wxPanel
 {
 public:
 
@@ -43,17 +49,12 @@ public:
 
         void        DoPaint(wxPaintEvent& event);
 
-
-
 protected:
 
     wxBitmap    mBitmap;
     bool        mStretch;
 
     DECLARE_DYNAMIC_CLASS(wxImagePanel)
-
 };
-
-
 
 #endif      // _IMAGEPANEL_H_

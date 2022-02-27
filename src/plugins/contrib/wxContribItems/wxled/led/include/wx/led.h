@@ -17,8 +17,16 @@
 #include <wx/dcclient.h>
 #include <wx/thread.h>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 /// Class to display a Led on the used dialogs page
-class wxLed : public wxWindow
+class DLLEXPORT wxLed : public wxWindow
 {
 	public :
         /** Constructor

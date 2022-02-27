@@ -11,8 +11,18 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef LINEARREGULATOR_H
+#define LINEARREGULATOR_H
 
 #include <wx/control.h>
+
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 const int kwxEVT_LINEARREG_FIRST = wxEVT_FIRST + 5401;
 
@@ -23,7 +33,7 @@ const wxEventType kwxEVT_LINEARREG_CHANGE	= kwxEVT_LINEARREG_FIRST + 1;
 		(wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&fn, \
 		(wxObject*)NULL ),
 
-class kwxLinearRegulator : public wxControl
+class DLLEXPORT kwxLinearRegulator : public wxControl
 {
 public:
 	kwxLinearRegulator(void) { m_id = -1 ; };
@@ -96,5 +106,6 @@ private:
 	wxColour m_cTagsColour ;
 
 	wxFont m_Font ;
+};
 
-} ;
+#endif

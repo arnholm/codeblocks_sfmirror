@@ -53,9 +53,6 @@
 				<Compiler>
 					<Add directory="wxImagePanel/include" />
 				</Compiler>
-				<Linker>
-					<Add option="-Wl,--export-all-symbols" />
-				</Linker>
 			</Target>
 			<Target title="wxSpeedButton">
 				<Option platforms="Windows;" />
@@ -64,9 +61,6 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
-				<Linker>
-					<Add option="-Wl,--export-all-symbols" />
-				</Linker>
 			</Target>
 			<Target title="wxKWIC">
 				<Option platforms="Windows;" />
@@ -78,9 +72,6 @@
 				<Compiler>
 					<Add directory="KWIC/include" />
 				</Compiler>
-				<Linker>
-					<Add option="-Wl,--export-all-symbols" />
-				</Linker>
 			</Target>
 			<Target title="wxLED">
 				<Option platforms="Windows;" />
@@ -95,9 +86,6 @@
 					<Add directory="wxled/led/include" />
 					<Add directory="wxled/gizmosled/include" />
 				</Compiler>
-				<Linker>
-					<Add option="-Wl,--export-all-symbols" />
-				</Linker>
 			</Target>
 			<Target title="wxMathPlot">
 				<Option platforms="Windows;" />
@@ -109,9 +97,6 @@
 				<Compiler>
 					<Add directory="wxmathplot" />
 				</Compiler>
-				<Linker>
-					<Add option="-Wl,--export-all-symbols" />
-				</Linker>
 			</Target>
 			<Environment>
 				<Variable name="WX_CFG" value="" />

@@ -13,7 +13,15 @@
 #include <wx/wx.h>
 #include <string.h>
 
-class MatrixObject
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
+class DLLEXPORT MatrixObject
 {
     public:
 		MatrixObject();

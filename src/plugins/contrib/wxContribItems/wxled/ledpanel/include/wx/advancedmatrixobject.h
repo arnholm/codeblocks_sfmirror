@@ -12,7 +12,15 @@
 
 #include "wx/matrixobject.h"
 
-class AdvancedMatrixObject : public MatrixObject
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
+class DLLEXPORT AdvancedMatrixObject : public MatrixObject
 {
 	public:
 		AdvancedMatrixObject();

@@ -11,15 +11,25 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef LCDCLOCK_H
+#define LCDCLOCK_H
 
 #include "LCDWindow.h"
 #include <wx/timer.h>
+
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 #define TIMER_TIME 3001
 
 class CTimeAlarm;
 
-class kwxLCDClock : public kwxLCDDisplay
+class DLLEXPORT kwxLCDClock : public kwxLCDDisplay
 {
     public:
 
@@ -40,3 +50,5 @@ class kwxLCDClock : public kwxLCDDisplay
         wxDateTime m_LastCheck;
         void OnTimer(wxTimerEvent &event);
 };
+
+#endif

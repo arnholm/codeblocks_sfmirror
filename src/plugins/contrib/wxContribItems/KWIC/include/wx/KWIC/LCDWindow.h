@@ -21,8 +21,16 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __LCDWINDOW_H__
-#define __LCDWINDOW_H__
+#ifndef LCDWINDOW_H
+#define LCDWINDOW_H
+
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 // This structure is used internally by the window.
 struct wxDigitData
@@ -32,7 +40,7 @@ struct wxDigitData
 };
 
 
-class kwxLCDDisplay : public wxWindow
+class DLLEXPORT kwxLCDDisplay : public wxWindow
 {
 	protected:
 		int mSegmentLen;

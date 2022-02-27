@@ -11,13 +11,20 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef LINEARMETER_H
+#define LINEARMETER_H
 
-#ifndef __LINEARMETER_H__
-#define __LINEARMETER_H__
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 #define MAX_TAGS 10
 
-class kwxLinearMeter : public wxWindow
+class DLLEXPORT kwxLinearMeter : public wxWindow
 {
 public:
 	kwxLinearMeter(){};

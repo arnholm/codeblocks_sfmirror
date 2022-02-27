@@ -11,8 +11,18 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef ANGULARREGULATOR_H
+#define ANGULARREGULATOR_H
 
 #include <wx/control.h>
+
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 const int kwxEVT_ANGREG_FIRST = wxEVT_FIRST + 5402;
 
@@ -26,7 +36,7 @@ const wxEventType kwxEVT_ANGREG_CHANGE	= kwxEVT_ANGREG_FIRST + 1;
 
 #define PGRECO (4.0 * atan(1.0))
 
-class kwxAngularRegulator : public wxControl
+class DLLEXPORT kwxAngularRegulator : public wxControl
 {
 public:
 	kwxAngularRegulator(void) { m_id = -1 ; };
@@ -104,4 +114,6 @@ private:
 
 	wxBitmap *membitmap ;
 
-} ;
+};
+
+#endif

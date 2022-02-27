@@ -15,6 +15,14 @@
 #include <wx/wx.h>
 #include <wx/animate.h>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 enum wxLEDColour
 {
 	wxLED_COLOUR_RED = 1,
@@ -26,7 +34,7 @@ enum wxLEDColour
 	wxLED_COLOUR_GREY = 7
 };
 
-class wxLEDPanel : public wxControl
+class DLLEXPORT wxLEDPanel : public wxControl
 {
 	public:
 		// Ctor

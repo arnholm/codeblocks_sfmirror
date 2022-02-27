@@ -1,7 +1,13 @@
 #ifndef _WX_LEDNUMBERCTRL_H_
 #define _WX_LEDNUMBERCTRL_H_
 
-#include "wx/gizmos/gizmos.h"
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 #include <wx/window.h>
 #include <wx/control.h>
@@ -29,7 +35,7 @@ enum wxLEDValueAlign
 // wxLEDNumberCtrl
 // ----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_GIZMOS wxLEDNumberCtrl : public wxControl
+class DLLEXPORT wxLEDNumberCtrl : public wxControl
 {
 public:
     // Constructors.

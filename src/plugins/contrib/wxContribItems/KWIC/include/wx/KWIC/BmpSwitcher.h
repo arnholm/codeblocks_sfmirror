@@ -11,11 +11,20 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef BMPSWITCHER_H
+#define BMPSWITCHER_H
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 WX_DECLARE_LIST(wxBitmap, CBmpList);
 
-class kwxBmpSwitcher : public wxWindow
+class DLLEXPORT kwxBmpSwitcher : public wxWindow
 {
 public:
 	kwxBmpSwitcher(wxWindow *parent,
@@ -51,3 +60,4 @@ private:
 
 } ;
 
+#endif

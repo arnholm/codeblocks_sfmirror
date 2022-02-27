@@ -3,6 +3,14 @@
 
 #include <wx/wx.h>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 // This structure is used internally by the window.
 struct wxDigitData
 {
@@ -11,7 +19,7 @@ struct wxDigitData
 };
 
 
-class wxLCDWindow : public wxWindow
+class DLLEXPORT wxLCDWindow : public wxWindow
 {
 protected:
 	int mSegmentLen;

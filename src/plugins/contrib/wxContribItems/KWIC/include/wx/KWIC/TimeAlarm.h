@@ -11,8 +11,18 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef TIMEALARM_H
+#define TIMEALARM_H
 
-class CTimeAlarm
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
+class DLLEXPORT CTimeAlarm
 {
 public:
 	CTimeAlarm() ;
@@ -29,4 +39,6 @@ private:
 	double m_dJAlarmTime ;
 	bool m_bEnable ;
 
-} ;
+};
+
+#endif

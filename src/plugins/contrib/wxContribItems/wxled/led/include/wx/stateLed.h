@@ -7,8 +7,16 @@
 #include <wx/thread.h>
 #include <map>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 /// Class to display a Led on the used dialogs page
-class wxStateLed : public wxWindow
+class DLLEXPORT wxStateLed : public wxWindow
 {
 	public :
         /** Constructor

@@ -46,15 +46,19 @@
 #include "wx/datetime.h"
 #include "wx/dynarray.h"
 
-
-
-
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
 
 //-----------------------------------------------------------------------------
 // wxSpeedButton
 //-----------------------------------------------------------------------------
 
-class wxSpeedButton : public wxControl
+class DLLEXPORT wxSpeedButton : public wxControl
 {
 public:
 

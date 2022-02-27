@@ -13,6 +13,14 @@
 #include "advancedmatrixobject.h"
 #include <wx/wx.h>
 
+#ifdef __WXMSW__
+    #ifndef DLLEXPORT
+	      #define DLLEXPORT __declspec (dllexport)
+    #endif
+#else
+    #define DLLEXPORT
+#endif
+
 enum wxLEDFontType
 {
 	wxLEDFont7x5=0,	// default
@@ -21,7 +29,7 @@ enum wxLEDFontType
 
 WX_DECLARE_HASH_MAP( wxChar , MatrixObject*, wxIntegerHash, wxIntegerEqual, wxLEDFontHashMap );
 
-class wxLEDFont
+class DLLEXPORT wxLEDFont
 {
 	public:
 		wxLEDFont(wxLEDFontType t=wxLEDFont7x5);
