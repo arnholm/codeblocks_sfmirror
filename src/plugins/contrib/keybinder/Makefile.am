@@ -11,7 +11,7 @@ libkeybinder_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefi
 libkeybinder_la_LIBADD = ../../../sdk/libcodeblocks.la $(WX_LIBS)
 
 libkeybinder_la_SOURCES = cbkeybinder.cpp \
-			cbkeyConfigPanel.cpp \
+			cbKeyConfigPanel.cpp \
 			cJSON.cpp \
 			clKeyboardBindingConfig.cpp \
 			clKeyboardManager.cpp \

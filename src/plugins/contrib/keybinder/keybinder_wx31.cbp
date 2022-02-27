@@ -64,7 +64,7 @@
 		<Unit filename="cJSON.cpp" />
 		<Unit filename="cJSON.h" />
 		<Unit filename="cbKeyConfigPanel.h" />
-		<Unit filename="cbkeyConfigPanel.cpp" />
+		<Unit filename="cbKeyConfigPanel.cpp" />
 		<Unit filename="cbkeybinder.cpp" />
 		<Unit filename="cbkeybinder.h" />
 		<Unit filename="clKeyboardBindingConfig.cpp" />
