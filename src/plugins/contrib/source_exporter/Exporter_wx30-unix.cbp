@@ -438,6 +438,9 @@
 		<Unit filename="wxPdfDocument/src/pdfxml.cpp">
 			<Option target="wxPdfDocument" />
 		</Unit>
+		<Unit filename="wxPdfDocument/src/srgb2014icc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
 		<Unit filename="wxPdfDocument/src/wxmemdbg.h">
 			<Option target="wxPdfDocument" />
 		</Unit>

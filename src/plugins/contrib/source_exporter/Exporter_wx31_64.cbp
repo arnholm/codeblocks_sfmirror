@@ -324,9 +324,6 @@
 		<Unit filename="wxPdfDocument/include/wx/pdfxml.h">
 			<Option target="wxPdfDocument" />
 		</Unit>
-		<Unit filename="wxPdfDocument/include/wx/srgb2014icc.h">
-			<Option target="wxPdfDocument" />
-		</Unit>
 		<Unit filename="wxPdfDocument/makefont/makefont.cpp">
 			<Option target="makefont" />
 		</Unit>
@@ -595,13 +592,12 @@
 		<Unit filename="wxPdfDocument/src/pdfxml.cpp">
 			<Option target="wxPdfDocument" />
 		</Unit>
+		<Unit filename="wxPdfDocument/src/srgb2014icc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
 		<Unit filename="wxPdfDocument/src/wxmemdbg.h">
 			<Option target="wxPdfDocument" />
 		</Unit>
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
