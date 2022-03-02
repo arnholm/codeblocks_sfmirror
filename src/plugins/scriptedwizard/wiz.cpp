@@ -293,7 +293,7 @@ CompileTargetBase* Wiz::Launch(int index, wxString* pFilename)
     {
         // any errors have been displayed by ScriptingManager
         Clear();
-        InfoWindow::Display(_("Error"), _("Failed to load the common functions script.\nPlease check the debug log for details..."));
+        InfoWindow::Display(_("Error"), _("Failed to load the common functions script.\nPlease check the log for details..."));
         return nullptr;
     }
 
@@ -306,7 +306,7 @@ CompileTargetBase* Wiz::Launch(int index, wxString* pFilename)
     {
         // any errors have been displayed by ScriptingManager
         Clear();
-        InfoWindow::Display(_("Error"), _("Failed to load the wizard's script.\nPlease check the debug log for details..."));
+        InfoWindow::Display(_("Error"), _("Failed to load the wizard's script.\nPlease check the log for details..."));
         return nullptr;
     }
 
