@@ -43,7 +43,7 @@ function BeginWizard()
         local opencv_path_descr = _T("Please select the location of OpenCV library on your computer.\n" +
                                   "This is the top-level folder where OpenCV was installed (unpacked).\n" +
                                   "To help you, this folder must contain the subfolders\n" +
-                                  "\"include\" and \"lib\".\n\n") +
+                                  "\"include\" and \"lib\".\n\n" +
                                   "You can also use a global variable, p.e. $(#cv)\n");
 
         Wizard.AddGenericSelectPathPage(_T("OpenCVPath"), opencv_path_descr, _T("Please select OpenCV's location:"), OpenCVPathDefault);

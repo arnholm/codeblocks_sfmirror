@@ -24,7 +24,7 @@ function BeginWizard()
         local stlportpath_descr = _T("Please select the location of STLport on your computer.\n" +
                                      "This is the top-level folder where STLport was installed (unpacked).\n" +
                                      "To help you, this folder must contain the subfolders\n" +
-                                     "\"include\" and \"lib\".\n\n") +
+                                     "\"include\" and \"lib\".\n\n" +
                                      "You can also use a global variable, p.e. $(#stlport)\n");
 
         Wizard.AddGenericSelectPathPage(_T("STLportPath"), stlportpath_descr, _T("Please select STLport's location:"), STLportPathDefault);

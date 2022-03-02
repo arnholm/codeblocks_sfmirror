@@ -29,7 +29,7 @@ function BeginWizard()
     local dxpath_descr = _T("Please select the location of the Direct/X SDK on your computer.\n" +
                             "This is the top-level folder where Direct/X was installed (unpacked).\n" +
                             "To help you, this folder must contain the subfolders\n" +
-                            "\"include\" and \"lib\".\n\n") +
+                            "\"include\" and \"lib\".\n\n" +
                             "You can also use a global variable, p.e. $(#dx)\n");
 
     Wizard.AddInfoPage(_T("DirectXIntro"), intro_msg);
