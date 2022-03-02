@@ -32,7 +32,7 @@ function BeginWizard()
         local sfmlpath_descr = _T("Please select the location of SFML on your computer.\n" +
                                  "This is the top-level folder where SFML was installed (unpacked).\n" +
                                  "To help you, this folder must contain the subfolders\n" +
-                                 "\"include\" and \"lib\".\n\n") +
+                                 "\"include\" and \"lib\".\n\n" +
                                  "You can also use a global variable, p.e. $(#sfml)\n");
 
         Wizard.AddGenericSelectPathPage(_T("SFMLPath"), sfmlpath_descr, _T("Please select SFML's location:"), SFMLPathDefault);
