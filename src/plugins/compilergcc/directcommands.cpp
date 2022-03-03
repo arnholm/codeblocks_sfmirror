@@ -886,7 +886,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
             break;
         default:
             wxString ex;
-            ex.Printf(_T("Encountered invalid TargetType (value = %d)"), target->GetTargetType());
+            ex.Printf(_("Encountered invalid TargetType (value = %d)"), target->GetTargetType());
             cbThrow(ex);
         break;
     }
@@ -1048,10 +1048,10 @@ bool DirectCommands::AreExternalDepsOutdated(ProjectBuildTarget* target,
                     if (timeExtDep > timeOutput)
                     {
                         // force re-link
-                        Manager::Get()->GetLogManager()->DebugLog(F(_T("Forcing re-link of '%s/%s' because '%s' is newer"),
-                                                                        target->GetParentProject()->GetTitle().wx_str(),
-                                                                        target->GetTitle().wx_str(),
-                                                                        lib.wx_str()));
+                        Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Forcing re-link of '%s/%s' because '%s' is newer"),
+                                                                                   target->GetParentProject()->GetTitle(),
+                                                                                   target->GetTitle(),
+                                                                                   lib));
                         return true;
                     }
                     continue;
@@ -1072,10 +1072,10 @@ bool DirectCommands::AreExternalDepsOutdated(ProjectBuildTarget* target,
                     if (timeExtDep > timeOutput)
                     {
                         // force re-link
-                        Manager::Get()->GetLogManager()->DebugLog(F(_T("Forcing re-link of '%s/%s' because '%s' is newer"),
-                                                                        target->GetParentProject()->GetTitle().wx_str(),
-                                                                        target->GetTitle().wx_str(),
-                                                                        dir.wx_str()));
+                        Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Forcing re-link of '%s/%s' because '%s' is newer"),
+                                                                                   target->GetParentProject()->GetTitle(),
+                                                                                   target->GetTitle(),
+                                                                                   dir));
                         return true;
                     }
                 }

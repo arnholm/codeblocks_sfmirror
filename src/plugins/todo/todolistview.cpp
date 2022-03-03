@@ -607,7 +607,7 @@ CheckListDialog::CheckListDialog(wxWindow*       parent,
     m_checkList = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkList1Choices, 0 );
     boxSizer->Add( m_checkList, 1, wxEXPAND, 5 );
 
-    m_okBtn = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+    m_okBtn = new wxButton(this, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
     boxSizer->Add( m_okBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxBOTTOM, 5 );
 
     SetSizer( boxSizer );

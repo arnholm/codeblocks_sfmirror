@@ -255,13 +255,12 @@ void CfgMgrBldr::SwitchTo(const wxString& fileName)
     TiXmlElement* docroot = doc->FirstChildElement("CodeBlocksConfig");
     if (!docroot)
     {
-        const wxString message = wxString::Format(wxT("Cannot find docroot in config file '%s'"),
-                                                  fileName.wx_str());
+        const wxString message = wxString::Format(_("Cannot find docroot in config file '%s'"), fileName);
         handleConfigError(*doc, fileName, message);
         docroot = doc->FirstChildElement("CodeBlocksConfig");
 
         if (!docroot)
-            cbThrow(wxT("Something really bad happened while reading the config file. Aborting!"));
+            cbThrow(_("Something really bad happened while reading the config file. Aborting!"));
     }
 
     const char *vers = docroot->Attribute("version");
@@ -340,7 +339,7 @@ void CfgMgrBldr::SwitchToR(const wxString& absFileName)
             }
             if (Manager::Get()->GetLogManager())
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("##### Error loading or parsing remote config file"));
+                Manager::Get()->GetLogManager()->DebugLog(_("##### Error loading or parsing remote config file"));
                 Manager::Get()->GetLogManager()->DebugLog(cbC2U(doc->ErrorDesc()));
                 doc->ClearError();
             }
@@ -376,7 +375,7 @@ void CfgMgrBldr::Flush()
                 else
                 {
                     AnnoyingDialog dlg(_("Error"),
-                                       F(_T("Could not save config file '%s'!"), cfg.wx_str()),
+                                       wxString::Format(_("Could not save config file '%s'!"), cfg),
                                        wxART_ERROR, AnnoyingDialog::TWO_BUTTONS,
                                        AnnoyingDialog::rtTWO, _("&Retry"), _("&Close"));
                     switch (dlg.ShowModal())
@@ -418,7 +417,7 @@ ConfigManager* CfgMgrBldr::GetConfigManager(const wxString& name_space)
 ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
 {
     if (name_space.IsEmpty())
-        cbThrow(_T("You attempted to get a ConfigManager instance without providing a namespace."));
+        cbThrow(_("You attempted to get a ConfigManager instance without providing a namespace."));
 
     wxCriticalSectionLocker locker(cs);
     NamespaceMap::iterator it = namespaces.find(name_space);
@@ -443,7 +442,7 @@ ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
         if (!docroot)
         {
             wxString err(_("Fatal error parsing supplied configuration file.\nParser error message:\n"));
-            err << wxString::Format(_T("%s\nAt row %d, column: %d."), cbC2U(doc->ErrorDesc()).c_str(), doc->ErrorRow(), doc->ErrorCol());
+            err << wxString::Format(_("%s\nAt row %d, column: %d."), cbC2U(doc->ErrorDesc()).c_str(), doc->ErrorRow(), doc->ErrorCol());
             cbThrow(err);
         }
     }
@@ -457,7 +456,7 @@ ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
     }
 
     if (!root) // now what!
-        cbThrow(_T("Unable to create namespace in document tree (actually not possible..?)"));
+        cbThrow(_("Unable to create namespace in document tree (actually not possible..?)"));
 
     ConfigManager *c = new ConfigManager(root);
     namespaces[name_space] = c;
@@ -694,9 +693,9 @@ void ConfigManager::SetPath(const wxString& path)
 wxString ConfigManager::InvalidNameMessage(const wxString& what, const wxString& sub, TiXmlElement *localPath) const
 {
     wxString s;
-    s.Printf(_T("The %s %s (child of node \"%s\" in namespace \"%s\") does not meet the standard for path naming (must start with a letter)."),
-    what.c_str(),
-    sub.c_str(),
+    s.Printf(_("The %s %s (child of node \"%s\" in namespace \"%s\") does not meet the standard for path naming (must start with a letter)."),
+    what,
+    sub,
     cbC2U(localPath->Value()).c_str(),
     cbC2U(root->Value()).c_str());
 
@@ -788,7 +787,7 @@ void ConfigManager::DeleteAll()
     const wxString ns(cbC2U(root->Value()));
 
     if (!ns.IsSameAs(_T("app")))
-        cbThrow(_T("Illegal attempt to invoke DeleteAll()."));
+        cbThrow(_("Illegal attempt to invoke DeleteAll()."));
 
     wxCriticalSectionLocker(bld->cs);
     doc->RootElement()->Clear();

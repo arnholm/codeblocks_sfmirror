@@ -868,7 +868,7 @@ int NativeParser::GetCallTips(wxArrayString& items, int& typedCommas, cbEditor* 
 
     if (!ed || !m_Parser->Done())
     {
-        items.Add(wxT("Parsing at the moment..."));
+        items.Add(_("Parsing at the moment") + "...");
         return wxSCI_INVALID_POSITION;
     }
 

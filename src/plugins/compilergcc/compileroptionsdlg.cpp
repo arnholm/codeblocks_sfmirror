@@ -2033,7 +2033,7 @@ void CompilerOptionsDlg::OnCopyDirsClick(cb_unused wxCommandEvent& event)
 
         if (!base)
         {
-            Manager::Get()->GetLogManager()->LogWarning(_T("Could not get build target in CompilerOptionsDlg::OnCopyLibsClick"));
+            Manager::Get()->GetLogManager()->LogWarning(_("Could not get build target in CompilerOptionsDlg::OnCopyLibsClick"));
             continue;
         }
 
@@ -2061,7 +2061,7 @@ static void QuoteString(wxString &value, const wxString &caption)
 {
     if (NeedQuotes(value))
     {
-        AnnoyingDialog dlgQuestion(caption, wxT("Variable quote string"),
+        AnnoyingDialog dlgQuestion(caption, _("Variable quote string"),
                                    _("The value contains spaces or strange characters. Do you want to quote it?"),
                                    wxART_QUESTION, AnnoyingDialog::YES_NO, AnnoyingDialog::rtSAVE_CHOICE,
                                    _("&Quote"), _("&Leave unquoted"));
@@ -3097,8 +3097,8 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
     else if (m_MenuOption == FMO_CPPOnly)
     {
         Compiler* compiler = CompilerFactory::GetCompiler(m_CurrentCompilerIdx);
-        wxTextEntryDialog dlg(this, wxT("List flags that will only be used during C++ compilation"),
-                              wxT("C++ - only flags"), compiler->GetCPPOnlyFlags(), wxTextEntryDialogStyle|wxTE_MULTILINE|wxRESIZE_BORDER);
+        wxTextEntryDialog dlg(this, _("List flags that will only be used during C++ compilation"),
+                              _("C++ - only flags"), compiler->GetCPPOnlyFlags(), wxTextEntryDialogStyle|wxTE_MULTILINE|wxRESIZE_BORDER);
         // TODO: Hack for Ubuntu, see here: http://forums.codeblocks.org/index.php/topic,16463.msg115270.html#msg115270 (Remove if no longer needed.)
         if (dlg.GetSize().GetHeight() < 220)
         {

@@ -1731,7 +1731,7 @@ auto CompilerGCC::CompilerValid(ProjectBuildTarget* target) -> CompilerValidResu
 
 void CompilerGCC::PrintInvalidCompiler(ProjectBuildTarget *target, Compiler* compiler, const wxString &finalMessage)
 {
-    wxString compilerName, compilerName2(wxT("unknown"));
+    wxString compilerName, compilerName2(_("unknown"));
     if (compiler)
     {
         compilerName = wxT("(") + compiler->GetName() + wxT(") ");
@@ -1742,16 +1742,15 @@ void CompilerGCC::PrintInvalidCompiler(ProjectBuildTarget *target, Compiler* com
     if (target)
         title = target->GetFullTitle();
     else
-        title = wxT("unknown");
+        title = _("unknown");
 
     wxString msg;
-    msg.Printf(_T("Project/Target: \"%s\":\n")
-               _T("  The compiler's setup %sis invalid, so Code::Blocks cannot find/run the compiler.\n")
-               _T("  Probably the toolchain path within the compiler options is not setup correctly?!\n")
-               _T("  Do you have a compiler installed?\n")
-               _T("Goto \"Settings->Compiler...->Global compiler settings->%s->Toolchain executables\"")
-               _T(" and fix the compiler's setup.\n"),
-               title.wx_str(), compilerName.wx_str(), compilerName2.wx_str());
+    msg.Printf(_("Project/Target: \"%s\":\n") +
+               _("  The compiler's setup %s is invalid, so Code::Blocks cannot find/run the compiler.\n") +
+               _("  Probably the toolchain path within the compiler options is not setup correctly?!\n") +
+               _("  Do you have a compiler installed?\n") +
+               _("Goto \"Settings->Compiler...->Global compiler settings->%s->Toolchain executables\" and fix the compiler's setup.\n"),
+               title, compilerName, compilerName2);
 
     LogManager* logger = Manager::Get()->GetLogManager();
     logger->LogError(msg, m_PageIndex);
@@ -2166,7 +2165,7 @@ bool CompilerGCC::DoCleanWithMake(ProjectBuildTarget* bt)
     if (cmd.empty())
     {
         LogMessage(COMPILER_ERROR_LOG +
-                   wxT("Make command for 'Clean project/target' is empty. Nothing will be cleaned!"),
+                   _("Make command for 'Clean project/target' is empty. Nothing will be cleaned!"),
                    cltError);
         return false;
     }
@@ -2240,7 +2239,7 @@ int CompilerGCC::DistClean(ProjectBuildTarget* target)
     }
     else
     {
-        NotImplemented(_T("CompilerGCC::DistClean() without a custom Makefile"));
+        NotImplemented(_("CompilerGCC::DistClean() without a custom Makefile"));
         return -1;
     }
     return 0;

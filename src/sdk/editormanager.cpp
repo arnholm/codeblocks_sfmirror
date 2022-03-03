@@ -1239,11 +1239,11 @@ bool EditorManager::OpenContainingFolder()
         path = fullPath;
 
     QuoteStringIfNeeded(path);
-    cmdData.command << wxT(" ") << path;
+    cmdData.command << ' ' << path;
 
     wxExecute(cmdData.command);
-    Manager::Get()->GetLogManager()->DebugLog(F(wxT("Executing command to open folder: '%s'"),
-                                                cmdData.command.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Executing command to open folder: '%s'"),
+                                              cmdData.command));
     return true;
 }
 

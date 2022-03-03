@@ -824,7 +824,7 @@ MainFrame::MainFrame(wxWindow* parent)
     RegisterScriptFunctions();
     RunStartupScripts();
 
-    Manager::Get()->GetLogManager()->DebugLog(_T("Initializing plugins..."));
+    Manager::Get()->GetLogManager()->DebugLog(_("Initializing plugins..."));
 }
 
 MainFrame::~MainFrame()
