@@ -178,7 +178,7 @@ void ThreadSearchLoggerTree::OnLoggerTreeContextualMenu(wxTreeEvent& event)
 
 bool ThreadSearchLoggerTree::hasResultLineForTreeItem(wxTreeItemId treeItemId)
 {
-    return (m_pTreeLog->GetItemText(treeItemId).StartsWith(_("=>")) == false) || (m_pTreeLog->ItemHasChildren(treeItemId));
+    return (m_pTreeLog->GetItemText(treeItemId).StartsWith("=>") == false) || (m_pTreeLog->ItemHasChildren(treeItemId));
 }
 
 

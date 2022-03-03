@@ -440,8 +440,8 @@ void ThreadSearchLoggerList::OnSearchBegin(const ThreadSearchFindData& findData)
         m_IndexManager.Reset();
         long index = m_pListLog->GetItemCount();
         m_pListLog->InsertItem(index, wxString::Format("=> %s", findData.GetFindText().c_str()));
-        m_pListLog->SetItem(index, ListColumns::Line, _("==="));
-        m_pListLog->SetItem(index, ListColumns::Text, _("============"));
+        m_pListLog->SetItem(index, ListColumns::Line, "===");
+        m_pListLog->SetItem(index, ListColumns::Text, "============");
         m_pListLog->SetItemData(index, 1);
 
         wxListItem info;

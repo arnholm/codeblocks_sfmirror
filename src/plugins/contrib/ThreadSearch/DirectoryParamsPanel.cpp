@@ -528,7 +528,7 @@ DirectoryParamsPanel::DirectoryParamsPanel(ThreadSearchFindData *findData, wxWin
     SetWindowMinMaxSize(*m_pSearchDirPath, 80, 180);
     m_pSearchDirPath->AutoComplete(new DirTextCompleter);
 
-    m_pBtnSelectDir = new wxButton(this, controlIDs.Get(ControlIDs::idBtnDirSelectClick), _("..."));
+    m_pBtnSelectDir = new wxButton(this, controlIDs.Get(ControlIDs::idBtnDirSelectClick), "...");
     m_pChkSearchDirRecursively = new wxCheckBox(this, controlIDs.Get(ControlIDs::idChkSearchDirRecurse), _("Recurse"));
     m_pChkSearchDirHiddenFiles = new wxCheckBox(this, controlIDs.Get(ControlIDs::idChkSearchDirHidden), _("Hidden"));
     m_pMask = new wxComboBox(this, controlIDs.Get(ControlIDs::idSearchMask), findData->GetSearchMask(),
