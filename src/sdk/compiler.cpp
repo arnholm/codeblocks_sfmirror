@@ -1429,7 +1429,7 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
                 continue;
             }
 
-            // Test first letter just in case all teste can be skipped
+            // Test first letter, just in case all tests can be skipped
             if (name[0] == 'v')
             {
                 if (name == "version_greater")
