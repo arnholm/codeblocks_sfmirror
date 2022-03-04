@@ -1355,38 +1355,82 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
             const wxString &name = attr->GetName();
 
             // Not really tests
-            if ((name == "exec") || (name == "default"))
+            if (name.empty() || (name == "exec") || (name == "default"))
                 continue;
 
+            // Matchs a regular expression or compares versions, dpeending on Value
+            // If Value == "expression", looks for match in all output lines
+            // If value == "expression;op;version" applies operator 'op' between match and version. Example: "([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0"
+            // Possible operators: gt, ge, eq, ne, le, lt
             if (name == "regex")
             {
-                wxRegEx re;
-                if (re.Compile(attr->GetValue()))
+                wxArrayString parts = wxSplit(attr->GetValue(), ';');
+                const size_t partCount = parts.Count();
+                if ((partCount != 1) && (partCount != 3))
                 {
-                    bool found = false;
-                    for (size_t i = 0; i < output.GetCount(); ++i)
-                    {
-                        if (re.Matches(output[i]))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
+                    val = false;
+                    const wxString msg = wxString::Format(_("Invalid argument \"%s\" in compiler test"),
+                                                          attr->GetValue());
 
-                    val = found;
+                    Manager::Get()->GetLogManager()->DebugLog(msg);
                 }
                 else
                 {
-                    val = false;
-                    const wxString msg = wxString::Format(_("Can not compile regex \"%s\" in compiler test"),
-                                                          attr->GetValue());
-                    Manager::Get()->GetLogManager()->DebugLog(msg);
+                    wxRegEx re;
+
+                    if (re.Compile(parts[0]))
+                    {
+                        bool ok = false;
+                        for (size_t i = 0; i < output.GetCount(); ++i)
+                        {
+                            if (re.Matches(output[i]))
+                            {
+                                if (partCount == 1)
+                                {
+                                    ok = true;
+                                }
+                                else
+                                {
+                                    int check;
+                                    if (CmpVersion(check, re.GetMatch(output[i], 1), parts[2]))
+                                    {
+                                        if (parts[1] == "gt")
+                                            ok = (check > 0);
+                                        else if (parts[1] == "ge")
+                                            ok = (check >= 0);
+                                        else if (parts[1] == "eq")
+                                            ok = (check == 0);
+                                        else if (parts[1] == "ne")
+                                            ok = (check != 0);
+                                        else if (parts[1] == "le")
+                                            ok = (check <= 0);
+                                        else if (parts[1] == "lt")
+                                            ok = (check < 0);
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+
+                        val = ok;
+                    }
+                    else
+                    {
+                        val = false;
+                        const wxString msg = wxString::Format(_("Can not compile regex \"%s\" in compiler test"),
+                                                              parts[0]);
+
+                        Manager::Get()->GetLogManager()->DebugLog(msg);
+                    }
+
                 }
 
                 continue;
             }
 
-            if (!name.empty() && name[0] == 'v')
+            // Test first letter just in case all teste can be skipped
+            if (name[0] == 'v')
             {
                 if (name == "version_greater")
                 {
