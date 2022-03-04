@@ -66,7 +66,7 @@
                 supersedes="--fomit-frame-pointer"
                 checkAgainst="-mpdk13 -mpdk14 -mpdk15"
                 checkMessage="Padauk backends do not support a frame pointer; --fno-omit-frame-pointer will be ignored."/>
-        <if exec="C --version" regex="(4\.[2-9]\.[0-9])|([5-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0" default="true">
             <!-- only with version 4.2.0+ -->
             <Option name="Use ABI calling convention version 0"
                     option="--sdcccall0"
@@ -141,7 +141,7 @@
                 option="--std-c11"/>
         <Option name="ISO C11 with SDCC extensions (default)"
                 option="--std-sdcc11"/>
-        <if exec="C --version" regex="(3\.[8-9]\.[0-9])|([4-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;3.8.0" default="true">
             <!-- only with version 3.8.0+ -->
             <Option name="ISO C2X"
                     option="--std-c2x"/>
@@ -172,7 +172,7 @@
                 option="-mr2k"/>
         <Option name="[CPU] Rabbit 3000A"
                 option="-mr3ka"/>
-        <if exec="C --version" regex="(4\.[2-9]\.[0-9])|([5-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0" default="true">
             <!-- name changed with version 4.2.0+ -->
             <Option name="[CPU] Sharp SM83 (Nintendo Game Boy)"
                     option="-msm83"/>
@@ -183,12 +183,12 @@
         </else>
         <Option name="[CPU] Toshiba TLCS-90"
                 option="-mtlcs90"/>
-        <if exec="C --version" regex="(3\.9\.[0-9])|([4-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;3.9.0" default="true">
             <!-- only with version 3.9.0+ -->
             <Option name="[CPU] Zilog eZ80 in Z80 mode"
                     option="-mez80_z80"/>
         </if>
-        <if exec="C --version" regex="(4\.[1-9]\.[0-9])|([5-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.1.0" default="true">
             <!-- only with version 4.1.0+ -->
             <Option name="[CPU] ZX Spectrum Next Z80N"
                     option="-mz80n"/>
@@ -209,7 +209,7 @@
                 option="-ms08"/>
         <Option name="[CPU] STMicroelectronics STM8"
                 option="-mstm8"/>
-        <if exec="C --version" regex="[4-9]\.[0-9]\.[0-9]" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.0.0" default="true">
             <!-- only with version 4.0.0+ -->
             <Option name="[CPU] Padauk 13-bit (experimental)"
                     option="-mpdk13"/>
@@ -218,7 +218,7 @@
                 option="-mpdk14"/>
         <Option name="[CPU] Padauk 15-bit"
                 option="-mpdk15"/>
-        <if exec="C --version" regex="(4\.[2-9]\.[0-9])|([5-9]\.[0-9]\.[0-9])" default="true">
+        <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0" default="true">
             <!-- only with version 4.2.0+ -->
             <Option name="[CPU] MOS Technology 6502 (experimental)"
                     option="-mmos6502"/>
@@ -284,7 +284,7 @@
                 option="--model-large"/>
     </Category>
     
-    <if exec="C --version" regex="(4\.[2-9]\.[0-9])|([5-9]\.[0-9]\.[0-9])" default="true">
+    <if exec="C --version" regex="([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0" default="true">
         <!-- only with version 4.2.0+ -->
         <Category name="MOS6502 Options">
             <Option name="[MOS6502] Small 8-bit address space for data (default is large)"
