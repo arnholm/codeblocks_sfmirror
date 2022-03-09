@@ -31,44 +31,44 @@ const Associations::Assoc knownTypes[] =
       Note: "index" is the index of the icon resource in "resources.rc"
             Keep all indices in sync with icon indices in "resources.rc"!
 */
-    { FileFilters::CODEBLOCKS_EXT,      "Project file",                  1, true },
-    { FileFilters::WORKSPACE_EXT,       "Workspace file",               11, true },
+    { FileFilters::CODEBLOCKS_EXT,      _("Project file"),                  1, true },
+    { FileFilters::WORKSPACE_EXT,       _("Workspace file"),               11, true },
 
-    { FileFilters::C_EXT,               "C source file",                 3, true },
+    { FileFilters::C_EXT,               _("C source file"),                 3, true },
 
-    { FileFilters::CC_EXT,              "C++ source file",               4, true },
-    { FileFilters::CPP_EXT,             "C++ source file",               4, true },
-    { FileFilters::CXX_EXT,             "C++ source file",               4, true },
-    { FileFilters::INL_EXT,             "C++ source file",               4, true },
+    { FileFilters::CC_EXT,              _("C++ source file"),               4, true },
+    { FileFilters::CPP_EXT,             _("C++ source file"),               4, true },
+    { FileFilters::CXX_EXT,             _("C++ source file"),               4, true },
+    { FileFilters::INL_EXT,             _("C++ source file"),               4, true },
 
-    { FileFilters::TPP_EXT,             "C++ template source file",      4, true },
-    { FileFilters::TCC_EXT,             "C++ template source file",      4, true },
+    { FileFilters::TPP_EXT,             _("C++ template source file"),      4, true },
+    { FileFilters::TCC_EXT,             _("C++ template source file"),      4, true },
 
-    { FileFilters::H_EXT,               "Header file",                   5, true },
-    { FileFilters::HH_EXT,              "Header file",                   5, true },
-    { FileFilters::HPP_EXT,             "Header file",                   5, true },
-    { FileFilters::HXX_EXT,             "Header file",                   5, true },
+    { FileFilters::H_EXT,               _("Header file"),                   5, true },
+    { FileFilters::HH_EXT,              _("Header file"),                   5, true },
+    { FileFilters::HPP_EXT,             _("Header file"),                   5, true },
+    { FileFilters::HXX_EXT,             _("Header file"),                   5, true },
 
-    { FileFilters::JAVA_EXT,            "Java source file",              6, false },
-    { "cg",                             "cg source file",                7, false },
-    { FileFilters::D_EXT,               "D source file",                 8, false },
-    { FileFilters::RESOURCE_EXT,        "Resource file",                10, false },
-    { FileFilters::XRCRESOURCE_EXT,     "XRC resource file",            10, false },
+    { FileFilters::JAVA_EXT,            _("Java source file"),              6, false },
+    { "cg",                             _("cg source file"),                7, false },
+    { FileFilters::D_EXT,               _("D source file"),                 8, false },
+    { FileFilters::RESOURCE_EXT,        _("Resource file"),                10, false },
+    { FileFilters::XRCRESOURCE_EXT,     _("XRC resource file"),            10, false },
 
-    { FileFilters::ASM_EXT,             "ASM source file",               2, false },
-    { FileFilters::S_EXT,               "ASM source file",               2, false },
-    { FileFilters::SS_EXT,              "ASM source file",               2, false },
-    { FileFilters::S62_EXT,             "ASM source file",               2, false },
+    { FileFilters::ASM_EXT,             _("ASM source file"),               2, false },
+    { FileFilters::S_EXT,               _("ASM source file"),               2, false },
+    { FileFilters::SS_EXT,              _("ASM source file"),               2, false },
+    { FileFilters::S62_EXT,             _("ASM source file"),               2, false },
 
-    { FileFilters::F_EXT,               "Fortran source file",           9, false },
-    { FileFilters::F77_EXT,             "Fortran source file",           9, false },
-    { FileFilters::F90_EXT,             "Fortran source file",           9, false },
-    { FileFilters::F95_EXT,             "Fortran source file",           9, false },
+    { FileFilters::F_EXT,               _("Fortran source file"),           9, false },
+    { FileFilters::F77_EXT,             _("Fortran source file"),           9, false },
+    { FileFilters::F90_EXT,             _("Fortran source file"),           9, false },
+    { FileFilters::F95_EXT,             _("Fortran source file"),           9, false },
 
-    { FileFilters::DEVCPP_EXT,          "Dev-CPP project file",         21, false },
-    { FileFilters::MSVC6_EXT,           "MS Visual C++ project file",   22, false },
-    { FileFilters::MSVC6_WORKSPACE_EXT, "MS Visual C++ workspace file", 23, false }
-    //{ "proj",                           "XCODE Project file",           24, false }
+    { FileFilters::DEVCPP_EXT,          _("Dev-CPP project file"),         21, false },
+    { FileFilters::MSVC6_EXT,           _("MS Visual C++ project file"),   22, false },
+    { FileFilters::MSVC6_WORKSPACE_EXT, _("MS Visual C++ workspace file"), 23, false }
+    //{ "proj",                           _("XCODE Project file"),           24, false }
 };
 
 inline void DoSetAssociation(const wxString& executable, int index)
@@ -169,7 +169,7 @@ void Associations::DoSetAssociation(const wxString& ext, const wxString& descr, 
 
     key.SetName(BaseKeyName + node);
     key.Create();
-    key = descr;
+    key = _(descr);
 
     key.SetName(BaseKeyName + node + "\\DefaultIcon");
     key.Create();
@@ -301,7 +301,7 @@ ManageAssocsDialog::ManageAssocsDialog(wxWindow* parent)
     const unsigned int assocCount = Associations::CountAssocs();
     for (unsigned int i = 0; i < assocCount; ++i)
     {
-        list->Append('.' + knownTypes[i].ext + "  (" + knownTypes[i].descr + ')');
+        list->Append('.' + knownTypes[i].ext + "  (" + _(knownTypes[i].descr) + ')');
         list->Check(i, Associations::DoCheckAssociation(knownTypes[i].ext, knownTypes[i].descr, exe, knownTypes[i].index));
     }
 
