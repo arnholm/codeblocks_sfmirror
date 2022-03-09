@@ -27,59 +27,59 @@
 const Associations::Assoc knownTypes[] =
 {
 /*
-    { Extension (wxString), Description (wxString), IconIndex (int) }
+    { Extension (wxString), Description (wxString), IconIndex (int), IsCore (bbol) }
       Note: "index" is the index of the icon resource in "resources.rc"
             Keep all indices in sync with icon indices in "resources.rc"!
 */
-    { FileFilters::CODEBLOCKS_EXT,      "Project file",                  1 },
-    { FileFilters::WORKSPACE_EXT,       "Workspace file",               11 },
+    { FileFilters::CODEBLOCKS_EXT,      "Project file",                  1, true },
+    { FileFilters::WORKSPACE_EXT,       "Workspace file",               11, true },
 
-    { FileFilters::C_EXT,               "C source file",                 3 },
+    { FileFilters::C_EXT,               "C source file",                 3, true },
 
-    { FileFilters::CC_EXT,              "C++ source file",               4 },
-    { FileFilters::CPP_EXT,             "C++ source file",               4 },
-    { FileFilters::CXX_EXT,             "C++ source file",               4 },
-    { FileFilters::INL_EXT,             "C++ source file",               4 },
+    { FileFilters::CC_EXT,              "C++ source file",               4, true },
+    { FileFilters::CPP_EXT,             "C++ source file",               4, true },
+    { FileFilters::CXX_EXT,             "C++ source file",               4, true },
+    { FileFilters::INL_EXT,             "C++ source file",               4, true },
 
-    { FileFilters::TPP_EXT,             "C++ template source file",      4 },
-    { FileFilters::TCC_EXT,             "C++ template source file",      4 },
+    { FileFilters::TPP_EXT,             "C++ template source file",      4, true },
+    { FileFilters::TCC_EXT,             "C++ template source file",      4, true },
 
-    { FileFilters::H_EXT,               "Header file",                   5 },
-    { FileFilters::HH_EXT,              "Header file",                   5 },
-    { FileFilters::HPP_EXT,             "Header file",                   5 },
-    { FileFilters::HXX_EXT,             "Header file",                   5 },
+    { FileFilters::H_EXT,               "Header file",                   5, true },
+    { FileFilters::HH_EXT,              "Header file",                   5, true },
+    { FileFilters::HPP_EXT,             "Header file",                   5, true },
+    { FileFilters::HXX_EXT,             "Header file",                   5, true },
 
-    { FileFilters::JAVA_EXT,            "Java source file",              6 },
-    { "cg",                             "cg source file",                7 },
-    { FileFilters::D_EXT,               "D source file",                 8 },
-    { FileFilters::RESOURCE_EXT,        "Resource file",                10 },
-    { FileFilters::XRCRESOURCE_EXT,     "XRC resource file",            10 },
+    { FileFilters::JAVA_EXT,            "Java source file",              6, false },
+    { "cg",                             "cg source file",                7, false },
+    { FileFilters::D_EXT,               "D source file",                 8, false },
+    { FileFilters::RESOURCE_EXT,        "Resource file",                10, false },
+    { FileFilters::XRCRESOURCE_EXT,     "XRC resource file",            10, false },
 
-    { FileFilters::ASM_EXT,             "ASM source file",               2 },
-    { FileFilters::S_EXT,               "ASM source file",               2 },
-    { FileFilters::SS_EXT,              "ASM source file",               2 },
-    { FileFilters::S62_EXT,             "ASM source file",               2 },
+    { FileFilters::ASM_EXT,             "ASM source file",               2, false },
+    { FileFilters::S_EXT,               "ASM source file",               2, false },
+    { FileFilters::SS_EXT,              "ASM source file",               2, false },
+    { FileFilters::S62_EXT,             "ASM source file",               2, false },
 
-    { FileFilters::F_EXT,               "Fortran source file",           9 },
-    { FileFilters::F77_EXT,             "Fortran source file",           9 },
-    { FileFilters::F90_EXT,             "Fortran source file",           9 },
-    { FileFilters::F95_EXT,             "Fortran source file",           9 },
+    { FileFilters::F_EXT,               "Fortran source file",           9, false },
+    { FileFilters::F77_EXT,             "Fortran source file",           9, false },
+    { FileFilters::F90_EXT,             "Fortran source file",           9, false },
+    { FileFilters::F95_EXT,             "Fortran source file",           9, false },
 
-    { FileFilters::DEVCPP_EXT,          "Dev-CPP project file",         21 },
-    { FileFilters::MSVC6_EXT,           "MS Visual C++ project file",   22 },
-    { FileFilters::MSVC6_WORKSPACE_EXT, "MS Visual C++ workspace file", 23 }
-    //{ "proj",                           "XCODE Project file",           24 }
+    { FileFilters::DEVCPP_EXT,          "Dev-CPP project file",         21, false },
+    { FileFilters::MSVC6_EXT,           "MS Visual C++ project file",   22, false },
+    { FileFilters::MSVC6_WORKSPACE_EXT, "MS Visual C++ workspace file", 23, false }
+    //{ "proj",                           "XCODE Project file",           24, false }
 };
 
 inline void DoSetAssociation(const wxString& executable, int index)
 {
     Associations::DoSetAssociation(knownTypes[index].ext, knownTypes[index].descr, executable, knownTypes[index].index);
-};
+}
 
 inline bool DoCheckAssociation(const wxString& executable, int index)
 {
     return Associations::DoCheckAssociation(knownTypes[index].ext, knownTypes[index].descr, executable, knownTypes[index].index);
-};
+}
 
 unsigned int Associations::CountAssocs()
 {
@@ -89,7 +89,7 @@ unsigned int Associations::CountAssocs()
 void Associations::SetBatchBuildOnly()
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
     ::DoSetAssociation(name, 0);
     ::DoSetAssociation(name, 1);
@@ -105,10 +105,12 @@ void Associations::UpdateChanges()
 void Associations::SetCore()
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
-    for (int i = 0; i <= 12; ++i)        // beware, the number 12 is hardcoded ;)
-        ::DoSetAssociation(name, i);
+    const unsigned int assocCount = CountAssocs();
+    for (unsigned int i = 0; i < assocCount; ++i)
+        if (knownTypes[i].core)
+            ::DoSetAssociation(name, i);
 
     UpdateChanges();
 }
@@ -116,9 +118,10 @@ void Associations::SetCore()
 void Associations::SetAll()
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
-    for (unsigned int i = 0; i < CountAssocs(); ++i)
+    const unsigned int assocCount = CountAssocs();
+    for (unsigned int i = 0; i < assocCount; ++i)
         ::DoSetAssociation(name, i);
 
     UpdateChanges();
@@ -127,9 +130,10 @@ void Associations::SetAll()
 void Associations::ClearAll()
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
-    for (unsigned int i = 0; i < CountAssocs(); ++i)
+    const unsigned int assocCount = CountAssocs();
+    for (unsigned int i = 0; i < assocCount; ++i)
         DoClearAssociation(knownTypes[i].ext);
 
     UpdateChanges();
@@ -138,14 +142,16 @@ void Associations::ClearAll()
 bool Associations::Check()
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
     bool result = true;
 
-    for (int i = 0; i <= 12; ++i)        // beware, the number 12 is hardcoded ;)
-        result &= ::DoCheckAssociation(name, i);
+    const unsigned int assocCount = CountAssocs();
+    for (unsigned int i = 0; i < assocCount; ++i)
+        if (knownTypes[i].core)
+            result &= ::DoCheckAssociation(name, i);
 
-    return  result;
+    return result;
 }
 
 void Associations::DoSetAssociation(const wxString& ext, const wxString& descr, const wxString& exe, int icoNum)
@@ -157,7 +163,7 @@ void Associations::DoSetAssociation(const wxString& ext, const wxString& descr, 
     const wxString node("CodeBlocks." + ext);
 
     wxRegKey key; // defaults to HKCR
-    key.SetName(BaseKeyName + _T(".") + ext);
+    key.SetName(BaseKeyName + '.' + ext);
     key.Create();
     key = "CodeBlocks." + ext;
 
@@ -173,6 +179,7 @@ void Associations::DoSetAssociation(const wxString& ext, const wxString& descr, 
     key.Create();
     key = '"' + exe + "\" \"%1\"";
 
+    // Delete old ddeexec keys, because they interfere with C::B's own DDE usage
     key.SetName(BaseKeyName + node + "\\shell\\open\\ddeexec");
     if (key.Exists())
         key.DeleteSelf();
@@ -273,15 +280,13 @@ bool Associations::DoCheckAssociation(const wxString& ext, cb_unused const wxStr
     return true;
 }
 
-
+//////////////////////////////////////////
 
 BEGIN_EVENT_TABLE(ManageAssocsDialog, wxScrollingDialog)
     EVT_BUTTON(XRCID("wxID_OK"), ManageAssocsDialog::OnApply)
     EVT_BUTTON(XRCID("wxID_CANCEL"), ManageAssocsDialog::OnCancel)
     EVT_BUTTON(XRCID("clearAll"), ManageAssocsDialog::OnClearAll)
 END_EVENT_TABLE()
-
-
 
 ManageAssocsDialog::ManageAssocsDialog(wxWindow* parent)
 {
@@ -291,9 +296,10 @@ ManageAssocsDialog::ManageAssocsDialog(wxWindow* parent)
     assert(list);
 
     wxChar exe[MAX_PATH] = {0};
-    GetModuleFileName(0L, exe, MAX_PATH);
+    GetModuleFileName(NULL, exe, MAX_PATH);
 
-    for (unsigned int i = 0; i < Associations::CountAssocs(); ++i)
+    const unsigned int assocCount = Associations::CountAssocs();
+    for (unsigned int i = 0; i < assocCount; ++i)
     {
         list->Append('.' + knownTypes[i].ext + "  (" + knownTypes[i].descr + ')');
         list->Check(i, Associations::DoCheckAssociation(knownTypes[i].ext, knownTypes[i].descr, exe, knownTypes[i].index));
@@ -305,7 +311,7 @@ ManageAssocsDialog::ManageAssocsDialog(wxWindow* parent)
 void ManageAssocsDialog::OnApply(cb_unused wxCommandEvent& event)
 {
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(NULL, name, MAX_PATH);
 
     for (size_t i = 0; i < list->GetCount(); ++i)
     {
@@ -331,6 +337,8 @@ void ManageAssocsDialog::OnClearAll(cb_unused wxCommandEvent& event)
     EndModal(0);
 }
 
+//////////////////////////////////////////
+
 BEGIN_EVENT_TABLE(AskAssocDialog, wxScrollingDialog)
     EVT_BUTTON(XRCID("wxID_OK"), AskAssocDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, AskAssocDialog::OnESC)
@@ -339,7 +347,7 @@ END_EVENT_TABLE()
 
 AskAssocDialog::AskAssocDialog(wxWindow* parent)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("askAssoc"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "askAssoc", "wxScrollingDialog");
     SetEscapeId(wxID_NONE);
 }
 

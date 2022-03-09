@@ -27,6 +27,7 @@ namespace Associations
     wxString ext;
     wxString descr;
     int index;
+    bool core;
     };
 
     unsigned int CountAssocs();
