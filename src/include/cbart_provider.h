@@ -3,6 +3,7 @@
 
 #include <wx/artprov.h>
 #include <unordered_map>
+#include "wxstringhash.h"
 
 #ifndef CB_PRECOMP
     #include "manager.h"
@@ -33,14 +34,6 @@ private:
 private:
     wxString m_prefix;
 
-    struct StringHash
-    {
-        size_t operator()(const wxString& s) const
-        {
-            return std::hash<std::wstring>()(s.ToStdWstring());
-        }
-    };
-
     struct Data
     {
         Data() : hasFormatting(false) {}
@@ -50,7 +43,7 @@ private:
         bool hasFormatting;
     };
 
-    typedef std::unordered_map<wxString, Data, StringHash> MapStockIdToPath;
+    typedef std::unordered_map<wxString, Data> MapStockIdToPath;
 
     MapStockIdToPath m_idToPath;
 };

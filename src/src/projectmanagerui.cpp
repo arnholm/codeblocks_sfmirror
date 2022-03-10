@@ -33,6 +33,7 @@
 #endif
 
 #include <unordered_map>
+#include "wxstringhash.h"
 #include <wx/dataobj.h>
 #include <wx/dnd.h>
 #include <wx/progdlg.h>
@@ -2075,14 +2076,6 @@ private:
     cbProject* m_pActiveProject;
 };
 
-struct cbStringHash
-{
-    size_t operator()(const wxString& s) const
-    {
-        return std::hash<std::wstring>()(s.ToStdWstring());
-    }
-};
-
 void ProjectManagerUI::OnGotoFile(cb_unused wxCommandEvent& event)
 {
     ProjectManager* pm = Manager::Get()->GetProjectManager();
@@ -2096,7 +2089,7 @@ void ProjectManagerUI::OnGotoFile(cb_unused wxCommandEvent& event)
 
     ProjectsArray* pa = pm->GetProjects();
 
-    std::unordered_map<wxString, ProjectFile*, cbStringHash> uniqueAbsPathFiles;
+    std::unordered_map<wxString, ProjectFile*> uniqueAbsPathFiles;
     for (size_t prjIdx = 0; prjIdx < pa->GetCount(); ++prjIdx)
     {
         cbProject* prj = (*pa)[prjIdx];
