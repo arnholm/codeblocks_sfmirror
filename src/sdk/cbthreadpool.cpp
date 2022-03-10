@@ -23,10 +23,10 @@ cbThreadPool::~cbThreadPool()
 {
   wxMutexLocker lock(m_Mutex);
 
-  std::for_each(m_threads.begin(), m_threads.end(), std::mem_fun(&cbWorkerThread::Abort));
+  std::for_each(m_threads.begin(), m_threads.end(), std::mem_fn(&cbWorkerThread::Abort));
   Broadcast(); // make every waiting thread realise it's time to die
 
-  std::for_each(m_tasksQueue.begin(), m_tasksQueue.end(), std::mem_fun_ref(&cbThreadedTaskElement::Delete));
+  std::for_each(m_tasksQueue.begin(), m_tasksQueue.end(), std::mem_fn(&cbThreadedTaskElement::Delete));
 }
 
 void cbThreadPool::SetConcurrentThreads(int concurrentThreads)
@@ -53,7 +53,7 @@ void cbThreadPool::_SetConcurrentThreads(int concurrentThreads)
 {
   if (!m_workingThreads)// if pool is not running (no thread is running)
   {
-    std::for_each(m_threads.begin(), m_threads.end(), std::mem_fun(&cbWorkerThread::Abort));
+    std::for_each(m_threads.begin(), m_threads.end(), std::mem_fn(&cbWorkerThread::Abort));
     Broadcast();
     m_threads.clear();
 
@@ -96,8 +96,8 @@ void cbThreadPool::AbortAllTasks()
 {
   wxMutexLocker lock(m_Mutex);
 
-  std::for_each(m_threads.begin(), m_threads.end(), std::mem_fun(&cbWorkerThread::AbortTask));
-  std::for_each(m_tasksQueue.begin(), m_tasksQueue.end(), std::mem_fun_ref(&cbThreadedTaskElement::Delete));
+  std::for_each(m_threads.begin(), m_threads.end(), std::mem_fn(&cbWorkerThread::AbortTask));
+  std::for_each(m_tasksQueue.begin(), m_tasksQueue.end(), std::mem_fn(&cbThreadedTaskElement::Delete));
   m_tasksQueue.clear();
 }
 
