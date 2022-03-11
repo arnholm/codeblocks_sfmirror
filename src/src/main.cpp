@@ -1181,7 +1181,9 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
 
     // update view->toolbars because we re-created the menubar
     PluginElementsArray plugins = Manager::Get()->GetPluginManager()->GetPlugins();
-    for (unsigned int i = 0; i < plugins.GetCount(); ++i)
+    bool anyToolbar = false;
+    const size_t pluginCount = plugins.GetCount();
+    for (size_t i = 0; i < pluginCount; ++i)
     {
         cbPlugin* plug = plugins[i]->plugin;
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plug);
@@ -1190,6 +1192,7 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
 
         if (m_PluginsTools[plug]) // if plugin has a toolbar
         {
+            anyToolbar = true;
             // toolbar exists; add the menu item
             wxMenu* viewToolbars = nullptr;
             GetMenuBar()->FindItem(idViewToolMain, &viewToolbars);
@@ -1197,6 +1200,7 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
             {
                 if (viewToolbars->FindItem(info->title) != wxNOT_FOUND)
                     continue;
+
                 wxMenuItem* item = AddPluginInMenus(viewToolbars, plug,
                                                     (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&MainFrame::OnToggleBar,
                                                     -1, true);
@@ -1206,6 +1210,12 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
                 }
             }
         }
+    }
+
+    if (anyToolbar)
+    {
+        CodeBlocksEvent event;
+        OnViewToolbarsOptimize(event);
     }
 
     Thaw();
