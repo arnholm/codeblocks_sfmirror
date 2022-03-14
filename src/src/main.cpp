@@ -1181,7 +1181,6 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
 
     // update view->toolbars because we re-created the menubar
     PluginElementsArray plugins = Manager::Get()->GetPluginManager()->GetPlugins();
-    bool anyToolbar = false;
     const size_t pluginCount = plugins.GetCount();
     for (size_t i = 0; i < pluginCount; ++i)
     {
@@ -1192,7 +1191,6 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
 
         if (m_PluginsTools[plug]) // if plugin has a toolbar
         {
-            anyToolbar = true;
             // toolbar exists; add the menu item
             wxMenu* viewToolbars = nullptr;
             GetMenuBar()->FindItem(idViewToolMain, &viewToolbars);
@@ -1210,12 +1208,6 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
                 }
             }
         }
-    }
-
-    if (anyToolbar)
-    {
-        CodeBlocksEvent event;
-        OnViewToolbarsOptimize(event);
     }
 
     Thaw();
@@ -5030,8 +5022,9 @@ void MainFrame::OnPluginLoaded(CodeBlocksEvent& event)
     {
         DoAddPlugin(plug);
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plug);
-        wxString msg = info ? info->title : wxString(_("<Unknown plugin>"));
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("%s plugin activated"), msg.wx_str()));
+        const wxString msg(info ? info->title : wxString(_("<Unknown plugin>")));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s plugin activated", msg));
+        OnViewToolbarsOptimize(event); // event is unused!
     }
 }
 
