@@ -109,6 +109,7 @@ const int idMenuProjectDown              = wxNewId();
 const int idMenuViewCategorizePopup      = wxNewId();
 const int idMenuViewUseFoldersPopup      = wxNewId();
 const int idMenuViewHideFolderNamePopup  = wxNewId();
+const int idMenuViewSortAlphabetically   = wxNewId();
 const int idMenuTreeRenameWorkspace      = wxNewId();
 const int idMenuTreeSaveWorkspace        = wxNewId();
 const int idMenuTreeSaveAsWorkspace      = wxNewId();
@@ -358,6 +359,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_MENU(idMenuViewCategorizePopup,      ProjectManagerUI::OnViewCategorize)
     EVT_MENU(idMenuViewUseFoldersPopup,      ProjectManagerUI::OnViewUseFolders)
     EVT_MENU(idMenuViewHideFolderNamePopup,  ProjectManagerUI::OnViewHideFolderName)
+    EVT_MENU(idMenuViewSortAlphabetically,   ProjectManagerUI::OnViewSortAlphabetically)
     EVT_MENU(idMenuViewFileMasks,            ProjectManagerUI::OnViewFileMasks)
     EVT_MENU(idMenuFindFile,                 ProjectManagerUI::OnFindFile)
     EVT_IDLE(                                ProjectManagerUI::OnIdle)
@@ -393,6 +395,7 @@ ProjectManagerUI::ProjectManagerUI() :
     m_TreeVisualState |= (cfg->ReadBool(_T("/categorize_tree"),  true)  ? ptvsCategorize     : ptvsNone);
     m_TreeVisualState |= (cfg->ReadBool(_T("/use_folders"),      true)  ? ptvsUseFolders     : ptvsNone);
     m_TreeVisualState |= (cfg->ReadBool(_T("/hide_folder_name"), false) ? ptvsHideFolderName : ptvsNone);
+    m_TreeVisualState |= (cfg->ReadBool(_T("/sort_alpha"),       false) ? ptvsSortAlpha      : ptvsNone);
     // fix invalid combination, "use folders" has precedence
     if ( (m_TreeVisualState&ptvsUseFolders) && (m_TreeVisualState&ptvsHideFolderName) )
     {
@@ -465,13 +468,21 @@ void ProjectManagerUI::RebuildTree()
     if (title.IsEmpty())
         title = _("Workspace");
     m_TreeRoot = m_pTree->AddRoot(title, cbProjectTreeImages::WorkspaceIconIndex(read_only), cbProjectTreeImages::WorkspaceIconIndex(read_only));
+
+    std::vector<cbProject*> prjv;
     for (int i = 0; i < count; ++i)
     {
-        if ( cbProject* prj = pa->Item(i) )
-        {
-            BuildProjectTree(prj, m_pTree, m_TreeRoot, m_TreeVisualState, pm->GetFilesGroupsAndMasks());
-            m_pTree->SetItemBold(prj->GetProjectNode(), prj == pm->GetActiveProject());
-        }
+        if (pa && pa->Item(i))
+            prjv.push_back(pa->Item(i));
+    }
+
+    if (m_TreeVisualState & ptvsSortAlpha)
+        std::sort(prjv.begin(), prjv.end(), [](cbProject* a, cbProject* b) { return a->GetTitle() < b->GetTitle();});
+
+    for (cbProject* prj : prjv)
+    {
+        BuildProjectTree(prj, m_pTree, m_TreeRoot, m_TreeVisualState, pm->GetFilesGroupsAndMasks());
+        m_pTree->SetItemBold(prj->GetProjectNode(), prj == pm->GetActiveProject());
     }
     m_pTree->Expand(m_TreeRoot);
 
@@ -680,10 +691,12 @@ void ProjectManagerUI::CreateMenuTreeProps(wxMenu* menu, bool popup)
                               _("Display folders as on disk"));
     treeprops->AppendCheckItem((popup ? idMenuViewHideFolderNamePopup : idMenuViewHideFolderName),
                               _("Hide folder name"));
+    treeprops->AppendCheckItem(idMenuViewSortAlphabetically,  _("Sort projects alphabetically"));
 
     ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("project_manager"));
     bool do_categorise       = cfg->ReadBool(_T("/categorize_tree"),  true);
     bool do_use_folders      = cfg->ReadBool(_T("/use_folders"),      true);
+    bool do_sort_alpha       = cfg->ReadBool(_T("/sort_alpha"),       false);
     bool do_hide_folder_name = !do_use_folders && cfg->ReadBool(_T("/hide_folder_name"), false); // "use folders" has precedence
     cfg->Write(_T("/hide_folder_name"), do_hide_folder_name); // make sure that configuration is consistent
 
@@ -693,6 +706,10 @@ void ProjectManagerUI::CreateMenuTreeProps(wxMenu* menu, bool popup)
 
     treeprops->Enable((popup ? idMenuViewUseFoldersPopup     : idMenuViewUseFolders),     !do_hide_folder_name);
     treeprops->Enable((popup ? idMenuViewHideFolderNamePopup : idMenuViewHideFolderName), !do_use_folders);
+
+    treeprops->Check(idMenuViewSortAlphabetically,  do_sort_alpha);
+    treeprops->Enable(idMenuProjectUp,   !do_sort_alpha);
+    treeprops->Enable(idMenuProjectDown, !do_sort_alpha);
 
     treeprops->Append(idMenuViewFileMasks, _("Edit file types && categories..."));
 
@@ -1257,14 +1274,17 @@ void ProjectManagerUI::OnRightClick(cb_unused wxCommandEvent& event)
     menu.AppendCheckItem(idMenuViewCategorizePopup,     _("Categorize by file types"));
     menu.AppendCheckItem(idMenuViewUseFoldersPopup,     _("Display folders as on disk"));
     menu.AppendCheckItem(idMenuViewHideFolderNamePopup, _("Hide folder name"));
+    menu.AppendCheckItem(idMenuViewSortAlphabetically,  _("Sort projects alphabetically"));
 
     bool do_categorise       = (m_TreeVisualState&ptvsCategorize);
     bool do_use_folders      = (m_TreeVisualState&ptvsUseFolders);
     bool do_hide_folder_name = !do_use_folders && (m_TreeVisualState&ptvsHideFolderName); // "use folders" has precedence
+    bool do_sort_alpha       = (m_TreeVisualState&ptvsSortAlpha);
 
     menu.Check(idMenuViewCategorizePopup,     do_categorise);
     menu.Check(idMenuViewUseFoldersPopup,     do_use_folders);
     menu.Check(idMenuViewHideFolderNamePopup, do_hide_folder_name);
+    menu.Check(idMenuViewSortAlphabetically,  do_sort_alpha);
 
     menu.Enable(idMenuViewUseFoldersPopup,     !do_hide_folder_name);
     menu.Enable(idMenuViewHideFolderNamePopup, !do_use_folders);
@@ -2228,6 +2248,19 @@ void ProjectManagerUI::OnViewUseFolders(wxCommandEvent& event)
         Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/hide_folder_name"), false);
     }
 
+    RebuildTree();
+}
+
+void ProjectManagerUI::OnViewSortAlphabetically(wxCommandEvent& event)
+{
+    bool do_sort_alpha = event.IsChecked();
+    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/sort_alpha"), do_sort_alpha);
+
+    // Do not create an invalid state
+    if (do_sort_alpha)
+        m_TreeVisualState |= ptvsSortAlpha;
+    else
+        m_TreeVisualState &= ~ptvsSortAlpha;
     RebuildTree();
 }
 

@@ -192,6 +192,7 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void OnViewCategorize(wxCommandEvent& event);
         void OnViewUseFolders(wxCommandEvent& event);
         void OnViewHideFolderName(wxCommandEvent& event);
+        void OnViewSortAlphabetically(wxCommandEvent& event);
         void OnViewFileMasks(wxCommandEvent& event);
         void OnFindFile(wxCommandEvent& event);
         wxArrayString ListNodes(wxTreeItemId node) const;
