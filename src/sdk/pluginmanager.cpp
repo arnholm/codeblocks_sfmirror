@@ -671,7 +671,7 @@ void PluginManager::RegisterPlugin(const wxString& name,
                                     PluginSDKVersionProc versionProc)
 {
     // sanity checks
-    if (name.IsEmpty() || !createProc || !freeProc || !versionProc)
+    if (name.empty() || !createProc || !freeProc || !versionProc)
         return;
 
     // first check to see it's not already loaded
@@ -680,10 +680,15 @@ void PluginManager::RegisterPlugin(const wxString& name,
 
     // read manifest file for plugin
     PluginInfo info;
-    if (!ReadManifestFile(m_CurrentlyLoadingFilename, name, &info) ||
-        info.name.IsEmpty())
+    if (!ReadManifestFile(m_CurrentlyLoadingFilename, name, &info))
     {
-        Manager::Get()->GetLogManager()->LogError(_T("Invalid manifest file for: ") + name);
+        Manager::Get()->GetLogManager()->LogError(wxString::Format(_("No manifest file for plugin \"%s\" filename: %s"), name, m_CurrentlyLoadingFilename));
+        return;
+    }
+
+    if (info.name.empty())
+    {
+        Manager::Get()->GetLogManager()->LogError(wxString::Format(_("Invalid manifest file for plugin \"%s\" filename: %s"), name, m_CurrentlyLoadingFilename));
         return;
     }
 
@@ -829,40 +834,53 @@ bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
     while (plugin)
     {
         const char* name = plugin->Attribute("name");
-        if (name && cbC2U(name) == pluginName)
+        if (name)
         {
-            infoOut->name = pluginName;
-            TiXmlElement* value = plugin->FirstChildElement("Value");
-            while (value)
+            const wxString convertedName(cbC2U(name));
+            if (pluginName.Cmp(convertedName))
             {
-                if (value->Attribute("title"))
-                    infoOut->title = cbC2U(value->Attribute("title"));
-                if (value->Attribute("version"))
-                    infoOut->version = cbC2U(value->Attribute("version"));
-                if (value->Attribute("description"))
+                infoOut->name = pluginName;
+                TiXmlElement* value = plugin->FirstChildElement("Value");
+                while (value)
                 {
-                    wxString tmp = cbC2U(value->Attribute("description"));
-                    // Most manifest*.xml files contain a description item formatted for Windows (with \r\n)
-                    // Remove all \r so that poedit works without complaining
-                    tmp.Replace("\r", "");
-                    // Use the _() macro to be able to translate the tmp string
-                    infoOut->description = _(tmp);
+                    if (value->Attribute("title"))
+                        infoOut->title = cbC2U(value->Attribute("title"));
+                    if (value->Attribute("version"))
+                        infoOut->version = cbC2U(value->Attribute("version"));
+                    if (value->Attribute("description"))
+                    {
+                        wxString tmp = cbC2U(value->Attribute("description"));
+                        // Most manifest*.xml files contain a description item formatted for Windows (with \r\n)
+                        // Remove all \r so that poedit works without complaining
+                        tmp.Replace("\r", "");
+                        // Use the _() macro to be able to translate the tmp string
+                        infoOut->description = _(tmp);
+                    }
+
+                    if (value->Attribute("author"))
+                        infoOut->author = cbC2U(value->Attribute("author"));
+                    if (value->Attribute("authorEmail"))
+                        infoOut->authorEmail = cbC2U(value->Attribute("authorEmail"));
+                    if (value->Attribute("authorWebsite"))
+                        infoOut->authorWebsite = cbC2U(value->Attribute("authorWebsite"));
+                    if (value->Attribute("thanksTo"))
+                        infoOut->thanksTo = cbC2U(value->Attribute("thanksTo"));
+                    if (value->Attribute("license"))
+                        infoOut->license = cbC2U(value->Attribute("license"));
+
+                    value = value->NextSiblingElement("Value");
                 }
 
-                if (value->Attribute("author"))
-                    infoOut->author = cbC2U(value->Attribute("author"));
-                if (value->Attribute("authorEmail"))
-                    infoOut->authorEmail = cbC2U(value->Attribute("authorEmail"));
-                if (value->Attribute("authorWebsite"))
-                    infoOut->authorWebsite = cbC2U(value->Attribute("authorWebsite"));
-                if (value->Attribute("thanksTo"))
-                    infoOut->thanksTo = cbC2U(value->Attribute("thanksTo"));
-                if (value->Attribute("license"))
-                    infoOut->license = cbC2U(value->Attribute("license"));
-
-                value = value->NextSiblingElement("Value");
+                break;
             }
-            break;
+            else if (pluginName.CmpNoCase(convertedName))
+            {
+                Manager::Get()->GetLogManager()->DebugLogError(wxString::Format(_("The plugin name \"%s\" case does not match the name in the \"%s\" file."), pluginName, convertedName));
+            }
+            else
+            {
+                Manager::Get()->GetLogManager()->DebugLogError(wxString::Format(_("The plugin name \"%s\" does not match the name in the \"%s\" file."), pluginName, convertedName));
+            }
         }
 
         plugin = plugin->NextSiblingElement("Plugin");
