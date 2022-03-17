@@ -477,7 +477,7 @@ void ProjectManagerUI::RebuildTree()
     }
 
     if (m_TreeVisualState & ptvsSortAlpha)
-        std::sort(prjv.begin(), prjv.end(), [](cbProject* a, cbProject* b) { return a->GetTitle() < b->GetTitle();});
+        std::sort(prjv.begin(), prjv.end(), [](cbProject* a, cbProject* b) { return a->GetTitle().Upper() < b->GetTitle().Upper();});
 
     for (cbProject* prj : prjv)
     {
@@ -584,7 +584,9 @@ void ProjectManagerUI::CloseWorkspace()
 
 void ProjectManagerUI::FinishLoadingProject(cbProject* project, bool newAddition, cb_unused FilesGroupsAndMasks* fgam)
 {
-    if (newAddition)
+    // If the project tree is sorted alphabetically we have to rebuild the project tree
+    // also when it is a new addition...
+    if (newAddition && !(m_TreeVisualState & ptvsSortAlpha))
     {
         ProjectManager* pm = Manager::Get()->GetProjectManager();
         BuildProjectTree(project, m_pTree, m_TreeRoot, m_TreeVisualState, pm->GetFilesGroupsAndMasks());
@@ -1949,6 +1951,10 @@ void ProjectManagerUI::OnProperties(wxCommandEvent& event)
         wxString newTitle = prj->GetTitle();
         if (backupTitle != newTitle)
         {
+            // title has changed, if the tree is sorted alphabetically, we have to rebuild the tree
+            if (m_TreeVisualState & ptvsSortAlpha)
+                RebuildTree();
+
             cbAuiNotebook* nb = Manager::Get()->GetEditorManager()->GetNotebook();
             if (nb)
             {
