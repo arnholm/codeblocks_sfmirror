@@ -837,7 +837,7 @@ bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
         if (name)
         {
             const wxString convertedName(cbC2U(name));
-            if (pluginName.Cmp(convertedName))
+            if (pluginName.IsSameAs(convertedName))
             {
                 infoOut->name = pluginName;
                 TiXmlElement* value = plugin->FirstChildElement("Value");
@@ -873,7 +873,7 @@ bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
 
                 break;
             }
-            else if (pluginName.CmpNoCase(convertedName))
+            else if (pluginName.IsSameAs(convertedName, false))
             {
                 Manager::Get()->GetLogManager()->DebugLogError(wxString::Format(_("The plugin name \"%s\" case does not match the name in the \"%s\" file."), pluginName, convertedName));
             }
