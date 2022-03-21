@@ -914,7 +914,8 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
     if (!m_State.GetDriver()->UseDebugBreakProcess())
     {
         AllocConsole();
-        SetConsoleTitleA(_("Codeblocks debug console - DO NOT CLOSE!").c_str());
+        // c_str() is needed when wxUSE_STL = 1
+        SetConsoleTitle(_("Codeblocks debug console - DO NOT CLOSE!").c_str());
         SetConsoleCtrlHandler(HandlerRoutine, TRUE);
         m_bIsConsole = true;
 
