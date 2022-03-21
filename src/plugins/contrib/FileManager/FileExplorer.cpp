@@ -935,7 +935,7 @@ void FileExplorer::OnChooseLoc(wxCommandEvent &event)
 
 void FileExplorer::OnSetLoc(wxCommandEvent &/*event*/)
 {
-    wxString loc=GetFullPath(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+    wxString loc=GetFullPath(m_Tree->GetFocusedItem());
     if(!SetRootFolder(loc))
         return;
     m_Loc->Insert(m_root,m_favdirs.GetCount());
@@ -1291,7 +1291,7 @@ void FileExplorer::OnRightClick(wxTreeEvent &event)
 
 void FileExplorer::OnNewFile(wxCommandEvent &/*event*/)
 {
-    wxString workingdir=GetFullPath(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+    wxString workingdir=GetFullPath(m_Tree->GetFocusedItem());
     wxTextEntryDialog te(this, _("Name Your New File: "));
     PlaceWindow(&te);
     if(te.ShowModal()!=wxID_OK)
@@ -1306,7 +1306,7 @@ void FileExplorer::OnNewFile(wxCommandEvent &/*event*/)
         if(fileobj.Create(newfile))
         {
             fileobj.Close();
-            Refresh(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+            Refresh(m_Tree->GetFocusedItem());
         }
         else
             cbMessageBox(_("File Creation Failed"),_("Error"));
@@ -1333,7 +1333,7 @@ void FileExplorer::OnAddFavorite(wxCommandEvent &/*event*/)
 
 void FileExplorer::OnNewFolder(wxCommandEvent &/*event*/)
 {
-    wxString workingdir=GetFullPath(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+    wxString workingdir=GetFullPath(m_Tree->GetFocusedItem());
     wxTextEntryDialog te(this,_("New Directory Name: "));
     PlaceWindow(&te);
     if(te.ShowModal()!=wxID_OK)
@@ -1346,7 +1346,7 @@ void FileExplorer::OnNewFolder(wxCommandEvent &/*event*/)
     {
         if (!dir.Mkdir(mkd))
             cbMessageBox(_("A directory could not be created with name ")+name);
-        Refresh(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+        Refresh(m_Tree->GetFocusedItem());
     }
     else
         cbMessageBox(_("A file or directory already exists with name ")+name);
@@ -1539,7 +1539,7 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
 
 void FileExplorer::OnRename(wxCommandEvent &/*event*/)
 {
-    wxString path(GetFullPath(m_selectti[0]));  //SINGLE: m_Tree->GetSelection()
+    wxString path(GetFullPath(m_Tree->GetFocusedItem()));
     if(wxFileName::FileExists(path))
     {
         EditorManager* em = Manager::Get()->GetEditorManager();
@@ -1574,17 +1574,17 @@ void FileExplorer::OnRename(wxCommandEvent &/*event*/)
         if(hresult)
             MessageBox(m_Tree,_("Rename directory '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
     }
-    Refresh(m_Tree->GetItemParent(m_selectti[0])); //SINGLE: m_Tree->GetSelection()
+    Refresh(m_Tree->GetItemParent(m_Tree->GetFocusedItem()));
 }
 
 void FileExplorer::OnExpandAll(wxCommandEvent &/*event*/)
 {
-    m_Tree->ExpandAllChildren(m_Tree->GetSelection());
+    m_Tree->ExpandAllChildren(m_Tree->GetFocusedItem());
 }
 
 void FileExplorer::OnCollapseAll(wxCommandEvent &/*event*/)
 {
-    m_Tree->CollapseAllChildren(m_Tree->GetSelection());
+    m_Tree->CollapseAllChildren(m_Tree->GetFocusedItem());
 }
 
 void FileExplorer::OnSettings(wxCommandEvent &/*event*/)
@@ -1653,8 +1653,8 @@ void FileExplorer::OnUpButton(wxCommandEvent &/*event*/)
 
 void FileExplorer::OnRefresh(wxCommandEvent &/*event*/)
 {
-    if(m_Tree->GetItemImage(m_selectti[0])==fvsFolder) //SINGLE: m_Tree->GetSelection()
-        Refresh(m_selectti[0]); //SINGLE: m_Tree->GetSelection()
+    if(m_Tree->GetItemImage(m_Tree->GetFocusedItem())==fvsFolder)
+        Refresh(m_Tree->GetFocusedItem());
     else
         Refresh(m_Tree->GetRootItem());
 }
