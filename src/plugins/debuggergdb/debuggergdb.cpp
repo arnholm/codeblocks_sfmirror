@@ -914,7 +914,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
     if (!m_State.GetDriver()->UseDebugBreakProcess())
     {
         AllocConsole();
-        SetConsoleTitleA(_("Codeblocks debug console - DO NOT CLOSE!"));
+        SetConsoleTitleA(_("Codeblocks debug console - DO NOT CLOSE!").c_str());
         SetConsoleCtrlHandler(HandlerRoutine, TRUE);
         m_bIsConsole = true;
 
@@ -923,6 +923,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
             ShowWindow(windowHandle, SW_HIDE);
     }
     #endif
+
     // start the gdb process
     wxString wdir = m_State.GetDriver()->GetDebuggersWorkingDirectory();
     if (wdir.empty())
