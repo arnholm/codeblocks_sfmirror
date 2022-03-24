@@ -137,7 +137,17 @@ PipedProcess::~PipedProcess()
 int PipedProcess::Launch(const wxString& cmd, int flags)
 {
     m_Stopped = false;
+
+    // wxWidgets < 3.1.0 on Unix has a bug in wxExecute() with non-ASCII characters
+    // See https://github.com/wxWidgets/wxWidgets/issues/16206
+#if !defined __WXGTK__ || wxCHECK_VERSION(3, 1, 0)
     m_Pid = wxExecute(cmd, flags, this);
+#else
+    char* currentLocale = wxSetlocale(LC_ALL, "");
+    m_Pid = wxExecute(cmd, flags, this);
+    wxSetlocale(LC_ALL, currentLocale);
+#endif
+
     if (m_Pid)
         m_timerPollProcess.Start(1000);
 
