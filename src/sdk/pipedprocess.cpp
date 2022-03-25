@@ -143,7 +143,7 @@ int PipedProcess::Launch(const wxString& cmd, int flags)
 #if !defined __WXGTK__ || wxCHECK_VERSION(3, 1, 0)
     m_Pid = wxExecute(cmd, flags, this);
 #else
-    char* currentLocale = strdup(wxSetlocale(LC_ALL, ""));
+    char* currentLocale = wxStrdup(wxSetlocale(LC_ALL, ""));
     m_Pid = wxExecute(cmd, flags, this);
     wxSetlocale(LC_ALL, currentLocale);
     free(currentLocale);
