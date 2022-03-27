@@ -210,18 +210,31 @@ class script_test_base
     {
         ::made_tests++;
         ::global_made_tests++;
-        // some workaround for some wired errors, this has to be tracked down
-        local tmp_string = to_test + " ";
-        local i = 0;
-        result += " ";
-        for(i=0; i < tmp_string.len() && i < result.len();i++)
-        {
-            if(tmp_string[i] != result[i])
-            {
 
-                failed(name, "\"" + to_test + "\"", "\"" + result + "\"");
-                return false;
+        // By adding a white space at the end we make a cheap ass to string conversion
+        local tmp_string = to_test + " ";
+        local tmp_result = result + " ";
+
+        local i = 0;
+        local test_failed = false;
+        if (tmp_string.len() != tmp_result.len())
+            test_failed = true;
+        else
+        {
+            for (i=0; i < tmp_string.len() && i < tmp_result.len();i++)
+            {
+                if(tmp_string[i] != tmp_result[i])
+                {
+                    test_failed = true;
+                    break;
+                }
             }
+        }
+
+        if (test_failed)
+        {
+            failed(name, "\"" + to_test + "\"", "\"" + result + "\"");
+            return false;
         }
 
         passed(name);
