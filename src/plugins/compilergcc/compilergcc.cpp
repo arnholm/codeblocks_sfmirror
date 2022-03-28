@@ -3887,7 +3887,7 @@ void CompilerGCC::SaveBuildLog()
     tempBuildLogFilename.Replace("\\", "/");
     wxURI tmpFilename = tempBuildLogFilename;
 
-    Manager::Get()->GetLogManager()->Log(F(_T("file://%s"), tmpFilename.BuildURI().wx_str()), m_PageIndex, Logger::warning);
+    Manager::Get()->GetLogManager()->Log(wxString::Format("file://%s", tmpFilename.BuildURI()), m_PageIndex, Logger::warning);
 }
 
 void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)

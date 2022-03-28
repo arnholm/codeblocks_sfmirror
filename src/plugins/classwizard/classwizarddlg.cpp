@@ -169,15 +169,15 @@ void ClassWizardDlg::OnAddMemberVar(cb_unused wxCommandEvent& event)
 
     if (memtyp.IsEmpty())
     {
-        cbMessageBox(_T("Please specify a valid variable type to continue."),
-                     _T("Error"), wxOK | wxICON_ERROR, this);
+        cbMessageBox(_("Please specify a valid variable type to continue."),
+                     _("Error"), wxOK | wxICON_ERROR, this);
         return;
     }
 
     if (memvar.IsEmpty())
     {
-        cbMessageBox(_T("Please specify a valid variable name to continue."),
-                     _T("Error"), wxOK | wxICON_ERROR, this);
+        cbMessageBox(_("Please specify a valid variable name to continue."),
+                     _("Error"), wxOK | wxICON_ERROR, this);
         return;
     }
 
@@ -186,8 +186,8 @@ void ClassWizardDlg::OnAddMemberVar(cb_unused wxCommandEvent& event)
     {
         if (DoMemVarRepr((*it).Typ, (*it).Var, (*it).Scp) == DoMemVarRepr(memtyp, memvar, memscp))
         {
-            cbMessageBox(_T("This variable does already exist."),
-                         _T("Error"), wxOK | wxICON_ERROR, this);
+            cbMessageBox(_("This variable does already exist."),
+                         _("Error"), wxOK | wxICON_ERROR, this);
             return;
         }
         it++;
@@ -213,8 +213,8 @@ void ClassWizardDlg::OnRemoveMemberVar(cb_unused wxCommandEvent& event)
     wxString selection = XRCCTRL(*this, "lstMemberVars", wxListBox)->GetStringSelection();
     if (selection.IsEmpty())
     {
-        cbMessageBox(_T("Please select a variable to remove."),
-                     _T("Error"), wxOK | wxICON_ERROR, this);
+        cbMessageBox(_("Please select a variable to remove."),
+                     _("Error"), wxOK | wxICON_ERROR, this);
         return;
     }
 
@@ -242,7 +242,7 @@ void ClassWizardDlg::OnRemoveMemberVar(cb_unused wxCommandEvent& event)
 void ClassWizardDlg::OnCommonDirClick(wxCommandEvent& WXUNUSED(event))
 {
     wxString path = XRCCTRL(*this, "txtCommonDir", wxTextCtrl)->GetValue();
-    wxDirDialog dlg (this, _T("Choose a directory"), path);
+    wxDirDialog dlg (this, _("Choose a directory"), path);
     PlaceWindow(&dlg);
     if (dlg.ShowModal()==wxID_OK)
     {
@@ -264,7 +264,7 @@ void ClassWizardDlg::OnLowerCaseClick(wxCommandEvent& WXUNUSED(event))
 void ClassWizardDlg::OnIncludeDirClick(wxCommandEvent& WXUNUSED(event))
 {
     wxString path = XRCCTRL(*this, "txtIncludeDir", wxTextCtrl)->GetValue();
-    wxDirDialog dlg (this, _T("Choose a directory"), path);
+    wxDirDialog dlg (this, _("Choose a directory"), path);
     PlaceWindow(&dlg);
     if (dlg.ShowModal()==wxID_OK)
     {
@@ -276,7 +276,7 @@ void ClassWizardDlg::OnIncludeDirClick(wxCommandEvent& WXUNUSED(event))
 void ClassWizardDlg::OnImplDirClick(wxCommandEvent& WXUNUSED(event))
 {
     wxString path = XRCCTRL(*this, "txtImplDir", wxTextCtrl)->GetValue();
-    wxDirDialog dlg (this, _T("Choose a directory"), path);
+    wxDirDialog dlg (this, _("Choose a directory"), path);
     PlaceWindow(&dlg);
     if (dlg.ShowModal()==wxID_OK)
     {
@@ -308,8 +308,8 @@ void ClassWizardDlg::OnOKClick(wxCommandEvent& WXUNUSED(event))
     // Error check
     if (m_Name.IsEmpty())
     {
-        cbMessageBox(_T("Please specify a class name to continue."),
-                     _T("Error"), wxOK | wxICON_ERROR, this);
+        cbMessageBox(_("Please specify a class name to continue."),
+                     _("Error"), wxOK | wxICON_ERROR, this);
         return;
     }
     // Extract namespaces from class name
@@ -407,10 +407,10 @@ bool ClassWizardDlg::DoHeader()
     cbEditor* new_ed = Manager::Get()->GetEditorManager()->New(headerFname.GetFullPath());
     if (!new_ed)
     {
-        cbMessageBox(_T("Class wizard can't continue.\n"
+        cbMessageBox(_("Class wizard can't continue.\n"
                         "Possibly the header file name is invalid.\n"
                         "Please check the entered file name."),
-                     _T("Error"), wxICON_ERROR, this);
+                     _("Error"), wxICON_ERROR, this);
         return false;
     }
 
@@ -453,7 +453,7 @@ bool ClassWizardDlg::DoHeader()
     // ctor
     if (m_Documentation)
     {
-        buffer << m_TabStr << m_TabStr << _T("/** Default constructor */") << m_EolStr;
+        buffer << m_TabStr << m_TabStr << _("/** Default constructor */") << m_EolStr;
     }
     buffer << m_TabStr << m_TabStr << m_Name << _T("(") << m_Arguments << _T(")")
            << (!m_GenerateImplementation ? _T(" {}") : _T(";")) << m_EolStr;
@@ -462,7 +462,7 @@ bool ClassWizardDlg::DoHeader()
     {
         if (m_Documentation)
         {
-            buffer << m_TabStr << m_TabStr << _T("/** Default destructor */") << m_EolStr;
+            buffer << m_TabStr << m_TabStr << _("/** Default destructor */") << m_EolStr;
         }
         buffer << m_TabStr << m_TabStr;
         if (m_VirtualDestructor)
@@ -478,9 +478,9 @@ bool ClassWizardDlg::DoHeader()
         if (m_Documentation)
         {
             buffer << m_TabStr << m_TabStr
-                   << _T("/** Copy constructor") << m_EolStr;
+                   << _("/** Copy constructor") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _T(" *  \\param other Object to copy from") << m_EolStr;
+                   << _(" *  \\param other Object to copy from") << m_EolStr;
             buffer << m_TabStr << m_TabStr
                    << _T(" */") << m_EolStr;
         }
@@ -494,11 +494,11 @@ bool ClassWizardDlg::DoHeader()
         if (m_Documentation)
         {
             buffer << m_TabStr << m_TabStr
-                   << _T("/** Assignment operator") << m_EolStr;
+                   << _("/** Assignment operator") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _T(" *  \\param other Object to assign from") << m_EolStr;
+                   << _(" *  \\param other Object to assign from") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _T(" *  \\return A reference to this") << m_EolStr;
+                   << _(" *  \\return A reference to this") << m_EolStr;
             buffer << m_TabStr << m_TabStr
                    << _T(" */") << m_EolStr;
         }
@@ -518,9 +518,9 @@ bool ClassWizardDlg::DoHeader()
             if (m_Documentation)
             {
                 buffer << m_TabStr << m_TabStr
-                       << _T("/** Access ") << (*it).Var << m_EolStr;
+                       << _("/** Access ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _T(" * \\return The current value of ") << (*it).Var << m_EolStr;
+                       << _(" * \\return The current value of ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
                        << _T(" */") << m_EolStr;
             }
@@ -533,11 +533,11 @@ bool ClassWizardDlg::DoHeader()
             if (m_Documentation)
             {
                 buffer << m_TabStr << m_TabStr
-                       << _T("/** Set ") << (*it).Var << m_EolStr;
+                       << _("/** Set ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _T(" * \\param val New value to set") << m_EolStr;
+                       << _(" * \\param val New value to set") << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _T(" */") << m_EolStr;
+                       << " */" << m_EolStr;
             }
             buffer << m_TabStr << m_TabStr << _T("void ") << (*it).Set << _T("(")
                    << (*it).Typ << _T(" val) { ") << (*it).Var << _T(" = val; }") << m_EolStr;
@@ -558,7 +558,7 @@ bool ClassWizardDlg::DoHeader()
                    << (*it).Typ << _T(" ") << (*it).Var << _T(";");
 
             if (m_Documentation)
-                buffer << _T(" //!< Member variable \"") << (*it).Var << _T("\"");
+                buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
 
             buffer << m_EolStr;
         }
@@ -578,7 +578,7 @@ bool ClassWizardDlg::DoHeader()
                    << (*it).Typ << _T(" ") << (*it).Var << _T(";");
 
             if (m_Documentation)
-                buffer << _T(" //!< Member variable \"") << (*it).Var << _T("\"");
+                buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
 
             buffer << m_EolStr;
         }
@@ -596,7 +596,7 @@ bool ClassWizardDlg::DoHeader()
                    << (*it).Typ << _T(" ") << (*it).Var << _T(";");
 
             if (m_Documentation)
-                buffer << _T(" //!< Member variable \"") << (*it).Var << _T("\"");
+                buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
 
             buffer << m_EolStr;
         }
@@ -645,10 +645,10 @@ bool ClassWizardDlg::DoImpl()
     cbEditor* new_ed = Manager::Get()->GetEditorManager()->New(implementationFname.GetFullPath());
     if (!new_ed)
     {
-        cbMessageBox(_T("Class wizard can't continue.\n"
+        cbMessageBox(_("Class wizard can't continue.\n"
                         "Possibly the implementation file name is invalid.\n"
                         "Please check the entered file name."),
-                     _T("Error"), wxICON_ERROR, this);
+                     _("Error"), wxICON_ERROR, this);
         return false;
     }
 
