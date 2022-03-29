@@ -79,21 +79,21 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
 
     wxPrintPaperDatabase paperDB;
     paperDB.CreateDatabase();
-    wxPrintData* ppd = &(g_printer->GetPrintDialogData().GetPrintData());
-    wxPaperSize paperId = ppd->GetPaperId();
+    wxPrintData& ppd = g_printer->GetPrintDialogData().GetPrintData();
+    wxPaperSize paperId = ppd.GetPaperId();
     if (paperId == wxPAPER_NONE)
     {
         cbMessageBox(_("No paper format specified from printer. Using DIN-A4 as default."),
-                     _("Unespecified paper format"),
+                     _("Unspecified paper format"),
                      wxICON_WARNING | wxOK);
 
         paperId = wxPAPER_A4;
-        ppd->SetPaperId(paperId);
-        g_printer->GetPrintDialogData().SetPrintData(*ppd);
+        ppd.SetPaperId(paperId);
+        g_printer->GetPrintDialogData().SetPrintData(ppd);
     }
 
     wxSize page = paperDB.GetSize(paperId);
-    if (ppd->GetOrientation() == wxLANDSCAPE)
+    if (ppd.GetOrientation() == wxLANDSCAPE)
         page = wxSize(page.GetHeight(), page.GetWidth());
 
     // We have to divide by 254.0 instead of 25.4, because GetSize() of paperDB returns tenth of millimeters
