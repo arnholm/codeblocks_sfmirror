@@ -89,6 +89,7 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
 
         paperId = wxPAPER_A4;
         ppd->SetPaperId(paperId);
+        g_printer->GetPrintDialogData().SetPrintData(*ppd);
     }
 
     wxSize page = paperDB.GetSize(paperId);
