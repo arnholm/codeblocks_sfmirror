@@ -1116,7 +1116,7 @@ void CCManager::OnPopupScroll(wxMouseEvent& event)
         return;
     }
 
-    cbStyledTexControl* editor = m_pLastEditor->GetControl();
+    cbStyledTextCtrl* editor = m_pLastEditor->GetControl();
     if (!editor)
     {
         event.Skip();
