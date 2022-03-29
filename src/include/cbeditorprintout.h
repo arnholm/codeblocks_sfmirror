@@ -17,17 +17,18 @@ class cbEditorPrintout : public wxPrintout
         ~cbEditorPrintout() override;
         bool OnPrintPage(int page) override;
         bool HasPage(int page) override;
-        void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo) override;
+        void GetPageInfo(int* minPage, int* maxPage, int* selPageFrom, int* selPageTo) override;
         bool OnBeginDocument(int startPage, int endPage) override;
+
     protected:
         bool ScaleDC(wxDC *dc);
+
         cbStyledTextCtrl* m_TextControl;
         wxRect m_pageRect;
         wxRect m_printRect;
-        int m_printed;
-        int m_SelStart;
-        int m_SelEnd;
-        wxArrayInt* m_pPageSelStart;
+        bool m_selection;
+        int m_selEnd;
+        wxArrayInt m_pPageSelStart;
 };
 
 #endif // CBEDITORPRINTOUT_H

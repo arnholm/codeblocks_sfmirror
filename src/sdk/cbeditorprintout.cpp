@@ -25,56 +25,43 @@
 
 cbEditorPrintout::cbEditorPrintout(const wxString& title, cbStyledTextCtrl* control, bool selectionOnly)
         : wxPrintout(title),
-        m_TextControl(control)
+        m_TextControl(control), m_selection(selectionOnly)
 {
     // ctor
-    m_SelStart = 0;
-    m_SelEnd = control->GetLength();
-    if (selectionOnly && !control->GetSelectedText().IsEmpty())
-    {
-        m_SelStart = control->GetSelectionStart();
-        m_SelEnd = control->GetSelectionEnd();
-    }
-
-    m_pPageSelStart = new wxArrayInt;
 }
 
 cbEditorPrintout::~cbEditorPrintout()
 {
     // dtor
-    delete m_pPageSelStart;
-    m_pPageSelStart = nullptr;
 }
 
 bool cbEditorPrintout::OnPrintPage(int page)
 {
-    wxDC *dc = GetDC();
+    wxDC* dc = GetDC();
     if (dc)
     {
         // scale DC
         ScaleDC(dc);
 
         // print selected page
-        const int maxpage = m_pPageSelStart->GetCount();
-        if (page && page < maxpage)
-            m_printed = (*m_pPageSelStart)[page-1];
-        else
+        const int maxpage = m_pPageSelStart.GetCount();
+        if (!page || page > maxpage)
         {
             Manager::Get()->GetLogManager()->DebugLog(wxString::Format("OnPrintPage ERROR: page = %d, maxpage = %d", page, maxpage));
             return false;
         }
 
-        //Manager::Get()->GetLogManager()->DebugLog("OnPrintPage: page %d , m_printed %d", page, m_printed);
-        m_printed = m_TextControl->FormatRange(1, m_printed, m_SelEnd, dc, dc, m_printRect, m_pageRect);
+        //Manager::Get()->GetLogManager()->DebugLog("OnPrintPage: page %d, page start %d", page, m_pPageSelStart[page-1]);
+        m_TextControl->FormatRange(1, m_pPageSelStart[page-1], m_selEnd, dc, dc, m_printRect, m_pageRect);
         return true;
     }
 
     return false;
 }
 
-bool cbEditorPrintout::HasPage(cb_unused int page)
+bool cbEditorPrintout::HasPage(int page)
 {
-    return m_printed < m_SelEnd;
+    return page && ((size_t)page <= m_pPageSelStart.GetCount());
 }
 
 void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom, int* selPageTo)
@@ -126,18 +113,25 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
     right  = static_cast <int> (right * ppiScr.GetWidth() / 25.4);
     m_printRect = wxRect(left, top, page.GetWidth() - (left + right), page.GetHeight() - (top + bottom));
 
-    wxDC *dc = GetDC();
+    // get print range start and end
+    int selStart = 0;
+    m_selEnd = m_TextControl->GetLength();
+    if (m_selection && !m_TextControl->GetSelectedText().empty())
+    {
+        selStart = m_TextControl->GetSelectionStart();
+        m_selEnd = m_TextControl->GetSelectionEnd();
+    }
+
+    wxDC* dc = GetDC();
     ScaleDC(dc);
 
-    // count pages and save SelStart value of each page
-    m_pPageSelStart->Clear();
-    m_pPageSelStart->Add(m_SelStart);
-    m_printed = m_SelStart;
-    while (HasPage(*maxPage))
+    // count pages and save start value of each page
+    m_pPageSelStart.Clear();
+    while (selStart < m_selEnd)
     {
-        //Manager::Get()->GetLogManager()->DebugLog(wxString::Format("CountPages: PageCount %d, m_printed %d", m_pPageSelStart->GetCount(), m_printed));
-        m_printed = m_TextControl->FormatRange(0, m_printed, m_SelEnd, dc, dc, m_printRect, m_pageRect);
-        m_pPageSelStart->Add(m_printed);
+        //Manager::Get()->GetLogManager()->DebugLog(wxString::Format("CountPages: PageCount %d, page start %d", m_pPageSelStart.GetCount(), selStart));
+        m_pPageSelStart.Add(selStart);
+        selStart = m_TextControl->FormatRange(0, selStart, m_selEnd, dc, dc, m_printRect, m_pageRect);
         *maxPage += 1;
     }
 
@@ -146,23 +140,18 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
 
     *selPageFrom = *minPage;
     *selPageTo = *maxPage;
-    m_printed = m_SelStart;
 }
 
 bool cbEditorPrintout::OnBeginDocument(int startPage, int endPage)
 {
-    const bool result = wxPrintout::OnBeginDocument(startPage, endPage);
-    // FIXME (Tiwag#1#): when the first time a printout is initiated
-    // and you request a page to print which is out of bounds of available pages
-    // it is not recognized by the above check, don't know how to fix this better
-    const int maxpage = m_pPageSelStart->GetCount();
-    if (startPage > maxpage || endPage > maxpage)
+    const int maxpage = m_pPageSelStart.GetCount();
+    if (startPage > endPage || endPage > maxpage)
     {
         Manager::Get()->GetLogManager()->DebugLog(wxString::Format("OnBeginDocument ERROR: startPage %d, endPage %d, maxpage %d", startPage, endPage, maxpage));
         return false;
     }
 
-    return result;
+    return wxPrintout::OnBeginDocument(startPage, endPage);
 }
 
 bool cbEditorPrintout::ScaleDC(wxDC* dc)
