@@ -1116,11 +1116,23 @@ void CCManager::OnPopupScroll(wxMouseEvent& event)
         return;
     }
 
-    const wxPoint& pos = m_pLastEditor->GetControl()->ClientToScreen(event.GetPosition());
-    if (m_pPopup->GetScreenRect().Contains(pos))
-        m_pHtml->GetEventHandler()->ProcessEvent(event);
+    cbStyledTexControl* editor = m_pLastEditor->GetControl();
+    if (!editor)
+    {
+        event.Skip();
+        return;
+    }
+
+    const wxPoint& pos = editor->ClientToScreen(event.GetPosition());
+    if (m_pPopup && m_pPopup->GetScreenRect().Contains(pos))
+    {
+        if (m_pHtml)
+            m_pHtml->GetEventHandler()->ProcessEvent(event);
+    }
     else if (m_pAutocompPopup && m_pAutocompPopup->GetScreenRect().Contains(pos))
+    {
         m_pAutocompPopup->ScrollList(0, event.GetWheelRotation() / -4); // TODO: magic number... can we hook to the actual event?
+    }
     else
         event.Skip();
 }
