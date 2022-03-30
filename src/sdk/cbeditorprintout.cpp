@@ -52,7 +52,7 @@ bool cbEditorPrintout::OnPrintPage(int page)
         }
 
         //Manager::Get()->GetLogManager()->DebugLog("OnPrintPage: page %d, page start %d", page, m_pPageSelStart[page-1]);
-        m_TextControl->FormatRange(1, m_pPageSelStart[page-1], m_selEnd, dc, dc, m_printRect, m_pageRect);
+        m_TextControl->FormatRange(true, m_pPageSelStart[page-1], m_selEnd, dc, dc, m_printRect, m_pageRect);
         return true;
     }
 
@@ -132,7 +132,7 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
     {
         //Manager::Get()->GetLogManager()->DebugLog(wxString::Format("CountPages: PageCount %d, page start %d", m_pPageSelStart.GetCount(), selStart));
         m_pPageSelStart.Add(selStart);
-        selStart = m_TextControl->FormatRange(0, selStart, m_selEnd, dc, dc, m_printRect, m_pageRect);
+        selStart = m_TextControl->FormatRange(false, selStart, m_selEnd, dc, dc, m_printRect, m_pageRect);
         *maxPage += 1;
     }
 
