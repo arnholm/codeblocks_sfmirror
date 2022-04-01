@@ -12,7 +12,7 @@
             <Fallback path="%ProgramFiles%\sdcc"/>
         </if>
         <else>
-            <Fallback path="/usr/local"/>
+            <Fallback path="/usr/local/share/sdcc"/>
         </else>
     </Path>
     <Path type="include">
