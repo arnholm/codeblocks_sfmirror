@@ -21,7 +21,7 @@
 
 #include "wx/wxFlatNotebook/wxFlatNotebook.h"
 
-class WXDLLIMPEXP_FNB wxFlatNotebook;
+class wxFlatNotebook;
 
 class WXDLLIMPEXP_FNB wxFlatNotebookXmlHandler : public wxXmlResourceHandler
 {
