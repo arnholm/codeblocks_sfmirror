@@ -199,14 +199,19 @@ CompilerTool* AdvancedCompilerOptionsDlg::GetCompilerTool(int cmd, int ext)
     const wxChoice* cmb = XRCCTRL(*this, "lstExt", wxChoice);
     for (size_t i = 0; i < m_Commands[cmd].size(); ++i)
     {
-        if (cmb->GetString(ext).IsEmpty() && m_Commands[cmd][i].extensions.GetCount() == 0)
+        wxString extension;
+        if (ext < int(cmb->GetCount()))
+            extension = cmb->GetString(ext);
+
+        if (extension.empty() && m_Commands[cmd][i].extensions.GetCount() == 0)
             return &m_Commands[cmd][i];
 
-        int selExt = m_Commands[cmd][i].extensions.Index(cmb->GetString(ext));
+        int selExt = m_Commands[cmd][i].extensions.Index(extension);
         if (selExt != -1)
             return &m_Commands[cmd][i];
     }
-    return 0;
+
+    return nullptr;
 }
 
 void AdvancedCompilerOptionsDlg::DisplayCommand(int cmd, int ext)
