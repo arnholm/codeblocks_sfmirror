@@ -63,7 +63,8 @@ cbProject::cbProject(const wxString& filename) :
     m_ExtendedObjectNamesGeneration(false),
     m_AutoShowNotesOnLoad(false),
     m_CheckForExternallyModifiedFiles(true),
-    m_pExtensionsElement(nullptr)
+    m_pExtensionsElement(nullptr),
+    m_Notifications(true)
 {
     SetCompilerID(CompilerFactory::GetDefaultCompilerID());
     SetModified(false);
@@ -222,6 +223,10 @@ cbProject& cbProject::operator=(const cbProject &p)
 
 void cbProject::NotifyPlugins(wxEventType type, const wxString& targetName, const wxString& oldTargetName)
 {
+    // A cbProject may have turned off event notifications
+    // Eg., Clangd_client should not broadcast changes regarding its dummy cbProject.
+    if (not m_Notifications) return;
+
     CodeBlocksEvent event(type);
     event.SetProject(this);
     event.SetBuildTargetName(targetName);
