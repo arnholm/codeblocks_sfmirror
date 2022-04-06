@@ -153,12 +153,13 @@ void cbEditorPrintout::GetPageInfo(int* minPage, int* maxPage, int* selPageFrom,
         }
     }
 
-    *maxPage = m_pages.size();
-    if (*maxPage > 0)
+    if (!m_pages.empty())
+    {
         *minPage = 1;
-
-    *selPageFrom = *minPage;
-    *selPageTo = *maxPage;
+        *maxPage = m_pages.size();
+        *selPageFrom = *minPage;
+        *selPageTo = *maxPage;
+    }
 }
 
 bool cbEditorPrintout::OnBeginDocument(int startPage, int endPage)
