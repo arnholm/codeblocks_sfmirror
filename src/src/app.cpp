@@ -552,7 +552,10 @@ void CodeBlocksApp::InitLocale()
     {
         do
         {
-            m_locale.AddCatalog(moName);
+            // Extension is added unconditionally in AddCatalog() since wxWidgets
+            // commit b9a9ae7 (just before release of wx3.1.6), so file.mo is converted in file.mo.mo
+            // Removing the extension is backwards compatible (it was not supposed to be there)
+            m_locale.AddCatalog(moName.BeforeLast('.'));
         } while (dir.GetNext(&moName));
     }
 }
