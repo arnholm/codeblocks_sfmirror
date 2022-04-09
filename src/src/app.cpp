@@ -462,6 +462,24 @@ void CodeBlocksApp::InitExceptionHandler()
 {
 #ifdef __WXMSW__
     ExcHndlInit();
+
+    // If the executable folder is not writable, as it happens with releases installed under Program Files,
+    // move crash report to the configuration folder and give it a more useful name
+    if (!wxFileName::IsDirWritable(ConfigManager::GetFolder(sdBase)))
+    {
+        wxString release(RELEASE);
+
+#if SVN_BUILD
+        release << ConfigManager::GetRevisionString();
+#endif
+
+        const wxString dtDisplay(wxDateTime::Now().Format("%Y%m%d_%H%M%S"));  // year first, so alphabetical orden matches cronological order
+        m_crashReportName = ConfigManager::GetFolder(sdConfig)+
+                            wxFileName::GetPathSeparator()+
+                            wxString::Format("CodeBlocks_%s_%s.rpt", dtDisplay, release);
+
+        ExcHndlSetLogFileNameA(m_crashReportName.c_str());
+    }
 #endif
 }
 
@@ -809,6 +827,9 @@ bool CodeBlocksApp::OnInit()
 
         CodeBlocksEvent event(cbEVT_APP_STARTUP_DONE);
         Manager::Get()->ProcessEvent(event);
+
+        if (!m_crashReportName.empty())
+            Manager::Get()->GetLogManager()->Log(wxString::Format("Setting the crash report file to: %s", m_crashReportName));
 
         return true;
     }

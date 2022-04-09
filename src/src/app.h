@@ -178,6 +178,7 @@ class CodeBlocksApp : public wxApp
         bool m_Assocs; // associations check enabled
 #endif
         int m_BatchExitCode;
+        wxString m_crashReportName;
 
         DECLARE_EVENT_TABLE()
 };
