@@ -28,8 +28,19 @@ cbSplashScreen::cbSplashScreen(const wxBitmap& bitmap)
 
 void cbSplashScreen::DrawReleaseInfo(wxDC  &dc)
 {
-    static const wxString release(wxT(RELEASE));
-    static const wxString revision = wxT(" ")+ ConfigManager::GetRevisionString();
+    const int text_center = 450;
+    const int y = 220;
+
+    const wxString title = _("The open source, cross-platform IDE");
+    const wxString safeMode = _("SAFE MODE");
+    const wxString release(RELEASE);
+    const wxString revision = " "+ConfigManager::GetRevisionString();
+
+    dc.SetTextForeground(*wxBLACK);
+
+    dc.SetFont(wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    const wxSize titleSize(dc.GetMultiLineTextExtent(title));
+    dc.DrawText(title, text_center - titleSize.GetWidth()/2, 145 - titleSize.GetHeight()/2);
 
     wxFont largeFont(15, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     wxFont smallFont(10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -40,31 +51,24 @@ void cbSplashScreen::DrawReleaseInfo(wxDC  &dc)
     wxCoord sf_width, sf_height, sf_descend;
     dc.GetTextExtent(release + revision, &sf_width, &sf_height, &sf_descend, nullptr, &smallFont);
 
-    int text_center = 450;
-    int x_offset = text_center;
-    int y = 220;
-
-    dc.SetTextForeground(*wxBLACK);
-
 #if SVN_BUILD
     // only render SVN revision when not building official release
-    x_offset = text_center - (sf_width)/2;
+    const int x_offset = text_center - (sf_width)/2;
     dc.SetFont(smallFont);
-    dc.DrawText(release + revision, x_offset, (y - sf_height + sf_descend));
+    dc.DrawText(release + revision, x_offset, y - sf_height + sf_descend);
 #else
-    x_offset = text_center - (lf_width)/2;
+    const int x_offset = text_center - (lf_width)/2;
     dc.SetFont(largeFont);
-    dc.DrawText(release,  x_offset, (y  - lf_height + lf_descend));
+    dc.DrawText(release,  x_offset, y - lf_height + lf_descend);
 #endif
 
     if (PluginManager::GetSafeMode())
     {
         wxCoord sm_width, sm_height, sm_descend;
-        dc.GetTextExtent(_("SAFE MODE"), &sm_width, &sm_height, &sm_descend, nullptr, &smallFont);
+        dc.GetTextExtent(safeMode, &sm_width, &sm_height, &sm_descend, nullptr, &smallFont);
         dc.SetFont(smallFont);
         dc.SetTextForeground(*wxRED);
-        x_offset = text_center - (sm_width)/2;
-        dc.DrawText(_("SAFE MODE"), x_offset, (y  - sm_height + sm_descend + lf_height+10));
+        dc.DrawText(safeMode, text_center - (sm_width)/2, y - sm_height + sm_descend + lf_height+10);
         dc.SetTextForeground(*wxBLACK);
     }
 }
