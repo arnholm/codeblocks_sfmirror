@@ -141,7 +141,7 @@ public:
 public:
     CIncludeSearchFilter(void);
     CIncludeSearchFilter(const CIncludeSearchFilter& Filter);
-    ~CIncludeSearchFilter(void);
+    virtual ~CIncludeSearchFilter(void);
 };
 
 class CCppIncludeSearchFilter: public CIncludeSearchFilter
@@ -153,7 +153,7 @@ public:
 public:
     CCppIncludeSearchFilter(void);
     CCppIncludeSearchFilter(const CCppIncludeSearchFilter& Filter);
-    ~CCppIncludeSearchFilter(void);
+    virtual ~CCppIncludeSearchFilter(void);
 };
 
 #endif

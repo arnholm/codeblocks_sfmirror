@@ -57,7 +57,7 @@ inline int FloatToInt(const double Value)
 
 inline bool FloatToBool(const double Value)
 {
- return (0.0!=Value);
+ return ((-0.0000001<Value) && (Value<0.0000001));
 }
 
 inline std::string FloatToStr(const double Value)

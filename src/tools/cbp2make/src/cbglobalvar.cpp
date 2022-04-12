@@ -109,6 +109,8 @@ CString CGlobalVariable::Convert(const CString& Value, const int Case)
             }
             break;
         }
+        default:
+            return result;
         }
     }
     return result;
@@ -252,18 +254,18 @@ void CGlobalVariable::Read(const TiXmlElement *GlobalVariableRoot)
                 TiXmlElement *field = (TiXmlElement *)_field->ToElement();
                 if (0!=field) {
                     CString field_name, field_value;
-                    char *value = 0;
-                    if ((value = (char *)field->Attribute("name"))) {
-                        field_name = value;
+                    char *value_ex = 0;
+                    if ((value_ex = (char *)field->Attribute("name"))) {
+                        field_name = value_ex;
                     }
-                    if ((value = (char *)field->Attribute("value"))) {
-                        field_value = value;
+                    if ((value_ex = (char *)field->Attribute("value"))) {
+                        field_value = value_ex;
                     }
                     m_Fields.InsertStringVariable(field_name,field_value);
                     /*
-                    if ((value = (char *)field->Attribute("")))
+                    if ((value_ex = (char *)field->Attribute("")))
                     {
-                     m_ = value;
+                     m_ = value_ex;
                     }
                     */
                 }

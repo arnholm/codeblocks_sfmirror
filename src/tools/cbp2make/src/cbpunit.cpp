@@ -67,27 +67,27 @@ void CBuildUnit::Read(const TiXmlElement *UnitRoot)
     while (0 != _option) {
         TiXmlElement* option = _option->ToElement();
         if (0 != option) {
-            char *value = 0;
-            if ((value = (char *)option->Attribute("compilerVar"))) {
-                m_CompilerVariable = value;
+            char *value_ex = 0;
+            if ((value_ex = (char *)option->Attribute("compilerVar"))) {
+                m_CompilerVariable = value_ex;
             }
-            if ((value = (char *)option->Attribute("compiler"))) {
-                m_CompilerVariable = value;
+            if ((value_ex = (char *)option->Attribute("compiler"))) {
+                m_CompilerVariable = value_ex;
             }
-            if ((value = (char *)option->Attribute("compile"))) {
-                m_DoCompile = StringToBoolean(value);
+            if ((value_ex = (char *)option->Attribute("compile"))) {
+                m_DoCompile = StringToBoolean(value_ex);
             }
-            if ((value = (char *)option->Attribute("link"))) {
-                m_DoLink = StringToBoolean(value);
+            if ((value_ex = (char *)option->Attribute("link"))) {
+                m_DoLink = StringToBoolean(value_ex);
             }
-            if ((value = (char *)option->Attribute("target"))) {
-                m_Targets.Insert(value);
+            if ((value_ex = (char *)option->Attribute("target"))) {
+                m_Targets.Insert(value_ex);
             }
-            if ((value = (char *)option->Attribute("weight"))) {
-                m_Weight = StringToInteger(value);
+            if ((value_ex = (char *)option->Attribute("weight"))) {
+                m_Weight = StringToInteger(value_ex);
             }
-            if ((value = (char *)option->Attribute("buildCommand"))) {
-                m_CustomBuildCommand = value;
+            if ((value_ex = (char *)option->Attribute("buildCommand"))) {
+                m_CustomBuildCommand = value_ex;
                 m_CustomBuildCommand = FindReplaceStr(m_CustomBuildCommand, "\\n", "\n\t");
             }
         }

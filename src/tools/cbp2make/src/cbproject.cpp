@@ -151,23 +151,23 @@ void CCodeBlocksProject::Read(const TiXmlElement *ProjectRoot)
         if (0!=_vtarget) {
             TiXmlElement *vtarget = _vtarget->ToElement();
             if (0!=vtarget) {
-                TiXmlNode *_option = (TiXmlNode *)_vtarget->FirstChild("Add");
-                while (0!=_option) {
-                    TiXmlElement* option = _option->ToElement();
+                TiXmlNode *_option_ex = (TiXmlNode *)_vtarget->FirstChild("Add");
+                while (0!=_option_ex) {
+                    TiXmlElement* option = _option_ex->ToElement();
                     if (0!=option) {
                         CVirtualTarget *v_target = new CVirtualTarget();
                         v_target->Read(option);
                         m_VirtualTargets.push_back(v_target);
                     }
-                    _option = (TiXmlNode *)_vtarget->IterateChildren(_option);
+                    _option_ex = (TiXmlNode *)_vtarget->IterateChildren(_option_ex);
                 } // option
             }
         } // vtargets
         TiXmlNode *_compiler = (TiXmlNode *)_project->FirstChild("Compiler");
         if (0!=_compiler) {
-            TiXmlNode *_option = (TiXmlNode *)_compiler->FirstChild("Add");
-            while (0!=_option) {
-                TiXmlElement* option = _option->ToElement();
+            TiXmlNode *_option_ex = (TiXmlNode *)_compiler->FirstChild("Add");
+            while (0!=_option_ex) {
+                TiXmlElement* option = _option_ex->ToElement();
                 if (0!=option) {
                     char *value = 0;
                     if ((value = (char *)option->Attribute("option"))) {
@@ -177,28 +177,28 @@ void CCodeBlocksProject::Read(const TiXmlElement *ProjectRoot)
                         m_CompilerDirectories.Insert(value);
                     }
                 }
-                _option = (TiXmlNode *)_compiler->IterateChildren(_option);
+                _option_ex = (TiXmlNode *)_compiler->IterateChildren(_option_ex);
             } // option
         } // compiler
         TiXmlNode *_res_compiler = (TiXmlNode *)_project->FirstChild("ResourceCompiler");
         if (0!=_res_compiler) {
-            TiXmlNode *_option = (TiXmlNode *)_res_compiler->FirstChild("Add");
-            while (0!=_option) {
-                TiXmlElement* option = _option->ToElement();
+            TiXmlNode *_option_ex = (TiXmlNode *)_res_compiler->FirstChild("Add");
+            while (0!=_option_ex) {
+                TiXmlElement* option = _option_ex->ToElement();
                 if (0!=option) {
                     char *value = 0;
                     if ((value = (char *)option->Attribute("directory"))) {
                         m_ResourceCompilerDirectories.Insert(value);
                     }
                 }
-                _option = (TiXmlNode *)_res_compiler->IterateChildren(_option);
+                _option_ex = (TiXmlNode *)_res_compiler->IterateChildren(_option_ex);
             } // option
         } // resource compiler
         TiXmlNode *_linker = (TiXmlNode *)_project->FirstChild("Linker");
         if (0!=_linker) {
-            TiXmlNode *_option = (TiXmlNode *)_linker->FirstChild("Add");
-            while (0!=_option) {
-                TiXmlElement* option = _option->ToElement();
+            TiXmlNode *_option_ex = (TiXmlNode *)_linker->FirstChild("Add");
+            while (0!=_option_ex) {
+                TiXmlElement* option = _option_ex->ToElement();
                 if (0!=option) {
                     char *value = 0;
                     if ((value = (char *)option->Attribute("option"))) {
@@ -211,14 +211,14 @@ void CCodeBlocksProject::Read(const TiXmlElement *ProjectRoot)
                         m_LinkerLibraries.Insert(value);
                     }
                 }
-                _option = (TiXmlNode *)_linker->IterateChildren(_option);
+                _option_ex = (TiXmlNode *)_linker->IterateChildren(_option_ex);
             } // option
         } // linker
         TiXmlNode *_extra_cmd = (TiXmlNode *)_project->FirstChild("ExtraCommands");
         if (0!=_extra_cmd) {
-            TiXmlNode *_option = (TiXmlNode *)_extra_cmd->FirstChild("Add");
-            while (0!=_option) {
-                TiXmlElement* option = _option->ToElement();
+            TiXmlNode *_option_ex = (TiXmlNode *)_extra_cmd->FirstChild("Add");
+            while (0!=_option_ex) {
+                TiXmlElement* option = _option_ex->ToElement();
                 if (0!=option) {
                     if (strcmp(option->Value(),"Add")) break;
                     char *value = 0;
@@ -229,11 +229,11 @@ void CCodeBlocksProject::Read(const TiXmlElement *ProjectRoot)
                         m_AfterBuildCommands.Insert(value);
                     }
                 }
-                _option = (TiXmlNode *)_extra_cmd->IterateChildren(_option);
+                _option_ex = (TiXmlNode *)_extra_cmd->IterateChildren(_option_ex);
             } // option
-            _option = (TiXmlNode *)_extra_cmd->FirstChild("Mode");
-            while (0!=_option) {
-                TiXmlElement* option = _option->ToElement();
+            _option_ex = (TiXmlNode *)_extra_cmd->FirstChild("Mode");
+            while (0!=_option_ex) {
+                TiXmlElement* option = _option_ex->ToElement();
                 if (0!=option) {
                     if (strcmp(option->Value(),"Mode")) break;
                     char *value = 0;
@@ -244,7 +244,7 @@ void CCodeBlocksProject::Read(const TiXmlElement *ProjectRoot)
                         m_ForceAfterBuildCommands = (strcmp(value,"always")==0);
                     }
                 }
-                _option = (TiXmlNode *)_extra_cmd->IterateChildren(_option);
+                _option_ex = (TiXmlNode *)_extra_cmd->IterateChildren(_option_ex);
             } // option
         } // extra commands
 
@@ -688,25 +688,25 @@ bool CCodeBlocksProject::GenerateMakefile
             //pl->Show();
             //tc->Show();
             line.Clear();
-            for (int i = 0; i < m_CompilerDirectories.GetCount(); i++) {
-                line = JoinStr(line,tc->IncludeDirSwitch()+pl->ProtectPath(pl->Pd(m_CompilerDirectories[i]),Config.QuotePathMode()),' ');
+            for (int j = 0; j < m_CompilerDirectories.GetCount(); j++) {
+                line = JoinStr(line,tc->IncludeDirSwitch()+pl->ProtectPath(pl->Pd(m_CompilerDirectories[j]),Config.QuotePathMode()),' ');
             }
             m_Makefile.AddMacro(STR_INC+tc_suffix,CGlobalVariable::Convert(line,Config.MacroVariableCase()),section);
             line.Clear();
-            for (int i = 0; i < m_CompilerOptions.GetCount(); i++) {
-                line = JoinStr(line,m_CompilerOptions[i],' ');
+            for (int j = 0; j < m_CompilerOptions.GetCount(); j++) {
+                line = JoinStr(line,m_CompilerOptions[j],' ');
             }
             m_Makefile.AddMacro(STR_CFLAGS+tc_suffix,CGlobalVariable::Convert(line,Config.MacroVariableCase()),section);
             m_Makefile.AddMacro(STR_RESINC+tc_suffix,"",section);
             //m_Makefile.AddMacro("RCFLAGS","",section);//not supported by CB build system
             line.Clear();
-            for (int i = 0; i < m_LinkerDirectories.GetCount(); i++) {
-                line = JoinStr(line,tc->LibraryDirSwitch()+pl->ProtectPath(pl->Pd(m_LinkerDirectories[i]),Config.QuotePathMode()),' ');
+            for (int j = 0; j < m_LinkerDirectories.GetCount(); j++) {
+                line = JoinStr(line,tc->LibraryDirSwitch()+pl->ProtectPath(pl->Pd(m_LinkerDirectories[j]),Config.QuotePathMode()),' ');
             }
             m_Makefile.AddMacro(STR_LIBDIR+tc_suffix,CGlobalVariable::Convert(line,Config.MacroVariableCase()),section);
             line.Clear();
-            for (int i = 0; i < m_LinkerLibraries.GetCount(); i++) {
-                CString lib_name = m_LinkerLibraries[i];
+            for (int j = 0; j < m_LinkerLibraries.GetCount(); j++) {
+                CString lib_name = m_LinkerLibraries[j];
                 CString lib_ext = ExtractFileExt(lib_name);
                 if (lib_ext.IsEmpty()) {
                     line = JoinStr(line,tc->LinkLibrarySwitch()+pl->ProtectPath(pl->Pd(lib_name),Config.QuotePathMode()),' ');
@@ -716,8 +716,8 @@ bool CCodeBlocksProject::GenerateMakefile
             }
             m_Makefile.AddMacro(STR_LIB+tc_suffix,CGlobalVariable::Convert(line,Config.MacroVariableCase()),section);
             line.Clear();
-            for (int i = 0; i < m_LinkerOptions.GetCount(); i++) {
-                line = JoinStr(line,m_LinkerOptions[i],' ');
+            for (int j = 0; j < m_LinkerOptions.GetCount(); j++) {
+                line = JoinStr(line,m_LinkerOptions[j],' ');
             }
             m_Makefile.AddMacro(STR_LDFLAGS+tc_suffix,CGlobalVariable::Convert(line,Config.MacroVariableCase()),section);
             section++;
@@ -725,11 +725,16 @@ bool CCodeBlocksProject::GenerateMakefile
         // per-target flags
         for (size_t t = 0; t < m_BuildTargetIndex.size(); t++) {
             CBuildTarget *target = m_BuildTargetIndex[t];
+
+            bool target_selected = ((Config.Targets().GetCount()==0) ||
+                                    ((Config.Targets().GetCount()>0) && (Config.Targets().FindString(target->Title())>=0)));
+            if (!target_selected) continue;
+
             int tc_id = m_TargetToolChainIndex[t];
             //std::cout<<"target #"<<t<<" -> toolchain #"<<tc_id<<std::endl<<std::flush;
             if (((tc_id<0) || (tc_id>=(int)m_ToolChainIndex.size())) && !Config.BeQuiet()) {
                 std::cout<<"Warning: toolchain '"<<target->Compiler().GetCString()<<"' for target '"
-                         <<target->Title().GetCString()<<"' is not defined."<<std::endl;
+                         <<target->Title().GetCString()<<"' is not defined XXX."<<std::endl;
                 continue;
             }
             CToolChain *tc = m_ToolChainIndex[tc_id];
@@ -857,6 +862,11 @@ bool CCodeBlocksProject::GenerateMakefile
         // build targets
         for (size_t t = 0; t < m_BuildTargetIndex.size(); t++) {
             CBuildTarget *target = m_BuildTargetIndex[t];
+
+            bool target_selected = ((Config.Targets().GetCount()==0) ||
+                                    ((Config.Targets().GetCount()>0) && (Config.Targets().FindString(target->Title())>=0)));
+            if (!target_selected) continue;
+
             UpdateTargetIndex(t,Config);
             CStringList before_build_commands = target->BeforeBuildCommands();
             CStringList after_build_commands = target->AfterBuildCommands();
@@ -865,7 +875,7 @@ bool CCodeBlocksProject::GenerateMakefile
             //std::cout<<"target #"<<t<<" -> toolchain #"<<tc_id<<std::endl<<std::flush;
             if (((tc_id<0) || (tc_id>=(int)m_ToolChainIndex.size())) && !Config.BeQuiet()) {
                 std::cout<<"Warning: toolchain '"<<target->Compiler().GetCString()<<"' for target '"
-                         <<target->Title().GetCString()<<"' is not defined."<<std::endl;
+                         <<target->Title().GetCString()<<"' is not defined XXX."<<std::endl;
                 continue;
             }
             CToolChain *tc = m_ToolChainIndex[tc_id];
@@ -1040,7 +1050,8 @@ bool CCodeBlocksProject::GenerateMakefile
                         }
                     }
                 }
-                case CBuildTarget::ttCommands:
+                case CBuildTarget::ttCommands: // fall-through
+                default:
                     break;
                 }
                 if (!object_extension.IsEmpty()) object_extension = "."+object_extension;
@@ -1201,6 +1212,7 @@ bool CCodeBlocksProject::GenerateMakefile
         // virtual targets
         for (size_t t = 0; t < m_VirtualTargetIndex.size(); t++) {
             CVirtualTarget *v_target = m_VirtualTargetIndex[t];
+
             CMakefileRule& rule_v_target = m_Makefile.AddRule(v_target->Name("virtual_"),section);
             if (have_global_commands) { //(m_BeforeBuildCommands.GetCount()>0)
                 rule_v_target.Dependencies().Insert(DecorateTargetName("before_build",Config.TargetNameCase()));
