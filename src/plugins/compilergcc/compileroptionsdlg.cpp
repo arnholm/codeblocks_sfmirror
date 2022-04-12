@@ -454,7 +454,7 @@ void CompilerOptionsDlg::DoFillCompilerSets(int compilerIdx)
     for (unsigned int i = 0; i < CompilerFactory::GetCompilersCount(); ++i)
     {
         Compiler* compiler = CompilerFactory::GetCompiler(i);
-        if (compiler && (!m_pProject || compiler->IsValid()))
+        if (compiler) // && (!m_pProject || compiler->IsValid()))
             cmb->Append(compiler->GetName(), new IntClientData(i));
     }
 
