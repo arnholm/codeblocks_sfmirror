@@ -680,7 +680,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT38">
-												<label>Use 8.3 notation for all include paths (Win):</label>
+												<label>Use 8.3 notation for all include paths and files (Win):</label>
 											</object>
 											<flag>wxTOP|wxALIGN_TOP</flag>
 											<border>4</border>

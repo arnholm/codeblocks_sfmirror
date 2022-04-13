@@ -419,6 +419,12 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     wxFileName tmpFname(UnquoteStringIfNeeded(tmpFile));
     wxFileName tmpOutFname;
 
+    if (platform::windows && compiler->GetSwitches().Use83Paths && tmpFname.Exists())
+    {
+        tmpFile = tmpFname.GetShortPath();
+        tmpFname.Assign(tmpFile);
+    }
+
 #ifdef command_line_generation
     Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[2]: tmpFile='%s', tmpDeps='%s', tmpObject='%s', tmpFlatObject='%s',\ntmpFname.GetName='%s', tmpFname.GetPath='%s', tmpFname.GetExt='%s'."),
                                                 tmpFile.wx_str(), tmpDeps.wx_str(),
