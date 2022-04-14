@@ -1,0 +1,255 @@
+
+::Require(_T("test_base.script"));
+
+class XMLTest extends script_test_base
+{
+    // To be comparable with the TiXMLPrinter CStr function we have to use this formatting.
+    // String literals in squirrel are really literals, so the identation at the beginning is
+    // also used...
+    validXML =
+@"<test attr=""hello world"">
+    <t1 name=""23"" value=""1.1"" value2=""1.2"">test 1</t1>
+    <t2 name=""2"">
+        <a a=""22"" />
+    </t2>
+    <t3 name=""3"">
+        <b b=""22"" />
+    </t3>
+</test>
+";
+
+    invalidXML =
+    @"
+    <test attr=""hello world"">
+        <t name=""1"" value=""1.1"" value2=""1.2"">
+            test 1
+
+        <t name=""2"">
+            <a a=""22""></a>
+        </t>
+        <t name=""3"">
+            <b b=""22""></b>
+        </t>
+    </test>
+    ";
+
+
+    function Run()
+    {
+	
+		// We require scripting sdk version > 2.0.0
+		if (!"SCRIPTING_VERSION_MAJOR" in getconsttable() ||
+		      SCRIPTING_VERSION_MAJOR < 2
+		   ) 
+		{
+			error("SDK Version not supported (need >= 2.0.0 is " + SCRIPTING_VERSION_MAJOR + "." + SCRIPTING_VERSION_MINOR + "." + SCRIPTING_VERSION_RELEASE + ")");
+			return;
+		}
+		
+        clear_global_test_results();
+        test_document();
+        test_element();
+        test_attribute();
+        test_handle();
+        print_global_test_result();
+    }
+
+    function test_document()
+    {
+        ::print("======= Test TiXMLdocument BEGINN ======= \n");
+        clear_test_result();
+        local doc = ::TiXmlDocument();
+        doc.Parse(validXML);
+        test_false("Error == false", doc.Error());
+        test_true("RootElement", doc.RootElement() != null && doc.RootElement() instanceof TiXmlElement);
+        doc.SetValue("test");
+        test_true("SetValue", true);
+        test_string("GetValue", doc.Value(), "test");
+        doc.SetValue(_("test(wxString)"));
+        test_true("SetValue (wxString)", true);
+        test_string("GetValue  (wxString)", doc.Value(), "test(wxString)");
+
+        local printer = ::TiXmlPrinter();
+        printer.SetIndent("    ");
+        printer.SetLineBreak("\r\n");
+        doc.Accept(printer);
+        test_string("TiXmlPrinter and TiXmlDocument::Accept", printer.CStr(), validXML);
+        local printer2 = ::TiXmlPrinter();
+        printer2.SetIndent("    ");
+        printer2.SetLineBreak("\n");
+        doc.Accept(printer2);
+        local validXMLwxString =  _(validXML);
+        validXMLwxString.Replace(_("\r\n"),_("\n"))
+        test_string("TiXmlPrinter::SetLineBreak", printer2.CStr(), validXMLwxString);
+
+        local invalidDoc = ::TiXmlDocument();
+        doc.Parse(invalidXML);
+        test_true("Error == true", doc.Error());
+
+        print_test_result();
+        ::print("======= Test TiXMLdocument END ======= \n");
+    }
+
+    function test_element()
+    {
+        ::print("======= Test TiXmlElement BEGINN ======= \n");
+        clear_test_result();
+
+        // document preparation
+        local doc = ::TiXmlDocument();
+        doc.Parse(validXML);
+        test_false("Error == false", doc.Error());
+        local element = doc.RootElement();
+
+        test_true("RootElement", element != null && element instanceof TiXmlElement);
+        test_string("Value", element.Value(), "test");
+
+        local childElement = element.FirstChildElement();
+        test_true("FirstChildElement() 1", childElement != null && childElement instanceof TiXmlElement);
+        test_string("FirstChildElement() 2", childElement.Value(), "t1");
+        local siblingElement = childElement.NextSiblingElement();
+        test_true("NextSiblingElement()", siblingElement != null && siblingElement instanceof TiXmlElement);
+        test_string("NextSiblingElement() 2", siblingElement.Value(), "t2");
+        local lastElement = element.LastChild();
+        test_true("LastChild() 1", lastElement != null && lastElement instanceof TiXmlNode);
+        test_string("LastChild() 2", lastElement.Value(), "t3");
+
+        lastElement = element.LastChildElement();
+        test_true("LastChildElement() 1", lastElement != null && lastElement instanceof TiXmlElement);
+        test_string("LastChildElement() 2", lastElement.Value(), "t3");
+
+        test_string("Attribute()", element.Attribute("attr"), "hello world");
+        local attribute1 = childElement.FirstAttribute();
+        test_true("FirstAttribute() 1", attribute1 != null && attribute1 instanceof TiXmlAttribute);
+        test_string("FirstAttribute() 2", attribute1.Value(), "23");
+		
+		attribute1 = element.GetAttribute("attr");
+		test_true("GetAttribute() 1", attribute1 != null && attribute1 instanceof TiXmlAttribute);
+        test_string("GetAttribute() 2", attribute1.Value(), "hello world");
+		
+        attribute1 = childElement.LastAttribute();
+        test_true("LastAttribute() 1", attribute1 != null && attribute1 instanceof TiXmlAttribute);
+        test_string("LastAttribute() 2", attribute1.Value(), "1.2");
+
+        childElement.RemoveAttribute("value2");
+        attribute1 = childElement.Attribute("value2");
+        test_true("RemoveAttribute", attribute1 == null);
+		
+		childElement.SetAttribute("stringAttribute","string");
+		test_string("SetAttribute(String)", childElement.Attribute("stringAttribute"), "string");
+		childElement.SetAttribute("wxstringAttribute",_("string"));
+		test_string("SetAttribute(wxString)", childElement.Attribute("wxstringAttribute"), "string");
+		childElement.SetAttribute("intAttribute", 50);
+		attribute1 = childElement.GetAttribute("intAttribute");
+		test_equal("SetAttribute(int)", attribute1.IntValue(), 50);
+		childElement.SetAttribute("doubleAttribute", 33.33);
+		attribute1 = childElement.GetAttribute("doubleAttribute");
+		test_equal("SetAttribute(double)", attribute1.DoubleValue(), 33.33);
+
+
+        test_string("GetText", childElement.GetText(), "test 1");
+
+        local constrElement = ::TiXmlElement("test1");
+        test_string("String constructor", constrElement.Value(), "test1");
+        constrElement = ::TiXmlElement(_("test1"));
+        test_string("wxString constructor", constrElement.Value(), "test1");
+
+        test_string("Value", constrElement.Value(), "test1");
+        constrElement.SetValue("otherValue");
+        test_string("SetValue", constrElement.Value(), "otherValue");
+
+
+        print_test_result();
+        ::print("======= Test TiXmlElement END ======= \n");
+    }
+
+    function test_attribute()
+    {
+        ::print("======= Test TiXmlAttribute BEGINN ======= \n");
+        clear_test_result();
+
+        // document preparation
+        local doc = ::TiXmlDocument();
+        doc.Parse(validXML);
+        test_false("Error == false", doc.Error());
+        local element = doc.RootElement();
+
+        test_true("RootElement", element != null && element instanceof TiXmlElement);
+        test_string("Value", element.Value(), "test");
+
+        local childElement = element.FirstChildElement();
+        test_true("FirstChildElement() 1", childElement != null && childElement instanceof TiXmlElement);
+        test_string("FirstChildElement() 2", childElement.Value(), "t1");
+
+        local attribute = childElement.FirstAttribute();
+        test_true("FirstAttribute() 1", attribute != null && attribute instanceof TiXmlAttribute);
+        test_string("FirstAttribute() 2", attribute.Value(), "23");
+        test_equal("IntValue", attribute.IntValue(), 23);
+
+
+        local nextAttribute = attribute.Next();
+        test_true("Next 1", nextAttribute != null && nextAttribute instanceof TiXmlAttribute);
+        test_string("Next 2", nextAttribute.Value(), "1.1");
+
+        test_string("Name", nextAttribute.Name(), "value");
+        test_equal("DoubleValue", nextAttribute.DoubleValue(), 1.1);
+
+        local ctorAttribute = ::TiXmlAttribute();
+        test_true("empty ctor", ctorAttribute != null && ctorAttribute instanceof TiXmlAttribute);
+
+        ctorAttribute = ::TiXmlAttribute("nameTest", "valueTest");
+        test_true("string ctor", ctorAttribute != null && ctorAttribute instanceof TiXmlAttribute);
+        test_string("Value ctor", ctorAttribute.Value(), "valueTest");
+        test_string("Name ctor", ctorAttribute.Name(), "nameTest");
+        ctorAttribute.SetValue("testValue");
+        test_string("SetValue", ctorAttribute.Value(), "testValue");
+        ctorAttribute.SetName("testName");
+        test_string("SetName", ctorAttribute.Name(), "testName");
+
+        local wxCtorAttribute = ::TiXmlAttribute(_("nameTest"), _("valueTest"));
+        test_true("wxString ctor", wxCtorAttribute != null && wxCtorAttribute instanceof TiXmlAttribute);
+        test_string("wxString ctor Value", wxCtorAttribute.Value(), "valueTest");
+        test_string("wxString ctor Name", wxCtorAttribute.Name(), "nameTest");
+
+        print_test_result();
+        ::print("======= Test TiXmlAttribute END ======= \n");
+    }
+
+    function test_handle()
+    {
+        ::print("======= Test TiXmlHandle BEGINN ======= \n");
+        clear_test_result();
+
+        // document preparation
+        local doc = ::TiXmlDocument();
+        doc.Parse(validXML);
+        test_false("Error == false", doc.Error());
+
+
+        local handle1 = ::TiXmlHandle(doc);
+        test_true("Constructor(Doc)", handle1 != null && handle1 instanceof  TiXmlHandle);
+        local handle2 = ::TiXmlHandle(handle1);
+        test_true("Constructor(handle)", handle2 != null && handle2 instanceof  TiXmlHandle);
+
+
+        local child = handle1.FirstChild();
+        test_true("FirstChild", child != null && child instanceof  TiXmlHandle);
+        local element = child.ToElement();
+        test_true("FirstChild->ToElement", element != null && element instanceof  TiXmlElement);
+        test_string("ToElement 2", element.Value(), "test");
+        test_true("FirstChild chaining, no fail", child.FirstChild().FirstChild().FirstChild().ToElement() == null );
+        test_true("FirstChild(string)", child.FirstChild("t3") != null && child.FirstChild(_("t3")).ToElement() != null );
+        test_true("FirstChild(wxString)", child.FirstChild(_("t3")) != null && child.FirstChild(_("t3")).ToElement() != null );
+
+        test_true("FirstChildElement()", child.FirstChildElement() != null && child.FirstChildElement().ToElement().Value() == "t1");
+        test_true("FirstChildElement(string)", child.FirstChildElement("t3") != null && child.FirstChildElement("t3").ToElement() != null );
+        test_true("FirstChildElement(string)", child.FirstChildElement(_("t3")) != null && child.FirstChildElement(_("t3")).ToElement() != null );
+
+
+
+        print_test_result();
+        ::print("======= Test TiXmlHandle END ======= \n");
+    }
+
+
+}
