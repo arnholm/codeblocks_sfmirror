@@ -11,6 +11,7 @@ libsqbindings_la_SOURCES = \
 	sc_io.cpp \
 	sc_plugin.cpp \
 	sc_progress.cpp \
+	sc_tinyxml.cpp \
 	sc_util_dialogs.cpp \
 	sc_utils.cpp \
 	sc_wxtypes.cpp \

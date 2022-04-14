@@ -3195,6 +3195,9 @@
 		<Unit filename="sdk/scripting/bindings/sc_wxtypes.cpp">
 			<Option target="sdk" />
 		</Unit>
+		<Unit filename="sdk/scripting/bindings/sc_tinyxml.cpp">
+			<Option target="sdk" />
+		</Unit>
 		<Unit filename="sdk/scripting/bindings/scriptbindings.cpp">
 			<Option target="sdk" />
 		</Unit>
