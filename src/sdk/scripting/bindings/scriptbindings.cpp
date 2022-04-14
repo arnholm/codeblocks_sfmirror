@@ -2232,6 +2232,7 @@ namespace ScriptBindings
     void Register_IO(HSQUIRRELVM v, ScriptingManager *manager);
     void Register_ScriptPlugin(HSQUIRRELVM v, ScriptingManager *manager);
     void Unregister_ScriptPlugin();
+    void Register_TinyXMLBindings(HSQUIRRELVM v, ScriptingManager *manager);
 
     void RegisterBindings(HSQUIRRELVM v, ScriptingManager *manager)
     {
@@ -2241,6 +2242,7 @@ namespace ScriptBindings
         Register_IO(v, manager); // IO is enabled, but just for harmless functions
         Register_ProgressDialog(v);
         Register_UtilDialogs(v, manager);
+        Register_TinyXMLBindings(v, manager);
 
         PreserveTop preserveTop(v);
         sq_pushroottable(v);
