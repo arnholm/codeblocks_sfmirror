@@ -217,14 +217,17 @@ class script_test_base
 
         local i = 0;
         local test_failed = false;
-        if (tmp_string.len() != tmp_result.len())
+        if (tmp_string.len() != tmp_result.len()) {
+            error("length mismatch: got " + (tmp_result.len() - 1) + " needed " + (tmp_string.len() - 1));
             test_failed = true;
+        }
         else
         {
             for (i=0; i < tmp_string.len() && i < tmp_result.len();i++)
             {
                 if(tmp_string[i] != tmp_result[i])
                 {
+                    error("failed in pos " + i + " " + tmp_string[i] + " != " + tmp_result[i]);
                     test_failed = true;
                     break;
                 }
@@ -233,7 +236,7 @@ class script_test_base
 
         if (test_failed)
         {
-            failed(name, "\"" + to_test + "\"", "\"" + result + "\"");
+            failed(name, "\"" + to_test + "\"", "\"" + result + "\" fail at pos " + i);
             return false;
         }
 
