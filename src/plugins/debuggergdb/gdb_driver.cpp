@@ -419,6 +419,37 @@ void GDB_driver::SetMemoryRangeValue(uint64_t addr, const wxString& value)
     QueueCommand(new DebuggerCmd(this, commandStr));
 }
 
+void GDB_driver::SetMemoryRangeValue(wxString address, const wxString& value)
+{
+    const size_t size = value.size();
+    uint64_t llAddres;
+
+    if ((size == 0) || (!address.ToULongLong(&llAddres, 16)))
+        return;
+
+    wxString dataStr = wxT("{");
+    const wxCharBuffer &data = value.To8BitData();
+    for (size_t i = 0; i < size; i++)
+    {
+        if (i != 0)
+            dataStr << wxT(",");
+        dataStr << wxString::Format(wxT("0x%x"), uint8_t(data[i]));
+    }
+    dataStr << wxT("}");
+
+    wxString commandStr;
+    // Check if build is for WX MS Windows
+    #ifdef __WXMSW__
+        commandStr.Printf(wxT("set {char [%ul]} 0x%" PRIx64 "="), size, llAddres);
+    #else
+        commandStr.Printf(wxT("set {char [%zu]} 0x%" PRIx64 "="), size, llAddres);
+    #endif // __WXMSW__
+
+    commandStr << dataStr;
+
+    QueueCommand(new DebuggerCmd(this, commandStr));
+}
+
 void GDB_driver::MemoryDump()
 {
     QueueCommand(new GdbCmd_ExamineMemory(this));

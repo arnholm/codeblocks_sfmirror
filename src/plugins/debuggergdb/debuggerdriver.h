@@ -107,6 +107,7 @@ class DebuggerDriver
         virtual void SwitchToFrame(size_t number) = 0;
         virtual void SetVarValue(const wxString& var, const wxString& value) = 0;
         virtual void SetMemoryRangeValue(uint64_t addr, const wxString& value) = 0;
+        virtual void SetMemoryRangeValue(wxString address, const wxString& value) = 0;
         virtual void MemoryDump() = 0;
         virtual void RunningThreads() = 0;
 

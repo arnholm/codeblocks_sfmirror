@@ -38,6 +38,7 @@ class GDB_driver : public DebuggerDriver
         void SwitchToFrame(size_t number) override;
         void SetVarValue(const wxString& var, const wxString& value) override;
         void SetMemoryRangeValue(uint64_t addr, const wxString& value) override;
+        void SetMemoryRangeValue(wxString address, const wxString& value) override;
         void MemoryDump() override;
         void Attach(int pid) override;
         void Detach() override;

@@ -224,6 +224,11 @@ void CDB_driver::SetMemoryRangeValue(cb_unused uint64_t addr, cb_unused const wx
     NOT_IMPLEMENTED();
 }
 
+void CDB_driver::SetMemoryRangeValue(wxString address, const wxString& value)
+{
+    NOT_IMPLEMENTED();
+}
+
 void CDB_driver::MemoryDump()
 {
     QueueCommand(new CdbCmd_ExamineMemory(this));

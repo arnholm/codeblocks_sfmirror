@@ -857,20 +857,23 @@ class GdbCmd_MemoryRangeWatch : public DebuggerCmd
             DebuggerCmd(driver),
             m_watch(watch)
         {
-            // wx2.8 does not support uint64_z for wxstring::printf
-            const size_t tmpBuffSize = 20;
-            char tmpAddr[tmpBuffSize];
-            char tmpSize[tmpBuffSize];
-            memset(tmpAddr, 0, tmpBuffSize);
-            memset(tmpSize, 0, tmpBuffSize);
-            snprintf(tmpAddr, tmpBuffSize, "0x%" PRIx64, m_watch->GetAddress());
-            snprintf(tmpSize, tmpBuffSize, "%" PRIu64, m_watch->GetSize());
-
-            m_Cmd  = wxString(wxT("x /")) << wxString::FromUTF8(tmpSize) << wxT("xb ") << wxString::FromUTF8(tmpAddr);
+            // Watch is either for a memory address or a symbol, so check and adjust the GDB command
+            wxString sSymbol;
+            m_watch->GetSymbol(sSymbol);
+            if (sSymbol.empty())
+            {
+                m_Cmd  = wxString::Format("x /%lldxb %#018llx", m_watch->GetSize(), m_watch->GetAddress());
+            }
+            else
+            {
+                m_Cmd  = wxString::Format("x /%lldxb %s", m_watch->GetSize(), sSymbol);
+            }
         }
 
         void ParseOutput(const wxString& output) override
         {
+            bool bFoundAddress = (m_watch->GetAddress() != 0);
+
             wxArrayString lines = GetArrayFromString(output, _T('\n'));
             wxString addr;
             std::vector<uint8_t> memory, lineMemory;
@@ -879,6 +882,17 @@ class GdbCmd_MemoryRangeWatch : public DebuggerCmd
                 lineMemory.clear();
                 // TODO: handle errors here!
                 ParseGDBExamineMemoryLine(addr, lineMemory, lines[i]);
+
+                if (!bFoundAddress)
+                {
+                    // Save address if one does not exist, but only for the first valid address found
+                    uint64_t llBaseAddress;
+                    if (addr.ToULongLong(&llBaseAddress, 16))
+                    {
+                        m_watch->SetAddress(llBaseAddress);
+                        bFoundAddress = true;
+                    }
+                }
 
                 memory.insert(memory.end(), lineMemory.begin(), lineMemory.end());
             }
