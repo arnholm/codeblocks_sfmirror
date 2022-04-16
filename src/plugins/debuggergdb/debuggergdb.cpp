@@ -2242,11 +2242,20 @@ bool DebuggerGDB::SetWatchValue(cb::shared_ptr<cbWatch> watch, const wxString &v
     const WatchType type = itType->second;
     if (type == WatchType::MemoryRange)
     {
-        cb::shared_ptr<GDBMemoryRangeWatch> temp_watch = std::static_pointer_cast<GDBMemoryRangeWatch>(watch);
-        uint64_t addr = temp_watch->GetAddress();
-
         DebuggerDriver* driver = m_State.GetDriver();
-        driver->SetMemoryRangeValue(addr, value);
+        cb::shared_ptr<GDBMemoryRangeWatch> temp_watch = std::static_pointer_cast<GDBMemoryRangeWatch>(watch);
+
+        uint64_t addr = temp_watch->GetAddress();
+        if (addr == 0)
+        {
+            driver->SetMemoryRangeValue(addr, value);
+        }
+        else
+        {
+            wxString symbol;
+            temp_watch->GetSymbol(symbol);
+            driver->SetMemoryRangeValue(symbol, value);
+        }
     }
     else
     {
