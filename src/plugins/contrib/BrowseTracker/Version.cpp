@@ -284,6 +284,8 @@ AppVersion::~AppVersion()
 //           Something has changed such that the EditorManager no longer knows the EditorBase* with:
 //           ProjectManager::GetEditor(filename) during the Editor activated event.
 //           Cf., https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
+// 1.2.113   Add sink event cbEVT_WORKSPACE_CHANGED to clear waiting load/close conditions
+//
 // ----------------------------------------------------------------------------
 //  //FIXME: Bugs
 //      01) Requires CB to be restarted after Install before Alt-Left/Right work.

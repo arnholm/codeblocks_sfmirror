@@ -248,6 +248,7 @@ class BrowseTracker : public cbPlugin
         void OnProjectClosing(CodeBlocksEvent& event);
         void OnProjectActivatedEvent(CodeBlocksEvent& event);
         void OnProjectLoadingHook(cbProject* project, TiXmlElement* elem, bool loading);
+        void OnWorkspaceChanged(CodeBlocksEvent& event);
 
         void OnStartShutdown(CodeBlocksEvent& event);
         void OnAppStartupDone(CodeBlocksEvent& event);

@@ -368,6 +368,7 @@ void BrowseTracker::OnAttach()
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_OPEN, new cbEventFunctor<BrowseTracker, CodeBlocksEvent>(this, &BrowseTracker::OnProjectOpened));
     // EVT_PROJECT_CLOSE
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_CLOSE, new cbEventFunctor<BrowseTracker, CodeBlocksEvent>(this, &BrowseTracker::OnProjectClosing));
+    Manager::Get()->RegisterEventSink(cbEVT_WORKSPACE_CHANGED, new cbEventFunctor<BrowseTracker, CodeBlocksEvent>(this, &BrowseTracker::OnWorkspaceChanged));
 
     // EVT_PROJECT_ACTIVATE
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_ACTIVATE, new cbEventFunctor<BrowseTracker, CodeBlocksEvent>(this, &BrowseTracker::OnProjectActivatedEvent));
@@ -2220,6 +2221,14 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
     event.Skip();
 
 }//OnProjectOpened
+// ----------------------------------------------------------------------------
+void BrowseTracker::OnWorkspaceChanged(CodeBlocksEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // Clear all waiting conditions
+    m_bProjectClosing   = false;
+    m_bProjectIsLoading = false;
+}
 // ----------------------------------------------------------------------------
 void BrowseTracker::OnProjectClosing(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
