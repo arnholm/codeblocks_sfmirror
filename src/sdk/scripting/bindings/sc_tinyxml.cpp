@@ -228,7 +228,7 @@ SQInteger TiXmlAttribute_ctor(HSQUIRRELVM v)
     }
     if (numArgs == 3)
     {
-        // 1 argument ctor
+        // 2 argument ctor
         const char* name = extractString(v, 2, extractor, "TiXmlAttribute_ctor");
         const char* value = extractString(v, 3, extractor, "TiXmlAttribute_ctor");
         if (!name || !value)
@@ -799,7 +799,7 @@ void Register_TinyXMLBindings(HSQUIRRELVM v, ScriptingManager *manager)
     }
 
     {
-        // Register TiXmlAttribute
+        // Register TiXmlHandle
         const SQInteger classDecl = CreateClassDecl<TiXmlHandle>(v);
         BindMethod(v, _SC("constructor"), TiXmlHandle_ctor, _SC("TiXmlHandle::constructor"));
 
