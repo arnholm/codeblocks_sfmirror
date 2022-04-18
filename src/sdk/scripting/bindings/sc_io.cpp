@@ -33,15 +33,40 @@ namespace ScriptBindings
     namespace IOLib
     {
         // not exposed
-        bool SecurityAllows(const wxString& operation, const wxString& descr)
+        bool SecurityAllows(HSQUIRRELVM v, const wxString& operation, const wxString& descr)
         {
-            if (Manager::Get()->GetScriptingManager()->IsCurrentlyRunningScriptTrusted())
+            // retrieve the stack info of the function
+            // if the function is not run inside LoadScript function (ex trough a registered menu)
+            // we have no track of the source of the function.
+            // For this we have to inspect the call stack and get source from this function
+            SQStackInfos info;
+            int lvl = 0;
+            wxString path = wxString();
+            SQRESULT res = SQ_OK;
+            do {
+                res = sq_stackinfos(v, lvl, &info);
+                // we search for a function that is loaded from a file.
+                // for this line has to be != -1
+                if (info.source != nullptr && info.line != -1)
+                {
+                    path = wxString(info.source);
+                    break;
+                }
+                lvl++;
+           } while(res == SQ_OK );
+
+           // when no function loaded from a file is found, we have the same problem as before this fix
+           // we can not determine the source of the function and for this not grant a security permanetely...
+
+
+            if (Manager::Get()->GetScriptingManager()->IsScriptTrusted(path))
                 return true;
+
 
             if (Manager::Get()->GetConfigManager(_T("security"))->ReadBool(operation, false))
                 return true;
 
-            ScriptSecurityWarningDlg dlg(Manager::Get()->GetAppWindow(), operation, descr);
+            ScriptSecurityWarningDlg dlg(Manager::Get()->GetAppWindow(), operation, descr, !path.IsEmpty() && path != "ScriptConsole");
             PlaceWindow(&dlg);
             if (dlg.ShowModal() != wxID_OK)
                 return false;
@@ -58,7 +83,7 @@ namespace ScriptBindings
 
                 case ssrTrust: // purposely fall through
                 case ssrTrustPermanently:
-                    Manager::Get()->GetScriptingManager()->TrustCurrentlyRunningScript(response == ssrTrustPermanently);
+                    Manager::Get()->GetScriptingManager()->TrustScript(path, response == ssrTrustPermanently);
                     return true;
 
                 default:
@@ -97,7 +122,7 @@ namespace ScriptBindings
 
             wxFileName fname(Manager::Get()->GetMacrosManager()->ReplaceMacros(*extractor.p1));
             NormalizePath(fname, wxEmptyString);
-            if (SecurityAllows(_T("CreateDir"), fname.GetFullPath()))
+            if (SecurityAllows(v, _T("CreateDir"), fname.GetFullPath()))
             {
                 const int perms = extractor.p2;
                 sq_pushbool(v, ::CreateDirRecursively(fname.GetFullPath(), perms));
@@ -129,7 +154,7 @@ namespace ScriptBindings
 
             wxFileName fname(Manager::Get()->GetMacrosManager()->ReplaceMacros(*extractor.p1));
             NormalizePath(fname, wxEmptyString);
-            if (SecurityAllows(_T("RemoveDir"), fname.GetFullPath()))
+            if (SecurityAllows(v, _T("RemoveDir"), fname.GetFullPath()))
                 sq_pushbool(v, wxRmdir(fname.GetFullPath()));
             else
                 sq_pushbool(v, false);
@@ -169,7 +194,7 @@ namespace ScriptBindings
             bool result = false;
 
             // FIXME (squirrel) This format differs from the one in RenameFile!
-            if (SecurityAllows("CopyFile", wxString::Format("%s -> %s", src, dst)))
+            if (SecurityAllows(v, "CopyFile", wxString::Format("%s -> %s", src, dst)))
             {
                 const wxString &srcFullPath = fnameSrc.GetFullPath();
                 if (wxFileExists(srcFullPath))
@@ -202,7 +227,7 @@ namespace ScriptBindings
             const wxString &dstFullPath = fnameDst.GetFullPath();
 
             bool result = false;
-            if (SecurityAllows("RenameFile", wxString::Format("%s -> %s", srcFullPath, dstFullPath)))
+            if (SecurityAllows(v, "RenameFile", wxString::Format("%s -> %s", srcFullPath, dstFullPath)))
             {
                 if (wxFileExists(srcFullPath))
                     result = wxRenameFile(srcFullPath, dstFullPath);
@@ -222,7 +247,7 @@ namespace ScriptBindings
 
             bool result = false;
             const wxString &fullPath = fname.GetFullPath();
-            if (SecurityAllows("RemoveFile", fullPath))
+            if (SecurityAllows(v, "RemoveFile", fullPath))
             {
                 if (wxFileExists(fullPath))
                     result = wxRemoveFile(fullPath);
@@ -284,7 +309,7 @@ namespace ScriptBindings
             NormalizePath(fname, wxEmptyString);
             const wxString &fullPath = fname.GetFullPath();
             bool result = false;
-            if (SecurityAllows("CreateFile", fullPath))
+            if (SecurityAllows(v, "CreateFile", fullPath))
             {
                 wxFile f(fullPath, wxFile::write);
                 result = cbWrite(f, *extractor.p2);
@@ -302,7 +327,7 @@ namespace ScriptBindings
             const wxString &command = *extractor.p1;
 
             SQInteger result = -1;
-            if (SecurityAllows("Execute", command))
+            if (SecurityAllows(v, "Execute", command))
             {
                 wxArrayString output;
                 result = wxExecute(command, output, wxEXEC_NODISABLE);
@@ -320,7 +345,7 @@ namespace ScriptBindings
             const wxString &command = *extractor.p1;
 
             wxString result;
-            if (SecurityAllows("Execute", command))
+            if (SecurityAllows(v, "Execute", command))
             {
                 wxArrayString output;
                 wxExecute(command, output, wxEXEC_NODISABLE);
@@ -338,7 +363,7 @@ namespace ScriptBindings
             const wxString &command = *extractor.p1;
 
             wxString result;
-            if (SecurityAllows("Execute", command))
+            if (SecurityAllows(v, "Execute", command))
             {
                 wxArrayString output;
                 wxArrayString error;

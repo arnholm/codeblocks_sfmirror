@@ -49,14 +49,6 @@
 									</object>
 									<object class="sizeritem">
 										<object class="wxChoice" name="cmbAnswer">
-											<content>
-												<item>ALLOW execution of this command</item>
-												<item>ALLOW execution of this command for all scripts from now on</item>
-												<item>DENY execution of this command</item>
-												<item>Mark this script as TRUSTED for this session</item>
-												<item>Mark this script as TRUSTED permanently</item>
-											</content>
-											<selection>2</selection>
 										</object>
 										<flag>wxALIGN_TOP</flag>
 									</object>
