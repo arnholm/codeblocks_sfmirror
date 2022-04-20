@@ -25,7 +25,7 @@ ScriptSecurityWarningDlg::ScriptSecurityWarningDlg(wxWindow* parent, const wxStr
     //ctor
     m_hasPath = hasPath;
 
-    wxXmlResource::Get()->LoadObject(this, parent, _T("ScriptingSecurityDlg"), _T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "ScriptingSecurityDlg", "wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     wxColour c = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
@@ -38,19 +38,18 @@ ScriptSecurityWarningDlg::ScriptSecurityWarningDlg(wxWindow* parent, const wxStr
     if (m_hasPath)
     {
         // The operation to ask has its origin in a valid file, so we can ask the user if he wants to trust this file
-        cmbAnswer->Append({_("ALLOW execution of this command"),
-                           _("ALLOW execution of this command for all scripts from now on"),
-                           _("DENY execution of this command"),
-                           _("Mark this script as TRUSTED for this session"),
-                           _("Mark this script as TRUSTED permanently")});
+        cmbAnswer->Append(_("ALLOW execution of this command"));
+        cmbAnswer->Append(_("ALLOW execution of this command for all scripts from now on"));
+        cmbAnswer->Append(_("DENY execution of this command"));
+        cmbAnswer->Append(_("Mark this script as TRUSTED for this session"));
+        cmbAnswer->Append(_("Mark this script as TRUSTED permanently"));
         cmbAnswer->SetSelection(2);
     }
     else
     {
         // The  operation is not called from a file, so we can ask only for current permission
-        cmbAnswer->Append(std::vector<wxString>({_("ALLOW execution of this command"),
-                                                 _("DENY execution of this command")})
-                         );
+        cmbAnswer->Append(_("ALLOW execution of this command"));
+        cmbAnswer->Append(_("DENY execution of this command"));
         cmbAnswer->SetSelection(1);
     }
 }
