@@ -886,10 +886,10 @@ class GdbCmd_MemoryRangeWatch : public DebuggerCmd
                 if (!bFoundAddress)
                 {
                     // Save address if one does not exist, but only for the first valid address found
-                    uint64_t llBaseAddress;
+                    wxULongLong_t llBaseAddress;
                     if (addr.ToULongLong(&llBaseAddress, 16))
                     {
-                        m_watch->SetAddress(llBaseAddress);
+                        m_watch->SetAddress(uint64_t(llBaseAddress));
                         bFoundAddress = true;
                     }
                 }

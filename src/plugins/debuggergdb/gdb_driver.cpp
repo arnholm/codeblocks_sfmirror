@@ -422,7 +422,7 @@ void GDB_driver::SetMemoryRangeValue(uint64_t addr, const wxString& value)
 void GDB_driver::SetMemoryRangeValue(wxString address, const wxString& value)
 {
     const size_t size = value.size();
-    uint64_t llAddres;
+    wxULongLong_t llAddres;
 
     if ((size == 0) || (!address.ToULongLong(&llAddres, 16)))
         return;
@@ -440,9 +440,9 @@ void GDB_driver::SetMemoryRangeValue(wxString address, const wxString& value)
     wxString commandStr;
     // Check if build is for WX MS Windows
     #ifdef __WXMSW__
-        commandStr.Printf(wxT("set {char [%ul]} 0x%" PRIx64 "="), size, llAddres);
+        commandStr.Printf(wxT("set {char [%ul]} 0x%" PRIx64 "="), size, uint64_t(llAddres));
     #else
-        commandStr.Printf(wxT("set {char [%zu]} 0x%" PRIx64 "="), size, llAddres);
+        commandStr.Printf(wxT("set {char [%zu]} 0x%" PRIx64 "="), size, uint64_t(llAddres));
     #endif // __WXMSW__
 
     commandStr << dataStr;
