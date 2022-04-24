@@ -26,8 +26,9 @@ cbSplashScreen::cbSplashScreen(const wxBitmap& bitmap)
 {
 }
 
-void cbSplashScreen::DrawReleaseInfo(wxDC  &dc)
+void cbSplashScreen::DrawReleaseInfo(wxDC& dc)
 {
+    wxCoord w, h;
     const int text_center = 450;
     const int y = 220;
 
@@ -39,8 +40,15 @@ void cbSplashScreen::DrawReleaseInfo(wxDC  &dc)
     dc.SetTextForeground(*wxBLACK);
 
     dc.SetFont(wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-    const wxSize titleSize(dc.GetMultiLineTextExtent(title));
-    dc.DrawText(title, text_center - titleSize.GetWidth()/2, 145 - titleSize.GetHeight()/2);
+    dc.GetMultiLineTextExtent(title, &w, &h);
+    int h0 = 145 - h/2;
+    const wxArrayString lines(wxSplit(title, '\n'));
+    for (const wxString &line : lines)
+    {
+        dc.GetTextExtent(line, &w, &h);
+        dc.DrawText(line, text_center - w/2, h0);
+        h0 += h;
+    }
 
     wxFont largeFont(15, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     wxFont smallFont(10, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -73,7 +81,7 @@ void cbSplashScreen::DrawReleaseInfo(wxDC  &dc)
     }
 }
 
-void cbSplashScreen::OnCloseWindow(wxCloseEvent &)
+void cbSplashScreen::OnCloseWindow(wxCloseEvent&)
 {
     // Don't destroy it here. It creates a dangling pointer in app.cpp and crashes C::B
     Hide();
