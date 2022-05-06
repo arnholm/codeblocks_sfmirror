@@ -3404,7 +3404,6 @@ static char *scan_request(char *c)
                     else
                         escapesym='\\';
                     break;
-                    c=skip_till_newline(c);
                 }
                 case REQ_eo: // groff(7) "turn Escape character Off"
                 {
@@ -3415,7 +3414,6 @@ static char *scan_request(char *c)
                 case REQ_ex: // groff(7) "EXit"
                 {
                     return 0;
-                    break;
                 }
                 case REQ_fc: // groff(7) "set Field and pad Character"
                 {
