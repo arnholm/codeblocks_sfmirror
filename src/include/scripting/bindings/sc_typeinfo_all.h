@@ -22,10 +22,12 @@ class ProjectManager;
 class ScriptingManager;
 class UserVariableManager;
 
-class TiXmlHandle;
 class TiXmlAttribute;
+class TiXmlDocument;
 class TiXmlElement;
+class TiXmlHandle;
 class TiXmlNode;
+class TiXmlPrinter;
 
 /// @file
 /// This file contains type traits for all C++ classes/structs known to Squirrel through our
