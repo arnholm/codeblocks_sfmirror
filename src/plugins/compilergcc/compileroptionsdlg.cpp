@@ -3072,8 +3072,8 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
     if (m_MenuOption == FMO_COnly)
     {
         Compiler* compiler = CompilerFactory::GetCompiler(m_CurrentCompilerIdx);
-        wxTextEntryDialog dlg(this, wxT("List flags that will only be used during C compilation"),
-                              wxT("C - only flags"), compiler->GetCOnlyFlags(), wxTextEntryDialogStyle|wxTE_MULTILINE|wxRESIZE_BORDER);
+        wxTextEntryDialog dlg(this, _("List flags that will only be used during C compilation"),
+                              _("C - only flags"), compiler->GetCOnlyFlags(), wxTextEntryDialogStyle|wxTE_MULTILINE|wxRESIZE_BORDER);
         // TODO: Hack for Ubuntu, see here: http://forums.codeblocks.org/index.php/topic,16463.msg115270.html#msg115270 (Remove if no longer needed.)
         if (dlg.GetSize().GetHeight() < 220)
         {
