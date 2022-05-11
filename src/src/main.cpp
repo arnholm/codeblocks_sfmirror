@@ -1164,10 +1164,10 @@ void MainFrame::RunStartupScripts()
                 else if (!se.menu.IsEmpty())
                     Manager::Get()->GetScriptingManager()->RegisterScriptMenu(se.menu, startup, false);
                 else
-                    Manager::Get()->GetLogManager()->LogWarning(F(_("Startup script/function '%s' not loaded: invalid configuration"), se.script.wx_str()));
+                    Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Startup script/function '%s' not loaded: invalid configuration"), se.script));
             }
             else
-                Manager::Get()->GetLogManager()->LogWarning(F(_("Startup script '%s' not found"), se.script.wx_str()));
+                Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Startup script '%s' not found"), se.script));
         }
     }
 }
@@ -1293,7 +1293,7 @@ void MainFrame::CreateMenubar()
 
                 hl->AppendRadioItem(id, lang,
                                     wxString::Format(_("Switch highlighting mode for current document to \"%s\""),
-                                                     lang.wx_str()));
+                                                     lang));
                 Connect(id, wxEVT_COMMAND_MENU_SELECTED,
                         wxObjectEventFunction(&MainFrame::OnEditHighlightMode));
                 Connect(id, wxEVT_UPDATE_UI,
@@ -1877,7 +1877,7 @@ void MainFrame::SaveViewLayout(const wxString& name, const wxString& layout, con
     if (viewLayouts && viewLayouts->FindItem(name) == wxNOT_FOUND)
     {
         int id = wxNewId();
-        viewLayouts->InsertCheckItem(viewLayouts->GetMenuItemCount() - 3, id, name, wxString::Format(_("Switch to %s perspective"), name.wx_str()));
+        viewLayouts->InsertCheckItem(viewLayouts->GetMenuItemCount() - 3, id, name, wxString::Format(_("Switch to %s perspective"), name));
         Connect( id,  wxEVT_COMMAND_MENU_SELECTED,
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)&MainFrame::OnViewLayout);
         m_PluginIDsMap[id] = name;
@@ -1994,7 +1994,7 @@ bool MainFrame::DoCheckCurrentLayoutForChanges(bool canCancel)
     if (layoutChanged)
     {
         AnnoyingDialog dlg(_("Layout changed"),
-                            wxString::Format(_("The perspective '%s' has changed. Do you want to save it?"), m_LastLayoutName.wx_str()),
+                            wxString::Format(_("The perspective '%s' has changed. Do you want to save it?"), m_LastLayoutName),
                             wxART_QUESTION,
                             canCancel ? AnnoyingDialog::YES_NO_CANCEL : AnnoyingDialog::YES_NO,
                             // partial fix for bug 18970 (fix is incomplete to prevent the user from saving 'rtCANCEL')
@@ -2132,7 +2132,7 @@ ToolbarInfo MainFrame::DoAddPluginToolbar(cbPlugin* plugin)
 
 void MainFrame::DoAddPlugin(cbPlugin* plugin)
 {
-    //Manager::Get()->GetLogManager()->DebugLog(_T("Adding plugin: %s"), plugin->GetInfo()->name.wx_str());
+    //Manager::Get()->GetLogManager()->DebugLog(_T("Adding plugin: %s"), plugin->GetInfo()->name);
     AddPluginInHelpPluginsMenu(plugin);
     if (plugin->GetType() == ptTool)
     {
@@ -2212,7 +2212,7 @@ bool MainFrame::Open(const wxString& filename, bool addToHistory)
     logger->DebugLog(_T("Opening file ") + name);
     bool ret = OpenGeneric(name, addToHistory);
     if (!ret)
-        logger->LogError(wxString::Format(wxT("Opening file '%s' failed!"), name.wx_str()));
+        logger->LogError(wxString::Format(wxT("Opening file '%s' failed!"), name));
 
     return ret;
 }
@@ -2320,7 +2320,7 @@ bool MainFrame::OpenGeneric(const wxString& filename, bool addToHistory)
 
 bool MainFrame::DoOpenProject(const wxString& filename, bool addToHistory)
 {
-//    Manager::Get()->GetLogManager()->DebugLog(_T("Opening project '%s'"), filename.wx_str());
+//    Manager::Get()->GetLogManager()->DebugLog(_T("Opening project '%s'"), filename);
     if (!wxFileExists(filename))
     {
         cbMessageBox(_("The project file does not exist..."), _("Error"), wxICON_ERROR);
@@ -2658,7 +2658,7 @@ void MainFrame::OnPluginsExecuteMenu(wxCommandEvent& event)
     if (!pluginName.IsEmpty())
         Manager::Get()->GetPluginManager()->ExecutePlugin(pluginName);
     else
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("No plugin found for ID %d"), event.GetId()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("No plugin found for ID %d", event.GetId()));
 }
 
 void MainFrame::OnHelpPluginMenu(wxCommandEvent& event)
@@ -2669,7 +2669,7 @@ void MainFrame::OnHelpPluginMenu(wxCommandEvent& event)
         const PluginInfo* pi = Manager::Get()->GetPluginManager()->GetPluginInfo(pluginName);
         if (!pi)
         {
-            Manager::Get()->GetLogManager()->DebugLog(_T("No plugin info for ") + pluginName);
+            Manager::Get()->GetLogManager()->DebugLog("No plugin info for " + pluginName);
             return;
         }
         dlgAboutPlugin dlg(this, pi);
@@ -2677,7 +2677,7 @@ void MainFrame::OnHelpPluginMenu(wxCommandEvent& event)
         dlg.ShowModal();
     }
     else
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("No plugin found for ID %d"), event.GetId()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("No plugin found for ID %d", event.GetId()));
 }
 
 void MainFrame::OnFileNewWhat(wxCommandEvent& event)
@@ -2902,7 +2902,7 @@ void MainFrame::OnFileSave(cb_unused wxCommandEvent& event)
     if (!Manager::Get()->GetEditorManager()->SaveActive())
     {
         wxString msg;
-        msg.Printf(_("File %s could not be saved..."), Manager::Get()->GetEditorManager()->GetActiveEditor()->GetFilename().wx_str());
+        msg.Printf(_("File %s could not be saved..."), Manager::Get()->GetEditorManager()->GetActiveEditor()->GetFilename());
         cbMessageBox(msg, _("Error saving file"), wxICON_ERROR);
     }
     DoUpdateStatusBar();
@@ -4314,7 +4314,7 @@ void MainFrame::OnViewLayoutDelete(cb_unused wxCommandEvent& event)
         return;
     }
 
-    if (cbMessageBox(wxString::Format(_("Are you really sure you want to delete the perspective '%s'?"), m_LastLayoutName.wx_str()),
+    if (cbMessageBox(wxString::Format(_("Are you really sure you want to delete the perspective '%s'?"), m_LastLayoutName),
                     _("Confirmation"),
                     wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT) == wxID_YES)
     {
@@ -4340,7 +4340,7 @@ void MainFrame::OnViewLayoutDelete(cb_unused wxCommandEvent& event)
                 m_PluginIDsMap.erase(it2);
         }
 
-        cbMessageBox(wxString::Format(_("Perspective '%s' deleted.\nWill now revert to perspective '%s'..."), m_LastLayoutName.wx_str(), gDefaultLayout.wx_str()),
+        cbMessageBox(wxString::Format(_("Perspective '%s' deleted.\nWill now revert to perspective '%s'..."), m_LastLayoutName, gDefaultLayout),
                         _("Information"), wxICON_INFORMATION);
 
         // finally, revert to the default layout
