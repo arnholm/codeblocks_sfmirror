@@ -33,6 +33,7 @@
 #endif
 
 #include <wx/progdlg.h>
+#include <wx/checkbox.h>
 
 #include "cbstyledtextctrl.h"
 #include "encodingdetector.h"
@@ -132,7 +133,7 @@ wxWindow* ToDoListView::CreateControl(wxWindow* parent)
     bs->Add(hbs, 0, wxGROW | wxALL, 4);
     m_pPanel->SetSizer(bs);
 
-    m_pAllowedTypesDlg = new CheckListDialog(m_pPanel);
+    m_pAllowedTypesDlg = new CheckListDialog(m_pPanel, wxID_ANY, _("Select type"), wxDefaultPosition, wxDefaultSize);
     return m_pPanel;
 }
 
@@ -155,6 +156,10 @@ void ToDoListView::Parse()
     // based on user prefs, parse files for todo items
     if (m_Ignore || (m_pPanel && !m_pPanel->IsShownOnScreen()) )
         return; // Reentrancy
+
+    // Load the current configuration for allowed types
+    m_allowedTypes.clear();
+    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &m_allowedTypes);
 
     Clear(); // clear the gui
     m_ItemsMap.clear(); // clear the data
@@ -256,6 +261,11 @@ void ToDoListView::ParseCurrent(bool forced)
 {
     if (m_Ignore)
         return; // Reentrancy
+
+    // Load the current configuration for allowed types
+    m_allowedTypes.clear();
+    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &m_allowedTypes);
+
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(Manager::Get()->GetEditorManager()->GetActiveEditor());
     if (ed)
     {
@@ -480,8 +490,6 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
 
     m_ItemsMap[filename].clear();
 
-    const wxArrayString allowedTypes = m_pAllowedTypesDlg->GetChecked();
-
     wxArrayString startStrings;
     if (langName == _T("C/C++") )
     {
@@ -498,13 +506,13 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
     if ( !cmttoken.streamCommentStart.empty() )
         startStrings.push_back(cmttoken.streamCommentStart);
 
-    if ( startStrings.empty() || allowedTypes.empty() )
+    if ( startStrings.empty() || m_allowedTypes.empty() )
     {
         Manager::Get()->GetLogManager()->Log(_T("ToDoList: Warning: No to-do types or comment symbols selected to search for, nothing to do."));
         return;
     }
 
-    ParseBufferForTODOs(m_ItemsMap, m_Items, startStrings, allowedTypes, buffer, filename);
+    ParseBufferForTODOs(m_ItemsMap, m_Items, startStrings, m_allowedTypes, buffer, filename);
 }
 
 void ToDoListView::FocusEntry(size_t index)
@@ -533,7 +541,15 @@ void ToDoListView::OnListItemSelected(cb_unused wxCommandEvent& event)
 
 void ToDoListView::OnButtonTypes(cb_unused wxCommandEvent& event)
 {
-    m_pAllowedTypesDlg->Show(!m_pAllowedTypesDlg->IsShown());
+    PlaceWindow(m_pAllowedTypesDlg);
+
+    // Read configuration fresh from the config manager
+    wxArrayString selectedTypes;
+    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &selectedTypes);
+    m_pAllowedTypesDlg->SetChecked(selectedTypes);
+
+    if (m_pAllowedTypesDlg->ShowModal() == wxID_OK)
+        Parse();    // When dialog is closed with OK, reparse...
 }
 
 void ToDoListView::OnButtonRefresh(cb_unused wxCommandEvent& event)
@@ -607,26 +623,40 @@ CheckListDialog::CheckListDialog(wxWindow*       parent,
     m_checkList = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkList1Choices, 0 );
     boxSizer->Add( m_checkList, 1, wxEXPAND, 5 );
 
-    m_okBtn = new wxButton(this, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
-    boxSizer->Add( m_okBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxBOTTOM, 5 );
+    wxStdDialogButtonSizer *buttonSizer = new wxStdDialogButtonSizer();
+    m_okBtn = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
+    m_checkAll = new wxCheckBox(this, wxID_ANY, _("all"), wxDefaultPosition, wxSize(45, 25), wxCHK_3STATE);
+
+    buttonSizer->AddButton(new wxButton(this, wxID_CANCEL, _("&Cancel")));
+    buttonSizer->AddButton(m_okBtn);
+    buttonSizer->Realize();
+
+    wxBoxSizer* controlSizer = new wxBoxSizer(wxHORIZONTAL);
+    controlSizer->Add( m_checkAll, 0, wxLEFT|wxTOP|wxBOTTOM, 5 );
+    controlSizer->Add( buttonSizer, 1, wxEXPAND|wxTOP|wxBOTTOM, 5 );
+    boxSizer->Add(controlSizer, 0, wxEXPAND|wxTOP|wxBOTTOM, 5 );
 
     SetSizer( boxSizer );
     Layout();
 
     // Connect Events
     m_okBtn->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CheckListDialog::OkOnButtonClick ), NULL, this);
+    m_checkAll->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CheckListDialog::OnAllClick ), NULL, this);
+    m_checkList->Connect(wxEVT_CHECKLISTBOX, wxCommandEventHandler( CheckListDialog::OnListCheck ), NULL, this);
 }
 
 CheckListDialog::~CheckListDialog()
 {
     // Disconnect Events
     m_okBtn->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CheckListDialog::OkOnButtonClick ), NULL, this);
+    m_checkAll->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CheckListDialog::OnAllClick ), NULL, this);
+    m_checkList->Disconnect(wxEVT_CHECKLISTBOX, wxCommandEventHandler( CheckListDialog::OnListCheck ), NULL, this);
 }
 
 void CheckListDialog::OkOnButtonClick(cb_unused wxCommandEvent& event)
 {
-    Show(false);
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("types_selected"), GetChecked());
+    Manager::Get()->GetConfigManager("todo_list")->Write("types_selected", GetChecked());
+    EndModal(wxID_OK);
 }
 
 bool CheckListDialog::IsChecked(const wxString& item) const
@@ -634,6 +664,26 @@ bool CheckListDialog::IsChecked(const wxString& item) const
     int result = m_checkList->FindString(item, true);
     result = (result == wxNOT_FOUND) ? 0 : result;
     return m_checkList->IsChecked(result);
+}
+
+void CheckListDialog::OnAllClick(wxCommandEvent& event)
+{
+    bool checked = event.IsChecked();
+    for (unsigned i = 0; i < m_checkList->GetCount(); ++i)
+    {
+        m_checkList->Check(i, checked);
+    }
+}
+
+void CheckListDialog::OnListCheck(wxCommandEvent& event)
+{
+    size_t checkedItems = GetChecked().size();
+    if (checkedItems == 0)
+        m_checkAll->Set3StateValue(wxCHK_UNCHECKED );
+    else if (checkedItems < m_checkList->GetCount())
+        m_checkAll->Set3StateValue(wxCHK_UNDETERMINED );
+    else
+        m_checkAll->Set3StateValue(wxCHK_CHECKED);
 }
 
 wxArrayString CheckListDialog::GetChecked() const

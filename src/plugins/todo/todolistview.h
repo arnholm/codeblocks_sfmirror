@@ -34,6 +34,8 @@ class CheckListDialog : public wxDialog
         ~CheckListDialog();
 
         virtual void OkOnButtonClick( wxCommandEvent& event );
+        virtual void OnAllClick( wxCommandEvent& event );
+        virtual void OnListCheck( wxCommandEvent& event );
 
         void AddItem(const wxArrayString& items) { m_checkList->InsertItems(items, 0); }
         void Clear()                             { m_checkList->Clear();               }
@@ -45,6 +47,7 @@ class CheckListDialog : public wxDialog
     protected:
         wxCheckListBox* m_checkList;
         wxButton*       m_okBtn;
+        wxCheckBox*     m_checkAll;
 
     private:
 };
@@ -115,6 +118,8 @@ class ToDoListView : public wxEvtHandler, public ListCtrlLogger
         // user filter, we can show only the specified todo items belongs to a single user
         wxComboBox*          m_pUser;
         wxStaticText*        m_pTotal;
+
+        wxArrayString        m_allowedTypes; /**< Allowed types for the current parser run. This variable has to be updated before running the parser function */
 
         // type string array: such as  todo, readme, note, fixme, and so on
         const wxArrayString& m_Types;
