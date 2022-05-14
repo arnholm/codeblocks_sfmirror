@@ -68,17 +68,33 @@ cbStyledTextCtrl::~cbStyledTextCtrl()
 
 // events
 
-void cbStyledTextCtrl::OnKillFocus(wxFocusEvent& event)
+void cbStyledTextCtrl::OnKillAutoCompPopups() //CallAfter
 {
-    // cancel auto-completion list when losing focus
     if ( AutoCompActive() )
         AutoCompCancel();
 
     if ( CallTipActive() )
         CallTipCancel();
-
-    event.Skip();
 }
+
+void cbStyledTextCtrl::OnKillFocus(wxFocusEvent& event)
+{
+     event.Skip();
+
+     // cancel auto-completion list when losing focus
+
+    // But don't kill the popups here. When AutoComplete::Select() does not
+    // find an appropriate string to select it issues a cancel to the popup
+    // which issues a SetFocus() back to this editor. If we kill it here, on return
+    // AutoComplete::Select() will use a popup address of 0x0; CRASH !!
+
+    // Issue a callback to close the popups after this Kill/SetFocus finishes.
+    if ( AutoCompActive() )
+           CallAfter(&cbStyledTextCtrl::OnKillAutoCompPopups);
+
+    if ( CallTipActive() )
+           CallAfter(&cbStyledTextCtrl::OnKillAutoCompPopups);
+ }
 
 void cbStyledTextCtrl::OnSetFocus(wxFocusEvent& event)
 {

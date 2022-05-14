@@ -84,6 +84,7 @@ class DLLIMPORT cbStyledTextCtrl : public wxScintilla
         void OnKeyDown(wxKeyEvent& event);
         void OnKeyUp(wxKeyEvent& event);
         void OnMouseLeftUp(wxMouseEvent& event);
+        void OnKillAutoCompPopups(); //CallAfter
 
         bool AllowTabSmartJump();
         void HighlightRightBrace();
