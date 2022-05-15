@@ -19,6 +19,7 @@ class wxComboBox;
 class wxButton;
 class wxPanel;
 class wxStaticText;
+class wxCheckBox;
 
 // when user click the "Types" button on the Todo list control panel, it will show a dialog, the
 // dialog can let user to filter which types will be shown in the Todo list.
