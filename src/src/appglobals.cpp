@@ -36,7 +36,7 @@ namespace appglobals
                                                             static_cast<int>(PLUGIN_SDK_VERSION_MINOR),
                                                             static_cast<int>(PLUGIN_SDK_VERSION_RELEASE));
 
-    const wxString AppUrl                = _T("http://www.codeblocks.org");
+    const wxString AppUrl                = _T("https://www.codeblocks.org");
     const wxString AppContactEmail       = _T("info@codeblocks.org");
 
 #if defined(__WXMSW__)
