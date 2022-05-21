@@ -1,7 +1,7 @@
 AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		$(CB_GAMIN_CFLAGS) \
 		-I$(top_srcdir)/src/include \
-		-I$(top_srcdir)/src/sdk/wxscintilla/include
+		-I$(top_srcdir)/src/sdk/wxscintilla/include \
 		-D__FAM__
 
 pluginlibdir = $(pkglibdir)/plugins
