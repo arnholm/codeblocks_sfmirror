@@ -394,6 +394,10 @@ void MacrosManager::RecalcVars(const cbProject* project, EditorBase* editor, con
             wxFileName MasterPath;
             MasterPath.SetPath(c->GetMasterPath(), wxPATH_NATIVE);
             m_Macros[_T("TARGET_COMPILER_DIR")] = MasterPath.GetPathWithSep(wxPATH_NATIVE);
+
+            // support wx-config in MSYS2 MinGW
+            m_Macros[_T("TARGET_COMPILER_UNIX_PATH")] = MasterPath.GetVolume() +
+                MasterPath.GetVolumeSeparator() + MasterPath.GetPath(wxPATH_GET_VOLUME, wxPATH_UNIX);
         }
         m_Macros[_T("TARGET_OBJECT_DIR")] = target->GetObjectOutput();
     }
