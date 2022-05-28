@@ -192,9 +192,18 @@ void ThreadSearchView::OnCboSearchExprEnter(wxCommandEvent &/*event*/)
     // in combo box text control.
     // Runs a multi threaded search.
 
-    const wxString &value = m_pCboSearchExpr->GetValue();
+    wxString value = m_pCboSearchExpr->GetValue();
     if (value.empty())
-        return;
+    {
+        // If the value of the combo box is empty we search for the last
+        // searched string and use it instead
+        const wxArrayString& strings = m_pCboSearchExpr->GetStrings();
+        if(strings.size() == 0)
+            return;
+
+        value = strings.Item(0);
+        m_pCboSearchExpr->SetValue(value);
+    }
     ThreadSearchFindData findData = m_ThreadSearchPlugin.GetFindData();
     findData.SetFindText(value);
     ThreadedSearch(findData);
@@ -232,7 +241,20 @@ void ThreadSearchView::OnBtnSearchClick(wxCommandEvent &/*event*/)
         {
             // We start the thread search
             ThreadSearchFindData findData = m_ThreadSearchPlugin.GetFindData();
-            findData.SetFindText(m_pCboSearchExpr->GetValue());
+            wxString value = m_pCboSearchExpr->GetValue();
+            if(value.empty())
+            {
+                // if the search value is empty we check if the search history is >0 and use the last searched
+                // word to repeat the search
+                const wxArrayString& strings = m_pCboSearchExpr->GetStrings();
+                if(strings.size() == 0)
+                    return;
+
+                value = strings.Item(0);
+                m_pCboSearchExpr->SetValue(value);
+            }
+
+            findData.SetFindText(value);
             ThreadedSearch(findData);
         }
     }
@@ -341,7 +363,10 @@ void ThreadSearchView::OnQuickOptionsUpdateUI(wxUpdateUIEvent &event)
     ThreadSearchFindData &findData = m_ThreadSearchPlugin.GetFindData();
     if (event.GetId() == controlIDs.Get(ControlIDs::idBtnSearch))
     {
-        const bool hasValue = !m_pCboSearchExpr->GetValue().empty();
+        // We enable the search button when a search string is present in the combo box
+        // or if the search history is not empty. If the user searches with an empty combo box
+        // the last performed search will be repeated (search word taken from combo box history)
+        const bool hasValue = !m_pCboSearchExpr->GetValue().empty() || m_pCboSearchExpr->GetStrings().size() > 0;
         event.Enable(hasValue);
     }
     else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionWholeWord))
