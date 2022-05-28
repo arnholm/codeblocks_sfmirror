@@ -1513,38 +1513,48 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     delete control; // done with it
     delete progress; // done here too
 
+    // We have to check different view options:
+    //    auto_hide -> auto show/hide the log panel -> if this option is not set we are not allowed to show the log panel
+    //    auto_show_search -> sub option to explicitly disable the search window
+    bool automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_hide"), false);
+    if(automaticallyShowPanel)
+        automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true);
+
+    if (automaticallyShowPanel)
+    {
+        CodeBlocksLogEvent evtShow(cbEVT_SHOW_LOG_MANAGER);
+        Manager::Get()->ProcessEvent(evtShow);
+    }
+
     if (count > 0)
     {
         m_pSearchLog->SetBasePath(data->searchPath);
-        if (Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true))
-        {
-            CodeBlocksLogEvent evtSwitch(cbEVT_SWITCH_TO_LOG_WINDOW, m_pSearchLog);
-            CodeBlocksLogEvent evtShow(cbEVT_SHOW_LOG_MANAGER);
-
-            Manager::Get()->ProcessEvent(evtSwitch);
-            Manager::Get()->ProcessEvent(evtShow);
-        }
         if (data->hasToOpenAfterFind)
             m_pSearchLog->FocusEntry(oldcount);
+
+        if(!m_pSearchLog->IsVisible() && !automaticallyShowPanel)
+        {
+            // If the log window is not visible and we are not allowed to open the log panel we inform the user with a message box
+            wxString msg;
+            msg.Printf(_("%s found in %lu files. To show results open Log View."),data->findText.c_str(), static_cast<unsigned long>(filesList.GetCount()));
+            cbMessageBox(msg, _("Results"), wxICON_INFORMATION);
+        }
     }
     else
     {
-        wxString msg;
-        if ( data->delOldSearches )
-        {
-            msg.Printf(_("Not found: %s"), data->findText.c_str());
+        const wxString msg = wxString::Format(_("%s not found in %lu files"), data->findText, static_cast<unsigned long>(filesList.GetCount()));
+        LogSearch(_T(""), -1, msg );
+        m_pSearchLog->FocusEntry(oldcount);
+
+        if(!m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it
             cbMessageBox(msg, _("Result"), wxICON_INFORMATION);
-            cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-            if (ed)
-                ed->GetControl()->SetSCIFocus(true);
-        }
-        else
-        {
-            msg.Printf(_("not found in %lu files"), static_cast<unsigned long>(filesList.GetCount()));
-            LogSearch(_T(""), -1, msg );
-            m_pSearchLog->FocusEntry(oldcount);
-        }
+
     }
+
+
+    // Automatically focus the search log window
+    CodeBlocksLogEvent evtSwitch(cbEVT_SWITCH_TO_LOG_WINDOW, m_pSearchLog);
+    Manager::Get()->ProcessEvent(evtSwitch);
 
     return count;
 }
