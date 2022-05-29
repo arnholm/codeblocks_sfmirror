@@ -22,3 +22,5 @@ Makefile.in
 /config.guess
 /config.sub
 *.cbTemp
+**/.cache
+**/compile_commands.json
