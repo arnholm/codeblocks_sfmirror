@@ -26,7 +26,7 @@ class DLLIMPORT cbSearchResultsLog : public ListCtrlLogger, public wxEvtHandler
          *
          * \return true if the log window is visible for the user
          */
-		bool IsVisible()    { return control->IsShownOnScreen(); }
+		bool IsVisible();
 	protected:
         void OnDoubleClick(wxCommandEvent& event);
         void SyncEditor(int selIndex);

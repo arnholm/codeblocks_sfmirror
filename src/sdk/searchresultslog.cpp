@@ -103,3 +103,8 @@ void cbSearchResultsLog::OnDoubleClick(cb_unused wxCommandEvent& event)
 
     SyncEditor(index);
 } // end of OnDoubleClick
+
+bool cbSearchResultsLog::IsVisible()
+{
+    return control->IsShownOnScreen();
+}
