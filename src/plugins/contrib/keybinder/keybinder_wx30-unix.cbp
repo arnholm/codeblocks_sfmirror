@@ -51,11 +51,10 @@
 			<Add after="zip -j9 ../../../devel30/share/codeblocks/keybinder.zip manifest.xml" />
 			<Mode after="always" />
 		</ExtraCommands>
-		<Unit filename="DebugLogging.h" />
 		<Unit filename="cJSON.cpp" />
 		<Unit filename="cJSON.h" />
-		<Unit filename="cbKeyConfigPanel.h" />
 		<Unit filename="cbKeyConfigPanel.cpp" />
+		<Unit filename="cbKeyConfigPanel.h" />
 		<Unit filename="cbkeybinder.cpp">
 			<Option target="default" />
 			<Option target="KeyBinder plugin" />
