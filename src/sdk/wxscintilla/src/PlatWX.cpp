@@ -2416,6 +2416,9 @@ ListBoxImpl::ListBoxImpl()
     : lineHeight(10), unicodeMode(false),
       desiredVisibleRows(5), aveCharWidth(8), maxStrWidth(0),
       imgList(NULL), imgTypeMap(NULL)
+/* C::B begin */
+      , technology(wxSCI_TECHNOLOGY_DEFAULT)
+/* C::B end */
 {
 }
 
@@ -2426,14 +2429,31 @@ ListBoxImpl::~ListBoxImpl() {
 
 
 void ListBoxImpl::SetFont(Font &font) {
-    GETLB(wid)->SetFont(*((wxFont*)font.GetID()));
+/* C::B begin */
+    // GETLB(wid)->SetFont(*((wxFont*)font.GetID()));
+    wxFont *NewFont = (wxFont*)font.GetID();
+    if (technology == wxSCI_TECHNOLOGY_DIRECTWRITE)
+    {
+#if wxCHECK_VERSION(3, 1, 4)
+        const double scale = GETLB(wid)->GetDPIScaleFactor();
+#else
+        const double scale = GETLB(wid)->GetContentScaleFactor();
+#endif
+        GETLB(wid)->SetFont(NewFont->Scaled(72.0/(96.0*scale)));
+    }
+    else
+        GETLB(wid)->SetFont(*NewFont);
+/* C::B end */
 }
 
 
-void ListBoxImpl::Create(Window &parent, int ctrlID, Point location_, int lineHeight_, bool unicodeMode_, int WXUNUSED(technology_)) {
+void ListBoxImpl::Create(Window &parent, int ctrlID, Point location_, int lineHeight_, bool unicodeMode_, int technology_) {
     location = location_;
     lineHeight =  lineHeight_;
     unicodeMode = unicodeMode_;
+/* C::B begin */
+    technology = technology_;
+/* C::B end */
     maxStrWidth = 0;
     wid = new wxSCIListBoxWin(GETWIN(parent.GetID()), ctrlID, location);
     if (imgList != NULL)
@@ -2464,6 +2484,17 @@ PRectangle ListBoxImpl::GetDesiredRect() {
     // wxListCtrl doesn't have a DoGetBestSize, so instead we kept track of
     // the max size in Append and calculate it here...
     int maxw = maxStrWidth * aveCharWidth;
+/* C::B begin */
+    if (technology == wxSCI_TECHNOLOGY_DIRECTWRITE)
+    {
+#if wxCHECK_VERSION(3, 1, 4)
+        const double scale = GETLB(wid)->GetDPIScaleFactor();
+#else
+        const double scale = GETLB(wid)->GetContentScaleFactor();
+#endif
+        maxw = (maxw*96*scale)/72;
+    }
+/* C::B end */
     int maxh ;
 
     // give it a default if there are no lines, and/or add a bit more
@@ -2498,6 +2529,7 @@ PRectangle ListBoxImpl::GetDesiredRect() {
     rc.left = 0;
     rc.right = maxw;
     rc.bottom = maxh;
+
     return rc;
 }
 

@@ -26,6 +26,9 @@ private:
     Point               location;       // Caret location at which the list is opened
     wxImageList*        imgList;
     wxArrayInt*         imgTypeMap;
+/* C::B begin */
+    int                 technology;
+/* C::B end */
 
 public:
     ListBoxImpl();
