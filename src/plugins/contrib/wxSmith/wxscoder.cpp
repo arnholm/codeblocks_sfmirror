@@ -505,17 +505,18 @@ bool wxsCoder::ApplyChangesString(wxString& BaseContent,const wxString& Header,c
     return true;
 }
 
-wxString wxsCoder::RebuildCode(wxString& BaseIndentation,const wxChar* Code,int CodeLen,wxString& EOL)
+wxString wxsCoder::RebuildCode(wxString& BaseIndentation, const wxChar* Code, int CodeLen, wxString& EOL)
 {
     wxString Tab;
-    bool UseTab = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_tab"), false);
-    int TabSize = Manager::Get()->GetConfigManager(_T("editor"))->ReadInt(_T("/tab_size"), 4);
-    if ( !UseTab )
+    ConfigManager *CfgMan = Manager::Get()->GetConfigManager("editor");
+    const bool UseTab = CfgMan->ReadBool("/use_tab", false);
+    if (!UseTab)
     {
-        Tab.Append(_T(' '),TabSize);
+        const int TabSize = CfgMan->ReadInt("/tab_size", 4);
+        Tab.Append(' ', TabSize);
     }
 
-    if ( EOL.IsEmpty() )
+    if (EOL.empty())
         EOL = GetEOLStr();
 
     BaseIndentation.Prepend(EOL);
@@ -523,22 +524,26 @@ wxString wxsCoder::RebuildCode(wxString& BaseIndentation,const wxChar* Code,int 
     wxString Result;
     Result.reserve(CodeLen+10);
 
-    while ( *Code )
+    while (*Code)
     {
-        switch ( *Code )
+        switch (*Code)
         {
-            case _T('\n'):
+            case '\n':
+                while (!Result.empty() && (Result.Last() == ' ' || Result.Last() == '\t'))
+                    Result.RemoveLast();
+
+                Result << BaseIndentation;
+                break;
+            case '\t':
+                if ( !UseTab )
                 {
-                    while (!Result.IsEmpty() &&
-                           (Result.Last() == _T(' ') || Result.Last() == _T('\t')))
-                        Result.RemoveLast();
-                    Result << BaseIndentation;
+                    Result << Tab;
                     break;
                 }
-            case _T('\t'): if ( UseTab ) { Result << Tab; break; }
-
-            default:       Result << *Code;
+            default:
+                Result << *Code;
         }
+
         Code++;
     }
 
