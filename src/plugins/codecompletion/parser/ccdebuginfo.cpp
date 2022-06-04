@@ -86,7 +86,7 @@ namespace CCDebugInfoHelper
             f.Close();        // release file handle
         }
         else
-            cbMessageBox(_("Cannot create file ") + fname, _("CC Debug Info"));
+            cbMessageBox(wxString::Format(_("Cannot create file %s"), fname), _("CC Debug Info"));
     }
 }// namespace CCDebugInfoHelper
 

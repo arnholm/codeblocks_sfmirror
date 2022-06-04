@@ -309,12 +309,12 @@ void AbbreviationsConfigPanel::OnLanguageDelete(cb_unused wxCommandEvent& event)
     wxString lang = m_LanguageCmb->GetValue();
     if (lang.IsSameAs(defaultLanguageStr) || lang.IsSameAs(_T("Fortran")))
     {
-        cbMessageBox(_("Abbreviations for ") + lang + _(" language can't be deleted!"), _("Error"),
+        cbMessageBox(wxString::Format(_("Abbreviations for %s language can't be deleted!"), lang), _("Error"),
                      wxICON_ERROR | wxOK, this);
         return;
     }
 
-    if (cbMessageBox(_("Are you sure you want to delete abbreviations for ") + lang + _(" language?"), _("Confirmation"),
+    if (cbMessageBox(wxString::Format(_("Are you sure you want to delete abbreviations for %s language?"), lang), _("Confirmation"),
                      wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this) == wxID_NO)
         return;
 
