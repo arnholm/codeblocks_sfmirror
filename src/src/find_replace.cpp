@@ -22,6 +22,7 @@
 #include "encodingdetector.h"
 #include "findreplacedlg.h"
 #include "searchresultslog.h"
+#include "main.h"
 
 struct cbFindReplaceData
 {
@@ -1520,6 +1521,8 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     if(automaticallyShowPanel)
         automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true);
 
+    const bool isLogPaneVisible = ((MainFrame*) Manager::Get()->GetAppFrame())->IsLogPaneVisible();
+
     if (automaticallyShowPanel)
     {
         CodeBlocksLogEvent evtShow(cbEVT_SHOW_LOG_MANAGER);
@@ -1532,21 +1535,21 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
         if (data->hasToOpenAfterFind)
             m_pSearchLog->FocusEntry(oldcount);
 
-        if(!m_pSearchLog->IsVisible() && !automaticallyShowPanel)
+        if(!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)
         {
             // If the log window is not visible and we are not allowed to open the log panel we inform the user with a message box
             wxString msg;
-            msg.Printf(_("%s found in %lu files. To show results open Log View."),data->findText.c_str(), static_cast<unsigned long>(filesList.GetCount()));
+            msg.Printf(_("Found %d instances of \"%s\".\nTo show results open Log View."), count, data->findText.c_str());
             cbMessageBox(msg, _("Results"), wxICON_INFORMATION);
         }
     }
     else
     {
-        const wxString msg = wxString::Format(_("%s not found in %lu files"), data->findText, static_cast<unsigned long>(filesList.GetCount()));
+        const wxString msg = wxString::Format(_("\"%s\" not found in %lu files"), data->findText, static_cast<unsigned long>(filesList.GetCount()));
         LogSearch(_T(""), -1, msg );
         m_pSearchLog->FocusEntry(oldcount);
 
-        if(!m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it
+        if(!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it
             cbMessageBox(msg, _("Result"), wxICON_INFORMATION);
 
     }
