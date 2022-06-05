@@ -5621,3 +5621,8 @@ void MainFrame::OnGetGlobalAccels(wxCommandEvent& event)
         globalAccels.push_back(m_pAccelEntries[ii]);
     return;
 }
+
+bool MainFrame::IsLogPaneVisible()
+{
+    return m_LayoutManager.GetPane(m_pInfoPane).IsShown();
+}
