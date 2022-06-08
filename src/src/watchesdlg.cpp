@@ -1081,9 +1081,15 @@ static void GetColumnWidths(wxClientDC &dc, wxPropertyGrid *grid, wxPGProperty *
     {
         wxPGProperty* p = root->Item(ii);
 
+#if wxCHECK_VERSION(3, 1, 7)
+        width[0] = std::max(width[0], state->GetColumnFullWidth(p, 0));
+        width[1] = std::max(width[1], state->GetColumnFullWidth(p, 1));
+        width[2] = std::max(width[2], state->GetColumnFullWidth(p, 2));
+#else
         width[0] = std::max(width[0], state->GetColumnFullWidth(dc, p, 0));
         width[1] = std::max(width[1], state->GetColumnFullWidth(dc, p, 1));
         width[2] = std::max(width[2], state->GetColumnFullWidth(dc, p, 2));
+#endif
     }
     for (unsigned ii = 0; ii < root->GetChildCount(); ++ii)
     {
