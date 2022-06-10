@@ -761,7 +761,7 @@ static int DetectLineEnds(cbStyledTextCtrl* control)
     {
         //In mixed EOL file, give the user a beep and InfoWindow notification.
         wxBell();
-        InfoWindow::Display(_("Mixed Line Endings"), _("Mixed line endings found, setting mode ") + eolModeStr, delay);
+        InfoWindow::Display(_("Mixed Line Endings"), wxString::Format(_("Mixed line endings found, setting mode %s"), eolModeStr), delay);
     }
     return eolMode;
 }

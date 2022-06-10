@@ -155,7 +155,7 @@ void AStylePlugin::OnFormatProject( wxCommandEvent& /*event*/ )
                     if ( fileType == ftSource || fileType == ftHeader || fileType == ftTemplateSource )
                     {
                         FormatFile( filename );
-                        if ( false == progressDlg.Update( i++, wxString(_("Formatting ")) + pf->relativeFilename ) )
+                        if (!progressDlg.Update(i++, wxString::Format(_("Formatting %s"), pf->relativeFilename)))
                             break;
                     }
                 }

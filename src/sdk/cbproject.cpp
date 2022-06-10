@@ -591,7 +591,7 @@ bool cbProject::SaveAs()
         return true;
     }
 
-    cbMessageBox(_("Couldn't save project ") + m_Filename + _("\n(Maybe the file is write-protected?)"), _("Warning"), wxICON_WARNING);
+    cbMessageBox(wxString::Format(_("Couldn't save project %s\n(Maybe the file is write-protected?)"), m_Filename), _("Warning"), wxICON_WARNING);
     return false;
 }
 
@@ -608,7 +608,7 @@ bool cbProject::Save()
         return true;
     }
 
-    cbMessageBox(_("Couldn't save project ") + m_Filename + _("\n(Maybe the file is write-protected?)"), _("Warning"), wxICON_WARNING);
+    cbMessageBox(wxString::Format(_("Couldn't save project %s\n(Maybe the file is write-protected?)"), m_Filename), _("Warning"), wxICON_WARNING);
     return false;
 }
 

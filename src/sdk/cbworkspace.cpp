@@ -115,8 +115,9 @@ bool cbWorkspace::Save(bool force)
     WorkspaceLoader wsp;
     bool ret = wsp.Save(m_Title, m_Filename.GetFullPath());
     SetModified(!ret);
-    if(!ret)
-        cbMessageBox(_("Couldn't save workspace ") + m_Filename.GetFullPath() + _("\n(Maybe the file is write-protected?)"), _("Warning"), wxICON_WARNING);
+    if (!ret)
+        cbMessageBox(wxString::Format(_("Couldn't save workspace %s\n(Maybe the file is write-protected?)"), m_Filename.GetFullPath()), _("Warning"), wxICON_WARNING);
+
     return ret;
 }
 

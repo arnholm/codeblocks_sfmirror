@@ -173,13 +173,13 @@ void OccurrencesHighlighting::BuildModuleMenu(const ModuleType type, wxMenu* men
 
     if ( m_texts.find(word) == m_texts.end() )
     {
-        const wxString label = _("Permanently Highlight '") + word + _T("'");
+        const wxString label(wxString::Format(_("Permanently Highlight '%s'"), word));
         const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
         menu->Insert(position, idMenuEntryPermanent, label);
     }
     else
     {
-        const wxString label = _("Don't Highlight '") + word + _T("'");
+        const wxString label(wxString::Format(_("Don't Highlight '%s'"), word));
         const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
         menu->Insert(position, idMenuEntryRemove, label);
     }
