@@ -23,10 +23,10 @@ AskTypeDlg::AskTypeDlg(wxWindow* parent, const wxString StreamStart, const wxStr
 
     wxChoice *choice = XRCCTRL(*this, "chcCorrect", wxChoice);
     choice->Clear();
-    choice->Append("keep line comment style and move it to the end of the line");
-    choice->Append("keep line comment style at the current position");
+    choice->Append(_("keep line comment style and move it to the end of the line"));
+    choice->Append(_("keep line comment style at the current position"));
 
-    if (!StreamStart.IsEmpty())
+    if (!StreamStart.empty())
         choice->Append(wxString::Format(_("switch to stream style comment (%s ... %s)"), StreamStart, StreamEnd));
 
     choice->SetSelection(0);
