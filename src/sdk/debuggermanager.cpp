@@ -856,7 +856,7 @@ bool DebuggerManager::UnregisterDebugger(cbDebuggerPlugin *plugin)
 
     if (m_registered.empty())
     {
-        DestoryWindows();
+        DestroyWindows();
 
         if (Manager::Get()->GetLogManager())
             Manager::Get()->GetDebuggerManager()->HideLogger();
@@ -1067,7 +1067,7 @@ void DebuggerManager::CreateWindows()
         m_watchesDialog = m_interfaceFactory->CreateWatches();
 }
 
-void DebuggerManager::DestoryWindows()
+void DebuggerManager::DestroyWindows()
 {
     m_interfaceFactory->DeleteBacktrace(m_backtraceDialog);
     m_backtraceDialog = nullptr;
