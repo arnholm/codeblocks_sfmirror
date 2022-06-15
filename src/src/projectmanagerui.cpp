@@ -89,6 +89,7 @@ const int idMenuRenameVFolder            = wxNewId();
 const int idMenuProjectNotes             = wxNewId();
 const int idMenuProjectProperties        = wxNewId();
 const int idMenuFileProperties           = wxNewId();
+const int idMenuOpenInSystemFileBrowser  = wxNewId();
 const int idMenuTreeProjectProperties    = wxNewId();
 const int idMenuTreeFileProperties       = wxNewId();
 const int idMenuTreeOptionsCompile       = wxNewId();
@@ -345,6 +346,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_MENU(idMenuProjectNotes,             ProjectManagerUI::OnNotes)
     EVT_MENU(idMenuProjectProperties,        ProjectManagerUI::OnProperties)
     EVT_MENU(idMenuFileProperties,           ProjectManagerUI::OnProperties)
+    EVT_MENU(idMenuOpenInSystemFileBrowser,  ProjectManagerUI::OnOpenFileInSystemBrowser)
     EVT_MENU(idMenuTreeOptionsCompile,       ProjectManagerUI::OnFileOptions)
     EVT_MENU(idMenuTreeOptionsLink,          ProjectManagerUI::OnFileOptions)
     EVT_MENU(idMenuTreeOptionsEnableBoth,    ProjectManagerUI::OnFileOptions)
@@ -873,6 +875,7 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
         // more project options
         if (ftd->GetKind() == FileTreeData::ftdkProject)
         {
+            menu.Append(idMenuOpenInSystemFileBrowser, _("Open containing folder"));
             menu.Append(idMenuTreeProjectProperties, _("Properties..."));
             menu.Enable(idMenuTreeProjectProperties, PopUpMenuOption);
         }
@@ -896,6 +899,7 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
                 menu.Check(idMenuTreeOptionsCompile, pf->compile);
                 menu.Check(idMenuTreeOptionsLink, pf->link);
             }
+            menu.Append(idMenuOpenInSystemFileBrowser, _("Open containing folder"));
             menu.Append(idMenuTreeFileProperties, _("Properties..."));
             menu.Enable(idMenuTreeFileProperties, PopUpMenuOption);
         }
@@ -1913,6 +1917,26 @@ void ProjectManagerUI::OnNotes(wxCommandEvent& WXUNUSED(event))
 {
     if ( cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject() )
         prj->ShowNotes(false, true);
+}
+
+void ProjectManagerUI::OnOpenFileInSystemBrowser(wxCommandEvent& event)
+{
+    wxTreeItemId sel = GetTreeSelection();
+    if (!sel.IsOk())
+        return;
+    FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(sel);
+
+    if (!ftd)
+        return;
+
+    if (ftd->GetKind() == FileTreeData::ftdkProject && ftd->GetProject())
+    {
+        wxLaunchDefaultApplication(ftd->GetProject()->GetCommonTopLevelPath());
+        return;
+    }
+    if (ProjectFile* pf = ftd->GetProjectFile())
+        wxLaunchDefaultApplication(pf->file.GetPath());
+
 }
 
 void ProjectManagerUI::OnProperties(wxCommandEvent& event)

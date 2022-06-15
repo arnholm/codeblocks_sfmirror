@@ -186,6 +186,7 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void OnOpenFolderFiles(wxCommandEvent& event);
         void OnOpenWith(wxCommandEvent& event);
         void OnProperties(wxCommandEvent& event);
+        void OnOpenFileInSystemBrowser(wxCommandEvent& event);
         void OnFileOptions(wxCommandEvent &event);
         void OnNotes(wxCommandEvent& event);
         void OnGotoFile(wxCommandEvent& event);
