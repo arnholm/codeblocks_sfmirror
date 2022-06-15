@@ -24,7 +24,7 @@
 
 inline void RemoveDockWindow(wxWindow *window)
 {
-    if (window)
+    if (window && !Manager::Get()->IsAppShuttingDown())
     {
         CodeBlocksDockEvent evt(cbEVT_REMOVE_DOCK_WINDOW);
         evt.pWindow = window;
