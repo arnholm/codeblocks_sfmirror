@@ -962,17 +962,17 @@ wxString CompilerCommandGenerator::MakeOptString(const wxArrayString& arr, const
 
 wxString CompilerCommandGenerator::PathSearch(const wxArrayString& arr, const wxString& filename)
 {
-    Manager::Get()->GetLogManager()->Log(_T("PathSearch: ") + filename);
+    Manager::Get()->GetLogManager()->Log(_("PathSearch: ") + filename);
     if (wxFileExists(filename))
         return filename;
     for (unsigned int x = 0; x < arr.GetCount(); ++x)
     {
         wxString fn(arr[x] + wxFILE_SEP_PATH + filename);
-        Manager::Get()->GetLogManager()->Log(_T("PathSearch: trying: ") + fn);
+        Manager::Get()->GetLogManager()->Log(_("PathSearch: trying: ") + fn);
         if (wxFileExists(fn))
             return fn;
     }
-    Manager::Get()->GetLogManager()->Log(_T("PathSearch: end: ") + filename);
+    Manager::Get()->GetLogManager()->Log(_("PathSearch: end: ") + filename);
     return filename;
 }
 

@@ -741,7 +741,7 @@ bool CodeBlocksApp::OnInit()
         {
             const double scalingFactor = cbGetContentScaleFactor(*frame);
             const double actualScalingFactor = cbGetActualContentScaleFactor(*frame);
-            log->Log(wxString::Format("Initial scaling factor is %.3f (actual: %.3f)",
+            log->Log(wxString::Format(_("Initial scaling factor is %.3f (actual: %.3f)"),
                                       scalingFactor, actualScalingFactor));
         }
 
@@ -829,7 +829,7 @@ bool CodeBlocksApp::OnInit()
         Manager::Get()->ProcessEvent(event);
 
         if (!m_crashReportName.empty())
-            Manager::Get()->GetLogManager()->Log(wxString::Format("Setting the crash report file to: %s", m_crashReportName));
+            Manager::Get()->GetLogManager()->Log(wxString::Format(_("Setting the crash report file to: %s"), m_crashReportName));
 
         return true;
     }
@@ -1340,8 +1340,7 @@ void CodeBlocksApp::AttachDebugger()
         return;
     }
 
-    logManager->Log(wxString::Format(_("Attach debugger '%s' to '%s'"), localConfig.wx_str(),
-                                     localAttach.wx_str()));
+    logManager->Log(wxString::Format(_("Attach debugger '%s' to '%s'"), localConfig, localAttach));
 
     // Split the dbg-config to plugin name and config name
     wxString::size_type pos = localConfig.find(wxT(':'));
@@ -1381,13 +1380,12 @@ void CodeBlocksApp::AttachDebugger()
     if (!plugin)
     {
         logManager->LogError(wxString::Format(_("Debugger plugin '%s' not found!"),
-                                              pluginName.wx_str()));
+                                              pluginName));
         logManager->Log(_("Available plugins:"));
         for (const auto &info : debuggers)
         {
             cbDebuggerPlugin *p = info.first;
-            logManager->Log(wxString::Format(_("    '%s' (%s)"), p->GetSettingsName().wx_str(),
-                                             p->GetGUIName().wx_str()));
+            logManager->Log(wxString::Format(_("    '%s' (%s)"), p->GetSettingsName(), p->GetGUIName()));
         }
         return;
     }
@@ -1405,10 +1403,10 @@ void CodeBlocksApp::AttachDebugger()
     if (configIndex == -1)
     {
         logManager->LogError(wxString::Format(_("Debugger configuration '%s' not found!"),
-                                              configName.wx_str()));
+                                              configName));
         logManager->Log(_("Available configurations:"));
         for (const cbDebuggerConfiguration *config : configs)
-            logManager->Log(wxString::Format(_("    '%s'"), config->GetName().wx_str()));
+            logManager->Log(wxString::Format(_("    '%s'"), config->GetName()));
         return;
     }
 

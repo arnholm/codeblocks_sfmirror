@@ -508,7 +508,7 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
 
     if ( startStrings.empty() || m_allowedTypes.empty() )
     {
-        Manager::Get()->GetLogManager()->Log(_T("ToDoList: Warning: No to-do types or comment symbols selected to search for, nothing to do."));
+        Manager::Get()->GetLogManager()->Log(_("ToDoList: Warning: No to-do types or comment symbols selected to search for, nothing to do."));
         return;
     }
 

@@ -2163,7 +2163,7 @@ bool cbEditor::FixFoldState()
 
 void cbEditor::AutoComplete()
 {
-    Manager::Get()->GetLogManager()->Log(_T("cbEditor::AutoComplete() is obsolete.\nUse AutoComplete(cbEditor &ed) from the Abbreviations plugin instead."));
+    Manager::Get()->GetLogManager()->Log(_("cbEditor::AutoComplete() is obsolete.\nUse AutoComplete(cbEditor &ed) from the Abbreviations plugin instead."));
 }
 
 void cbEditor::DoFoldAll(FoldMode fold)

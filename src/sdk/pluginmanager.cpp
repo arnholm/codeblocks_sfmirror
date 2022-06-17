@@ -1139,7 +1139,7 @@ void PluginManager::LoadAllPlugins()
             }
             catch (cbException& exception)
             {
-                Manager::Get()->GetLogManager()->Log(_T("[failed]"));
+                Manager::Get()->GetLogManager()->Log(_("[failed]"));
                 exception.ShowErrorMessage(false);
 
                 wxString msg;

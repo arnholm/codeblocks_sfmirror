@@ -294,8 +294,7 @@ void InfoWindow::OnClick(cb_unused wxMouseEvent& e)
 // static
 void InfoWindow::Display(const wxString& title, const wxString& message, unsigned int delay, unsigned int hysteresis)
 {
-    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Info[%s]: %s"), title.wx_str(),
-                                                          message.wx_str()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Info[%s]: %s"), title, message));
 
     if (std::find(active_messages.begin(), active_messages.end(), message) != active_messages.end())
     {

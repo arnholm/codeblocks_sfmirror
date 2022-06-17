@@ -312,7 +312,7 @@ int DefaultMimeHandler::DoOpenFile(cbMimeType* mt, const wxString& filename)
         else
             external << _T(" \"") << filename << _T("\""); // file args wrapped in quotes (bug #1187231)
 
-        Manager::Get()->GetLogManager()->Log(_T("Launching command: ") + external);
+        Manager::Get()->GetLogManager()->Log(_("Launching command: ") + external);
 
         // launch external program
         int ret = 0;

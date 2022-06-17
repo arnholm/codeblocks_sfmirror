@@ -2521,7 +2521,7 @@ void NativeParser::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
                         // AddProjectToParser return true means there are something need to parse, otherwise, it is false
                         if (!AddProjectToParser(projs->Item(i)))
                         {
-                            CCLogger::Get()->Log(_T("NativeParser::OnParsingOneByOneTimer: nothing need to parse in this project, try next project."));
+                            CCLogger::Get()->Log(_("NativeParser::OnParsingOneByOneTimer: nothing need to parse in this project, try next project."));
                             continue;
                         }
 

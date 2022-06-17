@@ -736,7 +736,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             wxRegEx re(_T("([0-9.]+)"));
             if (!re.Matches(lines[i]))
             {
-                m_pDBG->Log(_T("Unable to determine the version of gdb"));
+                m_pDBG->Log(_("Unable to determine the version of gdb"));
                 break;
             }
             wxString major = re.GetMatch(lines[i],0);
@@ -850,7 +850,7 @@ void GDB_driver::ParseOutput(const wxString& output)
 
                 if (rePendingFound1.Matches(newbpstr))
                 {
-//                    m_pDBG->Log(_T("MATCH"));
+//                    m_pDBG->Log(_("MATCH"));
 
                     wxString file;
                     wxString lineStr;
@@ -871,7 +871,7 @@ void GDB_driver::ParseOutput(const wxString& output)
                     else
                         file = UnixFilename(file);
 
-    //                m_pDBG->Log(wxString::Format(_T("file: %s, line: %s"), file.c_str(), lineStr.c_str()));
+    //                m_pDBG->Log(wxString::Format(_("file: %s, line: %s"), file, lineStr));
                     long line;
                     lineStr.ToLong(&line);
                     DebuggerState& state = m_pDBG->GetState();
@@ -879,7 +879,7 @@ void GDB_driver::ParseOutput(const wxString& output)
                     cb::shared_ptr<DebuggerBreakpoint> bp = state.GetBreakpoint(bpindex);
                     if (bp)
                     {
-    //                    m_pDBG->Log(_T("Found BP!!! Updating index..."));
+    //                    m_pDBG->Log(_("Found BP!!! Updating index..."));
                         long index;
                         wxString indexStr = rePendingFound1.GetMatch(newbpstr, 1);
                         indexStr.ToLong(&index);

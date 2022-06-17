@@ -661,7 +661,7 @@ class CdbCmd_DisassemblyInit : public DebuggerCmd
                 }
                 else
                 {
-                    m_pDriver->Log(_T("Checking for current function start"));
+                    m_pDriver->Log(_("Checking for current function start"));
                     if (reDisassemblyFunc.Matches(lines[i]))
                     {
                         uint64_t start = cbDebuggerStringToAddress(reDisassemblyFunc.GetMatch(lines[i], 1));
