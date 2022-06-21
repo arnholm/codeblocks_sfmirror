@@ -360,7 +360,7 @@ void ToolsManager::OnToolClick(wxCommandEvent& event)
 {
     cbTool* tool = GetToolByMenuId(event.GetId());
     if (!Execute(tool))
-        cbMessageBox(_("Could not execute ") + tool->GetName());
+        cbMessageBox(wxString::Format(_("Could not execute %s"), tool->GetName()));
 }
 
 void ToolsManager::OnIdle(wxIdleEvent& event)
@@ -377,12 +377,12 @@ void ToolsManager::OnIdle(wxIdleEvent& event)
 
 void ToolsManager::OnToolStdOutput(CodeBlocksEvent& event)
 {
-    Manager::Get()->GetLogManager()->Log(_T("stdout> ") + event.GetString());
+    Manager::Get()->GetLogManager()->Log("stdout> "+event.GetString());
 }
 
 void ToolsManager::OnToolErrOutput(CodeBlocksEvent& event)
 {
-    Manager::Get()->GetLogManager()->Log(_T("stderr> ") + event.GetString());
+    Manager::Get()->GetLogManager()->Log("stderr> "+event.GetString());
 }
 
 void ToolsManager::OnToolTerminated(CodeBlocksEvent& event)
@@ -390,5 +390,5 @@ void ToolsManager::OnToolTerminated(CodeBlocksEvent& event)
     m_Pid = 0;
     m_pProcess = nullptr;
 
-    Manager::Get()->GetLogManager()->Log(F(_T("Tool execution terminated with status %d"), event.GetInt()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Tool execution terminated with status %d"), event.GetInt()));
 }
