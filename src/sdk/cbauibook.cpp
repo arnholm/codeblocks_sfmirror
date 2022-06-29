@@ -500,7 +500,11 @@ bool cbAuiNotebook::MovePage(wxWindow* page, size_t new_idx)
 bool cbAuiNotebook::AddPage(wxWindow* page,
                             const wxString& caption,
                             bool select,
+#if wxCHECK_VERSION(3, 1, 6)
+                            const wxBitmapBundle& bitmap)
+#else
                             const wxBitmap& bitmap)
+#endif
 {
     bool result = wxAuiNotebook::AddPage(page, caption, select, bitmap);
     MinimizeFreeSpace();
