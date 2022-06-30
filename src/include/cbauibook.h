@@ -138,14 +138,18 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
          * \param page The page to add
          * \param caption The caption of the page
          * \param select If true the page gets selected
-         * \param bitmap The bitmap of the tab
+         * \param bitmap The bitmap (or bitmap bundle since wx3.1.6) of the tab
          * \return true if successful
          */
         bool InsertPage(size_t page_idx,
                         wxWindow* page,
                         const wxString& caption,
                         bool select = false,
+#if wxCHECK_VERSION(3, 1, 6)
+                        const wxBitmapBundle& bitmap = wxBitmapBundle());
+#else
                         const wxBitmap& bitmap = wxNullBitmap);
+#endif
         /** \brief Set zoom factor for builtin editors
          *
          * Sets the zoom factor for all visible builtin

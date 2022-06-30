@@ -515,7 +515,11 @@ bool cbAuiNotebook::InsertPage(size_t page_idx,
                                wxWindow* page,
                                const wxString& caption,
                                bool select,
+#if wxCHECK_VERSION(3, 1, 6)
+                               const wxBitmapBundle& bitmap)
+#else
                                const wxBitmap& bitmap)
+#endif
 {
     bool result = wxAuiNotebook::InsertPage(page_idx, page, caption, select, bitmap);
     MinimizeFreeSpace();
