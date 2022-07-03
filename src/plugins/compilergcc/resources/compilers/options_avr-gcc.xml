@@ -67,6 +67,7 @@
 
     <Category name="AVR CPU architecture derivatives"
               exclusive="true">
+		<!-- ===================== AVR 1  ================================ -->
         <Option name="AVR 1 architecture (only assembler)"
                 option="-mmcu=avr1"/>
         <Option name="AT90S1200 (only assembler)"
@@ -79,9 +80,15 @@
                 option="-mmcu=attiny15"/>
         <Option name="ATtiny28 (only assembler)"
                 option="-mmcu=attiny28"/>
-        <Option name="AVR 2 archtecture"
+        
+		<!-- ============= AVR 2 ================================ -->
+		<Option name="AVR 2 archtecture"
                 option="-mmcu=avr2"/>
-        <Option name="AT90S2313"
+        <Option name="ATtiny22"
+                option="-mmcu=attiny22"/>
+        <Option name="ATtiny26"
+                option="-mmcu=attiny26"/>
+		<Option name="AT90S2313"
                 option="-mmcu=at90s2313"/>
         <Option name="AT90S2323"
                 option="-mmcu=at90s2323"/>
@@ -89,10 +96,6 @@
                 option="-mmcu=at90s2333"/>
         <Option name="AT90S2343"
                 option="-mmcu=at90s2343"/>
-        <Option name="ATtiny22"
-                option="-mmcu=attiny22"/>
-        <Option name="ATtiny26"
-                option="-mmcu=attiny26"/>
         <Option name="AT90S4414"
                 option="-mmcu=at90s4414"/>
         <Option name="AT90S4433"
@@ -105,152 +108,683 @@
                 option="-mmcu=at90c8534"/>
         <Option name="AT90s8535"
                 option="-mmcu=at90s8535"/>
-        <Option name="AVR 2.5 architecture"
+        
+		<!-- ============= AVR 2.5 ================================ -->
+		<Option name="AVR 2.5 architecture"
                 option="-mmcu=avr25"/>
         <Option name="ATtiny13"
                 option="-mmcu=attiny13"/>
+		<Option name="ATtiny13a"
+                option="-mmcu=attiny13a"/>
         <Option name="ATtiny2313"
                 option="-mmcu=attiny2313"/>
         <Option name="ATtiny24"
                 option="-mmcu=attiny24"/>
-        <Option name="ATtiny44"
-                option="-mmcu=attiny44"/>
-        <Option name="ATtiny84"
-                option="-mmcu=attiny84"/>
+		<Option name="ATtiny24a"
+                option="-mmcu=attiny24a"/>
         <Option name="ATtiny25"
                 option="-mmcu=attiny25"/>
-        <Option name="ATtiny45"
+		<Option name="ATtiny261"
+                option="-mmcu=attiny261"/>
+		<Option name="ATtiny4313"
+                option="-mmcu=attiny4313"/>
+		<Option name="ATtiny43u"
+                option="-mmcu=attiny43u"/>
+		<Option name="ATtiny44"
+                option="-mmcu=attiny44"/>
+		<Option name="ATtiny44a"
+                option="-mmcu=attiny44a"/>
+		<Option name="ATtiny441"
+                option="-mmcu=attiny441"/>
+		<Option name="ATtiny45"
                 option="-mmcu=attiny45"/>
+		<Option name="ATtiny461"
+                option="-mmcu=attiny461"/>
+		<Option name="ATtiny461a"
+                option="-mmcu=attiny461a"/>
+		<Option name="ATtiny48"
+                option="-mmcu=attiny48"/>
+		<Option name="ATtiny828"
+                option="-mmcu=attiny828"/>
+		<Option name="ATtiny84"
+                option="-mmcu=attiny84"/>
+		<Option name="ATtiny84a"
+                option="-mmcu=attiny84a"/>
+		<Option name="ATtiny841"
+                option="-mmcu=attiny841"/>
         <Option name="ATtiny85"
                 option="-mmcu=attiny85"/>
-        <Option name="ATtiny261"
-                option="-mmcu=attiny261"/>
-        <Option name="ATtiny461"
-                option="-mmcu=attiny461"/>
-        <Option name="ATtiny861"
+		<Option name="ATtiny861"
                 option="-mmcu=attiny861"/>
+		<Option name="ATtiny861a"
+                option="-mmcu=attiny861a"/>
+		<Option name="ATtiny87"
+                option="-mmcu=attiny87"/>
+		<Option name="ATtiny88"
+                option="-mmcu=attiny88"/>
         <Option name="AT86RF401"
                 option="-mmcu=at86rf401"/>
-        <Option name="AVR 3 architecture"
+		<Option name="ATA5272"
+                option="-mmcu=ata5272"/>
+		<Option name="ATA6616C"
+                option="-mmcu=ata6616C"/>
+        
+		
+		<!-- ============= AVR 3 ================================ -->
+		<Option name="AVR 3 architecture"
                 option="-mmcu=avr3"/>
-        <Option name="ATmega103"
-                option="-mmcu=atmega103"/>
-        <Option name="ATmega603"
-                option="-mmcu=atmega603"/>
-        <Option name="AT43USB320"
-                option="-mmcu=at43usb320"/>
-        <Option name="AT43USB355"
+		<Option name="AT43USB355"
                 option="-mmcu=at43usb355"/>
         <Option name="AT76C711"
                 option="-mmcu=at76c711"/>
-        <Option name="AVR 4 architecture"
+        
+		<!-- ============= AVR 3.1 ================================ -->
+		<Option name="AVR 3.1 architecture"
+                option="-mmcu=avr31"/>
+        <Option name="ATmega103"
+                option="-mmcu=atmega103"/>
+        <Option name="AT43USB320"
+                option="-mmcu=at43usb320"/>
+        
+		<!-- ============= AVR 3.5 ================================ -->
+		<Option name="AVR 3.5 architecture"
+                option="-mmcu=avr35"/>
+		<Option name="attiny167"
+                option="-mmcu=attiny167"/>
+		<Option name="attiny1634"
+                option="-mmcu=attiny1634"/>
+		<Option name="atmega8u2"
+                option="-mmcu=atmega8u2"/>
+        <Option name="atmega16u2"
+                option="-mmcu=atmega16u2"/>
+		<Option name="atmega32u2"
+                option="-mmcu=atmega32u2"/>
+		<Option name="ata5505"
+                option="-mmcu=ata5505"/>
+		<Option name="ATA6617c"
+                option="-mmcu=ata6617c"/>
+		<Option name="ATA664251"
+                option="-mmcu=ata664251"/>
+		<Option name="AT90usb82"
+                option="-mmcu=at90usb82"/>
+		<Option name="AT90usb162"
+                option="-mmcu=at90usb162"/>
+		
+		<!-- ============= AVR 4 ================================ -->
+		<Option name="AVR 4 architecture"
                 option="-mmcu=avr4"/>
-        <Option name="ATmega8"
-                option="-mmcu=atmega8"/>
+        
         <Option name="ATmega48"
                 option="-mmcu=atmega48"/>
-        <Option name="ATmega88"
+		<Option name="ATmega48a"
+                option="-mmcu=atmega48a"/>
+		<Option name="ATmega48p"
+                option="-mmcu=atmega48p"/>
+		<Option name="ATmega48pa"
+                option="-mmcu=atmega48pa"/>
+		<Option name="ATmega48pb"
+                option="-mmcu=atmega48pb"/>
+				
+		<Option name="ATmega8"
+                option="-mmcu=atmega8"/>		
+        <Option name="ATmega8a"
+                option="-mmcu=atmega8a"/>		
+        <Option name="ATmega8hva"
+                option="-mmcu=atmega8hva"/>
+		<Option name="ATmega88"
                 option="-mmcu=atmega88"/>
+		<Option name="ATmega88a"
+                option="-mmcu=atmega88a"/>
+		<Option name="ATmega88pa"
+                option="-mmcu=atmega88pa"/>
+		<Option name="ATmega88pb"
+                option="-mmcu=atmega88pb"/>
+
         <Option name="ATmega8515"
                 option="-mmcu=atmega8515"/>
         <Option name="ATmega8535"
                 option="-mmcu=atmega8535"/>
-        <Option name="ATmega8HVA"
-                option="-mmcu=atmega8hva"/>
+
+		<Option name="ATA6285"
+                option="-mmcu=ata6285"/>
+		<Option name="ATA6286"
+                option="-mmcu=ata6286"/>
+		<Option name="ATA6289"
+                option="-mmcu=ata6289"/>
+		<Option name="ATA6612c"
+                option="-mmcu=ata6612c"/>
+		
         <Option name="AT90PWM1"
                 option="-mmcu=at90pwm1"/>
         <Option name="AT90PWM2"
                 option="-mmcu=at90pwm2"/>
+		<Option name="AT90PWM2B"
+                option="-mmcu=at90pwm2b"/>
         <Option name="AT90PWM3"
                 option="-mmcu=at90pwm3"/>
+		<Option name="AT90PWM3b"
+                option="-mmcu=at90pwm3b"/>
+		<Option name="AT90PWM81"
+                option="-mmcu=at90pwm81"/>
+
+		<!-- ============= AVR 5 ================================ -->
         <Option name="AVR 5 architecture"
                 option="-mmcu=avr5"/>
         <Option name="ATmega16"
                 option="-mmcu=atmega16"/>
-        <Option name="ATmega161"
+		<Option name="ATmega16a"
+                option="-mmcu=atmega16a"/>
+        <Option name="ATmega16hva"
+                option="-mmcu=atmega16hva"/>
+        <Option name="ATmega16hva2"
+                option="-mmcu=atmega16hva2"/>
+        <Option name="ATmega16hvb"
+                option="-mmcu=atmega16hvb"/>
+        <Option name="ATmega16hvbrevb"
+                option="-mmcu=atmega16hvbrevb"/>
+        
+		<Option name="ATmega16m1"
+                option="-mmcu=atmega16m1"/>
+        <Option name="ATmega16u4"
+                option="-mmcu=atmega16u4"/>
+        
+		<Option name="ATmega161"
                 option="-mmcu=atmega161"/>
-        <Option name="ATmega163"
+        <Option name="ATmega162"
+                option="-mmcu=atmega162"/>
+		<Option name="ATmega163"
                 option="-mmcu=atmega163"/>
-        <Option name="ATmega164P"
+        <Option name="ATmega164A"
+                option="-mmcu=atmega164a"/>
+		<Option name="ATmega164P"
                 option="-mmcu=atmega164p"/>
+		<Option name="ATmega164PA"
+                option="-mmcu=atmega164pa"/>
         <Option name="ATmega165"
                 option="-mmcu=atmega165"/>
+		<Option name="ATmega165A"
+                option="-mmcu=atmega165a"/>
         <Option name="ATmega165P"
                 option="-mmcu=atmega165p"/>
+		<Option name="ATmega165PA"
+                option="-mmcu=atmega165pa"/>
         <Option name="ATmega168"
                 option="-mmcu=atmega168"/>
+		<Option name="ATmega168A"
+                option="-mmcu=atmega168a"/>
+		<Option name="ATmega168P"
+                option="-mmcu=atmega168p"/>
+		<Option name="ATmega168PA"
+                option="-mmcu=atmega168pa"/>
+		<Option name="ATmega168PB"
+                option="-mmcu=atmega168pb"/>
         <Option name="ATmega169"
                 option="-mmcu=atmega169"/>
         <Option name="ATmega169P"
                 option="-mmcu=atmega169p"/>
-        <Option name="ATmega32"
+		<Option name="ATmega169PA"
+                option="-mmcu=atmega169pa"/>
+        
+		<Option name="ATmega32"
                 option="-mmcu=atmega32"/>
+		<Option name="ATmega32a"
+                option="-mmcu=atmega32a"/>
+        <Option name="ATmega32c1"
+                option="-mmcu=atmega32c1"/>
+        <Option name="ATmega32hvb"
+                option="-mmcu=atmega32hvb"/>
+        <Option name="ATmega32hvbrevb"
+                option="-mmcu=atmega32hvbrevb"/>
+        <Option name="ATmega32m1"
+                option="-mmcu=atmega32m1"/>
+        <Option name="ATmega32u4"
+                option="-mmcu=atmega32u4"/>
+        <Option name="ATmega32u6"
+                option="-mmcu=atmega32u6"/>
+		
         <Option name="ATmega323"
                 option="-mmcu=atmega323"/>
-        <Option name="ATmega324P"
+        <Option name="ATmega323A"
+                option="-mmcu=atmega323a"/>
+		<Option name="ATmega324P"
                 option="-mmcu=atmega324p"/>
+		<Option name="ATmega324PA"
+                option="-mmcu=atmega324pa"/>
         <Option name="ATmega325"
                 option="-mmcu=atmega325"/>
+		<Option name="ATmega325A"
+                option="-mmcu=atmega325a"/>
         <Option name="ATmega325P"
                 option="-mmcu=atmega325p"/>
-        <Option name="ATmega3250"
-                option="-mmcu=atmega3250"/>
-        <Option name="ATmega3250P"
-                option="-mmcu=atmega3250p"/>
-        <Option name="ATmega329"
+		<Option name="ATmega325PA"
+                option="-mmcu=atmega325pa"/>
+		
+		<Option name="ATmega328"
+                option="-mmcu=atmega328"/>
+		<Option name="ATmega328P"
+                option="-mmcu=atmega328p"/>
+		<Option name="ATmega328PB"
+                option="-mmcu=atmega328pb"/>
+        
+		<Option name="ATmega329"
                 option="-mmcu=atmega329"/>
+		<Option name="ATmega329A"
+                option="-mmcu=atmega329a"/>
         <Option name="ATmega329P"
                 option="-mmcu=atmega329p"/>
-        <Option name="ATmega3290"
+		<Option name="ATmega329PA"
+                option="-mmcu=atmega329pa"/>
+		
+        <Option name="ATmega3250"
+                option="-mmcu=atmega3250"/>
+        <Option name="ATmega3250A"
+                option="-mmcu=atmega3250a"/>
+		<Option name="ATmega3250P"
+                option="-mmcu=atmega3250p"/>
+        <Option name="ATmega3250PA"
+                option="-mmcu=atmega3250pa"/>
+				
+		<Option name="ATmega3290"
                 option="-mmcu=atmega3290"/>
         <Option name="ATmega3290P"
                 option="-mmcu=atmega3290p"/>
-        <Option name="ATmega406"
+        <Option name="ATmega3290PA"
+                option="-mmcu=atmega3290pa"/>
+        
+		<Option name="ATmega406"
                 option="-mmcu=atmega406"/>
+				
         <Option name="ATmega64"
                 option="-mmcu=atmega64"/>
+		<Option name="ATmega64A"
+                option="-mmcu=atmega64a"/>
+		<Option name="ATmega64C1"
+                option="-mmcu=atmega64c1"/>
+		<Option name="ATmega64HVE"
+                option="-mmcu=atmega64hve"/>
+		<Option name="ATmega64m1"
+                option="-mmcu=atmega64m1"/>
+		<Option name="ATmega64rf2"
+                option="-mmcu=atmega64rf2"/>
+				
         <Option name="ATmega640"
                 option="-mmcu=atmega640"/>
         <Option name="ATmega644"
                 option="-mmcu=atmega644"/>
+		<Option name="ATmega644A"
+                option="-mmcu=atmega644a"/>
         <Option name="ATmega644P"
                 option="-mmcu=atmega644p"/>
-        <Option name="ATmega645"
+		<Option name="ATmega644PA"
+                option="-mmcu=atmega644pa"/>
+		<Option name="ATmega644RF2"
+                option="-mmcu=atmega644rf2"/>
+        
+		<Option name="ATmega645"
                 option="-mmcu=atmega645"/>
+		<Option name="ATmega645A"
+                option="-mmcu=atmega645a"/>		
+		<Option name="ATmega645P"
+                option="-mmcu=atmega645p"/>		
+		
+		<Option name="ATmega649"
+                option="-mmcu=atmega649"/>
+		<Option name="ATmega649A"
+                option="-mmcu=atmega649a"/>		
+		<Option name="ATmega649P"
+                option="-mmcu=atmega649p"/>		
+		
         <Option name="ATmega6450"
                 option="-mmcu=atmega6450"/>
-        <Option name="ATmega649"
-                option="-mmcu=atmega649"/>
-        <Option name="ATmega6490"
+		<Option name="ATmega6450A"
+                option="-mmcu=atmega6450a"/>
+		<Option name="ATmega6450P"
+                option="-mmcu=atmega6450p"/>
+		
+		<Option name="ATmega6490"
                 option="-mmcu=atmega6490"/>
+		<Option name="ATmega6490A"
+                option="-mmcu=atmega6490a"/>
+		<Option name="ATmega6490P"
+                option="-mmcu=atmega6490P"/>
+		
+		<Option name="ATA5795"
+                option="-mmcu=ata5795"/>
+		<Option name="ATA5790"
+                option="-mmcu=ata5790"/>
+		<Option name="ATA5790N"
+                option="-mmcu=ata5790n"/>
+		<Option name="ATA5791"
+                option="-mmcu=ata5791"/>
+		<Option name="ATA6613C"
+                option="-mmcu=ata6613c"/>
+		<Option name="ATA6614q"
+                option="-mmcu=ata6614q"/>
+		<Option name="ATA5782"
+                option="-mmcu=ata5782"/>
+		<Option name="ATA5831"
+                option="-mmcu=ata5831"/>
+		<Option name="ATA8210"
+                option="-mmcu=ata8510"/>
+		<Option name="ATA5702M322"
+                option="-mmcu=ata5702m322"/>
+		<Option name="AT90PWM161"
+                option="-mmcu=at90pwm161"/>
+		<Option name="AT90PWM216"
+                option="-mmcu=at90pwm216"/>
+		<Option name="AT90PWM319"
+                option="-mmcu=at90pwm316"/>
+		<Option name="AT90CAN32"
+                option="-mmcu=at90CAN32"/>
+		<Option name="AT90CAN64"
+                option="-mmcu=at90can64"/>				
+		<Option name="AT90SCR100"
+                option="-mmcu=at90scr100"/>
+		<Option name="AT90USB646"
+                option="-mmcu=at90USB646"/>
+		<Option name="AT90USB647"
+                option="-mmcu=at90usb647"/>
+		<Option name="AT90K"
+                option="-mmcu=at90k"/>
+		<Option name="M3000"
+                option="-mmcu=m3000"/>
+				
+        <!-- ============= AVR 5.1 ================================ -->
+		 <Option name="AVR 5.1 architecture"
+                option="-mmcu=avr51"/>
         <Option name="ATmega128"
                 option="-mmcu=atmega128"/>
+		<Option name="ATmega128a"
+                option="-mmcu=atmega128a"/>
+		<Option name="ATmega128RFA1"
+                option="-mmcu=atmega128rfa1"/>
         <Option name="ATmega1280"
                 option="-mmcu=atmega1280"/>
         <Option name="ATmega1281"
                 option="-mmcu=atmega1281"/>
-        <Option name="ATmega16HVA"
-                option="-mmcu=atmega16hva"/>
-        <Option name="AT90CAN32"
-                option="-mmcu=at90can32"/>
-        <Option name="AT90CAN64"
-                option="-mmcu=at90can64"/>
-        <Option name="AT90CAN128"
+		<Option name="ATmega1284"
+                option="-mmcu=atmega1284"/>
+		<Option name="ATmega1284P"
+                option="-mmcu=atmega1284p"/>
+		<Option name="ATmega1284RFR2"
+                option="-mmcu=atmega1284rfr2"/>
+		<Option name="AT90CAN128"
                 option="-mmcu=at90can128"/>
-        <Option name="AT90USB82"
-                option="-mmcu=at90usb82"/>
-        <Option name="AT90USB162"
-                option="-mmcu=at90usb162"/>
-        <Option name="AT90USB646"
-                option="-mmcu=at90usb646"/>
-        <Option name="AT90USB647"
-                option="-mmcu=at90usb647"/>
-        <Option name="AT90USB1286"
+		<Option name="AT90USB1286"
                 option="-mmcu=at90usb1286"/>
-        <Option name="AT90USB1287"
-                option="-mmcu=at90usb1287"/>
-        <Option name="AT94K"
-                option="-mmcu=at94k"/>
+		<Option name="AT90USB1287"
+                option="-mmcu=at90usb1287"/>		
+				
+		<!-- ============= AVR 6 ================================ -->
+		<Option name="AVR 6 architecture"
+                option="-mmcu=avr6"/>
+		<Option name="ATmega256RFR2"
+                option="-mmcu=atmega256rfr2"/>		
+		<Option name="ATmega2560"
+                option="-mmcu=atmega2560"/>		
+		<Option name="ATmega2561"
+                option="-mmcu=atmega2561"/>		
+		<Option name="ATmega2564RFR2"
+                option="-mmcu=atmega2564rfr2"/>		
+				
+		<!-- ============= AVRXmega 2 ================================ -->
+		<Option name="AVRXmega 2 architecture"
+                option="-mmcu=avrxmega2"/>
+		<Option name="ATXmega8E5"
+                option="-mmcu=atxmega8e5"/>
+		<Option name="ATXmega16A4"
+                option="-mmcu=atxmega16a4"/>		
+		<Option name="ATXmega16A4U"
+                option="-mmcu=atxmega16a4u"/>		
+		<Option name="ATXmega16C4"
+                option="-mmcu=atxmega16c4"/>			
+		<Option name="ATXmega16D4"
+                option="-mmcu=atxmega16d4"/>			
+		<Option name="ATXmega16E5"
+                option="-mmcu=atxmega16e5"/>		
+		<Option name="ATXmega32A4"
+                option="-mmcu=atxmega32a4"/>		
+		<Option name="ATXmega32A4U"
+                option="-mmcu=atxmega32a4u"/>
+		<Option name="ATXmega32C3"
+                option="-mmcu=atxmega32c3"/>
+		<Option name="ATXmega32C4"
+                option="-mmcu=atxmega32c4"/>
+		<Option name="ATXmega32D3"
+                option="-mmcu=atxmega32d3"/>
+		<Option name="ATXmega32D4"
+                option="-mmcu=atxmega32d4"/>
+		<Option name="ATXmega32E5"
+                option="-mmcu=atxmega32e5"/>
+		<Option name="AVR64DA28"
+                option="-mmcu=avr64da28"/>
+		<Option name="AVR64DA32"
+                option="-mmcu=avr64da32"/>
+		<Option name="AVR64DA48"
+                option="-mmcu=avr64da48"/>
+		<Option name="AVR64DA64"
+                option="-mmcu=avr64da64"/>
+		<Option name="AVR64DB28"
+                option="-mmcu=avr64db28"/>
+		<Option name="AVR64DB32"
+                option="-mmcu=avr64db32"/>
+		<Option name="AVR64DB48"
+                option="-mmcu=avr64db48"/>
+		<Option name="AVR64DB64"
+                option="-mmcu=avr64db64"/>
+		
+		
+		<!-- ============= AVRXmega 3 ================================ -->
+		<Option name="AVRXmega 3 architecture"
+                option="-mmcu=avrxmega3"/>
+		<Option name="Attiny202"
+                option="-mmcu=attiny202"/>		
+		<Option name="Attiny204"
+                option="-mmcu=attiny204"/>
+		<Option name="Attiny212"
+                option="-mmcu=attiny212"/>
+		<Option name="Attiny214"
+                option="-mmcu=attiny214"/>		
+		<Option name="Attiny402"
+                option="-mmcu=attiny402"/>		
+		<Option name="Attiny404"
+                option="-mmcu=attiny404"/>		
+		<Option name="Attiny406"
+                option="-mmcu=attiny406"/>
+		<Option name="Attiny412"
+                option="-mmcu=attiny412"/>
+		<Option name="Attiny414"
+                option="-mmcu=attiny414"/>
+		<Option name="Attiny416"
+                option="-mmcu=attiny416"/>		
+		<Option name="Attiny417"
+                option="-mmcu=attiny417"/>
+		<Option name="Attiny804"
+                option="-mmcu=attiny804"/>
+		<Option name="Attiny806"
+                option="-mmcu=attiny806"/>
+		<Option name="Attiny807"
+                option="-mmcu=attiny807"/>
+		<Option name="Attiny814"
+                option="-mmcu=attiny814"/>
+		<Option name="Attiny816"
+                option="-mmcu=attiny816"/>
+		<Option name="Attiny817"
+                option="-mmcu=attiny817"/>
+		<Option name="Attiny1604"
+                option="-mmcu=attiny1604"/>
+		<Option name="Attiny1606"
+                option="-mmcu=attiny1606"/>
+		<Option name="Attiny1607"
+                option="-mmcu=attiny1607"/>
+		<Option name="Attiny1614"
+                option="-mmcu=attiny1614"/>
+		<Option name="Attiny1616"
+                option="-mmcu=attiny1616"/>
+		<Option name="Attiny1617"
+                option="-mmcu=attiny1617"/>
+		<Option name="Attiny3214"
+                option="-mmcu=attiny3214"/>
+		<Option name="Attiny3216"
+                option="-mmcu=attiny3216"/>
+		<Option name="Attiny3217"
+                option="-mmcu=attiny3217"/>
+		<Option name="Atmega808"
+                option="-mmcu=atmega808"/>
+		<Option name="Atmega809"
+                option="-mmcu=atmega809"/>
+		<Option name="Atmega1608"
+                option="-mmcu=atmega1608"/>
+		<Option name="Atmega1609"
+                option="-mmcu=atmega1609"/>
+		<Option name="Atmega3208"
+                option="-mmcu=atmega3208"/>
+		<Option name="Atmega3209"
+                option="-mmcu=atmega3209"/>
+		<Option name="Atmega4808"
+                option="-mmcu=atmega4808"/>
+		<Option name="Atmega4809"
+                option="-mmcu=atmega4809"/>
+		<Option name="AVR32DA28"
+                option="-mmcu=avr32da28"/>
+		<Option name="AVR32DA32"
+                option="-mmcu=avr32da32"/>
+		<Option name="AVR32DA48"
+                option="-mmcu=avr32da48"/>
+		<Option name="AVR32DB32"
+                option="-mmcu=avr32db32"/>
+		<Option name="AVR32DB48"
+                option="-mmcu=avr32db48"/>
+
+
+		<!-- ============= AVRXmega 4 ================================ -->
+		<Option name="AVRXmega 4 architecture"
+                option="-mmcu=avrxmega4"/>
+		<Option name="ATXmega64A3"
+                option="-mmcu=atxmega64a3"/>
+		<Option name="ATXmega64A3U"
+                option="-mmcu=atxmega64a3u"/>
+		<Option name="ATXmega64B1"
+                option="-mmcu=atxmega64b1"/>
+		<Option name="ATXmega64B3"
+                option="-mmcu=atxmega64B3"/>
+		<Option name="ATXmega64C3"
+                option="-mmcu=atxmega64c3"/>
+		<Option name="ATXmega64D3"
+                option="-mmcu=atxmega64d3"/>
+		<Option name="ATXmega64D4"
+                option="-mmcu=atxmega64d4"/>
+		<Option name="AVR128DA28"
+                option="-mmcu=avr128da28"/>
+		<Option name="AVR128DA32"
+                option="-mmcu=avr128da32"/>
+		<Option name="AVR128DA48"
+                option="-mmcu=avr128da48"/>
+		<Option name="AVR128DA64"
+                option="-mmcu=avr128da64"/>
+		<Option name="AVR128DB28"
+                option="-mmcu=avr128db28"/>
+		<Option name="AVR128DB32"
+                option="-mmcu=avr128db32"/>
+		<Option name="AVR128DB48"
+                option="-mmcu=avr128db48"/>
+		<Option name="AVR128DB64"
+                option="-mmcu=avr128db64"/>
+		
+		
+		<!-- ============= AVRXmega 5 ================================ -->
+		<Option name="AVRXmega 5 architecture"
+                option="-mmcu=avrxmega5"/>
+		<Option name="ATXmega64A1"
+                option="-mmcu=atxmega64a1"/>
+		<Option name="ATXmega64A1U"
+                option="-mmcu=atxmega64A1U"/>
+		
+
+		<!-- ============= AVRXmega 6 ================================ -->
+		<Option name="AVRXmega 6 architecture"
+                option="-mmcu=avrxmega6"/>
+		<Option name="ATXmega128A3"
+                option="-mmcu=atxmega128a3"/>
+		<Option name="ATXmega128A3U"
+                option="-mmcu=atxmega128a3u"/>
+		<Option name="ATXmega128B1"
+                option="-mmcu=atxmega128b1"/>
+		<Option name="ATXmega128b3"
+                option="-mmcu=atxmega128b3"/>
+		<Option name="ATXmega128C3"
+                option="-mmcu=atxmega128c3"/>
+		<Option name="ATXmega128D3"
+                option="-mmcu=atxmega128d3"/>
+		<Option name="ATXmega128D4"
+                option="-mmcu=atxmega128d4"/>
+		<Option name="ATXmega192A3"
+                option="-mmcu=atxmega192a3"/>
+		<Option name="ATXmega192A3U"
+                option="-mmcu=atxmega192a3u"/>
+		<Option name="ATXmega192C3"
+                option="-mmcu=atxmega192c3"/>
+		<Option name="ATXmega192D3"
+                option="-mmcu=atxmega192d3"/>
+		<Option name="ATXmega256A3"
+                option="-mmcu=atxmega256a3"/>
+		<Option name="ATXmega256A3B"
+                option="-mmcu=atxmega256a3b"/>
+		<Option name="ATXmega256A3BU"
+                option="-mmcu=atxmega256a3bu"/>
+		<Option name="ATXmega256A3U"
+                option="-mmcu=atxmega256a3u"/>
+		<Option name="ATXmega256C3"
+                option="-mmcu=atxmega256c3"/>
+		<Option name="ATXmega256D3"
+                option="-mmcu=atxmega256d3"/>
+		<Option name="ATXmega384C3"
+                option="-mmcu=atxmega384c3"/>
+		<Option name="ATXmega384D3"
+                option="-mmcu=atxmega384d3"/>
+		
+		<!-- ============= AVRXmega 7 ================================ -->
+		<Option name="AVRXmega 7 architecture"
+                option="-mmcu=avrxmega7"/>
+		<Option name="ATXmega128A1"
+                option="-mmcu=atxmega128a1"/>
+		<Option name="ATXmega128A1U"
+                option="-mmcu=atxmega128a1u"/>
+		<Option name="ATXmega128A4U"
+                option="-mmcu=atxmega128a4u"/>
+		
+
+		<!-- ============= AVRtiny 7 ================================ -->
+		<Option name="AVRtiny architecture"
+                option="-mmcu=avrtiny"/>
+		<Option name="ATtiny4"
+                option="-mmcu=attiny4"/>
+		<Option name="ATtiny5"
+                option="-mmcu=attiny5"/>
+		<Option name="ATtiny9"
+                option="-mmcu=attiny9"/>
+		<Option name="ATtiny10"
+                option="-mmcu=attiny10"/>
+		<Option name="ATtiny20"
+                option="-mmcu=attiny20"/>
+		<Option name="ATtiny40"
+                option="-mmcu=attiny40"/>
+		
+		
+		<!-- ============= AVR tiny ================================ -->
+		<Option name="AVR tiny architecture"
+                option="-mmcu=avrtiny"/>
+		<Option name="ATtiny11"
+                option="-mmcu=attiny11"/>
+		<Option name="ATtiny12"
+                option="-mmcu=attiny12"/>
+		<Option name="ATtiny15"
+                option="-mmcu=attiny15"/>
+		<Option name="ATtiny28"
+                option="-mmcu=attiny28"/>
+		<Option name="attiny40"
+                option="-mmcu=attiny40"/>
+		
     </Category>
 
     <Category name="AVR CPU architecture specific">
