@@ -748,7 +748,7 @@
         <Option name="ATXmega128A4U"
                 option="-mmcu=atxmega128a4u"/>
 
-        <!-- ============= AVRtiny 7 ================================ -->
+        <!-- ============= AVRtiny ================================ -->
         <Option name="AVRtiny architecture"
                 option="-mmcu=avrtiny"/>
         <Option name="ATtiny4"
@@ -759,25 +759,18 @@
                 option="-mmcu=attiny9"/>
         <Option name="ATtiny10"
                 option="-mmcu=attiny10"/>
-        <Option name="ATtiny20"
-                option="-mmcu=attiny20"/>
-        <Option name="ATtiny40"
-                option="-mmcu=attiny40"/>
-
-        <!-- ============= AVR tiny ================================ -->
-        <Option name="AVR tiny architecture"
-                option="-mmcu=avrtiny"/>
         <Option name="ATtiny11"
                 option="-mmcu=attiny11"/>
         <Option name="ATtiny12"
                 option="-mmcu=attiny12"/>
         <Option name="ATtiny15"
                 option="-mmcu=attiny15"/>
+        <Option name="ATtiny20"
+                option="-mmcu=attiny20"/>
         <Option name="ATtiny28"
                 option="-mmcu=attiny28"/>
-        <Option name="attiny40"
+        <Option name="ATtiny40"
                 option="-mmcu=attiny40"/>
-
     </Category>
 
     <Category name="AVR CPU architecture specific">
