@@ -516,13 +516,18 @@ void CCManager::OnCompleteCode(CodeBlocksEvent& event)
 
     cbStyledTextCtrl* stc = ed->GetControl();
     int tknEnd = stc->GetCurrentPos();
+    int tknStart = stc->WordStartPosition(tknEnd, true);
+    wxString trigger = stc->GetTextRange(tknStart, tknEnd);
     if (tknEnd == m_LastACLaunchState.caretStart && stc->GetZoom() == m_LastACLaunchState.editorZoom && !m_AutocompTokens.empty())
     {
         DoBufferedCC(stc);
-        return;
+        // If the completion trigger is the same as last, the cached completions have already been shown
+        // else they've just been cached, but not yet shown.
+        if (m_LastACLaunchState.trigger.Length() and (m_LastACLaunchState.trigger == trigger))
+            return;
     }
-
-    int tknStart = stc->WordStartPosition(tknEnd, true);
+    // Record the new completion trigger
+    m_LastACLaunchState.trigger = stc->GetTextRange(tknStart,tknEnd);
 
     m_AutocompTokens = ccPlugin->GetAutocompList(event.GetInt() == FROM_TIMER, ed, tknStart, tknEnd);
     if (m_AutocompTokens.empty())

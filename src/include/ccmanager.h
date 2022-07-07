@@ -223,6 +223,7 @@ class DLLIMPORT CCManager : public Mgr<CCManager>, public wxEvtHandler
             int caretStart;
             int tokenStart;
             int editorZoom;
+            wxString trigger;
         };
 
         LastACLaunchState m_LastACLaunchState;
