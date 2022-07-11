@@ -180,14 +180,16 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
 
     wxChoice *chProject = XRCCTRL(*this, "chProject", wxChoice);
     wxChoice *chTarget = XRCCTRL(*this, "chTarget", wxChoice);
-    for(unsigned int i=0;i<pa->size();++i)
+    chProject->Freeze();
+    const unsigned int numProjects = pa->size();
+    for (unsigned int i = 0; i < numProjects; ++i)
     {
-        chProject->AppendString((*pa)[i]->GetTitle());
+        chProject->Append((*pa)[i]->GetTitle());
         if ((*pa)[i] == active_project)
         {
             chProject->SetSelection(i);
-            chTarget->Clear();
-            chTarget->AppendString(_("All project files"));
+            chTarget->Freeze();
+            chTarget->Append(_("All project files"));
 
             const bool selectScopeAll = cfg->ReadBool(CONF_GROUP _T("/target_scope_all"), true);
 
@@ -212,8 +214,12 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
                 }
                 chTarget->Enable(false);
             }
+
+            chTarget->Thaw();
         }
     }
+
+    chProject->Thaw();
 
     wxRadioBox* rbScope = XRCCTRL(*this, "rbScope2", wxRadioBox);
     EditorManager* edMgr = Manager::Get()->GetEditorManager();
@@ -619,10 +625,13 @@ void FindReplaceDlg::OnSearchProject(cb_unused wxCommandEvent& event)
         return;
     cbProject *active_project=(*Manager::Get()->GetProjectManager()->GetProjects())[i];
     const bool targAll = (chTarget->GetSelection() == 0);
+    chTarget->Freeze();
     chTarget->Clear();
-    chTarget->AppendString(_("All project files"));
+    chTarget->Append(_("All project files"));
     for(int j=0;j<active_project->GetBuildTargetsCount();++j)
-        chTarget->AppendString(active_project->GetBuildTarget(j)->GetTitle());
+        chTarget->Append(active_project->GetBuildTarget(j)->GetTitle());
+
+    chTarget->Thaw();
     const int targIdx = chTarget->FindString(active_project->GetActiveBuildTarget(), true);
     chTarget->SetSelection(targAll || targIdx < 0 ? 0 : targIdx);
 }
