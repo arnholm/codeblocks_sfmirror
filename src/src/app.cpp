@@ -928,14 +928,22 @@ void CodeBlocksApp::OnFatalException()
 {
 #if wxUSE_DEBUGREPORT && wxUSE_XML && wxUSE_ON_FATAL_EXCEPTION
     wxDebugReport report;
-    wxDebugReportPreviewStd preview;
+    if (report.IsOk())
+    {
+        wxDebugReportPreviewStd preview;
 
-    report.AddAll();
-    if ( preview.Show(report) )
-        report.Process();
+        report.AddAll();
+        if ( preview.Show(report) )
+            report.Process();
+    }
+    else
+    {
+        cbMessageBox(wxString::Format(_("Debug report initialization failed, %s will terminate immediately.\n"
+                                        "We are sorry for the inconvenience..."), appglobals::AppName));
+    }
 #else
     cbMessageBox(wxString::Format(_("Something has gone wrong inside %s and it will terminate immediately.\n"
-                                    "We are sorry for the inconvenience..."), appglobals::AppName.wx_str()));
+                                    "We are sorry for the inconvenience..."), appglobals::AppName));
 #endif
 }
 
