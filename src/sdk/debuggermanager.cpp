@@ -1370,10 +1370,17 @@ void DebuggerManager::FindTargetsDebugger()
         }
     }
 
-    wxString targetTitle(target ? target->GetTitle() : wxT("<nullptr>"));
-    log->LogError(wxString::Format(_("Can't find the debugger config: '%s:%s' for the current target '%s'!"),
-                                   name.c_str(), config.c_str(),
-                                   targetTitle.c_str()));
+    if (target)
+    {
+        log->LogError(wxString::Format(_("Can't find the debugger config: '%s' for the current target '%s'!"),
+                                       dbgString, target->GetTitle()));
+    }
+    else
+    {
+        log->LogError(wxString::Format(_("Can't find the debugger config: '%s' for the compiler '%s'!"),
+                                       dbgString, compiler->GetName()));
+    }
+
     m_menuHandler->MarkActiveTargetAsValid(false);
 }
 
