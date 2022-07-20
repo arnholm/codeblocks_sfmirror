@@ -798,9 +798,10 @@ MainFrame::MainFrame(wxWindow* parent)
     Manager::Get()->GetCCManager();
 
     // save default view
-    wxString deflayout = cfg->Read("/main_frame/layout/default");
-    if (deflayout.IsEmpty())
+    const wxString deflayout(cfg->Read("/main_frame/layout/default"));
+    if (deflayout.empty())
         cfg->Write("/main_frame/layout/default", gDefaultLayout);
+
     gDefaultLayoutData = m_LayoutManager.SavePerspective(); // keep the "hardcoded" layout handy
     gDefaultMessagePaneLayoutData = m_pInfoPane->SaveTabOrder();
     SaveViewLayout(gDefaultLayout, gDefaultLayoutData, gDefaultMessagePaneLayoutData);
@@ -1156,14 +1157,16 @@ void MainFrame::RunStartupScripts()
             se.SerializeIn(ser);
             if (!se.enabled)
                 continue;
-            wxString startup = se.script;
+
+            wxString startup(se.script);
             if (wxFileName(se.script).IsRelative())
                 startup = ConfigManager::LocateDataFile(se.script, sdScriptsUser | sdScriptsGlobal);
-            if (!startup.IsEmpty())
+
+            if (!startup.empty())
             {
                 if (!se.registered)
                     Manager::Get()->GetScriptingManager()->LoadScript(startup);
-                else if (!se.menu.IsEmpty())
+                else if (!se.menu.empty())
                     Manager::Get()->GetScriptingManager()->RegisterScriptMenu(se.menu, startup, false);
                 else
                     Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Startup script/function '%s' not loaded: invalid configuration"), se.script));
@@ -1227,7 +1230,7 @@ void MainFrame::RecreateMenuBar()
     // update layouts menu
     for (LayoutViewsMap::iterator it = m_LayoutViews.begin(); it != m_LayoutViews.end(); ++it)
     {
-        if (it->first.IsEmpty())
+        if (it->first.empty())
             continue;
         SaveViewLayout(it->first, it->second,
                        m_LayoutMessagePane[it->first],
@@ -1792,7 +1795,7 @@ void MainFrame::SaveWindowState()
     int count = 0;
     for (LayoutViewsMap::iterator it = m_LayoutViews.begin(); it != m_LayoutViews.end(); ++it)
     {
-        if (it->first.IsEmpty())
+        if (it->first.empty())
             continue;
 
         ++count;
@@ -1800,7 +1803,7 @@ void MainFrame::SaveWindowState()
         cfg->Write(key + "name", it->first);
         cfg->Write(key + "data", it->second);
 
-        if (!m_LayoutMessagePane[it->first].IsEmpty())
+        if (!m_LayoutMessagePane[it->first].empty())
             cfg->Write(key + "dataMessagePane", m_LayoutMessagePane[it->first]);
     }
 
@@ -1833,11 +1836,12 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
 
     m_LastLayoutIsTemp = isTemp;
 
-    wxString layout = m_LayoutViews[name];
-    wxString layoutMP = m_LayoutMessagePane[name];
-    if (layoutMP.IsEmpty())
+    wxString layout(m_LayoutViews[name]);
+    wxString layoutMP(m_LayoutMessagePane[name]);
+    if (layoutMP.empty())
         layoutMP = m_LayoutMessagePane[gDefaultLayout];
-    if (layout.IsEmpty())
+
+    if (layout.empty())
     {
         layout = m_LayoutViews[gDefaultLayout];
         SaveViewLayout(name, layout, layoutMP, false);
@@ -1878,8 +1882,9 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
 
 void MainFrame::SaveViewLayout(const wxString& name, const wxString& layout, const wxString& layoutMP, bool select)
 {
-    if (name.IsEmpty())
+    if (name.empty())
         return;
+
     m_LayoutViews[name] = layout;
     m_LayoutMessagePane[name] = layoutMP;
     wxMenu* viewLayouts = nullptr;
@@ -2245,7 +2250,7 @@ wxString MainFrame::ShowOpenFileDialog(const wxString& caption, const wxString& 
 
 bool MainFrame::OpenGeneric(const wxString& filename, bool addToHistory)
 {
-    if (filename.IsEmpty())
+    if (filename.empty())
         return false;
 
     wxFileName fname(filename); fname.ClearExt(); fname.SetExt("cbp");
@@ -2504,6 +2509,7 @@ void MainFrame::DoUpdateAppTitle()
     }
     else
         prj = Manager::Get()->GetProjectManager() ? Manager::Get()->GetProjectManager()->GetActiveProject() : nullptr;
+
     wxString projname;
     wxString edname;
     wxString fulltitle;
@@ -2519,9 +2525,10 @@ void MainFrame::DoUpdateAppTitle()
         if (ed)
             edname = ed->GetTitle();
         fulltitle = edname + projname;
-        if (!fulltitle.IsEmpty())
+        if (!fulltitle.empty())
             fulltitle.Append(" - ");
     }
+
     fulltitle.Append(appglobals::AppName);
     fulltitle.Append(" ");
     fulltitle.Append(appglobals::AppVersion);
@@ -2666,8 +2673,8 @@ wxString MainFrame::GetEditorDescription(EditorBase* eb)
 
 void MainFrame::OnPluginsExecuteMenu(wxCommandEvent& event)
 {
-    wxString pluginName = m_PluginIDsMap[event.GetId()];
-    if (!pluginName.IsEmpty())
+    const wxString pluginName(m_PluginIDsMap[event.GetId()]);
+    if (!pluginName.empty())
         Manager::Get()->GetPluginManager()->ExecutePlugin(pluginName);
     else
         Manager::Get()->GetLogManager()->DebugLog(wxString::Format("No plugin found for ID %d", event.GetId()));
@@ -2675,8 +2682,8 @@ void MainFrame::OnPluginsExecuteMenu(wxCommandEvent& event)
 
 void MainFrame::OnHelpPluginMenu(wxCommandEvent& event)
 {
-    wxString pluginName = m_PluginIDsMap[event.GetId()];
-    if (!pluginName.IsEmpty())
+    const wxString pluginName(m_PluginIDsMap[event.GetId()]);
+    if (!pluginName.empty())
     {
         const PluginInfo* pi = Manager::Get()->GetPluginManager()->GetPluginInfo(pluginName);
         if (!pi)
@@ -2684,6 +2691,7 @@ void MainFrame::OnHelpPluginMenu(wxCommandEvent& event)
             Manager::Get()->GetLogManager()->DebugLog("No plugin info for " + pluginName);
             return;
         }
+
         dlgAboutPlugin dlg(this, pi);
         PlaceWindow(&dlg);
         dlg.ShowModal();
@@ -2714,7 +2722,7 @@ void MainFrame::OnFileNewWhat(wxCommandEvent& event)
         Manager::Get()->GetEditorManager()->CheckForExternallyModifiedFiles();
 
         // If both are empty it means that the wizard has failed
-        if (!prj && filename.IsEmpty())
+        if (!prj && filename.empty())
             return;
 
         // Send the new project event
@@ -2727,7 +2735,7 @@ void MainFrame::OnFileNewWhat(wxCommandEvent& event)
             prj->SaveAllFiles();
         }
 
-        if (!filename.IsEmpty())
+        if (!filename.empty())
         {
             if (prj)
                 m_projectsHistory.AddToHistory(filename);
@@ -2794,7 +2802,7 @@ bool MainFrame::OnDropFiles(wxCoord /*x*/, wxCoord /*y*/, const wxArrayString& f
         }
     }
 
-    if (!foundWorkspace.IsEmpty())
+    if (!foundWorkspace.empty())
       success &= OpenGeneric(foundWorkspace);
     else
     {
@@ -2842,8 +2850,8 @@ void MainFrame::DoOnFileOpen(bool bProject)
     {
         if (!bProject)
         {
-            wxString Filter = cfg->Read("/file_dialogs/file_new_open/filter");
-            if (!Filter.IsEmpty())
+            const wxString Filter(cfg->Read("/file_dialogs/file_new_open/filter"));
+            if (!Filter.empty())
                 FileFilters::GetFilterIndexFromName(Filters, Filter, StoredIndex);
 
             Path = cfg->Read("/file_dialogs/file_new_open/directory", Path);
@@ -3459,7 +3467,7 @@ void MainFrame::OnEditLineMove(wxCommandEvent& event)
         const wxString line  = stc->GetTextRange(startPos - lineLength - offset,
                                                  startPos - offset);
         stc->InsertText(endPos + (isLastLine ? 0 : 1), line);
-        // warning: line.Length() != lineLength if multibyte characters are used
+        // warning: line.length() != lineLength if multibyte characters are used
         stc->DeleteRange(startPos - lineLength, lineLength);
         startPos -= lineLength;
         endPos   -= lineLength;
@@ -3474,7 +3482,7 @@ void MainFrame::OnEditLineMove(wxCommandEvent& event)
         const wxString line  = stc->GetTextRange(endPos + 1,
                                                  endPos + 1 + lineLength);
         stc->InsertText(startPos, line);
-        // warning: line.Length() != lineLength if multibyte characters are used
+        // warning: line.length() != lineLength if multibyte characters are used
         startPos += lineLength;
         endPos   += lineLength;
         stc->DeleteRange(endPos + 1, lineLength);
@@ -3826,7 +3834,7 @@ void MainFrame::OnEditUncommentSelected(cb_unused wxCommandEvent& event)
             {      // we know the comment is there (maybe preceded by white space)
                 int Pos = strLine.Find(comment.lineComment);
                 int start = stc->PositionFromLine( curLine ) + Pos;
-                int end = start + comment.lineComment.Length();
+                int end = start + comment.lineComment.length();
                 stc->SetTargetStart( start );
                 stc->SetTargetEnd( end );
                 stc->ReplaceTarget( wxEmptyString );
@@ -3844,16 +3852,16 @@ void MainFrame::OnEditUncommentSelected(cb_unused wxCommandEvent& event)
                 // we know the start comment is there (maybe preceded by white space)
                 Pos = strLine.Find(comment.streamCommentStart);
                 start = stc->PositionFromLine( curLine ) + Pos;
-                end = start + comment.streamCommentStart.Length();
+                end = start + comment.streamCommentStart.length();
                 stc->SetTargetStart( start );
                 stc->SetTargetEnd( end );
                 stc->ReplaceTarget( wxEmptyString );
 
                 // we know the end comment is there too (maybe followed by white space)
                 // attention!! we have to subtract the length of the comment we already removed
-                Pos = strLine.rfind(comment.streamCommentEnd,strLine.npos) - comment.streamCommentStart.Length();
+                Pos = strLine.rfind(comment.streamCommentEnd,strLine.npos) - comment.streamCommentStart.length();
                 start = stc->PositionFromLine( curLine ) + Pos;
-                end = start + comment.streamCommentEnd.Length();
+                end = start + comment.streamCommentEnd.length();
                 stc->SetTargetStart( start );
                 stc->SetTargetEnd( end );
                 stc->ReplaceTarget( wxEmptyString );
@@ -3931,7 +3939,7 @@ void MainFrame::OnEditToggleCommentSelected(cb_unused wxCommandEvent& event)
                 wxString strLine = stc->GetLine( curLine );
                 int Pos = strLine.Find(comment);
                 int start = stc->PositionFromLine( curLine ) + Pos;
-                int end = start + comment.Length();
+                int end = start + comment.length();
                 stc->SetTargetStart( start );
                 stc->SetTargetEnd( end );
                 stc->ReplaceTarget( wxEmptyString );
@@ -3999,22 +4007,22 @@ void MainFrame::OnEditStreamCommentSelected(cb_unused wxCommandEvent& event)
         int p2 = endPos;
         while (stc->GetCharAt(p2) == ' ' && p2 < stc->GetLength())
             ++p2;
-        const wxString start = stc->GetTextRange(p1, p1 + comment.streamCommentStart.Length());
-        const wxString end = stc->GetTextRange(p2, p2 + comment.streamCommentEnd.Length());
+        const wxString start = stc->GetTextRange(p1, p1 + comment.streamCommentStart.length());
+        const wxString end = stc->GetTextRange(p2, p2 + comment.streamCommentEnd.length());
         if (start == comment.streamCommentStart && end == comment.streamCommentEnd)
         {
             stc->SetTargetStart(p1);
             stc->SetTargetEnd(p2 + 2);
             wxString target = stc->GetTextRange(p1 + 2, p2);
             stc->ReplaceTarget(target);
-            stc->GotoPos(p1 + target.Length());
+            stc->GotoPos(p1 + target.length());
         }
         else
         {
             stc->InsertText( startPos, comment.streamCommentStart );
             // we already inserted some characters so out endPos changed
-            startPos += comment.streamCommentStart.Length();
-            endPos += comment.streamCommentStart.Length();
+            startPos += comment.streamCommentStart.length();
+            endPos += comment.streamCommentStart.length();
             stc->InsertText( endPos, comment.streamCommentEnd );
             stc->SetSelectionVoid(startPos,endPos);
         }
@@ -4289,9 +4297,9 @@ void MainFrame::OnViewLayoutSave(cb_unused wxCommandEvent& event)
     if ( def.empty() )
         def = Manager::Get()->GetConfigManager("app")->Read("/main_frame/layout/default");
 
-    wxString name = cbGetTextFromUser(_("Enter the name for this perspective"),
-                                      _("Save current perspective"), def, this);
-    if (!name.IsEmpty())
+    const wxString name(cbGetTextFromUser(_("Enter the name for this perspective"),
+                                          _("Save current perspective"), def, this));
+    if (!name.empty())
     {
         DoFixToolbarsLayout();
         SaveViewLayout(name,
@@ -4851,8 +4859,8 @@ void MainFrame::OnToggleBar(wxCommandEvent& event)
     }
     else
     {
-        wxString pluginName = m_PluginIDsMap[event.GetId()];
-        if (!pluginName.IsEmpty())
+        const wxString pluginName(m_PluginIDsMap[event.GetId()]);
+        if (!pluginName.empty())
         {
             cbPlugin* plugin = Manager::Get()->GetPluginManager()->FindPluginByName(pluginName);
             if (plugin)
@@ -5339,15 +5347,16 @@ void MainFrame::OnRequestDockWindow(CodeBlocksDockEvent& event)
         return;
 
     wxAuiPaneInfo info;
-    wxString name = event.name;
-    if (name.IsEmpty())
+    wxString name(event.name);
+    if (name.empty())
     {
         static int idx = 0;
         name = wxString::Format("UntitledPane%d", ++idx);
     }
+
 // TODO (mandrav##): Check for existing pane with the same name
     info.Name(name);
-    info.Caption(event.title.IsEmpty() ? name : event.title);
+    info.Caption(event.title.empty() ? name : event.title);
     switch (event.dockSide)
     {
         case CodeBlocksDockEvent::dsLeft:     info.Left();   break;
@@ -5417,7 +5426,7 @@ void MainFrame::OnLayoutUpdate(cb_unused CodeBlocksLayoutEvent& event)
 
 void MainFrame::OnLayoutQuery(CodeBlocksLayoutEvent& event)
 {
-    event.layout = !m_LastLayoutName.IsEmpty() ? m_LastLayoutName : gDefaultLayout;
+    event.layout = !m_LastLayoutName.empty() ? m_LastLayoutName : gDefaultLayout;
     event.StopPropagation();
 }
 
