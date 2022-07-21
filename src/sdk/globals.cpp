@@ -57,12 +57,13 @@
 const wxString DEFAULT_WORKSPACE     = _T("default.workspace");
 const wxString DEFAULT_ARRAY_SEP     = _T(";");
 
-#ifndef __WXMAC__
-const wxString DEFAULT_CONSOLE_TERM  = _T("xterm -T $TITLE -e");
-#else
+#ifdef __WXMAC__
 const wxString DEFAULT_CONSOLE_TERM  = _T("osascript -e 'tell app \"Terminal\"' -e 'activate' -e 'do script quoted form of \"$SCRIPT\"' -e 'end tell'");
-#endif
+const wxString DEFAULT_CONSOLE_SHELL = _T("/bin/zsh -c");
+#else
+const wxString DEFAULT_CONSOLE_TERM  = _T("xterm -T $TITLE -e");
 const wxString DEFAULT_CONSOLE_SHELL = _T("/bin/sh -c");
+#endif
 
 #if defined __WXMSW__
 const wxString cbDEFAULT_OPEN_FOLDER_CMD = _T("explorer.exe /select,");
