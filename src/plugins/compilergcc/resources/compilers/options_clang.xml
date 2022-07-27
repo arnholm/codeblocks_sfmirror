@@ -88,10 +88,15 @@
                 checkAgainst="-O1 -O2 -Os -O3 -O4"
                 checkMessage="You have optimizations enabled. This is Not A Good Thing(tm) when producing debugging symbols..."
                 supersedes="-s -g"/>
-        <Option name="Produce full debugging symbols"
-                option="-g"
+        <Option name="Tune Debugging for GDB"
+                option="-ggdb"
                 checkAgainst="-O1 -O2 -Os -O3 -O4"
-                checkMessage="You have optimizations enabled. This is Not A Good Thing(tm) when producing debugging symbols..."
+                checkMessage="You have other optimizations or debugging settings that are not good for GDB."
+                supersedes="-s -gline-tables-only"/>
+        <Option name="Tune Debugging for DWARF-2 (LLDB)"
+                option="-gdwarf-2"
+                checkAgainst="-O1 -O2 -Os -O3 -O4"
+                checkMessage="You have other optimizations or debugging settings that are not good for LLDB."
                 supersedes="-s -gline-tables-only"/>
     </Category>
 

@@ -40,16 +40,31 @@
 
     <!-- Summary of GCC options: http://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html -->
 
-    <Option name="Produce debugging symbols"
-            option="-g"
-            category="Debugging"
-            checkAgainst="-O -O1 -O2 -O3 -Os"
-            checkMessage="You have optimizations enabled. This is Not A Good Thing(tm) when producing debugging symbols..."
-            supersedes="-s"/>
-    <Option name="Optimize debugging executable (compile speed, execution speed and better debugging)"
-            option="-Og"
-            category="Debugging"
-            supersedes="-O -O1 -O2 -O3"/>
+    <Category name="Debugging">
+        <Option name="Produce debugging symbols"
+                option="-g"
+                checkAgainst="-O -O1 -O2 -O3 -Os"
+                checkMessage="You have optimizations enabled. This is Not A Good Thing(tm) when producing debugging symbols..."
+                supersedes="-s"/>
+        <Option name="Optimize debugging executable (compile speed, execution speed and better debugging)"
+                option="-Og"
+                supersedes="-O -O1 -O2 -O3"/>
+        <Option name="Tune Debugging for GDB"
+                option="-ggdb"
+                checkAgainst="-O1 -O2 -Os -O3 -O4 -gdwarf -gdwarf-4"
+                checkMessage="You have other optimizations or debugging settings that are not good for GDB."
+                supersedes="-s -gline-tables-only"/>
+        <Option name="Tune Debugging for DWARF for GDB"
+                option="-gdwarf"
+                checkAgainst="-Os -O1 -O2 -O3 -O4 -ggdb -gdwarf-4"
+                checkMessage="You have other optimizations or debugging settings that are not good for GDB."
+                supersedes="-s -gline-tables-only"/>
+        <Option name="Tune Debugging for DWARF for LLDB"
+                option="-gdwarf-4"
+                checkAgainst="-Os -O1 -O2 -O3 -O4 -ggdb -gdwarf"
+                checkMessage="You have other optimizations or debugging settings that are not good for LLDB."
+                supersedes="-s -gline-tables-only"/>
+    </Category>
     <Option name="Target x86 (32bit)"
             option="-m32"
             additionalLibs="-m32"
