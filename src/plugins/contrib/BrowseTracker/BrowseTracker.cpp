@@ -1763,14 +1763,12 @@ void BrowseTracker::AppShuttingDown(CodeBlocksEvent& event)
     //-Manager::Get()->GetLogManager()->Log(_T("BrowseTracker OnStartShutdown() initiated."));
     event.Skip();
 
-    m_bAppShutdown = true;
-
     // Crashes occur when logging during shutdown
     //-#if defined(LOGGING)
     //-InfoWindow::Display(_T("Browstracker"),_T("Browstracker OnStartShutdown"), 7000);
     //-#endif
 
-     m_bAppShutdown = true;
+    m_bAppShutdown = true;
 
     if ( m_InitDone )
     {
