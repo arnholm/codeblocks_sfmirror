@@ -179,18 +179,17 @@ StartHerePage::StartHerePage(wxEvtHandler* owner, const RecentItemsList &project
 
     m_pWin->SetFonts(wxEmptyString, wxEmptyString, sizes);
 
-    const wxString htmlFile(ConfigManager::ReadDataPath()+"/start_here.zip#zip:start_here.html");
+    const wxString filePath(ConfigManager::ReadDataPath());
 
-    // must load the page this way because if we don't the image can't be found...
-    // This will produce some debug log entries about invalid colours, because macros have not been replaced yet,
-    m_pWin->LoadPage(htmlFile);
+    // Load an empty page just for setting the default image path.
+    // Loading start_here.html instead is slow and generates errors in the debug log
+    // because the colour macros have not been translated yet
+    m_pWin->LoadPage(filePath+"/start_here.zip#zip:empty_page.html");
 
-    // alternate way to read the file so we can perform some search and replace
-    // the C::B image referenced in the default start page can be found now
-    // because we used LoadPage() above...
+    // Read the file so we can perform some search and replace
     wxString buf;
     wxFileSystem* fs = new wxFileSystem;
-    wxFSFile* f = fs->OpenFile(htmlFile);
+    wxFSFile* f = fs->OpenFile(filePath+"/start_here.zip#zip:start_here.html");
     if (f)
     {
         char tmp[1024];
