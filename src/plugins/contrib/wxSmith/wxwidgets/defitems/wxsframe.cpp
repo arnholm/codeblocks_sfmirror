@@ -45,7 +45,6 @@ namespace
         WXS_ST(wxMAXIMIZE_BOX)
         WXS_ST(wxMINIMIZE_BOX)
         WXS_ST(wxSTAY_ON_TOP)
-        WXS_ST(wxTAB_TRAVERSAL)
         WXS_EXST(wxFRAME_EX_METAL)
         WXS_EXST(wxFRAME_EX_CONTEXTHELP)
         WXS_ST_DEFAULTS()
