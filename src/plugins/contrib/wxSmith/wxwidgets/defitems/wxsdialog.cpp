@@ -39,7 +39,6 @@ namespace
         WXS_ST(wxRESIZE_BORDER)
         WXS_ST(wxCLOSE_BOX)
         WXS_ST(wxDIALOG_NO_PARENT)
-        WXS_ST(wxTAB_TRAVERSAL)
         WXS_ST(wxMAXIMIZE_BOX)
         WXS_ST(wxMINIMIZE_BOX)
         WXS_ST(wxFRAME_SHAPED)
