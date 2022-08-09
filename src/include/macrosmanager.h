@@ -33,6 +33,7 @@ public:
     void RecalcVars(const cbProject* project, EditorBase* editor, const ProjectBuildTarget* target);
     void ClearProjectKeys();
     void Reset();
+    const MacrosMap& GetMacros() const { return m_Macros; }
 protected:
     const ProjectBuildTarget* m_LastTarget;
     const cbProject*    m_LastProject;
