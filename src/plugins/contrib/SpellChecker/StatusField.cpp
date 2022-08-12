@@ -204,7 +204,12 @@ void SpellCheckerStatusField::Update()
         }
         else
         {
+#if wxCHECK_VERSION(3, 1, 6)
+            const wxSize panelSize(GetSize());
+            m_bitmap = new wxStaticBitmap(this, wxID_ANY, bm, wxDefaultPosition, wxSize(panelSize.GetHeight(), panelSize.GetHeight()));
+#else
             m_bitmap = new wxStaticBitmap(this, wxID_ANY, bm);
+#endif
             m_bitmap->Connect(wxEVT_LEFT_UP,
                               wxMouseEventHandler(SpellCheckerStatusField::OnPressed), nullptr,
                               this);
