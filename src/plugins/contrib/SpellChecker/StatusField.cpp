@@ -205,8 +205,8 @@ void SpellCheckerStatusField::Update()
         else
         {
 #if wxCHECK_VERSION(3, 1, 6)
-            const wxSize panelSize(GetSize());
-            m_bitmap = new wxStaticBitmap(this, wxID_ANY, bm, wxDefaultPosition, wxSize(panelSize.GetHeight(), panelSize.GetHeight()));
+            const int height = GetSize().GetHeight()*cbGetActualContentScaleFactor(*this);
+            m_bitmap = new wxStaticBitmap(this, wxID_ANY, bm, wxDefaultPosition, wxSize(height, height));
 #else
             m_bitmap = new wxStaticBitmap(this, wxID_ANY, bm);
 #endif
