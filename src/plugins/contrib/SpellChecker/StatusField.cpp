@@ -101,7 +101,7 @@ static wxBitmapBundle LoadImageInPath(const wxString &path, wxString fileName, c
     if (bitmaps.empty())
         msg.Printf("Loading images: no images found in path '%s'!", path);
     else
-        msg.Printf("Loading images: %lu were successfully loaded!", bitmaps.size());
+        msg.Printf("Loading images: %lu were successfully loaded!", (unsigned long)bitmaps.size());
 
     Manager::Get()->GetLogManager()->DebugLog(msg);
     return wxBitmapBundle::FromBitmaps(bitmaps);
