@@ -26,12 +26,17 @@ public:
     /// printf formatting flags (%d). If you fail to provide them the behaviour is undefined!
     /// Example fileName could look like this: "some-secondary-prefix/%dx%d/filename.png".
     void AddMappingF(const wxString &stockId, const wxString &fileName);
+
 protected:
     wxBitmap CreateBitmap(const wxArtID& id, const wxArtClient& client,
                           const wxSize &size) override;
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmapBundle CreateBitmapBundle(const wxArtID& id, const wxArtClient& client,
+                          const wxSize &size) override;
+#endif
+
 private:
     wxBitmap DoCreateBitmap(const wxArtID& id, Manager::UIComponent uiComponent) const;
-private:
     wxString m_prefix;
 
     struct Data
