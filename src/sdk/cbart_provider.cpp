@@ -77,7 +77,7 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
         uiComponent = Manager::UIComponent::Menus;
     else if (client == wxT("wxART_BUTTON_C"))
         uiComponent = Manager::UIComponent::Main;
-    else if (client == wxT("wxART_BUTTON_C"))
+    else if (client == wxT("wxART_TOOLBAR_C"))
         uiComponent = Manager::UIComponent::Toolbars;
     else
         return wxBitmapBundle();
