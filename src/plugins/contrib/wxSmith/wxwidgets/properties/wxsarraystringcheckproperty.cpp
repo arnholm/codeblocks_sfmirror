@@ -118,7 +118,7 @@ bool wxsArrayStringCheckProperty::PropStreamWrite(wxsPropertyContainer* Object,w
     for ( size_t i=0; i<Count; i++ )
     {
         Stream->PutString(DataSubName,VALUE[i],wxEmptyString);
-		bool Checked = CHECK[i];
+        bool Checked = CHECK[i];
         Stream->PutBool(DataSubName + "_checked", Checked, false);
     }
     Stream->PopCategory();
