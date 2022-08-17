@@ -71,4 +71,4 @@ class BrowseTrackerConfPanel: public cbConfigurationPanel
     virtual void OnActivatePrevEd( wxCommandEvent& event );
 
 };
-#endif // THREAD_SEARCH_CONF_PANEL_H
+#endif // BROWSETRACKER_CONF_PANEL_H
