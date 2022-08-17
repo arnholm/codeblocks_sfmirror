@@ -86,7 +86,6 @@ class MainFrame : public wxFrame
 
         void StartupDone();
 
-
         /** \brief Return true if the log pane is visible to the user
          */
         bool IsLogPaneVisible();

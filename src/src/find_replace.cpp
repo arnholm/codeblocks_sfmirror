@@ -1518,7 +1518,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     //    auto_hide -> auto show/hide the log panel -> if this option is not set we are not allowed to show the log panel
     //    auto_show_search -> sub option to explicitly disable the search window
     bool automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_hide"), false);
-    if(automaticallyShowPanel)
+    if (automaticallyShowPanel)
         automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true);
 
     const bool isLogPaneVisible = ((MainFrame*) Manager::Get()->GetAppFrame())->IsLogPaneVisible();
@@ -1535,7 +1535,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
         if (data->hasToOpenAfterFind)
             m_pSearchLog->FocusEntry(oldcount);
 
-        if(!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)
+        if (!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)
         {
             // If the log window is not visible and we are not allowed to open the log panel we inform the user with a message box
             wxString msg;
@@ -1549,11 +1549,9 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
         LogSearch(_T(""), -1, msg );
         m_pSearchLog->FocusEntry(oldcount);
 
-        if(!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it
+        if (!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it
             cbMessageBox(msg, _("Result"), wxICON_INFORMATION);
-
     }
-
 
     // Automatically focus the search log window
     CodeBlocksLogEvent evtSwitch(cbEVT_SWITCH_TO_LOG_WINDOW, m_pSearchLog);
