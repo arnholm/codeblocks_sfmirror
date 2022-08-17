@@ -572,6 +572,18 @@ wxPdfDocument::GetImageScale()
   return m_imgscale;
 }
 
+int
+wxPdfDocument::GetPageOrientation()
+{
+  return m_curOrientation;
+}
+
+int
+wxPdfDocument::GetDefaultPageOrientation()
+{
+  return m_defOrientation;
+}
+
 double
 wxPdfDocument::GetPageWidth()
 {
@@ -611,9 +623,9 @@ wxPdfDocument::Open()
 }
 
 void
-wxPdfDocument::AddPage(int orientation)
+wxPdfDocument::AddPage(int orientation, bool useDefaultPageSize)
 {
-  AddPage(orientation, m_defPageSize);
+  AddPage(orientation, useDefaultPageSize ? m_defPageSize : m_curPageSize);
 }
 
 void
@@ -1681,8 +1693,10 @@ wxPdfDocument::GetImageSize(const wxString& fileName, const wxString& mimeType)
   wxFSFile* imageFile = fs.OpenFile(fileURL);
   if (imageFile != NULL)
   {
-    wxString mimeType = imageFile->GetMimeType();
-    image.LoadFile(*imageFile->GetStream(), mimeType);
+    wxString mimeTypeToUse = mimeType;
+    if ( mimeTypeToUse.empty() )
+        mimeTypeToUse = imageFile->GetMimeType();
+    image.LoadFile(*imageFile->GetStream(), mimeTypeToUse);
     delete imageFile;
   }
 #if 0
