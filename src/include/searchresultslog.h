@@ -14,25 +14,25 @@ class wxCommandEvent;
 
 class DLLIMPORT cbSearchResultsLog : public ListCtrlLogger, public wxEvtHandler
 {
-	public:
-		cbSearchResultsLog(const wxArrayString& titles, wxArrayInt& widths);
-		~cbSearchResultsLog() override;
-		void FocusEntry(size_t index);
-		void SetBasePath(const wxString base){ m_Base = base; }
+    public:
+        cbSearchResultsLog(const wxArrayString& titles, wxArrayInt& widths);
+        ~cbSearchResultsLog() override;
+        void FocusEntry(size_t index);
+        void SetBasePath(const wxString base){ m_Base = base; }
 
-		wxWindow* CreateControl(wxWindow* parent) override;
+        wxWindow* CreateControl(wxWindow* parent) override;
 
-        /** \brief Check if the log window is visible for the user
-         *
-         * \return true if the log window is visible for the user
-         */
-		bool IsVisible();
-	protected:
+    /** \brief Check if the log window is visible for the user
+     *
+     * \return true if the log window is visible for the user
+     */
+        bool IsVisible();
+    protected:
         void OnDoubleClick(wxCommandEvent& event);
         void SyncEditor(int selIndex);
 
         wxString m_Base;
-	private:
+    private:
         DECLARE_EVENT_TABLE()
 };
 
