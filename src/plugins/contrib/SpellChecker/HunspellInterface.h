@@ -33,6 +33,7 @@
 #include "wx/txtstrm.h"
 #include "wx/file.h"
 
+#include "hunspell.h"
 #include "SpellCheckUserInterface.h"
 #include "PersonalDictionary.h"
 
@@ -79,7 +80,7 @@ private:
     wxString GetDictionaryFileName();
     wxString GetDictionaryFileName(const wxString& strDictionaryName);
 
-    Hunspell* m_pHunspell;
+    Hunhandle* m_pHunhandle;
 
     StringToStringMap m_DictionaryLookupMap;
     StringToStringMap m_CustomMySpellDictionaryMap;
