@@ -70,11 +70,11 @@
 					<Add option="-fexceptions" />
 					<Add option="-pipe" />
 					<Add option="-mthreads" />
-					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-Winvalid-pch" />
+					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-DCB_PRECOMP" />
 					<Add option="-DcbDEBUG" />
-					<Add directory="hunspell/src" />
+					<Add directory="hunspell/src/hunspell" />
 					<Add directory="wxspellchecker/include" />
 					<Add directory="../../../include" />
 					<Add directory="../../../include/tinyxml" />

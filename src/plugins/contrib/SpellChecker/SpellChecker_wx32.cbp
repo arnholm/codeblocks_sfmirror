@@ -73,7 +73,7 @@
 					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-DNOPCH" />
 					<Add option="-DcbDEBUG" />
-					<Add directory="hunspell/src" />
+					<Add directory="hunspell/src/hunspell" />
 					<Add directory="wxspellchecker/include" />
 					<Add directory="../../../include" />
 					<Add directory="../../../include/tinyxml" />
