@@ -43,7 +43,8 @@ HunspellInterface::~HunspellInterface()
     }
 
     UninitializeSpellCheckEngine();
-
+    Hunspell_destroy(m_pHunhandle);
+    m_pHunhandle = NULL;
     delete m_pSpellUserInterface;
     m_pSpellUserInterface = NULL;
 }
@@ -75,7 +76,6 @@ int HunspellInterface::InitializeSpellCheckEngine()
 
 int HunspellInterface::UninitializeSpellCheckEngine()
 {
-    Hunspell_destroy(m_pHunhandle);
     m_bEngineInitialized = false;
     return true;
 }
@@ -426,11 +426,19 @@ void HunspellInterface::OpenPersonalDictionary(const wxString& strPersonalDictio
 
 wxString HunspellInterface::GetCharacterEncoding()
 {
-    if (m_pHunhandle == NULL)
-        return wxEmptyString;
+    wxString character_encoding = wxEmptyString;
 
-    wxString encoding(wxConvUTF8.cMB2WC(Hunspell_get_dic_encoding(m_pHunhandle)), *wxConvCurrent);
-    return encoding;
+    if (m_pHunhandle != NULL)
+    {
+        char * pEncoding = Hunspell_get_dic_encoding(m_pHunhandle);
+
+        if (pEncoding && (strlen(pEncoding) > 0))
+        {
+            character_encoding = wxString::FromUTF8(pEncoding);
+        }
+    }
+
+    return character_encoding;
 }
 
 ///////////// Options /////////////////
