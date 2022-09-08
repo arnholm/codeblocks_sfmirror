@@ -32,7 +32,7 @@ inline bool isMMIXALOperator(char ch) {
 	if (isalnum(ch))
 		return false;
 	if (ch == '+' || ch == '-' || ch == '|' || ch == '^' ||
-		ch == '*' || ch == '/' || ch == '/' ||
+		ch == '*' || ch == '/' ||
 		ch == '%' || ch == '<' || ch == '>' || ch == '&' ||
 		ch == '~' || ch == '$' ||
 		ch == ',' || ch == '(' || ch == ')' ||
