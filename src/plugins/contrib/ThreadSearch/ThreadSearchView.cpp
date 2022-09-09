@@ -64,11 +64,8 @@ ThreadSearchView::ThreadSearchView(ThreadSearch& threadSearchPlugin) :
     m_pSplitter = new wxSplitterWindow(this, -1, wxDefaultPosition, wxSize(1,1), wxSP_3D|wxSP_BORDER|wxSP_PERMIT_UNSPLIT);
     m_pPnlPreview = new wxPanel(m_pSplitter, -1, wxDefaultPosition, wxSize(1,1));
     m_pSizerSearchDirItems_staticbox = new wxStaticBox(this, -1, _("Directory parameters"));
-    const wxString m_pCboSearchExpr_choices[] = {
-
-    };
     m_pCboSearchExpr = new wxComboBox(this, controlIDs.Get(ControlIDs::idCboSearchExpr), wxEmptyString,
-                                      wxDefaultPosition, wxDefaultSize, 0, m_pCboSearchExpr_choices,
+                                      wxDefaultPosition, wxDefaultSize, 0, NULL,
                                       wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
     m_pBtnSearch = new wxBitmapButton(this, controlIDs.Get(ControlIDs::idBtnSearch),
                                       cbLoadBitmapScaled(prefix + wxT("findf.png"),
