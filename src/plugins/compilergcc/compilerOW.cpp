@@ -8,18 +8,17 @@
  */
 
 #include <sdk.h>
-#include "compilerOW.h"
-#include <wx/intl.h>
-#include <wx/regex.h>
-#include <wx/config.h>
-#include <wx/utils.h>
-
 #include <logmanager.h>
 #include <manager.h>
+
+#include "compilerOW.h"
 #include "compilerOWgenerator.h"
 
-#include <wx/utils.h>
+#include <wx/config.h>
 #include <wx/filefn.h>
+#include <wx/intl.h>
+#include <wx/regex.h>
+#include <wx/utils.h>
 
 CompilerOW::CompilerOW()
     : Compiler(wxT("OpenWatcom (W32) Compiler"), _T("ow"))
