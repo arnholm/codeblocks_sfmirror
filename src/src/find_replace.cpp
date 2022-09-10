@@ -136,7 +136,7 @@ void FindReplace::CreateSearchLog()
 #else
     const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
-    wxBitmap * bmp = new wxBitmap(cbLoadBitmapScaled(imgFile+"filefind.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+    wxBitmap * bmp = new wxBitmap(cbLoadBitmapScaled(prefix+"filefind.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
 #endif
 
     m_pSearchLog = new cbSearchResultsLog(titles, widths);
