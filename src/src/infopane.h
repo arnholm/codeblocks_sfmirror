@@ -30,7 +30,11 @@ class InfoPane : public cbAuiNotebook
     {
         Page() : icon(nullptr), window(nullptr), logger(nullptr), indexInNB(std::numeric_limits<int>::min()), eventID(0), islogger(0) {};
         wxString  title;
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmapBundle* icon;
+#else
         wxBitmap* icon;
+#endif
         wxWindow* window;
         Logger*   logger;
         int       indexInNB; // used to be "visible" flag: invisible is <0, any other value means visible
@@ -42,7 +46,11 @@ class InfoPane : public cbAuiNotebook
     static int  CompareIndexes(Page **p1, Page **p2);
     void        ReorderTabs(CompareFunction cmp_f);
 
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmapBundle m_DefaultBitmap;
+#else
     wxBitmap m_DefaultBitmap;
+#endif
 
     WX_DEFINE_ARRAY(Page*, wxArrayOfPage);
     wxArrayOfPage m_Pages;
@@ -59,8 +67,13 @@ class InfoPane : public cbAuiNotebook
     void OnCloseClicked(wxAuiNotebookEvent& event);
     void OnTabPosition(wxCommandEvent& event);
     void DoShowContextMenu();
+#if wxCHECK_VERSION(3, 1, 6)
+    int  AddPagePrivate(wxWindow* p, const wxString& title, wxBitmapBundle* icon = nullptr);
+    bool InsertPagePrivate(wxWindow* p, const wxString& title, wxBitmapBundle* icon = nullptr, int index = -1);
+#else
     int  AddPagePrivate(wxWindow* p, const wxString& title, wxBitmap* icon = nullptr);
     bool InsertPagePrivate(wxWindow* p, const wxString& title, wxBitmap* icon = nullptr, int index = -1);
+#endif
     using wxWindow::Show;
 public:
 
@@ -100,7 +113,11 @@ public:
     *  will be redirected to the null log thereafter.
     *  To prove that you are serious, you must know the logger belonging to the tab to delete.
     */
+#if wxCHECK_VERSION(3, 1, 6)
+    bool AddLogger(Logger* logger, wxWindow* p, const wxString& title, wxBitmapBundle* icon = nullptr);
+#else
     bool AddLogger(Logger* logger, wxWindow* p, const wxString& title, wxBitmap* icon = nullptr);
+#endif
     bool DeleteLogger(Logger* l);
 
     /*
@@ -108,7 +125,11 @@ public:
     *  use AddNonLogger()/DeleteNonLogger() for that purpose.
     *  An example of something that is not a logger but might still show up in the info pane is the list of search results.
     */
+#if wxCHECK_VERSION(3, 1, 6)
+    bool AddNonLogger(wxWindow* p, const wxString& title, wxBitmapBundle* icon = nullptr);
+#else
     bool AddNonLogger(wxWindow* p, const wxString& title, wxBitmap* icon = nullptr);
+#endif
     bool RemoveNonLogger(wxWindow* p);
     bool DeleteNonLogger(wxWindow* p);
 };

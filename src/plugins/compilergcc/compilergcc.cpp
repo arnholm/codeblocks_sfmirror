@@ -384,12 +384,14 @@ void CompilerGCC::OnAttach()
 //    msgMan->SetBatchBuildLog(m_PageIndex);
     // set log image
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
+    wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmapBundle *bmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "misc.png", uiSize, wxBITMAP_TYPE_PNG));
+#else
     const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-    const wxString prefix = ConfigManager::GetDataFolder()
-                          + wxString::Format(_T("/resources.zip#zip:/images/infopane/%dx%d/"),
-                                             uiSize, uiSize);
-    wxBitmap* bmp = new wxBitmap(cbLoadBitmapScaled(prefix + _T("misc.png"), wxBITMAP_TYPE_PNG,
-                                                    uiScaleFactor));
+    prefix << wxString::Format("%dx%d/", uiSize, uiSize);
+    wxBitmap* bmp = new wxBitmap(cbLoadBitmapScaled(prefix+"misc.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+#endif
     msgMan->Slot(m_PageIndex).icon = bmp;
 
     // create warnings/errors log
@@ -407,8 +409,11 @@ void CompilerGCC::OnAttach()
     m_ListPageIndex = msgMan->SetLog(m_pListLog);
     msgMan->Slot(m_ListPageIndex).title = _("Build messages");
     // set log image
-    bmp = new wxBitmap(cbLoadBitmapScaled(prefix + _T("flag.png"), wxBITMAP_TYPE_PNG,
-                                          uiScaleFactor));
+#if wxCHECK_VERSION(3, 1, 6)
+    bmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "flag.png", uiSize, wxBITMAP_TYPE_PNG));
+#else
+    bmp = new wxBitmap(cbLoadBitmapScaled(prefix+"flag.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+#endif
     msgMan->Slot(m_ListPageIndex).icon = bmp;
 
     CodeBlocksLogEvent evtAdd1(cbEVT_ADD_LOG_WINDOW, m_pLog, msgMan->Slot(m_PageIndex).title, msgMan->Slot(m_PageIndex).icon);

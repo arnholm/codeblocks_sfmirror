@@ -6,6 +6,10 @@
 #ifndef SDK_EVENTS_H
 #define SDK_EVENTS_H
 
+#include <wx/bitmap.h>
+#if wxCHECK_VERSION(3, 1, 6)
+#include <wx/bmpbndl.h>
+#endif
 #include <wx/event.h>
 #include <wx/intl.h>
 #include "settings.h"
@@ -189,21 +193,33 @@ typedef void (wxEvtHandler::*CodeBlocksLayoutEventFunction)(CodeBlocksLayoutEven
 class EVTIMPORT CodeBlocksLogEvent : public wxEvent
 {
     public:
+#if wxCHECK_VERSION(3, 1, 6)
+        CodeBlocksLogEvent(wxEventType commandType = wxEVT_NULL, Logger* logger = nullptr, const wxString& title = wxEmptyString, wxBitmapBundle *icon = nullptr);
+        CodeBlocksLogEvent(wxEventType commandType, wxWindow* window, const wxString& title = wxEmptyString, wxBitmapBundle *icon = nullptr);
+        CodeBlocksLogEvent(wxEventType commandType, int logIndex, const wxString& title = wxEmptyString, wxBitmapBundle *icon = nullptr);
+#else
         CodeBlocksLogEvent(wxEventType commandType = wxEVT_NULL, Logger* logger = nullptr, const wxString& title = wxEmptyString, wxBitmap *icon = nullptr);
         CodeBlocksLogEvent(wxEventType commandType, wxWindow* window, const wxString& title = wxEmptyString, wxBitmap *icon = nullptr);
         CodeBlocksLogEvent(wxEventType commandType, int logIndex, const wxString& title = wxEmptyString, wxBitmap *icon = nullptr);
+#endif
         CodeBlocksLogEvent(const CodeBlocksLogEvent& rhs);
 
-		wxEvent *Clone() const override { return new CodeBlocksLogEvent(*this); }
+        wxEvent *Clone() const override { return new CodeBlocksLogEvent(*this); }
 
         Logger* logger; ///< The logger.
         int logIndex; ///< The logger's index.
-		wxBitmap *icon; ///< The logger's icon. Valid only for cbEVT_ADD_LOG_WINDOW.
-		wxString title; ///< The logger's title. Valid only for cbEVT_ADD_LOG_WINDOW.
-		wxWindow* window; ///< A non-logger window. Needed at least by cbEVT_REMOVE_LOG_WINDOW.
-	private:
-		DECLARE_DYNAMIC_CLASS(CodeBlocksLogEvent)
+
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmapBundle *icon; ///< The logger's icon. Valid only for cbEVT_ADD_LOG_WINDOW.
+#else
+        wxBitmap *icon; ///< The logger's icon. Valid only for cbEVT_ADD_LOG_WINDOW.
+#endif
+        wxString title; ///< The logger's title. Valid only for cbEVT_ADD_LOG_WINDOW.
+        wxWindow* window; ///< A non-logger window. Needed at least by cbEVT_REMOVE_LOG_WINDOW.
+    private:
+        DECLARE_DYNAMIC_CLASS(CodeBlocksLogEvent)
 };
+
 typedef void (wxEvtHandler::*CodeBlocksLogEventFunction)(CodeBlocksLogEvent&);
 
 

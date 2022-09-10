@@ -1161,6 +1161,27 @@ wxBitmap cbLoadBitmap(const wxString& filename, wxBitmapType bitmapType, wxFileS
     return wxBitmap(im);
 }
 
+#if wxCHECK_VERSION(3, 1, 6)
+wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename, int minSize, wxBitmapType bitmapType, wxFileSystem *fs)
+{
+    static const int imageSize[] = {16, 20, 24, 28, 32, 40, 48, 56, 64};
+
+    wxVector <wxBitmap> bitmaps;
+    for (const int sz : imageSize)
+    {
+        // Do not load bitmaps smaller than needed
+        if (sz < minSize)
+            continue;
+
+        const wxBitmap bmp(cbLoadBitmap(prefix+wxString::Format("%dx%d/", sz, sz)+filename, wxBITMAP_TYPE_PNG));
+        if (bmp.IsOk())
+            bitmaps.push_back(bmp);
+    }
+
+    return wxBitmapBundle::FromBitmaps(bitmaps);
+}
+#endif
+
 wxBitmap cbLoadBitmapScaled(const wxString& filename, wxBitmapType bitmapType, double scaleFactor,
                             wxFileSystem *fs)
 {

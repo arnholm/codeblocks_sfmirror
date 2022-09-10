@@ -74,11 +74,14 @@ void ReopenEditor::OnAttach()
     m_IsManaged = cfg->ReadBool(_T("/reopen_editor/managed"),true);
 
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
+    wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
+#if wxCHECK_VERSION(3, 1, 6)
+    m_LogIcon = cbLoadBitmapBundle(prefix, "undo.png", uiSize, wxBITMAP_TYPE_PNG);
+#else
     const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-    const wxString undoImgFile = ConfigManager::GetDataFolder()
-                               + wxString::Format(_T("/resources.zip#zip:/images/%dx%d/undo.png"),
-                                                  uiSize, uiSize);
-    m_LogIcon = cbLoadBitmapScaled(undoImgFile, wxBITMAP_TYPE_PNG, uiScaleFactor);
+    prefix << wxString::Format("%dx%d/", uiSize, uiSize);
+    m_LogIcon = cbLoadBitmapScaled(prefix+"undo.png", wxBITMAP_TYPE_PNG, uiScaleFactor);
+#endif
 
     m_pListLog = nullptr;
     ShowList();

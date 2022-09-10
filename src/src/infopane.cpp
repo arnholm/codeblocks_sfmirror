@@ -56,10 +56,13 @@ END_EVENT_TABLE()
 InfoPane::InfoPane(wxWindow* parent) : cbAuiNotebook(parent, idNB, wxDefaultPosition, wxDefaultSize, infopane_flags)
 {
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
-    const wxString path = ConfigManager::GetDataFolder()
-                          + wxString::Format(_T("/resources.zip#zip:/images/infopane/%dx%d/edit.png"),
-                                             uiSize, uiSize);
-    m_DefaultBitmap = cbLoadBitmapScaled(path, wxBITMAP_TYPE_PNG, cbGetContentScaleFactor(*parent));
+    wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
+#if wxCHECK_VERSION(3, 1, 6)
+    m_DefaultBitmap = cbLoadBitmapBundle(prefix, "edit.png", uiSize, wxBITMAP_TYPE_PNG);
+#else
+    prefix << wxString::Format("%dx%d/", uiSize, uiSize);
+    m_DefaultBitmap = cbLoadBitmapScaled(prefix+"edit.png", wxBITMAP_TYPE_PNG, cbGetContentScaleFactor(*parent));
+#endif
 }
 
 InfoPane::~InfoPane()
@@ -153,19 +156,23 @@ void InfoPane::ReorderTabs(CompareFunction cmp_f)
     cbAuiNotebook::Show();
 }
 
+#if wxCHECK_VERSION(3, 1, 6)
+int InfoPane::AddPagePrivate(wxWindow* p, const wxString& title, wxBitmapBundle* icon)
+#else
 int InfoPane::AddPagePrivate(wxWindow* p, const wxString& title, wxBitmap* icon)
+#endif
 {
-    const wxBitmap& bmp = icon ? *icon : m_DefaultBitmap;
-
-    AddPage(p, title, false, bmp);
+    AddPage(p, title, false, icon ? *icon : m_DefaultBitmap);
     return GetPageCount() - 1;
 }
 
+#if wxCHECK_VERSION(3, 1, 6)
+bool InfoPane::InsertPagePrivate(wxWindow* p, const wxString& title, wxBitmapBundle* icon, int index)
+#else
 bool InfoPane::InsertPagePrivate(wxWindow* p, const wxString& title, wxBitmap* icon, int index)
+#endif
 {
-    const wxBitmap& bmp = icon ? *icon : m_DefaultBitmap;
-
-    return InsertPage(index, p, title, false, bmp);
+    return InsertPage(index, p, title, false, icon ? *icon : m_DefaultBitmap);
 }
 
 void InfoPane::UpdateEffectiveTabOrder()
@@ -449,7 +456,11 @@ void InfoPane::OnTabPosition(wxCommandEvent& event)
     Manager::Get()->GetConfigManager(_T("app"))->Write(_T("/environment/infopane_tabs_bottom"), (bool)(style & wxAUI_NB_BOTTOM));
 }
 
+#if wxCHECK_VERSION(3, 1, 6)
+bool InfoPane::AddLogger(Logger* logger, wxWindow* p, const wxString& title, wxBitmapBundle* icon)
+#else
 bool InfoPane::AddLogger(Logger* logger, wxWindow* p, const wxString& title, wxBitmap* icon)
+#endif
 {
     if (p)
     {
@@ -469,7 +480,11 @@ bool InfoPane::AddLogger(Logger* logger, wxWindow* p, const wxString& title, wxB
     return false;
 }
 
+#if wxCHECK_VERSION(3, 1, 6)
+bool InfoPane::AddNonLogger(wxWindow* p, const wxString& title, wxBitmapBundle* icon)
+#else
 bool InfoPane::AddNonLogger(wxWindow* p, const wxString& title, wxBitmap* icon)
+#endif
 {
     if (p)
     {

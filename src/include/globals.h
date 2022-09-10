@@ -299,6 +299,15 @@ extern DLLIMPORT wxBitmap cbLoadBitmap(const wxString& filename,
                                        wxBitmapType bitmapType = wxBITMAP_TYPE_PNG,
                                        wxFileSystem *fs = nullptr);
 
+#if wxCHECK_VERSION(3, 1, 6)
+/// This function loads a bitmap bundle from disk.
+/// @param fs File system used to load the image from. If nullptr the default would be used.
+extern DLLIMPORT wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename,
+                                                   int minSize,
+                                                   wxBitmapType bitmapType = wxBITMAP_TYPE_PNG,
+                                                   wxFileSystem *fs = nullptr);
+#endif
+
 /// Loads bitmap from this. Use it when you need a bitmap which takes into account the scaling
 /// factor of the wx toolkit used. Toolkits which need this are GTK+3 and Cocoa.
 /// @param scaleFactor You can take this by calling GetContentScaleFactor on the window where

@@ -18,6 +18,9 @@
 #include "ThreadSearchViewManagerBase.h"
 
 class wxBitmap;
+#if wxCHECK_VERSION(3, 1, 6)
+class wxBitmapBundle;
+#endif
 class wxWindow;
 class ThreadSearchView;
 class ThreadSearchLogger;
@@ -37,7 +40,11 @@ public:
     bool IsViewShown() override;
     void Raise() override;
 private:
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmapBundle *m_Bitmap;
+#else
     wxBitmap *m_Bitmap;
+#endif
 };
 
 #endif // THREAD_SEARCH_VIEW_MANAGER_MESSAGES_NOTEBOOK_H

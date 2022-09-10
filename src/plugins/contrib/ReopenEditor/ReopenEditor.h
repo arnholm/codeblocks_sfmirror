@@ -61,7 +61,11 @@ class ReopenEditor : public cbPlugin
         bool m_IsManaged;
         /// We need this to live longer than the logger, because the InfoPane stores a pointer to
         /// this icon.
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmapBundle m_LogIcon;
+#else
         wxBitmap m_LogIcon;
+#endif
 
     DECLARE_EVENT_TABLE()
 };

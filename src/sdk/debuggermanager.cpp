@@ -996,13 +996,14 @@ TextCtrlLogger* DebuggerManager::GetLogger(int &index)
         slot.title = _("Debugger");
         // set log image
         const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
+        wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
+#if wxCHECK_VERSION(3, 1, 6)
+        slot.icon = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "misc.png", uiSize, wxBITMAP_TYPE_PNG));
+#else
         const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-        const wxString prefix = ConfigManager::GetDataFolder()
-                              + wxString::Format(_T("/resources.zip#zip:/images/infopane/%dx%d/"),
-                                                 uiSize, uiSize);
-        wxBitmap* bmp = new wxBitmap(cbLoadBitmapScaled(prefix + _T("misc.png"), wxBITMAP_TYPE_PNG,
-                                                        uiScaleFactor));
-        slot.icon = bmp;
+        prefix << wxString::Format("%dx%d/", uiSize, uiSize);
+        slot.icon = new wxBitmap(cbLoadBitmapScaled(prefix+"misc.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+#endif
 
         CodeBlocksLogEvent evtAdd(cbEVT_ADD_LOG_WINDOW, m_logger, slot.title, slot.icon);
         Manager::Get()->ProcessEvent(evtAdd);
