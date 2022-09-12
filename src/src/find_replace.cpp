@@ -132,11 +132,11 @@ void FindReplace::CreateSearchLog()
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle *bmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "filefind.png", uiSize, wxBITMAP_TYPE_PNG));
+    const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
+    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "filefind.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG));
 #else
-    const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
-    wxBitmap * bmp = new wxBitmap(cbLoadBitmapScaled(prefix+"filefind.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+    wxBitmap* bmp = new wxBitmap(cbLoadBitmap(prefix+"filefind.png", wxBITMAP_TYPE_PNG));
 #endif
 
     m_pSearchLog = new cbSearchResultsLog(titles, widths);

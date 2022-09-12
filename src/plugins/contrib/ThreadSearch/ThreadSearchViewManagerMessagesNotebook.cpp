@@ -34,11 +34,11 @@ void ThreadSearchViewManagerMessagesNotebook::AddViewToManager()
         const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "findf.png", uiSize, wxBITMAP_TYPE_PNG));
+        const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
+        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "findf.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG));
 #else
-        const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
-        m_Bitmap = new wxBitmap(cbLoadBitmapScaled(prefix+"findf.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+        m_Bitmap = new wxBitmap(cbLoadBitmap(prefix+"findf.png", wxBITMAP_TYPE_PNG));
 #endif
 
         // Adds log to C::B Messages notebook

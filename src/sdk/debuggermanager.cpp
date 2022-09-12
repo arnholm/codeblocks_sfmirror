@@ -998,11 +998,11 @@ TextCtrlLogger* DebuggerManager::GetLogger(int &index)
         const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
 #if wxCHECK_VERSION(3, 1, 6)
-        slot.icon = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "misc.png", uiSize, wxBITMAP_TYPE_PNG));
+        const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
+        slot.icon = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "misc.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG));
 #else
-        const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
-        slot.icon = new wxBitmap(cbLoadBitmapScaled(prefix+"misc.png", wxBITMAP_TYPE_PNG, uiScaleFactor));
+        slot.icon = new wxBitmap(cbLoadBitmap(prefix+"misc.png", wxBITMAP_TYPE_PNG));
 #endif
 
         CodeBlocksLogEvent evtAdd(cbEVT_ADD_LOG_WINDOW, m_logger, slot.title, slot.icon);
