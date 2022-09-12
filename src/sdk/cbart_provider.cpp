@@ -83,7 +83,7 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
         return wxBitmapBundle();
 
     // Get component size undoing scaling
-    const double scaleFactor = cbGetActualContentScaleFactor(*Manager::Get()->GetAppFrame());
+    const double scaleFactor = Manager::Get()->GetUIScaleFactor(component);
     const int componentSize = wxRound(Manager::Get()->GetImageSize(component)/scaleFactor);
 
     wxVector <wxBitmap> bitmaps;
