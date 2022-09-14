@@ -76,41 +76,35 @@ BreakpointsDlg::BreakpointsDlg() :
     SetAutoLayout(TRUE);
     SetSizer(bs);
 
-    wxWindow *parent = Manager::Get()->GetAppWindow();
-    wxString sizeStr;
-    int selectedHeight;
-    {
-
-        const int targetHeight = floor(12.0 * cbGetActualContentScaleFactor(*parent));
-        const int possibleHeights[] = { 12, 16, 20, 24, 28, 32, 40, 48, 56, 64 };
-        selectedHeight = cbFindMinSize(targetHeight, possibleHeights, cbCountOf(possibleHeights));
-
-        sizeStr = wxString::Format(wxT("%dx%d/"), selectedHeight, selectedHeight);
-    }
+    wxWindow* parent = Manager::Get()->GetAppWindow();
     const double scaleFactor = cbGetContentScaleFactor(*parent);
+    const int targetHeight = wxRound(12 * scaleFactor);
+    static const int possibleHeights[] = { 12, 16, 20, 24, 28, 32, 40, 48, 56, 64 };
+    const int size = cbFindMinSize(targetHeight, possibleHeights, cbCountOf(possibleHeights));
+#ifdef __WXMSW__
+    const int imageListSize = size;
+#else
+    const int imageListSize = wxRound(size/scaleFactor);
+#endif
 
     // Setup the image list for the enabled/disabled icons.
-#ifdef __WXMSW__
-    m_icons.Create(selectedHeight, selectedHeight, true);
-#else
-    m_icons.Create(floor(selectedHeight / scaleFactor), floor(selectedHeight / scaleFactor), true);
-#endif // __WXMSW__
+    m_icons.Create(imageListSize, imageListSize, true);
 
-    const wxString &basepath = ConfigManager::GetDataFolder()
-                             + wxT("/manager_resources.zip#zip:/images/")
-                             + sizeStr;
-    wxBitmap icon = cbLoadBitmapScaled(basepath + wxT("breakpoint.png"), wxBITMAP_TYPE_PNG,
-                                       scaleFactor);
+    const wxString basepath = ConfigManager::GetDataFolder()
+                            + wxString::Format("/manager_resources.zip#zip:/images/%dx%d/", imageListSize, imageListSize);
+
+    wxBitmap icon = cbLoadBitmap(basepath + "breakpoint.png", wxBITMAP_TYPE_PNG);
     if (icon.IsOk())
         m_icons.Add(icon);
-    icon = cbLoadBitmapScaled(basepath + wxT("breakpoint_disabled.png"), wxBITMAP_TYPE_PNG,
-                              scaleFactor);
+
+    icon = cbLoadBitmap(basepath + "breakpoint_disabled.png", wxBITMAP_TYPE_PNG);
     if (icon.IsOk())
         m_icons.Add(icon);
-    icon = cbLoadBitmapScaled(basepath + wxT("breakpoint_other.png"), wxBITMAP_TYPE_PNG,
-                              scaleFactor);
+
+    icon = cbLoadBitmap(basepath + "breakpoint_other.png", wxBITMAP_TYPE_PNG);
     if (icon.IsOk())
         m_icons.Add(icon);
+
     m_pList->SetImageList(&m_icons, wxIMAGE_LIST_SMALL);
 
     m_pList->InsertColumn(Type, _("Type"), wxLIST_FORMAT_LEFT, 128);

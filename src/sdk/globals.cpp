@@ -1255,20 +1255,19 @@ int cbFindMinSize16to64(int targetSize)
     return cbFindMinSize(targetSize, sizes, cbCountOf(sizes));
 }
 
-std::unique_ptr<wxImageList> cbMakeScaledImageList(int size, double scaleFactor,
-                                                   int &outActualSize)
+std::unique_ptr<wxImageList> cbMakeScaledImageList(int size, double scaleFactor, int &outActualSize)
 {
 #ifdef __WXMSW__
     outActualSize = size;
 #else
-    outActualSize = floor(size / scaleFactor);
-#endif // __WXMSW__
+    outActualSize = wxRound(size/scaleFactor);
+#endif
 
-    return std::unique_ptr<wxImageList>(new wxImageList(outActualSize, outActualSize));
+    return std::unique_ptr <wxImageList> (new wxImageList(outActualSize, outActualSize));
 }
 
-bool cbAddBitmapToImageList(wxImageList &list, const wxBitmap &bitmap, int size, int listSize,
-                            double scaleFactor)
+bool cbAddBitmapToImageList(wxImageList &list, const wxBitmap &bitmap, int size, cb_unused int listSize,
+                            cb_unused double scaleFactor)
 {
     if (bitmap.IsOk())
     {
@@ -1277,23 +1276,13 @@ bool cbAddBitmapToImageList(wxImageList &list, const wxBitmap &bitmap, int size,
     }
     else
     {
-        wxBitmap missingBitmap;
-#if wxCHECK_VERSION(3, 1, 0)
-        missingBitmap.CreateScaled(listSize, listSize,  wxBITMAP_SCREEN_DEPTH, scaleFactor);
-#else
-        (void)scaleFactor;
-        missingBitmap.Create(listSize, listSize);
-#endif // wxCHECK_VERSION(3, 1, 0)
-
-        {
-            // Draw red square image. Do the drawing in a separate scope, because we need to
-            // deselect the missing bitmap from the DC before calling the Add method.
-            wxMemoryDC dc;
-            dc.SelectObject(missingBitmap);
-            dc.SetBrush(*wxRED_BRUSH);
-            dc.DrawRectangle(0, 0, size, size);
-        }
-
+        wxBitmap missingBitmap(size, size);
+        // Draw red square image
+        wxMemoryDC dc;
+        dc.SelectObject(missingBitmap);
+        dc.SetBrush(*wxRED_BRUSH);
+        dc.DrawRectangle(0, 0, size, size);
+        dc.SelectObject(wxNullBitmap);
         list.Add(missingBitmap);
         return false;
     }
@@ -1754,50 +1743,50 @@ std::unique_ptr<wxImageList> cbProjectTreeImages::MakeImageList(int baseSize, wx
         // NOTE: Keep in sync with FileVisualState in globals.h!
 
         // The following are related to (editable, source-) file states
-        _T("file.png"),                  // fvsNormal
-        _T("file-missing.png"),          // fvsMissing,
-        _T("file-modified.png"),         // fvsModified,
-        _T("file-readonly.png"),         // fvsReadOnly,
+        "file.png",                  // fvsNormal
+        "file-missing.png",          // fvsMissing,
+        "file-modified.png",         // fvsModified,
+        "file-readonly.png",         // fvsReadOnly,
 
         // The following are related to version control systems (vc)
-        _T("rc-file-added.png"),         // fvsVcAdded,
-        _T("rc-file-conflict.png"),      // fvsVcConflict,
-        _T("rc-file-missing.png"),       // fvsVcMissing,
-        _T("rc-file-modified.png"),      // fvsVcModified,
-        _T("rc-file-outofdate.png"),     // fvsVcOutOfDate,
-        _T("rc-file-uptodate.png"),      // fvsVcUpToDate,
-        _T("rc-file-requireslock.png"),  // fvsVcRequiresLock,
-        _T("rc-file-external.png"),      // fvsVcExternal,
-        _T("rc-file-gotlock.png"),       // fvsVcGotLock,
-        _T("rc-file-lockstolen.png"),    // fvsVcLockStolen,
-        _T("rc-file-mismatch.png"),      // fvsVcMismatch,
-        _T("rc-file-noncontrolled.png"), // fvsVcNonControlled,
+        "rc-file-added.png",         // fvsVcAdded,
+        "rc-file-conflict.png",      // fvsVcConflict,
+        "rc-file-missing.png",       // fvsVcMissing,
+        "rc-file-modified.png",      // fvsVcModified,
+        "rc-file-outofdate.png",     // fvsVcOutOfDate,
+        "rc-file-uptodate.png",      // fvsVcUpToDate,
+        "rc-file-requireslock.png",  // fvsVcRequiresLock,
+        "rc-file-external.png",      // fvsVcExternal,
+        "rc-file-gotlock.png",       // fvsVcGotLock,
+        "rc-file-lockstolen.png",    // fvsVcLockStolen,
+        "rc-file-mismatch.png",      // fvsVcMismatch,
+        "rc-file-noncontrolled.png", // fvsVcNonControlled,
 
         // The following are related to C::B workspace/project/folder/virtual
-        _T("workspace.png"),             // fvsWorkspace,         WorkspaceIconIndex()
-        _T("workspace-readonly.png"),    // fvsWorkspaceReadOnly, WorkspaceIconIndex(true)
-        _T("project.png"),               // fvsProject,           ProjectIconIndex()
-        _T("project-readonly.png"),      // fvsProjectReadOnly,   ProjectIconIndex(true)
-        _T("folder_open.png"),           // fvsFolder,            FolderIconIndex()
-        _T("vfolder_open.png"),          // fvsVirtualFolder,     VirtualFolderIconIndex()
+        "workspace.png",             // fvsWorkspace,         WorkspaceIconIndex()
+        "workspace-readonly.png",    // fvsWorkspaceReadOnly, WorkspaceIconIndex(true)
+        "project.png",               // fvsProject,           ProjectIconIndex()
+        "project-readonly.png",      // fvsProjectReadOnly,   ProjectIconIndex(true)
+        "folder_open.png",           // fvsFolder,            FolderIconIndex()
+        "vfolder_open.png",          // fvsVirtualFolder,     VirtualFolderIconIndex()
     };
 
     const double scaleFactor = cbGetContentScaleFactor(treeParent);
-    const int targetHeight = floor(baseSize * cbGetActualContentScaleFactor(treeParent));
+    const int targetHeight = wxRound(baseSize * scaleFactor);
     const int size = cbFindMinSize16to64(targetHeight);
 
     int imageListSize;
     std::unique_ptr<wxImageList> images = cbMakeScaledImageList(size, scaleFactor, imageListSize);
 
     const wxString prefix = ConfigManager::ReadDataPath()
-                          + wxString::Format(_T("/resources.zip#zip:images/tree/%dx%d/"),
-                                             size, size);
-    wxBitmap bmp;
+                          + wxString::Format("/resources.zip#zip:images/tree/%dx%d/", imageListSize, imageListSize);
+
     for (const wxString &img : imgs)
     {
-        bmp = cbLoadBitmapScaled(prefix + img, wxBITMAP_TYPE_PNG, scaleFactor);
-        cbAddBitmapToImageList(*images, bmp, size, imageListSize, scaleFactor);
+        wxBitmap bmp = cbLoadBitmap(prefix + img, wxBITMAP_TYPE_PNG);
+        cbAddBitmapToImageList(*images, bmp, imageListSize, imageListSize, scaleFactor);
     }
+
     return images;
 }
 
