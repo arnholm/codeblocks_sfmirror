@@ -1144,7 +1144,7 @@ static void cbLoadImageFromFS(wxImage &image, const wxString& filename, wxBitmap
         image.ConvertAlphaToMask();
 }
 
-wxBitmap cbLoadBitmap(const wxString& filename, wxBitmapType bitmapType, wxFileSystem *fs)
+wxBitmap cbLoadBitmap(const wxString& filename, wxBitmapType bitmapType, wxFileSystem* fs)
 {
     wxImage im;
     if (fs)
@@ -1162,7 +1162,7 @@ wxBitmap cbLoadBitmap(const wxString& filename, wxBitmapType bitmapType, wxFileS
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
-wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename, int minSize, wxBitmapType bitmapType, wxFileSystem *fs)
+wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename, int minSize, wxBitmapType bitmapType, wxFileSystem* fs)
 {
     static const int imageSize[] = {16, 20, 24, 28, 32, 40, 48, 56, 64};
 
@@ -1180,10 +1180,45 @@ wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filena
 
     return wxBitmapBundle::FromBitmaps(bitmaps);
 }
+
+wxBitmapBundle cbLoadBitmapBundleFromSVG(const wxString& filename, const wxSize& size, wxFileSystem* fs)
+{
+    wxBitmapBundle bundle;
+
+#ifdef wxHAS_SVG
+    wxFileSystem defaultFS;
+    if (!fs)
+        fs = &defaultFS;
+
+    wxFSFile* f = fs->OpenFile(filename);
+    if (f)
+    {
+        wxInputStream* is = f->GetStream();
+        if (is->IsOk())
+        {
+            const size_t dataSize = is->GetSize();
+            if (dataSize)
+            {
+                char *data = new char[dataSize];
+                if (is->ReadAll(data, dataSize))
+                    bundle = wxBitmapBundle::FromSVG(data, size);
+
+                delete [] data;
+            }
+        }
+
+        delete f;
+    }
+#else
+#warning The port does not provide raw bitmap accessvia wxPixelData, so SVG loading will fail
+#endif
+
+    return bundle;
+}
 #endif
 
 wxBitmap cbLoadBitmapScaled(const wxString& filename, wxBitmapType bitmapType, double scaleFactor,
-                            wxFileSystem *fs)
+                            wxFileSystem* fs)
 {
 
     wxImage im;
