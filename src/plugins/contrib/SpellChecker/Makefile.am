@@ -203,3 +203,18 @@ dist_onlinecheckerconfig_64_DATA = \
 	rc/64x64/es_ES.png \
 	rc/64x64/fr_FR.png \
 	rc/64x64/ru_RU.png
+
+onlinecheckerconfig_svgdir = $(datadir)/@PACKAGE@/SpellChecker/svg
+dist_onlinecheckerconfig_svg_DATA = \
+	rc/svg/de_AT.svg \
+	rc/svg/de_CH.svg \
+	rc/svg/de_DE.svg \
+	rc/svg/disabled.svg \
+	rc/svg/en_AU.svg \
+	rc/svg/en_CA.svg \
+	rc/svg/en_GB.svg \
+	rc/svg/en_NZ.svg \
+	rc/svg/en_US.svg \
+	rc/svg/es_ES.svg \
+	rc/svg/fr_FR.svg \
+	rc/svg/ru_RU.svg
