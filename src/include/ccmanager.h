@@ -195,6 +195,12 @@ class DLLIMPORT CCManager : public Mgr<CCManager>, public wxEvtHandler
          * to determine its dimensions (so the scroll event can be sent to it, if relevant)
          */
         wxListView* m_pAutocompPopup;
+
+        /**
+         * List of editors holding an event connect to popup mouse scroll event
+         * for AutoCompPopup and html Documentation popup
+         */
+        std::set<cbEditor*> m_EdAutocompMouseTraps;
 #endif // __WXMSW__
 
         cbEditor* m_pLastEditor; //!< Last editor operated on.
