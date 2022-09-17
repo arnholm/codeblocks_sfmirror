@@ -211,6 +211,8 @@ if [ -d "${CB_DEVEL_RESDIR}/SpellChecker" ]; then
     mkdir -p ${CB_OUTPUT_RESDIR}/SpellChecker
     cp -f ${CB_DEVEL_RESDIR}/SpellChecker/*.xml ${CB_OUTPUT_RESDIR}/SpellChecker > /dev/null
     copyImageFiles ${CB_DEVEL_RESDIR}/SpellChecker ${CB_OUTPUT_RESDIR}/SpellChecker
+    mkdir -p ${CB_OUTPUT}/SpellChecker/svg
+    cp -f ${CB_DEVEL_RESDIR}/SpellChecker/svg/*.svg ${CB_OUTPUT_RESDIR}/SpellChecker/svg > /dev/null
 fi
 
 # misc. contrib plugin settings:
