@@ -76,7 +76,7 @@ static wxBitmapBundle LoadImageInPath(const wxString& path, const wxString& file
     const wxString imgPath(path+"/svg/");
     wxBitmapBundle bmp = cbLoadBitmapBundleFromSVG(imgPath+fileName, size);
     if (!bmp.IsOk())
-        Manager::Get()->GetLogManager()->Log(wxString::Format("Loading image: '%s' failed!", imgPath+fileName));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("Loading image: '%s' failed!"), imgPath+fileName));
 
     return bmp;
 }
@@ -86,7 +86,7 @@ static wxBitmap LoadImageInPath(const wxString& path, const wxString& fileName, 
     const wxString imgPath(path+wxString::Format("/%dx%d/", size.GetWidth(), size.GetHeight()));
     wxBitmap bmp = cbLoadBitmap(imgPath+fileName, wxBITMAP_TYPE_PNG);
     if (!bmp.IsOk())
-        Manager::Get()->GetLogManager()->Log(wxString::Format("Loading image: '%s' failed!", imgPath+fileName));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("Loading image: '%s' failed!"), imgPath+fileName));
 
     return bmp;
 }
@@ -125,9 +125,9 @@ void SpellCheckerStatusField::Update()
 
     // Get bitmap size
 #if wxCHECK_VERSION(3, 1, 6)
-    const int height = GetClientSize().GetHeight();
+    const int height = 20;
 #else
-    const int height = cbFindMinSize16to64(wxRound(GetClientSize().GetHeight()*cbGetContentScaleFactor(*this)));
+    const int height = cbFindMinSize16to64(wxRound(20*cbGetContentScaleFactor(*this)));
 #endif
     const wxSize bmpSize(height, height);
 
