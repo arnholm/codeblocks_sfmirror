@@ -207,6 +207,9 @@ if exist "%CB_DEVEL_RESDIR%\SpellChecker" (
     call:mkdirSilent "%CB_OUTPUT_RESDIR%\SpellChecker"
     xcopy /D /y "%CB_DEVEL_RESDIR%\SpellChecker\*.xml" "%CB_OUTPUT_RESDIR%\SpellChecker" > nul
     call:copyImageFiles "%CB_DEVEL_RESDIR%\SpellChecker" "%CB_OUTPUT_RESDIR%\SpellChecker"
+    echo From %CB_DEVEL_RESDIR%\SpellChecker\svg to %CB_OUTPUT_RESDIR%\SpellChecker\svg
+    call:mkdirSilent %CB_OUTPUT_RESDIR%\SpellChecker\svg
+    xcopy /D /y %CB_DEVEL_RESDIR%\SpellChecker\svg\*.svg %CB_OUTPUT_RESDIR%\SpellChecker\svg > nul
 )
 
 REM misc. contrib plugin settings:
