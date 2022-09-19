@@ -602,7 +602,8 @@ bool CodeBlocksApp::OnInit()
     m_BatchWindowAutoClose = true;
     m_pSingleInstance      = nullptr;
 
-    wxTheClipboard->Flush();
+    if (wxTheClipboard->IsOpened())
+        wxTheClipboard->Flush();
 
     wxCmdLineParser& parser = *Manager::GetCmdLineParser();
     parser.SetDesc(cmdLineDesc);
@@ -851,7 +852,11 @@ bool CodeBlocksApp::OnInit()
 
 int CodeBlocksApp::OnExit()
 {
-    wxTheClipboard->Flush();
+    if (wxTheClipboard->IsOpened())
+    {
+        wxTheClipboard->Flush();
+        wxTheClipboard->Close();
+    }
 
     if (g_DDEServer) delete g_DDEServer;
 
