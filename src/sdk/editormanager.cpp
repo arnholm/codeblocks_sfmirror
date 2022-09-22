@@ -861,11 +861,12 @@ void EditorManager::CheckForExternallyModifiedFiles()
 {
     if (m_isCheckingForExternallyModifiedFiles) // for some reason, a mutex locker does not work???
         return;
+
     m_isCheckingForExternallyModifiedFiles = true;
 
     bool reloadAll = false; // flag to stop bugging the user
     wxArrayString failedFiles; // list of files failed to reload
-    for (size_t i = 0; i < m_pNotebook->GetPageCount(); ++i)
+    for (int i = (int)m_pNotebook->GetPageCount()-1; i >= 0; --i)
     {
         cbEditor* ed = InternalGetBuiltinEditor(i);
         bool b_modified = false;
@@ -902,35 +903,33 @@ void EditorManager::CheckForExternallyModifiedFiles()
                                          "Do you wish to try to save the file to disk?\n"
                                          "If you close it, it will most likely be lost !\n"
                                          "If you cancel this dialog, you have to take care yourself !\n"
-                                         "Yes: save the file, No: close it, Cancel: keep your fingers crossed."), eb->GetFilename().c_str());
-                            int ret = cbMessageBox(msg, _("File changed!"), wxICON_QUESTION | wxYES_NO | wxCANCEL );
+                                         "Yes: save the file, No: close it, Cancel: keep your fingers crossed."), eb->GetFilename());
+
+                            const int ret = cbMessageBox(msg, _("File changed!"), wxICON_QUESTION | wxYES_NO | wxCANCEL );
                             switch (ret)
                             {
                                 case wxID_YES:
-                                {
                                     eb->Save();
                                     break;
-                                }
                                 case wxID_NO:
-                                {
                                     pf->SetFileState(fvsMissing);
                                     eb->Close();
                                     break;
-                                }
                                 case wxID_CANCEL: // fall through
                                 default:
                                     eb->SetModified(true); // some editors might implement it
                                     pf->SetFileState(fvsMissing);
-                                    break;
                             }
                         }
                     }
                     else
                         pf->SetFileState(readOnly?fvsReadOnly:fvsNormal);
                 }
+
                 continue;
             }
         }
+
         if (!ed->IsOK())
             continue;
 
@@ -957,15 +956,18 @@ void EditorManager::CheckForExternallyModifiedFiles()
             wxString msg;
             msg.Printf(_("%s has been deleted, or is no longer available.\n"
                          "Do you wish to keep the file open?\n"
-                         "Yes to keep the file, No to close it."), ed->GetFilename().c_str());
+                         "Yes to keep the file, No to close it."), ed->GetFilename());
+
             if (cbMessageBox(msg, _("File changed!"), wxICON_QUESTION | wxYES_NO) == wxID_YES)
                 ed->SetModified(true);
             else
             {
                 if (pf)
                     pf->SetFileState(fvsMissing);
+
                 ed->Close();
             }
+
             continue;
         }
 
@@ -982,6 +984,7 @@ void EditorManager::CheckForExternallyModifiedFiles()
             if (pf)
                 pf->SetFileState(fvsNormal);
         }
+
         //File changed from RW -> RO?
         if (!ed->GetControl()->GetReadOnly() &&
                 !wxFile::Access(ed->GetFilename().c_str(), wxFile::write))
@@ -992,6 +995,7 @@ void EditorManager::CheckForExternallyModifiedFiles()
             if (pf)
                 pf->SetFileState(fvsReadOnly);
         }
+
         //File content changed?
         if (last.IsLaterThan(ed->GetLastModificationTime()))
             b_modified = true;
@@ -1004,7 +1008,8 @@ void EditorManager::CheckForExternallyModifiedFiles()
             {
                 wxString msg;
                 msg.Printf(_("File %s is modified outside the IDE...\nDo you want to reload it (you will lose any unsaved work)?"),
-                           ed->GetFilename().c_str());
+                           ed->GetFilename());
+
                 ConfirmReplaceDlg dlg(Manager::Get()->GetAppWindow(), false, msg);
                 dlg.SetTitle(_("Reload file?"));
                 dlg.GetSizer()->SetSizeHints(&dlg);
@@ -1036,7 +1041,7 @@ void EditorManager::CheckForExternallyModifiedFiles()
     // (we're interested in updating read-write state)
     SetActiveEditor(GetActiveEditor());
 
-    if (failedFiles.GetCount())
+    if (!failedFiles.IsEmpty())
     {
         // Find the window, that actually has the mouse-focus and force a release
         // prevents crash on windows or hang on wxGTK
@@ -1045,9 +1050,11 @@ void EditorManager::CheckForExternallyModifiedFiles()
             win->ReleaseMouse();
 
         wxString msg;
-        msg.Printf(_("Could not reload all files:\n\n%s"), GetStringFromArray(failedFiles, _T("\n")).c_str());
+
+        msg.Printf(_("Could not reload all files:\n\n%s"), GetStringFromArray(failedFiles, "\n"));
         cbMessageBox(msg, _("Error"), wxICON_ERROR);
     }
+
     m_isCheckingForExternallyModifiedFiles = false;
 }
 
