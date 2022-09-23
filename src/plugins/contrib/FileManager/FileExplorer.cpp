@@ -101,7 +101,8 @@ private:
 };
 
 
-class DirTraverseFind : public wxDirTraverser     {
+class DirTraverseFind : public wxDirTraverser
+{
 public:
     DirTraverseFind(const wxString& wildcard) : m_files(), m_wildcard(wildcard) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
@@ -288,7 +289,7 @@ FileExplorer::FileExplorer(wxWindow *parent,wxWindowID id,
 {
     m_kill=false;
     m_update_queue=new UpdateQueue;
-    m_updater=NULL;
+    m_updater=nullptr;
     m_updatetimer=new wxTimer(this,ID_UPDATETIMER);
     m_update_active=false;
     m_updater_cancel=false;
@@ -303,7 +304,7 @@ FileExplorer::FileExplorer(wxWindow *parent,wxWindowID id,
     m_parse_bzr=false;
     m_parse_git=false;
     m_parse_svn=false;
-    m_vcs_file_loader=0;
+    m_vcs_file_loader=nullptr;
     wxBoxSizer* bs = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* bsh = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* bshloc = new wxBoxSizer(wxHORIZONTAL);
@@ -312,9 +313,9 @@ FileExplorer::FileExplorer(wxWindow *parent,wxWindowID id,
     m_Tree = new FileTreeCtrl(this, ID_FILETREE);
     m_Tree->SetIndent(m_Tree->GetIndent()/2);
     m_Tree->SetDropTarget(m_droptarget);
-    m_Loc = new wxComboBox(this,ID_FILELOC,_T(""),wxDefaultPosition,wxDefaultSize,0,NULL,wxTE_PROCESS_ENTER|wxCB_DROPDOWN);
-    m_WildCards = new wxComboBox(this,ID_FILEWILD,_T(""),wxDefaultPosition,wxDefaultSize,0,NULL,wxTE_PROCESS_ENTER|wxCB_DROPDOWN);
-    m_UpButton = new wxButton(this,ID_FILE_UPBUTTON,_("^"),wxDefaultPosition,wxDefaultSize,wxBU_EXACTFIT);
+    m_Loc = new wxComboBox(this,ID_FILELOC,"",wxDefaultPosition,wxDefaultSize,0,NULL,wxTE_PROCESS_ENTER|wxCB_DROPDOWN);
+    m_WildCards = new wxComboBox(this,ID_FILEWILD,"",wxDefaultPosition,wxDefaultSize,0,NULL,wxTE_PROCESS_ENTER|wxCB_DROPDOWN);
+    m_UpButton = new wxButton(this,ID_FILE_UPBUTTON,"^",wxDefaultPosition,wxDefaultSize,wxBU_EXACTFIT);
     bshloc->Add(m_Loc, 1, wxEXPAND);
     bshloc->Add(m_UpButton, 0, wxEXPAND);
     bs->Add(bshloc, 0, wxEXPAND);
@@ -323,8 +324,8 @@ FileExplorer::FileExplorer(wxWindow *parent,wxWindowID id,
     bs->Add(bsh, 0, wxEXPAND);
 
     m_VCS_Control = new wxChoice(this,ID_VCSCONTROL);
-    m_VCS_Type = new wxStaticText(this,ID_VCSTYPE,_T(""));
-    m_VCS_ChangesOnly = new wxCheckBox(this, ID_VCSCHANGESCHECK, _T("Show changed files only"));
+    m_VCS_Type = new wxStaticText(this,ID_VCSTYPE,"");
+    m_VCS_ChangesOnly = new wxCheckBox(this, ID_VCSCHANGESCHECK, _("Show changed files only"));
     box_vcs_top->Add(m_VCS_Type,0,wxALIGN_CENTER);
     box_vcs_top->Add(m_VCS_Control,1,wxEXPAND);
     m_Box_VCS_Control->Add(box_vcs_top, 0, wxEXPAND);
@@ -376,7 +377,7 @@ bool FileExplorer::SetRootFolder(wxString root)
         root=root+wxFileName::GetPathSeparator();
 #ifdef __WXMSW__
     wxFileName fnroot=wxFileName(root);
-    if(fnroot.GetVolume().IsEmpty())
+    if(fnroot.GetVolume().empty())
     {
         fnroot.SetVolume(wxFileName(::wxGetCwd()).GetVolume());
         root=fnroot.GetFullPath();//(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR)+fnroot.GetFullName();
@@ -563,11 +564,10 @@ void FileExplorer::OnDirMonitor(wxDirectoryMonitorEvent &e)
     if(m_kill)
         return;
 //  TODO: Apparently creating log messages during Code::Blocks shutdown can create segfaults
-//    LogMessage(wxString::Format(_T("Dir Event: %s,%i,%s"),e.m_mon_dir.c_str(),e.m_event_type,e.m_info_uri.c_str()));
-    if(e.m_event_type==MONITOR_TOO_MANY_CHANGES)
-    {
-//        LogMessage(_("directory change read error"));
-    }
+//    LogMessage(wxString::Format(_("Dir Event: %s,%i,%s"),e.m_mon_dir,e.m_event_type,e.m_info_uri));
+//    if(e.m_event_type==MONITOR_TOO_MANY_CHANGES)
+//        LogMessage(_("Directory change read error"));
+
     wxTreeItemId ti;
     if(GetItemFromPath(e.m_mon_dir,ti))
     {
@@ -598,18 +598,14 @@ void FileExplorer::OnTimerCheckUpdates(wxTimerEvent &/*e*/)
 
 bool FileExplorer::ValidateRoot()
 {
-    wxTreeItemId ti=m_Tree->GetRootItem();
-    while(true)
-    {
-    if(!ti.IsOk())
-        break;
-    if(m_Tree->GetItemImage(ti)!=fvsFolder)
-        break;
-    if(!wxFileName::DirExists(GetFullPath(ti)))
-        break;
-    return true;
-    }
-    return false;
+    wxTreeItemId ti = m_Tree->GetRootItem();
+    if (!ti.IsOk())
+        return false;
+
+    if (m_Tree->GetItemImage(ti) != fvsFolder)
+        return false;
+
+    return wxFileName::DirExists(GetFullPath(ti));
 }
 
 void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
@@ -618,24 +614,24 @@ void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
         return;
     m_updater->Wait();
     wxTreeItemId ti=m_updated_node;
-    bool viewing_commit = (m_updater->m_vcs_commit_string != wxEmptyString) &&
-                          (m_updater->m_vcs_commit_string != _T("Working copy"));
+    const bool viewing_commit = (!m_updater->m_vcs_commit_string.empty() &&
+                                ( m_updater->m_vcs_commit_string != _("Working copy")));
     if (ti == m_Tree->GetRootItem() && !viewing_commit)
     {
         m_VCS_Type->SetLabel(m_updater->m_vcs_type);
-        if (m_updater->m_vcs_type == wxEmptyString)
+        if (m_updater->m_vcs_type.empty())
         {
             m_VCS_Control->Clear();
             m_Box_VCS_Control->Hide(true);
-            m_commit = _T("");
+            m_commit = "";
         }
-        else if (m_commit == wxEmptyString)
+        else if (m_commit.empty())
         {
             m_VCS_Control->Clear();
-            m_VCS_Control->Append(_T("Working copy"));
-            m_VCS_Control->Append(_T("Select commit..."));
+            m_VCS_Control->Append(_("Working copy"));
+            m_VCS_Control->Append(_("Select commit..."));
             m_VCS_Control->SetSelection(0);
-            m_commit = _T("Working copy");
+            m_commit = _("Working copy");
             m_Box_VCS_Control->Show(true);
         }
         Layout();
@@ -644,7 +640,7 @@ void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
     { //NODE WAS DELETED - REFRESH NOW!
         //TODO: Should only need to clean up and restart the timer (no need to change queue)
         delete m_updater;
-        m_updater=NULL;
+        m_updater=nullptr;
         m_update_active=false;
         ResetDirMonitor();
         if(ValidateRoot())
@@ -654,7 +650,7 @@ void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
         }
         return;
     }
-//    cbMessageBox(_T("Node OK"));
+//    cbMessageBox(_("Node OK"));
 //    m_Tree->DeleteChildren(ti);
     FileDataVec &removers=m_updater->m_removers;
     FileDataVec &adders=m_updater->m_adders;
@@ -662,7 +658,7 @@ void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
     {
         m_Tree->Freeze();
         //LOOP THROUGH THE REMOVERS LIST AND REMOVE THOSE ITEMS FROM THE TREE
-    //    cbMessageBox(_T("Removers"));
+    //    cbMessageBox(_("Removers"));
         for(FileDataVec::iterator it=removers.begin();it!=removers.end();it++)
         {
     //        cbMessageBox(it->name);
@@ -679,7 +675,7 @@ void FileExplorer::OnUpdateTreeItems(wxCommandEvent &/*e*/)
             }
         }
         //LOOP THROUGH THE ADDERS LIST AND ADD THOSE ITEMS TO THE TREE
-    //    cbMessageBox(_T("Adders"));
+    //    cbMessageBox(_("Adders"));
         for(FileDataVec::iterator it=adders.begin();it!=adders.end();it++)
         {
     //        cbMessageBox(it->name);
@@ -748,83 +744,82 @@ void FileExplorer::OnExpand(wxTreeEvent &event)
 void FileExplorer::ReadConfig()
 {
     //IMPORT SETTINGS FROM LEGACY SHELLEXTENSIONS PLUGIN - TODO: REMOVE IN NEXT VERSION
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("ShellExtensions"));
-    if(!cfg->Exists(_("FileExplorer/ShowHidenFiles")))
-        cfg = Manager::Get()->GetConfigManager(_T("FileManager"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("ShellExtensions");
+    if(!cfg->Exists("FileExplorer/ShowHiddenFiles"))
+        cfg = Manager::Get()->GetConfigManager("FileManager");
     int len=0;
-    cfg->Read(_T("FileExplorer/FavRootList/Len"), &len);
+    cfg->Read("FileExplorer/FavRootList/Len", &len);
     for(int i=0;i<len;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/FavRootList/I%i"),i);
-        wxString loc;
+        const wxString ref(wxString::Format("FileExplorer/FavRootList/I%i", i));
         FavoriteDir fav;
-        cfg->Read(ref+_T("/alias"), &fav.alias);
-        cfg->Read(ref+_T("/path"), &fav.path);
+        cfg->Read(ref+"/alias", &fav.alias);
+        cfg->Read(ref+"/path", &fav.path);
         m_Loc->Append(fav.alias);
         m_favdirs.Add(fav);
     }
     len=0;
-    cfg->Read(_T("FileExplorer/RootList/Len"), &len);
+    cfg->Read("FileExplorer/RootList/Len", &len);
     for(int i=0;i<len;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/RootList/I%i"),i);
+        const wxString ref(wxString::Format("FileExplorer/RootList/I%i",i));
         wxString loc;
         cfg->Read(ref, &loc);
         m_Loc->Append(loc);
     }
     len=0;
-    cfg->Read(_T("FileExplorer/WildMask/Len"), &len);
+    cfg->Read("FileExplorer/WildMask/Len", &len);
     for(int i=0;i<len;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/WildMask/I%i"),i);
+        const wxString ref(wxString::Format("FileExplorer/WildMask/I%i",i));
         wxString wild;
         cfg->Read(ref, &wild);
         m_WildCards->Append(wild);
     }
-    cfg->Read(_T("FileExplorer/ParseCVS"), &m_parse_cvs);
-    cfg->Read(_T("FileExplorer/ParseSVN"), &m_parse_svn);
-    cfg->Read(_T("FileExplorer/ParseHG"), &m_parse_hg);
-    cfg->Read(_T("FileExplorer/ParseBZR"), &m_parse_bzr);
-    cfg->Read(_T("FileExplorer/ParseGIT"), &m_parse_git);
-    cfg->Read(_T("FileExplorer/ShowHiddenFiles"), &m_show_hidden);
+    cfg->Read("FileExplorer/ParseCVS",        &m_parse_cvs);
+    cfg->Read("FileExplorer/ParseSVN",        &m_parse_svn);
+    cfg->Read("FileExplorer/ParseHG",         &m_parse_hg);
+    cfg->Read("FileExplorer/ParseBZR",        &m_parse_bzr);
+    cfg->Read("FileExplorer/ParseGIT",        &m_parse_git);
+    cfg->Read("FileExplorer/ShowHiddenFiles", &m_show_hidden);
 }
 
 void FileExplorer::WriteConfig()
 {
     //DISCARD SETTINGS FROM LEGACY SHELLEXTENSIONS PLUGIN - TODO: REMOVE IN NEXT VERSION
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("ShellExtensions"));
-    if(cfg->Exists(_("FileExplorer/ShowHidenFiles")))
-        cfg->DeleteSubPath(_("FileExplorer"));
-    cfg = Manager::Get()->GetConfigManager(_T("FileManager"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("ShellExtensions");
+    if(cfg->Exists("FileExplorer/ShowHiddenFiles"))
+        cfg->DeleteSubPath("FileExplorer");
+    cfg = Manager::Get()->GetConfigManager("FileManager");
     //cfg->Clear();
     int count=static_cast<int>(m_favdirs.GetCount());
-    cfg->Write(_T("FileExplorer/FavRootList/Len"), count);
+    cfg->Write("FileExplorer/FavRootList/Len", count);
     for(int i=0;i<count;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/FavRootList/I%i"),i);
-        cfg->Write(ref+_T("/alias"), m_favdirs[i].alias);
-        cfg->Write(ref+_T("/path"), m_favdirs[i].path);
+        const wxString ref(wxString::Format("FileExplorer/FavRootList/I%i", i));
+        cfg->Write(ref+"/alias", m_favdirs[i].alias);
+        cfg->Write(ref+"/path", m_favdirs[i].path);
     }
     count=static_cast<int>(m_Loc->GetCount())-static_cast<int>(m_favdirs.GetCount());
-    cfg->Write(_T("FileExplorer/RootList/Len"), count);
+    cfg->Write("FileExplorer/RootList/Len", count);
     for(int i=0;i<count;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/RootList/I%i"),i);
+        const wxString ref(wxString::Format("FileExplorer/RootList/I%i", i));
         cfg->Write(ref, m_Loc->GetString(m_favdirs.GetCount()+i));
     }
     count=static_cast<int>(m_WildCards->GetCount());
-    cfg->Write(_T("FileExplorer/WildMask/Len"), count);
+    cfg->Write("FileExplorer/WildMask/Len", count);
     for(int i=0;i<count;i++)
     {
-        wxString ref=wxString::Format(_T("FileExplorer/WildMask/I%i"),i);
+        const wxString ref(wxString::Format("FileExplorer/WildMask/I%i", i));
         cfg->Write(ref, m_WildCards->GetString(i));
     }
-    cfg->Write(_T("FileExplorer/ParseCVS"), m_parse_cvs);
-    cfg->Write(_T("FileExplorer/ParseSVN"), m_parse_svn);
-    cfg->Write(_T("FileExplorer/ParseHG"), m_parse_hg);
-    cfg->Write(_T("FileExplorer/ParseBZR"), m_parse_bzr);
-    cfg->Write(_T("FileExplorer/ParseGIT"), m_parse_git);
-    cfg->Write(_T("FileExplorer/ShowHiddenFiles"), m_show_hidden);
+    cfg->Write("FileExplorer/ParseCVS",        m_parse_cvs);
+    cfg->Write("FileExplorer/ParseSVN",        m_parse_svn);
+    cfg->Write("FileExplorer/ParseHG",         m_parse_hg);
+    cfg->Write("FileExplorer/ParseBZR",        m_parse_bzr);
+    cfg->Write("FileExplorer/ParseGIT",        m_parse_git);
+    cfg->Write("FileExplorer/ShowHiddenFiles", m_show_hidden);
 }
 
 void FileExplorer::OnEnterWild(wxCommandEvent &/*event*/)
@@ -951,14 +946,14 @@ void FileExplorer::OnVCSChangesCheck(wxCommandEvent &/*event*/)
 void FileExplorer::OnVCSControl(wxCommandEvent &/*event*/)
 {
     wxString commit = m_VCS_Control->GetString(m_VCS_Control->GetSelection());
-    if (commit == _T("Select commit..."))
+    if (commit == _("Select commit..."))
     {
         CommitBrowser *cm = new CommitBrowser(this, GetFullPath(m_Tree->GetRootItem()), m_VCS_Type->GetLabel());
         if(cm->ShowModal() == wxID_OK)
         {
             commit = cm->GetSelectedCommit();
             cm->Destroy();
-            if (commit != wxEmptyString)
+            if (!commit.empty())
             {
                 unsigned int i=0;
                 for (; i<m_VCS_Control->GetCount(); ++i)
@@ -977,7 +972,7 @@ void FileExplorer::OnVCSControl(wxCommandEvent &/*event*/)
         else
             commit = wxEmptyString;
     }
-    if (commit!=wxEmptyString)
+    if (!commit.empty())
     {
         m_commit = commit;
         Refresh(m_Tree->GetRootItem());
@@ -1006,13 +1001,13 @@ void FileExplorer::OnOpenInEditor(wxCommandEvent &/*event*/)
             path.MakeRelativeTo(GetRootFolder());
             wxString name = path.GetFullName();
             wxString vcs_type = m_VCS_Type->GetLabel();
-            name = vcs_type + _T("-") + m_commit.Mid(0,6) + _T("-") + name;
+            name = vcs_type + "-" + m_commit.Mid(0,6) + "-" + name;
             path.SetFullName(name);
-            wxFileName tmp = wxFileName(wxFileName::GetTempDir(),_T(""));
-            tmp.AppendDir(_T("codeblocks-fm"));
+            wxFileName tmp = wxFileName(wxFileName::GetTempDir(), "");
+            tmp.AppendDir("codeblocks-fm");
             path.MakeAbsolute(tmp.GetFullPath());
             if(!path.FileExists())
-                m_vcs_file_loader_queue.Add(_T("cat"), original_path, path.GetFullPath());
+                m_vcs_file_loader_queue.Add("cat", original_path, path.GetFullPath());
             else
                 DoOpenInEditor(path.GetFullPath());
         }
@@ -1037,12 +1032,12 @@ void FileExplorer::OnVCSDiff(wxCommandEvent &event)
 {
     wxString comp_commit;
     if (event.GetId() == ID_FILEDIFF) //Diff with head (for working copy) or previous (for commit)
-        comp_commit = _T("Previous");
+        comp_commit = _("Previous");
     else //Otherwise diff against specific revision
         comp_commit = m_VCS_Control->GetString(event.GetId()-ID_FILEDIFF1);
-    if (m_commit == _T("Working copy") && comp_commit == _T("Working copy"))
-        comp_commit = _T("Previous");
-    if (comp_commit == _T("Select commit..."))
+    if (m_commit == _("Working copy") && comp_commit == _("Working copy"))
+        comp_commit = _("Previous");
+    if (comp_commit == _("Select commit..."))
     {
         wxString diff_paths;
         for(int i=0;i<m_ticount;i++)
@@ -1050,7 +1045,7 @@ void FileExplorer::OnVCSDiff(wxCommandEvent &event)
             wxFileName path(GetFullPath(m_selectti[i]));
             path.MakeRelativeTo(GetRootFolder());
             if (path != wxEmptyString)
-                diff_paths+=_T(" \"") + path.GetFullPath() + _T("\"");
+                diff_paths += " \"" + path.GetFullPath() + "\"";
         }
         CommitBrowser *cm = new CommitBrowser(this, GetFullPath(m_Tree->GetRootItem()), m_VCS_Type->GetLabel(), diff_paths);
         if(cm->ShowModal() == wxID_OK)
@@ -1060,23 +1055,23 @@ void FileExplorer::OnVCSDiff(wxCommandEvent &event)
         else
             return;
     }
-    wxString diff_paths = wxEmptyString;
+    wxString diff_paths;
     for(int i=0;i<m_ticount;i++)
     {
         wxFileName path(GetFullPath(m_selectti[i]));
         path.MakeRelativeTo(GetRootFolder());
         if (path != wxEmptyString)
-            diff_paths+=_T(" \"") + path.GetFullPath() + _T("\"");
+            diff_paths += " \"" + path.GetFullPath() + "\"";
     }
-    wxFileName tmp = wxFileName(wxFileName::GetTempDir(),_T(""));
+    wxFileName tmp = wxFileName(wxFileName::GetTempDir(), "");
     wxFileName root_path(GetRootFolder());
     wxString name = root_path.GetName();
     wxString vcs_type = m_VCS_Type->GetLabel();
-    tmp.AppendDir(_T("codeblocks-fm"));
-    name = _T("diff-") + vcs_type + _T("-") + m_commit.Mid(0,7) +_T("~") + comp_commit + _T("-") + name + _T(".patch");
+    tmp.AppendDir("codeblocks-fm");
+    name = "diff-" + vcs_type + "-" + m_commit.Mid(0,7) + "~" + comp_commit + "-" + name + ".patch";
     wxString dest_tmp_path = wxFileName(tmp.GetFullPath(), name).GetFullPath();
-    m_vcs_file_loader_queue.Add(_T("diff"), diff_paths, dest_tmp_path, comp_commit);
-    if (m_vcs_file_loader==0 && !m_vcs_file_loader_queue.empty())
+    m_vcs_file_loader_queue.Add("diff", diff_paths, dest_tmp_path, comp_commit);
+    if (m_vcs_file_loader==nullptr && !m_vcs_file_loader_queue.empty())
     {
         LoaderQueueItem item = m_vcs_file_loader_queue.Pop();
         m_vcs_file_loader = new VCSFileLoader(this);
@@ -1141,7 +1136,7 @@ void FileExplorer::OnActivate(wxTreeEvent &event)
     if (!plugin)
     {
         wxString msg;
-        msg.Printf(_("Could not open file '%s'.\nNo handler registered for this type of file."), filename.c_str());
+        msg.Printf(_("Could not open file '%s'.\nNo handler registered for this type of file."), filename);
         LogErrorMessage(msg);
 //        em->Open(filename); //should never need to open the file from here
     }
@@ -1149,7 +1144,7 @@ void FileExplorer::OnActivate(wxTreeEvent &event)
     {
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plugin);
         wxString msg;
-        msg.Printf(_("Could not open file '%s'.\nThe registered handler (%s) could not open it."), filename.c_str(), info ? info->title.c_str() : wxString(_("<Unknown plugin>")).c_str());
+        msg.Printf(_("Could not open file '%s'.\nThe registered handler (%s) could not open it."), filename, info ? info->title : wxString(_("<Unknown plugin>")));
         LogErrorMessage(msg);
     }
 
@@ -1174,12 +1169,12 @@ void FileExplorer::OnKeyDown(wxKeyEvent &event)
 
 bool FileExplorer::IsBrowsingVCSTree()
 {
-    return m_commit != _T("Working copy") && m_commit != wxEmptyString;
+    return m_commit != _("Working copy") && !m_commit.empty();
 }
 
 bool FileExplorer::IsBrowsingWorkingCopy()
 {
-    return m_commit == _T("Working copy") && m_commit != wxEmptyString;
+    return m_commit == _("Working copy") && !m_commit.empty();
 }
 
 void FileExplorer::OnRightClick(wxTreeEvent &event)
@@ -1271,10 +1266,10 @@ void FileExplorer::OnRightClick(wxTreeEvent &event)
         ftd->SetKind(FileTreeData::ftdkVirtualGroup);
         wxString pathlist = GetFullPath(m_selectti[0]);
         for(int i=1;i<m_ticount;i++)
-            pathlist += _T("*") + GetFullPath(m_selectti[i]); //passing a '*' separated list of files/directories to any plugin takers
+            pathlist += "*" + GetFullPath(m_selectti[i]); //passing a '*' separated list of files/directories to any plugin takers
         ftd->SetFolder(pathlist);
     }
-    else if ( m_ticount > 0)
+    else if (m_ticount > 0)
     {
         wxString filepath = GetFullPath(m_selectti[0]);
         ftd->SetFolder(filepath);
@@ -1363,15 +1358,15 @@ void FileExplorer::OnDuplicate(wxCommandEvent &/*event*/)
             if(!PromptSaveOpenFile(_("File is modified, press Yes to save before duplication, No to copy unsaved file or Cancel to skip file"),wxFileName(path)))
                 continue;
             int j=1;
-            wxString destpath(path.GetPathWithSep()+path.GetName()+wxString::Format(_T("(%i)"),j));
-            if(path.GetExt()!=wxEmptyString)
-                destpath+=_T(".")+path.GetExt();
+            wxString destpath(path.GetPathWithSep()+path.GetName()+wxString::Format("(%i)", j));
+            if(!path.GetExt().empty())
+                destpath += "."+path.GetExt();
             while(j<100 && (wxFileName::FileExists(destpath) || wxFileName::DirExists(destpath)))
             {
                 j++;
-                destpath=path.GetPathWithSep()+path.GetName()+wxString::Format(_T("(%i)"),j);
-                if(path.GetExt()!=wxEmptyString)
-                    destpath+=_T(".")+path.GetExt();
+                destpath=path.GetPathWithSep()+path.GetName()+wxString::Format("(%i)", j);
+                if(!path.GetExt().empty())
+                    destpath += "."+path.GetExt();
             }
             if(j==100)
             {
@@ -1383,16 +1378,16 @@ void FileExplorer::OnDuplicate(wxCommandEvent &/*event*/)
             wxArrayString output;
             wxString cmdline;
             if(wxFileName::FileExists(path.GetFullPath()))
-                cmdline=_T("cmd /c copy /Y \"")+path.GetFullPath()+_T("\" \"")+destpath+_T("\"");
+                cmdline="cmd /c copy /Y \""+path.GetFullPath()+"\" \""+destpath+"\"";
             else
-                cmdline=_T("cmd /c xcopy /S/E/Y/H/I \"")+path.GetFullPath()+_T("\" \"")+destpath+_T("\"");
+                cmdline="cmd /c xcopy /S/E/Y/H/I \""+path.GetFullPath()+"\" \""+destpath+"\"";
             int hresult=::wxExecute(cmdline,output,wxEXEC_SYNC);
 #else
-            wxString cmdline=_T("/bin/cp -r -b \"")+path.GetFullPath()+_T("\" \"")+destpath+_T("\"");
+            wxString cmdline="/bin/cp -r -b \""+path.GetFullPath()+"\" \""+destpath+"\"";
             int hresult=::wxExecute(cmdline,wxEXEC_SYNC);
 #endif
             if(hresult)
-                MessageBox(m_Tree,_("Command '")+cmdline+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+                MessageBox(m_Tree, wxString::Format(_("Command '%s' failed with error %i"), cmdline, hresult));
         }
     }
     Refresh(m_Tree->GetRootItem()); //TODO: Can probably be more efficient than this
@@ -1417,15 +1412,15 @@ void FileExplorer::CopyFiles(const wxString &destination, const wxArrayString &s
             wxArrayString output;
             wxString cmdline;
             if(wxFileName::FileExists(path))
-                cmdline=_T("cmd /c copy /Y \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\"");
+                cmdline="cmd /c copy /Y \""+path+"\" \""+destpath.GetFullPath()+"\"";
             else
-                cmdline=_T("cmd /c xcopy /S/E/Y/H/I \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\"");
+                cmdline="cmd /c xcopy /S/E/Y/H/I \""+path+"\" \""+destpath.GetFullPath()+"\"";
             int hresult=::wxExecute(cmdline,output,wxEXEC_SYNC);
 #else
-            int hresult=::wxExecute(_T("/bin/cp -r -b \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),wxEXEC_SYNC);
+            int hresult=::wxExecute("/bin/cp -r -b \""+path+"\" \""+destpath.GetFullPath()+"\"",wxEXEC_SYNC);
 #endif
-            if(hresult)
-                MessageBox(m_Tree,_("Copying '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+            if (hresult)
+                MessageBox(m_Tree, wxString::Format(_("Copying '%s' failed with error %i"), path, hresult));
         }
     }
 }
@@ -1461,12 +1456,12 @@ void FileExplorer::MoveFiles(const wxString &destination, const wxArrayString &s
         {
 #ifdef __WXMSW__
             wxArrayString output;
-            int hresult=::wxExecute(_T("cmd /c move /Y \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),output,wxEXEC_SYNC);
+            int hresult=::wxExecute("cmd /c move /Y \""+path+"\" \""+destpath.GetFullPath()+"\"",output,wxEXEC_SYNC);
 #else
-            int hresult=::wxExecute(_T("/bin/mv -b \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),wxEXEC_SYNC);
+            int hresult=::wxExecute("/bin/mv -b \""+path+"\" \""+destpath.GetFullPath()+"\"",wxEXEC_SYNC);
 #endif
-            if(hresult)
-                MessageBox(m_Tree,_("Moving '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+            if (hresult)
+                MessageBox(m_Tree, wxString::Format(_("Moving '%s' failed with error %i"), path, hresult));
         }
     }
 }
@@ -1502,7 +1497,7 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
 {
     m_ticount=m_Tree->GetSelections(m_selectti);
     wxArrayString as=GetSelectedPaths();
-    wxString prompt=_("Your are about to delete\n\n");
+    wxString prompt=_("You are about to delete\n\n");
     for(unsigned int i=0;i<as.Count();i++)
         prompt+=as[i]+'\n';
     prompt+=_("\nAre you sure?");
@@ -1520,18 +1515,18 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
             //            return;
             //        }
             if(!::wxRemoveFile(path))
-                MessageBox(m_Tree,_("Delete file '")+path+_("' failed"));
-        } else
-        if(wxFileName::DirExists(path))
+                MessageBox(m_Tree, wxString::Format(_("Delete file '%s' failed"), path));
+        }
+        else if(wxFileName::DirExists(path))
         {
 #ifdef __WXMSW__
             wxArrayString output;
-            int hresult=::wxExecute(_T("cmd /c rmdir /S/Q \"")+path+_T("\""),output,wxEXEC_SYNC);
+            int hresult=::wxExecute("cmd /c rmdir /S/Q \""+path+"\"",output,wxEXEC_SYNC);
 #else
-            int hresult=::wxExecute(_T("/bin/rm -r -f \"")+path+_T("\""),wxEXEC_SYNC);
+            int hresult=::wxExecute("/bin/rm -r -f \""+path+"\"",wxEXEC_SYNC);
 #endif
             if(hresult)
-                MessageBox(m_Tree,_("Delete directory '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+                MessageBox(m_Tree, wxString::Format(_("Delete directory '%s' failed with error %i"), path, hresult));
         }
     }
     Refresh(m_Tree->GetRootItem());
@@ -1567,12 +1562,12 @@ void FileExplorer::OnRename(wxCommandEvent &/*event*/)
         destpath.SetFullName(te.GetValue());
 #ifdef __WXMSW__
         wxArrayString output;
-        int hresult=::wxExecute(_T("cmd /c move /Y \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),output,wxEXEC_SYNC);
+        int hresult=::wxExecute("cmd /c move /Y \""+path+"\" \""+destpath.GetFullPath()+"\"",output,wxEXEC_SYNC);
 #else
-        int hresult=::wxExecute(_T("/bin/mv \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),wxEXEC_SYNC);
+        int hresult=::wxExecute("/bin/mv \""+path+"\" \""+destpath.GetFullPath()+"\"",wxEXEC_SYNC);
 #endif
         if(hresult)
-            MessageBox(m_Tree,_("Rename directory '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+            MessageBox(m_Tree, wxString::Format(_("Rename directory '%s' failed with error %i"), path, hresult));
     }
     Refresh(m_Tree->GetItemParent(m_Tree->GetFocusedItem()));
 }
@@ -1703,13 +1698,14 @@ void FileExplorer::OnEndDragTreeItem(wxTreeEvent &event)
                         continue;
 #ifdef __WXMSW__
                 wxArrayString output;
-                int hresult=::wxExecute(_T("cmd /c move /Y \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),output,wxEXEC_SYNC);
+                int hresult=::wxExecute("cmd /c move /Y \""+path+"\" \""+destpath.GetFullPath()+"\"",output,wxEXEC_SYNC);
 #else
-                int hresult=::wxExecute(_T("/bin/mv -b \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),wxEXEC_SYNC);
+                int hresult=::wxExecute("/bin/mv -b \""+path+"\" \""+destpath.GetFullPath()+"\"",wxEXEC_SYNC);
 #endif
                 if(hresult)
-                    MessageBox(m_Tree,_("Move directory '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
-            } else
+                    MessageBox(m_Tree, wxString::Format(_("Move directory '%s' failed with error %i"), path, hresult));
+            }
+            else
             {
                 if(wxFileName::FileExists(path))
                     if(!PromptSaveOpenFile(_("File is modified, press Yes to save before copy, No to copy unsaved file or Cancel to skip file"),wxFileName(path)))
@@ -1718,18 +1714,18 @@ void FileExplorer::OnEndDragTreeItem(wxTreeEvent &event)
                 wxArrayString output;
                 wxString cmdline;
                 if(wxFileName::FileExists(path))
-                    cmdline=_T("cmd /c copy /Y \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\"");
+                    cmdline="cmd /c copy /Y \""+path+"\" \""+destpath.GetFullPath()+"\"";
                 else
-                    cmdline=_T("cmd /c xcopy /S/E/Y/H/I \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\"");
+                    cmdline="cmd /c xcopy /S/E/Y/H/I \""+path+"\" \""+destpath.GetFullPath()+"\"";
                 int hresult=::wxExecute(cmdline,output,wxEXEC_SYNC);
 #else
-                int hresult=::wxExecute(_T("/bin/cp -r -b \"")+path+_T("\" \"")+destpath.GetFullPath()+_T("\""),wxEXEC_SYNC);
+                int hresult=::wxExecute("/bin/cp -r -b \""+path+"\" \""+destpath.GetFullPath()+"\"",wxEXEC_SYNC);
 #endif
                 if(hresult)
-                    MessageBox(m_Tree,_("Copy directory '")+path+_("' failed with error ")+wxString::Format(_T("%i"),hresult));
+                    MessageBox(m_Tree, wxString::Format(_("Copy directory '%s' failed with error %i"), path, hresult));
             }
         }
-//        if(!PromptSaveOpenFile(_T("File is modified, press \"Yes\" to save before move/copy, \"No\" to move/copy unsaved file or \"Cancel\" to abort the operation"),path)) //TODO: specify move or copy depending on whether CTRL held down
+//        if(!PromptSaveOpenFile(_("File is modified, press \"Yes\" to save before move/copy, \"No\" to move/copy unsaved file or \"Cancel\" to abort the operation"),path)) //TODO: specify move or copy depending on whether CTRL held down
 //            return;
     }
     Refresh(m_Tree->GetRootItem());
