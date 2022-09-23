@@ -23,16 +23,16 @@ END_EVENT_TABLE()
 
 CommitBrowser::CommitBrowser(wxWindow* parent, const wxString& repo_path, const wxString &repo_type, const wxString &files)
 {
-	//(*Initialize(CommitBrowser)
-	wxXmlResource::Get()->LoadObject(this,parent,_T("CommitBrowser"),_T("wxDialog"));
-	StaticText1 = (wxStaticText*)FindWindow(XRCID("ID_STATICTEXT1"));
-	Choice1 = (wxChoice*)FindWindow(XRCID("ID_BRANCH_CHOICE"));
-	CommitList = (wxListCtrl*)FindWindow(XRCID("ID_COMMITLIST"));
-	TextCtrl1 = (wxTextCtrl*)FindWindow(XRCID("ID_COMMIT_MESSAGE"));
-	ButtonMore = (wxButton*)FindWindow(XRCID("ID_BUTTON_MORE"));
-	CommitStatus = (wxStaticText*)FindWindow(XRCID("ID_COMMIT_STATUS"));
-	Button1 = (wxButton*)FindWindow(XRCID("ID_CANCEL"));
-	Button2 = (wxButton*)FindWindow(XRCID("ID_BROWSE_COMMIT"));
+    //(*Initialize(CommitBrowser)
+    wxXmlResource::Get()->LoadObject(this,parent,_T("CommitBrowser"),_T("wxDialog"));
+    StaticText1 = (wxStaticText*)FindWindow(XRCID("ID_STATICTEXT1"));
+    Choice1 = (wxChoice*)FindWindow(XRCID("ID_BRANCH_CHOICE"));
+    CommitList = (wxListCtrl*)FindWindow(XRCID("ID_COMMITLIST"));
+    TextCtrl1 = (wxTextCtrl*)FindWindow(XRCID("ID_COMMIT_MESSAGE"));
+    ButtonMore = (wxButton*)FindWindow(XRCID("ID_BUTTON_MORE"));
+    CommitStatus = (wxStaticText*)FindWindow(XRCID("ID_COMMIT_STATUS"));
+    Button1 = (wxButton*)FindWindow(XRCID("ID_CANCEL"));
+    Button2 = (wxButton*)FindWindow(XRCID("ID_BROWSE_COMMIT"));
 
     CheckStartCommit = (wxCheckBox*)FindWindow(XRCID("ID_CHECK_START_COMMIT"));
     StartCommit = (wxTextCtrl*)FindWindow(XRCID("ID_START_COMMIT"));
@@ -45,35 +45,34 @@ CommitBrowser::CommitBrowser(wxWindow* parent, const wxString& repo_path, const 
     Grep = (wxTextCtrl*)FindWindow(XRCID("ID_GREP_ENTRY"));
     FileEntry = (wxTextCtrl*)FindWindow(XRCID("ID_FILE_ENTRY"));
 
-	Connect(XRCID("ID_SEARCH_BUTTON"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnSearch);
-	Connect(XRCID("ID_CANCEL"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButton1Click);
-	Connect(XRCID("ID_BROWSE_COMMIT"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButton2Click);
-	Connect(XRCID("ID_BUTTON_MORE"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButtonMore);
-	//*)
-
+    Connect(XRCID("ID_SEARCH_BUTTON"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnSearch);
+    Connect(XRCID("ID_CANCEL"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButton1Click);
+    Connect(XRCID("ID_BROWSE_COMMIT"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButton2Click);
+    Connect(XRCID("ID_BUTTON_MORE"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommitBrowser::OnButtonMore);
+    //*)
 
     m_autofetch_count = 0;
-	m_repo_path = repo_path;
-	m_repo_type = repo_type;
+    m_repo_path = repo_path;
+    m_repo_type = repo_type;
 
-	CommitList->InsertColumn(0,_T("ID"));
-	CommitList->InsertColumn(1,_T("Author"));
-	CommitList->InsertColumn(2,_T("Date"));
-	CommitList->InsertColumn(3,_T("Message"));
+    CommitList->InsertColumn(0, _("ID"));
+    CommitList->InsertColumn(1, _("Author"));
+    CommitList->InsertColumn(2, _("Date"));
+    CommitList->InsertColumn(3, _("Message"));
     ButtonMore->Disable();
     Button2->Disable();
-	TextCtrl1->Clear();
-	this->SetSize(600, 500);
-	//TODO: The amount fetched should be reduced if fetching over a network
-	m_rev_fetch_amt[_T("SVN")] = 20;
-	m_rev_fetch_amt[_T("GIT")] = 100;
-	m_rev_fetch_amt[_T("BZR")] = 100;
-	m_rev_fetch_amt[_T("Hg")] = 100;
-	FileEntry->SetValue(files);
+    TextCtrl1->Clear();
+    this->SetSize(600, 500);
+    //TODO: The amount fetched should be reduced if fetching over a network
+    m_rev_fetch_amt[_T("SVN")] = 20;
+    m_rev_fetch_amt[_T("GIT")] = 100;
+    m_rev_fetch_amt[_T("BZR")] = 100;
+    m_rev_fetch_amt[_T("Hg")] = 100;
+    FileEntry->SetValue(files);
 
     m_updater_commits = new CommitUpdater(this, m_repo_path, m_repo_type);
-	m_updater = new CommitUpdater(this, m_repo_path, m_repo_type);
-	m_updater->Update(_T("BRANCHES"));
+    m_updater = new CommitUpdater(this, m_repo_path, m_repo_type);
+    m_updater->Update("BRANCHES");
 }
 
 CommitBrowser::~CommitBrowser()
@@ -107,13 +106,13 @@ wxString CommitBrowser::GetSelectedCommit()
 
 void CommitBrowser::OnSearch(wxCommandEvent& /*event*/)
 {
-    wxString br = GetRepoBranch();
-    CommitsUpdaterQueue(_T("COMMITS:")+br);
+    const wxString br(GetRepoBranch());
+    CommitsUpdaterQueue("COMMITS:"+br);
     CommitList->DeleteAllItems();
     TextCtrl1->Clear();
     Button2->Disable();
     ButtonMore->Disable();
-    CommitStatus->SetLabel(_T("Loading commits..."));
+    CommitStatus->SetLabel(_("Loading commits..."));
 }
 
 void CommitBrowser::OnButton1Click(wxCommandEvent& /*event*/)
@@ -148,9 +147,9 @@ void CommitBrowser::OnCheckCommitEnd(wxCommandEvent &event)
 
 void CommitBrowser::OnButtonMore(wxCommandEvent& /*event*/)
 {
-    CommitsUpdaterQueue(_T("CONTINUE"));
+    CommitsUpdaterQueue("CONTINUE");
     ButtonMore->Disable();
-    CommitStatus->SetLabel(_T("Loading commits..."));
+    CommitStatus->SetLabel(_("Loading commits..."));
 }
 
 void CommitBrowser::CommitsUpdaterQueue(const wxString &cmd)
@@ -161,7 +160,7 @@ void CommitBrowser::CommitsUpdaterQueue(const wxString &cmd)
     {
         m_update_commits_queue = wxEmptyString;
         CommitUpdater* cu = m_updater_commits;
-        if (cmd == _T("CONTINUE"))
+        if (cmd == "CONTINUE")
         {
             m_updater_commits = new CommitUpdater(*m_updater_commits);
             m_updater_commits->UpdateContinueCommitRetrieve();
@@ -179,17 +178,17 @@ void CommitBrowser::CommitsUpdaterQueue(const wxString &cmd)
 void CommitBrowser::OnListItemSelected(wxListEvent &event)
 {
     wxListItem li = event.GetItem();
-    wxString id = li.GetText();
+    const wxString id(li.GetText());
 
     Button2->Enable();
     TextCtrl1->Clear();
-    if (m_updater == 0 && id != wxEmptyString)
+    if (m_updater == nullptr && !id.empty())
     {
         m_updater = new CommitUpdater(this, m_repo_path, m_repo_type);
-        m_updater->Update(_T("DETAIL:")+id);
+        m_updater->Update("DETAIL:"+id);
     }
     else
-        m_update_queue = _T("DETAIL:")+id;
+        m_update_queue = "DETAIL:"+id;
 }
 
 CommitUpdaterOptions CommitBrowser::GetCommitOptions()
@@ -207,12 +206,12 @@ CommitUpdaterOptions CommitBrowser::GetCommitOptions()
 
 void CommitBrowser::OnBranchSelected(wxCommandEvent & /*event*/)
 {
-    wxString br = Choice1->GetString(Choice1->GetSelection());
-    CommitsUpdaterQueue(_T("COMMITS:")+br);
+    const wxString br(Choice1->GetString(Choice1->GetSelection()));
+    CommitsUpdaterQueue("COMMITS:"+br);
     CommitList->DeleteAllItems();
     ButtonMore->Disable();
     Button2->Disable();
-    CommitStatus->SetLabel(_T("Loading commits..."));
+    CommitStatus->SetLabel(_("Loading commits..."));
 }
 
 void CommitBrowser::OnCommitsUpdateComplete(wxCommandEvent& /*event*/)
@@ -220,9 +219,9 @@ void CommitBrowser::OnCommitsUpdateComplete(wxCommandEvent& /*event*/)
     if (m_updater_commits == 0)
         return;
     m_updater_commits->Wait();
-    if(m_updater_commits->m_what.StartsWith(_T("COMMITS:")))
+    if(m_updater_commits->m_what.StartsWith("COMMITS:"))
     {
-        wxString branch = m_updater_commits->m_what.AfterFirst(_T(':'));
+        wxString branch = m_updater_commits->m_what.AfterFirst(':');
         m_autofetch_count += m_updater_commits->m_commits.size();
         for (unsigned int i = 0; i<m_updater_commits->m_commits.size(); ++i)
         {
@@ -246,7 +245,7 @@ void CommitBrowser::OnCommitsUpdateComplete(wxCommandEvent& /*event*/)
         {
             if (m_autofetch_count < m_rev_fetch_amt[m_repo_type])
             {
-                CommitsUpdaterQueue(_T("CONTINUE"));
+                CommitsUpdaterQueue("CONTINUE");
             }
             else
             {
@@ -255,9 +254,9 @@ void CommitBrowser::OnCommitsUpdateComplete(wxCommandEvent& /*event*/)
             }
         }
         if (CommitList->GetItemCount()!=1)
-            CommitStatus->SetLabel(wxString::Format(_T("Showing %i commits"),CommitList->GetItemCount()));
+            CommitStatus->SetLabel(wxString::Format(_("Showing %i commits"), CommitList->GetItemCount()));
         else
-            CommitStatus->SetLabel(_T("Showing 1 commit"));
+            CommitStatus->SetLabel(_("Showing 1 commit"));
     }
 
     if (m_update_commits_queue != wxEmptyString)
@@ -268,7 +267,7 @@ void CommitBrowser::OnUpdateComplete(wxCommandEvent& /*event*/)
     if (m_updater == 0)
         return;
     m_updater->Wait();
-    if(m_updater->m_what == _T("BRANCHES"))
+    if(m_updater->m_what == "BRANCHES")
     {
         if (m_updater->m_branches.GetCount()==0)
         {
@@ -281,11 +280,11 @@ void CommitBrowser::OnUpdateComplete(wxCommandEvent& /*event*/)
             Choice1->Append(m_updater->m_branches[i]);
         }
         Choice1->Select(0);
-        CommitsUpdaterQueue(_T("COMMITS:")+m_updater->m_branches[0]);
+        CommitsUpdaterQueue("COMMITS:"+m_updater->m_branches[0]);
     }
-    else if(m_updater->m_what.StartsWith(_T("DETAIL:")))
+    else if(m_updater->m_what.StartsWith("DETAIL:"))
     {
-        wxString commit = m_updater->m_what.AfterFirst(_T(':'));
+        wxString commit = m_updater->m_what.AfterFirst(':');
         TextCtrl1->Clear();
         TextCtrl1->SetValue(m_updater->m_detailed_commit_log);
     }
