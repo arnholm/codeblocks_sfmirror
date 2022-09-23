@@ -563,9 +563,10 @@ MonData::MonData(DirMonitorThread *monitor, const wxString &path, bool subtree)
         m_overlapped=new_overlapped();
         m_changedata=(PFILE_NOTIFY_INFORMATION)(new char[4096]);
         ReadRequest(subtree);
-    } else
+    }
+    else
     {
-        wxMessageBox(_("WARNING: Failed to open handle for ")+m_path);
+        wxMessageBox(wxString::Format(_("WARNING: Failed to open handle for '%s'"), m_path));
         m_handle=NULL;
         m_fail=true;
     }
@@ -577,7 +578,7 @@ void MonData::ReadCancel()
     {
         if(!::CancelIo(m_handle))
         {
-            wxMessageBox(_("WARNING: Failed to initiate cancel io for ")+m_path);
+            wxMessageBox(wxString::Format(_("WARNING: Failed to initiate cancel io for '%s'"), m_path));
             m_fail=true;
         }
         else

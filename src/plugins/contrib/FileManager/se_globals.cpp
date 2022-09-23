@@ -4,7 +4,7 @@
 wxString GetParentDir(const wxString &path)
 {
     wxString parent=wxFileName(path).GetPath(0);
-    if(path==parent||parent.IsEmpty())
+    if(path == parent || parent.empty())
         return wxEmptyString;
     else
         return parent;
@@ -13,7 +13,7 @@ wxString GetParentDir(const wxString &path)
 bool DirIsChildOf(const wxString &path, const wxString &/*child*/)
 {
     wxString parent=path;
-    while(!parent.IsEmpty())
+    while(!parent.empty())
     {
         if(wxFileName(path).SameAs(parent))
             return true;
@@ -24,15 +24,15 @@ bool DirIsChildOf(const wxString &path, const wxString &/*child*/)
 
 bool WildCardListMatch(wxString list, wxString name, bool strip)
 {
-    if(list==_T("")) //any empty list matches everything by default
+    if (list.empty()) //any empty list matches everything by default
         return true;
     wxString wildlist=list;
     wxString wild=list.BeforeFirst(';');
     if(strip)
         wild=wild.Strip(wxString::both);
-    while(wildlist!=_T(""))
+    while(!wildlist.empty())
     {
-        if(wild!=_T("") && ::wxMatchWild(wild,name))
+        if(!wild.empty() && ::wxMatchWild(wild,name))
             return true;
         wildlist=wildlist.AfterFirst(';');
         wild=wildlist.BeforeFirst(';');
@@ -49,7 +49,7 @@ bool PromptSaveOpenFile(wxString message, wxFileName path)
     if(eb)
     {
         if(eb->GetModified())
-            switch(cbMessageBox(message,_T("Save File?"),wxYES_NO|wxCANCEL))
+            switch(cbMessageBox(message, _("Save File?"), wxYES_NO|wxCANCEL))
             {
                 case wxYES:
                     if(!eb->Save())

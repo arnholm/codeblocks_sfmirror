@@ -30,7 +30,7 @@ END_EVENT_TABLE()
 
 FileBrowserSettings::FileBrowserSettings( const FavoriteDirs &favdirs, wxWindow* parent, int /*id*/, wxPoint /*pos*/, wxSize /*size*/, int /*style*/ ) //: wxDialog( parent, id, _T("File Explorer Settings"), pos, size, style )
 {
-    wxXmlResource::Get()->LoadDialog(this,parent,_T("FileBrowserSettings"));
+    wxXmlResource::Get()->LoadDialog(this, parent, "FileBrowserSettings");
     idfavlist=XRCCTRL(*this,"idfavlist",wxListBox);
 //    idnew=XRCCTRL(*this,"idnew",wxButton);
 //    iddelete=XRCCTRL(*this,"iddelete",wxButton);
@@ -66,8 +66,8 @@ FileBrowserSettings::FileBrowserSettings( const FavoriteDirs &favdirs, wxWindow*
 void FileBrowserSettings::New(wxCommandEvent &/*event*/)
 {
     FavoriteDir f;
-    f.alias=_T("New Path");
-    f.path=_T("");
+    f.alias = _("New Path");
+    f.path = "";
     m_favdirs.Add(FavoriteDir());
     idfavlist->Append(f.alias);
     m_selected=idfavlist->GetCount()-1;
@@ -171,7 +171,7 @@ void FileBrowserSettings::OnOk(wxCommandEvent &/*event*/)
 void FileBrowserSettings::OnBrowse(wxCommandEvent &/*event*/)
 {
     // todo: change to a dir picker
-    wxDirDialog *dd=new wxDirDialog(NULL,_T("Choose a Directory"));
+    wxDirDialog* dd = new wxDirDialog(nullptr, _("Choose a Directory"));
     dd->SetPath(idpath->GetValue());
     if(dd->ShowModal()==wxID_OK)
     {

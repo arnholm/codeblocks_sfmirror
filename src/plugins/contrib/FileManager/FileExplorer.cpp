@@ -1020,7 +1020,7 @@ void FileExplorer::OnOpenInEditor(wxCommandEvent &/*event*/)
             DoOpenInEditor(filename);
         }
     }
-    if (m_vcs_file_loader==0 && !m_vcs_file_loader_queue.empty())
+    if (m_vcs_file_loader==nullptr && !m_vcs_file_loader_queue.empty())
     {
         LoaderQueueItem item = m_vcs_file_loader_queue.Pop();
         m_vcs_file_loader = new VCSFileLoader(this);
@@ -1084,7 +1084,7 @@ void FileExplorer::OnVCSFileLoaderComplete(wxCommandEvent& /*event*/)
     m_vcs_file_loader->Wait();
     DoOpenInEditor(m_vcs_file_loader->m_destination_path);
     delete m_vcs_file_loader;
-    m_vcs_file_loader = 0;
+    m_vcs_file_loader = nullptr;
     if (!m_vcs_file_loader_queue.empty())
     {
         LoaderQueueItem item = m_vcs_file_loader_queue.Pop();

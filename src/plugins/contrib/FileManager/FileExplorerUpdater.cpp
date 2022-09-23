@@ -67,17 +67,17 @@ int Updater::Exec(const wxString &command, wxArrayString &output, const wxString
     int exitcode = Exec(command, out, path);
     while(out.Len()>0)
     {
-        output.Add(out.BeforeFirst(_T('\n')));
-        out = out.AfterFirst(_T('\n'));
+        output.Add(out.BeforeFirst('\n'));
+        out = out.AfterFirst('\n');
     }
     return exitcode;
 }
 
 void Updater::OnExecMain(wxCommandEvent &/*event*/)
 {
-    Manager::Get()->GetLogManager()->DebugLog(_T("File Manager Command: ")+m_exec_cmd+_T("\nin ")+m_exec_path);
+    Manager::Get()->GetLogManager()->DebugLog("File Manager Command: "+m_exec_cmd+"\nin "+m_exec_path);
 //    m_exec_output.Empty();
-    wxString str(_T(""), wxConvISO8859_1);
+    wxString str("", wxConvISO8859_1);
     str.reserve(10000);
     m_exec_output = str;
     m_exec_sstream = new wxStringOutputStream(&m_exec_output);
@@ -94,7 +94,7 @@ void Updater::OnExecMain(wxCommandEvent &/*event*/)
     {
         m_exec_cond->Signal();
         m_exec_mutex->Unlock();
-        Manager::Get()->GetLogManager()->DebugLog(_T("File Manager Command failed to execute: "));
+        Manager::Get()->GetLogManager()->DebugLog("File Manager Command failed to execute: ");
         return;
     }
     m_exec_timer=new wxTimer(this,ID_EXEC_TIMER);
@@ -111,11 +111,11 @@ void Updater::OnExecTerminate(wxProcessEvent &e)
     delete m_exec_proc;
     if (e.GetExitCode() == 255)
         m_exec_proc_id = 0;
-    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_T("process finished with exit code %i, pid %i"), e.GetExitCode(), e.GetPid()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Process finished with exit code %i, pid %i", e.GetExitCode(), e.GetPid()));
     m_exec_proc=NULL;
     m_exec_cond->Signal();
     m_exec_mutex->Unlock();
-//    Manager::Get()->GetLogManager()->DebugLog(_T("Exec Output\n")+m_exec_output);
+//    Manager::Get()->GetLogManager()->DebugLog("Exec Output\n"+m_exec_output);
 }
 
 void Updater::OnExecTimer(wxTimerEvent &/*e*/)
@@ -228,61 +228,64 @@ bool FileExplorerUpdater::GetCurrentState(const wxString &path)
     //bool is_git=false;
 
     //If we are browsing a repo we get the tree for the requested commit
-    if (m_vcs_type != wxEmptyString && m_vcs_commit_string != _T("Working copy") &&
-            m_vcs_commit_string != wxEmptyString && !m_vcs_changes_only)
+    if (!m_vcs_type.empty() && m_vcs_commit_string != _("Working copy") &&
+        !m_vcs_commit_string.empty() && !m_vcs_changes_only)
     {
-        if (m_vcs_type == _T("GIT"))
+        if (m_vcs_type == "GIT")
         {
             if (GetGITCommitState(path))
                 return !TestDestroy();
         }
-        else if (m_vcs_type == _T("Hg"))
+        else if (m_vcs_type == "Hg")
         {
             if (GetHgCommitState(path))
                 return !TestDestroy();
         }
-        else if (m_vcs_type == _T("BZR"))
+        else if (m_vcs_type == "BZR")
         {
-            if (GetVCSCommitState(path, _T("bzr")))
+            if (GetVCSCommitState(path, "bzr"))
                 return !TestDestroy();
         }
-        else if (m_vcs_type == _T("SVN"))
+        else if (m_vcs_type == "SVN")
         {
-            if (GetVCSCommitState(path, _T("svn")))
+            if (GetVCSCommitState(path, "svn"))
                 return !TestDestroy();
         }
     }
-    if (m_vcs_type != wxEmptyString  && m_vcs_changes_only)
+    if (!m_vcs_type.empty()  && m_vcs_changes_only)
     {
+        const bool isWorkingCopy = (m_vcs_commit_string == _("Working copy"));
         bool parsed = false;
-        if (m_vcs_type == _T("GIT"))
+
+        if (m_vcs_type == "GIT")
         {
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (isWorkingCopy)
                 parsed = ParseGITChanges(path, sa, true);
             else
                 parsed = ParseGITChangesTree(path, sa, true);
         }
-        else if (m_vcs_type == _T("Hg"))
+        else if (m_vcs_type == "Hg")
         {
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (isWorkingCopy)
                 parsed = ParseHGChanges(path, sa, true);
             else
                 parsed = ParseHGChangesTree(path, sa, true);
         }
-        else if (m_vcs_type == _T("BZR"))
+        else if (m_vcs_type == "BZR")
         {
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (isWorkingCopy)
                 parsed = ParseBZRChanges(path, sa, true);
             else
                 parsed = ParseBZRChangesTree(path, sa, true);
         }
-        else if (m_vcs_type == _T("SVN"))
+        else if (m_vcs_type == "SVN")
         {
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (isWorkingCopy)
                 parsed = ParseSVNChanges(path, sa, true);
             else
                 parsed = ParseSVNChangesTree(path, sa, true);
         }
+
         if (parsed)
         {
             for (unsigned int i = 0; i<sa.size(); ++i)
@@ -297,7 +300,7 @@ bool FileExplorerUpdater::GetCurrentState(const wxString &path)
     }
 
     //Otherwise we are browsing an unversioned folder or the working copy
-    m_vcs_type = _T("");
+    m_vcs_type = "";
 
     // TODO: THIS NEEDS TO BE CALLED FROM MAIN THREAD BUT CAN'T BE UI-BLOCKING (CAN'T CALL wxExecute FROM THREADS)
     // TODO: IDEALLY THE VCS COMMAND LINE PROGRAM SHOULD BE CALLED ONCE ON THE BASE DIRECTORY (SINCE THEY ARE USUALLY RECURSIVE) TO AVOID REPEATED CALLS FOR SUB-DIRS
@@ -306,25 +309,25 @@ bool FileExplorerUpdater::GetCurrentState(const wxString &path)
         {
             is_vcs=true;
             //is_git=true;
-            m_vcs_type = _T("GIT");
+            m_vcs_type = "GIT";
         }
     if (m_fe->m_parse_svn)
         if (ParseSVNChanges(path,sa))
         {
             is_vcs=true;
-            m_vcs_type = _T("SVN");
+            m_vcs_type = "SVN";
         }
     if (m_fe->m_parse_bzr && !is_vcs)
         if (ParseBZRChanges(path,sa))
         {
             is_vcs=true;
-            m_vcs_type = _T("BZR");
+            m_vcs_type = "BZR";
         }
     if (m_fe->m_parse_hg && !is_vcs)
         if (ParseHGChanges(path,sa))
         {
             is_vcs=true;
-            m_vcs_type = _T("Hg");
+            m_vcs_type = "Hg";
         }
 /*    if (m_fe->m_parse_cvs && !is_vcs)
         if (ParseCVSChanges(path,sa))
@@ -411,11 +414,11 @@ bool FileExplorerUpdater::ParseSVNChanges(const wxString &path, VCSstatearray &s
     wxString parent = path;
 // Older versions of subversion had a hidden .svn folder in every directory in the repo, but
 // that's no longer the case
-//    if (!wxFileName::DirExists(wxFileName(path,_T(".svn")).GetFullPath()))
+//    if (!wxFileName::DirExists(wxFileName(path,".svn").GetFullPath()))
 //        return false;
     while(true)
     {
-        if (wxFileName::DirExists(wxFileName(parent,_T(".svn")).GetFullPath()))
+        if (wxFileName::DirExists(wxFileName(parent, ".svn").GetFullPath()))
             break;
         wxString oldparent=parent;
         parent=wxFileName(parent).GetPath();
@@ -424,7 +427,7 @@ bool FileExplorerUpdater::ParseSVNChanges(const wxString &path, VCSstatearray &s
     }
     wxArrayString output;
     int name_pos = 8;
-    int hresult = Exec(_T("svn stat -N ."), output, path);
+    int hresult = Exec("svn stat -N .", output, path);
     if (hresult != 0)
         return false;
     for(size_t i=0;i<output.GetCount();i++)
@@ -487,12 +490,12 @@ bool FileExplorerUpdater::ParseSVNChangesTree(const wxString &path, VCSstatearra
 {
     wxArrayString output;
     int name_pos = 8;
-    if (m_vcs_commit_string == wxEmptyString)
+    if (m_vcs_commit_string.empty())
         return false;
     wxFileName rel_root_fn = wxFileName(path);
     rel_root_fn.MakeRelativeTo(m_repo_path);
     wxString rel_root_path = rel_root_fn.GetFullPath();
-    int hresult = Exec(_T("svn diff --summarize -c") + m_vcs_commit_string + _T(" ") + rel_root_path, output, m_repo_path);
+    int hresult = Exec("svn diff --summarize -c" + m_vcs_commit_string + " " + rel_root_path, output, m_repo_path);
     if (hresult!=0)
         return false;
     for(size_t i=0;i<output.GetCount();i++)
@@ -560,7 +563,7 @@ bool FileExplorerUpdater::ParseGITChanges(const wxString &path, VCSstatearray &s
     wxString parent=path;
     while(true)
     {
-        if (wxFileName::DirExists(wxFileName(parent,_T(".git")).GetFullPath()))
+        if (wxFileName::DirExists(wxFileName(parent, ".git").GetFullPath()))
             break;
         wxString oldparent=parent;
         parent=wxFileName(parent).GetPath();
@@ -573,9 +576,9 @@ bool FileExplorerUpdater::ParseGITChanges(const wxString &path, VCSstatearray &s
     wxString rpath=parent;
     int name_pos;
     #ifdef __WXMSW__
-    int hresult = Exec(_T("cmd /c git status --short"), output, parent);
+    int hresult = Exec("cmd /c git status --short", output, parent);
     #else
-    int hresult = Exec(_T("git status --short"), output, parent);
+    int hresult = Exec("git status --short", output, parent);
     #endif
     if (hresult!=0)
         return false;
@@ -680,9 +683,9 @@ bool FileExplorerUpdater::ParseGITChangesTree(const wxString &path, VCSstatearra
     rel_root_fn.MakeRelativeTo(m_repo_path);
     wxString rel_root_path = rel_root_fn.GetFullPath();
     int name_pos = 2;
-    if (m_vcs_commit_string == wxEmptyString)
+    if (m_vcs_commit_string.empty())
         return false;
-    int hresult = Exec(_T("git show --name-status --format=oneline ") + m_vcs_commit_string + _T(" ")+rel_root_path, output, m_repo_path);
+    int hresult = Exec("git show --name-status --format=oneline " + m_vcs_commit_string + " " + rel_root_path, output, m_repo_path);
     if (hresult!=0)
         return false;
     if (output.GetCount() > 0) // first line is the one-line commit summary
@@ -765,22 +768,22 @@ bool FileExplorerUpdater::ParseBZRChanges(const wxString &path, VCSstatearray &s
     wxString parent=path;
     while(true)
     {
-        if (wxFileName::DirExists(wxFileName(parent,_T(".bzr")).GetFullPath()))
+        if (wxFileName::DirExists(wxFileName(parent, ".bzr").GetFullPath()))
             break;
-        wxString oldparent=parent;
-        parent=wxFileName(parent).GetPath();
-        if (oldparent==parent||parent.IsEmpty())
+        const wxString oldparent(parent);
+        parent = wxFileName(parent).GetPath();
+        if (oldparent == parent || parent.empty())
             return false;
     }
-    if (parent.IsEmpty())
+    if (parent.empty())
         return false;
     wxArrayString output;
     int name_pos = 4;
     wxString rpath=parent;
     #ifdef __WXMSW__
-    int hresult=Exec(_T("cmd /c bzr stat --short ")+path, output, path);
+    int hresult=Exec("cmd /c bzr stat --short "+path, output, path);
     #else
-    int hresult=Exec(_T("bzr stat --short ")+path, output, path);
+    int hresult=Exec("bzr stat --short "+path, output, path);
     #endif
     if (hresult!=0)
     {
@@ -853,12 +856,12 @@ bool FileExplorerUpdater::ParseBZRChangesTree(const wxString &path, VCSstatearra
 {
     wxArrayString output;
     int name_pos = 4;
-    if (m_vcs_commit_string == wxEmptyString)
+    if (m_vcs_commit_string.empty())
         return false;
     wxFileName rel_root_fn = wxFileName(path);
     rel_root_fn.MakeRelativeTo(m_repo_path);
     wxString rel_root_path = rel_root_fn.GetFullPath();
-    int hresult = Exec(_T("bzr status --short -c ") + m_vcs_commit_string + _T(" ") + rel_root_path, output, m_repo_path);
+    int hresult = Exec("bzr status --short -c " + m_vcs_commit_string + " " + rel_root_path, output, m_repo_path);
     if (hresult!=0)
         return false;
     for(size_t i=0;i<output.GetCount();i++)
@@ -930,18 +933,18 @@ bool FileExplorerUpdater::ParseHGChanges(const wxString &path, VCSstatearray &sa
     wxString parent=path;
     while(true)
     {
-        if (wxFileName::DirExists(wxFileName(parent,_T(".hg")).GetFullPath()))
+        if (wxFileName::DirExists(wxFileName(parent, ".hg").GetFullPath()))
             break;
-        wxString oldparent=parent;
-        parent=wxFileName(parent).GetPath();
-        if (oldparent==parent||parent.IsEmpty())
+        const wxString oldparent(parent);
+        parent = wxFileName(parent).GetPath();
+        if (oldparent == parent || parent.empty())
             return false;
     }
-    if (parent.IsEmpty())
+    if (parent.empty())
         return false;
     int name_pos = 2;
     wxArrayString output;
-    int hresult=Exec(_T("hg -y stat ."), output, path);
+    int hresult = Exec("hg -y stat .", output, path);
     if (hresult!=0)
         return false;
     for(size_t i=0;i<output.GetCount();i++)
@@ -992,12 +995,12 @@ bool FileExplorerUpdater::ParseHGChangesTree(const wxString &path, VCSstatearray
 {
     wxArrayString output;
     int name_pos = 2;
-    if (m_vcs_commit_string == wxEmptyString)
+    if (m_vcs_commit_string.empty())
         return false;
     wxFileName rel_root_fn = wxFileName(path);
     rel_root_fn.MakeRelativeTo(m_repo_path);
     wxString rel_root_path = rel_root_fn.GetFullPath();
-    int hresult = Exec(_T("hg status --change ") + m_vcs_commit_string + _T(" ") + rel_root_path, output, m_repo_path);
+    int hresult = Exec("hg status --change " + m_vcs_commit_string + " " + rel_root_path, output, m_repo_path);
     if (hresult!=0)
         return false;
     for(size_t i=0;i<output.GetCount();i++)
@@ -1051,30 +1054,30 @@ bool FileExplorerUpdater::ParseCVSChanges(const wxString &path, VCSstatearray &s
 {
     wxArrayString output;
     wxString wdir=wxGetCwd();
-    Exec(_T("cvs stat -q -l  ."),output,path);
+    Exec("cvs stat -q -l  .", output, path);
 //    if (hresult!=0)
 //        return false;
     for(size_t i=0;i<output.GetCount();i++)
     {
-        int ind1=output[i].Find(_T("File: "));
-        int ind2=output[i].Find(_T("Status: "));
+        int ind1=output[i].Find("File: ");
+        int ind2=output[i].Find("Status: ");
         if (ind1<0||ind2<0)
             return false;
         wxString state=output[i].Mid(ind2+8).Strip();
         VCSstate s;
         while(1)
         {
-            if (state==_T("Up-to-date"))
+            if (state == "Up-to-date")
             {
                 s.state=fvsVcUpToDate;
                 break;
             }
-            if (state==_T("Locally Modified"))
+            if (state == "Locally Modified")
             {
                 s.state=fvsVcModified;
                 break;
             }
-            if (state==_T("Locally Added"))
+            if (state == "Locally Added")
             {
                 s.state=fvsVcAdded;
                 break;
@@ -1099,17 +1102,17 @@ bool FileExplorerUpdater::GetGITCommitState(const wxString &path)
 
     // git ls-tree requires a relative path with appended separator to work correctly
     wxFileName root_fn = wxFileName(path);
-//    fn.AppendDir(_T("a")); //append a fake part to the path
+//    fn.AppendDir("a"); //append a fake part to the path
     root_fn.MakeRelativeTo(m_repo_path); //make it relative to the repo_path
     wxString rel_path = root_fn.GetFullPath(); //then extract the path (without the "a") with separator
-    if (rel_path == wxEmptyString)
-        rel_path = _T(".");
+    if (rel_path.empty())
+        rel_path = ".";
     else
         rel_path += wxFileName::GetPathSeparator();
     //Reads the tree in two commands
     //TODO: Alternatively read and parse a single "git ls-tree" i.e. without --name-only
-    Exec(_T("git ls-tree --name-only ")+m_vcs_commit_string + _T(" ") + rel_path, output, m_repo_path);
-    Exec(_T("git ls-tree -d --name-only ")+m_vcs_commit_string + _T(" ") + rel_path, dir_output, m_repo_path);
+    Exec("git ls-tree --name-only " + m_vcs_commit_string + " " + rel_path, output, m_repo_path);
+    Exec("git ls-tree -d --name-only " + m_vcs_commit_string + " " + rel_path, dir_output, m_repo_path);
 
     VCSstatearray sa;
     ParseGITChangesTree(path, sa, true);
@@ -1117,7 +1120,7 @@ bool FileExplorerUpdater::GetGITCommitState(const wxString &path)
     for (unsigned int i=0; i<output.GetCount(); ++i)
     {
         FileData fd;
-        if (output[i] == wxEmptyString)
+        if (output[i].empty())
             continue;
         wxFileName fn(output[i]);
         fn.MakeRelativeTo(rel_path);
@@ -1157,14 +1160,14 @@ bool FileExplorerUpdater::GetHgCommitState(const wxString &path)
     wxFileName root_fn = wxFileName(path);
     root_fn.MakeRelativeTo(m_repo_path); //make the target path relative to the repo_path
     wxString rel_path = root_fn.GetFullPath();
-    if (rel_path != wxEmptyString)
+    if (!rel_path.empty())
         rel_path += wxFileName::GetPathSeparator();
 
     //Hg doesn't have an ls command, but manifest dumps the entire directory structure
     //However, even if the working directory is a subdirectory of the repo root, the listing will include
     //all files from the repo root (so probably should only allow user to browse the repo history
     // from the root of the repo)
-    Exec(_T("hg manifest -r") + m_vcs_commit_string, output, m_repo_path);
+    Exec("hg manifest -r" + m_vcs_commit_string, output, m_repo_path);
 
     VCSstatearray sa;
     ParseHGChangesTree(path, sa, true);
@@ -1174,14 +1177,14 @@ bool FileExplorerUpdater::GetHgCommitState(const wxString &path)
     for (unsigned int i=0; i<output.GetCount(); ++i)
     {
         FileData fd;
-        if (output[i] == wxEmptyString)
+        if (output[i].empty())
             continue;
         if (!output[i].StartsWith(rel_path))
             continue;
         wxFileName fn(output[i]);
         fn.MakeRelativeTo(rel_path);
         wxString name = fn.GetFullPath();
-        wxString subdir = name.BeforeFirst(_T('/'));
+        wxString subdir = name.BeforeFirst('/');
         if (subdir != name)
         {
             if (dirs.find(subdir) != dirs.end())
@@ -1219,23 +1222,23 @@ bool FileExplorerUpdater::GetVCSCommitState(const wxString &path, const wxString
     wxFileName root_fn = wxFileName(path);
     root_fn.MakeRelativeTo(m_repo_path); //make it relative to the repo_path
     wxString rel_path = root_fn.GetFullPath(); //then extract the relative path
-    if (rel_path == wxEmptyString)
-        rel_path = _T(".");
+    if (rel_path.empty())
+        rel_path = ".";
     else
         rel_path += wxFileName::GetPathSeparator();
 
-    Exec(cmd + _T(" ls -r") + m_vcs_commit_string + _T(" ") + rel_path, output, m_repo_path);
+    Exec(cmd + " ls -r" + m_vcs_commit_string + " " + rel_path, output, m_repo_path);
 
     VCSstatearray sa;
-    if (m_vcs_type == _T("SVN"))
+    if (m_vcs_type == "SVN")
         ParseSVNChangesTree(path, sa, true);
-    else if (m_vcs_type == _T("BZR"))
+    else if (m_vcs_type == "BZR")
         ParseBZRChangesTree(path, sa, true);
 
     for (unsigned int i=0; i<output.GetCount(); ++i)
     {
         FileData fd;
-        if (output[i] == wxEmptyString)
+        if (output[i].empty())
             continue;
         wxFileName fn(output[i]);
         fn.MakeRelativeTo(rel_path);
@@ -1289,136 +1292,137 @@ void VCSFileLoader::Update(const wxString &op, const wxString &source_path, cons
 void *VCSFileLoader::Entry()
 {
     CodeBlocksThreadEvent ne(wxEVT_NOTIFY_LOADER_UPDATE_COMPLETE,0);
-    if (m_vcs_op == _T("cat"))
+    if (m_vcs_op == "cat")
     {
-        if (m_vcs_type == _T("GIT"))
+        if (m_vcs_type == "GIT")
         {
             wxString output;
             wxFileName source_rel_path(m_source_path);
             source_rel_path.MakeRelativeTo(m_repo_path);
-            Exec(_T("git show ")+m_vcs_commit_string+_T(":")+source_rel_path.GetFullPath(),output, m_repo_path);
+            Exec("git show "+m_vcs_commit_string+":"+source_rel_path.GetFullPath(),output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("Hg"))
+        else if (m_vcs_type == "Hg")
         {
             wxString output;
             wxFileName source_rel_path(m_source_path);
             source_rel_path.MakeRelativeTo(m_repo_path);
-            Exec(_T("hg cat -r")+m_vcs_commit_string+_T(" ")+source_rel_path.GetFullPath(),output, m_repo_path);
+            Exec("hg cat -r"+m_vcs_commit_string+" "+source_rel_path.GetFullPath(),output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("BZR"))
+        else if (m_vcs_type == "BZR")
         {
             wxString output;
             wxFileName source_rel_path(m_source_path);
             source_rel_path.MakeRelativeTo(m_repo_path);
-            Exec(_T("bzr cat -r")+m_vcs_commit_string+_T(" ")+source_rel_path.GetFullPath(),output, m_repo_path);
+            Exec("bzr cat -r"+m_vcs_commit_string+" "+source_rel_path.GetFullPath(),output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("SVN"))
+        else if (m_vcs_type == "SVN")
         {
             wxString output;
             wxFileName source_rel_path(m_source_path);
             source_rel_path.MakeRelativeTo(m_repo_path);
-            Exec(_T("svn cat -r")+m_vcs_commit_string+_T(" ")+source_rel_path.GetFullPath(),output, m_repo_path);
+            Exec("svn cat -r"+m_vcs_commit_string+" "+source_rel_path.GetFullPath(),output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
     }
-    if (m_vcs_op == _T("diff"))
+
+    if (m_vcs_op == "diff")
     {
-        if (m_vcs_type == _T("GIT"))
+        if (m_vcs_type == "GIT")
         {
             wxString output, comp_string;
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (m_vcs_commit_string == _("Working copy"))
             {
-                if (m_vcs_comp_commit == _T("Previous"))
+                if (m_vcs_comp_commit == _("Previous"))
                     comp_string = wxEmptyString;
                 else
                     comp_string = m_vcs_comp_commit;
             }
             else
             {
-                if (m_vcs_comp_commit == _T("Previous"))
-                    comp_string =  m_vcs_commit_string + _T("^..") + m_vcs_commit_string;
-                else if (m_vcs_comp_commit == _T("Working copy"))
+                if (m_vcs_comp_commit == _("Previous"))
+                    comp_string =  m_vcs_commit_string + "^.." + m_vcs_commit_string;
+                else if (m_vcs_comp_commit == _("Working copy"))
                     comp_string = m_vcs_commit_string;
                 else
-                    comp_string = m_vcs_comp_commit + _T("..") + m_vcs_commit_string;
+                    comp_string = m_vcs_comp_commit + ".." + m_vcs_commit_string;
             }
-            Exec(_T("git diff ") + comp_string + _T(" -- ")+ m_source_path, output, m_repo_path);
+            Exec("git diff " + comp_string + " -- " +  m_source_path, output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("Hg"))
+        else if (m_vcs_type == "Hg")
         {
             wxString output, comp_string;
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (m_vcs_commit_string == _("Working copy"))
             {
-                if (m_vcs_comp_commit == _T("Previous"))
+                if (m_vcs_comp_commit == _("Previous"))
                     comp_string = wxEmptyString;
                 else
-                    comp_string = _T(" -r ") + m_vcs_comp_commit;
+                    comp_string = " -r " + m_vcs_comp_commit;
             }
             else
             {
-                if (m_vcs_comp_commit == _T("Previous"))
-                    comp_string =  _T(" -c") + m_vcs_commit_string;
-                else if (m_vcs_comp_commit == _T("Working copy"))
-                    comp_string = _T(" -r ") + m_vcs_commit_string;
+                if (m_vcs_comp_commit == _("Previous"))
+                    comp_string =  " -c" + m_vcs_commit_string;
+                else if (m_vcs_comp_commit == _("Working copy"))
+                    comp_string = " -r " + m_vcs_commit_string;
                 else
-                    comp_string = _T(" -r ") + m_vcs_comp_commit + _T(" -r ") + m_vcs_commit_string;
+                    comp_string = " -r " + m_vcs_comp_commit + " -r " + m_vcs_commit_string;
             }
-            Exec(_T("hg diff ") + comp_string + _T(" ") + m_source_path, output, m_repo_path);
+            Exec("hg diff " + comp_string + " " + m_source_path, output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("BZR"))
+        else if (m_vcs_type == "BZR")
         {
             wxString output, comp_string;
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (m_vcs_commit_string == _("Working copy"))
             {
-                if (m_vcs_comp_commit == _T("Previous"))
+                if (m_vcs_comp_commit == _("Previous"))
                     comp_string = wxEmptyString;
                 else
-                    comp_string = _T(" -r") + m_vcs_comp_commit;
+                    comp_string = " -r" + m_vcs_comp_commit;
             }
             else
             {
-                if (m_vcs_comp_commit == _T("Previous"))
-                    comp_string =  _T(" -c") + m_vcs_commit_string;
-                else if (m_vcs_comp_commit == _T("Working copy"))
-                    comp_string = _T(" -r") + m_vcs_commit_string;
+                if (m_vcs_comp_commit == _("Previous"))
+                    comp_string = " -c" + m_vcs_commit_string;
+                else if (m_vcs_comp_commit == _("Working copy"))
+                    comp_string = " -r" + m_vcs_commit_string;
                 else
-                    comp_string = _T(" -r") + m_vcs_comp_commit + _T("..") + m_vcs_commit_string;
+                    comp_string = " -r" + m_vcs_comp_commit + ".." + m_vcs_commit_string;
             }
-            Exec(_T("bzr diff ") + comp_string + _T(" ") + m_source_path, output, m_repo_path);
+            Exec("bzr diff " + comp_string + " " + m_source_path, output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
-        else if (m_vcs_type == _T("SVN"))
+        else if (m_vcs_type == "SVN")
         {
             wxString output, comp_string;
-            if (m_vcs_commit_string == _T("Working copy"))
+            if (m_vcs_commit_string == _("Working copy"))
             {
-                if (m_vcs_comp_commit == _T("Previous"))
+                if (m_vcs_comp_commit == _("Previous"))
                     comp_string = wxEmptyString;
                 else
-                    comp_string = _T(" -r" ) + m_vcs_comp_commit;
+                    comp_string = " -r"  + m_vcs_comp_commit;
             }
             else
             {
-                if (m_vcs_comp_commit == _T("Previous"))
-                    comp_string =  _T(" -c ") + m_vcs_commit_string;
-                else if (m_vcs_comp_commit == _T("Working copy"))
-                    comp_string = _T(" -r ") + m_vcs_commit_string;
+                if (m_vcs_comp_commit == _("Previous"))
+                    comp_string =  " -c " + m_vcs_commit_string;
+                else if (m_vcs_comp_commit == _("Working copy"))
+                    comp_string = " -r " + m_vcs_commit_string;
                 else
-                    comp_string = _T(" -r" ) + m_vcs_comp_commit + _T(":") + m_vcs_commit_string;
+                    comp_string = " -r" + m_vcs_comp_commit + ":" + m_vcs_commit_string;
             }
-            Exec(_T("svn diff ") + comp_string + _T(" ") + m_source_path, output, m_repo_path);
+            Exec("svn diff " + comp_string + " " + m_source_path, output, m_repo_path);
             wxFileName::Mkdir(wxFileName(m_destination_path).GetPath(), 0777, wxPATH_MKDIR_FULL);
             wxFile(m_destination_path, wxFile::write).Write(output);
         }
@@ -1446,9 +1450,9 @@ bool CommitUpdater::Update(const wxString &what, const wxString &repo_branch, Co
 {
     if (IsRunning())
         return false;
-    if (!(what.StartsWith(_T("BRANCHES")) ||
-        what.StartsWith(_T("COMMITS:")) ||
-        what.StartsWith(_T("DETAIL:"))) )
+    if (!(what.StartsWith("BRANCHES") ||
+        what.StartsWith("COMMITS:") ||
+        what.StartsWith("DETAIL:")) )
         return false;
     m_what = wxString(what.c_str());
     m_repo_branch = repo_branch;
@@ -1468,7 +1472,7 @@ bool CommitUpdater::UpdateContinueCommitRetrieve()
         return false;
     if (m_retrieved_all)
         return false;
-    if (!m_what.StartsWith(_T("COMMITS:")))
+    if (!m_what.StartsWith("COMMITS:"))
         return false;
     if (Create()!=wxTHREAD_NO_ERROR)
         return false;
@@ -1481,88 +1485,88 @@ void *CommitUpdater::Entry()
 {
     CodeBlocksThreadEvent ne(wxEVT_NOTIFY_UPDATE_COMPLETE,0);
     CodeBlocksThreadEvent nce(wxEVT_NOTIFY_COMMITS_UPDATE_COMPLETE,0);
-    if (m_what.StartsWith(_T("BRANCHES")))
+    if (m_what.StartsWith("BRANCHES"))
     {
-        if (m_repo_type == _T("GIT"))
+        if (m_repo_type == "GIT")
         {
             wxArrayString output;
-            Exec(_T("git branch"),output, m_repo_path);
+            Exec("git branch", output, m_repo_path);
             for (unsigned int i=0; i<output.GetCount(); ++i)
                 if (output[i].Strip(wxString::both) != wxEmptyString)
                 {
-                    if (output[i].StartsWith(_T("*")))
+                    if (output[i].StartsWith("*"))
                         m_branches.Insert(output[i].Mid(2), 0);
                     else
                         m_branches.Add(output[i].Mid(2));
                 }
         }
-        if (m_repo_type == _T("Hg"))
+        if (m_repo_type == "Hg")
         {
             wxArrayString output;
-            Exec(_T("hg branches -q"),output, m_repo_path);
+            Exec("hg branches -q",output, m_repo_path);
             for (unsigned int i=0; i<output.GetCount(); ++i)
                 if (output[i].Strip(wxString::both) != wxEmptyString)
                     m_branches.Add(output[i].Strip(wxString::both));
         }
-        if (m_repo_type == _T("SVN") || m_repo_type == _T("BZR"))
+        if (m_repo_type == "SVN" || m_repo_type == "BZR")
         {
-            m_branches.Add(_T("Active Tree"));
+            m_branches.Add("Active Tree");
         }
         m_parent->AddPendingEvent(ne);
         return 0;
     }
-    if (m_what.StartsWith(_T("COMMITS:")))
+    if (m_what.StartsWith("COMMITS:"))
     {
         wxArrayString output;
         std::vector<CommitEntry> commits;
         m_commits.clear();
-        wxString branch = m_what.AfterFirst(_T(':'));
-        if (m_repo_type == _T("GIT"))
+        wxString branch = m_what.AfterFirst(':');
+        if (m_repo_type == "GIT")
         {
             wxString commit_date_range;
             if (m_opts.date_after != wxEmptyString)
-                commit_date_range = _T(" --since=\"") + m_opts.date_after + _T("\" ");
+                commit_date_range = " --since=\"" + m_opts.date_after + "\" ";
             if (m_opts.date_before != wxEmptyString)
-                commit_date_range += _T(" --until=\"") + m_opts.date_before + _T("\" ");
+                commit_date_range += " --until=\"" + m_opts.date_before + "\" ";
             wxString n;
             if (m_opts.commits_per_retrieve > 0)
             {
-                n = wxString::Format(_T(" -n %i "),m_opts.commits_per_retrieve);
-                n+= wxString::Format(_T("--skip %i "),m_continue_count*m_opts.commits_per_retrieve);
+                n = wxString::Format(" -n %i ", m_opts.commits_per_retrieve);
+                n+= wxString::Format("--skip %i ", m_continue_count*m_opts.commits_per_retrieve);
             }
             wxString file;
             if (m_opts.file != wxEmptyString)
-                file = _T(" -- ") + m_opts.file;
-            Exec(_T("git log --pretty=format:%H~%an~%ad~%s ") + commit_date_range + n + branch + file,output, m_repo_path);
+                file = " -- " + m_opts.file;
+            Exec("git log --pretty=format:%H~%an~%ad~%s " + commit_date_range + n + branch + file,output, m_repo_path);
             for (unsigned int i=0; i<output.GetCount(); ++i)
             {
                 wxString s = output[i];
                 CommitEntry cdata;
-                cdata.id = s.BeforeFirst(_T('~'));
-                s = s.AfterFirst(_T('~'));
-                cdata.author = s.BeforeFirst(_T('~'));
-                s = s.AfterFirst(_T('~'));
-                cdata.date = s.BeforeFirst(_T('~'));
-                s = s.AfterFirst(_T('~'));
+                cdata.id = s.BeforeFirst('~');
+                s = s.AfterFirst('~');
+                cdata.author = s.BeforeFirst('~');
+                s = s.AfterFirst('~');
+                cdata.date = s.BeforeFirst('~');
+                s = s.AfterFirst('~');
                 cdata.message = s;
                 if (cdata.id.Strip(wxString::both) != wxEmptyString)
                     commits.push_back(cdata);
             }
         }
-        if (m_repo_type == _T("Hg"))
+        if (m_repo_type == "Hg")
         {
             wxString commit_date_range;
             if (m_opts.date_after != wxEmptyString && m_opts.date_before == wxEmptyString)
-                commit_date_range = _T(" --date=\">") + m_opts.date_after + _T("\" ");
+                commit_date_range = " --date=\">" + m_opts.date_after + "\" ";
             if (m_opts.date_after == wxEmptyString && m_opts.date_before != wxEmptyString)
-                commit_date_range += _T(" --date=\"<") + m_opts.date_before + _T("\" ");
+                commit_date_range += " --date=\"<" + m_opts.date_before + "\" ";
             if (m_opts.date_after != wxEmptyString && m_opts.date_before != wxEmptyString)
-                commit_date_range += _T(" --date=\"") + m_opts.date_after + _T(" to ") + m_opts.date_before + _T("\" ");
-            wxString commit_range = wxEmptyString;
+                commit_date_range += " --date=\"" + m_opts.date_after + " to " + m_opts.date_before + "\" ";
+            wxString commit_range;
             if (m_opts.commits_per_retrieve > 0)
             {
-                if (m_last_commit_retrieved == wxEmptyString)
-                    commit_range = wxString::Format(_T(" -l%i "),m_opts.commits_per_retrieve);
+                if (m_last_commit_retrieved.empty())
+                    commit_range = wxString::Format(" -l%i ", m_opts.commits_per_retrieve);
                 else
                 {
                     long hi_commit;
@@ -1579,16 +1583,16 @@ void *CommitUpdater::Entry()
                             m_parent->AddPendingEvent(ne);
                             return 0;
                         }
-                        m_last_commit_retrieved = wxString::Format(_T("%i"),low_commit); //THIS IS SPECIAL LOGIC FOR HG BRANCHES (SEE BELOW)
-                        commit_range = wxString::Format(_T(" -r%i:%i "),hi_commit,low_commit);
+                        m_last_commit_retrieved = wxString::Format("%i", low_commit); //THIS IS SPECIAL LOGIC FOR HG BRANCHES (SEE BELOW)
+                        commit_range = wxString::Format(" -r%i:%i ", hi_commit,low_commit);
                     }
                 }
             }
             wxString file;
-            if (m_opts.file != wxEmptyString)
-                file = _T(" ") + m_opts.file;
+            if (!m_opts.file.empty())
+                file = " " + m_opts.file;
 
-            Exec(_T("hg log --only-branch ") + m_repo_branch + commit_date_range + commit_range + file, output, m_repo_path);
+            Exec("hg log --only-branch " + m_repo_branch + commit_date_range + commit_range + file, output, m_repo_path);
             size_t i=0;
             size_t n = output.GetCount();
             while (i<n && !TestDestroy())
@@ -1598,62 +1602,62 @@ void *CommitUpdater::Entry()
                     continue;
                 wxString s = output[i];
                 ++i;
-                if (!s.StartsWith(_T("changeset:")))
+                if (!s.StartsWith("changeset:"))
                     continue;
-                cdata.id = s.AfterFirst(_T(':')).BeforeFirst(_T(':')).Strip(wxString::both);
+                cdata.id = s.AfterFirst(':').BeforeFirst(':').Strip(wxString::both);
                 if (i>=n)
                     continue;
                 s = output[i];
                 ++i;
-                if (s.StartsWith(_T("branch:")))
+                if (s.StartsWith("branch:"))
                 {
                     if (i>=n)
                         continue;
                     s = output[i];
                     ++i;
                 }
-                if (s.StartsWith(_T("tag:")))
+                if (s.StartsWith("tag:"))
                 {
                     if (i>=n)
                         continue;
                     s = output[i];
                     ++i;
                 }
-                if (!s.StartsWith(_T("user:")))
+                if (!s.StartsWith("user:"))
                     continue;
-                cdata.author = s.AfterFirst(_T(':')).Strip(wxString::both);
+                cdata.author = s.AfterFirst(':').Strip(wxString::both);
 
                 if (i>=n)
                     continue;
                 s = output[i];
                 ++i;
-                if (!s.StartsWith(_T("date:")))
+                if (!s.StartsWith("date:"))
                     continue;
-                cdata.date = s.AfterFirst(_T(':')).Strip(wxString::both);
+                cdata.date = s.AfterFirst(':').Strip(wxString::both);
 
                 if (i>=n)
                     continue;
                 s = output[i];
                 ++i;
-                if (!s.StartsWith(_T("summary:")))
+                if (!s.StartsWith("summary:"))
                     continue;
-                cdata.message = s.AfterFirst(_T(':')).Strip(wxString::both);
+                cdata.message = s.AfterFirst(':').Strip(wxString::both);
                 commits.push_back(cdata);
             }
         }
-        if (m_repo_type == _T("BZR"))
+        if (m_repo_type == "BZR")
         {
             wxString commit_range = wxEmptyString;
             if (m_continue_count == 0)
             {
                 if (m_opts.date_after != wxEmptyString && m_opts.date_before == wxEmptyString)
-                    commit_range = _T(" -r date:\"") + m_opts.date_after + _T("\".. ");
+                    commit_range = " -r date:\"" + m_opts.date_after + "\".. ";
                 else if (m_opts.date_after == wxEmptyString && m_opts.date_before != wxEmptyString)
-                    commit_range = _T("-r ..date:\"") + m_opts.date_before + _T("\" ");
+                    commit_range = "-r ..date:\"" + m_opts.date_before + "\" ";
                 else if (m_opts.date_after != wxEmptyString && m_opts.date_before != wxEmptyString)
-                    commit_range = _T("-r date:\"") + m_opts.date_after + _T("\"..date:\"") + m_opts.date_before + _T("\" ");
+                    commit_range = "-r date:\"" + m_opts.date_after + "\"..date:\"" + m_opts.date_before + "\" ";
                 if (m_opts.commits_per_retrieve > 0)
-                    commit_range += wxString::Format(_T(" -l%i "),m_opts.commits_per_retrieve);
+                    commit_range += wxString::Format(" -l%i ",m_opts.commits_per_retrieve);
             }
             else
             {
@@ -1672,15 +1676,15 @@ void *CommitUpdater::Entry()
                         return 0;
                     }
                     if (m_opts.date_after != wxEmptyString)
-                        commit_range = wxString::Format(_T(" -rdate:\"%s\"..%i -l%i "), m_opts.date_after.c_str(),hi_commit, m_opts.commits_per_retrieve);
+                        commit_range = wxString::Format(" -rdate:\"%s\"..%i -l%i ", m_opts.date_after, hi_commit, m_opts.commits_per_retrieve);
                     else
-                        commit_range = wxString::Format(_T(" -r%i..%i "),low_commit,hi_commit);
+                        commit_range = wxString::Format(" -r%i..%i ", low_commit, hi_commit);
                 }
             }
             wxString file;
-            if (m_opts.file != wxEmptyString)
-                file = _T(" ") + m_opts.file;
-            Exec(_T("bzr log ") + commit_range + file, output, m_repo_path);
+            if (!m_opts.file.empty())
+                file = " " + m_opts.file;
+            Exec("bzr log " + commit_range + file, output, m_repo_path);
             size_t i=0;
             size_t n = output.GetCount();
             output.RemoveAt(0); //First line of ----------------------
@@ -1689,21 +1693,21 @@ void *CommitUpdater::Entry()
             {
                 wxString s = output[i];
                 ++i;
-                if (s.StartsWith(_T("revno:")))
-                    cdata.id = s.AfterFirst(_T(' ')).BeforeFirst(_T(' ')).Strip(wxString::both);
-                else if (s.StartsWith(_T("committer:")))
-                    cdata.author = s.AfterFirst(_T(':')).Strip(wxString::both);
-                else if (s.StartsWith(_T("timestamp:")))
-                    cdata.date = s.AfterFirst(_T(':')).Strip(wxString::both);
-                else if (s.StartsWith(_T("message:")))
+                if (s.StartsWith("revno:"))
+                    cdata.id = s.AfterFirst(' ').BeforeFirst(' ').Strip(wxString::both);
+                else if (s.StartsWith("committer:"))
+                    cdata.author = s.AfterFirst(':').Strip(wxString::both);
+                else if (s.StartsWith("timestamp:"))
+                    cdata.date = s.AfterFirst(':').Strip(wxString::both);
+                else if (s.StartsWith("message:"))
                 {
-                    while(i<n && !output[i].StartsWith(_T("------------------")))
+                    while(i<n && !output[i].StartsWith("------------------"))
                     {
-                        cdata.message += output[i] + _T(" ");
+                        cdata.message += output[i] + " ";
                         ++i;
                     }
                 }
-                else if (s.StartsWith(_T("---------------------")))
+                else if (s.StartsWith("---------------------"))
                 {
                     //finalize
                     commits.push_back(cdata);
@@ -1712,20 +1716,20 @@ void *CommitUpdater::Entry()
                 }
             }
         }
-        if (m_repo_type == _T("SVN"))
+        if (m_repo_type == "SVN")
         {
-            wxString commit_range = wxEmptyString;
+            wxString commit_range;
             //TODO: Check required date format
             if (m_continue_count == 0)
             {
                 if (m_opts.date_after != wxEmptyString && m_opts.date_before == wxEmptyString)
-                    commit_range = _T(" -r {") + m_opts.date_after + _T("}:1 ");
+                    commit_range = " -r {" + m_opts.date_after + "}:1 ";
                 else if (m_opts.date_after == wxEmptyString && m_opts.date_before != wxEmptyString)
-                    commit_range = _T("-r HEAD:{") + m_opts.date_before + _T("} "); //or BASE??
+                    commit_range = "-r HEAD:{" + m_opts.date_before + "} "; //or BASE??
                 else if (m_opts.date_after != wxEmptyString && m_opts.date_before != wxEmptyString)
-                    commit_range = _T("-r {") + m_opts.date_before + _T("}:{") + m_opts.date_after + _T("} ");
+                    commit_range = "-r {" + m_opts.date_before + "}:{" + m_opts.date_after + "} ";
                 if (m_opts.commits_per_retrieve > 0)
-                    commit_range += wxString::Format(_T(" -l%i "), m_opts.commits_per_retrieve);
+                    commit_range += wxString::Format(" -l%i ", m_opts.commits_per_retrieve);
             }
             else
             {
@@ -1743,16 +1747,16 @@ void *CommitUpdater::Entry()
                         m_parent->AddPendingEvent(ne);
                         return 0;
                     }
-                    if (m_opts.date_after != wxEmptyString)
-                        commit_range = wxString::Format(_T(" -r%i:{%s} -l%i "), hi_commit, m_opts.date_after.c_str(), m_opts.commits_per_retrieve);
+                    if (!m_opts.date_after.empty())
+                        commit_range = wxString::Format(" -r%i:{%s} -l%i ", hi_commit, m_opts.date_after, m_opts.commits_per_retrieve);
                     else
-                        commit_range = wxString::Format(_T(" -r%i:%i "),hi_commit,low_commit);
+                        commit_range = wxString::Format(" -r%i:%i ", hi_commit, low_commit);
                 }
             }
             wxString file;
-            if (m_opts.file != wxEmptyString)
-                file = _T(" ") + m_opts.file;
-            Exec(_T("svn log ") + commit_range + file, output, m_repo_path);
+            if (!m_opts.file.empty())
+                file = " " + m_opts.file;
+            Exec("svn log " + commit_range + file, output, m_repo_path);
             size_t i=0;
             size_t n = output.GetCount();
             while (i<n && !TestDestroy())
@@ -1760,27 +1764,27 @@ void *CommitUpdater::Entry()
                 CommitEntry cdata;
                 wxString s = output[i];
                 ++i;
-                if (!s.StartsWith(_T("---------------------")))
+                if (!s.StartsWith("---------------------"))
                     continue;
                 if (i>=n)
                     continue;
                 s = output[i];
                 ++i; ++i; //Blank line between commit info and the message
-                if (!s.StartsWith(_T("r")))
+                if (!s.StartsWith("r"))
                     continue;
-                cdata.id = s.BeforeFirst(_T('|')).AfterFirst(_T('r')).Strip(wxString::both);
-                s = s.AfterFirst(_T('|'));
-                cdata.author = s.BeforeFirst(_T('|')).Strip(wxString::both);
-                s = s.AfterFirst(_T('|'));
-                cdata.date = s.BeforeFirst(_T('|')).Strip(wxString::both);
-                s = s.AfterFirst(_T('|'));
-                wxString lines = s.BeforeFirst(_T('l')).Strip(wxString::both);
+                cdata.id = s.BeforeFirst('|').AfterFirst('r').Strip(wxString::both);
+                s = s.AfterFirst('|');
+                cdata.author = s.BeforeFirst('|').Strip(wxString::both);
+                s = s.AfterFirst('|');
+                cdata.date = s.BeforeFirst('|').Strip(wxString::both);
+                s = s.AfterFirst('|');
+                wxString lines = s.BeforeFirst('l').Strip(wxString::both);
                 long line;
                 if (!lines.ToLong(&line))
                     continue;
-                while(i<n && line>0 && !output[i].StartsWith(_T("------------------")))
+                while(i<n && line>0 && !output[i].StartsWith("------------------"))
                 {
-                    cdata.message += output[i] + _T(" ");
+                    cdata.message += output[i] + " ";
                     ++i;
                     --line;
                 }
@@ -1792,10 +1796,10 @@ void *CommitUpdater::Entry()
         else
             m_continue_count = 0;
         bool hg_not_done = false;
-        if (m_repo_type == _T("Hg"))
+        if (m_repo_type == "Hg")
         {
             long last;
-            if (m_last_commit_retrieved == wxEmptyString)
+            if (m_last_commit_retrieved.empty())
                 if (commits.size()>0)
                     m_last_commit_retrieved = commits.back().id;
             if (m_last_commit_retrieved.ToLong(&last))
@@ -1808,7 +1812,7 @@ void *CommitUpdater::Entry()
             m_retrieved_all = false;
         else
             m_retrieved_all = true;
-        if (m_repo_type != _T("Hg"))
+        if (m_repo_type != "Hg")
         {
             if (commits.size()>0)
             {
@@ -1819,7 +1823,7 @@ void *CommitUpdater::Entry()
                 m_last_commit_retrieved = wxEmptyString;
             }
         }
-        if (m_opts.grep != wxEmptyString)
+        if (!m_opts.grep.empty())
         {
             wxRegEx re(m_opts.grep, wxRE_ADVANCED|wxRE_ICASE);
             if (re.IsValid())
@@ -1836,33 +1840,33 @@ void *CommitUpdater::Entry()
         m_parent->AddPendingEvent(nce);
         return 0;
     }
-    if (m_what.StartsWith(_T("DETAIL:")))
+    if (m_what.StartsWith("DETAIL:"))
     {
-        wxString commit = m_what.AfterFirst(_T(':'));
+        wxString commit = m_what.AfterFirst(':');
         wxArrayString output;
-        if (m_repo_type == _T("GIT"))
+        if (m_repo_type == "GIT")
         {
-            Exec(_T("git log -1 --stat ")+commit,output, m_repo_path);
+            Exec("git log -1 --stat "+commit, output, m_repo_path);
             for (unsigned int i=0; i<output.GetCount(); ++i)
-                m_detailed_commit_log += output[i]+_T("\n");
+                m_detailed_commit_log += output[i]+"\n";
         }
-        if (m_repo_type == _T("Hg"))
+        else if (m_repo_type == "Hg")
         {
-            Exec(_T("hg log -v -r")+commit,output, m_repo_path);
+            Exec("hg log -v -r"+commit, output, m_repo_path);
             for (unsigned int i=0; i<output.GetCount()-1; ++i) //skips last output line
-                m_detailed_commit_log += output[i]+_T("\n");
+                m_detailed_commit_log += output[i]+"\n";
         }
-        if (m_repo_type == _T("BZR"))
+        else if (m_repo_type == "BZR")
         {
-            Exec(_T("bzr log -v -r")+commit,output, m_repo_path);
+            Exec("bzr log -v -r"+commit, output, m_repo_path);
             for (unsigned int i=1; i<output.GetCount(); ++i) //skips first output line cruft
-                m_detailed_commit_log += output[i]+_T("\n");
+                m_detailed_commit_log += output[i]+"\n";
         }
-        if (m_repo_type == _T("SVN"))
+        else if (m_repo_type == "SVN")
         {
-            Exec(_T("svn log -v -r")+commit,output, m_repo_path);
+            Exec("svn log -v -r"+commit, output, m_repo_path);
             for (unsigned int i=1; i<output.GetCount()-1; ++i) //skips first and last output line cruft
-                m_detailed_commit_log += output[i]+_T("\n");
+                m_detailed_commit_log += output[i]+"\n";
         }
         m_parent->AddPendingEvent(ne);
         return 0;

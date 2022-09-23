@@ -13,7 +13,7 @@
 // We are using an anonymous namespace so we don't litter the global one.
 namespace
 {
-    PluginRegistrant<FileManagerPlugin> reg(_T("FileManager"));
+    PluginRegistrant<FileManagerPlugin> reg("FileManager");
 }
 
 int ID_ProjectOpenInFileBrowser=wxNewId();
@@ -26,9 +26,9 @@ END_EVENT_TABLE()
 // constructor
 FileManagerPlugin::FileManagerPlugin()
 {
-    if(!Manager::LoadResource(_T("FileManager.zip")))
+    if(!Manager::LoadResource("FileManager.zip"))
     {
-        NotifyMissingFile(_T("FileManager.zip"));
+        NotifyMissingFile("FileManager.zip");
     }
     m_fe=0;
 }
