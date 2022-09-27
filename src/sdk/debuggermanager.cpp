@@ -577,11 +577,15 @@ public:
                                          wxDefaultPosition, wxDefaultSize, 0, nullptr,
                                          wxCB_DROPDOWN | wxTE_PROCESS_ENTER);
 
-        wxBitmap execute_bitmap = wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_EXECUTABLE_FILE")),
-                                                           wxART_BUTTON);
-        wxBitmap clear_bitmap = wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_DELETE")),wxART_BUTTON);
-        wxBitmap file_open_bitmap =wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FILE_OPEN")),
-                                                            wxART_BUTTON);
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmapBundle execute_bitmap = wxArtProvider::GetBitmapBundle(wxART_EXECUTABLE_FILE, wxART_BUTTON, wxSize(16, 16));
+        wxBitmapBundle clear_bitmap = wxArtProvider::GetBitmapBundle(wxART_DELETE, wxART_BUTTON, wxSize(16, 16));
+        wxBitmapBundle file_open_bitmap =wxArtProvider::GetBitmapBundle(wxART_FILE_OPEN, wxART_BUTTON, wxSize(16, 16));
+#else
+        wxBitmap execute_bitmap = wxArtProvider::GetBitmap(wxART_EXECUTABLE_FILE, wxART_BUTTON);
+        wxBitmap clear_bitmap = wxArtProvider::GetBitmap(wxART_DELETE, wxART_BUTTON);
+        wxBitmap file_open_bitmap =wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_BUTTON);
+#endif
 
         wxBitmapButton *button_execute;
         button_execute = new wxBitmapButton(this, idDebug_ExecuteButton, execute_bitmap, wxDefaultPosition,
