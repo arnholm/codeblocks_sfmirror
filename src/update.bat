@@ -196,6 +196,7 @@ if exist "%CB_DEVEL_RESDIR%\images\fortranproject" (
 if exist "%CB_DEVEL_RESDIR%\images\wxsmith" (
     call:mkdirSilent "%CB_OUTPUT_RESDIR%\images\wxsmith"
     xcopy /D /y "%CB_DEVEL_RESDIR%\images\wxsmith\*.png" "%CB_OUTPUT_RESDIR%\images\wxsmith" > nul
+    xcopy /D /y "%CB_DEVEL_RESDIR%\images\wxsmith\*.svg" "%CB_OUTPUT_RESDIR%\images\wxsmith" > nul
 )
 
 if exist "%CB_DEVEL_RESDIR%\lib_finder" (

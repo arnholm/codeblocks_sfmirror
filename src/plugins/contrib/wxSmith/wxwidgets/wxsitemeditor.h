@@ -142,7 +142,11 @@ class wxsItemEditor : public wxsEditor
         void RebuildIcons();
 
         /** \brief Building icon for one button */
-        void BuildInsTypeIcon(wxBitmapButton* Btn,const wxImage& Original,int ButtonType);
+#if wxCHECK_VERSION(3, 1, 6)
+        void BuildInsTypeIcon(wxBitmapButton* Btn, const wxBitmapBundle& Original, const wxBitmapBundle& Checked, int ButtonType);
+#else
+        void BuildInsTypeIcon(wxBitmapButton* Btn, const wxImage& Original, int ButtonType);
+#endif
 
         /** \brief Opening or closing Quick Props panel */
         void ToggleQuickPropsPanel(bool Open);
@@ -200,6 +204,20 @@ class wxsItemEditor : public wxsEditor
         bool m_QuickPropsOpen;              ///< \brief Set to true if quick properties panel is opened
         wxsItem* m_PopupCaller;             ///< \brief Item which requested popup to be shown
 
+#if wxCHECK_VERSION(3, 1, 6)
+        static wxBitmapBundle m_InsPointImg;
+        static wxBitmapBundle m_InsIntoImg;
+        static wxBitmapBundle m_InsBeforeImg;
+        static wxBitmapBundle m_InsAfterImg;
+        static wxBitmapBundle m_InsPointSelImg;
+        static wxBitmapBundle m_InsIntoSelImg;
+        static wxBitmapBundle m_InsBeforeSelImg;
+        static wxBitmapBundle m_InsAfterSelImg;
+        static wxBitmapBundle m_DelImg;
+        static wxBitmapBundle m_PreviewImg;
+        static wxBitmapBundle m_QuickPropsImgOpen;
+        static wxBitmapBundle m_QuickPropsImgClose;
+#else
         static wxImage m_InsPointImg;
         static wxImage m_InsIntoImg;
         static wxImage m_InsBeforeImg;
@@ -209,6 +227,8 @@ class wxsItemEditor : public wxsEditor
         static wxImage m_QuickPropsImgOpen;
         static wxImage m_QuickPropsImgClose;
         static wxImage m_SelectedImg;
+#endif
+
         static WindowSet m_AllEditors;
         static bool m_ImagesLoaded;
 

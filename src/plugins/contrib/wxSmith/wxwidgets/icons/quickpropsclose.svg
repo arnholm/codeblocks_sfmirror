@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <linearGradient id="b">
+            <stop style="stop-color:#152d64;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#183987;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient id="a">
+            <stop style="stop-color:#ffb854;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#ffd59a;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#b" id="c" x1=".576" y1="291.717" x2="2.221" y2="291.717" gradientUnits="userSpaceOnUse"/>
+    </defs>
+    <g transform="translate(0 -288.533)" style="display:inline">
+        <path style="fill:#b3c1cb;fill-opacity:1;fill-rule:nonzero;stroke:#a9b5cb;stroke-width:.170921;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M2.646 289.592h5.292v6.615H2.646z"/>
+        <path style="fill:url(#c);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:.170942;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m2.05 291.717-.694.4-.695.401V290.915l.695.4z" transform="matrix(1 0 0 1.97949 0 -284.948)"/>
+        <ellipse style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#183987;stroke-width:.529167;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="5.164" cy="292.138" rx="1.521" ry="1.588"/>
+        <path style="fill:none;stroke:#183987;stroke-width:.52916667;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" d="m5.82 293.56.927 1.588"/>
+    </g>
+</svg>

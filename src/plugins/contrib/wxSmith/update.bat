@@ -1,9 +1,15 @@
 @echo off
 cls
-md ..\..\..\devel\share\CodeBlocks\images\wxsmith > nul 2>&1
-md ..\..\..\output\share\CodeBlocks\images\wxsmith > nul 2>&1
-zip ..\..\..\devel\share\CodeBlocks\wxsmith.zip manifest.xml
-zip ..\..\..\output\share\CodeBlocks\wxsmith.zip manifest.xml
-copy wxwidgets\icons\*.png ..\..\..\devel\share\CodeBlocks\images\wxsmith\ > nul 2>&1
-copy wxwidgets\icons\*.png ..\..\..\output\share\CodeBlocks\images\wxsmith\ > nul 2>&1
+set CB_DEVEL_DIR=devel%1
+set CB_OUTPUT_DIR=output%1
+set CB_DEVEL_RESDIR=%CB_DEVEL_DIR%\share\CodeBlocks
+set CB_OUTPUT_RESDIR=%CB_OUTPUT_DIR%\share\CodeBlocks
+zip ..\..\..\%CB_DEVEL_RESDIR%\wxsmith.zip manifest.xml
+zip ..\..\..\%CB_OUTPUT_RESDIR%\wxsmith.zip manifest.xml
+md  ..\..\..\%CB_DEVEL_RESDIR%\images\wxsmith > nul 2>&1
+md  ..\..\..\%CB_OUTPUT_RESDIR%\images\wxsmith > nul 2>&1
+copy wxwidgets\icons\*.png ..\..\..\%CB_DEVEL_RESDIR%\images\wxsmith\ > nul 2>&1
+copy wxwidgets\icons\*.png ..\..\..\%CB_OUTPUT_RESDIR%\images\wxsmith\ > nul 2>&1
+copy wxwidgets\icons\*.svg ..\..\..\%CB_DEVEL_RESDIR%\images\wxsmith\ > nul 2>&1
+copy wxwidgets\icons\*.svg ..\..\..\%CB_OUTPUT_RESDIR%\images\wxsmith\ > nul 2>&1
 exit 0
