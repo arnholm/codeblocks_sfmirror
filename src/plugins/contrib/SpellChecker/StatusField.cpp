@@ -124,9 +124,9 @@ void SpellCheckerStatusField::Update()
 
     // Get bitmap size
 #if wxCHECK_VERSION(3, 1, 6)
-    const int height = 16;
+    const int height = 20;
 #else
-    const int height = cbFindMinSize16to64(wxRound(16*cbGetContentScaleFactor(*this)));
+    const int height = cbFindMinSize16to64(wxRound(20*cbGetContentScaleFactor(*this)));
 #endif
     const wxSize bmpSize(height, height);
 
