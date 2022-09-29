@@ -2247,8 +2247,8 @@ void CodeCompletion::OnProjectClosed(CodeBlocksEvent& event)
             if (it != m_ReparsingMap.end())
                 m_ReparsingMap.erase(it);
 
-            // remove the Parser instance associated with the project
-            m_NativeParser.DeleteParser(project);
+            // remove the Parser instances associated with the project
+            while (m_NativeParser.DeleteParser(project));
         }
     }
     event.Skip();
