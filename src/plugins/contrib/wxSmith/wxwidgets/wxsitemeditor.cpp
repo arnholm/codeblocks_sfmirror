@@ -532,7 +532,7 @@ void wxsItemEditor::InitializeImages()
         "deletewidget32.png",
         "showpreview32.png",
         "quickpropsopen32.png",
-        "quickpropsclose2.png",
+        "quickpropsclose32.png",
         "selected32.png"
     };
 
