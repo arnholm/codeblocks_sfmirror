@@ -129,11 +129,11 @@ void FindReplace::CreateSearchLog()
     widths.Add(48);
     widths.Add(640);
 
-    const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/filefind.svg", wxSize(uiSize, uiSize)));
+    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/filefind.svg", wxSize(16, 16)));
 #else
+    const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
     wxBitmap* bmp = new wxBitmap(cbLoadBitmap(prefix+"filefind.png", wxBITMAP_TYPE_PNG));
 #endif

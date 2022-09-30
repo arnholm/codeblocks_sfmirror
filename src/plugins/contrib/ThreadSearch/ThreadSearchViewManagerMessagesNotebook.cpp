@@ -31,12 +31,11 @@ void ThreadSearchViewManagerMessagesNotebook::AddViewToManager()
     if ( m_IsManaged == false )
     {
         // Creates log image
-        const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-        const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "findf.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG));
+        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/findf.svg", wxSize(16, 16)));
 #else
+        const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
         m_Bitmap = new wxBitmap(cbLoadBitmap(prefix+"findf.png", wxBITMAP_TYPE_PNG));
 #endif

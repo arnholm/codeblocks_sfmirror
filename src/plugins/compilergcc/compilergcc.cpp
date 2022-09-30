@@ -383,11 +383,11 @@ void CompilerGCC::OnAttach()
     msgMan->Slot(m_PageIndex).title = _("Build log");
 //    msgMan->SetBatchBuildLog(m_PageIndex);
     // set log image
-    const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(uiSize, uiSize)));
+    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(16, 16)));
 #else
+    const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
     wxBitmap* bmp = new wxBitmap(cbLoadBitmap(prefix+"misc.png", wxBITMAP_TYPE_PNG));
 #endif
@@ -409,7 +409,7 @@ void CompilerGCC::OnAttach()
     msgMan->Slot(m_ListPageIndex).title = _("Build messages");
     // set log image
 #if wxCHECK_VERSION(3, 1, 6)
-    bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/flag.svg", wxSize(uiSize, uiSize)));
+    bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/flag.svg", wxSize(16, 16)));
 #else
     bmp = new wxBitmap(cbLoadBitmap(prefix+"flag.png", wxBITMAP_TYPE_PNG));
 #endif

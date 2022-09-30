@@ -999,11 +999,11 @@ TextCtrlLogger* DebuggerManager::GetLogger(int &index)
         LogSlot &slot = msgMan->Slot(m_loggerIndex);
         slot.title = _("Debugger");
         // set log image
-        const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
 #if wxCHECK_VERSION(3, 1, 6)
-        slot.icon = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(uiSize, uiSize)));
+        slot.icon = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(16, 16)));
 #else
+        const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
         slot.icon = new wxBitmap(cbLoadBitmap(prefix+"misc.png", wxBITMAP_TYPE_PNG));
 #endif
