@@ -281,7 +281,32 @@ imagesForZip = \
 	resources/images/64x64/targetselected.png \
 	resources/images/64x64/workspacedisabled.png \
 	resources/images/64x64/workspace.png \
-	resources/images/64x64/workspaceselected.png
+	resources/images/64x64/workspaceselected.png \
+	\
+	resources/images/svg/findfdisabled.svg \
+	resources/images/svg/findf.svg \
+	resources/images/svg/folderdisabled.svg \
+	resources/images/svg/folder.svg \
+	resources/images/svg/folderselected.svg \
+	resources/images/svg/openfilesdisabled.svg \
+	resources/images/svg/openfiles.svg \
+    resources/images/svg/openfilesselected.svg \
+	resources/images/svg/optionsactive.svg \
+	resources/images/svg/optionsdisabled.svg \
+	resources/images/svg/options.svg \
+	resources/images/svg/projectdisabled.svg \
+	resources/images/svg/project.svg \
+	resources/images/svg/projectselected.svg \
+	resources/images/svg/showdirdisabled.svg \
+	resources/images/svg/showdir.svg \
+	resources/images/svg/stopdisabled.svg \
+	resources/images/svg/stop.svg \
+	resources/images/svg/targetdisabled.svg \
+	resources/images/svg/target.svg \
+	resources/images/svg/targetselected.svg \
+	resources/images/svg/workspacedisabled.svg \
+	resources/images/svg/workspace.svg \
+	resources/images/svg/workspaceselected.svg
 
 EXTRA_DIST = 	$(srcdir)/*.cbp \
 		$(srcdir)/ThreadSearch.wxg \

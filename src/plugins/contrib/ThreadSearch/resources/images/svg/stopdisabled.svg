@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <linearGradient id="a">
+            <stop style="stop-color:#de2626;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#ed8989;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="b" x1="-3.176" y1="5.529" x2="-13.103" y2="-3.206" gradientUnits="userSpaceOnUse"/>
+        <filter style="color-interpolation-filters:sRGB" id="c">
+            <feColorMatrix values="0.21 0.72 0.072 0.32 0 0.21 0.72 0.072 0.32 0 0.21 0.72 0.072 0.32 0 0 0 0 1 0"/>
+        </filter>
+    </defs>
+    <g transform="translate(0 -288.533)">
+        <circle style="fill:url(#b);fill-opacity:1;stroke:#a71313;stroke-width:.50000006;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges;filter:url(#filter826)" cx="-6.75" cy="2.75" r="6.75" transform="matrix(.52917 0 0 .52917 7.805 291.311)"/>
+        <path style="fill:none;stroke:#fff;stroke-width:1.0583334;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#c)" d="m2.755 291.287 2.954 2.957-1.477-1.477 1.477-1.48-2.798 2.802-.156.155"/>
+        <image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI WXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3AgOExc5PWFbsQAAAB1pVFh0Q29tbWVudAAAAAAAQ3Jl YXRlZCB3aXRoIEdJTVBkLmUHAAAB00lEQVQ4y82Sv08TcRTAP9WGYq2L5a7oUBzs3S1NdHTDoWwN NzgYRgYWEjGw6KR/gE5dwH9AjIONTkpiY5z8kaC5gWuACkgt3DHYaLjr3ffu62B6xhTCqG96ecn7 vE/ee/CvI3VUsbm4pG+/eG4ffPqMzAyR0zTGqlXjyuxs80TAW9N01NJlZfTCRVLtNlEUEZ7JsrO/ x1Z7173x8pV6LODN5KRjjI8rue9d4p5P7PvEnk/k+0jPo1tQ+Wjb7s2VlQRy6o/2oj5aKim5bpfs /Xt8mZpCCoGMBN8W5hl5skxus0Uxn1c+1Gp6vy/dT9bqdft6pULsOFiWRblcxpqZAfidWxaKEBQz GRr1ut23Twy89XVSrkvs+xSXHiWQpPnOXWIh4Gsbd81mwEBISXToIXs+hNHAZWQYQiggBRLJwA7O aRphNos89Ni9fSuZ3Dc5ePiAOOwRFVTO6/og4FK1auzs7xF53l/aI/MLCSQOQraCAMM0jSPP+HRi wrmqacrZVguEIBYCGQpkGBAHAT8Ng3edjjvdaKjHPtLjSsUZy+eV4lAGubEB6TRRocB2ELD5o+tO v26oJ77y+1pNt+vP7M7qKqeHh8nrBoZpGtfm5pr8d/ELVMLiwIxokZ4AAAAASUVORK5CYII=" preserveAspectRatio="none" height="21.333" width="21.333" transform="matrix(.29766 0 0 .29766 -9.657 289.724)" style="stroke-width:.88888884;shape-rendering:crispEdges"/>
+    </g>
+</svg>

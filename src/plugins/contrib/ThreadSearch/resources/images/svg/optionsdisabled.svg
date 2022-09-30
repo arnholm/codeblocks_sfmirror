@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" style="shape-rendering:crispEdges">
+    <defs>
+        <linearGradient id="a">
+            <stop offset="0" style="stop-color:#2161ab;stop-opacity:1"/>
+            <stop offset="1" style="stop-color:#478cdb;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="b">
+            <stop style="stop-color:#e5aa09;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#dfd15a;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#b" id="e" x1="-2.117" y1="295.677" x2="-1.852" y2="295.148" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.22757 0 0 1.22794 -3.457 -69.69)"/>
+        <linearGradient gradientTransform="matrix(1.22757 0 0 1.22794 -10.602 -69.69)" xlink:href="#c" id="f" x1="2.117" y1="294.883" x2="1.323" y2="292.385" gradientUnits="userSpaceOnUse"/>
+        <linearGradient id="c">
+            <stop offset="0" style="stop-color:#9bc3d4;stop-opacity:1"/>
+            <stop style="stop-color:#a8cbda;stop-opacity:1" offset=".5"/>
+            <stop offset=".625" style="stop-color:#e8f3f6;stop-opacity:1"/>
+            <stop offset="1" style="stop-color:#f1f9fa;stop-opacity:1"/>
+        </linearGradient>
+        <filter style="color-interpolation-filters:sRGB" id="d">
+            <feColorMatrix values="0.21 0.72 0.072 0.05 0 0.21 0.72 0.072 0.05 0 0.21 0.72 0.072 0.05 0 0 0 0 1 0"/>
+        </filter>
+    </defs>
+    <g transform="matrix(1.34847 0 0 1.34807 14.221 -389.011)" style="stroke-width:.74169087;shape-rendering:crispEdges;filter:url(#d)">
+        <path d="m-7.192 292.899 1.787 1.787c.324.324 1.299-.65.974-.975l-1.786-1.787z" style="fill:url(#e);fill-opacity:1;fill-rule:evenodd;stroke:#c68e28;stroke-width:.19623902px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;shape-rendering:crispEdges"/>
+        <path d="m-7.192 292.899-.325-.325s-1.461.487-2.11-.163a3.179 3.179 0 0 1-.813-1.462l.325-.325.65.65c.324.325.812.812 1.624 0s.324-1.3 0-1.624l-.65-.65.325-.325s.812.163 1.461.812c.65.65.163 2.112.163 2.112l.325.325" style="fill:url(#f);fill-opacity:1;fill-rule:evenodd;stroke:#417e9a;stroke-width:.19623902px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;shape-rendering:crispEdges"/>
+        <path d="m-7.512 292.57.97-.97" style="fill:none;fill-rule:evenodd;stroke:#417e9a;stroke-width:.19623902px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;shape-rendering:crispEdges"/>
+    </g>
+</svg>

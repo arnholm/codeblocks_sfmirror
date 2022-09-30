@@ -22,7 +22,8 @@ zip -Rq9 ..\%CB_DEVEL_ZIPDIR%\ThreadSearch.zip ^
     images/40x40/*.png ^
     images/48x48/*.png ^
     images/56x56/*.png ^
-    images/64x64/*.png
+    images/64x64/*.png ^
+    images/svg/*.svg
 cd ..
 
 exit 0
