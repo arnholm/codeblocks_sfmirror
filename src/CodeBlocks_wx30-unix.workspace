@@ -61,6 +61,9 @@
 		<Project filename="plugins/contrib/FileManager/FileManager_wx30-unix.cbp">
 			<Depends filename="CodeBlocks_wx30-unix.cbp" />
 		</Project>
+		<Project filename="plugins/contrib/FortranProject/FortranProject_cbsvn_wx30-unix.cbp" >
+			<Depends filename="CodeBlocks_wx30-unix.cbp" />
+		</Project>
 		<Project filename="plugins/contrib/headerfixup/headerfixup_wx30-unix.cbp">
 			<Depends filename="CodeBlocks_wx30-unix.cbp" />
 		</Project>
