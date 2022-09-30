@@ -76,8 +76,7 @@ void ReopenEditor::OnAttach()
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-    const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-    m_LogIcon = cbLoadBitmapBundle(prefix, "undo.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG);
+    m_LogIcon = cbLoadBitmapBundleFromSVG(prefix+"svg/undo.svg", wxSize(uiSize, uiSize));
 #else
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
     m_LogIcon = cbLoadBitmap(prefix+"undo.png", wxBITMAP_TYPE_PNG);

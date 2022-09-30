@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <clipPath clipPathUnits="userSpaceOnUse" id="a">
+            <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M8.864 297.794v-3.175l-1.94-2.25H3.042v2.382h.793c.662 0 1.72.794 1.853 1.19.132.53.529 1.059.529 1.059s.595.661.86.661h1.19c.133 0 .463.794.463.794h.133zm0 1.455v1.323H3.043v-4.895H2.91h.265c.33 0 1.19.397 1.463.95.466.945 1.447 2.093 1.712 2.093h1.323c.132 0 .397.529.53.529h.793"/>
+        </clipPath>
+    </defs>
+    <g transform="translate(0 -288.533)">
+        <path d="M7.011 294.09v-3.175l-1.94-2.25h-3.88v2.382h.793c.662 0 1.72.794 1.852 1.19.133.53.53 1.059.53 1.059s.595.661.86.661h1.19c.132 0 .463.794.463.794h.132zm0 1.455v1.323h-5.82v-4.895h-.133.265c.33 0 1.19.397 1.463.95.466.945 1.447 2.093 1.712 2.093H5.82c.132 0 .397.529.529.529h.794" style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+        <g style="shape-rendering:crispEdges" transform="translate(-1.852 -3.704)" clip-path="url(#a)">
+            <path d="m1.058 304.408 8.467-8.996v8.996z" style="fill:#2bcc2a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+            <path d="m.53 304.408 8.995-9.525v-.529L0 304.408Z" style="fill:#2bcc2a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"/>
+        </g>
+        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
+        <path style="fill:none;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M7.011 294.09v-3.175l-1.94-2.25h-3.88v2.382h.793c.662 0 1.72.794 1.852 1.19.133.53.53 1.059.53 1.059s.595.661.86.661h1.19c.132 0 .463.794.463.794h.132zm0 1.455v1.323h-5.82v-4.895h-.133.265c.33 0 1.19.397 1.463.95.466.945 1.447 2.093 1.712 2.093H5.82c.132 0 .397.529.529.529h.794"/>
+        <image y="288.533" x="-8.996" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAAK/INwWK6QAAACRQTFRF fNWBtrbLkNiV09PhmeGchN2HK8wq4eHs0NDfnJy28vL5zMzMloXLWQAAAAx0Uk5T//////////// //8AEt/OzgAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAABeSURBVCiRTcxB EsAgCANA2goI/P+/BYyOuWUnQBETsahQgq8sueEzgGqDZRoiFOQbiqoPw0lJduYN2hMeOJneExou B0pelQPem8xzgF4QIP+RZDZk5+qCk9Px1K5E/PVACQeFVNoEAAAAAElFTkSuQmCC" style="stroke-width:.5;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
+    </g>
+</svg>

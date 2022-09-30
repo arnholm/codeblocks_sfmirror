@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <linearGradient id="a">
+            <stop style="stop-color:#eff267;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#f8f9bc;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="b" x1="-4.763" y1="292.237" x2="-6.218" y2="290.782" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.04348 0 0 1.04348 12.073 -13.275)"/>
+    </defs>
+    <g transform="translate(0 -288.533)">
+        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
+        <path style="fill:#d0d0df;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M4.895 288.666v2.38H7.01"/>
+        <image y="289.175" x="-8.993" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEAAAA QwCCiClq6gAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9kDAxcZBV7z2hsAAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAACP0lEQVQ4y9WVT2oUURjEfx0C2agH8A5exJUo 7pWoM6IIJhk0mBu4UhOCEAVJBgJ6BA+gBxBX3sA/ODOR5M18VS7e654ekxlcCTY0/bqbrq+qvvpe w/92VPXidf+dDVQGKQgLhZCc70NYIiw27t+u/hr41cFbX796BQOSwUbltMAICfb7+0SYzYd3F4Iv 1wvbmAyCTdj5mU15hGwiRGd1lcl47PMrLxqgCLG+9qUptlQvJGFBqAUqIxVwFQUhvv484l63g4Fu d5c7naekFGczrn01ZEC3AclqbELBt8GvBkAeYo8YzwOeTDJjWY3sukAuku26sLLNx/fbGTQMHmCN SCnY2rpogO8/jtuMVWTT8pcGUM5KALqdHewhYpQZM6T3+Cb2CPuY3trhFDgiGvlN0wyWcvMK+yx/ UECyDWKINAJOTlsRUmZd0iFXBdTFouJxmGfPe6QUjE8m9B7dwAx5stknncTZzSvxLdeSiJJrk+8v X/vQvH+zewkxBCdSmrC3N6hOM44o8lsRq7NdbGmsKgpSCnACICXNi1se1yZqVI2CaUpoJUSkcdBb PySlIMIzwEvtybFaQMpFmiFpZ9tChlsPPtHZ+MzyuQ79g6PqbMYxaX3oxtearWxQHcXSg7qxofl7 RZ2KWT//mMKW33YZKExEzAdWqOXpdJzdblqLfRZQWxWLGNcDkrfHaRoKSDMg04J1sVhoRWiGIYYw IOfrzFQWiwrjWMxY7L3cycwj+x3Kf416rZkzULhsWv53/7zf4WEIE2xUcf0AAAAASUVORK5CYII=" style="image-rendering:optimizeSpeed" preserveAspectRatio="none" height="7.761" width="7.761"/>
+        <path style="fill:url(#b);fill-opacity:1;stroke:#82821d;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M6 289.46h.965v1.104H8.07v.966H6.965v1.104H6v-1.104H4.895v-.966h1.104z"/>
+    </g>
+</svg>

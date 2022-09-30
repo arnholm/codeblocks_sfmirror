@@ -58,8 +58,7 @@ InfoPane::InfoPane(wxWindow* parent) : cbAuiNotebook(parent, idNB, wxDefaultPosi
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
 #if wxCHECK_VERSION(3, 1, 6)
-    const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-    m_DefaultBitmap = cbLoadBitmapBundle(prefix, "edit.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG);
+    m_DefaultBitmap = cbLoadBitmapBundleFromSVG(prefix+"svg/edit.svg", wxSize(uiSize, uiSize));
 #else
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);
     m_DefaultBitmap = cbLoadBitmap(prefix+"edit.png", wxBITMAP_TYPE_PNG);

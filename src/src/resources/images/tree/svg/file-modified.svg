@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <g transform="translate(0 -288.533)">
+        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
+        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
+        <image y="291.356" x="-5.909" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAGFBMVEXT0+H/mTTQ0N+cnLby8vkA AAAAAAAAAABCts6SAAAABnRSTlP//////wCzv6S/AAAAAWJLR0QF+G/pxwAAAAlwSFlzAAAASAAA AEgARslrPgAAADFJREFUCNdjCFUCAtPQUIZQFRcXF2UwQ9DFRcEUyjA2hjJcnFEYLhgimFKkMIzB IBQAtqIf047it1UAAAAASUVORK5CYII=" style="image-rendering:optimizeSpeed" preserveAspectRatio="none" height="5.644" width="5.644"/>
+        <path style="fill:#ff9934;fill-opacity:1;stroke:#ff9934;stroke-width:.26458335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.984 291.841h.794v.794h-.794zM1.984 289.195h.794v2.117h-.794z"/>
+    </g>
+</svg>

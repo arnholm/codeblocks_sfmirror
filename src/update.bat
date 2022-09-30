@@ -78,6 +78,7 @@ cd src\resources
     images\48x48\*.png ^
     images\56x56\*.png ^
     images\64x64\*.png ^
+    images\svg\*.svg ^
     images\tree\16x16\*.png ^
     images\tree\20x20\*.png ^
     images\tree\24x24\*.png ^
@@ -87,6 +88,7 @@ cd src\resources
     images\tree\48x48\*.png ^
     images\tree\56x56\*.png ^
     images\tree\64x64\*.png ^
+    images\tree\svg\*.svg ^
     images\infopane\16x16\*.png ^
     images\infopane\20x20\*.png ^
     images\infopane\24x24\*.png ^
@@ -96,6 +98,7 @@ cd src\resources
     images\infopane\48x48\*.png ^
     images\infopane\56x56\*.png ^
     images\infopane\64x64\*.png ^
+    images\infopane\svg\*.svg ^
     > nul
 cd ..\..\sdk\resources
 "%ZIPCMD%" -0 -qu "..\..\%CB_DEVEL_RESDIR%\manager_resources.zip" ^
@@ -112,6 +115,7 @@ cd ..\..\sdk\resources
     images\48x48\*.png ^
     images\56x56\*.png ^
     images\64x64\*.png ^
+    images\svg\*.svg ^
     > nul
 echo Packing plugins UI bitmaps
 cd ..\..\plugins\compilergcc\resources
@@ -125,6 +129,7 @@ cd ..\..\plugins\compilergcc\resources
     images\48x48\*.png ^
     images\56x56\*.png ^
     images\64x64\*.png ^
+    images\svg\*.svg ^
     > nul
 cd ..\..\..\plugins\codecompletion\resources
 "%ZIPCMD%" -0 -qu "..\..\..\%CB_DEVEL_RESDIR%\codecompletion.zip" ^
@@ -137,6 +142,7 @@ cd ..\..\..\plugins\codecompletion\resources
     images\48x48\*.png ^
     images\56x56\*.png ^
     images\64x64\*.png ^
+    images\svg\*.svg ^
     > nul
 cd ..\..\..\plugins\abbreviations\resources
 "%ZIPCMD%" -0 -qu "..\..\..\%CB_DEVEL_RESDIR%\abbreviations.zip" ^
@@ -149,6 +155,7 @@ cd ..\..\..\plugins\abbreviations\resources
     images\48x48\*.png ^
     images\56x56\*.png ^
     images\64x64\*.png ^
+    images\svg\*.svg ^
     > nul
 cd ..\..\..
 
@@ -208,9 +215,7 @@ if exist "%CB_DEVEL_RESDIR%\SpellChecker" (
     call:mkdirSilent "%CB_OUTPUT_RESDIR%\SpellChecker"
     xcopy /D /y "%CB_DEVEL_RESDIR%\SpellChecker\*.xml" "%CB_OUTPUT_RESDIR%\SpellChecker" > nul
     call:copyImageFiles "%CB_DEVEL_RESDIR%\SpellChecker" "%CB_OUTPUT_RESDIR%\SpellChecker"
-    echo From %CB_DEVEL_RESDIR%\SpellChecker\svg to %CB_OUTPUT_RESDIR%\SpellChecker\svg
-    call:mkdirSilent %CB_OUTPUT_RESDIR%\SpellChecker\svg
-    xcopy /D /y %CB_DEVEL_RESDIR%\SpellChecker\svg\*.svg %CB_OUTPUT_RESDIR%\SpellChecker\svg > nul
+    call:copySvgFiles "%CB_DEVEL_RESDIR%\SpellChecker" "%CB_OUTPUT_RESDIR%\SpellChecker"
 )
 
 REM misc. contrib plugin settings:
@@ -265,14 +270,19 @@ GOTO:EOF
 
 :copyImageFiles - create a directory and copy image files to it
 setlocal
-echo Copy image files from %~1 to %~1
-REM call mkdirSilent %~2
+echo Copy image files from %~1 to %~2
 for %%g in (16x16,20x20,24x24,28x28,32x32,40x40,48x48,56x56,64x64) do (
     echo From %~1\%%g to %~2\%%g
     call:mkdirSilent %~2\%%g
     xcopy /D /y %~1\%%g\*.png %~2\%%g > nul
 )
-REM     call:mkdirSilent "%CB_OUTPUT_RESDIR%\images\ThreadSearch\32x32"
-REM     xcopy /D /y "%CB_DEVEL_RESDIR%\images\ThreadSearch\32x32\*.png" "%CB_OUTPUT_RESDIR%\images\ThreadSearch\32x32" > nul
+endlocal
+GOTO:EOF
+
+:copySvgFiles - create a directory and copy avg files to it
+setlocal
+echo Copy svg files from %~1 to %~1
+call:mkdirSilent %~2\svg
+xcopy /D /y %~1\svg\*.svg %~2\svg > nul
 endlocal
 GOTO:EOF

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <g transform="translate(0 -288.533)">
+        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
+        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
+        <path style="fill:red;fill-opacity:1;stroke:red;stroke-width:.26458335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M2.514 293.428h2.91v2.117h-2.91z"/>
+        <path style="fill:none;stroke:red;stroke-width:.5291667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M3.175 293.296v-1.567c0-.072.17-.285.227-.285h1.134c.056 0 .227.225.227.285v1.567"/>
+        <image y="288.533" x="-8.996" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAAK/INwWK6QAAABVQTFRF 09PhK8wq0NDfnJy2/wAA8vL5zMzMhB5/OwAAAAd0Uk5T////////ABpLA0YAAAAZdEVYdFNvZnR3 YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAQElEQVQokaXKMRIAIAgDQRTM/58sICoUVt6k2gkB PWJYpDBWSzIQV2CtgNkFkQrie0Lb0M5DvPQI+HpE8eAUMAFpmQR42mApTwAAAABJRU5ErkJggg==" style="stroke-width:.49999934;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
+        <path style="opacity:1;fill:#2bcc2a;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.5291667;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M1.323 296.206h.529v.529h-.529zM1.323 295.148h.529v.529h-.529zM1.323 294.09h.529v.529h-.529zM1.323 293.031h.529v.529h-.529zM6.35 296.206h.529v.529H6.35zM6.35 295.148h.529v.529H6.35zM6.35 294.09h.529v.529H6.35zM6.35 293.031h.529v.529H6.35z"/>
+    </g>
+</svg>

@@ -33,6 +33,14 @@ copyImageFiles() {
     done
 }
 
+copySvgFiles() {
+    from=$1
+    to=$2
+    echo "  Copy SVG ${from}/${dir} to ${to}/${dir}"
+    mkdir -p ${to}/svg
+    cp -f ${from}/svg/*.svg ${to}/svg > /dev/null
+}
+
 echo Creating output directory tree
 
 CB_DEVEL=devel$1
@@ -88,6 +96,7 @@ ${ZIPCMD} -0 -qu ../../${CB_DEVEL_RESDIR}/resources.zip \
     images/48x48/*.png \
     images/56x56/*.png \
     images/64x64/*.png \
+    images/svg/*.svg \
     images/tree/16x16/*.png \
     images/tree/20x20/*.png \
     images/tree/24x24/*.png \
@@ -97,6 +106,7 @@ ${ZIPCMD} -0 -qu ../../${CB_DEVEL_RESDIR}/resources.zip \
     images/tree/48x48/*.png \
     images/tree/56x56/*.png \
     images/tree/64x64/*.png \
+    images/tree/svg/*.svg \
     images/infopane/16x16/*.png \
     images/infopane/20x20/*.png \
     images/infopane/24x24/*.png \
@@ -106,6 +116,7 @@ ${ZIPCMD} -0 -qu ../../${CB_DEVEL_RESDIR}/resources.zip \
     images/infopane/48x48/*.png \
     images/infopane/56x56/*.png \
     images/infopane/64x64/*.png \
+    images/infopane/svg/*.svg \
     > /dev/null
 cd ../../sdk/resources
 ${ZIPCMD} -0 -qu ../../${CB_DEVEL_RESDIR}/manager_resources.zip \
@@ -122,6 +133,7 @@ ${ZIPCMD} -0 -qu ../../${CB_DEVEL_RESDIR}/manager_resources.zip \
     images/48x48/*.png \
     images/56x56/*.png \
     images/64x64/*.png \
+    images/svg/*.svg \
     > /dev/null
 echo Packing plugins UI bitmaps
 cd ../../plugins/compilergcc/resources
@@ -135,6 +147,7 @@ ${ZIPCMD} -0 -qu ../../../${CB_DEVEL_RESDIR}/compiler.zip \
     images/48x48/*.png \
     images/56x56/*.png \
     images/64x64/*.png \
+    images/svg/*.svg \
     > /dev/null
 cd ../../../plugins/codecompletion/resources
 ${ZIPCMD} -0 -qu ../../../${CB_DEVEL_RESDIR}/codecompletion.zip \
@@ -147,6 +160,7 @@ ${ZIPCMD} -0 -qu ../../../${CB_DEVEL_RESDIR}/codecompletion.zip \
     images/48x48/*.png \
     images/56x56/*.png \
     images/64x64/*.png \
+    images/svg/*.svg \
     > /dev/null
 cd ../../../plugins/abbreviations/resources
 ${ZIPCMD} -0 -qu ../../../${CB_DEVEL_RESDIR}/abbreviations.zip \
@@ -159,6 +173,7 @@ ${ZIPCMD} -0 -qu ../../../${CB_DEVEL_RESDIR}/abbreviations.zip \
     images/48x48/*.png \
     images/56x56/*.png \
     images/64x64/*.png \
+    images/svg/*.svg \
     > /dev/null
 cd ../../..
 
@@ -212,9 +227,7 @@ if [ -d "${CB_DEVEL_RESDIR}/SpellChecker" ]; then
     mkdir -p ${CB_OUTPUT_RESDIR}/SpellChecker
     cp -f ${CB_DEVEL_RESDIR}/SpellChecker/*.xml ${CB_OUTPUT_RESDIR}/SpellChecker > /dev/null
     copyImageFiles ${CB_DEVEL_RESDIR}/SpellChecker ${CB_OUTPUT_RESDIR}/SpellChecker
-    echo "  Copy ${CB_DEVEL_RESDIR}/SpellChecker/svg to ${CB_OUTPUT_RESDIR}/SpellChecker/svg"
-    mkdir -p ${CB_OUTPUT}/SpellChecker/svg
-    cp -f ${CB_DEVEL_RESDIR}/SpellChecker/svg/*.svg ${CB_OUTPUT_RESDIR}/SpellChecker/svg > /dev/null
+    copySvgFiles ${CB_DEVEL_RESDIR}/SpellChecker ${CB_OUTPUT_RESDIR}/SpellChecker
 fi
 
 # misc. contrib plugin settings:
