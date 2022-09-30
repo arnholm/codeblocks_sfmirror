@@ -332,7 +332,43 @@ images_forZIP = \
 	images/64x64/redo.png \
 	images/64x64/searchreplacef.png \
 	images/64x64/searchreplace.png \
-	images/64x64/undo.png
+	images/64x64/undo.png \
+	images/svg/bookmark_add.svg \
+	images/svg/dbginfo.svg \
+	images/svg/dbgnexti.svg \
+	images/svg/dbgnext.svg \
+	images/svg/dbgpause.svg \
+	images/svg/dbgrun.svg \
+	images/svg/dbgrunto.svg \
+	images/svg/dbgstepi.svg \
+	images/svg/dbgstepout.svg \
+	images/svg/dbgstep.svg \
+	images/svg/dbgstop.svg \
+	images/svg/dbgwindow.svg \
+	images/svg/editcopy.svg \
+	images/svg/editcut.svg \
+	images/svg/editpaste.svg \
+	images/svg/exit.svg \
+	images/svg/fileclose.svg \
+	images/svg/filefindnext.svg \
+	images/svg/filefind.svg \
+	images/svg/filefindprev.svg \
+	images/svg/filenew.svg \
+	images/svg/fileopen.svg \
+	images/svg/fileprint.svg \
+	images/svg/filesaveall.svg \
+	images/svg/filesaveas.svg \
+	images/svg/filesave.svg \
+	images/svg/findf.svg \
+	images/svg/goto.svg \
+	images/svg/history_clear.svg \
+	images/svg/idea.svg \
+	images/svg/info.svg \
+	images/svg/plug.svg \
+	images/svg/redo.svg \
+	images/svg/searchreplacef.svg \
+	images/svg/searchreplace.svg \
+	images/svg/undo.svg
 
 treeImages_forZIP = \
 	images/tree/16x16/file-missing.png \
@@ -532,7 +568,29 @@ treeImages_forZIP = \
 	images/tree/64x64/rc-file-uptodate.png \
 	images/tree/64x64/vfolder_open.png \
 	images/tree/64x64/workspace.png \
-	images/tree/64x64/workspace-readonly.png
+	images/tree/64x64/workspace-readonly.png \
+	images/tree/svg/file-missing.svg \
+	images/tree/svg/file-modified.svg \
+	images/tree/svg/file.svg \
+	images/tree/svg/file-readonly.svg \
+	images/tree/svg/folder_open.svg \
+	images/tree/svg/project.svg \
+	images/tree/svg/project-readonly.svg \
+	images/tree/svg/rc-file-added.svg \
+	images/tree/svg/rc-file-conflict.svg \
+	images/tree/svg/rc-file-external.svg \
+	images/tree/svg/rc-file-gotlock.svg \
+	images/tree/svg/rc-file-lockstolen.svg \
+	images/tree/svg/rc-file-mismatch.svg \
+	images/tree/svg/rc-file-missing.svg \
+	images/tree/svg/rc-file-modified.svg \
+	images/tree/svg/rc-file-noncontrolled.svg \
+	images/tree/svg/rc-file-outofdate.svg \
+	images/tree/svg/rc-file-requireslock.svg \
+	images/tree/svg/rc-file-uptodate.svg \
+	images/tree/svg/vfolder_open.svg \
+	images/tree/svg/workspace.svg \
+	images/tree/svg/workspace-readonly.svg
 
 infoPaneImages_forZIP = \
 	images/infopane/16x16/edit.png \
@@ -561,7 +619,10 @@ infoPaneImages_forZIP = \
 	images/infopane/56x56/misc.png \
 	images/infopane/64x64/edit.png \
 	images/infopane/64x64/flag.png \
-	images/infopane/64x64/misc.png
+	images/infopane/64x64/misc.png \
+	images/infopane/svg/edit.svg \
+	images/infopane/svg/flag.svg \
+	images/infopane/svg/misc.svg
 
 resources.zip: \
 		$(srcdir)/*.xrc $(images_forZIP) $(treeImages_forZIP) $(infoPaneImages_forZIP) \
@@ -578,3 +639,4 @@ EXTRA_DIST = \
 	$(images_forZIP) \
 	$(infoPaneImages_forZIP) \
 	$(treeImages_forZIP)
+
