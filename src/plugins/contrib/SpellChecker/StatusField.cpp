@@ -72,8 +72,10 @@ SpellCheckerStatusField::~SpellCheckerStatusField()
 #if wxCHECK_VERSION(3, 1, 6)
 static wxBitmapBundle LoadImageInPath(const wxString& path, const wxString& fileName, const wxSize& size)
 {
-    const wxString imgPath(path+"/svg/");
-    wxBitmapBundle bmp = cbLoadBitmapBundleFromSVG(imgPath+fileName, size);
+    // const wxString imgPath(path+"/svg/");
+    // wxBitmapBundle bmp = cbLoadBitmapBundleFromSVG(imgPath+fileName, size);
+    const wxString imgPath(path+"/");
+    wxBitmapBundle bmp = cbLoadBitmapBundle(imgPath, fileName, size.GetHeight());
     if (!bmp.IsOk())
         Manager::Get()->GetLogManager()->Log(wxString::Format(_("Loading image: '%s' failed!"), imgPath+fileName));
 
@@ -98,7 +100,8 @@ void SpellCheckerStatusField::Update()
 
 #if wxCHECK_VERSION(3, 1, 6)
     wxBitmapBundle bm;
-    const wxString ext(".svg");
+    // const wxString ext(".svg");
+    const wxString ext(".png");
 #else
     wxBitmap bm;
     const wxString ext(".png");
