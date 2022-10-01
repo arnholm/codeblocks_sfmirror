@@ -131,7 +131,8 @@ void FindReplace::CreateSearchLog()
 
     wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/filefind.svg", wxSize(16, 16)));
+    // wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/filefind.svg", wxSize(16, 16)));
+    wxBitmapBundle* bmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "filefind.png", 16));
 #else
     const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
     prefix << wxString::Format("%dx%d/", uiSize, uiSize);

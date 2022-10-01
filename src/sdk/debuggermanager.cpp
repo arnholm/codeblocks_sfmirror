@@ -1001,7 +1001,8 @@ TextCtrlLogger* DebuggerManager::GetLogger(int &index)
         // set log image
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/infopane/");
 #if wxCHECK_VERSION(3, 1, 6)
-        slot.icon = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(16, 16)));
+        // slot.icon = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/misc.svg", wxSize(16, 16)));
+        slot.icon = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "misc.png", 16));
 #else
         const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
