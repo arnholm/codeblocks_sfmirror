@@ -508,6 +508,7 @@ void wxsItemEditor::InitializeImages()
     const int toolSize = ToolIconSize();
 
 #if wxCHECK_VERSION(3, 1, 6)
+  #if 0
     const wxSize imgSize(toolSize, toolSize);
 
     m_InsPointImg        = cbLoadBitmapBundleFromSVG(basePath + "insertpoint.svg", imgSize);
@@ -522,6 +523,42 @@ void wxsItemEditor::InitializeImages()
     m_PreviewImg         = cbLoadBitmapBundleFromSVG(basePath + "showpreview.svg", imgSize);
     m_QuickPropsImgOpen  = cbLoadBitmapBundleFromSVG(basePath + "quickpropsopen.svg", imgSize);
     m_QuickPropsImgClose = cbLoadBitmapBundleFromSVG(basePath + "quickpropsclose.svg", imgSize);
+  #else
+    wxMemoryDC DC;
+    const wxString imgSize(wxString::Format("%i", toolSize));
+
+    wxBitmap InsPoint(cbLoadBitmap(basePath + "insertpoint"+imgSize+".png"));
+    wxBitmap InsInto(cbLoadBitmap(basePath + "insertinto"+imgSize+".png"));
+    wxBitmap InsAfter(cbLoadBitmap(basePath + "insertafter"+imgSize+".png"));
+    wxBitmap InsBefore(cbLoadBitmap(basePath + "insertbefore"+imgSize+".png"));
+    wxBitmap CheckMark(cbLoadBitmap(basePath + "selected"+imgSize+".png"));
+    m_InsPointImg  = wxBitmapBundle::FromBitmap(InsPoint);
+    m_InsIntoImg   = wxBitmapBundle::FromBitmap(InsInto);
+    m_InsAfterImg  = wxBitmapBundle::FromBitmap(InsAfter);
+    m_InsBeforeImg = wxBitmapBundle::FromBitmap(InsBefore);
+
+    DC.SelectObject(InsPoint);
+    DC.DrawBitmap(CheckMark, 0, 0);
+    DC.SelectObject(wxNullBitmap);
+    DC.SelectObject(InsInto);
+    DC.DrawBitmap(CheckMark, 0, 0);
+    DC.SelectObject(wxNullBitmap);
+    DC.SelectObject(InsAfter);
+    DC.DrawBitmap(CheckMark, 0, 0);
+    DC.SelectObject(wxNullBitmap);
+    DC.SelectObject(InsBefore);
+    DC.DrawBitmap(CheckMark, 0, 0);
+    DC.SelectObject(wxNullBitmap);
+
+    m_InsPointSelImg     = wxBitmapBundle::FromBitmap(InsPoint);
+    m_InsIntoSelImg      = wxBitmapBundle::FromBitmap(InsInto);
+    m_InsAfterSelImg     = wxBitmapBundle::FromBitmap(InsAfter);
+    m_InsBeforeSelImg    = wxBitmapBundle::FromBitmap(InsBefore);
+    m_DelImg             = wxBitmapBundle::FromBitmap(cbLoadBitmap(basePath + "deletewidget"+imgSize+".png"));
+    m_PreviewImg         = wxBitmapBundle::FromBitmap(cbLoadBitmap(basePath + "showpreview"+imgSize+".png"));
+    m_QuickPropsImgOpen  = wxBitmapBundle::FromBitmap(cbLoadBitmap(basePath + "quickpropsopen"+imgSize+".png"));
+    m_QuickPropsImgClose = wxBitmapBundle::FromBitmap(cbLoadBitmap(basePath + "quickpropsclose"+imgSize+".png"));
+  #endif
 #else
     static const wxString NormalNames[] =
     {
