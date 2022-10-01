@@ -8,7 +8,6 @@
 			<Target title="default">
 				<Option output="../../../devel32_64/share/CodeBlocks/plugins/ThreadSearch.dll" prefix_auto="0" extension_auto="0" />
 				<Option object_output="../../../.objs32_64/plugins/contrib/ThreadSearch" />
-				<Option external_deps="../../../devel32_64/wxcustombutton.dll;" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --multiple-instance -na -ns -nd -p debug" />
@@ -20,7 +19,6 @@
 				<Linker>
 					<Add library="codeblocks" />
 					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
-					<Add library="wxcustombutton" />
 					<Add directory="../../../devel32_64" />
 					<Add directory="$(#WX32_64.lib)/gcc_dll$(WX_CFG)" />
 				</Linker>

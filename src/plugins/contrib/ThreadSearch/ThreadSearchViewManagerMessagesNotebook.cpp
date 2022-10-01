@@ -33,7 +33,8 @@ void ThreadSearchViewManagerMessagesNotebook::AddViewToManager()
         // Creates log image
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 #if wxCHECK_VERSION(3, 1, 6)
-        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/findf.svg", wxSize(16, 16)));
+        // m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/findf.svg", wxSize(16, 16)));
+        m_Bitmap = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "findf.png", 16));
 #else
         const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         prefix << wxString::Format("%dx%d/", uiSize, uiSize);

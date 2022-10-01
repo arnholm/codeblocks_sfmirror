@@ -1,7 +1,6 @@
 AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		-I$(top_srcdir)/src/include \
-		-I$(top_srcdir)/src/sdk/wxscintilla/include \
-		-I$(srcdir)/../wxContribItems/wxthings/include
+		-I$(top_srcdir)/src/sdk/wxscintilla/include
 
 pluginlibdir = $(pkglibdir)/plugins
 
@@ -9,7 +8,7 @@ pluginlib_LTLIBRARIES = libThreadSearch.la
 
 libThreadSearch_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefined -avoid-version
 
-libThreadSearch_la_LIBADD = ../../../sdk/libcodeblocks.la ../wxContribItems/wxthings/libwxcustombutton.la $(WX_LIBS)
+libThreadSearch_la_LIBADD = ../../../sdk/libcodeblocks.la $(WX_LIBS)
 
 libThreadSearch_la_SOURCES = DirectoryParamsPanel.cpp \
 			InsertIndexManager.cpp \

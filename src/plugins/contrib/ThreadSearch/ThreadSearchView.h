@@ -178,13 +178,13 @@ protected:
     // begin wxGlade: ThreadSearchView::attributes
     wxStaticBox* m_pSizerSearchDirItems_staticbox;
     wxComboBox* m_pCboSearchExpr;
-    wxBitmapButton* m_pBtnSearch;
-    wxBitmapButton* m_pBtnOptions;
+    wxButton* m_pBtnSearch;
+    wxButton* m_pBtnOptions;
     wxStaticLine* m_pStaticLine1;
     wxStaticText* m_pStaTxtSearchIn;
     SearchInPanel* m_pPnlSearchIn;
     wxStaticLine* m_pStaticLine2;
-    wxBitmapButton* m_pBtnShowDirItems;
+    wxButton* m_pBtnShowDirItems;
     DirectoryParamsPanel* m_pPnlDirParams;
     cbStyledTextCtrl* m_pSearchPreview;
     wxPanel* m_pPnlPreview;
