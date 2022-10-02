@@ -72,25 +72,22 @@ ThreadSearchView::ThreadSearchView(ThreadSearch& threadSearchPlugin) :
     const wxSize butSize(m_pPnlSearchIn->GetButtonSize());
 
 #if wxCHECK_VERSION(3, 1, 6)
-    // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-    // const wxSize bmpSize(16, 16);
-    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
+    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+    const wxSize bmpSize(16, 16);
 #else
     const wxString prefix(GetImagePrefix(false, Manager::Get()->GetAppWindow()));
 #endif
 
     m_pBtnSearch = new wxButton(this, controlIDs.Get(ControlIDs::idBtnSearch), wxEmptyString, wxDefaultPosition, butSize);
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnSearch->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"findf.svg", bmpSize));
-    m_pBtnSearch->SetBitmapLabel(cbLoadBitmapBundle(prefix, "findf.png", 16));
+    m_pBtnSearch->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"findf.svg", bmpSize));
 #else
     m_pBtnSearch->SetBitmapLabel(cbLoadBitmap(prefix+"findf.png"));
 #endif
 
     m_pBtnOptions = new wxButton(this, controlIDs.Get(ControlIDs::idBtnOptions), wxEmptyString, wxDefaultPosition, butSize);
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"options.svg", bmpSize));
-    m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundle(prefix, "options.png", 16));
+    m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"options.svg", bmpSize));
 #else
     m_pBtnOptions->SetBitmapLabel(cbLoadBitmap(prefix+"options.png"));
 #endif
@@ -101,8 +98,7 @@ ThreadSearchView::ThreadSearchView(ThreadSearch& threadSearchPlugin) :
 
     m_pBtnShowDirItems = new wxButton(this, controlIDs.Get(ControlIDs::idBtnShowDirItemsClick), wxEmptyString, wxDefaultPosition, butSize);
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnShowDirItems->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"showdir.svg", bmpSize));
-    m_pBtnShowDirItems->SetBitmapLabel(cbLoadBitmapBundle(prefix, "showdir.png", 16));
+    m_pBtnShowDirItems->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+"showdir.svg", bmpSize));
 #else
     m_pBtnShowDirItems->SetBitmapLabel(cbLoadBitmap(prefix+"showdir.png"));
 #endif
@@ -357,10 +353,8 @@ void ThreadSearchView::UpdateOptionsButtonImage(const ThreadSearchFindData &find
 
     {
 #if wxCHECK_VERSION(3, 1, 6)
-        // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-        // m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+name+".svg", wxSize(16, 16)));
-        const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
-        m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundle(prefix, name+".png", 16));
+        const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+        m_pBtnOptions->SetBitmapLabel(cbLoadBitmapBundleFromSVG(prefix+name+".svg", wxSize(16, 16)));
 #else
         const wxString prefix(GetImagePrefix(false, m_pBtnOptions));
         m_pBtnOptions->SetBitmapLabel(cbLoadBitmap(prefix+name+".png"));
@@ -371,10 +365,8 @@ void ThreadSearchView::UpdateOptionsButtonImage(const ThreadSearchFindData &find
     {
 #if wxCHECK_VERSION(3, 1, 6)
         const int height = m_pToolBar->GetToolBitmapSize().GetHeight();
-        // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-        // m_pToolBar->SetToolNormalBitmap(controlIDs.Get(ControlIDs::idBtnOptions), cbLoadBitmapBundleFromSVG(prefix+name+".svg", wxSize(height, height)));
-        const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
-        m_pToolBar->SetToolNormalBitmap(controlIDs.Get(ControlIDs::idBtnOptions), cbLoadBitmapBundle(prefix, name+".png", height));
+        const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+        m_pToolBar->SetToolNormalBitmap(controlIDs.Get(ControlIDs::idBtnOptions), cbLoadBitmapBundleFromSVG(prefix+name+".svg", wxSize(height, height)));
 #else
         const wxString prefix(GetImagePrefix(true));
         m_pToolBar->SetToolNormalBitmap(controlIDs.Get(ControlIDs::idBtnOptions), cbLoadBitmap(prefix+name+".png"));
@@ -443,9 +435,8 @@ void ThreadSearchView::set_properties()
     // Update icons 1, 2 and 8 in the message pane
 
 #if wxCHECK_VERSION(3, 1, 6)
-    // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-    // const wxSize bmpSize(16, 16);
-    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
+    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+    const wxSize bmpSize(16, 16);
 #else
     const wxString prefix(GetImagePrefix(false, this));
 #endif
@@ -457,24 +448,21 @@ void ThreadSearchView::set_properties()
 
     m_pBtnSearch->SetToolTip(_("Search in files"));
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnSearch->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"findfdisabled.svg", bmpSize));
-    m_pBtnSearch->SetBitmapDisabled(cbLoadBitmapBundle(prefix, "findfdisabled.png", 16));
+    m_pBtnSearch->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"findfdisabled.svg", bmpSize));
 #else
     m_pBtnSearch->SetBitmapDisabled(cbLoadBitmap(prefix+"findfdisabled.png"));
 #endif
 
     m_pBtnOptions->SetToolTip(_("Options"));
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnOptions->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"optionsdisabled.svg", bmpSize));
-    m_pBtnOptions->SetBitmapDisabled(cbLoadBitmapBundle(prefix, "optionsdisabled.png", 16));
+    m_pBtnOptions->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"optionsdisabled.svg", bmpSize));
 #else
     m_pBtnOptions->SetBitmapDisabled(cbLoadBitmap(prefix+"optionsdisabled.png"));
 #endif
 
     m_pBtnShowDirItems->SetToolTip(_("Show dir Items"));
 #if wxCHECK_VERSION(3, 1, 6)
-    // m_pBtnShowDirItems->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"showdirdisabled.svg", bmpSize));
-    m_pBtnShowDirItems->SetBitmapDisabled(cbLoadBitmapBundle(prefix, "showdirdisabled.png", 16));
+    m_pBtnShowDirItems->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"showdirdisabled.svg", bmpSize));
 #else
     m_pBtnShowDirItems->SetBitmapDisabled(cbLoadBitmap(prefix+"showdirdisabled.png"));
 #endif
@@ -1017,12 +1005,9 @@ void ThreadSearchView::UpdateSearchButtons(bool enable, eSearchButtonLabel label
     {
         {
 #if wxCHECK_VERSION(3, 1, 6)
-            // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-            // wxBitmapBundle bmpSearch = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsEnabled[label]+".svg", wxSize(16, 16));
-            // wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsDisabled[label]+".svg", wxSize(16, 16));
-            const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
-            wxBitmapBundle bmpSearch = cbLoadBitmapBundle(prefix, searchButtonPathsEnabled[label]+".png", 16);
-            wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundle(prefix, searchButtonPathsDisabled[label]+".png", 16);
+            const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+            wxBitmapBundle bmpSearch = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsEnabled[label]+".svg", wxSize(16, 16));
+            wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsDisabled[label]+".svg", wxSize(16, 16));
 #else
             const wxString prefix(GetImagePrefix(false, m_pBtnSearch));
             wxBitmap bmpSearch = cbLoadBitmap(prefix+searchButtonPathsEnabled[label]+".png");
@@ -1037,12 +1022,9 @@ void ThreadSearchView::UpdateSearchButtons(bool enable, eSearchButtonLabel label
             //Toolbar buttons
 #if wxCHECK_VERSION(3, 1, 6)
             const int height = m_pToolBar->GetToolBitmapSize().GetHeight();
-            // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-            // wxBitmapBundle bmpSearch = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsEnabled[label]+".svg", wxSize(height, height));
-            // wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsDisabled[label]+".svg", wxSize(height, height));
-            const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
-            wxBitmapBundle bmpSearch = cbLoadBitmapBundle(prefix, searchButtonPathsEnabled[label]+".png", height);
-            wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundle(prefix, searchButtonPathsDisabled[label]+".png", height);
+            const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
+            wxBitmapBundle bmpSearch = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsEnabled[label]+".svg", wxSize(height, height));
+            wxBitmapBundle bmpSearchDisabled = cbLoadBitmapBundleFromSVG(prefix+searchButtonPathsDisabled[label]+".svg", wxSize(height, height));
 #else
             const wxString prefix(GetImagePrefix(true));
             wxBitmap bmpSearch = cbLoadBitmap(prefix+searchButtonPathsEnabled[label]+".png");

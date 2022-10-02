@@ -34,8 +34,7 @@ SearchInPanel::SearchInPanel(wxWindow* parent, int id, const wxPoint& pos, const
     // Create icons 3 to 7 in the message pane and all icons of the options dialog
 
 #if wxCHECK_VERSION(3, 1, 6)
-    // const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
-    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/");
+    const wxString prefix(ConfigManager::GetDataFolder()+"/ThreadSearch.zip#zip:images/svg/");
 #else
     const wxString prefix(GetImagePrefix(false, parent));
 #endif
@@ -56,13 +55,10 @@ SearchInPanel::SearchInPanel(wxWindow* parent, int id, const wxPoint& pos, const
 wxBitmapToggleButton* SearchInPanel::CreateButton(wxWindowID id, const wxSize& size, const wxString& prefix, const wxString& name)
 {
 #if wxCHECK_VERSION(3, 1, 6)
-    // const wxSize bmpSize(16, 16);
-    // wxBitmapToggleButton *button = new wxBitmapToggleButton(this, id, cbLoadBitmapBundleFromSVG(prefix+name+".svg", bmpSize), wxDefaultPosition, size);
-    // button->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+name+"disabled.svg", bmpSize));
-    // button->SetBitmapPressed(cbLoadBitmapBundleFromSVG(prefix+name+"selected.svg", bmpSize));
-    wxBitmapToggleButton *button = new wxBitmapToggleButton(this, id, cbLoadBitmapBundle(prefix, name+".png", 16), wxDefaultPosition, size);
-    button->SetBitmapDisabled(cbLoadBitmapBundle(prefix, name+"disabled.png", 16));
-    button->SetBitmapPressed(cbLoadBitmapBundle(prefix, name+"selected.png", 16));
+    const wxSize bmpSize(16, 16);
+    wxBitmapToggleButton *button = new wxBitmapToggleButton(this, id, cbLoadBitmapBundleFromSVG(prefix+name+".svg", bmpSize), wxDefaultPosition, size);
+    button->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+name+"disabled.svg", bmpSize));
+    button->SetBitmapPressed(cbLoadBitmapBundleFromSVG(prefix+name+"selected.svg", bmpSize));
 #else
     wxBitmapToggleButton *button = new wxBitmapToggleButton(this, id, cbLoadBitmap(prefix+name+".png"), wxDefaultPosition, size);
     button->SetBitmapDisabled(cbLoadBitmap(prefix+name+"disabled.png"));
