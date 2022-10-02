@@ -4,7 +4,7 @@ CB_OUTPUT=output$1
 CB_DEVEL_RESDIR=$CB_DEVEL/share/codeblocks
 CB_OUTPUT_RESDIR=$CB_OUTPUT/share/codeblocks
 mkdir -p ../../../${CB_DEVEL_RESDIR}/images/wxsmith > /dev/null 2> /dev/null
-mkdir -p ../../../${CB_OUTPUT_RESDIR}/share/codeblocks/images/wxsmith > /dev/null 2> /dev/null
+mkdir -p ../../../${CB_OUTPUT_RESDIR}/images/wxsmith > /dev/null 2> /dev/null
 zip ../../../${CB_DEVEL_RESDIR}/wxsmith.zip manifest.xml
 zip ../../../${CB_OUTPUT_RESDIR}/wxsmith.zip manifest.xml
 cp ./wxwidgets/icons/*.png ../../../${CB_DEVEL_RESDIR}/images/wxsmith/ > /dev/null 2> /dev/null
