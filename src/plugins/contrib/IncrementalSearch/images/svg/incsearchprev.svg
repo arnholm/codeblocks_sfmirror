@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <linearGradient id="a">
+            <stop style="stop-color:#3bb234;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#95e891;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" x1="1.886" y1="294.035" x2="6.367" y2="290.194" gradientTransform="translate(1.72 2.249)"/>
+    </defs>
+    <g transform="translate(0 -288.533)">
+        <g style="stroke-width:.80645221">
+            <path d="M2.432 295.963h3.414v.854h.214l1.92-1.814-1.92-1.813h-.214v.853c-2.05.01-2.88 0-3.414 0-.213.213-.213.564-.213.964s0 .743.213.956z" style="fill:url(#b);fill-opacity:1;stroke:#075503;stroke-width:.21337384;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" transform="matrix(-1.24 0 0 1.24 10.292 -72.773)"/>
+        </g>
+        <image y="287.475" x="-11.509" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEACEA owAaI76niAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9kDBRMNIW48Hp8AAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAABgElEQVQ4y+2UWyuEQRjH/7O7dlcrX0aS2rRf QdKmTZQrKW02N5Q7KcU1UVohh6RcbPkKDpEr5Su4Z5/DPC7m3VOLwpYLOzW9z6H5zTz/95kBuuN/ jeWnRetbSFrHwZlS0oqPc5aZ/xwe+xHZA6SMwlQBvbM9H8ITNWPnZctK20UgBpgC8AaoA9SCr4D5 EDcFRAjsGWOTozjnC3vdZdcMrjv9qylbm1kHKUGUwSpgz5EdpiiDlCGeISrBjnKVvSu8lRvwhhTO gZTqEPYEFm6JUS0nDBICC0V5Qq6QRaqQsHawAawEqcGEwdGXJCxu3oB8kIIk8pUxNDGA1HjcWjSG ITphKE+8BIinYEuQoLl8UYF4AkuQ7Xr/FtUzdS1gU9R1ZA2nYZUWfdlzVElj49q8ObhD9VRd289b eV6yzfIG4NHoBN/UDVHMecCrYSSfrctzc3iP6rG4X1+Q9HTCcpVhy14OWjof/7qPv3dBHFgYt0cP qJ6o6+hbkZpIWPfV/NvxDu4gYNhIfgndAAAAAElFTkSuQmCC" style="stroke-width:.91666663;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="8.467" width="8.467" transform="translate(2.249 3.307)"/>
+    </g>
+</svg>

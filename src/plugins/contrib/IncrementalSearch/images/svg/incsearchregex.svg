@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
+    <defs>
+        <radialGradient xlink:href="#a" id="b" cx="1.521" cy="295.479" fx="1.521" fy="295.479" r=".728" gradientUnits="userSpaceOnUse"/>
+        <linearGradient id="a">
+            <stop style="stop-color:#103f70;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#1860ab;stop-opacity:.90980393" offset="1"/>
+        </linearGradient>
+    </defs>
+    <g transform="translate(0 -288.533)">
+        <image y="288.93" x="-9.79" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAANpJREFUOMvt 1D1KBEEUBOBvFyPjBRPxBBvpATYxHYxMREORBQ/QR5gDqKAbuxfo1HQjBT3CgkbSsZk/yQsmMBhm mMT1QQWvul9RXd00/7U5Nanq7zb7xkMZ2Grh8ASHuCw5fTT4bVzhoeS07OJ4hjM8Tqp6GqJTPAU/ +21o1DLXXcxxij284h7XJae3Phl/BcaNuc/gul3epKpvsMYxqqCr6Nex3snxCksclJxeoOT0jP3g V3/jHQ9Wo8YRj3Ab7XnJKfcRbkZxh53Aoq/jwTJuCs/xHrjYvH/7BzJUNe4OIFywAAAAAElFTkSu QmCC" style="stroke-width:.68749994;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="8.467" width="8.467"/>
+        <circle style="fill:url(#b);fill-opacity:1;stroke:none;stroke-width:.26458335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="1.521" cy="295.479" r=".728"/>
+        <text xml:space="preserve" style="font-style:normal;font-weight:400;font-size:8.55510616px;line-height:1.25;font-family:sans-serif;letter-spacing:0;word-spacing:0;fill:#144d88;fill-opacity:1;stroke:none;stroke-width:.26458341" x="2.706" y="291.821" transform="scale(.98308 1.01721)"><tspan x="2.706" y="291.821" style="fill:#144d88;fill-opacity:1;stroke-width:.26458341">*</tspan></text>
+    </g>
+</svg>

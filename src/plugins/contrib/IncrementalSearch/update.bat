@@ -10,9 +10,13 @@ rem $Id: update.bat 7443 2011-09-01 16:29:16Z mortenmacfly $
 rem $HeadURL: https://mortenmacfly@svn.berlios.de/svnroot/repos/codeblocks/trunk/src/plugins/contrib/IncrementalSearch/update.bat $
 rem
 
-md ..\..\..\devel\share\CodeBlocks\images\settings > nul 2>&1
-md ..\..\..\output\share\CodeBlocks\images\settings > nul 2>&1
-copy .\*.png ..\..\..\devel\share\CodeBlocks\images\settings\ > nul 2>&1
-copy .\*.png ..\..\..\output\share\CodeBlocks\images\settings\ > nul 2>&1
+set CB_DEVEL_DIR=devel%1
+set CB_OUTPUT_DIR=output%1
+set CB_DEVEL_RESDIR=%CB_DEVEL_DIR%\share\CodeBlocks
+set CB_OUTPUT_RESDIR=%CB_OUTPUT_DIR%\share\CodeBlocks
+md ..\..\..\%CB_DEVEL_RESDIR%\images\settings > nul 2>&1
+md ..\..\..\%CB_OUTPUT_RESDIR%\images\settings > nul 2>&1
+copy .\*.png ..\..\..\%CB_DEVEL_RESDIR%\images\settings\ > nul 2>&1
+copy .\*.png ..\..\..\%CB_OUTPUT_RESDIR%\images\settings\ > nul 2>&1
 exit 0
 

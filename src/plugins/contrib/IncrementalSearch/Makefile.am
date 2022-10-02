@@ -64,6 +64,7 @@ resources_forZIP = \
 	images/32x32/incsearchprev.png \
 	images/32x32/incsearchregex.png \
 	images/32x32/incsearchselectedonly.png \
+    \
 	images/40x40/incsearchcase.png \
 	images/40x40/incsearchclear.png \
 	images/40x40/incsearchfocus.png \
@@ -72,6 +73,7 @@ resources_forZIP = \
 	images/40x40/incsearchprev.png \
 	images/40x40/incsearchregex.png \
 	images/40x40/incsearchselectedonly.png \
+    \
 	images/48x48/incsearchcase.png \
 	images/48x48/incsearchclear.png \
 	images/48x48/incsearchfocus.png \
@@ -80,6 +82,7 @@ resources_forZIP = \
 	images/48x48/incsearchprev.png \
 	images/48x48/incsearchregex.png \
 	images/48x48/incsearchselectedonly.png \
+    \
 	images/56x56/incsearchcase.png \
 	images/56x56/incsearchclear.png \
 	images/56x56/incsearchfocus.png \
@@ -88,6 +91,7 @@ resources_forZIP = \
 	images/56x56/incsearchprev.png \
 	images/56x56/incsearchregex.png \
 	images/56x56/incsearchselectedonly.png \
+    \
 	images/64x64/incsearchcase.png \
 	images/64x64/incsearchclear.png \
 	images/64x64/incsearchfocus.png \
@@ -95,7 +99,16 @@ resources_forZIP = \
 	images/64x64/incsearchnext.png \
 	images/64x64/incsearchprev.png \
 	images/64x64/incsearchregex.png \
-	images/64x64/incsearchselectedonly.png
+	images/64x64/incsearchselectedonly.png \
+    \
+	images/svg/incsearchcase.xvg \
+	images/svg/incsearchclear.svg \
+	images/svg/incsearchfocus.svg \
+	images/svg/incsearchhighlight.svg \
+	images/svg/incsearchnext.svg \
+	images/svg/incsearchprev.svg \
+	images/svg/incsearchregex.svg \
+	images/svg/incsearchselectedonly.svg
 
 EXTRA_DIST = \
 	$(srcdir)/*.cbp \

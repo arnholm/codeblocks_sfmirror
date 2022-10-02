@@ -46,6 +46,7 @@
 					<Add after="zip -Rq9 ..\..\..\devel31\share\codeblocks\IncrementalSearch.zip images\16x16\*.png images\20x20\*.png images\24x24\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel31\share\codeblocks\IncrementalSearch.zip images\28x28\*.png images\32x32\*.png images\40x40\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel31\share\codeblocks\IncrementalSearch.zip images\48x48\*.png images\56x56\*.png images\64x64\*.png" />
+					<Add after="zip -Rq9 ..\..\..\devel31\share\codeblocks\IncrementalSearch.zip images\svg\*.svg" />
 					<Add after="update31.bat" />
 					<Mode after="always" />
 				</ExtraCommands>
