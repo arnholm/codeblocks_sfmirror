@@ -281,7 +281,7 @@ GOTO:EOF
 
 :copySvgFiles - create a directory and copy avg files to it
 setlocal
-echo Copy svg files from %~1 to %~1
+echo Copy svg files from %~1 to %~2
 call:mkdirSilent %~2\svg
 xcopy /D /y %~1\svg\*.svg %~2\svg > nul
 endlocal
