@@ -1199,9 +1199,9 @@ wxBitmapBundle cbLoadBitmapBundleFromSVG(const wxString& filename, const wxSize&
             const size_t dataSize = is->GetSize();
             if (dataSize)
             {
-                char *data = new char[dataSize];
+                wxByte *data = new wxByte[dataSize];
                 if (is->ReadAll(data, dataSize))
-                    bundle = wxBitmapBundle::FromSVG(data, size);
+                    bundle = wxBitmapBundle::FromSVG(data, dataSize, size);
 
                 delete [] data;
             }
