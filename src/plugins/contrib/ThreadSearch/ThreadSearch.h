@@ -58,7 +58,7 @@ public:
       * Notice that you can logically OR more than one configuration groups,
       * so you could set it, for example, as "cgCompiler | cgContribPlugin".
       */
-    virtual int GetConfigurationGroup() const override { return cgContribPlugin; }
+    virtual int GetConfigurationGroup() const override { return cgEditor; }
 
     /** Return plugin's configuration panel.
       * @param parent The parent window.
