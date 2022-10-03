@@ -287,7 +287,7 @@ void IncrementalSearch::BuildMenu(wxMenuBar* menuBar)
         wxBitmapBundle image = cbLoadBitmapBundleFromSVG(prefix+"svg/incsearchfocus.svg", wxSize(16, 16));
 #else
         const int imageSize = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
-        prefix << wxString::Format("%dx%d/"), imageSize, imageSize);
+        prefix << wxString::Format("%dx%d/", imageSize, imageSize);
         wxBitmap image = cbLoadBitmap(prefix+"incsearchfocus.png");
 #endif
         itemTmp->SetBitmap(image);
