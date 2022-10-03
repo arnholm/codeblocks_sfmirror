@@ -97,7 +97,15 @@ resources_forZIP = \
 	images/64x64/configure.png \
 	images/64x64/doxywizard.png \
 	images/64x64/extract.png \
-	images/64x64/html.png
+	images/64x64/html.png \
+	\
+	images/svg/chm.svg \
+	images/svg/comment_block.svg \
+	images/svg/comment_line.svg \
+	images/svg/configure.svg \
+	images/svg/doxywizard.svg \
+	images/svg/extract.svg \
+	images/svg/html.svg
 
 EXTRA_DIST = $(srcdir)/*.cbp \
 		wxsmith/ConfigPanel.wxs \

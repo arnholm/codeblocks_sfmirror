@@ -538,56 +538,71 @@ void DoxyBlocks::BuildMenu(wxMenuBar *menuBar)
 //    NotImplemented(wxT("DoxyBlocks::BuildMenu()"));
 
     int idx = menuBar->FindMenu(_("P&lugins"));
-    if(idx != wxNOT_FOUND){
+    if(idx != wxNOT_FOUND)
+    {
         wxMenu *submenu = new wxMenu;
-        const wxString sDataFolder(ConfigManager::GetDataFolder());
+        wxString prefix(ConfigManager::GetDataFolder() + "/DoxyBlocks.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxSize uiSize(16, 16);
+        prefix << "svg/";
+        wxBitmapBundle bmpDoxyWizard(cbLoadBitmapBundleFromSVG(prefix + "doxywizard.svg", uiSize));
+        wxBitmapBundle bmpExtract(cbLoadBitmapBundleFromSVG(prefix + "extract.svg", uiSize));
+        wxBitmapBundle bmpBlockComment(cbLoadBitmapBundleFromSVG(prefix + "comment_block.svg", uiSize));
+        wxBitmapBundle bmpLineComment(cbLoadBitmapBundleFromSVG(prefix + "comment_line.svg", uiSize));
+        wxBitmapBundle bmpRunHTML(cbLoadBitmapBundleFromSVG(prefix + "html.svg", uiSize));
+        wxBitmapBundle bmpRunCHM(cbLoadBitmapBundleFromSVG(prefix + "chm.svg", uiSize));
+        wxBitmapBundle bmpConfig(cbLoadBitmapBundleFromSVG(prefix + "configure.svg", uiSize));
+#else
         const int imageSize = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
-        const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
-        const wxString prefix = sDataFolder
-                              + wxString::Format(wxT("/DoxyBlocks.zip#zip:images/%dx%d/"),
-                                                 imageSize, imageSize);
+        const wxSize uiSize(imageSize, imageSize);
+        prefix << wxString::Format("%dx%d/", imageSize, imageSize);
+        wxBitmap bmpDoxyWizard(cbLoadBitmap(prefix + "doxywizard.png"));
+        wxBitmap bmpExtract(cbLoadBitmap(prefix + "extract.png"));
+        wxBitmap bmpBlockComment(cbLoadBitmap(prefix + "comment_block.png"));
+        wxBitmap bmpLineComment(cbLoadBitmap(prefix + "comment_line.png"));
+        wxBitmap bmpRunHTML(cbLoadBitmap(prefix + "html.png"));
+        wxBitmap bmpRunCHM(cbLoadBitmap(prefix + "chm.png"));
+        wxBitmap bmpConfig(cbLoadBitmap(prefix + "configure.png"));
+#endif
 
         wxMenuItem *MenuItemDoxywizard = new wxMenuItem(submenu, ID_MENU_DOXYWIZARD, _("&Doxywizard...\tCtrl-Shift-D"), _("Run doxywizard."));
-        MenuItemDoxywizard->SetBitmap(cbLoadBitmapScaled(prefix + wxT("doxywizard.png"),
-                                                         wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemDoxywizard->SetBitmap(bmpDoxyWizard);
         submenu->Append(MenuItemDoxywizard);
 
         wxMenuItem *MenuItemExtract = new wxMenuItem(submenu, ID_MENU_EXTRACTPROJECT, _("&Extract documentation"), _("Extract documentation for the current project."));
-        MenuItemExtract->SetBitmap(cbLoadBitmapScaled(prefix + wxT("extract.png"),
-                                                      wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemExtract->SetBitmap(bmpExtract);
         submenu->Append(MenuItemExtract);
+
         submenu->AppendSeparator();
 
         wxMenuItem *MenuItemBlockComment = new wxMenuItem(submenu, ID_MENU_BLOCKCOMMENT, _("&Block comment"), _("Insert a comment block at the current line."));
-        MenuItemBlockComment->SetBitmap(cbLoadBitmapScaled(prefix + wxT("comment_block.png"),
-                                                           wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemBlockComment->SetBitmap(bmpBlockComment);
         submenu->Append(MenuItemBlockComment);
 
         wxMenuItem *MenuItemLineComment = new wxMenuItem(submenu, ID_MENU_LINECOMMENT, _("&Line comment"), _("Insert a line comment at the current cursor position."));
-        MenuItemLineComment->SetBitmap(cbLoadBitmapScaled(prefix + wxT("comment_line.png"),
-                                                          wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemLineComment->SetBitmap(bmpLineComment);
         submenu->Append(MenuItemLineComment);
+
         submenu->AppendSeparator();
 
         wxMenuItem *MenuItemRunHTML = new wxMenuItem(submenu, ID_MENU_RUNHTML, _("Run &HTML\tCtrl-Shift-H"), _("Run HTML documentation."));
-        MenuItemRunHTML->SetBitmap(cbLoadBitmapScaled(prefix + wxT("html.png"),
-                                                      wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemRunHTML->SetBitmap(bmpRunHTML);
         submenu->Append(MenuItemRunHTML);
 
         wxMenuItem *MenuItemRunCHM = new wxMenuItem(submenu, ID_MENU_RUNCHM, _("Run &CHM"), _("Run CHM documentation."));
-        MenuItemRunCHM->SetBitmap(cbLoadBitmapScaled(prefix + wxT("chm.png"), wxBITMAP_TYPE_PNG,
-                                                     uiScaleFactor));
+        MenuItemRunCHM->SetBitmap(bmpRunCHM);
         submenu->Append(MenuItemRunCHM);
+
         submenu->AppendSeparator();
 
         wxMenuItem *MenuItemConfig = new wxMenuItem(submenu, ID_MENU_CONFIG, _("Open &preferences..."), _("Open DoxyBlocks' preferences."));
-        MenuItemConfig->SetBitmap(cbLoadBitmapScaled(prefix + wxT("configure.png"),
-                                                     wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemConfig->SetBitmap(bmpConfig);
         submenu->Append(MenuItemConfig);
+
         submenu->AppendSeparator();
 
-        wxBitmap bmpFileOpen = wxArtProvider::GetBitmap(wxT("core/file_open"), wxART_MENU);
-        wxBitmap bmpFileSave = wxArtProvider::GetBitmap(wxT("core/file_save"), wxART_MENU);
+        wxBitmap bmpFileOpen = wxArtProvider::GetBitmap("core/file_open", wxART_MENU, uiSize);
+        wxBitmap bmpFileSave = wxArtProvider::GetBitmap("core/file_save", wxART_MENU, uiSize);
 
         wxMenuItem *MenuItemLoadTemplate = new wxMenuItem(submenu, ID_MENU_LOAD_TEMPLATE, _("L&oad settings template"), _("Load saved settings template."));
         MenuItemLoadTemplate->SetBitmap(bmpFileOpen);
@@ -618,24 +633,31 @@ void DoxyBlocks::BuildModuleMenu(const ModuleType type, wxMenu *menu, const File
     //TIP: for consistency, add a separator as the first item...
 
     // Add the comment functions to the editor's context-sensitive menu.
-    if(type == mtEditorManager){
+    if(type == mtEditorManager)
+    {
         wxMenu *submenu = new wxMenu;
+        wxString prefix(ConfigManager::GetDataFolder() + "/DoxyBlocks.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxSize uiSize(16, 16);
+        prefix << "svg/";
+        wxBitmapBundle bmpBlockComment(cbLoadBitmapBundleFromSVG(prefix + "comment_block.svg", uiSize));
+        wxBitmapBundle bmpLineComment(cbLoadBitmapBundleFromSVG(prefix + "comment_line.svg", uiSize));
+#else
         const int imageSize = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
-        const int uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
-        const wxString prefix = ConfigManager::GetDataFolder()
-                              + wxString::Format(wxT("/DoxyBlocks.zip#zip:images/%dx%d/"),
-                                                 imageSize, imageSize);
+        const wxSize uiSize(imageSize, imageSize);
+        prefix << wxString::Format("%dx%d/", imageSize, imageSize);
+        wxBitmap bmpBlockComment(cbLoadBitmap(prefix + "comment_block.png"));
+        wxBitmap bmpLineComment(cbLoadBitmap(prefix + "comment_line.png"));
+#endif
 
         wxMenuItem *MenuItemBlockComment = new wxMenuItem(submenu, ID_MENU_BLOCKCOMMENT, _("&Block Comment"), _("Insert a comment block at the current line."));
-        MenuItemBlockComment->SetBitmap(cbLoadBitmapScaled(prefix + wxT("comment_block.png"),
-                                                           wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemBlockComment->SetBitmap(bmpBlockComment);
         submenu->Append(MenuItemBlockComment);
         wxMenuItem *MenuItemLineComment = new wxMenuItem(submenu, ID_MENU_LINECOMMENT, _("&Line Comment"), _("Insert a line comment at the current cursor position."));
-        MenuItemLineComment->SetBitmap(cbLoadBitmapScaled(prefix + wxT("comment_line.png"),
-                                                          wxBITMAP_TYPE_PNG, uiScaleFactor));
+        MenuItemLineComment->SetBitmap(bmpLineComment);
         submenu->Append(MenuItemLineComment);
 
-        const wxString label = wxT("Do&xyBlocks");
+        const wxString label("Do&xyBlocks");
         const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
         menu->Insert(position, wxID_ANY, label, submenu);
         // Events are already attached to these IDs in BuildMenu().
@@ -647,48 +669,40 @@ bool DoxyBlocks::BuildToolBar(wxToolBar *toolBar)
     if(!IsAttached() || !toolBar)
         return false;
 
+    wxString prefix(ConfigManager::GetDataFolder() + "/DoxyBlocks.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+    const wxSize uiSize(16, 16);
+    prefix << "svg/";
+    wxBitmapBundle bmpDoxyWizard(cbLoadBitmapBundleFromSVG(prefix + "doxywizard.svg", uiSize));
+    wxBitmapBundle bmpExtract(cbLoadBitmapBundleFromSVG(prefix + "extract.svg", uiSize));
+    wxBitmapBundle bmpBlockComment(cbLoadBitmapBundleFromSVG(prefix + "comment_block.svg", uiSize));
+    wxBitmapBundle bmpLineComment(cbLoadBitmapBundleFromSVG(prefix + "comment_line.svg", uiSize));
+    wxBitmapBundle bmpRunHTML(cbLoadBitmapBundleFromSVG(prefix + "html.svg", uiSize));
+    wxBitmapBundle bmpRunCHM(cbLoadBitmapBundleFromSVG(prefix + "chm.svg", uiSize));
+    wxBitmapBundle bmpConfig(cbLoadBitmapBundleFromSVG(prefix + "configure.svg", uiSize));
+#else
+    const int imageSize = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
+    prefix << wxString::Format("%dx%d/", imageSize, imageSize);
+    wxBitmap bmpDoxyWizard(cbLoadBitmap(prefix + "doxywizard.png"));
+    wxBitmap bmpExtract(cbLoadBitmap(prefix + "extract.png"));
+    wxBitmap bmpBlockComment(cbLoadBitmap(prefix + "comment_block.png"));
+    wxBitmap bmpLineComment(cbLoadBitmap(prefix + "comment_line.png"));
+    wxBitmap bmpRunHTML(cbLoadBitmap(prefix + "html.png"));
+    wxBitmap bmpRunCHM(cbLoadBitmap(prefix + "chm.png"));
+    wxBitmap bmpConfig(cbLoadBitmap(prefix + "configure.png"));
+#endif
+
     m_pToolbar = toolBar;
-    const int toolbarSize = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
-    const wxString prefix = ConfigManager::GetDataFolder()
-                          + wxString::Format(wxT("/DoxyBlocks.zip#zip:images/%dx%d/"),
-                                             toolbarSize, toolbarSize);
-
-    const double scalingFactor = cbGetContentScaleFactor(*m_pToolbar);
-
-    m_pToolbar->AddTool(ID_TB_WIZARD, _("Doxywizard"),
-                        cbLoadBitmapScaled(prefix + wxT("doxywizard.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL, _("Run doxywizard"));
-    m_pToolbar->AddTool(ID_TB_EXTRACTPROJECT, _("Document project"),
-                        cbLoadBitmapScaled(prefix + wxT("extract.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL,
-                        _("Extract documentation for the current project"));
+    m_pToolbar->AddTool(ID_TB_WIZARD, _("Doxywizard"), bmpDoxyWizard, wxNullBitmap, wxITEM_NORMAL, _("Run doxywizard"));
+    m_pToolbar->AddTool(ID_TB_EXTRACTPROJECT, _("Document project"), bmpExtract, wxNullBitmap, wxITEM_NORMAL, _("Extract documentation for the current project"));
     m_pToolbar->AddSeparator();
-    m_pToolbar->AddTool(ID_TB_BLOCKCOMMENT, _("Block Comment"),
-                        cbLoadBitmapScaled(prefix + wxT("comment_block.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL,
-                        _("Insert a comment block at the current line"));
-    m_pToolbar->AddTool(ID_TB_LINECOMMENT, _("Line Comment"),
-                        cbLoadBitmapScaled(prefix + wxT("comment_line.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL,
-                        _("Insert a line comment at the current cursor position"));
+    m_pToolbar->AddTool(ID_TB_BLOCKCOMMENT, _("Block Comment"), bmpBlockComment, wxNullBitmap, wxITEM_NORMAL, _("Insert a comment block at the current line"));
+    m_pToolbar->AddTool(ID_TB_LINECOMMENT, _("Line Comment"), bmpLineComment, wxNullBitmap, wxITEM_NORMAL, _("Insert a line comment at the current cursor position"));
     m_pToolbar->AddSeparator();
-    m_pToolbar->AddTool(ID_TB_RUNHTML, _("Run HTML"),
-                        cbLoadBitmapScaled(prefix + wxT("html.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL, _("Run HTML documentation"));
-    m_pToolbar->AddTool(ID_TB_RUNCHM, _("Run CHM"),
-                        cbLoadBitmapScaled(prefix + wxT("chm.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL, _("Run HTML Help documentation"));
+    m_pToolbar->AddTool(ID_TB_RUNHTML, _("Run HTML"), bmpRunHTML, wxNullBitmap, wxITEM_NORMAL, _("Run HTML documentation"));
+    m_pToolbar->AddTool(ID_TB_RUNCHM, _("Run CHM"), bmpRunCHM, wxNullBitmap, wxITEM_NORMAL, _("Run HTML Help documentation"));
     m_pToolbar->AddSeparator();
-    m_pToolbar->AddTool(ID_TB_CONFIG, _("Open Preferences"),
-                        cbLoadBitmapScaled(prefix + wxT("configure.png"), wxBITMAP_TYPE_PNG,
-                                           scalingFactor),
-                        wxNullBitmap, wxITEM_NORMAL, _("Open DoxyBlocks' preferences"));
+    m_pToolbar->AddTool(ID_TB_CONFIG, _("Open Preferences"), bmpConfig, wxNullBitmap, wxITEM_NORMAL, _("Open DoxyBlocks' preferences"));
     m_pToolbar->Realize();
     m_pToolbar->SetInitialSize();
 
