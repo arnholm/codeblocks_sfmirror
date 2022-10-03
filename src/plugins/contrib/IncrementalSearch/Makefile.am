@@ -101,7 +101,7 @@ resources_forZIP = \
 	images/64x64/incsearchregex.png \
 	images/64x64/incsearchselectedonly.png \
     \
-	images/svg/incsearchcase.xvg \
+	images/svg/incsearchcase.svg \
 	images/svg/incsearchclear.svg \
 	images/svg/incsearchfocus.svg \
 	images/svg/incsearchhighlight.svg \
