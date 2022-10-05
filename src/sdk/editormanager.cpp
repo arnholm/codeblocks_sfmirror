@@ -109,7 +109,11 @@ struct EditorManagerInternalData
     /* Static data */
 
     EditorManager* m_pOwner;
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmapBundle m_ReadonlyIcon;
+#else
     wxBitmap m_ReadonlyIcon;
+#endif
     bool m_SetFocusFlag;
 };
 
@@ -1065,17 +1069,24 @@ void EditorManager::MarkReadOnly(int page, bool readOnly)
         // The file is read-only and we don't have an image loaded - load it now.
         if (readOnly && !m_pData->m_ReadonlyIcon.IsOk())
         {
-            const int targetHeight = floor(16 * cbGetActualContentScaleFactor(*m_pNotebook));
+            wxString prefix(ConfigManager::GetDataFolder() + "/manager_resources.zip#zip:/images/");
+#if wxCHECK_VERSION(3, 1, 6)
+            prefix << "svg/";
+            m_pData->m_ReadonlyIcon = cbLoadBitmapBundleFromSVG(prefix + "readonly.svg", wxSize(16, 16));
+#else
+            const int targetHeight = wxRound(16 * cbGetActualContentScaleFactor(*m_pNotebook));
             const int size = cbFindMinSize16to64(targetHeight);
-
-            const wxString path = ConfigManager::GetDataFolder()
-                                + wxString::Format(wxT("/manager_resources.zip#zip:/images/%dx%d/readonly.png"),
-                                                   size, size);
-
-            m_pData->m_ReadonlyIcon = cbLoadBitmapScaled(path, wxBITMAP_TYPE_PNG,
-                                                         cbGetContentScaleFactor(*m_pNotebook));
+            prefix << wxString::Format("%dx%d/", size, size);
+            m_pData->m_ReadonlyIcon = cbLoadBitmap(prefix + "readonly.png");
+#endif
         }
+
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmapBundle bmp = readOnly ? m_pData->m_ReadonlyIcon : wxBitmapBundle();
+#else
         wxBitmap bmp = readOnly ? m_pData->m_ReadonlyIcon : wxNullBitmap;
+#endif
+
         if (m_pNotebook)
             m_pNotebook->SetPageBitmap(page, bmp);
     }

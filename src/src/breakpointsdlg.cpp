@@ -90,20 +90,28 @@ BreakpointsDlg::BreakpointsDlg() :
     // Setup the image list for the enabled/disabled icons.
     m_icons.Create(imageListSize, imageListSize, true);
 
-    const wxString basepath = ConfigManager::GetDataFolder()
-                            + wxString::Format("/manager_resources.zip#zip:/images/%dx%d/", imageListSize, imageListSize);
+    wxString prefix(ConfigManager::GetDataFolder() + "/manager_resources.zip#zip:/images/");
+#if wxCHECK_VERSION(3, 1, 6)
+    prefix << "svg/";
+    const wxSize baseSize(12, 12);
+    const wxSize listSize(imageListSize, imageListSize);
+    wxBitmap icon1 = cbLoadBitmapBundleFromSVG(prefix + "breakpoint.svg", baseSize).GetBitmap(listSize);
+    wxBitmap icon2 = cbLoadBitmapBundleFromSVG(prefix + "breakpoint_disabled.svg", baseSize).GetBitmap(listSize);
+    wxBitmap icon3 = cbLoadBitmapBundleFromSVG(prefix + "breakpoint_other.svg", baseSize).GetBitmap(listSize);
+#else
+    prefix << wxString::Format("%dx%d/", imageListSize, imageListSize);
+    wxBitmap icon1 = cbLoadBitmap(prefix + "breakpoint.png");
+    wxBitmap icon2 = cbLoadBitmap(prefix + "breakpoint_disabled.png");
+    wxBitmap icon3 = cbLoadBitmap(prefix + "breakpoint_other.png");
+#endif
+    if (icon1.IsOk())
+        m_icons.Add(icon1);
 
-    wxBitmap icon = cbLoadBitmap(basepath + "breakpoint.png", wxBITMAP_TYPE_PNG);
-    if (icon.IsOk())
-        m_icons.Add(icon);
+    if (icon2.IsOk())
+        m_icons.Add(icon2);
 
-    icon = cbLoadBitmap(basepath + "breakpoint_disabled.png", wxBITMAP_TYPE_PNG);
-    if (icon.IsOk())
-        m_icons.Add(icon);
-
-    icon = cbLoadBitmap(basepath + "breakpoint_other.png", wxBITMAP_TYPE_PNG);
-    if (icon.IsOk())
-        m_icons.Add(icon);
+    if (icon3.IsOk())
+        m_icons.Add(icon3);
 
     m_pList->SetImageList(&m_icons, wxIMAGE_LIST_SMALL);
 
