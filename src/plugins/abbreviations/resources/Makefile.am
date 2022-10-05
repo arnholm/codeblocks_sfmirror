@@ -12,8 +12,8 @@ EXTRA_DIST = \
 	images/48x48/arrow.png \
 	images/56x56/arrow.png \
 	images/64x64/arrow.png \
+    images/svg/arrow.svg \
 	manifest.xml
 
 abbreviations.zip: $(EXTRA_DIST)
 	PWD=`pwd` cd $(srcdir) && zip $(PWD)/abbreviations.zip $(EXTRA_DIST) > /dev/null
-
