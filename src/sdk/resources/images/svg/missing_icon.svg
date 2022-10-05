@@ -1,0 +1,14 @@
+<svg xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 4.233 4.233">
+    <defs>
+        <linearGradient id="a" osb:paint="solid">
+            <stop style="stop-color:#008400;stop-opacity:.42446044" offset="0"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="b" x1="0" y1="294.883" x2="4.233" y2="294.883" gradientUnits="userSpaceOnUse"/>
+    </defs>
+    <g transform="translate(0 -292.767)">
+        <circle style="opacity:1;fill:#fc0000;fill-opacity:1;fill-rule:evenodd;paint-order:markers fill stroke;stroke:url(#b);stroke-opacity:1" cx="2.117" cy="294.883" r="0"/>
+        <circle style="opacity:1;fill:#000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.00012493;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" cx="2.117" cy="294.883" r="2.117"/>
+        <circle style="opacity:1;fill:red;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.00012493;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" cx="2.117" cy="294.883" r="1.852"/>
+        <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:4.48713827px;line-height:125%;font-family:'Adobe New Century Schoolbook';-inkscape-font-specification:'Adobe New Century Schoolbook';letter-spacing:0;word-spacing:0;fill:#000;fill-opacity:1;stroke:none;stroke-width:.26458329px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x=".888" y="292.558" transform="scale(.9868 1.01337)"><tspan x=".888" y="292.558" style="stroke-width:.26458329px">?</tspan></text>
+    </g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467">
+    <g transform="translate(0 -288.533)">
+        <image y="288.533" x="-8.996" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAAAAAClZ7nPAAAAAXRS TlMAQObYZgAAABpJREFUCNdjYIAB5gMMbAkMLApQxP8BHYEBAIzTB5DcSwytAAAAAElFTkSuQmCC" style="stroke-width:.50000107;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="8.467" width="8.467"/>
+        <path style="opacity:1;fill:#000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.19843751;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke" d="M2.117 292.767H6.35v3.175H2.117z"/>
+        <path style="fill:#000;fill-opacity:1;fill-rule:evenodd;stroke:#000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M2.646 292.766v-.587c0-.882.264-2.058 1.455-2.058h.265c1.19 0 1.455 1.176 1.455 2.058v.587h-.53v-.587c0-.882-.264-1.529-.925-1.529H4.1c-.661 0-.926.646-.926 1.529v.588z"/>
+    </g>
+</svg>

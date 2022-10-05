@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32">
+    <defs>
+        <linearGradient id="b">
+            <stop style="stop-color:#000;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#000;stop-opacity:0" offset="1"/>
+        </linearGradient>
+        <linearGradient id="a">
+            <stop style="stop-color:#334250;stop-opacity:1" offset="0"/>
+            <stop style="stop-color:#6786a4;stop-opacity:1" offset="1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="c" x1="20" y1="1039.862" x2="8" y2="1023.362" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.29167 0 0 1.29167 -1.437 -297.752)"/>
+        <linearGradient xlink:href="#b" id="d" x1="-28.5" y1="1036.196" x2="-7.167" y2="1036.196" gradientUnits="userSpaceOnUse"/>
+    </defs>
+    <g transform="translate(0 -1020.362)" style="display:inline">
+        <circle style="fill:url(#c);fill-opacity:1;stroke:#344453;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="16" cy="1036.362" r="15.5"/>
+        <image y="1025.529" x="-28.5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI WXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QwYCDc0jYkyGQAAAbVJREFUOMulk01qVEEUhb9673Wn sWO3dlBExYmik4BB0aHJxB0Ib+AKsgCF7CC0C8gW0uAOBKGHUYRMnTkRJJEO/sRXf7fKQZdt2Xk4 yYXiFnXrnDrcU1fFGDlPVACPnj5rq5XAw7T/AMjyhfdvXlO0ADeBfaWU7w9HB/3B5QOllAf2U+2s gixedFZ641t373PpynViEEIQggizo8/1l08fa+/sS+DVH0CuYLPqrozvPXjCYO0q3lmcNTijcUbT vzjkxu11yqoa50pygu2bd9YpywpvLd5qXFrWaqxuiFEYrl0D2F4mGJVVp14djOYgo7Emy7rBmgar G6pOF1UUNTDKe7DRu7CKc4YgHvF+nsUTvEN82qdaUZRICBvA20UTYwg40/wDFp8IMnAQT4zhjAuH uvmJ1b8IIulFR8hfFj+vpQwc5gSzIDL5cfK17nR7f6WLZGC/sBSYALNlF/a+nxwzV9JgMxe81ckZ S/r6e202TmMIO6ffZtjmdOG/swbvLCIepRTADjBtIwDYjTFuOWcm3tnUsIgqSoqynKDUFrD7v69M Yp8Cz1HqsZqfvWsbJgB13nH+DRY3PCSye3WFAAAAAElFTkSuQmCC" style="image-rendering:optimizeSpeed;fill:url(#d);fill-opacity:1" preserveAspectRatio="none" height="21.333" width="21.333"/>
+    </g>
+</svg>
