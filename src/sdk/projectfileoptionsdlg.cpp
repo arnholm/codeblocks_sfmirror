@@ -41,7 +41,6 @@
 #include <wx/textfile.h>
 
 BEGIN_EVENT_TABLE(ProjectFileOptionsDlg, wxScrollingDialog)
-    EVT_CHECKBOX (XRCID("chkReadOnly"), ProjectFileOptionsDlg::OnReadOnlyCheck)
     EVT_CHOICE   (XRCID("cmbBuildStageCompiler"), ProjectFileOptionsDlg::OnCompilerCombo)
     EVT_UPDATE_UI(-1, ProjectFileOptionsDlg::OnUpdateUI)
 END_EVENT_TABLE()
@@ -216,30 +215,6 @@ ProjectFileOptionsDlg::~ProjectFileOptionsDlg()
 {
 }
 
-void ProjectFileOptionsDlg::OnReadOnlyCheck(wxCommandEvent& event)
-{
-    if (m_FileNameStr.IsEmpty() || !m_FileName.FileExists())
-        return;
-
-    if (event.IsChecked())
-    {
-        // make read-only
-        if ( !ToggleFileReadOnly(true) )
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Unable to set file '%s' read-only (probably missing access rights)."), m_FileNameStr.wx_str()));
-    }
-    else
-    {
-        // make writeable
-        if ( !ToggleFileReadOnly(false) )
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Unable to set file '%s' writeable (probably missing access rights)."), m_FileNameStr.wx_str()));
-    }
-
-    // Update UI
-    XRCCTRL(*this, "chkReadOnly", wxCheckBox)->SetValue(!m_FileName.IsFileWritable());
-
-    Manager::Get()->GetEditorManager()->CheckForExternallyModifiedFiles();
-}
-
 void ProjectFileOptionsDlg::OnCompilerCombo(wxCommandEvent& event)
 {
     if (m_LastBuildStageCompilerSel != event.GetSelection())
@@ -300,6 +275,19 @@ void ProjectFileOptionsDlg::EndModal(int retCode)
         cbProject* prj = m_ProjectFile->GetParentProject();
         prj->SetModified(true);
         Manager::Get()->GetProjectManager()->GetUI().RebuildTree();
+
+        // Check if read-only status has changed
+        const bool readOnlyStatus = XRCCTRL(*this, "chkReadOnly", wxCheckBox)->GetValue();
+        if (readOnlyStatus != m_ReadOnlyInitialStatus)
+        {
+            if (!m_FileNameStr.empty() && m_FileName.FileExists())
+            {
+                if (ToggleFileReadOnly(readOnlyStatus))
+                    Manager::Get()->GetEditorManager()->CheckForExternallyModifiedFiles();
+                else
+                    Manager::Get()->GetLogManager()->DebugLog(F(_T("Unable to set file '%s' %s (probably missing access rights)."), m_FileNameStr, readOnlyStatus ? _("read-only") : _("writeable")));
+            }
+        }
     }
 
     wxScrollingDialog::EndModal(retCode);
@@ -339,7 +327,9 @@ void ProjectFileOptionsDlg::FillGeneralProperties()
         XRCCTRL(*this, "staticFileSize", wxStaticText)->GetContainingSizer()->Layout();
         file.Close();
     }
-    XRCCTRL(*this, "chkReadOnly", wxCheckBox)->SetValue(!m_FileName.IsFileWritable());
+
+    m_ReadOnlyInitialStatus = !m_FileName.IsFileWritable();
+    XRCCTRL(*this, "chkReadOnly", wxCheckBox)->SetValue(m_ReadOnlyInitialStatus);
     wxDateTime modTime = m_FileName.GetModificationTime();
     XRCCTRL(*this, "staticDateTimeStamp", wxStaticText)->SetLabel(
         wxString::Format(_("%02hd/%02hd/%d %02hd:%02hd:%02hd"), modTime.GetDay(),
