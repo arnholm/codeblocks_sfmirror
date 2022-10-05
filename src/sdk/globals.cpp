@@ -1778,32 +1778,32 @@ std::unique_ptr<wxImageList> cbProjectTreeImages::MakeImageList(int baseSize, wx
         // NOTE: Keep in sync with FileVisualState in globals.h!
 
         // The following are related to (editable, source-) file states
-        "file.png",                  // fvsNormal
-        "file-missing.png",          // fvsMissing,
-        "file-modified.png",         // fvsModified,
-        "file-readonly.png",         // fvsReadOnly,
+        "file",                  // fvsNormal
+        "file-missing",          // fvsMissing,
+        "file-modified",         // fvsModified,
+        "file-readonly",         // fvsReadOnly,
 
         // The following are related to version control systems (vc)
-        "rc-file-added.png",         // fvsVcAdded,
-        "rc-file-conflict.png",      // fvsVcConflict,
-        "rc-file-missing.png",       // fvsVcMissing,
-        "rc-file-modified.png",      // fvsVcModified,
-        "rc-file-outofdate.png",     // fvsVcOutOfDate,
-        "rc-file-uptodate.png",      // fvsVcUpToDate,
-        "rc-file-requireslock.png",  // fvsVcRequiresLock,
-        "rc-file-external.png",      // fvsVcExternal,
-        "rc-file-gotlock.png",       // fvsVcGotLock,
-        "rc-file-lockstolen.png",    // fvsVcLockStolen,
-        "rc-file-mismatch.png",      // fvsVcMismatch,
-        "rc-file-noncontrolled.png", // fvsVcNonControlled,
+        "rc-file-added",         // fvsVcAdded,
+        "rc-file-conflict",      // fvsVcConflict,
+        "rc-file-missing",       // fvsVcMissing,
+        "rc-file-modified",      // fvsVcModified,
+        "rc-file-outofdate",     // fvsVcOutOfDate,
+        "rc-file-uptodate",      // fvsVcUpToDate,
+        "rc-file-requireslock",  // fvsVcRequiresLock,
+        "rc-file-external",      // fvsVcExternal,
+        "rc-file-gotlock",       // fvsVcGotLock,
+        "rc-file-lockstolen",    // fvsVcLockStolen,
+        "rc-file-mismatch",      // fvsVcMismatch,
+        "rc-file-noncontrolled", // fvsVcNonControlled,
 
         // The following are related to C::B workspace/project/folder/virtual
-        "workspace.png",             // fvsWorkspace,         WorkspaceIconIndex()
-        "workspace-readonly.png",    // fvsWorkspaceReadOnly, WorkspaceIconIndex(true)
-        "project.png",               // fvsProject,           ProjectIconIndex()
-        "project-readonly.png",      // fvsProjectReadOnly,   ProjectIconIndex(true)
-        "folder_open.png",           // fvsFolder,            FolderIconIndex()
-        "vfolder_open.png",          // fvsVirtualFolder,     VirtualFolderIconIndex()
+        "workspace",             // fvsWorkspace,         WorkspaceIconIndex()
+        "workspace-readonly",    // fvsWorkspaceReadOnly, WorkspaceIconIndex(true)
+        "project",               // fvsProject,           ProjectIconIndex()
+        "project-readonly",      // fvsProjectReadOnly,   ProjectIconIndex(true)
+        "folder_open",           // fvsFolder,            FolderIconIndex()
+        "vfolder_open",          // fvsVirtualFolder,     VirtualFolderIconIndex()
     };
 
     const double scaleFactor = cbGetContentScaleFactor(treeParent);
@@ -1813,14 +1813,22 @@ std::unique_ptr<wxImageList> cbProjectTreeImages::MakeImageList(int baseSize, wx
     int imageListSize;
     std::unique_ptr<wxImageList> images = cbMakeScaledImageList(size, scaleFactor, imageListSize);
 
-    const wxString prefix = ConfigManager::ReadDataPath()
-                          + wxString::Format("/resources.zip#zip:images/tree/%dx%d/", imageListSize, imageListSize);
-
+    wxString prefix(ConfigManager::ReadDataPath() + "/resources.zip#zip:images/tree/");
+#if wxCHECK_VERSION(3, 1, 6)
+    prefix << "svg/";
     for (const wxString &img : imgs)
     {
-        wxBitmap bmp = cbLoadBitmap(prefix + img, wxBITMAP_TYPE_PNG);
+        wxBitmap bmp = cbLoadBitmapBundleFromSVG(prefix + img + ".svg", wxSize(baseSize, baseSize)).GetBitmap(wxSize(imageListSize, imageListSize));
         cbAddBitmapToImageList(*images, bmp, imageListSize, imageListSize, scaleFactor);
     }
+#else
+    prefix << wxString::Format("%dx%d/", imageListSize, imageListSize);
+    for (const wxString &img : imgs)
+    {
+        wxBitmap bmp = cbLoadBitmap(prefix + img + ".png");
+        cbAddBitmapToImageList(*images, bmp, imageListSize, imageListSize, scaleFactor);
+    }
+#endif
 
     return images;
 }
