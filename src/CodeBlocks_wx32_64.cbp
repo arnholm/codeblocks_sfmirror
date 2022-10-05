@@ -313,7 +313,7 @@
 				<ExtraCommands>
 					<Add after="cmd /c if not exist devel32_64\share\CodeBlocks mkdir devel32_64\share\CodeBlocks" />
 					<Add after="zip -jq9 devel32_64\share\CodeBlocks\compiler.zip plugins\compilergcc\resources\manifest.xml plugins\compilergcc\resources\*.xrc" />
-					<Add after='cmd /c &quot;cd plugins\compilergcc\resources &amp; zip -0 -q ..\..\..\devel32_64\share\CodeBlocks\compiler.zip images\*.png images\16x16\*.png&quot;' />
+					<Add after='cmd /c &quot;cd plugins\compilergcc\resources &amp; zip -0 -q ..\..\..\devel32_64\share\CodeBlocks\compiler.zip images\*.png images\16x16\*.png images\20x20\*.png images\24x24\*.png images\28x28\*.png images\32x32\*.png images\40x40\*.png images\48x48\*.png images\56x56\*.png images\64x64\*.png images\svg\*.svg&quot;' />
 					<Add after="cmd /c if not exist devel32_64\share\CodeBlocks\compilers mkdir devel32_64\share\CodeBlocks\compilers" />
 					<Add after="cmd /c xcopy /D /Y plugins\compilergcc\resources\compilers\*.* devel32_64\share\CodeBlocks\compilers" />
 					<Mode after="always" />
