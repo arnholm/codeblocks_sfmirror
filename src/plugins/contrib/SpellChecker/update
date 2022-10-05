@@ -10,12 +10,17 @@
 # $HeadURL: https://svn.code.sf.net/p/codeblocks/code/trunk/src/plugins/contrib/SpellChecker/update $
 #
 
-mkdir -p "../../../devel/share/codeblocks/SpellChecker"
-mkdir -p "../../../output/share/codeblocks/SpellChecker"
-cp *.png "../../../devel/share/codeblocks/images/settings/"
-cp *.png "../../../output/share/codeblocks/images/settings/"
-cp OnlineSpellChecking.xml  "../../../devel/share/codeblocks/SpellChecker/"
-cp OnlineSpellChecking.xml  "../../../output/share/codeblocks/SpellChecker/"
+CB_DEVEL=devel$1
+CB_OUTPUT=output$1
+CB_DEVEL_RESDIR=$CB_DEVEL/share/codeblocks
+CB_OUTPUT_RESDIR=$CB_OUTPUT/share/codeblocks
+
+mkdir -p "../../../${CB_DEVEL_RESDIR}/SpellChecker"
+mkdir -p "../../../${CB_OUTPUT_RESDIR}/SpellChecker"
+cp *.png "../../../${CB_DEVEL_RESDIR}/images/settings/"
+cp *.png "../../../${CB_OUTPUT_RESDIR}/images/settings/"
+cp OnlineSpellChecking.xml  "../../../${CB_DEVEL_RESDIR}/SpellChecker/"
+cp OnlineSpellChecking.xml  "../../../${CB_OUTPUT_RESDIR}/SpellChecker/"
 
 copyImageFiles() {
     from=$1
@@ -33,8 +38,8 @@ copyImageFiles() {
     done
 }
 
-copyImageFiles rc ../../../devel/share/codeblocks/SpellChecker
-copyImageFiles rc ../../../output/share/codeblocks/SpellChecker
+copyImageFiles rc ../../../${CB_DEVEL_RESDIR}/SpellChecker
+copyImageFiles rc ../../../${CB_OUTPUT_RESDIR}/SpellChecker
 
 exit 0
 

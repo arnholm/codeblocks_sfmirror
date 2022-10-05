@@ -1,7 +1,11 @@
 #!/bin/bash
-mkdir -p ../../../devel/share/codeblocks/lib_finder > /dev/null 2> /dev/null
-mkdir -p ../../../output/share/codeblocks/lib_finder > /dev/null 2> /dev/null
-cp ./lib_finder/*.xml ../../../devel/share/codeblocks/lib_finder > /dev/null 2> /dev/null
-cp ./lib_finder/*.xml ../../../output/share/codeblocks/lib_finder > /dev/null 2> /dev/null
-zip -j9 ../../../devel/share/codeblocks/lib_finder.zip manifest.xml
+CB_DEVEL=devel$1
+CB_OUTPUT=output$1
+CB_DEVEL_RESDIR=$CB_DEVEL/share/codeblocks
+CB_OUTPUT_RESDIR=$CB_OUTPUT/share/codeblocks
+mkdir -p ../../../${CB_DEVEL_RESDIR}/lib_finder > /dev/null 2> /dev/null
+mkdir -p ../../../${CB_OUTPUT_RESDIR}/lib_finder > /dev/null 2> /dev/null
+cp ./lib_finder/*.xml ../../../${CB_DEVEL_RESDIR}/lib_finder > /dev/null 2> /dev/null
+cp ./lib_finder/*.xml ../../../${CB_OUTPUT_RESDIR}/lib_finder > /dev/null 2> /dev/null
+zip -j9 ../../../${CB_DEVEL_RESDIR}/lib_finder.zip manifest.xml
 exit 0
