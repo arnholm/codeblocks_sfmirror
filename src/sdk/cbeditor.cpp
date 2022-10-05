@@ -355,15 +355,23 @@ struct cbEditorInternalData
 
     static void SetupBreakpointMarkers(cbStyledTextCtrl* control, int size)
     {
-        wxString basepath = ConfigManager::GetDataFolder() + wxT("/manager_resources.zip#zip:/images/");
-        basepath += wxString::Format(wxT("%dx%d/"), size, size);
-        ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("editor"));
-        bool imageBP = mgr->ReadBool(_T("/margin_1_image_bp"), true);
+        ConfigManager* mgr = Manager::Get()->GetConfigManager("editor");
+        bool imageBP = mgr->ReadBool("/margin_1_image_bp", true);
         if (imageBP)
         {
-            wxBitmap iconBP    = cbLoadBitmap(basepath + wxT("breakpoint.png"),          wxBITMAP_TYPE_PNG);
-            wxBitmap iconBPDis = cbLoadBitmap(basepath + wxT("breakpoint_disabled.png"), wxBITMAP_TYPE_PNG);
-            wxBitmap iconBPOth = cbLoadBitmap(basepath + wxT("breakpoint_other.png"),    wxBITMAP_TYPE_PNG);
+            wxString prefix(ConfigManager::GetDataFolder() + wxT("/manager_resources.zip#zip:/images/"));
+#if wxCHECK_VERSION(3, 1, 6)
+            prefix << "svg/";
+            const wxSize sz(size, size);
+            wxBitmap iconBP    = cbLoadBitmapBundleFromSVG(prefix + "breakpoint.svg", sz).GetBitmap(wxDefaultSize);
+            wxBitmap iconBPDis = cbLoadBitmapBundleFromSVG(prefix + "breakpoint_disabled.svg", sz).GetBitmap(wxDefaultSize);
+            wxBitmap iconBPOth = cbLoadBitmapBundleFromSVG(prefix + "breakpoint_other.svg", sz).GetBitmap(wxDefaultSize);
+#else
+            prefix << wxString::Format("%dx%d/", size, size);
+            wxBitmap iconBP    = cbLoadBitmap(prefix + "breakpoint.png");
+            wxBitmap iconBPDis = cbLoadBitmap(prefix + "breakpoint_disabled.png");
+            wxBitmap iconBPOth = cbLoadBitmap(prefix + "breakpoint_other.png");
+#endif
             if (iconBP.IsOk() && iconBPDis.IsOk() && iconBPOth.IsOk())
             {
                 control->MarkerDefineBitmap(BREAKPOINT_MARKER,          iconBP   );
@@ -373,6 +381,7 @@ struct cbEditorInternalData
             else
                 imageBP = false; // apply default markers
         }
+
         if (!imageBP)
         {
             control->MarkerDefine(BREAKPOINT_MARKER,                 BREAKPOINT_STYLE);
