@@ -146,7 +146,7 @@ ProjectFileOptionsDlg::ProjectFileOptionsDlg(wxWindow* parent, ProjectFile* pf) 
     m_FileName(),
     m_LastBuildStageCompilerSel(-1)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgProjectFileOptions"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgProjectFileOptions", "wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     if (pf)
@@ -173,8 +173,8 @@ ProjectFileOptionsDlg::ProjectFileOptionsDlg(wxWindow* parent, ProjectFile* pf) 
         FillCompilers();
         UpdateBuildCommand();
 
-        XRCCTRL(*this, "txtProject",         wxTextCtrl)->SetValue(prj?(prj->GetTitle() + _T("\n") + prj->GetFilename()):_T("-"));
-        XRCCTRL(*this, "txtProjectBasePath", wxTextCtrl)->SetValue(prj?prj->GetCommonTopLevelPath():_T("-"));
+        XRCCTRL(*this, "txtProject",         wxTextCtrl)->SetValue(prj ? (prj->GetTitle() + "\n" + prj->GetFilename()) : wxString("-"));
+        XRCCTRL(*this, "txtProjectBasePath", wxTextCtrl)->SetValue(prj ? prj->GetCommonTopLevelPath() : wxString("-"));
         XRCCTRL(*this, "txtAbsName",         wxTextCtrl)->SetValue(m_FileNameStr);
         XRCCTRL(*this, "txtRelName",         wxTextCtrl)->SetValue(pf->relativeFilename);
 
@@ -270,7 +270,7 @@ void ProjectFileOptionsDlg::EndModal(int retCode)
 
         // make sure we have a compiler var, if the file is to be compiled
         if (m_ProjectFile->compile && m_ProjectFile->compilerVar.IsEmpty())
-            m_ProjectFile->compilerVar = _T("CPP");
+            m_ProjectFile->compilerVar = "CPP";
 
         cbProject* prj = m_ProjectFile->GetParentProject();
         prj->SetModified(true);
@@ -285,7 +285,9 @@ void ProjectFileOptionsDlg::EndModal(int retCode)
                 if (ToggleFileReadOnly(readOnlyStatus))
                     Manager::Get()->GetEditorManager()->CheckForExternallyModifiedFiles();
                 else
-                    Manager::Get()->GetLogManager()->DebugLog(F(_T("Unable to set file '%s' %s (probably missing access rights)."), m_FileNameStr, readOnlyStatus ? _("read-only") : _("writeable")));
+                    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Unable to set file '%s' %s (probably missing access rights).",
+                                                                               m_FileNameStr,
+                                                                               readOnlyStatus ? "read-only" : "writeable"));
             }
         }
     }
@@ -313,16 +315,16 @@ void ProjectFileOptionsDlg::FillGeneralProperties()
         long int comment_lines = 0;
         long int codecomments_lines = 0;
         CountLines(m_FileName, colour_set->GetCommentToken(lang), code_lines, codecomments_lines, comment_lines, empty_lines, total_lines);
-        XRCCTRL(*this, "staticTotalLines",   wxStaticText)->SetLabel(wxString::Format(_T("%ld"), total_lines));
-        XRCCTRL(*this, "staticEmptyLines",   wxStaticText)->SetLabel(wxString::Format(_T("%ld"), empty_lines));
-        XRCCTRL(*this, "staticActualLines",  wxStaticText)->SetLabel(wxString::Format(_T("%ld"), code_lines + codecomments_lines));
-        XRCCTRL(*this, "staticCommentLines", wxStaticText)->SetLabel(wxString::Format(_T("%ld"), comment_lines));
+        XRCCTRL(*this, "staticTotalLines",   wxStaticText)->SetLabel(wxString::Format("%ld", total_lines));
+        XRCCTRL(*this, "staticEmptyLines",   wxStaticText)->SetLabel(wxString::Format("%ld", empty_lines));
+        XRCCTRL(*this, "staticActualLines",  wxStaticText)->SetLabel(wxString::Format("%ld", code_lines + codecomments_lines));
+        XRCCTRL(*this, "staticCommentLines", wxStaticText)->SetLabel(wxString::Format("%ld", comment_lines));
         XRCCTRL(*this, "staticEmptyLines",   wxStaticText)->GetContainingSizer()->Layout();
     }
     wxFile file(m_FileName.GetFullPath());
     if (file.IsOpened())
     {
-        long length = static_cast<long>(file.Length());
+        const long length = static_cast<long>(file.Length());
         XRCCTRL(*this, "staticFileSize", wxStaticText)->SetLabel(wxString::Format(_("%ld Bytes"), length));
         XRCCTRL(*this, "staticFileSize", wxStaticText)->GetContainingSizer()->Layout();
         file.Close();
@@ -394,13 +396,13 @@ bool ProjectFileOptionsDlg::ToggleFileReadOnly(bool setReadOnly)
     if (res != 0)
     {
         if      (errno == ENOENT)
-            Manager::Get()->GetLogManager()->DebugLog(_T("Error calling chmod (ENOENT)."));
+            Manager::Get()->GetLogManager()->DebugLog("Error calling chmod (ENOENT).");
         else if (errno == EINVAL)
-            Manager::Get()->GetLogManager()->DebugLog(_T("Error calling chmod (EINVAL)."));
+            Manager::Get()->GetLogManager()->DebugLog("Error calling chmod (EINVAL).");
         else if (errno == EBADF)
-            Manager::Get()->GetLogManager()->DebugLog(_T("Error calling chmod (EBADF)."));
+            Manager::Get()->GetLogManager()->DebugLog("Error calling chmod (EBADF).");
         else
-            Manager::Get()->GetLogManager()->DebugLog(_T("Error calling chmod."));
+            Manager::Get()->GetLogManager()->DebugLog("Error calling chmod.");
         return false; // chmod error
     }
 #else
@@ -409,7 +411,7 @@ bool ProjectFileOptionsDlg::ToggleFileReadOnly(bool setReadOnly)
     int res  = chmod(m_FileNameStr.mb_str(wxConvUTF8), mask | X_MODE_MASK);
     if (res != 0)
     {
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("Error calling chmod : errno = %d."), errno));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Error calling chmod : errno = %d.", errno));
         return false; // chmod error
     }
 
