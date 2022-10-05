@@ -51,7 +51,12 @@ EXTRA_DIST = advanced_compiler_options.xrc \
 	images/64x64/compilerun.png \
 	images/64x64/rebuild.png \
 	images/64x64/run.png \
-	images/64x64/stop.png
+	images/64x64/stop.png \
+	images/svg/compile.svg \
+	images/svg/compilerun.svg \
+	images/svg/rebuild.svg \
+	images/svg/run.svg \
+	images/svg/stop.svg
 
 compiler.zip: $(EXTRA_DIST)
 	PWD=`pwd` cd $(srcdir) && zip $(PWD)/compiler.zip $(EXTRA_DIST) > /dev/null
