@@ -72,7 +72,7 @@ BrowseSelector::BrowseSelector(wxWindow* parent, BrowseTracker* pBrowseTracker, 
     int winWidth = Manager::Get()->GetAppWindow()->GetRect().GetWidth();
     int textWidth = 0;
     int textHeight = 0;
-    m_listBox->GetTextExtent( wxString(_T('M'), maxFilenameWidth+4), &textWidth, &textHeight);
+    m_listBox->GetTextExtent( wxString('M', maxFilenameWidth+4), &textWidth, &textHeight);
     rect.width = wxMin(textWidth, winWidth );
     rect.width = wxMax(rect.width, 200);
     this->SetSize(wxSize(rect.width+4,rect.height+4));
@@ -140,7 +140,7 @@ void BrowseSelector::Create(wxWindow* parent, BrowseTracker* pBrowseTracker, int
         font.SetWeight( wxFONTWEIGHT_BOLD );
         mem_dc.SetFont(font);
         int w;
-        mem_dc.GetTextExtent(wxT("Tp"), &w, &panelHeight);
+        mem_dc.GetTextExtent("Tp", &w, &panelHeight);
 
         imageSize = cbFindMinSize16to64(panelHeight);
         panelHeight = imageSize + 4; // Place a spacer of 2 pixels
@@ -171,12 +171,12 @@ void BrowseSelector::Create(wxWindow* parent, BrowseTracker* pBrowseTracker, int
 
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
     m_listBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
-    int logfontsize = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadInt(_T("/log_font_size"), (platform::macosx ? 10 : 8));
+    int logfontsize = Manager::Get()->GetConfigManager("message_manager")->ReadInt("/log_font_size", (platform::macosx ? 10 : 8));
     wxFont cbFont = Manager::Get()->GetAppWindow()->GetFont();
     cbFont.SetPointSize(logfontsize);
     //cbFont.SetWeight( wxFONTWEIGHT_BOLD );
     // Try using font settings from user editor choices
-    wxString fontstring = Manager::Get()->GetConfigManager(_T("editor"))->Read(_T("/font"), wxEmptyString);
+    wxString fontstring = Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString);
     if (!fontstring.IsEmpty())
     {
         wxNativeFontInfo nfi;
@@ -188,10 +188,14 @@ void BrowseSelector::Create(wxWindow* parent, BrowseTracker* pBrowseTracker, int
     // Create the bitmap, only once
     if (!m_bmp.Ok())
     {
-        const wxString filename = ConfigManager::GetDataFolder()
-                                + wxString::Format(wxT("/BrowseTracker.zip#zip:images/%dx%d/signpost.png"),
-                                                   imageSize, imageSize);
-        m_bmp = cbLoadBitmapScaled(filename, wxBITMAP_TYPE_PNG, cbGetContentScaleFactor(*this));
+        wxString prefix(ConfigManager::GetDataFolder() + "/BrowseTracker.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+        prefix << "svg/";
+        m_bmp = cbLoadBitmapBundleFromSVG(prefix + "signpost.svg", wxSize(imageSize, imageSize)).GetBitmap(wxDefaultSize);
+#else
+        prefix << wxString::Format("%dx%d/", imageSize, imageSize);
+        m_bmp = cbLoadBitmap(prefix + "signpost.png");
+#endif
     }
     //?m_listBox->SetFocus();
 }
@@ -207,7 +211,7 @@ void BrowseSelector::OnWindowKillFocus(wxFocusEvent& event) //debugging
     wxBell();
     wxWindow* p = (wxWindow*)event.GetEventObject();
     //if (p == this) asm("int3"); /*trap*/
-    LOGIT( _T("BT SetFocusEvent for[%p]"), p);
+    LOGIT("BT SetFocusEvent for[%p]", p);
 }
 // ----------------------------------------------------------------------------
 void BrowseSelector::OnKeyDown(wxKeyEvent &event)
@@ -278,7 +282,7 @@ void BrowseSelector::OnNavigationKey(wxKeyEvent &event)
     long itemToSelect = 0;
 
     #if defined(LOGGING)
-    LOGIT( _T("OnNavigationKey selected[%ld]maxItems[%ld]key[%d]"), selected, maxItems, event.GetKeyCode() );
+    LOGIT("OnNavigationKey selected[%ld]maxItems[%ld]key[%d]", selected, maxItems, event.GetKeyCode() );
     #endif
 
     if( (event.GetKeyCode() == WXK_LEFT) || (event.GetKeyCode() == WXK_UP) )
@@ -289,7 +293,7 @@ void BrowseSelector::OnNavigationKey(wxKeyEvent &event)
         else
             itemToSelect = selected - 1;
     }
-    if( (event.GetKeyCode() == WXK_RIGHT) || (event.GetKeyCode() == WXK_DOWN) )
+    if ((event.GetKeyCode() == WXK_RIGHT) || (event.GetKeyCode() == WXK_DOWN))
     {
         // Select next page
         if (selected == maxItems - 1)
@@ -298,8 +302,8 @@ void BrowseSelector::OnNavigationKey(wxKeyEvent &event)
             itemToSelect = selected + 1;
     }
 
-    m_listBox->SetSelection( itemToSelect );
-    LOGIT( _T("OnNavigationKey Selection[%ld]"), itemToSelect );
+    m_listBox->SetSelection(itemToSelect);
+    LOGIT("OnNavigationKey Selection[%ld]", itemToSelect);
 }
 // ----------------------------------------------------------------------------
 int BrowseSelector::PopulateListControl(EditorBase* /*pEditor*/)
@@ -309,14 +313,13 @@ int BrowseSelector::PopulateListControl(EditorBase* /*pEditor*/)
 
     // memorize current selection
     int selection = m_pBrowseTracker->GetCurrentEditorIndex();
-    int maxCount     = MaxEntries;
-    int maxWidth     = 0;
+    int maxCount  = MaxEntries;
+    int maxWidth  = 0;
+    int itemIdx   = 0;
 
-
-    int itemIdx = 0;
-    for(int c=0; c < maxCount; c++)
+    for (int c = 0; c < maxCount; c++)
     {
-        editorFilename = m_pBrowseTracker->GetPageFilename(c) ;
+        editorFilename = m_pBrowseTracker->GetPageFilename(c);
         if (not editorFilename.IsEmpty())
         {
             maxWidth = wxMax(maxWidth, (int)editorFilename.Length());
@@ -326,7 +329,6 @@ int BrowseSelector::PopulateListControl(EditorBase* /*pEditor*/)
             itemIdx++;
         }
     }//for
-
 
     // Select the entry before/after current entry
     m_listBox->SetSelection( selection );
@@ -349,15 +351,18 @@ void BrowseSelector::CloseDialog()
     m_selectedItem = m_listBox->GetSelection();
 
     if ((m_selectedItem > -1) && (m_selectedItem < MaxEntries))
-    {   std::map<int, int>::iterator iter = m_indexMap.find(m_selectedItem);
-        LOGIT( _T("ListBox[%ld] Map[%d]"), m_selectedItem, iter->second );
+    {
+        std::map<int, int>::iterator iter = m_indexMap.find(m_selectedItem);
+        LOGIT("ListBox[%ld] Map[%d]", m_selectedItem, iter->second);
         // we have to end the dlg before activating the editor or else
         // the old editor get re-activated.
         //-m_pBrowseTracker->SetSelection( iter->second ); logic error
         m_pBrowseTracker->m_UpdateUIEditorIndex = iter->second;
     }
 
-    if (not IsModal() ) return; //avoid assert "not modal" error 2020/06/19
+    if (not IsModal())
+        return; //avoid assert "not modal" error 2020/06/19
+
     EndModal( wxID_OK );
 }
 // ----------------------------------------------------------------------------
@@ -371,7 +376,7 @@ void BrowseSelector::OnPanelPaint(wxPaintEvent &event)
     firstPaint = true;
     static wxBitmap bmp( rect.width, rect.height );
 
-    if( firstPaint )
+    if (firstPaint)
     {
         firstPaint = false;
         wxMemoryDC mem_dc;
@@ -395,13 +400,13 @@ void BrowseSelector::OnPanelPaint(wxPaintEvent &event)
         wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
         font.SetWeight( wxFONTWEIGHT_BOLD );
         mem_dc.SetFont( font );
-        mem_dc.GetTextExtent( wxT("Tp"), &w, &fontHeight );
+        mem_dc.GetTextExtent("Tp", &w, &fontHeight);
 
         txtPt.x = bmpPt.x + m_bmp.GetWidth() + 4;
         txtPt.y = (rect.height - fontHeight)/2;
         mem_dc.SetTextForeground( *wxWHITE );
-        mem_dc.DrawText( wxT("Browsed Tabs:"), txtPt );
-        mem_dc.SelectObject( wxNullBitmap );
+        mem_dc.DrawText("Browsed Tabs:", txtPt);
+        mem_dc.SelectObject(wxNullBitmap);
     }
 
     dc.DrawBitmap( bmp, 0, 0 );
@@ -412,24 +417,23 @@ void BrowseSelector::OnPanelEraseBg(wxEraseEvent &event)
 // ----------------------------------------------------------------------------
 {
     wxUnusedVar(event);
-
 }
 // ----------------------------------------------------------------------------
 wxColor BrowseSelector::LightColour(const wxColour& color, int percent)
 // ----------------------------------------------------------------------------
 {
     int rd, gd, bd, high = 0;
-    wxColor end_color = wxT("WHITE");
+    wxColor end_color = "WHITE";
     rd = end_color.Red() - color.Red();
     gd = end_color.Green() - color.Green();
     bd = end_color.Blue() - color.Blue();
     high = 100;
 
     // We take the percent way of the color from color --> white
-    int i = percent;
-    int r = color.Red() +  ((i*rd*100)/high)/100;
-    int g = color.Green() + ((i*gd*100)/high)/100;
-    int b = color.Blue() + ((i*bd*100)/high)/100;
+    const int i = percent;
+    const int r = color.Red()   + ((i*rd*100)/high)/100;
+    const int g = color.Green() + ((i*gd*100)/high)/100;
+    const int b = color.Blue()  + ((i*bd*100)/high)/100;
     return wxColor(r, g, b);
 }
 // ----------------------------------------------------------------------------

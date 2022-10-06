@@ -100,8 +100,14 @@ resources_forZIP = \
 	images/64x64/mark_prev.png \
 	images/64x64/next.png \
 	images/64x64/prev.png \
-	images/64x64/signpost.png
-
+	images/64x64/signpost.png \
+	images/svg/mark_clear.svg \
+	images/svg/mark_next.svg \
+	images/svg/mark.svg \
+	images/svg/mark_prev.svg \
+	images/svg/next.svg \
+	images/svg/prev.svg \
+	images/svg/signpost.svg
 
 EXTRA_DIST = \
 	$(srcdir)/*.cbp \
