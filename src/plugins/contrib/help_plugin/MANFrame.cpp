@@ -101,7 +101,11 @@ BEGIN_EVENT_TABLE(MANFrame, wxPanel)
     EVT_HTML_LINK_CLICKED(htmlWindowID, MANFrame::OnLinkClicked)
 END_EVENT_TABLE()
 
+#if wxCHECK_VERSION(3, 1, 6)
+MANFrame::MANFrame(wxWindow* parent, wxWindowID id, const wxBitmapBundle &zoomInBmp, const wxBitmapBundle &zoomOutBmp)
+#else
 MANFrame::MANFrame(wxWindow *parent, wxWindowID id, const wxBitmap &zoomInBmp, const wxBitmap &zoomOutBmp)
+#endif
 : wxPanel(parent, id), m_baseFontSize(wxGetDefaultHTMLFontSize())
 {
     wxStaticText *m_label = new wxStaticText(this, wxID_ANY, _("Man page: "));
@@ -155,29 +159,29 @@ void MANFrame::OnLinkClicked(wxHtmlLinkEvent &event)
 {
     wxString link = event.GetLinkInfo().GetHref();
 
-    if (link.StartsWith(_T("man:"), &link))
+    if (link.StartsWith("man:", &link))
     {
-        if (link.Last() == _T(')'))
+        if (link.Last() == ')')
         {
             link.RemoveLast();
-            wxString name = link.BeforeLast(_T('('));
+            wxString name = link.BeforeLast('(');
 
             if (name.IsEmpty())
             {
                 return;
             }
 
-            wxString section = link.AfterLast(_T('('));
+            wxString section = link.AfterLast('(');
 
             if (!section.IsEmpty())
             {
-                name += _T(".") + section;
+                name += "." + section;
             }
 
             SearchManPage(name);
         }
     }
-    else if (link.StartsWith(_T("fman:"), &link))
+    else if (link.StartsWith("fman:", &link))
     {
         wxString man_page = GetManPage(link);
 
@@ -189,7 +193,7 @@ void MANFrame::OnLinkClicked(wxHtmlLinkEvent &event)
 
         SetPage(cbC2U(man2html_buffer(cbU2C(man_page))));
     }
-    else if (wxFileName(link).GetExt().Mid(0, 3).CmpNoCase(_T("htm")) == 0)
+    else if (wxFileName(link).GetExt().Mid(0, 3).CmpNoCase("htm") == 0)
     {
     	m_htmlWindow->LoadPage(link);
     }
@@ -258,7 +262,7 @@ void MANFrame::SetDirs(const wxString &dirs)
 
         while (true)
         {
-            size_t next_semi = dirs.find(_T(';'), start_pos);
+            size_t next_semi = dirs.find(';', start_pos);
 
             if ((int)next_semi == wxNOT_FOUND)
             {
@@ -288,13 +292,13 @@ void MANFrame::GetMatches(const wxString &keyword, std::vector<wxString> *files_
     {
         wxArrayString files;
 
-        if (keyword.Last() == _T('*'))
+        if (keyword.Last() == '*')
         {
             wxDir::GetAllFiles(*i, &files, keyword);
         }
         else
         {
-            wxDir::GetAllFiles(*i, &files, keyword + _T("*"));
+            wxDir::GetAllFiles(*i, &files, keyword + "*");
         }
 
         for (size_t j = 0; j < files.GetCount(); ++j)
@@ -314,7 +318,7 @@ wxString MANFrame::GetManPage(wxString filename, int depth)
     }
 
     wxString ret;
-    if (filename.EndsWith(_T(".gz")))
+    if (filename.EndsWith(".gz"))
     {
         gzFile f = gzopen(filename.mb_str(), "rb");
         if (!f)
@@ -346,7 +350,7 @@ wxString MANFrame::GetManPage(wxString filename, int depth)
     }
     else
     {
-        if (filename.EndsWith(_T(".bz2")))
+        if (filename.EndsWith(".bz2"))
         {
             if (!m_tmpfile.IsEmpty())
             {
@@ -356,7 +360,7 @@ wxString MANFrame::GetManPage(wxString filename, int depth)
                 }
             }
 
-            m_tmpfile = wxFileName::CreateTempFileName(_T("manbz2"));
+            m_tmpfile = wxFileName::CreateTempFileName("manbz2");
 
             if (!Decompress(filename, m_tmpfile))
             {
@@ -381,28 +385,28 @@ wxString MANFrame::GetManPage(wxString filename, int depth)
     }
 
     // Check if we should follow the link
-    if (ret.StartsWith(_T(".so "), &ret))
+    if (ret.StartsWith(".so ", &ret))
     {
-        wxString path = ret.BeforeFirst(_T('\n'));
+        wxString path = ret.BeforeFirst('\n');
         wxString name;
         wxString ext;
         wxString newfilename;
 
         wxFileName::SplitPath(path, 0, &name, &ext, wxPATH_UNIX); // man pages "always" use /
-        newfilename = name + _T(".") + ext;
+        newfilename = name + "." + ext;
         wxFileName::SplitPath(orgFilename, &path, 0, &ext);
         newfilename = path + wxFileName::GetPathSeparator() + newfilename;
 
-        if (ext == _T("bz2") || ext == _T("gz"))
+        if (ext == "bz2" || ext == "gz")
         {
-            newfilename += _T(".") + ext;
+            newfilename += "." + ext;
         }
         else if (!wxFileName::FileExists(newfilename))
         {
-            if (wxFileName::FileExists(newfilename + wxT(".bz2")))
-                newfilename += wxT(".bz2");
-            else if (wxFileName::FileExists(newfilename + wxT(".gz")))
-                newfilename += wxT(".gz");
+            if (wxFileName::FileExists(newfilename + ".bz2"))
+                newfilename += ".bz2";
+            else if (wxFileName::FileExists(newfilename + ".gz"))
+                newfilename += ".gz";
         }
 
         return GetManPage(newfilename, depth + 1);
@@ -457,7 +461,7 @@ wxString MANFrame::CreateLinksPage(const std::vector<wxString> &files)
     typedef std::multimap<wxString, wxString> ResultsMap;
     ResultsMap sortedResults;
 
-    wxRegEx reMatchLocale(wxT("^(.+)/(man.+)$"));
+    wxRegEx reMatchLocale("^(.+)/(man.+)$");
     for (std::vector<wxString>::const_iterator i = files.begin(); i != files.end(); ++i)
     {
         wxString filename = *i;
@@ -465,9 +469,9 @@ wxString MANFrame::CreateLinksPage(const std::vector<wxString> &files)
 
         wxFileName::SplitPath(filename, &path, &linkname, &ext);
 
-        if (ext != _T("bz2") && ext != _T("gz"))
+        if (ext != "bz2" && ext != "gz")
         {
-            linkname += _T(".") + ext;
+            linkname += "." + ext;
         }
 
         // Strip the common directory from the path, so we can detect the language of the man page.
@@ -487,18 +491,17 @@ wxString MANFrame::CreateLinksPage(const std::vector<wxString> &files)
         {
             const wxString &locale = reMatchLocale.GetMatch(path, 1);
             if (!locale.empty())
-                linkname += wxT(" (") + locale + wxT(")");
+                linkname += " (" + locale + ")";
         }
 
-        const wxString &aTag = _T("<a href=\"fman:") + filename + _T("\">") + linkname + _T("</a><br>");
+        const wxString &aTag = "<a href=\"fman:" + filename + "\">" + linkname + "</a><br>";
         sortedResults.insert(ResultsMap::value_type(linkname, aTag));
     }
 
     for (ResultsMap::const_iterator it = sortedResults.begin(); it != sortedResults.end(); ++it)
         ret += it->second;
 
-    ret += _T("</body>\n"
-        "</html>");
+    ret += "</body>\n</html>";
 
     return ret;
 }

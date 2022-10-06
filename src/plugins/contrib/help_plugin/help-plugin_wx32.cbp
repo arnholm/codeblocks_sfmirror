@@ -70,6 +70,7 @@
 					<Add after="zip -Rq9 ..\..\..\devel32\share\CodeBlocks\help_plugin.zip images\16x16\*.png images\20x20\*.png images\24x24\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel32\share\CodeBlocks\help_plugin.zip images\28x28\*.png images\32x32\*.png images\40x40\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel32\share\CodeBlocks\help_plugin.zip images\48x48\*.png images\56x56\*.png images\64x64\*.png" />
+					<Add after="zip -Rq9 ..\..\..\devel32\share\CodeBlocks\help_plugin.zip images\svg\*.svg" />
 					<Add after="cmd /c if not exist ..\..\..\devel32\share\CodeBlocks\docs mkdir ..\..\..\devel32\share\CodeBlocks\docs" />
 					<Add after="xcopy /Y index.ini ..\..\..\devel32\share\CodeBlocks\docs" />
 					<Add after="cmd /c if not exist ..\..\..\output32\share\CodeBlocks\docs mkdir ..\..\..\output32\share\CodeBlocks\docs" />

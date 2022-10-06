@@ -68,7 +68,9 @@ resources_forZIP = \
 	images/56x56/zoomin.png \
 	images/56x56/zoomout.png \
 	images/64x64/zoomin.png \
-	images/64x64/zoomout.png
+	images/64x64/zoomout.png \
+	images/svg/zoomin.svg \
+	images/svg/zoomout.svg
 
 docdatadir = $(datadir)/@PACKAGE@/docs
 if CODEBLOCKS_INSTALLERDOCS_FOUND

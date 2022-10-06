@@ -25,7 +25,11 @@ class MANFrame : public wxPanel
         wxString m_tmpfile;
 
     public:
-        MANFrame(wxWindow *parent = 0, wxWindowID id = wxID_ANY, const wxBitmap &zoomInBmp = wxNullBitmap, const wxBitmap &zoomOutBmp = wxNullBitmap);
+#if wxCHECK_VERSION(3, 1, 6)
+        MANFrame(wxWindow* parent = 0, wxWindowID id = wxID_ANY, const wxBitmapBundle &zoomInBmp = wxBitmapBundle(), const wxBitmapBundle &zoomOutBmp = wxBitmapBundle());
+#else
+        MANFrame(wxWindow* parent = 0, wxWindowID id = wxID_ANY, const wxBitmap &zoomInBmp = wxNullBitmap, const wxBitmap &zoomOutBmp = wxNullBitmap);
+#endif
         ~MANFrame();
         bool SearchManPage(const wxString &keyword);
         void SetBaseFontSize(int newsize);
