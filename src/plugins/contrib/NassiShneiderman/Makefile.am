@@ -199,6 +199,21 @@ resources_forZIP = \
 		images/64x64/sourceToggletool.png \
 		images/64x64/switchtool.png \
 		images/64x64/whiletool.png \
+		images/svg/blocktool.svg \
+		images/svg/breaktool.svg \
+		images/svg/commentToggletool.svg \
+		images/svg/continuetool.svg \
+		images/svg/dowhiletool.svg \
+		images/svg/fortool.svg \
+		images/svg/glassntool.svg \
+		images/svg/glassptool.svg \
+		images/svg/iftool.svg \
+		images/svg/instrtool.svg \
+		images/svg/returntool.svg \
+		images/svg/selecttool.svg \
+		images/svg/sourceToggletool.svg \
+		images/svg/switchtool.svg \
+		images/svg/whiletool.svg \
 		manifest.xml \
 		nassi_shneiderman_toolbar.xrc
 
