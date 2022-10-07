@@ -48,7 +48,11 @@ wxToolBarAddOnXmlHandler::wxToolBarAddOnXmlHandler() :
 void wxToolBarAddOnXmlHandler::SetToolbarImageSize(int size)
 {
     m_ImageSize = size;
-    m_PathReplaceString = wxString::Format(wxT("%dx%d"), size, size);
+#if wxCHECK_VERSION(3, 1, 6)
+    m_PathReplaceString = "svg";
+#else
+    m_PathReplaceString = wxString::Format("%dx%d", size, size);
+#endif
 }
 
 void wxToolBarAddOnXmlHandler::SetCurrentResourceID(const wxString &id)
@@ -105,17 +109,20 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
         return wxArtProvider::GetBitmap(wxT("sdk/missing_icon"), wxART_TOOLBAR, size * scaleFactor);
 
     wxString finalName = name;
-    finalName.Replace(wxT("22x22"), m_PathReplaceString);
+    finalName.Replace("22x22", m_PathReplaceString);
+#if wxCHECK_VERSION(3, 1, 6)
+    finalName.Replace(".png", ".svg");
+    wxBitmap bitmap = cbLoadBitmapBundleFromSVG(finalName, wxSize(m_ImageSize, m_ImageSize), &GetCurFileSystem()).GetBitmap(wxDefaultSize);
+#else
+    wxBitmap bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
+#endif
 
-    wxBitmap bitmap = cbLoadBitmapScaled(finalName, wxBITMAP_TYPE_PNG, scaleFactor,
-                                         &GetCurFileSystem());
     if (!bitmap.Ok())
     {
         LogManager *logger = Manager::Get()->GetLogManager();
-        logger->LogError(wxString::Format(wxT("(%s) Failed to load image: '%s'"),
-                                          m_CurrentID.wx_str(), finalName.wx_str()));
+        logger->LogError(wxString::Format("(%s) Failed to load image: '%s'", m_CurrentID, finalName));
 
-        return wxArtProvider::GetBitmap(wxT("sdk/missing_icon"), wxART_TOOLBAR, size * scaleFactor);
+        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR, size * scaleFactor);
     }
 
     int bw = bitmap.GetWidth();
@@ -124,11 +131,10 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
         return bitmap;
 
     LogManager *logger = Manager::Get()->GetLogManager();
-    const wxString msg = wxString::Format(wxT("(%s): Image \"%s\" with size [%dx%d] doesn't match ")
-                                          wxT("requested size [%dx%d] resizing (scale factor ")
-                                          wxT("%.3f)!"),
-                                          m_CurrentID.wx_str(), finalName.wx_str(), bw, bh,
-                                          int(size.x * scaleFactor), int(size.y * scaleFactor),
+    const wxString msg = wxString::Format("(%s): Image \"%s\" with size [%dx%d] doesn't match "
+                                          "requested size [%dx%d] resizing (scale factor %.3f)!",
+                                          m_CurrentID, finalName, bw, bh,
+                                          wxRound(size.x * scaleFactor), wxRound(size.y * scaleFactor),
                                           scaleFactor);
     logger->LogWarning(msg);
 
