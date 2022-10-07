@@ -3460,51 +3460,54 @@ wxBitmap CodeCompletion::GetImage(ImageId::Id id, int fontSize)
     const int size = cbFindMinSize16to64(fontSize);
     const ImageId key(id, size);
     ImagesMap::const_iterator it = m_images.find(key);
-    if (it == m_images.end())
+    if (it != m_images.end())
+        return it->second;
+
+    // Image was not found, add it to the map
+    wxString prefix(ConfigManager::GetDataFolder() + "/codecompletion.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+    prefix << "svg/";
+    const wxString ext(".svg");
+#else
+    prefix << wxString::Format("%dx%d/", size, size);
+    const wxString ext(".png");
+#endif
+
+    wxString filename;
+    switch (id)
     {
-        const wxString prefix = ConfigManager::GetDataFolder()
-                              + wxString::Format(_T("/codecompletion.zip#zip:images/%dx%d/"), size,
-                                                 size);
+        case ImageId::HeaderFile:
+            filename = prefix + "header" + ext;
+            break;
+        case ImageId::KeywordCPP:
+            filename = prefix + "keyword_cpp" + ext;
+            break;
+        case ImageId::KeywordD:
+            filename = prefix + "keyword_d" + ext;
+            break;
+        case ImageId::Unknown:
+            filename = prefix + "unknown" + ext;
+            break;
+        case ImageId::Last:
+        default:
+            ;
+    }
 
-        wxString filename;
-        switch (id)
+    wxBitmap bitmap;
+    if (!filename.empty())
+    {
+#if wxCHECK_VERSION(3, 1, 6)
+        bitmap = cbLoadBitmapBundleFromSVG(filename, wxSize(size, size)).GetBitmap(wxDefaultSize);
+#else
+        bitmap = cbLoadBitmap(filename);
+#endif
+        if (!bitmap.IsOk())
         {
-            case ImageId::HeaderFile:
-                filename = prefix + wxT("header.png");
-                break;
-            case ImageId::KeywordCPP:
-                filename = prefix + wxT("keyword_cpp.png");
-                break;
-            case ImageId::KeywordD:
-                filename = prefix + wxT("keyword_d.png");
-                break;
-            case ImageId::Unknown:
-                filename = prefix + wxT("unknown.png");
-                break;
-
-            case ImageId::Last:
-            default:
-                ;
-        }
-
-        if (!filename.empty())
-        {
-            wxBitmap bitmap = cbLoadBitmap(filename);
-            if (!bitmap.IsOk())
-            {
-                const wxString msg = wxString::Format(_("Cannot load image: '%s'!"),
-                                                      filename.wx_str());
-                Manager::Get()->GetLogManager()->LogError(msg);
-            }
-            m_images[key] = bitmap;
-            return bitmap;
-        }
-        else
-        {
-            m_images[key] = wxNullBitmap;
-            return wxNullBitmap;
+            const wxString msg(wxString::Format(_("Cannot load image: '%s'!"), filename));
+            Manager::Get()->GetLogManager()->LogError(msg);
         }
     }
-    else
-        return it->second;
+
+    m_images[key] = bitmap;
+    return bitmap;
 }

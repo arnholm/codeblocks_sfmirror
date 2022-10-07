@@ -125,65 +125,73 @@ int idTimerParsingOneByOne = wxNewId();
 /** if this option is enabled, there will be many log messages when doing semantic match */
 bool s_DebugSmartSense = false;
 
-static void AddToImageList(wxImageList *list, const wxString &path)
+static void AddToImageList(wxImageList* list, const wxString &path, int size)
 {
-    wxBitmap bmp = cbLoadBitmap(path, wxBITMAP_TYPE_PNG);
+#if wxCHECK_VERSION(3, 1, 6)
+    wxBitmap bmp = cbLoadBitmapBundleFromSVG(path, wxSize(size, size)).GetBitmap(wxDefaultSize);
+#else
+    wxBitmap bmp = cbLoadBitmap(path);
+#endif
+
     if (!bmp.IsOk())
-    {
         printf("failed to load: %s\n", path.utf8_str().data());
-    }
+
     list->Add(bmp);
 }
 
 static wxImageList* LoadImageList(int size)
 {
-    wxImageList *list = new wxImageList(size, size);
-    wxBitmap bmp;
-    const wxString prefix = ConfigManager::GetDataFolder()
-                          + wxString::Format(_T("/codecompletion.zip#zip:images/%dx%d/"), size,
-                                             size);
+    wxImageList* list = new wxImageList(size, size);
+    wxString prefix(ConfigManager::GetDataFolder() + "/codecompletion.zip#zip:images/");
+#if wxCHECK_VERSION(3, 1, 6)
+    prefix << "svg/";
+    const wxString ext(".svg");
+#else
+    prefix << wxString::Format("%dx%d/", size, size);
+    const wxString ext(".png");
+#endif
 
     // Bitmaps must be added by order of PARSER_IMG_* consts.
-    AddToImageList(list, prefix + _T("class_folder.png")); // PARSER_IMG_CLASS_FOLDER
-    AddToImageList(list, prefix + _T("class.png")); // PARSER_IMG_CLASS
-    AddToImageList(list, prefix + _T("class_private.png")); // PARSER_IMG_CLASS_PRIVATE
-    AddToImageList(list, prefix + _T("class_protected.png")); // PARSER_IMG_CLASS_PROTECTED
-    AddToImageList(list, prefix + _T("class_public.png")); // PARSER_IMG_CLASS_PUBLIC
-    AddToImageList(list, prefix + _T("ctor_private.png")); // PARSER_IMG_CTOR_PRIVATE
-    AddToImageList(list, prefix + _T("ctor_protected.png")); // PARSER_IMG_CTOR_PROTECTED
-    AddToImageList(list, prefix + _T("ctor_public.png")); // PARSER_IMG_CTOR_PUBLIC
-    AddToImageList(list, prefix + _T("dtor_private.png")); // PARSER_IMG_DTOR_PRIVATE
-    AddToImageList(list, prefix + _T("dtor_protected.png")); // PARSER_IMG_DTOR_PROTECTED
-    AddToImageList(list, prefix + _T("dtor_public.png")); // PARSER_IMG_DTOR_PUBLIC
-    AddToImageList(list, prefix + _T("method_private.png")); // PARSER_IMG_FUNC_PRIVATE
-    AddToImageList(list, prefix + _T("method_protected.png")); // PARSER_IMG_FUNC_PRIVATE
-    AddToImageList(list, prefix + _T("method_public.png")); // PARSER_IMG_FUNC_PUBLIC
-    AddToImageList(list, prefix + _T("var_private.png")); // PARSER_IMG_VAR_PRIVATE
-    AddToImageList(list, prefix + _T("var_protected.png")); // PARSER_IMG_VAR_PROTECTED
-    AddToImageList(list, prefix + _T("var_public.png")); // PARSER_IMG_VAR_PUBLIC
-    AddToImageList(list, prefix + _T("macro_def.png")); // PARSER_IMG_MACRO_DEF
-    AddToImageList(list, prefix + _T("enum.png")); // PARSER_IMG_ENUM
-    AddToImageList(list, prefix + _T("enum_private.png")); // PARSER_IMG_ENUM_PRIVATE
-    AddToImageList(list, prefix + _T("enum_protected.png")); // PARSER_IMG_ENUM_PROTECTED
-    AddToImageList(list, prefix + _T("enum_public.png")); // PARSER_IMG_ENUM_PUBLIC
-    AddToImageList(list, prefix + _T("enumerator.png")); // PARSER_IMG_ENUMERATOR
-    AddToImageList(list, prefix + _T("namespace.png")); // PARSER_IMG_NAMESPACE
-    AddToImageList(list, prefix + _T("typedef.png")); // PARSER_IMG_TYPEDEF
-    AddToImageList(list, prefix + _T("typedef_private.png")); // PARSER_IMG_TYPEDEF_PRIVATE
-    AddToImageList(list, prefix + _T("typedef_protected.png")); // PARSER_IMG_TYPEDEF_PROTECTED
-    AddToImageList(list, prefix + _T("typedef_public.png")); // PARSER_IMG_TYPEDEF_PUBLIC
-    AddToImageList(list, prefix + _T("symbols_folder.png")); // PARSER_IMG_SYMBOLS_FOLDER
-    AddToImageList(list, prefix + _T("vars_folder.png")); // PARSER_IMG_VARS_FOLDER
-    AddToImageList(list, prefix + _T("funcs_folder.png")); // PARSER_IMG_FUNCS_FOLDER
-    AddToImageList(list, prefix + _T("enums_folder.png")); // PARSER_IMG_ENUMS_FOLDER
-    AddToImageList(list, prefix + _T("macro_def_folder.png")); // PARSER_IMG_MACRO_DEF_FOLDER
-    AddToImageList(list, prefix + _T("others_folder.png")); // PARSER_IMG_OTHERS_FOLDER
-    AddToImageList(list, prefix + _T("typedefs_folder.png")); // PARSER_IMG_TYPEDEF_FOLDER
-    AddToImageList(list, prefix + _T("macro_use.png")); // PARSER_IMG_MACRO_USE
-    AddToImageList(list, prefix + _T("macro_use_private.png")); // PARSER_IMG_MACRO_USE_PRIVATE
-    AddToImageList(list, prefix + _T("macro_use_protected.png")); // PARSER_IMG_MACRO_USE_PROTECTED
-    AddToImageList(list, prefix + _T("macro_use_public.png")); // PARSER_IMG_MACRO_USE_PUBLIC
-    AddToImageList(list, prefix + _T("macro_use_folder.png")); // PARSER_IMG_MACRO_USE_FOLDER
+    AddToImageList(list, prefix + "class_folder" + ext, size); // PARSER_IMG_CLASS_FOLDER
+    AddToImageList(list, prefix + "class" + ext, size); // PARSER_IMG_CLASS
+    AddToImageList(list, prefix + "class_private" + ext, size); // PARSER_IMG_CLASS_PRIVATE
+    AddToImageList(list, prefix + "class_protected" + ext, size); // PARSER_IMG_CLASS_PROTECTED
+    AddToImageList(list, prefix + "class_public" + ext, size); // PARSER_IMG_CLASS_PUBLIC
+    AddToImageList(list, prefix + "ctor_private" + ext, size); // PARSER_IMG_CTOR_PRIVATE
+    AddToImageList(list, prefix + "ctor_protected" + ext, size); // PARSER_IMG_CTOR_PROTECTED
+    AddToImageList(list, prefix + "ctor_public" + ext, size); // PARSER_IMG_CTOR_PUBLIC
+    AddToImageList(list, prefix + "dtor_private" + ext, size); // PARSER_IMG_DTOR_PRIVATE
+    AddToImageList(list, prefix + "dtor_protected" + ext, size); // PARSER_IMG_DTOR_PROTECTED
+    AddToImageList(list, prefix + "dtor_public" + ext, size); // PARSER_IMG_DTOR_PUBLIC
+    AddToImageList(list, prefix + "method_private" + ext, size); // PARSER_IMG_FUNC_PRIVATE
+    AddToImageList(list, prefix + "method_protected" + ext, size); // PARSER_IMG_FUNC_PRIVATE
+    AddToImageList(list, prefix + "method_public" + ext, size); // PARSER_IMG_FUNC_PUBLIC
+    AddToImageList(list, prefix + "var_private" + ext, size); // PARSER_IMG_VAR_PRIVATE
+    AddToImageList(list, prefix + "var_protected" + ext, size); // PARSER_IMG_VAR_PROTECTED
+    AddToImageList(list, prefix + "var_public" + ext, size); // PARSER_IMG_VAR_PUBLIC
+    AddToImageList(list, prefix + "macro_def" + ext, size); // PARSER_IMG_MACRO_DEF
+    AddToImageList(list, prefix + "enum" + ext, size); // PARSER_IMG_ENUM
+    AddToImageList(list, prefix + "enum_private" + ext, size); // PARSER_IMG_ENUM_PRIVATE
+    AddToImageList(list, prefix + "enum_protected" + ext, size); // PARSER_IMG_ENUM_PROTECTED
+    AddToImageList(list, prefix + "enum_public" + ext, size); // PARSER_IMG_ENUM_PUBLIC
+    AddToImageList(list, prefix + "enumerator" + ext, size); // PARSER_IMG_ENUMERATOR
+    AddToImageList(list, prefix + "namespace" + ext, size); // PARSER_IMG_NAMESPACE
+    AddToImageList(list, prefix + "typedef" + ext, size); // PARSER_IMG_TYPEDEF
+    AddToImageList(list, prefix + "typedef_private" + ext, size); // PARSER_IMG_TYPEDEF_PRIVATE
+    AddToImageList(list, prefix + "typedef_protected" + ext, size); // PARSER_IMG_TYPEDEF_PROTECTED
+    AddToImageList(list, prefix + "typedef_public" + ext, size); // PARSER_IMG_TYPEDEF_PUBLIC
+    AddToImageList(list, prefix + "symbols_folder" + ext, size); // PARSER_IMG_SYMBOLS_FOLDER
+    AddToImageList(list, prefix + "vars_folder" + ext, size); // PARSER_IMG_VARS_FOLDER
+    AddToImageList(list, prefix + "funcs_folder" + ext, size); // PARSER_IMG_FUNCS_FOLDER
+    AddToImageList(list, prefix + "enums_folder" + ext, size); // PARSER_IMG_ENUMS_FOLDER
+    AddToImageList(list, prefix + "macro_def_folder" + ext, size); // PARSER_IMG_MACRO_DEF_FOLDER
+    AddToImageList(list, prefix + "others_folder" + ext, size); // PARSER_IMG_OTHERS_FOLDER
+    AddToImageList(list, prefix + "typedefs_folder" + ext, size); // PARSER_IMG_TYPEDEF_FOLDER
+    AddToImageList(list, prefix + "macro_use" + ext, size); // PARSER_IMG_MACRO_USE
+    AddToImageList(list, prefix + "macro_use_private" + ext, size); // PARSER_IMG_MACRO_USE_PRIVATE
+    AddToImageList(list, prefix + "macro_use_protected" + ext, size); // PARSER_IMG_MACRO_USE_PROTECTED
+    AddToImageList(list, prefix + "macro_use_public" + ext, size); // PARSER_IMG_MACRO_USE_PUBLIC
+    AddToImageList(list, prefix + "macro_use_folder" + ext, size); // PARSER_IMG_MACRO_USE_FOLDER
 
     return list;
 }
