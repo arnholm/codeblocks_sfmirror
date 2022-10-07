@@ -791,22 +791,28 @@ void CompilerGCC::SetupEnvironment()
         pathList.Add(masterPath + pathSep + _T("bin"));
         pathList.Add(masterPath); // in case there is no "bin" sub-folder
     }
+
     // [2] Get configured extrapath(s), expand macros and remove trailing separators
-    for (size_t i=0; i<extraPaths.GetCount(); ++i)
+    for (size_t i = 0; i < extraPaths.GetCount(); ++i)
     {
         wxString extraPath = extraPaths[i];
-        Manager::Get()->GetMacrosManager()->ReplaceMacros(extraPath);
-        while (extraPath.Last() == '\\' || extraPath.Last() == '/')
-            extraPath.RemoveLast();
-        if (!extraPath.Trim().IsEmpty())
+        if (!extraPath.empty())
         {
-            // Remember, if we found the C application in the extra path's:
-            if (   extraPathsBinPath.IsEmpty()
-                && wxFileExists(extraPath + pathSep + cApp ) )
-                extraPathsBinPath = extraPath;
-            pathList.Add(extraPath);
+            Manager::Get()->GetMacrosManager()->ReplaceMacros(extraPath);
+            while (!extraPath.empty() && (extraPath.Last() == '\\' || extraPath.Last() == '/'))
+                extraPath.RemoveLast();
+
+            if (!extraPath.Trim().empty())
+            {
+                // Remember, if we found the C application in the extra path's:
+                if (extraPathsBinPath.empty() && wxFileExists(extraPath + pathSep + cApp))
+                    extraPathsBinPath = extraPath;
+
+                pathList.Add(extraPath);
+            }
         }
     }
+
     // [3] Append what has already been in the PATH envvar...
     // If we do it this way, paths are automatically normalized and doubles are removed
     wxPathList pathArray;
