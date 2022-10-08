@@ -113,10 +113,10 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
 #if wxCHECK_VERSION(3, 1, 6)
     wxBitmap bitmap;
     if (finalName.Replace("22x22", m_PathReplaceString))
-        {
+    {
         finalName.Replace(".png", ".svg");
         bitmap = cbLoadBitmapBundleFromSVG(finalName, wxSize(m_ImageSize, m_ImageSize), &GetCurFileSystem()).GetBitmap(wxDefaultSize);
-        }
+    }
     else
         bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
 #else
