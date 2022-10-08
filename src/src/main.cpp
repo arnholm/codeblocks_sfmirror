@@ -938,12 +938,17 @@ void MainFrame::CreateIDE()
 
     {
         // Setup the art provider with the images stored in manager_resources.zip
-        const wxString prefix = ConfigManager::GetDataFolder()
-                              + "/manager_resources.zip#zip:/images";
-        cbArtProvider *provider = new cbArtProvider(prefix);
+        const wxString prefix(ConfigManager::GetDataFolder()+ "/manager_resources.zip#zip:/images");
+        cbArtProvider* provider = new cbArtProvider(prefix);
 
-        provider->AddMapping("sdk/select_target", "select_target.png");
-        provider->AddMapping("sdk/missing_icon", "missing_icon.png");
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxString ext(".svg");
+#else
+        const wxString ext(".png");
+#endif
+
+        provider->AddMapping("sdk/select_target", "select_target"+ext);
+        provider->AddMapping("sdk/missing_icon",  "missing_icon"+ext);
 
         wxArtProvider::Push(provider);
     }
@@ -961,49 +966,55 @@ void MainFrame::CreateIDE()
         Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
                                          Manager::UIComponent::Main);
 
-        const wxString prefix = ConfigManager::GetDataFolder() + "/resources.zip#zip:/images";
-        cbArtProvider *provider = new cbArtProvider(prefix);
+        const wxString prefix(ConfigManager::GetDataFolder() + "/resources.zip#zip:/images");
+        cbArtProvider* provider = new cbArtProvider(prefix);
 
-        provider->AddMapping("core/file_open", "fileopen.png");
-        provider->AddMapping("core/file_new", "filenew.png");
-        provider->AddMapping("core/history_clear", "history_clear.png");
-        provider->AddMapping("core/file_save", "filesave.png");
-        provider->AddMapping("core/file_save_as", "filesaveas.png");
-        provider->AddMapping("core/file_save_all", "filesaveall.png");
-        provider->AddMapping("core/file_close", "fileclose.png");
-        provider->AddMapping("core/file_print", "fileprint.png");
-        provider->AddMapping("core/exit", "exit.png");
-        provider->AddMapping("core/undo", "undo.png");
-        provider->AddMapping("core/redo", "redo.png");
-        provider->AddMapping("core/edit_cut", "editcut.png");
-        provider->AddMapping("core/edit_copy", "editcopy.png");
-        provider->AddMapping("core/edit_paste", "editpaste.png");
-        provider->AddMapping("core/bookmark_add", "bookmark_add.png");
-        provider->AddMapping("core/find", "filefind.png");
-        provider->AddMapping("core/find_in_files", "findf.png");
-        provider->AddMapping("core/find_next", "filefindnext.png");
-        provider->AddMapping("core/find_prev", "filefindprev.png");
-        provider->AddMapping("core/search_replace", "searchreplace.png");
-        provider->AddMapping("core/search_replace_in_files", "searchreplacef.png");
-        provider->AddMapping("core/goto", "goto.png");
-        provider->AddMapping("core/manage_plugins", "plug.png");
-        provider->AddMapping("core/help_info", "info.png");
-        provider->AddMapping("core/help_idea", "idea.png");
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxString ext(".svg");
+#else
+        const wxString ext(".png");
+#endif
 
-        provider->AddMapping("core/dbg/run", "dbgrun.png");
-        provider->AddMapping("core/dbg/pause", "dbgpause.png");
-        provider->AddMapping("core/dbg/stop", "dbgstop.png");
-        provider->AddMapping("core/dbg/run_to", "dbgrunto.png");
-        provider->AddMapping("core/dbg/next", "dbgnext.png");
-        provider->AddMapping("core/dbg/step", "dbgstep.png");
-        provider->AddMapping("core/dbg/step_out", "dbgstepout.png");
-        provider->AddMapping("core/dbg/next_inst", "dbgnexti.png");
-        provider->AddMapping("core/dbg/step_inst", "dbgstepi.png");
-        provider->AddMapping("core/dbg/window", "dbgwindow.png");
-        provider->AddMapping("core/dbg/info", "dbginfo.png");
+        provider->AddMapping("core/file_open", "fileopen"+ext);
+        provider->AddMapping("core/file_new", "filenew"+ext);
+        provider->AddMapping("core/history_clear", "history_clear"+ext);
+        provider->AddMapping("core/file_save", "filesave"+ext);
+        provider->AddMapping("core/file_save_as", "filesaveas"+ext);
+        provider->AddMapping("core/file_save_all", "filesaveall"+ext);
+        provider->AddMapping("core/file_close", "fileclose"+ext);
+        provider->AddMapping("core/file_print", "fileprint"+ext);
+        provider->AddMapping("core/exit", "exit"+ext);
+        provider->AddMapping("core/undo", "undo"+ext);
+        provider->AddMapping("core/redo", "redo"+ext);
+        provider->AddMapping("core/edit_cut", "editcut"+ext);
+        provider->AddMapping("core/edit_copy", "editcopy"+ext);
+        provider->AddMapping("core/edit_paste", "editpaste"+ext);
+        provider->AddMapping("core/bookmark_add", "bookmark_add"+ext);
+        provider->AddMapping("core/find", "filefind"+ext);
+        provider->AddMapping("core/find_in_files", "findf"+ext);
+        provider->AddMapping("core/find_next", "filefindnext"+ext);
+        provider->AddMapping("core/find_prev", "filefindprev"+ext);
+        provider->AddMapping("core/search_replace", "searchreplace"+ext);
+        provider->AddMapping("core/search_replace_in_files", "searchreplacef"+ext);
+        provider->AddMapping("core/goto", "goto"+ext);
+        provider->AddMapping("core/manage_plugins", "plug"+ext);
+        provider->AddMapping("core/help_info", "info"+ext);
+        provider->AddMapping("core/help_idea", "idea"+ext);
 
-        provider->AddMappingF("core/folder_open", "tree/%dx%d/folder_open.png");
-        provider->AddMappingF("core/gear", "infopane/%dx%d/misc.png");
+        provider->AddMapping("core/dbg/run", "dbgrun"+ext);
+        provider->AddMapping("core/dbg/pause", "dbgpause"+ext);
+        provider->AddMapping("core/dbg/stop", "dbgstop"+ext);
+        provider->AddMapping("core/dbg/run_to", "dbgrunto"+ext);
+        provider->AddMapping("core/dbg/next", "dbgnext"+ext);
+        provider->AddMapping("core/dbg/step", "dbgstep"+ext);
+        provider->AddMapping("core/dbg/step_out", "dbgstepout"+ext);
+        provider->AddMapping("core/dbg/next_inst", "dbgnexti"+ext);
+        provider->AddMapping("core/dbg/step_inst", "dbgstepi"+ext);
+        provider->AddMapping("core/dbg/window", "dbgwindow"+ext);
+        provider->AddMapping("core/dbg/info", "dbginfo"+ext);
+
+        provider->AddMappingF("core/folder_open", "tree/%dx%d/folder_open"+ext);
+        provider->AddMappingF("core/gear", "infopane/%dx%d/misc"+ext);
 
         wxArtProvider::Push(provider);
     }

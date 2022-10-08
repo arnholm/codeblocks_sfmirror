@@ -365,14 +365,20 @@ void CompilerGCC::OnAttach()
     LogManager* msgMan = Manager::Get()->GetLogManager();
 
     {
-        const wxString prefix = ConfigManager::GetDataFolder() + wxT("/compiler.zip#zip:/images");
+        const wxString prefix(ConfigManager::GetDataFolder() + wxT("/compiler.zip#zip:/images"));
         m_pArtProvider = new cbArtProvider(prefix);
 
-        m_pArtProvider->AddMapping(wxT("compiler/compile"), wxT("compile.png"));
-        m_pArtProvider->AddMapping(wxT("compiler/run"), wxT("run.png"));
-        m_pArtProvider->AddMapping(wxT("compiler/compile_run"), wxT("compilerun.png"));
-        m_pArtProvider->AddMapping(wxT("compiler/rebuild"), wxT("rebuild.png"));
-        m_pArtProvider->AddMapping(wxT("compiler/stop"), wxT("stop.png"));
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxString ext(".svg");
+#else
+        const wxString ext(".png");
+#endif
+
+        m_pArtProvider->AddMapping("compiler/compile",     "compile"+ext);
+        m_pArtProvider->AddMapping("compiler/run",         "run"+ext);
+        m_pArtProvider->AddMapping("compiler/compile_run", "compilerun"+ext);
+        m_pArtProvider->AddMapping("compiler/rebuild",     "rebuild"+ext);
+        m_pArtProvider->AddMapping("compiler/stop",        "stop"+ext);
 
         wxArtProvider::Push(m_pArtProvider);
     }

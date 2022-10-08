@@ -189,13 +189,18 @@ void IncrementalSearch::OnAttach()
     // (see: does not need) this plugin...
 
     {
-        const wxString prefix = ConfigManager::GetDataFolder()+"/IncrementalSearch.zip#zip:/images";
+        const wxString prefix(ConfigManager::GetDataFolder()+"/IncrementalSearch.zip#zip:/images");
         m_ArtProvider = new cbArtProvider(prefix);
 
-        m_ArtProvider->AddMapping("incremental_search/highlight",     "incsearchhighlight.png");
-        m_ArtProvider->AddMapping("incremental_search/selected_only", "incsearchselectedonly.png");
-        m_ArtProvider->AddMapping("incremental_search/case",          "incsearchcase.png");
-        m_ArtProvider->AddMapping("incremental_search/regex",         "incsearchregex.png");
+#if wxCHECK_VERSION(3, 1, 6)
+        const wxString ext(".svg");
+#else
+        const wxString ext(".png");
+#endif
+        m_ArtProvider->AddMapping("incremental_search/highlight",     "incsearchhighlight"+ext);
+        m_ArtProvider->AddMapping("incremental_search/selected_only", "incsearchselectedonly"+ext);
+        m_ArtProvider->AddMapping("incremental_search/case",          "incsearchcase"+ext);
+        m_ArtProvider->AddMapping("incremental_search/regex",         "incsearchregex"+ext);
 
         wxArtProvider::Push(m_ArtProvider);
     }
