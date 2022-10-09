@@ -198,6 +198,7 @@ if exist "%CB_DEVEL_RESDIR%\images\codesnippets" (
 
 if exist "%CB_DEVEL_RESDIR%\images\fortranproject" (
     call:copyImageFiles "%CB_DEVEL_RESDIR%\images\fortranproject" "%CB_OUTPUT_RESDIR%\images\fortranproject"
+    call:copySvgFiles "%CB_DEVEL_RESDIR%\images\fortranproject" "%CB_OUTPUT_RESDIR%\images\fortranproject"
 )
 
 if exist "%CB_DEVEL_RESDIR%\images\wxsmith" (
