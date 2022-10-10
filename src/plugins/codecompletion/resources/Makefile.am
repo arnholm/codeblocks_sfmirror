@@ -467,7 +467,7 @@ resources_forZIP = \
 	images/64x64/var_private.png \
 	images/64x64/var_protected.png \
 	images/64x64/var_public.png \
-	images/64x64/vars_folder.png
+	images/64x64/vars_folder.png \
 	\
 	images/svg/class_folder.svg \
 	images/svg/class.svg \
