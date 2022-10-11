@@ -1173,9 +1173,12 @@ wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filena
         if (sz < minSize)
             continue;
 
-        const wxBitmap bmp(cbLoadBitmap(prefix+wxString::Format("%dx%d/", sz, sz)+filename, wxBITMAP_TYPE_PNG));
+        const wxString pngName(prefix+wxString::Format("%dx%d/", sz, sz)+filename);
+        const wxBitmap bmp(cbLoadBitmap(pngName));
         if (bmp.IsOk())
             bitmaps.push_back(bmp);
+        else
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("cbLoadBitmapBundle: Cannot load bitmap '%s'", pngName));
     }
 
     return wxBitmapBundle::FromBitmaps(bitmaps);
@@ -1209,6 +1212,10 @@ wxBitmapBundle cbLoadBitmapBundleFromSVG(const wxString& filename, const wxSize&
 
         delete f;
     }
+
+    if (!bundle.IsOk())
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("cbLoadBitmapBundleFromSVG: Cannot load '%s'", filename));
+
 #else
 #warning The port does not provide raw bitmap accessvia wxPixelData, so SVG loading will fail
 #endif
