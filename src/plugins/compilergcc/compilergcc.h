@@ -299,6 +299,7 @@ class CompilerGCC : public cbCompilerPlugin
         wxString            m_LastTargetName;
         bool                m_NotifiedMaxErrors;
         wxLongLong          m_StartTime;
+        bool                m_StartedEventSent;
 
         // build state management
         cbProject*          m_pBuildingProject; // +

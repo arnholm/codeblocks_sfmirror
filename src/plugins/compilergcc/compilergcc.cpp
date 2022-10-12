@@ -316,6 +316,8 @@ CompilerGCC::CompilerGCC() :
 {
     if (!Manager::LoadResource(_T("compiler.zip")))
         NotifyMissingFile(_T("compiler.zip"));
+
+    m_StartedEventSent = false;
 }
 
 CompilerGCC::~CompilerGCC()
@@ -1657,6 +1659,8 @@ void CompilerGCC::DoPrepareQueue(bool clearLog)
     {
         CodeBlocksEvent evt(cbEVT_COMPILER_STARTED, 0, m_pProject, 0, this);
         Manager::Get()->ProcessEvent(evt);
+        //Make sure we force sending the compiler finish event, else plugins will hang
+        m_StartedEventSent = true;
 
         if (clearLog)
         {
@@ -4096,11 +4100,14 @@ void CompilerGCC::NotifyJobDone(bool showNothingToBeDone)
         // If this is the case we don't need to send cbEVT_COMPILER_FINISHED event.
         if (manager->GetIsRunning() == this)
             manager->SetIsRunning(nullptr);
-        else
+        // The above is not true for the idMenuRun which sends the compiler started event.
+        // If we sent the started event, make sure we send the finish event, else plugins hang.
+        if (m_StartedEventSent)
         {
             CodeBlocksEvent evt(cbEVT_COMPILER_FINISHED, 0, m_pProject, 0, this);
             evt.SetInt(m_LastExitCode);
             Manager::Get()->ProcessEvent(evt);
+            m_StartedEventSent = false;
         }
         m_LastExitCode = 0;
     }
