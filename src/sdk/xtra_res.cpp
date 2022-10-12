@@ -48,11 +48,7 @@ wxToolBarAddOnXmlHandler::wxToolBarAddOnXmlHandler() :
 void wxToolBarAddOnXmlHandler::SetToolbarImageSize(int size)
 {
     m_ImageSize = size;
-#if wxCHECK_VERSION(3, 1, 6)
-    m_PathReplaceString = "svg";
-#else
     m_PathReplaceString = wxString::Format("%dx%d", size, size);
-#endif
 }
 
 void wxToolBarAddOnXmlHandler::SetCurrentResourceID(const wxString &id)
@@ -104,24 +100,30 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
             return stockArt;
     }
 
-    const wxString name = GetParamValue(paramNode);
+    const wxString name(GetParamValue(paramNode));
     if (name.empty())
-        return wxArtProvider::GetBitmap(wxT("sdk/missing_icon"), wxART_TOOLBAR, size * scaleFactor);
+        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR, size * scaleFactor);
 
     wxString finalName(name);
-
-#if wxCHECK_VERSION(3, 1, 6)
     wxBitmap bitmap;
-    if (finalName.Replace("22x22", m_PathReplaceString))
+#if wxCHECK_VERSION(3, 1, 6)
+    if (finalName.Replace("22x22", "svg"))
     {
         finalName.Replace(".png", ".svg");
         bitmap = cbLoadBitmapBundleFromSVG(finalName, wxSize(m_ImageSize, m_ImageSize), &GetCurFileSystem()).GetBitmap(wxDefaultSize);
+        // Fallback
+        if (!bitmap.Ok() && name.EndsWith(".png"))
+        {
+            finalName = name;
+            if (finalName.Replace("22x22", m_PathReplaceString))
+                bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
+        }
     }
     else
         bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
 #else
     finalName.Replace("22x22", m_PathReplaceString);
-    wxBitmap bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
+    bitmap = cbLoadBitmap(finalName, wxBITMAP_TYPE_PNG, &GetCurFileSystem());
 #endif
 
     if (!bitmap.Ok())
