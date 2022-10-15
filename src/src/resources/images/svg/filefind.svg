@@ -1,19 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32">
-    <defs>
-        <linearGradient id="b">
-            <stop style="stop-color:#b69526;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#dfc25a;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="a">
-            <stop style="stop-color:#9bc3d4;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#f1f9fa;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="d" x1="21" y1="1041.362" x2="8" y2="1023.362" gradientUnits="userSpaceOnUse" gradientTransform="translate(-1)"/>
-        <linearGradient xlink:href="#b" id="c" gradientUnits="userSpaceOnUse" x1="26.437" y1="1042.286" x2="22.381" y2="1046.548" gradientTransform="matrix(.98624 0 0 1.05598 -.073 -57.767)"/>
-    </defs>
-    <g transform="translate(0 -1020.362)" style="display:inline">
-        <path style="fill:url(#c);fill-opacity:1;stroke:#644e00;stroke-width:.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M24.5 1050.362c1.5 1 3.213.685 4.07-.124.93-.876 1.43-1.376 1.93-2.18.65-1.046 1-2.196 0-3.696-2-2-8.383-8.284-8.383-8.284l-5.424 6.336s5.807 5.948 7.807 7.948z"/>
-        <circle style="fill:url(#d);fill-opacity:1;stroke:#417e9a;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="12.5" cy="1032.862" r="12"/>
-        <image y="1023.362" x="-36" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEAGQA TgAA7/XKOAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9kDBBYvBDz9KXYAAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAADkklEQVQ4y6WUzU9cZRSHn/fOB0wHpjClHbAO DWkQxVYDkRIWNE010RqjYWdiY6J/gy5M1JUrEzfGGExMGhcmGK2NVdFFrdoaC5SSQk0DJWWABgqF QsvMwGXmvue4uBeCcagNnptz897k5jnv+Z0PQwnrHRrXq5PzTC3cI+u6xCIR9icraWmopau92fAQ 9o+fLlyf0tMDYzTWVtN8YB+11Qmi4TAra+tM31lmODPLjZkFTnYe5kRrk3ko8HeXb+iVyTleOdJE /d7diIK1iidCwQrFwCfmljh7aYRjzQd4/VjrtnAH4PfrUzqYuc2bz7ZwMJUkGnKIOA6hkMExhpBj cAwYY0jvq+K159o491eGHwdH9YHg0/1jvNzWRCIWJRyCSMjBccBgMMZPy2AwgKOGeFk5Lx55klPn h7aVwukdGteDdVWka3ajgAhYUVQVUPw3wdl/jIFHapLU1+2h54/hkrd2rmbmeCKdwqpiRSkGmnri f4sqIopgUAXFIEHQpnQd/eO3St94avEetVUVeKIU7Uah/LMn4kMDuKp/VlVEIJWsZGJuqSQ4vLLq Eo2E8aygOBjxU1VRBMWz4IniqfgZBIEUpSwSJeu6pcGxaISVtXUSsXJELcYEHaSKQCCJ+K2nilXB BnXIu+vEo9HSUjy6p5LphWWKYikEUhSsUBCh4AmeDVw06GsfakWZW7pPQypZGtzSUMdI5jZFL9DY sxQ9H1rcDLShufoB1PfR6VnaG9OlwV3tzebmzAKZ+bsBTCmIUPR0c+I8EYriT6EVwbPK7OIymZl5 Jns6th+Qk0ef4vu+ayzn1yhYS8GTAL5xa8WzdnOsc65Lb98Ib9d/Ssuhet59I6rb7oovfhvSc9cm eKHtEPv3VvujoKAKEqQvqswsLvNT3wgfHP6KfH6FfC7Lai7LL3/e5KMvPVNyu/0wOKqnzl+hvraG x9K1pJIJyiIR1tYLzC3dZ3RqlszsHT5s/ZZdFZW4q3nyuSy5/AqruSy9v47zyTdiAMJbwS8987gB 6Lk4rP3jt/j50l1W3HUqyqI0pJJ0NKZJXOgi39SBAvF4JVs1OHG8Ebcwpp+fxYRLCf9q59MP3LWx 8n59/ng7oMQrEpubxEAwB0qYHdh73a6JRS/r0c42AOIVCV9TAyFnS1fsxN76eNUMDAyRz2XJ57KU 74rz9ZmLdJ9R86/i7cS630no6polt2Z5/zP3f/P+0/4GkxE4LWNvmCIAAAAASUVORK5CYII=" style="image-rendering:optimizeSpeed" preserveAspectRatio="none" height="29.333" width="29.333"/>
-    </g>
+<svg width="32" height="32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="d" x1="21" x2="8" y1="1041" y2="1023" gradientTransform="translate(-1)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9bc3d4" offset="0"/>
+      <stop stop-color="#f1f9fa" offset="1"/>
+    </linearGradient>
+    <linearGradient id="c" x1="26.44" x2="22.38" y1="1042" y2="1047" gradientTransform="matrix(.9862 0 0 1.056 -.073 -57.77)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b69526" offset="0"/>
+      <stop stop-color="#dfc25a" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -1020)">
+    <path d="M24.5 1050.362c1.5 1 3.213.685 4.07-.124.93-.876 1.43-1.376 1.93-2.18.65-1.046 1-2.196 0-3.696-2-2-8.383-8.284-8.383-8.284l-5.424 6.336s5.807 5.948 7.807 7.948z" fill="url(#c)" stroke="#644e00" stroke-width="1px"/>
+    <circle cx="12.5" cy="1033" r="12" fill="url(#d)" stroke="#417e9a"/>
+  </g>
 </svg>

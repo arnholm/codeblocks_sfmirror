@@ -1,14 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" style="shape-rendering:crispEdges">
-    <defs>
-        <linearGradient id="a">
-            <stop offset="0" style="stop-color:#003efe;stop-opacity:1"/>
-            <stop offset="1" style="stop-color:#d4eaff;stop-opacity:1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="b" x1="6.689" y1="295.768" x2=".55" y2="288.265" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.7197 0 0 .7197 .128 83.122)"/>
-    </defs>
-    <g transform="translate(0 -288.533)">
-        <circle cx="3.175" cy="293.825" style="fill:url(#b);fill-opacity:1;stroke:#001184;stroke-width:.19656241;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.98431373" r="3.047" transform="matrix(1.34605 0 0 1.34605 -.044 -102.733)"/>
-        <image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI WXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3AgOEyAluWenygAAAB1pVFh0Q29tbWVudAAAAAAAQ3Jl YXRlZCB3aXRoIEdJTVBkLmUHAAADHElEQVQ4y2WTXUybZRTHf+/bbmv5GDBJKaW2kykufLgyNkFd 4rbMJZtxzmR+ZMgNmhhjvPDSGGnorRcao14tJJqY+BEvtpgYjbIlOFjGhBUma+sitCnFlIJMCvR9 3vd5Hi8KZLon+V88yfn/zzn/c47B/97kzErwux8XBsduLvXfSRdxmxD076TnwJ6hl04/GO3qeCB7 b7xx72fg49Tg95eXBiLtPkKBWmp2e1nfcMgXivyZLnArkebcyUDsg3e7ovcJvPbedHqt5AmdfDqM aZhcGZmgulKzXlIs39W0t7VSXBeMjacI+5zM158cDQO4AN7/KDk4XzDOnHnmYbweN5dHJnnn9U7O PxfkaE8TdXU+fvg5TkODjwZfPVO38zWv9L1pjg1fuGJOzqwELw0vDhx7ci9SaixboZRmbaOM1TXN hqXRgNYGGs2Bx1r46lJmYHwqH3TV7+v70OOt6QwFalGAkjCfy3Hz9wVGf8sxPDrPxPQCba3tOFLh SI2SIKRiefnvWuN434h+vOtR/L5qXC64dj3O+Rc6aWt2UVdtIBy4NmXx2Rc32L+/FUsoLKFYLNwl l5nBzOSKVFTsQgiFsBQHIx18/s0EczmJ221QW2XgdoFSIKUuQ2m8Hg9z2VXcSkqErTCQmK7yYGxH 40iN1hqlDZxNkiPLkFLjaNAozCa/h8JSsVxaSWEJie0opCwbB6DUJsnR2z6s/rNGuKkSsyeyZ2gu U6AkFCWhsCy1GaTYUtjKKmyF42hsR5FfXOTIIf+Q+fKzoWgimWF9Q1ASkpJQ2LamZCm0BqXLmaXU CEchbIVl2WQyaXrPtkTNQx312XOnArHrN1JYliIen+aN3oOc6PZSXWni2Wly4okK3u7vIpW8je0o Eokkvc8/FOuONGS3V/nFt4bTf2QJdbS2MDubwjTKHWjFtoENjc0kkkna9urMxQunwwDmlsC3nx4P Hzvsjf30y68IZxdVuxtpDLRQ72+motqPcHYwevUqp56qjG2R77tGgPF4PvjlxTuDI+N/9admV9jh Ngg3VXHksH/o1bOPRLsj/v+c878Hf7BEGTAnDQAAAABJRU5ErkJggg==" preserveAspectRatio="none" height="21.333" width="21.333" transform="matrix(.26458 0 0 .26458 -9.922 291.047)"/>
-        <path style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:medium;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0;word-spacing:0;fill:#fffefe;fill-opacity:1;stroke:#011286;stroke-width:.82305938;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto" d="M-1.556-13.617-1.573.055c0 .747.285 1.526.578 1.873.294.32.762.515 1.482.622v1.865L-9.04 4.5l-.01-1.95c.906-.214 1.463-.355 1.703-.622.266-.293.33-1.652.331-2.479l.006-9.3c.001-.826-.07-1.013-.337-1.28-.267-.293-.823-.434-1.703-.621v-1.865zM-6.36-20.22c.613-.613 1.347-.92 2.2-.92.853 0 1.573.307 2.16.92.613.613.92 1.347.92 2.2 0 .88-.307 1.613-.92 2.2-.587.587-1.32.88-2.2.88-.88 0-1.613-.293-2.2-.88-.587-.587-.88-1.333-.88-2.24 0-.853.307-1.573.92-2.16z" transform="matrix(.43406 0 0 .23808 6.188 294.601)"/>
-    </g>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="b" x1="6.689" x2=".55" y1="295.8" y2="288.3" gradientTransform="matrix(.7197 0 0 .7197 .128 83.12)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#003efe" offset="0"/>
+      <stop stop-color="#d4eaff" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -288.5)">
+    <circle transform="matrix(1.346 0 0 1.346 -.044 -102.7)" cx="3.175" cy="293.8" r="3.047" fill="url(#b)" stroke="#001184" stroke-opacity=".9843" stroke-width=".1966"/>
+    <path transform="matrix(.4341 0 0 .2381 6.188 294.6)" d="M-1.556-13.617-1.573.055c0 .747.285 1.526.578 1.873.294.32.762.515 1.482.622v1.865L-9.04 4.5l-.01-1.95c.906-.214 1.463-.355 1.703-.622.266-.293.33-1.652.331-2.479l.006-9.3c.001-.826-.07-1.013-.337-1.28-.267-.293-.823-.434-1.703-.621v-1.865zM-6.36-20.22c.613-.613 1.347-.92 2.2-.92.853 0 1.573.307 2.16.92.613.613.92 1.347.92 2.2 0 .88-.307 1.613-.92 2.2-.587.587-1.32.88-2.2.88-.88 0-1.613-.293-2.2-.88-.587-.587-.88-1.333-.88-2.24 0-.853.307-1.573.92-2.16z" fill="#fffefe" image-rendering="auto" stroke="#011286" stroke-width=".8231"/>
+  </g>
 </svg>

@@ -1,47 +1,23 @@
-<svg xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="32" width="32">
-    <defs>
-        <linearGradient id="h">
-            <stop style="stop-color:#9798c7;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#344bd0;stop-opacity:.98412699" offset="1"/>
-        </linearGradient>
-        <linearGradient osb:paint="gradient" id="g">
-            <stop style="stop-color:#fff;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#f1f1f1;stop-opacity:1" offset=".467"/>
-            <stop style="stop-color:#c7c7c7;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="f">
-            <stop style="stop-color:#00f;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#c8c8ff;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="a">
-            <stop style="stop-color:#000;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#000;stop-opacity:0" offset="1"/>
-        </linearGradient>
-        <linearGradient id="c">
-            <stop style="stop-color:#454c9b;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#3d42ff;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="d">
-            <stop style="stop-color:#6c7aff;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#eae8e3;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="e">
-            <stop style="stop-color:#fff;stop-opacity:0" offset="0"/>
-            <stop style="stop-color:#fff;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="b" osb:paint="gradient">
-            <stop offset="0" style="stop-color:silver;stop-opacity:1"/>
-            <stop offset=".349" style="stop-color:#f1f1f1;stop-opacity:1"/>
-            <stop offset="1" style="stop-color:#f0f0f0;stop-opacity:1"/>
-        </linearGradient>
-        <radialGradient xlink:href="#g" id="i" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.87918 .15818 -.14012 .77876 4.425 -.388)" cx="18.033" cy="16.034" fx="18.033" fy="16.034" r="14.291"/>
-        <radialGradient xlink:href="#h" id="j" cx="15.161" cy="40.265" fx="15.161" fy="40.265" r="6.485" gradientTransform="matrix(.79883 .01144 -.05034 2.95812 5.453 -78.899)" gradientUnits="userSpaceOnUse"/>
-    </defs>
-    <image xlink:href="data:image/png;base64,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" preserveAspectRatio="none" height="62.667" width="44" transform="matrix(.75284 0 0 .75284 -46.62 -15.21)"/>
-    <path style="fill:url(#i);fill-opacity:1;stroke:#344bd0;stroke-width:1.37185335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M16.832 37.686s-.037-.96-.244-1.995c-.207-1.036-.505-2.58-1.002-3.642-.374-.8-1.518-3.205-2.95-4.834-1.066-1.214-1.912-2.2-3.287-4.264-1.023-1.533-1.684-3.43-1.71-6.163-.015-1.441.26-3.31 1.024-5.335.843-2.237 2.18-3.502 3.425-4.747 1.001-1.001 2.655-2.002 4.657-2.935 1.373-.639 4.04-1.14 5.905-1.07 1.864.069 4.437.46 6.042 1.277 1.83.933 3.667 1.73 5.048 3.318 1.38 1.588 2.01 2.503 2.487 4.264.484 1.788.904 4.503.417 7.382-.415 2.46-1.923 4.65-3.189 6.236-1.476 1.849-2.07 2.693-3.244 4.42a12.47 12.47 0 0 0-2.001 4.989c-.157.922-.265 1.633-.26 3.099-4.15-.006-7.273.047-11.118 0z" transform="matrix(.72771 0 0 .73017 -.059 -1.464)"/>
-    <path style="fill:#b5b5b5;fill-opacity:1;stroke:#7c7c7c;stroke-width:1.37185335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M19.469 43.027h6.012l-.158 2.12H19.74z" transform="matrix(.72771 0 0 .73017 -.059 -1.464)"/>
-    <path transform="matrix(.6812 0 0 .74503 4.617 -1.888)" style="fill:url(#j);fill-opacity:1;stroke:#344bd0;stroke-width:1.40370429;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M11.243 37.593H23.17l-.467 5.29H11.535Z"/>
-    <path transform="matrix(.5745 0 0 .57643 4.423 2.56)" style="fill:none;fill-opacity:1;stroke:#f0f0f0;stroke-width:1.2164185;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M18.65 28.847c-.007-1.342-2.224-2.106-2.356-4.278-.138-2.285 1.367-3.976 3.807-3.976 2.441 0 4.165 1.877 3.851 4.173-.262 1.923-2.428 2.996-2.423 4.063"/>
-    <path style="fill:none;stroke:#f0f0f0;stroke-width:.913495;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m23.155 29.14.307 7.77" transform="matrix(.72771 0 0 .8069 -.059 -4.335)"/>
-    <path style="fill:none;stroke:#f0f0f0;stroke-width:.91171211;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m23.129 29.148-.211 7.727" transform="matrix(.72771 0 0 .81006 -1.694 -4.424)"/>
+<svg width="32" height="32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <radialGradient id="i" cx="18.03" cy="16.03" r="14.29" gradientTransform="matrix(.8792 .1582 -.1401 .7788 4.425 -.388)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" offset="0"/>
+      <stop stop-color="#f1f1f1" offset=".467"/>
+      <stop stop-color="#c7c7c7" offset="1"/>
+    </radialGradient>
+    <radialGradient id="j" cx="15.16" cy="40.26" r="6.485" gradientTransform="matrix(.7988 .01144 -.05034 2.958 5.453 -78.9)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9798c7" offset="0"/>
+      <stop stop-color="#344bd0" stop-opacity=".9841" offset="1"/>
+    </radialGradient>
+  </defs>
+  <g>
+    <path transform="matrix(.7277 0 0 .7302 -.059 -1.464)" d="M16.832 37.686s-.037-.96-.244-1.995c-.207-1.036-.505-2.58-1.002-3.642-.374-.8-1.518-3.205-2.95-4.834-1.066-1.214-1.912-2.2-3.287-4.264-1.023-1.533-1.684-3.43-1.71-6.163-.015-1.441.26-3.31 1.024-5.335.843-2.237 2.18-3.502 3.425-4.747 1.001-1.001 2.655-2.002 4.657-2.935 1.373-.639 4.04-1.14 5.905-1.07 1.864.069 4.437.46 6.042 1.277 1.83.933 3.667 1.73 5.048 3.318 1.38 1.588 2.01 2.503 2.487 4.264.484 1.788.904 4.503.417 7.382-.415 2.46-1.923 4.65-3.189 6.236-1.476 1.849-2.07 2.693-3.244 4.42a12.47 12.47 0 0 0-2.001 4.989c-.157.922-.265 1.633-.26 3.099-4.15-.006-7.273.047-11.118 0z" fill="url(#i)" stroke="#344bd0" stroke-width="1.372px"/>
+    <path transform="matrix(.7277 0 0 .7302 -.059 -1.464)" d="m19.47 43.03h6.012l-0.158 2.12h-5.583z" fill="#b5b5b5" stroke="#7c7c7c" stroke-width="1.372"/>
+    <path transform="matrix(.6812 0 0 .745 4.617 -1.888)" d="m11.24 37.59h11.93l-0.467 5.29h-11.17z" fill="url(#j)" stroke="#344bd0" stroke-width="1.404"/>
+  </g>
+  <g fill="none" stroke="#f0f0f0">
+    <path transform="matrix(.5745 0 0 .5764 4.423 2.56)" d="M18.65 28.847c-.007-1.342-2.224-2.106-2.356-4.278-.138-2.285 1.367-3.976 3.807-3.976 2.441 0 4.165 1.877 3.851 4.173-.262 1.923-2.428 2.996-2.423 4.063" stroke-width="1.216"/>
+    <path transform="matrix(.7277 0 0 .8069 -.059 -4.335)" d="m23.155 29.14.307 7.77" stroke-width=".9135"/>
+    <path transform="matrix(.7277 0 0 .8101 -1.694 -4.424)" d="m23.13 29.15-0.211 7.727" stroke-width=".9117"/>
+  </g>
 </svg>

@@ -1,21 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <defs>
-        <linearGradient id="a">
-            <stop style="stop-color:#818181;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#ededed;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="b">
-            <stop style="stop-color:#ffb854;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#ffd59a;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="c" x1="7.673" y1="292.039" x2="3.969" y2="292.039" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 .92308 -.265 20.413)"/>
-        <linearGradient xlink:href="#b" id="d" gradientUnits="userSpaceOnUse" x1="4.28" y1="291.186" x2="1.906" y2="292.539" gradientTransform="matrix(.04428 .93985 -.99775 -.0127 293.914 294.426)"/>
-        <linearGradient xlink:href="#a" id="e" x1="7.673" y1="292.039" x2="3.969" y2="292.039" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 .92308 -.265 25.44)"/>
-    </defs>
-    <g transform="translate(0 -288.533)">
-        <path style="fill:url(#c);fill-opacity:1;stroke:#313131;stroke-width:.26458335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M4.895 289.195h2.646v1.588H4.895z"/>
-        <path style="fill:url(#d);fill-opacity:1;stroke:#945904;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M5.292 291.84H2.914c-1.062 0-1.459 1.059-1.459 1.72v.926H.265v.265l1.948 1.803 1.756-1.803v-.265h-1.19v-.396c0-.53-.133-.926.854-.931l1.712.01c.211 0 .344-.402.344-.67 0-.262-.133-.655-.397-.658z"/>
-        <path style="fill:url(#e);fill-opacity:1;stroke:#313131;stroke-width:.26458335;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M4.895 294.222h2.646v1.588H4.895z"/>
-        <image y="288.798" x="-8.202" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEAPkA qgA5N43Z7QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gMDhIYAmQhILsAAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAB1ElEQVQ4y9WUzWoUQRSFv1s98Z0iuBTFhRuZ YBz8SUCNG7MQ3Ji14kZMXIgY/0JEkglRBhcufIE8j1Xdmenqe1z0iARRxzYuvHCpTdXhcu6pD/5R WZdHa/fWhImUSmJKpBiJMZJSIsbIwcGB9boIuzvzJ+eZ6/VIZUmMkRgTMX5hf38fgNBFOFUJdyc3 juRIAtp2dwA6TZxioixLQgjUdU2d287Zybn5G+HIaDSiaRomkwmH4zGHVUVZldPJ/8f6adyGN3oq AoQARWivBYMTReD04/FvY/qDx9vLhXoBLtzeQLlEdQlNBfUhygnlik/a0dn1ic0s/Ppq0KW7z8Ab aMaY2jghAd4uRrMt54iwBMoV5o58Al6DZ1Ceno6p+TOPnw9My3ceYGYgIa+R13x4cZ+pxRTBmCvg 3JN6do9dQK6QWfuTPDPcfMjiZu7Ek+/CtDZ88+Td5iMuv2qsa9yOpqKuwEAI/8WSZqLbeh+FAO5C uZza7rhga6lQYTB4eXTyWejWw+DmtT5mBUytkMTgYh9o2Nl9341uq7sYGurWlfOYGZqmAom3w48s bbl1ptvqEIORVgZnwIQJ3ux95vq227HQbX0BTfZO6emiHT/7NhaOB6hfAbHhdUKlnQACAAAAAElF TkSuQmCC" style="image-rendering:optimizeSpeed" preserveAspectRatio="none" height="7.761" width="7.761"/>
-    </g>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="a">
+      <stop stop-color="#818181" offset="0"/>
+      <stop stop-color="#ededed" offset="1"/>
+    </linearGradient>
+    <linearGradient id="c" x1="7.673" x2="3.969" y1="292" y2="292" gradientTransform="matrix(1 0 0 .9231 -.265 20.41)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+    <linearGradient id="d" x1="4.28" x2="1.906" y1="291.2" y2="292.5" gradientTransform="matrix(.04428 .9398 -.9978 -.0127 293.9 294.4)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffb854" offset="0"/>
+      <stop stop-color="#ffd59a" offset="1"/>
+    </linearGradient>
+    <linearGradient id="e" x1="7.673" x2="3.969" y1="292" y2="292" gradientTransform="matrix(1 0 0 .9231 -.265 25.44)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+  </defs>
+  <g transform="translate(0 -288.5)" stroke-width=".2646">
+    <path d="m4.895 289.2h2.646v1.588h-2.646z" fill="url(#c)" stroke="#313131"/>
+    <path d="M5.292 291.84H2.914c-1.062 0-1.459 1.059-1.459 1.72v.926H.265v.265l1.948 1.803 1.756-1.803v-.265h-1.19v-.396c0-.53-.133-.926.854-.931l1.712.01c.211 0 .344-.402.344-.67 0-.262-.133-.655-.397-.658z" fill="url(#d)" stroke="#945904"/>
+    <path d="m4.895 294.2h2.646v1.588h-2.646z" fill="url(#e)" stroke="#313131"/>
+  </g>
 </svg>

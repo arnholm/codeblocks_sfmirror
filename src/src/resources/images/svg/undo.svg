@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <defs>
-        <linearGradient id="a">
-            <stop style="stop-color:#48ba43;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#93e790;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" x1="1.581" y1="289.177" x2="5.512" y2="292.97" gradientTransform="matrix(0 -1.3125 -1.04651 0 308.977 297.62)"/>
-    </defs>
-    <g transform="translate(0 -288.533)">
-        <path style="fill:url(#b);fill-opacity:1;stroke:#096204;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m7.017 296.069-3.313.005c-1.107 0-1.984-1.19-1.984-2.381v-1.323H.66v-.133l2.117-2.38 2.117 2.38v.133H3.836v.529c0 .694.09 1.058 1.059 1.058h2.117c.276 0 .396.715.396 1.063 0 .347-.12 1.054-.397 1.054z"/>
-        <image y="288.93" x="-7.673" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEAAYA TAADloprwQAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9kDBBMHFHrcVVMAAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAB0klEQVQ4y92VvWpUQRiGn1mSLIZdL0MsLdVr 0EqCu2lVLIKNQiAoCkHxHwP+IVhoTBEUG5N7sLERa2svQCLsfH8WM2ddXJdsEix04HDmDJzne+f9 3jkH/qtx+FE7/gr08be16D7cH7w1CXqrdxeAm/3bdO/MxYHBo1BzQ0y42r9Bd3Vv8NYkqJqiJki9 Li8u07k+Pbz1OzQiCswVcUFMURfUhKX+JTorszE1uIF6BOIyorbcsypiZf1c7wLzV3aHp2bSvdcO LAiHlcVrqAnqWoqE8mz9CRgQiZ0HOe0Gnmkm35cHCaCzOhdZM+aGhha4Cxjs3Jc0rcczYytOhelQ sbkSnvYUt3GwgVhG3VAXzBR1I2kc8IBYVKWlWSUZwpn+AvNLs7FvxWFly0PVVi0J5dTZ02zLh3BP JIPwAC9iwhODTU1jqWjGxY/nY/PrBgtHe0OoVb9l9LkpWIubC5/ffGHwvigbs+LFiZdJPlk9JNWO muOSax2xqObdy+6a3U78CP1Yk/Ru/S2iQq4vigrqglgmW0a1OUQZdx82fnIqGvhTSVuyFYeOtDl+ 7GRpZvyKYJMaRtsZwUSP/+T56+evCsBKzsMCPBEONA0MyNuW/t3f2k/EDJ8WZfYjwwAAAABJRU5E rkJggg==" style="stroke-width:.91666663;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="8.467" width="8.467"/>
-    </g>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="b" x1="1.581" x2="5.512" y1="289.2" y2="293" gradientTransform="matrix(0 -1.312 -1.047 0 309 297.6)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#48ba43" offset="0"/>
+      <stop stop-color="#93e790" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -288.5)">
+    <path d="m7.017 296.069-3.313.005c-1.107 0-1.984-1.19-1.984-2.381v-1.323H.66v-.133l2.117-2.38 2.117 2.38v.133H3.836v.529c0 .694.09 1.058 1.059 1.058h2.117c.276 0 .396.715.396 1.063 0 .347-.12 1.054-.397 1.054z" fill="url(#b)" stroke="#096204" stroke-width=".2646"/>
+  </g>
 </svg>
