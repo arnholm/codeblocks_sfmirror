@@ -1,12 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <g transform="translate(0 -288.533)">
-        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
-        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
-        <image y="288.533" x="-8.996" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAAK/INwWK6QAAABJQTFRF 09Ph0NDfnJy2kZH78vL5zMzML64kJQAAAAZ0Uk5T//////8As7+kvwAAABl0RVh0U29mdHdhcmUA QWRvYmUgSW1hZ2VSZWFkeXHJZTwAAABESURBVChTfc05DgAxCARBPMf/v+xg0JoN7BZRCUTZq4Nt u+ylFJlQ+AMAHCAl6QBJTiAj1xOy54NsvEF6QzffpgBG9gbn7wOXOtrpXAAAAABJRU5ErkJggg==" style="stroke-width:.49999931;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
-        <path style="opacity:1;fill:#9191fb;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M2.117 295.677h3.969v.529H2.117zM5.292 293.296h.794v.529h-.794z"/>
-        <path style="opacity:1;fill:#9191fb;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458329;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M5.556 293.825h.529v1.852h-.529z"/>
-        <path style="opacity:1;fill:#9191fb;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M2.117 293.825h.539v2.117h-.539z"/>
-        <path style="fill:#9191fb;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;shape-rendering:crispEdges" d="M2.91 292.502h.53v2.646h1.323v-2.646h.529l-1.191-1.19z"/>
-        <path style="opacity:1;fill:#9191fb;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M2.117 293.296h.794v.529h-.794z"/>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 -288.5)">
+    <path d="m1.19 296.9v-8.202h3.881l1.94 2.237v5.965z" fill="#f2f2f9" stroke="#9c9cb6" stroke-width=".2646"/>
+    <path d="m4.895 288.7v2.38h2.115" fill="#d0d0df" stroke="#9c9cb6" stroke-width=".2646px"/>
+    <g fill="#9191fb" fill-rule="evenodd" shape-rendering="crispEdges">
+      <path d="M2.117 295.677h3.969v.529H2.117zM5.292 293.296h.794v.529h-.794z" style="paint-order:stroke markers fill"/>
+      <path d="m5.556 293.8h0.529v1.852h-0.529z" style="paint-order:stroke markers fill"/>
+      <path d="m2.117 293.8h0.539v2.117h-0.539z" style="paint-order:stroke markers fill"/>
+      <path d="m2.91 292.5h0.53v2.646h1.323v-2.646h0.529l-1.191-1.19z"/>
+      <path d="M2.117 293.296h.794v.529h-.794z" style="paint-order:stroke markers fill"/>
     </g>
+  </g>
 </svg>

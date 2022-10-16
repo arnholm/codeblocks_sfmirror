@@ -1,27 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 4.233 4.233">
-    <defs>
-        <linearGradient id="b">
-            <stop style="stop-color:#000;stop-opacity:1" offset="0"/>
-            <stop offset=".342" style="stop-color:#171717;stop-opacity:1"/>
-            <stop style="stop-color:#5e5e5e;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient id="a">
-            <stop style="stop-color:#fb2121;stop-opacity:1" offset="0"/>
-            <stop offset=".073" style="stop-color:#fc5a5a;stop-opacity:1"/>
-            <stop offset=".123" style="stop-color:#ffe8e8;stop-opacity:1"/>
-            <stop style="stop-color:#fbfbfb;stop-opacity:1" offset=".145"/>
-            <stop style="stop-color:#ffe8e8;stop-opacity:1" offset=".168"/>
-            <stop offset=".238" style="stop-color:#fc5a5a;stop-opacity:1"/>
-            <stop offset=".315" style="stop-color:#fa0e0e;stop-opacity:1"/>
-            <stop style="stop-color:#5a0000;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="d" gradientUnits="userSpaceOnUse" x1="1.362" y1="293.311" x2="3.588" y2="297.795"/>
-        <linearGradient xlink:href="#b" id="c" x1="1.119" y1="294.027" x2=".539" y2="297.745" gradientUnits="userSpaceOnUse"/>
-    </defs>
-    <g transform="translate(0 -292.767)">
-        <path style="opacity:1;fill:#000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.00012493;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" d="M-5.292 292.767h4.233V297h-4.233z"/>
-        <image y="292.767" x="-5.292" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9 kT1Iw0AcxV9TpSIVBzuIOmSoThZERR21CkWoEGqFVh1MLv2CJg1Jiouj4Fpw8GOx6uDirKuDqyAI foC4uDopukiJ/0sKLWI8OO7Hu3uPu3eAUC8zzeoYAzTdNlOJuJjJroqhV4QwiDCmMSMzy5iTpCR8 x9c9Any9i/Es/3N/jh41ZzEgIBLPMsO0iTeIpzZtg/M+cYQVZZX4nHjUpAsSP3Jd8fiNc8FlgWdG zHRqnjhCLBbaWGljVjQ14kniqKrplC9kPFY5b3HWylXWvCd/YTinryxzneYQEljEEiSIUFBFCWXY iNGqk2IhRftxH/+A65fIpZCrBEaOBVSgQXb94H/wu1srPzHuJYXjQOeL43wMA6FdoFFznO9jx2mc AMFn4Epv+St1YOaT9FpLix4BvdvAxXVLU/aAyx2g/8mQTdmVgjSFfB54P6NvygJ9t0D3mtdbcx+n D0CaukreAAeHwEiBstd93t3V3tu/Z5r9/QDvuXLZJiNnWwAAAAZiS0dEAAAAAAAA+UO7fwAAAAlw SFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+MHGww4Gorbc+cAAAC4SURBVDjL1ZIxDoJAEEXfUqGn MLHGHjTZK3gQPYw2XGFLWkoShV5jaWLpBQh0YyNm2awxYKM/2eJP5s/Mnx34GzQgGYgbVzapjRGA 6X5HW1beQhNHo4aIfUUCgMt2IwD3NP0o9qI2Rq5aSwNie+247/UsSBJL1zkH1s+4nRgmcX95ZaVe BexE218GEmlNu4gAmC1XANyOB8LTmXlRKNU4X+Nu+RMCm+Qj7kO9G3/wBPnICw2+Ef8GHiGFThp9 vGL+AAAAAElFTkSuQmCC" style="stroke-width:.32000095;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="4.233" width="4.233"/>
-        <path style="fill:url(#c);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m2.77 293.905.41-.115.198 1.391-1.35-.433.197-.49c-.482-.274-2.13-1.39-2.06 2.263l.579-.31c-.02-2.785.61-2.964 2.026-2.306Z"/>
-        <path style="fill:url(#d);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m2.768 293.907.464-.355.469 1.866s-1.988-.71-2.02-.678c-.064.064.545-.483.545-.483-.372-.214-.715-.41-1.115-.367-.229.054-.25.06-.454.238.567-.763 1.386-.61 2.11-.221z"/>
-    </g>
+<svg width="16" height="16" version="1.1" viewBox="0 0 4.233 4.233" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="d" x1="1.362" x2="3.588" y1="293.3" y2="297.8" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fb2121" offset="0"/>
+      <stop stop-color="#fc5a5a" offset=".073"/>
+      <stop stop-color="#ffe8e8" offset=".123"/>
+      <stop stop-color="#fbfbfb" offset=".145"/>
+      <stop stop-color="#ffe8e8" offset=".168"/>
+      <stop stop-color="#fc5a5a" offset=".238"/>
+      <stop stop-color="#fa0e0e" offset=".315"/>
+      <stop stop-color="#5a0000" offset="1"/>
+    </linearGradient>
+    <linearGradient id="c" x1="1.119" x2=".539" y1="294" y2="297.7" gradientUnits="userSpaceOnUse">
+      <stop offset="0"/>
+      <stop stop-color="#171717" offset=".342"/>
+      <stop stop-color="#5e5e5e" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -292.8)" fill-rule="evenodd">
+    <path d="m2.77 293.905.41-.115.198 1.391-1.35-.433.197-.49c-.482-.274-2.13-1.39-2.06 2.263l.579-.31c-.02-2.785.61-2.964 2.026-2.306Z" fill="url(#c)"/>
+    <path d="m2.768 293.907.464-.355.469 1.866s-1.988-.71-2.02-.678c-.064.064.545-.483.545-.483-.372-.214-.715-.41-1.115-.367-.229.054-.25.06-.454.238.567-.763 1.386-.61 2.11-.221z" fill="url(#d)"/>
+  </g>
 </svg>

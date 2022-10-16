@@ -1,15 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <defs>
-        <linearGradient id="a">
-            <stop style="stop-color:#aecfff;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#4493fd;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" x1="5.953" y1="293.031" x2="1.588" y2="289.327" gradientTransform="matrix(0 -.9853 -.97561 0 287.178 297.115)"/>
-        <linearGradient xlink:href="#a" id="c" gradientUnits="userSpaceOnUse" x1=".654" y1="288.391" x2="5.353" y2="292.459" gradientTransform="matrix(0 .9853 .97561 0 -278.712 288.419)"/>
-    </defs>
-    <g transform="translate(0 -288.533)">
-        <image y="288.533" x="-9.525" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAAZiS0dEAAIA PACL1JiuQwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gMDhYcJ0xAmSQAAAAZdEVYdENv bW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAACm0lEQVQ4y92UzUtVURTF1xEbGjUJhHj9EwoZ RgVCQVpiEpaEeYs0xSdUg2gUJDnLZ1goSSZh+UX2LYZfoDjw/RcVNCkjqKhzzt6rwbnv1UV91bA2 XC73cvmdfddaewP/WpnffZA6kyWpoAhUBaSAqqAKlB5dHQfRUllk/gq8K8qyt7MMVgAngBfCioEV wgvgxKC7/xkoirWp2gSruBBYKbAecApYQYB5wqmBE8AJkY6qYT3Qp+P89OR4Hl5UCExKDAhAK4AV AyeEldxzOLhk204MLCs3lSIVZfn6bnn+fWnjIoOuQWNQoBR0NNfAKeA8YDUcfm/oPr5MN5l1UqSi LDOdZUjLCt8O7zEA8G5k/4Y+9PpJnj1dF8ODPKRgnRSpaJWZdBmcB7rbK1DauMBCMn18XG8GBkdh 446tAFRNglPRKjMd5bGWwaSr5/dhR8OrgnBq7IE3sJ6g/uy4OBVl2ZMuC+7HRuXidflcFa7753w/ WZ2QY2v1A5IK1VxqCOcBpceWAzdJFRSTHukbKyAFXW17gxEKXLs9A2Ewa6MYnjjZCKchHbmGqupb 4QSYH8ug+M1QhQnuL9D6XF4JpeDDRPWGxn1+ccqMeMfahqb837k4dnNjGejSRVOUzCzjjCKh10b1 dSYyj0buwInJw+djaCIVqpL/wArQ3lyDbUcnCpr3bbbVvHzYByfA3HgGEkMTOaZqbESYLOeBqOkY BmWEqgrSh+UTm/Z9ttUAgFtMmwVx1F+gickbWFZe6XmKtuYj69KRi2FuZzhPTI/egltMb7rE8lK0 VBaZXNeJSwjrCavx3RNWg3SFKjHSa1N1pl9GWbI9hcOHdoc4eQMvjLsNMnlFYnz/eNEPLCsvdA3n 9YQKlJpYRLJ0yeC/qh/fKRSKnwUPPgAAAABJRU5ErkJggg==" style="stroke-width:.91666663;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="8.467" width="8.467"/>
-        <path style="fill:url(#b);fill-opacity:1;stroke:#054192;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M4.908 296.074H2.646c-.926 0-1.72-1.058-1.72-1.984v-.926H.132v-.397l1.588-1.72 1.587 1.72v.397h-.793v.396c0 .522.132.926.661.926h1.72c.258 0 .529.265.529.794 0 .397-.271.794-.53.794z"/>
-        <path style="fill:url(#c);fill-opacity:1;stroke:#054192;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M3.559 289.46h2.262c1.032 0 1.72 1.058 1.72 1.984v.926h.793v.397l-1.587 1.72-1.588-1.72v-.397h.794v-.397c0-.521-.132-.926-.661-.926h-1.72c-.258 0-.53-.265-.53-.794 0-.53.272-.794.53-.794z"/>
-    </g>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="a">
+      <stop stop-color="#aecfff" offset="0"/>
+      <stop stop-color="#4493fd" offset="1"/>
+    </linearGradient>
+    <linearGradient id="b" x1="5.953" x2="1.588" y1="293" y2="289.3" gradientTransform="matrix(0 -.9853 -.9756 0 287.2 297.1)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+    <linearGradient id="c" x1=".654" x2="5.353" y1="288.4" y2="292.5" gradientTransform="matrix(0 .9853 .9756 0 -278.7 288.4)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+  </defs>
+  <g transform="translate(0 -288.5)" stroke="#054192" stroke-width=".2646">
+    <path d="M4.908 296.074H2.646c-.926 0-1.72-1.058-1.72-1.984v-.926H.132v-.397l1.588-1.72 1.587 1.72v.397h-.793v.396c0 .522.132.926.661.926h1.72c.258 0 .529.265.529.794 0 .397-.271.794-.53.794z" fill="url(#b)"/>
+    <path d="M3.559 289.46h2.262c1.032 0 1.72 1.058 1.72 1.984v.926h.793v.397l-1.587 1.72-1.588-1.72v-.397h.794v-.397c0-.521-.132-.926-.661-.926h-1.72c-.258 0-.53-.265-.53-.794 0-.53.272-.794.53-.794z" fill="url(#c)"/>
+  </g>
 </svg>

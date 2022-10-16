@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <g transform="translate(0 -288.533)">
-        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
-        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
-        <image y="288.533" x="-9.525" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAAK/INwWK6QAAAD9QTFRF +Wls89vi9bzB/wIC9qWq/wYG/gsM8unw09Ph/Sss/Sor96Km9qGm/wkJ9q6z/S4v8+Hn0NDfnJy2 8vL5zMzMgUzJ1wAAABV0Uk5T//////////////////////////8AK9l96gAAABl0RVh0U29mdHdh cmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAABgSURBVCiRdc5LDsAgCARQ//YnUuX+Zy3GRnHh7HjJ TFBE759CLYqh9nSRcJQVCmeBZlvQ7dITXIBaIbgBmBNAyjgrmL3nW4w+1t5yFNJ1JphguM87ZkBU 3EcVd48VEaIPcj4RYlsoOBkAAAAASUVORK5CYII=" style="stroke-width:.49999997;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
-        <path style="fill:#ff0202;fill-opacity:1;fill-rule:evenodd;stroke:#ff0202;stroke-width:.079375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" d="m2.117 292.502.529-.53 1.455 1.456 1.455-1.455.53.529-1.456 1.455 1.455 1.455-.529.53-1.455-1.456-1.455 1.456-.53-.53 1.456-1.455z"/>
-    </g>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 -288.5)">
+    <path d="m1.19 296.9v-8.202h3.881l1.94 2.237v5.965z" fill="#f2f2f9" stroke="#9c9cb6" stroke-width=".2646"/>
+    <path d="m4.895 288.7v2.38h2.115" fill="#d0d0df" stroke="#9c9cb6" stroke-width=".2646px"/>
+    <path d="m2.117 292.502.529-.53 1.455 1.456 1.455-1.455.53.529-1.456 1.455 1.455 1.455-.529.53-1.455-1.456-1.455 1.456-.53-.53 1.456-1.455z" fill="#ff0202" fill-rule="evenodd" shape-rendering="crispEdges" stroke="#ff0202" stroke-width=".07938"/>
+  </g>
 </svg>

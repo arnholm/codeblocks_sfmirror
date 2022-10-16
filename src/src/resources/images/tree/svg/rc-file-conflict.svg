@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <g transform="translate(0 -288.533)">
-        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
-        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
-        <image y="288.533" x="-8.996" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAGFBMVEXT0+HQ0N+cnLYAAADMzAD/ /wDy8vkAAACXHi76AAAACHRSTlP/////////AN6DvVkAAAABYktHRAMRDEzyAAAACXBIWXMAAABI AAAASABGyWs+AAAARklEQVQI12MoFwQC9fJyhnKxtLQ0IRhDQB3KUFKCMtKSwIwUN3SGawgaIyXY 1A2V4RpsGgJhhIaCGSKhwaahTsgMJTAoBwCW9SjJKmzYNwAAAABJRU5ErkJggg==" style="stroke-width:.5;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
-        <path style="fill:#ff0;fill-opacity:1;fill-rule:evenodd;stroke:#cc0;stroke-width:.26458329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" d="m1.72 296.603 2.381-5.027h.265l2.38 5.027z"/>
-        <path style="opacity:1;fill:#000;fill-opacity:.84172662;fill-rule:evenodd;stroke:none;stroke-width:.26458329;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M3.969 295.942h.529v.529h-.529zM3.969 292.767h.529v2.646h-.529z"/>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 -288.5)">
+    <g>
+      <path d="m1.19 296.9v-8.202h3.881l1.94 2.237v5.965z" fill="#f2f2f9" stroke="#9c9cb6" stroke-width=".2646"/>
+      <path d="m4.895 288.7v2.38h2.115" fill="#d0d0df" stroke="#9c9cb6" stroke-width=".2646px"/>
+      <path d="m1.72 296.6 2.381-5.027h0.265l2.38 5.027z" fill="#ff0" fill-rule="evenodd" shape-rendering="crispEdges" stroke="#cc0" stroke-miterlimit="2" stroke-width=".2646"/>
     </g>
+    <path d="m3.969 295.9h0.529v0.529h-0.529zm0-3.175h0.529v2.646h-0.529z" fill-opacity=".8417" fill-rule="evenodd" shape-rendering="crispEdges" style="paint-order:stroke markers fill"/>
+  </g>
 </svg>

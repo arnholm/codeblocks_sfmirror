@@ -1,104 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="32"
-   height="32"
-   viewBox="0 0 8.4666665 8.4666669"
-   version="1.1"
-   id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="var_private.svg">
-  <defs
-     id="defs2">
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient850"
-       id="linearGradient852"
-       x1="1.7197917"
-       y1="290.78226"
-       x2="5.0270834"
-       y2="294.08954"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.88235308,0,0,0.88235832,1.1984072,34.674985)" />
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient850">
-      <stop
-         style="stop-color:#fd8889;stop-opacity:1"
-         offset="0"
-         id="stop846" />
-      <stop
-         style="stop-color:#f02222;stop-opacity:1"
-         offset="1"
-         id="stop848" />
+<svg width="32" height="32" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="linearGradient852" x1="1.72" x2="5.027" y1="290.8" y2="294.1" gradientTransform="matrix(.8824 0 0 .8824 1.198 34.67)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fd8889" offset="0"/>
+      <stop stop-color="#f02222" offset="1"/>
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="11.554092"
-     inkscape:cy="20.630373"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     units="px"
-     inkscape:window-width="1920"
-     inkscape:window-height="1007"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid815" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-288.53332)">
-    <rect
-       style="fill:url(#linearGradient852);fill-opacity:1;stroke:#b70d0d;stroke-width:0.26458332;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect842"
-       width="3.9687502"
-       height="3.9687502"
-       x="2.2489583"
-       y="290.78229"
-       ry="0.70038027"
-       rx="0" />
-    <image
-       y="288.53333"
-       x="-9.5249996"
-       id="image830"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A /wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gLHRcBFhO8u1QAAADKSURBVDjL 7ZHBTQMxFESfBeKUC6KCCCFxpgsqIb2CKCBVrL3E317bfzhwIrtSUkBG+peR/tOMBm4KW2Z9fpV7 xXNGpxM/wBwCL/McLgJsv9fDxwHljMf4d2nCY+T4+cVbSv9+7s8Bag1PCfWOWkNjgDu4I2mVdg0w w1OEMVCpUAqqDXrHN+quAKNW7mJE7mhZwAwVQ6UyrkkQQ+BpikgOrUGtyAyZYSFcBmTgMU0goHe0 VFQKno1y7Yzfu51GCDjQgQUowPvGjDfBL5wqjCXMh0JKAAAAAElFTkSuQmCC "
-       style="stroke-width:0.66666663;image-rendering:optimizeSpeed"
-       preserveAspectRatio="none"
-       height="8.4666662"
-       width="8.4666662" />
+  <g transform="translate(0 -288.5)">
+    <rect x="2.249" y="290.8" width="3.969" height="3.969" rx="0" ry=".7004" fill="url(#linearGradient852)" stroke="#b70d0d" stroke-width=".2646"/>
   </g>
 </svg>

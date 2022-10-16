@@ -1,8 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467">
-    <path style="opacity:1;fill:#e70000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke" d="M0 289.592h8.467v5.821H0z" transform="translate(0 -288.533)"/>
-    <path style="opacity:1;fill:#fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke" d="M0 291.444h8.467v2.117H0z" transform="translate(0 -288.533)"/>
-    <g transform="matrix(2 0 0 2 .53 -585.534)" style="stroke-width:.4999997">
-        <path style="opacity:1;fill:#53523e;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke" d="M-4.762 292.767h4.233V297h-4.233z"/>
-        <image width="4.233" height="2.91" preserveAspectRatio="none" style="stroke-width:.4999997;image-rendering:optimizeSpeed" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0 U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAElSURBVHjaYvzPgAD/UNlYEUAAmuTYAAAQ hAEYqF/zFbe50RZ1cMmS9TLi0pJLRjZohAMTGFUN9HdnHgEE1sDw//+Tp0ClINW/f0NIKPoFJH/9 //ULyGaUlQXaABBALAympv81tRhExYFWAI0BqQZZ8geE4Iw/f379+sUmLv5v+3aAAGJ8+fKlqKgo 2Jb/DGCIBoBKISQ3N/fbt28BAgjiJKgqOAM7AMsCBBALQhFW85HV/weGyz+AAGL8ra/PWFj4//Vr BiQXAwPq/18UbwBlGcXF37S1AQQQy7+LF5mPHft/7x4DNFigYQIlIYw/vxmAYa2iAnQOQACxAEOK 6fcfBklJUIACRYFywBAEsf8wQEiw8RAEVAwQQIxfUSMSTxxDAECAAQAPfFda8rBeqAAAAABJRU5E rkJggg==" x="-4.762" y="293.296"/>
-    </g>
+<svg width="32" height="32" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg">
+  <path transform="translate(0 -288.5)" d="M0 289.592h8.467v5.821H0z" fill="#e70000" fill-rule="evenodd" style="paint-order:fill markers stroke"/>
+  <path transform="translate(0 -288.5)" d="M0 291.444h8.467v2.117H0z" fill="#fff" fill-rule="evenodd" style="paint-order:fill markers stroke"/>
 </svg>

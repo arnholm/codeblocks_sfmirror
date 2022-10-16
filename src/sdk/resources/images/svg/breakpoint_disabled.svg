@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32">
-    <defs>
-        <linearGradient id="a">
-            <stop style="stop-color:#727272;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#a3a3a3;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="b" x1="21" y1="1041.362" x2="8" y2="1023.362" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.29167 0 0 1.29167 -1.438 -297.759)"/>
-    </defs>
-    <g transform="translate(0 -1020.362)" style="display:inline">
-        <circle style="fill:url(#b);fill-opacity:1;stroke:#545454;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="16" cy="1036.362" r="15.5"/>
-        <image y="1015.862" x="-34.5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI WXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QwYCDkC3LCKDgAAAY5JREFUOMulkz2KIlEQx39vp+nW QJAGEQQTD6ADi5uORzDrYE/gAXZhbrC4B5grjJlXMBpmYWESAyOTTjpwQEXs7nqv3yStPLV3kyko XvGq/vVdylrLZ8gDGI/HVbo74Gsp/wXMtcF8PudLBfABeFZK6TAMX8MwfFVKaeC51N1m4NCPWq02 HQwGdLtdiqI4cxzH0XK5jLIs+wn8PgHcDB6CIJiORiM6nQ5aa0QErTVaa1qtFsPhEN/3p24mroNJ v98nCIILsIic2fM8er0ewOTaQej7ftRut88Rr8EiQp7nNJtNPM+LgNB1cN9oNDDGXBhXySJCvV4H uL9oorUWEcEYQ1EUN68ru7tzcvC23+/JsgxrbSXQGIO1FmMMx+MR4M0t4V1EZkmSkOf5TfpuT7bb LcaYGfB+PYWn9XrN4XC4qNedSJqmJEkC8FQ1xoWIPK5WKzabzc0e7HY74jjGGPMILP61ib+01i9x HE+UUlEQBACn3szKyIv/rTKlwcJa+z1N02/l35+qYwJQnz3nDyawRPCVIlIQAAAAAElFTkSuQmCC" style="stroke-width:.66666663;image-rendering:optimizeSpeed" preserveAspectRatio="none" height="32" width="32"/>
-    </g>
+<svg width="32" height="32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="b" x1="21" x2="8" y1="1041" y2="1023" gradientTransform="matrix(1.292 0 0 1.292 -1.438 -297.8)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#727272" offset="0"/>
+      <stop stop-color="#a3a3a3" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -1020)">
+    <circle cx="16" cy="1036" r="15.5" fill="url(#b)" stroke="#545454"/>
+  </g>
 </svg>

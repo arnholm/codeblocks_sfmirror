@@ -1,11 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <defs>
-        <linearGradient id="a">
-            <stop style="stop-color:#d52d1c;stop-opacity:1" offset="0"/>
-            <stop style="stop-color:#f39c94;stop-opacity:1" offset="1"/>
-        </linearGradient>
-        <linearGradient xlink:href="#a" id="b" x1="3.471" y1="291.558" x2="8.762" y2="291.659" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.6039 0 0 .65515 .028 102.525)"/>
-    </defs>
-    <path style="fill:url(#b);fill-opacity:1;fill-rule:evenodd;stroke:#9c1406;stroke-width:.16135295;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" d="M1.19 292.105s.566-.028.74-.071c.175-.044.446.436.683.574.271.164.548.12.694.026.189-.12.252-.166.353-.243.166-.129.54-.272.535-.012l-.186 2.162c-.222.143-.382.475-.702.475H2.91c-.324 0-.738-.53-1.058-.53h-.661Z" transform="matrix(1.38463 -.88234 -.8877 -1.37627 260.94 409.17)"/>
-    <path style="fill:#b28b0a;fill-opacity:1;fill-rule:evenodd;stroke:#b28b0a;stroke-width:.1449154;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" d="M.913 292.092h.291v3.995H.913Z" transform="matrix(1.38463 -.88234 .8877 1.37627 -259.778 -398.137)"/>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="b" x1="3.471" x2="8.762" y1="291.6" y2="291.7" gradientTransform="matrix(.6039 0 0 .6552 .028 102.5)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d52d1c" offset="0"/>
+      <stop stop-color="#f39c94" offset="1"/>
+    </linearGradient>
+  </defs>
+  <path transform="matrix(1.385 -.8823 -.8877 -1.376 260.9 409.2)" d="M1.19 292.105s.566-.028.74-.071c.175-.044.446.436.683.574.271.164.548.12.694.026.189-.12.252-.166.353-.243.166-.129.54-.272.535-.012l-.186 2.162c-.222.143-.382.475-.702.475H2.91c-.324 0-.738-.53-1.058-.53h-.661Z" fill="url(#b)" fill-rule="evenodd" shape-rendering="crispEdges" stroke="#9c1406" stroke-width=".1614"/>
+  <path transform="matrix(1.385 -.8823 .8877 1.376 -259.8 -398.1)" d="M.913 292.092h.291v3.995H.913Z" fill="#b28b0a" fill-rule="evenodd" shape-rendering="crispEdges" stroke="#b28b0a" stroke-width=".1449"/>
 </svg>

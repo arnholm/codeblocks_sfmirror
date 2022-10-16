@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 8.467 8.467" shape-rendering="crispEdges">
-    <g transform="translate(0 -288.533)">
-        <path style="fill:#f2f2f9;fill-opacity:1;stroke:#9c9cb6;stroke-width:.26458335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M1.19 296.868v-8.202h3.881l1.94 2.237v5.965z"/>
-        <path style="fill:#d0d0df;stroke:#9c9cb6;stroke-width:.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1" d="M4.895 288.666v2.38H7.01"/>
-        <image y="288.533" x="-9.525" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAAK/INwWK6QAAABhQTFRF 09Ph8MgZ168A0NDfnJy2/wAA8vL5zMzMgvCPyAAAAAh0Uk5T/////////wDeg71ZAAAAGXRFWHRT b2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEdJREFUKJF9zEESwCAIBEEkbPb/P46IqKQq mWMfRshrZvSkwx2FnCBWwXoF3DYAFYAhC4CQBMwSsPp+vEC1OTTVHxgl2BH5AOU6BS17IZ2xAAAA AElFTkSuQmCC" style="stroke-width:.49999955;image-rendering:optimizeSpeed;shape-rendering:crispEdges" preserveAspectRatio="none" height="8.467" width="8.467"/>
-        <path style="opacity:1;fill:#d7af00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.07937499;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M1.323 294.883h5.556v1.852H1.323z"/>
-        <path style="opacity:1;fill:#f0c819;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.07937502;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;shape-rendering:crispEdges" d="M2.381 294.883h3.44v1.852h-3.44z"/>
-        <path style="fill:red;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;shape-rendering:crispEdges" d="M1.323 293.825h1.852v2.117h1.852v-2.117H6.88l-2.91-2.646z"/>
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 -288.5)">
+    <path d="m1.19 296.9v-8.202h3.881l1.94 2.237v5.965z" fill="#f2f2f9" stroke="#9c9cb6" stroke-width=".2646"/>
+    <path d="m4.895 288.7v2.38h2.115" fill="#d0d0df" stroke="#9c9cb6" stroke-width=".2646px"/>
+    <g fill-rule="evenodd" shape-rendering="crispEdges">
+      <path d="m1.323 294.9h5.556v1.852h-5.556z" fill="#d7af00" style="paint-order:stroke markers fill"/>
+      <path d="m2.381 294.9h3.44v1.852h-3.44z" fill="#f0c819" style="paint-order:stroke markers fill"/>
+      <path d="m1.323 293.8h1.852v2.117h1.852v-2.117h1.853l-2.91-2.646z" fill="red"/>
     </g>
+  </g>
 </svg>
