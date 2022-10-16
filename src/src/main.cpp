@@ -920,7 +920,7 @@ void MainFrame::CreateIDE()
     m_pPrjMan->SetUI(m_pPrjManUI);
 
     const double actualScaleFactor = cbGetActualContentScaleFactor(*this);
-    const int targetHeight = floor(16 * actualScaleFactor);
+    const int targetHeight = wxRound(16 * actualScaleFactor);
     const int uiSize16 = cbFindMinSize16to64(targetHeight);
 
     // All message posted before this call are either lost or sent to stdout/stderr.
