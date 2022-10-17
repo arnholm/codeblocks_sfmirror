@@ -95,7 +95,11 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     wxString artId, artClient;
     if (GetStockArtAttrs(artId, artClient, paramNode, wxART_TOOLBAR))
     {
+#if wxCHECK_VERSION(3, 1, 6)
+        wxBitmap stockArt = wxArtProvider::GetBitmapBundle(artId, artClient, size * scaleFactor).GetBitmap(wxDefaultSize);
+#else
         wxBitmap stockArt = wxArtProvider::GetBitmap(artId, artClient, size * scaleFactor);
+#endif
         if (stockArt.IsOk())
             return stockArt;
     }

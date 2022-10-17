@@ -919,8 +919,7 @@ void MainFrame::CreateIDE()
 
     m_pPrjMan->SetUI(m_pPrjManUI);
 
-    const double actualScaleFactor = cbGetActualContentScaleFactor(*this);
-    const int targetHeight = wxRound(16 * actualScaleFactor);
+    const int targetHeight = wxRound(16 * cbGetContentScaleFactor(*this));
     const int uiSize16 = cbFindMinSize16to64(targetHeight);
 
     // All message posted before this call are either lost or sent to stdout/stderr.
@@ -1022,7 +1021,7 @@ void MainFrame::CreateIDE()
     {
         // Setup toolbar sizes
         const int configSize = cbHelpers::ReadToolbarSizeFromConfig();
-        const int scaledSize = cbFindMinSize16to64(configSize * actualScaleFactor);
+        const int scaledSize = cbFindMinSize16to64(wxRound(configSize * cbGetContentScaleFactor(*this)));
         Manager::Get()->SetImageSize(scaledSize, Manager::UIComponent::Toolbars);
         Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
                                          Manager::UIComponent::Toolbars);
