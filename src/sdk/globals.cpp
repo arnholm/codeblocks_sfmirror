@@ -774,7 +774,7 @@ wxFontEncoding DetectEncodingAndConvert(const char* strIn, wxString& strOut, wxF
             wxCSConv conv(possibleEncoding);
             strOut = wxString(strIn, conv);
 
-            if (strOut.Length() == 0)
+            if (strOut.empty())
             {
                 // oops! wrong encoding...
 
@@ -785,17 +785,19 @@ wxFontEncoding DetectEncodingAndConvert(const char* strIn, wxString& strOut, wxF
                     strOut = wxString(strIn, wxConvUTF8);
                 }
 
-                // check again: if still not right, try system encoding, default encoding and then iso8859-1 to iso8859-15
-                if (strOut.Length() == 0)
+                // check again: if still not right, try system encoding and then iso8859-1 to iso8859-15
+                if (strOut.empty())
                 {
                     for (int i = wxFONTENCODING_SYSTEM; i < wxFONTENCODING_ISO8859_MAX; ++i)
                     {
                         encoding = (wxFontEncoding)i;
-                        if (encoding == possibleEncoding)
-                            continue; // skip if same as what was asked
+                        // skip if same as what was asked or the default encoding (the constructor would assert)
+                        if (encoding == possibleEncoding || encoding == wxFONTENCODING_DEFAULT)
+                            continue;
+
                         wxCSConv csconv(encoding);
                         strOut = wxString(strIn, csconv);
-                        if (strOut.Length() != 0)
+                        if (!strOut.empty())
                             break; // got it!
                     }
                 }
