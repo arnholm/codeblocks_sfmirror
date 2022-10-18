@@ -791,12 +791,11 @@ wxFontEncoding DetectEncodingAndConvert(const char* strIn, wxString& strOut, wxF
                     for (int i = wxFONTENCODING_SYSTEM; i < wxFONTENCODING_ISO8859_MAX; ++i)
                     {
                         encoding = (wxFontEncoding)i;
-                        // skip if same as what was asked or the default encoding (the constructor would assert)
-                        if (encoding == possibleEncoding || encoding == wxFONTENCODING_DEFAULT)
+                        // skip if same as what was asked
+                        if (encoding == possibleEncoding)
                             continue;
 
-                        wxCSConv csconv(encoding);
-                        strOut = wxString(strIn, csconv);
+                        strOut = wxString(strIn, (encoding == wxFONTENCODING_DEFAULT) ? wxConvLocal : wxCSConv(encoding));
                         if (!strOut.empty())
                             break; // got it!
                     }
