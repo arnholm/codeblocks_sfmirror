@@ -1410,6 +1410,9 @@ bool cbProject::RemoveBuildTarget(int index)
     ProjectBuildTarget* target = GetBuildTarget(index);
     if (target)
     {
+        // The macro manager stores pointers to projects and targets, so we need to clear it to prevent
+        // dangling pointer bugs.
+
         const wxString targetTitle = target->GetTitle();
 
         // remove target from any virtual targets it belongs to
