@@ -29,16 +29,15 @@ public:
     void AddMappingF(const wxString& stockId, const wxString& fileName);
 
 protected:
-    wxBitmap CreateBitmap(const wxArtID& id, const wxArtClient& client,
-                          const wxSize& size) override;
+    wxBitmap CreateBitmap(const wxArtID& id, const wxArtClient& client, const wxSize& size) override;
 #if wxCHECK_VERSION(3, 1, 6)
-    wxBitmapBundle CreateBitmapBundle(const wxArtID& id, const wxArtClient& client,
-                          const wxSize& size) override;
+    wxBitmapBundle CreateBitmapBundle(const wxArtID& id, const wxArtClient& client, const wxSize& size) override;
 #endif
+    /// Return the native (i.e. unescaled) size of the client
+    wxSize DoGetSizeHint(const wxArtClient& client) override;
 
 private:
     wxString GetFileName(const wxArtID& id, const wxSize& size) const;
-    wxSize GetSize(const wxArtClient& client, bool unscaled) const;
     wxBitmap ReadBitmap(const wxArtID& id, const wxSize& size) const;
     wxString m_prefix;
 

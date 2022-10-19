@@ -47,36 +47,6 @@ wxString cbArtProvider::GetFileName(const wxArtID& id, const wxSize& size) const
     return m_prefix+fileName;
 }
 
-wxSize cbArtProvider::GetSize(const wxArtClient& client, bool unscaled) const
-{
-    int size = 0;
-    double scaleFactor = 1.0;
-
-    if (client == wxART_MENU)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
-    }
-    else if (client == wxART_BUTTON)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Main);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
-    }
-    else if (client == wxART_TOOLBAR)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
-    }
-
-    if (!size)
-        return wxDefaultSize;
-
-    if (unscaled)
-        size = cbFindMinSize16to64(wxRound(size/scaleFactor));
-
-    return wxSize(size, size);
-}
-
 wxBitmap cbArtProvider::ReadBitmap(const wxArtID& id, const wxSize& size) const
 {
     const wxString filePath(GetFileName(id, size));
@@ -104,7 +74,16 @@ wxBitmap cbArtProvider::ReadBitmap(const wxArtID& id, const wxSize& size) const
 
 wxBitmap cbArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client, cb_unused const wxSize& size)
 {
-    return ReadBitmap(id, GetSize(client, false));
+    double scaleFactor = 1.0;
+
+    if (client == wxART_MENU)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
+    else if (client == wxART_BUTTON)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
+    else if (client == wxART_TOOLBAR)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
+
+    return ReadBitmap(id, DoGetSizeHint(client).Scale(scaleFactor, scaleFactor));
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
@@ -112,7 +91,7 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
 {
     wxBitmapBundle result;
 
-    const wxSize requiredSize(GetSize(client, true));
+    const wxSize requiredSize(DoGetSizeHint(client));
     const wxString filePath(GetFileName(id, requiredSize));
     if (filePath.empty())
         return wxBitmapBundle();
@@ -150,3 +129,28 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
     return result;
 }
 #endif
+
+wxSize cbArtProvider::DoGetSizeHint(const wxArtClient& client)
+{
+    int size = 16;
+    double scaleFactor = 1.0;
+
+    if (client == wxART_MENU)
+    {
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
+    }
+    else if (client == wxART_BUTTON)
+    {
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Main);
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
+    }
+    else if (client == wxART_TOOLBAR)
+    {
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
+    }
+
+    size = cbFindMinSize16to64(wxRound(size/scaleFactor));
+    return wxSize(size, size);
+}
