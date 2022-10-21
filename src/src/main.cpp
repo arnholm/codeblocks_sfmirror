@@ -919,7 +919,8 @@ void MainFrame::CreateIDE()
 
     m_pPrjMan->SetUI(m_pPrjManUI);
 
-    const int targetHeight = wxRound(16 * cbGetContentScaleFactor(*this));
+    const double scaleFactor = cbGetContentScaleFactor(*this);
+    const int targetHeight = wxRound(16 * scaleFactor);
     const int uiSize16 = cbFindMinSize16to64(targetHeight);
 
     // All message posted before this call are either lost or sent to stdout/stderr.
@@ -959,20 +960,17 @@ void MainFrame::CreateIDE()
 
         // Setup menu sizes
         Manager::Get()->SetImageSize(uiSize16, Manager::UIComponent::Menus);
-        Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
-                                         Manager::UIComponent::Menus);
+        Manager::Get()->SetUIScaleFactor(scaleFactor, Manager::UIComponent::Menus);
 
         // Setup main sizes
         Manager::Get()->SetImageSize(uiSize16, Manager::UIComponent::Main);
-        Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
-                                         Manager::UIComponent::Main);
+        Manager::Get()->SetUIScaleFactor(scaleFactor, Manager::UIComponent::Main);
 
         // Setup toolbar sizes
         const int configSize = cbHelpers::ReadToolbarSizeFromConfig();
-        const int scaledSize = cbFindMinSize16to64(wxRound(configSize * cbGetContentScaleFactor(*this)));
+        const int scaledSize = cbFindMinSize16to64(wxRound(configSize * scaleFactor));
         Manager::Get()->SetImageSize(scaledSize, Manager::UIComponent::Toolbars);
-        Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
-                                         Manager::UIComponent::Toolbars);
+        Manager::Get()->SetUIScaleFactor(scaleFactor, Manager::UIComponent::Toolbars);
 
         const wxString prefix(ConfigManager::GetDataFolder() + "/resources.zip#zip:/images");
         cbArtProvider* provider = new cbArtProvider(prefix);
