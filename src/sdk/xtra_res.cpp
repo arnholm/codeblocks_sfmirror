@@ -94,12 +94,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     wxString artId, artClient;
     if (GetStockArtAttrs(artId, artClient, paramNode, wxART_TOOLBAR))
     {
-#if wxCHECK_VERSION(3, 1, 6)
-        // Default tool bitmap size for MSW is 16x15, this is needed so the last line is not truncated
-        wxBitmap stockArt = wxArtProvider::GetBitmapBundle(artId, artClient).GetBitmap(wxDefaultSize);
-#else
         wxBitmap stockArt = wxArtProvider::GetBitmap(artId, artClient);
-#endif
         if (stockArt.IsOk())
             return stockArt;
     }
@@ -278,6 +273,10 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
             if (separation != -1)
                 toolbar->SetToolSeparation(separation);
         }
+
+#if wxCHECK_VERSION(3, 1, 6)
+        toolbar->SetToolBitmapSize(wxArtProvider::GetNativeSizeHint(wxART_TOOLBAR));
+#endif
 
         wxXmlNode *children_node = GetParamNode(_T("object"));
         if (!children_node)
