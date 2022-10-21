@@ -957,13 +957,22 @@ void MainFrame::CreateIDE()
         // size of the images. Also do this here when we have a main window (probably this doesn't
         // help us much, because the window hasn't been shown yet).
 
+        // Setup menu sizes
         Manager::Get()->SetImageSize(uiSize16, Manager::UIComponent::Menus);
         Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
                                          Manager::UIComponent::Menus);
 
+        // Setup main sizes
         Manager::Get()->SetImageSize(uiSize16, Manager::UIComponent::Main);
         Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
                                          Manager::UIComponent::Main);
+
+        // Setup toolbar sizes
+        const int configSize = cbHelpers::ReadToolbarSizeFromConfig();
+        const int scaledSize = cbFindMinSize16to64(wxRound(configSize * cbGetContentScaleFactor(*this)));
+        Manager::Get()->SetImageSize(scaledSize, Manager::UIComponent::Toolbars);
+        Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
+                                         Manager::UIComponent::Toolbars);
 
         const wxString prefix(ConfigManager::GetDataFolder() + "/resources.zip#zip:/images");
         cbArtProvider* provider = new cbArtProvider(prefix);
@@ -1016,15 +1025,6 @@ void MainFrame::CreateIDE()
         provider->AddMappingF("core/gear", "infopane/%dx%d/misc"+ext);
 
         wxArtProvider::Push(provider);
-    }
-
-    {
-        // Setup toolbar sizes
-        const int configSize = cbHelpers::ReadToolbarSizeFromConfig();
-        const int scaledSize = cbFindMinSize16to64(wxRound(configSize * cbGetContentScaleFactor(*this)));
-        Manager::Get()->SetImageSize(scaledSize, Manager::UIComponent::Toolbars);
-        Manager::Get()->SetUIScaleFactor(cbGetContentScaleFactor(*this),
-                                         Manager::UIComponent::Toolbars);
     }
 
     CreateMenubar();
