@@ -58,18 +58,18 @@ void wxToolBarAddOnXmlHandler::SetCurrentResourceID(const wxString &id)
 
 // if 'param' has stock_id/stock_client, extracts them and returns true
 // Taken from wxWidgets.
-static bool GetStockArtAttrs(wxString &art_id, wxString &art_client, const wxXmlNode *paramNode,
+static bool GetStockArtAttrs(wxString& art_id, wxString& art_client, const wxXmlNode* paramNode,
                              const wxString& defaultArtClient)
 {
     if (paramNode)
     {
-        art_id = paramNode->GetAttribute(wxT("stock_id"), wxString());
+        art_id = paramNode->GetAttribute("stock_id", wxEmptyString);
 
         if (!art_id.empty())
         {
             art_id = wxART_MAKE_ART_ID_FROM_STR(art_id);
 
-            art_client = paramNode->GetAttribute(wxT("stock_client"), wxString());
+            art_client = paramNode->GetAttribute("stock_client", wxEmptyString);
             if (art_client.empty())
                 art_client = defaultArtClient;
             else
@@ -85,7 +85,7 @@ static bool GetStockArtAttrs(wxString &art_id, wxString &art_client, const wxXml
 wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSize size,
                                                      double scaleFactor)
 {
-    wxXmlNode *paramNode = GetParamNode(param);
+    wxXmlNode* paramNode = GetParamNode(param);
     // If there is no such tag as requested it is best to return null bitmap, so default processing
     // could have chance to work.
     if (!paramNode)
@@ -133,8 +133,8 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
         return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
     }
 
-    int bw = bitmap.GetWidth();
-    int bh = bitmap.GetHeight();
+    const int bw = bitmap.GetWidth();
+    const int bh = bitmap.GetHeight();
     if (size * scaleFactor == wxSize(bw, bh))
         return bitmap;
 
@@ -148,15 +148,15 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
 
     wxImage image = bitmap.ConvertToImage();
 
-    int w = size.GetWidth();
-    int h = size.GetHeight();
-    int x = (w - bw) / 2;
-    int y = (h - bh) / 2;
+    const int w = size.GetWidth();
+    const int h = size.GetHeight();
+    const int x = (w - bw) / 2;
+    const int y = (h - bh) / 2;
 
     // If the image is bigger than the current size our code for resizing would do overflow the
     // buffers. Until the code is made to handle such cases just rescale the image.
-    if (size.x < bw || size.y < bh)
-        image.Rescale(size.x, size.y, wxIMAGE_QUALITY_HIGH);
+    if (w < bw || h < bh)
+        image.Rescale(w, h, wxIMAGE_QUALITY_HIGH);
     else if (image.HasAlpha()) // Resize doesn't handle Alpha... :-(
     {
         const unsigned char *data = image.GetData();
@@ -165,7 +165,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
         unsigned char *a = (unsigned char *) calloc(w * h, 1);
 
         // copy Data/Alpha from smaller bitmap to larger bitmap
-        for (int row = 0; row < bh; row++)
+        for (int row = 0; row < bh; ++row)
         {
             memcpy(rgb + ((row + y) * w + x) * 3, data + (row * bw) * 3, bw * 3);
             memcpy(a + ((row + y) * w + x), alpha + (row * bw), bw);
@@ -179,10 +179,10 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     return wxBitmap(image);
 }
 
-wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
+wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
 {
     wxToolBar* toolbar=nullptr;
-    if (m_class == _T("tool"))
+    if (m_class == "tool")
     {
         wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: tool not within a toolbar!"));
 
@@ -197,79 +197,84 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         {
             m_toolbar->AddTool(GetID(),
                                wxEmptyString,
-                               GetCenteredBitmap(_T("bitmap"), bitmapSize, scaleFactor),
-                               GetCenteredBitmap(_T("bitmap2"), bitmapSize, scaleFactor),
+                               GetCenteredBitmap("bitmap",  bitmapSize, scaleFactor),
+                               GetCenteredBitmap("bitmap2", bitmapSize, scaleFactor),
                                wxITEM_NORMAL,
-                               GetText(_T("tooltip")),
-                               GetText(_T("longhelp")));
+                               GetText("tooltip"),
+                               GetText("longhelp"));
         }
         else
         {
             wxItemKind kind = wxITEM_NORMAL;
-            if (GetBool(_T("radio")))
+            if (GetBool("radio"))
                 kind = wxITEM_RADIO;
-            if (GetBool(_T("toggle")))
+
+            if (GetBool("toggle"))
             {
-                wxASSERT_MSG( kind == wxITEM_NORMAL,
-                              _("can't have both toggleable and radion button at once") );
+                wxASSERT_MSG(kind == wxITEM_NORMAL, "Can't have both toggleable and radion button at once");
                 kind = wxITEM_CHECK;
             }
+
             m_toolbar->AddTool(GetID(),
-                               GetText(_T("label")),
-                               GetCenteredBitmap(_T("bitmap"), bitmapSize, scaleFactor),
-                               GetCenteredBitmap(_T("bitmap2"), bitmapSize, scaleFactor),
+                               GetText("label"),
+                               GetCenteredBitmap("bitmap",  bitmapSize, scaleFactor),
+                               GetCenteredBitmap("bitmap2", bitmapSize, scaleFactor),
                                kind,
-                               GetText(_T("tooltip")),
-                               GetText(_T("longhelp")));
+                               GetText("tooltip"),
+                               GetText("longhelp"));
         }
 
-        if (GetBool(_T("disabled")))
-            m_toolbar->EnableTool(GetID(),false);
+        if (GetBool("disabled"))
+            m_toolbar->EnableTool(GetID(), false);
 
         return m_toolbar; // must return non-nullptr
     }
 
-    else if (m_class == _T("separator"))
+    else if (m_class == "separator")
     {
-        wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: separator not within a toolbar!"));
+        wxCHECK_MSG(m_toolbar, nullptr, "Incorrect syntax of XRC resource: separator not within a toolbar!");
         m_toolbar->AddSeparator();
         return m_toolbar; // must return non-nullptr
     }
     else /*<object class="wxToolBar">*/
     {
-        m_isAddon=(m_class == _T("wxToolBarAddOn"));
-        if(m_isAddon)
-        { // special case: Only add items to toolbar
-          toolbar=(wxToolBar*)m_instance;
-          // XRC_MAKE_INSTANCE(toolbar, wxToolBar);
+        m_isAddon = (m_class == "wxToolBarAddOn");
+        if (m_isAddon)
+        {   // special case: Only add items to toolbar
+            toolbar=(wxToolBar*)m_instance;
+            // XRC_MAKE_INSTANCE(toolbar, wxToolBar);
         }
         else
         {
-            int style = GetStyle(_T("style"), wxNO_BORDER | wxTB_HORIZONTAL);
+            int style = GetStyle("style", wxNO_BORDER | wxTB_HORIZONTAL);
             #ifdef __WXMSW__
-            if (!(style & wxNO_BORDER)) style |= wxNO_BORDER;
+            // Force style
+            style |= wxNO_BORDER;
             #endif
 
             // XRC_MAKE_INSTANCE(toolbar, wxToolBar)
             if (m_instance)
                 toolbar = wxStaticCast(m_instance, wxToolBar);
+
             if (!toolbar)
                 toolbar = new wxToolBar;
 
             toolbar->Create(m_parentAsWindow,
-                             GetID(),
-                             GetPosition(),
-                             GetSize(),
-                             style,
-                             GetName());
+                            GetID(),
+                            GetPosition(),
+                            GetSize(),
+                            style,
+                            GetName());
 
-            wxSize margins = GetSize(_T("margins"));
+            const wxSize margins(GetSize("margins"));
             if (!(margins == wxDefaultSize))
                 toolbar->SetMargins(margins.x, margins.y);
-            long packing = GetLong(_T("packing"), -1);
+
+            const long packing = GetLong("packing", -1);
             if (packing != -1)
                 toolbar->SetToolPacking(packing);
-            long separation = GetLong(_T("separation"), -1);
+
+            const long separation = GetLong("separation", -1);
             if (separation != -1)
                 toolbar->SetToolSeparation(separation);
         }
@@ -278,51 +283,53 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
         toolbar->SetToolBitmapSize(wxArtProvider::GetNativeSizeHint(wxART_TOOLBAR));
 #endif
 
-        wxXmlNode *children_node = GetParamNode(_T("object"));
+        wxXmlNode *children_node = GetParamNode("object");
         if (!children_node)
-           children_node = GetParamNode(_T("object_ref"));
+           children_node = GetParamNode("object_ref");
 
-        if (children_node == nullptr) return toolbar;
+        if (children_node == nullptr)
+            return toolbar;
 
-        m_isInside = TRUE;
+        m_isInside = true;
         m_toolbar = toolbar;
 
-        wxXmlNode *n = children_node;
-
+        wxXmlNode* n = children_node;
         while (n)
         {
             if ((n->GetType() == wxXML_ELEMENT_NODE) &&
-                (n->GetName() == _T("object") || n->GetName() == _T("object_ref")))
+                (n->GetName() == "object" || n->GetName() == "object_ref"))
             {
-                wxObject *created = CreateResFromNode(n, toolbar, nullptr);
-                wxControl *control = wxDynamicCast(created, wxControl);
-                if (!IsOfClass(n, _T("tool")) &&
-                    !IsOfClass(n, _T("separator")) &&
+                wxObject* created = CreateResFromNode(n, toolbar, nullptr);
+                wxControl* control = wxDynamicCast(created, wxControl);
+                if (!IsOfClass(n, "tool") &&
+                    !IsOfClass(n, "separator") &&
                     control != nullptr &&
                     control != toolbar)
                 {
-                    //Manager::Get()->GetLogManager()->DebugLog(F(_T("control=%p, parent=%p, toolbar=%p"), control, control->GetParent(), toolbar));
+                    //Manager::Get()->GetLogManager()->DebugLog(wxString::Format("control=%p, parent=%p, toolbar=%p", control, control->GetParent(), toolbar));
                     toolbar->AddControl(control);
                 }
             }
+
             n = n->GetNext();
         }
 
         toolbar->Realize();
 
-        m_isInside = FALSE;
+        m_isInside = false;
         m_toolbar = nullptr;
 
-        if(!m_isAddon)
+        if (!m_isAddon)
         {
-            if (m_parentAsWindow && !GetBool(_T("dontattachtoframe")))
+            if (m_parentAsWindow && !GetBool("dontattachtoframe"))
             {
-                wxFrame *parentFrame = wxDynamicCast(m_parent, wxFrame);
+                wxFrame* parentFrame = wxDynamicCast(m_parent, wxFrame);
                 if (parentFrame)
                     parentFrame->SetToolBar(toolbar);
             }
         }
-        m_isAddon=false;
+
+        m_isAddon = false;
         return toolbar;
     }
 }
@@ -338,9 +345,9 @@ bool wxToolBarAddOnXmlHandler::CanHandle(wxXmlNode *node)
 //
 // Don't ask me why... >:-|
 
-    bool istbar = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("wxToolBarAddOn"));
-    bool istool = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("tool"));
-    bool issep = node->GetAttribute(wxT("class"), wxEmptyString).Matches(_T("separator"));
+    const bool istbar = node->GetAttribute("class", wxEmptyString).Matches("wxToolBarAddOn");
+    const bool istool = node->GetAttribute("class", wxEmptyString).Matches("tool");
+    const bool issep  = node->GetAttribute("class", wxEmptyString).Matches("separator");
 
     return ((!m_isInside && istbar) ||
             (m_isInside && istool) ||
@@ -353,29 +360,31 @@ wxScrollingDialogXmlHandler::wxScrollingDialogXmlHandler() : wxDialogXmlHandler(
 {
 }
 
-wxObject *wxScrollingDialogXmlHandler::DoCreateResource()
+wxObject* wxScrollingDialogXmlHandler::DoCreateResource()
 {
     XRC_MAKE_INSTANCE(dlg, wxScrollingDialog);
 
     dlg->Create(m_parentAsWindow,
                 GetID(),
-                GetText(wxT("title")),
+                GetText("title"),
                 wxDefaultPosition, wxDefaultSize,
-                GetStyle(wxT("style"), wxDEFAULT_DIALOG_STYLE),
+                GetStyle("style", wxDEFAULT_DIALOG_STYLE),
                 GetName());
 
-    if (HasParam(wxT("size")))
-        dlg->SetClientSize(GetSize(wxT("size"), dlg));
-    if (HasParam(wxT("pos")))
+    if (HasParam("size"))
+        dlg->SetClientSize(GetSize("size", dlg));
+
+    if (HasParam("pos"))
         dlg->Move(GetPosition());
-    if (HasParam(wxT("icon")))
-        dlg->SetIcon(GetIcon(wxT("icon"), wxART_FRAME_ICON));
+
+    if (HasParam("icon"))
+        dlg->SetIcon(GetIcon("icon", wxART_FRAME_ICON));
 
     SetupWindow(dlg);
 
     CreateChildren(dlg);
 
-    if (GetBool(wxT("centered"), false))
+    if (GetBool("centered", false))
         dlg->Centre();
 
     return dlg;
@@ -383,5 +392,5 @@ wxObject *wxScrollingDialogXmlHandler::DoCreateResource()
 
 bool wxScrollingDialogXmlHandler::CanHandle(wxXmlNode *node)
 {
-    return IsOfClass(node, wxT("wxScrollingDialog"));
+    return IsOfClass(node, "wxScrollingDialog");
 }
