@@ -82,7 +82,6 @@ static bool GetStockArtAttrs(wxString &art_id, wxString &art_client, const wxXml
     return false;
 }
 
-
 wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSize size,
                                                      double scaleFactor)
 {
@@ -96,9 +95,10 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     if (GetStockArtAttrs(artId, artClient, paramNode, wxART_TOOLBAR))
     {
 #if wxCHECK_VERSION(3, 1, 6)
-        wxBitmap stockArt = wxArtProvider::GetBitmapBundle(artId, artClient, size * scaleFactor).GetBitmap(wxDefaultSize);
+        // Default tool bitmap size for MSW is 16x15, this is needed so the last line is not truncated
+        wxBitmap stockArt = wxArtProvider::GetBitmapBundle(artId, artClient).GetBitmap(wxDefaultSize);
 #else
-        wxBitmap stockArt = wxArtProvider::GetBitmap(artId, artClient, size * scaleFactor);
+        wxBitmap stockArt = wxArtProvider::GetBitmap(artId, artClient);
 #endif
         if (stockArt.IsOk())
             return stockArt;
@@ -106,7 +106,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
 
     const wxString name(GetParamValue(paramNode));
     if (name.empty())
-        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR, size * scaleFactor);
+        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
 
     wxString finalName(name);
     wxBitmap bitmap;
@@ -135,7 +135,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
         LogManager *logger = Manager::Get()->GetLogManager();
         logger->LogError(wxString::Format("(%s) Failed to load image: '%s'", m_CurrentID, finalName));
 
-        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR, size * scaleFactor);
+        return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
     }
 
     int bw = bitmap.GetWidth();
@@ -267,6 +267,7 @@ wxObject *wxToolBarAddOnXmlHandler::DoCreateResource()
                              GetSize(),
                              style,
                              GetName());
+
             wxSize margins = GetSize(_T("margins"));
             if (!(margins == wxDefaultSize))
                 toolbar->SetMargins(margins.x, margins.y);
@@ -346,8 +347,6 @@ bool wxToolBarAddOnXmlHandler::CanHandle(wxXmlNode *node)
             (m_isInside && istool) ||
             (m_isInside && issep));
 }
-
-
 
 IMPLEMENT_DYNAMIC_CLASS(wxScrollingDialogXmlHandler, wxDialogXmlHandler)
 

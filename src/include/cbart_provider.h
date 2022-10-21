@@ -38,7 +38,9 @@ protected:
 
 private:
     wxString GetFileName(const wxArtID& id, const wxSize& size) const;
-    wxBitmap ReadBitmap(const wxArtID& id, const wxSize& size) const;
+    double GetScaleFactor(const wxArtClient& client) const;
+    wxSize GetSize(const wxArtClient& client) const;
+    wxBitmap ReadBitmap(const wxArtID& id, const wxSize& defaultSize, const wxSize& requiredSize) const;
     wxString m_prefix;
 
     struct Data

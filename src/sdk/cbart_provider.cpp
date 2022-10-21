@@ -47,16 +47,50 @@ wxString cbArtProvider::GetFileName(const wxArtID& id, const wxSize& size) const
     return m_prefix+fileName;
 }
 
-wxBitmap cbArtProvider::ReadBitmap(const wxArtID& id, const wxSize& size) const
+double cbArtProvider::GetScaleFactor(const wxArtClient& client) const
 {
-    const wxString filePath(GetFileName(id, size));
+    double scaleFactor = 1.0;
+
+    if (client == wxART_MENU)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
+    else if (client == wxART_BUTTON)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
+    else if (client == wxART_TOOLBAR)
+        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
+
+    return scaleFactor;
+}
+
+wxSize cbArtProvider::GetSize(const wxArtClient& client) const
+{
+    int size = 16;
+
+    if (client == wxART_MENU)
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
+    else if (client == wxART_BUTTON)
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Main);
+    else if (client == wxART_TOOLBAR)
+        size = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
+
+    return wxSize(size, size);
+}
+
+wxSize cbArtProvider::DoGetSizeHint(const wxArtClient& client)
+{
+    const double scaleFactor = GetScaleFactor(client);
+    return GetSize(client).Scale(1.0/scaleFactor, 1.0/scaleFactor);
+}
+
+wxBitmap cbArtProvider::ReadBitmap(const wxArtID& id, const wxSize& defaultSize, const wxSize& requiredSize) const
+{
+    const wxString filePath(GetFileName(id, requiredSize));
     if (filePath.empty())
         return wxNullBitmap;
 
     wxBitmap result;
 #if wxCHECK_VERSION(3, 1, 6)
     if (filePath.EndsWith(".svg"))
-        result = cbLoadBitmapBundleFromSVG(filePath, size).GetBitmap(wxDefaultSize);
+        result = cbLoadBitmapBundleFromSVG(filePath, defaultSize).GetBitmap(requiredSize);
     else
         result = cbLoadBitmap(filePath);
 #else
@@ -74,16 +108,9 @@ wxBitmap cbArtProvider::ReadBitmap(const wxArtID& id, const wxSize& size) const
 
 wxBitmap cbArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client, cb_unused const wxSize& size)
 {
-    double scaleFactor = 1.0;
-
-    if (client == wxART_MENU)
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
-    else if (client == wxART_BUTTON)
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
-    else if (client == wxART_TOOLBAR)
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
-
-    return ReadBitmap(id, DoGetSizeHint(client).Scale(scaleFactor, scaleFactor));
+    const wxSize defaultSize(DoGetSizeHint(client));
+    const wxSize requiredSize(GetSize(client));
+    return ReadBitmap(id, defaultSize, requiredSize);
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
@@ -91,27 +118,28 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
 {
     wxBitmapBundle result;
 
-    const wxSize requiredSize(DoGetSizeHint(client));
-    const wxString filePath(GetFileName(id, requiredSize));
+    const wxSize defaultSize(DoGetSizeHint(client));
+    const wxString filePath(GetFileName(id, defaultSize));
     if (filePath.empty())
         return wxBitmapBundle();
 
     if (filePath.EndsWith(".svg"))
     {
-        result = cbLoadBitmapBundleFromSVG(filePath, requiredSize);
+        result = cbLoadBitmapBundleFromSVG(filePath, defaultSize);
     }
     else
     {
         static const int imageSize[] = {16, 20, 24, 28, 32, 40, 48, 56, 64};
-
         wxVector <wxBitmap> bitmaps;
+
         for (const int sz : imageSize)
         {
             // Do not load bitmaps smaller than needed
-            if (sz < requiredSize.GetWidth())
+            if (sz < defaultSize.GetWidth())
                 continue;
 
-            const wxBitmap bmp(ReadBitmap(id, wxSize(sz, sz)));
+            const wxSize requiredSize(sz, sz);
+            const wxBitmap bmp(ReadBitmap(id, defaultSize, requiredSize));
             if (bmp.IsOk())
                 bitmaps.push_back(bmp);
         }
@@ -129,28 +157,3 @@ wxBitmapBundle cbArtProvider::CreateBitmapBundle(const wxArtID& id, const wxArtC
     return result;
 }
 #endif
-
-wxSize cbArtProvider::DoGetSizeHint(const wxArtClient& client)
-{
-    int size = 16;
-    double scaleFactor = 1.0;
-
-    if (client == wxART_MENU)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Menus);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Menus);
-    }
-    else if (client == wxART_BUTTON)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Main);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Main);
-    }
-    else if (client == wxART_TOOLBAR)
-    {
-        size = Manager::Get()->GetImageSize(Manager::UIComponent::Toolbars);
-        scaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::Toolbars);
-    }
-
-    size = cbFindMinSize16to64(wxRound(size/scaleFactor));
-    return wxSize(size, size);
-}
