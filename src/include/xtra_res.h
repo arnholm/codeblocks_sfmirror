@@ -32,7 +32,7 @@ class DLLIMPORT wxToolBarAddOnXmlHandler : public wxXmlResourceHandler
         wxString m_PathReplaceString;
         wxString m_CurrentID;
 
-        wxBitmap GetCenteredBitmap(const wxString& param, wxSize size, double scaleFactor);
+        wxBitmap GetCenteredBitmap(const wxString& param, const wxSize& size, double scaleFactor);
 };
 
 class DLLIMPORT wxScrollingDialogXmlHandler : public wxDialogXmlHandler

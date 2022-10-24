@@ -82,7 +82,7 @@ static bool GetStockArtAttrs(wxString& art_id, wxString& art_client, const wxXml
     return false;
 }
 
-wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSize size,
+wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, const wxSize& size,
                                                      double scaleFactor)
 {
     wxXmlNode* paramNode = GetParamNode(param);
@@ -109,7 +109,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     if (finalName.Replace("22x22", "svg"))
     {
         finalName.Replace(".png", ".svg");
-        bitmap = cbLoadBitmapBundleFromSVG(finalName, wxSize(m_ImageSize, m_ImageSize), &GetCurFileSystem()).GetBitmap(wxDefaultSize);
+        bitmap = cbLoadBitmapBundleFromSVG(finalName, size, &GetCurFileSystem()).GetBitmap(wxDefaultSize);
         // Fallback
         if (!bitmap.Ok() && name.EndsWith(".png"))
         {
@@ -127,9 +127,7 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
 
     if (!bitmap.Ok())
     {
-        LogManager *logger = Manager::Get()->GetLogManager();
-        logger->LogError(wxString::Format("(%s) Failed to load image: '%s'", m_CurrentID, finalName));
-
+        Manager::Get()->GetLogManager()->LogError(wxString::Format("(%s) Failed to load image: '%s'", m_CurrentID, finalName));
         return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
     }
 
@@ -138,13 +136,13 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, wxSi
     if (size * scaleFactor == wxSize(bw, bh))
         return bitmap;
 
-    LogManager *logger = Manager::Get()->GetLogManager();
     const wxString msg = wxString::Format("(%s): Image \"%s\" with size [%dx%d] doesn't match "
                                           "requested size [%dx%d] resizing (scale factor %.3f)!",
                                           m_CurrentID, finalName, bw, bh,
                                           wxRound(size.x * scaleFactor), wxRound(size.y * scaleFactor),
                                           scaleFactor);
-    logger->LogWarning(msg);
+
+    Manager::Get()->GetLogManager()->LogWarning(msg);
 
     wxImage image = bitmap.ConvertToImage();
 
@@ -186,11 +184,12 @@ wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
     {
         wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: tool not within a toolbar!"));
 
-        const wxSize bitmapSize = m_toolbar->GetToolBitmapSize();
+        wxSize bitmapSize = wxSize(m_ImageSize, m_ImageSize);
 #ifdef __WXMSW__
         const double scaleFactor = 1.0;
 #else
         const double scaleFactor = cbGetContentScaleFactor(*m_toolbar);
+        bitmapSize.Scale(1.0/scaleFactor, 1.0/scaleFactor);
 #endif // __WXMSW__
 
         if (GetPosition() != wxDefaultPosition)
@@ -241,7 +240,7 @@ wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
         m_isAddon = (m_class == "wxToolBarAddOn");
         if (m_isAddon)
         {   // special case: Only add items to toolbar
-            toolbar=(wxToolBar*)m_instance;
+            toolbar = (wxToolBar*)m_instance;
             // XRC_MAKE_INSTANCE(toolbar, wxToolBar);
         }
         else
@@ -278,10 +277,6 @@ wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
             if (separation != -1)
                 toolbar->SetToolSeparation(separation);
         }
-
-#if wxCHECK_VERSION(3, 1, 6)
-        toolbar->SetToolBitmapSize(wxArtProvider::GetNativeSizeHint(wxART_TOOLBAR));
-#endif
 
         wxXmlNode *children_node = GetParamNode("object");
         if (!children_node)
