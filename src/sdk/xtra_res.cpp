@@ -82,8 +82,7 @@ static bool GetStockArtAttrs(wxString& art_id, wxString& art_client, const wxXml
     return false;
 }
 
-wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, const wxSize& size,
-                                                     double scaleFactor)
+wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, const wxSize& size)
 {
     wxXmlNode* paramNode = GetParamNode(param);
     // If there is no such tag as requested it is best to return null bitmap, so default processing
@@ -91,12 +90,13 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, cons
     if (!paramNode)
         return wxNullBitmap;
 
+    wxBitmap bitmap;
     wxString artId, artClient;
     if (GetStockArtAttrs(artId, artClient, paramNode, wxART_TOOLBAR))
     {
-        wxBitmap stockArt = wxArtProvider::GetBitmap(artId, artClient);
-        if (stockArt.IsOk())
-            return stockArt;
+        bitmap = wxArtProvider::GetBitmap(artId, artClient);
+        if (bitmap.IsOk())
+            return bitmap;
     }
 
     const wxString name(GetParamValue(paramNode));
@@ -104,7 +104,6 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, cons
         return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
 
     wxString finalName(name);
-    wxBitmap bitmap;
 #if wxCHECK_VERSION(3, 1, 6)
     if (finalName.Replace("22x22", "svg"))
     {
@@ -131,23 +130,22 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, cons
         return wxArtProvider::GetBitmap("sdk/missing_icon", wxART_TOOLBAR);
     }
 
-    const int bw = bitmap.GetWidth();
-    const int bh = bitmap.GetHeight();
-    if (size * scaleFactor == wxSize(bw, bh))
+    if (size == bitmap.GetSize())
         return bitmap;
 
+    const int bw = bitmap.GetWidth();
+    const int bh = bitmap.GetHeight();
+    const int w  = size.GetWidth();
+    const int h  = size.GetHeight();
+
     const wxString msg = wxString::Format("(%s): Image \"%s\" with size [%dx%d] doesn't match "
-                                          "requested size [%dx%d] resizing (scale factor %.3f)!",
-                                          m_CurrentID, finalName, bw, bh,
-                                          wxRound(size.x * scaleFactor), wxRound(size.y * scaleFactor),
-                                          scaleFactor);
+                                          "requested size [%dx%d], resizing!",
+                                          m_CurrentID, finalName, bw, bh, w, h);
 
     Manager::Get()->GetLogManager()->LogWarning(msg);
 
     wxImage image = bitmap.ConvertToImage();
 
-    const int w = size.GetWidth();
-    const int h = size.GetHeight();
     const int x = (w - bw) / 2;
     const int y = (h - bh) / 2;
 
@@ -179,25 +177,23 @@ wxBitmap wxToolBarAddOnXmlHandler::GetCenteredBitmap(const wxString& param, cons
 
 wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
 {
-    wxToolBar* toolbar=nullptr;
+    wxToolBar* toolbar = nullptr;
     if (m_class == "tool")
     {
         wxCHECK_MSG(m_toolbar, nullptr, _("Incorrect syntax of XRC resource: tool not within a toolbar!"));
 
         wxSize bitmapSize = wxSize(m_ImageSize, m_ImageSize);
-#ifdef __WXMSW__
-        const double scaleFactor = 1.0;
-#else
+#ifndef __WXMSW__
         const double scaleFactor = cbGetContentScaleFactor(*m_toolbar);
         bitmapSize.Scale(1.0/scaleFactor, 1.0/scaleFactor);
-#endif // __WXMSW__
+#endif
 
         if (GetPosition() != wxDefaultPosition)
         {
             m_toolbar->AddTool(GetID(),
                                wxEmptyString,
-                               GetCenteredBitmap("bitmap",  bitmapSize, scaleFactor),
-                               GetCenteredBitmap("bitmap2", bitmapSize, scaleFactor),
+                               GetCenteredBitmap("bitmap",  bitmapSize),
+                               GetCenteredBitmap("bitmap2", bitmapSize),
                                wxITEM_NORMAL,
                                GetText("tooltip"),
                                GetText("longhelp"));
@@ -216,8 +212,8 @@ wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
 
             m_toolbar->AddTool(GetID(),
                                GetText("label"),
-                               GetCenteredBitmap("bitmap",  bitmapSize, scaleFactor),
-                               GetCenteredBitmap("bitmap2", bitmapSize, scaleFactor),
+                               GetCenteredBitmap("bitmap",  bitmapSize),
+                               GetCenteredBitmap("bitmap2", bitmapSize),
                                kind,
                                GetText("tooltip"),
                                GetText("longhelp"));
@@ -287,6 +283,15 @@ wxObject* wxToolBarAddOnXmlHandler::DoCreateResource()
 
         m_isInside = true;
         m_toolbar = toolbar;
+#if wxCHECK_VERSION(3, 1, 6)
+        wxSize toolSize(m_ImageSize, m_ImageSize);
+        // Hack for scale factors less than 1.75 not scaling at all
+        const double scaleFactor = cbGetContentScaleFactor(*m_toolbar);
+        if ((scaleFactor > 1.00) && (scaleFactor < 1.75))
+            toolSize.Scale(scaleFactor, scaleFactor);
+
+        m_toolbar->SetToolBitmapSize(toolSize);
+#endif
 
         wxXmlNode* n = children_node;
         while (n)
