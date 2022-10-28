@@ -35,7 +35,7 @@ EditorLexerLoader::~EditorLexerLoader()
 
 void EditorLexerLoader::Load(LoaderBase* loader)
 {
-    Manager::Get()->GetLogManager()->Log(_("Loading ") + wxFileName(loader->FileName()).GetName());
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Loading %s"), wxFileName(loader->FileName()).GetName()));
 
     TiXmlDocument doc;
     doc.Parse(loader->GetData());

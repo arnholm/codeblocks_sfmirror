@@ -199,10 +199,10 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
                 firstproject = project;
 
             if (!project)
-                Manager::Get()->GetLogManager()->Log(F(_("Warning: Unable to load project '%s' from '%s'"), prjTitle.wx_str(), fname.GetFullPath().wx_str()));
+                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Warning: Unable to load project '%s' from '%s'"), prjTitle, fname.GetFullPath()));
             else
             {
-                Manager::Get()->GetLogManager()->Log(F(_("Registering project '%s' from '%s'"), prjTitle.wx_str(), fname.GetFullPath().wx_str()));
+                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Registering project '%s' from '%s'"), prjTitle, fname.GetFullPath()));
                 registerProject(project->GetTitle(), project);
                 ++count;
             }

@@ -188,8 +188,8 @@ void ProjectManager::SetProject(cbProject* project, bool refresh)
 
     long time = timer.Time();
     if (time >= 50)
-        Manager::Get()->GetLogManager()->Log(F(wxT("ProjectManager::SetProject took: %.3f seconds."),
-                                               time / 1000.0f));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("ProjectManager::SetProject() took: %.3f seconds."),
+                                                              time / 1000.0f));
 }
 
 cbProject* ProjectManager::IsOpen(const wxString& filename)

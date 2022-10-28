@@ -129,7 +129,7 @@ bool ToolsManager::Execute(const cbTool* tool)
 
     // log info so user can troubleshoot
     dir = wxGetCwd(); // read in the actual working dir
-    Manager::Get()->GetLogManager()->Log(F(_("Launching tool '%s': %s (in %s)"), tool->GetName().wx_str(), cmdline.wx_str(), dir.wx_str()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Launching tool '%s': %s (in %s)"), tool->GetName(), cmdline, dir));
 
     bool pipe = true;
     int flags = wxEXEC_ASYNC;
@@ -264,7 +264,7 @@ void ToolsManager::LoadTools()
 
         AddTool(&tool, false);
     }
-    Manager::Get()->GetLogManager()->Log(F(_("Configured %d tools"), m_Tools.GetCount()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Configured %d tools"), m_Tools.GetCount()));
 }
 
 void ToolsManager::SaveTools()

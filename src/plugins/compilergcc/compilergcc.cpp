@@ -1904,7 +1904,7 @@ int CompilerGCC::RunSingleFile(const wxString& filename)
     }
 
     Manager::Get()->GetMacrosManager()->ReplaceEnvVars(m_CdRun);
-    Manager::Get()->GetLogManager()->Log(F(_("Executing: '%s' (in '%s')"), command.wx_str(), m_CdRun.wx_str()), m_PageIndex);
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Executing: '%s' (in '%s')"), command, m_CdRun), m_PageIndex);
     m_CommandQueue.Add(new CompilerCommand(command, wxEmptyString, 0, 0, true));
     return 0;
 }
@@ -2837,7 +2837,7 @@ void CompilerGCC::CalculateProjectDependencies(cbProject* prj, wxArrayInt& deps)
             }
         }
         else
-            Manager::Get()->GetLogManager()->Log(F(_("Circular dependency detected between \"%s\" and \"%s\". Skipping..."), prj->GetTitle().wx_str(), thisprj->GetTitle().wx_str()), m_PageIndex, Logger::warning);
+            Manager::Get()->GetLogManager()->Log(wxString::Format(_("Circular dependency detected between \"%s\" and \"%s\". Skipping..."), prj->GetTitle(), thisprj->GetTitle()), m_PageIndex, Logger::warning);
     }
 
     // always add the project in question
@@ -2943,7 +2943,7 @@ int CompilerGCC::DoWorkspaceBuild(const wxString& target, bool clean, bool build
         {
             cbProject* prj = arr->Item(i);
             if (prj && !prj->SaveAllFiles())
-                Manager::Get()->GetLogManager()->Log(F(_("Could not save all files of %s..."), prj->GetTitle().wx_str()), m_PageIndex);
+                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Could not save all files of %s..."), prj->GetTitle()), m_PageIndex);
         }
     }
 
@@ -3047,7 +3047,7 @@ int CompilerGCC::KillProcess()
             if (ret != wxKILL_OK)
             {
                 // No need to tell the user about the errors - just keep him waiting.
-                Manager::Get()->GetLogManager()->Log(F(_("Aborting process %ld ..."), p.PID), m_PageIndex);
+                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Aborting process %ld ..."), p.PID), m_PageIndex);
             }
             else switch (ret)
             {
@@ -4018,7 +4018,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
 // TODO (mandrav##): Maybe create and use GetLastRunExitCode()? Is it needed?
             m_LastExitCode = 0; // *might* not be needed any more, see NotifyJobDone()
         }
-        Manager::Get()->GetLogManager()->Log(_T(" "), m_PageIndex); // blank line
+        Manager::Get()->GetLogManager()->Log(" ", m_PageIndex); // blank line
 
         NotifyJobDone();
 

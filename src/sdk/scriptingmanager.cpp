@@ -503,8 +503,8 @@ bool ScriptingManager::RegisterScriptMenu(const wxString& menuPath, const wxStri
         m_data->m_MenuIDToScript.insert(m_data->m_MenuIDToScript.end(), std::make_pair(id, mbs));
 
 
-        Manager::Get()->GetLogManager()->Log(F(_("Script/function '%s' registered under menu '%s'"),
-                                               scriptOrFunc.wx_str(), menuPath.wx_str()));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("Script/function '%s' registered under menu '%s'"),
+                                                              scriptOrFunc, menuPath));
         return true;
     }
 

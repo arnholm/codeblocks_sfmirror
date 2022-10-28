@@ -159,7 +159,7 @@ int ProjectsImporter::LoadProject(const wxString& filename)
     {
         wxBusyCursor wait;
 
-        Manager::Get()->GetLogManager()->Log(F(_("Importing %s: "), filename.wx_str()));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("Importing %s: "), filename));
         IBaseLoader* loader = nullptr;
         FileType ft = FileTypeOf(filename);
         switch (ft)
@@ -256,7 +256,7 @@ int ProjectsImporter::LoadWorkspace(const wxString& filename)
         return -1;
     }
 
-    Manager::Get()->GetLogManager()->Log(F(_("Importing %s: "), filename.wx_str()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Importing %s: "), filename));
     FileType ft = FileTypeOf(filename);
     IBaseWorkspaceLoader* pWsp = 0;
     switch (ft)

@@ -391,7 +391,7 @@ void cbProject::Open()
     FileType ft = FileTypeOf(m_Filename);
     if (ft == ftCodeBlocksProject)
     {
-        Manager::Get()->GetLogManager()->Log(_("Opening ") + m_Filename);
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("Opening %s"), m_Filename));
         m_CurrentlyLoading = true;
         ProjectLoader loader(this);
         m_Loaded = loader.Open(m_Filename, &m_pExtensionsElement);
@@ -427,8 +427,8 @@ void cbProject::Open()
 
     long time = timer.Time();
     if (time >= 100)
-        Manager::Get()->GetLogManager()->Log(F(wxT("cbProject::Open took: %.3f seconds."),
-                                               time / 1000.0f));
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("cbProject::Open() took: %.3f seconds."),
+                                                              time / 1000.0f));
 } // end of Open
 
 void cbProject::CalculateCommonTopLevelPath()
