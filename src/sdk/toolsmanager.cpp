@@ -265,7 +265,7 @@ void ToolsManager::LoadTools()
         AddTool(&tool, false);
     }
 
-    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Configured %lu tools"), (unsigned long)m_Tools.GetCount()));
+    Manager::Get()->GetLogManager()->Log(wxString::Format(_("Configured %zu tools"), m_Tools.GetCount()));
 }
 
 void ToolsManager::SaveTools()
