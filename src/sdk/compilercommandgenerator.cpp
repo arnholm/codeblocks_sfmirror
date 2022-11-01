@@ -231,10 +231,8 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     cbAssert(result.macro);
 #ifdef command_line_generation
     wxString logFile = (params.pf ? params.pf->file.GetFullPath() : params.file);
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[0]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'."),
-                                                result.macro->wx_str(), logFile.wx_str(),
-                                                params.object.wx_str(), params.flatObject.wx_str(),
-                                                params.deps.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[0]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'.",
+                                                               *(result.macro), logFile, params.object, params.flatObject, params.deps));
 #endif
 
     if (params.target && !params.target->SupportsCurrentPlatform())
@@ -336,8 +334,8 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
         || (compiler->GetPrograms().LIB.IsEmpty()     && result.macro->Contains(_T("$lib_linker")))
         || (compiler->GetPrograms().WINDRES.IsEmpty() && result.macro->Contains(_T("$rescomp"))) )
     {
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine: Required compiler executable (%s) not found! Check the toolchain settings."),
-                                                    params.file.wx_str()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine: Required compiler executable (%s) not found! Check the toolchain settings.",
+                                                                   params.file));
         result.macro->Clear();
         return;
     }
@@ -406,8 +404,8 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     }
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[1]: tmpIncludes='%s', tmpResIncludes='%s'."),
-                                                tmpIncludes.wx_str(), tmpResIncludes.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[1]: tmpIncludes='%s', tmpResIncludes='%s'."),
+                                                               tmpIncludes, tmpResIncludes));
 #endif
 
     wxString   tmp;
@@ -426,12 +424,12 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     }
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[2]: tmpFile='%s', tmpDeps='%s', tmpObject='%s', tmpFlatObject='%s',\ntmpFname.GetName='%s', tmpFname.GetPath='%s', tmpFname.GetExt='%s'."),
-                                                tmpFile.wx_str(), tmpDeps.wx_str(),
-                                                tmpObject.wx_str(), tmpFlatObject.wx_str(),
-                                                tmpFname.GetName().wx_str(),
-                                                tmpFname.GetPath().wx_str(),
-                                                tmpFname.GetExt().wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[2]: tmpFile='%s', tmpDeps='%s', tmpObject='%s', tmpFlatObject='%s',\ntmpFname.GetName='%s', tmpFname.GetPath='%s', tmpFname.GetExt='%s'.",
+                                                               tmpFile, tmpDeps,
+                                                               tmpObject, tmpFlatObject,
+                                                               tmpFname.GetName(),
+                                                               tmpFname.GetPath(),
+                                                               tmpFname.GetExt()));
 #endif
 
     FixPathSeparators(compiler, tmpFile);
@@ -440,11 +438,9 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     FixPathSeparators(compiler, tmpFlatObject);
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[3]: tmpFile='%s', tmpDeps='%s', tmpObject='%s', tmpFlatObject='%s'."),
-                                                tmpFile.wx_str(), tmpDeps.wx_str(),
-                                                tmpObject.wx_str(), tmpFlatObject.wx_str()));
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[4]: macro='%s'."),
-                                                result.macro->wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[3]: tmpFile='%s', tmpDeps='%s', tmpObject='%s', tmpFlatObject='%s'.",
+                                                               tmpFile, tmpDeps, tmpObject, tmpFlatObject));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[4]: macro='%s'.", *(result.macro)));
 #endif
     // Special handling for compiler options to filter between C and C++ compilers
     wxString cFlags = m_CFlags[params.target];
@@ -494,8 +490,7 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     result.macro->Replace(_T("$dep_object"),    tmpDeps);
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[5]: macro='%s'."),
-                                                result.macro->wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[5]: macro='%s'.", *(result.macro)));
 #endif
 
     if (params.target)
@@ -540,15 +535,15 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     result.macro->Replace(_T("$all_link_objects_quoted"), allObjectsQuoted);
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[6]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'."),
-                                                result.macro->wx_str(), params.file.wx_str(),
-                                                params.object.wx_str(), params.flatObject.wx_str(),
-                                                params.deps.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[6]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'.",
+                                                               *(result.macro), params.file,
+                                                               params.object, params.flatObject,
+                                                               params.deps));
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[7]: m_Output[target]='%s, m_StaticOutput[target]='%s', m_DefOutput[target]='%s'."),
-                                                m_Output[params.target].wx_str(),
-                                                m_StaticOutput[params.target].wx_str(),
-                                                m_DefOutput[params.target].wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[7]: m_Output[target]='%s, m_StaticOutput[target]='%s', m_DefOutput[target]='%s'.",
+                                                               m_Output[params.target],
+                                                               m_StaticOutput[params.target],
+                                                               m_DefOutput[params.target]));
 #endif
 
     if (params.target
@@ -574,18 +569,17 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
     }
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[8]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'."),
-                                                result.macro->wx_str(), params.file.wx_str(),
-                                                params.object.wx_str(), params.flatObject.wx_str(),
-                                                params.deps.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[8]: macro='%s', file='%s', object='%s', flat_object='%s', deps='%s'.",
+                                                               *(result.macro), params.file,
+                                                               params.object, params.flatObject,
+                                                               params.deps));
 #endif
 
     // finally, replace all macros in one go
     Manager::Get()->GetMacrosManager()->ReplaceMacros(*result.macro, params.target);
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("GenerateCommandLine[9]: macro='%s'."),
-                                                result.macro->wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[9]: macro='%s'.", *(result.macro)));
 #endif
 
     result.processedCppFile = (compExec == ceCPP);
@@ -663,7 +657,7 @@ wxString CompilerCommandGenerator::SetupOutputFilenames(Compiler* compiler, Proj
     m_Output[target] = result;
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[0]: m_Output[target]='%s'."), m_Output[target].wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[0]: m_Output[target]='%s'.", m_Output[target]));
 #endif
 
     // static/import library name
@@ -699,7 +693,7 @@ wxString CompilerCommandGenerator::SetupOutputFilenames(Compiler* compiler, Proj
                 m_StaticOutput[target] = result;
 
 #ifdef command_line_generation
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[1]: m_StaticOutput[target]='%s'."), m_StaticOutput[target].wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[1]: m_StaticOutput[target]='%s'.", m_StaticOutput[target]));
 #endif
 
                 wxString definitionFileFileNameString(target->GetDynamicLibDefFilename());
@@ -725,7 +719,7 @@ wxString CompilerCommandGenerator::SetupOutputFilenames(Compiler* compiler, Proj
                 FixPathSeparators(compiler, result);
 
 #ifdef command_line_generation
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[2]: result='%s'."), result.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[2]: result='%s'.", result));
 #endif
             }
             break;
@@ -773,7 +767,7 @@ wxString CompilerCommandGenerator::SetupOutputFilenames(Compiler* compiler, Proj
                 m_StaticOutput[target] = result;
 
 #ifdef command_line_generation
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[3]: m_StaticOutput[target]='%s'."), m_StaticOutput[target].wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[3]: m_StaticOutput[target]='%s'.", m_StaticOutput[target]));
 #endif
 
                 // def
@@ -783,14 +777,14 @@ wxString CompilerCommandGenerator::SetupOutputFilenames(Compiler* compiler, Proj
                 FixPathSeparators(compiler, result);
 
 #ifdef command_line_generation
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[4]: result='%s'."), result.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[4]: result='%s'.", result));
 #endif
             }
             break;
     }
 
 #ifdef command_line_generation
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("SetupOutputFilenames[5]: result='%s'."), result.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SetupOutputFilenames[5]: result='%s'.", result));
 #endif
     return result;
 }

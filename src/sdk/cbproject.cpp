@@ -489,7 +489,7 @@ void cbProject::CalculateCommonTopLevelPath()
         }
     }
 #ifdef ctlp_measuring
-    Manager::Get()->GetLogManager()->DebugLogError(F(_T("%s::%s:%d  took : %d ms"), cbC2U(__FILE__).c_str(),cbC2U(__PRETTY_FUNCTION__).c_str(), __LINE__, (int)sw.Time()));
+    Manager::Get()->GetLogManager()->DebugLogError(wxString::Format("%s::%s:%d took: %ld ms", cbC2U(__FILE__),cbC2U(__PRETTY_FUNCTION__), __LINE__, sw.Time()));
 #endif
 
     m_CommonTopLevelPath = base.GetFullPath();
@@ -1280,16 +1280,16 @@ ProjectBuildTarget* cbProject::AddBuildTarget(const wxString& targetName)
     target->SetTitle(targetName);
     target->SetCompilerID(GetCompilerID()); // same compiler as project's
     target->SetOutputFilename(wxFileName(GetOutputFilename()).GetFullName());
-    target->SetWorkingDir(_T("."));
-    target->SetObjectOutput(_T(".objs"));
-    target->SetDepsOutput(_T(".deps"));
+    target->SetWorkingDir(".");
+    target->SetObjectOutput(".objs");
+    target->SetDepsOutput(".deps");
     m_Targets.Add(target);
 
     // remove any virtual targets with the same name
     if (HasVirtualBuildTarget(targetName))
     {
         RemoveVirtualBuildTarget(targetName);
-        Manager::Get()->GetLogManager()->LogWarning(F(_T("Deleted existing virtual target '%s' because real target was added with the same name"), targetName.wx_str()));
+        Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Deleted existing virtual target '%s' because real target was added with the same name"), targetName));
     }
 
     SetModified(true);
@@ -1548,9 +1548,8 @@ void cbProject::ReOrderTargets(const wxArrayString& nameOrder)
     LogManager* msgMan = Manager::Get()->GetLogManager();
     if (nameOrder.GetCount() != m_Targets.GetCount())
     {
-        msgMan->DebugLog(F(_T("cbProject::ReOrderTargets() : Count does not match (%lu sent, %lu had)..."),
-                           static_cast<unsigned long>(nameOrder.GetCount()),
-                           static_cast<unsigned long>(m_Targets.GetCount())));
+        msgMan->DebugLog(wxString::Format("cbProject::ReOrderTargets() : Count does not match (%zu sent, %zu had)...",
+                                          nameOrder.GetCount(), m_Targets.GetCount()));
         return;
     }
 
@@ -1559,7 +1558,7 @@ void cbProject::ReOrderTargets(const wxArrayString& nameOrder)
         ProjectBuildTarget* target = GetBuildTarget(nameOrder[i]);
         if (!target)
         {
-            msgMan->DebugLog(F(_T("cbProject::ReOrderTargets() : Target \"%s\" not found..."), nameOrder[i].wx_str()));
+            msgMan->DebugLog(wxString::Format("cbProject::ReOrderTargets() : Target \"%s\" not found...", nameOrder[i]));
             break;
         }
 
@@ -1591,14 +1590,14 @@ bool cbProject::DefineVirtualBuildTarget(const wxString& alias, const wxArrayStr
 {
     if (targets.GetCount() == 0)
     {
-        Manager::Get()->GetLogManager()->LogWarning(F(_T("Can't define virtual build target '%s': Group of build targets is empty!"), alias.wx_str()));
+        Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Can't define virtual build target '%s': Group of build targets is empty!"), alias));
         return false;
     }
 
     ProjectBuildTarget* existing = GetBuildTarget(alias);
     if (existing)
     {
-        Manager::Get()->GetLogManager()->LogWarning(F(_T("Can't define virtual build target '%s': Real build target exists with that name!"), alias.wx_str()));
+        Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Can't define virtual build target '%s': Real build target exists with that name!"), alias));
         return false;
     }
 

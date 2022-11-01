@@ -1101,7 +1101,7 @@ void ClassBrowser::SaveSelectedItem()
     }
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("SaveSelectedItem() took : %ld ms for %u items", sw.Time(), m_CCTreeCtrl->GetCount()));
+    CCLogger::Get()->DebugLog(wxString::Format("SaveSelectedItem() took : %ld ms for %zu items", sw.Time(), m_CCTreeCtrl->GetCount()));
 #endif
 }
 
@@ -1142,7 +1142,7 @@ void ClassBrowser::SelectSavedItem()
     }
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("SelectSavedItem() took : %ld ms for %u items", sw.Time(), m_CCTreeCtrl->GetCount()));
+    CCLogger::Get()->DebugLog(wxString::Format("SelectSavedItem() took : %ld ms for %zu items", sw.Time(), m_CCTreeCtrl->GetCount()));
 #endif
 }
 

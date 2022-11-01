@@ -53,7 +53,6 @@
     }
 //} // namespace cb
 
-
 struct DLLIMPORT LogSlot
 {
     friend class LogManager;

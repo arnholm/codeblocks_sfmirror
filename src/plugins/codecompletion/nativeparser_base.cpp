@@ -123,8 +123,8 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
     wxString searchtext = parser_component.component;
 
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Search for %s, isLast = %d"),
-                                    searchtext.wx_str(), isLastComponent?1:0));
+        CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Search for %s, isLast = %d",
+                                                   searchtext, isLastComponent ? 1 : 0));
 
     // get a set of matches for the current token
     TokenIdxSet local_result;
@@ -134,8 +134,7 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
                       (isLastComponent && !isPrefix), kindMask);
 
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Looping %lu results"),
-                                    static_cast<unsigned long>(local_result.size())));
+        CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Looping %zu results", local_result.size()));
 
     // loop all matches, and recurse
     for (TokenIdxSet::const_iterator it = local_result.begin(); it != local_result.end(); it++)
@@ -171,9 +170,8 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
         }
 
         if (s_DebugSmartSense)
-            CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Match: '%s' (ID='%d') : type='%s'"),
-                                        token->m_Name.wx_str(), id, token->m_BaseType.wx_str()));
-
+            CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Match: '%s' (ID='%d') : type='%s'",
+                                                       token->m_Name, id, token->m_BaseType));
 
         // is the token a function or variable (i.e. is not a type)
         if (    !searchtext.IsEmpty()
@@ -193,9 +191,8 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
             // until we find a result, or reach -1...
 
             if (s_DebugSmartSense)
-                CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Looking for type: '%s' (%lu components)"),
-                                            actual.wx_str(),
-                                            static_cast<unsigned long>(type_components.size())));
+                CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Looking for type: '%s' (%zu components)",
+                                                           actual.wx_str(), type_components.size()));
 
             // search under all search-scope namespaces too
             TokenIdxSet temp_search_scope;
@@ -228,8 +225,8 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
                 const Token* parent = tree->at(*itsearch);
 
                 if (s_DebugSmartSense)
-                    CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Now looking under '%s'"),
-                                                parent ? parent->m_Name.wx_str() : wxString(_("Global namespace")).wx_str()));
+                    CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Now looking under '%s'",
+                                                               parent ? parent->m_Name : wxString("Global namespace")));
 
                 do
                 {
@@ -275,15 +272,14 @@ size_t NativeParserBase::FindAIMatches(TokenTree*                  tree,
 
                 if (s_DebugSmartSense)
                 {
-                    CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Type: '%s' (%d)"), tree->at(id)->m_Name.wx_str(), id));
+                    CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Type: '%s' (%d)", tree->at(id)->m_Name, id));
                     if (type_result.size() > 1)
-                        CCLogger::Get()->DebugLog(F(_T("FindAIMatches() Multiple types matched for '%s': %lu results"),
-                                                    token->m_BaseType.wx_str(),
-                                                    static_cast<unsigned long>(type_result.size())));
+                        CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() Multiple types matched for '%s': %zu results",
+                                                                   token->m_BaseType, type_result.size()));
                 }
             }
             else if (s_DebugSmartSense)
-                CCLogger::Get()->DebugLog(F(_T("FindAIMatches() No types matched '%s'."), token->m_BaseType.wx_str()));
+                CCLogger::Get()->DebugLog(wxString::Format("FindAIMatches() No types matched '%s'.", token->m_BaseType));
         }
 
         // if no more components, add to result set
@@ -686,7 +682,7 @@ size_t NativeParserBase::BreakUpComponents(const wxString&              actual,
     OperatorType tokenOperatorType;
     // break up components of phrase
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(F(_T("BreakUpComponents() Breaking up '%s'"), statement.wx_str()));
+        CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Breaking up '%s'", statement));
     TRACE(_T("NativeParserBase::BreakUpComponents()"));
 
     while (true)
@@ -715,8 +711,8 @@ size_t NativeParserBase::BreakUpComponents(const wxString&              actual,
                 default:
                 {   tokenTypeString = _T("Undefined");         }
             }
-            CCLogger::Get()->DebugLog(F(_T("BreakUpComponents() Found component: '%s' (%s)"),
-                                        tok.wx_str(), tokenTypeString.wx_str()));
+            CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Found component: '%s' (%s)",
+                                                       tok, tokenTypeString));
         }
 
         // Support global namespace like ::MessageBoxA
@@ -726,7 +722,7 @@ size_t NativeParserBase::BreakUpComponents(const wxString&              actual,
         if (!tok.IsEmpty() || (tokenType == pttSearchText && !components.empty()))
         {
             if (s_DebugSmartSense)
-                CCLogger::Get()->DebugLog(F(_T("BreakUpComponents() Adding component: '%s'."), tok.wx_str()));
+                CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Adding component: '%s'.", tok));
             components.push(pc);
         }
 
@@ -781,17 +777,17 @@ size_t NativeParserBase::ResolveExpression(TokenTree*                  tree,
                 continue;
             else
             {
-                CCLogger::Get()->DebugLog(F(_T("ResolveExpression() Error to find initial search scope.")));
+                CCLogger::Get()->DebugLog("ResolveExpression() Error to find initial search scope.");
                 break; // error happened.
             }
         }
 
         if (s_DebugSmartSense)
         {
-            CCLogger::Get()->DebugLog(F(_T("ResolveExpression() Search scope with %lu result:"),
-                                        static_cast<unsigned long>(initialScope.size())));
+            CCLogger::Get()->DebugLog(wxString::Format("ResolveExpression() Search scope with %zu result:",
+                                                       initialScope.size()));
             for (TokenIdxSet::const_iterator tt = initialScope.begin(); tt != initialScope.end(); ++tt)
-                CCLogger::Get()->DebugLog(F(_T("- Search scope: %d"), (*tt)));
+                CCLogger::Get()->DebugLog(wxString::Format("- Search scope: %d", *tt));
         }
 
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
@@ -812,8 +808,8 @@ size_t NativeParserBase::ResolveExpression(TokenTree*                  tree,
         //-------------------------------------
 
         if (s_DebugSmartSense)
-            CCLogger::Get()->DebugLog(F(_T("ResolveExpression() Looping %lu result."),
-                                        static_cast<unsigned long>(initialResult.size())));
+            CCLogger::Get()->DebugLog(wxString::Format("ResolveExpression() Looping %zu result.",
+                                                       initialResult.size()));
 
         //------------------------------------
         if (!initialResult.empty())
@@ -837,7 +833,7 @@ size_t NativeParserBase::ResolveExpression(TokenTree*                  tree,
                 if (!token)
                 {
                     if (s_DebugSmartSense)
-                        CCLogger::Get()->DebugLog(F(_T("ResolveExpression() token is NULL?!")));
+                        CCLogger::Get()->DebugLog("ResolveExpression() token is NULL?!");
                     continue;
                 }
 
@@ -847,10 +843,8 @@ size_t NativeParserBase::ResolveExpression(TokenTree*                  tree,
                     continue;
 
                 if (s_DebugSmartSense)
-                    CCLogger::Get()->DebugLog(F(_T("ResolvExpression() Match:'%s(ID=%lu) : type='%s'"),
-                                                token->m_Name.wx_str(),
-                                                static_cast<unsigned long>(id),
-                                                token->m_BaseType.wx_str()));
+                    CCLogger::Get()->DebugLog(wxString::Format("ResolvExpression() Match:'%s(ID=%zu) : type='%s'",
+                                                               token->m_Name, id, token->m_BaseType));
 
                 // recond the template map message here. hope it will work.
                 // wxString tkname = token->m_Name;
@@ -1230,12 +1224,12 @@ size_t NativeParserBase::GenerateResultSet(TokenTree*      tree,
 
     Token* parent = tree->at(parentIdx);
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(F(_("GenerateResultSet() search '%s', parent='%s (id:%d, type:%s), isPrefix=%d'"),
-                                    target.wx_str(),
-                                    parent ? parent->m_Name.wx_str() : wxString(_T("Global namespace")).wx_str(),
-                                    parent ? parent->m_Index : 0,
-                                    parent ? parent->GetTokenKindString().wx_str() : 0,
-                                    isPrefix ? 1 : 0));
+        CCLogger::Get()->DebugLog(wxString::Format(_("GenerateResultSet() search '%s', parent='%s (id:%d, type:%s), isPrefix=%d'"),
+                                                   target,
+                                                   parent ? parent->m_Name : wxString("Global namespace"),
+                                                   parent ? parent->m_Index : 0,
+                                                   parent ? parent->GetTokenKindString() : wxString("?"),
+                                                   isPrefix ? 1 : 0));
 
     // parent == null means we are searching in the global scope
     if (parent)

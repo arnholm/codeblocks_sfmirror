@@ -852,8 +852,8 @@ void CodeCompletion::DoCodeComplete(int caretPos, cbEditor* ed, std::vector<CCTo
         || m_NativeParser.LastAISearchWasGlobal() ) // enter even if no match (code-complete C++ keywords)
     {
         if (s_DebugSmartSense)
-            CCLogger::Get()->DebugLog(F(wxT("%lu results"), static_cast<unsigned long>(result.size())));
-        TRACE(F(wxT("%lu results"), static_cast<unsigned long>(result.size())));
+            CCLogger::Get()->DebugLog(wxString::Format("%zu results", result.size()));
+        TRACE(wxString::Format("%zu results", result.size()));
 
         if (result.size() <= m_CCMaxMatches)
         {
@@ -1015,7 +1015,7 @@ void CodeCompletion::DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEdit
     macros.push_back(wxT("line"));
     macros.push_back(wxT("pragma"));
     macros.push_back(wxT("undef"));
-    const wxString idxStr = F(wxT("\n%d"), PARSER_IMG_MACRO_DEF);
+    const wxString idxStr = wxString::Format("\n%d", PARSER_IMG_MACRO_DEF);
     for (size_t i = 0; i < macros.size(); ++i)
     {
         if (text.IsEmpty() || macros[i][0] == text[0]) // ignore tokens that start with a different letter
@@ -3062,8 +3062,8 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
     TRACE(F(_T("Parsed %lu functionscope items"), static_cast<unsigned long>(m_FunctionsScope.size())));
 #if CC_CODECOMPLETION_DEBUG_OUTPUT == 1
     for (unsigned int i = 0; i < m_FunctionsScope.size(); ++i)
-        CCLogger::Get()->DebugLog(F(_T("\t%s%s (%d:%d)"),
-            m_FunctionsScope[i].Scope.wx_str(), m_FunctionsScope[i].Name.wx_str(),
+        CCLogger::Get()->DebugLog(wxString::Format(_T("\t%s%s (%d:%d)"),
+            m_FunctionsScope[i].Scope, m_FunctionsScope[i].Name,
             m_FunctionsScope[i].StartLine, m_FunctionsScope[i].EndLine));
 #endif
 
@@ -3408,7 +3408,7 @@ void CodeCompletion::OnReparsingTimer(cb_unused wxTimerEvent& event)
             }
 
             if (reparseCount)
-                CCLogger::Get()->DebugLog(F(_T("Re-parsed %lu files."), static_cast<unsigned long>(reparseCount)));
+                CCLogger::Get()->DebugLog(wxString::Format("Re-parsed %zu files.", reparseCount));
         }
 
         if (files.IsEmpty())

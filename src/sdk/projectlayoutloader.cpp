@@ -82,11 +82,11 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
 
         if (major >= PROJECT_LAYOUT_FILE_VERSION_MAJOR && minor > PROJECT_LAYOUT_FILE_VERSION_MINOR)
         {
-            pMsg->DebugLog(F(_T("Project layout file version is > %d.%d. Trying to load..."), PROJECT_LAYOUT_FILE_VERSION_MAJOR, PROJECT_LAYOUT_FILE_VERSION_MINOR));
+            pMsg->DebugLog(wxString::Format("Project layout file version is > %d.%d. Trying to load...", PROJECT_LAYOUT_FILE_VERSION_MAJOR, PROJECT_LAYOUT_FILE_VERSION_MINOR));
             AnnoyingDialog dlg(_("Project layout file format is newer/unknown"),
-                                F(_("This project layout file was saved with a newer version of Code::Blocks.\n"
+                                wxString::Format(_("This project layout file was saved with a newer version of Code::Blocks.\n"
                                 "Will try to load, but you might see unexpected results.\n"
-                                "In this case close the project, delete %s and reopen the project."),filename.wx_str()),
+                                "In this case close the project, delete %s and reopen the project."),filename),
                                 wxART_WARNING,
                                 AnnoyingDialog::OK);
             dlg.ShowModal();

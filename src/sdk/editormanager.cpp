@@ -1195,7 +1195,7 @@ static OpenContainingFolderData detectNautilus(const wxString &command, ConfigMa
     else
         fileManager = command;
 
-    Manager::Get()->GetLogManager()->DebugLog(F(wxT("File manager is: '%s'"), fileManager.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("File manager is: '%s'", fileManager));
     if (fileManager.find(wxT("nautilus")) == wxString::npos)
         return OpenContainingFolderData(command, false);
     // If the file manager ends with desktop then this is produced by xdg-mime.
@@ -1211,7 +1211,7 @@ static OpenContainingFolderData detectNautilus(const wxString &command, ConfigMa
     const wxString prefix(wxT("GNOME nautilus "));
 
     const wxString firstLine = output[0].Trim(true).Trim(false);
-    Manager::Get()->GetLogManager()->DebugLog(F(wxT("Nautilus version is: '%s'"), firstLine.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Nautilus version is: '%s'", firstLine));
 
     if (firstLine.StartsWith(prefix))
     {
@@ -1417,7 +1417,7 @@ bool EditorManager::SwapActiveHeaderSource()
             if (!dname.IsAbsolute())
             {
                 dname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, project->GetBasePath());
-    //            Manager::Get()->GetLogManager()->DebugLog(F(_T("Normalizing dir to '%s'."), dname.GetFullPath().c_str()));
+    //            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Normalizing dir to '%s'.", dname.GetFullPath()));
             }
 
             fileArray.Clear();

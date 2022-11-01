@@ -287,11 +287,11 @@ void ToDoListView::LoadUsers()
     m_pUser->Append(_("<All users>"));
 
     // loop through all todos and add distinct users
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("Managing %d items."), m_Items.GetCount()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Managing %zu items.", m_Items.GetCount()));
     for (unsigned int i = 0; i < m_Items.GetCount(); ++i)
     {
         wxString user = m_Items[i].user;
-//        Manager::Get()->GetLogManager()->DebugLog(F(_T("Found user %s."), user.c_str()));
+//        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Found user %s.", user));
         if (!user.IsEmpty())
         {
             if (m_pUser->FindString(user, true) == wxNOT_FOUND)

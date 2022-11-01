@@ -73,17 +73,17 @@ DirectCommands::DirectCommands(CompilerGCC* compilerPlugin,
     // depslib does special handling on Windows in case the CWD is a root
     // folder like "R:". But this ONLY works, if its just "R:", NOT e.g. "R:/"
     wxString depsCWD = cwd.GetPath(wxPATH_GET_VOLUME);
-    Manager::Get()->GetLogManager()->DebugLog(F(_("CWD for depslib was: %s."), depsCWD.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("CWD for depslib was: %s."), depsCWD));
     if (     (depsCWD.Len()==3)         && (depsCWD.GetChar(1)==':')
         && ( (depsCWD.GetChar(2)=='\\') || (depsCWD.GetChar(2)=='/') ) )
     {
         depsCWD.RemoveLast();
     }
-    Manager::Get()->GetLogManager()->DebugLog(F(_("CWD for depslib is: %s."), depsCWD.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("CWD for depslib is: %s."), depsCWD));
     depsSetCWD(depsCWD.mb_str());
 
     wxFileName fname(m_pProject->GetFilename());
-    fname.SetExt(_T("depend"));
+    fname.SetExt("depend");
     depsCacheRead(fname.GetFullPath().mb_str());
 }
 
@@ -101,9 +101,10 @@ DirectCommands::~DirectCommands()
         depsCacheWrite(fname.GetFullPath().mb_str());
     }
 
-    Manager::Get()->GetLogManager()->DebugLog(
-        F(_("Scanned %ld files for #includes, cache used %ld, cache updated %ld"),
-        stats.scanned, stats.cache_used, stats.cache_updated));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Scanned %ld files for #includes, cache used %ld, cache updated %ld"),
+                                                               stats.scanned,
+                                                               stats.cache_used,
+                                                               stats.cache_updated));
 
     depsDone();
 
@@ -326,8 +327,8 @@ wxArrayString DirectCommands::GetCompileFileCommand(ProjectBuildTarget* target, 
             source_file = pfd.source_file;
 
 #ifdef command_line_generation
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("GetCompileFileCommand[1]: compiler_cmd='%s', source_file='%s', object='%s', object_dir='%s'."),
-                                                    compiler_cmd.wx_str(), source_file.wx_str(), object.wx_str(), object_dir.wx_str()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GetCompileFileCommand[1]: compiler_cmd='%s', source_file='%s', object='%s', object_dir='%s'.",
+                                                                   compiler_cmd, source_file, object, object_dir));
 #endif
 
         // for resource files, use short from if path because if windres bug with spaces-in-paths
@@ -337,8 +338,7 @@ wxArrayString DirectCommands::GetCompileFileCommand(ProjectBuildTarget* target, 
         QuoteStringIfNeeded(source_file);
 
 #ifdef command_line_generation
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("GetCompileFileCommand[2]: source_file='%s'."),
-                                                    source_file.wx_str()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GetCompileFileCommand[2]: source_file='%s'.", source_file));
 #endif
         m_pGenerator->GenerateCommandLine(compiler_cmd, target, pf, source_file, object,
                                           pfd.object_file_flat, pfd.dep_file);

@@ -345,7 +345,7 @@ void ClassBrowserBuilderThread::ExpandItem(CCTreeItem* item)
         AddMembersOf(m_CCTreeTop, item);
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("ExpandItem (internally) took : %ld ms for %u items.", sw.Time(), m_CCTreeTop->GetCount()));
+    CCLogger::Get()->DebugLog(wxString::Format("ExpandItem (internally) took : %ld ms for %zu items.", sw.Time(), m_CCTreeTop->GetCount()));
 #endif
 
     if (locked)
@@ -371,7 +371,7 @@ void ClassBrowserBuilderThread::SelectGUIItem()
         AddMembersOf(tree, m_targetItem);
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("SelectGUIItem (internally) took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("SelectGUIItem (internally) took : %ld ms", sw.Time()));
 #endif
 
     CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
@@ -406,14 +406,14 @@ void ClassBrowserBuilderThread::BuildTree()
     m_ExpandedVect.clear();
     SaveExpandedItems(m_CCTreeTop, root, 0);
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Saving expanded items took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("Saving expanded items took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
     // 4.) Remove any nodes no longer valid (due to update)
     RemoveInvalidNodes(m_CCTreeTop, root);
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Removing invalid nodes (top tree) took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("Removing invalid nodes (top tree) took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
@@ -421,7 +421,7 @@ void ClassBrowserBuilderThread::BuildTree()
     {
         RemoveInvalidNodes(m_CCTreeBottom, m_CCTreeBottom->GetRootItem());
 #ifdef CC_BUILDTREE_MEASURING
-        CCLogger::Get()->DebugLog(F("Removing invalid nodes (bottom tree) took : %ld ms", sw.Time()));
+        CCLogger::Get()->DebugLog(wxString::Format("Removing invalid nodes (bottom tree) took : %ld ms", sw.Time()));
         sw.Start();
 #endif
     }
@@ -433,21 +433,21 @@ void ClassBrowserBuilderThread::BuildTree()
         return;
     }
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("TestDestroy() took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("TestDestroy() took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
     // 6.) Expand item
     ExpandItem(root);
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Expanding root item took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("Expanding root item took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
     // 7.) Expand the items saved before
     ExpandSavedItems(m_CCTreeTop, root, 0);
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Expanding saved items took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("Expanding saved items took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
@@ -456,7 +456,7 @@ void ClassBrowserBuilderThread::BuildTree()
     ExpandNamespaces(root, tkClass,     1);
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Expanding namespaces took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("Expanding namespaces took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
@@ -554,7 +554,7 @@ void ClassBrowserBuilderThread::ExpandNamespaces(CCTreeItem* node, TokenKind tok
             && data->m_Token
             && (data->m_Token->m_TokenKind == tokenKind) )
         {
-            TRACE(F("Auto-expanding: " + data->m_Token->m_Name));
+            TRACE("Auto-expanding: " + data->m_Token->m_Name);
             ExpandItem(existing);
             ExpandNamespaces(existing, tokenKind, level-1); // re-curse
         }
@@ -776,12 +776,12 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
 #endif
         tree->DeleteAllItems();
 #ifdef CC_BUILDTREE_MEASURING
-        CCLogger::Get()->DebugLog(F("tree->DeleteAllItems() took : %ld ms", sw.Time()));
+        CCLogger::Get()->DebugLog(wxString::Format("tree->DeleteAllItems() took : %ld ms", sw.Time()));
         sw.Start();
 #endif
         node = tree->AddRoot("Members"); // not visible, so don't translate
 #ifdef CC_BUILDTREE_MEASURING
-        CCLogger::Get()->DebugLog(F("tree->AddRoot() took : %ld ms", sw.Time()));
+        CCLogger::Get()->DebugLog(wxString::Format("tree->AddRoot() took : %ld ms", sw.Time()));
 #endif
     }
 
@@ -941,7 +941,7 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
     tree->SortChildren(parent);
 //    tree->RemoveDoubles(parent);
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("Added %d nodes", count));
+    CCLogger::Get()->DebugLog(wxString::Format("Added %d nodes", count));
 #endif
     return count != 0;
 }
@@ -1092,7 +1092,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
     const uint32_t NewCrc32 = localTree->GetCrc32();
 
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F("GetCrc32() took : %ld ms", sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("GetCrc32() took : %ld ms", sw.Time()));
 #endif
 
     if (NewCrc32 == (top ? m_topCrc32 : m_bottomCrc32))

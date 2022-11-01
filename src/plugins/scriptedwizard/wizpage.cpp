@@ -226,7 +226,7 @@ void WizPage::OnButton(wxCommandEvent& event)
     wxWindow* win = FindWindowById(event.GetId(), this);
     if (!win)
     {
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("Can't locate window with id %d"), event.GetId()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Can't locate window with id %d", event.GetId()));
         return;
     }
 

@@ -112,7 +112,7 @@ cb::shared_ptr<DebuggerBreakpoint> DebuggerState::AddBreakpoint(const wxString& 
         RemoveBreakpoint(idx);
 
     // create new bp
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("DebuggerState::AddBreakpoint() : bp: file=%s, bpfile=%s"), file.c_str(), bpfile.c_str()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("DebuggerState::AddBreakpoint() : bp: file=%s, bpfile=%s", file, bpfile));
     cb::shared_ptr<DebuggerBreakpoint> bp(new DebuggerBreakpoint);
     bp->type = DebuggerBreakpoint::bptCode;
     bp->filename = bpfile;

@@ -106,7 +106,7 @@ Compiler::Compiler(const wxString& name, const wxString& ID, const wxString& par
     m_VersionString = wxString();
     m_Weight = weight;
     m_RegExes.reserve(100);
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("Added compiler \"%s\""), m_Name.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Added compiler \"%s\"", m_Name));
 }
 
 Compiler::Compiler(const Compiler& other) :
@@ -241,7 +241,7 @@ wxString Compiler::MakeInvalidCompilerMessages() const
     wxString triedPathsMsgs;
     wxString tmp = m_MasterPath + _T("/bin/") + m_Programs.C;
     macros->ReplaceMacros(tmp);
-    triedPathsMsgs += F(_T("Tried to run compiler executable '%s', but failed!\n"), tmp.wx_str());
+    triedPathsMsgs += wxString::Format(_("Tried to run compiler executable '%s', but failed!\n"), tmp);
 
     // and try without appending the 'bin'
     tmp = m_MasterPath + _T("/") + m_Programs.C;
@@ -250,7 +250,7 @@ wxString Compiler::MakeInvalidCompilerMessages() const
     // look in extra paths too
     for (size_t i = 0; i < m_ExtraPaths.GetCount(); ++i)
     {
-        triedPathsMsgs += F(_T("Tried to run compiler executable '%s', but failed!\n"), tmp.wx_str());
+        triedPathsMsgs += wxString::Format(_("Tried to run compiler executable '%s', but failed!\n"), tmp);
 
         tmp = m_ExtraPaths[i] + _T("/") + m_Programs.C;
         macros->ReplaceMacros(tmp);

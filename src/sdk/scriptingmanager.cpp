@@ -349,7 +349,7 @@ bool ScriptingManager::LoadBuffer(const wxString& buffer, const wxString& debugN
     wxString incName = UnixFilename(debugName);
     if (m_data->m_IncludeSet.find(incName) != m_data->m_IncludeSet.end())
     {
-        Manager::Get()->GetLogManager()->LogWarning(F(_T("Ignoring Include(\"%s\") because it would cause recursion..."), incName.wx_str()));
+        Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Ignoring Include(\"%s\") because it would cause recursion..."), incName));
         return true;
     }
     m_data->m_IncludeSet.insert(incName);

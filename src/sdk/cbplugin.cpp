@@ -588,7 +588,7 @@ void cbDebuggerPlugin::SwitchToDebuggingLayout()
 
     CodeBlocksLayoutEvent switchEvent(cbEVT_SWITCH_VIEW_LAYOUT, perspectiveName);
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_("Switching layout to \"%s\""), switchEvent.layout.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Switching layout to \"%s\""), switchEvent.layout));
 
     // query the current layout
     Manager::Get()->ProcessEvent(queryEvent);
@@ -607,7 +607,7 @@ void cbDebuggerPlugin::SwitchToPreviousLayout()
 
     wxString const &name = !switchEvent.layout.IsEmpty() ? switchEvent.layout : wxString(_("Code::Blocks default"));
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_("Switching layout to \"%s\""), name.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("Switching layout to \"%s\""), name));
 
     // switch to previous layout
     Manager::Get()->ProcessEvent(switchEvent);
@@ -874,8 +874,8 @@ int cbDebuggerPlugin::RunNixConsole(wxString &consoleTty)
         // Try to detect if the terminal command is present or its parameters are valid.
         if (processInfo->FailedToStart() /*&& ii > 0*/)
         {
-            Log(F(wxT("Failed to execute terminal command: '%s' (exit code: %d)"),
-                  cmd.wx_str(), processInfo->status), Logger::error);
+            Log(wxString::Format("Failed to execute terminal command: '%s' (exit code: %d)",
+                                 cmd, processInfo->status), Logger::error);
             break;
         }
 
@@ -892,14 +892,13 @@ int cbDebuggerPlugin::RunNixConsole(wxString &consoleTty)
         // If we detect such case we will return the PID for the sleep command instead of the PID
         // for the terminal.
         if (kill(consolePid, 0) == -1 && errno == ESRCH) {
-            DebugLog(F(wxT("Using sleep command's PID as console PID %d, TTY %s"),
-                       info.sleepPID, info.ttyPath.wx_str()));
+            DebugLog(wxString::Format("Using sleep command's PID as console PID %d, TTY %s", info.sleepPID, info.ttyPath));
             consoleTty = info.ttyPath;
             return info.sleepPID;
         }
         else
         {
-            DebugLog(F(wxT("Using terminal's PID as console PID %d, TTY %s"), info.sleepPID, info.ttyPath.wx_str()));
+            DebugLog(wxString::Format("Using terminal's PID as console PID %d, TTY %s", info.sleepPID, info.ttyPath));
             consoleTty = info.ttyPath;
             return consolePid;
         }

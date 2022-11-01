@@ -61,11 +61,13 @@ AutoDetectResult CompilerGDC::AutoDetectInstallationDir()
                 // look for dev-cpp installation
                 wxRegKey key; // defaults to HKCR
                 key.SetName(_T("HKEY_LOCAL_MACHINE\\Software\\Dev-C++"));
-                if (key.Exists() && key.Open(wxRegKey::Read)) {
+                if (key.Exists() && key.Open(wxRegKey::Read))
+                {
                     // found; read it
                     key.QueryValue(_T("Install_Dir"), m_MasterPath);
                 }
-                else {
+                else
+                {
                     // installed by inno-setup
                     // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Minimalist GNU for Windows 4.1_is1
                     wxString name;
@@ -73,14 +75,18 @@ AutoDetectResult CompilerGDC::AutoDetectInstallationDir()
                     key.SetName(_T("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
                     //key.SetName("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion");
                     bool ok = key.GetFirstKey(name, index);
-                    while (ok && !name.StartsWith(_T("Minimalist GNU for Windows"))) {
+                    while (ok && !name.StartsWith(_T("Minimalist GNU for Windows")))
+                    {
                         ok = key.GetNextKey(name, index);
                     }
-                    if (ok) {
-                        name = key.GetName() + _T("\\") + name;
+
+                    if (ok)
+                    {
+                        name = key.GetName() + "\\" + name;
                         key.SetName(name);
-                        Manager::Get()->GetLogManager()->DebugLog(F(_T("name: %s"), name.wx_str()));
-                        if (key.Exists()) key.QueryValue(_T("InstallLocation"), m_MasterPath);
+                        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("name: %s", name));
+                        if (key.Exists())
+                            key.QueryValue("InstallLocation", m_MasterPath);
                     }
                 }
 #endif

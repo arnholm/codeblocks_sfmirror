@@ -86,9 +86,9 @@ void AnnoyingDialog::Init(const wxString &caption, const wxString &id, const wxS
             if (m_DefRet == rtSAVE_CHOICE)
                 m_DefRet = rtYES; // default value
             disabled.erase(it);
-            disabled.insert(m_Id + F(wxT(":%d"), m_DefRet));
+            disabled.insert(m_Id + wxString::Format(":%d", m_DefRet));
             // save updated format
-            cfg->Write(wxT("/disabled_ret"), disabled);
+            cfg->Write("/disabled_ret", disabled);
             return;
         }
         else if (it->BeforeLast(wxT(':')) == m_Id)
@@ -257,8 +257,8 @@ void AnnoyingDialog::OnButton(wxCommandEvent& event)
         ConfigManager* cfg = Manager::Get()->GetConfigManager(wxT("an_dlg"));
         ConfigManagerContainer::StringSet disabled = cfg->ReadSSet(wxT("/disabled_ret"));
         // if we are supposed to remember the users choice, save the button
-        disabled.insert(m_Id + F(wxT(":%d"), m_DefRet == rtSAVE_CHOICE ? id : m_DefRet));
-        cfg->Write(wxT("/disabled_ret"), disabled);
+        disabled.insert(m_Id + wxString::Format(":%d", m_DefRet == rtSAVE_CHOICE ? id : m_DefRet));
+        cfg->Write("/disabled_ret", disabled);
     }
     EndModal(id);
 }

@@ -184,10 +184,10 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
                             wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), wxPATH_NATIVE);
             if (!fname.FileExists())
             {
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Project '%s' from '%s' not found."), prjTitle.wx_str(), fname.GetFullPath().wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Project '%s' from '%s' not found.", prjTitle, fname.GetFullPath()));
                 continue;
             }
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Found project '%s' in '%s'"), prjTitle.wx_str(), fname.GetFullPath().wx_str()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Found project '%s' in '%s'", prjTitle, fname.GetFullPath()));
 
             int percentage = ((int)file.TellI())*100 / (int)(file.GetLength());
             // While updating the progrerss dialog check for cancellation - probably interrupt.

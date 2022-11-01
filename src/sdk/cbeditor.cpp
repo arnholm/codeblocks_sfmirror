@@ -129,7 +129,7 @@ struct cbEditorInternalData
                 m_encoding            = enc.GetFontEncoding();
             }
 #ifdef fileload_measuring
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Encoding via fileloader took : %d ms"),(int)sw.Time()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Encoding via fileloader took : %ld ms", sw.Time()));
 #endif
         }
     }
@@ -1943,7 +1943,7 @@ bool cbEditor::Open(bool detectEncoding)
 
     ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("editor"));
 #ifdef fileload_measuring
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("cbEditor::Open() => Encoding detection and conversion took : %d ms"),(int)sw.Time()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("cbEditor::Open() => Encoding detection and conversion took : %ld ms", sw.Time()));
     sw.Start();
 #endif
 
@@ -1968,7 +1968,7 @@ bool cbEditor::Open(bool detectEncoding)
         m_pData->m_pFileLoader = nullptr;
     }
 #ifdef fileload_measuring
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("loading into editor needs : %d ms"),(int)sw.Time()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("loading into editor needs : %ld ms", sw.Time()));
 #endif
     return true;
 }

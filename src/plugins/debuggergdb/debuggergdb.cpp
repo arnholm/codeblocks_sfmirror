@@ -1674,8 +1674,8 @@ void DebuggerGDB::DoBreak(bool temporary)
             if (!wxProcess::Exists(pid))
                 DebugLog(wxString::Format(_("GDB process (pid:%ld) doesn't exists"), pid), Logger::error);
 
-            Log(F(_("Trying to interrupt process with pid: %ld; child pid: %ld gdb pid: %ld"),
-                  pid, childPid, static_cast<long>(m_Pid)));
+            Log(wxString::Format(_("Trying to interrupt process with pid: %ld; child pid: %ld gdb pid: %ld"),
+                                 pid, childPid, static_cast<long>(m_Pid)));
             wxKillError error;
             if (wxKill(pid, wxSIGINT, &error) != 0)
                 DebugLog(wxString::Format(_("Can't kill process (%ld) %d"), pid, (int)(error)));
@@ -1698,7 +1698,7 @@ void DebuggerGDB::DoBreak(bool temporary)
                     if (static_cast<int>(lppe.th32ParentProcessID) == m_Pid) // Have my Child...
                     {
                         pid = lppe.th32ProcessID;
-                        DebugLog(F(_("Found child: %ld"),  pid));
+                        DebugLog(wxString::Format(_("Found child: %ld"),  pid));
                     }
                     lppe.dwSize = sizeof(PROCESSENTRY32);
                     ok = Process32NextFunc(snap, &lppe);
@@ -1715,8 +1715,8 @@ void DebuggerGDB::DoBreak(bool temporary)
                 Log(_("DebugBreakProcess is not supported, you need Windows XP or newer..."), Logger::error);
             else if (pid > 0)
             {
-                Log(F(_("Trying to interrupt process with pid: %ld; child pid: %ld gdb pid: %ld"),
-                      pid, childPid, static_cast<long>(m_Pid)));
+                Log(wxString::Format(_("Trying to interrupt process with pid: %ld; child pid: %ld gdb pid: %ld"),
+                                     pid, childPid, static_cast<long>(m_Pid)));
                 HANDLE proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD)pid);
                 if (proc)
                 {

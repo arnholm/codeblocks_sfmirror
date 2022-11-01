@@ -2989,9 +2989,8 @@ void ProjectManagerUI::CheckForExternallyModifiedProjects()
     long durationMS = timer.Time();
     if (durationMS > 100)
     {
-        LogManager *log = Manager::Get()->GetLogManager();
-        log->Log(F(wxT("Checking for externally modified projects took %.3lf seconds"),
-                   durationMS / 1000.0f));
+        LogManager* log = Manager::Get()->GetLogManager();
+        log->Log(wxString::Format(_("Checking for externally modified projects took %.3lf seconds"), durationMS / 1000.0f));
     }
     m_isCheckingForExternallyModifiedProjects = false;
 }
@@ -3564,7 +3563,7 @@ static bool ProjectVirtualFolderAdded(cbProject* project, wxTreeCtrl* tree,
 
     project->SetModified(true);
 
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("VirtualFolderAdded: %s: %s"), foldername.c_str(), GetStringFromArray(m_VirtualFolders, _T(";")).c_str()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("VirtualFolderAdded: %s: %s", foldername, GetStringFromArray(m_VirtualFolders, ";")));
     return true;
 }
 
@@ -3589,7 +3588,7 @@ static void ProjectVirtualFolderDeleted(cbProject* project, wxTreeCtrl* tree, wx
     project->RemoveVirtualFolders(foldername);
     if (!parent_foldername.IsEmpty())
         project->AppendUniqueVirtualFolder(parent_foldername);
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("VirtualFolderDeleted: %s: %s"), foldername.c_str(), GetStringFromArray(m_VirtualFolders, _T(";")).c_str()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("VirtualFolderDeleted: %s: %s", foldername, GetStringFromArray(m_VirtualFolders, ";")));
 }
 
 static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wxTreeItemId node,
@@ -3633,7 +3632,7 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
 
     project->ReplaceVirtualFolder(old_foldername, new_foldername);
 
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("VirtualFolderRenamed: %s to %s: %s"), old_foldername.c_str(), new_foldername.c_str(), GetStringFromArray(m_VirtualFolders, _T(";")).c_str()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("VirtualFolderRenamed: %s to %s: %s", old_foldername, new_foldername, GetStringFromArray(m_VirtualFolders, ";")));
     return true;
 }
 
@@ -3818,6 +3817,6 @@ void ProjectManagerUI::BuildProjectTree(cbProject* project, cbTreeCtrl* tree,
     ProjectTreeSortChildrenRecursive(tree, project->GetProjectNode());
     tree->Expand(project->GetProjectNode());
 #ifdef fileload_measuring
-    Manager::Get()->GetLogManager()->DebugLogError(F(_T("%s::%s:%d  took : %d ms"), cbC2U(__FILE__).c_str(),cbC2U(__PRETTY_FUNCTION__).c_str(), __LINE__, (int)sw.Time()));
+    Manager::Get()->GetLogManager()->DebugLogError(wxString::Format("%s::%s:%d took: %ld ms", cbC2U(__FILE__),cbC2U(__PRETTY_FUNCTION__), __LINE__, sw.Time()));
 #endif
 }

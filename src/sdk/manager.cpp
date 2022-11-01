@@ -288,7 +288,7 @@ bool Manager::ProcessEvent(CodeBlocksEvent& event)
 
                 wxEventType type=event.GetEventType();
                 msg << GetCodeblocksEventName(type);
-                Manager::Get()->GetLogManager()->DebugLog(F(_("%s take %ld ms"), msg.wx_str(), sw.Time()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_("%s take %ld ms"), msg, sw.Time()));
             }
 #endif // PPRCESS_EVENT_PERFORMANCE_MEASURE
         }

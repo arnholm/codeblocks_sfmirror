@@ -344,7 +344,8 @@ bool wxsItemResData::LoadInSourceMode()
     TiXmlDocument Doc;
     if ( !TinyXML::LoadDocument(m_WxsFileName,&Doc)  )
     {
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("wxSmith: Error loading wxs file (Col: %d, Row:%d): ") + cbC2U(Doc.ErrorDesc()),Doc.ErrorCol(),Doc.ErrorRow()));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("wxSmith: Error loading wxs file (Col: %d, Row: %d): %s",
+                                                                   Doc.ErrorCol(), Doc.ErrorRow(), cbC2U(Doc.ErrorDesc())));
         return false;
     }
 
@@ -706,7 +707,7 @@ void wxsItemResData::RebuildSourceCode()
             }
 
             wxsCoder::Get()->Flush(500);
-            //Manager::Get()->GetLogManager()->DebugLog(F(_T("wxSmith: New code built in %d milis"),SW.Time()));
+            //Manager::Get()->GetLogManager()->DebugLog(wxString::Format("wxSmith: New code built in %ld ms", SW.Time()));
 
             break;
         }

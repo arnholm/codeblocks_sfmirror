@@ -74,7 +74,7 @@ bool MSVC10Loader::Open(const wxString& filename)
         m_WorkspacePath = tmp.GetPathWithSep();
     }
 
-    pMsg->DebugLog(F(_("Importing MSVC 10+ project: %s"), filename.wx_str()));
+    pMsg->DebugLog(wxString::Format(_("Importing MSVC 10+ project: %s"), filename));
 
     TiXmlDocument doc(filename.mb_str());
     if (!doc.LoadFile())

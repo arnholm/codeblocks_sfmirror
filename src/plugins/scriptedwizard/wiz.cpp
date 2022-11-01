@@ -530,7 +530,7 @@ CompileTargetBase* Wiz::RunProjectWizard(wxString* pFilename)
                     }
                     else
                     {
-                        Manager::Get()->GetLogManager()->DebugLog(F(_T("File %s exists"), actual.wx_str()));
+                        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("File %s exists", actual));
                     }
                 }
             }
@@ -762,7 +762,8 @@ wxString Wiz::GenerateFile(const wxString& basePath, const wxString& filename, c
                 // attempt to create file outside the project dir
                 // remove any path info from the filename
                 fname = fname.GetFullName();
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Attempt to generate a file outside the project base dir:\nOriginal: %s\nConverted to:%s"), filename.wx_str(), fname.GetFullPath().wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Attempt to generate a file outside the project base dir:\nOriginal: %s\nConverted to: %s",
+                                                                           filename, fname.GetFullPath()));
                 break;
             }
         }
@@ -1416,7 +1417,7 @@ void Wiz::AddWizard(TemplateOutputType otype,
         WizardInfo& info = m_Wizards[i];
         if (info.output_type == otype && info.title == title)
         {
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Wizard already registered. Skipping... (%s)"), title.wx_str()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Wizard already registered. Skipping... (%s)", title));
             return;
         }
     }
@@ -1442,9 +1443,8 @@ void Wiz::AddWizard(TemplateOutputType otype,
     // wx3.0 asserts when the image is smaller than 32x32, so we need to resize it.
     if (info.templatePNG.Ok() && (info.templatePNG.GetWidth() != 32 || info.templatePNG.GetHeight() != 32))
     {
-        Manager::Get()->GetLogManager()->LogWarning(F(_("Resizing image '%s' to fit 32x32 (original size is %dx%d)"),
-                                                      tpng.wx_str(), info.templatePNG.GetWidth(),
-                                                      info.templatePNG.GetHeight()));
+        Manager::Get()->GetLogManager()->LogWarning(wxString::Format(_("Resizing image '%s' to fit 32x32 (original size is %dx%d)"),
+                                                                     tpng, info.templatePNG.GetWidth(), info.templatePNG.GetHeight()));
         wxImage temp = info.templatePNG.ConvertToImage();
         temp.Resize(wxSize(32, 32), wxPoint(0, 0), -1, -1, -1);
         info.templatePNG = wxBitmap(temp);
@@ -1465,7 +1465,7 @@ void Wiz::AddWizard(TemplateOutputType otype,
         default: break;
     }
 
-    Manager::Get()->GetLogManager()->DebugLog(F(typS + _T(" wizard added for '%s'"), title.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s wizard added for '%s'", typS, title));
 }
 
 wxString Wiz::GetProjectPath()

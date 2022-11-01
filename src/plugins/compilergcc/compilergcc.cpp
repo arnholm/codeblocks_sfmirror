@@ -2126,7 +2126,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         }
     }
 
-    const wxString &message = F(_("Executing: %s (in %s)"), cmd.wx_str(), m_CdRun.wx_str());
+    const wxString& message = wxString::Format(_("Executing: %s (in %s)"), cmd, m_CdRun);
     m_CommandQueue.Add(new CompilerCommand(cmd, message, m_pProject, target, true));
 
     m_pProject->SetCurrentlyCompilingTarget(0);
@@ -3262,12 +3262,12 @@ void CompilerGCC::OnCleanFile(wxCommandEvent& event)
         if ( wxFileExists(obj_file) )
         {
             if ( wxRemoveFile(obj_file) )
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("File has been removed: %s"), obj_file.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("File has been removed: %s", obj_file));
             else
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Removing file failed for: %s"), obj_file.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Removing file failed for: %s", obj_file));
         }
         else
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("File to remove does not exist: %s"), obj_file.wx_str()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("File to remove does not exist: %s", obj_file));
     }
 }
 
@@ -3578,7 +3578,7 @@ void CompilerGCC::OnCompileFileRequest(CodeBlocksEvent& event)
     ProjectFile* pf = prj->GetFileByFilename(UnixFilename(filepath), true, false);
     if (!pf || !pf->buildTargets.GetCount())
     {
-//            Manager::Get()->GetLogManager()->DebugLog(F(_T("Skipping incoming compile file request for '%s' (no project file or build targets)."), filepath.wx_str()));
+//            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Skipping incoming compile file request for '%s' (no project file or build targets).", filepath));
         return;
     }
 
@@ -3589,11 +3589,11 @@ void CompilerGCC::OnCompileFileRequest(CodeBlocksEvent& event)
         bt = prj->GetBuildTarget(m_RealTargetIndex); // pick the selected target
     if (!bt)
     {
-//        Manager::Get()->GetLogManager()->DebugLog(F(_T("Skipping incoming compile file request for '%s' (no build target)."), filepath.wx_str()));
+//        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Skipping incoming compile file request for '%s' (no build target).", filepath));
         return;
     }
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("Executing incoming compile file request for '%s'."), filepath.wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Executing incoming compile file request for '%s'.", filepath));
     CompileFileDefault(prj, pf, bt);
 }
 
@@ -3626,14 +3626,14 @@ void CompilerGCC::OnGCCTerminated(CodeBlocksEvent& event)
 
 void CompilerGCC::AddOutputLine(const wxString& output, bool forceErrorColour)
 {
-    wxArrayString ignore_output = Manager::Get()->GetConfigManager(_T("compiler"))->ReadArrayString(_T("/ignore_output"));
+    wxArrayString ignore_output = Manager::Get()->GetConfigManager("compiler")->ReadArrayString("/ignore_output");
     if (!ignore_output.IsEmpty())
     {
         for (size_t i = 0; i<ignore_output.GetCount(); ++i)
         {
             if (output.Find(ignore_output.Item(i)) != wxNOT_FOUND)
             {
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Ignoring compiler output: %s"), output.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Ignoring compiler output: %s", output));
                 return;
             }
         }

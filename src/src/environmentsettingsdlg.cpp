@@ -309,10 +309,10 @@ EnvironmentSettingsDlg::EnvironmentSettingsDlg(wxWindow* parent, wxAuiDockArt* a
     wxCheckListBox* clb = XRCCTRL(*this, "chkDialogs", wxCheckListBox);
     clb->Clear();
 
-    m_AnnoyingDlgReturnMap[F(wxT("%d"), AnnoyingDialog::rtOK)]     = _("OK");
-    m_AnnoyingDlgReturnMap[F(wxT("%d"), AnnoyingDialog::rtCANCEL)] = _("Cancel");
-    m_AnnoyingDlgReturnMap[F(wxT("%d"), AnnoyingDialog::rtYES)]    = _("Yes");
-    m_AnnoyingDlgReturnMap[F(wxT("%d"), AnnoyingDialog::rtNO)]     = _("No");
+    m_AnnoyingDlgReturnMap[wxString::Format("%d", AnnoyingDialog::rtOK)]     = _("OK");
+    m_AnnoyingDlgReturnMap[wxString::Format("%d", AnnoyingDialog::rtCANCEL)] = _("Cancel");
+    m_AnnoyingDlgReturnMap[wxString::Format("%d", AnnoyingDialog::rtYES)]    = _("Yes");
+    m_AnnoyingDlgReturnMap[wxString::Format("%d", AnnoyingDialog::rtNO)]     = _("No");
     ConfigManagerContainer::StringSet dialogs;
     if (acfg->Exists(wxT("/disabled_ret")))
     {

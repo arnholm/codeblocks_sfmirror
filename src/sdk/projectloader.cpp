@@ -108,12 +108,12 @@ bool ProjectLoader::Open(const wxString& filename, TiXmlElement** ppExtensions)
             (major == 1 && minor < 2))
         {
             // pre-1.2
-            pMsg->DebugLog(F(_T("Project version is %d.%d. Defaults have changed since then..."), major, minor));
+            pMsg->DebugLog(wxString::Format("Project version is %d.%d. Defaults have changed since then...", major, minor));
             m_IsPre_1_2 = true;
         }
         else if (major >= PROJECT_FILE_VERSION_MAJOR && minor > PROJECT_FILE_VERSION_MINOR)
         {
-            pMsg->DebugLog(F(_T("Project version is > %d.%d. Trying to load..."), PROJECT_FILE_VERSION_MAJOR, PROJECT_FILE_VERSION_MINOR));
+            pMsg->DebugLog(wxString::Format("Project version is > %d.%d. Trying to load...", PROJECT_FILE_VERSION_MAJOR, PROJECT_FILE_VERSION_MINOR));
             AnnoyingDialog dlg(_("Project file format is newer/unknown"),
                                 _("This project file was saved with a newer version of Code::Blocks.\n"
                                 "Will try to load, but you should make sure all the settings were loaded correctly..."),
@@ -1068,7 +1068,7 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
         unit = unit->NextSiblingElement("Unit");
     }
     m_pProject->EndAddFiles();
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("%d files loaded"), count));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%d files loaded", count));
 }
 
 void ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* file)

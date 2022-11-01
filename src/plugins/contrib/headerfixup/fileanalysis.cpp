@@ -105,19 +105,19 @@ void FileAnalysis::SaveFile(const wxString& Prepend)
     wxFFile File;
     if ( !File.Open(m_FileName,_T("wb")) )
     {
-      Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: ")+m_FileName+_T("\" could not be updated (opened).")));
+      Manager::Get()->GetLogManager()->DebugLog(wxString::Format("[HeaderFixup]: \"%s\" could not be updated (opened).", m_FileName));
       return;
     }
 
     if ( !File.Write(m_FileContent,wxConvUTF8) )
     {
-      Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: ")+m_FileName+_T("\" could not be updated (written).")));
+      Manager::Get()->GetLogManager()->DebugLog(wxString::Format("[HeaderFixup]: \"%s\" could not be updated (written).", m_FileName));
       return;
     }
 
     if ( !File.Close() )
     {
-      Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: ")+m_FileName+_T("\" could not be closed.")));
+      Manager::Get()->GetLogManager()->DebugLog(wxString::Format("[HeaderFixup]: \"%s\" could not be closed.", m_FileName));
       return;
     }
   }

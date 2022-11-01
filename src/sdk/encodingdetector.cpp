@@ -136,14 +136,15 @@ class EncodingDetectorImpl : public nsUniversalDetector
                 {
                     //{ MOZILLA nsUniversalDetector START
                     // If we still have no results try Mozilla (taken from nsUdetXPCOMWrapper.cpp):
-                    Reset(); nsresult res = HandleData((char*)buffer, size);
+                    Reset();
+                    nsresult res = HandleData((char*)buffer, size);
                     if (res==NS_OK)
                         DataEnd();
                     else
                     {
                         m_MozillaResult = wxEmptyString;
                         if (m_UseLog)
-                            Manager::Get()->GetLogManager()->DebugLog(F(_T("Mozilla universal detection failed with %d."), res));
+                            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Mozilla universal detection failed with %d.", res));
                     }
                     //} MOZILLA nsUniversalDetector END
 
@@ -373,7 +374,7 @@ class EncodingDetectorImpl : public nsUniversalDetector
             m_MozillaResult = cbC2U(aCharset);
 
             if (m_UseLog)
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Mozilla universal detection engine detected '%s'."), m_MozillaResult.wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Mozilla universal detection engine detected '%s'.", m_MozillaResult));
 
             if (m_MozillaResult == _T("gb18030")) // hack, because wxWidgets only knows cp936
                 m_MozillaResult = _T("cp936");

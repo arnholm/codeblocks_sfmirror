@@ -371,7 +371,8 @@ bool wxsCorrector::FixVarName(wxString& Name)
             _T("_"));
 
         if ( FirstChar.Find(Name.GetChar(0)) == -1 )
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("wxSmith: Variable name : \"%s\" is not a valid c++ identifier (invalid character \"%c\" at position %d)"),Name.wx_str(),wxChar(Name.GetChar(0)),0));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("wxSmith: Variable name : \"%s\" is not a valid c++ identifier (invalid character \"%c\" at position %d)",
+                                                                       Name, wxChar(Name.GetChar(0)), 0));
         else
             Corrected.Append(Name.GetChar(0));
 
@@ -385,10 +386,8 @@ bool wxsCorrector::FixVarName(wxString& Name)
         {
             if ( NextChars.Find(Name.GetChar(i)) == -1 )
             {
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("wxSmith: Variable name : \"%s\" is not a valid c++ identifier (invalid character \"%c\" at position %lu)"),
-                                                            Name.wx_str(),
-                                                            wxChar(Name.GetChar(i)),
-                                                            static_cast<unsigned long>(i)));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("wxSmith: Variable name : \"%s\" is not a valid c++ identifier (invalid character \"%c\" at position %zu)",
+                                                            Name, wxChar(Name.GetChar(i)), i));
             }
             else
                 Corrected.Append(Name.GetChar(i));

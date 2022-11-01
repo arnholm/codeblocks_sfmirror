@@ -299,11 +299,11 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
 
         if (major >= WORKSPACE_LAYOUT_FILE_VERSION_MAJOR && minor > WORKSPACE_LAYOUT_FILE_VERSION_MINOR)
         {
-            GetpMsg()->DebugLog(F(_T("Workspace layout file version is > %d.%d. Trying to load..."), WORKSPACE_LAYOUT_FILE_VERSION_MAJOR, WORKSPACE_LAYOUT_FILE_VERSION_MINOR));
+            GetpMsg()->DebugLog(wxString::Format("Workspace layout file version is > %d.%d. Trying to load...", WORKSPACE_LAYOUT_FILE_VERSION_MAJOR, WORKSPACE_LAYOUT_FILE_VERSION_MINOR));
             AnnoyingDialog dlg(_("Workspace layout file format is newer/unknown"),
-                                F(_("This workspace layout file was saved with a newer version of Code::Blocks.\n"
+                                wxString::Format(_("This workspace layout file was saved with a newer version of Code::Blocks.\n"
                                 "Will try to load, but you might see unexpected results.\n"
-                                "In this case close the workspace, delete %s and reopen the workspace."),filename.wx_str()),
+                                "In this case close the workspace, delete %s and reopen the workspace."),filename),
                                 wxART_WARNING,
                                 AnnoyingDialog::OK);
             dlg.ShowModal();
@@ -363,10 +363,10 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
         if (project)
         {
             GetpMan()->SetProject(project);
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Project %s has been activated."), fname.GetFullPath().wx_str()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Project %s has been activated.", fname.GetFullPath()));
         }
         else
-            Manager::Get()->GetLogManager()->DebugLog(F(_T("Could not activate project: %s"), fname.GetFullPath().wx_str()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Could not activate project: %s", fname.GetFullPath()));
     }
     // else XML element 'ActiveProject' not found?!
 

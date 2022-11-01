@@ -270,45 +270,45 @@ void Execution::OnBtnRunClick(wxCommandEvent& /*event*/)
   int HeadersAdded = 0;
   if      ( m_FileType->GetSelection()==0 )
   {
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: Processing header files...")));
-    m_Log.Add( _T("[header files]\n"));
+    Manager::Get()->GetLogManager()->DebugLog("[HeaderFixup]: Processing header files...");
+    m_Log.Add("[header files]\n");
     m_Processor   = ProcessHeaderFiles;
     HeadersAdded += RunScan(FilesToProcess,Groups);
   }
   else if ( m_FileType->GetSelection()==1 )
   {
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: Processing source files...")));
-    m_Log.Add(_T("[source files]\n"));
+    Manager::Get()->GetLogManager()->DebugLog("[HeaderFixup]: Processing source files...");
+    m_Log.Add("[source files]\n");
     m_Processor   = ProcessSourceFiles;
     HeadersAdded += RunScan(FilesToProcess,Groups);
   }
   else
   {
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: Processing header files...")));
-    m_Log.Add( _T("[header files]\n"));
+    Manager::Get()->GetLogManager()->DebugLog("[HeaderFixup]: Processing header files...");
+    m_Log.Add("[header files]\n");
     m_Processor   = ProcessHeaderFiles;
     HeadersAdded += RunScan(FilesToProcess,Groups);
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: Processing source files...")));
-    m_Log.Add( _T("\n[source files]\n"));
+    Manager::Get()->GetLogManager()->DebugLog("[HeaderFixup]: Processing source files...");
+    m_Log.Add("\n[source files]\n");
     m_Processor   = ProcessSourceFiles;
     HeadersAdded += RunScan(FilesToProcess,Groups);
   }
 
   if ( HeadersAdded )
   {
-    wxString log; log.Printf(_("Added %d extra includes.\n"),HeadersAdded);
+    wxString log; log.Printf(_("Added %d extra includes.\n"), HeadersAdded);
     if ( !m_Protocol->IsChecked() )
       cbMessageBox(log);
 
-    m_Log.Add( _T("\n--> ") + log);
+    m_Log.Add("\n--> " + log);
   }
   else
   {
     if ( !m_Protocol->IsChecked() )
-      cbMessageBox(_("All files were OK. Nothing to be done."),_T("Header Fixup"));
+      cbMessageBox(_("All files were OK. Nothing to be done."), "Header Fixup");
 
-    m_Log.Add( _("\n--> All files were OK. Nothing to be done.\n"));
+    m_Log.Add(_("\n--> All files were OK. Nothing to be done.\n"));
   }
 
   if ( m_Protocol->IsChecked() )
@@ -505,7 +505,7 @@ int Execution::ProcessFile(const wxString& GlobalFileName, const wxArrayString& 
   if (  m_FileAnalysis.IsHeaderFile() && m_Processor==ProcessSourceFiles )
     return 0; // implementation files only
 
-  Manager::Get()->GetLogManager()->DebugLog(F(_T("[HeaderFixup]: Processing \"")+GlobalFileName+_T("\"...")));
+  Manager::Get()->GetLogManager()->DebugLog(wxString::Format("[HeaderFixup]: Processing \"%s\"...", GlobalFileName));
   m_Log.Add( _T("\n--- Processing \"") + GlobalFileName + _T("\" ---\n"));
 
   // first iteration: scanning the content for existing includes

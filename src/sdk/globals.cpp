@@ -893,7 +893,7 @@ wxString cbExpandBackticks(wxString& str) // backticks are written in-place to s
         else
         {
             LogManager *log = Manager::Get()->GetLogManager();
-            log->DebugLog(F(_T("Caching result of `%s`"), cmd.wx_str()));
+            log->DebugLog(wxString::Format("Caching result of `%s`", cmd));
 
             wxString fullCmd;
 

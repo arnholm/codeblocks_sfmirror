@@ -290,8 +290,8 @@ cbProject* ProjectManager::LoadProject(const wxString& filename, bool activateIt
     long time = timer.Time();
     if (time >= 100)
     {
-        LogManager *log = Manager::Get()->GetLogManager();
-        log->Log(F(wxT("ProjectManager::LoadProject took: %.3f seconds."), time / 1000.0f));
+        LogManager* log = Manager::Get()->GetLogManager();
+        log->Log(wxString::Format(_("ProjectManager::LoadProject took: %.3f seconds."), time / 1000.0f));
     }
 
     return result;
@@ -435,7 +435,7 @@ bool ProjectManager::CloseAllProjects(bool dontsave)
     if (time >= 100)
     {
         LogManager *log = Manager::Get()->GetLogManager();
-        log->Log(F(wxT("ProjectManager::CloseAllProjects took: %.3f seconds."), time / 1000.0f));
+        log->Log(wxString::Format(_("ProjectManager::CloseAllProjects took: %.3f seconds."), time / 1000.0f));
     }
 
     return true;
@@ -899,7 +899,10 @@ bool ProjectManager::AddProjectDependency(cbProject* base, cbProject* dependsOn)
         arr->Add(dependsOn);
         if (m_pWorkspace)
             m_pWorkspace->SetModified(true);
-        Manager::Get()->GetLogManager()->DebugLog(F(_T("%s now depends on %s (%lu deps)"), base->GetTitle().wx_str(), dependsOn->GetTitle().wx_str(), static_cast<unsigned long>(arr->GetCount())));
+        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s now depends on %s (%zu deps)",
+                                                                   base->GetTitle(),
+                                                                   dependsOn->GetTitle(),
+                                                                   arr->GetCount()));
     }
     return true;
 }
@@ -916,7 +919,10 @@ void ProjectManager::RemoveProjectDependency(cbProject* base, cbProject* doesNot
     ProjectsArray* arr = it->second;
     arr->Remove(doesNotDependOn);
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("%s now does not depend on %s (%lu deps)"), base->GetTitle().wx_str(), doesNotDependOn->GetTitle().wx_str(), static_cast<unsigned long>(arr->GetCount())));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s now does not depend on %s (%lu deps)",
+                                              base->GetTitle(),
+                                              doesNotDependOn->GetTitle(),
+                                              arr->GetCount()));
     // if it was the last dependency, delete the array
     if (!arr->GetCount())
     {
@@ -981,7 +987,7 @@ void ProjectManager::RemoveProjectFromAllDependencies(cbProject* base)
         else
             ++it;
     }
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("Removed %s from all deps"), base->GetTitle().wx_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Removed %s from all deps", base->GetTitle()));
 }
 
 const ProjectsArray* ProjectManager::GetDependenciesForProject(cbProject* base)

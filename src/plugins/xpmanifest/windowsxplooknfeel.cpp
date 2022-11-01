@@ -62,7 +62,7 @@ int WindowsXPLookNFeel::Execute()
 		{
 			if (tgt->GetTargetType() != ttExecutable)
 			{
-				Manager::Get()->GetLogManager()->DebugLog(F(_T("WindowsXPLookNFeel: Ignoring target '%s'"), tgt->GetTitle().wx_str()));
+				Manager::Get()->GetLogManager()->DebugLog(wxString::Format("WindowsXPLookNFeel: Ignoring target '%s'", tgt->GetTitle()));
 				continue;
 			}
 			targetNames.Add(tgt->GetTitle());
@@ -97,7 +97,7 @@ int WindowsXPLookNFeel::Execute()
 		wxFileName fname(filename);
 		fname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, project->GetBasePath());
 		filename = fname.GetFullPath();
-		Manager::Get()->GetLogManager()->DebugLog(F(_T("WindowsXPLookNFeel: Creating Manifest '%s'"), filename.wx_str()));
+		Manager::Get()->GetLogManager()->DebugLog(wxString::Format("WindowsXPLookNFeel: Creating Manifest '%s'", filename));
 
 		wxString buffer;
 		buffer << _T("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>") << _T('\n');

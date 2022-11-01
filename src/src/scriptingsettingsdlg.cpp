@@ -226,7 +226,7 @@ void ScriptingSettingsDlg::SaveItem(long item)
 
 void ScriptingSettingsDlg::OnListSelection(wxListEvent& event)
 {
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("Selected %d"), event.GetIndex()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Selected %d", event.GetIndex()));
 
     // load
     long sel = event.GetIndex();
@@ -237,7 +237,7 @@ void ScriptingSettingsDlg::OnListSelection(wxListEvent& event)
 
 void ScriptingSettingsDlg::OnListDeselection(wxListEvent& event)
 {
-//    Manager::Get()->GetLogManager()->DebugLog(F(_T("Deselected %d"), event.GetIndex()));
+//    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Deselected %d", event.GetIndex()));
 
     // save
     long sel = event.GetIndex();

@@ -141,7 +141,7 @@ void EditorHooks::CallHooks(cbEditor* editor, wxScintillaEvent& event)
 
             wxEventType type = event.GetEventType();
             txt << GetScintillaEventName(type);
-            Manager::Get()->GetLogManager()->DebugLog(F(wxT("%s take %ld ms"), txt.wx_str(), sw.Time()));
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s take %ld ms", txt, sw.Time()));
 #endif // EDITOR_HOOK_PERFORMANCE_MEASURE
         }
 

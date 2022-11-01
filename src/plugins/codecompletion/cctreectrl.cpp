@@ -180,6 +180,6 @@ void CCTreeCtrl::RemoveDoubles(const wxTreeItemId& parent)
             existing = GetPrevSibling(existing);
     }
 #ifdef CC_BUILDTREE_MEASURING
-    CCLogger::Get()->DebugLog(F(_T("RemoveDoubles took : %ld"), sw.Time()));
+    CCLogger::Get()->DebugLog(wxString::Format("RemoveDoubles took: %ld ms", sw.Time()));
 #endif
 }

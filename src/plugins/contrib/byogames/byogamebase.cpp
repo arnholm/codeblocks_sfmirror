@@ -172,7 +172,7 @@ void byoGameBase::RecalculateSizeHints(int minStepsHoriz,int minStepsVert)
     m_MinCellsHoriz = minStepsHoriz;
     m_MinCellsVert  = minStepsVert;
 
-    Manager::Get()->GetLogManager()->DebugLog(F(_T("msh: %d, msv: %d, ch: %d, cv: %d, cs: %d, x: %d, y: %d"),
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("msh: %d, msv: %d, ch: %d, cv: %d, cs: %d, x: %d, y: %d",
         minStepsHoriz,
         minStepsVert,
         cellSizeH,
