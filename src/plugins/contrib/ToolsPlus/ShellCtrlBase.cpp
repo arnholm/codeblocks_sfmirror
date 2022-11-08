@@ -117,7 +117,7 @@ bool ShellManager::QueryClose(ShellCtrlBase* sh)
         return true;
     if(!sh->IsDead())
     {
-        wxString msg(_("Process \"")+sh->GetName()+_("\" is still running...\nDo you want to kill it?"));
+        wxString msg(wxString::Format(_("Process \"%s\" is still running...\nDo you want to kill it?"), sh->GetName()));
         switch (cbMessageBox(msg, _("Kill process?"), wxICON_QUESTION | wxYES_NO))
         {
         case wxID_YES:
@@ -139,7 +139,7 @@ long ShellManager::LaunchProcess(const wxString &processcmd, const wxString &nam
     ShellCtrlBase *shell=GlobalShellRegistry().CreateControl(type,this,id,name,this);
     if(!shell)
     {
-        cbMessageBox(wxString::Format(_("Console type %s not found in registry."),type.c_str()));
+        cbMessageBox(wxString::Format(_("Console type %s not found in registry."),type));
         return -1;
     }
     long procid=shell->LaunchProcess(processcmd,options);

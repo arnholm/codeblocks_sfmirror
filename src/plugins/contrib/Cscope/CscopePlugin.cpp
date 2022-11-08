@@ -160,8 +160,8 @@ void CscopePlugin::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fi
 
     PluginManager *pluginManager = Manager::Get()->GetPluginManager();
     int idximp = pluginManager->GetFindMenuItemFirst() + pluginManager->GetFindMenuItemCount();
-    menu->Insert(idximp++, idOnFindFunctionsCalledByThisFuncion, _("Find functions called by '") + word + _T("'"));
-    menu->Insert(idximp++, idOnFindFunctionsCallingThisFunction, _("Find functions calling '") + word + _T("'"));
+    menu->Insert(idximp++, idOnFindFunctionsCalledByThisFuncion, wxString::Format(_("Find functions called by '%s'"), word));
+    menu->Insert(idximp++, idOnFindFunctionsCallingThisFunction, wxString::Format(_("Find functions calling '%s'"), word));
     pluginManager->RegisterFindMenuItems(false, 2);
 }
 

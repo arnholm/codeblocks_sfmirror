@@ -82,8 +82,8 @@ dlgAbout::dlgAbout(wxWindow* parent)
     cancelButton->SetDefault();
     cancelButton->SetFocus();
 
-    const wxString description = _("Welcome to ") + appglobals::AppName + _T(" ") +
-                                 appglobals::AppVersion + _T("!\n") + appglobals::AppName +
+    const wxString description = wxString::Format(_("Welcome to %s %s!\n"), appglobals::AppName, appglobals::AppVersion) +
+                                 appglobals::AppName +
                                  _(" is a full-featured IDE (Integrated Development Environment) "
                                    "aiming to make the individual developer (and the development team) "
                                    "work in a nice programming environment offering everything he/they "

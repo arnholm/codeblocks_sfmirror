@@ -295,11 +295,11 @@ void EditorBase::DisplayContextMenu(const wxPoint& position, ModuleType type, wx
 
         if (!text.IsEmpty())
         {
-            popup->Append(idGoogle,        _("Search the Internet for \"")  + text + _T("\""));
-            popup->Append(idMsdn,          _("Search MSDN for \"")          + text + _T("\""));
-            popup->Append(idStackOverflow, _("Search StackOverflow for \"") + text + _T("\""));
-            popup->Append(idCodeProject,   _("Search CodeProject for \"")   + text + _T("\""));
-            popup->Append(idCPlusPlusCom,  _("Search CplusPlus.com for \"") + text + _T("\""));
+            popup->Append(idGoogle,        wxString::Format(_("Search the Internet for \"%s\""),  text));
+            popup->Append(idMsdn,          wxString::Format(_("Search MSDN for \"%s\""),          text));
+            popup->Append(idStackOverflow, wxString::Format(_("Search StackOverflow for \"%s\""), text));
+            popup->Append(idCodeProject,   wxString::Format(_("Search CodeProject for \"%s\""),   text));
+            popup->Append(idCPlusPlusCom,  wxString::Format(_("Search CplusPlus.com for \"%s\""), text));
         }
         lastWord = text;
 

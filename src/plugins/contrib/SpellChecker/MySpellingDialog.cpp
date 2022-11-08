@@ -93,34 +93,34 @@ void MySpellingDialog::CreateDialog()
     // First the misspelling section
     wxFlexGridSizer* pMisspellingSizer = new wxFlexGridSizer(3, 5, 5);
 
-    pMisspellingSizer->Add(new wxStaticText(this, -1, _T("Misspelled Word:"), wxDefaultPosition));
-    pMisspellingSizer->Add(new wxTextCtrl(this, IDC_TEXT_MISSPELLED_WORD, _T(""), wxDefaultPosition, wxDefaultSize, wxTE_READONLY, wxTextValidator(wxFILTER_NONE, &m_strMisspelledWord)), 1, wxEXPAND);
-    pMisspellingSizer->Add(new wxButton(this, IDC_BUTTON_RECHECK_PAGE, _T("Recheck Page")), 0, wxEXPAND);
-    pMisspellingSizer->Add(new wxStaticText(this, -1, _T("Replace with:"), wxDefaultPosition), 0, wxEXPAND | wxGROW);
-    pMisspellingSizer->Add(new wxTextCtrl(this, IDC_TEXT_REPLACE_WITH, _T(""), wxDefaultPosition, wxDefaultSize, 0, wxTextValidator(wxFILTER_NONE, &m_strReplaceWithText)), 1, wxEXPAND);
-    pMisspellingSizer->Add(new wxButton(this, IDC_BUTTON_CHECK_WORD, _T("Check Word")), 0, wxEXPAND);
+    pMisspellingSizer->Add(new wxStaticText(this, -1, _("Misspelled Word:"), wxDefaultPosition));
+    pMisspellingSizer->Add(new wxTextCtrl(this, IDC_TEXT_MISSPELLED_WORD, "", wxDefaultPosition, wxDefaultSize, wxTE_READONLY, wxTextValidator(wxFILTER_NONE, &m_strMisspelledWord)), 1, wxEXPAND);
+    pMisspellingSizer->Add(new wxButton(this, IDC_BUTTON_RECHECK_PAGE, _("Recheck Page")), 0, wxEXPAND);
+    pMisspellingSizer->Add(new wxStaticText(this, -1, _("Replace with:"), wxDefaultPosition), 0, wxEXPAND | wxGROW);
+    pMisspellingSizer->Add(new wxTextCtrl(this, IDC_TEXT_REPLACE_WITH, "", wxDefaultPosition, wxDefaultSize, 0, wxTextValidator(wxFILTER_NONE, &m_strReplaceWithText)), 1, wxEXPAND);
+    pMisspellingSizer->Add(new wxButton(this, IDC_BUTTON_CHECK_WORD, _("Check Word")), 0, wxEXPAND);
     pMisspellingSizer->AddGrowableCol(1);
 
     pTopSizer->Add(pMisspellingSizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 
     // Now the suggestions section
-    pTopSizer->Add(new wxStaticText(this, -1, _T("Suggestions:"), wxDefaultPosition), 0, wxLEFT | wxRIGHT | wxTOP, 10);
+    pTopSizer->Add(new wxStaticText(this, -1, _("Suggestions:"), wxDefaultPosition), 0, wxLEFT | wxRIGHT | wxTOP, 10);
     wxBoxSizer* pSuggestionSizer = new wxBoxSizer(wxHORIZONTAL);
     pSuggestionSizer->Add(new wxListBox(this, IDC_LIST_SUGGESTIONS, wxDefaultPosition, wxSize(200, 100)), 1, wxEXPAND | wxGROW | wxRIGHT, 5);
     wxBoxSizer* pSuggestionButtonSizer = new wxBoxSizer(wxVERTICAL);
     wxFlexGridSizer* pSuggestionButtonGridSizer = new wxFlexGridSizer(2, 5, 5);
 
-    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_WORD, _T("Replace")), 0, wxEXPAND);
-    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_IGNORE_WORD, _T("Ignore")), 0, wxEXPAND);
-    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_ALL, _T("Replace All")), 0, wxEXPAND);
-    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_IGNORE_ALL, _T("Ignore All")), 0, wxEXPAND);
+    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_WORD, _("Replace")), 0, wxEXPAND);
+    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_IGNORE_WORD, _("Ignore")), 0, wxEXPAND);
+    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_ALL, _("Replace All")), 0, wxEXPAND);
+    pSuggestionButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_IGNORE_ALL, _("Ignore All")), 0, wxEXPAND);
     pSuggestionButtonSizer->Add(pSuggestionButtonGridSizer);
 
     pSuggestionButtonSizer->Add(10, 10, 1, wxEXPAND | wxGROW);
-    pSuggestionButtonSizer->Add(new wxStaticText(this, -1, _T("Custom Dictionary:"), wxDefaultPosition), 0, wxALL, 5);
+    pSuggestionButtonSizer->Add(new wxStaticText(this, -1, _("Custom Dictionary:"), wxDefaultPosition), 0, wxALL, 5);
     wxGridSizer* pCustomDictionaryButtonGridSizer = new wxGridSizer(2, 5, 5);
-    pCustomDictionaryButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_ADD_WORD, _T("Add Word")), 0, wxEXPAND);
-    pCustomDictionaryButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_EDIT_CUSTOM_DICT, _T("Edit...")), 0, wxEXPAND);
+    pCustomDictionaryButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_ADD_WORD, _("Add Word")), 0, wxEXPAND);
+    pCustomDictionaryButtonGridSizer->Add(new wxButton(this, IDC_BUTTON_EDIT_CUSTOM_DICT, _("Edit...")), 0, wxEXPAND);
     pSuggestionButtonSizer->Add(pCustomDictionaryButtonGridSizer);
 
     pSuggestionSizer->Add(pSuggestionButtonSizer);
@@ -128,17 +128,17 @@ void MySpellingDialog::CreateDialog()
     pTopSizer->Add(pSuggestionSizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
     // Finally the bottom section
-    pTopSizer->Add(new wxStaticText(this, IDC_STATIC_LANGUAGE, _T("Language:"), wxDefaultPosition), 0, wxLEFT | wxRIGHT | wxTOP, 10);
+    pTopSizer->Add(new wxStaticText(this, IDC_STATIC_LANGUAGE, _("Language:"), wxDefaultPosition), 0, wxLEFT | wxRIGHT | wxTOP, 10);
     wxBoxSizer* pBottomRowSizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* pLanguageComboSizer = new wxBoxSizer(wxHORIZONTAL);
     pLanguageComboSizer->Add(new wxChoice(this, IDC_CHOICE_LANGUAGE), 1, wxEXPAND);
     pBottomRowSizer->Add(pLanguageComboSizer, 1, wxEXPAND, 0);
-    pBottomRowSizer->Add(new wxButton(this, wxID_CLOSE, _T("Close")), 0, wxEXPAND | wxLEFT, 5);
+    pBottomRowSizer->Add(new wxButton(this, wxID_CLOSE, _("Close")), 0, wxEXPAND | wxLEFT, 5);
 
     pTopSizer->Add(pBottomRowSizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
 
     // Add a context section
-    pTopSizer->Add(new wxTextCtrl(this, IDC_TEXT_CONTEXT, _T(""), wxDefaultPosition, wxSize(320,100), wxTE_MULTILINE | wxTE_READONLY | wxTE_NOHIDESEL | wxTE_RICH2 ), 0, wxEXPAND);
+    pTopSizer->Add(new wxTextCtrl(this, IDC_TEXT_CONTEXT, "", wxDefaultPosition, wxSize(320,100), wxTE_MULTILINE | wxTE_READONLY | wxTE_NOHIDESEL | wxTE_RICH2 ), 0, wxEXPAND);
 
     // Now attach the main sizer to the window
     SetSizer(pTopSizer);
@@ -222,7 +222,7 @@ void MySpellingDialog::OnAddWordToCustomDictionary(cb_unused wxCommandEvent& eve
     if (m_pSpellCheckEngine != NULL)
     {
         if (!(m_pSpellCheckEngine->AddWordToDictionary(m_strMisspelledWord)))
-            ::wxMessageBox(_T("There was an error adding \"") + m_strMisspelledWord + _T("\" to the personal dictionary"));
+            wxMessageBox(wxString::Format(_("There was an error adding \"%s\" to the personal dictionary"), m_strMisspelledWord));
     }
     Show(FALSE);
 }
@@ -239,7 +239,7 @@ void MySpellingDialog::OnInit(cb_unused wxInitDialogEvent& event)
 {
     if (m_pSpellCheckEngine)
     {
-        if ((m_pSpellCheckEngine->GetSpellCheckEngineName() != _T("Aspell")))
+        if ((m_pSpellCheckEngine->GetSpellCheckEngineName() != "Aspell"))
         {
             wxStaticText* pStatic = (wxStaticText*)FindWindow(IDC_STATIC_LANGUAGE);
             if (pStatic)
@@ -292,7 +292,7 @@ void MySpellingDialog::OnChangeLanguage(cb_unused wxCommandEvent& event)
 {
     // Set the option on the spell checker library to use this newly-selected language and get a new list of suggestions
     // Since this is a spell check engine specific option, only deal with Aspell (for now)
-    if (m_pSpellCheckEngine && m_pSpellCheckEngine->GetSpellCheckEngineName() == _T("Aspell"))
+    if (m_pSpellCheckEngine && m_pSpellCheckEngine->GetSpellCheckEngineName() == "Aspell")
     {
         wxChoice* pChoice = (wxChoice*)FindWindow(IDC_CHOICE_LANGUAGE);
         if (pChoice)
@@ -406,7 +406,7 @@ BEGIN_EVENT_TABLE(MyPersonalDictionaryDialog, wxDialog)
 END_EVENT_TABLE()
 
 MyPersonalDictionaryDialog::MyPersonalDictionaryDialog(wxWindow* parent, wxSpellCheckEngineInterface* pEngine):
-    wxDialog(parent, wxID_ANY, wxString(_T("Personal Dictionary")),wxDefaultPosition, wxSize(230,175), wxDEFAULT_DIALOG_STYLE)
+    wxDialog(parent, wxID_ANY, wxString(_("Personal Dictionary")),wxDefaultPosition, wxSize(230,175), wxDEFAULT_DIALOG_STYLE)
 {
     m_pSpellCheckEngine = pEngine;
     CreateDialog();
@@ -423,30 +423,30 @@ void MyPersonalDictionaryDialog::CreateDialog()
     pTopSizer->Add(10, 10);
     wxBoxSizer* pPadLabelSizer = new wxBoxSizer(wxHORIZONTAL);
     pPadLabelSizer->Add(10, 10);
-    pPadLabelSizer->Add(new wxStaticText(this, -1, _T("New Word:"), wxDefaultPosition));
+    pPadLabelSizer->Add(new wxStaticText(this, -1, _("New Word:"), wxDefaultPosition));
     pTopSizer->Add(pPadLabelSizer);
 
     wxBoxSizer* pNewWordSizer = new wxBoxSizer(wxHORIZONTAL);
     pNewWordSizer->Add(10, 0);
-    pNewWordSizer->Add(new wxTextCtrl(this, IDC_TEXT_NEW_PERSONAL_WORD, _T(""), wxDefaultPosition), 1, wxEXPAND | wxGROW);
-    pNewWordSizer->Add(new wxButton(this, IDC_BUTTON_ADD_TO_DICT, _T("Add")), 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
+    pNewWordSizer->Add(new wxTextCtrl(this, IDC_TEXT_NEW_PERSONAL_WORD, "", wxDefaultPosition), 1, wxEXPAND | wxGROW);
+    pNewWordSizer->Add(new wxButton(this, IDC_BUTTON_ADD_TO_DICT, _("Add")), 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
     pTopSizer->Add(pNewWordSizer, 0, wxEXPAND | wxGROW, 10);
     pTopSizer->Add(10, 10);
 
     wxBoxSizer* pPadLabelSizer2 = new wxBoxSizer(wxHORIZONTAL);
     pPadLabelSizer2->Add(10, 10);
-    pPadLabelSizer2->Add(new wxStaticText(this, -1, _T("Words in dictionary:"), wxDefaultPosition));
+    pPadLabelSizer2->Add(new wxStaticText(this, -1, _("Words in dictionary:"), wxDefaultPosition));
     pTopSizer->Add(pPadLabelSizer2);
     wxBoxSizer* pWordListSizer = new wxBoxSizer(wxHORIZONTAL);
 
     pWordListSizer->Add(new wxListBox(this, IDC_LIST_PERSONAL_WORDS, wxDefaultPosition, wxSize(200, 150)), 1, wxEXPAND | wxGROW | wxLEFT | wxRIGHT | wxBOTTOM, 10);
 
     wxBoxSizer* pWordButtonsSizer = new wxBoxSizer(wxVERTICAL);
-    pWordButtonsSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_IN_DICT, _T("Replace")), 0, wxEXPAND | wxTOP | wxRIGHT | wxBOTTOM, 10);
+    pWordButtonsSizer->Add(new wxButton(this, IDC_BUTTON_REPLACE_IN_DICT, _("Replace")), 0, wxEXPAND | wxTOP | wxRIGHT | wxBOTTOM, 10);
     pTopSizer->Add(5, 5);
-    pWordButtonsSizer->Add(new wxButton(this, IDC_BUTTON_REMOVE_FROM_DICT, _T("Remove")), 0, wxEXPAND | wxTOP | wxRIGHT | wxBOTTOM, 10);
+    pWordButtonsSizer->Add(new wxButton(this, IDC_BUTTON_REMOVE_FROM_DICT, _("Remove")), 0, wxEXPAND | wxTOP | wxRIGHT | wxBOTTOM, 10);
     pTopSizer->Add(5, 5);
-    pWordButtonsSizer->Add(new wxButton(this, wxID_CLOSE, _T("Close")), 0, wxEXPAND | wxTOP | wxRIGHT, 10);
+    pWordButtonsSizer->Add(new wxButton(this, wxID_CLOSE, _("Close")), 0, wxEXPAND | wxTOP | wxRIGHT, 10);
     pWordListSizer->Add(pWordButtonsSizer, 0, wxEXPAND | wxGROW, 10);
 
     pTopSizer->Add(pWordListSizer, 1, wxEXPAND);
@@ -490,7 +490,7 @@ void MyPersonalDictionaryDialog::AddWordToPersonalDictionary(cb_unused wxCommand
             if (!strNewWord.Trim().IsEmpty())
             {
                 if (!(m_pSpellCheckEngine->AddWordToDictionary(strNewWord)))
-                    ::wxMessageBox(_T("There was an error adding \"") + strNewWord + _T("\" to the personal dictionary"));
+                    wxMessageBox(wxString::Format(_("There was an error adding \"%s\" to the personal dictionary"), strNewWord));
             }
         }
         PopulatePersonalWordListBox();
@@ -503,8 +503,8 @@ void MyPersonalDictionaryDialog::ReplaceInPersonalDictionary(cb_unused wxCommand
     {
         TransferDataFromWindow();
 
-        wxString strOldWord = _T("");
-        wxString strNewWord = _T("");
+        wxString strOldWord;
+        wxString strNewWord;
 
         // Find the old word
         wxListBox* pListBox = (wxListBox*)FindWindow(IDC_LIST_PERSONAL_WORDS);
@@ -537,7 +537,7 @@ void MyPersonalDictionaryDialog::RemoveFromPersonalDictionary(cb_unused wxComman
             if (!strNewWord.Trim().IsEmpty())
             {
                 if (!(m_pSpellCheckEngine->RemoveWordFromDictionary(strNewWord)))
-                    ::wxMessageBox(_T("There was an error removing \"") + strNewWord + _T("\" to the personal dictionary"));
+                    wxMessageBox(wxString::Format(_("There was an error removing \"%s\" from the personal dictionary"), strNewWord));
             }
         }
         PopulatePersonalWordListBox();

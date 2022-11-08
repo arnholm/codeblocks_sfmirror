@@ -75,7 +75,7 @@ namespace Expression
 
     wxString Executor::ErrorDesc()
     {
-        wxString pos = wxString::Format( _T(" (at %d)"), m_OperationPos-1 );
+        wxString pos = wxString::Format(_(" (at %d)"), m_OperationPos-1);
         switch ( m_Status )
         {
             case executedSuccessfully: return _("Executed successfully") + pos;

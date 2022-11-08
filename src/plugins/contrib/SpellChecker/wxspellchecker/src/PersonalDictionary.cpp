@@ -27,7 +27,7 @@ bool PersonalDictionary::LoadPersonalDictionary()
   {
     wxMessageOutput* msgOut = wxMessageOutput::Get();
     if (msgOut)
-      msgOut->Printf(_T("Unable to open personal dictionary file\n"));
+      msgOut->Printf(_("Unable to open personal dictionary file\n"));
     return false;
   }
 
@@ -73,7 +73,7 @@ bool PersonalDictionary::SavePersonalDictionary()
   {
     wxMessageOutput* msgOut = wxMessageOutput::Get();
     if (msgOut)
-      msgOut->Printf(_T("Unable to open personal dictionary file\n"));
+      msgOut->Printf(_("Unable to open personal dictionary file\n"));
     return false;
   }
 

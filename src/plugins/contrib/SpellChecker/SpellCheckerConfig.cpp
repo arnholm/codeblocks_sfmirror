@@ -275,7 +275,7 @@ void SpellCheckerConfig::SetBitmapPath(const wxString &path)
 const wxString SpellCheckerConfig::GetPersonalDictionaryFilename()const
 {
     wxString dfile = ConfigManager::LocateDataFile(GetDictionaryName() + _T("_personaldictionary.dic"), sdConfig );
-    if (dfile == _T(""))
+    if (dfile.empty())
         dfile = ConfigManager::GetFolder(sdConfig) + wxFILE_SEP_PATH + GetDictionaryName() + _T("_personaldictionary.dic");
     return dfile;
 }

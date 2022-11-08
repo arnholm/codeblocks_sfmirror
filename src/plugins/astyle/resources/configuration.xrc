@@ -15,7 +15,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbAllman">
 												<label>Allman (ANSI)</label>
-												<tooltip> Allman style uses broken brackets. </tooltip>
+												<tooltip> Allman style uses broken brackets.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -23,7 +23,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbJava">
 												<label>Java</label>
-												<tooltip> Java style uses attached brackets. </tooltip>
+												<tooltip> Java style uses attached brackets.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -31,7 +31,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbKr">
 												<label>K&amp;&amp;R</label>
-												<tooltip>Kernighan &amp; Ritchie style uses linux brackets. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. </tooltip>
+												<tooltip>Kernighan &amp; Ritchie style uses linux brackets. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -39,7 +39,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbStroustrup">
 												<label>Stroustrup</label>
-												<tooltip>Stroustrup style uses stroustrup brackets. Brackets are broken from function definitions only. Brackets are attached to everything else including namespaces, classes, and statements within a function, arrays, structs, and enums. This style frequently is used with an indent of 5 spaces. </tooltip>
+												<tooltip>Stroustrup style uses stroustrup brackets. Brackets are broken from function definitions only. Brackets are attached to everything else including namespaces, classes, and statements within a function, arrays, structs, and enums. This style frequently is used with an indent of 5 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -71,7 +71,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbGNU">
 												<label>GNU</label>
-												<tooltip>GNU style uses broken brackets and indented blocks. This style frequently is used with an indent of 2 spaces.&#x0A;Extra indentation is added to blocks within a function. The opening bracket for namespaces, classes, and functions is not indented. </tooltip>
+												<tooltip>GNU style uses broken brackets and indented blocks. This style frequently is used with an indent of 2 spaces.&#x0A;Extra indentation is added to blocks within a function. The opening bracket for namespaces, classes, and functions is not indented.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -79,7 +79,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbLinux">
 												<label>Linux</label>
-												<tooltip>Linux style uses linux brackets. Opening brackets are broken from namespace, class, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. Minimum conditional indent is one-half indent. If you want a different minimum conditional indent use the K&amp;R style instead. This style works best with a large indent. It frequently is used with an indent of 8 spaces.&#x0A;Also known as Kernel Normal Form (KNF) style, this is the style used in the Linux kernel. </tooltip>
+												<tooltip>Linux style uses linux brackets. Opening brackets are broken from namespace, class, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. Minimum conditional indent is one-half indent. If you want a different minimum conditional indent use the K&amp;R style instead. This style works best with a large indent. It frequently is used with an indent of 8 spaces.&#x0A;Also known as Kernel Normal Form (KNF) style, this is the style used in the Linux kernel.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -95,7 +95,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rb1TBS">
 												<label>1TBS</label>
-												<tooltip>&quot;One True Brace Style&quot; uses linux brackets and adds brackets to unbracketed one line conditional statements. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. &#x0A;In the following example brackets have been added to the &quot;return 0;&quot; statement. The option --add-one-line-brackets can also be used with this style. </tooltip>
+												<tooltip>&quot;One True Brace Style&quot; uses linux brackets and adds brackets to unbracketed one line conditional statements. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. &#x0A;In the following example brackets have been added to the &quot;return 0;&quot; statement. The option --add-one-line-brackets can also be used with this style.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>

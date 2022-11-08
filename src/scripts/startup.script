@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-Log(_T("Running startup script"));
+Log(_("Running startup script"));
 
 // #include any script plugins; this will register them too
 // un-comment the line below to register a pointless sample plugin

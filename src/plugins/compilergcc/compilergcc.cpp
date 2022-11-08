@@ -1415,17 +1415,17 @@ int CompilerGCC::DoRunQueue()
     if (!process.PID)
     {
         wxString err = wxString::Format(_("Execution of '%s' in '%s' failed."),
-                                        cmd->command.wx_str(), wxGetCwd().wx_str());
+                                        cmd->command, wxGetCwd());
         LogMessage(err, cltError);
         LogWarningOrError(cltError, 0, wxEmptyString, wxEmptyString, err);
         if (!m_CommandQueue.LastCommandWasRun())
         {
             if ( !IsProcessRunning() )
             {
-                wxString msg = wxString::Format(_("%s (%s)"), GetErrWarnStr().wx_str(), GetMinSecStr().wx_str());
+                wxString msg = wxString::Format("%s (%s)", GetErrWarnStr(), GetMinSecStr());
                 LogMessage(msg, cltError, ltAll, true);
                 LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,
-                                  wxString::Format(_("=== Build failed: %s ==="), msg.wx_str()));
+                                  wxString::Format(_("=== Build failed: %s ==="), msg));
                 if (!Manager::IsBatchBuild())
                     m_pListLog->AutoFitColumns(2);
 

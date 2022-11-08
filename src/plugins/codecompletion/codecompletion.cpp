@@ -2028,15 +2028,15 @@ void CodeCompletion::OnGotoDeclaration(wxCommandEvent& event)
         else
         {
             if (isImpl)
-                cbMessageBox(wxString::Format(_("Implementation not found: %s"), target.wx_str()),
+                cbMessageBox(wxString::Format(_("Implementation not found: %s"), target),
                              _("Warning"), wxICON_WARNING);
             else if (isDecl)
-                cbMessageBox(wxString::Format(_("Declaration not found: %s"), target.wx_str()),
+                cbMessageBox(wxString::Format(_("Declaration not found: %s"), target),
                              _("Warning"), wxICON_WARNING);
         }
     }
     else
-        cbMessageBox(wxString::Format(_("Not found: %s"), target.wx_str()), _("Warning"), wxICON_WARNING);
+        cbMessageBox(wxString::Format(_("Not found: %s"), target), _("Warning"), wxICON_WARNING);
 }
 
 void CodeCompletion::OnFindReferences(cb_unused wxCommandEvent& event)
@@ -2130,7 +2130,7 @@ void CodeCompletion::OnOpenIncludeFile(cb_unused wxCommandEvent& event)
         return;
     }
 
-    cbMessageBox(wxString::Format(_("Not found: %s"), NameUnderCursor.c_str()), _("Warning"), wxICON_WARNING);
+    cbMessageBox(wxString::Format(_("Not found: %s"), NameUnderCursor), _("Warning"), wxICON_WARNING);
 }
 
 void CodeCompletion::OnCurrentProjectReparse(wxCommandEvent& event)

@@ -75,10 +75,10 @@ void XmlSpellCheckDialog::CreateDialog(wxWindow* pParent)
   wxXmlResource::Get()->InitAllHandlers();
   if (wxXmlResource::Get()->Load(m_strResourceFile) == false)
     return;
-  
+
   if (wxXmlResource::Get()->LoadDialog(this, pParent, m_strDialogResource) == false)
     return;
-  
+
   // Verify that the controls we need are present
 /*
   XRCID("ButtonRecheckPage")
@@ -105,56 +105,56 @@ void XmlSpellCheckDialog::CreateDialog(wxWindow* pParent)
       Connect(XRCID("ButtonCheckWord"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnCheckWord);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonReplaceWord"), XmlSpellCheckDialog::OnReplaceWord)
     if (this->FindWindow(XRCID("ButtonReplaceWord")))
     {
       Connect(XRCID("ButtonReplaceWord"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnReplaceWord);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonIgnoreWord"), XmlSpellCheckDialog::OnIgnoreWord)
     if (this->FindWindow(XRCID("ButtonIgnoreWord")))
     {
       Connect(XRCID("ButtonIgnoreWord"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnIgnoreWord);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonReplaceAll"), XmlSpellCheckDialog::OnReplaceAll)
     if (this->FindWindow(XRCID("ButtonReplaceAll")))
     {
       Connect(XRCID("ButtonReplaceAll"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnReplaceAll);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonIgnoreAll"), XmlSpellCheckDialog::OnIgnoreAll)
     if (this->FindWindow(XRCID("ButtonIgnoreAll")))
     {
       Connect(XRCID("ButtonIgnoreAll"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnIgnoreAll);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonAddWord"), XmlSpellCheckDialog::OnAddWordToCustomDictionary)
     if (this->FindWindow(XRCID("ButtonAddWord")))
     {
       Connect(XRCID("ButtonAddWord"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnAddWordToCustomDictionary);
     }
-    
+
 		//EVT_BUTTON(XRCID("ButtonEditCustomDist"), XmlSpellCheckDialog::OnEditCustomDictionary)
     if (this->FindWindow(XRCID("ButtonEditCustomDist")))
     {
       Connect(XRCID("ButtonEditCustomDist"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnEditCustomDictionary);
     }
-    
+
     if (this->FindWindow(XRCID("ButtonOptions")))
     {
       Connect(XRCID("ButtonOptions"),  wxEVT_COMMAND_BUTTON_CLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnOptions);
     }
 
-    //EVT_LISTBOX(XRCID("ListBoxSuggestions"), XmlSpellCheckDialog::OnChangeSuggestionSelection) 
+    //EVT_LISTBOX(XRCID("ListBoxSuggestions"), XmlSpellCheckDialog::OnChangeSuggestionSelection)
     //EVT_LISTBOX_DCLICK(XRCID("ListBoxSuggestions"), XmlSpellCheckDialog::OnDblClkSuggestionSelection)
     if (this->FindWindow(XRCID("ListBoxSuggestions")))
     {
@@ -163,7 +163,7 @@ void XmlSpellCheckDialog::CreateDialog(wxWindow* pParent)
       Connect(XRCID("ListBoxSuggestions"),  wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,
           (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &XmlSpellCheckDialog::OnDblClkSuggestionSelection);
     }
-    
+
     //EVT_BUTTON(XRCID("ButtonClose"), XmlSpellCheckDialog::OnClose)
     if (this->FindWindow(XRCID("ButtonClose")))
     {
@@ -225,7 +225,7 @@ void XmlSpellCheckDialog::OnCheckWord(wxCommandEvent& event)
       }
       else
       {
-        pListBox->Append(_T("(no suggestions)"));
+        pListBox->Append(_("(no suggestions)"));
         pListBox->Enable(FALSE);
       }
     }
@@ -357,7 +357,7 @@ void XmlSpellCheckDialog::SetMisspelledWord(const wxString& strMisspelling)
       }
       else
       {
-        pListBox->Append(_T("(no suggestions)"));
+        pListBox->Append(_("(no suggestions)"));
         pListBox->Enable(FALSE);
       }
     }
@@ -365,16 +365,16 @@ void XmlSpellCheckDialog::SetMisspelledWord(const wxString& strMisspelling)
     if (this->FindWindow(XRCID("TextContext")))
     {
       wxTextCtrl* pContextText = XRCCTRL(*this, "TextContext", wxTextCtrl);
-  
+
       if (pContextText)
       {
         wxSpellCheckEngineInterface::MisspellingContext Context = m_pSpellCheckEngine->GetCurrentMisspellingContext();
-  
+
         pContextText->SetEditable(FALSE);
-  
+
         pContextText->Clear();
-        
-        #ifdef __WXGTK20__        
+
+        #ifdef __WXGTK20__
           wxString strContext = Context.GetContext();
           pContextText->SetValue(strContext.Left(Context.GetOffset()));
           wxColour originalTextColour = pContextText->GetDefaultStyle().GetTextColour();
@@ -382,7 +382,7 @@ void XmlSpellCheckDialog::SetMisspelledWord(const wxString& strMisspelling)
           pContextText->AppendText(strContext.Mid(Context.GetOffset(), Context.GetLength()));
           pContextText->SetDefaultStyle(wxTextAttr(originalTextColour));
           pContextText->AppendText(strContext.Right(strContext.Length() - (Context.GetOffset() + Context.GetLength())));
-        #else  
+        #else
           // This code works for GTK 1.x and MSW
           pContextText->SetValue(Context.GetContext());
           pContextText->SetSelection(Context.GetOffset(), Context.GetOffset() + Context.GetLength());
@@ -399,7 +399,7 @@ void XmlSpellCheckDialog::OnOptions(wxCommandEvent& event)
 {
   // Create a really basic dialog that gets dynamically populated
   // with controls based on the m_pSpellCheckEngine->GetOptions();
-  SpellCheckerOptionsDialog OptionsDialog(this, m_pSpellCheckEngine->GetSpellCheckEngineName() + _T(" Options"), m_pSpellCheckEngine);
+  SpellCheckerOptionsDialog OptionsDialog(this, wxString::Format(_("%s Options"), m_pSpellCheckEngine->GetSpellCheckEngineName()), m_pSpellCheckEngine);
   if (OptionsDialog.ShowModal() == wxID_OK)
   {
     // Set the modified options

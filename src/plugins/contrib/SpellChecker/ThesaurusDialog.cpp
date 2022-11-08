@@ -27,7 +27,7 @@ BEGIN_EVENT_TABLE(ThesaurusDialog,wxDialog)
 END_EVENT_TABLE()
 
 ThesaurusDialog::ThesaurusDialog(wxWindow* parent, wxString Word, std::map<wxString, std::vector< wxString > > &syn):
-    wxDialog( parent, wxID_ANY, wxString(_T("Thesaurus"))),
+    wxDialog( parent, wxID_ANY, _("Thesaurus")),
     m_syn(syn)
 {
     this->SetSizeHints( wxDefaultSize, wxDefaultSize );

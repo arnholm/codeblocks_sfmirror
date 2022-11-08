@@ -558,7 +558,7 @@ void CCDebugInfo::FillDescendants()
     {
         const Token* descendant = tree->at(*it);
         const wxString msgInvalidToken = _("<invalid token>");
-        cmbDescendants->Append(wxString::Format(_T("%s (%d)"), descendant ? descendant->m_Name.wx_str() : msgInvalidToken.wx_str(), *it));
+        cmbDescendants->Append(wxString::Format("%s (%d)", descendant ? descendant->m_Name : msgInvalidToken, *it));
     }
     cmbDescendants->SetSelection(0);
 }
@@ -568,9 +568,9 @@ void CCDebugInfo::OnInit(cb_unused wxInitDialogEvent& event)
     if (!m_Parser || !m_Parser->GetTokenTree())
         return;
 
-    txtInfo->SetLabel(wxString::Format(_("The parser contains %lu tokens, found in %lu files"),
-                                       static_cast<unsigned long>(m_Parser->GetTokenTree()->size()),
-                                       static_cast<unsigned long>(m_Parser->GetTokenTree()->m_FileMap.size())));
+    txtInfo->SetLabel(wxString::Format(_("The parser contains %zu tokens, found in %zu files"),
+                                       m_Parser->GetTokenTree()->size(),
+                                       m_Parser->GetTokenTree()->m_FileMap.size()));
 
     DisplayTokenInfo();
     FillFiles();

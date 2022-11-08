@@ -382,7 +382,7 @@ void wxsTreeListCtrl::PreviewItemCode (wxTreeListCtrl* inPreview)
 
 // make our own root item
 
-    id[0] = inPreview->AddRoot (_ ("(root)") );
+    id[0] = inPreview->AddRoot(_("(root)"));
 
 // and now each item in the tree data list
 

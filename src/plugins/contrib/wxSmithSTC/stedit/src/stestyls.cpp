@@ -765,7 +765,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
 
     // FIXME oops - no style number
     if (style_n == -1)
-        return _("Unknown style name in '")+name+wxT("'\n");
+        return wxString::Format(_("Unknown style name in '%s'\n"), name);
 
     for (wxStringTokenizer tkz(value, wxT(","));
          tkz.HasMoreTokens();
@@ -777,7 +777,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
 
         if (val.IsEmpty())
         {
-            errorMsg += _("Empty style option '") + option + _("' in style '")+name+wxT("'\n");
+            errorMsg += wxString::Format(_("Empty style option '%s' in style '%s'\n"), option, name);
             continue;
         }
         bool def = (val.GetChar(0) == wxT('*'));
@@ -792,7 +792,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                 SetForegroundColourInt(style_n, (int)long_val);
             }
             else
-                errorMsg += _("Invalid foreground colour in style '")+name+wxT("'\n");
+                errorMsg += wxString::Format(_("Invalid foreground colour in style '%s'\n"), name);
         }
         else if (option == wxT("back"))
         {
@@ -802,7 +802,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                 SetBackgroundColourInt(style_n, (int)long_val);
             }
             else
-                errorMsg += _("Invalid background colour in style '")+name+wxT("'\n");
+                errorMsg += wxString::Format(_("Invalid background colour in style '%s'\n"), name);
         }
         else if (option == wxT("face"))
         {
@@ -817,7 +817,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                 SetSize(style_n, long_val);
             }
             else
-                errorMsg += _("Invalid font size in style '")+name+wxT("'\n");
+                errorMsg += wxString::Format(_("Invalid font size in style '%s'\n"), name);
         }
         else if (option == wxT("bold"))
         {
@@ -858,7 +858,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                 SetCase(style_n, int(long_val));
             }
             else
-                errorMsg += _("Invalid letter case for style '")+name+wxT("'.\n");
+                errorMsg += wxString::Format(_("Invalid letter case for style '%s'.\n"), name);
         }
         else if (option == wxT("style")) // only for indicators & markers
         {
@@ -870,7 +870,7 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                     SetIndicatorStyle(style_n - STE_STYLE_INDIC__FIRST, (int)long_val);
                 }
                 else
-                    errorMsg += _("Invalid indicator style in '")+name+wxT("'\n");
+                    errorMsg += wxString::Format(_("Invalid indicator style in '%s'\n"), name);
             }
             else if ((style_n >= STE_STYLE_MARKER__FIRST) && (style_n <= STE_STYLE_MARKER__LAST))
             {
@@ -880,11 +880,11 @@ wxString wxSTEditorStyles::ParseConfigLine(const wxString &key, const wxString &
                     SetMarkerSymbol(style_n - STE_STYLE_MARKER__FIRST, (int)long_val);
                 }
                 else
-                    errorMsg += _("Invalid marker style in '")+name+wxT("'\n");
+                    errorMsg += wxString::Format(_("Invalid marker style in '%s'\n"), name);
             }
             else
             {
-                errorMsg += _("Style set for non indicator or marker in '")+name+wxT("'\n");
+                errorMsg += wxString::Format(_("Style set for non indicator or marker in '%s'\n"), name);
             }
         }
     }

@@ -270,8 +270,8 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         m_interpnum=m_contextvec[ID-ID_ContextMenu_0];
         commandstr=m_ic.interps[m_interpnum].command;
         consolename=m_ic.interps[m_interpnum].name;
-        windowed=(m_ic.interps[m_interpnum].mode==_("W"));
-        console=(m_ic.interps[m_interpnum].mode==_("C"));
+        windowed=(m_ic.interps[m_interpnum].mode=="W");
+        console=(m_ic.interps[m_interpnum].mode=="C");
         workingdir=m_ic.interps[m_interpnum].wdir;
     }
     else if (ID>=ID_SubMenu_0&&ID<=ID_SubMenu_49)
@@ -279,12 +279,12 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         m_interpnum=ID-ID_SubMenu_0;
         commandstr=m_ic.interps[m_interpnum].command;
         consolename=m_ic.interps[m_interpnum].name;
-        windowed=(m_ic.interps[m_interpnum].mode==_("W"));
-        console=(m_ic.interps[m_interpnum].mode==_("C"));
+        windowed=(m_ic.interps[m_interpnum].mode=="W");
+        console=(m_ic.interps[m_interpnum].mode=="C");
         workingdir=m_ic.interps[m_interpnum].wdir;
         m_wildcard=m_ic.interps[m_interpnum].wildcards;
-        if (m_ic.interps[m_interpnum].command.Find(_("$file"))>0 ||
-            m_ic.interps[m_interpnum].command.Find(_("$path"))>0)
+        if (m_ic.interps[m_interpnum].command.Find("$file")>0 ||
+            m_ic.interps[m_interpnum].command.Find("$path")>0)
         {
             m_RunTarget=wxEmptyString;
             EditorManager* edMan = Manager::Get()->GetEditorManager();
@@ -300,25 +300,25 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
                 OnSetTarget(event);
             if (!wxFileName::FileExists(m_RunTarget))
             {
-                LogMessage(_("Tools Plus plugin: ")+m_RunTarget+_(" not found"));
+                LogMessage(wxString::Format(_("Tools Plus plugin: %s not found"), m_RunTarget));
                 return;
             }
         }
-        if (m_ic.interps[m_interpnum].command.Find(_("$dir"))>0)
+        if (m_ic.interps[m_interpnum].command.Find("$dir")>0)
         {
             OnSetDirTarget(event);
             if (!wxFileName::DirExists(m_RunTarget))
             {
-                LogMessage(_("Tools Plus plugin: ")+m_RunTarget+_(" not found"));
+                LogMessage(wxString::Format(_("Tools Plus plugin: %s not found"), m_RunTarget));
                 return;
             }
-            if (m_RunTarget==_T(""))
+            if (m_RunTarget.empty())
                 return;
         }
-        if (m_ic.interps[m_interpnum].command.Find(_("$mpaths"))>0)
+        if (m_ic.interps[m_interpnum].command.Find("$mpaths")>0)
         {
             OnSetMultiTarget(event);
-            if (m_RunTarget==_T(""))
+            if (m_RunTarget.empty())
                 return;
         }
     }
@@ -331,15 +331,15 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
     m_RunTarget.Replace(_T("*"),_T(" "));
 
     bool setdir=true;
-    commandstr.Replace(_("$file"),wxFileName(m_RunTarget).GetShortPath());
-    commandstr.Replace(_("$relfile"),wxFileName(m_RunTarget).GetFullName());
-    commandstr.Replace(_("$fname"),wxFileName(m_RunTarget).GetName());
-    commandstr.Replace(_("$fext"),wxFileName(m_RunTarget).GetExt());
-    commandstr.Replace(_("$dir"),wxFileName(m_RunTarget).GetShortPath());
-    commandstr.Replace(_("$reldir"),wxFileName(m_RunTarget).GetFullName());
-    commandstr.Replace(_("$path"),wxFileName(m_RunTarget).GetShortPath());
-    commandstr.Replace(_("$relpath"),wxFileName(m_RunTarget).GetFullPath());
-    if (commandstr.Replace(_("$mpaths"),m_RunTarget)>0)
+    commandstr.Replace("$file", wxFileName(m_RunTarget).GetShortPath());
+    commandstr.Replace("$relfile", wxFileName(m_RunTarget).GetFullName());
+    commandstr.Replace("$fname", wxFileName(m_RunTarget).GetName());
+    commandstr.Replace("$fext", wxFileName(m_RunTarget).GetExt());
+    commandstr.Replace("$dir", wxFileName(m_RunTarget).GetShortPath());
+    commandstr.Replace("$reldir", wxFileName(m_RunTarget).GetFullName());
+    commandstr.Replace("$path", wxFileName(m_RunTarget).GetShortPath());
+    commandstr.Replace("$relpath", wxFileName(m_RunTarget).GetFullPath());
+    if (commandstr.Replace("$mpaths", m_RunTarget)>0)
         setdir=false;
 
     // substitute user prompted values in the format: $inputstr{Enter your message}
@@ -382,7 +382,7 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         Manager::Get()->GetMacrosManager()->ReplaceMacros(workingdir);
     }
     wxString olddir=wxGetCwd();
-    if (setdir && workingdir!=_T(""))
+    if (setdir && !workingdir.empty())
     {
         if (!wxSetWorkingDirectory(workingdir))
         {
@@ -391,7 +391,7 @@ void ToolsPlus::OnRunTarget(wxCommandEvent& event)
         }
     }
 
-    LogMessage(wxString::Format(_("Launching '%s': %s (in %s)"), consolename.c_str(), commandstr.c_str(), workingdir.c_str()));
+    LogMessage(wxString::Format(_("Launching '%s': %s (in %s)"), consolename, commandstr, workingdir));
 
     if (windowed)
     {

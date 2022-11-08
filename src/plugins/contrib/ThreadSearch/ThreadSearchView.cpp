@@ -460,7 +460,7 @@ void ThreadSearchView::set_properties()
     m_pBtnOptions->SetBitmapDisabled(cbLoadBitmap(prefix+"optionsdisabled.png"));
 #endif
 
-    m_pBtnShowDirItems->SetToolTip(_("Show dir Items"));
+    m_pBtnShowDirItems->SetToolTip(_("Show dir items"));
 #if wxCHECK_VERSION(3, 1, 6)
     m_pBtnShowDirItems->SetBitmapDisabled(cbLoadBitmapBundleFromSVG(prefix+"showdirdisabled.svg", bmpSize));
 #else

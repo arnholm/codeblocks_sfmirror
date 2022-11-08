@@ -12,7 +12,7 @@ SpellCheckerOptionsDialog::SpellCheckerOptionsDialog(wxWindow* pParent, const wx
   : wxDialog(pParent, -1, strCaption, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
   m_pEngineInterface = pEngineInterface;
-  
+
   // Put each option in the member options map
   m_ModifiedOptions.clear();
   OptionsMap* pOptionsMap = pEngineInterface->GetOptions();
@@ -27,7 +27,7 @@ SpellCheckerOptionsDialog::SpellCheckerOptionsDialog(wxWindow* pParent, const wx
 }
 
 void SpellCheckerOptionsDialog::CreateControls()
-{    
+{
 ////@begin SpellCheckerOptionsDialog content construction
 
     SpellCheckerOptionsDialog* item1 = this;
@@ -48,11 +48,11 @@ void SpellCheckerOptionsDialog::CreateControls()
     wxBoxSizer* item5 = new wxBoxSizer(wxHORIZONTAL);
     item2->Add(item5, 0, wxALIGN_RIGHT|wxALL, 5);
 
-    wxButton* item6 = new wxButton( item1, wxID_OK, _T("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton* item6 = new wxButton( item1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetDefault();
     item5->Add(item6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-    wxButton* item7 = new wxButton( item1, wxID_CANCEL, _T("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton* item7 = new wxButton( item1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->Add(item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
 ////@end SpellCheckerOptionsDialog content construction
@@ -81,13 +81,13 @@ void SpellCheckerOptionsDialog::PopulateOptionsSizer(wxSizer* pSizer)
         NewDependency.strLastValue = m_ModifiedOptions[strDependency].GetValueAsString();
         m_OptionDependenciesMap[strName] = NewDependency;
       }
-      
+
       // Label
       if (nOptionType != SpellCheckEngineOption::BOOLEAN)
         pSizer->Add(new wxStaticText(this, -1, pCurrentOption->GetText() + _T(":")), 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
       else
         pSizer->Add(5, 5, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5); // Spacer
-      
+
       // Value
       if (nOptionType == SpellCheckEngineOption::STRING)
       {
@@ -107,7 +107,7 @@ void SpellCheckerOptionsDialog::PopulateOptionsSizer(wxSizer* pSizer)
             pCombo->Append(sortedArray[j]);
           // Add this wxComboBox control to the dialog
           pSizer->Add(pCombo, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-          
+
           // Add the wxFocusEvent for this item to update the list of possible values
           Connect(pCombo->GetId(),  wxEVT_SET_FOCUS,
             (wxObjectEventFunction) (wxEventFunction) (wxFocusEventFunction) &SpellCheckerOptionsDialog::UpdateControlPossibleValues);
@@ -139,14 +139,14 @@ void SpellCheckerOptionsDialog::PopulateOptionsSizer(wxSizer* pSizer)
       {
         wxBoxSizer* item13 = new wxBoxSizer(wxHORIZONTAL);
         pSizer->Add(item13, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-    
+
         wxTextCtrl* item14 = new wxTextCtrl( this, -1, pCurrentOption->GetValueAsString(), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, strName);
         item13->Add(item14, 1, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
-    
+
         wxBitmap OpenBitmap(open_xpm);
         wxBitmapButton* item15 = new wxBitmapButton( this, -1, OpenBitmap, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, strName + _T("-browse"));
         item13->Add(item15, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
-        
+
         // Add an event handler so that the button presents a wxFileDialog or wxDirDialog is presented
         if (nOptionType == SpellCheckEngineOption::DIR)
         {
@@ -185,16 +185,16 @@ void SpellCheckerOptionsDialog::OnBrowseForDir(wxCommandEvent& event)
   // First get the event control name, then remove the "-browse" suffix to determine the
   //  string to default to
   TransferDataFromWindow();
-  
+
   wxString strBrowseName = ((wxWindow*)(event.GetEventObject()))->GetName();
-  wxString strOptionName = strBrowseName.Left(strBrowseName.Length() - wxString(_T("-browse")).Length());
+  wxString strOptionName = strBrowseName.Left(strBrowseName.Length() - wxString("-browse").Length());
   wxWindow* pControl = wxWindow::FindWindowByName(strOptionName, this);
-  wxString strDefaultDir = _T("");
+  wxString strDefaultDir;
   if (pControl)
   {
     strDefaultDir = ((wxTextCtrl*)pControl)->GetValue();
   }
-  wxDirDialog DirDialog(this,  _T("Choose a directory"), strDefaultDir);
+  wxDirDialog DirDialog(this,  _("Choose a directory"), strDefaultDir);
   if (DirDialog.ShowModal() == wxID_OK)
   {
     m_ModifiedOptions[strOptionName].SetValue(DirDialog.GetPath(), SpellCheckEngineOption::DIR);
@@ -206,17 +206,17 @@ void SpellCheckerOptionsDialog::OnBrowseForFile(wxCommandEvent& event)
 {
   TransferDataFromWindow();
   wxString strBrowseName = ((wxWindow*)(event.GetEventObject()))->GetName();
-  wxString strOptionName = strBrowseName.Left(strBrowseName.Length() - wxString(_T("-browse")).Length());
+  wxString strOptionName = strBrowseName.Left(strBrowseName.Length() - wxString("-browse").Length());
   wxWindow* pControl = wxWindow::FindWindowByName(strOptionName, this);
-  wxString strDefaultDir = _T("");
-  wxString strDefaultFileName = _T("");
+  wxString strDefaultDir;
+  wxString strDefaultFileName;
   if (pControl)
   {
     wxFileName FileName(((wxTextCtrl*)pControl)->GetValue());
     strDefaultDir = FileName.GetPath();
     strDefaultFileName = FileName.GetFullName();
   }
-  wxFileDialog FileDialog(this, _T("Choose a file"), strDefaultDir, strDefaultFileName);
+  wxFileDialog FileDialog(this, _("Choose a file"), strDefaultDir, strDefaultFileName);
   if (FileDialog.ShowModal() == wxID_OK)
   {
     m_ModifiedOptions[strOptionName].SetValue(FileDialog.GetPath(), SpellCheckEngineOption::FILE);
@@ -319,7 +319,7 @@ bool SpellCheckerOptionsDialog::TransferDataToWindow()
 void SpellCheckerOptionsDialog::UpdateControlPossibleValues(wxFocusEvent& event)
 {
   TransferDataFromWindow();
-  
+
   // Get the control that got the focus event
   wxComboBox* pCombo = (wxComboBox*)(event.GetEventObject());
   if (pCombo)
@@ -330,7 +330,7 @@ void SpellCheckerOptionsDialog::UpdateControlPossibleValues(wxFocusEvent& event)
     if (DependencyOption.GetValueAsString() != OptionDependencyStruct.strLastValue)
     {
       m_pEngineInterface->UpdatePossibleValues(DependencyOption, Option);
-      
+
       // Now repopulate the combo box contents
       pCombo->Clear();
       VariantArray* pArray = Option.GetPossibleValuesArray();
@@ -343,7 +343,7 @@ void SpellCheckerOptionsDialog::UpdateControlPossibleValues(wxFocusEvent& event)
         pCombo->Append(sortedArray[j]);
 
       pCombo->SetValue(Option.GetValueAsString());
-      
+
       // Update the dependency struct so that we don't unnecessarily update this list again
       OptionDependencyStruct.strLastValue = DependencyOption.GetValueAsString();
       m_OptionDependenciesMap[pCombo->GetName()] = OptionDependencyStruct;

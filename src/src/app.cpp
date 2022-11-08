@@ -1398,7 +1398,7 @@ void CodeBlocksApp::AttachDebugger()
         for (const auto &info : debuggers)
         {
             cbDebuggerPlugin *p = info.first;
-            logManager->Log(wxString::Format(_("    '%s' (%s)"), p->GetSettingsName(), p->GetGUIName()));
+            logManager->Log(wxString::Format("    '%s' (%s)", p->GetSettingsName(), p->GetGUIName()));
         }
         return;
     }
@@ -1419,7 +1419,7 @@ void CodeBlocksApp::AttachDebugger()
                                               configName));
         logManager->Log(_("Available configurations:"));
         for (const cbDebuggerConfiguration *config : configs)
-            logManager->Log(wxString::Format(_("    '%s'"), config->GetName()));
+            logManager->Log(wxString::Format("    '%s'", config->GetName()));
         return;
     }
 

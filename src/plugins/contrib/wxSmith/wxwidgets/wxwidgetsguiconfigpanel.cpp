@@ -149,7 +149,7 @@ void wxWidgetsGUIConfigPanel::OnButton1Click(cb_unused wxCommandEvent& event)
         _T(""),_T(""),_T(""),
         _("XRC files (*.xrc)|*.xrc|"
           "Zipped files (*.zip)|*.zip|"
-          "All files (*)|*"),
+          "All files (*.*)|*.*"),
         wxFD_OPEN | wxFD_FILE_MUST_EXIST | compatibility::wxHideReadonly);
 
     if ( !FileName.empty() )

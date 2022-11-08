@@ -28,10 +28,10 @@ void XmlPersonalDictionaryDialog::CreateDialog(wxWindow* pParent)
   wxXmlResource::Get()->InitAllHandlers();
   if (wxXmlResource::Get()->Load(m_strResourceFile) == false)
     return;
-  
+
   if (wxXmlResource::Get()->LoadDialog(this, pParent, m_strDialogResource) == false)
     return;
-  
+
   // Verify that the controls we need are present
 
   // Now present the word list to the user
@@ -76,7 +76,7 @@ void XmlPersonalDictionaryDialog::AddWordToPersonalDictionary(wxCommandEvent& ev
 
       if (!strNewWord.Trim().IsEmpty())
         m_pSpellCheckEngine->AddWordToDictionary(strNewWord);
-      
+
       // Clear the text control
       pText->Clear();
     }
@@ -90,21 +90,21 @@ void XmlPersonalDictionaryDialog::ReplaceInPersonalDictionary(wxCommandEvent& ev
   if (m_pSpellCheckEngine != NULL)
   {
     TransferDataFromWindow();
-    
-    wxString strOldWord = _T("");
-    wxString strNewWord = _T("");
+
+    wxString strOldWord;
+    wxString strNewWord;
 
     // Find the old word
     wxListBox* pListBox = XRCCTRL(*this, "ListPersonalWords", wxListBox);
     if (pListBox)
       strOldWord = pListBox->GetStringSelection();
-    
+
     // Find the new word
     wxTextCtrl* pText = XRCCTRL(*this, "TextNewPersonalWord", wxTextCtrl);
     if (pText)
     {
       strNewWord = pText->GetValue();
-      
+
       // Clear the text control
       pText->Clear();
     }

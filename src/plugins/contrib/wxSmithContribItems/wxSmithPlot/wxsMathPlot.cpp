@@ -92,7 +92,7 @@ wxString    cname;
 
 // include files
 
-    AddHeader(_("<mathplot.h>"), GetInfo().ClassName, 0);
+    AddHeader("<mathplot.h>", GetInfo().ClassName, 0);
 
 // create the panel
 

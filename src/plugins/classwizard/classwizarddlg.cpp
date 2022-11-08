@@ -715,7 +715,7 @@ bool ClassWizardDlg::DoImpl()
     if (!new_ed->Save())
     {
         wxString msg;
-        msg.Printf(_("Could not save implementation file %s.\nAborting..."), implementationFname.GetFullPath().c_str());
+        msg.Printf(_("Could not save implementation file %s.\nAborting..."), implementationFname.GetFullPath());
         cbMessageBox(msg, _("Error"), wxICON_ERROR, this);
         return false;
     }

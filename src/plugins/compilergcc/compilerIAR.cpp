@@ -22,7 +22,7 @@
 #endif
 
 CompilerIAR::CompilerIAR(wxString arch)
-    : Compiler(_("IAR ") + arch + _(" Compiler"), _T("iar") + arch)
+    : Compiler(wxString::Format(_("IAR %s Compiler"), arch), "iar" + arch)
 {
     m_Weight = 75;
     m_Arch = arch;

@@ -544,7 +544,7 @@ int DoxyBlocks::GenerateDocuments(cbProject *prj)
     fnDoxygenLog.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
 
     if (!fnOutput.Mkdir(0777, wxPATH_MKDIR_FULL)){
-        const wxString sMsg = _("Failed. ") + fnOutput.GetFullPath() + _(" was not created.");
+        const wxString sMsg(wxString::Format(_("Failed. %s was not created."), fnOutput.GetFullPath()));
         AppendToLog(sMsg, LOG_WARNING);
         wxSetWorkingDirectory(sOldPath);
         return -1;
@@ -554,7 +554,7 @@ int DoxyBlocks::GenerateDocuments(cbProject *prj)
     WriteConfigFiles(prj, sPrjName, sPrjPath, sDoxygenDir, fnDoxyfile, fnDoxygenLog);
 
     if(!wxFile::Exists(fnDoxyfile.GetFullPath())){
-        const wxString sMsg = _("Failed. ") + fnDoxyfile.GetFullPath() + _(" was not created.");
+        const wxString sMsg(wxString::Format(_("Failed. %s was not created."), fnDoxyfile.GetFullPath()));
         AppendToLog(sMsg, LOG_WARNING);
         wxSetWorkingDirectory(sOldPath);
         return -1;

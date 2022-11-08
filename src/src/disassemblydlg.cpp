@@ -244,8 +244,8 @@ void DisassemblyDlg::OnSave(cb_unused wxCommandEvent& event)
     cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (prj)
     {
-        output << _("Project title : ") << prj->GetTitle() << _T('\n');
-        output << _("Project path  : ") << prj->GetBasePath() << _T('\n') << _T('\n');
+        output << _("Project title: ") << prj->GetTitle() << _T('\n');
+        output << _("Project path : ") << prj->GetBasePath() << _T('\n') << _T('\n');
     }
 
     output << _("Frame function: ") << m_FrameFunction << _T('\n');

@@ -442,7 +442,7 @@ ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
         if (!docroot)
         {
             wxString err(_("Fatal error parsing supplied configuration file.\nParser error message:\n"));
-            err << wxString::Format(_("%s\nAt row %d, column: %d."), cbC2U(doc->ErrorDesc()).c_str(), doc->ErrorRow(), doc->ErrorCol());
+            err << wxString::Format(_("%s\nAt row %d, column %d."), cbC2U(doc->ErrorDesc()), doc->ErrorRow(), doc->ErrorCol());
             cbThrow(err);
         }
     }

@@ -45,7 +45,7 @@ void SpellCheckHelper::LoadConfiguration()
     wxString fname = SpellCheckerPlugin::GetOnlineCheckerConfigPath() + wxFILE_SEP_PATH + _T("OnlineSpellChecking.xml");
     TiXmlDocument doc( fname.char_str() );
     if ( !doc.LoadFile() )
-        Manager::Get()->GetLogManager()->Log( _("SpellCheck Plugin: Error loading Online SpellChecking Configuration file \"") + fname +_T("\"") );
+        Manager::Get()->GetLogManager()->Log(wxString::Format(_("SpellCheck Plugin: Error loading Online SpellChecking Configuration file \"%s\""), fname));
 
     TiXmlNode* rootnode =  doc.FirstChildElement( "OnlineSpellCheckingConfigurationFile" );
     if (rootnode)

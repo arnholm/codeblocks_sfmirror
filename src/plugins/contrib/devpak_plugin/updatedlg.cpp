@@ -708,15 +708,15 @@ void UpdateDlg::OnDownloadEnded(wxCommandEvent& event)
         if (rec)
         {
             if (rec->bytes != m_CurrFileSize)
-                wxMessageBox(_("File size mismatch for ") + event.GetString() + _("!\n\n"
-                            "This, usually, means one of three things:\n"
-                            "1) The reported size in the update list is wrong. The DevPak might still be valid.\n"
-                            "2) The file's location returned a web error-page. Invalid DevPak...\n"
-                            "3) The file is corrupt...\n\n"
-                            "You can try to install it anyway. If it is not a valid DevPak, the operation will fail."),
+                wxMessageBox(wxString::Format(_("File size mismatch for %s!"), event.GetString()) + "\n\n" +
+                             _("This, usually, means one of three things:\n"
+                               "1) The reported size in the update list is wrong. The DevPak might still be valid.\n"
+                               "2) The file's location returned a web error-page. Invalid DevPak...\n"
+                               "3) The file is corrupt...\n\n"
+                               "You can try to install it anyway. If it is not a valid DevPak, the operation will fail."),
                             _("Warning"), wxICON_WARNING);
         }
-        if (rec && rec->installable && wxMessageBox(_("Do you want to install ") + event.GetString() + _(" now?"), _("Confirmation"), wxICON_QUESTION | wxYES_NO) == wxYES)
+        if (rec && rec->installable && wxMessageBox(wxString::Format(_("Do you want to install %s now?"), event.GetString()), _("Confirmation"), wxICON_QUESTION | wxYES_NO) == wxYES)
             InstallFile();
         else if (rec && rec->title == _T("WebUpdate Mirrors list"))
             InstallMirrors(GetPackagePath() + rec->local_file);

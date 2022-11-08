@@ -48,7 +48,7 @@
 // We are using an anonymous namespace so we don't litter the global one.
 namespace
 {
-PluginRegistrant<SpellCheckerPlugin> reg(_T("SpellChecker"));
+PluginRegistrant<SpellCheckerPlugin> reg("SpellChecker");
 
 const int idSpellCheck                 = wxNewId();
 const int idThesaurus                  = wxNewId();
@@ -82,9 +82,9 @@ SpellCheckerPlugin::SpellCheckerPlugin():
     // Make sure our resources are available.
     // In the generated boilerplate code we have no resources but when
     // we add some, it will be nice that this code is in place already ;)
-    if(!Manager::LoadResource(_T("SpellChecker.zip")))
+    if(!Manager::LoadResource("SpellChecker.zip"))
     {
-        NotifyMissingFile(_T("SpellChecker.zip"));
+        NotifyMissingFile("SpellChecker.zip");
     }
 }
 
@@ -182,12 +182,12 @@ wxString SpellCheckerPlugin::GetOnlineCheckerConfigPath()
 void SpellCheckerPlugin::ConfigureHunspellSpellCheckEngine()
 {
     SpellCheckEngineOption DictionaryFileOption(
-        _T("dict-file"), _T("Dictionary File"),
+        _T("dict-file"), _("Dictionary File"),
         m_sccfg->GetDictionaryPath() + wxFILE_SEP_PATH + m_sccfg->GetDictionaryName() + _T(".dic"), SpellCheckEngineOption::FILE
     );
     m_pSpellChecker->AddOptionToMap(DictionaryFileOption);
     SpellCheckEngineOption AffixFileOption(
-        _T("affix-file"), _T("Affix File"),
+        _T("affix-file"), _("Affix File"),
         m_sccfg->GetDictionaryPath() + wxFILE_SEP_PATH + m_sccfg->GetDictionaryName() + _T(".aff"), SpellCheckEngineOption::FILE
     );
     m_pSpellChecker->AddOptionToMap(AffixFileOption);
@@ -265,7 +265,7 @@ void SpellCheckerPlugin::BuildMenu(wxMenuBar* menuBar)
         wxMenu* EditMenu = menuBar->GetMenu(EditPos);
         EditMenu->AppendSeparator();
         EditMenu->Append(idSpellCheck, _("Spelling..."), _("Spell check the selected text"));
-        EditMenu->Append(idThesaurus,  _("Thesaurus..."), _T(""));
+        EditMenu->Append(idThesaurus,  _("Thesaurus..."), "");
 
         // find menu - Edit/Special commands/Case
         int id = EditMenu->FindItem(_("Special commands"));
@@ -379,17 +379,17 @@ void SpellCheckerPlugin::BuildModuleMenu(const ModuleType type, wxMenu* menu, cb
             SuggestionsMenu->AppendSeparator();
             if ( m_suggestions.size() > MaxSuggestEntries )
                 SuggestionsMenu->Append(idMoreSuggestions, _("more..."));
-            SuggestionsMenu->Append(idAddToDictionary, _("Add '") + misspelledWord + _("' to dictionary"));
+            SuggestionsMenu->Append(idAddToDictionary, wxString::Format(_("Add '%s' to dictionary"), misspelledWord));
 
-            const wxString label = _("Spelling suggestions for '") + misspelledWord + _T("'");
+            const wxString label = wxString::Format(_("Spelling suggestions for '%s'"), misspelledWord);
             const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
-            menu->Insert(position, wxID_ANY, label, SuggestionsMenu); //AppendSubMenu(SuggestionsMenu, _("Spelling suggestions for '") + misspelledWord + _T("'") );
+            menu->Insert(position, wxID_ANY, label, SuggestionsMenu);
         }
         else
         {
-            const wxString label = _("Add '") + misspelledWord + _("' to dictionary");
+            const wxString label = wxString::Format(_("Add '%s' to dictionary"), misspelledWord);
             const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
-            menu->Insert(position, idAddToDictionary, _("Add '") + misspelledWord + _("' to dictionary"));
+            menu->Insert(position, idAddToDictionary, wxString::Format(_("Add '%s' to dictionary"), misspelledWord));
         }
     }
 }
@@ -463,7 +463,7 @@ void SpellCheckerPlugin::OnThesaurus(cb_unused wxCommandEvent &event)
     }
     else
     {
-        AnnoyingDialog dlg(_T("Thesaurus"), _T("No entry found!"), wxART_INFORMATION, AnnoyingDialog::OK);
+        AnnoyingDialog dlg(_("Thesaurus"), _("No entry found!"), wxART_INFORMATION, AnnoyingDialog::OK);
         dlg.ShowModal();
     }
 }
@@ -842,7 +842,7 @@ void SpellCheckerPlugin::OnEditorTooltip(CodeBlocksEvent& event)
     //       horizontal scrolling is accounted for by PointFromPosition().x
     const int offset = tipWidth + pos + 1 - lnStart -
                        (stc->GetSize().x - stc->PointFromPosition(lnStart).x) /
-                       stc->TextWidth(wxSCI_STYLE_LINENUMBER, _T("W"));
+                       stc->TextWidth(wxSCI_STYLE_LINENUMBER, "W");
     if (offset > 0)
         pos -= offset;
     if (pos < lnStart) // do not go to previous line if tip is wider than editor

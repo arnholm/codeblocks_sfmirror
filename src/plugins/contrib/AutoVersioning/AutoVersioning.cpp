@@ -382,16 +382,17 @@ void AutoVersioning::OnMenuAutoVersioning(wxCommandEvent&)
             }
             else
             {
-                if (wxMessageBox(_("Configure the project \"") + m_Project->GetTitle() + _("\" for Autoversioning?"),_("Autoversioning"),wxYES_NO) == wxYES)
+                wxString msg;
+                msg.Printf(_("Configure the project \"%s\" for Autoversioning?"), m_Project->GetTitle());
+                if (wxMessageBox(msg, _("Autoversioning"), wxYES_NO) == wxYES)
                 {
-                    if(wxFileExists(m_Project->GetBasePath() + _T("version.h")))
+                    if (wxFileExists(m_Project->GetBasePath() + "version.h"))
                     {
                         wxMessageBox(
-                         _T("The header version.h already exist on your projects path. "
-                            "The content will be overwritten by the the version info generated code."
-                            "\n\nYou can change the default version.h file on the \"Settings\" Tab."
-                           ),
-                         _T("Warning"),
+                         _("The header version.h already exist on your projects path. "
+                           "The content will be overwritten by the the version info generated code."
+                           "\n\nYou can change the default version.h file on the \"Settings\" Tab."),
+                         _("Warning"),
                          wxICON_EXCLAMATION  | wxOK
                         );
                     }

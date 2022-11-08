@@ -256,7 +256,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent, DoxyBlocks *pOwner, wxWindowID /*id*/
     ChoiceOutputLanguage->Append(_("Russian"));
     ChoiceOutputLanguage->Append(_("Serbian"));
     ChoiceOutputLanguage->Append(_("Serbian-Cyrilic"));
-    ChoiceOutputLanguage->Append(_("Slovak,"));
+    ChoiceOutputLanguage->Append(_("Slovak"));
     ChoiceOutputLanguage->Append(_("Slovene"));
     ChoiceOutputLanguage->Append(_("Spanish"));
     ChoiceOutputLanguage->Append(_("Swedish"));

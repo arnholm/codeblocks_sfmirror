@@ -167,7 +167,7 @@ void wxsToolBar::OnBuildCreatingCode()
 void wxsToolBar::OnEnumToolProperties(cb_unused long Flags)
 {
     WXS_SIZE(wxsToolBar,m_BitmapSize,_("Use Bitmap size"),_("  Bitmapwidth"),_("  Bitmapheight"),_("  Bmp in Dialog Units"),_T("bitmapsize"));
-    WXS_SIZE(wxsToolBar,m_Margins,_("Use Margins"),_("  Marginwidth"),_("  MarginhHeight"),_("  Margin in Dialog Units "),_T("margins"));
+    WXS_SIZE(wxsToolBar,m_Margins,_("Use Margins"),_("  Marginwidth"),_("  Marginheight"),_("  Margin in Dialog Units "),_T("margins"));
     WXS_LONG(wxsToolBar,m_Packing,_("Packing"),_T("packing"),-1);
     WXS_LONG(wxsToolBar,m_Separation,_("Separation"),_T("separation"),-1);
 }

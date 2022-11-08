@@ -766,7 +766,7 @@ void WatchesDlg::OnPropertyRightClick(wxPropertyGridEvent &event)
     {
         wxMenu m;
         m.Append(idMenuRename, _("Rename"), _("Rename the watch"));
-        m.Append(idMenuAddDataBreak, _("Add Data breakpoint"), _("Add Data breakpoing"));
+        m.Append(idMenuAddDataBreak, _("Add Data breakpoint"), _("Add Data breakpoint"));
         m.AppendSeparator();
         m.AppendCheckItem(idMenuAutoUpdate, _("Auto update"),
                           _("Flag which controls if this watch should be auto updated."));

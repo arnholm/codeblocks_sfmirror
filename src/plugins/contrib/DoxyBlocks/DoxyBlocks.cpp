@@ -1064,7 +1064,7 @@ wxString DoxyBlocks::GetAutoVersion()
         }
     }
     else{
-        AppendToLog(_("Version header ") + sPathVersionH + _(" not found."), LOG_ERROR);
+        AppendToLog(wxString::Format(_("Version header %s not found."), sPathVersionH), LOG_ERROR);
     }
     return sAutoVersion;
 }

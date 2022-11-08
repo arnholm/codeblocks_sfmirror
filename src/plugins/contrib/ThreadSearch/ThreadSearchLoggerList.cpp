@@ -222,7 +222,7 @@ void ThreadSearchLoggerList::OnThreadSearchEvent(const ThreadSearchEvent& event)
             long line = 0;
             if ( words[i].ToLong(&line) == false )
             {
-                cbMessageBox(_("Failed to convert line number from %s") + words[i], _("Error"), wxICON_ERROR);
+                cbMessageBox(wxString::Format(_("Failed to convert line number from %s"), words[i]), _("Error"), wxICON_ERROR);
             }
             else
             {

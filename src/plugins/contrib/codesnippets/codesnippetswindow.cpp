@@ -612,7 +612,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
                 else // it's a text snippet
                 {   snippetsTreeMenu->Append(idMnuEditSnippet, _("Edit Text"));
                     if ( IsUrlSnippet() )
-                        snippetsTreeMenu->Append(idMnuOpenFileLink,_("Open Url"));
+                        snippetsTreeMenu->Append(idMnuOpenFileLink,_("Open URL"));
                 }
 
                 //-#if defined(BUILDING_PLUGIN)

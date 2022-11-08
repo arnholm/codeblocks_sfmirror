@@ -1511,7 +1511,7 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
             //        EditorManager* em = Manager::Get()->GetEditorManager();
             //        if(em->IsOpen(path))
             //        {
-            //            cbMessageBox(_("Close file ")+path.GetFullPath()+_(" first"));
+            //            cbMessageBox(wxString::Format(_("Close file %s first"), path.GetFullPath()));
             //            return;
             //        }
             if(!::wxRemoveFile(path))

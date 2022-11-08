@@ -50,12 +50,12 @@ void SpellCheckCmdLineInterface::PrintSuggestions()
       for (unsigned int nCtr = 0; (nCtr < SuggestionArray.GetCount()) && (nCtr < 5); nCtr++)
       {
         wxCharBuffer suggestionCharBuffer(wxConvUTF8.cWC2MB(SuggestionArray[nCtr].wc_str(*wxConvCurrent)));
-        wxPrintf(_T(" '%s'"), (const char*)suggestionCharBuffer);
+        wxPrintf(" '%s'", (const char*)suggestionCharBuffer);
       }
     }
     else
     {
-      wxPrintf(_T(" (no suggestions)\n"));
+      wxPrintf(_(" (no suggestions)\n"));
     }
   }
 }
@@ -63,7 +63,7 @@ void SpellCheckCmdLineInterface::PrintSuggestions()
 void SpellCheckCmdLineInterface::GetFeedback()
 {
   wxChar strReplacement[256];
-  wxPrintf(_T("\nReplacement? : \n"));
+  wxPrintf(_("\nReplacement? : \n"));
   if ( !wxFgets(strReplacement, WXSIZEOF(strReplacement), stdin) )
     m_nLastAction = ACTION_IGNORE; /* ignore the current misspelling */
   else

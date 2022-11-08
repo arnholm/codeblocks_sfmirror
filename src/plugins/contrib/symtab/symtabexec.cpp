@@ -386,8 +386,7 @@ int SymTabExecDlg::ExecuteSingle(struct_config &config, wxString cmd)
   if (retval == 0)
   {
     wxString msg;
-    msg << _("The search in:\n") << the_library
-        << _("\nfor \"") << the_symbol << _("\" produced no results.");
+    msg << wxString::Format(_("The search in:\n%s\nfor \"%s\" produced no results."), the_library, the_symbol);
     cbMessageBox(msg, _("Info"), wxICON_INFORMATION | wxOK,
                  (wxWindow*)Manager::Get()->GetAppWindow());
   }
