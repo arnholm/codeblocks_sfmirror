@@ -1118,7 +1118,7 @@ void Register_wxTypes(HSQUIRRELVM v)
     }
 
     {
-        // Register wxSize
+        // Register wxArrayString
         const SQInteger classDecl = CreateClassDecl<wxArrayString>(v);
         BindEmptyCtor<wxArrayString>(v);
         BindDefaultClone<wxArrayString>(v);
