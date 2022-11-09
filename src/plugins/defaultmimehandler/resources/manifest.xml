@@ -4,7 +4,9 @@
     <Plugin name="FilesExtensionHandler">
         <Value title="Files extension handler" />
         <Value version="1.0" />
-        <Value description="This is the default files extension handler for Code::Blocks" />
+        <Value description="This is the default files extension handler for Code::Blocks.
+
+If you disable it, some file types will not open in Code::Blocks" />
         <Value author="Yiannis An. Mandravellos" />
         <Value authorEmail="info@codeblocks.org" />
         <Value authorWebsite="http://www.codeblocks.org" />
