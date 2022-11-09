@@ -4,13 +4,11 @@ outputvariant <- 1;
 function BeginWizard()
 {
 	// this is the text that will appear in the start (intro) page
-	local intro_msg = _T(	"Welcome to the new PowerPC application wizard!\n" +
-				"This wizard will guide you to create a new PowerPC application.\n\n" +
-				"Please click \"Next\" to proceed.");
+	local intro_msg = _("Welcome to the new PowerPC application wizard!\n") +
+				      _("This wizard will guide you to create a new PowerPC application.\n\n") +
+				      _("Please click \"Next\" to proceed.");
 
-	local PowerPC_derivatives = _T(	"PowerPC MPC5200;" +
-					"PowerPC MPC565"
-					); // !!! NEW DERIVATIVE: UPDATE FUNCTION SETUPDERIVATIVE, TOO !!!
+	local PowerPC_derivatives = _T("PowerPC MPC5200;PowerPC MPC565"); // !!! NEW DERIVATIVE: UPDATE FUNCTION SETUPDERIVATIVE, TOO !!!
 	// intro
 	Wizard.AddInfoPage(_T("ConsoleIntro"), intro_msg);
 	// select project name and path
@@ -18,9 +16,9 @@ function BeginWizard()
 	// select compiler and configurations
 	Wizard.AddCompilerPage(_T(""), _T("ppc*"), false, false);
 	// select language
-	Wizard.AddGenericSingleChoiceListPage(_T("PowerPCDerivatives"), _T("Please select your PowerPC derivative."), PowerPC_derivatives , derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("PowerPCDerivatives"), _("Please select your PowerPC derivative."), PowerPC_derivatives , derivative);
 
-//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _T("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _T("Empty project;Compilable project with dummyfiles"), outputvariant);
+//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _T("Empty project;Compilable project with dummyfiles"), outputvariant);
 }
 //
 //------------------------------------------------------------------------------

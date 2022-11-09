@@ -12,19 +12,19 @@ QtPath <- _T("");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new Trolltech Qt4 project wizard!\n" +
-                         "This wizard will guide you to create a new Qt4 project\n" +
-                         "using the Trolltech Qt4 cross-platform GUI toolkit\n\n" +
-                         "When you're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new Trolltech Qt4 project wizard!\n") +
+                      _("This wizard will guide you to create a new Qt4 project\n") +
+                      _("using the Trolltech Qt4 cross-platform GUI toolkit\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
-    local qtpath_msg = _T("Please select the location of Trolltech Qt4 on your computer.\n" +
-                          "This is the top-level folder where Qt4 was installed.\n" +
-                          "To help you, this folder must contain the subfolders\n" +
-                          "\"include\" and \"lib\".");
+    local qtpath_msg = _("Please select the location of Trolltech Qt4 on your computer.\n") +
+                       _("This is the top-level folder where Qt4 was installed.\n") +
+                       _("To help you, this folder must contain the subfolders\n") +
+                       _("\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("QtIntro"), intro_msg);
     Wizard.AddProjectPathPage();
-    Wizard.AddGenericSelectPathPage(_T("QtPath"), qtpath_msg, _T("Qt's location:"), QtPathDefault);
+    Wizard.AddGenericSelectPathPage(_T("QtPath"), qtpath_msg, _("Qt's location:"), QtPathDefault);
     Wizard.AddCompilerPage(_T(""), _T("gcc*"), true, true);
 }
 
@@ -47,7 +47,7 @@ function OnLeave_QtPath(fwd)
         if (dir_nomacro_inc.IsEmpty())
             return false;
         if (PLATFORM == PLATFORM_MSW
-            && !VerifyFile(dir_nomacro_inc + wxFILE_SEP_PATH + _T("QtGui"), _T("QApplication"), _T("Qt's include")))
+            && !VerifyFile(dir_nomacro_inc + wxFILE_SEP_PATH + _T("QtGui"), _T("QApplication"), _("Qt's include")))
             return false;
 
         // verify library dependencies

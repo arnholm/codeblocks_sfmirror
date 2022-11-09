@@ -14,9 +14,9 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the new static library wizard!\n" +
-                             "This wizard will guide you to create a new static library.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new static library wizard!\n") +
+                          _("This wizard will guide you to create a new static library.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("StaticLibIntro"), intro_msg);
         Wizard.AddProjectPathPage();
@@ -24,9 +24,10 @@ function BeginWizard()
     }
     else if (wiz_type == wizTarget)
     {
-        local intro_msg = _T("Welcome to the new static library build target wizard!\n" +
-                             "This wizard will guide you to create a new static library build target.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new static library build target wizard!\n") +
+                          _("This wizard will guide you to create a new static library build target.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
+
         Wizard.AddInfoPage(_T("StaticLibIntro"), intro_msg);
         Wizard.AddBuildTargetPage(_T(""), false, true, _T(""), _T("*"), true);
     }

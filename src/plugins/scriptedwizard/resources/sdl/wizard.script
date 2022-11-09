@@ -12,22 +12,22 @@ SDLPath           <- _T("");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new SDL project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the SDL graphics library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new SDL project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the SDL graphics library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("SDLIntro"), intro_msg);
     Wizard.AddProjectPathPage();
     if (PLATFORM == PLATFORM_MSW)
     {
-        local sdlpath_descr = _T("Please select the location of SDL on your computer.\n" +
-                                 "This is the top-level folder where SDL was installed (unpacked).\n" +
-                                 "To help you, this folder must contain the subfolders\n" +
-                                 "\"include\" and \"lib\".\n\n" +
-                                 "You can also use a global variable, p.e. $(#sdl)\n");
+        local sdlpath_descr = _("Please select the location of SDL on your computer.\n") +
+                              _("This is the top-level folder where SDL was installed (unpacked).\n") +
+                              _("To help you, this folder must contain the subfolders\n") +
+                              _("\"include\" and \"lib\".\n\n") +
+                              _("You can also use a global variable, p.e. $(#sdl)\n");
 
-        Wizard.AddGenericSelectPathPage(_T("SDLPath"), sdlpath_descr, _T("Please select SDL's location:"), SDLPathDefault);
+        Wizard.AddGenericSelectPathPage(_T("SDLPath"), sdlpath_descr, _("Please select SDL's location:"), SDLPathDefault);
     }
 
     Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
@@ -54,7 +54,7 @@ function OnLeave_SDLPath(fwd)
 
         if (!IO.FileExists(dir_nomacro_inc + wxFILE_SEP_PATH + _T("SDL.h")))
         {
-            if (VerifyFile(dir_nomacro_inc, _T("SDL/SDL.h"), _T("SDL's include")))
+            if (VerifyFile(dir_nomacro_inc, _T("SDL/SDL.h"), _("SDL's include")))
                 SDLPathDefaultInc = SDLPathDefaultInc + _T("/SDL");
             else
                 return false;

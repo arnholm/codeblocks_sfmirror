@@ -14,21 +14,22 @@ PsdkPath <- _T("$(#psdk)");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new Win32 GUI project wizard!\n\n" +
-                         "This wizard will guide you to create a new Win32 GUI project.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
-    local psdk_msg = _T("Please define Platform SDK directory.\n\n" +
-                        "Project will not compile without the necessary system\n" +
-                        "libraries");
+    local intro_msg = _("Welcome to the new Win32 GUI project wizard!\n\n") +
+                      _("This wizard will guide you to create a new Win32 GUI project.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
+
+    local psdk_msg = _("Please define Platform SDK directory.\n\n") +
+                     _("Project will not compile without the necessary system libraries");
 
     Wizard.AddInfoPage(_T("Win32Intro"), intro_msg);
     Wizard.AddGenericSingleChoiceListPage(_T("Win32ProjType"),
-            _T("Please select type of project."),
-            _T("Frame based;Dialog based"),
+            _("Please select type of project."),
+            _("Frame based;Dialog based"),
             ProjectType); // select wxwidgets version
+
     Wizard.AddProjectPathPage();
     Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
-    Wizard.AddGenericSelectPathPage(_T("PsdkPath"), psdk_msg, _T("Platform SDK's location:"), _T("$(#psdk)"));
+    Wizard.AddGenericSelectPathPage(_T("PsdkPath"), psdk_msg, _("Platform SDK's location:"), _T("$(#psdk)"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

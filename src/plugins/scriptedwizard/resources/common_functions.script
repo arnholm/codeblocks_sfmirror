@@ -70,7 +70,7 @@ function WarningsOn(compileTargetBase, compilerID)
     }
     else
     {
-        ShowWarning(_T("This wizard doesn't know how to setup warning flags for this compiler.\n"));
+        ShowWarning(_("This wizard doesn't know how to setup warning flags for this compiler.\n"));
     }
     // TODO: Other compilers, fallback?
 }// WarningsOn
@@ -139,7 +139,7 @@ function DebugSymbolsOn(compileTargetBase, compilerID)
     }
     else
     {
-        ShowWarning(_T("This wizard doesn't know how to setup debug flags for this compiler.\n"));
+        ShowWarning(_("This wizard doesn't know how to setup debug flags for this compiler.\n"));
     }
     // TODO: Other compilers, fallback?
 }// DebugSymbolsOn
@@ -227,7 +227,7 @@ function OptimizationsOn(compileTargetBase, compilerID)
     }
     else
     {
-        ShowWarning(_T("This wizard doesn't know how to setup optimization flags for this compiler.\n"));
+        ShowWarning(_("This wizard doesn't know how to setup optimization flags for this compiler.\n"));
     }
     // TODO: Other compilers, fallback?
 }// OptimizationsOn
@@ -268,7 +268,7 @@ function CppExceptionsOn(compileTargetBase, compilerID)
     }
     else
     {
-        ShowWarning(_T("This wizard doesn't know how to setup exception flags for this compiler.\n"));
+        ShowWarning(_("This wizard doesn't know how to setup exception flags for this compiler.\n"));
     }
     // TODO: Other compilers, fallback?
 }// CppExceptionsOn
@@ -282,8 +282,7 @@ function VerifyDirectory(dir_or_macro)
 
     if (!IO.DirectoryExists(dir))
     {
-        ShowError(_T("The directory you entered seems not to be valid.\n" +
-                     "This wizard cannot continue."));
+        ShowError(_("The directory you entered seems not to be valid.\nThis wizard cannot continue."));
         return (_T(""));
     }
 
@@ -320,9 +319,9 @@ function GetCompilerIncludeDir(selection, defaultSelection, defaultIncludeMacro)
         // no macros used, direct path
         if (!IO.DirectoryExists(selection + wxFILE_SEP_PATH + _T("include")))
         {
-            ShowError(_T("The path you entered seems valid, but the wizard " +
-                         "can't locate the include directory.\n" +
-                         "This wizard cannot continue."));
+            ShowError(_("The path you entered seems valid, but the wizard can't\n") +
+                      _("locate the include directory.\n") +
+                      _("This wizard cannot continue."));
             return (_T(""));
         }
         return (selection + wxFILE_SEP_PATH + _T("include"));
@@ -338,9 +337,9 @@ function GetCompilerIncludeDir(selection, defaultSelection, defaultIncludeMacro)
         local defaultInclude_nomacro = ReplaceMacros(defaultIncludeMacro);
         if (!IO.DirectoryExists(defaultInclude_nomacro))
         {
-            ShowError(_T("The macro you entered seems valid, but this wizard can't\n" +
-                         "locate the include directory based on this macro.\n" +
-                         "This wizard cannot continue."));
+            ShowError(_("The macro you entered seems valid, but the wizard can't\n") +
+                      _("locate the include directory based on this macro.\n") +
+                      _("This wizard cannot continue."));
             return (_T(""));
         }
 
@@ -352,9 +351,9 @@ function GetCompilerIncludeDir(selection, defaultSelection, defaultIncludeMacro)
 
     if (!IO.DirectoryExists(selection_nomacro + wxFILE_SEP_PATH + _T("include")))
     {
-        ShowError(_T("The macro you entered seems valid, but this wizard can't\n" +
-                     "compute the include directory based on this macro.\n" +
-                     "This wizard cannot continue."));
+        ShowError(_("The macro you entered seems valid, but the wizard can't\n") + 
+                  _("compute the include directory based on this macro.\n") +
+                  _("This wizard cannot continue."));
         return (_T(""));
     }
 
@@ -418,9 +417,9 @@ function GetCompilerLibDir(selection, defaultSelection, defaultLibMacro)
         // no macros used, direct path
         if (!IO.DirectoryExists(selection + wxFILE_SEP_PATH + _T("lib")))
         {
-            ShowError(_T("The path you entered seems valid, but the wizard " +
-                         "can't locate the library directory.\n" +
-                         "This wizard cannot continue."));
+            ShowError(_("The path you entered seems valid, but the wizard can't\n") +
+                      _("locate the library directory.\n") +
+                      _("This wizard cannot continue."));
             return (_T(""));
         }
         return (selection + wxFILE_SEP_PATH + _T("lib"));
@@ -436,9 +435,9 @@ function GetCompilerLibDir(selection, defaultSelection, defaultLibMacro)
         local defaultInclude_nomacro = ReplaceMacros(defaultLibMacro);
         if (!IO.DirectoryExists(defaultInclude_nomacro))
         {
-            ShowError(_T("The macro you entered seems valid, but this wizard can't\n" +
-                         "locate the library directory based on this macro.\n" +
-                         "This wizard cannot continue."));
+            ShowError(_("The macro you entered seems valid, but the wizard can't\n") +
+                      _("locate the library directory based on this macro.\n") +
+                      _("This wizard cannot continue."));
             return (_T(""));
         }
 
@@ -450,9 +449,9 @@ function GetCompilerLibDir(selection, defaultSelection, defaultLibMacro)
 
     if (!IO.DirectoryExists(selection_nomacro + wxFILE_SEP_PATH + _T("lib")))
     {
-        ShowError(_T("The macro you entered seems valid, but this wizard can't\n" +
-                     "compute the library directory based on this macro.\n" +
-                     "This wizard cannot continue."));
+        ShowError(_("The macro you entered seems valid, but the wizard can't\n") +
+                  _("compute the library directory based on this macro.\n") +
+                  _("This wizard cannot continue."));
         return (_T(""));
     }
 
@@ -531,9 +530,8 @@ function VerifyFile(dir, file, type)
 {
     if (!IO.FileExists(dir + wxFILE_SEP_PATH + file))
     {
-        ShowError(_T("The path you entered seems valid, but this wizard\n" +
-                     "can't locate the following ") + type + _T(" file:\n") +
-                     file + _T(" in it."));
+        ShowError(_("The path you entered seems valid, but the wizard can't\n") +
+                  _("locate the following ") + type + _(" file:\n") + file + _(" in it."));
         return false;
     }
     return true;
@@ -566,10 +564,9 @@ function VerifyLibFile(dir, file, type)
 {
     if (!SilentVerifyLibFile(dir, file))
     {
-        ShowError(_T("The path you entered seems valid, but this wizard\n" +
-                     "can't locate the following ") + type + _T(" library file:\n") +
-                     file + _T(" in it.\n" +
-                     "(Also tried prepending lib and appending .a and .lib)."));
+        ShowError(_("The path you entered seems valid, but the wizard can't\n") +
+                  _("locate the following ") + type + _(" library file:\n") + file + _(" in it.\n") +
+                  _("(Also tried prepending lib and appending .a and .lib)."));
         return false;
     }
     return true;

@@ -20,28 +20,27 @@ OgreIsSource <- false;
 function BeginWizard()
 {
     // intro text
-    local intro_msg = _T("Welcome to the new OGRE project wizard!\n\n" +
-                        "This wizard will guide you to create a new project\n" +
-                        "using the OGRE 3D rendering engine.\n\n" +
-                        "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new OGRE project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the OGRE 3D rendering engine.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     // "select OGRE path" text
-    local ogrepath_descr = _T("Please select the location of OGRE on your computer.\n" +
-                              "This is the top-level folder where OGRE was installed\n(unpacked).\n" +
-                              "To help you, this folder must contain the subfolders\n" +
-                              "\"include\" and \"lib\".\n" +
-                              "If you have setup an environment variable named\n" +
-                              "OGRE_HOME, it 'll automatically be used below.");
+    local ogrepath_descr = _("Please select the location of OGRE on your computer.\n") +
+                           _("This is the top-level folder where OGRE was installed\n(unpacked).\n") +
+                           _("To help you, this folder must contain the subfolders\n") +
+                           _("\"include\" and \"lib\".\n") +
+                           _("If you have setup an environment variable named\n") +
+                           _("OGRE_HOME, it 'll automatically be used below.");
 
     // source or SDK?
-    local sdk_descr = _T("OGRE might exist on your system as a source package\n" +
-                        "(you built it yourself), or as a pre-made SDK which you installed.\n\n" +
-                        "It is important for this wizard to know which SDK type is\n" +
-                        "installed so that it can setup your project properly.");
+    local sdk_descr = _("OGRE might exist on your system as a source package\n") +
+                      _("(you built it yourself), or as a pre-made SDK which you installed.\n\n") +
+                      _("It is important for this wizard to know which SDK type is\n") +
+                      _("installed so that it can setup your project properly.");
 
     // choices
-    local sdk_choices =  _T("I have a folder with the OGRE source code;" +
-                            "I have installed a pre-made OGRE SDK");
+    local sdk_choices =  _("I have a folder with the OGRE source code;"I have installed a pre-made OGRE SDK");
 
     // compilers: GCC and MSVC for windows, GCC for linux
     local compilers = PLATFORM == PLATFORM_MSW
@@ -51,7 +50,7 @@ function BeginWizard()
     Wizard.AddInfoPage(_T("OgreIntro"), intro_msg);
     Wizard.AddProjectPathPage();
     Wizard.AddGenericSingleChoiceListPage(_T("OgreSDKType"), sdk_descr, sdk_choices, OgreIsSource ? 0 : 1);
-    Wizard.AddGenericSelectPathPage(_T("OgrePath"), ogrepath_descr, _T("Please select OGRE's location:"), _T("$(OGRE_HOME)"));
+    Wizard.AddGenericSelectPathPage(_T("OgrePath"), ogrepath_descr, _("Please select OGRE's location:"), _T("$(OGRE_HOME)"));
     Wizard.AddCompilerPage(_T(""), compilers, true, true);
 }
 
@@ -97,8 +96,7 @@ function OnLeave_OgrePath(fwd)
         if ((OgreIsSource && !IO.FileExists(dir_nomacro + _T("/OgreMain/include/Ogre.h"))) ||
             (!OgreIsSource && !IO.FileExists(dir_nomacro + _T("/include/Ogre.h"))))
         {
-            ShowError(_T("The path you entered seems valid, but this wizard " +
-                    "can't locate OGRE's files in it..."));
+            ShowError(_("The path you entered seems valid, but this wizard can't locate OGRE's files in it..."));
             return false;
         }
 

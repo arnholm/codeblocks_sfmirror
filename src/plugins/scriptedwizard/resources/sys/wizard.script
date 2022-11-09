@@ -14,9 +14,9 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the new Kernel Mode Driver wizard!\n" +
-                             "This wizard will guide you to create a new Kernel Mode Driver.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new Kernel Mode Driver wizard!\n") +
+                          _("This wizard will guide you to create a new Kernel Mode Driver.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("SysIntro"), intro_msg);
         Wizard.AddProjectPathPage();
@@ -24,9 +24,10 @@ function BeginWizard()
     }
     else if (wiz_type == wizTarget)
     {
-        local intro_msg = _T("Welcome to the new Kernel Mode Driver build target wizard!\n" +
-                             "This wizard will guide you to create a new Kernel Mode Driver build target.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new Kernel Mode Driver build target wizard!\n") +
+                          _("This wizard will guide you to create a new Kernel Mode Driver build target.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
+
         Wizard.AddInfoPage(_T("SysIntro"), intro_msg);
         Wizard.AddBuildTargetPage(_T(""), false, false, _T(""), _T("*"), true);
     }

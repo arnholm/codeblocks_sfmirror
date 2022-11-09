@@ -26,10 +26,10 @@ VersionString   <- _T("")
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new OpenCV project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the OpenCV C++ library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new OpenCV project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the OpenCV C++ library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("OpenCVIntro"), intro_msg);
 
@@ -40,13 +40,13 @@ function BeginWizard()
     // Get the values (major, minor, and revision number), and construct a version string
     if (PLATFORM == PLATFORM_MSW)
     {
-        local opencv_path_descr = _T("Please select the location of OpenCV library on your computer.\n" +
-                                  "This is the top-level folder where OpenCV was installed (unpacked).\n" +
-                                  "To help you, this folder must contain the subfolders\n" +
-                                  "\"include\" and \"lib\".\n\n" +
-                                  "You can also use a global variable, p.e. $(#cv)\n");
+        local opencv_path_descr = _("Please select the location of OpenCV library on your computer.\n") +
+                                  _("This is the top-level folder where OpenCV was installed (unpacked).\n") +
+                                  _("To help you, this folder must contain the subfolders\n") +
+                                  _("\"include\" and \"lib\".\n\n") +
+                                  _("You can also use a global variable, p.e. $(#cv)\n");
 
-        Wizard.AddGenericSelectPathPage(_T("OpenCVPath"), opencv_path_descr, _T("Please select OpenCV's location:"), OpenCVPathDefault);
+        Wizard.AddGenericSelectPathPage(_T("OpenCVPath"), opencv_path_descr, _("Please select OpenCV's location:"), OpenCVPathDefault);
         Wizard.AddPage(_T("VersionSelection"));
     }
 
@@ -116,8 +116,7 @@ function OnLeave_VersionSelection(fwd)
         local test_inc_file = inc_nomacro + _T("\\opencv2\\opencv.hpp");
         if (!IO.FileExists(test_inc_file))
         {
-            ShowError(_T("The include path you entered seems invalid: File ")
-                       + test_inc_file + _T(" not found"));
+            ShowError(_("The include path you entered seems invalid: File ") + test_inc_file + _(" not found"));
             return false;
         }
 
@@ -138,8 +137,8 @@ function OnLeave_VersionSelection(fwd)
         }
         else
         {
-            ShowError(_T("The lib path you entered seems invalid: File ")
-                       + test_release_lib_file + _T(" or ") + test_debug_lib_file + _T(" not found"));
+            ShowError(_("The lib path you entered seems invalid: File ")
+                       + test_release_lib_file + _(" or ") + test_debug_lib_file + _(" not found"));
             return false;
         }
 

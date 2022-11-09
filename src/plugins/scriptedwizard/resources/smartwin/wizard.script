@@ -12,19 +12,19 @@ SmartwinPath           <- _T("");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new Smartwin project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the Smartwin GUI C++ library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new Smartwin project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the Smartwin GUI C++ library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
-    local swpath_descr = _T("Please select the location of SmartWin on your computer.\n" +
-                            "This is the top-level folder where SmartWin was installed (unpacked).\n" +
-                            "To help you, this folder must contain the subfolders\n" +
-                            "\"include\" and \"lib\".");
+    local swpath_descr = _("Please select the location of SmartWin on your computer.\n") +
+                         _("This is the top-level folder where SmartWin was installed (unpacked).\n") +
+                         _("To help you, this folder must contain the subfolders\n") +
+                         _("\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("SmartwinIntro"), intro_msg);
     Wizard.AddProjectPathPage();
-    Wizard.AddGenericSelectPathPage(_T("SmartwinPath"), swpath_descr, _T("Please select SmartWin's location:"), SmartwinPathDefault);
+    Wizard.AddGenericSelectPathPage(_T("SmartwinPath"), swpath_descr, _("Please select SmartWin's location:"), SmartwinPathDefault);
     Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
 }
 
@@ -46,13 +46,13 @@ function OnLeave_SmartwinPath(fwd)
         local dir_nomacro_inc = GetCompilerIncludeDir(dir, SmartwinPathDefault, SmartwinPathDefaultInc);
         if (dir_nomacro_inc.IsEmpty())
             return false;
-        if (!VerifyFile(dir_nomacro_inc, _T("SmartWin.h"), _T("Smartwin's include"))) return false;
+        if (!VerifyFile(dir_nomacro_inc, _T("SmartWin.h"), _("Smartwin's include"))) return false;
 
         // verify library dependencies
         local dir_nomacro_lib = GetCompilerLibDir(dir, SmartwinPathDefault, SmartwinPathDefaultLib);
         if (dir_nomacro_lib.IsEmpty())
             return false;
-        if (!VerifyLibFile(dir_nomacro_lib, _T("smartwin"), _T("Smartwin's library"))) return false;
+        if (!VerifyLibFile(dir_nomacro_lib, _T("smartwin"), _("Smartwin's library"))) return false;
 
 
         SmartwinPath = dir; // Remember the original selection.

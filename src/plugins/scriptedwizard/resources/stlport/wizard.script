@@ -12,22 +12,22 @@ STLportPath           <- _T("");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new STLport project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the STLport library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new STLport project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the STLport library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("STLportIntro"), intro_msg);
     Wizard.AddProjectPathPage();
     if (PLATFORM == PLATFORM_MSW)
     {
-        local stlportpath_descr = _T("Please select the location of STLport on your computer.\n" +
-                                     "This is the top-level folder where STLport was installed (unpacked).\n" +
-                                     "To help you, this folder must contain the subfolders\n" +
-                                     "\"include\" and \"lib\".\n\n" +
-                                     "You can also use a global variable, p.e. $(#stlport)\n");
+        local stlportpath_descr = _("Please select the location of STLport on your computer.\n") +
+                                  _("This is the top-level folder where STLport was installed (unpacked).\n") +
+                                  _("To help you, this folder must contain the subfolders\n") +
+                                  _("\"include\" and \"lib\".\n\n") +
+                                  _("You can also use a global variable, p.e. $(#stlport)\n");
 
-        Wizard.AddGenericSelectPathPage(_T("STLportPath"), stlportpath_descr, _T("Please select STLport's location:"), STLportPathDefault);
+        Wizard.AddGenericSelectPathPage(_T("STLportPath"), stlportpath_descr, _("Please select STLport's location:"), STLportPathDefault);
     }
 
     Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
@@ -51,7 +51,7 @@ function OnLeave_STLportPath(fwd)
         local dir_nomacro_inc = GetCompilerIncludeDir(dir, STLportPathDefault, STLportPathDefaultInc);
         if (dir_nomacro_inc.IsEmpty())
             return false;
-        if (!VerifyFile(dir_nomacro_inc, _T("iostream"), _T("STLport's include")))
+        if (!VerifyFile(dir_nomacro_inc, _T("iostream"), _("STLport's include")))
             return false;
 
         // verify library dependencies
@@ -59,13 +59,13 @@ function OnLeave_STLportPath(fwd)
         if (dir_nomacro_lib.IsEmpty())
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("stlport.5.1.dll"),     _T("STLport's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("stlport.5.1.dll"),     _("STLport's")))
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("stlportg.5.1.dll"),    _T("STLport's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("stlportg.5.1.dll"),    _("STLport's")))
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("stlportstlg.5.1.dll"), _T("STLport's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("stlportstlg.5.1.dll"), _("STLport's")))
             return false;
 
         STLportPath = dir; // Remember the original selection.

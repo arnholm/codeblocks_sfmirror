@@ -12,22 +12,22 @@ SDL2Path           <- _T("");
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new SDL2 project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the SDL2 library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new SDL2 project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the SDL2 library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("SDL2Intro"), intro_msg);
     Wizard.AddProjectPathPage();
     if (PLATFORM == PLATFORM_MSW)
     {
-        local sdl2path_descr = _T("Please select the folder where SDL2 is installed on your computer.\n" +
-                                  "This is either the i686-w64-mingw32 (32-bit) or the x86_64-w64-mingw32 (64-bit)\n" +
-                                  "folder under the top-level folder where SDL2 was unpacked.\n\n" +
-                                  "To help you, this folder must contain the subfolders \"include\" and \"lib\".\n\n" +
-                                  "You can also use a global variable, p.e. $(#sdl2)\n");
+        local sdl2path_descr = _("Please select the folder where SDL2 is installed on your computer.\n") +
+                               _("This is either the i686-w64-mingw32 (32-bit) or the x86_64-w64-mingw32 (64-bit)\n") +
+                               _("folder under the top-level folder where SDL2 was unpacked.\n\n") +
+                               _("To help you, this folder must contain the subfolders \"include\" and \"lib\".\n\n") +
+                               _("You can also use a global variable, p.e. $(#sdl2)\n");
 
-        Wizard.AddGenericSelectPathPage(_T("SDL2Path"), sdl2path_descr, _T("Please select SDL2's location:"), SDL2PathDefault);
+        Wizard.AddGenericSelectPathPage(_T("SDL2Path"), sdl2path_descr, _("Please select SDL2's location:"), SDL2PathDefault);
     }
 
     Wizard.AddCompilerPage(_T(""), _T("*"), true, true);
@@ -54,7 +54,7 @@ function OnLeave_SDL2Path(fwd)
 
         if (!IO.FileExists(dir_nomacro_inc + wxFILE_SEP_PATH + _T("SDL.h")))
         {
-            if (VerifyFile(dir_nomacro_inc, _T("SDL2/SDL.h"), _T("SDL2's include")))
+            if (VerifyFile(dir_nomacro_inc, _T("SDL2/SDL.h"), _("SDL2's include")))
                 SDL2PathDefaultInc = SDL2PathDefaultInc + _T("/SDL2");
             else
                 return false;
@@ -65,10 +65,10 @@ function OnLeave_SDL2Path(fwd)
         if (dir_nomacro_lib.IsEmpty())
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL2main"), _T("SDL2's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL2main"), _("SDL2's")))
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL2.dll"), _T("SDL2's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL2.dll"), _("SDL2's")))
             return false;
 
         SDL2Path = dir; // Remember the original selection.
