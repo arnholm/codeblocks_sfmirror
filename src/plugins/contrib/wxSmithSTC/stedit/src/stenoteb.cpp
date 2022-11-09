@@ -1278,8 +1278,8 @@ void wxSTEditorNotebook::OnFindDialog(wxFindDialogEvent &event)
         int pages = 0;
         int count = ReplaceAllStrings(findString, replaceString, flags, &pages);
 
-        wxString msg( wxString::Format(_("Replaced %d occurances of\n'%s' with '%s'\nin %d documents."),
-                                       count, findString.wx_str(), replaceString.wx_str(), pages) );
+        wxString msg( wxString::Format(_("Replaced %d occurrences of\n'%s' with '%s'\nin %d documents."),
+                                       count, findString, replaceString, pages) );
 
         wxMessageBox( msg, _("Finished replacing"),
                       wxOK|wxICON_INFORMATION|wxSTAY_ON_TOP,

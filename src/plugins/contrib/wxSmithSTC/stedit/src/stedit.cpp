@@ -2141,8 +2141,8 @@ void wxSTEditor::HandleFindDialogEvent(wxFindDialogEvent& event)
             count = ReplaceAllStrings(findString, replaceString, flags);
         }
 
-        wxString msg(wxString::Format(_("Replaced %d occurances of\n'%s' with '%s'."),
-                                      count, findString.wx_str(), replaceString.wx_str()));
+        wxString msg(wxString::Format(_("Replaced %d occurrences of\n'%s' with '%s'."),
+                                      count, findString, replaceString));
 
         wxWindow* parent = wxDynamicCast(event.GetEventObject(), wxWindow);
         wxMessageBox( msg, _("Finished replacing"),
