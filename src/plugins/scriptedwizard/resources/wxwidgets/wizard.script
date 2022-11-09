@@ -36,7 +36,7 @@ LibWxSTC <- false; // STC Lib
 LibWxPropertyGrid <- false; // PropertyGrid Lib
 LibWxRibbon <- false; // Ribbon Lib
 LibWxLinkWinSock2 <- false; // On Windows, link with WinSock2 instead of WinSock
-WxVersion <- 0; // 0 - wx 3.0, 1 - wx 3.1, 2 - wx 3.2
+WxVersion <- 0; // 0 - wx 3.0, 1 - wx 3.1, 2 - wx 3.2, 3 - wx 3.3
 DebugTarget <- 1; // Target Type; 0 - Console, 1 - GUI
 ReleaseTarget <- 1; // Target Type; 0 - Console, 1 - GUI
 FileName <- _T(""); // Filename for wizard
@@ -54,31 +54,31 @@ multi_thread_dynamic <- true; //Default to Multi-thread. For MSVC only.
 
 function BeginWizard()
 {
-    local wxpath_msg = _T("Please select the location of wxWidgets on your computer.\n" +
-                          "This is the top-level folder where wxWidgets was unpacked.\n" +
-                          "To help you, this folder must contain the subfolders\n" +
-                          "\"include\" and \"lib\".\n\n" +
-                          "You can also use a global variable, f.e. $(#wx)\n");
+    local wxpath_msg = _("Please select the location of wxWidgets on your computer.\n") +
+                       _("This is the top-level folder where wxWidgets was unpacked.\n") +
+                       _("To help you, this folder must contain the subfolders\n") +
+                       _("\"include\" and \"lib\".\n\n") +
+                       _("You can also use a global variable, f.e. $(#wx)\n");
 
     WizType = Wizard.GetWizardType();
 
     if (WizType == wizProject)
     {
-        local intro_msg = _T("Welcome to the wxWidgets project wizard!\n\n" +
-                            "This wizard will guide you to create a new project using\n" +
-                            "the wxWidgets cross-platform GUI library.\n\n" +
-                            "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the wxWidgets project wizard!\n\n") +
+                          _("This wizard will guide you to create a new project using\n") +
+                          _("the wxWidgets cross-platform GUI library.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("WxIntro"), intro_msg);
         Wizard.AddGenericSingleChoiceListPage(_T("wxVersionPage"),
-                                              _T("Please select the wxWidgets version you want to use."),
-                                              _T("wxWidgets 3.0.x;wxWidgets 3.1.x;wxWidgets 3.2.x"),
+                                              _("Please select the wxWidgets version you want to use"),
+                                              _T("wxWidgets 3.0;wxWidgets 3.1;wxWidgets 3.2;wxWidgets 3.3"),
                                               WxVersion); // select wxwidgets version
         Wizard.AddProjectPathPage();
         Wizard.AddPage(_T("WxProjDetails"));
         Wizard.AddPage(_T("WxGuiSelect"));
         if (PLATFORM == PLATFORM_MSW)
-            Wizard.AddGenericSelectPathPage(_T("WxPath"), wxpath_msg, _T("wxWidgets' location:"), _T("$(#wx)"));
+            Wizard.AddGenericSelectPathPage(_T("WxPath"), wxpath_msg, _("wxWidgets' location:"), _T("$(#wx)"));
 
         // we need the compiler selection before wx settings, because we 'll have
         // to validate the settings. To do this we must know the compiler beforehand...
@@ -96,17 +96,17 @@ function BeginWizard()
     }
     else if (WizType == wizTarget)
     {
-        local intro_msg = _T("Welcome to the wxWidgets Target wizard!\n\n" +
-                            "This wizard will guide you to create a new target\n" +
-                            "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the wxWidgets Target wizard!\n\n") +
+                          _("This wizard will guide you to create a new target\n") +
+                          _("When you 're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("WxIntro"), intro_msg);
         Wizard.AddGenericSingleChoiceListPage(_T("wxVersionPage"),
-                                              _T("Please select the wxWidgets version you want to use."),
-                                              _T("wxWidgets 3.0.x;wxWidgets 3.1.x;wxWidgets 3.2.x"),
+                                              _("Please select the wxWidgets version you want to use."),
+                                              _T("wxWidgets 3.0;wxWidgets 3.1;wxWidgets 3.2;wxWidgets 3.3"),
                                               WxVersion); // select wxwidgets version
         if (PLATFORM == PLATFORM_MSW)
-            Wizard.AddGenericSelectPathPage(_T("WxPath"), wxpath_msg, _T("wxWidgets' location:"), _T("$(#wx)"));
+            Wizard.AddGenericSelectPathPage(_T("WxPath"), wxpath_msg, _("wxWidgets' location:"), _T("$(#wx)"));
 
         // we need the compiler selection before wx settings, because we 'll have
         // to validate the settings. To do this we must know the compiler beforehand...
@@ -206,7 +206,7 @@ function OnLeave_WxGuiSelect(fwd)
         {
             if ( !("WxsAddWxExtensions" in getroottable()) )
             {
-                ShowInfo(_T("wxSmith plugin is not loaded, can't continue"));
+                ShowInfo(_("wxSmith plugin is not loaded, can't continue"));
                 return false;
             }
         }
@@ -230,8 +230,7 @@ function OnLeave_WxPath(fwd)
         local dir_nomacro = ReplaceMacros(dir);
         if (!IO.FileExists(dir_nomacro + _T("/include/wx/wx.h")))
         {
-            ShowError(_T("The path you entered seems valid, but this wizard " +
-                    "can't locate wxWidgets' files in it..."));
+            ShowError(_("The path you entered seems valid, but this wizard can't locate wxWidgets' files in it..."));
             return false;
         }
 
@@ -274,14 +273,14 @@ function OnLeave_WxConf(fwd)
         // Ask the user whether wizard shall add PCH support when empty Project is selected
         if (IsEmpty && WantPCH)
         {
-            local msg = _T("You have selected PCH support for Empty project.\n\n");
-            msg = msg + _T("Wizard will add support for PCH assuming the PCH header name as wx_pch.h\n\n");
-            msg = msg + _T("Click Yes to accept default settings\n\nClick No to Enter PCH header manually");
-            local return_val = Message(msg, _T("wxWidgets Project Wizard"), wxICON_QUESTION | wxYES_NO);
+            local msg = _("You have selected PCH support for Empty project.\n\n");
+            msg = msg + _("Wizard will add support for PCH assuming the PCH header name as wx_pch.h\n\n");
+            msg = msg + _("Click Yes to accept default settings\n\nClick No to Enter PCH header manually");
+            local return_val = Message(msg, _("wxWidgets Project Wizard"), wxICON_QUESTION | wxYES_NO);
             if (return_val == wxID_NO)
             {
-                msg = _T("Please enter PCH header file name");
-                PCHFileName = wxGetTextFromUser(msg, _T("wxWidgets Wizard"), _T("wxprec.h"));
+                msg = _("Please enter PCH header file name");
+                PCHFileName = wxGetTextFromUser(msg, _("wxWidgets Wizard"), _T("wxprec.h"));
                 if (PCHFileName.IsEmpty()) // Check for empty string
                     PCHFileName = _T("wx_pch.h");
             }
@@ -354,8 +353,10 @@ function OnLeave_WxConf(fwd)
             lib_wxver = _T("30");
         else if (WxVersion == 1)
             lib_wxver = _T("31");
-       else if (WxVersion == 2)
+        else if (WxVersion == 2)
             lib_wxver = _T("32");
+        else if (WxVersion == 3)
+            lib_wxver = _T("33");
 
         // Now set the global variables
         LibPrefix = lib_prefix; // Prefix of lib name
@@ -386,28 +387,26 @@ function OnLeave_WxConf(fwd)
                 // alarm!
                 if (!IO.FileExists(LibPath + _T("/") + lib_rel_name))
                 {
-                    if (Message(_T("A matching Debug configuration cannot be found in the wxWidgets directory " +
-                                "you specified.\n" +
-                                "This means that Debug target of your project will not build.\n\n" +
-                                "Are you sure you want to continue with these settings?"),
-                                _T("Warning"), wxYES_NO) == wxID_NO)
+                    if (Message(_("A matching Debug configuration cannot be found in the wxWidgets directory you specified.\n") +
+                                _("This means that Debug target of your project will not build.\n\n") +
+                                _("Are you sure you want to continue with these settings?"),
+                                _("Warning"), wxYES_NO) == wxID_NO)
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (Message(_T("A matching Debug configuration cannot be found in the wxWidgets directory " +
-                                "you specified.\n" +
-                                "Would you like to link this target against the release binaries instead?\n" +
-                                "(Debugging the executable will still be possible.)"),
-                                _T("Warning"), wxYES_NO) == wxID_YES)
+                    if (Message(_("A matching Debug configuration cannot be found in the wxWidgets directory you specified.\n") +
+                                _("Would you like to link this target against the release binaries instead?\n") +
+                                _("(Debugging the executable will still be possible.)"),
+                                _("Warning"), wxYES_NO) == wxID_YES)
                     {
                         IsPartialDebug = true;
                     }
-                    else if (Message(_T("This means that Debug target of your project will not build.\n\n" +
-                                     "Are you sure you want to continue with these settings?"),
-                                     _T("Warning"), wxYES_NO) == wxID_NO)
+                    else if (Message(_("This means that Debug target of your project will not build.\n\n") +
+                                     _("Are you sure you want to continue with these settings?"),
+                                     _("Warning"), wxYES_NO) == wxID_NO)
                     {
                         return false;
                     }
@@ -416,11 +415,10 @@ function OnLeave_WxConf(fwd)
             if (!IO.FileExists(LibPath + _T("/") + lib_rel_name) && (chk_release == true))
             {
                 // alarm!
-                if (Message(_T("A matching Release configuration cannot be found in the wxWidgets directory " +
-                            "you specified.\n" +
-                            "This means that Release target of your project will not build.\n\n" +
-                            "Are you sure you want to continue with these settings?"),
-                            _T("Warning"), wxYES_NO) == wxID_NO)
+                if (Message(_("A matching Release configuration cannot be found in the wxWidgets directory you specified.\n") +
+                            _("This means that Release target of your project will not build.\n\n") +
+                            _("Are you sure you want to continue with these settings?"),
+                            _("Warning"), wxYES_NO) == wxID_NO)
                 {
                     return false;
                 }
@@ -435,11 +433,10 @@ function OnLeave_WxConf(fwd)
                 libname = LibPath + _T("/") + lib_rel_name;
             if (!IO.FileExists(libname))
             {
-                if (Message(_T("A matching configuration cannot be found in the wxWidgets directory " +
-                            "you specified.\n" +
-                            "This means that this target of your project will not build.\n\n" +
-                            "Are you sure you want to continue with these settings?"),
-                            _T("Warning"), wxYES_NO) == wxID_NO)
+                if (Message(_("A matching configuration cannot be found in the wxWidgets directory you specified.\n") +
+                            _("This means that this target of your project will not build.\n\n") +
+                            _("Are you sure you want to continue with these settings?"),
+                            _("Warning"), wxYES_NO) == wxID_NO)
                 {
                     return false;
                 }
@@ -450,10 +447,10 @@ function OnLeave_WxConf(fwd)
          || GetCompilerFactory().CompilerInheritsFrom(Wizard.GetCompilerID(), _T("msvc8"))
          || GetCompilerFactory().CompilerInheritsFrom(Wizard.GetCompilerID(), _T("msvc10")))
         {
-            local msg = _T("Wizard will setup the Project in Multi-threaded Dynamic CRT mode by default.\n\n");
-            msg = msg + _T("Click Yes to continue with Multi-threaded Dynamic CRT mode\n\n");
-            msg = msg + _T("Click No to continue with Multi-threaded Static CRT mode");
-            local thread = Message(msg, _T("wxWidgets Wizard"), wxICON_QUESTION | wxYES_NO);
+            local msg = _("Wizard will setup the Project in Multi-threaded Dynamic CRT mode by default.\n\n");
+            msg = msg + _("Click Yes to continue with Multi-threaded Dynamic CRT mode\n\n");
+            msg = msg + _("Click No to continue with Multi-threaded Static CRT mode");
+            local thread = Message(msg, _("wxWidgets Wizard"), wxICON_QUESTION | wxYES_NO);
             if (thread == wxID_YES)
                 multi_thread_dynamic = true;
             else
@@ -498,8 +495,8 @@ function OnLeave_WxConfUnix(fwd)
 
         if (!GetCompilerFactory().CompilerInheritsFrom(Wizard.GetCompilerID(), _T("gcc*")) && WantPCH)
         {
-            ShowWarning(_T("Precompiled headers currently only work for GNU GCC.\n" +
-                        "They are disabled for all other compilers."));
+            ShowWarning(_("Precompiled headers currently only work for GNU GCC.\n") +
+                        _("They are disabled for all other compilers."));
             WantPCH = false;
         }
 
@@ -509,13 +506,15 @@ function OnLeave_WxConfUnix(fwd)
             LibWxVer = _T("3.1");
         else if (WxVersion == 2)
             LibWxVer = _T("3.2");
+        else if (WxVersion == 3)
+            LibWxVer = _T("3.3");
 
         // Ask the user whether wizard shall add PCH support when empty Project is selected
         if (IsEmpty && WantPCH)
         {
-            local msg = _T("You have selected PCH support for Empty project.\n");
-            msg = msg + _T("Wizard will NOT add PCH support as it can't be added without adding any file.\n\n");
-            msg = msg + _T("Please add the PCH header later to Project");
+            local msg = _("You have selected PCH support for Empty project.\n");
+            msg = msg + _("Wizard will NOT add PCH support as it can't be added without adding any file.\n\n");
+            msg = msg + _("Please add the PCH header later to Project");
             ShowInfo(msg);
             WantPCH = false; // Sorry! Wizard can't add PCH support
         }
@@ -1237,9 +1236,8 @@ function OnLeave_WxAddLib(fwd)
 
             if (tempLibArray.Index(_T("wxQA")) >= 0)
             {
-                if (Message(_T("Library wxQA may not be available for wxWidgets built with GCC.\n" +
-                            "Continue anyway?"),
-                            _T("Warning"), wxYES_NO) == wxID_NO)
+                if (Message(_("Library wxQA may not be available for wxWidgets built with GCC.\nContinue anyway?"),
+                            _("Warning"), wxYES_NO) == wxID_NO)
                 {
                     return false;
                 }
