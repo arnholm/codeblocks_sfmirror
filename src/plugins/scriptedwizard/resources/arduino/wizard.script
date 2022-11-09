@@ -26,15 +26,19 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T(" Welcome to the Arduino Project Wizard\n\n" +
-                             "This wizard will guide you to create a new Arduino project.\nIf you want to be able to upload the built binary to your board,\nbe sure to choose a correct serial port which your board is connected on.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"\n\n" +
-                             "This wizard is created by Stanley Huang.\nFor updates, please visit http://www.arduinodev.com/codeblocks\nFor suggestions and bug reports, please send to\n<stanleyhuangyc@gmail.com>");
+        local intro_msg = _(" Welcome to the Arduino Project Wizard\n\n") +
+                          _("This wizard will guide you to create a new Arduino project.\n") +
+                          _("If you want to be able to upload the built binary to your board,\n") +
+                          _("be sure to choose a correct serial port which your board is connected on.\n\n") +
+                          _("When you 're ready to proceed, please click \"Next\"\n\n") +
+                          _("This wizard is created by Stanley Huang.\n") +
+                          _("For updates, please visit http://www.arduinodev.com/codeblocks\n") +
+                          _("For suggestions and bug reports, please send to <stanleyhuangyc@gmail.com>");
 
         Wizard.AddInfoPage(_T("Intro"), intro_msg);
         Wizard.AddPage(_T("processorChoice"));
         Wizard.AddProjectPathPage();
-        Wizard.AddCompilerPage(_T("GNU AVR GCC Compiler"), _T("avr*"), true, true);
+        Wizard.AddCompilerPage(_("GNU AVR GCC Compiler"), _T("avr*"), true, true);
     }
     else
         print(wiz_type);
@@ -335,8 +339,8 @@ function SetupProject(project)
 	    OptimizationsOn(target, Wizard.GetCompilerID());
 			SetSimTarget(project, target);
 	}
-	project.RenameBuildTarget(0, _T("Simulator - Debug"));
-	project.RenameBuildTarget(1, _T("Simulator - Release"));
+	project.RenameBuildTarget(0, _("Simulator - Debug"));
+	project.RenameBuildTarget(1, _("Simulator - Release"));
 	
 	return true;
 }

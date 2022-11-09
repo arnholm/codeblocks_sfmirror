@@ -22,13 +22,13 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the MCS51 project wizard!\n" +
-                             "This wizard will guide you to create a new MCS51 project.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the MCS51 project wizard!\n") +
+                          _("This wizard will guide you to create a new MCS51 project.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("MCS51Intro"), intro_msg);
         Wizard.AddProjectPathPage();
-        Wizard.AddCompilerPage(_T("SDCC Compiler"), _T("sdcc*;keil*;iar8051"), true, true);
+        Wizard.AddCompilerPage(_("SDCC Compiler"), _T("sdcc*;keil*;iar8051"), true, true);
         Wizard.AddPage(_T("memoryModelChoice"));
     }
     else

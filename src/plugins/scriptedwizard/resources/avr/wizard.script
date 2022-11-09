@@ -31,13 +31,13 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the new Atmel AVR project wizard!\n" +
-                             "This wizard will guide you to create a new Atmel AVR project.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new Atmel AVR project wizard!\n") +
+                          _("This wizard will guide you to create a new Atmel AVR project.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("AtmelAVRIntro"), intro_msg);
         Wizard.AddProjectPathPage();
-        Wizard.AddCompilerPage(_T("GNU AVR GCC Compiler"), _T("avr*"), false, true);
+        Wizard.AddCompilerPage(_("GNU AVR GCC Compiler"), _T("avr*"), false, true);
         Wizard.AddPage(_T("processorChoice"));
         //Wizard.AddPage(_T("programmerChoice"));
     }

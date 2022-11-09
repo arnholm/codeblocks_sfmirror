@@ -14,26 +14,26 @@ FLTKQuickProject <- true;
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new FLTK project wizard!\n\n" +
-                         "This wizard will guide you to create a new project\n" +
-                         "using the FLTK GUI C++ library.\n\n" +
-                         "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new FLTK project wizard!\n\n") +
+                      _("This wizard will guide you to create a new project\n") +
+                      _("using the FLTK GUI C++ library.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     // "select fltk project to generate" text
-    local fltkprjtype_descr = _T("Please select the type of project to generate.");
-    local fltkprj_choices = _T("Simple main() example;FLUID-based project");
+    local fltkprjtype_descr = _("Please select the type of project to generate.");
+    local fltkprj_choices = _("Simple main() example;FLUID-based project");
 
     Wizard.AddInfoPage(_T("FltkIntro"), intro_msg);
     Wizard.AddProjectPathPage();
     if (PLATFORM == PLATFORM_MSW)
     {
-        local fltkpath_descr = _T("Please select the location of FLTK on your computer.\n" +
-                                  "This is the top-level folder where FLTK was installed (unpacked).\n" +
-                                  "To help you, this folder must contain the subfolders\n" +
-                                  "\"include\" and \"lib\".\n\n" +
-                                  "You can also use a global variable, p.e. $(#fl)\n");
+        local fltkpath_descr = _("Please select the location of FLTK on your computer.\n") +
+                               _("This is the top-level folder where FLTK was installed (unpacked).\n") +
+                               _("To help you, this folder must contain the subfolders\n") +
+                               _("\"include\" and \"lib\".\n\n") +
+                               _("You can also use a global variable, p.e. $(#fl)\n");
 
-        Wizard.AddGenericSelectPathPage(_T("FltkPath"), fltkpath_descr, _T("Please select FLTK's location:"), FltkPathDefault);
+        Wizard.AddGenericSelectPathPage(_T("FltkPath"), fltkpath_descr, _("Please select FLTK's location:"), FltkPathDefault);
     }
 
     Wizard.AddGenericSingleChoiceListPage(_T("FLTKPrjType"), fltkprjtype_descr, fltkprj_choices, 0);
@@ -58,8 +58,7 @@ function OnLeave_FltkPath(fwd)
         local dir_nomacro_inc = GetCompilerIncludeDir(dir, FltkPathDefault, FltkPathDefaultInc);
         if (dir_nomacro_inc.IsEmpty())
             return false;
-        if (!VerifyFile(dir_nomacro_inc + wxFILE_SEP_PATH + _T("FL"), _T("Fl.H"),
-                        _T("FLTK's include")))
+        if (!VerifyFile(dir_nomacro_inc + wxFILE_SEP_PATH + _T("FL"), _T("Fl.H"), _("FLTK's include")))
         {
             return false;
         }
@@ -68,7 +67,7 @@ function OnLeave_FltkPath(fwd)
         local dir_nomacro_lib = GetCompilerLibDir(dir, FltkPathDefault, FltkPathDefaultLib);
         if (dir_nomacro_lib.IsEmpty())
             return false;
-        if (!VerifyLibFile(dir_nomacro_lib, _T("fltk"), _T("FLTK's"))) return false;
+        if (!VerifyLibFile(dir_nomacro_lib, _T("fltk"), _("FLTK's"))) return false;
 
 
         FltkPath = dir; // Remember the original selection.

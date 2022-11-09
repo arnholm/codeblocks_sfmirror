@@ -10,9 +10,9 @@
 function BeginWizard()
 {
     // this is the text that will appear in the start (intro) page
-    local intro_msg = _T("Welcome to the new Java application wizard!\n" +
-                        "This wizard will guide you to create a new Java application.\n\n" +
-                        "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new Java application wizard!\n") +
+                      _("This wizard will guide you to create a new Java application.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     // add builtin pages
     Wizard.AddInfoPage(_T("JavaIntro"), intro_msg); // intro

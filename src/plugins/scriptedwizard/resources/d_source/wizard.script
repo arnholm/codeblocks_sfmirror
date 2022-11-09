@@ -13,11 +13,9 @@ New_file_path <- _T( "newFile.d" );
 
 function BeginWizard()
 {
-	local intro_msg =
-		_T("Welcome to the new PL/D source file wizard.\n"
-		+ "This wizard will guide you to create a new D source file.\n\n"
-		+ "When you 're ready to proceed, please click \"Next\"..."
-	);
+	local intro_msg = _("Welcome to the new PL/D source file wizard.\n") +
+		              _("This wizard will guide you to create a new D source file.\n\n") +
+		              _("When you're ready to proceed, please click \"Next\"...");
 
 	local active_file = GetEditorManager().GetActiveEditor().GetFilename();
 	local path = active_file.BeforeLast( wxFILE_SEP_PATH.GetChar( 0 ) );
@@ -36,7 +34,7 @@ function BeginWizard()
 
 function OnEnter_FilePathPage( is_forward ) {
 	if( is_forward ) {
-		Wizard.SetFilePathSelectionFilter( _T("D sources (*.d; *.di)|*.d;*.di") );
+		Wizard.SetFilePathSelectionFilter( _("D sources (*.d; *.di)|*.d;*.di") );
 		Wizard.SetTextControlValue( _T( "ID_TEXTCTRL1" ), New_file_path );
 	}
 }
@@ -46,7 +44,7 @@ function CreateFiles() {
 
 	if (IsNull(ed)) {
 
-		ShowError(_T("The wizard could not locate the editor manager."));
+		ShowError(_("The wizard could not locate the editor manager."));
 	}
 
 	local fname = Wizard.GetFileName();
@@ -54,8 +52,7 @@ function CreateFiles() {
 
 	if (IsNull(ed_new)) {
 
-		ShowError(_T("The wizard could not create a new file.\n"
-			+ "Maybe the target folder is write-protected?"));
+		ShowError(_("The wizard could not create a new file.\nMaybe the target folder is write-protected?"));
 	}
 	else { // succeeded -> add file to project if needed
 		if( ed_new.GetText().IsEmpty() ) {

@@ -24,14 +24,14 @@ function BeginWizard()
     if (wiz_type == wizProject)
     {
         // this is the text that will appear in the start (intro) page
-        local intro_msg = _T("Welcome to the new console application wizard!\n" +
-                            "This wizard will guide you to create a new console application.\n\n" +
-                            "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new console application wizard!\n") +
+                          _("This wizard will guide you to create a new console application.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         // intro
         Wizard.AddInfoPage(_T("ConsoleIntro"), intro_msg);
         // select language
-        Wizard.AddGenericSingleChoiceListPage(_T("ConsoleLanguagePage"), _T("Please select the language you want to use."), _T("C;C++"), ConsoleLang); // select language
+        Wizard.AddGenericSingleChoiceListPage(_T("ConsoleLanguagePage"), _("Please select the language you want to use."), _T("C;C++"), ConsoleLang); // select language
         // select project name and path
         Wizard.AddProjectPathPage();
         // select compiler and configurations
@@ -40,9 +40,10 @@ function BeginWizard()
     else if (wiz_type == wizTarget)
     {
         WizardType = 1;
-        local intro_msg = _T("Welcome to the new console build target wizard!\n" +
-                            "This wizard will guide you to create a new console build target.\n\n" +
-                            "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new console build target wizard!\n") +
+                          _("This wizard will guide you to create a new console build target.\n\n") +
+                          _("When you're ready to proceed, please click \"Next\"...");
+
         Wizard.AddInfoPage(_T("ConsoleIntro"), intro_msg);
         Wizard.AddBuildTargetPage(_T(""), false, true, _T(""), _T("*"), true);
     }
@@ -79,10 +80,10 @@ function OnLeave_CompilerPage(fwd)
          || GetCompilerFactory().CompilerInheritsFrom(Wizard.GetCompilerID(), _T("msvc8"))
          || GetCompilerFactory().CompilerInheritsFrom(Wizard.GetCompilerID(), _T("msvc10")))
         {
-            local msg = _T("Wizard will setup the Project in Multi-threaded Dynamic CRT mode by default.\n\n");
-            msg = msg + _T("Click Yes to continue with Multi-threaded Dynamic CRT mode\n\n");
-            msg = msg + _T("Click No to continue with Multi-threaded Static CRT mode");
-            local thread = Message(msg, _T("Console Wizard"), wxICON_QUESTION | wxYES_NO);
+            local msg = _("Wizard will setup the Project in Multi-threaded Dynamic CRT mode by default.\n\n");
+            msg = msg + _("Click Yes to continue with Multi-threaded Dynamic CRT mode\n\n");
+            msg = msg + _("Click No to continue with Multi-threaded Static CRT mode");
+            local thread = Message(msg, _("Console Wizard"), wxICON_QUESTION | wxYES_NO);
             if (thread == wxID_YES)
                 multi_thread_dynamic = true;
             else

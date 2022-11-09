@@ -4,9 +4,9 @@ outputvariant <- 1;
 function BeginWizard()
 {
 	// this is the text that will appear in the start (intro) page
-	local intro_msg = _T(	"Welcome to the new ARM application wizard!\n" +
-				"This wizard will guide you to create a new ARM application.\n\n" +
-				"Please click \"Next\" to proceed.");
+	local intro_msg = _("Welcome to the new ARM application wizard!\n") +
+				      _("This wizard will guide you to create a new ARM application.\n\n") +
+				      _("Please click \"Next\" to proceed.");
 
 	local ARM_boards = _T(	"ARM-eval7t;" +
 					"ek-at91sam7a3;" +
@@ -24,19 +24,19 @@ function BeginWizard()
 	// select compiler and configurations
 	Wizard.AddCompilerPage(_T(""), _T("arm-elf*"), false, false);
 	// select language
-	Wizard.AddGenericSingleChoiceListPage(_T("ARMBoards"), _T("Please select your ARM evaluation board."), ARM_boards , board);
+	Wizard.AddGenericSingleChoiceListPage(_T("ARMBoards"), _("Please select your ARM evaluation board."), ARM_boards , board);
 
 	// Targetconfiguration for ARM
-	Wizard.AddGenericSingleChoiceListPage(_T("ARM_eval7t_Config"), _T("Please select the configuration you want to use."), _T("default"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("ek_at91sam7a3_Config"), _T("Please select the configuration you want to use."), _T("Code in ROM;Code in RAM"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("lpd_lh7a404_Config"), _T("Please select the configuration you want to use."), _T("default"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("olimex_at91sam7sx_Config"), _T("Please select the configuration you want to use."), _T("at91sam7s32;at91sam7s64;at91sam7s128;at91sam7s256"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("olimex_lpc213x_Config"), _T("Please select the configuration you want to use."), _T("lpc2132;lpc2134;lpc2136;lpc2138"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_AT91M55800_Config"), _T("Please select the configuration you want to use."), _T("default;ROM;RAM 512kB;RAM 1MB"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_LPC2294_Config"), _T("Please select the configuration you want to use."), _T("default;ROM;RAM 1MB"), derivative);
-	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_PXA255_Config"), _T("Please select the configuration you want to use."), _T("default"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("ARM_eval7t_Config"), _("Please select the configuration you want to use."), _("default"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("ek_at91sam7a3_Config"), _("Please select the configuration you want to use."), _("Code in ROM;Code in RAM"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("lpd_lh7a404_Config"), _("Please select the configuration you want to use."), _("default"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("olimex_at91sam7sx_Config"), _("Please select the configuration you want to use."), _("at91sam7s32;at91sam7s64;at91sam7s128;at91sam7s256"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("olimex_lpc213x_Config"), _("Please select the configuration you want to use."), _("lpc2132;lpc2134;lpc2136;lpc2138"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_AT91M55800_Config"), _("Please select the configuration you want to use."), _("default;ROM;RAM 512kB;RAM 1MB"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_LPC2294_Config"), _("Please select the configuration you want to use."), _("default;ROM;RAM 1MB"), derivative);
+	Wizard.AddGenericSingleChoiceListPage(_T("phyCORE_PXA255_Config"), _("Please select the configuration you want to use."), _("default"), derivative);
 
-//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _T("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _T("Empty project;Compilable project with dummyfiles"), outputvariant);
+//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _("Empty project;Compilable project with dummyfiles"), outputvariant);
 }
 //
 //------------------------------------------------------------------------------

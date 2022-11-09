@@ -9,23 +9,23 @@ MatlabPath <- _T("");
 
 function BeginWizard()
 {
-  local intro_msg = _T("Welcome to the new Matlab C-S-Function project wizard!\n\n" +
-                       "This wizard will guide you to create a new project\n" +
-                       "creating a Matlab C-S-Function using the GCC\n" +
-                       "or Matlab LCC compiler.\n\n" +
-                       "For GCC you must have converted the Matlab DLL's into\n" +
-                       "GCC compatible libraries using the DLLTOOL before.\n" +
-                       "On Windows, this wizard expects the GCC libraries at the location:\n" +
-                       "[MATLAB]/extern/lib/win32/gcc\n\n" +
-                       "When you're ready to proceed, please click \"Next\"...");
+  local intro_msg = _("Welcome to the new Matlab C-S-Function project wizard!\n\n") +
+                    _("This wizard will guide you to create a new project\n") +
+                    _("creating a Matlab C-S-Function using the GCC\n") +
+                    _("or Matlab LCC compiler.\n\n") +
+                    _("For GCC you must have converted the Matlab DLL's into\n") +
+                    _("GCC compatible libraries using the DLLTOOL before.\n") +
+                    _("On Windows, this wizard expects the GCC libraries at the location:\n") +
+                    _("[MATLAB]/extern/lib/win32/gcc\n\n") +
+                    _("When you're ready to proceed, please click \"Next\"...");
 
-  local matlabpath_descr = _T("Please select the location of Matlab on your computer.\n" +
-                              "This is the top-level folder where Matlab was installed.");
+  local matlabpath_descr = _("Please select the location of Matlab on your computer.\n") +
+                           _("This is the top-level folder where Matlab was installed.");
 
   Wizard.AddInfoPage(_T("MatlabCSFIntro"), intro_msg); // intro
   Wizard.AddProjectPathPage();
   Wizard.AddCompilerPage(_T(""), _T("gcc;lcc"), true, false); // compiler selection but no path selection
-  Wizard.AddGenericSelectPathPage(_T("MatlabPath"), matlabpath_descr, _T("Please select Matlab's location:"), _T("$(#matlab)"));
+  Wizard.AddGenericSelectPathPage(_T("MatlabPath"), matlabpath_descr, _("Please select Matlab's location:"), _T("$(#matlab)"));
   Wizard.AddPage(_T("MatlabHint"));
 }
 
@@ -41,36 +41,34 @@ function OnLeave_MatlabPath(fwd)
     local dir_nomacro = ReplaceMacros(dir);
     if (!IO.DirectoryExists(dir_nomacro))
     {
-      ShowError(_T("Please select a valid path to Matlab..."));
+      ShowError(_("Please select a valid path to Matlab..."));
       return false;
     }
     // Verify Matlab extern includes
     if (!IO.DirectoryExists(dir_nomacro + _T("/extern/include")))
     {
-      ShowError(_T("The Matlab path you entered seems valid, but this wizard\n" +
-                   "can't locate the Matlab extern include path in the sub-directory /extern/include"));
+      ShowError(_("The Matlab path you entered seems valid, but this wizard\n") +
+                _("can't locate the Matlab extern include path in the sub-directory /extern/include"));
       return false;
     }
     // Verify Matlab extern tmwtypes.h (Simulink types)
     if (!IO.FileExists(dir_nomacro + _T("/extern/include/tmwtypes.h")))
     {
-      ShowError(_T("The Matlab extern path seems valid, but this wizard\n" +
-                   "can't locate the Matlab twmtypes.h in it."));
+      ShowError(_("The Matlab extern path seems valid, but this wizard\ncan't locate the Matlab twmtypes.h in it."));
       return false;
     }
     // Verify Simulink includes
     if (!IO.DirectoryExists(dir_nomacro + _T("/simulink/include")))
     {
-      ShowError(_T("The Matlab path you entered seems valid, but this wizard\n" +
-                   "can't locate the Simulink include path in the sub-directory\n"
-                   "/simulink/include"));
+      ShowError(_("The Matlab path you entered seems valid, but this wizard\n") +
+                _("can't locate the Simulink include path in the sub-directory\n") +
+                _T("/simulink/include"));
       return false;
     }
     // Verify Matlab extern tmwtypes.h (Simulink types)
     if (!IO.FileExists(dir_nomacro + _T("/simulink/include/simstruc.h")))
     {
-      ShowError(_T("The Matlab-Simulink include path seems valid, but this wizard\n" +
-                   "can't locate the Matlab simstruc.h in it."));
+      ShowError(_("The Matlab-Simulink include path seems valid, but this wizard\ncan't locate the Matlab simstruc.h in it."));
       return false;
     }
 
@@ -79,9 +77,9 @@ function OnLeave_MatlabPath(fwd)
       // Verify LCC includes
       if (!IO.DirectoryExists(dir_nomacro + _T("/sys/lcc/include")))
       {
-        ShowError(_T("The Matlab path you entered seems valid, but this wizard\n" +
-                     "can't locate the LCC include path in the sub-directory\n" +
-                     "/sys/lcc/include"));
+        ShowError(_("The Matlab path you entered seems valid, but this wizard\n") +
+                  _("can't locate the LCC include path in the sub-directory\n") +
+                  _T("/sys/lcc/include"));
         return false;
       }
       if (PLATFORM == PLATFORM_MSW)
@@ -89,9 +87,9 @@ function OnLeave_MatlabPath(fwd)
         // Verify LCC libraries
         if (!IO.DirectoryExists(dir_nomacro + _T("/extern/lib/win32/lcc")))
         {
-          ShowError(_T("The Matlab path you entered seems valid, but this wizard\n" +
-                       "can't locate the LCC library path in the sub-directory\n" +
-                       "/extern/lib/win32/lcc"));
+          ShowError(_("The Matlab path you entered seems valid, but this wizard\n") +
+                    _("can't locate the LCC library path in the sub-directory\n") +
+                    _T("/extern/lib/win32/lcc"));
           return false;
         }
       }
@@ -103,9 +101,9 @@ function OnLeave_MatlabPath(fwd)
         // Verify GCC libraries
         if (!IO.DirectoryExists(dir_nomacro + _T("/extern/lib/win32/gcc")))
         {
-          ShowError(_T("The Matlab path you entered seems valid, but this wizard\n" +
-                       "can't locate the GCC library path in the sub-directory\n" +
-                       "/extern/lib/win32/gcc"));
+          ShowError(_("The Matlab path you entered seems valid, but this wizard\n") +
+                    _("can't locate the GCC library path in the sub-directory\n") +
+                    _T("/extern/lib/win32/gcc"));
           return false;
         }
       }
@@ -134,9 +132,9 @@ function SetupProject(project)
   {
     if (!CompilerFactory.IsValidCompilerID(_T("lcc")))
     {
-      ShowError(_T("The wizard has detected that your version of Code::Blocks does not\n" +
-                   "support the LCC compiler which is required for this project.\n" +
-                   "The wizard cannot continue. Please update Code::Blocks."));
+      ShowError(_("The wizard has detected that your version of Code::Blocks does not\n") +
+                _("support the LCC compiler which is required for this project.\n") +
+                _("The wizard cannot continue. Please update Code::Blocks."));
       return false;
     }
 

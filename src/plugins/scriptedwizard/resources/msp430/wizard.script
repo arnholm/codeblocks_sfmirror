@@ -25,12 +25,13 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _T("Welcome to the new MSP430 project wizard!\n" +
-                             "This wizard will guide you to create a new MSP430 project.\n\n" +
-                             "When you 're ready to proceed, please click \"Next\"...");
+        local intro_msg = _("Welcome to the new MSP430 project wizard!\n") +
+                          _("This wizard will guide you to create a new MSP430 project.\n\n") +
+                          _("When you 're ready to proceed, please click \"Next\"...");
+
         Wizard.AddInfoPage(_T("MSP430Intro"), intro_msg);
         Wizard.AddProjectPathPage();
-        Wizard.AddCompilerPage(_T("GNU MSP430 GCC Compiler"), _T("msp430*"), false, true);
+        Wizard.AddCompilerPage(_("GNU MSP430 GCC Compiler"), _T("msp430*"), false, true);
         Wizard.AddPage(_T("processorChoice"));        
     }
     else

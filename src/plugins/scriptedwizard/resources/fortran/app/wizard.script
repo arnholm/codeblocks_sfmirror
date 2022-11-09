@@ -10,9 +10,9 @@
 
 function BeginWizard()
 {
-    local intro_msg = _T("Welcome to the new Fortran project wizard!\n" +
-                        "This wizard will guide you to create a new Fortran project.\n\n" +
-                        "When you 're ready to proceed, please click \"Next\"...");
+    local intro_msg = _("Welcome to the new Fortran project wizard!\n") +
+                      _("This wizard will guide you to create a new Fortran project.\n\n") +
+                      _("When you're ready to proceed, please click \"Next\"...");
 
     // intro
     Wizard.AddInfoPage(_T("EmptyProjectIntro"), intro_msg);
