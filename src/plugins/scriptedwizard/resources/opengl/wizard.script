@@ -7,8 +7,7 @@
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new OpenGL project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using OpenGL.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing OpenGL.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("OpenGLIntro"), intro_msg);

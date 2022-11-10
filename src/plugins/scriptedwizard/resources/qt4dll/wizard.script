@@ -13,14 +13,12 @@ QtPath <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new Trolltech Qt4 shared project wizard!\n") +
-                      _("This wizard will guide you to create a new Qt4 project\n") +
-                      _("using the Trolltech Qt4 cross-platform GUI toolkit\n\n") +
+                      _("This wizard will guide you to create a new Qt4 project\nusing the Trolltech Qt4 cross-platform GUI toolkit\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     local qtpath_msg = _("Please select the location of Trolltech Qt4 shared on your computer.\n") +
                        _("This is the top-level folder where Qt4 was installed.\n") +
-                       _("To help you, this folder must contain the subfolders\n") +
-                       _("\"include\" and \"lib\".");
+                       _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("QtIntro"), intro_msg);
     Wizard.AddProjectPathPage();
@@ -54,7 +52,7 @@ function OnLeave_QtPath(fwd)
         local dir_nomacro_lib = GetCompilerLibDir(dir, QtPathDefault, QtPathDefaultLib);
         if (dir_nomacro_lib.IsEmpty())
             return false;
-        if (PLATFORM == PLATFORM_MSW && !VerifyLibFile(dir_nomacro_lib, _T("QtCore4"), _T("Qt's")))
+        if (PLATFORM == PLATFORM_MSW && !VerifyLibFile(dir_nomacro_lib, _T("QtCore4"), _("Qt's")))
             return false;
         else if (PLATFORM != PLATFORM_MSW && !VerifyLibFile(dir_nomacro_lib, _T("QtCore4"), _("Qt's")))
             return false;

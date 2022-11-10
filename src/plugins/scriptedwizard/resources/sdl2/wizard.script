@@ -13,8 +13,7 @@ SDL2Path           <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new SDL2 project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the SDL2 library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the SDL2 library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("SDL2Intro"), intro_msg);
@@ -22,8 +21,7 @@ function BeginWizard()
     if (PLATFORM == PLATFORM_MSW)
     {
         local sdl2path_descr = _("Please select the folder where SDL2 is installed on your computer.\n") +
-                               _("This is either the i686-w64-mingw32 (32-bit) or the x86_64-w64-mingw32 (64-bit)\n") +
-                               _("folder under the top-level folder where SDL2 was unpacked.\n\n") +
+                               _("This is either the i686-w64-mingw32 (32-bit) or the x86_64-w64-mingw32 (64-bit)\nfolder under the top-level folder where SDL2 was unpacked.\n\n") +
                                _("To help you, this folder must contain the subfolders \"include\" and \"lib\".\n\n") +
                                _("You can also use a global variable, p.e. $(#sdl2)\n");
 

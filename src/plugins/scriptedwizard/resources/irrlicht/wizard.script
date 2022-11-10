@@ -13,14 +13,12 @@ IrrlichtPath <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new Irrlicht project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the Irrlicht 3D real-time engine.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the Irrlicht 3D real-time engine.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     local irrpath_descr = _("Please select the location of Irrlicht on your computer.\n") +
                           _("This is the top-level folder where Irrlicht was installed (unpacked).\n") +
-                          _("To help you, this folder must contain the subfolders\n") +
-                          _("\"include\" and \"lib\".");
+                          _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("IrrIntro"), intro_msg);
     Wizard.AddProjectPathPage();
@@ -123,7 +121,7 @@ function SetupProject(project)
         {
             IrrlichtLibDir = _T("Win32-gcc"); // fallback is GCC
             ShowWarning(_("This wizard only knows how to setup a project for GCC (windows+linux) or Free Microsoft VisualC++ Toolkit 2003.\n") +
-                        _("Continuing but you're on your own..."));
+                        _("Continuing, but you're on your own..."));
         }
     }
     else

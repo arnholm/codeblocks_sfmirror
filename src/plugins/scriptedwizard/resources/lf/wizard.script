@@ -20,8 +20,7 @@ function BeginWizard()
 {
     // intro text
     local intro_msg = _("Welcome to the new Lightfeather project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the Lightfeather 3D rendering engine.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the Lightfeather 3D rendering engine.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     // "select LF path" text
@@ -52,7 +51,7 @@ function OnLeave_LFPath(fwd)
     if (fwd)
     {
         // error string
-        local error =_("The path you entered seems valid, but this wizard can't locate Lightfeather's files in it...");
+        local error =_("The path you entered seems valid, but this wizard\ncan't locate Lightfeather's files in it...");
 
         local dir         = Wizard.GetTextControlValue(_T("txtFolder")); // txtFolder is the text control in GenericSelectPathPage
         local dir_nomacro = ReplaceMacros(dir);

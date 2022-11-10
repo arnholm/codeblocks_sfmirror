@@ -26,10 +26,9 @@ function BeginWizard()
 
     if (wiz_type == wizProject)
     {
-        local intro_msg = _(" Welcome to the Arduino Project Wizard\n\n") +
+        local intro_msg = _("Welcome to the Arduino Project Wizard\n\n") +
                           _("This wizard will guide you to create a new Arduino project.\n") +
-                          _("If you want to be able to upload the built binary to your board,\n") +
-                          _("be sure to choose a correct serial port which your board is connected on.\n\n") +
+                          _("If you want to be able to upload the built binary to your board,\nbe sure to choose a correct serial port which your board is connected on.\n\n") +
                           _("When you 're ready to proceed, please click \"Next\"\n\n") +
                           _("This wizard is created by Stanley Huang.\n") +
                           _("For updates, please visit http://www.arduinodev.com/codeblocks\n") +

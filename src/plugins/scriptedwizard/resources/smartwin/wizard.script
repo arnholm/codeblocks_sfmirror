@@ -13,14 +13,12 @@ SmartwinPath           <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new Smartwin project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the Smartwin GUI C++ library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the Smartwin GUI C++ library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     local swpath_descr = _("Please select the location of SmartWin on your computer.\n") +
                          _("This is the top-level folder where SmartWin was installed (unpacked).\n") +
-                         _("To help you, this folder must contain the subfolders\n") +
-                         _("\"include\" and \"lib\".");
+                         _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("SmartwinIntro"), intro_msg);
     Wizard.AddProjectPathPage();

@@ -26,7 +26,7 @@ function BeginWizard()
     Wizard.AddInfoPage(_T("HFileIntro"), intro_msg); // intro
     Wizard.AddFilePathPage(true); // select filename (header guard required for header files)
 
-    Wizard.SetFilePathSelectionFilter(_("C/C++ header files (*.h;*.hpp;*.hxx;*.hh)|*.h;*.hpp;*.hxx;*.hh"));
+    Wizard.SetFilePathSelectionFilter(_("C/C++ header files") + _T(" (*.h;*.hpp;*.hxx;*.hh)|*.h;*.hpp;*.hxx;*.hh"));
 }
 
 function CreateFiles()

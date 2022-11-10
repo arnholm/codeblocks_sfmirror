@@ -13,8 +13,7 @@ SDLPath           <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new SDL project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the SDL graphics library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the SDL graphics library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("SDLIntro"), intro_msg);
@@ -23,8 +22,7 @@ function BeginWizard()
     {
         local sdlpath_descr = _("Please select the location of SDL on your computer.\n") +
                               _("This is the top-level folder where SDL was installed (unpacked).\n") +
-                              _("To help you, this folder must contain the subfolders\n") +
-                              _("\"include\" and \"lib\".\n\n") +
+                              _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                               _("You can also use a global variable, p.e. $(#sdl)\n");
 
         Wizard.AddGenericSelectPathPage(_T("SDLPath"), sdlpath_descr, _("Please select SDL's location:"), SDLPathDefault);
@@ -65,10 +63,10 @@ function OnLeave_SDLPath(fwd)
         if (dir_nomacro_lib.IsEmpty())
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("SDLmain"), _T("SDL's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDLmain"), _("SDL's")))
             return false;
 
-        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL.dll"), _T("SDL's")))
+        if (!VerifyLibFile(dir_nomacro_lib, _T("SDL.dll"), _("SDL's")))
             return false;
 
         SDLPath = dir; // Remember the original selection.

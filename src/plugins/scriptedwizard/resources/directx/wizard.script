@@ -13,23 +13,16 @@ DirectXVer  <- 9;
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new Direct/X project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the Direct/X extensions.\n\n") +
-                      _("This wizard expects the global variable \"dx\" to point\n") +
-                      _("to the appropriate DirectX SDK.\n") +
-                      _("This is the MS DirectX SDK for a Visual C++ Toolkit 2003 project\n") +
-                      _("and e.g. the DevPack folder for a GCC project.\n\n") +
-                      _("For a Visual C++ Toolkit 2003 project in addition the global variable\n") +
-                      _("\"psdk\" must point to the directory of the MS platform SDK.\n\n") +
-                      _("You will be asked to setup the variables accordingly. If this is\n") +
-                      _("not the case, verify \"Settings->Global variables\"\n") +
-                      _("after this wizard has completed.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the Direct/X extensions.\n\n") +
+                      _("This wizard expects the global variable \"dx\" to point\nto the appropriate DirectX SDK.\n") +
+                      _("This is the MS DirectX SDK for a Visual C++ Toolkit 2003 project\nand e.g. the DevPack folder for a GCC project.\n\n") +
+                      _("For a Visual C++ Toolkit 2003 project in addition the global variable\n\"psdk\" must point to the directory of the MS platform SDK.\n\n") +
+                      _("You will be asked to setup the variables accordingly. If this is\nnot the case, verify \"Settings->Global variables\"\nafter this wizard has completed.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     local dxpath_descr = _("Please select the location of the Direct/X SDK on your computer.\n") +
                          _("This is the top-level folder where Direct/X was installed (unpacked).\n") +
-                         _("To help you, this folder must contain the subfolders\n") +
-                         _("\"include\" and \"lib\".\n\n") +
+                         _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                          _("You can also use a global variable, p.e. $(#dx)\n");
 
     Wizard.AddInfoPage(_T("DirectXIntro"), intro_msg);

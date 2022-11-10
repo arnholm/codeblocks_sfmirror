@@ -13,8 +13,7 @@ STLportPath           <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new STLport project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the STLport library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the STLport library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("STLportIntro"), intro_msg);
@@ -23,8 +22,7 @@ function BeginWizard()
     {
         local stlportpath_descr = _("Please select the location of STLport on your computer.\n") +
                                   _("This is the top-level folder where STLport was installed (unpacked).\n") +
-                                  _("To help you, this folder must contain the subfolders\n") +
-                                  _("\"include\" and \"lib\".\n\n") +
+                                  _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                                   _("You can also use a global variable, p.e. $(#stlport)\n");
 
         Wizard.AddGenericSelectPathPage(_T("STLportPath"), stlportpath_descr, _("Please select STLport's location:"), STLportPathDefault);

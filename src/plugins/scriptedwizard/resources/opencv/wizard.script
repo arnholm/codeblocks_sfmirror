@@ -27,8 +27,7 @@ VersionString   <- _T("")
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new OpenCV project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the OpenCV C++ library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the OpenCV C++ library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("OpenCVIntro"), intro_msg);
@@ -42,8 +41,7 @@ function BeginWizard()
     {
         local opencv_path_descr = _("Please select the location of OpenCV library on your computer.\n") +
                                   _("This is the top-level folder where OpenCV was installed (unpacked).\n") +
-                                  _("To help you, this folder must contain the subfolders\n") +
-                                  _("\"include\" and \"lib\".\n\n") +
+                                  _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                                   _("You can also use a global variable, p.e. $(#cv)\n");
 
         Wizard.AddGenericSelectPathPage(_T("OpenCVPath"), opencv_path_descr, _("Please select OpenCV's location:"), OpenCVPathDefault);
@@ -116,7 +114,7 @@ function OnLeave_VersionSelection(fwd)
         local test_inc_file = inc_nomacro + _T("\\opencv2\\opencv.hpp");
         if (!IO.FileExists(test_inc_file))
         {
-            ShowError(_("The include path you entered seems invalid: File ") + test_inc_file + _(" not found"));
+            ShowError(_("The include path you entered seems invalid,\ncan't find file ") + test_inc_file);
             return false;
         }
 
@@ -137,8 +135,7 @@ function OnLeave_VersionSelection(fwd)
         }
         else
         {
-            ShowError(_("The lib path you entered seems invalid: File ")
-                       + test_release_lib_file + _(" or ") + test_debug_lib_file + _(" not found"));
+            ShowError(_("The lib path you entered seems invalid,\ncan't find files ") + test_release_lib_file + _(" or ") + test_debug_lib_file);
             return false;
         }
 

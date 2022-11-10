@@ -22,9 +22,7 @@ function BeginWizard()
                      _("Project will not compile without the necessary system libraries");
 
     Wizard.AddInfoPage(_T("Win32Intro"), intro_msg);
-    Wizard.AddGenericSingleChoiceListPage(_T("Win32ProjType"),
-            _("Please select type of project."),
-            _("Frame based;Dialog based"),
+    Wizard.AddGenericSingleChoiceListPage(_T("Win32ProjType"), _("Please select type of project."), _("Frame based;Dialog based"),
             ProjectType); // select wxwidgets version
 
     Wizard.AddProjectPathPage();

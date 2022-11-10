@@ -18,7 +18,7 @@ function BeginWizard()
 	// select language
 	Wizard.AddGenericSingleChoiceListPage(_T("PowerPCDerivatives"), _("Please select your PowerPC derivative."), PowerPC_derivatives , derivative);
 
-//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _T("Empty project;Compilable project with dummyfiles"), outputvariant);
+//	Wizard.AddGenericSingleChoiceListPage(_T("OutputVariant"), _("Please select the content of your project.\nPlease note: Empty projects are only compilable\nafter adding files!"), _("Empty project;Compilable project with dummyfiles"), outputvariant);
 }
 //
 //------------------------------------------------------------------------------

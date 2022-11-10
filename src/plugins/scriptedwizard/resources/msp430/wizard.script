@@ -27,7 +27,7 @@ function BeginWizard()
     {
         local intro_msg = _("Welcome to the new MSP430 project wizard!\n") +
                           _("This wizard will guide you to create a new MSP430 project.\n\n") +
-                          _("When you 're ready to proceed, please click \"Next\"...");
+                          _("When you're ready to proceed, please click \"Next\"...");
 
         Wizard.AddInfoPage(_T("MSP430Intro"), intro_msg);
         Wizard.AddProjectPathPage();

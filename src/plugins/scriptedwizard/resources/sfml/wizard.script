@@ -17,8 +17,7 @@ SFMLPath           <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new SFML project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the Simple and Fast Multimedia Library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the Simple and Fast Multimedia Library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("SFMLIntro"), intro_msg);
@@ -31,8 +30,7 @@ function BeginWizard()
     {
         local sfmlpath_descr = _("Please select the location of SFML on your computer.\n") +
                                _("This is the top-level folder where SFML was installed (unpacked).\n") +
-                               _("To help you, this folder must contain the subfolders\n") +
-                               _("\"include\" and \"lib\".\n\n") +
+                               _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                                _("You can also use a global variable, p.e. $(#sfml)\n");
 
         Wizard.AddGenericSelectPathPage(_T("SFMLPath"), sfmlpath_descr, _("Please select SFML's location:"), SFMLPathDefault);

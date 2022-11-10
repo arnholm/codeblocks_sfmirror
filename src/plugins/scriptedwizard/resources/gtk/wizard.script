@@ -14,8 +14,7 @@ GtkPath <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new GTK project wizard!\n") +
-                      _("This wizard will guide you to create a new GTK project\n") +
-                      _("using the GTK cross-platform GUI toolkit\n\n") +
+                      _("This wizard will guide you to create a new GTK project\nusing the GTK cross-platform GUI toolkit\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     Wizard.AddInfoPage(_T("GtkIntro"), intro_msg);
@@ -24,8 +23,7 @@ function BeginWizard()
     {
         local gtkpath_msg = _("Please select the location of GTK on your computer.\n") +
                             _("This is the top-level folder where GTK was installed.\n") +
-                            _("To help you, this folder must contain the subfolders\n") +
-                            _("\"include\" and \"lib\".\n\n") +
+                            _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                             _("You can also use a global variable, p.e. $(#gtk)\n");
 
         Wizard.AddGenericSelectPathPage(_T("GtkPath"), gtkpath_msg, _("GTK's location:"), GtkPathDefault);

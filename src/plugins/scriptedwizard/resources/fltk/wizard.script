@@ -15,8 +15,7 @@ FLTKQuickProject <- true;
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new FLTK project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the FLTK GUI C++ library.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the FLTK GUI C++ library.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     // "select fltk project to generate" text
@@ -29,8 +28,7 @@ function BeginWizard()
     {
         local fltkpath_descr = _("Please select the location of FLTK on your computer.\n") +
                                _("This is the top-level folder where FLTK was installed (unpacked).\n") +
-                               _("To help you, this folder must contain the subfolders\n") +
-                               _("\"include\" and \"lib\".\n\n") +
+                               _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".\n\n") +
                                _("You can also use a global variable, p.e. $(#fl)\n");
 
         Wizard.AddGenericSelectPathPage(_T("FltkPath"), fltkpath_descr, _("Please select FLTK's location:"), FltkPathDefault);

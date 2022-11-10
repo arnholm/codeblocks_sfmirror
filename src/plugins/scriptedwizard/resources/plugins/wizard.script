@@ -30,13 +30,11 @@ function BeginWizard()
     if (PLATFORM == PLATFORM_MSW)
     {
         intro_msg += _("\nVERY IMPORTANT NOTE:\n\n") +
-                     _("Code::Blocks is built with the GNU GCC compiler and links to\n") +
-                     _("the monolithic unicode wxWidgets DLL.\n") +
-                     _("This means that you must have exactly this setup to be able to\n") +
-                     _("build the generated plugin.\n") +
+                     _("Code::Blocks is built with the GNU GCC compiler and links to\nthe monolithic unicode wxWidgets DLL.\n") +
+                     _("This means that you must have exactly this setup to be able to build the generated plugin.\n") +
                      _("You must also have defined two global variables:\n") +
                      _("   1. $(#cb) pointing to Code::Blocks base dir (where CodeBlocks.cbp is)\n") +
-                     _("   2. $(#wx) or $(#wx30) pointing to wxWidgets base directory\n\n\n");
+                     _("   2. $(#wx) or $(#wx3n) pointing to wxWidgets base directory\n\n\n");
     }
 
     intro_msg += _("When you're ready to proceed, please click \"Next\"...");
@@ -380,6 +378,22 @@ function SetupTarget(target, isSystemWide, targetWxVersion)
             target.AddLinkLib(_T("wxmsw31u"));
             target.AddLibDir(_T("$(#wx31.lib)\\gcc_dll"));
         }
+        else if (targetWxVersion == 3)
+        {
+            target.AddIncludeDir(_T("$(#wx32.include)"));
+            target.AddIncludeDir(_T("$(#wx32.lib)\\gcc_dll\\mswu"));
+
+            target.AddLinkLib(_T("wxmsw32u"));
+            target.AddLibDir(_T("$(#wx32.lib)\\gcc_dll"));
+        }
+        else
+        {
+            target.AddIncludeDir(_T("$(#wx33.include)"));
+            target.AddIncludeDir(_T("$(#wx33.lib)\\gcc_dll\\mswu"));
+
+            target.AddLinkLib(_T("wxmsw33u"));
+            target.AddLibDir(_T("$(#wx33.lib)\\gcc_dll"));
+        }
 
         target.AddLibDir(GetBaseDevelPath(targetWxVersion));
         target.AddLinkLib(_T("codeblocks"));
@@ -412,7 +426,12 @@ function SetupTarget(target, isSystemWide, targetWxVersion)
         else if (targetWxVersion == 2)
             WxVersionFlag = _T(" --version=3.1");
         else if (targetWxVersion == 3)
+            WxVersionFlag = _T(" --version=3.2");
+        else if (targetWxVersion == 4)
+            WxVersionFlag = _T(" --version=3.3");
+        else
             WxVersionFlag = _T("");
+
         target.AddCompilerOption(_T("`wx-config --cflags ") + WxVersionFlag + _T("`"));
         target.AddLinkerOption(_T("`wx-config --libs ") + WxVersionFlag + _T("`"));
     }

@@ -13,14 +13,12 @@ GlutPath <- _T("");
 function BeginWizard()
 {
     local intro_msg = _("Welcome to the new GLUT project wizard!\n\n") +
-                      _("This wizard will guide you to create a new project\n") +
-                      _("using the GLUT OpenGL extensions.\n\n") +
+                      _("This wizard will guide you to create a new project\nusing the GLUT OpenGL extensions.\n\n") +
                       _("When you're ready to proceed, please click \"Next\"...");
 
     local glutpath_descr = _("Please select the location of GLUT on your computer.\n") +
                            _("This is the top-level folder where GLUT was installed (unpacked).\n") +
-                           _("To help you, this folder must contain the subfolders\n") +
-                           _("\"include\" and \"lib\".");
+                           _("To help you, this folder must contain the subfolders\n\"include\" and \"lib\".");
 
     Wizard.AddInfoPage(_T("GlutIntro"), intro_msg);
     Wizard.AddProjectPathPage();
