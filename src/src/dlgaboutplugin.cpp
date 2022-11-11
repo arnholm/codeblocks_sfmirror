@@ -23,11 +23,11 @@
 // class constructor
 dlgAboutPlugin::dlgAboutPlugin(wxWindow* parent, const PluginInfo* pi)
 {
-	wxXmlResource::Get()->LoadObject(this, parent, _T("dlgAboutPlugin"),_T("wxScrollingDialog"));
+	wxXmlResource::Get()->LoadObject(this, parent, "dlgAboutPlugin", "wxScrollingDialog");
     XRCCTRL(*this, "wxID_CANCEL", wxButton)->SetDefault();
 
-	XRCCTRL(*this, "lblTitle", wxStaticText)->SetLabel(pi->title);
-	XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetValue(pi->description);
+	XRCCTRL(*this, "lblTitle", wxStaticText)->SetLabel(_(pi->title));
+	XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetValue(_(pi->description));
 	XRCCTRL(*this, "txtThanksTo", wxTextCtrl)->SetValue(pi->thanksTo);
 	XRCCTRL(*this, "txtLicense", wxTextCtrl)->SetValue(pi->license);
 	XRCCTRL(*this, "lblName", wxStaticText)->SetLabel(pi->name);
