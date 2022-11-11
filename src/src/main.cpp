@@ -1534,7 +1534,7 @@ wxMenuItem* MainFrame::AddPluginInMenus(wxMenu* menu, cbPlugin* plugin, wxObject
     }
 
     int id = wxNewId();
-    wxString title(info->title);
+    wxString title(_(info->title));
     if (menu == m_HelpPluginsMenu)
         title << "...";
 
