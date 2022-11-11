@@ -119,13 +119,18 @@ function CheckOptions(options)
             Processor_t = TriCoreConfig[Processor.tostring()];
             if (Processor.Matches(_T("tc1765")) || Processor.Matches(_T("tc1775")) || Processor.Matches(_T("tc1920")))
             {
-                ShowMessage(_("Processor ") + Processor.Upper() + _(" is not supported by this wizard. Please select one of the supported one."));
+                local msg = _("Processor $1 is not supported by this wizard. Please select one of the supported one.");
+                msg.Replace(_T("$1"), Processor.Upper());
+                ShowMessage(msg);
             }
             else
             {
                 if (!Board.IsEmpty())
                     Wizard.EnableWindow(_T("comboboxProc"), false);
-                ShowMessage(_("For the Flash version of new build target ROM the processor ") + Processor.Upper() + _(" will be used."));
+
+                local msg = _("For the Flash version of new build target ROM the processor $1 will be used.");
+                msg.Replace(_T("$1"), Processor.Upper());
+                ShowMessage(msg);
                 return true;
             }
         }
@@ -160,7 +165,11 @@ function GetFlashType()
 {
     FlashType = Wizard.GetComboboxStringSelection(_T("comboboxFlashType"));
     if (Processor_t.flashtype.Find(FlashType) == -1)
-        ShowMessage(Processor.Upper() + _(" does not support this type of flash."));
+    {
+        local msg = _("$1 does not support this type of flash.");
+        msg.Replace(_T("$1"), Processor.Upper());
+        ShowMessage(msg);
+    }
 }
 
 function OnLeave_processorChoice(fwd)
@@ -317,7 +326,9 @@ function SetupTarget(target,is_debug)
         target.SetVar(_T("FLASHTYPE"), FlashType, false);
         if (!FlashType.Matches(_T("intern")))
         {
-            LogWarning(_("Please adjust in ") + Processor_t.linkerfile_rom + _(" the symbol __EBMCFG for 16-Bit or 32-Bit access of external Flash."));
+            local msg = _("Please adjust in $1 the symbol __EBMCFG for 16-Bit or 32-Bit access of external Flash.");
+            msg.Replace(_T("$1"), Processor_t.linkerfile_rom);
+            LogWarning(msg);
             project.SetNotes(_("Please look at the tab Code::Blocks in the 'Log & others' console to see how to do adjust your settings for using external Flash."));
             project.ShowNotes(true,false);
             project.SetShowNotesOnLoad(true);

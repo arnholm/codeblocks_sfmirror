@@ -114,7 +114,9 @@ function OnLeave_VersionSelection(fwd)
         local test_inc_file = inc_nomacro + _T("\\opencv2\\opencv.hpp");
         if (!IO.FileExists(test_inc_file))
         {
-            ShowError(_("The include path you entered seems invalid,\ncan't find file ") + test_inc_file);
+            local msg = _("The include path you entered seems invalid,\ncan't find file $1");
+            msg.Replace(_T("$1"), test_inc_file);
+            ShowError(msg);
             return false;
         }
 
@@ -135,7 +137,10 @@ function OnLeave_VersionSelection(fwd)
         }
         else
         {
-            ShowError(_("The lib path you entered seems invalid,\ncan't find files ") + test_release_lib_file + _(" or ") + test_debug_lib_file);
+            local msg = _("The lib path you entered seems invalid,\ncan't find files $1 or $2");
+            msg.Replace(_T("$1"), test_release_lib_file);
+            msg.Replace(_T("$2"), test_debug_lib_file);
+            ShowError(msg);
             return false;
         }
 

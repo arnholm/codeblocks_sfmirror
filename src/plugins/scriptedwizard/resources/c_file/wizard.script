@@ -25,9 +25,9 @@ function OnLeave_CFileLanguagePage(fwd)
     if (fwd)
     {
         if (Wizard.GetListboxSelection(_T("GenericChoiceList")) == 0)
-            Wizard.SetFilePathSelectionFilter(_("C files (*.c;*.C)|*.c;*.C")); // C
+            Wizard.SetFilePathSelectionFilter(_("C files") + _T(" (*.c;*.C)|*.c;*.C")); // C
         else
-            Wizard.SetFilePathSelectionFilter(_("C++ files (*.cpp;*.cxx;*.cc)|*.cpp;*.cxx;*.cc")); // C++
+            Wizard.SetFilePathSelectionFilter(_("C++ files") + _T(" (*.cpp;*.cxx;*.cc)|*.cpp;*.cxx;*.cc")); // C++
     }
     return true; // allow it
 }

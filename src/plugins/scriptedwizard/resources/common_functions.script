@@ -524,7 +524,10 @@ function VerifyFile(dir, file, type)
 {
     if (!IO.FileExists(dir + wxFILE_SEP_PATH + file))
     {
-        ShowError(_("The path you entered seems valid, but this wizard can't\nlocate the following ") + type + _(" file:\n") + file + _(" in it."));
+        local msg = _("The path you entered seems valid, but this wizard can't\nlocate the following $1 file:\n$2 in it.");
+        msg.Replace(_T("$1"), type);
+        msg.Replace(_T("$2"), file);
+        ShowError(msg);
         return false;
     }
     return true;
@@ -557,8 +560,12 @@ function VerifyLibFile(dir, file, type)
 {
     if (!SilentVerifyLibFile(dir, file))
     {
-        ShowError(_("The path you entered seems valid, but this wizard can't\nlocate the following ") + type + _(" library file:\n") + file + _(" in it.\n") +
-                  _("(Also tried prepending lib and appending .a and .lib)."));
+        local msg = _("The path you entered seems valid, but this wizard can't\nlocate the following $1 library file:\n$2 in it.\n") +
+                    _("(Also tried prepending lib and appending .a and .lib).");
+
+        msg.Replace(_T("$1"), type);
+        msg.Replace(_T("$2"), file);
+        ShowError(msg);
         return false;
     }
     return true;
