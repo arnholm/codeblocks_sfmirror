@@ -167,16 +167,16 @@ void RegExDlg::Reevaluate()
     wxArrayString as(GetBuiltinMatches(m_text->GetValue()));
     if (as.IsEmpty())
     {
-        m_output->SetPage("<html><center><b>no matches</b></center></html>");
+        m_output->SetPage("<html><center><b>"+_("no matches")+"</b></center></html>");
         return;
     }
 
-    wxString s("<html width='100%'><center><b>matches:</b><br><br><font size=-1><table width='100%' border='1' cellspacing='2'>");
+    wxString s("<html width='100%'><center><b>"+_("matches")+":</b><br><br><font size=-1><table width='100%' border='1' cellspacing='2'>");
     const size_t asCount = as.GetCount();
     for (size_t i = 0; i < asCount; ++i)
     {
         cbEscapeHtml(as[i]);
-        s.append(wxString::Format("<tr><td width=35><b>%lu</b></td><td>%s</td></tr>", static_cast <unsigned long> (i), as[i]));
+        s.append(wxString::Format("<tr><td width=35><b>%zu</b></td><td>%s</td></tr>", i, as[i]));
     }
 
     s.append("</table></font></html>");
