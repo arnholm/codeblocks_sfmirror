@@ -65,8 +65,8 @@
 				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
 				<object class="wxCheckBox" name="checkboxUpload">
-					<tooltip>Automatically upload to Arudino board after project built</tooltip>
-					<label>Upload to board after compiliation</label>
+					<tooltip>Automatically upload to Arduino board after project built</tooltip>
+					<label>Upload to board after compilation</label>
 					<checked>0</checked>
 				</object>
 			</object>
