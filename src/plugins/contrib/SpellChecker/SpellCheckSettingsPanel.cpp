@@ -174,25 +174,26 @@ void SpellCheckSettingsPanel::OnCancel()
 
 void SpellCheckSettingsPanel::OnChooseDirectory(wxCommandEvent& event)
 {
-    wxString message = _("Choose the directory containing ");
+    wxString message;
     wxTextCtrl *textctrl;
 
     if ( event.GetId() == XRCID("ID_BUTTON_DICTIONARIES") )
     {
-        message += _("the dictionaries");
+        message = _("Choose the directory containing the dictionaries");
         textctrl = m_TextDictPath;
         //defaultDir = m_TextDictPath->GetValue();
     }
     else if ( event.GetId() == XRCID("ID_BUTTON_THESAURI") )
     {
-        message += _("the thesaurus files");
+        message = _("Choose the directory containing the thesaurus files");
         textctrl = m_TextThPath;
     }
     else //XRCID("ID_BUTTON_BITMAPS")
     {
-        message += _("the bitmaps");
+        message = _("Choose the directory containing the bitmaps");
         textctrl = m_TextBitmapPath;
     }
+
     wxString path = textctrl->GetValue();
     Manager::Get()->GetMacrosManager()->ReplaceEnvVars(path);
     wxDirDialog dlg(this, message, path, wxDD_DIR_MUST_EXIST);

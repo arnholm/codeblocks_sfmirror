@@ -591,7 +591,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
                 snippetsTreeMenu->Append(idMnuAddSnippet, _("Add Snippet"));
                 snippetsTreeMenu->Append(idMnuAddSubCategory, _("Add SubCategory"));
                 snippetsTreeMenu->AppendSeparator();
-                snippetsTreeMenu->Append(idMnuCopy,  _("Copy  Category"));
+                snippetsTreeMenu->Append(idMnuCopy,  _("Copy Category"));
                 snippetsTreeMenu->Append(idMnuPaste, _("Paste Tree Items"));
                 snippetsTreeMenu->Enable(idMnuPaste, pTiXmlDoc);
                 snippetsTreeMenu->Append(idMnuRename, _("Rename"));

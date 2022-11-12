@@ -15,7 +15,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbAllman">
 												<label>Allman (ANSI)</label>
-												<tooltip> Allman style uses broken brackets.</tooltip>
+												<tooltip>Allman style uses broken brackets.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -23,7 +23,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbJava">
 												<label>Java</label>
-												<tooltip> Java style uses attached brackets.</tooltip>
+												<tooltip>Java style uses attached brackets.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
