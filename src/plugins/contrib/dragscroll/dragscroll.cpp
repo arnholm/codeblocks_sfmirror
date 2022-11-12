@@ -1545,6 +1545,18 @@ void MouseEventsHandler::OnMouseEvent(wxMouseEvent& event)    //MSW
         // also allows auto activating the editor during long compiles
         if (pDS->GetMouseEditorFocusEnabled() && pStyledTextCtrl )
             ((wxWindow*)pEvtObject)->SetFocus();
+        else if (pDS->GetMouseEditorFocusEnabled())
+        {   // For focus-follows-mouse,
+            // test for movement. We can get here on clicks even though docs say otherwise.
+            if (event.Moving())
+            {   // If no movement leave focus where it is.
+                wxPoint startXY = ((wxWindow*)pEvtObject)->ScreenToClient(wxGetMousePosition());
+                wxMilliSleep(10);
+                wxPoint endXY = ((wxWindow*)pEvtObject)->ScreenToClient(wxGetMousePosition());
+                if ( (abs(startXY.x - endXY.x) >2) or (abs(startXY.y - endXY.y) >2) )
+                    ((wxWindow*)pEvtObject)->SetFocus();
+            }
+        }
     }
 
     int scrollx;

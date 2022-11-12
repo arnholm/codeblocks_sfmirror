@@ -31,7 +31,7 @@
 // ---------------------------------------------------------------------------
 
 //----------------------------------------
-#define VERSION "1.3.30 2021/06/25"                //(ph 2021/06/25)
+#define VERSION "1.3.31 2022/11/12"
 //----------------------------------------
 
 //-#undef LOGGING
@@ -477,6 +477,9 @@ private:
 //          Make it easier for external processes to use DragScroll support
 //          Convert event ids to XRCIDs for external use.
 //          Add Connect() for wxEVT_COMMAND_MENU_SELECTED for DragScroll events
+// 1.3.31   2022/11/12
+//          For focus-follows-mouse, give focus to windows with mouse movement and no clicks
+//          Allows log windows to re-click/scroll just by moving mouse.
 // ----------------------------------------------------------------------------
 //  ToDo
 // ----------------------------------------------------------------------------
