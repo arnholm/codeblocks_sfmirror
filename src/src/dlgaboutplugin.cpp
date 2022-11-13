@@ -30,8 +30,8 @@ dlgAboutPlugin::dlgAboutPlugin(wxWindow* parent, const PluginInfo* pi)
 	XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetValue(_(pi->description));
 	XRCCTRL(*this, "txtThanksTo", wxTextCtrl)->SetValue(_(pi->thanksTo));
 	XRCCTRL(*this, "txtLicense", wxTextCtrl)->SetValue(_(pi->license));
-	XRCCTRL(*this, "lblName", wxStaticText)->SetLabel(_(pi->name));
-	XRCCTRL(*this, "lblVersion", wxStaticText)->SetLabel(_(pi->version));
+	XRCCTRL(*this, "lblName", wxStaticText)->SetLabel(pi->name);
+	XRCCTRL(*this, "lblVersion", wxStaticText)->SetLabel(pi->version);
 	XRCCTRL(*this, "lblAuthor", wxStaticText)->SetLabel(pi->author);
 	XRCCTRL(*this, "lblEmail", wxStaticText)->SetLabel(pi->authorEmail);
 	XRCCTRL(*this, "lblWebsite", wxStaticText)->SetLabel(pi->authorWebsite);
