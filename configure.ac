@@ -515,6 +515,8 @@ AC_CONFIG_FILES([Makefile
 	src/plugins/contrib/regex_testbed/Makefile
 	src/plugins/contrib/ReopenEditor/Makefile
 	src/plugins/contrib/rndgen/Makefile
+	src/plugins/contrib/clangd_client/Makefile
+	src/plugins/contrib/clangd_client/src/resources/Makefile
 	src/plugins/contrib/ThreadSearch/Makefile
 	src/plugins/contrib/ToolsPlus/Makefile
 	src/plugins/contrib/ToolsPlus/Resources/Makefile

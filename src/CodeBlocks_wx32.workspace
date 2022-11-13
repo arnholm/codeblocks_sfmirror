@@ -130,6 +130,9 @@
 		<Project filename="plugins/contrib/rndgen/rndgen_wx32.cbp">
 			<Depends filename="CodeBlocks_wx32.cbp" />
 		</Project>
+		<Project filename="plugins/contrib/clangd_client/clangd_client_wx32.cbp">
+			<Depends filename="CodeBlocks_wx32.cbp" />
+		</Project>
 		<Project filename="plugins/contrib/SmartIndent/SmartIndent_wx32.cbp">
 			<Depends filename="CodeBlocks_wx32.cbp" />
 		</Project>

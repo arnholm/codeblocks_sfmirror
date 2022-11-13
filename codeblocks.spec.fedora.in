@@ -286,6 +286,7 @@ fi
 %{pkgdatadir}/ProjectOptionsManipulator.zip
 %{pkgdatadir}/RegExTestbed.zip
 %{pkgdatadir}/rndgen.zip
+%{pkgdatadir}/clangd_client.zip
 %{pkgdatadir}/ReopenEditor.zip
 %{pkgdatadir}/SymTab.zip
 %{pkgdatadir}/wxsmith.zip
@@ -331,6 +332,7 @@ fi
 %{plugindir}/libRegExTestbed.so
 %{plugindir}/libReopenEditor.so
 %{plugindir}/librndgen.so
+%{plugindir}/libclangd_client.so
 %{plugindir}/libSymTab.so
 %{plugindir}/libwxsmith.so
 %{plugindir}/libwxSmithAui.so

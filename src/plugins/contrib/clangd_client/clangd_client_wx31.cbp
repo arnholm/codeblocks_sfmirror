@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Clangd_Client-wx3" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Clangd_Client-wx3">
+				<Option output="bin/Clangd_Client" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin31" />
+				<Option object_output=".objs31" />
+				<Option external_deps="$(TARGET_DEVEL_DIR)/src/devel31/libcodeblocks.a;" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance --no-splash-screen --verbose  /p cbDebug315" />
+				<Option host_application="$(TARGET_DEVEL_DIR)/src/devel31/codeblocks.exe" />
+				<Option run_host_application_in_terminal="0" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-DBUILDING_PLUGIN" />
+					<Add option="-DCC_NO_COLLAPSE_ITEM" />
+					<Add option="-DLOGGING" />
+					<Add option="-DDONT_SHOW_SERVER_CONSOLE" />
+					<Add option="-Dcb_DEBUG" />
+					<Add directory="$(TARGET_DEVEL_DIR)/src/include" />
+					<Add directory="$(TARGET_DEVEL_DIR)/src/sdk/wxscintilla/include/" />
+					<Add directory="$(TARGET_DEVEL_DIR)/src/include/tinyxml/" />
+					<Add directory="$(PROJECT_DIR)/src/LSPclient/include" />
+					<Add directory="$(PROJECT_DIR)/src" />
+					<Add directory="src/LSPclient" />
+					<Add directory="src/winprocess" />
+					<Add directory="src/winprocess/asyncprocess" />
+					<Add directory="src/winprocess/misc" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,--enable-auto-image-base" />
+					<Add option="-Wl,--add-stdcall-alias" />
+					<Add option="-Wl,--enable-auto-import" />
+					<Add option="-Wl,--no-undefined" />
+					<Add option="-mthreads" />
+					<Add library="codeblocks" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add directory="$(TARGET_DEVEL_DIR)/src/devel31" />
+				</Linker>
+				<ExtraCommands>
+					<!-- <Add before="cmd /c @echo TARGET_OUTPUT_DIR: $(TARGET_OUTPUT_DIR)" /> -->
+					<!-- debugging - <Add before="cmd /c echo CODEBLOCKS: $(CODEBLOCKS)" /> -->
+					<!-- debugging - <Add before="cmd /c echo TARGET_DEVEL_DIR: $(TARGET_DEVEL_DIR)" /> -->
+					<!-- debugging - <Add before="cmd /c echo PROJECT_DIR: $(PROJECT_DIR)" /> -->
+					<!-- debugging - <Add before="g++ --version" /> -->
+
+					<Add after="cmd /c if not exist $(TARGET_OUTPUT_DIR) mkdir $(TARGET_OUTPUT_DIR)" />
+
+					<!-- Create the clangd_client.zip file -->
+					<Add after="cmd /c if exist clangd_client.zip del clangd_client.zip" />
+					<Add after="zip -jq9 clangd_client.zip src\resources\manifest.xml src/resources/*.xrc" />
+					<Add after='cmd /c "cd src\resources &amp;&amp; zip -rq9 ..\..\clangd_client.zip images"' />
+
+					<!-- Create the clangd_client.cbplugin file using the stripped dll -->
+					<!-- clangd_client.cbplugin is NOT BUILT BY DEFAULT as requested by PECAN
+						<Add after="cmd /c if exist clangd_client.cbplugin del clangd_client.cbplugin" />
+						<Add after="cmd /c copy bin\clangd_client.dll" />
+						<Add after="strip clangd_client.dll" />
+						<Add after="zip -jq9 clangd_client.cbplugin clangd_client.dll  clangd_client.zip  documentation-install/*.txt" />
+						<Add after="cmd /c del clangd_client.dll" />
+					-->
+
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="TARGET_DEVEL_DIR_AC" value="D:\Andrew_Development\Work_Installers\AC-WindowsInstaller" />
+					<Variable name="TARGET_DEVEL_DIR" value="$(CODEBLOCKS)\..\.." />
+				</Environment>
+			</Target>
+			<Environment>
+				<Variable name="WX_CFG" value="" />
+				<Variable name="WX_SUFFIX" value="u" />
+				<Variable name="WX_VERSION" value="31" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu++17" />
+			<Add option="-g" />
+			<Add option="$(#CB_RELEASE_TYPE)" />
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option="-fmessage-length=0" />
+			<Add option="-fexceptions" />
+			<Add option="-DHAVE_W32API_H" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DWXUSINGDLL" />
+			<Add option="-DcbDEBUG" />
+			<Add option="-DNOPCH" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add directory="$(#WX31.include)" />
+			<Add directory="$(#WX31.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
+			<Add directory="sdk/wxscintilla/include" />
+			<Add directory="include/tinyxml" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#WX31.include)" />
+			<Add directory="$(#WX31)/lib/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-m64" />
+			<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+			<Add directory="$(#WX31.lib)/gcc_dll$(WX_CFG)" />
+		</Linker>
+		<Unit filename="src/ClangLocator.cpp" />
+		<Unit filename="src/ClangLocator.h" />
+		<Unit filename="src/LSP_SymbolKind.h" />
+		<Unit filename="src/LSPclient/include/client.h" />
+		<Unit filename="src/LSPclient/include/json.hpp" />
+		<Unit filename="src/LSPclient/include/protocol.h" />
+		<Unit filename="src/LSPclient/include/transport.h" />
+		<Unit filename="src/LSPclient/include/uri.h" />
+		<Unit filename="src/LSPclient/lspdiagresultslog.cpp" />
+		<Unit filename="src/LSPclient/lspdiagresultslog.h" />
+		<Unit filename="src/LSPclient/src/client.cpp" />
+		<Unit filename="src/Version.h" />
+		<Unit filename="src/codecompletion/IdleCallbackHandler.h" />
+		<Unit filename="src/codecompletion/LSPEventCallbackHandler.h" />
+		<Unit filename="src/codecompletion/ccoptionsdlg.cpp" />
+		<Unit filename="src/codecompletion/ccoptionsdlg.h" />
+		<Unit filename="src/codecompletion/ccoptionsprjdlg.cpp" />
+		<Unit filename="src/codecompletion/ccoptionsprjdlg.h" />
+		<Unit filename="src/codecompletion/cctreectrl.cpp" />
+		<Unit filename="src/codecompletion/cctreectrl.h" />
+		<Unit filename="src/codecompletion/classbrowser.cpp" />
+		<Unit filename="src/codecompletion/classbrowser.h" />
+		<Unit filename="src/codecompletion/classbrowserbuilderthread.cpp" />
+		<Unit filename="src/codecompletion/classbrowserbuilderthread.h" />
+		<Unit filename="src/codecompletion/codecompletion.cpp" />
+		<Unit filename="src/codecompletion/codecompletion.h" />
+		<Unit filename="src/codecompletion/coderefactoring.cpp" />
+		<Unit filename="src/codecompletion/coderefactoring.h" />
+		<Unit filename="src/codecompletion/doxygen_parser.cpp" />
+		<Unit filename="src/codecompletion/doxygen_parser.h" />
+		<Unit filename="src/codecompletion/gotofunctiondlg.cpp" />
+		<Unit filename="src/codecompletion/gotofunctiondlg.h" />
+		<Unit filename="src/codecompletion/insertclassmethoddlg.cpp" />
+		<Unit filename="src/codecompletion/insertclassmethoddlg.h" />
+		<Unit filename="src/codecompletion/parsemanager.cpp" />
+		<Unit filename="src/codecompletion/parsemanager.h" />
+		<Unit filename="src/codecompletion/parsemanager_base.cpp" />
+		<Unit filename="src/codecompletion/parsemanager_base.h" />
+		<Unit filename="src/codecompletion/parser/LSP_symbolsparser.cpp" />
+		<Unit filename="src/codecompletion/parser/LSP_symbolsparser.h" />
+		<Unit filename="src/codecompletion/parser/LSP_tokenizer.cpp" />
+		<Unit filename="src/codecompletion/parser/LSP_tokenizer.h" />
+		<Unit filename="src/codecompletion/parser/ccdebuginfo.cpp" />
+		<Unit filename="src/codecompletion/parser/ccdebuginfo.h" />
+		<Unit filename="src/codecompletion/parser/cclogger.cpp" />
+		<Unit filename="src/codecompletion/parser/cclogger.h" />
+		<Unit filename="src/codecompletion/parser/expression.cpp" />
+		<Unit filename="src/codecompletion/parser/expression.h" />
+		<Unit filename="src/codecompletion/parser/parser.cpp" />
+		<Unit filename="src/codecompletion/parser/parser.h" />
+		<Unit filename="src/codecompletion/parser/parser_base.cpp" />
+		<Unit filename="src/codecompletion/parser/parser_base.h" />
+		<Unit filename="src/codecompletion/parser/profiletimer.cpp" />
+		<Unit filename="src/codecompletion/parser/profiletimer.h" />
+		<Unit filename="src/codecompletion/parser/searchtree.cpp" />
+		<Unit filename="src/codecompletion/parser/searchtree.h" />
+		<Unit filename="src/codecompletion/parser/token.cpp" />
+		<Unit filename="src/codecompletion/parser/token.h" />
+		<Unit filename="src/codecompletion/parser/tokenizer.cpp" />
+		<Unit filename="src/codecompletion/parser/tokenizer.h" />
+		<Unit filename="src/codecompletion/parser/tokentree.cpp" />
+		<Unit filename="src/codecompletion/parser/tokentree.h" />
+		<Unit filename="src/codecompletion/selectincludefile.cpp" />
+		<Unit filename="src/codecompletion/selectincludefile.h" />
+		<Unit filename="src/codecompletion/wxsmith/goto_function.wxs" />
+		<Unit filename="src/resources/clclassbrowser.xrc" />
+		<Unit filename="src/resources/clcodecompletion_toolbar.xrc" />
+		<Unit filename="src/resources/clinsert_class_method.xrc" />
+		<Unit filename="src/resources/clproject_settings.xrc" />
+		<Unit filename="src/resources/clselectincludefile.xrc" />
+		<Unit filename="src/resources/clsettings.xrc" />
+		<Unit filename="src/resources/manifest.xml" />
+		<Unit filename="src/winprocess/asyncprocess/StringUtils.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/StringUtils.h" />
+		<Unit filename="src/winprocess/asyncprocess/asyncprocess.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/asyncprocess.h" />
+		<Unit filename="src/winprocess/asyncprocess/processreaderthread.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/processreaderthread.h" />
+		<Unit filename="src/winprocess/asyncprocess/procutils.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/procutils.h" />
+		<Unit filename="src/winprocess/asyncprocess/smart_ptr.h" />
+		<Unit filename="src/winprocess/asyncprocess/winprocess.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/winprocess.h" />
+		<Unit filename="src/winprocess/asyncprocess/winprocess_impl.cpp" />
+		<Unit filename="src/winprocess/asyncprocess/winprocess_impl.h" />
+		<Unit filename="src/winprocess/misc/fileutils.cpp" />
+		<Unit filename="src/winprocess/misc/fileutils.h" />
+		<Unit filename="src/winprocess/misc/wxStringHash.h" />
+		<Extensions>
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxScrollingDialog wxs="wxsmith/VirtualBuildTargetsDlg.wxs" src="src/virtualbuildtargetsdlg.cpp" hdr="src/virtualbuildtargetsdlg.h" xrc="src/resources/virtualbuildtargetsdlg.xrc" fwddecl="0" i18n="1" name="VirtualBuildTargetsDlg" language="CPP" />
+					<wxScrollingDialog wxs="wxsmith/databreakpointdlg.wxs" src="plugins/debuggergdb/databreakpointdlg.cpp" hdr="plugins/debuggergdb/databreakpointdlg.h" fwddecl="0" i18n="1" name="DataBreakpointDlg" language="CPP" />
+					<wxScrollingDialog wxs="wxsmith/CCDebugInfo.wxs" src="src/codecompletion/parser/ccdebuginfo.cpp" hdr="src/codecompletion/parser/ccdebuginfo.h" fwddecl="0" i18n="1" name="CCDebugInfo" language="CPP" />
+					<wxPanel wxs="wxsmith/ScriptConsole.wxs" src="src/scriptconsole.cpp" hdr="src/scriptconsole.h" fwddecl="0" i18n="1" name="ScriptConsole" language="CPP" />
+					<wxPanel wxs="wxsmith/BuildTargetPanel.wxs" src="plugins/scriptedwizard/buildtargetpanel.cpp" hdr="plugins/scriptedwizard/buildtargetpanel.h" fwddecl="0" i18n="1" name="BuildTargetPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/CompilerPanel.wxs" src="plugins/scriptedwizard/compilerpanel.cpp" hdr="plugins/scriptedwizard/compilerpanel.h" fwddecl="0" i18n="1" name="CompilerPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/FilePathPanel.wxs" src="plugins/scriptedwizard/filepathpanel.cpp" hdr="plugins/scriptedwizard/filepathpanel.h" fwddecl="0" i18n="1" name="FilePathPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/GenericSelectPath.wxs" src="plugins/scriptedwizard/genericselectpath.cpp" hdr="plugins/scriptedwizard/genericselectpath.h" fwddecl="0" i18n="1" name="GenericSelectPath" language="CPP" />
+					<wxPanel wxs="wxsmith/GenericSingleChoiceList.wxs" src="plugins/scriptedwizard/genericsinglechoicelist.cpp" hdr="plugins/scriptedwizard/genericsinglechoicelist.h" fwddecl="0" i18n="1" name="GenericSingleChoiceList" language="CPP" />
+					<wxPanel wxs="wxsmith/InfoPanel.wxs" src="plugins/scriptedwizard/infopanel.cpp" hdr="plugins/scriptedwizard/infopanel.h" fwddecl="0" i18n="1" name="InfoPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/ProjectPathPanel.wxs" src="plugins/scriptedwizard/projectpathpanel.cpp" hdr="plugins/scriptedwizard/projectpathpanel.h" fwddecl="0" i18n="1" name="ProjectPathPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/EmbeddedHtmlPanel.wxs" src="plugins/defaultmimehandler/EmbeddedHtmlPanel.cpp" hdr="plugins/defaultmimehandler/EmbeddedHtmlPanel.h" fwddecl="1" i18n="1" name="EmbeddedHtmlPanel" language="CPP" />
+					<wxScrollingDialog wxs="wxsmith/debuggersettingsdlg.wxs" src="src/debuggersettingsdlg.cpp" hdr="src/debuggersettingsdlg.h" fwddecl="0" i18n="1" name="DebuggerSettingsDlg" language="CPP" />
+					<wxPanel wxs="wxsmith/debuggersettingspanel.wxs" src="src/debuggersettingspanel.cpp" hdr="src/debuggersettingspanel.h" fwddecl="0" i18n="1" name="DebuggerSettingsPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/debuggersettingscommonpanel.wxs" src="src/debuggersettingscommonpanel.cpp" hdr="src/debuggersettingscommonpanel.h" fwddecl="0" i18n="1" name="DebuggerSettingsCommonPanel" language="CPP" />
+					<wxDialog wxs="wxsmith/goto_file.wxs" src="src/goto_file.cpp" hdr="src/goto_file.h" fwddecl="1" i18n="1" name="GotoFile" language="CPP" />
+					<wxDialog wxs="src/codecompletion/wxsmith/goto_function.wxs" src="src/codecompletion/gotofunctiondlg.cpp" hdr="src/codecompletion/gotofunctiondlg.h" fwddecl="1" i18n="1" name="GotoFunctionDlg" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

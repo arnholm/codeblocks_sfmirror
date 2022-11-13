@@ -47,6 +47,7 @@
 		<Project filename="plugins\contrib\regex_testbed\RegExTestbed_wx32.cbp" />
 		<Project filename="plugins\contrib\ReopenEditor\ReopenEditor_wx32.cbp" />
 		<Project filename="plugins\contrib\rndgen\rndgen_wx32.cbp" />
+		<Project filename="plugins\contrib\clangd_client\clangd_client_wx32.cbp" />
 		<Project filename="plugins\contrib\SmartIndent\SmartIndent_wx32.cbp" />
 		<Project filename="plugins\contrib\source_exporter\Exporter_wx32.cbp" />
 		<Project filename="plugins\contrib\SpellChecker\SpellChecker_wx32.cbp" />

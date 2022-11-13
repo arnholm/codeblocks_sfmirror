@@ -45,6 +45,7 @@ find ../plugins/contrib/profiler                  | grep -P "(\.cpp|\.h)$" | xar
 find ../plugins/contrib/ProjectOptionsManipulator | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o ProjectOptionsManipulator.pot
 find ../plugins/contrib/regex_testbed             | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o regex_testbed.pot
 find ../plugins/contrib/rndgen                    | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o rndgen.pot
+find ../plugins/contrib/clangd_client             | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o clangd_client.pot
 find ../plugins/contrib/source_exporter           | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o source_exporter.pot
 find ../plugins/contrib/symtab                    | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o symtab.pot
 find ../plugins/contrib/ThreadSearch              | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o threadsearch.pot
