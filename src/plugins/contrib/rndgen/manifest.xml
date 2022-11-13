@@ -2,7 +2,7 @@
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11"  release="12" />
     <Plugin name="rndgen">
-        <Value title="rndgen" />
+        <Value title="Random generator" />
         <Value version="217.11.0.22" />
         <Value description="Replaces parts of the code with random numbers or character sequences when saving the file.
 
