@@ -2,7 +2,7 @@
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11"  release="10" />
     <Plugin name="ThreadSearch">
-        <Value title="ThreadSearch" />
+        <Value title="Thread search" />
         <Value version="1.14" />
         <Value description="Multi-threaded 'Search in files' with preview window." />
         <Value author="Jerome ANTOINE" />

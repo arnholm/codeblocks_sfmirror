@@ -14,7 +14,7 @@
               minor="11"
               release="12" />
   <Plugin name="ReopenEditor">
-    <Value title="ReopenEditor" />
+    <Value title="Reopen editor" />
     <Value version="0.5" />
     <Value description="Reopens a closed editor via hotkey, menu-item or from a list." />
     <Value author="Jens Lody" />

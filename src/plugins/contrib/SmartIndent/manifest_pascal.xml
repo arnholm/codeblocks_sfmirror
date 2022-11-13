@@ -2,7 +2,7 @@
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11"  release="12" />
     <Plugin name="SmartIndentPascal">
-        <Value title="SmartIndentPascal" />
+        <Value title="Smart indent for Pascal" />
         <Value version="0.1" />
         <Value description="Provides Smart indenting for Pascal" />
         <Value author="Daniel Anselmi" />

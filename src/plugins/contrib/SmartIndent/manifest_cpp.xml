@@ -2,7 +2,7 @@
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11"  release="12" />
     <Plugin name="SmartIndentCpp">
-        <Value title="SmartIndentCpp" />
+        <Value title="Smart indent for C++" />
         <Value version="0.1" />
         <Value description="Provides Smart indenting for Cpp (refactored from cbEditor)" />
         <Value author="Daniel Anselmi" />

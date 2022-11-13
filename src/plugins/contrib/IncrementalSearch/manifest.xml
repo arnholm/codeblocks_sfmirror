@@ -14,7 +14,7 @@
               minor="11"
               release="12" />
   <Plugin name="IncrementalSearch">
-    <Value title="IncrementalSearch" />
+    <Value title="Incremental search" />
     <Value version="0.9" />
     <Value description="Searches and highlights a marked text incrementally within the open editor." />
     <Value author="Jens Lody" />

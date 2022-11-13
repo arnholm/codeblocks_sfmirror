@@ -2,7 +2,7 @@
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11"  release="12" />
     <Plugin name="SmartIndentFortran">
-        <Value title="SmartIndentFortran" />
+        <Value title="Smart indent for Fortran" />
         <Value version="0.1" />
         <Value description="Provides Smart indenting for Fortran" />
         <Value author="darmar" />
