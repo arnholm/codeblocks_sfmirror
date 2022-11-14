@@ -83,7 +83,7 @@
 		</Project>
  		<Project filename="plugins/contrib/FortranProject/FortranProject_cbsvn_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
-		</Project>    
+		</Project>
 		<Project filename="plugins/contrib/headerfixup/headerfixup_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
 		</Project>
@@ -122,6 +122,9 @@
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/rndgen/rndgen_wx32_64.cbp">
+			<Depends filename="CodeBlocks_wx32_64.cbp" />
+		</Project>
+		<Project filename="plugins/contrib/clangd_client/clangd_client_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/SmartIndent/SmartIndent_wx32_64.cbp">
