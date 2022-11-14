@@ -131,10 +131,10 @@ void PluginsConfigurationDlg::FillList()
     wxListCtrl* list = XRCCTRL(*this, "lstPlugins", wxListCtrl);
     if (list->GetColumnCount() == 0)
     {
-        list->InsertColumn(0, _T("Title"));
-        list->InsertColumn(1, _T("Version"));
-        list->InsertColumn(2, _T("Enabled"), wxLIST_FORMAT_CENTER);
-        list->InsertColumn(3, _T("Filename"));
+        list->InsertColumn(0, _("Title"));
+        list->InsertColumn(1, _("Version"));
+        list->InsertColumn(2, _("Enabled"), wxLIST_FORMAT_CENTER);
+        list->InsertColumn(3, _("Filename"));
     }
 
     PluginManager* man = Manager::Get()->GetPluginManager();
@@ -147,7 +147,7 @@ void PluginsConfigurationDlg::FillList()
         const PluginElement* elem = plugins[i];
 
         long idx = list->InsertItem(i, _(elem->info.title));
-        list->SetItem(idx, 1, _(elem->info.version));
+        list->SetItem(idx, 1, elem->info.version);
         list->SetItem(idx, 2, elem->plugin->IsAttached() ? _("Yes") : _("No"));
         list->SetItem(idx, 3, UnixFilename(elem->fileName).AfterLast(wxFILE_SEP_PATH));
         list->SetItemPtrData(idx, (wxUIntPtr)elem);
@@ -247,7 +247,7 @@ void PluginsConfigurationDlg::OnInstall(cb_unused wxCommandEvent& event)
     wxFileDialog fd(this,
                         _("Select plugin to install"),
                         wxEmptyString, wxEmptyString,
-                        _T("Code::Blocks Plugins (*.cbplugin)|*.cbplugin"),
+                        _("Code::Blocks Plugins") + " (*.cbplugin)|*.cbplugin",
                         wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE | compatibility::wxHideReadonly);
     PlaceWindow(&fd);
     if (fd.ShowModal() != wxID_OK)
@@ -380,7 +380,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         {
             AnnoyingDialog dlg(_("Overwrite confirmation"),
                                 wxString::Format(_("%s already exists.\n"
-                                "Are you sure you want to overwrite it?"), filename.c_str()),
+                                "Are you sure you want to overwrite it?"), filename),
                                 wxART_QUESTION,
                                 AnnoyingDialog::THREE_BUTTONS,
                                 AnnoyingDialog::rtONE,
@@ -401,7 +401,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         }
 
         if (!Manager::Get()->GetPluginManager()->ExportPlugin(elem->plugin, filename))
-            failure << list->GetItemText(sel) << _T('\n');
+            failure << list->GetItemText(sel) << '\n';
     }
 
     if (!failure.IsEmpty())

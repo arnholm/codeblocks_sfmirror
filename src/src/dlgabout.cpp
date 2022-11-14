@@ -246,7 +246,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
             const wxString name(pluginlist[i]->info.name);
             const bool active = Manager::Get()->GetConfigManager("plugins")->ReadBool("/"+name, true);
             if (active)
-                plugins.push_back({_(pluginlist[i]->info.title), _(pluginlist[i]->info.version)});
+                plugins.push_back({_(pluginlist[i]->info.title), pluginlist[i]->info.version});
         }
 
         wxTextCtrl *txtPlugins = XRCCTRL(*this, "txtPlugins", wxTextCtrl);
