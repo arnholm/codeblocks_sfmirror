@@ -36,6 +36,8 @@ copyImageFiles() {
         cp -f ${from}/${dir}/*.png ${to}/${dir} > /dev/null
     done
 
+    echo "  Copy ${from}/svg to ${to}/svg"
+    mkdir -p ${to}/svg
     cp -f ${from}/svg/*.svg ${to}/svg > /dev/null
 }
 
