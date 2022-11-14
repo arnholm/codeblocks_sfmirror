@@ -28,14 +28,15 @@ copyImageFiles() {
     echo "Copy ${from} to ${to}"
 
     # This is done this stupid/convoluted way, because dash/posix doesn't have arrays!
-    dirs="16x16 20x20 24x24 28x28 32x32 40x40 48x48 56x56 64x64 svg"
+    dirs="16x16 20x20 24x24 28x28 32x32 40x40 48x48 56x56 64x64"
     echo "$dirs" | tr ' ' '\n' | while read dir; do
         echo "  Copy ${from}/${dir} to ${to}/${dir}"
 
         mkdir -p ${to}/${dir}
         cp -f ${from}/${dir}/*.png ${to}/${dir} > /dev/null
-        cp -f ${from}/${dir}/*.svg ${to}/${dir} > /dev/null
     done
+
+    cp -f ${from}/svg/*.svg ${to}/svg > /dev/null
 }
 
 copyImageFiles rc ../../../${CB_DEVEL_RESDIR}/SpellChecker
