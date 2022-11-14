@@ -6,24 +6,24 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="../../../devel32_64/share/CodeBlocks/plugins/clangd_client" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="devel32_64" />
-				<Option object_output="../../../.objs32_64/plugins/contrib/clangd_client" />
+				<Option output="../../../devel32/share/CodeBlocks/plugins/clangd_client" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="devel32" />
+				<Option object_output="../../../.objs32/plugins/contrib/clangd_client" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --verbose --no-splash-screen  /p cbDebugCLD" />
-				<Option host_application="$(CODEBLOCKS)/../devel32_64/codeblocks.exe" />
+				<Option host_application="$(CODEBLOCKS)/../devel32/codeblocks.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<ExtraCommands>
 					<Add before="cmd /c @echo TARGET_OUTPUT_DIR: $(TARGET_OUTPUT_DIR)" />
 					<Add before="cmd /c @echo TARGET_OUTPUT_FILENAME: $(TARGET_OUTPUT_FILENAME)" />
 					<Add before="cmd /c @ECHO TARGET_DEVEL_DIR: $(TARGET_DEVEL_DIR)" />
 					<Add before="cmd /c @ECHO CB_TRUNK: $(CB_TRUNK)" />
-					<Add after="cmd /c if not exist ..\..\..\devel32_64\share\codeblocks\plugins mkdir ..\..\..\devel32_64\share\codeblocks\plugins" />
+					<Add after="cmd /c if not exist ..\..\..\devel32\share\codeblocks\plugins mkdir ..\..\..\devel32\share\codeblocks\plugins" />
 					<Add after="cmd /c if exist .\clangd_client.zip del .\clangd_client.zip" />
 					<Add after="zip -jq9 .\clangd_client.zip  src\resources\manifest.xml  src/resources/*.xrc src/resources/*.cbp" />
 					<Add after='cmd /c &quot;cd src\resources &amp;&amp; zip -rq9 ..\..\clangd_client.zip images &amp;&amp; cd ..\..&quot;' />
-					<Add after="cmd /c copy .\clangd_client.zip ..\..\..\devel32_64\share\CodeBlocks\clangd_client.zip" />
+					<Add after="cmd /c copy .\clangd_client.zip ..\..\..\devel32\share\CodeBlocks\clangd_client.zip" />
 				</ExtraCommands>
 			</Target>
 			<Environment>
@@ -63,12 +63,12 @@
 			<Add directory="src/winprocess" />
 			<Add directory="src/winprocess/asyncprocess" />
 			<Add directory="src/winprocess/misc" />
-			<Add directory="$(#WX32_64.include)" />
-			<Add directory="$(#WX32_64.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
+			<Add directory="$(#WX32.include)" />
+			<Add directory="$(#WX32.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 		</Compiler>
 		<ResourceCompiler>
-			<Add directory="$(#WX32_64.include)" />
-			<Add directory="$(#WX32_64)/lib/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
+			<Add directory="$(#WX32.include)" />
+			<Add directory="$(#WX32)/lib/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-m32" />
@@ -79,8 +79,8 @@
 			<Add option="-Wl,--no-undefined" />
 			<Add library="codeblocks" />
 			<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
-			<Add directory="../../../devel32_64" />
-			<Add directory="$(#WX32_64.lib)/gcc_dll$(WX_CFG)" />
+			<Add directory="../../../devel32" />
+			<Add directory="$(#WX32.lib)/gcc_dll$(WX_CFG)" />
 		</Linker>
 		<Unit filename="src/ClangLocator.cpp" />
 		<Unit filename="src/ClangLocator.h" />
