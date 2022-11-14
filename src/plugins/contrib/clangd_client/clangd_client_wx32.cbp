@@ -39,7 +39,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=gnu++17" />
-			<Add option="-m64" />
+			<Add option="-m32" />
 			<Add option="-g" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
 			<Add option="-pipe" />
@@ -52,7 +52,7 @@
 			<Add option="-DWXUSINGDLL" />
 			<Add option="-DNOPCH" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-D_WIN64" />
+			<Add option="-D_WIN32" />
 			<Add option="-DCC_NO_COLLAPSE_ITEM" />
 			<Add option="-DcbDEBUG" />
 			<Add directory="../../../include" />
