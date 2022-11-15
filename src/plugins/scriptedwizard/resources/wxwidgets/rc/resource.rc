@@ -1,3 +1,6 @@
 aaaa ICON "wx/msw/std.ico"
 
+#define wxUSE_NO_MANIFEST         0
+#define wxUSE_DPI_AWARE_MANIFEST  2
+
 #include "wx/msw/wx.rc"
