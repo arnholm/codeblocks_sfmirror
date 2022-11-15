@@ -9,20 +9,20 @@
 		<Build>
 			<Target title="clangd_client">
 				<Option platforms="Unix;" />
-				<Option output="./devel30/clangd_client" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="./devel30" />
-				<Option object_output="./.objs30" />
+				<Option output="../../../devel30/share/codeblocks/plugins/clangd_client" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../devel30" />
+				<Option object_output="../../../.objs30/plugins/contrib/clangd_client" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --multiple-instance --no-splash-screen --verbose -p debug --no-ipc " />
-				<Option host_application="$(TARGET_DEVEL_DIR)/src/devel30/codeblocks" />
+				<Option host_application="../../../devel30/codeblocks" />
 				<Option run_host_application_in_terminal="0" />
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add directory="$(TARGET_DEVEL_DIR)/src/include" />
-					<Add directory="$(TARGET_DEVEL_DIR)/src/sdk/wxscintilla/include/" />
-					<Add directory="$(TARGET_DEVEL_DIR)/src/include/tinyxml/" />
+					<Add directory="../../../include" />
+					<Add directory="../../../sdk/wxscintilla/include/" />
+					<Add directory="../../../include/tinyxml/" />
 					<Add directory="src" />
 					<Add directory="src/LSPclient" />
 					<Add directory="src/codecompletion" />
@@ -38,17 +38,13 @@
 					<Add after="if [ -e clangd_client.cbplugin ]; then rm clangd_client.cbplugin; fi;" />
 					<Add after="zip -jq9 clangd_client.zip src/resources/manifest.xml src/resources/*.xrc" />
 					<Add after="cd src/resources &amp;&amp; zip -rq9 ../../clangd_client.zip images &amp;&amp; cd ../.." />
-					<Add after="zip -jq9 clangd_client.cbplugin $(TARGET_OUTPUT_FILE) clangd_client.zip documentation-install/*.txt" />
-					<Add after="cp clangd_client.zip $(TARGET_DEVEL_DIR)/src/devel30/share/codeblocks/clangd_client.zip" />
-					<Add after="cp $(TARGET_OUTPUT_FILE) $(TARGET_DEVEL_DIR)/src/devel30/share/codeblocks/plugins/$(TARGET_OUTPUT_FILENAME)" />
-					<Mode after="always" />
+					<Add after="cp clangd_client.zip ../../../devel30/share/codeblocks/clangd_client.zip" />
+					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
+										<Mode after="always" />
 				</ExtraCommands>
 			</Target>
 			<Environment>
 				<Variable name="PKG_CONFIG_GTK_VERSION" value="3.0" />
-				<Variable name="TARGET_DEVEL_DIR" value="$(CODEBLOCKS)/../.." />
-				<Variable name="TARGET_DEVEL_DIR_AC" value="/home/mint/code/AC-WindowsInstaller" />
-				<Variable name="TARGET_DEVEL_DIR_PECAN" value="$(CODEBLOCKS)/../.." />
 				<Variable name="WX_CFG" value="" />
 				<Variable name="WX_CONFIG" value="wx-config --toolkit=gtk3" />
 				<Variable name="WX_SUFFIX" value="u" />
@@ -68,7 +64,7 @@
 		<Linker>
 			<Add option="`$(WX_CONFIG) --libs std,aui,propgrid`" />
 			<Add option="-Wl,--no-undefined" />
-			<Add directory="$(TARGET_DEVEL_DIR)/src/devel30" />
+			<Add directory="../../../devel30" />
 		</Linker>
 		<Unit filename="src/ClangLocator.cpp" />
 		<Unit filename="src/ClangLocator.h" />
