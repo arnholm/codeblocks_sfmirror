@@ -4,10 +4,13 @@
     <Plugin name="ScriptedWizard">
         <Value title="Scripted wizard" />
         <Value version="0.9" />
-        <Value description="A generic scripted wizard" />
+        <Value description="A generic scripted wizard.
+
+This plugin is used to create files, projects and targets.
+If you disable it, all the 'New' dialogs will be empty." />
         <Value author="Yiannis An. Mandravellos" />
         <Value authorEmail="info@codeblocks.org" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="" />
         <Value license="GPL" />
     </Plugin>
