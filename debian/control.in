@@ -138,6 +138,7 @@ Description: contrib plugins for Code::Blocks IDE
  plugins. These are:
     * Autoversioning
     * BrowseTracker
+    * Clangd_Client / symbols-browser
     * Cccc
     * Code statistics (SLOCs etc)
     * Codesnippets

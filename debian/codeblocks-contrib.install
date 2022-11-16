@@ -5,6 +5,7 @@ usr/lib/codeblocks/plugins/libCccc.so
 usr/lib/codeblocks/plugins/libCppCheck.so
 usr/lib/codeblocks/plugins/libSmartIndent*.so
 usr/lib/codeblocks/plugins/libcb_koders.so
+usr/lib/codeblocks/plugins/libclangd_client.so
 usr/lib/codeblocks/plugins/libcodesnippets.so
 usr/lib/codeblocks/plugins/libcodestat.so
 usr/lib/codeblocks/plugins/libcopystrings.so
