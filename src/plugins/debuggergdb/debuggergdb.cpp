@@ -1829,7 +1829,7 @@ void DebuggerGDB::SetupToolsMenu(wxMenu &menu)
     menuPrint->AppendRadioItem(idMenuInfoPrintElements200, _("200 (default)"));
     menu.AppendSubMenu(menuPrint, _("Print Elements"), _("Set limit on string chars or array elements to print"));
     menu.AppendCheckItem(idMenuInfoCatchThrow, _("Catch throw"),
-                         _("If enabled the debugger will break when an exception is thronw"));
+                         _("If enabled the debugger will break when an exception is thrown"));
 }
 
 void DebuggerGDB::OnUpdateTools(wxUpdateUIEvent &event)
