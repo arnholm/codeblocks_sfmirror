@@ -55,7 +55,7 @@ wxsAuiToolBarSpacer::wxsAuiToolBarSpacer(wxsItemResData* Data)
 
 void wxsAuiToolBarSpacer::OnEnumItemProperties(long Flags)
 {
-    WXS_BOOL(wxsAuiToolBarSpacer,m_Stretch,_("Is strecht spacer"),_T("stretch"),false)
+    WXS_BOOL(wxsAuiToolBarSpacer,m_Stretch,_("Is stretch spacer"),_T("stretch"),false)
     WXS_LONG(wxsAuiToolBarSpacer,m_Pixels,_("Pixels"),_T("pixels"),0)
     WXS_LONG(wxsAuiToolBarSpacer,m_Proportion,_("Proportion"),_T("proportion"),1)
 }

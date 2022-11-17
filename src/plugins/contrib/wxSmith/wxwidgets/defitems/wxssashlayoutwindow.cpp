@@ -149,13 +149,13 @@ void wxsSashLayoutWindow::OnEnumContainerProperties(cb_unused long Flags)
     static const wxChar *norient[] = {_T("wxLAYOUT_HORIZONTAL"), _T("wxLAYOUT_VERTICAL"), 0};
 
 
-    WXS_BOOL(wxsSashLayoutWindow, mTop,    _("Drag Top"),    _("dragtop"),    true);
-    WXS_BOOL(wxsSashLayoutWindow, mBottom, _("Drag Bottom"), _("dragbottom"), true);
-    WXS_BOOL(wxsSashLayoutWindow, mLeft,   _("Drag Left"),   _("dragleft"),   true);
-    WXS_BOOL(wxsSashLayoutWindow, mRight,  _("Drag Right"),  _("dragright"),  true);
+    WXS_BOOL(wxsSashLayoutWindow, mTop,    _("Drag Top"),    "dragtop",    true);
+    WXS_BOOL(wxsSashLayoutWindow, mBottom, _("Drag Bottom"), "dragbottom", true);
+    WXS_BOOL(wxsSashLayoutWindow, mLeft,   _("Drag Left"),   "dragleft",   true);
+    WXS_BOOL(wxsSashLayoutWindow, mRight,  _("Drag Right"),  "dragright",  true);
 
-    WXS_ENUM(wxsSashLayoutWindow, mAlign,  _("Alignment"),   _T("alignment"),   valign,  nalign,  wxLAYOUT_LEFT);
-    WXS_ENUM(wxsSashLayoutWindow, mOrient, _("Orientation"), _T("orientation"), vorient, norient, wxLAYOUT_HORIZONTAL);
+    WXS_ENUM(wxsSashLayoutWindow, mAlign,  _("Alignment"),   "alignment",   valign,  nalign,  wxLAYOUT_LEFT);
+    WXS_ENUM(wxsSashLayoutWindow, mOrient, _("Orientation"), "orientation", vorient, norient, wxLAYOUT_HORIZONTAL);
 
 }
 

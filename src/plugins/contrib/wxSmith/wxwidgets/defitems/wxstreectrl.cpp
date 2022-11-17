@@ -345,14 +345,14 @@ void wxsTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
 
     pImageNames[n] = nullptr;
 
-    WXS_EDITENUM(wxsTreeCtrl, m_sImageList, _("Image List"), _T("image_list"), pImageNames, _("<none>"))
+    WXS_EDITENUM(wxsTreeCtrl, m_sImageList, _("Image List"), "image_list", pImageNames, _("<none>"))
 
     // The list of items to appear in the tree.
     UpdateTreeItemList();
 
-    WXS_IMAGETREE(wxsTreeCtrl, m_arrItems, _("Tree Items"), wxT("tree_items"));
-    WXS_ARRAYSTRING(wxsTreeCtrl, m_arrItems, _("Items as Text"), wxT("items_text"), _("item2"));
-    WXS_BOOL(wxsTreeCtrl, m_bExpand, _("Expand All"), _("expand_all"), false);
+    WXS_IMAGETREE(wxsTreeCtrl, m_arrItems, _("Tree Items"), "tree_items");
+    WXS_ARRAYSTRING(wxsTreeCtrl, m_arrItems, _("Items as Text"), "items_text", _("item2"));
+    WXS_BOOL(wxsTreeCtrl, m_bExpand, _("Expand All"), "expand_all", false);
 }
 
 /*! \brief Find all tools that are image lists and return their names.

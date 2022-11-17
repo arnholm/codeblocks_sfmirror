@@ -115,10 +115,10 @@ void wxsSashWindow::OnBuildCreatingCode()
 
 void wxsSashWindow::OnEnumContainerProperties(cb_unused long Flags)
 {
-    WXS_BOOL(wxsSashWindow, mTop,    _("Drag Top"),    _("dragtop"),    true);
-    WXS_BOOL(wxsSashWindow, mBottom, _("Drag Bottom"), _("dragbottom"), true);
-    WXS_BOOL(wxsSashWindow, mLeft,   _("Drag Left"),   _("dragleft"),   true);
-    WXS_BOOL(wxsSashWindow, mRight,  _("Drag Right"),  _("dragright"),  true);
+    WXS_BOOL(wxsSashWindow, mTop,    _("Drag Top"),    "dragtop",    true);
+    WXS_BOOL(wxsSashWindow, mBottom, _("Drag Bottom"), "dragbottom", true);
+    WXS_BOOL(wxsSashWindow, mLeft,   _("Drag Left"),   "dragleft",   true);
+    WXS_BOOL(wxsSashWindow, mRight,  _("Drag Right"),  "dragright",  true);
 }
 
 //------------------------------------------------------------------------------

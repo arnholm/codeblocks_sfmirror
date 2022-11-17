@@ -336,11 +336,11 @@ void wxsVector::OnEnumWidgetProperties(cb_unused long Flags) {
 static const long    AlignValues[] = {    mpALIGN_NE,       mpALIGN_NW,       mpALIGN_SW,       mpALIGN_SE,    0};
 static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mpALIGN_SW"), _T("mpALIGN_SE"),  0};
 
-    WXS_SHORT_STRING(wxsVector, mLabel,      _("Label Text"),      _("mLabelText"),  _("Label"), true);
-    WXS_ENUM(        wxsVector, mAlign,      _("Label Alignment"), _("mAlign"),      AlignValues, AlignNames, mpALIGN_NE);
-    WXS_BOOL(        wxsVector, mContinuous, _("Continuous Line"), _("mContinuous"), true);
-    WXS_COLOUR(      wxsVector, mPenColour,  _("Pen Colour"),      _("mPenColour"));
-    WXS_FONT(        wxsVector, mPenFont,    _("Pen Font"),        _("mPenFont"));
-    WXS_ARRAYSTRING( wxsVector, mXYData,     _("X,Y Data"),        _("mXYData"),     _("nums"));
+    WXS_SHORT_STRING(wxsVector, mLabel,      _("Label Text"),      "mLabelText",  _("Label"), true);
+    WXS_ENUM(        wxsVector, mAlign,      _("Label Alignment"), "mAlign"),     AlignValues, AlignNames, mpALIGN_NE);
+    WXS_BOOL(        wxsVector, mContinuous, _("Continuous Line"), "mContinuous", true);
+    WXS_COLOUR(      wxsVector, mPenColour,  _("Pen Colour"),      "mPenColour");
+    WXS_FONT(        wxsVector, mPenFont,    _("Pen Font"),        "mPenFont");
+    WXS_ARRAYSTRING( wxsVector, mXYData,     _("X,Y Data"),        "mXYData",     _("nums"));
 
 }

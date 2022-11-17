@@ -220,11 +220,11 @@ static const wxChar* AlignNames[]  = {_T("mpALIGN_BORDER_LEFT"), _T("mpALIGN_BOR
 
 
 
-    WXS_ENUM(  wxsAxis, mType,       _("Axis Type"),      _("mType"),   TypeValues,  TypeNames, 0);
-    WXS_STRING(wxsAxis, mLabel,      _("Label"),          _T("mLabel"), _T("axis"),  true);
-    WXS_ENUM(  wxsAxis, mAlign,      _("Axis Location"),  _("mAlign"),  AlignValues, AlignNames, mpALIGN_CENTER);
-    WXS_BOOL(  wxsAxis, mTics,       _("Show Tic Marks"), _("mTics"),   true);
-    WXS_COLOUR(wxsAxis, mPenColour,  _("Pen Colour"),     _("mPenColour"));
-    WXS_FONT(  wxsAxis, mPenFont,    _("Pen Font"),       _("mPenFont"));
+    WXS_ENUM(  wxsAxis, mType,       _("Axis Type"),       "mType",  TypeValues,  TypeNames, 0);
+    WXS_STRING(wxsAxis, mLabel,      _("Label"),           "mLabel", _("axis"),  true);
+    WXS_ENUM(  wxsAxis, mAlign,      _("Axis Location"),   "mAlign", AlignValues, AlignNames, mpALIGN_CENTER);
+    WXS_BOOL(  wxsAxis, mTics,       _("Show Tick Marks"), "mTics",  true);
+    WXS_COLOUR(wxsAxis, mPenColour,  _("Pen Colour"),      "mPenColour");
+    WXS_FONT(  wxsAxis, mPenFont,    _("Pen Font"),        "mPenFont");
 
 }
