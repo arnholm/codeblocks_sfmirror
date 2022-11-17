@@ -1928,10 +1928,10 @@ bool MainFrame::LayoutDifferent(const wxString& layout1, const wxString& layout2
             wxString theToken = strTokColon.GetNextToken();
             if (theToken.StartsWith("state="))
             {
-                theToken=theToken.Right(theToken.Len() - _("state=").Len());
+                theToken=theToken.Right(theToken.Len() - wxString("state=").Len());
                 theToken.ToULong(&j);
                 // we filter out the hidden/show state
-                theToken = _("state=") + wxString::Format("%lu", j & wxAuiPaneInfo::optionHidden);
+                theToken = wxString::Format("state=%lu", j & wxAuiPaneInfo::optionHidden);
             }
                arLayout1.Add(theToken);
         }
@@ -1947,10 +1947,10 @@ bool MainFrame::LayoutDifferent(const wxString& layout1, const wxString& layout2
             wxString theToken = strTokColon.GetNextToken();
             if (theToken.StartsWith("state="))
             {
-                theToken=theToken.Right(theToken.Len() - _("state=").Len());
+                theToken=theToken.Right(theToken.Len() - wxString("state=").Len());
                 theToken.ToULong(&j);
                 // we filter out the hidden/show state
-                theToken = _("state=") + wxString::Format("%lu", j & wxAuiPaneInfo::optionHidden);
+                theToken = wxString::Format("state=%lu", j & wxAuiPaneInfo::optionHidden);
             }
                arLayout2.Add(theToken);
         }
