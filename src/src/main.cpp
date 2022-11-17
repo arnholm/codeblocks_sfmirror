@@ -811,7 +811,7 @@ MainFrame::MainFrame(wxWindow* parent)
     for (size_t i = 0; i < panes.GetCount(); ++i)
     {
         wxAuiPaneInfo& info = panes[i];
-        if (!(info.name == "MainPane"))
+        if (info.name != "MainPane")
             info.Hide();
     }
     gMinimalLayoutData = m_LayoutManager.SavePerspective(); // keep the "hardcoded" layout handy
@@ -1928,10 +1928,10 @@ bool MainFrame::LayoutDifferent(const wxString& layout1, const wxString& layout2
             wxString theToken = strTokColon.GetNextToken();
             if (theToken.StartsWith("state="))
             {
-                theToken=theToken.Right(theToken.Len() - wxString("state=").Len());
+                theToken=theToken.Right(theToken.Len() - _("state=").Len());
                 theToken.ToULong(&j);
                 // we filter out the hidden/show state
-                theToken=wxString::Format(_("state=%lu"),j & wxAuiPaneInfo::optionHidden);
+                theToken = _("state=") + wxString::Format("%lu", j & wxAuiPaneInfo::optionHidden);
             }
                arLayout1.Add(theToken);
         }
@@ -1947,10 +1947,10 @@ bool MainFrame::LayoutDifferent(const wxString& layout1, const wxString& layout2
             wxString theToken = strTokColon.GetNextToken();
             if (theToken.StartsWith("state="))
             {
-                theToken=theToken.Right(theToken.Len() - wxString("state=").Len());
+                theToken=theToken.Right(theToken.Len() - _("state=").Len());
                 theToken.ToULong(&j);
                 // we filter out the hidden/show state
-                theToken=wxString::Format(_("state=%lu"),j & wxAuiPaneInfo::optionHidden);
+                theToken = _("state=") + wxString::Format("%lu", j & wxAuiPaneInfo::optionHidden);
             }
                arLayout2.Add(theToken);
         }
@@ -2236,7 +2236,7 @@ bool MainFrame::Open(const wxString& filename, bool addToHistory)
     logger->DebugLog("Opening file " + name);
     bool ret = OpenGeneric(name, addToHistory);
     if (!ret)
-        logger->LogError(wxString::Format("Opening file '%s' failed!", name));
+        logger->LogError(wxString::Format(_("Opening file '%s' failed!"), name));
 
     return ret;
 }
@@ -2653,7 +2653,7 @@ void MainFrame::TerminateRecentFilesHistory()
 
 wxString MainFrame::GetEditorDescription(EditorBase* eb)
 {
-    wxString descr = wxEmptyString;
+    wxString descr;
     cbProject* prj = nullptr;
     if (eb && eb->IsBuiltinEditor())
     {
@@ -3896,7 +3896,7 @@ void MainFrame::OnEditToggleCommentSelected(cb_unused wxCommandEvent& event)
         return;
 
     wxString comment = colour_set->GetCommentToken( ed->GetLanguage() ).lineComment;
-    if (comment==wxEmptyString)
+    if (comment.empty())
         return;
 
     stc->BeginUndoAction();
@@ -3974,7 +3974,7 @@ void MainFrame::OnEditStreamCommentSelected(cb_unused wxCommandEvent& event)
         return;
 
     CommentToken comment = colour_set->GetCommentToken( ed->GetLanguage() );
-    if (comment.streamCommentStart==wxEmptyString)
+    if (comment.streamCommentStart.empty())
         return;
 
     stc->BeginUndoAction();
@@ -4054,7 +4054,7 @@ void MainFrame::OnEditBoxCommentSelected(cb_unused wxCommandEvent& event)
         return;
 
     CommentToken comment = colour_set->GetCommentToken( ed->GetLanguage() );
-    if (comment.boxCommentStart==wxEmptyString)
+    if (comment.boxCommentStart.empty())
         return;
 
     stc->BeginUndoAction();
