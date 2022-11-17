@@ -337,7 +337,7 @@ static const long    AlignValues[] = {    mpALIGN_NE,       mpALIGN_NW,       mp
 static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mpALIGN_SW"), _T("mpALIGN_SE"),  0};
 
     WXS_SHORT_STRING(wxsVector, mLabel,      _("Label Text"),      "mLabelText",  _("Label"), true);
-    WXS_ENUM(        wxsVector, mAlign,      _("Label Alignment"), "mAlign"),     AlignValues, AlignNames, mpALIGN_NE);
+    WXS_ENUM(        wxsVector, mAlign,      _("Label Alignment"), "mAlign",      AlignValues, AlignNames, mpALIGN_NE);
     WXS_BOOL(        wxsVector, mContinuous, _("Continuous Line"), "mContinuous", true);
     WXS_COLOUR(      wxsVector, mPenColour,  _("Pen Colour"),      "mPenColour");
     WXS_FONT(        wxsVector, mPenFont,    _("Pen Font"),        "mPenFont");
