@@ -14,13 +14,14 @@ Yuanhui Zhang       : Developer
 Damien Moore        : Developer
 Micah Ng            : Developer
 BlueHazzard         : Developer
+Miguel Gimenez      : Developer
 Ricardo Garcia      : All-hands person
 Paul A. Jimenez     : Help and AStyle plugins
 Thomas Lorblanches  : CodeStat and Profiler plugins
 Bartlomiej Swiecki  : wxSmith RAD plugin
 Jerome Antoine      : ThreadSearch plugin
 Pecan Heber         : Keybinder, BrowseTracker, DragScroll
-                      CodeSnippets plugins
+                      CodeSnippets, clangd-client plugins
 Arto Jonsson        : CodeSnippets plugin (passed on to Pecan)
 Darius Markauskas   : Fortran support
 Mario Cupelli       : Compiler support for embedded systems
@@ -45,7 +46,7 @@ J.A. Ortega         : 3D Icon based on the above
 Alexandr Efremo     : Providing OpenSuSe packages
 Huki                : Misc. Code-Completion improvements
 stahta01            : Misc. patches for several enhancements
-Miguel Gimenez      : Misc. patches for several enhancements
+Gerard Durand       : Translation infrastructure
 
 All contributors that provided patches.
 
