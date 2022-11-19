@@ -1005,6 +1005,16 @@ int PluginManager::ScanForPlugins(const wxString& path)
         return count;
 
     bool batch = Manager::IsBatchBuild();
+
+    // when debugging a single plugin, we need to exclude other dlls
+    // GDB will start slowly if a lot of plugins(dlls) get loaded, since it has to parsed
+    // each debug symbol of those plugins. The below three lines are a hack to use the "batch"
+    // mode when debugging, so only a limited number of plugins get loaded.
+    // only enable this option if the personality name is "debug-plugin"
+    wxString personality(Manager::Get()->GetPersonalityManager()->GetPersonality());
+    if (personality == "debug-plugin")
+        batch = true;
+
     wxArrayString bbplugins;
     if (batch)
         bbplugins = cbReadBatchBuildPlugins();
