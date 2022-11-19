@@ -2,8 +2,8 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU General Public License, version 3
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
- * $Revision: 87 $
- * $Id: Version.h 87 2022-10-31 17:58:56Z pecanh $
+ * $Revision: 90 $
+ * $Id: Version.h 90 2022-11-19 19:00:38Z pecanh $
  * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/Version.h $
  */
 
@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("0.2.51 22/11/09")
+#define VERSION wxT("0.2.52 22/11/19")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,14 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//0.2.51    Commit ? rev ?
+//0.2.52    commit 0.2.52 2022/11/19
+//          2022/11/19 Add cbAssertNonFatal() call to protocol.h work-around
+//              in order to use -std=c++11 instead of c++17. This allows
+//              debian builds for CB which does not support c++17. Thanks Andrew.
+//0.2.51    Commit 2022/11/18 rev 89
+//          2022/11/18
+//          Remove requirement for -std=C++14 in protocol.h line 647 using
+//               std::make_unique<SelectionRange>();
 //          2022/11/9
 //          Replace annoying cbMessageBox with log msg @ LSP_SymbolsParser::DoHandleClass()
 //              When trying to parse out the ancestor of a class.

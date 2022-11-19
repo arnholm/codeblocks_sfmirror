@@ -38,7 +38,7 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=gnu++17" />
+			<Add option="-std=c++11" />
 			<Add option="-m32" />
 			<Add option="-g" />
 			<Add option="$(#CB_RELEASE_TYPE)" />

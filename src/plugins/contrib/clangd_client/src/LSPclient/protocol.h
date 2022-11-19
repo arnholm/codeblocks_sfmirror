@@ -6,6 +6,8 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 // Most of the code comes from clangd(Protocol.h)
 
+#include "cbexception.h" //(ph 2022/11/19)
+
 #ifndef LSP_PROTOCOL_H
 #define LSP_PROTOCOL_H
 #include <string>
@@ -619,6 +621,20 @@ struct SelectionRangeParams {
 };
 JSON_SERIALIZE(SelectionRangeParams, MAP_JSON(MAP_KEY(textDocument), MAP_KEY(positions)), {});
 
+//(ph 2022/11/18) https://stackoverflow.com/questions/64054795/how-can-i-use-make-unique-with-c11
+// Test for availability of c++14 std::make_unique
+#if __cplusplus < 201304L //Test for c++14 or better
+// #warning "C++14 or better is not available"
+#endif
+
+#if __cplusplus < 201304L //make a substitute for c++14 std::make_unique
+template<class T, class... Args>
+std::unique_ptr<T> make_unique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+#endif
+
 struct SelectionRange {
     Range range;
     std::unique_ptr<SelectionRange> parent;
@@ -626,7 +642,14 @@ struct SelectionRange {
 JSON_SERIALIZE(SelectionRange, {}, {
     FROM_KEY(range);
     if (j.contains("parent")) {
+        //(ph 2022/11/18) change to allow compilation via -std=c++11
+        // as of 2022/11/19 there's no clangd_client reference to this routine.
+      #if __cplusplus < 201304L //if c++14 not available, use c++11
+        cbAssertNonFatal(0 && "This needs validation. Has never been tested.")
+        value.parent = make_unique<SelectionRange>();
+      #else
         value.parent = std::make_unique<SelectionRange>();
+      #endif
         j.at("parent").get_to(*value.parent);
     }
 });
