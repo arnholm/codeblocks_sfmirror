@@ -132,9 +132,7 @@ void wxsStateLed::OnAddExtraProperties(wxsPropertyGridManager *Grid)
  */
 void wxsStateLed::InsertPropertyForState(wxsPropertyGridManager *Grid, int Position)
 {
-    wxString SectorName = wxString::Format(_("State %d Colour"), Position + 1);
-    wxString SectorDataName = wxString::Format(_("state_%d_colour"), Position + 1);
-
+    const wxString SectorName(wxString::Format(_("State %d Colour"), Position + 1));
 	m_StateColor[Position].id = Grid->GetGrid()->Insert(_("Current State"), new wxSystemColourProperty(SectorName, wxPG_LABEL, m_StateColor[Position].colour));
 }
 
