@@ -132,7 +132,7 @@ void wxWidgetsGUI::OnRebuildApplicationCode()
 
     wxsCoder::Get()->AddCode(
         GetProjectPath() + m_AppFile,
-        wxsCodeMarks::Beg(m_AppLanguage,_("AppInitialize")),
+        wxsCodeMarks::Beg(m_AppLanguage, _T("AppInitialize")),
         wxsCodeMarks::End(m_AppLanguage),
         NewCode);
 
