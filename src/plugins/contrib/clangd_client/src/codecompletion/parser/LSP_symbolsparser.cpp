@@ -918,10 +918,10 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
             lineTxt.Trim(true);  //remove crlf
 
             if (debugging) { //debugging
-            CCLogger::Get()->DebugLog(wxString::Format("lineTxt[%s]", lineTxt));
-            CCLogger::Get()->DebugLog(wxString::Format("name[%s] kind(%d) startLine|startCol|endLine|endCol[%d:%d:%d:%d]", name, kind, startLine, startCol, endLine, endCol));
-            CCLogger::Get()->DebugLog(wxString::Format("SelectionRange: startLine|StartCol|endLine|endCol[%d:%d:%d:%d]", selectionRangeStartLine, selectionRangeStartCol, selectionRangeEndLine, selectionRangeEndCol));
-            CCLogger::Get()->DebugLog(wxString::Format("\tchildren[%d]", childcnt ));
+                CCLogger::Get()->DebugLog(wxString::Format("lineTxt[%s]", lineTxt));
+                CCLogger::Get()->DebugLog(wxString::Format("name[%s] kind(%d) startLine|startCol|endLine|endCol[%d:%d:%d:%d]", name, kind, startLine, startCol, endLine, endCol));
+                CCLogger::Get()->DebugLog(wxString::Format("SelectionRange: startLine|StartCol|endLine|endCol[%d:%d:%d:%d]", selectionRangeStartLine, selectionRangeStartCol, selectionRangeEndLine, selectionRangeEndCol));
+                CCLogger::Get()->DebugLog(wxString::Format("\tchildren[%d]", childcnt ));
             }
 
             Token* newToken = nullptr;
