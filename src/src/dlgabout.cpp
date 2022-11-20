@@ -166,7 +166,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "Alexandr Efremo     : Providing OpenSuSe packages\n"
         "Huki                : Misc. Code-Completion improvements\n"
         "stahta01            : Misc. patches for several enhancements\n"
-        "Gerard Durand       : Translation infrastructure\n"
+        "Gerard Durand       : Translation infrastructure, documentation writer\n"
         "\n"));
 
     const wxString others(_(
