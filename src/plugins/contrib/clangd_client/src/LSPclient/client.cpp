@@ -4003,15 +4003,14 @@ void ProcessLanguageClient::CreateDiagnosticsLog()
         widths.Add(48);
         widths.Add(640);
 
-        const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
         wxString prefix(ConfigManager::GetDataFolder()+"/resources.zip#zip:/images/");
 
         #if wxCHECK_VERSION(3, 1, 6)
-         const double uiScaleFactor = Manager::Get()->GetUIScaleFactor(Manager::UIComponent::InfoPaneNotebooks);
-         wxBitmapBundle* logbmp = new wxBitmapBundle(cbLoadBitmapBundle(prefix, "filefind.png", wxRound(uiSize/uiScaleFactor), wxBITMAP_TYPE_PNG));
+            wxBitmapBundle* logbmp = new wxBitmapBundle(cbLoadBitmapBundleFromSVG(prefix+"svg/filefind.svg", wxSize(16, 16)));
         #else
-         prefix << wxString::Format("%dx%d/", uiSize, uiSize);
-         wxBitmap* logbmp = new wxBitmap(cbLoadBitmap(prefix+"filefind.png", wxBITMAP_TYPE_PNG));
+            const int uiSize = Manager::Get()->GetImageSize(Manager::UIComponent::InfoPaneNotebooks);
+            prefix << wxString::Format("%dx%d/", uiSize, uiSize);
+            wxBitmap* logbmp = new wxBitmap(cbLoadBitmap(prefix+"filefind.png", wxBITMAP_TYPE_PNG));
         #endif
 
         m_pDiagnosticsLog = new LSPDiagnosticsResultsLog(titles, widths, GetLSP_IgnoredDiagnostics());
