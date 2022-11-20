@@ -453,7 +453,6 @@ static const SQChar *sqstd_rex_matchnode(SQRex* exp,SQRexNode *node,const SQChar
                     return asd;
             }
             return NULL;
-            break;
     }
     case OP_EXPR:
     case OP_NOCAPEXPR:{
