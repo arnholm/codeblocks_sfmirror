@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_plugin_manifest_file>
     <SdkVersion major="1" minor="11" release="12" />
-    <Plugin name="Smart indentXML">
+    <Plugin name="SmartIndentXML">
         <Value title="Smart indent for XML" />
         <Value version="0.1" />
         <Value description="Provides Smart indenting for XML and HTML" />
