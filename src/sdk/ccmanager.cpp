@@ -745,6 +745,14 @@ void CCManager::OnEditorTooltip(CodeBlocksEvent& event)
 
     wxStringVec tips(uniqueTips.begin(), uniqueTips.end());
 
+    // If user specified "~NoSort~" as first token entry, reset tips as the user specified them.
+    if (tokens.size() and (tokens[0].displayName == "~NoSort~"))
+    {
+        tips.clear();
+        for (size_t i = 1; i < tokens.size(); ++i)
+            tips.push_back( tokens[i].displayName);
+    }
+
     const int style = event.GetInt();
     if (!tips.empty())
     {
