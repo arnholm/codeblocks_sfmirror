@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("0.2.52 22/11/19")
+#define VERSION wxT("1.2.53 2022/11/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,10 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//0.2.53    commit 1.2.53 2022/11/22
+//          Set major release number to 1.
+//          Parser::OnLSP_HoverResponse() Tell ccManager not to sort our Hover data.
+//              Goes with CB ccManager mod rev 13058
 //0.2.52    commit 0.2.52 2022/11/19
 //          2022/11/19 Add cbAssertNonFatal() call to protocol.h work-around
 //              in order to use -std=c++11 instead of c++17. This allows

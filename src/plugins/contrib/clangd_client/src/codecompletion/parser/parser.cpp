@@ -2570,7 +2570,7 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
         // prepended to the hover text line to control the sort order.
         // ----------------------------------------------------------------------------
         wxString hoverText;
-        //for (size_t ii=0, foundIn=false; ii<vHoverInfo.size(); ++ii)
+        wxString noSort = "~NoSort~";
         size_t posn;
         for (size_t ii=0; ii<vHoverInfo.size(); ++ii)
         {
@@ -2614,12 +2614,13 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
             }
             else
             {
-                // prepend numerics to stop ccManager from sorting by strings
-                // FIXME (ph#):Modify ccManager to allow NO sorting option //(ph 2022/10/16)
-                hoverText = wxString::Format("%02d) %s", int(ii), vHoverInfo[ii]);
-                v_HoverTokens.push_back(ClgdCCToken(ii, hoverText, hoverText));
-                hoverText.Clear();
-            }
+                // Ask ccManager not to sort entries by setting the first entry == "~NoSort~"
+                hoverText = vHoverInfo[ii];
+                if (v_HoverTokens.empty())
+                    v_HoverTokens.push_back(ClgdCCToken(ii, noSort, noSort));
+                 v_HoverTokens.push_back(ClgdCCToken(ii, hoverText, hoverText));
+                 hoverText.Clear();
+             }
         }//endfor vHoverInfo
 
         //// **Debugging** show what is going to be passed to ccManager
