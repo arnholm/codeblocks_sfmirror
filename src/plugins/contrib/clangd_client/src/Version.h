@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.53 2022/11/22")
+#define VERSION wxT("1.2.54 2022/11/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//0.2.54    commit 1.2.54 2022/11/23
+//          Fix Parser::OnLSP_HoverResponse() to omit prepending numeric on tooltip content.
 //0.2.53    commit 1.2.53 2022/11/22
 //          Set major release number to 1.
 //          Parser::OnLSP_HoverResponse() Tell ccManager not to sort our Hover data.

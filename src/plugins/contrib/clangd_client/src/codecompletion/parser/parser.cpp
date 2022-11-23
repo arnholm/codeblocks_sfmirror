@@ -2572,6 +2572,11 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
         wxString hoverText;
         wxString noSort = "~NoSort~";
         size_t posn;
+
+        // Tell ccManager not to sort entries by setting the first entry == "~NoSort~"
+        if (vHoverInfo.size())
+            v_HoverTokens.push_back(ClgdCCToken(0, noSort, noSort));
+
         for (size_t ii=0; ii<vHoverInfo.size(); ++ii)
         {
             if (vHoverInfo[ii].StartsWith("----")) //a huge long line of dashes
@@ -2582,7 +2587,6 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
                     hoverText = vHoverInfo[ii].Mid(posn+1);
                     if (hoverText.Length())
                     {
-                        hoverText = wxString::Format("%02d) %s",int(ii), hoverText);
                         v_HoverTokens.push_back(ClgdCCToken(int(ii), hoverText, hoverText));
                     }
                     hoverText.Empty();
@@ -2592,7 +2596,7 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
             else if (vHoverInfo[ii].StartsWith("Parameters:"))
             {
                 // Gather the parameters into one line of text
-                hoverText = wxString::Format("%02d) Args: ", int(ii));
+                hoverText = " Args: ";
                 continue;
             }
             else if (vHoverInfo[ii].StartsWith("- ") and hoverText.Contains(" Args: "))
@@ -2614,13 +2618,10 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
             }
             else
             {
-                // Ask ccManager not to sort entries by setting the first entry == "~NoSort~"
                 hoverText = vHoverInfo[ii];
-                if (v_HoverTokens.empty())
-                    v_HoverTokens.push_back(ClgdCCToken(ii, noSort, noSort));
-                 v_HoverTokens.push_back(ClgdCCToken(ii, hoverText, hoverText));
-                 hoverText.Clear();
-             }
+                v_HoverTokens.push_back(ClgdCCToken(ii, hoverText, hoverText));
+                hoverText.Clear();
+            }
         }//endfor vHoverInfo
 
         //// **Debugging** show what is going to be passed to ccManager
@@ -2632,7 +2633,8 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
         //            pLogMgr->DebugLog(wxString::Format("v_HoverTokens[%d]:%s", int(ii), v_HoverTokens[ii].displayName));
         //}
 
-        if (v_HoverTokens.size() )
+        // The first entry is "~NoSort~", so count must be > 1
+        if (v_HoverTokens.size() > 1 )
         {
             //re-invoke cbEVT_EDITOR_TOOLTIP now that there's data to display
             CodeBlocksEvent evt(cbEVT_EDITOR_TOOLTIP);
