@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.54 2022/11/23")
+#define VERSION wxT("1.2.55 2022/11/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,12 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//0.2.54    commit 1.2.54 2022/11/23
+//1.2.55    commit 1.2.55 2022/11/23
+//          Switch all .cbp(s) back to std=gnu++11 except unix_30
+//          Restore clangd_client_wx30-unix.cbp back to gtk2
+//          Add Clangd_client_3x30-unix_gtk3.cbp
+//          Fix LSP_SymbolParser.cpp for ticket #1331 (thanks Miguel Gimenez)
+//1.2.54    commit 1.2.54 2022/11/23
 //          Fix Parser::OnLSP_HoverResponse() to omit prepending numeric on tooltip content.
 //0.2.53    commit 1.2.53 2022/11/22
 //          Set major release number to 1.

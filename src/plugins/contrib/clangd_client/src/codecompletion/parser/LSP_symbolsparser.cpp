@@ -741,7 +741,8 @@ bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject) 
             //    typedef std::tuple<size_t, size_t, size_t, size_t, size_t, std::string> LSP_SemanticToken;
 
             ParserBase::LSP_SemanticToken tokenTuple(
-                                lineNumber,columnNumber,textLength,symbolType,symbolModifier,symbolName);
+                    lineNumber,columnNumber,textLength,symbolType,symbolModifier,symbolName.ToStdString());
+
             pParser->AddSemanticToken(tokenTuple);
 
                 if (debugging)  // **debugging** Show each SemanticToken entry

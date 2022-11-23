@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="clangd_client-unix30" />
+		<Option title="clangd_client-unix30_gtk3" />
 		<Option platforms="Unix;" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
@@ -44,9 +44,9 @@
 				</ExtraCommands>
 			</Target>
 			<Environment>
-				<Variable name="PKG_CONFIG_GTK_VERSION" value="2.0" />
+				<Variable name="PKG_CONFIG_GTK_VERSION" value="3.0" />
 				<Variable name="WX_CFG" value="" />
-				<Variable name="WX_CONFIG" value="wx-config --toolkit=gtk2" />
+				<Variable name="WX_CONFIG" value="wx-config --toolkit=gtk3" />
 				<Variable name="WX_SUFFIX" value="u" />
 				<Variable name="WX_VERSION" value="30" />
 			</Environment>
