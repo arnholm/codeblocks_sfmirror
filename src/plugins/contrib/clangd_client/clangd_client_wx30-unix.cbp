@@ -31,7 +31,7 @@
 				<Linker>
 					<Add library="codeblocks" />
 					<Add library="util" />
-					<Add library="wx_gtk3u_aui-3.0" />
+					<Add library="wx_gtk2u_aui-3.0" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
