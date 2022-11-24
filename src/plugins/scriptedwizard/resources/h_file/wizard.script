@@ -7,13 +7,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-header_contents <- @"#ifndef GUARD
-#define GUARD
-
-AUTO_GENERATED_CONTENTS
-
-#endif // GUARD
-";
+header_contents <- "#ifndef GUARD\n"
++ "#define GUARD\n\n"
++ "AUTO_GENERATED_CONTENTS\n\n"
++ "#endif // GUARD\n";
 
 function BeginWizard()
 {
