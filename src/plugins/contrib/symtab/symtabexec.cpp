@@ -361,9 +361,7 @@ int SymTabExecDlg::ExecuteMulti(struct_config &config, wxString cmd)
     }// for
     if (!something_found)
     {
-      wxString msg;
-      msg << _("The search for \"") << the_symbol
-          << _("\" produced no results.");
+      const wxString msg(wxString::Format(_("The search for \"%s\" produced no results."), the_symbol));
       cbMessageBox(msg, _("Info"), wxICON_INFORMATION | wxOK,
                    (wxWindow*)Manager::Get()->GetAppWindow());
     }
