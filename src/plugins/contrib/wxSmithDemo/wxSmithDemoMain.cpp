@@ -225,7 +225,7 @@ wxSmithDemoFrame::wxSmithDemoFrame(wxWindow* parent,wxWindowID id)
     MediaCtrl1->Load(_T("media/EarthImpactSml_512kb.mp4"));
     MediaCtrl1->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_DEFAULT);
     MediaCtrl1->SetVolume(0.5);
-    MediaCtrl1->SetToolTip(_("wxMediaCtrl\n\nA class for displaying types of media, such as videos, audio files,\nnatively through native codecs.wxMediaCtrl\n\nA class for displaying types of media, such as videos, audio files,\nnatively through native codecs."));
+    MediaCtrl1->SetToolTip(_("wxMediaCtrl\n\nA class for displaying types of media,\nsuch as videos or audio files,\nthrough native codecs."));
     BoxSizer4->Add(MediaCtrl1, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
     BoxSizer10->Add(BoxSizer4, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
     Panel8->SetSizer(BoxSizer10);
