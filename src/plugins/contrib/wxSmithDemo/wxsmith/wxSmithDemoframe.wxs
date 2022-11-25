@@ -159,7 +159,7 @@
 												<object class="wxMediaCtrl" name="ID_MEDIACTRL1" variable="MediaCtrl1" member="yes">
 													<media_file>media/EarthImpactSml__512kb.mp4</media_file>
 													<size>326,101</size>
-													<tooltip>wxMediaCtrl&#x0A;&#x0A;A class for displaying types of media, such as videos, audio files,&#x0A;natively through native codecs.wxMediaCtrl&#x0A;&#x0A;A class for displaying types of media, such as videos, audio files,&#x0A;natively through native codecs.</tooltip>
+													<tooltip>wxMediaCtrl&#x0A;&#x0A;A class for displaying types of media,&#x0A;such as videos or audio files,&#x0A;through native codecs.</tooltip>
 													<handler function="OnMediaCtrl1Play" entry="EVT_MEDIA_PLAY" />
 													<handler function="OnMediaCtrl1Pause" entry="EVT_MEDIA_PAUSE" />
 													<handler function="OnMediaCtrl1Stop" entry="EVT_MEDIA_STOP" />
