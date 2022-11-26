@@ -1148,7 +1148,7 @@ void ProjectOptionsDlg::OnPlatform(wxCommandEvent& event)
         txtP = XRCCTRL(*this, "txtPlatform",     wxTextCtrl);
     else
         txtP = XRCCTRL(*this, "txtPlatformProj", wxTextCtrl);
-    bool isAll = txtP->GetValue().Contains(_("All"));
+    bool isAll = txtP->GetValue().Contains("All");
 
     wxArrayString arr = GetArrayFromString(GetStringFromPlatforms(spAll, true));
     MultiSelectDlg dlg(this, arr, isAll, _("Select supported platforms:"), _("Build target platforms"));
@@ -1164,7 +1164,7 @@ void ProjectOptionsDlg::OnPlatform(wxCommandEvent& event)
     {
         wxArrayString ret = dlg.GetSelectedStrings();
         if (ret.GetCount() == 3)
-            txtP->SetValue(_("All"));
+            txtP->SetValue("All");
         else
         {
             wxString platform = GetStringFromArray(ret);

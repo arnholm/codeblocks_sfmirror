@@ -75,10 +75,10 @@ const wxString cbDEFAULT_OPEN_FOLDER_CMD = _T("xdg-open");
 
 int GetPlatformsFromString(const wxString& platforms)
 {
-    bool pW = platforms.Contains(_("Windows"));
-    bool pU = platforms.Contains(_("Unix"));
-    bool pM = platforms.Contains(_("Mac"));
-    bool pA = platforms.Contains(_("All"));
+    bool pW = platforms.Contains("Windows");
+    bool pU = platforms.Contains("Unix");
+    bool pM = platforms.Contains("Mac");
+    bool pA = platforms.Contains("All");
 
     if (pA || (pW && pU && pM))
         return spAll;
@@ -98,15 +98,15 @@ wxString GetStringFromPlatforms(int platforms, bool forceSeparate)
     {
         int tmpAll = spWindows | spUnix | spMac;
         if (((platforms & tmpAll) == tmpAll) || ((platforms & spAll) == spAll))
-            return _("All");
+            return "All";
     }
 
     if (platforms & spWindows)
-        ret << _("Windows;");
+        ret << "Windows;";
     if (platforms & spUnix)
-        ret << _("Unix;");
+        ret << "Unix;";
     if (platforms & spMac)
-        ret << _("Mac;");
+        ret << "Mac;";
     return ret;
 }
 
