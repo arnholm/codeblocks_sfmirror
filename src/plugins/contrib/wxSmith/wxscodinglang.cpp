@@ -26,6 +26,8 @@
 #include <configmanager.h>
 #include <logmanager.h>
 
+#include <algorithm>
+
 namespace wxsCodeMarks
 {
     wxString Name(wxsCodingLang Lang)
@@ -158,45 +160,56 @@ namespace wxsCodeMarks
 
     wxString WxString(wxsCodingLang Lang, const wxString& Source, bool WithTranslation)
     {
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("wxsmith"));
-        bool DoTranslation = WithTranslation && (cfg->ReadBool(_T("/useI18N"), true));
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
 
-        wxString NonTransPrefix = _T("_T("); wxString NonTransPostfix = _T(")");
-        switch (cfg->ReadInt(_T("/noneI18N"),0))
+        wxString Prefix;
+        wxString Postfix;
+        switch (cfg->ReadInt("/noneI18N", 0))
         {
-          case 1: NonTransPrefix = _T("wxT(");                       break;
-          case 2: NonTransPrefix = _T(""); NonTransPostfix = _T(""); break;
-          case 3: NonTransPrefix = _T("wxS(");                       break;
-          case 0: // fall-through
-          default:                                                   break;
+            case 0:
+                Prefix = "_T(";
+                Postfix = ")";
+                break;
+            case 1:
+                Prefix = "wxT(";
+                Postfix = ")";
+                break;
+            case 2:
+                // Do nothing
+                break;
+            case 3:
+                Prefix = "wxS(";
+                Postfix = ")";
         }
 
-        switch ( Lang )
+        const bool DoTranslation = WithTranslation && (cfg->ReadBool("/useI18N"), true);
+        switch (Lang)
         {
             case wxsCPP:
             {
-                if ( Source.empty() )
+                if (Source.empty())
+                    return "wxEmptyString";  // Always empty string, no matter if we have translation
+
+                if (DoTranslation)
                 {
-                    // Always empty string, no matter if we have translation
-                    return _T("wxEmptyString");
+                    // Check if translation is really needed. For now, just check if it contains alphabetic chars
+                    if (std::any_of(Source.begin(), Source.end(), [] (wxChar c) {return wxIsalpha(c);}))
+                    {
+                        Prefix = "_(";
+                        Postfix = ")";
+                    }
                 }
 
-                if ( DoTranslation )
-                {
-                    return _T("_(") + String(Lang,Source) + _T(")");
-                }
-                else
-                {
-                    return NonTransPrefix + String(Lang,Source) + NonTransPostfix;
-                }
+                return Prefix + String(Lang, Source) + Postfix;
             }
 
             case wxsUnknownLanguage: // fall-through
             default:
             {
-                Unknown(_T("wxsCodeMarks::WxString"),Lang);
+                Unknown("wxsCodeMarks::WxString", Lang);
             }
         }
+
         return wxEmptyString;
     }
 
