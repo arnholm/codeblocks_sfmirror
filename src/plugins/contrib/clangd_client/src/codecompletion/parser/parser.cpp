@@ -125,7 +125,7 @@ namespace
     // LSP_Symbol identifiers
     #include "../LSP_SymbolKind.h"
 
-    const char STX = '\u0002'; //(ph 2021/03/17)
+    const char STX = '\u0002';  //start of text
 
     int prevDocumentSymbolsFilesProcessed = 0;
 
@@ -2564,10 +2564,11 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
         //            pLogMgr->DebugLog(wxString::Format("vHoverInfo[%d]:%s", int(ii), vHoverInfo[ii]));
         //}
 
+        /// ccManager will show max lines = only 1/4 editor lines on the screen
         // ----------------------------------------------------------------------------
         // Reformat the hover response so that it fits into the ccManager allowed 5 to 6 lines.
-        // ccManager displays tips by unique ordered std::set, so we have to use a digit
-        // prepended to the hover text line to control the sort order.
+        // ccManager displays tips by unique ordered std::set, so we have to set the
+        // first entry to "~NoSort~" to tell ccManager to use our own order.
         // ----------------------------------------------------------------------------
         wxString hoverText;
         wxString noSort = "~NoSort~";
@@ -2609,7 +2610,6 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
             {
                 // Ignore the parameter line for now. The parameters are shown
                 // when the full declaraton is shown anyway.
-                // Args hoverText starts with a sort number
                 if (0) // don't show this parameter text
                     v_HoverTokens.push_back(ClgdCCToken(ii-1, hoverText, hoverText));
                 hoverText.Clear();
