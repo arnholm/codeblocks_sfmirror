@@ -193,7 +193,7 @@ namespace wxsCodeMarks
                 if (DoTranslation)
                 {
                     // Check if translation is really needed. For now, just check if it contains alphabetic chars
-                    if (std::any_of(Source.begin(), Source.end(), [] (wxChar c) {return wxIsalpha(c);}))
+                    if (std::any_of(Source.begin(), Source.end(), [] (wxUniChar c) {return wxIsalpha(c);}))
                     {
                         Prefix = "_(";
                         Postfix = ")";
