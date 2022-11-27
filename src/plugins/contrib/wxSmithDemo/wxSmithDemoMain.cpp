@@ -15,7 +15,7 @@
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
-#include <wx/paper.h>					// wxPrintPaperDatabase.
+#include <wx/paper.h>                    // wxPrintPaperDatabase.
 #include <wx/aboutdlg.h>
 #include <wx/log.h>
 #include <wx/dcmemory.h>
@@ -127,10 +127,10 @@ END_EVENT_TABLE()
 wxSmithDemoFrame::wxSmithDemoFrame(wxWindow* parent,wxWindowID id)
 {
     // Set the frame icon
-//	SetIcon(wxICON(wxsmith));
+//    SetIcon(wxICON(wxsmith));
 
-	//  A help provider must be created before the wxContextHelpButton control and any controls that use context-sensitive help are declared.
-	wxHelpProvider::Set(new wxSimpleHelpProvider);
+    //  A help provider must be created before the wxContextHelpButton control and any controls that use context-sensitive help are declared.
+    wxHelpProvider::Set(new wxSimpleHelpProvider);
 
     //(*Initialize(wxSmithDemoFrame)
     wxBoxSizer* BoxSizer4;
@@ -455,7 +455,7 @@ wxSmithDemoFrame::wxSmithDemoFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&wxSmithDemoFrame::OnAbout);
     //*)
 
-	Init();
+    Init();
 }
 
 wxSmithDemoFrame::~wxSmithDemoFrame()
@@ -464,19 +464,19 @@ wxSmithDemoFrame::~wxSmithDemoFrame()
 
 void wxSmithDemoFrame::Init()
 {
-	CreateStyles();
-	WriteInitialText();
-	InitWithListItems();
-	InitGridBag();
-	InitTreebook();
+    CreateStyles();
+    WriteInitialText();
+    InitWithListItems();
+    InitGridBag();
+    InitTreebook();
 
 #if wxUSE_STATUSBAR
     SetStatusText(wxT("wxDialUpManager:"), 1);
     SetStatusText(DialUpManager1->IsAlwaysOnline() ? _("LAN") : _("No LAN"), 2);
 #endif
 
-	// Let's use the new wxImage tool to obtain a bitmap for the static bitmap.
-	StaticBitmap1->SetBitmap(wxBitmap(*Image1));
+    // Let's use the new wxImage tool to obtain a bitmap for the static bitmap.
+    StaticBitmap1->SetBitmap(wxBitmap(*Image1));
 }
 
 void wxSmithDemoFrame::OnQuit(wxCommandEvent& event)
@@ -491,22 +491,22 @@ void wxSmithDemoFrame::OnAbout(wxCommandEvent& event)
     info.SetVersion(wxString::Format(wxT("%d.%d.%d.%d %s"), AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::BUILD, AutoVersion::REVISION, wxString(AutoVersion::STATUS, wxConvUTF8).c_str()));
     info.SetDescription(_("This program demonstrates controls\nrecently added to wxSmith, the GUI\neditor plug-in for Code::Blocks IDE."));
     info.SetCopyright(_T("Copyright (C) 2010 Gary Harris"));
-	info.AddDeveloper(wxT("Gary Harris"));
-//	info.AddTranslator(wxT("Gary Harris"));
-	info.SetName(wxTheApp->GetAppName());
-	info.SetWebSite(wxT("http://wxsmithaddons.sourceforge.net/"));
-	wxString sLicence(_("wxDemoApp is released under the\nterms of the wxWidgets Licence.\n\n"));
-	sLicence.Append(_("Parts of the wxWidgets sample\napplications are used under\nthe terms of the\nwxWidgets licence.\n\n"));
-	sLicence.Append(_("EarthImpactSml_512kb.mp4 is used\nunder the terms of the Creative\nCommons licence."));
-	info.SetLicence(sLicence);
+    info.AddDeveloper(wxT("Gary Harris"));
+//    info.AddTranslator(wxT("Gary Harris"));
+    info.SetName(wxTheApp->GetAppName());
+    info.SetWebSite(wxT("http://wxsmithaddons.sourceforge.net/"));
+    wxString sLicence(_("wxDemoApp is released under the\nterms of the wxWidgets Licence.\n\n"));
+    sLicence.Append(_("Parts of the wxWidgets sample\napplications are used under\nthe terms of the\nwxWidgets licence.\n\n"));
+    sLicence.Append(_("EarthImpactSml_512kb.mp4 is used\nunder the terms of the Creative\nCommons licence."));
+    info.SetLicence(sLicence);
 
-	wxAboutBox(info);
+    wxAboutBox(info);
 }
 
 // -- Utility functions.
 void wxSmithDemoFrame::LogString(wxString s)
 {
-	ListBoxLog->Append(s);
+    ListBoxLog->Append(s);
     ListBoxLog->SetFirstItem(ListBoxLog->GetCount() - 1);
 }
 
@@ -672,13 +672,13 @@ void wxSmithDemoFrame::WriteInitialText()
     wxRichTextCtrl& r = *RichTextCtrl1;
 
     r.Newline();
-	r.WriteText(wxT("This is "));
+    r.WriteText(wxT("This is "));
     r.WriteText(wxT("wxRichTextCtrl."));
     r.Newline();
     r.Newline();
-	r.WriteText(wxT("The styles you set in wxSmith are used to set the basic styles for the control. Other styles are layered on top of them."));
-	r.WriteText(wxT("You will still want to set and apply your detailed styles as per the wxWidgets Rich Text sample. The text below the line that follows is from Julian's wxWidgets sample application. "));
-	r.WriteText(wxT("You can play around with the settings in wxSmith to see how they affect the display."));
+    r.WriteText(wxT("The styles you set in wxSmith are used to set the basic styles for the control. Other styles are layered on top of them."));
+    r.WriteText(wxT("You will still want to set and apply your detailed styles as per the wxWidgets Rich Text sample. The text below the line that follows is from Julian's wxWidgets sample application. "));
+    r.WriteText(wxT("You can play around with the settings in wxSmith to see how they affect the display."));
     r.Newline();
     r.Newline();
     r.Newline();
@@ -891,12 +891,12 @@ void wxSmithDemoFrame::InitWithListItems()
 void wxSmithDemoFrame::InitTreebook()
 {
     wxPanel *Panel99 = new wxPanel(Treebook1 , ID_PANEL99, wxPoint(0, 0), wxDefaultSize, wxTAB_TRAVERSAL|wxSTATIC_BORDER, _T("ID_PANEL99"));
-//	wxStaticText *text = new wxStaticText(Panel99, wxNewId(), wxString(_("This is a sub-page.")), wxPoint(88, 96));
-	Treebook1->InsertSubPage(0, Panel99, wxT("1-1"));
-	Treebook1->InsertSubPage(0, Panel99, wxT("1-2"));
-	Treebook1->InsertSubPage(3, Panel99, wxT("2-1"));
-	Treebook1->InsertSubPage(4, Panel99, wxT("2-1-1"));
-	Treebook1->InsertSubPage(5, Panel99, wxT("2-1-1-1"));
+//    wxStaticText *text = new wxStaticText(Panel99, wxNewId(), wxString(_("This is a sub-page.")), wxPoint(88, 96));
+    Treebook1->InsertSubPage(0, Panel99, wxT("1-1"));
+    Treebook1->InsertSubPage(0, Panel99, wxT("1-2"));
+    Treebook1->InsertSubPage(3, Panel99, wxT("2-1"));
+    Treebook1->InsertSubPage(4, Panel99, wxT("2-1-1"));
+    Treebook1->InsertSubPage(5, Panel99, wxT("2-1-1-1"));
 }
 
 // -- wxGridBagSizer
@@ -968,26 +968,26 @@ void wxSmithDemoFrame::InitGridBag()
 
 void wxSmithDemoFrame::OnNotebook1PageChanged(wxNotebookEvent& event)
 {
-	if(event.GetSelection() == 6){
-		LogString(wxString::Format(_("Rich Text Controls: Styles will be applied to the wxRichTextCtrl tab.")));
-	}
+    if(event.GetSelection() == 6){
+        LogString(wxString::Format(_("Rich Text Controls: Styles will be applied to the wxRichTextCtrl tab.")));
+    }
 }
 
 //  -- wxDialUpManager --
 
 void wxSmithDemoFrame::OnDialUpManager1Connected(wxDialUpEvent& event)
 {
-	wxMessageBox(_("Network connected."));
+    wxMessageBox(_("Network connected."));
 }
 
 void wxSmithDemoFrame::OnDialUpManager1Disconnected(wxDialUpEvent& event)
 {
-	wxMessageBox(_("Network disconnected."));
+    wxMessageBox(_("Network disconnected."));
 }
 
 void wxSmithDemoFrame::OnMenuItemCheckNetworkStatus(wxCommandEvent& event)
 {
-	if(DialUpManager1->IsOnline())
+    if(DialUpManager1->IsOnline())
       wxLogMessage(_("Network is online."));
    else
       wxLogMessage(_("Network is offline."));
@@ -997,25 +997,25 @@ void wxSmithDemoFrame::OnMenuItemCheckNetworkStatus(wxCommandEvent& event)
 
 void wxSmithDemoFrame::OnBitmapComboBox1Selected(wxCommandEvent& event)
 {
-	wxString s = BitmapComboBox1->GetString(event.GetSelection());
-	LogString(wxString::Format(_("wxBitmapComboBox: You selected \"%s\"."), s.c_str()));
+    wxString s = BitmapComboBox1->GetString(event.GetSelection());
+    LogString(wxString::Format(_("wxBitmapComboBox: You selected \"%s\"."), s.c_str()));
 }
 
 void wxSmithDemoFrame::OnBitmapComboBox1TextEnter(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxBitmapComboBox: You pressed \"Enter\". Value: %s"), event.GetString().c_str()));
+    LogString(wxString::Format(_("wxBitmapComboBox: You pressed \"Enter\". Value: %s"), event.GetString().c_str()));
 }
 
 //  -- wxSimpleHtmlListBox --
 
 void wxSmithDemoFrame::OnSimpleHtmlListBox1Select(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxSimpleHtmlListBox: Mouse clicked over item %d."), event.GetSelection()));
+    LogString(wxString::Format(_("wxSimpleHtmlListBox: Mouse clicked over item %d."), event.GetSelection()));
 }
 
 void wxSmithDemoFrame::OnSimpleHtmlListBox1CellClicked(wxHtmlCellEvent& event)
 {
-	LogString(wxString::Format(_("wxSimpleHtmlListBox: Click over cell %p at %d;%d."), event.GetCell(), event.GetPoint().x, event.GetPoint().y));
+    LogString(wxString::Format(_("wxSimpleHtmlListBox: Click over cell %p at %d;%d."), event.GetCell(), event.GetPoint().x, event.GetPoint().y));
 
     // if we don't skip the event, OnSimpleHtmlListBox1LinkClicked() won't be called!
     event.Skip();
@@ -1023,65 +1023,65 @@ void wxSmithDemoFrame::OnSimpleHtmlListBox1CellClicked(wxHtmlCellEvent& event)
 
 void wxSmithDemoFrame::OnSimpleHtmlListBox1CellHover(wxHtmlCellEvent& event)
 {
-	LogString(wxString::Format(_("wxSimpleHtmlListBox: The mouse moved over cell %p at %d;%d."), event.GetCell(), event.GetPoint().x, event.GetPoint().y));
+    LogString(wxString::Format(_("wxSimpleHtmlListBox: The mouse moved over cell %p at %d;%d."), event.GetCell(), event.GetPoint().x, event.GetPoint().y));
 }
 
 void wxSmithDemoFrame::OnSimpleHtmlListBox1LinkClicked(wxHtmlLinkEvent& event)
 {
-	LogString(wxString::Format(_("wxSimpleHtmlListBox: The url '%s' was clicked."), event.GetLinkInfo().GetHref().c_str()));
+    LogString(wxString::Format(_("wxSimpleHtmlListBox: The url '%s' was clicked."), event.GetLinkInfo().GetHref().c_str()));
 }
 
 //  -- wxSearchCtrl --
 
 void wxSmithDemoFrame::OnSearchCtrl1SearchClicked(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxSearchCtrl: You clicked the Search button.")));
+    LogString(wxString::Format(_("wxSearchCtrl: You clicked the Search button.")));
 }
 
 void wxSmithDemoFrame::OnSearchCtrl1CancelClicked(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxSearchCtrl: You clicked the Cancel button.")));
+    LogString(wxString::Format(_("wxSearchCtrl: You clicked the Cancel button.")));
 }
 
 void wxSmithDemoFrame::OnSearchCtrl1TextEnter(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxSearchCtrl: You presses Enter.")));
+    LogString(wxString::Format(_("wxSearchCtrl: You presses Enter.")));
 }
 
 void wxSmithDemoFrame::OnSearchCtrl1Text(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxSearchCtrl: You entered some text.")));
+    LogString(wxString::Format(_("wxSearchCtrl: You entered some text.")));
 }
 
 //  -- wxHtmlEasyPrinting --
 
 void wxSmithDemoFrame::OnHtmlEasyPrint(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxHtmlEasyPrinting: Printing output to a directory called 'help' in the application directory.")));
-	HtmlEasyPrinting1->PrintFile(wxT("html/subsup.html"));
+    LogString(wxString::Format(_("wxHtmlEasyPrinting: Printing output to a directory called 'help' in the application directory.")));
+    HtmlEasyPrinting1->PrintFile(wxT("html/subsup.html"));
 }
 
 void wxSmithDemoFrame::OnHtmlEasyPageSetup(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxHtmlEasyPrinting: Running the page setup dialogue.")));
-	HtmlEasyPrinting1->PageSetup();
+    LogString(wxString::Format(_("wxHtmlEasyPrinting: Running the page setup dialogue.")));
+    HtmlEasyPrinting1->PageSetup();
 }
 
 // -- wxRichTextCtrl
 
 void wxSmithDemoFrame::OnRichTextCtrl1Text(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxRichTextCtrl: You entered some text.")));
+    LogString(wxString::Format(_("wxRichTextCtrl: You entered some text.")));
 }
 
 void wxSmithDemoFrame::OnRichTextCtrl1TextEnter(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxRichTextCtrl: You pressed Enter.")));
+    LogString(wxString::Format(_("wxRichTextCtrl: You pressed Enter.")));
 }
 
 void wxSmithDemoFrame::OnRichTextCtrl1TextUrl(wxTextUrlEvent& event)
 {
-	LogString(wxString::Format(_("wxRichTextCtrl: You clicked the URL.")));
+    LogString(wxString::Format(_("wxRichTextCtrl: You clicked the URL.")));
 }
 
 // -- Menus
@@ -1089,53 +1089,53 @@ void wxSmithDemoFrame::OnRichTextCtrl1TextUrl(wxTextUrlEvent& event)
 
 void wxSmithDemoFrame::OnMenuItemFindReplaceDlgSelected(wxCommandEvent& event)
 {
-	// You don't actually gain a lot by creating a wxFindReplaceDialog as it has to be recycled, anyway.
-	// It does create the wxFindReplaceData object for you, though.
-	// wxFindReplaceDialog is always, by design and implementation, modeless.
-	LogString(wxString::Format(_("wxFindReplaceDialog: Running.")));
-	if(!FindReplaceDialog1){
-		FindReplaceDialog1 = new wxFindReplaceDialog(this, &findReplaceData_1, _("wxFindReplaceDialog"), wxFR_REPLACEDIALOG);
-	}
-	FindReplaceDialog1->Show();
+    // You don't actually gain a lot by creating a wxFindReplaceDialog as it has to be recycled, anyway.
+    // It does create the wxFindReplaceData object for you, though.
+    // wxFindReplaceDialog is always, by design and implementation, modeless.
+    LogString(wxString::Format(_("wxFindReplaceDialog: Running.")));
+    if(!FindReplaceDialog1){
+        FindReplaceDialog1 = new wxFindReplaceDialog(this, &findReplaceData_1, _("wxFindReplaceDialog"), wxFR_REPLACEDIALOG);
+    }
+    FindReplaceDialog1->Show();
 }
 
-// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT	***** IMPORTANT *****
+// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT    ***** IMPORTANT *****
 //
 // For events to work the id of your  wxFindReplaceDialog MUST be set to -1.
 //
-// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT	***** IMPORTANT *****
+// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT    ***** IMPORTANT *****
 
 void wxSmithDemoFrame::OnFindReplaceDialog1Find(wxFindDialogEvent& event)
 {
-	LogString(wxString::Format(_("wxFindReplaceDialog: You clicked Find.")));
+    LogString(wxString::Format(_("wxFindReplaceDialog: You clicked Find.")));
 }
 
 void wxSmithDemoFrame::OnFindReplaceDialog1FindNext(wxFindDialogEvent& event)
 {
-	LogString(wxString::Format(_("wxFindReplaceDialog: You clicked Find Next.")));
+    LogString(wxString::Format(_("wxFindReplaceDialog: You clicked Find Next.")));
 }
 
 void wxSmithDemoFrame::OnFindReplaceDialog1Close(wxFindDialogEvent& event)
 {
-	LogString(wxString::Format(_("wxFindReplaceDialog: You pressed Cancel.")));
-	wxDELETE(FindReplaceDialog1);
-	wxASSERT(!FindReplaceDialog1);
+    LogString(wxString::Format(_("wxFindReplaceDialog: You pressed Cancel.")));
+    wxDELETE(FindReplaceDialog1);
+    wxASSERT(!FindReplaceDialog1);
 }
 
 // - wxFontDialog
 
 void wxSmithDemoFrame::OnMenuItemFontDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxFontDialog: Running.")));
-	FontDialog1->ShowModal();
+    LogString(wxString::Format(_("wxFontDialog: Running.")));
+    FontDialog1->ShowModal();
 }
 
 // - wxMessageDialog
 
 void wxSmithDemoFrame::OnMenuItemMessageDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxMessageDialog: Running.")));
-	MessageDialog1->ShowModal();
+    LogString(wxString::Format(_("wxMessageDialog: Running.")));
+    MessageDialog1->ShowModal();
 }
 
 // - wxPageSetupDialog
@@ -1144,48 +1144,48 @@ void wxSmithDemoFrame::OnMenuItemMessageDlgSelected(wxCommandEvent& event)
 // reconfigure the associated wxPageSetupDialogData object for subsequent runs.
 void wxSmithDemoFrame::OnMenuItemPageSetupDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxPageSetupDialog: Running.")));
-	if(PageSetupDialog1->ShowModal() == wxID_OK){
-		wxPageSetupDialogData setupData = PageSetupDialog1->GetPageSetupData();
-		if(!setupData.IsOk()){
-			LogString(wxString::Format(_("wxPageSetupDialog: Error getting setup data.")));
-			return;
-		}
-		wxPoint ptTL = setupData.GetMarginTopLeft();
-		wxPoint ptBR = setupData.GetMarginBottomRight();
-		LogString(wxString::Format(_("wxPageSetupDialog: Margins: Top %d Left %d Bottom %d  Right %d."), ptTL.y, ptTL.x, ptBR.y, ptBR.x));
-		wxPaperSize paperID = setupData.GetPaperId();
-		wxPrintPaperDatabase *paperDB = new wxPrintPaperDatabase;
-		paperDB->CreateDatabase();
-		wxString sPaper = paperDB->ConvertIdToName(paperID);
-		if(!sPaper.IsEmpty()){
-			LogString(wxString::Format(_("wxPageSetupDialog: Paper size: %s."), sPaper.c_str()));
-		}
-		else{
-			LogString(wxString::Format(_("wxPageSetupDialog: Paper size: Not found in wxPrintPaperDatabase.")));
-		}
-		wxPrintData printData = setupData.GetPrintData();
-		wxString sOrientation = printData.GetOrientation() == wxPORTRAIT ? wxString(_("Portrait")) : wxString(_("Landscape"));
-		LogString(wxString::Format(_("wxPageSetupDialog: Paper size: %s."), sOrientation.c_str() ));
+    LogString(wxString::Format(_("wxPageSetupDialog: Running.")));
+    if(PageSetupDialog1->ShowModal() == wxID_OK){
+        wxPageSetupDialogData setupData = PageSetupDialog1->GetPageSetupData();
+        if(!setupData.IsOk()){
+            LogString(wxString::Format(_("wxPageSetupDialog: Error getting setup data.")));
+            return;
+        }
+        wxPoint ptTL = setupData.GetMarginTopLeft();
+        wxPoint ptBR = setupData.GetMarginBottomRight();
+        LogString(wxString::Format(_("wxPageSetupDialog: Margins: Top %d Left %d Bottom %d  Right %d."), ptTL.y, ptTL.x, ptBR.y, ptBR.x));
+        wxPaperSize paperID = setupData.GetPaperId();
+        wxPrintPaperDatabase *paperDB = new wxPrintPaperDatabase;
+        paperDB->CreateDatabase();
+        wxString sPaper = paperDB->ConvertIdToName(paperID);
+        if(!sPaper.IsEmpty()){
+            LogString(wxString::Format(_("wxPageSetupDialog: Paper size: %s."), sPaper.c_str()));
+        }
+        else{
+            LogString(wxString::Format(_("wxPageSetupDialog: Paper size: Not found in wxPrintPaperDatabase.")));
+        }
+        wxPrintData printData = setupData.GetPrintData();
+        wxString sOrientation = printData.GetOrientation() == wxPORTRAIT ? wxString(_("Portrait")) : wxString(_("Landscape"));
+        LogString(wxString::Format(_("wxPageSetupDialog: Paper size: %s."), sOrientation.c_str() ));
 
-		wxDELETE(paperDB);
-	}
-	else{
-		LogString(wxString::Format(_("wxPageSetupDialog: You pressed Cancel.")));
-	}
+        wxDELETE(paperDB);
+    }
+    else{
+        LogString(wxString::Format(_("wxPageSetupDialog: You pressed Cancel.")));
+    }
 }
 
 // - wxPasswordEntryDialog
 
 void wxSmithDemoFrame::OnMenuItemPasswordEntryDialogSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxPasswordEntryDialog: Running.")));
-	if(PasswordEntryDialog1->ShowModal() == wxID_OK){
-		LogString(wxString::Format(_("wxPasswordEntryDialog: You entered '%s'."), PasswordEntryDialog1->GetValue().c_str()));
-	}
-	else{
-		LogString(wxString::Format(_("wxPasswordEntryDialog: You pressed Cancel.")));
-	}
+    LogString(wxString::Format(_("wxPasswordEntryDialog: Running.")));
+    if(PasswordEntryDialog1->ShowModal() == wxID_OK){
+        LogString(wxString::Format(_("wxPasswordEntryDialog: You entered '%s'."), PasswordEntryDialog1->GetValue().c_str()));
+    }
+    else{
+        LogString(wxString::Format(_("wxPasswordEntryDialog: You pressed Cancel.")));
+    }
 }
 
 // - wxPrintDialog
@@ -1194,69 +1194,69 @@ void wxSmithDemoFrame::OnMenuItemPasswordEntryDialogSelected(wxCommandEvent& eve
 // (including wxPrintout, wxPrinter, and other classes), you won't need to invoke these dialogues explicitly in your code.
 void wxSmithDemoFrame::OnMenuItemPrintDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxPrintDialog: Running.")));
-	if(PrintDialog1->ShowModal() == wxID_OK){
-		wxDC *dc = PrintDialog1->GetPrintDC();           // Get DC data from Printer Dialog.
-		wxMemoryDC *dcMem = new wxMemoryDC;
+    LogString(wxString::Format(_("wxPrintDialog: Running.")));
+    if(PrintDialog1->ShowModal() == wxID_OK){
+        wxDC *dc = PrintDialog1->GetPrintDC();           // Get DC data from Printer Dialog.
+        wxMemoryDC *dcMem = new wxMemoryDC;
 
-		dc->SetDeviceOrigin(1000, 100); 						// Set the origin of the printed bitmap on the paper.
-		dc->SetUserScale(10, 10);       							// Set printer scale: if (1, 1), each pixel will correspond to a dot on the printer; so,
-																							// if your printer prints at 300 DPI, a 300 pixel wide image will be printed 1 inch wide.
-		dc->StartDoc(_("printing..."));           						// Begin new document to be printed.
-		dc->StartPage();                        								// Begin new page to be printed.
+        dc->SetDeviceOrigin(1000, 100);                         // Set the origin of the printed bitmap on the paper.
+        dc->SetUserScale(10, 10);                                   // Set printer scale: if (1, 1), each pixel will correspond to a dot on the printer; so,
+                                                                                            // if your printer prints at 300 DPI, a 300 pixel wide image will be printed 1 inch wide.
+        dc->StartDoc(_("printing..."));                                   // Begin new document to be printed.
+        dc->StartPage();                                                        // Begin new page to be printed.
 
-		dc->DrawText(wxString(_("wxSmithDemo Test Page")), 100, 20);
-		dc->DrawLine(20, 30, 300, 30);
-		wxBitmap bmp(*Image1);
-		dcMem->SelectObject(bmp);               					// "Enable" bitmap for "blitting".
-		dc->DrawText(wxString(_("This image was created in wxSmith using the new wxImage tool.")), 20, 50);
-		dc->Blit(20, 70, 400, 400, dcMem, 0, 0); 			// Copy bitmap into printer DC.
-		dc->DrawText(wxString(_("Lets boogie...")), 20, 120);
-		wxPen pen(*wxRED, 2);
-		dc->SetPen(pen);
-		dc->DrawCircle(100, 300, 100);
-		dc->SetPen(*wxCYAN_PEN);
-		dc->SetBrush(*wxCYAN_BRUSH);
-		dc->DrawRoundedRectangle(wxPoint(180, 200), wxSize(150, 80), 30);
-		dc->SetPen(*wxLIGHT_GREY_PEN);
-		dc->SetBrush(*wxLIGHT_GREY_BRUSH);
-		dc->DrawEllipse(wxPoint(-40, 320), wxSize(180, 100));
-		dc->SetTextForeground(*wxGREEN);
-		dc->DrawRotatedText(wxString(_("Some text rotated to 57 degrees")), 100, 300, 57);
-		dc->DrawBitmap(wxBitmap(wxT("media/zebra.xpm"), wxBITMAP_TYPE_XPM), 50, 450);
-		dc->SetTextForeground(*wxBLACK);
-		dc->DrawText(wxString(_("That's all folks.")), 20, 650);
+        dc->DrawText(wxString(_("wxSmithDemo Test Page")), 100, 20);
+        dc->DrawLine(20, 30, 300, 30);
+        wxBitmap bmp(*Image1);
+        dcMem->SelectObject(bmp);                                   // "Enable" bitmap for "blitting".
+        dc->DrawText(wxString(_("This image was created in wxSmith using the new wxImage tool.")), 20, 50);
+        dc->Blit(20, 70, 400, 400, dcMem, 0, 0);             // Copy bitmap into printer DC.
+        dc->DrawText(wxString(_("Lets boogie...")), 20, 120);
+        wxPen pen(*wxRED, 2);
+        dc->SetPen(pen);
+        dc->DrawCircle(100, 300, 100);
+        dc->SetPen(*wxCYAN_PEN);
+        dc->SetBrush(*wxCYAN_BRUSH);
+        dc->DrawRoundedRectangle(wxPoint(180, 200), wxSize(150, 80), 30);
+        dc->SetPen(*wxLIGHT_GREY_PEN);
+        dc->SetBrush(*wxLIGHT_GREY_BRUSH);
+        dc->DrawEllipse(wxPoint(-40, 320), wxSize(180, 100));
+        dc->SetTextForeground(*wxGREEN);
+        dc->DrawRotatedText(wxString(_("Some text rotated to 57 degrees")), 100, 300, 57);
+        dc->DrawBitmap(wxBitmap(wxT("media/zebra.xpm"), wxBITMAP_TYPE_XPM), 50, 450);
+        dc->SetTextForeground(*wxBLACK);
+        dc->DrawText(wxString(_("That's all folks.")), 20, 650);
 
-		dcMem->SelectObject(wxNullBitmap);      			// Free the bitmap.
-		dc->EndPage();
-		dc->EndDoc();
+        dcMem->SelectObject(wxNullBitmap);                  // Free the bitmap.
+        dc->EndPage();
+        dc->EndDoc();
 
-		wxDELETE(dc);
-		wxDELETE(dcMem);
-	}
-	else{
-		LogString(wxString::Format(_("wxPrintDialog: You pressed Cancel.")));
-	}
+        wxDELETE(dc);
+        wxDELETE(dcMem);
+    }
+    else{
+        LogString(wxString::Format(_("wxPrintDialog: You pressed Cancel.")));
+    }
 }
 
 // - wxProgressDialog
 
 void wxSmithDemoFrame::OnMenuItemProgressDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxProgressDialog: Running.")));
+    LogString(wxString::Format(_("wxProgressDialog: Running.")));
 
     int iMax = 50;
 
-	// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT	***** IMPORTANT *****
-	//
-	// wxSmith either creates an uninitialised pointer or initialises and runs the dialogue at start-up,
-	// depending on the state of m_bRunAtStartup.
-	// There is no way to initialise the dialogue without having it run at the same time, by design.
-	//
-	// IN THIS EXAMPLE, THE DLG IS NOT SET TO RUN AT STARTUP SO IT MUST BE INITIALISED HERE.
-	//
-	// ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT	***** IMPORTANT *****
-	ProgressDialog1 = new wxProgressDialog(_T("wxProgressDialog"),
+    // ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT    ***** IMPORTANT *****
+    //
+    // wxSmith either creates an uninitialised pointer or initialises and runs the dialogue at start-up,
+    // depending on the state of m_bRunAtStartup.
+    // There is no way to initialise the dialogue without having it run at the same time, by design.
+    //
+    // IN THIS EXAMPLE, THE DLG IS NOT SET TO RUN AT STARTUP SO IT MUST BE INITIALISED HERE.
+    //
+    // ***** IMPORTANT ***** IMPORTANT***** IMPORTANT***** IMPORTANT    ***** IMPORTANT *****
+    ProgressDialog1 = new wxProgressDialog(_T("wxProgressDialog"),
                             _T("An informative message"),
                             iMax,
                             this,
@@ -1308,24 +1308,24 @@ void wxSmithDemoFrame::OnMenuItemProgressDlgSelected(wxCommandEvent& event)
 
 void wxSmithDemoFrame::OnMenuItemRichTextFormattingDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxRichTextFormattingDialog: Running. Styles will be applied to the wxRichTextCtrl tab.")));
+    LogString(wxString::Format(_("wxRichTextFormattingDialog: Running. Styles will be applied to the wxRichTextCtrl tab.")));
 
-	wxRichTextRange range;
-	if(RichTextCtrl1->HasSelection()){
-		range = RichTextCtrl1->GetSelectionRange();
-	}
-	else{
-		range = wxRichTextRange(0, RichTextCtrl1->GetLastPosition()+1);
-	}
-	RichTextFormattingDialog1->GetStyle(RichTextCtrl1, range);
+    wxRichTextRange range;
+    if(RichTextCtrl1->HasSelection()){
+        range = RichTextCtrl1->GetSelectionRange();
+    }
+    else{
+        range = wxRichTextRange(0, RichTextCtrl1->GetLastPosition()+1);
+    }
+    RichTextFormattingDialog1->GetStyle(RichTextCtrl1, range);
 
-	if(RichTextFormattingDialog1->ShowModal() == wxID_OK){
-		LogString(wxString::Format(_("wxRichTextFormattingDialog: Applying format.")));
-		RichTextFormattingDialog1->ApplyStyle(RichTextCtrl1, range);
-	}
-	else{
-		LogString(wxString::Format(_("wxRichTextFormattingDialog: You pressed Cancel.")));
-	}
+    if(RichTextFormattingDialog1->ShowModal() == wxID_OK){
+        LogString(wxString::Format(_("wxRichTextFormattingDialog: Applying format.")));
+        RichTextFormattingDialog1->ApplyStyle(RichTextCtrl1, range);
+    }
+    else{
+        LogString(wxString::Format(_("wxRichTextFormattingDialog: You pressed Cancel.")));
+    }
 }
 
 // - wxRichTextStyleOrganiserDialog
@@ -1337,63 +1337,63 @@ void wxSmithDemoFrame::OnMenuItemRichTextFormattingDlgSelected(wxCommandEvent& e
 // and I can't get SetStyleSheet() to work at all.
 void wxSmithDemoFrame::OnMenuItemRichTextStyleOrganiserDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxRichTextStyleOrganiserDialog: Running. Styles will be applied to the wxRichTextCtrl tab.")));
-	RichTextStyleOrganiserDialog1->SetRichTextCtrl(RichTextCtrl1);
-	RichTextStyleOrganiserDialog1->ShowModal();
+    LogString(wxString::Format(_("wxRichTextStyleOrganiserDialog: Running. Styles will be applied to the wxRichTextCtrl tab.")));
+    RichTextStyleOrganiserDialog1->SetRichTextCtrl(RichTextCtrl1);
+    RichTextStyleOrganiserDialog1->ShowModal();
 }
 
 // - wxTextEntryDialog
 
 void wxSmithDemoFrame::OnMenuItemTextEntryDlgSelected(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxTextEntryDialog: Running.")));
-	if(TextEntryDialog1->ShowModal() == wxID_OK){
-		LogString(wxString::Format(_("wxTextEntryDialog: You entered '%s'."), TextEntryDialog1->GetValue().c_str()));
-	}
-	else{
-		LogString(wxString::Format(_("wxTextEntryDialog: You pressed Cancel.")));
-	}
+    LogString(wxString::Format(_("wxTextEntryDialog: Running.")));
+    if(TextEntryDialog1->ShowModal() == wxID_OK){
+        LogString(wxString::Format(_("wxTextEntryDialog: You entered '%s'."), TextEntryDialog1->GetValue().c_str()));
+    }
+    else{
+        LogString(wxString::Format(_("wxTextEntryDialog: You pressed Cancel.")));
+    }
 }
 
 // -- wxAnimationCtrl
 
 void wxSmithDemoFrame::OnButtonPlayAnimationClick(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxAnimationCtrl: Playing animation.")));
-	AnimationCtrl1->Play();
+    LogString(wxString::Format(_("wxAnimationCtrl: Playing animation.")));
+    AnimationCtrl1->Play();
 }
 
 void wxSmithDemoFrame::OnButtonStopAnimationClick(wxCommandEvent& event)
 {
-	LogString(wxString::Format(_("wxAnimationCtrl: Stopping animation.")));
-	AnimationCtrl1->Stop();
+    LogString(wxString::Format(_("wxAnimationCtrl: Stopping animation.")));
+    AnimationCtrl1->Stop();
 }
 
 // -- wxListView
 
 void wxSmithDemoFrame::OnListView1ItemSelect(wxListEvent& event)
 {
-	LogString(wxString::Format(_("wxListView: You clicked %s."), event.GetItem().GetText().c_str()));
+    LogString(wxString::Format(_("wxListView: You clicked %s."), event.GetItem().GetText().c_str()));
 }
 
 // -- wxMediaCtrl
 
 void wxSmithDemoFrame::OnMediaCtrl1Play(wxMediaEvent& event)
 {
-	LogString(wxString::Format(_("wxMediaCtrl: Starting playback.")));
+    LogString(wxString::Format(_("wxMediaCtrl: Starting playback.")));
 }
 
 void wxSmithDemoFrame::OnMediaCtrl1Pause(wxMediaEvent& event)
 {
-	LogString(wxString::Format(_("wxMediaCtrl: Pausing playback.")));
+    LogString(wxString::Format(_("wxMediaCtrl: Pausing playback.")));
 }
 
 void wxSmithDemoFrame::OnMediaCtrl1Stop(wxMediaEvent& event)
 {
-	LogString(wxString::Format(_("wxMediaCtrl: Stopping playback.")));
+    LogString(wxString::Format(_("wxMediaCtrl: Stopping playback.")));
 }
 
 void wxSmithDemoFrame::OnMediaCtrl1Finished(wxMediaEvent& event)
 {
-	LogString(wxString::Format(_("wxMediaCtrl: Playback finished.")));
+    LogString(wxString::Format(_("wxMediaCtrl: Playback finished.")));
 }
