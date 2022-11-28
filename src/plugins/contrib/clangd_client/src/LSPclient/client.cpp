@@ -367,7 +367,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         if (not wxFileExists(cfgClangdMasterPath))
         {
             wxString msg; msg << _("The clangd path:\n") << cfgClangdMasterPath << _(" does not exist.");
-            msg << _("\nClangd_Client will attempt to find it in some know locations.");
+            msg << _("\nClangd_Client will attempt to find it in some known locations.");
                 cbMessageBox(msg, _("ERROR: Clangd client") );
         }
     }
