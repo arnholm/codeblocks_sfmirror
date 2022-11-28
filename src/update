@@ -21,7 +21,7 @@ fi
 copyImageFiles() {
     from=$1
     to=$2
-    echo "Copy images ${from} to ${to}"
+    echo "Copy images from ${from} to ${to}"
 
     # This is done this stupid/convoluted way, because dash/posix doesn't have arrays!
     dirs="16x16 20x20 24x24 28x28 32x32 40x40 48x48 56x56 64x64"
