@@ -10,12 +10,12 @@
 							<object class="wxBoxSizer">
 								<object class="sizeritem">
 									<object class="wxStaticBoxSizer">
-										<label>Bracket style</label>
+										<label>Brace style</label>
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbAllman">
 												<label>Allman (ANSI)</label>
-												<tooltip>Allman style uses broken brackets.</tooltip>
+												<tooltip>Allman style uses broken braces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -23,7 +23,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbJava">
 												<label>Java</label>
-												<tooltip>Java style uses attached brackets.</tooltip>
+												<tooltip>Java style uses attached braces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -31,7 +31,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbKr">
 												<label>K&amp;&amp;R</label>
-												<tooltip>Kernighan &amp; Ritchie style uses linux brackets. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums.</tooltip>
+												<tooltip>Kernighan &amp; Ritchie style uses linux braces.&#x0A;Opening braces are broken from namespaces, classes, and function definitions.&#x0A;The braces are attached to everything else, including arrays, structs, enums, and statements within a function.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -39,7 +39,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbStroustrup">
 												<label>Stroustrup</label>
-												<tooltip>Stroustrup style uses stroustrup brackets. Brackets are broken from function definitions only. Brackets are attached to everything else including namespaces, classes, and statements within a function, arrays, structs, and enums. This style frequently is used with an indent of 5 spaces.</tooltip>
+												<tooltip>Stroustrup style uses linux braces. Opening braces are broken from function definitions only.&#x0A;The opening braces are attached to everything else, including namespaces, classes, arrays, structs, enums, and statements within a function.&#x0A;The closing headers are broken from closing braces (e.g. --break-closing-headers).&#x0A;This style frequently is used with attach-closing-while, tabbed indents, and an indent of 5 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -47,7 +47,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbWhitesmith">
 												<label>Whitesmith</label>
-												<tooltip>Whitesmith style uses broken, indented brackets. Switch blocks and class blocks are indented to prevent a &apos;hanging indent&apos; with following case statements and C++ class modifiers (public, private, protected).</tooltip>
+												<tooltip>Whitesmith style uses broken, indented braces.&#x0A;Switch blocks and class blocks are indented to prevent a &apos;hanging indent&apos; with &#x0A;the following case statements and C++ class modifiers (public, private, protected).</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -55,7 +55,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbVTK">
 												<label>VTK</label>
-												<tooltip>VTK (Visualization Toolkit) style uses broken, indented brackets, except for the opening bracket. Switch blocks are indented to prevent a &apos;hanging indent&apos; with following case statements.</tooltip>
+												<tooltip>VTK (Visualization Toolkit) style uses broken, indented braces, except for the opening brace&#x0A;of classes, arrays, structs, enums, and function definitions.&#x0A;Switch blocks are indented to prevent a &apos;hanging indent&apos; with following case statements.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -63,7 +63,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbRatliff">
 												<label>Ratliff</label>
-												<tooltip>Ratliff style uses attached, indented brackets. Switch blocks and class blocks are indented to prevent a &apos;hanging indent&apos; with following case statements and C++ class modifiers (public, private, protected).</tooltip>
+												<tooltip>Ratliff style uses attached, indented braces.&#x0A;Switch blocks and class blocks are indented to prevent a &apos;hanging indent&apos; with &#x0A;following case statements and C++ class modifiers (public, private, protected).</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -71,7 +71,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbGNU">
 												<label>GNU</label>
-												<tooltip>GNU style uses broken brackets and indented blocks. This style frequently is used with an indent of 2 spaces.&#x0A;Extra indentation is added to blocks within a function. The opening bracket for namespaces, classes, and functions is not indented.</tooltip>
+												<tooltip>GNU style uses broken braces. Extra indentation is added to blocks within a function only.&#x0A;The entire block is indented, not just the brace.&#x0A;This style frequently is used with an indent of 2 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -79,7 +79,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbLinux">
 												<label>Linux</label>
-												<tooltip>Linux style uses linux brackets. Opening brackets are broken from namespace, class, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. Minimum conditional indent is one-half indent. If you want a different minimum conditional indent use the K&amp;R style instead. This style works best with a large indent. It frequently is used with an indent of 8 spaces.&#x0A;Also known as Kernel Normal Form (KNF) style, this is the style used in the Linux kernel.</tooltip>
+												<tooltip>Linux style uses linux braces. Opening braces are broken from namespace, class, and function definitions.&#x0A;The braces are attached to everything else, including arrays, structs, enums, and statements within a function.&#x0A;The minimum conditional indent is one-half indent.&#x0A;If you want a different minimum conditional indent, use the K&amp;R style instead. This style works best with a large indent.&#x0A;It is frequently used with an indent of 8 spaces.&#x0A;Also known as Kernel Normal Form (KNF) style, this is the style used in the Linux BSD kernel.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -87,7 +87,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbHorstmann">
 												<label>Horstmann</label>
-												<tooltip>Horstmann style uses run-in brackets. Brackets are broken and allow run-in statements. Switches are indented to allow a run-in to the opening switch block. This style frequently is used with an indent of 3 spaces.</tooltip>
+												<tooltip>Horstmann style uses broken braces and run-in statements.&#x0A;Switches are indented to allow a run-in to the opening switch block.&#x0A;This style frequently is used with an indent of 3 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -95,7 +95,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rb1TBS">
 												<label>1TBS</label>
-												<tooltip>&quot;One True Brace Style&quot; uses linux brackets and adds brackets to unbracketed one line conditional statements. Opening brackets are broken from namespaces, classes, and function definitions. Brackets are attached to everything else including statements within a function, arrays, structs, and enums. &#x0A;In the following example brackets have been added to the &quot;return 0;&quot; statement. The option --add-one-line-brackets can also be used with this style.</tooltip>
+												<tooltip>&quot;One True Brace Style&quot;uses linux braces and adds braces to unbraced one line conditional statements.&#x0A;Opening braces are broken from namespaces, classes, and function definitions.The braces are attached to everything else,&#x0A;including arrays, structs, enums, and statements within a function.&#x0A;In the example, braces have been added to the &quot;return 0;&quot; statement.&#x0A;The option --add-one-line-braces can also be used with this style.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -103,7 +103,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbGoogle">
 												<label>Google</label>
-												<tooltip>Google style uses attached brackets and indented class access modifiers. See the indent-modifiers option for an example of the indented modifiers format. This style frequently is used with an indent of 2 spaces.</tooltip>
+												<tooltip>Google style uses attached braces and indented class access modifiers.&#x0A;See the indent-modifiers option for an example of the indented modifiers format.&#x0A;This is not actually a unique brace style, but is Java style with a non-brace variation.&#x0A;This style frequently is used with an indent of 2 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -111,6 +111,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbMozilla">
 												<label>Mozilla</label>
+												<tooltip>Mozilla style uses linux braces. Opening braces are broken from classes, structs, enums, and function definitions.&#x0A;The braces are attached to everything else, including namespaces, arrays, and statements within a function.&#x0A;This style frequently is used with an indent of 2 spaces and --break-return-type.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -118,7 +119,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbPico">
 												<label>Pico</label>
-												<tooltip>Pico style uses run-in brackets and attached closing brackets. Opening brackets are broken and allow run-in statements. The closing bracket is attached to the last line in the block. Switches are indented to allow a run-in to the opening switch block. The style implies keep-one-line-blocks and keep-one-line-statements. If add-brackets is used they will be added as one-line brackets. This style frequently is used with an indent of 2 spaces.</tooltip>
+												<tooltip>Pico style uses broken braces and run-in statements with attached closing braces.&#x0A;The closing brace is attached to the last line in the block.&#x0A;Switches are indented to allow a run-in to the opening switch block.&#x0A;The style implies keep-one-line-blocks and keep-one-line-statements.&#x0A;If add-braces is used they will be added as one-line braces.&#x0A;This style frequently is used with an indent of 2 spaces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -126,7 +127,7 @@
 										<object class="sizeritem">
 											<object class="wxRadioButton" name="rbLisp">
 												<label>Lisp</label>
-												<tooltip>Lisp style uses attached opening and closing brackets. Opening brackets are attached at the end of the statement. The closing bracket is attached to the last line in the block. The style implies keep-one-line-statements but NOT keep-one-line-blocks. This style does not support one-line brackets. If add-one-line-brackets is used they will be added as multiple-line brackets.</tooltip>
+												<tooltip>Lisp style uses attached opening and closing braces. The closing brace is attached to the last line in the block.&#x0A;The style implies keep-one-line-statements, but NOT keep-one-line-blocks.&#x0A;This style does not support one-line braces.&#x0A;If add-one-line-braces is used they will be added as multiple-line braces.</tooltip>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -148,7 +149,7 @@
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT3">
-												<label>Sample of the bracket style option chosen to use:</label>
+												<label>Sample of the brace style option chosen to use:</label>
 											</object>
 											<flag>wxEXPAND</flag>
 											<border>5</border>
@@ -226,7 +227,7 @@
 								</object>
 							</object>
 						</object>
-						<label>Brackets</label>
+						<label>Braces</label>
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="tabIndentation">
@@ -342,7 +343,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkIndentPreprocBlock">
-												<label>Indent preprocessor blocks at bracket level zero, and within a namespace</label>
+												<label>Indent preprocessor blocks at brace level zero, and within a namespace</label>
 											</object>
 											<flag>wxTOP|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -427,7 +428,7 @@
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkBreakClosing">
-												<label>Break closing headers from their immediately preceding closing brackets</label>
+												<label>Break closing headers from their immediately preceding closing braces</label>
 											</object>
 											<flag>wxTOP|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -656,7 +657,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkFillEmptyLines">
-												<label>Fill empty lines with the whitespace of their previous lines</label>
+												<label>Fill empty lines with the whitespace of the previous lines</label>
 											</object>
 											<flag>wxTOP|wxALIGN_LEFT</flag>
 											<border>5</border>
