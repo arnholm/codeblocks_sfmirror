@@ -21,7 +21,7 @@ fi
 copyImageFiles() {
     from=$1
     to=$2
-    echo "Copy ${from} to ${to}"
+    echo "Copy images ${from} to ${to}"
 
     # This is done this stupid/convoluted way, because dash/posix doesn't have arrays!
     dirs="16x16 20x20 24x24 28x28 32x32 40x40 48x48 56x56 64x64"
@@ -36,7 +36,7 @@ copyImageFiles() {
 copySvgFiles() {
     from=$1
     to=$2
-    echo "  Copy SVG ${from}/${dir} to ${to}/${dir}"
+    echo "  Copy ${from}/svg to ${to}/svg"
     mkdir -p ${to}/svg
     cp -f ${from}/svg/*.svg ${to}/svg > /dev/null
 }
