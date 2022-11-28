@@ -148,7 +148,7 @@
                               <flag>wxLEFT|wxALIGN_CENTRE</flag>
                               <object class="wxStaticText" name="lblLibrary">
                                 <label>Select library:</label>
-                                <tooltip>The option lets you select a library whos symbols you want to see.</tooltip>
+                                <tooltip>The option lets you select a library whose symbols you want to see.</tooltip>
                               </object>
                               <border>8</border>
                             </object>
