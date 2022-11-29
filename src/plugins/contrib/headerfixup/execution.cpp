@@ -92,7 +92,7 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizAdvancedOptions = new wxStaticBoxSizer(wxVERTICAL, this, _("Advanced options"));
   m_Ignore = new wxCheckBox(this, ID_CHK_IGNORE, _("Ignore any existing includes / forward decls"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_IGNORE"));
   m_Ignore->SetValue(false);
-  m_Ignore->SetToolTip(_("This will work as if there were no incluides / forwards decls at all int the files (as \"from scratch\")."));
+  m_Ignore->SetToolTip(_("This will work as if there were no includes / forwards decls at all in the files (as \"from scratch\")."));
   sizAdvancedOptions->Add(m_Ignore, 0, wxEXPAND, 5);
   m_FwdDecl = new wxCheckBox(this, ID_CHK_FWD_DECL, _("Try to use forward declarations in header files"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_FWD_DECL"));
   m_FwdDecl->SetValue(false);

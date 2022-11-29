@@ -278,7 +278,7 @@
 				<flag>wxALL</flag>
 				<border>5</border>
 				<object class="wxStaticText" name="m_staticText2">
-					<label>Not tested with all programmers, \nand try to use /dev/ttyUSB0 by default!\nEdit the cbp file with hand to chanege the options\n</label>
+					<label>Not tested with all programmers,\nand try to use /dev/ttyUSB0 by default!\nEdit the cbp file manually to change the options\n</label>
 				</object>
 			</object>
 			<object class="sizeritem">

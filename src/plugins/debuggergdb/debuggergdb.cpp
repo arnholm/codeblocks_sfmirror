@@ -1661,7 +1661,7 @@ void DebuggerGDB::DoBreak(bool temporary)
     #ifndef __WXMSW__
         if (pid > 0 && !wxProcess::Exists(pid))
         {
-            DebugLog(wxString::Format(_("Child process (pid:%ld) doesn't exists"), pid), Logger::warning);
+            DebugLog(wxString::Format(_("Child process (pid:%ld) doesn't exist"), pid), Logger::warning);
             pid = 0;
         }
         if (pid <= 0)
@@ -1672,7 +1672,7 @@ void DebuggerGDB::DoBreak(bool temporary)
         else
         {
             if (!wxProcess::Exists(pid))
-                DebugLog(wxString::Format(_("GDB process (pid:%ld) doesn't exists"), pid), Logger::error);
+                DebugLog(wxString::Format(_("GDB process (pid:%ld) doesn't exist"), pid), Logger::error);
 
             Log(wxString::Format(_("Trying to interrupt process with pid: %ld; child pid: %ld gdb pid: %ld"),
                                  pid, childPid, static_cast<long>(m_Pid)));
