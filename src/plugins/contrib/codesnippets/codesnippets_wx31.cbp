@@ -87,7 +87,6 @@
 		<Unit filename="resources/category.png" />
 		<Unit filename="resources/findf.png" />
 		<Unit filename="resources/findfdisabled.png" />
-		<Unit filename="resources/manifest.xml" />
 		<Unit filename="resources/options.png" />
 		<Unit filename="resources/optionsdisabled.png" />
 		<Unit filename="resources/snippet.png" />

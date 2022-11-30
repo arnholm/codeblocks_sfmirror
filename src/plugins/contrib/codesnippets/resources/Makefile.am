@@ -28,8 +28,6 @@ dist_image_DATA =  allsnippets.png \
 		stop.png \
 		stopdisabled.png
 
-EXTRA_DIST = manifest.xml
-
 codesnippets.zip: $(EXTRA_DIST)
 	PWD=`pwd` cd $(srcdir) && zip $(PWD)/codesnippets.zip manifest.xml > /dev/null
 
