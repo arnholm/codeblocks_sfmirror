@@ -373,7 +373,7 @@ void wxsAngularMeter::InsertPropertyForSector(wxsPropertyGridManager *Grid, int 
 {
     SectorDesc *Desc = m_arrSectors[Position];
     wxString SectorName = wxString::Format(_("Sector %d Colour"), Position + 1);
-    wxString SectorDataName = wxString::Format(_("sector_%d_colour"), Position + 1);
+//    wxString SectorDataName = wxString::Format(_("sector_%d_colour"), Position + 1);
 
     Desc->id = Grid->GetGrid()->Insert(_("Needle Colour"), new wxSystemColourProperty(SectorName, wxPG_LABEL, Desc->colour));
 
