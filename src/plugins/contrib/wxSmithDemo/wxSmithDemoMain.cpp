@@ -241,7 +241,7 @@ wxSmithDemoFrame::wxSmithDemoFrame(wxWindow* parent,wxWindowID id)
     ColourPickerCtrl2->SetToolTip(_("wxColourPickerCtrl\n\nA button which brings up a wxColourDialog when clicked. This control\nis using the wxCLRP_SHOW_LABEL style."));
     StaticBoxSizer3->Add(ColourPickerCtrl2, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     ColourPickerCtrl3 = new wxColourPickerCtrl(Panel2, ID_COLOURPICKERCTRL3, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, wxCLRP_USE_TEXTCTRL, wxDefaultValidator, _T("ID_COLOURPICKERCTRL3"));
-    ColourPickerCtrl3->SetToolTip(_("wxColourPickerCtrl\n\nwxColourPickerCtrl\n\nA button which brings up a wxColourDialog when clicked. This control\nis using the wxCLRP_USE_TEXTCTRL style."));
+    ColourPickerCtrl3->SetToolTip(_("wxColourPickerCtrl\n\nA button which brings up a wxColourDialog when clicked. This control\nis using the wxCLRP_USE_TEXTCTRL style."));
     StaticBoxSizer3->Add(ColourPickerCtrl3, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM, 5);
     StaticBoxSizer5 = new wxStaticBoxSizer(wxHORIZONTAL, Panel2, _("wxFilePickerCtrl"));

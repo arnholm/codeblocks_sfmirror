@@ -207,7 +207,7 @@
 											<object class="sizeritem">
 												<object class="wxColourPickerCtrl" name="ID_COLOURPICKERCTRL3" variable="ColourPickerCtrl3" member="yes">
 													<colour>#000000</colour>
-													<tooltip>wxColourPickerCtrl&#x0A;&#x0A;wxColourPickerCtrl&#x0A;&#x0A;A button which brings up a wxColourDialog when clicked. This control&#x0A;is using the wxCLRP__USE__TEXTCTRL style.</tooltip>
+													<tooltip>wxColourPickerCtrl&#x0A;&#x0A;A button which brings up a wxColourDialog when clicked. This control&#x0A;is using the wxCLRP__USE__TEXTCTRL style.</tooltip>
 													<style>wxCLRP_USE_TEXTCTRL</style>
 												</object>
 												<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
