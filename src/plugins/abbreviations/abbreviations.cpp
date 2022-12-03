@@ -173,7 +173,7 @@ void Abbreviations::BuildMenu(wxMenuBar* menuBar)
     if (editMenu)
     {
         editMenu->AppendSeparator();
-        editMenu->Append(idEditAutoComplete, "Auto-complete\tCtrl-J", _("Auto-completes the word under the caret (nothing to do with code-completion plugins)"));
+        editMenu->Append(idEditAutoComplete, _("Auto-complete")+"\tCtrl-J", _("Auto-completes the word under the caret (nothing to do with code-completion plugins)"));
     }
 }
 
