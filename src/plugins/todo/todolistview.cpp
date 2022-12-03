@@ -109,7 +109,7 @@ wxWindow* ToDoListView::CreateControl(wxWindow* parent)
     hbs->Add(new wxStaticText(m_pPanel, wxID_ANY, _("Scope:")), 0, wxTOP, 4);
 
     m_pSource = new wxComboBox(m_pPanel, idSource, wxEmptyString, wxDefaultPosition, wxDefaultSize, choices, wxCB_READONLY);
-    int source = Manager::Get()->GetConfigManager(_T("todo_list"))->ReadInt(_T("source"), 0);
+    int source = Manager::Get()->GetConfigManager("todo_list")->ReadInt("source", 0);
     m_pSource->SetSelection(source);
     hbs->Add(m_pSource, 0, wxLEFT | wxRIGHT, 8);
 
@@ -195,9 +195,9 @@ void ToDoListView::Parse()
             ProjectBuildTarget *target = prj->GetBuildTarget(prj->GetActiveBuildTarget());
             if (!target)
                 return;
-            wxProgressDialog pd(_T("Todo Plugin: Processing all files in the active target.."),
-                                _T("Processing a target of a big project may take large amount of time.\n\n"
-                                   "Please be patient!\n"),
+            wxProgressDialog pd(_("Todo Plugin: Processing all files in the active target.."),
+                                _("Processing a target of a big project may take large amount of time.\n\n"
+                                  "Please be patient!\n"),
                                 target->GetFilesCount(),
                                 Manager::Get()->GetAppWindow(),
                                 wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_CAN_ABORT);
@@ -228,9 +228,9 @@ void ToDoListView::Parse()
             cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
             if (!prj)
                 return;
-            wxProgressDialog pd(_T("Todo Plugin: Processing all files.."),
-                                _T("Processing a big project may take large amount of time.\n\n"
-                                   "Please be patient!\n"),
+            wxProgressDialog pd(_("Todo Plugin: Processing all files.."),
+                                _("Processing a big project may take large amount of time.\n\n"
+                                  "Please be patient!\n"),
                                 prj->GetFilesCount(),
                                 Manager::Get()->GetAppWindow(),
                                 wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_CAN_ABORT);
@@ -491,10 +491,10 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
     m_ItemsMap[filename].clear();
 
     wxArrayString startStrings;
-    if (langName == _T("C/C++") )
+    if (langName == "C/C++" )
     {
-        startStrings.push_back(_T("#warning"));
-        startStrings.push_back(_T("#error"));
+        startStrings.push_back("#warning");
+        startStrings.push_back("#error");
     }
     if (!cmttoken.doxygenLineComment.empty())
         startStrings.push_back(cmttoken.doxygenLineComment);
@@ -525,7 +525,7 @@ void ToDoListView::FocusEntry(size_t index)
 }
 void ToDoListView::OnComboChange(cb_unused wxCommandEvent& event)
 {
-    Manager::Get()->GetConfigManager( _T("todo_list"))->Write(_T("source"), m_pSource->GetSelection() );
+    Manager::Get()->GetConfigManager( "todo_list")->Write("source", m_pSource->GetSelection() );
     Parse();
 }
 

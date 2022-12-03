@@ -40,7 +40,7 @@
 
 namespace
 {
-    PluginRegistrant<ToDoList> reg(_T("ToDoList"));
+    PluginRegistrant<ToDoList> reg("ToDoList");
 }
 
 const int idViewTodo = wxNewId();
@@ -59,9 +59,9 @@ ToDoList::ToDoList() :
     m_StandAlone(true)
 {
     //ctor
-    if (!Manager::LoadResource(_T("todo.zip")))
+    if (!Manager::LoadResource("todo.zip"))
     {
-        NotifyMissingFile(_T("todo.zip"));
+        NotifyMissingFile("todo.zip");
     }
 }
 
@@ -84,7 +84,7 @@ void ToDoList::OnAttach()
 
     m_pListLog = new ToDoListView(titles, widths, m_Types);
 
-    m_StandAlone = Manager::Get()->GetConfigManager(_T("todo_list"))->ReadBool(_T("stand_alone"), true);
+    m_StandAlone = Manager::Get()->GetConfigManager("todo_list")->ReadBool("stand_alone", true);
     if (!m_StandAlone)
     {
         LogManager* msgMan = Manager::Get()->GetLogManager();
@@ -101,7 +101,7 @@ void ToDoList::OnAttach()
         m_pListLog->GetWindow()->SetInitialSize(wxSize(352,94));
 
         CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-        evt.name = _T("TodoListPanev2.0.0");
+        evt.name = "TodoListPanev2.0.0";
         evt.title = _("Todo list");
         evt.pWindow = m_pListLog->GetWindow();
         evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -111,7 +111,7 @@ void ToDoList::OnAttach()
         Manager::Get()->ProcessEvent(evt);
     }
 
-    m_AutoRefresh = Manager::Get()->GetConfigManager(_T("todo_list"))->ReadBool(_T("auto_refresh"), true);
+    m_AutoRefresh = Manager::Get()->GetConfigManager("todo_list")->ReadBool("auto_refresh", true);
     LoadUsers();
     LoadTypes();
 
@@ -201,7 +201,7 @@ void ToDoList::LoadUsers()
 {
     m_Users.Clear();
 
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Read(_T("users"), &m_Users);
+    Manager::Get()->GetConfigManager("todo_list")->Read("users", &m_Users);
 
     if (m_Users.GetCount() == 0)
         m_Users.Add(wxGetUserId());
@@ -211,34 +211,34 @@ void ToDoList::LoadUsers()
 
 void ToDoList::SaveUsers()
 {
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("users"), m_Users);
+    Manager::Get()->GetConfigManager("todo_list")->Write("users", m_Users);
 }
 
 void ToDoList::LoadTypes()
 {
     m_Types.Clear();
 
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Read(_T("types"), &m_Types);
+    Manager::Get()->GetConfigManager("todo_list")->Read("types", &m_Types);
 
     if (m_Types.GetCount() == 0)
     {
-        m_Types.Add(_T("TODO"));
-        m_Types.Add(_T("@todo"));
-        m_Types.Add(_T("\\todo"));
+        m_Types.Add("TODO");
+        m_Types.Add("@todo");
+        m_Types.Add("\\todo");
 
-        m_Types.Add(_T("FIXME"));
-        m_Types.Add(_T("@fixme"));
-        m_Types.Add(_T("\\fixme"));
+        m_Types.Add("FIXME");
+        m_Types.Add("@fixme");
+        m_Types.Add("\\fixme");
 
-        m_Types.Add(_T("NOTE"));
-        m_Types.Add(_T("@note"));
-        m_Types.Add(_T("\\note"));
+        m_Types.Add("NOTE");
+        m_Types.Add("@note");
+        m_Types.Add("\\note");
     }
     m_pListLog->m_pAllowedTypesDlg->Clear();
     m_pListLog->m_pAllowedTypesDlg->AddItem(m_Types);
 
     wxArrayString selectedTypes;
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Read(_T("types_selected"), &selectedTypes);
+    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &selectedTypes);
 
     if (selectedTypes.GetCount()==0)
     {
@@ -253,7 +253,7 @@ void ToDoList::LoadTypes()
 
 void ToDoList::SaveTypes()
 {
-    Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("types"), m_Types);
+    Manager::Get()->GetConfigManager("todo_list")->Write("types", m_Types);
 }
 
 // events
@@ -311,7 +311,7 @@ void ToDoList::OnAddItem(cb_unused wxCommandEvent& event)
         return;
 
     HighlightLanguage hlang = colour_set->GetLanguageName(ed->GetLanguage());
-    bool edIsCCpp = (hlang == _T("C/C++"));
+    bool edIsCCpp = (hlang == "C/C++");
 
     CommentToken token = colour_set->GetCommentToken(ed->GetLanguage());
     bool hasStreamComments = not token.streamCommentStart.IsEmpty();
@@ -424,34 +424,34 @@ void ToDoList::OnAddItem(cb_unused wxCommandEvent& event)
             buffer << token.doxygenStreamCommentStart;
             break;
         case tdctWarning:
-            buffer << _T("#warning");
+            buffer << "#warning";
             break;
         case tdctError:
-            buffer << _T("#error");
+            buffer << "#error";
             break;
         case tdctStream:
             buffer << token.streamCommentStart;
             break;
     } // end switch
-    buffer << _T(" ");
+    buffer << " ";
 
     // continue with the type
-    buffer << dlg.GetType() << _T(" ");
-    wxString priority = wxString::Format(_T("%d"), dlg.GetPriority()); // do it like this (wx bug with int and streams)
+    buffer << dlg.GetType() << " ";
+    wxString priority = wxString::Format("%d", dlg.GetPriority()); // do it like this (wx bug with int and streams)
 
     // now do the () part
-    buffer << _T("(") << dlg.GetUser() << _T("#") << priority << _T("#") << (dlg.DateRequested() ? (wxDateTime::Today().Format(_T("%x): "))) :  _T("): "));
+    buffer << "(" << dlg.GetUser() << "#" << priority << "#" << (dlg.DateRequested() ? (wxDateTime::Today().Format("%x): ")) :  "): ");
 
     wxString text = dlg.GetText();
 
     // make sure that multi-line notes, don't break the todo
     if ( (CmtType == tdctWarning) || (CmtType == tdctError) )
     {
-        if (text.Replace(_T("\r\n"), _T("\\\r\n")) == 0)
-            text.Replace(_T("\n"), _T("\\\n"));
+        if (text.Replace("\r\n", "\\\r\n") == 0)
+            text.Replace("\n", "\\\n");
         // now see if there were already a backslash before newline
-        if (text.Replace(_T("\\\\\r\n"), _T("\\\r\n")) == 0)
-            text.Replace(_T("\\\\\n"), _T("\\\n"));
+        if (text.Replace("\\\\\r\n", "\\\r\n") == 0)
+            text.Replace("\\\\\n", "\\\n");
     }
     else if (CmtType == tdctLine || (CmtType == tdctDoxygenLine))
     {
@@ -461,20 +461,20 @@ void ToDoList::OnAddItem(cb_unused wxCommandEvent& event)
         else
             lc = token.doxygenLineComment;
         // comment every line from the todo text
-        if ( text.Replace(_T("\r\n"), _T("\r\n")+lc) == 0 )
-            text.Replace(_T("\n"), _T("\n")+lc);
+        if ( text.Replace("\r\n", "\r\n"+lc) == 0 )
+            text.Replace("\n", "\n"+lc);
         // indicate (on the first line) that there is some more text
-        if ( text.Replace(_T("\r\n"), _T(" ...\r\n"),false) == 0 )
-            text.Replace(_T("\n"), _T(" ...\n"),false);
+        if ( text.Replace("\r\n", " ...\r\n", false) == 0 )
+            text.Replace("\n", " ...\n", false);
     }
 
     // add the actual text
     buffer << text;
 
     if ( CmtType == tdctStream )
-        buffer << _T(" ") << token.streamCommentEnd;
+        buffer << " " << token.streamCommentEnd;
     if ( CmtType == tdctDoxygenStream )
-        buffer << _T(" ") << token.doxygenStreamCommentEnd;
+        buffer << " " << token.doxygenStreamCommentEnd;
 
     // add newline char(s), only if dlg.GetPosition() != tdpCurrent
     if (dlg.GetPosition() != tdpCurrent)

@@ -25,7 +25,7 @@ WX_DEFINE_OBJARRAY(ToDoItems); // TODO: find out why this causes a shadow warnin
 static void SkipSpaces(const wxString& buffer, size_t &pos)
 {
     wxChar c = buffer.GetChar(pos);
-    while ( c == _T(' ') || c == _T('\t') )
+    while ( c == ' ' || c == '\t' )
         c = buffer.GetChar(++pos);
 }
 
@@ -82,57 +82,57 @@ void ParseBufferForTODOs(TodoItemsMap &outItemsMap, ToDoItems &outItems,
                 // TODO: Implement code to do this and the other...
 
                 // is it ours or generic todo?
-                if (pos < buffer.length() && buffer.GetChar(pos) == _T('('))
+                if (pos < buffer.length() && buffer.GetChar(pos) == '(')
                 {
                     // it's ours, find user and/or priority
                     ++pos;
                     while (pos < buffer.length())
                     {
                         wxChar c1 = buffer.GetChar(pos);
-                        if (c1 != _T('#') && c1 != _T(')'))
+                        if (c1 != '#' && c1 != ')')
                         {
                             // a little logic doesn't hurt ;)
-                            if (c1 == _T(' ') || c1 == _T('\t'))
+                            if (c1 == ' ' || c1 == '\t')
                             {
                                 // allow one consecutive space
-                                if (!item.user.empty() && item.user.Last() != _T(' '))
-                                    item.user += _T(' ');
+                                if (!item.user.empty() && item.user.Last() != ' ')
+                                    item.user += ' ';
                             }
                             else
                                 item.user += c1;
                         }
-                        else if (c1 == _T('#'))
+                        else if (c1 == '#')
                         {
                             // look for priority
                             c1 = buffer.GetChar(++pos);
-                            static const wxString allowedChars = _T("0123456789");
+                            static const wxString allowedChars("0123456789");
                             if (allowedChars.find(c1) != wxString::npos)
                                 item.priorityStr += c1;
                             // skip to start of date
-                            while (pos < buffer.length() && buffer.GetChar(pos) != _T('\r') && buffer.GetChar(pos) != _T('\n') )
+                            while (pos < buffer.length() && buffer.GetChar(pos) != '\r' && buffer.GetChar(pos) != '\n' )
                             {
                                 const wxChar c2 = buffer.GetChar(pos);
-                                if ( c2 == _T('#'))
+                                if ( c2 == '#')
                                 {
                                     ++pos;
                                     break;
                                 }
-                                if ( c2 == _T(')') )
+                                if ( c2 == ')' )
                                     break;
                                 ++pos;
                             }
                             // look for date
-                            while (pos < buffer.length() && buffer.GetChar(pos) != _T('\r') && buffer.GetChar(pos) != _T('\n') )
+                            while (pos < buffer.length() && buffer.GetChar(pos) != '\r' && buffer.GetChar(pos) != '\n' )
                             {
                                 const wxChar c2 = buffer.GetChar(pos++);
-                                if (c2 == _T(')'))
+                                if (c2 == ')')
                                     break;
                                 item.date += c2;
                             }
 
                             break;
                         }
-                        else if (c1 == _T(')'))
+                        else if (c1 == ')')
                         {
                             ++pos;
                             break;
@@ -144,10 +144,10 @@ void ParseBufferForTODOs(TodoItemsMap &outItemsMap, ToDoItems &outItems,
                 }
                 // ok, we 've reached the actual todo text :)
                 // take everything up to the end of line
-                if (pos < buffer.length() && buffer.GetChar(pos) == _T(':'))
+                if (pos < buffer.length() && buffer.GetChar(pos) == ':')
                     ++pos;
                 size_t idx = pos;
-                while (idx < buffer.length() && buffer.GetChar(idx) != _T('\r') && buffer.GetChar(idx) != _T('\n'))
+                while (idx < buffer.length() && buffer.GetChar(idx) != '\r' && buffer.GetChar(idx) != '\n')
                     ++idx;
                 item.text = buffer.substr(pos, idx-pos);
 
@@ -155,7 +155,7 @@ void ParseBufferForTODOs(TodoItemsMap &outItemsMap, ToDoItems &outItems,
                 item.text.Trim(true).Trim(false);
                 // for a C block style comment like /* TODO: xxx */
                 // we should delete the "*/" at the end of the item.text
-                if (startStrings[k].StartsWith(_T("/*")) && item.text.EndsWith(_T("*/")))
+                if (startStrings[k].StartsWith("/*") && item.text.EndsWith("*/"))
                 {
                     // remove the tailing "*/"
                     item.text.RemoveLast();
@@ -175,7 +175,7 @@ void ParseBufferForTODOs(TodoItemsMap &outItemsMap, ToDoItems &outItems,
                 last_start_pos = pos;
 
                 item.line = current_line_count;
-                item.lineStr = wxString::Format(_T("%d"), item.line + 1); // 1-based line number for list
+                item.lineStr = wxString::Format("%d", item.line + 1); // 1-based line number for list
                 outItemsMap[filename].push_back(item);
                 outItems.Add(item);
 

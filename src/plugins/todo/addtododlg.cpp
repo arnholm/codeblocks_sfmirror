@@ -33,14 +33,14 @@ END_EVENT_TABLE()
 AddTodoDlg::AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArrayString& types, std::bitset<(int)tdctError+1> supportedTdcts) :
     m_supportedTdcts(supportedTdcts)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgAddToDo"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgAddToDo", "wxScrollingDialog");
 
-    ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("todo_list"));
-    const wxString lastUser  = mgr->Read(_T("last_used_user"));
-    const wxString lastType  = mgr->Read(_T("last_used_type"));
-    const wxString lastStyle = mgr->Read(_T("last_used_style"));
-    const wxString lastPos   = mgr->Read(_T("last_used_position"));
-    const bool lastDateReq   = mgr->ReadBool(_T("last_date_req"), false);
+    ConfigManager* mgr = Manager::Get()->GetConfigManager("todo_list");
+    const wxString lastUser  = mgr->Read("last_used_user");
+    const wxString lastType  = mgr->Read("last_used_type");
+    const wxString lastStyle = mgr->Read("last_used_style");
+    const wxString lastPos   = mgr->Read("last_used_position");
+    const bool lastDateReq   = mgr->ReadBool("last_date_req", false);
 
     // load users
     wxChoice* cmb = XRCCTRL(*this, "chcUser", wxChoice);
@@ -62,17 +62,17 @@ AddTodoDlg::AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArr
 
     if (types.empty())
     {
-        cmb->Append(_T("TODO"));
-        cmb->Append(_T("@todo"));
-        cmb->Append(_T("\\todo"));
+        cmb->Append("TODO");
+        cmb->Append("@todo");
+        cmb->Append("\\todo");
 
-        cmb->Append(_T("FIXME"));
-        cmb->Append(_T("@fixme"));
-        cmb->Append(_T("\\fixme"));
+        cmb->Append("FIXME");
+        cmb->Append("@fixme");
+        cmb->Append("\\fixme");
 
-        cmb->Append(_T("NOTE"));
-        cmb->Append(_T("@note"));
-        cmb->Append(_T("\\note"));
+        cmb->Append("NOTE");
+        cmb->Append("@note");
+        cmb->Append("\\note");
     }
     else
         cmb->Append(types);
@@ -85,17 +85,17 @@ AddTodoDlg::AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArr
     cmb = XRCCTRL(*this, "chcStyle", wxChoice);
     cmb->Clear();
     if (m_supportedTdcts[(int)tdctLine])
-        cmb->Append(_T("Line comment"));
+        cmb->Append(_("Line comment"));
     if (m_supportedTdcts[(int)tdctStream])
-        cmb->Append(_T("Stream comment"));
+        cmb->Append(_("Stream comment"));
     if (m_supportedTdcts[(int)tdctDoxygenLine])
-        cmb->Append(_T("Doxygen line comment"));
+        cmb->Append(_("Doxygen line comment"));
     if (m_supportedTdcts[(int)tdctDoxygenStream])
-        cmb->Append(_T("Doxygen stream comment"));
+        cmb->Append(_("Doxygen stream comment"));
     if (m_supportedTdcts[(int)tdctWarning])
-        cmb->Append(_T("Compiler warning"));
+        cmb->Append(_("Compiler warning"));
     if (m_supportedTdcts[(int)tdctError])
-            cmb->Append(_T("Compiler error"));
+            cmb->Append(_("Compiler error"));
 
     if (lastStyle.empty())
         cmb->SetSelection(0);
@@ -161,21 +161,21 @@ void AddTodoDlg::EndModal(int retVal)
     if (retVal == wxID_OK)
     {
         wxChoice* cmb = XRCCTRL(*this, "chcUser", wxChoice);
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("users"), cmb->GetStrings());
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("last_used_user"), cmb->GetStringSelection());
+        Manager::Get()->GetConfigManager("todo_list")->Write("users", cmb->GetStrings());
+        Manager::Get()->GetConfigManager("todo_list")->Write("last_used_user", cmb->GetStringSelection());
 
         cmb = XRCCTRL(*this, "chcType", wxChoice);
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("types"), cmb->GetStrings());
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("last_used_type"), cmb->GetStringSelection());
+        Manager::Get()->GetConfigManager("todo_list")->Write("types", cmb->GetStrings());
+        Manager::Get()->GetConfigManager("todo_list")->Write("last_used_type", cmb->GetStringSelection());
 
         cmb = XRCCTRL(*this, "chcStyle", wxChoice);
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("last_used_style"), cmb->GetStringSelection());
+        Manager::Get()->GetConfigManager("todo_list")->Write("last_used_style", cmb->GetStringSelection());
 
         cmb = XRCCTRL(*this, "chcPosition", wxChoice);
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("last_used_position"), cmb->GetStringSelection());
+        Manager::Get()->GetConfigManager("todo_list")->Write("last_used_position", cmb->GetStringSelection());
 
         wxCheckBox *checkAddDate = XRCCTRL(*this, "ID_CHECKBOX1", wxCheckBox);
-        Manager::Get()->GetConfigManager(_T("todo_list"))->Write(_T("last_date_req"), checkAddDate->GetValue() );
+        Manager::Get()->GetConfigManager("todo_list")->Write("last_date_req", checkAddDate->GetValue() );
     }
 
     wxScrollingDialog::EndModal(retVal);
@@ -184,9 +184,9 @@ void AddTodoDlg::EndModal(int retVal)
 void AddTodoDlg::OnAddUser(wxCommandEvent&)
 {
     // ask for the new user to be added to the "choice" list
-    const wxString &User = cbGetTextFromUser(_T("Enter the user you wish to add"), _T("Add user"), wxEmptyString, this);
+    const wxString &User = cbGetTextFromUser(_("Enter the user you wish to add"), _("Add user"), wxEmptyString, this);
     if (!User.empty())
-            XRCCTRL(*this, "chcUser", wxChoice)->Append(User);
+        XRCCTRL(*this, "chcUser", wxChoice)->Append(User);
 }
 
 void AddTodoDlg::OnDelUser(wxCommandEvent&)
@@ -196,19 +196,19 @@ void AddTodoDlg::OnDelUser(wxCommandEvent&)
     if (sel == wxNOT_FOUND)
         return;
 
-    wxString msg; msg.Printf(_T("Are you sure you want to delete the user '%s'?"), cmb->GetString(sel).c_str());
-    if (cbMessageBox(msg, _T("Confirmation"), wxICON_QUESTION | wxYES_NO, this) == wxID_NO)
+    wxString msg;
+    msg.Printf(_("Are you sure you want to delete the user '%s'?"), cmb->GetString(sel));
+    if (cbMessageBox(msg, _("Confirmation"), wxICON_QUESTION | wxYES_NO, this) == wxID_NO)
        return;
 
     cmb->Delete(sel);
-      cmb->SetSelection(0);
+    cmb->SetSelection(0);
 }
-
 
 void AddTodoDlg::OnAddType(wxCommandEvent&)
 {
     // ask for the new type to be added to the "choice" list
-    const wxString &Type = cbGetTextFromUser(_T("Enter the type you wish to add"), _T("Add type"), wxEmptyString, this);
+    const wxString &Type = cbGetTextFromUser(_("Enter the type you wish to add"), _("Add type"), wxEmptyString, this);
     if (!Type.empty())
         XRCCTRL(*this, "chcType", wxChoice)->Append(Type);
 }
@@ -220,12 +220,13 @@ void AddTodoDlg::OnDelType(wxCommandEvent&)
     if (sel == wxNOT_FOUND)
         return;
 
-    wxString msg; msg.Printf(_T("Are you sure you want to delete the type '%s'?"), cmb->GetString(sel).c_str());
-    if (cbMessageBox(msg, _T("Confirmation"), wxICON_QUESTION | wxYES_NO, this) == wxID_NO)
+    wxString msg;
+    msg.Printf(_("Are you sure you want to delete the type '%s'?"), cmb->GetString(sel));
+    if (cbMessageBox(msg, _("Confirmation"), wxICON_QUESTION | wxYES_NO, this) == wxID_NO)
        return;
 
     cmb->Delete(sel);
-      cmb->SetSelection(0);
+    cmb->SetSelection(0);
 }
 
 bool AddTodoDlg::DateRequested() const
