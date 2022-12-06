@@ -1209,7 +1209,7 @@ void MainFrame::PluginsUpdated(cb_unused cbPlugin* plugin, cb_unused int status)
             GetMenuBar()->FindItem(idViewToolMain, &viewToolbars);
             if (viewToolbars)
             {
-                if (viewToolbars->FindItem(_(info->title)) != wxNOT_FOUND)
+                if (viewToolbars->FindItem(info->title) != wxNOT_FOUND)
                     continue;
 
                 wxMenuItem* item = AddPluginInMenus(viewToolbars, plug,
@@ -1534,7 +1534,7 @@ wxMenuItem* MainFrame::AddPluginInMenus(wxMenu* menu, cbPlugin* plugin, wxObject
     }
 
     int id = wxNewId();
-    wxString title(_(info->title));
+    wxString title(info->title);
     if (menu == m_HelpPluginsMenu)
         title << "...";
 
@@ -2144,7 +2144,7 @@ ToolbarInfo MainFrame::DoAddPluginToolbar(cbPlugin* plugin)
         if (!pluginInfo)
             cbThrow("No plugin info?!?");
 
-        info.paneInfo.Name(pluginInfo->name + "Toolbar").Caption(_(pluginInfo->title) + _(" Toolbar"));
+        info.paneInfo.Name(pluginInfo->name + "Toolbar").Caption(pluginInfo->title + _(" Toolbar"));
     }
     else
     {
@@ -5055,7 +5055,7 @@ void MainFrame::OnPluginLoaded(CodeBlocksEvent& event)
     {
         DoAddPlugin(plug);
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plug);
-        const wxString msg(info ? _(info->title) : wxString(_("<Unknown plugin>")));
+        const wxString msg(info ? info->title : wxString(_("<Unknown plugin>")));
         Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%s plugin activated", msg));
         OnViewToolbarsOptimize(event); // event is unused!
     }

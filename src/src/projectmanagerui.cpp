@@ -969,7 +969,7 @@ void ProjectManagerUI::DoOpenFile(ProjectFile* pf, const wxString& filename)
         {
             const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plugin);
             wxString msg;
-            msg.Printf(_("Could not open file '%s'.\nThe registered handler (%s) could not open it."), filename.c_str(), info ? info->title.c_str() : wxString(_("<Unknown plugin>")).c_str());
+            msg.Printf(_("Could not open file '%s'.\nThe registered handler (%s) could not open it."), filename, info ? info->title : wxString(_("<Unknown plugin>")));
             Manager::Get()->GetLogManager()->LogError(msg);
         }
     }

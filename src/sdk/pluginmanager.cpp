@@ -757,6 +757,13 @@ void PluginManager::RegisterPlugin(const wxString& name,
     m_RegisteredPlugins.push_back(pr);
 }
 
+static wxString RemoveCRAndTranslate(const wxString& value)
+{
+    wxString Result(value);
+    Result.Replace("\r\n", "\n");
+    return _(Result);
+}
+
 bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
                                      const wxString& pluginName,
                                      PluginInfo* infoOut)
@@ -875,30 +882,31 @@ bool PluginManager::ReadManifestFile(const wxString& pluginFilename,
                 TiXmlElement* value = plugin->FirstChildElement("Value");
                 while (value)
                 {
+                    // Most manifest*.xml files contain items formatted for Windows (with \r\n)
+                    // Remove all \r from the translatable ones so poedit works without complaining
                     if (value->Attribute("title"))
-                        infoOut->title = cbC2U(value->Attribute("title"));
+                        infoOut->title = RemoveCRAndTranslate(cbC2U(value->Attribute("title")));
+
                     if (value->Attribute("version"))
                         infoOut->version = cbC2U(value->Attribute("version"));
+
                     if (value->Attribute("description"))
-                    {
-                        wxString tmp = cbC2U(value->Attribute("description"));
-                        // Most manifest*.xml files contain a description item formatted for Windows (with \r\n)
-                        // Remove all \r so that poedit works without complaining
-                        tmp.Replace("\r", "");
-                        // Use the _() macro to be able to translate the tmp string
-                        infoOut->description = _(tmp);
-                    }
+                        infoOut->description = RemoveCRAndTranslate(cbC2U(value->Attribute("description")));
 
                     if (value->Attribute("author"))
-                        infoOut->author = cbC2U(value->Attribute("author"));
+                        infoOut->author = RemoveCRAndTranslate(cbC2U(value->Attribute("author")));
+
                     if (value->Attribute("authorEmail"))
                         infoOut->authorEmail = cbC2U(value->Attribute("authorEmail"));
+
                     if (value->Attribute("authorWebsite"))
                         infoOut->authorWebsite = cbC2U(value->Attribute("authorWebsite"));
+
                     if (value->Attribute("thanksTo"))
-                        infoOut->thanksTo = cbC2U(value->Attribute("thanksTo"));
+                        infoOut->thanksTo = RemoveCRAndTranslate(cbC2U(value->Attribute("thanksTo")));
+
                     if (value->Attribute("license"))
-                        infoOut->license = cbC2U(value->Attribute("license"));
+                        infoOut->license = RemoveCRAndTranslate(cbC2U(value->Attribute("license")));
 
                     value = value->NextSiblingElement("Value");
                 }

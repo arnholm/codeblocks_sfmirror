@@ -68,7 +68,7 @@ inline int wxCALLBACK sortByTitle(wxIntPtr item1, wxIntPtr item2, cb_unused wxIn
     const PluginElement* elem1 = (const PluginElement*)item1;
     const PluginElement* elem2 = (const PluginElement*)item2;
 
-    return _(elem1->info.title).CmpNoCase(_(elem2->info.title));
+    return elem1->info.title.CmpNoCase(elem2->info.title);
 }
 
 BEGIN_EVENT_TABLE(PluginsConfigurationDlg, wxScrollingDialog)
@@ -146,7 +146,7 @@ void PluginsConfigurationDlg::FillList()
     {
         const PluginElement* elem = plugins[i];
 
-        long idx = list->InsertItem(i, _(elem->info.title));
+        long idx = list->InsertItem(i, elem->info.title);
         list->SetItem(idx, 1, elem->info.version);
         list->SetItem(idx, 2, elem->plugin->IsAttached() ? _("Yes") : _("No"));
         list->SetItem(idx, 3, UnixFilename(elem->fileName).AfterLast(wxFILE_SEP_PATH));
@@ -202,14 +202,14 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
         if (elem && elem->plugin)
         {
             pd.Update(++count,
-                        wxString::Format("%s \"%s\"...", isEnable ? _("Enabling") : _("Disabling"), _(elem->info.title)),
+                        wxString::Format("%s \"%s\"...", isEnable ? _("Enabling") : _("Disabling"), elem->info.title),
                         &skip);
             if (skip)
                 break;
 
             if (elem->plugin->IsAttached() and (not elem->plugin->CanDetach()))
             {
-                failure << _(elem->info.title) << '\n';
+                failure << elem->info.title << '\n';
                 continue;
             }
 
@@ -293,7 +293,7 @@ void PluginsConfigurationDlg::OnUninstall(cb_unused wxCommandEvent& event)
         const PluginElement* elem = (const PluginElement*)list->GetItemData(sel);
         if (elem && elem->plugin)
         {
-            wxString title = _(elem->info.title); //fetch info before uninstalling
+            wxString title = elem->info.title; //fetch info before uninstalling
             if (!Manager::Get()->GetPluginManager()->UninstallPlugin(elem->plugin))
                 failure << title << '\n';
         }
@@ -369,7 +369,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         fname.SetExt(_T("cbplugin"));
 
         pd.Update(++count,
-                    wxString::Format(_("Exporting \"%s\"..."), _(elem->info.title)),
+                    wxString::Format(_("Exporting \"%s\"..."), elem->info.title),
                     &skip);
         if (skip)
             break;
@@ -419,13 +419,13 @@ void PluginsConfigurationDlg::OnSelect(cb_unused wxListEvent& event)
     if (!elem)
         return;
 
-    wxString description(_(elem->info.description));
+    wxString description(elem->info.description);
     description.Replace(_T("\n"), _T("<br />\n"));
 
     wxString info;
     info << _T("<html><body>\n");
-    info << _T("<h3>") << _(elem->info.title) << " ";
-    info << _T("<font color=\"#0000AA\">") << _(elem->info.version) << _T("</font></h3>");
+    info << _T("<h3>") << elem->info.title << " ";
+    info << _T("<font color=\"#0000AA\">") << elem->info.version << _T("</font></h3>");
     info << _T("<i><font color=\"#808080\" size=\"-1\">") << UnixFilename(elem->fileName) << _T("</font></i><br />\n");
     info << _T("<br />\n");
     info << description << _T("<br />\n");
