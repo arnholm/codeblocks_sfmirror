@@ -188,7 +188,7 @@ void OpenFilesListPlugin::BuildMenu(wxMenuBar* menuBar)
             {
                 m_ViewMenu->InsertCheckItem(i, idViewOpenFilesTree, _("&Open files list"), _("Toggle displaying the open files list"));
                 m_ViewPreserveChk = m_ViewMenu->InsertCheckItem(i + 2, idViewPreserveOpenEditors, _("&Preserve open editors"), _("Preserve open editors per target/project.\n"
-                                                                                                                                 "Only available the when the workspace is empty."));
+                                                                                                                                 "Only available when the workspace is empty."));
                 m_ViewPreserveChk->Check(m_PreserveOpenEditors);
                 m_ViewMenu->InsertSeparator(i + 3);
                 return;
@@ -197,8 +197,8 @@ void OpenFilesListPlugin::BuildMenu(wxMenuBar* menuBar)
         // not found, just append
         m_ViewMenu->AppendCheckItem(idViewOpenFilesTree, _("&Open files list"), _("Toggle displaying the open files list"));
         m_ViewMenu->AppendSeparator();
-        m_ViewPreserveChk = m_ViewMenu->AppendCheckItem(idViewPreserveOpenEditors, _("&Preserve open editors"), _("Preserve open editors per target/project\n"
-                                                                                                                  "Only available the when workspace is empty."));
+        m_ViewPreserveChk = m_ViewMenu->AppendCheckItem(idViewPreserveOpenEditors, _("&Preserve open editors"), _("Preserve open editors per target/project.\n"
+                                                                                                                  "Only available when the workspace is empty."));
         m_ViewPreserveChk->Check(m_PreserveOpenEditors);
         m_ViewMenu->AppendSeparator();
     }
