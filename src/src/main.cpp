@@ -1863,7 +1863,17 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
 
     // We have to force an update here, because the m_LayoutManager.GetAllPanes()
     // would not report correct values if not updated here.
-    m_LayoutManager.LoadPerspective(layout, true);
+    m_LayoutManager.LoadPerspective(layout, false);
+    // Fix translations on load
+    wxAuiPaneInfo& managementPaneInfo = m_LayoutManager.GetPane("ManagementPane");
+    if (managementPaneInfo.IsOk())
+        managementPaneInfo.Caption(_("Management"));
+
+    wxAuiPaneInfo& messagesPaneInfo = m_LayoutManager.GetPane("MessagesPane");
+    if (messagesPaneInfo.IsOk())
+        messagesPaneInfo.Caption(_("Logs & others"));
+
+    m_LayoutManager.Update();
 
     // If we load a layout we have to check if the window is on a valid display
     // and has valid size. This can happen if a user moves a layout file from a
