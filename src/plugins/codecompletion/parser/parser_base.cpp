@@ -334,8 +334,8 @@ wxArrayString ParserBase::FindFileInIncludeDirs(const wxString& file, bool first
         }
     }
 
-    TRACE(_T("ParserBase::FindFileInIncludeDirs(): Searching %s"), file.wx_str());
-    TRACE(_T("ParserBase::FindFileInIncludeDirs(): Found %lu"), static_cast<unsigned long>(FoundSet.GetCount()));
+    TRACE(wxString::Format("ParserBase::FindFileInIncludeDirs(): Searching %s", file));
+    TRACE(wxString::Format("ParserBase::FindFileInIncludeDirs(): Found %zu", FoundSet.GetCount()));
 
     return FoundSet;
 }

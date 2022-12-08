@@ -634,10 +634,10 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
 
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
-        parseEndLog.Printf(_T("Project '%s' parsing stage done (%lu total parsed files, ")
-                           _T("%lu tokens in %ld minute(s), %ld.%03ld seconds)."), prj.wx_str(),
-                           m_TokenTree ? static_cast<unsigned long>(m_TokenTree->GetFileMapSize()) : 0,
-                           m_TokenTree ? static_cast<unsigned long>(m_TokenTree->realsize())       : 0,
+        parseEndLog.Printf("Project '%s' parsing stage done (%zu total parsed files, "
+                           "%zu tokens in %ld minute(s), %ld.%03ld seconds).", prj,
+                           m_TokenTree ? m_TokenTree->GetFileMapSize() : 0,
+                           m_TokenTree ? m_TokenTree->realsize()       : 0,
                            (m_LastStopWatchTime / 60000),
                            (m_LastStopWatchTime / 1000) % 60,
                            (m_LastStopWatchTime % 1000) );

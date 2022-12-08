@@ -1547,7 +1547,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     }
     else
     {
-        const wxString msg = wxString::Format(_("\"%s\" not found in %lu files"), data->findText, static_cast<unsigned long>(filesList.GetCount()));
+        const wxString msg = wxString::Format(_("\"%s\" not found in %zu files"), data->findText, filesList.GetCount());
         LogSearch(_T(""), -1, msg );
         m_pSearchLog->FocusEntry(oldcount);
 

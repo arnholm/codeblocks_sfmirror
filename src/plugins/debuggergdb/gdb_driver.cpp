@@ -503,7 +503,7 @@ void GDB_driver::EnableCatchingThrow(bool enable)
 void GDB_driver::SwitchThread(size_t threadIndex)
 {
     ResetCursor();
-    QueueCommand(new DebuggerCmd(this, wxString::Format(_T("thread %lu"), static_cast<unsigned long>(threadIndex))));
+    QueueCommand(new DebuggerCmd(this, wxString::Format("thread %zu", threadIndex)));
     if (Manager::Get()->GetDebuggerManager()->UpdateBacktrace())
         QueueCommand(new GdbCmd_Backtrace(this));
 }

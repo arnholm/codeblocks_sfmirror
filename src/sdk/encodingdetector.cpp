@@ -461,8 +461,8 @@ class EncodingDetectorImpl : public nsUniversalDetector
                     outlen = size + 4 - m_BOMSizeInBytes; // should be correct, because Convert has returned true
                     if (m_UseLog && outlen>0)
                     {
-                        logmsg.Printf(_T("Conversion succeeded using wxEncodingConverter "
-                                         "(buffer size = %lu, converted size = %lu."), static_cast<unsigned long>(size), static_cast<unsigned long>(outlen));
+                        logmsg.Printf("Conversion succeeded using wxEncodingConverter "
+                                      "(buffer size = %zu, converted size = %zu.", size, outlen);
                         logmgr->DebugLog(logmsg);
                     }
                 }
@@ -475,8 +475,8 @@ class EncodingDetectorImpl : public nsUniversalDetector
                         wideBuff = csconv.cMB2WC((const char*)buffer, size + 4 - m_BOMSizeInBytes, &outlen);
                         if (m_UseLog && outlen>0)
                         {
-                            logmsg.Printf(_T("Conversion succeeded using wxCSConv "
-                                             "(buffer size = %lu, converted size = %lu."), static_cast<unsigned long>(size), static_cast<unsigned long>(outlen));
+                            logmsg.Printf("Conversion succeeded using wxCSConv "
+                                          "(buffer size = %zu, converted size = %zu.", size, outlen);
                             logmgr->DebugLog(logmsg);
                         }
                     }

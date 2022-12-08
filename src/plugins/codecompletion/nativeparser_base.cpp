@@ -1469,8 +1469,7 @@ size_t NativeParserBase::GenerateResultSet(TokenTree*          tree,
         // eliminate the tokens.
         if (!textMatchSet.empty())
         {
-            TRACE(_T("Find %lu valid text matched tokens from the tree."),
-                  static_cast<unsigned long>(textMatchSet.size()));
+            TRACE(wxString::Format("Find %zu valid text matched tokens from the tree.", textMatchSet.size()));
 
             // get the tokens under the search scope. Note: tokens can have the same names, but we are
             // only interests those under the search scope, here the search scope is the parentSet,
@@ -1716,10 +1715,10 @@ int NativeParserBase::GetTokenFromCurrentLine(TokenTree*         tree,
 
         if (found) break; // exit for-loop
 
-        TRACE(_T("GetTokenFromCurrentLine() Function out of bounds: tN='%s', tF='%s', tStart=%u, ")
-              _T("tEnd=%u, line=%lu (size_t)line=%lu"), token->DisplayName().wx_str(),
-              token->GetFilename().wx_str(), token->m_ImplLineStart, token->m_ImplLineEnd,
-              static_cast<unsigned long>(curLine), static_cast<unsigned long>(curLine));
+        TRACE(wxString::Format("GetTokenFromCurrentLine() Function out of bounds: tN='%s', tF='%s', tStart=%u, "
+                               "tEnd=%u, line=%zu (size_t)line=%zu"), token->DisplayName(),
+                               token->GetFilename(), token->m_ImplLineStart, token->m_ImplLineEnd,
+                               curLine, curLine);
     }
 
     if (classToken)

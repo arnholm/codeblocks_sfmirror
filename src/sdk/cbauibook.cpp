@@ -662,30 +662,30 @@ wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
                     continue;
 
                 if (!tabsTmp.empty())
-                    tabsTmp += wxT(",");
+                    tabsTmp += ",";
 
                 if ((int)page_idx == m_curPage)
-                    tabsTmp += wxT("*");
+                    tabsTmp += "*";
                 else if ((int)p == tabCtrl->GetActivePage())
-                    tabsTmp += wxT("+");
+                    tabsTmp += "+";
 
-                tabsTmp += wxString::Format(wxT("%lu"), static_cast<unsigned long>(page_idx));
-                tabsTmp += wxT(";");
+                tabsTmp += wxString::Format("%zu", page_idx);
+                tabsTmp += ";";
                 tabsTmp += id;
             }
             if (!tabsTmp.empty())
             {
                 if (!tabs.empty())
-                    tabs += wxT("|");
+                    tabs += "|";
 
                 panes.Add(pane.name);
                 tabs += pane.name;
-                tabs += wxT("=");
+                tabs += "=";
                 tabs += tabsTmp;
             }
         }
     }
-    tabs += wxT("@");
+    tabs += "@";
 
     tabsTmp = m_mgr.SavePerspective();
 

@@ -161,8 +161,7 @@ void RecentItemsList::BuildMenu(wxMenu *menu)
         menu->InsertSeparator(0);
         for (size_t i = 0; i < m_list->GetCount(); ++i)
         {
-            const wxString &name = wxString::Format(_T("&%lu "), static_cast<unsigned long>(i + 1))
-                                   + m_list->GetHistoryFile(i);
+            const wxString &name = wxString::Format("&%zu ", i + 1) + m_list->GetHistoryFile(i);
             menu->Insert(menu->GetMenuItemCount() - 2, m_firstMenuItemID + i, name);
         }
     }

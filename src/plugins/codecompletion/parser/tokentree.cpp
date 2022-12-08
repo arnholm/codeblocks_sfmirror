@@ -340,8 +340,7 @@ size_t TokenTree::FindTokensInFile(const wxString& filename, TokenIdxSet& result
             result.insert(*it);
     }
 
-    TRACE(_T("TokenTree::FindTokensInFile() : Found %lu results for file '%s'."),
-          static_cast<unsigned long>(result.size()), f.wx_str());
+    TRACE(wxString::Format("TokenTree::FindTokensInFile() : Found %zu results for file '%s'.", result.size(), f));
     return result.size();
 }
 

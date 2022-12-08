@@ -84,8 +84,7 @@ void ReplaceRecentProjectFiles(wxString &buf, const wxFileHistory &projects, con
         for (size_t i = 0; i < projects.GetCount(); ++i)
         {
             links << "<tr><td width=\"50\"><img alt=\"\" width=\"20\" src=\"blank.png\" />";
-            links << wxString::Format("<a href=\"CB_CMD_DELETE_HISTORY_PROJECT_%lu\"><img alt=\"\" src=\"trash_16x16.png\" /></a>",
-                                      static_cast<unsigned long>(i + 1));
+            links << wxString::Format("<a href=\"CB_CMD_DELETE_HISTORY_PROJECT_%zu\"><img alt=\"\" src=\"trash_16x16.png\" /></a>", i + 1);
             links << "<img alt=\"\"  width=\"10\" src=\"blank.png\" /></td><td width=\"10\">";
             links << "<a href=\"CB_CMD_OPEN_HISTORY_PROJECT_" << (i + 1) << "\">"
                   << "<font color=\"" << linkColour << "\">" << projects.GetHistoryFile(i)
@@ -108,8 +107,7 @@ void ReplaceRecentProjectFiles(wxString &buf, const wxFileHistory &projects, con
         for (size_t i = 0; i < files.GetCount(); ++i)
         {
             links << "<tr><td width=\"50\"><img alt=\"\" width=\"20\" src=\"blank.png\" />";
-            links << wxString::Format("<a href=\"CB_CMD_DELETE_HISTORY_FILE_%lu\"><img alt=\"\" src=\"trash_16x16.png\" /></a>",
-                                      static_cast<unsigned long>(i + 1));
+            links << wxString::Format("<a href=\"CB_CMD_DELETE_HISTORY_FILE_%zu\"><img alt=\"\" src=\"trash_16x16.png\" /></a>", i + 1);
             links << "<img alt=\"\"  width=\"10\" src=\"blank.png\" /></td><td width=\"10\">";
             links << "<a href=\"CB_CMD_OPEN_HISTORY_FILE_" << (i + 1) << "\">"
                   << "<font color=\"" << linkColour << "\">" << files.GetHistoryFile(i) << "</font></a>";

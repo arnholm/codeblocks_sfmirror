@@ -482,10 +482,10 @@ void Compiler::SaveSettings(const wxString& baseKey)
         {
             if (n >= m_Mirror.Commands[i].size() || m_Mirror.Commands[i][n] != m_Commands[i][n])
             {
-                wxString key = wxString::Format(_T("%s/macros/%s/tool%lu/"), tmp.c_str(), CommandTypeDescriptions[i].c_str(), static_cast<unsigned long>(n));
-                cfg->Write(key + _T("command"), m_Commands[i][n].command);
-                cfg->Write(key + _T("extensions"), m_Commands[i][n].extensions);
-                cfg->Write(key + _T("generatedFiles"), m_Commands[i][n].generatedFiles);
+                wxString key = wxString::Format("%s/macros/%s/tool%zu/", tmp, CommandTypeDescriptions[i], n);
+                cfg->Write(key + "command", m_Commands[i][n].command);
+                cfg->Write(key + "extensions", m_Commands[i][n].extensions);
+                cfg->Write(key + "generatedFiles", m_Commands[i][n].generatedFiles);
             }
         }
     }
@@ -550,7 +550,7 @@ void Compiler::SaveSettings(const wxString& baseKey)
         if (i < m_Mirror.RegExes.size() && m_Mirror.RegExes[i] == m_RegExes[i])
             continue;
 
-        group.Printf(_T("%s/regex/re%3.3lu"), tmp.c_str(), static_cast<unsigned long>(i + 1));
+        group.Printf("%s/regex/re%3.3zu", tmp, i + 1);
         RegExStruct& rs = m_RegExes[i];
         cfg->Write(group + _T("/description"),  rs.desc,  true);
         if (rs.lt != 0)

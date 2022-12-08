@@ -1577,8 +1577,8 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
     else
     {
         newToken = new Token(newname, m_FileIdx, line, ++m_TokenTree->m_TokenTicketCount);
-        TRACE(_T("DoAddToken() : Created token='%s', file_idx=%u, line=%d, ticket=%lu"), newname.wx_str(),
-              m_FileIdx, line, static_cast<unsigned long>(m_TokenTree->m_TokenTicketCount));
+        TRACE(wxString::Format("DoAddToken() : Created token='%s', file_idx=%u, line=%d, ticket=%zu",
+                               newname, m_FileIdx, line, m_TokenTree->m_TokenTicketCount));
 
         Token* finalParent = localParent ? localParent : m_LastParent;
         if (kind == tkVariable && m_Options.parentIdxOfBuffer != -1)
@@ -1990,10 +1990,9 @@ void ParserThread::HandleClass(EClassType ct)
         // -------------------------------------------------------------------
         {
             wxString unnamedTmp;
-            unnamedTmp.Printf(_T("%s%s%u_%lu"),
-                              g_UnnamedSymbol.wx_str(),
-                              (ct == ctClass ? _T("Class") : (ct == ctUnion ? _T("Union") : _T("Struct"))),
-                              m_FileIdx, static_cast<unsigned long>(m_StructUnionUnnamedCount++));
+            unnamedTmp.Printf("%s%s%u_%zu", g_UnnamedSymbol,
+                              (ct == ctClass ? "Class" : (ct == ctUnion ? "Union" : "Struct")),
+                              m_FileIdx, m_StructUnionUnnamedCount++);
             Token* newToken = DoAddToken(tkClass, unnamedTmp, lineNr);
             // Maybe it is a bug here. I just fixed it.
             if (!newToken)
@@ -2699,7 +2698,7 @@ void ParserThread::HandleEnum()
         // we have an un-named enum
         if (m_ParsingTypedef)
         {
-            token.Printf(_T("%sEnum%u_%lu"), g_UnnamedSymbol.wx_str(), m_FileIdx, static_cast<unsigned long>(m_EnumUnnamedCount++));
+            token.Printf("%sEnum%u_%zu", g_UnnamedSymbol, m_FileIdx, m_EnumUnnamedCount++);
             m_LastUnnamedTokenName = token;
         }
         else

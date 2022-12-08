@@ -3021,11 +3021,11 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
         it = unique(functionsScopes.begin(), functionsScopes.end(), CodeCompletionHelper::EqualFunctionScope);
         functionsScopes.resize(it - functionsScopes.begin());
 
-        TRACE(F(_T("Found %lu namespace locations"), static_cast<unsigned long>(nameSpaces.size())));
+        TRACE(wxString::Format("Found %zu namespace locations", nameSpaces.size()));
 #if CC_CODECOMPLETION_DEBUG_OUTPUT == 1
         for (unsigned int i = 0; i < nameSpaces.size(); ++i)
-            CCLogger::Get()->DebugLog(F(_T("\t%s (%d:%d)"),
-                nameSpaces[i].Name.wx_str(), nameSpaces[i].StartLine, nameSpaces[i].EndLine));
+            CCLogger::Get()->DebugLog(wxString::Format("\t%s (%d:%d)",
+                nameSpaces[i].Name, nameSpaces[i].StartLine, nameSpaces[i].EndLine));
 #endif
 
         if (!m_ToolbarNeedRefresh)
@@ -3059,10 +3059,10 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
         }
     }
 
-    TRACE(F(_T("Parsed %lu functionscope items"), static_cast<unsigned long>(m_FunctionsScope.size())));
+    TRACE(wxString::Format("Parsed %zu functionscope items", m_FunctionsScope.size()));
 #if CC_CODECOMPLETION_DEBUG_OUTPUT == 1
     for (unsigned int i = 0; i < m_FunctionsScope.size(); ++i)
-        CCLogger::Get()->DebugLog(wxString::Format(_T("\t%s%s (%d:%d)"),
+        CCLogger::Get()->DebugLog(wxString::Format("\t%s%s (%d:%d)",
             m_FunctionsScope[i].Scope, m_FunctionsScope[i].Name,
             m_FunctionsScope[i].StartLine, m_FunctionsScope[i].EndLine));
 #endif

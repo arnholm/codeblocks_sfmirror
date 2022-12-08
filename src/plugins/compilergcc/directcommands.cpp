@@ -707,11 +707,11 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
     {
         wxString warn;
 #ifdef NO_TRANSLATION
-        warn.Printf(wxT("WARNING: Target '%s': Unable to resolve %lu external dependenc%s:"),
-                    target->GetFullTitle().wx_str(), static_cast<unsigned long>(fileMissing.Count()), wxString(fileMissing.Count() == 1 ? wxT("y") : wxT("ies")).wx_str());
+        warn.Printf("WARNING: Target '%s': Unable to resolve %zu external dependenc%s:",
+                    target->GetFullTitle(), fileMissing.Count(), wxString(fileMissing.Count() == 1 ? "y" : "ies"));
 #else
-        warn.Printf(_("WARNING: Target '%s': Unable to resolve %lu external dependency/ies:"),
-                    target->GetFullTitle().wx_str(), static_cast<unsigned long>(fileMissing.Count()));
+        warn.Printf(_("WARNING: Target '%s': Unable to resolve %zu external dependency/ies:"),
+                    target->GetFullTitle(), fileMissing.Count());
 #endif // NO_TRANSLATION
         ret.Add(COMPILER_WARNING_LOG + warn);
         for (size_t i = 0; i < fileMissing.Count(); ++i)
