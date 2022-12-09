@@ -324,7 +324,7 @@ void CCTestFrame::Start()
             CCTestAppGlobal::s_fileQueue.Add(testFiles[i]);
     }
 
-    AppendToLog(_("--------------M-a-i-n--L-o-g--------------\r\n\r\n"));
+    AppendToLog(_("--------------M-a-i-n--L-o-g--------------\n\n"));
 
     // parse file from the queue one-by-one
     while (!CCTestAppGlobal::s_fileQueue.IsEmpty())
@@ -361,7 +361,7 @@ void CCTestFrame::AppendToLog(const wxString& log)
 
     m_LogCtrl->AppendText( wxString::Format("%06zu. ", ++m_LogCount) );
     m_LogCtrl->AppendText( log );
-    m_LogCtrl->AppendText( "\r\n" );
+    m_LogCtrl->AppendText( "\n" );
 
     m_LogCtrl->SetInsertionPoint(m_LogCtrl->GetLastPosition());
 
@@ -710,16 +710,16 @@ void CCTestFrame::OnPrintTree(cb_unused wxCommandEvent& event)
     // print tree information below
 
     m_ProgDlg->Update(-1, _("Creating tree log..."));
-    AppendToLog(_("--------------T-r-e-e--L-o-g--------------\r\n"));
+    AppendToLog(_("--------------T-r-e-e--L-o-g--------------\n"));
     m_NativeParser.PrintTree();
 
     m_ProgDlg->Update(-1, _("Creating list log..."));
-    AppendToLog(_("--------------L-i-s-t--L-o-g--------------\r\n"));
+    AppendToLog(_("--------------L-i-s-t--L-o-g--------------\n"));
     m_NativeParser.PrintList();
 
     if (m_DoTreeCtrl->IsChecked())
     {
-        m_ProgDlg->Update(-1, wxT("Serializing tree..."));
+        m_ProgDlg->Update(-1, _("Serializing tree..."));
 
         Freeze();
         m_TreeCtrl->SetValue( m_NativeParser.SerializeTree() );
@@ -752,9 +752,8 @@ void CCTestFrame::OnSaveTestResultClick(wxCommandEvent& event)
 {
     // save the content of the Completion test panel to the result file
     wxString content = m_CompletionTestCtrl->GetValue();
-    wxFileDialog dlg(this, _T("Save .txt file..."),
-                     _T(""), _T(""),
-                     _T("Save Files (*.txt)|*.txt|All files(*.*)|*.*"),
+    wxFileDialog dlg(this, _("Save .txt file..."), "", "",
+                     _("Save Files (*.txt)|*.txt|All files(*.*)|*.*"),
                      wxFD_SAVE);
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)
@@ -766,6 +765,5 @@ void CCTestFrame::OnSaveTestResultClick(wxCommandEvent& event)
             file.Close();
         }
     }
-    return;
-
 }
+
