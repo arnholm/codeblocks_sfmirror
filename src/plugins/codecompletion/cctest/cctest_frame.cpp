@@ -753,7 +753,7 @@ void CCTestFrame::OnSaveTestResultClick(wxCommandEvent& event)
     // save the content of the Completion test panel to the result file
     wxString content = m_CompletionTestCtrl->GetValue();
     wxFileDialog dlg(this, _("Save .txt file..."), "", "",
-                     _("Save Files (*.txt)|*.txt|All files(*.*)|*.*"),
+                     _("Save files (*.txt)|*.txt|All files (*.*)|*.*"),
                      wxFD_SAVE);
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)
