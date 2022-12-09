@@ -93,7 +93,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT5">
-												<label>Add different command line macros for different&#x0D;&#x0A;extensions. This effectively adds support for non C/C++&#x0D;&#x0A;files.&#x0D;&#x0A;In the generated files box, add macros for any files that&#x0D;&#x0A;will be generated when the command runs. These are&#x0D;&#x0A;files that will further need to be compiled by the build&#x0D;&#x0A;system.&#x0D;&#x0A;Currently, only the $file* macros are allowed to appear&#x0D;&#x0A;in the generated files box.&#x0D;&#x0A;&#x0D;&#x0A;See docs for more info.</label>
+												<label>Add different command line macros for different&#x0A;extensions. This effectively adds support for non C/C++&#x0A;files.&#x0A;In the generated files box, add macros for any files that&#x0A;will be generated when the command runs. These are&#x0A;files that will further need to be compiled by the build&#x0A;system.&#x0A;Currently, only the $file* macros are allowed to appear&#x0A;in the generated files box.&#x0A;&#x0A;See docs for more info.</label>
 											</object>
 											<flag>wxTOP|wxALIGN_LEFT</flag>
 											<border>4</border>
@@ -204,7 +204,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticText" name="ID_STATICTEXT9">
-														<label>Order matters!&#x0D;&#x0A;The first matching parsing expression is selected.</label>
+														<label>Order matters!&#x0A;The first matching parsing expression is selected.</label>
 														<fg>#800000</fg>
 													</object>
 													<flag>wxTOP|wxLEFT|wxEXPAND</flag>
@@ -354,7 +354,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticText" name="ID_STATICTEXT18">
-														<label>A sub-expression index of 0 (zero), means it&apos;s not provided by&#x0D;&#x0A;the regular expression.</label>
+														<label>A sub-expression index of 0 (zero), means it&apos;s not provided by&#x0A;the regular expression.</label>
 														<fg>#800000</fg>
 													</object>
 													<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
