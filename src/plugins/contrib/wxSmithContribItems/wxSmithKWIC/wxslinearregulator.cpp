@@ -348,7 +348,7 @@ bool wxsLinearRegulator::OnXmlWrite(TiXmlElement *Element, bool IsXRC, bool IsEx
 {
     for(size_t i = 0;i < m_arrTags.Count();i++){
         TagDesc *Desc = m_arrTags[i];
-        wxString s = wxString::Format(wxT("tag_%lu_value"), static_cast<unsigned long>(i + 1));
+        wxString s = wxString::Format("tag_%zu_value", i + 1);
         TiXmlElement *msg = new TiXmlElement(s.mb_str());
         msg->LinkEndChild(new TiXmlText(wxString::Format(wxT("%d"), Desc->val).mb_str()));
         Element->LinkEndChild(msg);

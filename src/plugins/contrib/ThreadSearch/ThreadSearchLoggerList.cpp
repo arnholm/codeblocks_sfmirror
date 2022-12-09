@@ -460,7 +460,7 @@ void ThreadSearchLoggerList::OnSearchBegin(const ThreadSearchFindData& findData)
 
 void ThreadSearchLoggerList::OnSearchEnd()
 {
-    wxString message = wxString::Format(_("%lu matches found."), static_cast<unsigned long>(m_TotalLinesFound));
+    wxString message = wxString::Format(_("%zu matches found."), m_TotalLinesFound);
     long index = m_pListLog->GetItemCount();
     m_pListLog->InsertItem(index, _("=> Search complete. "));
     m_pListLog->SetItem(index, ListColumns::Text, message);

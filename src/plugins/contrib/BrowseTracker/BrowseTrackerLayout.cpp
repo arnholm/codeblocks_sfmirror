@@ -284,18 +284,17 @@ void BrowseTrackerLayout::DumpBrowse_Marks( const wxString /*hashType*/, FileBro
 // ----------------------------------------------------------------------------
 {
     #if defined(LOGGING)
-    LOGIT( _T("--- DumpBrowseData ---[%s]"), hashType.c_str()  );
+    LOGIT(wxString::Format("--- DumpBrowseData ---[%s]", hashType));
 
     FileBrowse_MarksHash* phash = &m_FileBrowse_MarksArchive;
     #if defined(LOGGING)
-    LOGIT( _T("Dump_%s Size[%lu]"), hashType.wx_str(), static_cast<unsigned long>(phash->size()) );
+    LOGIT(wxString::Format("Dump_%s Size[%zu]", hashType, phash->size()));
     #endif
     for (FileBrowse_MarksHash::iterator it = phash->begin(); it != phash->end(); ++it)
     {
         wxString filename = it->first;
         BrowseMarks* p = it->second;
-        LOGIT( _T("Filename[%s]%s*[%p]name[%s]"), filename.c_str(), hashType.c_str(), p,
-              (p ? p->GetFilePath().c_str() : ""));
+        LOGIT(wxString::Format("Filename[%s]%s*[%p]name[%s]"), filename, hashType, p, (p ? p->GetFilePath() : wxString()));
         if (p)
         {
             //dump the browse marks

@@ -376,8 +376,7 @@ void Execution::LoadSettings()
   {
     for (size_t i=0; i<m_Sets->GetCount(); i++)
     {
-      wxString Sel; Sel.Printf(_T("/selection%lu"), static_cast<unsigned long>(i));
-      m_Sets->Check(i, cfg->ReadBool(Sel, true));
+      m_Sets->Check(i, cfg->ReadBool(wxString::Format("/selection%zu", i), true));
     }
   }
 }// LoadSettings
@@ -418,8 +417,7 @@ void Execution::SaveSettings()
   {
     for (size_t i=0; i<m_Sets->GetCount(); i++)
     {
-      wxString Sel; Sel.Printf(_T("/selection%lu"), static_cast<unsigned long>(i));
-      cfg->Write(Sel, m_Sets->IsChecked(i));
+      cfg->Write(wxString::Format("/selection%zu", i), m_Sets->IsChecked(i));
     }
   }
 }// SaveSettings

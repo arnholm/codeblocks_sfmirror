@@ -85,7 +85,7 @@ bool NativeParserTest::TestExpression(wxString&          expression,
     ResolveExpression(m_Parser.GetTokenTree(), components, searchScope, result, true, true /*isPrefix*/);
 
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(F(_T("NativeParserTest::TestExpression, returned %lu results"), static_cast<unsigned long>(result.size())));
+        CCLogger::Get()->DebugLog(wxString::Format("NativeParserTest::TestExpression, returned %zu results", result.size()));
 
     return true;
 }
@@ -336,7 +336,7 @@ bool NativeParserTest::ParseAndCodeCompletion(wxString filename, bool isLocalFil
                                 if (pass)
                                     --passCount;
                                 pass = false;
-                                element = wxString::Format(_T("%s  \"%s\""), token->m_Name.wx_str(), match_doc.wx_str());
+                                element = wxString::Format("%s  \"%s\"", token->m_Name, match_doc);
                                 break;
                             }
                         }
@@ -347,13 +347,13 @@ bool NativeParserTest::ParseAndCodeCompletion(wxString filename, bool isLocalFil
                 }
                 if (pass == false)
                 {
-                    message = wxString::Format(_T("- FAIL: %s  %s"), expression.wx_str(), element.wx_str());
+                    message = wxString::Format("- FAIL: %s  %s", expression, element);
                     testResult << message << wxT("\n");
                     wxLogMessage(message);
                     failCount++;
                 }
             }
-            // wxLogMessage(_T("Result have %lu matches"), static_cast<unsigned long>(result.size()));
+            // wxLogMessage(wxString::Format("Result have %zu matches", result.size()));
         }
         else
             break; // if the line is not started with //, then we just stop testing

@@ -158,7 +158,7 @@ TextFileSearcher::eFileSearcherReturn TextFileSearcher::FindInFile(const wxStrin
 
                 line.Trim(true);
 
-                foundLines.Add(wxString::Format(wxT("%lu"), static_cast<unsigned long>(i + 1)));
+                foundLines.Add(wxString::Format("%zu", i + 1));
                 foundLines.Add(line);
 
                 // We have to compensate any trimming on the left. If we don't do it the matched

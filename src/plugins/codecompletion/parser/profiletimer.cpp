@@ -52,12 +52,12 @@ ProfileTimerHelper::~ProfileTimerHelper()
     {
         const long totalTime = it->first->m_StopWatch.Time();
         wxString log;
-        log.Printf(_T("\"%s\" used time is %ld minute(s), %ld.%03ld seconds; call times is %lu."),
-                   it->second.wx_str(),
+        log.Printf(wxString::Format("\"%s\" used time is %ld minute(s), %ld.%03ld seconds; call times is %zu.",
+                   it->second,
                    (totalTime / 60000),
                    (totalTime / 1000) % 60,
                    (totalTime % 1000),
-                   static_cast<unsigned long>(it->first->m_CallTimes));
+                   it->first->m_CallTimes));
 #ifndef CC_PARSER_TEST
         Manager::Get()->GetLogManager()->DebugLog(log);
 #endif

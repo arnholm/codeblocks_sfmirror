@@ -137,8 +137,7 @@ void EnvVarsConfigDlg::LoadSettings()
 
     // Load all envvar sets available
     choSet->Set(nsEnvVars::GetEnvvarSetNames());
-    EV_DBGLOG("Found %lu envvar sets in config.",
-              static_cast <unsigned long> (choSet->GetCount()));
+    EV_DBGLOG("Found %lu envvar sets in config.", static_cast<unsigned long>(choSet->GetCount()));
 
     // Read the currently active envvar set and select it
     m_active_set = nsEnvVars::GetActiveSetName();

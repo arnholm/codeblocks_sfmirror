@@ -305,7 +305,7 @@ void CCTestFrame::Start()
     wxDir::GetAllFiles(wxGetCwd(), &testFiles, wxT("ccc_*.cpp"));
     if (testFiles.size() > 0)
     {
-        m_ProgDlg->Update(-1, wxString::Format(_("Adding %lu ccc_*.cpp files."), static_cast<unsigned long>(testFiles.size())));
+        m_ProgDlg->Update(-1, wxString::Format(_("Adding %zu ccc_*.cpp files."), testFiles.size()));
         wxString filename = testFiles[0];
         // only test the first matched file
         CCTestAppGlobal::s_fileQueue.Add(filename);
@@ -319,7 +319,7 @@ void CCTestFrame::Start()
     {
         m_ProgDlg->Update(-1, _("Collecting cc_*.cpp files..."));
         wxDir::GetAllFiles(wxGetCwd(), &testFiles, wxT("cc_*.cpp"));
-        m_ProgDlg->Update(-1, wxString::Format(_("Adding %lu cc_*.cpp files."), static_cast<unsigned long>(testFiles.size())));
+        m_ProgDlg->Update(-1, wxString::Format(_("Adding %zu cc_*.cpp files."), testFiles.size()));
         for (size_t i=0; i<testFiles.size(); i++)
             CCTestAppGlobal::s_fileQueue.Add(testFiles[i]);
     }
@@ -359,9 +359,9 @@ void CCTestFrame::AppendToLog(const wxString& log)
 {
     Freeze();
 
-    m_LogCtrl->AppendText( wxString::Format(wxT("%06lu. "), static_cast<unsigned long>(++m_LogCount)) );
+    m_LogCtrl->AppendText( wxString::Format("%06zu. ", ++m_LogCount) );
     m_LogCtrl->AppendText( log );
-    m_LogCtrl->AppendText( wxT("\r\n") );
+    m_LogCtrl->AppendText( "\r\n" );
 
     m_LogCtrl->SetInsertionPoint(m_LogCtrl->GetLastPosition());
 
@@ -733,8 +733,7 @@ void CCTestFrame::OnPrintTree(cb_unused wxCommandEvent& event)
     TokenTree* tt = m_NativeParser.m_Parser.GetTokenTree();
     if (tt)
     {
-        AppendToLog((wxString::Format(_("The parser contains %lu tokens, found in %lu files."),
-                                      static_cast<unsigned long>(tt->size()), static_cast<unsigned long>(tt->m_FileMap.size()))));
+        AppendToLog((wxString::Format(_("The parser contains %zu tokens, found in %zu files."), tt->size(), tt->m_FileMap.size())));
     }
 }
 

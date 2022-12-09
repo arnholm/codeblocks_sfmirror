@@ -255,7 +255,7 @@ bool wxsBmpSwitcher::OnXmlWrite(TiXmlElement *Element, bool IsXRC, bool IsExtra)
 
     for(size_t i = 0;i < m_arrBmps.Count();i++){
         BmpDesc *Desc = m_arrBmps[i];
-        wxString s = wxString::Format(wxT("bitmap_%lu"), static_cast<unsigned long>(i + 1));
+        wxString s = wxString::Format("bitmap_%zu", i + 1);
         TiXmlElement *msg = new TiXmlElement(s.mb_str());
         msg->LinkEndChild(new TiXmlText(Desc->sPath.mb_str()));
         tags->LinkEndChild(msg);

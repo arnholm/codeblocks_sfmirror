@@ -222,9 +222,7 @@ wxArrayString nsEnvVars::GetEnvvarsBySetPath(const wxString& set_path)
             EV_DBGLOG("Warning: empty envvar '%s' detected and skipped.", envvars_keys[i]);
     }
 
-    EV_DBGLOG("Read %lu/%u envvars in path '%s'.",
-              static_cast <unsigned long> (envvars.GetCount()),
-              num_envvars, set_path);
+    EV_DBGLOG("Read %lu/%u envvars in path '%s'.", static_cast<unsigned long>(envvars.GetCount()), num_envvars, set_path.wx_str());
 
     return envvars;
 }// GetEnvvarsBySetPath

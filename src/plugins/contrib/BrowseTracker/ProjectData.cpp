@@ -244,13 +244,12 @@ void ProjectData::DumpHash( const wxString
     FileBrowse_MarksHash* phash = &m_FileBrowse_MarksArchive;
     FileBrowse_MarksHash& hash = *phash;
 
-    LOGIT( _T("--- DumpProjectHash ---[%s]Count[%lu]Name[%s]"), hashType.wx_str(),
-          static_cast<unsigned long>(hash.size()), m_ProjectFilename.wx_str() );
+    LOGIT(wxString::Format("--- DumpProjectHash ---[%s]Count[%zu]Name[%s]", hashType, hash.size(), m_ProjectFilename));
     for (FileBrowse_MarksHash::iterator it = hash.begin(); it != hash.end(); it++)
     {
         wxString filename = it->first; //an Editor filename withing this project
         BrowseMarks* p = it->second;    // ptr to array of Editor Browse/Book mark cursor positions
-        LOGIT( _T("filename[%s]BrowseMark*[%p]name[%s]"), filename.c_str(), p, p->GetFilePath().c_str() );
+        LOGIT(wxString::Format("filename[%s]BrowseMark*[%p]name[%s]", filename, p, p->GetFilePath()));
     }
 
     #endif
@@ -270,14 +269,13 @@ void ProjectData::DumpBrowse_Marks( const wxString
     FileBrowse_MarksHash* phash = &m_FileBrowse_MarksArchive;
     FileBrowse_MarksHash& hash = *phash;
 
-    LOGIT( _T("Dump_%s Size[%lu]"), hashType.wx_str(), static_cast<unsigned long>(hash.size()) );
+    LOGIT(wxString::Format("Dump_%s Size[%zu]", hashType, hash.size()));
 
     for (FileBrowse_MarksHash::iterator it = hash.begin(); it != hash.end(); ++it)
     {
         wxString filename = it->first;
         BrowseMarks* p = it->second;
-        LOGIT( _T("Filename[%s]%s*[%p]name[%s]"), filename.c_str(), hashType.c_str(), p,
-              (p ? p->GetFilePath().c_str() : ""));
+        LOGIT(wxString::Format("Filename[%s]%s*[%p]name[%s]", filename, hashType, p, (p ? p->GetFilePath() : wxString())));
         if (p)
         {
             //dump the browse marks

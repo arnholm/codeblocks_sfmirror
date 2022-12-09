@@ -502,7 +502,7 @@ int SymTabExecDlg::ParseOutputSuccess(wxString lib, wxString filter)
     return 0;
   }
 
-	Manager::Get()->GetLogManager()->DebugLog(F(_T("SymTab: Parsing %lu items..."), static_cast<unsigned long>(count)));
+	Manager::Get()->GetLogManager()->DebugLog(wxString::Format("SymTab: Parsing %zu items...", count));
 
   wxProgressDialog* progress = nullptr;
   if (count>2000) // avoid flickering for small libs

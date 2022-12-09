@@ -881,7 +881,7 @@ int wxKeyBinder::MergeSubMenu(wxMenu* pMenu, int& modified)           //+v0.4.25
             //   menu items will never match causing constant update overhead
             AddShortcut(nMenuItemID, menuItemKeyStr, true );
             #ifdef LOGGING
-                wxLogMessage(_("Merge change type[%d]:item[%lu]:id[%d]:@[%p]text[%s]key[%s]"), changed, static_cast<unsigned long>(j), nMenuItemID, pMenuItem, pMenuItem->GetItemLabel().wx_str(), menuItemKeyStr.wx_str() );
+                wxLogMessage(_("Merge change type[%d]:item[%zu]:id[%d]:@[%p]text[%s]key[%s]"), changed, j, nMenuItemID, pMenuItem, pMenuItem->GetItemLabel(), menuItemKeyStr);
             #endif
         }//if changed
         else
