@@ -1008,11 +1008,11 @@ void TokenizeGDBLocals(std::vector<GDBLocalVariable> &results, wxString const &v
             break;
         case wxT('"'):
             if (!inChar && !escaped)
-                inString=!inString;
+                inString = !inString;
             break;
         case wxT('\''):
             if (!inString && !escaped)
-                inChar=!inChar;
+                inChar = !inChar;
             break;
         default:
             break;

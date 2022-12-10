@@ -213,9 +213,10 @@ size_t ShellManager::GetTermNum(ShellCtrlBase *term)
 
 int ShellManager::NumAlive()
 {
-    int count=0;
-    for(unsigned int i=0;i<m_nb->GetPageCount();i++)
-        count+=!GetPage(i)->IsDead();
+    int count = 0;
+    for (unsigned int i = 0; i < m_nb->GetPageCount(); i++)
+        count += !GetPage(i)->IsDead();
+
     return count;
 }
 

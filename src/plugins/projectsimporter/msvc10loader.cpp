@@ -247,11 +247,11 @@ bool MSVC10Loader::GetProjectConfigurations(const TiXmlElement* root)
         if (pc.sTargetExt.IsEmpty())
         {
             if (pc.TargetType.IsSameAs(_T("DynamicLibrary"), false))
-                pc.sTargetExt =! m_ConvertSwitches ? _T(".dll") : _T(".so");
+                pc.sTargetExt = !m_ConvertSwitches ? ".dll" : ".so";
             else if (pc.TargetType.IsSameAs(_T("StaticLibrary"),  false))
-                pc.sTargetExt =! m_ConvertSwitches ? _T(".lib") : _T(".a");
+                pc.sTargetExt = !m_ConvertSwitches ? ".lib" : ".a";
             else
-                pc.sTargetExt =! m_ConvertSwitches ? _T(".exe") : _T("");
+                pc.sTargetExt = !m_ConvertSwitches ? ".exe" : "";
         }
         if (pc.bNoImportLib==-1)
             pc.bNoImportLib=m_NoImportLib;

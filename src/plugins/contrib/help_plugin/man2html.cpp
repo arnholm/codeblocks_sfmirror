@@ -2558,7 +2558,7 @@ static char *fill_words(char *c, char *words[], int *n, bool newline, char **nex
                     *sl++ = '\a';
                 else {
                 *sl='\a';
-                skipspace=!skipspace;
+                skipspace = !skipspace;
                 }
         } else if (*sl==escapesym) {
         slash=1;
@@ -3486,7 +3486,7 @@ static char *scan_request(char *c)
                     c=scan_expression(c, &i);
                     if (request == REQ_ie)
                     {
-                        int ifelseval=!i;
+                        int ifelseval = !i;
                         s_ifelseval.push( ifelseval );
                     }
                     if (i)

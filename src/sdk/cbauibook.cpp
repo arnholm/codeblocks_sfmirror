@@ -803,7 +803,7 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 
     wxString frames = layout.AfterFirst (wxT ('@') );
     // if we load an additional project to an exiting layout, the first new tab always goes into a new frame
-    bool firstTabInCtrl =! currentLayout.empty();
+    bool firstTabInCtrl = !currentLayout.empty();
     // This creates a new tabframe if none exists; a workaround, because we can not directly access
     // the needed wxTabFrame class, because it is not exported.
     // This also takes care of all needed pane-info

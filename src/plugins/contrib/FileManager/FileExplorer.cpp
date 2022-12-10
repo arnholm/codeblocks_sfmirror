@@ -1601,38 +1601,38 @@ void FileExplorer::OnSettings(wxCommandEvent &/*event*/)
 
 void FileExplorer::OnShowHidden(wxCommandEvent &/*event*/)
 {
-    m_show_hidden=!m_show_hidden;
+    m_show_hidden = !m_show_hidden;
     Refresh(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseCVS(wxCommandEvent &/*event*/)
 {
-    m_parse_cvs=!m_parse_cvs;
+    m_parse_cvs = !m_parse_cvs;
     //cfg->Clear();
     Refresh(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseSVN(wxCommandEvent &/*event*/)
 {
-    m_parse_svn=!m_parse_svn;
+    m_parse_svn = !m_parse_svn;
     Refresh(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseGIT(wxCommandEvent &/*event*/)
 {
-    m_parse_git=!m_parse_git;
+    m_parse_git = !m_parse_git;
     Refresh(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseHG(wxCommandEvent &/*event*/)
 {
-    m_parse_hg=!m_parse_hg;
+    m_parse_hg = !m_parse_hg;
     Refresh(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseBZR(wxCommandEvent &/*event*/)
 {
-    m_parse_bzr=!m_parse_bzr;
+    m_parse_bzr = !m_parse_bzr;
     Refresh(m_Tree->GetRootItem());
 }
 

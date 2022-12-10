@@ -411,7 +411,7 @@ int FindReplace::Replace(cbStyledTextCtrl* control, cbFindReplaceData* data)
     }
 
     bool advRegex = false;
-    bool advRegexNewLinePolicy =! data->IsMultiLine();
+    bool advRegexNewLinePolicy = !data->IsMultiLine();
     int replacecount = 0;
     int foundcount   = 0;
     int flags        = 0;
@@ -783,7 +783,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
     }
 
     bool advRegex=false;
-    bool advRegexNewLinePolicy =! data->IsMultiLine();
+    bool advRegexNewLinePolicy = !data->IsMultiLine();
     int flags = 0;
     if (data->matchWord)
         flags |= wxSCI_FIND_WHOLEWORD;
@@ -1121,7 +1121,7 @@ int FindReplace::Find(cbStyledTextCtrl* control, cbFindReplaceData* data)
         return -1;
 
     bool advRegex = false;
-    bool advRegexNewLinePolicy =! data->IsMultiLine();
+    bool advRegexNewLinePolicy = !data->IsMultiLine();
     int flags = 0;
     data->ConvertEOLs(control->GetEOLMode());
     CalculateFindReplaceStartEnd(control, data);
