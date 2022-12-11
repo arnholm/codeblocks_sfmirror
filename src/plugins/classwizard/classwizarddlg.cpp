@@ -480,7 +480,7 @@ bool ClassWizardDlg::DoHeader()
             buffer << m_TabStr << m_TabStr
                    << _("/** Copy constructor") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _(" *  \\param other Object to copy from") << m_EolStr;
+                   << " *  \\param other " << _("Object to copy from") << m_EolStr;
             buffer << m_TabStr << m_TabStr
                    << _T(" */") << m_EolStr;
         }
@@ -496,9 +496,9 @@ bool ClassWizardDlg::DoHeader()
             buffer << m_TabStr << m_TabStr
                    << _("/** Assignment operator") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _(" *  \\param other Object to assign from") << m_EolStr;
+                   << " *  \\param other " << _("Object to assign from") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _(" *  \\return A reference to this") << m_EolStr;
+                   << " *  \\return " << _("A reference to 'this'") << m_EolStr;
             buffer << m_TabStr << m_TabStr
                    << _T(" */") << m_EolStr;
         }
@@ -520,7 +520,7 @@ bool ClassWizardDlg::DoHeader()
                 buffer << m_TabStr << m_TabStr
                        << _("/** Access ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _(" * \\return The current value of ") << (*it).Var << m_EolStr;
+                       << " * \\return " << _("The current value of ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
                        << _T(" */") << m_EolStr;
             }
@@ -535,7 +535,7 @@ bool ClassWizardDlg::DoHeader()
                 buffer << m_TabStr << m_TabStr
                        << _("/** Set ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _(" * \\param val New value to set") << m_EolStr;
+                       << " * \\param val " << _("New value to set") << m_EolStr;
                 buffer << m_TabStr << m_TabStr
                        << " */" << m_EolStr;
             }
