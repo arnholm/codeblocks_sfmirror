@@ -190,7 +190,7 @@ typedef wxsPositionSizeProperty wxsSizeProperty;
 /** \brief Macro automatically declaring position property
  *  \param ClassName name of class holding this property
  *  \param VarName name of wxsPositionData structure inside container
- *  \param PGDefName name of "default vlaue" property used in property grid
+ *  \param PGDefName name of "default value" property used in property grid
  *  \param PGXName name of X coordinate used in property grid
  *  \param PGYName name of Y coordinate used in property grid
  *  \param PGDUName name of "dialog units" switch used in property grid
@@ -203,7 +203,7 @@ typedef wxsPositionSizeProperty wxsSizeProperty;
 /** \brief Macro automatically declaring position property with custom priority
  *  \param ClassName name of class holding this property
  *  \param VarName name of wxsPositionData structure inside container
- *  \param PGDefName name of "default vlaue" property used in property grid
+ *  \param PGDefName name of "default value" property used in property grid
  *  \param PGXName name of X coordinate used in property grid
  *  \param PGYName name of Y coordinate used in property grid
  *  \param PGDUName name of "dialog units" switch used in property grid
@@ -217,7 +217,7 @@ typedef wxsPositionSizeProperty wxsSizeProperty;
 /** \brief Macro automatically declaring size property
  *  \param ClassName name of class holding this property
  *  \param VarName name of wxsSizeData structure inside container
- *  \param PGDefName name of "default vlaue" property used in property grid
+ *  \param PGDefName name of "default value" property used in property grid
  *  \param PGWidthName name of Width used in property grid
  *  \param PGHeightName name of Height coordinate used in property grid
  *  \param PGDUName name of "dialog units" switch used in property grid
@@ -231,7 +231,7 @@ typedef wxsPositionSizeProperty wxsSizeProperty;
 /** \brief Macro automatically declaring size property with custom priority
  *  \param ClassName name of class holding this property
  *  \param VarName name of wxsSizeData structure inside container
- *  \param PGDefName name of "default vlaue" property used in property grid
+ *  \param PGDefName name of "default value" property used in property grid
  *  \param PGWidthName name of Width used in property grid
  *  \param PGHeightName name of Height coordinate used in property grid
  *  \param PGDUName name of "dialog units" switch used in property grid
