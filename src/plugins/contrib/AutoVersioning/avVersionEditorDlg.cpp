@@ -311,7 +311,7 @@ avVersionEditorDlg::avVersionEditorDlg(wxWindow* parent,wxWindowID /*id*/)
     svnSizer->Add(txtSvnDir, 1, wxALL|wxEXPAND, 2);
     btnSvnDir = new wxButton(pnlSettings, ID_SVNDIR_BUTTON, _("..."), wxDefaultPosition, wxSize(23,26), 0, wxDefaultValidator, _T("ID_SVNDIR_BUTTON"));
     btnSvnDir->Disable();
-    btnSvnDir->SetToolTip(_("Choose current svn directory project\nif diffrent from the project default."));
+    btnSvnDir->SetToolTip(_("Choose current svn directory project\nif different from the project default."));
     svnSizer->Add(btnSvnDir, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2);
     settingsSizer->Add(svnSizer, 0, wxALL|wxEXPAND, 2);
     pnlSettings->SetSizer(settingsSizer);
