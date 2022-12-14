@@ -43,15 +43,15 @@ class sdkTest extends script_test_base
         test_string("if 1>0", ReplaceMacros(_T("$if(1>0){true}{false}")), _T("true"));
         test_string("if 1<0", ReplaceMacros(_T("$if(1<0){true}{false}")), _T("false"));
 
-        test_string("if [[print(_(\"true\"))]]", ReplaceMacros(_T("$if([[print(_(\"true\"))]]){true}{false}")), _T("true"));
-        test_string("if [[print(_(\"false\"))]]", ReplaceMacros(_T("$if([[print(_(\"false\"))]]){true}{false}")), _T("false"));
-        test_string("if [[print(_(\"FALSE\"))]]", ReplaceMacros(_T("$if([[print(_(\"FALSE\"))]]){true}{false}")), _T("false"));
-        test_string("if [[print(_(\"0\"))]]", ReplaceMacros(_T("$if([[print(_(\"0\"))]]){true}{false}")), _T("false"));
+        test_string("if [[print(_T(\"true\"))]]", ReplaceMacros(_T("$if([[print(_T(\"true\"))]]){true}{false}")), _T("true"));
+        test_string("if [[print(_T(\"false\"))]]", ReplaceMacros(_T("$if([[print(_T(\"false\"))]]){true}{false}")), _T("false"));
+        test_string("if [[print(_T(\"FALSE\"))]]", ReplaceMacros(_T("$if([[print(_T(\"FALSE\"))]]){true}{false}")), _T("false"));
+        test_string("if [[print(_T(\"0\"))]]", ReplaceMacros(_T("$if([[print(_T(\"0\"))]]){true}{false}")), _T("false"));
 
-        test_string("if [[print(_(\"1==0\"))]]", ReplaceMacros(_T("$if([[print(_(\"1==0\"))]]){true}{false}")), _T("false"));
-        test_string("if [[print(_(\"1==1\"))]]", ReplaceMacros(_T("$if([[print(_(\"1==1\"))]]){true}{false}")), _T("true"));
+        test_string("if [[print(_T(\"1==0\"))]]", ReplaceMacros(_T("$if([[print(_T(\"1==0\"))]]){true}{false}")), _T("false"));
+        test_string("if [[print(_T(\"1==1\"))]]", ReplaceMacros(_T("$if([[print(_T(\"1==1\"))]]){true}{false}")), _T("true"));
         local testStr = " PS1=\"\\(awk '/MemFree/{print \\\" \\2}' \\\" /proc/meminfo) prompt > \"";
-        print(_("bash escape string: \"" + testStr + "\""));
+        print(_T("bash escape string: \"" + testStr + "\""));
         test_string("bash escaping 1.1", ReplaceMacros(_T("$if(true){" + testStr + "}{false}")), _T(testStr));
         test_string("bash escaping 1.2", ReplaceMacros(_T("$if(false){" + testStr + "}{false}")), _T("false"));
         testStr = " echo \"I'd say: \\\"Go for it!\\\"\"\"";
@@ -1191,11 +1191,11 @@ class sdkTest extends script_test_base
         test_true("cbEditor type", editor0 instanceof cbEditor);
         test_true("EditorBase type", editor0 instanceof EditorBase);
 
-        editor0.SetText(_("Line1\nLine2\nLine3"));
+        editor0.SetText(_T("Line1\nLine2\nLine3"));
 
         local editor1 = editorMgr.New(MakePath(tempFolder, _T("test1.ext")));
         test_false("EditorManager::New 2", IsNull(editor1));
-        editor1.SetText(_("Line1\nLine2\nLine3\nLine4"));
+        editor1.SetText(_T("Line1\nLine2\nLine3\nLine4"));
 
         {
             // FIXME (squirrel) GetShortName behaves strangely. Setting the filename doesn't change

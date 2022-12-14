@@ -10,9 +10,9 @@
 
 // Script plugins must extend cbScriptPlugin
 
-Include(_("sdk_test.script"));
-Include(_("wx_test.script"));
-Include(_("xml_test.script"));
+Include(_T("sdk_test.script"));
+Include(_T("wx_test.script"));
+Include(_T("xml_test.script"));
 
 class Scripting_TestPlugin extends cbScriptPlugin
 {
@@ -122,3 +122,4 @@ print("Plugin instance: " + GetPlugin(_T("Scripting_TestPlugin")) + "\n");
 
 // if you want to call this plugin's Execute() function, use this in a script:
 ExecutePlugin(_T("Scripting_TestPlugin"));
+

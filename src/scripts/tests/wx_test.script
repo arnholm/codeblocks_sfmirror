@@ -116,7 +116,7 @@ class wxTest extends script_test_base
         string = _T("Hallo");
         test_string("RemoveLast",string.RemoveLast(2),"Hal");
         string = _T("Hallo");
-        test_equal("Replace ret",string.Replace(_("ll"),_("xx")),1);
+        test_equal("Replace ret",string.Replace(_T("ll"),_T("xx")),1);
         test_string("Replace value",string,"Haxxo");
         string = _T("Hallo");
         test_string("AfterFirst",string.AfterFirst(_T("l")),"lo");
@@ -251,7 +251,7 @@ class wxTest extends script_test_base
  //       string = _T("!5Aa ЉЩщӃ ウインカリ");
  //       test_string("RemoveLast",string.RemoveLast(2),"!5Aa ЉЩщӃ ウイン");
  //       string = _T("!5Aa ЉЩщӃ ウインカリ");
- //       test_equal("Replace ret",string.Replace(_("Љ"),_("ウ")),1);
+ //       test_equal("Replace ret",string.Replace(_T("Љ"),_T("ウ")),1);
  //       test_string("Replace value",string,"!5Aa ウЩщӃ ウインカリ");
  //       string = _T("!5Aa ЉЩщӃ ウインカリ");
  //       test_string("AfterFirst",string.AfterFirst("ウ"),"インカリ");

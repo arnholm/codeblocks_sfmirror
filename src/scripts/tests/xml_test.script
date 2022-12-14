@@ -56,7 +56,7 @@ class XMLTest extends script_test_base
 
     function test_document()
     {
-        ::print("======= Test TiXMLdocument BEGINN ======= \n");
+        ::print("======= Test TiXMLdocument BEGIN ======= \n");
         clear_test_result();
         local doc = ::TiXmlDocument();
         doc.Parse(validXML);
@@ -65,7 +65,7 @@ class XMLTest extends script_test_base
         doc.SetValue("test");
         test_true("SetValue", true);
         test_string("GetValue", doc.Value(), "test");
-        doc.SetValue(_("test(wxString)"));
+        doc.SetValue(_T("test(wxString)"));
         test_true("SetValue (wxString)", true);
         test_string("GetValue  (wxString)", doc.Value(), "test(wxString)");
 
@@ -79,7 +79,7 @@ class XMLTest extends script_test_base
         printer2.SetLineBreak("\n");
         doc.Accept(printer2);
         local validXMLwxString =  _(validXML);
-        validXMLwxString.Replace(_("\r\n"),_("\n"))
+        validXMLwxString.Replace(_T("\r\n"), _T("\n"))
         test_string("TiXmlPrinter::SetLineBreak", printer2.CStr(), validXMLwxString);
 
         local invalidDoc = ::TiXmlDocument();
@@ -92,7 +92,7 @@ class XMLTest extends script_test_base
 
     function test_element()
     {
-        ::print("======= Test TiXmlElement BEGINN ======= \n");
+        ::print("======= Test TiXmlElement BEGIN ======= \n");
         clear_test_result();
 
         // document preparation
@@ -137,7 +137,7 @@ class XMLTest extends script_test_base
 		
 		childElement.SetAttribute("stringAttribute","string");
 		test_string("SetAttribute(String)", childElement.Attribute("stringAttribute"), "string");
-		childElement.SetAttribute("wxstringAttribute",_("string"));
+		childElement.SetAttribute("wxstringAttribute", _T("string"));
 		test_string("SetAttribute(wxString)", childElement.Attribute("wxstringAttribute"), "string");
 		childElement.SetAttribute("intAttribute", 50);
 		attribute1 = childElement.GetAttribute("intAttribute");
@@ -165,7 +165,7 @@ class XMLTest extends script_test_base
 
     function test_attribute()
     {
-        ::print("======= Test TiXmlAttribute BEGINN ======= \n");
+        ::print("======= Test TiXmlAttribute BEGIN ======= \n");
         clear_test_result();
 
         // document preparation
@@ -206,7 +206,7 @@ class XMLTest extends script_test_base
         ctorAttribute.SetName("testName");
         test_string("SetName", ctorAttribute.Name(), "testName");
 
-        local wxCtorAttribute = ::TiXmlAttribute(_("nameTest"), _("valueTest"));
+        local wxCtorAttribute = ::TiXmlAttribute(_T("nameTest"), _T("valueTest"));
         test_true("wxString ctor", wxCtorAttribute != null && wxCtorAttribute instanceof TiXmlAttribute);
         test_string("wxString ctor Value", wxCtorAttribute.Value(), "valueTest");
         test_string("wxString ctor Name", wxCtorAttribute.Name(), "nameTest");
@@ -217,7 +217,7 @@ class XMLTest extends script_test_base
 
     function test_handle()
     {
-        ::print("======= Test TiXmlHandle BEGINN ======= \n");
+        ::print("======= Test TiXmlHandle BEGIN ======= \n");
         clear_test_result();
 
         // document preparation
@@ -238,13 +238,12 @@ class XMLTest extends script_test_base
         test_true("FirstChild->ToElement", element != null && element instanceof  TiXmlElement);
         test_string("ToElement 2", element.Value(), "test");
         test_true("FirstChild chaining, no fail", child.FirstChild().FirstChild().FirstChild().ToElement() == null );
-        test_true("FirstChild(string)", child.FirstChild("t3") != null && child.FirstChild(_("t3")).ToElement() != null );
-        test_true("FirstChild(wxString)", child.FirstChild(_("t3")) != null && child.FirstChild(_("t3")).ToElement() != null );
+        test_true("FirstChild(string)", child.FirstChild("t3") != null && child.FirstChild("t3").ToElement() != null );
+        test_true("FirstChild(wxString)", child.FirstChild("t3") != null && child.FirstChild("t3").ToElement() != null );
 
         test_true("FirstChildElement()", child.FirstChildElement() != null && child.FirstChildElement().ToElement().Value() == "t1");
         test_true("FirstChildElement(string)", child.FirstChildElement("t3") != null && child.FirstChildElement("t3").ToElement() != null );
-        test_true("FirstChildElement(string)", child.FirstChildElement(_("t3")) != null && child.FirstChildElement(_("t3")).ToElement() != null );
-
+        test_true("FirstChildElement(string)", child.FirstChildElement("t3") != null && child.FirstChildElement("t3").ToElement() != null );
 
 
         print_test_result();

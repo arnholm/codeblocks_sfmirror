@@ -10,7 +10,7 @@
 
 // Script plugins must extend cbScriptPlugin
 
-//Include(_("wx_test.script"));
+//Include(_T("wx_test.script"));
 
 class Menu_test_plugin extends cbScriptPlugin
 {
@@ -132,3 +132,4 @@ function ScriptMenuFunc()
 // Register script menu
 GetScriptingManager().RegisterScriptMenu(_("&Plugins") + _T("/-") + _("ScriptMenu"),
                                          _T("ScriptMenuFunc"), true);
+
