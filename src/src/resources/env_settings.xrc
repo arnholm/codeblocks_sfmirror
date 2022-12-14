@@ -145,7 +145,7 @@
 									<object class="wxCheckBox" name="chkRobustSave">
 										<label>Save using &quot;save to temp and rename&quot; operation</label>
 										<checked>1</checked>
-										<tooltip>Doing this makes it less probable that a save opeartion would lead to data corruption, but sometimes it interferes with softwares which monitor files</tooltip>
+										<tooltip>Doing this makes it less probable that a save operation would lead to data corruption, but sometimes it interferes with softwares which monitor files</tooltip>
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
