@@ -400,12 +400,12 @@ private:
     /** Collect the default compiler include file search paths. called by AddCompilerDirs() function
      * @return compiler's own search path(system include search paths), like: c:/mingw/include
      */
-    const wxArrayString& GetGCCCompilerDirs(const wxString& cpp_path, const wxString& cpp_executable);
+    const wxArrayString& GetGCCCompilerDirs(const wxString& cpp_path, const wxArrayString& extra_path, const wxString& cpp_executable);
 
     /** Add the collected default GCC compiler include search paths to a parser
      * todo: document this
      */
-    void AddGCCCompilerDirs(const wxString& masterPath, const wxString& compilerCpp, ParserBase* parser);
+    void AddGCCCompilerDirs(const wxString& masterPath, const wxArrayString& extraPath, const wxString& compilerCpp, ParserBase* parser);
 
     /** Add a list of directories to the parser's search directories, normalise to "base" path, if
      * "base" is not empty. Replaces macros.
@@ -415,8 +415,15 @@ private:
      */
     void AddIncludeDirsToParser(const wxArrayString& dirs, const wxString& base, ParserBase* parser);
 
-    /** Runs an app safely (protected against re-entry) and returns output and error */
-    bool SafeExecute(const wxString& app_path, const wxString& app, const wxString& args, wxArrayString &output, wxArrayString &error);
+    /** Runs an app safely (protected against re-entry) and returns output and error
+     * @param app_path the path where the compiler(such as gcc.exe) locates, this is usually the master(bin) path of the compiler plugin
+     * @param extra_path some extra paths from the compiler plugin, this usually are the extra compiler path of the C::B project
+     * @param app the compiler command, for example "gcc.exe" under Windows OS
+     * @param args the compiler option to run the command
+     * @param[out] output the stdout of the command result
+     * @param[out] error the stderr of the command result
+     */
+    bool SafeExecute(const wxString& app_path, const wxArrayString& extra_path, const wxString& app, const wxString& args, wxArrayString &output, wxArrayString &error);
 
     /** Event handler when the batch parse starts, print some log information */
     void OnParserStart(wxCommandEvent& event);

@@ -1992,7 +1992,7 @@ bool NativeParser::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cb
 #endif
 
         wxArrayString output, error;
-        if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetPrograms().CPP, args, output, error) )
+        if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetExtraPaths(), compiler->GetPrograms().CPP, args, output, error) )
             return false;
 
         // wxExecute can be a long action and C::B might have been shutdown in the meantime...
@@ -2079,7 +2079,7 @@ bool NativeParser::AddCompilerPredefinedMacrosVC(const wxString& compilerId, wxS
     }
 
     wxArrayString output, error;
-    if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetPrograms().C, wxEmptyString, output, error) )
+    if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetExtraPaths(), compiler->GetPrograms().C, wxEmptyString, output, error) )
         return false;
 
     // wxExecute can be a long action and C::B might have been shutdown in the meantime...
@@ -2229,14 +2229,14 @@ void NativeParser::AddCompilerIncludeDirsToParser(const Compiler* compiler, Pars
         // to find it's internal include paths
         // but do only once per C::B session, thus cache for later calls
         if (compiler->GetID().Contains(_T("gcc")))
-            AddGCCCompilerDirs(compiler->GetMasterPath(), compiler->GetPrograms().CPP, parser);
+            AddGCCCompilerDirs(compiler->GetMasterPath(), compiler->GetExtraPaths(), compiler->GetPrograms().CPP, parser);
     }
 }
 
 // These dirs are the built-in search dirs of the compiler itself (GCC).
 // Such as when you install your MinGW GCC in E:/code/MinGW/bin
 // The built-in search dir may contain: E:/code/MinGW/include
-const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, const wxString& cpp_executable)
+const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, const wxArrayString& extra_path, const wxString& cpp_executable)
 {
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
     wxString cpp_compiler = cpp_path + sep + _T("bin") + sep + cpp_executable;
@@ -2267,7 +2267,7 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
 #endif
 
     wxArrayString output, error;
-    if ( !SafeExecute(cpp_path, cpp_executable, args, output, error) )
+    if ( !SafeExecute(cpp_path, extra_path, cpp_executable, args, output, error) )
         return cached_result;
 
     // wxExecute can be a long action and C::B might have been shutdown in the meantime...
@@ -2304,9 +2304,9 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
     return dirs[cpp_compiler];
 }
 
-void NativeParser::AddGCCCompilerDirs(const wxString& masterPath, const wxString& compilerCpp, ParserBase* parser)
+void NativeParser::AddGCCCompilerDirs(const wxString& masterPath, const wxArrayString& extraPath, const wxString& compilerCpp, ParserBase* parser)
 {
-    const wxArrayString& gccDirs = GetGCCCompilerDirs(masterPath, compilerCpp);
+    const wxArrayString& gccDirs = GetGCCCompilerDirs(masterPath, extraPath, compilerCpp);
     TRACE(wxString::Format("NativeParser::AddGCCCompilerDirs: Adding %zu cached gcc dirs to parser...", gccDirs.GetCount()));
     for (size_t i=0; i<gccDirs.GetCount(); ++i)
     {
@@ -2337,7 +2337,7 @@ void NativeParser::AddIncludeDirsToParser(const wxArrayString& dirs, const wxStr
     }
 }
 
-bool NativeParser::SafeExecute(const wxString& app_path, const wxString& app, const wxString& args, wxArrayString& output, wxArrayString& error)
+bool NativeParser::SafeExecute(const wxString& app_path, const wxArrayString& extra_path, const wxString& app, const wxString& args, wxArrayString& output, wxArrayString& error)
 {
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
     wxString pth = (app_path.IsEmpty() ? _T("") : (app_path + sep + _T("bin") + sep));
@@ -2364,7 +2364,24 @@ bool NativeParser::SafeExecute(const wxString& app_path, const wxString& app, co
     wxString path_env;
     if ( !pth.IsEmpty() && wxGetEnv(_T("PATH"), &path_env) )
     {
-        wxString tmp_path_env = pth + (platform::windows ? _T(";") : _T(":")) + path_env;
+        wxString tmp_path_env = pth + (platform::windows ? _T(";") : _T(":"));
+        if ( extra_path.GetCount() > 0 )
+        {
+            for (size_t i = 0; i < extra_path.GetCount(); ++i)
+            {
+                wxString expth = extra_path[i];
+                if ( !expth.IsEmpty() )
+                {
+                    Manager::Get()->GetMacrosManager()->ReplaceMacros(expth);
+                    while (!expth.IsEmpty() && (expth.Last() == '\\' || expth.Last() == '/'))
+                        expth.RemoveLast();
+
+                    if (!expth.Trim().IsEmpty())
+                        tmp_path_env = tmp_path_env + expth + (platform::windows ? _T(";") : _T(":"));
+                }
+            }
+        }
+        tmp_path_env = tmp_path_env + path_env;
         if ( !wxSetEnv(_T("PATH"), tmp_path_env) )
         {   CCLogger::Get()->DebugLog(_T("NativeParser::SafeExecute: Could not set PATH environment variable: ") + tmp_path_env); }
     }
