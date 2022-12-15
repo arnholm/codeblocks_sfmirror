@@ -2578,7 +2578,7 @@ void CompilerGCC::BuildStateManagement()
                     if (isEmpty)
                     {
                         cmds.Add(COMPILER_ERROR_LOG +
-                                 _("Make command for 'Build/Project target' is empty. Nothing will be built!"));
+                                 _("Make command for 'Build project/target' is empty. Nothing will be built!"));
                     }
 
                 }
