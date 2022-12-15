@@ -190,7 +190,7 @@ wxMenu* RecentItemsList::GetMenu()
 void RecentItemsList::RefreshStartHerePage()
 {
     // update start here page
-    EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle);
+    EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(GetStartHereTitle());
     if (sh)
         ((StartHerePage*)sh)->Reload();
 }

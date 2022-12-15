@@ -2610,7 +2610,7 @@ void ProjectManagerUI::OnUpdateUI(wxUpdateUIEvent& event)
         if (editorManager)
         {
             EditorBase *editor = editorManager->GetActiveEditor();
-            EditorBase *startHerePage = editorManager->GetEditor(g_StartHereTitle);
+            EditorBase *startHerePage = editorManager->GetEditor(GetStartHereTitle());
 
             enableProperties = (editor && editor != startHerePage);
             if (enableProperties)

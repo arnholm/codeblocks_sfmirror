@@ -10,7 +10,7 @@
     #include <editorbase.h>
 #endif
 
-extern const wxString g_StartHereTitle;
+wxString GetStartHereTitle();
 
 class wxHtmlWindow;
 class wxHtmlLinkInfo;

@@ -35,8 +35,12 @@
 #include <wx/docview.h>
 #include <wx/wxhtml.h>
 
-const wxString g_StartHereTitle = _("Start here");
 int idWin = wxNewId();
+
+wxString GetStartHereTitle()
+{
+    return _("Start here");
+}
 
 class MyHtmlWin : public wxHtmlWindow
 {
@@ -146,7 +150,7 @@ void CopyToClipboard(const wxString& text)
 
 StartHerePage::StartHerePage(wxEvtHandler* owner, const RecentItemsList &projects,
                              const RecentItemsList &files, wxWindow* parent)
-    : EditorBase(parent, g_StartHereTitle, true),
+    : EditorBase(parent, GetStartHereTitle(), true),
     m_pOwner(owner),
     m_projects(projects),
     m_files(files)

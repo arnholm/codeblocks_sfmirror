@@ -2578,7 +2578,7 @@ void MainFrame::ShowHideStartPage(bool forceHasProject, int forceState)
 
     if (m_InitiatedShutdown)
     {
-        EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle);
+        EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(GetStartHereTitle());
         if (sh)
             sh->Destroy();
         return;
@@ -2593,7 +2593,7 @@ void MainFrame::ShowHideStartPage(bool forceHasProject, int forceState)
     if (forceState>0)
         show = true;
 
-    EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle);
+    EditorBase* sh = Manager::Get()->GetEditorManager()->GetEditor(GetStartHereTitle());
     if (show)
     {
         if (!sh)
@@ -4551,7 +4551,7 @@ void MainFrame::OnFileMenuUpdateUI(wxUpdateUIEvent& event)
         else
         {
             // Detect if this is the start here page.
-            event.Enable(ed->GetTitle() != g_StartHereTitle);
+            event.Enable(ed->GetTitle() != GetStartHereTitle());
         }
     }
     else if (id == idFileSave)
@@ -4742,7 +4742,7 @@ void MainFrame::OnViewMenuUpdateUI(wxUpdateUIEvent& event)
         for (int ii = 0; ii < editorCount; ++ii)
         {
             EditorBase *editor = editorManager->GetEditor(ii);
-            if (editor && editor->GetTitle() == g_StartHereTitle)
+            if (editor && editor->GetTitle() == GetStartHereTitle())
             {
                 found = true;
                 break;
@@ -5028,7 +5028,7 @@ void MainFrame::OnSwitchTabs(cb_unused wxCommandEvent& event)
 void MainFrame::OnToggleStartPage(cb_unused wxCommandEvent& event)
 {
     int toggle = -1;
-    if (Manager::Get()->GetEditorManager()->GetEditor(g_StartHereTitle) == nullptr)
+    if (Manager::Get()->GetEditorManager()->GetEditor(GetStartHereTitle()) == nullptr)
         toggle = 1;
 
     ShowHideStartPage(false, toggle);
