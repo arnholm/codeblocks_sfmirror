@@ -1431,7 +1431,7 @@ void DoxyBlocks::DoWritePrefsTemplate()
         AppendToLog(_("Settings template saved."));
     }
     else{
-        AppendToLog(_("Error savings settings template."), LOG_ERROR);
+        AppendToLog(_("Error saving settings template."), LOG_ERROR);
     }
 }
 
