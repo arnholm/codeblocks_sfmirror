@@ -2895,7 +2895,6 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
             msg << _("\n\nDo you want to use the detected clangd?");
 
             wxWindow* pTopWindow = GetTopWxWindow();
-            cbMessageBox(msg, _("ERROR: Clangd client"), wxOK, pTopWindow);
             if (cbMessageBox(msg, _("ERROR: Clangd client"), wxICON_QUESTION | wxYES_NO, pTopWindow) == wxID_YES)
             {
                 cfg->Write(_T("/LLVM_MasterPath"), fnClangdPath.GetFullPath());

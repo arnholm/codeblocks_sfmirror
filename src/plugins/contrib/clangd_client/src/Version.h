@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.55 2022/11/23")
+#define VERSION wxT("1.2.56 2022/12/15")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.56    Commit 1.2.56 2022/12/15
+//          Fixed crash: using window pointer after it was destroyed.
 //1.2.55    commit 1.2.55 2022/11/23
 //          Switch all .cbp(s) back to std=gnu++11 except unix_30
 //          Restore clangd_client_wx30-unix.cbp back to gtk2
