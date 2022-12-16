@@ -115,7 +115,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
 
-    wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgCCSettings"));
+    wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgCldSettings"));
 
     // -----------------------------------------------------------------------
     // Handle all options that are being directly applied from config

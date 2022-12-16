@@ -137,7 +137,7 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     m_ClassBrowserSemaphore(0, 1),  // initial count, max count
     m_ClassBrowserBuilderThread(nullptr)
 {
-    wxXmlResource::Get()->LoadPanel(this, parent, "pnlClassBrowser"); // panel class browser -> pnlCB
+    wxXmlResource::Get()->LoadPanel(this, parent, "pnlCldClassBrowser"); // panel class browser -> pnlCB
     m_Search = XRCCTRL(*this, "cmbSearch", wxComboBox);
 
     if (platform::windows)
@@ -159,7 +159,7 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     // if the classbrowser is put under the control of a wxFlatNotebook,
     // somehow the main panel is like "invisible" :/
     // so we force the correct colour for the panel here...
-    XRCCTRL(*this, "MainPanel", wxPanel)->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+    XRCCTRL(*this, "pnlCldMainPanel", wxPanel)->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 
 }
 

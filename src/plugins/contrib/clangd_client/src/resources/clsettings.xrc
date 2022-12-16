@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resource xmlns="http://www.wxwidgets.org/wxxrc" version="2.5.3.0">
-	<object class="wxPanel" name="dlgCCSettings">
+	<object class="wxPanel" name="dlgCldSettings">
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="nbCCSettings">
 					<object class="notebookpage">
-						<object class="wxPanel" name="tabCC">
+						<object class="wxPanel" name="tabCldCC">
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
@@ -81,8 +81,8 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxSpinCtrl" name="spnMaxMatches">
-														<value>16384</value>
-														<max>100000</max>
+														<value>20</value>
+														<max>1000</max>
 													</object>
 													<flag>wxALL|wxALIGN_TOP</flag>
 												</object>
@@ -234,7 +234,7 @@
 						<label>Code completion</label>
 					</object>
 					<object class="notebookpage">
-						<object class="wxPanel" name="tabParser">
+						<object class="wxPanel" name="tabCldParser">
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
@@ -368,7 +368,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT7">
-												<label>NOTE: The clangd&apos;s version must be 13 or newer. </label>
+												<label>NOTE: The clangd&apos;s version must be 13 or newer. Restart CB after changing this field. </label>
 												<fg>#800000</fg>
 											</object>
 											<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
@@ -385,7 +385,7 @@
 						<label>C/C++ parser</label>
 					</object>
 					<object class="notebookpage">
-						<object class="wxPanel" name="tabParserAdvanced">
+						<object class="wxPanel" name="tabCldParserAdvanced">
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
@@ -516,7 +516,7 @@
 						<label>C/C++ parser (adv.)</label>
 					</object>
 					<object class="notebookpage">
-						<object class="wxPanel" name="tabBrowser">
+						<object class="wxPanel" name="tabCldBrowser">
 							<object class="wxBoxSizer">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
