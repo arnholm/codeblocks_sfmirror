@@ -67,7 +67,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT2">
-												<label>If you right-click a Code::Blocks project/workspace in explorer, you will see&#x0D;&#x0A;two extensions: &quot;Build&quot; and &quot;Rebuild (clean)&quot; (windows only).&#x0D;&#x0A;The arguments configured here, are used by those two extensions.&#x0D;&#x0A;You could specify, for example, a profile/personality to use for batch builds.&#x0D;&#x0A;&#x0D;&#x0A;The relevant command-line arguments are (all are optional):&#x0D;&#x0A;&#x0D;&#x0A;-na: don&apos;t perform any association checks&#x0D;&#x0A;-nd: don&apos;t start a DDE server&#x0D;&#x0A;-ns: don&apos;t display a splash screen while loading&#x0D;&#x0A;-p : the profile to use: &quot;ask&quot; or &lt;profile-name&gt;&#x0D;&#x0A;&#x0D;&#x0A;--target: work only on &lt;target&gt; for &quot;Build&quot; or &quot;Rebuild (clean)&quot;&#x0D;&#x0A;--no-batch-window-close: do not auto-close log window when batch build is done&#x0D;&#x0A;--batch-build-notify: show message when batch build is done</label>
+												<label>If you right-click a Code::Blocks project/workspace in explorer, you will see&#x0A;two extensions: &quot;Build&quot; and &quot;Rebuild (clean)&quot; (windows only).&#x0A;The arguments configured here, are used by those two extensions.&#x0A;You could specify, for example, a profile/personality to use for batch builds.&#x0A;&#x0A;The relevant command-line arguments are (all are optional):&#x0A;&#x0A;-na: don&apos;t perform any association checks&#x0A;-nd: don&apos;t start a DDE server&#x0A;-ns: don&apos;t display a splash screen while loading&#x0A;-p : the profile to use: &quot;ask&quot; or &lt;profile-name&gt;&#x0A;&#x0A;--target: work only on &lt;target&gt; for &quot;Build&quot; or &quot;Rebuild (clean)&quot;&#x0A;--no-batch-window-close: do not auto-close log window when batch build is done&#x0A;--batch-build-notify: show message when batch build is done</label>
 											</object>
 											<flag>wxLEFT|wxEXPAND</flag>
 											<border>8</border>
@@ -110,7 +110,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT4">
-												<label>For more info on profiles/personalities, read the Code::Blocks WiKi at&#x0D;&#x0A;http://wiki.codeblocks.org/index.php?title=Personalities</label>
+												<label>For more info on profiles/personalities, read the Code::Blocks Wiki at&#x0A;https://wiki.codeblocks.org/index.php?title=Personalities</label>
 											</object>
 											<flag>wxLEFT|wxEXPAND</flag>
 											<border>8</border>
