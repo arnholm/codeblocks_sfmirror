@@ -72,7 +72,7 @@ namespace CCDebugInfoHelper
                         fileDesc,
                         _T(""),
                         _T(""),
-                        _T("Text files (*.txt)|*.txt|Any file (*)|*"),
+                        _("Text files (*.txt)|*.txt|Any file (*)|*"),
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         PlaceWindow(&dlg);
         if (dlg.ShowModal() != wxID_OK)

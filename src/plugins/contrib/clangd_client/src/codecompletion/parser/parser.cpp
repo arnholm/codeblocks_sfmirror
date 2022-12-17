@@ -2044,7 +2044,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
                 Manager::Get()->ProcessEvent(evtShow);
             }
             //-unneeded- searchLog->FocusEntry(focusIndex);
-            cbMessageBox("Multiple responses re-directed to Search results log.");
+            cbMessageBox(_("Multiple responses re-directed to Search results log."));
         }
 
         if (resultKnt == 0)

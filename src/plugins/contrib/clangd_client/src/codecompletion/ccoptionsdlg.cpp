@@ -573,7 +573,7 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)       //
     }
     if (fnClangdPath.GetPath().empty())
     {
-        wxString msg; msg << __FUNCTION__ << _("() Could not find clangd installation.");
+        wxString msg; msg << __FUNCTION__ << "() " << _("Could not find clangd installation.");
         cbMessageBox( msg, _("Auto detect Error"));
         return;
     }

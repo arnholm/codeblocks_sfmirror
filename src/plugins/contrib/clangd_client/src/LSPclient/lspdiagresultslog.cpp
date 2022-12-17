@@ -175,10 +175,10 @@ void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(wxCommandEvent& event)
     // Log lines contain filename|lineNumber|msg
     //eg., F:\usr\Proj\Clangd_Client\plugin\plugins\LSPclient\lspdiagresultslog.cpp|16|note:In included file: definition of builtin function '__rdtsc'|
 
+    wxString annoyingMsg = _("Setting a diagnostic as ignored may cause the associated statement to also\n"
+                             "be ignored for references, declarations, implementations etc.");
 
-    wxString annoyingMsg = "Setting a diagnostic as ignored may cause the associated statement to also";
-    annoyingMsg += "\nbe ignored for references, declarations, implementations etc.";
-    AnnoyingDialog annoyingDlg("Set ignored log messages", annoyingMsg, wxART_INFORMATION,  AnnoyingDialog::OK);
+    AnnoyingDialog annoyingDlg(_("Set ignored log messages"), annoyingMsg, wxART_INFORMATION,  AnnoyingDialog::OK);
     annoyingDlg.ShowModal();
 
     int cnt = GetItemsCount(); //log lines

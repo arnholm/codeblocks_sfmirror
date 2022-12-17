@@ -500,11 +500,11 @@ ClgdCompletion::ClgdCompletion() :
         msg << _("\nnavigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.");
         msg << _("\n\nRestart CodeBlocks after closing the \"Manage plugins\" dialog.");
         msg << ("\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n");
-        msg << ("Only one (Clangd_Client or CodeCompletion) should be enabled.");
+        msg << _("Only one (Clangd_Client or CodeCompletion) should be enabled.");
         wxWindow* pTopWindow = GetTopWxWindow();
         //avoid later assert in PluginManager if user changes selection in parent window
         pTopWindow->Freeze();
-        cbMessageBox(msg, "Clangd_client plugin", wxOK, pTopWindow);
+        cbMessageBox(msg, _("Clangd_client plugin"), wxOK, pTopWindow);
         pTopWindow->Thaw();
 
         return;
@@ -597,8 +597,8 @@ void ClgdCompletion::OnAttach()
         // But we can cripple the code and show it as inactive.
         if (not pInfo->version.Contains(" Inactive"))
             pInfo->version = appVersion.GetVersion().Append(" Inactive");
-        InfoWindow::Display("Clangd_client is inactive",
-            "To run clangd_client, restart CodeBlocks after\n setting a compiler and disabling CodeCompletion plugin", 10000);
+        InfoWindow::Display(_("Clangd_client is inactive"),
+            _("To run clangd_client, restart CodeBlocks after\n setting a compiler and disabling CodeCompletion plugin"), 10000);
         return;
     }
 
@@ -1173,7 +1173,7 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
         msg << _("\n\nDisable either CodeCompletion or Clangd_client and");
         msg << _("\nRESTART Code::Blocks to avoid crashes and effects of incompatibilities.");
         if (plgnFilename.Length())
-            msg << wxString::Format("\n\nPlugin location:\n%s",plgnFilename);
+            msg << wxString::Format(_("\n\nPlugin location:\n%s"), plgnFilename);
         cbMessageBox(msg, _("ERROR"), wxOK, GetTopWxWindow());
         return;
     }
@@ -2389,7 +2389,7 @@ void ClgdCompletion::OnRenameSymbols(cb_unused wxCommandEvent& event)
         if (pEdMgr->GetEditor(ii)->GetModified())
         {
             wxString msg = _("Some editors may need saving\n before refactoring can be successful.");
-            InfoWindow::Display("Some editors modified", msg, 6000);
+            InfoWindow::Display(_("Some editors modified"), msg, 6000);
             break;
         }
     }
@@ -2520,7 +2520,7 @@ void ClgdCompletion::ClearReparseConditions()
     }
 
     if (msg.Length())
-        InfoWindow::Display(" Paused reason(s) ", msg, 7000);
+        InfoWindow::Display(_(" Paused reason(s) "), msg, 7000);
     return;
 }
 // ----------------------------------------------------------------------------
@@ -2695,8 +2695,8 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event) //(ph 2020/11
         bool logStat = CCLogger::Get()->GetExternalLogStatus();
         logStat = (not logStat);
         CCLogger::Get()->SetExternalLog(logStat);
-        wxString infoTitle = wxString::Format("External CCLogging is %s", logStat?"ON":"OFF");
-        wxString infoText = wxString::Format("External CCLogging now %s", logStat?"ON":"OFF");
+        wxString infoTitle = wxString::Format(_("External CCLogging is %s"), logStat?_("ON"):_("OFF"));
+        wxString infoText = wxString::Format(_("External CCLogging now %s"), logStat?_("ON"):_("OFF"));
         InfoWindow::Display(infoTitle, infoText, 6000);
 
         return;
@@ -2723,8 +2723,8 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event) //(ph 2020/11
             bool paused = pParser->GetUserParsingPaused();
             paused = (not paused);
             pParser->SetUserParsingPaused(paused);
-            wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?"PAUSED":"ACTIVE");
-            wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?"PAUSED":"ACTIVE");
+            wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
+            wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
             InfoWindow::Display(infoTitle, infoText, 6000);
             //CCLogger::Get()->->Log(infoLSP); done by infowindow.cpp:297
         }
@@ -3313,11 +3313,11 @@ void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)     //(ph 20
     if (pClient)
     {
         wxString msg = _("Unusual termination of LanguageProcessClient(LSP) occured.");
-        msg += "\n\nProject: " + pProject->GetTitle();
+        msg += "\n\n" + _("Project: ") + pProject->GetTitle();
         if (pClient->lspClientLogFile.IsOpened() )
-            msg += "\nClient Log: " + pClient->lspClientLogFile.GetName();
+            msg += "\n" + _("Client Log: ") + pClient->lspClientLogFile.GetName();
         if (pClient->lspServerLogFile.IsOpened() )
-            msg += "\nServer Log: " + pClient->lspServerLogFile.GetName();
+            msg += "\n" + _("Server Log: ") + pClient->lspServerLogFile.GetName();
         //#if defined(_WIN32)
         cbMessageBox(msg, "clangd client"); //Crashes with X window error on Linux Mint 20.2
         //#else
@@ -5649,7 +5649,6 @@ void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)                 
     msg += _("\n If you are going to load a project OTHER than the current project as the debuggee");
     msg += _("\n you do not have to shut down the current clangd client.");
     msg += _("\n\n If you choose to shutdown, you can, later, restart clangd via menu 'Project/Reparse current project'.");
-
     msg += _("\n\nShut down clangd client for this project?");
     AnnoyingDialog annoyingDlg(_("Debugger Starting"), msg, wxART_QUESTION, AnnoyingDialog::YES_NO, AnnoyingDialog::rtSAVE_CHOICE);
     PlaceWindow(&annoyingDlg);
@@ -5747,14 +5746,14 @@ wxString ClgdCompletion::VerifyEditorParsed(cbEditor* pEd)
         //something is wrong
         msg = _("Error: Something went wrong.\n Editor is opened for clangd_client. But...");
         if (not isFileParsing)
-            msg += "\nFile is not Parsing.";
+            msg += "\n" + _("File is not Parsing.");
         if (not isEditorParsed)
-            msg += "\n Editor is not parsed.";
+            msg += "\n" + _("Editor is not parsed.");
         msg += "\n" + pEd->GetFilename();
-        msg += "\nProject:";
-        pProject ? msg += pProject->GetTitle() : "none";
+        msg += "\n" + _("Project:");
+        pProject ? msg += pProject->GetTitle() : _("none");
         CCLogger::Get()->DebugLogError(msg);
-        cbMessageBox(msg, "ERROR: VerifyEditorParsed()");
+        cbMessageBox(msg, _("ERROR: VerifyEditorParsed()"));
     }
 
     return msg;

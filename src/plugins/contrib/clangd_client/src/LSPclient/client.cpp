@@ -397,16 +397,17 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     wxString clangdResourceDir = clangLocator.Locate_ResourceDir(fnClangdMasterPath);
     if (clangd_Dir.empty() or clangdResourceDir.empty())
     {
-        wxString msg; msg << "clangd_client plugin could not auto detect a clangd installation.";
-        msg << "\nPlease enter the location of clangd using";
-        msg << "\n MainMenu->Settings->Editor->clangd_client/C/C++ parser(tab)";
-        msg << "\n 'clangd's installation location' using the button to the left";
-        msg << "\n of 'Auto detect' to locate the clangd executable file";
+        wxString msg; msg << _("clangd_client plugin could not auto detect a clangd installation.\n"
+                               "Please enter the location of clangd using\n"
+                               "MainMenu->Settings->Editor->clangd_client/C/C++ parser(tab)\n"
+                               "'clangd's installation location' using the button to the left\n"
+                               "of 'Auto detect' to locate the clangd executable file");
+
         cbMessageBox( msg, "Error");
 
-        msg.Empty(); msg << "Error: " << __FUNCTION__ << "() Could not find clangd installation.";
-        if (clangd_Dir.empty()) msg << " clangd dir not found.";
-        if (clangdResourceDir.empty()) msg << " clangd Resource dir not found.";
+        msg.Empty(); msg << _("Error: ") << __FUNCTION__ << "() " + _("Could not find clangd installation.");
+        if (clangd_Dir.empty()) msg << _(" clangd dir not found.");
+        if (clangdResourceDir.empty()) msg << _(" clangd Resource dir not found.");
         CCLogger::Get()->LogError(msg);
         CCLogger::Get()->DebugLogError(msg);
         return;
@@ -416,7 +417,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     Compiler* pCompiler = CompilerFactory::GetCompiler(pProject->GetCompilerID());
     if (not pCompiler)
     {
-        wxString msg; msg << "Error: " << __FUNCTION__ << "() Could not find projects' compiler installation.";
+        wxString msg; msg << _("Error: ") << __FUNCTION__ << "() " + _("Could not find projects' compiler installation.");
         pLogMgr->Log(msg);
         return;
     }
@@ -527,10 +528,10 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
 
     if ( (not m_pServerProcess) or (not IsAlive()) )
     {
-        wxString msg = "Starting server for client failed:\n";
+        wxString msg = _("Starting server for client failed:") + "\n";
         msg << command ;
-        msg << "\n\nTry entering the location of clangd using Setting->Editor->clangd_client C/C++ parser";
-        cbMessageBox(msg, "clangd_client Error");
+        msg << "\n\n" << _("Try entering the location of clangd using Setting->Editor->clangd_client C/C++ parser");
+        cbMessageBox(msg, _("clangd_client Error"));
         return;
     }
 
@@ -547,14 +548,14 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
             wxString clientLogFilename = logFilename;
             lspClientLogFile.Open( clientLogFilename,"w" );
             if (not lspClientLogFile.IsOpened())
-                cbMessageBox(wxString::Format(wxT("Failed to open %s"), clientLogFilename ));
+                cbMessageBox(wxString::Format(_("Failed to open %s"), clientLogFilename ));
             // write the project title to the log for identification
             //-std::string logLine = "Project: " + pProject->GetTitle().ToStdString() + ": " + pProject->GetFilename().ToStdString();
             std::string logLine = "Project: " + GetstdUTF8Str(pProject->GetTitle()) + ": " + GetstdUTF8Str(pProject->GetFilename()); //(ollydbg 2022/10/30) ticket #78
             writeClientLog(logLine);
             wxString envPath;
             wxGetEnv("PATH", &envPath);
-            logLine = "SystemPath: " + envPath;
+            logLine = _("SystemPath: ") + envPath;
             writeClientLog(logLine);
 
         }
@@ -570,13 +571,13 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         serverLogFilename.Replace("client", "server");
         lspServerLogFile.Open( serverLogFilename,  "w" );
         if (not lspServerLogFile.IsOpened())
-            cbMessageBox(wxString::Format(wxT("Failed to open %s"), serverLogFilename ));
+            cbMessageBox(wxString::Format(_("Failed to open %s"), serverLogFilename ));
         // write the project title to the log for identification
-        wxString logLine = "Project: " + pProject->GetTitle() + ": " + pProject->GetFilename()+ "\n";
+        wxString logLine = _("Project: ") + pProject->GetTitle() + ": " + pProject->GetFilename()+ "\n";
         writeServerLog(logLine.ToStdString());
         wxString envPath;
         wxGetEnv("PATH", &envPath);
-        logLine = "SystemPath: " + envPath + "\n";
+        logLine = _("SystemPath: ") + envPath + "\n";
         writeServerLog(logLine.ToStdString());
     }
 
@@ -865,7 +866,7 @@ cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& file
             EncodingDetector detector(filename, false);
             if (not detector.IsOK())
             {
-                wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, filename));
+                wxString msg(wxString::Format(_("%s():%d failed EncodingDetector for %s"), __FUNCTION__, __LINE__, filename));
                 Manager::Get()->GetLogManager()->Log(msg);
                 delete control;
                 return nullptr;
@@ -908,8 +909,8 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
 
         if (lockerr != wxMUTEX_NO_ERROR)
         {
-            wxString msg = wxString::Format("LSP data loss. %s() Failed to obtain input buffer lock", __FUNCTION__);
-            wxSafeShowMessage("Lock fail, lost data", msg);
+            wxString msg = wxString::Format(_("LSP data loss. %s() Failed to obtain input buffer lock"), __FUNCTION__);
+            wxSafeShowMessage(_("Lock fail, lost data"), msg);
             CCLogger::Get()->DebugLogError(msg);
             writeClientLog(msg.ToStdString());
             return;
@@ -1074,7 +1075,7 @@ int ProcessLanguageClient::ReadLSPinputLength()
                 // usually caused by clangd invalid utf8 sequence
                 std::string msg = StdString_Format("ERROR:%s(): buffLength (%d): Position of content header %d.\n",
                              __FUNCTION__, int(m_std_LSP_IncomingStr.length()), int(hdrPosn));
-                msg += "Buffer contents written to client log.";
+                msg += _("Buffer contents written to client log.");
                 //#if defined(cbDEBUG)
                 //    wxSafeShowMessage("Input Buffer error",msg);
                 //#endif
@@ -1110,7 +1111,7 @@ int ProcessLanguageClient::ReadLSPinputLength()
                 {
                     jdataLength = actualLength - jdataPosn;
                     // FIXME (ph#): After debugging, remove "Error" of  DebugLog()
-                    pLogMgr->DebugLogError(wxString::Format("\tCorrectd data length is %d:", jdataLength));
+                    pLogMgr->DebugLogError(wxString::Format("\tCorrected data length is %d", jdataLength));
                     return jdataLength;
                 }
                 else // try to match beginning '{' with ending '}' to get actual length //(ph 2022/10/10)
@@ -2194,8 +2195,8 @@ void ProcessLanguageClient::LSP_DidSave(cbEditor* pcbEd)
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pcbEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg) ;
         return;
     }
 
@@ -2263,7 +2264,7 @@ void ProcessLanguageClient::LSP_GoToDefinition(cbEditor* pcbEd, int argCaretPosi
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to use LSP_GoToDefinition() before initialization.");
+        cbMessageBox(_("LSP: attempt to use LSP_GoToDefinition() before initialization."));
         return ;
     }
 
@@ -2271,8 +2272,8 @@ void ProcessLanguageClient::LSP_GoToDefinition(cbEditor* pcbEd, int argCaretPosi
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pcbEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg) ;
         return;
     }
 
@@ -2353,15 +2354,15 @@ void ProcessLanguageClient::LSP_GoToDeclaration(cbEditor* pcbEd, int argCaretPos
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to LSP_GoToDeclaration before initialization.");
+        cbMessageBox(_("LSP: attempt to LSP_GoToDeclaration before initialization."));
         return ;
     }
     if (not GetLSP_IsEditorParsed(pcbEd))
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pcbEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pcbEd).Length() ? GetEditorsProjectTitle(pcbEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -2434,7 +2435,7 @@ void ProcessLanguageClient::LSP_FindReferences(cbEditor* pEd, int argCaretPositi
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to LSP_FindReferences before initialization.");
+        cbMessageBox(_("LSP: attempt to LSP_FindReferences before initialization."));
         return ;
     }
 
@@ -2444,8 +2445,8 @@ void ProcessLanguageClient::LSP_FindReferences(cbEditor* pEd, int argCaretPositi
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -2510,7 +2511,7 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to LSP_RequestRename() before initialization.");
+        cbMessageBox(_("LSP: attempt to LSP_RequestRename() before initialization."));
         return ;
     }
 
@@ -2520,8 +2521,8 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -2589,7 +2590,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to LSP_GetSymbols before initialization.");
+        cbMessageBox(_("LSP: attempt to LSP_GetSymbols before initialization."));
         return ;
     }
 
@@ -2597,8 +2598,8 @@ void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -2656,8 +2657,8 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
 
     if (not GetLSP_Initialized())
     {
-        wxString msg = "LSP: attempt to LSP_GetSymbols before initialization.";
-        msg += wxString::Format("\n %s() Line:%d", __FUNCTION__, __LINE__);
+        wxString msg = _("LSP: attempt to LSP_GetSymbols before initialization.");
+        msg += wxString::Format(_("\n %s() Line:%d"), __FUNCTION__, __LINE__);
         cbMessageBox(msg);
         return ;
     }
@@ -2690,7 +2691,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
     catch(std::exception &err)
     {
         //printf("read error -> %s\nread -> %s\n ", e.what(), read.c_str());
-        wxString errMsg(wxString::Format("\nLSP_RequestSymbols() error: %s\n%s", err.what(), docuri.c_str()) );
+        wxString errMsg(wxString::Format(_("\nLSP_RequestSymbols() error: %s\n%s"), err.what(), docuri.c_str()));
         writeClientLog(errMsg.ToStdString());
         cbMessageBox(errMsg);
     }
@@ -2712,7 +2713,7 @@ void ProcessLanguageClient::LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to LSP_GetSemanticTokens before initialization.");
+        cbMessageBox(_("LSP: attempt to LSP_GetSemanticTokens before initialization."));
         return ;
     }
 
@@ -2792,8 +2793,8 @@ void ProcessLanguageClient::LSP_RequestSemanticTokens(wxString filename, cbProje
 
     if (not GetLSP_Initialized())
     {
-        wxString msg = "LSP: attempt to LSP_RequestSemanticTokens() before initialization.";
-        msg += wxString::Format("\n %s() Line:%d", __FUNCTION__, __LINE__);
+        wxString msg = _("LSP: attempt to LSP_RequestSemanticTokens() before initialization.");
+        msg += wxString::Format(_("\n %s() Line:%d"), __FUNCTION__, __LINE__);
         cbMessageBox(msg);
         return ;
     }
@@ -2906,7 +2907,7 @@ void ProcessLanguageClient::LSP_DidChange(cbEditor* pEd)
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to call LSP_DidChange() before initialization.");
+        cbMessageBox(_("LSP: attempt to call LSP_DidChange() before initialization."));
         return ;
     }
 
@@ -2914,8 +2915,8 @@ void ProcessLanguageClient::LSP_DidChange(cbEditor* pEd)
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -3024,15 +3025,15 @@ void ProcessLanguageClient::LSP_CompletionRequest(cbEditor* pEd, int rrid)
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to call LSP_Completion() before initialization.");
+        cbMessageBox(_("LSP: attempt to call LSP_Completion() before initialization."));
         return ;
     }
     if (not GetLSP_IsEditorParsed(pEd))
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -3104,7 +3105,7 @@ void ProcessLanguageClient::LSP_Hover(cbEditor* pEd, int posn, int rrid)
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to call LSP_Hover() before initialization.");
+        cbMessageBox(_("LSP: attempt to call LSP_Hover() before initialization."));
         return ;
     }
     if (not GetLSP_IsEditorParsed(pEd))
@@ -3178,15 +3179,15 @@ void ProcessLanguageClient::LSP_SignatureHelp(cbEditor* pEd, int posn)
 
     if (not GetLSP_Initialized())
     {
-        cbMessageBox("LSP: attempt to call LSP_SignatureHelp() before initialization.");
+        cbMessageBox(_("LSP: attempt to call LSP_SignatureHelp() before initialization."));
         return ;
     }
     if (not GetLSP_IsEditorParsed(pEd))
     {
         wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
                 wxFileName(pEd->GetFilename()).GetFullName());
-        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : "None";
-        InfoWindow::Display("LSP: File not yet parsed", msg ) ;
+        msg += GetEditorsProjectTitle(pEd).Length() ? GetEditorsProjectTitle(pEd) : _("None");
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
         return;
     }
 
@@ -3816,7 +3817,7 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         jsonFile.open (compileCommandsFullPath.ToStdString(), std::ofstream::in);
         if (not jsonFile.is_open())
         {
-            wxString msg = wxString::Format("Existing compile_commands.json file failed to open.\n%s", editorProjectDotCBP);
+            wxString msg = wxString::Format(_("Existing compile_commands.json file failed to open.\n%s"), editorProjectDotCBP);
             cbMessageBox(msg);
             break;
         }
@@ -3889,7 +3890,7 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         jsonFile.open (compileCommandsFullPath.ToStdString(), std::ofstream::out | std::ofstream::trunc);
         if (not jsonFile.is_open())
         {
-            wxString msg(wxString::Format("compile_commands.json file %s\nfailed to open for output.\n", compileCommandsFullPath) );
+            wxString msg(wxString::Format(_("'compile_commands.json' file %s\nfailed to open for output.\n"), compileCommandsFullPath));
             cbMessageBox(msg);
         }
         else
@@ -3930,7 +3931,7 @@ int ProcessLanguageClient::GetCompilationDatabaseEntry(wxArrayString& resultArra
         jsonFile.close();
     } catch (std::exception &e)
     {
-        wxString msg = "GetCompilationDatabaseEntry(): error reading " + fn_ccdbj.GetFullPath();
+        wxString msg = _("'GetCompilationDatabaseEntry()': error reading ") + fn_ccdbj.GetFullPath();
         CCLogger::Get()->DebugLog(msg);
         cbMessageBox(msg);
         return 0;
@@ -3958,7 +3959,7 @@ int ProcessLanguageClient::GetCompilationDatabaseEntry(wxArrayString& resultArra
         }//endfor
     }//endtry
     catch (std::exception &e) {
-        wxString msg = wxString::Format("GetCompilationDatabaseEntry():parse error %s", e.what());
+        wxString msg = wxString::Format(_("'GetCompilationDatabaseEntry()':parse error %s"), e.what());
         cbMessageBox(msg);
         return 0;
     }//endcatch
@@ -4108,7 +4109,7 @@ wxString ProcessLanguageClient::CreateLSPClientLogName(int pid, const cbProject*
 
     if (not clientLogIndexesFile.IsOpened())
     {
-        wxString msg = "Error: CreateLSPClientLogName() could not open " + clientLogIndexesFilename;
+        wxString msg = _("Error: 'CreateLSPClientLogName()' could not open ") + clientLogIndexesFilename;
         writeClientLog(msg.ToStdString());
         cbMessageBox(msg);
         return wxEmptyString;
@@ -4178,8 +4179,8 @@ void ProcessLanguageClient::ListenForSavedFileMethod()
 // ----------------------------------------------------------------------------
 {
     wxFrame* pAppFrame = Manager::Get()->GetAppFrame();
-    int saveFileID = wxFindMenuItemId(pAppFrame, "File", "Save file");
-    int saveEverythingID = wxFindMenuItemId(pAppFrame, "File", "Save everything");
+    int saveFileID = wxFindMenuItemId(pAppFrame, _("File"), _("Save file"));
+    int saveEverythingID = wxFindMenuItemId(pAppFrame, _("File"), _("Save everything"));
 
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ProcessLanguageClient::SetSaveFileEventOccured, this, saveFileID);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ProcessLanguageClient::SetSaveFileEventOccured, this, saveEverythingID);
@@ -4196,13 +4197,13 @@ void ProcessLanguageClient::SetSaveFileEventOccured(wxCommandEvent& event)
 bool ProcessLanguageClient::GetSaveFileEventOccured()
 // ----------------------------------------------------------------------------
 {
-    // This routine called to avoid switchng the log focus unless user did a save.
+    // This routine called to avoid switching the log focus unless user did a save.
     // If so, the focus can switch to the LSP messages log when the "textDocument/Diagnostics"
     // LSP response event occurs.
     bool isSaveButton = false;
     wxFrame* pAppFrame = Manager::Get()->GetAppFrame();
-    int saveFileID = wxFindMenuItemId(pAppFrame, "File", "Save file");
-    int saveEverythingID = wxFindMenuItemId(pAppFrame, "File", "Save everything");
+    int saveFileID = wxFindMenuItemId(pAppFrame, _("File"), _("Save file"));
+    int saveEverythingID = wxFindMenuItemId(pAppFrame, _("File"), _("Save everything"));
 
     if ((an_SavedFileMethod == saveFileID) or (an_SavedFileMethod == saveEverythingID))
         isSaveButton =true;
