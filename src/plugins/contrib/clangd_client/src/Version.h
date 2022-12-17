@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.57 2022/12/16")
+#define VERSION wxT("1.2.58 2022/12/17")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.58    Commit 1.2.58 2022/12/17
+//          Don't write translated messages to debugging logs.
 //1.2.57    Commit 1.2.57 2022/12/16
 //          Hail Mary pass: Fix crash(#2): Change names of class="wxPanel" name=<> in .xrc files
 //              to force load of clangd_class panels vs CC panels.

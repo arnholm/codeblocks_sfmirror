@@ -555,7 +555,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
             writeClientLog(logLine);
             wxString envPath;
             wxGetEnv("PATH", &envPath);
-            logLine = _("SystemPath: ") + envPath;
+            logLine = "SystemPath: " + envPath;
             writeClientLog(logLine);
 
         }
@@ -573,11 +573,11 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         if (not lspServerLogFile.IsOpened())
             cbMessageBox(wxString::Format(_("Failed to open %s"), serverLogFilename ));
         // write the project title to the log for identification
-        wxString logLine = _("Project: ") + pProject->GetTitle() + ": " + pProject->GetFilename()+ "\n";
+        wxString logLine = "Project: " + pProject->GetTitle() + ": " + pProject->GetFilename()+ "\n";
         writeServerLog(logLine.ToStdString());
         wxString envPath;
         wxGetEnv("PATH", &envPath);
-        logLine = _("SystemPath: ") + envPath + "\n";
+        logLine = "SystemPath: " + envPath + "\n";
         writeServerLog(logLine.ToStdString());
     }
 
@@ -909,8 +909,8 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
 
         if (lockerr != wxMUTEX_NO_ERROR)
         {
-            wxString msg = wxString::Format(_("LSP data loss. %s() Failed to obtain input buffer lock"), __FUNCTION__);
-            wxSafeShowMessage(_("Lock fail, lost data"), msg);
+            wxString msg = wxString::Format("LSP data loss. %s() Failed to obtain input buffer lock", __FUNCTION__);
+            wxSafeShowMessage("Lock fail, lost data", msg);
             CCLogger::Get()->DebugLogError(msg);
             writeClientLog(msg.ToStdString());
             return;
@@ -1075,7 +1075,7 @@ int ProcessLanguageClient::ReadLSPinputLength()
                 // usually caused by clangd invalid utf8 sequence
                 std::string msg = StdString_Format("ERROR:%s(): buffLength (%d): Position of content header %d.\n",
                              __FUNCTION__, int(m_std_LSP_IncomingStr.length()), int(hdrPosn));
-                msg += _("Buffer contents written to client log.");
+                msg += "Buffer contents written to client log.";
                 //#if defined(cbDEBUG)
                 //    wxSafeShowMessage("Input Buffer error",msg);
                 //#endif
@@ -2691,9 +2691,10 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
     catch(std::exception &err)
     {
         //printf("read error -> %s\nread -> %s\n ", e.what(), read.c_str());
-        wxString errMsg(wxString::Format(_("\nLSP_RequestSymbols() error: %s\n%s"), err.what(), docuri.c_str()));
-        writeClientLog(errMsg.ToStdString());
-        cbMessageBox(errMsg);
+        wxString usrMsg(wxString::Format(_("\nLSP_RequestSymbols() error: %s\n%s"), err.what(), docuri.c_str()));
+        wxString logMsg(wxString::Format("\nLSP_RequestSymbols() error: %s\n%s", err.what(), docuri.c_str()));
+        writeClientLog(logMsg.ToStdString());
+        cbMessageBox(usrMsg);
     }
 
     SetLastLSP_Request(filename, "textDocument/documentSymbol");
@@ -4109,9 +4110,10 @@ wxString ProcessLanguageClient::CreateLSPClientLogName(int pid, const cbProject*
 
     if (not clientLogIndexesFile.IsOpened())
     {
-        wxString msg = _("Error: 'CreateLSPClientLogName()' could not open ") + clientLogIndexesFilename;
-        writeClientLog(msg.ToStdString());
-        cbMessageBox(msg);
+        wxString usrmsg = _("Error: 'CreateLSPClientLogName()' could not open ") + clientLogIndexesFilename;
+        wxString logmsg = "Error: 'CreateLSPClientLogName()' could not open " + clientLogIndexesFilename;
+        writeClientLog(logmsg.ToStdString());
+        cbMessageBox(usrmsg);
         return wxEmptyString;
     }
     size_t logLineCount = clientLogIndexesFile.GetLineCount();

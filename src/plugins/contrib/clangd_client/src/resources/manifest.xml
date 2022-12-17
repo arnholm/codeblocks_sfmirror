@@ -3,7 +3,7 @@
     <SdkVersion major="2" minor="0" release="0" />
     <Plugin name="clangd_client">
         <Value title="Clangd_Client" />
-        <Value version="1.2.57 2022/12/16" />
+        <Value version="1.2.58 2022/12/17" />
         <Value description="This plugin provides a symbols browser for your projects and code-completion inside the editor.
 Note: Only C/C++ language is supported by this plugin (currently)..." />
         <Value author="Yiannis An. Mandravellos (Modified for clangd by Pecan and AndrewCo)" />
