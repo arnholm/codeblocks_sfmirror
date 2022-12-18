@@ -76,7 +76,7 @@ namespace Expression
         "    pow(a, b)\n"
         "    ln(a), log(a,b)\n"
         "\n"
-        "Exapmle:\n"
+        "Example:\n"
         "    word[ 4 * dword[ @ ] + 128 ]\n"
         "  This code will read dword value at current cursor\n"
         "  position, multiply it by 4 and add 128 to it,\n"
