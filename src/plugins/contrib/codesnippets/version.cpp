@@ -536,6 +536,12 @@ AppVersion::~AppVersion()
 //          Replace GenericMessageBox with wxMessageBox
 //          Remove use of external editor (causes hang)
 // ----------------------------------------------------------------------------
+//  Commit 1.4.4 2022/12/12
+//          Remove unused resource directory
+//          Remove Makefile.am references to resource directory
+//          update update.bat files and update for linux
+//          General cleanup
+// ----------------------------------------------------------------------------
 //  Bugs
 //      2008/04/8
 //          If floating wxAUI window is docked with Edit's open, they disappear. But

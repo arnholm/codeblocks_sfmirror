@@ -108,11 +108,12 @@ CodeSnippets::~CodeSnippets()
 void CodeSnippets::OnAttach()
 // ----------------------------------------------------------------------------
 {
-
     // Do not allow a secondary plugin enable
-    //if (g_pConfig){
-    if (GetConfig()){
-        wxMessageBox(_("CodeSnippets will enable on CodeBlocks restart."));
+    if (GetConfig())
+    {
+        // Don't allow msg window to hide behind current top window
+        wxWindow* pTopWindow = GetTopWxWindow();
+        cbMessageBox("CodeSnippets will enable on CodeBlocks restart.", "Warning", wxOK, pTopWindow);
         return;
     }
 
@@ -1263,7 +1264,7 @@ void CodeSnippets::SendMouseLeftUp(const wxWindow* pWin, const int mouseX, const
         // move mouse into the window
         MSW_MouseMove( fullScreen.x, fullScreen.y );
         // send mouse LeftKeyUp
-        INPUT Input         = {0,0,0,0,0,0,0};
+        INPUT Input         = {0,{{0}}};
         Input.type          = INPUT_MOUSE;
         Input.mi.dwFlags    = MOUSEEVENTF_LEFTUP;
         ::SendInput(1,&Input,sizeof(INPUT));
@@ -1282,7 +1283,7 @@ void CodeSnippets::MSW_MouseMove(int x, int y )
       double fScreenHeight  = ::GetSystemMetrics( SM_CYSCREEN )-1;
       double fx = x*(65535.0f/fScreenWidth);
       double fy = y*(65535.0f/fScreenHeight);
-      INPUT  Input={0,0,0,0,0,0,0};
+      INPUT Input = {0,{{0}}};
       Input.type      = INPUT_MOUSE;
       Input.mi.dwFlags  = MOUSEEVENTF_MOVE|MOUSEEVENTF_ABSOLUTE;
       Input.mi.dx = (LONG)fx;

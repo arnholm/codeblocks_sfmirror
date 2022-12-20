@@ -24,6 +24,7 @@
 
 #include <wx/frame.h>
 #include <wx/fileconf.h>
+#include <wx/textctrl.h>
 
 #include "snippetsimages.h"
 

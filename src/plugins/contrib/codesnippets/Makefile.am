@@ -1,4 +1,3 @@
-SUBDIRS = resources
 
 AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		$(WX_GTK_CFLAGS) \
@@ -50,8 +49,6 @@ noinst_HEADERS =  	codesnippets.h \
 man_MANS = codesnippets.1
 
 EXTRA_DIST = 	$(srcdir)/*.cbp \
-		generic.rc \
-		generic.Manifest \
 		$(srcdir)/update* \
 		readme.html \
 		license.txt \

@@ -2077,7 +2077,7 @@ void CodeSnippetsTreeCtrl::SendMouseLeftUp(const wxWindow* pWin, const int mouse
         // move mouse into the window
         MSW_MouseMove( fullScreen.x, fullScreen.y );
         // send mouse LeftKeyUp
-        INPUT Input         = {0,0,0,0,0,0,0};
+        INPUT Input         = {0,{{0}}};
         Input.type          = INPUT_MOUSE;
         Input.mi.dwFlags    = MOUSEEVENTF_LEFTUP;
         ::SendInput(1,&Input,sizeof(INPUT));

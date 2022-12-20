@@ -193,6 +193,52 @@ class CodeSnippets : public cbPlugin
 
 		DECLARE_EVENT_TABLE();
 
+    public:
+        // Find wxTopLevelWindow from the windows list
+        // ----------------------------------------------------------------------------
+        wxWindow* GetWxTopLevelWindow()
+        // ----------------------------------------------------------------------------
+        {
+            // travers the list of windows to get the top level window
+            wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+            while (node)
+            {
+                //wxWindow*pwin = node->GetData(); removed for ticket #63 //(ac 2022/08/22)
+                //if (node->GetNext() == nullptr)
+                //    return pwin;
+                if (not node->GetNext())               //ticket #63 support for msys2
+                {
+                    wxWindow*pwin = node->GetData();
+                    return pwin;
+                }
+                node = node->GetNext();
+            }
+            return nullptr;
+        }
+
+        // Find top parent of a window
+        // ----------------------------------------------------------------------------
+        wxWindow* GetTopParent(wxWindow* pWindow)
+        // ----------------------------------------------------------------------------
+        {
+            wxWindow* pWin = pWindow;
+            while(pWin->GetParent())
+                    pWin = pWin->GetParent();
+            return pWin;
+        }
+
+        // get top window to use as cbMessage parent, else MessageBoxes hide behind dialogs
+        // ----------------------------------------------------------------------------
+        wxWindow* GetTopWxWindow()
+        // ----------------------------------------------------------------------------
+        {
+            wxWindow* appWindow = Manager::Get()->GetAppWindow();
+            wxWindow* topWindow =GetWxTopLevelWindow();
+            if (not topWindow)
+                topWindow = appWindow;
+            return topWindow;
+        }
+
 }; //class CodeSnippets
 // ----------------------------------------------------------------------------
 //  ::MainFrame Drop Target (taken from ../src/main.cpp)
