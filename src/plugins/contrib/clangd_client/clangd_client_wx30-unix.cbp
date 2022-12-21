@@ -3,19 +3,17 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="clangd_client-unix30" />
-		<Option platforms="Unix;" />
-		<Option pch_mode="2" />
+		<Option default_target="clangd_client" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="clangd_client">
-				<Option platforms="Unix;" />
 				<Option output="../../../devel30/share/codeblocks/plugins/clangd_client" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../devel30" />
 				<Option object_output="../../../.objs30/plugins/contrib/clangd_client" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --multiple-instance --no-splash-screen --verbose -p debug --no-ipc " />
-				<Option host_application="../../../devel30/codeblocks" />
+				<Option host_application="$(CODEBLOCKS)/../devel30/codeblocks" />
 				<Option run_host_application_in_terminal="0" />
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
@@ -29,9 +27,9 @@
 					<Add directory="src/unixprocess" />
 				</Compiler>
 				<Linker>
+					<Add option="`$(WX_CONFIG) --libs std,aui`" />
+					<Add option="-Wl,--no-undefined" />
 					<Add library="codeblocks" />
-					<Add library="util" />
-					<Add library="wx_gtk2u_aui-3.0" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
@@ -40,13 +38,13 @@
 					<Add after="cd src/resources &amp;&amp; zip -rq9 ../../clangd_client.zip images &amp;&amp; cd ../.." />
 					<Add after="cp clangd_client.zip ../../../devel30/share/codeblocks/clangd_client.zip" />
 					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
-										<Mode after="always" />
+					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
 			<Environment>
-				<Variable name="PKG_CONFIG_GTK_VERSION" value="2.0" />
+				<Variable name="GTK_VERSION" value="gtk+-3.0" />
 				<Variable name="WX_CFG" value="" />
-				<Variable name="WX_CONFIG" value="wx-config --toolkit=gtk2" />
+				<Variable name="WX_CONFIG" value="wx-config --version=3.0" />
 				<Variable name="WX_SUFFIX" value="u" />
 				<Variable name="WX_VERSION" value="30" />
 			</Environment>
@@ -59,10 +57,20 @@
 			<Add option="-std=c++11" />
 			<Add option="-fPIC" />
 			<Add option="-g" />
+			<Add option="$(#CB_RELEASE_TYPE)" />
+			<Add option="-fmessage-length=0" />
+			<Add option="-fexceptions" />
+			<Add option="-Winvalid-pch" />
 			<Add option="`$(WX_CONFIG) --cflags`" />
+			<Add option="`pkg-config --cflags $(GTK_VERSION)`" />
+			<Add option="-DcbDEBUG" />
+			<Add option="-DCB_PRECOMP" />
+			<Add directory="sdk/wxscintilla/include" />
+			<Add directory="include/tinyxml" />
 		</Compiler>
 		<Linker>
 			<Add option="`$(WX_CONFIG) --libs std,aui,propgrid`" />
+			<Add option="`pkg-config --libs $(GTK_VERSION)`" />
 			<Add option="-Wl,--no-undefined" />
 			<Add directory="../../../devel30" />
 		</Linker>
@@ -70,14 +78,14 @@
 		<Unit filename="src/ClangLocator.h" />
 		<Unit filename="src/ClgdCCToken.h" />
 		<Unit filename="src/LSP_SymbolKind.h" />
+		<Unit filename="src/LSPclient/client.cpp" />
 		<Unit filename="src/LSPclient/client.h" />
 		<Unit filename="src/LSPclient/json.hpp" />
+		<Unit filename="src/LSPclient/lspdiagresultslog.cpp" />
+		<Unit filename="src/LSPclient/lspdiagresultslog.h" />
 		<Unit filename="src/LSPclient/protocol.h" />
 		<Unit filename="src/LSPclient/transport.h" />
 		<Unit filename="src/LSPclient/uri.h" />
-		<Unit filename="src/LSPclient/lspdiagresultslog.cpp" />
-		<Unit filename="src/LSPclient/lspdiagresultslog.h" />
-		<Unit filename="src/LSPclient/client.cpp" />
 		<Unit filename="src/Version.h" />
 		<Unit filename="src/codecompletion/IdleCallbackHandler.h" />
 		<Unit filename="src/codecompletion/LSPEventCallbackHandler.h" />
