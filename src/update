@@ -208,11 +208,6 @@ cp -f scripts/tests/*.script ${CB_OUTPUT_RESDIR}/scripts/tests > /dev/null
 rm excludes.txt
 
 # several contrib plugins
-if [ -d "${CB_DEVEL_RESDIR}/images/codesnippets" ]; then
-    mkdir -p ${CB_OUTPUT_RESDIR}/images/codesnippets
-    cp -f ${CB_DEVEL_RESDIR}/images/codesnippets/*.png ${CB_OUTPUT_RESDIR}/images/codesnippets > /dev/null
-fi
-
 if [ -d "${CB_DEVEL_RESDIR}/images/wxsmith" ]; then
     mkdir -p ${CB_OUTPUT_RESDIR}/images/wxsmith
     cp -f ${CB_DEVEL_RESDIR}/images/wxsmith/*.png ${CB_OUTPUT_RESDIR}/images/wxsmith > /dev/null

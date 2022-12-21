@@ -191,11 +191,6 @@ del excludes%TARGET%.txt
 
 REM several contrib plugins
 echo Copying files of several contrib plugins
-if exist "%CB_DEVEL_RESDIR%\images\codesnippets" (
-    call:mkdirSilent "%CB_OUTPUT_RESDIR%\images\codesnippets"
-    xcopy /D /y "%CB_DEVEL_RESDIR%\images\codesnippets\*.png" "%CB_OUTPUT_RESDIR%\images\codesnippets" > nul
-)
-
 if exist "%CB_DEVEL_RESDIR%\images\fortranproject" (
     call:copyImageFiles "%CB_DEVEL_RESDIR%\images\fortranproject" "%CB_OUTPUT_RESDIR%\images\fortranproject"
     call:copySvgFiles "%CB_DEVEL_RESDIR%\images\fortranproject" "%CB_OUTPUT_RESDIR%\images\fortranproject"
