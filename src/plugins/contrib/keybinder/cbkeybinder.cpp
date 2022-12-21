@@ -66,6 +66,8 @@ namespace
 BEGIN_EVENT_TABLE(cbKeyBinder, cbPlugin)
     // add events here...
 
+    // This event issued from another plugin to request KeyBinder to refresh its key shortcuts database.
+    // It happens at CB startup and plugin enable/disable/install/uninstall if the menus change.
     EVT_MENU (idKeyBinderRefresh, cbKeyBinder::OnKeyBinderRefreshRequested)
 
 END_EVENT_TABLE()
@@ -159,7 +161,7 @@ cbConfigurationPanel* cbKeyBinder::GetConfigurationPanel(wxWindow* parent)
 {
     // This routine will create a minimal configuration panel for
     // the Editor configuration 'Keyboard shortcuts' dialog. The actual work
-    // for this panel will be done in GetConfigurationPanePhaseII() when the user
+    // for this panel will be done in GetKeyConfigPanelPhaseII() when the user
     // clicks on MainMenu\Settings\Editor\Keyboard shortcuts.
     // See OnPageChanging().
 
@@ -342,7 +344,7 @@ void cbKeyBinder::OnKeyBinderRefreshRequested(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // a process has issued: wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idKeyBinderRefresh"))
-
+    // or another plugin (eg. keymacs) needs us to refresh our database of key assignments.
     if (m_KeyBinderRefreshRequested)
         return; //already doing the job
 
@@ -351,7 +353,7 @@ void cbKeyBinder::OnKeyBinderRefreshRequested(wxCommandEvent& event)
     if (m_AppStartupDone)
     {
         CodeBlocksEvent cbevt(event.GetEventType(), event.GetId());
-        OnAppStartupDone(cbevt);
+        OnAppStartupDone(cbevt); // this is a local call, not a real event
         m_KeyBinderRefreshRequested = false;
     }
 }
@@ -543,15 +545,15 @@ bool cbKeyBinder::OnSaveKbOldFormatCfgFile(wxKeyProfileArray* pKeyProfArr, wxStr
     if ((ok = pKeyProfArr->Save(cfg, wxEmptyString, TRUE)))
      {
         // get the cmd count
+        #if defined(LOGGING)
         int total = 0;
         for (int i=0; i<pKeyProfArr->GetCount(); i++)
             total += pKeyProfArr->Item(i)->GetCmdCount();
-        cfg->Flush();
-        #if defined(LOGGING)
-            LOGIT(wxString::Format(wxT("All the [%d] keyprofiles ([%d] commands ")
+        LOGIT(wxString::Format(wxT("All the [%d] keyprofiles ([%d] commands ")
             wxT("in total) have been saved in \n") + fnKeyBinderCfg.GetFullPath(),
-              pKeyProfArr->GetCount(), total) );
+            pKeyProfArr->GetCount(), total) );
         #endif
+        cfg->Flush();
 
     }//endif Save
     else

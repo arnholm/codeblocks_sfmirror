@@ -10,6 +10,10 @@
 #ifndef CBKEYCONFIGPANEL_H
 #define CBKEYCONFIGPANEL_H
 
+#include <configurationpanel.h> //
+#include "keybinder.h"          //(2022/12/20)
+#include "clKeyboardManager.h"  //
+
 // Modified Keybinder for CodeBlocks KeyBnder v2.0
 
 // ----------------------------------------------------------------------------

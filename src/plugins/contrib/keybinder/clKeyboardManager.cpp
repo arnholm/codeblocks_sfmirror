@@ -763,18 +763,25 @@ void clKeyboardManager::CheckForDuplicateAccels(MenuItemDataMap_t& accelMap) con
     {
         bool isParentWindowDialog = false;
         // Get top window to solve msg window getting hidden behind keybinder dialog
+        // Issue the key conflicts msg at CB startup and when user makes a change;
+        // but not just because a plugin is {en|dis}abled or {un|in}stalled.
         wxWindow* pMainWin = nullptr;
         if ( (pMainWin = wxFindWindowByLabel(_("Configure editor"))) )
-        {   pMainWin = wxFindWindowByLabel(_("Configure editor"));
+        {
             isParentWindowDialog = true;
         }
+        else if ( (pMainWin = wxFindWindowByLabel(_("Manage plugins"))) )
+        {
+            // Don't issue msg when enabling/disabling plugins
+            return;
+        }
         else pMainWin = Manager::Get()->GetAppWindow();
+
         wxString msg = _("Keyboard shortcut conflicts found.\n");
         if (not isParentWindowDialog)
             msg += _("Use Settings/Editor/KeyboardShortcuts to resolve conflicts.\n\n");
         for (size_t ii=0; ii<dupMsgs.GetCount(); ++ii)
             msg += dupMsgs[ii];
-        //-cbMessageBox(msg, _("Keyboard shortcuts conflicts"), wxOK, pMainWin);
         AnnoyingDialog dlg(_("Keyboard shortcuts conflicts"), msg, wxART_INFORMATION,  AnnoyingDialog::OK);
         dlg.ShowModal();
     }//endif dupMsgs

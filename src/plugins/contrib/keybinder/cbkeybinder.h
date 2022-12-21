@@ -23,7 +23,7 @@
 // Modified Keybinder for CodeBlocks KeyBnder v2.0
 
 // --Version-Rlease-Feature-Fix-------
-#define VERSION "2.0.16 2020/07/14"
+#define VERSION "2.0.17 2022/12/21"
 
 // -----------------------------------
 class wxKeyConfigPanel;
@@ -706,4 +706,7 @@ class cbKeyBinder : public cbPlugin
 //          Fix duplicate keybindings in internationalizations
 //          Remove duplicate global keybindings
 //          http://forums.codeblocks.org/index.php/topic,23358.msg162587.html#msg162587
+// ----------------------------------------------------------------------------
+//  Commit 2.0.17 2022/12/21
+//          Prevent KeyBinder from issuing shortcut conflict msg during pluigin management
 // ----------------------------------------------------------------------------
