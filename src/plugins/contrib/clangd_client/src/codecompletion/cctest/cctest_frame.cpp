@@ -324,7 +324,7 @@ void CCTestFrame::Start()
             CCTestAppGlobal::s_fileQueue.Add(testFiles[i]);
     }
 
-    AppendToLog(_("--------------M-a-i-n--L-o-g--------------\r\n\r\n"));
+    AppendToLog(_("--------------M-a-i-n--L-o-g--------------\n\n"));
 
     // parse file from the queue one-by-one
     while (!CCTestAppGlobal::s_fileQueue.IsEmpty())
@@ -710,11 +710,11 @@ void CCTestFrame::OnPrintTree(cb_unused wxCommandEvent& event)
     // print tree information below
 
     m_ProgDlg->Update(-1, _("Creating tree log..."));
-    AppendToLog(_("--------------T-r-e-e--L-o-g--------------\r\n"));
+    AppendToLog(_("--------------T-r-e-e--L-o-g--------------\n"));
     m_NativeParser.PrintTree();
 
     m_ProgDlg->Update(-1, _("Creating list log..."));
-    AppendToLog(_("--------------L-i-s-t--L-o-g--------------\r\n"));
+    AppendToLog(_("--------------L-i-s-t--L-o-g--------------\n"));
     m_NativeParser.PrintList();
 
     if (m_DoTreeCtrl->IsChecked())
