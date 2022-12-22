@@ -811,49 +811,10 @@ void ParseManager::RereadParserOptions()
     else if (!useSymbolBrowser && m_ClassBrowser)
         RemoveClassBrowser();
 
-    //-const bool parserPerWorkspace = cfg->ReadBool(_T("/parser_per_workspace"), false);
-    const bool parserPerWorkspace = false;//(ph 2021/08/26)
-    if (m_Parser == m_TempParser)
-    {
-        m_ParserPerWorkspace = parserPerWorkspace; //always false for clangd
-        return;
-    }
-
-////    RemoveObsoleteParsers();
-
-    // re-parse if settings changed
+    // re-read the .conf options
     ParserOptions opts = m_Parser->Options();
     m_Parser->ReadOptions();
-    bool reparse = false;
-    cbProject* project = GetActiveEditorProject();
-    if (   opts.followLocalIncludes  != m_Parser->Options().followLocalIncludes
-        || opts.followGlobalIncludes != m_Parser->Options().followGlobalIncludes
-        || opts.wantPreprocessor     != m_Parser->Options().wantPreprocessor
-        || opts.parseComplexMacros   != m_Parser->Options().parseComplexMacros
-        || opts.logClangdClientCheck != m_Parser->Options().logClangdClientCheck
-        || opts.logClangdServerCheck != m_Parser->Options().logClangdServerCheck
-        || opts.logPluginInfoCheck   != m_Parser->Options().logPluginInfoCheck
-        || opts.logPluginDebugCheck  != m_Parser->Options().logPluginDebugCheck
-        || opts.LLVM_MasterPath      != m_Parser->Options().LLVM_MasterPath //(ph 2021/11/7)
-        || m_ParserPerWorkspace      != parserPerWorkspace ) //always false for clangd
-    {
-        // important options changed... flag for reparsing
-        if (cbMessageBox(_("You changed some class parser options. Do you want to "
-                           "reparse your projects now, using the new options?"),
-                         _("Reparse?"), wxYES_NO | wxICON_QUESTION) == wxID_YES)
-        {
-            reparse = true;
-        }
-    }
-
-    if (reparse)
-        ClearParsers();
-
-    //-m_ParserPerWorkspace = parserPerWorkspace; //always false for clangd
     m_ParserPerWorkspace = false;
-
-    if (reparse)
-        CreateParser(project);
 }
 // ----------------------------------------------------------------------------
 void ParseManager::ReparseCurrentProject()

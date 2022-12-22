@@ -148,6 +148,8 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/max_parsers_while_compiling"), 0));
     XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->Enable(true);   //(ph 2022/04/25)
 
+    XRCCTRL(*this, "txtMasterPath",            wxTextCtrl)->SetValue(cfg->Read("/LLVM_MasterPath", wxString())); //(ph 2022/12/22)
+
     // Page "C / C++ parser (adv.)"
     // NOTE (Morten#1#): Keep this in sync with files in the XRC file (settings.xrc) and parser.cpp
     XRCCTRL(*this, "txtCCFileExtHeader",       wxTextCtrl)->SetValue(cfg->Read(_T("/header_ext"),    _T("h,hpp,hxx,hh,h++,tcc,xpm")));
@@ -186,7 +188,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     XRCCTRL(*this, "chkLogPluginDebug",     wxCheckBox)->SetValue(m_Parser.Options().logPluginDebugCheck);
     XRCCTRL(*this, "chkLSPMsgsFocusOnSave", wxCheckBox)->SetValue(m_Parser.Options().lspMsgsFocusOnSaveCheck);
     XRCCTRL(*this, "chkLSPMsgsClearOnSave", wxCheckBox)->SetValue(m_Parser.Options().lspMsgsClearOnSaveCheck);
-    XRCCTRL(*this, "txtMasterPath",         wxTextCtrl)->SetValue(m_Parser.Options().LLVM_MasterPath);  //(ph 2021/11/7)
+    XRCCTRL(*this, "txtMasterPath",         wxTextCtrl)->SetValue(m_Parser.Options().LLVM_MasterPath);
 
     m_Old_LLVM_MasterPath = m_Parser.Options().LLVM_MasterPath; //save for onApply() check
 
@@ -377,15 +379,14 @@ void CCOptionsDlg::OnApply()
     m_Documentation->WriteOptions(cfg);
     m_CodeCompletion->RereadOptions();
 
-    // If a project is loaded and the clangd location changed, say something.
-    if (Manager::Get()->GetProjectManager()->GetActiveProject()
-        and (m_Old_LLVM_MasterPath != m_Parser.Options().LLVM_MasterPath) )
+    // If the clangd executable location changed, remind the user to restart CB.
+    if (m_Old_LLVM_MasterPath != m_Parser.Options().LLVM_MasterPath)
     {
         wxString msg = _("CodeBlocks needs to be restarted to accomodate the clangd location change.");
+        // Issue the warning only when clangd_client page is active
         if ((activePageTitle == "clangd_client") or (activePageTitle == _("clangd_client")) )
-            cbMessageBox(msg, _("Settings changed"));
+            cbMessageBox(msg, _("Settings changed"), wxOK, m_CodeCompletion->GetTopWxWindow());
     }
-
 }
 // ----------------------------------------------------------------------------
 void CCOptionsDlg::OnChooseColour(wxCommandEvent& event)
