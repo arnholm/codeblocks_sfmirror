@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.59 22/12/22")
+#define VERSION wxT("1.2.60 22/12/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.58    Commit 1.2.59 22/12/22
+//1.2.60    Commit 1.2.60 22/12/22
+//          Include lost code from last commit
+//1.2.59    Commit 1.2.59 22/12/22
 //          Fix clangd.exe auto location failing to show in configuration dlg
 //1.2.58    Commit 1.2.58 2022/12/17
 //          Don't write translated messages to debugging logs.

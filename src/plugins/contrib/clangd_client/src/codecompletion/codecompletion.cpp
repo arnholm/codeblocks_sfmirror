@@ -2860,7 +2860,7 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Verify an existent clangd.exe path before creating a proxy project
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     wxString cfgClangdMasterPath = cfg->Read("/LLVM_MasterPath", wxEmptyString);
 
     if (cfgClangdMasterPath.Length())
@@ -2891,13 +2891,16 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
             msg << _("\nThe clangd detected is:");
             msg <<   "\n'" << fnClangdPath.GetFullPath() << "'.";
             msg << _("\n\nTo use a different clangd, use the Settings/Editor/Clangd_client \n'C/C++ parser' tab to set it's path.");
-            msg << _("\nThis requires a restart of CodeBlocks for Clangd to function correctly.");
+            msg << _("\nThis REQUIRES A RESTART of CodeBlocks for Clangd to function correctly.");
             msg << _("\n\nDo you want to use the detected clangd?");
 
-            wxWindow* pTopWindow = GetTopWxWindow();
-            if (cbMessageBox(msg, _("ERROR: Clangd client"), wxICON_QUESTION | wxYES_NO, pTopWindow) == wxID_YES)
+            if (cbMessageBox(msg, _("ERROR: Clangd client"), wxICON_QUESTION | wxYES_NO, GetTopWxWindow() ) == wxID_YES)
             {
-                cfg->Write(_T("/LLVM_MasterPath"), fnClangdPath.GetFullPath());
+                cfg->Write("/LLVM_MasterPath", fnClangdPath.GetFullPath()); //(ph 2022/12/22)
+                // update cached options
+                GetParseManager()->RereadParserOptions();
+                msg = "Please RESTART CodeBlocks for this change to take effect.";
+                cbMessageBox(msg, _("WARNING: Clangd client"), wxICON_WARNING | wxOK, GetTopWxWindow());
             }
         }
         else

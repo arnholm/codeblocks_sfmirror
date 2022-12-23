@@ -223,7 +223,7 @@ wxString ClangLocator::Locate_ClangdDir()
             size_t cnt = ScanForFiles(path, clangLocations, clangdexe);
             for (size_t ii=0; ii<cnt; ++ii)
             {
-                fnClangdPath.SetPath(clangLocations[ii]);
+                fnClangdPath.Assign(clangLocations[ii]); //(ph 2022/12/22)
                 if (fnClangdPath.FileExists())
                 {
                     CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), fnClangdPath.GetPath()));
