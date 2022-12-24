@@ -1067,10 +1067,12 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
         ProjectFile* pProjectFile = pProject ? pProject->GetFileByFilename(filename, false) : nullptr;
         if ((not pProject) or (not pProjectFile) )
             break;
+
         // file must belong to a project target (target could have been deleted)
         wxArrayString buildTargetsArray = pProjectFile->GetBuildTargets();
         if (not buildTargetsArray.GetCount())
             break;
+
         EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
         cbEditor* pEditor = pEdMgr->IsBuiltinOpen(filename);
         if (pEditor)
@@ -1081,6 +1083,11 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
         ProcessLanguageClient* pClient = m_pLSP_Client;
         if (pClient and pEditor and pClient->GetLSP_EditorIsOpen(pEditor))
             break; //didOpen already done for this editor and file
+        if (pClient and pEditor and pClient->GetLSP_IsEditorParsed(pEditor))
+            break; //didOpen already done for this editor and file
+        if (pClient and pEditor and pClient->IsServerFilesParsing(filename)) //(ph 2022/12/23)
+            break;
+
         //send LSP_server didOpen notifier for open editor files not yet parsed
         if (pClient and pEditor)
             ok = pClient->LSP_DidOpen(pEditor);
@@ -1272,6 +1279,14 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         return;
     }
 
+    // Avoid an empty textDocument/publishDiagnostics with a missing version entry.      //(ph 2022/12/23)
+    // It's sent as a response to a DidClose()
+    // This solves the "LSP: file not yet parsed" loop.
+    // see https://forums.codeblocks.org/index.php/topic,24357.msg171622.html#msg171622
+    // message number 242.
+    if (version == -1)  // This solves the "not parsed yet" loop
+        return;
+
     // Mark this editor as parsed and get editor owning this filename
     cbEditor* pEditor =  nullptr;
     wxString cbFilename;
@@ -1289,12 +1304,13 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             pEditor = pEdMgr->GetBuiltinEditor(pEdBase);
             if (not pEditor) return;
             // verify LSP client is ok (am being paranoid here)
-            ProcessLanguageClient* pClient = GetLSPClient(); // gets this parsers LSP_client
+            ProcessLanguageClient* pClient = GetLSPClient(); // get this parsers LSP_client
             if (not pClient) return;
             ProjectFile* pProjectFile = pEditor->GetProjectFile();
             pProject = pProjectFile->GetParentProject();
+
             // Inform user when editor has finished parsing stage
-            if (pClient and (not pClient->GetLSP_IsEditorParsed(pEditor)) )
+            if (pClient )                                                       //(ph 2022/12/23)
             {
                 pClient->SetLSP_EditorIsParsed(pEditor, true);
                 pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);

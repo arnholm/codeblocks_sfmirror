@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.60 22/12/22")
+#define VERSION wxT("1.2.611 22/12/24")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,13 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.61    Commit 1.2.61 2022/12/24
+//          Remove the check for IsEditorParsed()==false status to
+//          avoid the "LSP: file not yet parsed" loop caused by the clangd response
+//          to didClose(). It responds with an empty textDocument/publishDiagnostics
+//          record with a missing "version" entry.
+//          There's no LSP documentation that indicates didClose() does this.
+//          see: https://forums.codeblocks.org/index.php/topic,24357.msg171622.html#msg171622 #242
 //1.2.60    Commit 1.2.60 22/12/22
 //          Include lost code from last commit
 //1.2.59    Commit 1.2.59 22/12/22

@@ -3598,6 +3598,9 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
         // So far, it hasn't affected anything, even performance //(ph 2022/04/8)
         return;
     }
+    // **Debugging**
+    //    wxString msg = "LSP_Event recieved: " + evtString;
+    //    Manager::Get()->GetLogManager()->DebugLog(msg);
     // ----------------------------------------------------
     // LSP client/server Initialized
     // ----------------------------------------------------

@@ -2177,7 +2177,7 @@ void ProcessLanguageClient::LSP_DidSave(cbEditor* pcbEd)
 // ----------------------------------------------------------------------------
 {
     // There's a bug in clangd that causes completions to stop after a didClose.
-    // Clangd gets an unhangled notifications (see server log) and #301 bug
+    // Clangd gets an unhandled notifications (see server log) and #301 bug
     // after a didSave. But if we issue a didClose/DidOpen after didSave,
     // completions start up again
 
