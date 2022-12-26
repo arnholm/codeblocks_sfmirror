@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.611 22/12/24")
+#define VERSION wxT("1.2.61 22/12/24")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
