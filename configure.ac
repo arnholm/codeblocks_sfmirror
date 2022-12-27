@@ -483,7 +483,6 @@ AC_CONFIG_FILES([Makefile
 	src/plugins/contrib/CppCheck/resources/Makefile
 	src/plugins/contrib/cb_koders/Makefile
 	src/plugins/contrib/codesnippets/Makefile
-	src/plugins/contrib/codesnippets/resources/Makefile
 	src/plugins/contrib/codestat/Makefile
 	src/plugins/contrib/codestat/resources/Makefile
 	src/plugins/contrib/copystrings/Makefile
