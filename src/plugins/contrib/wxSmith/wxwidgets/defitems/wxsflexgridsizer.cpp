@@ -25,7 +25,7 @@
 
 namespace
 {
-    wxArrayInt GetArray(const wxString& String,bool* Valid = 0)
+    wxArrayInt GetArray(const wxString& String, bool* Valid = nullptr)
     {
         wxStringTokenizer Tokens(String,_T(","));
         wxArrayInt Array;
@@ -137,8 +137,8 @@ void wxsFlexGridSizer::OnEnumSizerProperties(cb_unused long Flags)
     WXS_LONG(wxsFlexGridSizer,Rows,_("Rows"),_T("rows"),0);
     WXS_DIMENSION(wxsFlexGridSizer,VGap,_("V-Gap"),_("V-Gap in dialog units"),_T("vgap"),0,false);
     WXS_DIMENSION(wxsFlexGridSizer,HGap,_("H-Gap"),_("H,y-Gap in dialog units"),_T("hgap"),0,false);
-    WXS_SHORT_STRING(wxsFlexGridSizer,GrowableCols,_("Growable cols"),_T("growablecols"),_T(""),false);
-    WXS_SHORT_STRING(wxsFlexGridSizer,GrowableRows,_("Growable rows"),_T("growablerows"),_T(""),false);
+    WXS_SHORT_STRING_T(wxsFlexGridSizer, GrowableCols, _("Growable cols"), _T("growablecols"), _T(""), false, _("Comma-separated list of growable columns"));
+    WXS_SHORT_STRING_T(wxsFlexGridSizer, GrowableRows, _("Growable rows"), _T("growablerows"), _T(""), false, _("Comma-separated list of growable rows"));
     FixupList(GrowableCols);
     FixupList(GrowableRows);
 }
