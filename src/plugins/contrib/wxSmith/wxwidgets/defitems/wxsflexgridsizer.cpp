@@ -27,25 +27,32 @@ namespace
 {
     wxArrayInt GetArray(const wxString& String, bool* Valid = nullptr)
     {
-        wxStringTokenizer Tokens(String,_T(","));
+        bool ok = true;
         wxArrayInt Array;
-        if ( Valid )
-        {
-            *Valid = true;
-        }
 
-        while ( Tokens.HasMoreTokens() )
+        wxStringTokenizer Tokens(String, ",");
+        while (Tokens.HasMoreTokens())
         {
             long Value;
             wxString Token = Tokens.GetNextToken();
             Token.Trim(true);
             Token.Trim(false);
-            if ( !Token.ToLong(&Value) && Valid )
+            if (!Token.ToLong(&Value) || (Value < 0))
             {
-                *Valid = false;
+                // Reject invalid values and signal error
+                ok = false;
             }
-            Array.Add((int)Value);
+            else
+            {
+                // Reject repeated values
+                // AddGrowable[Col|Row]() cannot be called twice with the same index
+                if (Array.Index((int)Value) == wxNOT_FOUND)
+                    Array.Add((int)Value);
+            }
         }
+
+        if (Valid)
+            *Valid = ok;
 
         return Array;
     }
@@ -53,16 +60,17 @@ namespace
     bool FixupList(wxString& List)
     {
         bool Ret;
-        wxArrayInt Array = GetArray(List,&Ret);
+        wxArrayInt Array = GetArray(List, &Ret);
         List.Clear();
         for ( size_t i=0; i<Array.Count(); i++ )
         {
-            List.Append(wxString::Format(_T("%d"),Array[i]));
+            List << Array[i];
             if ( i < Array.Count() - 1 )
             {
-                List.Append(_T(','));
+                List << ',';
             }
         }
+
         return Ret;
     }
 
@@ -78,20 +86,25 @@ wxsFlexGridSizer::wxsFlexGridSizer(wxsItemResData* Data):
 
 wxSizer* wxsFlexGridSizer::OnBuildSizerPreview(wxWindow* Parent)
 {
-    wxFlexGridSizer* Sizer = new wxFlexGridSizer(Rows,Cols,
-        VGap.GetPixels(Parent),HGap.GetPixels(Parent));
+    wxFlexGridSizer* Sizer = new wxFlexGridSizer(Rows, Cols,
+        VGap.GetPixels(Parent), HGap.GetPixels(Parent));
 
     wxArrayInt _Cols = GetArray(GrowableCols);
     for ( size_t i=0; i<_Cols.Count(); i++ )
     {
-        Sizer->AddGrowableCol(_Cols[i]);
+        // Do not call the method with an out-of-range index
+        if (_Cols[i] < Cols)
+            Sizer->AddGrowableCol(_Cols[i]);
     }
 
     wxArrayInt _Rows = GetArray(GrowableRows);
     for ( size_t i=0; i<_Rows.Count(); i++ )
     {
-        Sizer->AddGrowableRow(_Rows[i]);
+        // Do not call the method with an out-of-range index
+        if (_Rows[i] < Rows)
+            Sizer->AddGrowableRow(_Rows[i]);
     }
+
     return Sizer;
 }
 
@@ -109,12 +122,14 @@ void wxsFlexGridSizer::OnBuildSizerCreatingCode()
             wxArrayInt _Cols = GetArray(GrowableCols);
             for ( size_t i=0; i<_Cols.Count(); i++ )
             {
+                // Do not check range here, let the runtime assert
                 Codef(_T("%AAddGrowableCol(%d);\n"),_Cols[i]);
             }
 
             wxArrayInt _Rows = GetArray(GrowableRows);
             for ( size_t i=0; i<_Rows.Count(); i++ )
             {
+                // Do not check range here, let the runtime assert
                 Codef(_T("%AAddGrowableRow(%d);\n"),_Rows[i]);
             }
 
