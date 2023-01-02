@@ -109,7 +109,8 @@ class wxsItemRes: public wxWidgetsRes, public wxsItemResFunctions
 
         /** \brief Ctor for external resource
          *  \param FileName name of XRC file
-         *  \param Object Xml node with XRC resource
+         *  \param XrcElem Xml node with XRC resource
+         *  \param ResourceType name of resource type (f.ex. wxDialog)
          */
         wxsItemRes(const wxString& FileName,const TiXmlElement* XrcElem,const wxString& ResourceType);
 

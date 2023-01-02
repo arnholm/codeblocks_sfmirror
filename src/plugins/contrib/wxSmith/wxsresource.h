@@ -43,16 +43,14 @@ class wxsResource: public wxObject
     DECLARE_CLASS(wxsResource)
     public:
 
-        /** \brief Ctor
+        /** \brief Constructor
          *  \param Owner project owning resource
-         *  \param ResourceName name of resource (f.ex. class name)
          *  \param ResourceType name of resource type (f.ex. wxDialog)
          *  \param GUI name of GUI using this resource, put empty string if this is universal resource like bitmap file
-         *  \param Language coding language used for this resource
          */
         wxsResource(wxsProject* Owner,const wxString& ResourceType,const wxString& GUI);
 
-        /** \brief dctor */
+        /** \brief Destructor */
         virtual ~wxsResource();
 
         /** \brief Getting resource type */
@@ -80,9 +78,9 @@ class wxsResource: public wxObject
         void EditClose();
 
         /** \brief Checking if editor for this resource is opened */
-        inline bool IsEditorOpened() { return m_Editor!=0; }
+        inline bool IsEditorOpened() { return m_Editor != nullptr; }
 
-        /** \brief Getting pointer to editor or 0 if there's none */
+        /** \brief Getting pointer to editor or nullptr if there's none */
         inline wxsEditor* GetEditor() { return m_Editor; }
 
         /** \brief Getting tree item id in resource browser */
@@ -92,12 +90,12 @@ class wxsResource: public wxObject
         void BuildTreeEntry(const wxsResourceItemId& Parent);
 
         /** \brief Getting name of declaration file
-          * \note this function is only a wrapper to OnGetDeclarationFile (to hold consistency of functions to override)
+          * \note This function is only a wrapper to OnGetDeclarationFile (to hold consistency of functions to override)
           */
         inline wxString GetDeclarationFile() { return OnGetDeclarationFile(); }
 
         /** \brief Getting code creating this resource
-         *  \note this function is only a wrapper to OnGetAppBuildingCode (to hold consistency of functions to override)
+         *  \note This function is only a wrapper to OnGetAppBuildingCode (to hold consistency of functions to override)
          */
         inline wxString GetAppBuildingCode() { return OnGetAppBuildingCode(); }
 
@@ -108,7 +106,7 @@ class wxsResource: public wxObject
         bool WriteConfig(TiXmlElement* Node);
 
         /** \brief Helper function for fetching project path */
-        inline wxString GetProjectPath() { return m_Owner ? m_Owner->GetProjectPath() : _T(""); }
+        inline wxString GetProjectPath() { return m_Owner ? m_Owner->GetProjectPath() : wxString(); }
 
         /** \brief Getting project owning this resource */
         inline wxsProject* GetProject() { return m_Owner; }
@@ -117,8 +115,10 @@ class wxsResource: public wxObject
         inline bool DeleteCleanup(bool ShowDialog=true) { return OnDeleteCleanup(ShowDialog); }
 
         /** \brief Rename components (if any)
-         * \retval true If something has being renamed
-         * \retval false Nothing has changed
+         *  \param oldName Current name
+         *  \param newName Desired name
+         *  \retval true If something has been renamed
+         *  \retval false Nothing has changed
          */
         virtual bool Rename(const wxString &oldName, const wxString &newName) { return false; }
 

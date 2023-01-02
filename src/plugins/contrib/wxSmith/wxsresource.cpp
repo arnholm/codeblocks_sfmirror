@@ -111,16 +111,17 @@ wxsResource::wxsResource(wxsProject* Owner,const wxString& ResourceType,const wx
     m_ResourceName(wxEmptyString),
     m_GUI(GUI),
     m_Owner(Owner),
-    m_Editor(0),
+    m_Editor(nullptr),
     m_Language(wxsCPP)
-{}
+{
+}
 
 wxsResource::~wxsResource()
 {
     if ( m_Editor )
     {
         wxsEditor* EditorStore = m_Editor;
-        m_Editor = 0;
+        m_Editor = nullptr;
         EditorStore->Close();
     }
 
@@ -155,7 +156,7 @@ void wxsResource::EditClose()
 
 void wxsResource::EditorClosed()
 {
-    m_Editor = 0;
+    m_Editor = nullptr;
     if ( !m_Owner )
     {
         wxsExtRes()->EditorClosed(this);
@@ -175,13 +176,15 @@ bool wxsResource::ReadConfig(const TiXmlElement* Node)
 {
     m_ResourceName = cbC2U(Node->Attribute("name"));
     m_Language = wxsCodeMarks::Id(cbC2U(Node->Attribute("language")));
-    if ( GetResourceName().empty() ) return false;
+    if ( GetResourceName().empty() )
+        return false;
+
     return OnReadConfig(Node);
 }
 
 bool wxsResource::WriteConfig(TiXmlElement* Node)
 {
-    bool Result = OnWriteConfig(Node);
+    const bool Result = OnWriteConfig(Node);
     Node->SetAttribute("name",cbU2C(m_ResourceName));
     Node->SetAttribute("language",cbU2C(wxsCodeMarks::Name(m_Language)));
     return Result;
