@@ -147,7 +147,7 @@
 					<Add option="-Wl,--enable-auto-import" />
 					<Add option="-Wl,--no-undefined" />
 					<Add library="codeblocks" />
-					<Add library="exchndl" />
+					<Add library="exchndl.dll" />
 					<Add library="shfolder" />
 					<Add library="kernel32" />
 					<Add library="user32" />
