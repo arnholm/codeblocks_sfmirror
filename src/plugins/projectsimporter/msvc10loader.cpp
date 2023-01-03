@@ -70,7 +70,8 @@ bool MSVC10Loader::Open(const wxString& filename)
     m_ProjectName = wxFileName(filename).GetName();
     if (!MSVC7WorkspaceLoader::g_WorkspacePath.IsEmpty())
     {
-        wxFileName tmp(MSVC7WorkspaceLoader::g_WorkspacePath); tmp.MakeRelativeTo(m_pProject->GetBasePath());
+        wxFileName tmp(MSVC7WorkspaceLoader::g_WorkspacePath);
+        tmp.MakeRelativeTo(m_pProject->GetBasePath());
         m_WorkspacePath = tmp.GetPathWithSep();
     }
 
@@ -316,7 +317,7 @@ void MSVC10Loader::SetConfigurationValuesPath(const TiXmlElement* root, const ch
     for (const TiXmlElement* e=root->FirstChildElement(key); e; e=e->NextSiblingElement(key))
     {
         if (!GetConfigurationName(e,config,defconfig))
-          continue;
+            continue;
 
         wxString* value;
         if (config.IsEmpty())
