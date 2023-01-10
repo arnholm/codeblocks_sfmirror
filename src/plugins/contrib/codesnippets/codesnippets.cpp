@@ -113,7 +113,7 @@ void CodeSnippets::OnAttach()
     {
         // Don't allow msg window to hide behind current top window
         wxWindow* pTopWindow = GetTopWxWindow();
-        cbMessageBox("CodeSnippets will enable on CodeBlocks restart.", "Warning", wxOK, pTopWindow);
+        cbMessageBox(_("CodeSnippets will enable on CodeBlocks restart."), _("Warning"), wxOK, pTopWindow);
         return;
     }
 
@@ -133,15 +133,13 @@ void CodeSnippets::OnAttach()
 
     AppVersion pgmVersion;
 
-    #if LOGGING
+    #ifdef LOGGING
      wxLog::EnableLogging(true);
-     m_pLog = new wxLogWindow( m_pAppWin, _T(" CodeSnippets Plugin"),true,false);
+     m_pLog = new wxLogWindow( m_pAppWin, _T("CodeSnippets Plugin"),true,false);
      wxLog::SetActiveTarget( m_pLog);
      m_pLog->Flush();
      m_pLog->GetFrame()->SetSize(20,30,600,300);
-     #if defined(LOGGING)
      LOGIT( _T("CodeSnippets Plugin Logging Started[%s]"),pgmVersion.GetVersion().c_str());
-     #endif
     #endif
 
     // Set current plugin version
@@ -439,7 +437,7 @@ void CodeSnippets::CreateSnippetWindow()
 
 	CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
 	evt.name = _T("CodeSnippetsPane");
-	evt.title = _(" CodeSnippets");
+	evt.title = _("CodeSnippets");
 	evt.pWindow = GetSnippetsWindow();
 	evt.desiredSize.Set(300, 400);
 	evt.floatingSize.Set(300, 400);
@@ -1428,9 +1426,10 @@ wxWindow* CodeSnippets::FindOpenFilesListWindow()
 {
     //Find "Open files list" menu item.
     wxFrame* pFrame = Manager::Get()->GetAppFrame();
-    int idMenuOpenFilesList = ::wxFindMenuItemId( pFrame, _T("View"), _T("Open files list"));
     #if defined(__WXGTK__)
-      idMenuOpenFilesList = ::wxFindMenuItemId( pFrame, _T("View"), _T("_Open files list"));
+      int idMenuOpenFilesList = ::wxFindMenuItemId( pFrame, _("View"), _("_Open files list"));
+    #else
+      int idMenuOpenFilesList = ::wxFindMenuItemId( pFrame, _("View"), _("Open files list"));
     #endif
     int idWindowOpenFilesList = 0;
     if (idMenuOpenFilesList != wxNOT_FOUND)
