@@ -494,12 +494,12 @@ ClgdCompletion::ClgdCompletion() :
         SetClangdClient_Disabled();
 
         // Old CodeCompletion is loaded and running
-        wxString msg = _("The Clangd client plugin cannot run while the \"Code completion\" plugin is enabled.");
-        msg << _("\nThe Clangd client plugin will now inactivate itself. :-(");
-        msg << _("\n\nIf you wish to use the Clangd_client rather than the older CodeCompletion plugin,");
-        msg << _("\nnavigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.");
-        msg << _("\n\nRestart CodeBlocks after closing the \"Manage plugins\" dialog.");
-        msg << ("\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n");
+        wxString msg = _("The Clangd client plugin cannot run while the \"Code completion\" plugin is enabled.\n"
+                         "The Clangd client plugin will now inactivate itself. :-(\n\n"
+                         "If you wish to use the Clangd_client rather than the older CodeCompletion plugin,\n"
+                         "navigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.\n\n"
+                         "Restart CodeBlocks after closing the \"Manage plugins\" dialog.");
+        msg << "\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n";
         msg << _("Only one (Clangd_Client or CodeCompletion) should be enabled.");
         wxWindow* pTopWindow = GetTopWxWindow();
         //avoid later assert in PluginManager if user changes selection in parent window
@@ -613,17 +613,17 @@ void ClgdCompletion::OnAttach()
 
         //SetClangdClient_Disabled(); //<< This won't work here. PluginManger will enable on return anyway.
 
-        wxString msg = _("The Clangd client plugin cannot run while the \"Code completion\" plugin is enabled.");
-        msg << _("\nThe Clangd client plugin will now inactivate itself. :-(");
-        msg << _("\n\nIf you wish to use the Clangd_client rather than the older CodeCompletion plugin,");
-        msg << _("\nnavigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.");
-        msg << _("\n\nRESTART CodeBlocks after closing the \"Manage plugins\" dialog.");
-        msg << ("\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n");
+        wxString msg = _("The Clangd client plugin cannot run while the \"Code completion\" plugin is enabled.\n"
+                         "The Clangd client plugin will now inactivate itself. :-(\n\n"
+                         "If you wish to use the Clangd_client rather than the older CodeCompletion plugin,\n"
+                         "navigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.\n\n"
+                         "RESTART CodeBlocks after closing the \"Manage plugins\" dialog.");
+        msg << "\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n";
         msg << _("Only one (Clangd_Client or CodeCompletion) should be enabled.");
         wxWindow* pTopWindow = GetTopWxWindow();
         //avoid later assert in PluginManager if user changes selection in parent window
         pTopWindow->Freeze();
-        cbMessageBox(msg, "Clangd_client plugin", wxOK, pTopWindow);
+        cbMessageBox(msg, _("Clangd_client plugin"), wxOK, pTopWindow);
         pTopWindow->Thaw();
 
         pTopWindow = Manager::Get()->GetAppWindow();
@@ -835,9 +835,9 @@ void ClgdCompletion::OnRelease(bool appShutDown)
     // conflict with enabling old CodeCompletion.
     if (not appShutDown)
     {
-        wxString msg = _("You should RESTART Code::Blocks to remove Clangd_Client resource");
-        msg += _("\n  if you intend to re-enable the older CodeCompletion plugin.");
-        cbMessageBox(msg,_("RESTART required"), wxOK, GetTopWxWindow());
+        wxString msg = _("You should RESTART Code::Blocks to remove Clangd_Client resource\n"
+                         "  if you intend to re-enable the older CodeCompletion plugin.");
+        cbMessageBox(msg, _("RESTART required"), wxOK, GetTopWxWindow());
     }
 }
 // ----------------------------------------------------------------------------
@@ -1168,10 +1168,10 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
         PluginElement* pPluginElement = pPlgnMgr->FindElementByName("CodeCompletion");
         wxString plgnFilename = pPluginElement ? pPluginElement->fileName : wxString();
         // clangd_client is running and old codecompletion plugin is being loaded.
-        wxString msg = _("The old CodeCompletion plugin should not be enabled when 'Clangd_client' is running.");
-        msg << _("\nThe plugins are not compatible with one another.");
-        msg << _("\n\nDisable either CodeCompletion or Clangd_client and");
-        msg << _("\nRESTART Code::Blocks to avoid crashes and effects of incompatibilities.");
+        wxString msg = _("The old CodeCompletion plugin should not be enabled when 'Clangd_client' is running.\n"
+                         "The plugins are not compatible with one another.\n\n"
+                         "Disable either CodeCompletion or Clangd_client and\n"
+                         "RESTART Code::Blocks to avoid crashes and effects of incompatibilities.");
         if (plgnFilename.Length())
             msg << wxString::Format(_("\n\nPlugin location:\n%s"), plgnFilename);
         cbMessageBox(msg, _("ERROR"), wxOK, GetTopWxWindow());
@@ -1206,10 +1206,10 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
         wxString msg = info ? info->title : wxString(_("<Unknown plugin>"));
         if (info->name == "CodeCompletion")
         {
-            wxString msg = _("The old CodeCompletion plugin should not be enabled when 'Clangd_client' is running.");
-            msg << _("\nThey are not compatible with one another.");
-            msg << _("\nDisable either CodeCompletion or Clangd_client.");
-            msg << _("\n\nRESTART Code::Blocks to avoid the effects of these incompatibilities.");
+            wxString msg = _("The old CodeCompletion plugin should not be enabled when 'Clangd_client' is running.\n"
+                             "They are not compatible with one another.\n"
+                             "Disable either CodeCompletion or Clangd_client.\n\n"
+                             "RESTART Code::Blocks to avoid the effects of these incompatibilities.");
             cbMessageBox(msg, _("ERROR"), wxOK, GetTopWxWindow());
         }
         //Manager::Get()->GetLogManager()->DebugLog(F(_T("%s plugin activated"), msg.wx_str())); // **Debugging**
@@ -2346,9 +2346,9 @@ void ClgdCompletion::OnFindReferences(cb_unused wxCommandEvent& event)
            msg = _("Editor's file is not contained as member of a project.");
         if (not pClient)
             msg << _("\nThe project is not associated with a clangd_client (not parsed).");
-        msg << _("\nMake sure the editors file has been added to a project and the file or project has been parsed.");
-        msg << _("\n\nRight-click the item in the Projects tree and choose Reparse this project.");
-        msg << _("\nor Right-click in the editor and choose Reparse this file.");
+        msg << _("\nMake sure the editors file has been added to a project and the file or project has been parsed.\n\n"
+                 "Right-click the item in the Projects tree and choose Reparse this project\n"
+                 "or right-click in the editor and choose Reparse this file.");
         cbMessageBox(msg, wxString("LSP: ") << __FUNCTION__);
         return;
     }
@@ -2870,7 +2870,7 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
         if ( ( not fnClangdName.FileExists()) || (not fnClangdName.GetFullName().Lower().StartsWith(clangdexe)) )
         {
             wxString msg;
-            msg << _("The clangd path:\n") <<"'" <<cfgClangdMasterPath << _("' does not exist.");
+            msg << wxString::Format(_("The clangd path:\n'%s' does not exist."), cfgClangdMasterPath);
             msg << _("\nUse Settings/Editor/Clangd_client/ 'C/C++ parser' tab to set it's path.");
             msg << _("\n\nThis requires a restart of CodeBlocks for Clangd to function correctly.");
             wxWindow* pTopWindow = GetTopWxWindow();
@@ -2899,7 +2899,7 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
                 cfg->Write("/LLVM_MasterPath", fnClangdPath.GetFullPath()); //(ph 2022/12/22)
                 // update cached options
                 GetParseManager()->RereadParserOptions();
-                msg = "Please RESTART CodeBlocks for this change to take effect.";
+                msg = _("Please RESTART CodeBlocks for this change to take effect.");
                 cbMessageBox(msg, _("WARNING: Clangd client"), wxICON_WARNING | wxOK, GetTopWxWindow());
             }
         }
