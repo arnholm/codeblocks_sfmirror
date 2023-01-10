@@ -498,7 +498,7 @@ ClgdCompletion::ClgdCompletion() :
                          "The Clangd client plugin will now inactivate itself. :-(\n\n"
                          "If you wish to use the Clangd_client rather than the older CodeCompletion plugin,\n"
                          "navigate to Plugins->Manage plugins... and disable CodeCompletion, then enable Clangd_client.\n\n"
-                         "Restart CodeBlocks after closing the \"Manage plugins\" dialog.");
+                         "RESTART CodeBlocks after closing the \"Manage plugins\" dialog.");
         msg << "\n\n-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.\n";
         msg << _("Only one (Clangd_Client or CodeCompletion) should be enabled.");
         wxWindow* pTopWindow = GetTopWxWindow();
@@ -1207,9 +1207,9 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
         if (info->name == "CodeCompletion")
         {
             wxString msg = _("The old CodeCompletion plugin should not be enabled when 'Clangd_client' is running.\n"
-                             "They are not compatible with one another.\n"
-                             "Disable either CodeCompletion or Clangd_client.\n\n"
-                             "RESTART Code::Blocks to avoid the effects of these incompatibilities.");
+                             "The plugins are not compatible with one another.\n\n"
+                             "Disable either CodeCompletion or Clangd_client and\n"
+                             "RESTART Code::Blocks to avoid crashes and effects of incompatibilities.");
             cbMessageBox(msg, _("ERROR"), wxOK, GetTopWxWindow());
         }
         //Manager::Get()->GetLogManager()->DebugLog(F(_T("%s plugin activated"), msg.wx_str())); // **Debugging**
