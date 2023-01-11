@@ -142,8 +142,8 @@ void wxsGridBagSizer::OnEnumSizerProperties(cb_unused long Flags)
 {
 	FixupList(GrowableCols);
 	FixupList(GrowableRows);
-	WXS_DIMENSION(wxsGridBagSizer,VGap, _("V-Gap"), _("V-Gap in dialog units"),   "vgap", 0, false);
-	WXS_DIMENSION(wxsGridBagSizer,HGap, _("H-Gap"), _("H,y-Gap in dialog units"), "hgap", 0, false);
+	WXS_DIMENSION(wxsGridBagSizer,VGap, _("V-Gap"), _("V-Gap in dialog units"), "vgap", 0, false);
+	WXS_DIMENSION(wxsGridBagSizer,HGap, _("H-Gap"), _("H-Gap in dialog units"), "hgap", 0, false);
 	WXS_SHORT_STRING_T(wxsGridBagSizer, GrowableCols, _("Growable cols"), "growablecols", "", false, _("Comma-separated list of columns"));
 	WXS_SHORT_STRING_T(wxsGridBagSizer, GrowableRows, _("Growable rows"), "growablerows", "", false, _("Comma-separated list of rows"));
 	FixupList(GrowableCols);

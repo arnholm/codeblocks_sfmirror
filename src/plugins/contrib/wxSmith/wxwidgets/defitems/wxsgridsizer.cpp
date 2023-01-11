@@ -66,5 +66,5 @@ void wxsGridSizer::OnEnumSizerProperties(cb_unused long Flags)
     WXS_LONG(wxsGridSizer,Cols,_("Cols"),_T("cols"),0);
     WXS_LONG(wxsGridSizer,Rows,_("Rows"),_T("rows"),0);
     WXS_DIMENSION(wxsGridSizer,VGap,_("V-Gap"),_("V-Gap in dialog units"),_T("vgap"),0,false);
-    WXS_DIMENSION(wxsGridSizer,HGap,_("H-Gap"),_("H,y-Gap in dialog units"),_T("hgap"),0,false);
+    WXS_DIMENSION(wxsGridSizer,HGap,_("H-Gap"),_("H-Gap in dialog units"),_T("hgap"),0,false);
 }

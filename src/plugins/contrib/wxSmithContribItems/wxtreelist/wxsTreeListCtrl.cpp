@@ -109,48 +109,47 @@ wxsTreeListCtrl::wxsTreeListCtrl (wxsItemResData* Data) :
         wxsTreeListCtrlEvents,
         wxsTreeListCtrlStyles)
 {
-
     m_ColCount = 5;
     m_ColWidth = 64;
-    m_ColTitles.Clear();
     m_ReadOnly = false;
 
-    m_ColTitles.Add(_("!Define Column Titles"));
-    m_ColTitles.Add(_("!Text lines that begin with \"!\" are ignored, but blank"));
-    m_ColTitles.Add(_("!lines are significant (a blank line is a blank title for"));
-    m_ColTitles.Add(_("!a column)."));
-    m_ColTitles.Add(_("First"));
-    m_ColTitles.Add(_("Second"));
-    m_ColTitles.Add(_("Third"));
-    m_ColTitles.Add(_("Fourth"));
-    m_ColTitles.Add(_("Fifth"));
+    const wxString cols(_("!Define Column Titles\n"
+                          "!Text lines that begin with \"!\" are ignored, but blank\n"
+                          "!lines are significant (a blank line is a blank title for\n"
+                          "!a column).\n"
+                          "First\n"
+                          "Second\n"
+                          "Third\n"
+                          "Fourth\n"
+                          "Fifth"));
 
-    m_TreeData.Add(_("! Define node data for a wxTreeCtrl."));
-    m_TreeData.Add(_("! Note that all lines that start with a \"!\" are comment lines and ignored."));
-    m_TreeData.Add(_("! Also, all empty lines are ignored (a line of spaces is not an empty line)."));
-    m_TreeData.Add(_T("!"));
-    m_TreeData.Add(_("! The node data is organized similar to a Tabbed Hierarchical Values (THV) file,"));
-    m_TreeData.Add(_("! such that each line of text represents one label for a single tree node."));
-    m_TreeData.Add(_("! The number of leading TAB characters indicate the indentation level of the"));
-    m_TreeData.Add(_("! tree node."));
-    m_TreeData.Add(_T("!"));
-    m_TreeData.Add(_("! Space (or blank) characters are not used the same as TAB characters; if your"));
-    m_TreeData.Add(_("! editor substitutes spaces for TABs, use the \"TAB Char\" attribute to change"));
-    m_TreeData.Add(_("! the character used to indicate the tree node level."));
-    m_TreeData.Add(_T("!"));
-    m_TreeData.Add(_("! Following is a sample tree data definition:"));
-    m_TreeData.Add(_T(""));
-    m_TreeData.Add(_("First level, no tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_("\tSecond level, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_"\t\tThird level, 2 tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_("First level again, no tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_("\tSecond level again, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_("\tAnother second level, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_("\t\tThird level again, 2 tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column"));
-    m_TreeData.Add(_T(""));
+    m_ColTitles = wxSplit(cols, '\n');
 
+    const wxString tree(_("!Define node data for a wxTreeCtrl.\n"
+                          "!Note that all lines that start with a \"!\" are comment lines and ignored.\n"
+                          "!Also, all empty lines are ignored (a line of spaces is not an empty line).\n"
+                          "!\n"
+                          "!The node data is organized similar to a Tabbed Hierarchical Values (THV) file,\n"
+                          "!such that each line of text represents one label for a single tree node.\n"
+                          "!The number of leading TAB characters indicate the indentation level of the\n"
+                          "!tree node.\n"
+                          "!\n"
+                          "!Space (or blank) characters are not used the same as TAB characters; if your\n"
+                          "!editor substitutes spaces for TABs, use the \"TAB Char\" attribute to change\n"
+                          "!the character used to indicate the tree node level.\n"
+                          "!\n"
+                          "!Following is a sample tree data definition:\n"
+                          "\n"
+                          "First level, no tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "\tSecond level, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "\t\tThird level, 2 tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "First level again, no tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "\tSecond level again, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "\tAnother second level, 1 tab\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          "\t\tThird level again, 2 tabs\tSecond Column\tThird Column\tFourth Column\tFifth Column\n"
+                          ""));
 
-
+    m_TreeData = wxSplit(tree, '\n');
 }
 
 //------------------------------------------------------------------------------
