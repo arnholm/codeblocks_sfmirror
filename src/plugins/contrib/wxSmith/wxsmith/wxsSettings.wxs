@@ -415,7 +415,7 @@
 						<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 							<object class="sizeritem">
 								<object class="wxCheckBox" name="ID_CHECKBOX12" variable="m_UseI18N" member="yes">
-									<label>Use I18N for strings</label>
+									<label>Use __() in I18N-enabled windows</label>
 									<checked>1</checked>
 								</object>
 								<flag>wxALIGN_CENTER_VERTICAL</flag>
@@ -433,7 +433,7 @@
 									</object>
 									<object class="sizeritem">
 										<object class="wxStaticText" name="wxID_ANY" variable="StaticText15" member="no">
-											<label>Non-I18N string:</label>
+											<label>Non-I18N strings:</label>
 										</object>
 										<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 										<border>5</border>
