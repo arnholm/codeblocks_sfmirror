@@ -64,7 +64,7 @@ CodeStatExecDlg::~CodeStatExecDlg()
 int CodeStatExecDlg::Execute(LanguageDef languages[NB_FILETYPES_MAX], int numLanguages)
 {
     m_choice->Clear();
-    m_choice->Append(_T("Entire workspace"));
+    m_choice->Append(_("Entire workspace"));
 
     ProjectsArray* projects = Manager::Get()->GetProjectManager()->GetProjects();
     for (size_t i = 0, length = projects->GetCount(); i < length; ++i)
@@ -96,7 +96,7 @@ int CodeStatExecDlg::Execute(LanguageDef languages[NB_FILETYPES_MAX], int numLan
     // If not, ask user if we can save them
     if (!all_saved)
     {
-        if (cbMessageBox(_T("Some files are not saved.\nDo you want to save them before running the plugin?"),
+        if (cbMessageBox(_("Some files are not saved.\nDo you want to save them before running the plugin?"),
                          _("Warning"),
                          wxICON_EXCLAMATION | wxYES_NO,
                          Manager::Get()->GetAppWindow()) == wxID_YES)

@@ -611,7 +611,7 @@ int DoxyBlocks::GenerateDocuments(cbProject *prj)
         }
 
         // tell the user where to find the docs
-        const wxString sMsg = wxT("Success.\nYour documents are in: ");
+        const wxString sMsg = _("Success.\nYour documents are in: ");
         AppendToLog(sMsg + fnDoxyfile.GetPathWithSep());
     }
     else{

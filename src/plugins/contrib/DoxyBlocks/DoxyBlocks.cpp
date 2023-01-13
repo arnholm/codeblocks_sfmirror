@@ -134,7 +134,7 @@ void DoxyBlocks::OnAttach()
     if(LogManager *LogMan = Manager::Get()->GetLogManager()){
         m_DoxyBlocksLog = new DoxyBlocksLogger();
         m_LogPageIndex = LogMan->SetLog(m_DoxyBlocksLog);
-        LogMan->Slot(m_LogPageIndex).title = wxT("DoxyBlocks");
+        LogMan->Slot(m_LogPageIndex).title = "DoxyBlocks";
         CodeBlocksLogEvent evtAdd(cbEVT_ADD_LOG_WINDOW, m_DoxyBlocksLog, LogMan->Slot(m_LogPageIndex).title);
         Manager::Get()->ProcessEvent(evtAdd);
     }
@@ -360,7 +360,7 @@ void DoxyBlocks::OnConfigure(wxCommandEvent & WXUNUSED(event))
 int DoxyBlocks::Configure()
 {
     //create and display the configuration dialog for your plugin
-    cbConfigurationDialog dlg(Manager::Get()->GetAppWindow(), wxID_ANY, _("DoxyBlocks"));
+    cbConfigurationDialog dlg(Manager::Get()->GetAppWindow(), wxID_ANY, "DoxyBlocks");
     cbConfigurationPanel *panel = GetConfigurationPanel(&dlg);
     if(panel){
         dlg.AttachConfigurationPanel(panel);
@@ -622,7 +622,7 @@ void DoxyBlocks::BuildMenu(wxMenuBar *menuBar)
         Connect(ID_MENU_LOAD_TEMPLATE,  wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(DoxyBlocks::OnReadPrefsTemplate));
         Connect(ID_MENU_SAVE_TEMPLATE,  wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(DoxyBlocks::OnWritePrefsTemplate));
 
-        menuBar->Insert(idx + 1, submenu, wxT("Do&xyBlocks"));
+        menuBar->Insert(idx + 1, submenu, "Do&xyBlocks");
     }
 }
 

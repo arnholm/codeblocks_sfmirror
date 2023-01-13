@@ -40,7 +40,7 @@ CscopeTab::CscopeTab( wxWindow* parent, CscopeConfig *cfg )
 
     Clear();
 
-	SetMessage(_T("Ready"), 0);
+	SetMessage(_("Ready"), 0);
 }
 
 CscopeTab::~CscopeTab()
@@ -60,10 +60,10 @@ void CscopeTab::Clear()
     m_table = NULL;
 
 	m_pListCtrl->ClearAll();
-    m_pListCtrl->InsertColumn(0,_T("File"),wxLIST_FORMAT_LEFT, 100);
-    m_pListCtrl->InsertColumn(1,_T("Line"),wxLIST_FORMAT_CENTER, 50);
-    m_pListCtrl->InsertColumn(2,_T("Scope"),wxLIST_FORMAT_LEFT, 50);
-    m_pListCtrl->InsertColumn(3,_T("Text"),wxLIST_FORMAT_LEFT, 500);
+    m_pListCtrl->InsertColumn(0, _("File"),  wxLIST_FORMAT_LEFT,  100);
+    m_pListCtrl->InsertColumn(1, _("Line"),  wxLIST_FORMAT_CENTER, 50);
+    m_pListCtrl->InsertColumn(2, _("Scope"), wxLIST_FORMAT_LEFT,   50);
+    m_pListCtrl->InsertColumn(3, _("Text"),  wxLIST_FORMAT_LEFT,  500);
 }
 
 void CscopeTab::BuildTable(CscopeResultTable *table)

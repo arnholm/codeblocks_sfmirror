@@ -239,31 +239,31 @@ void CscopePlugin::DoCscopeCommand(const wxString &cmd, const wxString &endMsg)
     //set environment variables for cscope
 	wxSetEnv(_T("TMPDIR"), _T("."));
 
-    m_view->GetWindow()->SetMessage(_T("Executing cscope..."), 10);
+    m_view->GetWindow()->SetMessage(_("Executing cscope..."), 10);
 
 	m_pProcess = new CscopeProcess(this);
     if ( !wxExecute(cmd, wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER, m_pProcess) )
     {
         delete m_pProcess;
         m_pProcess = NULL;
-        wxString errorMessage = _T("Error while calling cscope executable occurred! You maybe have to fix the executable in Settings->Environment->CScope.");
+        wxString errorMessage = _("Error while calling cscope executable occurred! You maybe have to fix the executable in Settings->Environment->CScope.");
         m_view->GetWindow()->SetMessage(errorMessage, 0);
-        Manager::Get()->GetLogManager()->LogError(_T("CScope: ") + errorMessage);
-        Manager::Get()->GetLogManager()->LogError(_T("CScope: Failed CScope command:") + cmd);
+        Manager::Get()->GetLogManager()->LogError(_("CScope: ") + errorMessage);
+        Manager::Get()->GetLogManager()->LogError(_("CScope: Failed CScope command:") + cmd);
     }
 
     //set environment variables back
-    Manager::Get()->GetLogManager()->Log(_T("cscope process started"));
+    Manager::Get()->GetLogManager()->Log(_("CScope process started"));
     wxSetWorkingDirectory(curDir);
 }
 void CscopePlugin::OnCscopeReturned(wxProcessEvent & /*event*/)
 {
-    Manager::Get()->GetLogManager()->Log(_T("cscope returned"));
+    Manager::Get()->GetLogManager()->Log(_("CScope returned"));
     if ( !m_pProcess )
         return;
 
-    m_view->GetWindow()->SetMessage(_T("Parsing results..."), 50);
-    Manager::Get()->GetLogManager()->Log(_T("Parsing results..."));
+    m_view->GetWindow()->SetMessage(_("Parsing results..."), 50);
+    Manager::Get()->GetLogManager()->Log(_("Parsing results..."));
 
     while (m_pProcess->ReadProcessOutput())
         ;
@@ -272,7 +272,7 @@ void CscopePlugin::OnCscopeReturned(wxProcessEvent & /*event*/)
     m_thrd->Create();
     m_thrd->Run();
 
-    Manager::Get()->GetLogManager()->Log(_T("parser Thread started"));
+    Manager::Get()->GetLogManager()->Log(_("Parser thread started"));
 }
 void CscopePlugin::OnParserThreadEnded(wxCommandEvent &event)
 {
@@ -346,7 +346,7 @@ wxString CscopePlugin::GetCscopeBinaryName()
        return cfg->Read(_T("cscope_app"), _T("cscope"));
     }
 
-    Manager::Get()->GetLogManager()->LogError(_T("cscope: Could not load config manager for cscope! Could not lookup for executable name."));
+    Manager::Get()->GetLogManager()->LogError(_("CScope: Could not load config manager for cscope! Could not lookup for executable name."));
 	return _T("cscope");
 }
 void CscopePlugin::OnCscopeUI(wxUpdateUIEvent &event)

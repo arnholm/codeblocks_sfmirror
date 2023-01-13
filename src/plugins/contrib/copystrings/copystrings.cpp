@@ -180,7 +180,7 @@ int copystrings::Execute()
             wxTheClipboard->SetData( new wxTextDataObject(result));
             wxTheClipboard->Close();
         }
-        cbMessageBox(_T("Literal strings copied to clipboard."));
+        cbMessageBox(_("Literal strings copied to clipboard."));
 	}
 	return -1;
 }

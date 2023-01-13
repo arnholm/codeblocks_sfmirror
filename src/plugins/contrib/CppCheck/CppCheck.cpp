@@ -170,7 +170,7 @@ int CppCheck::Execute()
         return 0;
 
     const wxString BasePath = Project->GetBasePath();
-    AppendToLog(_T("Switching working directory to : ") + BasePath);
+    AppendToLog(_("Switching working directory to : ") + BasePath);
     ::wxSetWorkingDirectory(BasePath);
 
 
