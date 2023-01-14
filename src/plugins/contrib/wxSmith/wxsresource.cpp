@@ -72,7 +72,8 @@ class wxsResource::wxsResourceRootTreeItemData: public wxsResourceTreeItemData
             wxsItemRes* item = dynamic_cast <wxsItemRes *> (m_Resource);
             if (item)
             {
-                Menu.Append(ChangeI18NId, item->IsI18N() ? _("Disable internacionalization") : _("Enable internacionalization"));
+                Menu.Append(ChangeI18NId, item->IsI18N() ? _("Disable internationalization")
+				                                         : _("Enable internationalization"));
             }
 
             Menu.Append(DeleteId,_("Delete this resource"));
