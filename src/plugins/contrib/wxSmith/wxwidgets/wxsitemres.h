@@ -134,6 +134,12 @@ class wxsItemRes: public wxWidgetsRes, public wxsItemResFunctions
         /** \brief Building data object for this resource */
         wxsItemResData* BuildResData(wxsItemEditor* Editor);
 
+        /** \brief Check if I18N is enabled */
+        bool IsI18N() const { return m_UseI18n; }
+
+        /** \brief Modify I18N */
+        void SetI18N(bool Value);
+
     protected:
 
         virtual wxsEditor* OnCreateEditor(wxWindow* Parent);

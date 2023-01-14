@@ -23,6 +23,7 @@
 #include "wxsresource.h"
 #include "wxsextresmanager.h"
 #include "wxsresourcetreeitemdata.h"
+#include "wxwidgets/wxsitemres.h"
 
 #include "cbauibook.h"
 #include <editormanager.h>
@@ -31,6 +32,7 @@ namespace
 {
     const int EditOpenId = wxNewId();
     const int EditCloseId = wxNewId();
+    const int ChangeI18NId = wxNewId();
     const int DeleteId = wxNewId();
 }
 
@@ -64,7 +66,15 @@ class wxsResource::wxsResourceRootTreeItemData: public wxsResourceTreeItemData
             {
                 Menu.Append(EditOpenId,_("Open editor"));
             }
+
             Menu.AppendSeparator();
+
+            wxsItemRes* item = dynamic_cast <wxsItemRes *> (m_Resource);
+            if (item)
+            {
+                Menu.Append(ChangeI18NId, item->IsI18N() ? _("Disable internacionalization") : _("Enable internacionalization"));
+            }
+
             Menu.Append(DeleteId,_("Delete this resource"));
 
             m_Resource->OnFillPopupMenu(&Menu);
@@ -86,6 +96,12 @@ class wxsResource::wxsResourceRootTreeItemData: public wxsResourceTreeItemData
                 return true;
             }
 
+            if ( Id == ChangeI18NId )
+            {
+                ToggleI18N();
+                return true;
+            }
+
             if ( Id == DeleteId )
             {
                 DeleteResource();
@@ -93,6 +109,15 @@ class wxsResource::wxsResourceRootTreeItemData: public wxsResourceTreeItemData
             }
 
             return m_Resource->OnPopupMenu(Id);
+        }
+
+        void ToggleI18N()
+        {
+            wxsItemRes* item = dynamic_cast <wxsItemRes *> (m_Resource);
+            if (item)
+            {
+                item->SetI18N(!item->IsI18N());
+            }
         }
 
         void DeleteResource()

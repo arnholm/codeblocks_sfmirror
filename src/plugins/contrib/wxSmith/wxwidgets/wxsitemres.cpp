@@ -646,3 +646,12 @@ bool wxsItemRes::Rename(const wxString& oldName, const wxString& newName)
 
     return renamed;
 }
+
+void wxsItemRes::SetI18N(bool Value)
+{
+    if (m_UseI18n != Value)
+    {
+        m_UseI18n = Value;
+        GetProject()->NotifyChange();
+    }
+}
