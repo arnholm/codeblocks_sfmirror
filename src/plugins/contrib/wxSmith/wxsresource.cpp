@@ -73,7 +73,7 @@ class wxsResource::wxsResourceRootTreeItemData: public wxsResourceTreeItemData
             if (item)
             {
                 Menu.Append(ChangeI18NId, item->IsI18N() ? _("Disable internationalization")
-				                                         : _("Enable internationalization"));
+                                                         : _("Enable internationalization"));
             }
 
             Menu.Append(DeleteId,_("Delete this resource"));
