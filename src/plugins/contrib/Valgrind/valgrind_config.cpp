@@ -124,7 +124,7 @@ void ValgrindConfigurationPanel::OnApply()
 
 void ValgrindConfigurationPanel::OnBrowseButtonClick(wxCommandEvent& /*event*/)
 {
-    wxFileDialog dialog(this, wxT("Choose path"));
+    wxFileDialog dialog(this, _("Choose path"));
     PlaceWindow(&dialog);
     if (dialog.ShowModal() == wxID_OK)
     {
