@@ -31,7 +31,7 @@ class MakeDistPlugin extends cbScriptPlugin
 	constructor()
 	{
 		info.name = _T("MakeDistPlugin");
-		info.title = _T("Make distribution package");
+		info.title = _("Make distribution package");
 		info.version = _T("0.2");
 		info.license = _T("GPL");
 	}
@@ -40,7 +40,7 @@ class MakeDistPlugin extends cbScriptPlugin
 	function GetMenu()
 	{
 		local entries = ::wxArrayString();
-		entries.Add(_T("Project/7:Create package for distribution"), 1);
+		entries.Add(_("&Project") + _T("/10:") + _("Create package for distribution"), 1);
 		return entries;
 	}
 
@@ -58,7 +58,7 @@ class MakeDistPlugin extends cbScriptPlugin
         local prj = GetProjectManager().GetActiveProject();
         if (IsNull(prj))
         {
-        	ShowError(_T("No project is open!"));
+        	ShowError(_("No project is open!"));
         	return -1;
         }
 
@@ -97,9 +97,9 @@ class MakeDistPlugin extends cbScriptPlugin
         //ShowMessage(cmd);
         local result = IO.Execute(cmd);
         if (result == 0)
-			ShowInfo(_T("All done!"));
+			ShowInfo(_("All done!"));
 		else
-			ShowWarning(_T("Failed. Make sure the ZIP program is installed and somewhere in the path..."));
+			ShowWarning(_("Failed. Make sure the ZIP program is installed and somewhere in the path..."));
 
         return result;
     }
