@@ -9,7 +9,7 @@
 
 GNU GProf Online Reference:
 http://www.gnu.org/software/binutils/manual/gprof-2.9.1/html_mono/gprof.html" />
-        <Value author="Dark Lord & Zlika" />
+        <Value author="Dark Lord &amp; Zlika" />
         <Value authorEmail="" />
         <Value authorWebsite="" />
         <Value thanksTo="Mandrav, for the n00b intro to profiling
@@ -21,3 +21,4 @@ plugin
         <Value license="GPL" />
     </Plugin>
 </CodeBlocks_plugin_manifest_file>
+
