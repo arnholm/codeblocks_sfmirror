@@ -68,7 +68,7 @@
 												<object class="sizeritem">
 													<object class="wxCheckBox" name="chkUnusedFunctions">
 														<label>Unused functions</label>
-														<tooltip>Mention  all  functions  in the flat  profile, even those that were never called, and that had no time spent in them. (Useful with static call graph.)</tooltip>
+														<tooltip>Mention all functions in the flat profile, even those that were never called, and that had no time spent in them. (Useful with static call graph.)</tooltip>
 													</object>
 													<flag></flag>
 												</object>
