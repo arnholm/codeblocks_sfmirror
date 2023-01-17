@@ -305,34 +305,35 @@ wxString CscopePlugin::GetWordAtCaret()
 }
 void CscopePlugin::OnFind(wxCommandEvent &event)
 {
-    wxString WordAtCaret = GetWordAtCaret();
-    if (WordAtCaret.IsEmpty()) return;
+    const wxString WordAtCaret(GetWordAtCaret());
+    if (WordAtCaret.empty())
+        return;
 
-    wxString list_file, outputfilename;
-    if ( !CreateListFile(list_file) ) return;
+    wxString list_file;
+    if (!CreateListFile(list_file))
+        return;
 
-    wxString cmd( GetCscopeBinaryName() + _T(" ") + //_T(" -f ")  + reffilename +
-                  _T(" -L") );
-    wxString endMsg(_T("Results for: "));
+    wxString cmd(GetCscopeBinaryName() + _T(" ") /* + _T(" -f ") + reffilename */ + _T(" -L"));
+    wxString endMsg(_("Results for: "));
     if ( event.GetId() == idOnFindFunctionsCallingThisFunction)
     {
         cmd += _T(" -3 ");
-        endMsg += _T("find functions calling '") + WordAtCaret + _T("'");
+        endMsg += wxString::Format(_("find functions calling '%s'"), WordAtCaret);
     }
     else //if( event.GetId() == idOnFindFunctionsCalledByThisFuncion)
     {
         cmd += _T(" -2 ");
-        endMsg += _T("find functions called by '") + WordAtCaret + _T("'");
+        endMsg += wxString::Format(_("find functions called by '%s'"), WordAtCaret);
     }
 //    else if ( event.GetId() == idOnFindGlobalDefinition )
 //    {
 //        cmd += _T(" -1 ");
-//        endMsg += _T("find '") + WordAtCaret + _T("' global definition");
+//        endMsg += wxString::Format(_("find '%s' global definition"), WordAtCaret);
 //    }
 //    else //idOnFindSymbol
 //    {
 //        cmd += _T(" -0 ");
-//        endMsg += _T("find C symbol '") + WordAtCaret + _T("'");
+//        endMsg += wxString::Format(_("find C symbol '%s'"), WordAtCaret);
 //    }
 
     cmd += WordAtCaret + _T(" -i \"") + list_file + _T("\"");
