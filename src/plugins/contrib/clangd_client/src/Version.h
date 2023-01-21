@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.61 22/12/24")
+#define VERSION wxT("1.2.62 23/01/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.62   1.2.62 2023/01/14
+//          Minor text changes and logmsg to identify which log belongs to a project
 //1.2.61    Commit 1.2.61 2022/12/24
 //          Remove the check for IsEditorParsed()==false status to
 //          avoid the "LSP: file not yet parsed" loop caused by the clangd response

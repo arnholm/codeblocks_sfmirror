@@ -558,6 +558,8 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
             logLine = "SystemPath: " + envPath;
             writeClientLog(logLine);
 
+            if (lspClientLogFile.IsOpened())
+                CCLogger::Get()->DebugLog("New Clangd Client log @:" + logFilename);
         }
     }
 
@@ -579,6 +581,8 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         wxGetEnv("PATH", &envPath);
         logLine = "SystemPath: " + envPath + "\n";
         writeServerLog(logLine.ToStdString());
+        if (lspServerLogFile.IsOpened())
+            CCLogger::Get()->DebugLog("New Clangd Server log @:" + serverLogFilename);
     }
 
     Manager::Get()->GetAppFrame()->PushEventHandler(this);

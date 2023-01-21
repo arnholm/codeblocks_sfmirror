@@ -1392,6 +1392,13 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
         //    wxString msg = wxString::Format("%s adding file to parser: %s", __FUNCTION__, entry);
         //    CCLogger::Get()->DebugLog(DebugLog(msg);
         //}
+        //    // **Debugging**
+        //    for (const wxString& entry : localSources)
+        //    {
+        //        wxString msg = wxString::Format("%s adding file to parser: %s", __FUNCTION__, entry);
+        //        CCLogger::Get()->DebugLog(msg);
+        //    }
+
         // local source files added to Parser
         parser->AddBatchParse(localSources);
     }

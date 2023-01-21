@@ -2268,6 +2268,11 @@ void ClgdCompletion::OnUnimplementedClassMethods(cb_unused wxCommandEvent& event
 void ClgdCompletion::OnGotoDeclaration(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    //NB: if the user asks for a declaration while already positioned on it
+    //    clangd will respond with the implementation location.
+    //    if the user asks for a definition while already positioned on it
+    //    clangd will respond with the declaration location.
+
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     cbProject* pActiveProject = pPrjMgr->GetActiveProject();
     if (not GetLSPclient(pActiveProject)) return;
@@ -2992,7 +2997,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
                 if (pcbEd)
                 {
                     // don't re-open an already open editor
-                    // An opened editor will have, at least, a didOpen request d
+                    // An opened editor will have, at least, a didOpen requested
                     ProcessLanguageClient* pClient = GetLSPclient(pcbEd);
                     if (pClient) continue; //file already processed
 
@@ -3632,9 +3637,6 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
             cbMessageBox(msg, "LSP initialization");
             return;
         }
-
-        // Open any file that belongs to the current active project that        //(ph 2022/08/02)
-        //  has not yet been Did_Open()'ed by OnEditorActivate().
 
         return;
     }//endif LSP_Initialized
