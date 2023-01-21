@@ -139,7 +139,9 @@ void CodeSnippets::OnAttach()
      wxLog::SetActiveTarget( m_pLog);
      m_pLog->Flush();
      m_pLog->GetFrame()->SetSize(20,30,600,300);
+     #if defined(LOGGING)
      LOGIT( _T("CodeSnippets Plugin Logging Started[%s]"),pgmVersion.GetVersion().c_str());
+     #endif
     #endif
 
     // Set current plugin version
@@ -429,7 +431,7 @@ void CodeSnippets::CreateSnippetWindow()
 	SetSnippetsWindow( new CodeSnippetsWindow(GetConfig()->pMainFrame));
 
     // Floating windows must be set by their parent
-   if ( GetConfig()->IsApplication() )
+   if ( GetConfig()->IsApplication() ) //**Deprecated**
    {     // We can position an application window
         GetSnippetsWindow()->SetSize(GetConfig()->windowXpos, GetConfig()->windowYpos,
             GetConfig()->windowWidth, GetConfig()->windowHeight);
