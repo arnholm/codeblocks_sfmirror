@@ -267,6 +267,7 @@ EXTRA_DIST += $(srcdir)/FortranProject/*.h \
 		$(srcdir)/FortranProject/images/48x48/*.png \
 		$(srcdir)/FortranProject/images/56x56/*.png \
 		$(srcdir)/FortranProject/images/64x64/*.png \
+		$(srcdir)/FortranProject/images/svg/*.svg \
 		$(srcdir)/FortranProject/images/fortranproject/16x16/*.png \
 		$(srcdir)/FortranProject/images/fortranproject/20x20/*.png \
 		$(srcdir)/FortranProject/images/fortranproject/24x24/*.png \
@@ -276,6 +277,7 @@ EXTRA_DIST += $(srcdir)/FortranProject/*.h \
 		$(srcdir)/FortranProject/images/fortranproject/48x48/*.png \
 		$(srcdir)/FortranProject/images/fortranproject/56x56/*.png \
 		$(srcdir)/FortranProject/images/fortranproject/64x64/*.png \
+		$(srcdir)/FortranProject/images/fortranproject/svg/*.svg \
 		$(srcdir)/FortranProject/images/fortranproject/*.f90 \
 		$(srcdir)/FortranProject/images/fortranproject/*.py \
 		$(srcdir)/FortranProject/images/fortranproject/*.dem \
