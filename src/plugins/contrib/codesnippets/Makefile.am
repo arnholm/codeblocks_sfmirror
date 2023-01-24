@@ -1,3 +1,4 @@
+# SUBDIRS = resources **Deprecated**
 
 AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		$(WX_GTK_CFLAGS) \
@@ -55,3 +56,8 @@ EXTRA_DIST = 	$(srcdir)/*.cbp \
 		manifest.xml \
 		$(man_MANS)
 
+pkgdata_DATA = codesnippets.zip
+CLEANFILES = $(pkgdata_DATA)
+
+codesnippets.zip: manifest.xml
+	PWD=`pwd` cd $(srcdir) && zip $(PWD)/codesnippets.zip manifest.xml
