@@ -63,6 +63,7 @@
 #include "compilerMSVC.h"
 #include "compilerMSVC8.h"
 #include "compilerMSVC10.h"
+#include "compilerMSVC17.h"
 #include "compilerOW.h"
 #include "compilerGNUARM.h"
 #include "compilerCYGWIN.h"
@@ -927,6 +928,7 @@ void CompilerGCC::DoRegisterCompilers()
         CompilerFactory::RegisterCompiler(new CompilerMSVC);
         CompilerFactory::RegisterCompiler(new CompilerMSVC8);
         CompilerFactory::RegisterCompiler(new CompilerMSVC10);
+        CompilerFactory::RegisterCompiler(new CompilerMSVC17);
         CompilerFactory::RegisterCompiler(new CompilerOW);
         CompilerFactory::RegisterCompiler(new CompilerCYGWIN);
         CompilerFactory::RegisterCompiler(new CompilerLCC);
