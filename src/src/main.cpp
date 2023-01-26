@@ -1886,6 +1886,10 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
     if (debuggerToolbarInfo.IsOk())
         debuggerToolbarInfo.Caption(_("Debugger Toolbar"));
 
+    wxAuiPaneInfo& highlightedOccurrencesPaneInfo = m_LayoutManager.GetPane("HighlightedOccurrences");
+    if (highlightedOccurrencesPaneInfo.IsOk())
+        highlightedOccurrencesPaneInfo.Caption(_("Highlighted Occurrences"));
+
     m_LayoutManager.Update();
 
     // If we load a layout we have to check if the window is on a valid display
