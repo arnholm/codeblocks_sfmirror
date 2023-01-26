@@ -149,6 +149,10 @@ void ToDoListView::DestroyControls(bool destr_control)
     }
 }
 
+void ToDoListView::SetAllowedTypes(const wxArrayString& allowedTypes)
+{
+    m_allowedTypes = allowedTypes;
+}
 
 void ToDoListView::Parse()
 {
@@ -156,10 +160,6 @@ void ToDoListView::Parse()
     // based on user prefs, parse files for todo items
     if (m_Ignore || (m_pPanel && !m_pPanel->IsShownOnScreen()) )
         return; // Reentrancy
-
-    // Load the current configuration for allowed types
-    m_allowedTypes.clear();
-    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &m_allowedTypes);
 
     Clear(); // clear the gui
     m_ItemsMap.clear(); // clear the data
@@ -261,10 +261,6 @@ void ToDoListView::ParseCurrent(bool forced)
 {
     if (m_Ignore)
         return; // Reentrancy
-
-    // Load the current configuration for allowed types
-    m_allowedTypes.clear();
-    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &m_allowedTypes);
 
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(Manager::Get()->GetEditorManager()->GetActiveEditor());
     if (ed)
@@ -496,6 +492,7 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
         startStrings.push_back("#warning");
         startStrings.push_back("#error");
     }
+
     if (!cmttoken.doxygenLineComment.empty())
         startStrings.push_back(cmttoken.doxygenLineComment);
     if (!cmttoken.doxygenStreamCommentStart.empty())
@@ -507,10 +504,7 @@ void ToDoListView::ParseBuffer(const wxString& buffer, const wxString& filename)
         startStrings.push_back(cmttoken.streamCommentStart);
 
     if ( startStrings.empty() || m_allowedTypes.empty() )
-    {
-        Manager::Get()->GetLogManager()->Log(_("ToDoList: Warning: No to-do types or comment symbols selected to search for, nothing to do."));
         return;
-    }
 
     ParseBufferForTODOs(m_ItemsMap, m_Items, startStrings, m_allowedTypes, buffer, filename);
 }
@@ -523,6 +517,7 @@ void ToDoListView::FocusEntry(size_t index)
         control->EnsureVisible(index);
     }
 }
+
 void ToDoListView::OnComboChange(cb_unused wxCommandEvent& event)
 {
     Manager::Get()->GetConfigManager( "todo_list")->Write("source", m_pSource->GetSelection() );
@@ -542,14 +537,18 @@ void ToDoListView::OnListItemSelected(cb_unused wxCommandEvent& event)
 void ToDoListView::OnButtonTypes(cb_unused wxCommandEvent& event)
 {
     PlaceWindow(m_pAllowedTypesDlg);
-
-    // Read configuration fresh from the config manager
-    wxArrayString selectedTypes;
-    Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &selectedTypes);
-    m_pAllowedTypesDlg->SetChecked(selectedTypes);
-
+    m_pAllowedTypesDlg->SetChecked(m_allowedTypes);
     if (m_pAllowedTypesDlg->ShowModal() == wxID_OK)
-        Parse();    // When dialog is closed with OK, reparse...
+    {
+        // Check if something has changed
+        const wxArrayString newAllowedTypes(m_pAllowedTypesDlg->GetChecked());
+        if (m_allowedTypes != newAllowedTypes)
+        {
+            m_allowedTypes = newAllowedTypes;
+            Manager::Get()->GetConfigManager("todo_list")->Write("types_selected", m_allowedTypes);
+            Parse();    // When dialog is closed with OK, reparse...
+        }
+    }
 }
 
 void ToDoListView::OnButtonRefresh(cb_unused wxCommandEvent& event)
@@ -640,7 +639,6 @@ CheckListDialog::CheckListDialog(wxWindow*       parent,
     Layout();
 
     // Connect Events
-    m_okBtn->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CheckListDialog::OkOnButtonClick ), NULL, this);
     m_checkAll->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CheckListDialog::OnAllClick ), NULL, this);
     m_checkList->Connect(wxEVT_CHECKLISTBOX, wxCommandEventHandler( CheckListDialog::OnListCheck ), NULL, this);
 }
@@ -648,15 +646,8 @@ CheckListDialog::CheckListDialog(wxWindow*       parent,
 CheckListDialog::~CheckListDialog()
 {
     // Disconnect Events
-    m_okBtn->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CheckListDialog::OkOnButtonClick ), NULL, this);
     m_checkAll->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CheckListDialog::OnAllClick ), NULL, this);
     m_checkList->Disconnect(wxEVT_CHECKLISTBOX, wxCommandEventHandler( CheckListDialog::OnListCheck ), NULL, this);
-}
-
-void CheckListDialog::OkOnButtonClick(cb_unused wxCommandEvent& event)
-{
-    Manager::Get()->GetConfigManager("todo_list")->Write("types_selected", GetChecked());
-    EndModal(wxID_OK);
 }
 
 bool CheckListDialog::IsChecked(const wxString& item) const

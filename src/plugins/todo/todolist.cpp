@@ -234,20 +234,13 @@ void ToDoList::LoadTypes()
         m_Types.Add("@note");
         m_Types.Add("\\note");
     }
+
     m_pListLog->m_pAllowedTypesDlg->Clear();
     m_pListLog->m_pAllowedTypesDlg->AddItem(m_Types);
 
     wxArrayString selectedTypes;
     Manager::Get()->GetConfigManager("todo_list")->Read("types_selected", &selectedTypes);
-
-    if (selectedTypes.GetCount()==0)
-    {
-      // initially, all types are selected
-      for (size_t i=0; i<m_Types.GetCount(); i++)
-        selectedTypes.Add(m_Types[i]);
-    }
-
-    m_pListLog->m_pAllowedTypesDlg->SetChecked(selectedTypes);
+    m_pListLog->SetAllowedTypes(selectedTypes.empty() ? m_Types : selectedTypes);
     SaveTypes();
 }
 

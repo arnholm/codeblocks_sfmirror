@@ -34,7 +34,6 @@ class CheckListDialog : public wxDialog
                          long            style = 0 );
         ~CheckListDialog();
 
-        virtual void OkOnButtonClick( wxCommandEvent& event );
         virtual void OnAllClick( wxCommandEvent& event );
         virtual void OnListCheck( wxCommandEvent& event );
 
@@ -61,6 +60,7 @@ class ToDoListView : public wxEvtHandler, public ListCtrlLogger
         ~ToDoListView() override;
         wxWindow* CreateControl(wxWindow* parent) override;
         void DestroyControls(bool control);
+        void SetAllowedTypes(const wxArrayString& allowedTypes);
 
         // parse all the sources
         void Parse();
