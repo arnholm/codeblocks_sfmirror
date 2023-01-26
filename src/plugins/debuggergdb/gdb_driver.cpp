@@ -164,6 +164,8 @@ void GDB_driver::Prepare(bool isConsole, int printElements, const RemoteDebuggin
     // Make sure backtraces use absolute paths, so it is more reliable to find where the sources
     // file when trying to open it in the editor.
     QueueCommand(new DebuggerCmd(this, "set filename-display absolute"));
+    // Disable ANSI escape sequences, new in GDB 8.2
+    QueueCommand(new DebuggerCmd(this, "set style enabled off"));
 
     if (platform::windows && isConsole)
         QueueCommand(new DebuggerCmd(this, "set new-console on"));
