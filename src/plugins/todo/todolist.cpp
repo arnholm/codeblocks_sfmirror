@@ -107,7 +107,7 @@ void ToDoList::OnAttach()
         evt.dockSide = CodeBlocksDockEvent::dsFloating;
         evt.desiredSize.Set(352, 94);
         evt.floatingSize.Set(352, 94);
-        evt.minimumSize.Set(352, 94);
+        evt.minimumSize.Set(252, 94);
         Manager::Get()->ProcessEvent(evt);
     }
 
