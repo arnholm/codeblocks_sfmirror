@@ -1,0 +1,11 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <radialGradient id="radialGradient4684" cx="7.613" cy="2.058" r="2.094" gradientTransform="matrix(2.514 -.01755 .01823 2.607 -6.902 7.19)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fbffff" stop-opacity=".8058" offset="0"/>
+      <stop stop-color="#fdc37f" stop-opacity=".902" offset=".3055"/>
+      <stop stop-color="#fea53f" stop-opacity=".949" offset=".4037"/>
+      <stop stop-color="#fa8500" offset="1"/>
+    </radialGradient>
+  </defs>
+  <ellipse transform="rotate(.5107)" cx="16.14" cy="15.86" rx="12.5" ry="12.5" fill="url(#radialGradient4684)" fill-rule="evenodd" stroke="#d06d00" stroke-linecap="round" stroke-linejoin="round" style="paint-order:fill markers stroke"/>
+</svg>

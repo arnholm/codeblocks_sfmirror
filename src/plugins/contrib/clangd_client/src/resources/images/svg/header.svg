@@ -1,0 +1,23 @@
+<svg width="32" height="32" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <radialGradient id="radialGradient15089" cx="2.539" cy="294.5" r="1.588" gradientTransform="matrix(3.671 -2.531 1.654 2.399 -493.3 -403.5)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dadada" offset="0"/>
+      <stop stop-color="#f1f1f1" offset=".1684"/>
+      <stop stop-color="#f9f9f9" offset="1"/>
+    </radialGradient>
+    <filter id="filter15378" x="-.1365" y="-.08228" width="1.273" height="1.165" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="0.042220926"/>
+    </filter>
+  </defs>
+  <g transform="translate(0 -288.5)">
+    <g transform="matrix(1.818 0 0 1.854 -.01214 -253.8)" stroke-width=".5447">
+      <path d="m0.6615 292.9h1.852c1.058 0.6615 0 0 1.058 0.6614v3.043h-2.91c0.01085-1.206-0.001644-2.51 0-3.704z" fill="url(#radialGradient15089)" fill-rule="evenodd" stroke="#c5c5c5" stroke-linecap="round" stroke-linejoin="round" stroke-width=".1441" style="paint-order:fill markers stroke"/>
+      <g transform="translate(-.04857 -.03032)" fill="#777" filter="url(#filter15378)" stroke-opacity="0" aria-label="h">
+        <path d="m2.827 295v0.9155h-0.2492v-0.9074q0-0.2153-0.08397-0.3223t-0.2519-0.107q-0.2018 0-0.3183 0.1287t-0.1165 0.3508v0.8573h-0.2505v-2.107h0.2505v0.8261q0.08938-0.1368 0.2099-0.2045 0.1219-0.0677 0.2803-0.0677 0.2614 0 0.3955 0.1625 0.1341 0.1612 0.1341 0.4754z" fill="#777" stroke-opacity="0"/>
+      </g>
+      <g fill="#eb100b" stroke-opacity="0" aria-label="h">
+        <path d="m2.736 294.9v0.9155h-0.2492v-0.9074q0-0.2153-0.08397-0.3223t-0.2519-0.107q-0.2018 0-0.3183 0.1287-0.1165 0.1287-0.1165 0.3508v0.8573h-0.2505v-2.107h0.2505v0.8261q0.08938-0.1368 0.2099-0.2045 0.1219-0.0677 0.2803-0.0677 0.2614 0 0.3955 0.1625 0.1341 0.1612 0.1341 0.4754z" fill="#eb100b" stroke-opacity="0"/>
+      </g>
+    </g>
+  </g>
+</svg>

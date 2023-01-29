@@ -1,0 +1,30 @@
+<svg width="32" height="32" shape-rendering="crispEdges" version="1.1" viewBox="0 0 8.467 8.467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="linearGradient876" x1="6.963" x2="4.895" y1="295.4" y2="293.3" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#eddd52" offset="0"/>
+      <stop stop-color="#fbef8a" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient911" x1="6.879" x2="4.895" y1="293" y2="291.2" gradientTransform="matrix(1.056 0 0 1.056 -.2646 -16.29)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f22f30" offset="0"/>
+      <stop stop-color="#fa6c6d" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient911-2" x1="4.895" x2="6.879" y1="291.2" y2="292.4" gradientTransform="rotate(180 4.763 293.3)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#261fb1" offset="0"/>
+      <stop stop-color="#5c55e3" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient852" x1="1.72" x2="5.027" y1="290.8" y2="294.1" gradientTransform="matrix(1.059 0 0 1.059 -.3346 -17.87)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9be7a2" offset="0"/>
+      <stop stop-color="#2ebc3b" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 -288.5)">
+    <path d="m3.175 293.7v0.5292" fill="none" stroke="#3831c7" stroke-width=".2646px"/>
+    <path d="m7.144 293.3h-2.381l1e-7 2.249h1.984l0.3969-0.2646z" fill="url(#linearGradient876)"/>
+    <path d="m4.763 295.5h1.856c0.3275 0 0.6632-0.3423 0.6573-0.6615-0.01212-0.6614 3.7e-6 -1.72 3.7e-6 -1.72" fill="none" stroke="#a59725" stroke-width=".2646px"/>
+    <path d="m4.762 290.8v2.514h2.514l1e-7 -2.117-0.3969-0.3969z" fill="url(#linearGradient911)"/>
+    <path d="m7.276 293.3-4e-7 -1.852c-1e-7 -0.3218-0.3272-0.6615-0.6615-0.6615-0.6468 0-1.852 3e-5 -1.852 3e-5" fill="none" stroke="#be1e1e" stroke-width=".2646px"/>
+    <path d="m4.763 295.7v-2.381h-2.514v1.72l0.5292 0.5292z" fill="url(#linearGradient911-2)"/>
+    <path d="m2.249 293.2s-2e-7 1.058 0 1.72c1e-7 0.3241 0.3496 0.6615 0.6615 0.6615h1.852" fill="none" stroke="#221d89" stroke-width=".2646px"/>
+    <rect x=".926" y="289.5" width="4.762" height="4.763" rx="0" ry=".8405" fill="url(#linearGradient852)" stroke="#1b8025" stroke-width=".2646"/>
+  </g>
+</svg>
