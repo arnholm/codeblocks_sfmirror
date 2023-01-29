@@ -34,6 +34,7 @@
 
 #include <wx/progdlg.h>
 #include <wx/checkbox.h>
+#include <wx/wrapsizer.h>
 
 #include "cbstyledtextctrl.h"
 #include "encodingdetector.h"
@@ -104,7 +105,7 @@ wxWindow* ToDoListView::CreateControl(wxWindow* parent)
     choices.Add(_("Open files"));          // 1
     choices.Add(_("Active target files")); // 2
     choices.Add(_("All project files"));   // 3
-    wxBoxSizer* hbs = new wxBoxSizer(wxHORIZONTAL);
+    wxWrapSizer* hbs = new wxWrapSizer(wxHORIZONTAL);
 
     hbs->Add(new wxStaticText(m_pPanel, wxID_ANY, _("Scope:")), 0, wxTOP, 4);
 
