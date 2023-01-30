@@ -21,7 +21,7 @@
 #include <wx/utils.h>
 
 CompilerOW::CompilerOW()
-    : Compiler(wxT("OpenWatcom (W32) Compiler"), _T("ow"))
+    : Compiler(_("OpenWatcom (W32) Compiler"), "ow")
 {
     m_Weight = 28;
     Reset();
