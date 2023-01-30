@@ -23,12 +23,8 @@ libclangd_client_la_LDFLAGS = \
 			-no-undefined \
 			-avoid-version
 
-libcodecompletion_la_LIBADD = ../../sdk/libcodeblocks.la\
-			$(WX_LIBS) \
-			$(CB_TINYXML_LIBS)
-
 libclangd_client_la_LIBADD = \
-			../../../../sdk/libcodeblocks.la \
+			../../../sdk/libcodeblocks.la \
 			-lutil \
 			$(WX_LIBS) \
 			$(CB_TINYXML_LIBS)
