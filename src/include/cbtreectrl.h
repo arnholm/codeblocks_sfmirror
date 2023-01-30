@@ -8,6 +8,7 @@
 
 #include <wx/treectrl.h>
 
+
 class ProjectFile;
 class wxKeyEvent;
 class wxMouseEvent;
@@ -23,6 +24,15 @@ class DLLIMPORT cbTreeCtrl : public wxTreeCtrl
         cbTreeCtrl();
         cbTreeCtrl(wxWindow* parent, int id);
         void SetCompareFunction(const int ptvs);
+
+
+        /** \brief This function handles scrolling of treeCtrl during dragging. This has to be called in
+         *   DropTarget::OnDragOver with the coordinates (at least on windows)
+         */
+        void CalculateScrollingAfterMove(int x, int y);
+        /** \brief (for scroll handling) Signal the end of dragging
+         */
+        void OnEndDrag();
 /*
         GetPrevVisible appears to be faulty, so override.
 */
@@ -41,10 +51,18 @@ class DLLIMPORT cbTreeCtrl : public wxTreeCtrl
 */
         void OnKeyDown(wxKeyEvent& event);
 
+        void OnMouseMove( wxMouseEvent & event );
+        void OnBeginDrag(wxTreeEvent & event );
+        void OnEndDrag(wxTreeEvent & event );
+
+        void Scroll( bool bScrollUp );
+
         static int filesSort(const ProjectFile* arg1, const ProjectFile* arg2);
         static int filesSortNameOnly(const ProjectFile* arg1, const ProjectFile* arg2);
         int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
         int (*Compare)(const ProjectFile* arg1, const ProjectFile* arg2);
+
+        bool m_dragging;
 
         DECLARE_DYNAMIC_CLASS(cbTreeCtrl)
         DECLARE_EVENT_TABLE()

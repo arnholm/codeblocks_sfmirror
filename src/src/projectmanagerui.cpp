@@ -246,6 +246,8 @@ wxDragResult ProjectTreeDropTarget::OnDragOver(wxCoord x, wxCoord y, wxDragResul
     wxUnusedVar(flag);
     const wxTreeItemId item = m_treeCtrl->HitTest(wxPoint(x,y), flag);
 
+    m_treeCtrl->CalculateScrollingAfterMove(x, y);
+
     // GetData in OnDragOver seems only to work in windows...
     if (GetData())
     {
@@ -1088,6 +1090,7 @@ void ProjectManagerUI::OnTabPosition(wxCommandEvent& event)
 
 void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
 {
+    event.Skip();
     wxArrayString fileList;
 
     size_t count = m_pTree->GetSelections(m_DraggingSelection);
@@ -1147,6 +1150,7 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         m_pTree->SetCursor(wxCursor(wxNullCursor));
         return;
     }
+
 }
 
 bool ProjectManagerUI::TestDropOnItem(const wxTreeItemId& to) const

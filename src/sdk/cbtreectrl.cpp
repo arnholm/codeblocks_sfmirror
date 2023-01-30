@@ -27,11 +27,17 @@ BEGIN_EVENT_TABLE(cbTreeCtrl, wxTreeCtrl)
     EVT_RIGHT_DOWN(cbTreeCtrl::OnRightClick)
 #endif // !__WXMSW__
     EVT_KEY_DOWN(cbTreeCtrl::OnKeyDown)
+
+    EVT_MOUSE_EVENTS(cbTreeCtrl::OnMouseMove)
+    EVT_LEFT_UP(cbTreeCtrl::OnMouseMove)
+    EVT_TREE_BEGIN_DRAG(wxID_ANY, cbTreeCtrl::OnBeginDrag)
+    EVT_TREE_END_DRAG(wxID_ANY, cbTreeCtrl::OnEndDrag)
 END_EVENT_TABLE()
 
 cbTreeCtrl::cbTreeCtrl() : wxTreeCtrl()
 {
     Compare = &filesSort;
+    m_dragging = false;
 }
 
 cbTreeCtrl::cbTreeCtrl(wxWindow* parent, int id) :
@@ -39,6 +45,97 @@ cbTreeCtrl::cbTreeCtrl(wxWindow* parent, int id) :
                wxTR_EDIT_LABELS | wxTR_HAS_BUTTONS | wxTR_MULTIPLE | wxBORDER_NONE)
 {
     Compare = &filesSort;
+}
+
+void cbTreeCtrl::CalculateScrollingAfterMove(int x, int y)
+{
+    // implement custom scrolling during drag and drop
+    if ( m_dragging )
+    {
+        int iWidth = 0;
+        int iHeight = 0;
+        // Get the width and height of the treectrl
+        GetSize( &iWidth, &iHeight );
+        // Find where the mouse is in relation to the (exited) pane
+
+        if ( x < 0 || x > iWidth )
+            return;     // If mouse outside x coordinates of window we do not scroll
+        // scrolling if the mouse is move at the top/bottom 1/5 of the tree ctrl
+        if ( y <= (iHeight / 5) )
+        {
+            Scroll( true ); // Scroll Up
+        }
+        else if ( y >= iHeight - (iHeight / 5) )
+        {
+            Scroll( false ); // Scroll Down
+        }
+    }
+}
+
+void cbTreeCtrl::OnMouseMove( wxMouseEvent & event )
+{
+    // To implement scrolling during dragging we need to track the
+    // mouse movement, to terminate dragging when the user
+    // drops outside the tree ctrl. When left mouse up then
+    // terminate dragging
+    // when mouse down -> dragging -> update scroll position
+    event.Skip();
+    if (event.LeftUp() || !event.LeftIsDown())
+    {
+        OnEndDrag();
+        return;
+    }
+
+    wxPoint mousePt = ScreenToClient( wxGetMousePosition( ) );
+    CalculateScrollingAfterMove(mousePt.x, mousePt.y);
+}
+
+void cbTreeCtrl::Scroll( bool bScrollUp )
+{
+
+    // Scrolling by dragging is currently not natively supported
+    // by wxWidgets. We have to implement it by hand
+    // i encoutered a strange behaviour on linux that LineUp and LineDow
+    // only move the scroll bar but do not redraw the tree at the
+    // current scroll position.
+
+#ifdef __WXMSW__
+    bool refresh = false;
+    if ( bScrollUp )
+        refresh = LineUp( );
+    else
+        refresh = LineDown( );
+
+    if (refresh)
+        Refresh( true );
+#else
+    // On linux we scroll by getting the current window position
+    // and add some pixel to it. The User has to move the mouse
+    // to actively scroll.
+    int x = 0, y = 0;
+    GetViewStart(&y, &y);
+    if ( bScrollUp )
+        wxTreeCtrl::Scroll(x, y - 5);
+    else
+        wxTreeCtrl::Scroll(x, y + 5);
+#endif // __WXMSW__
+}
+
+void cbTreeCtrl::OnBeginDrag(wxTreeEvent& event)
+{
+    m_dragging = true;
+    event.Skip();   // process the event future up
+}
+
+void cbTreeCtrl::OnEndDrag()
+{
+    m_dragging = false;
+}
+
+void cbTreeCtrl::OnEndDrag(wxTreeEvent &event)
+{
+    OnEndDrag();
+    event.Skip(); // process the event future up
 }
 
 void cbTreeCtrl::SetCompareFunction(const int ptvs)
