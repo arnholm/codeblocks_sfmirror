@@ -1865,30 +1865,11 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
     // would not report correct values if not updated here.
     m_LayoutManager.LoadPerspective(layout, false);
 
-    // Fix translations on load
-    wxAuiPaneInfo& managementPaneInfo = m_LayoutManager.GetPane("ManagementPane");
-    if (managementPaneInfo.IsOk())
-        managementPaneInfo.Caption(_("Management"));
-
-    wxAuiPaneInfo& messagesPaneInfo = m_LayoutManager.GetPane("MessagesPane");
-    if (messagesPaneInfo.IsOk())
-        messagesPaneInfo.Caption(_("Logs & others"));
-
-    wxAuiPaneInfo& scriptingPaneInfo = m_LayoutManager.GetPane("ScriptConsole");
-    if (scriptingPaneInfo.IsOk())
-        scriptingPaneInfo.Caption(_("Scripting console"));
-
-    wxAuiPaneInfo& mainToolbarInfo = m_LayoutManager.GetPane("MainToolbar");
-    if (mainToolbarInfo.IsOk())
-        mainToolbarInfo.Caption(_("Main Toolbar"));
-
-    wxAuiPaneInfo& debuggerToolbarInfo = m_LayoutManager.GetPane("DebuggerToolbar");
-    if (debuggerToolbarInfo.IsOk())
-        debuggerToolbarInfo.Caption(_("Debugger Toolbar"));
-
-    wxAuiPaneInfo& highlightedOccurrencesPaneInfo = m_LayoutManager.GetPane("HighlightedOccurrences");
-    if (highlightedOccurrencesPaneInfo.IsOk())
-        highlightedOccurrencesPaneInfo.Caption(_("Highlighted Occurrences"));
+    // Fix translations on load (captions are saved in the config file)
+    wxAuiPaneInfoArray &panes = m_LayoutManager.GetAllPanes();
+    const size_t paneCount = panes.GetCount();
+    for (size_t i = 0; i < paneCount; ++i)
+        panes[i].caption = _(panes[i].caption);
 
     m_LayoutManager.Update();
 
