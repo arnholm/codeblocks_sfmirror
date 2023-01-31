@@ -625,7 +625,8 @@ bool CodeBlocksApp::OnInit()
     Manager::SetToolbarHandler(toolbarAddonHandler);
 
     LogManager *log = Manager::Get()->GetLogManager();
-    log->Log(wxString::Format(_("Starting %s %s %s"), appglobals::AppName,
+    // Translating this string is futile, the locale has not been initialized yet
+    log->Log(wxString::Format("Starting %s %s %s", appglobals::AppName,
                               appglobals::AppActualVersionVerb, appglobals::AppBuildTimestamp));
 
     try
