@@ -8,10 +8,10 @@ AM_CPPFLAGS = \
 			-I$(top_srcdir)/src/include \
 			-I$(top_srcdir)/src/sdk/wxscintilla/include \
 			-I$(top_srcdir)/src/include/tinyxml \
-			-Isrc \
-			-Isrc/LSPclient \
-			-Isrc/codecompletion \
-			-Isrc/unixprocess
+			-I$(srcdir)/src \
+			-I$(srcdir)/src/LSPclient \
+			-I$(srcdir)/src/codecompletion \
+			-I$(srcdir)/src/unixprocess
 
 pluginlibdir = $(pkglibdir)/plugins
 
