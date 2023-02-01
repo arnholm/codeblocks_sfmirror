@@ -8,10 +8,6 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
 //(*Headers(CCDebugInfo)
 #include <wx/combobox.h>
 #include <wx/sizer.h>

@@ -39,10 +39,6 @@
 // wxWidget headers not include in wx_pch.h
     #include <wx/clipbrd.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
-
 //-#if defined(BUILDING_PLUGIN)
     #include "sdk.h"
     #ifndef CB_PRECOMP

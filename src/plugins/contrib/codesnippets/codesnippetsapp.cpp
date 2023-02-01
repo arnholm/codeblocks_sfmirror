@@ -30,10 +30,6 @@
 #include "wx_pch.h"
 #endif
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
-
 #include <wx/stdpaths.h>
 #include <wx/process.h>
 #include <wx/filename.h>
@@ -168,10 +164,6 @@ int CodeSnippetsApp::OnExit()
 #ifdef WX_PRECOMP
 #include "wx_pch.h"
 #endif
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
 
 
 // ----------------------------------------------------------------------------

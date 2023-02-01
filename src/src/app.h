@@ -8,10 +8,6 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
 #if !defined(WX_PRECOMP)
     #include <wx/wx.h>
     #include <wx/intl.h>

@@ -26,11 +26,6 @@
     #include "wx/wx.h"
 #endif
 
-
-#ifdef __BORLANDC__
-  #pragma hdrstop
-#endif
-
 #if wxUSE_STREAMS
 
 #include "bzipstream.h"

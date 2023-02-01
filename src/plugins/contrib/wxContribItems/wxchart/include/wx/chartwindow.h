@@ -19,10 +19,6 @@
 #pragma interface "chartwindow.h"
 #endif
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
     #include <wx/window.h>
     #include <wx/scrolwin.h>

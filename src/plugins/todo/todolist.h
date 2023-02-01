@@ -6,10 +6,6 @@
 #ifndef TODOLIST_H
 #define TODOLIST_H
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
 #include <wx/arrstr.h>
 #include "cbplugin.h" // the base class we're inheriting
 #include "globals.h"

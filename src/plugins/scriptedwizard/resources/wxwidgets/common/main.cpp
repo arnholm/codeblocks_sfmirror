@@ -11,10 +11,6 @@
 #include "wx_pch.h"
 #endif
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
-
 #include "[FILENAME_PREFIX]Main.h"
 
 //helper functions

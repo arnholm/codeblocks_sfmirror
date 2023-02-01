@@ -24,10 +24,6 @@
 // (Added by J.L.Blanco, Aug 2007)
 // #define MATHPLOT_DO_LOGGING
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
 #include "wx/object.h"
 #include "wx/font.h"

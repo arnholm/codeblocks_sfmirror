@@ -25,10 +25,6 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
 //(*Headers(wxsFontFaceEditorDlg)
 #include <wx/sizer.h>
 #include <wx/textctrl.h>

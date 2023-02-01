@@ -23,10 +23,6 @@
 // so even if NO CB_PRECOMP we can still have WX_PRECOMP turned on in this "wxprec" header
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-	#pragma hdrstop
-#endif
-
 #include "prep.h" // this is deliberately not inside the #ifdef block
 
 #ifdef CB_PRECOMP

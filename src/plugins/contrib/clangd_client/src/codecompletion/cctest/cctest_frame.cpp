@@ -6,10 +6,6 @@
  * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/codecompletion/cctest/cctest_frame.cpp $
  */
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
     #include <wx/file.h>

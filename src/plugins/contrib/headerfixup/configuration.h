@@ -8,10 +8,6 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 //(*Headers(Configuration)
 #include <wx/sizer.h>
 #include <wx/button.h>

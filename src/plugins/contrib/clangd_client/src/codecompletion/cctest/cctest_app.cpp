@@ -100,10 +100,6 @@
  * definition to empty.
  */
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 //(*AppHeaders
 #include <wx/image.h>
 //*)

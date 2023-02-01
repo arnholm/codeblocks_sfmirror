@@ -1,10 +1,6 @@
 #ifndef MouseSapCfg_H
 #define MouseSapCfg_H
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
-
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/checkbox.h>

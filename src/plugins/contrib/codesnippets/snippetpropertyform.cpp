@@ -32,10 +32,6 @@
 #endif
 #include "wx/wxprec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
-
 //#include "wxscintilla/include/wx/wxscintilla.h" //svn5785
 #include <wx/wxscintilla.h>                       //svn5785
 #include "snippetpropertyform.h"

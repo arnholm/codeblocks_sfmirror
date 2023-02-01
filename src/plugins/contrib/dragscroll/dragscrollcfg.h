@@ -1,9 +1,6 @@
 #ifndef DragScrollCfg_H
 #define DragScrollCfg_H
 
-#ifdef __BORLANDC__
-    #pragma hdrstop
-#endif
 #include "dragscroll.h"
 
 //(*Headers(cbDragScrollCfg)

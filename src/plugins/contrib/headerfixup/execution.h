@@ -8,10 +8,6 @@
 
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 //(*Headers(Execution)
 #include <wx/gauge.h>
 #include <wx/checklst.h>
