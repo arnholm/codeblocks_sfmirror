@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="clangd_client-unix30" />
+		<Option title="Clangd_client wx3.0.x (Unix)" />
 		<Option default_target="clangd_client" />
 		<Option compiler="gcc" />
 		<Build>
