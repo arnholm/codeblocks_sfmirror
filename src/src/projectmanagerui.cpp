@@ -2546,20 +2546,26 @@ void ProjectManagerUI::OnRenameVirtualFolder(cb_unused wxCommandEvent& event)
     if (!prj)
         return;
 
-    wxString oldName = ftd->GetFolder();
-
-    if (oldName.EndsWith(_T("/")))
+    const wxUniChar separator = wxFileName::GetPathSeparator();
+    wxString oldName(ftd->GetFolder());
+    if (oldName.EndsWith(separator))
         oldName.RemoveLast(1);
 
+    oldName = oldName.AfterLast(separator);
     wxTextEntryDialog dlg(Manager::Get()->GetAppWindow(),
                           _("Please enter the new name for the virtual folder:"),
                           _("Rename Virtual Folder"),
                           oldName,
                           wxOK | wxCANCEL | wxCENTRE);
+
     if (dlg.ShowModal() == wxID_OK)
     {
-        ProjectVirtualFolderRenamed(prj, m_pTree, sel, dlg.GetValue());
-        RebuildTree();
+        const wxString newName(dlg.GetValue());
+        if (newName != oldName)
+        {
+            ProjectVirtualFolderRenamed(prj, m_pTree, sel, newName);
+            RebuildTree();
+        }
     }
 }
 
