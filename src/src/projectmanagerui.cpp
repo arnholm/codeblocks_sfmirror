@@ -2546,12 +2546,11 @@ void ProjectManagerUI::OnRenameVirtualFolder(cb_unused wxCommandEvent& event)
     if (!prj)
         return;
 
-    const wxUniChar separator = wxFileName::GetPathSeparator();
     wxString oldName(ftd->GetFolder());
-    if (oldName.EndsWith(separator))
+    if (oldName.EndsWith(wxFILE_SEP_PATH))
         oldName.RemoveLast(1);
 
-    oldName = oldName.AfterLast(separator);
+    oldName = oldName.AfterLast(wxFILE_SEP_PATH);
     wxTextEntryDialog dlg(Manager::Get()->GetAppWindow(),
                           _("Please enter the new name for the virtual folder:"),
                           _("Rename Virtual Folder"),
@@ -2560,12 +2559,8 @@ void ProjectManagerUI::OnRenameVirtualFolder(cb_unused wxCommandEvent& event)
 
     if (dlg.ShowModal() == wxID_OK)
     {
-        const wxString newName(dlg.GetValue());
-        if (newName != oldName)
-        {
-            ProjectVirtualFolderRenamed(prj, m_pTree, sel, newName);
+        if (ProjectVirtualFolderRenamed(prj, m_pTree, sel, dlg.GetValue()))
             RebuildTree();
-        }
     }
 }
 
@@ -3607,12 +3602,10 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
     if (new_name.IsEmpty())
         return false;
 
-    if (new_name.First(_T(';')) != wxNOT_FOUND ||
-        new_name.First(_T('/')) != wxNOT_FOUND ||
-        new_name.First(_T('\\')) != wxNOT_FOUND)
+    if (new_name.find_first_of(";/\\") != std::string::npos)
     {
         cbMessageBox(_("A virtual folder name cannot contain these special characters: \";\", \"\\\" or \"/\"."),
-                    _("Error"), wxICON_WARNING);
+                     _("Error"), wxICON_WARNING);
         return false;
     }
 
@@ -3633,13 +3626,14 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
     if (ftd->GetProject() != project)
         return false;
 
-    wxString old_foldername = GetRelativeFolderPath(tree, node);
-    wxString new_foldername = GetRelativeFolderPath(tree, tree->GetItemParent(node)) + new_name + wxFILE_SEP_PATH;
+    const wxString old_foldername(GetRelativeFolderPath(tree, node));
+    const wxString new_foldername(GetRelativeFolderPath(tree, tree->GetItemParent(node)) + new_name + wxFILE_SEP_PATH);
 
     const wxArrayString &virtualFolders = project->GetVirtualFolders();
     if (!ProjectHasVirtualFolder(new_foldername, virtualFolders))
         return false;
 
+    wxMessageBox(old_foldername+" - "+new_foldername);
     project->ReplaceVirtualFolder(old_foldername, new_foldername);
 
 //    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("VirtualFolderRenamed: %s to %s: %s", old_foldername, new_foldername, GetStringFromArray(m_VirtualFolders, ";")));
