@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Clangd_Client-wx32_64" />
+		<Option title="Clangd_Client wx3.2.x (64 bit)" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
