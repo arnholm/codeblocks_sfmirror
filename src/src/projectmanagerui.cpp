@@ -3633,7 +3633,6 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
     if (!ProjectHasVirtualFolder(new_foldername, virtualFolders))
         return false;
 
-    wxMessageBox(old_foldername+" - "+new_foldername);
     project->ReplaceVirtualFolder(old_foldername, new_foldername);
 
 //    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("VirtualFolderRenamed: %s to %s: %s", old_foldername, new_foldername, GetStringFromArray(m_VirtualFolders, ";")));
