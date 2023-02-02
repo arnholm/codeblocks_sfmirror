@@ -1,7 +1,7 @@
 #ifndef WXSTIMEPICKERCTRL_H
 #define WXSTIMEPICKERCTRL_H
 
-#include <wxWidgets/wxsWidget.h>
+#include <wxwidgets/wxswidget.h>
 
 
 class wxsTimePickerCtrl : public wxsWidget
