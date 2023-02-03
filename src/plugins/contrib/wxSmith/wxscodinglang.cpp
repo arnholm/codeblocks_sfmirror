@@ -182,7 +182,7 @@ namespace wxsCodeMarks
                 Postfix = ")";
         }
 
-        const bool DoTranslation = WithTranslation && (cfg->ReadBool("/useI18N"), true);
+        const bool DoTranslation = WithTranslation && cfg->ReadBool("/useI18N", true);
         switch (Lang)
         {
             case wxsCPP:
