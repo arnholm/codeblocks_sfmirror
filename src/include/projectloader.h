@@ -68,6 +68,9 @@ class DLLIMPORT ProjectLoader : public IBaseLoader
 
         /** @return True if the file was modified while loading, false if not. This is usually true if FileUpgraded() returned true. */
         bool FileModified(){ return m_OpenDirty; }
+
+        /** Search for new, or removed files in this glob and update the project accordingly **/
+        bool UpdateGlob(const ProjectGlob& glob);
     protected:
         void DoProjectOptions(TiXmlElement* parentNode);
         void DoCompilerOptions(TiXmlElement* parentNode, ProjectBuildTarget* target = nullptr);
@@ -86,7 +89,8 @@ class DLLIMPORT ProjectLoader : public IBaseLoader
         void DoEnvironment(TiXmlElement* parentNode, CompileOptionsBase* base);
 
         void DoUnits(const TiXmlElement* parentNode);
-        void DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* file);
+        bool DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* file);
+
     private:
         void ConvertVersion_Pre_1_1();
         void ConvertLibraries(CompileTargetBase* object);
@@ -107,4 +111,3 @@ class DLLIMPORT ProjectLoader : public IBaseLoader
 };
 
 #endif // PROJECTLOADER_H
-

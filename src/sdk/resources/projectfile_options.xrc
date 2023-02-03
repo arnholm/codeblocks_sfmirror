@@ -15,7 +15,7 @@
 								<object class="sizeritem">
 									<object class="wxFlexGridSizer">
 										<cols>2</cols>
-										<rows>4</rows>
+										<rows>5</rows>
 										<vgap>4</vgap>
 										<hgap>4</hgap>
 										<growablecols>1</growablecols>
@@ -68,6 +68,20 @@
 										<object class="sizeritem">
 											<object class="wxTextCtrl" name="txtRelName">
 												<style>wxTE_READONLY</style>
+											</object>
+											<flag>wxEXPAND</flag>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="lblGlobId">
+												<label>This file is part of glob:</label>
+											</object>
+											<flag>wxBOTTOM|wxALIGN_CENTER_HORIZONTAL</flag>
+											<border>8</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxTextCtrl" name="txtGlob">
+												<style>wxTE_MULTILINE|wxTE_READONLY</style>
 											</object>
 											<flag>wxEXPAND</flag>
 											<option>1</option>

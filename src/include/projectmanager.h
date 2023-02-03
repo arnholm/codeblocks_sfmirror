@@ -126,6 +126,9 @@ class DLLIMPORT cbProjectManagerUI
 
         /** Switches the management's notebook to the Projects tab */
         virtual void SwitchToProjectsPage() = 0;
+
+        /** Reload the File system watcher for the project prj **/
+        virtual void ReloadFileSystemWatcher(cbProject* prj) = 0;
 };
 
 
@@ -470,4 +473,3 @@ class DLLIMPORT ProjectManager : public Mgr<ProjectManager>, public wxEvtHandler
 };
 
 #endif // PROJECTMANAGER_H
-

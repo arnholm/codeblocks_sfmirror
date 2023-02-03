@@ -30,6 +30,7 @@
     #include "configmanager.h"
     #include "editormanager.h"
     #include "logmanager.h"
+
 #endif
 
 #include <unordered_map>
@@ -50,6 +51,8 @@
 #include "projectfileoptionsdlg.h"
 #include "projectoptionsdlg.h"
 #include "projectsfilemasksdlg.h"
+#include "manageglobsdlg.h"
+#include "projectloader.h"
 
 #include "goto_file.h"
 #include "startherepage.h"
@@ -80,6 +83,7 @@ const int idMenuAddFilePopup             = wxNewId();
 const int idMenuAddFilesRecursivelyPopup = wxNewId();
 const int idMenuAddFile                  = wxNewId();
 const int idMenuAddFilesRecursively      = wxNewId();
+const int idMenuManageGlobs              = wxNewId();
 const int idMenuRemoveFolderFilesPopup   = wxNewId();
 const int idMenuOpenFolderFilesPopup     = wxNewId();
 const int idMenuRemoveFilePopup          = wxNewId();
@@ -335,6 +339,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_MENU(idMenuRemoveFile,               ProjectManagerUI::OnRemoveFileFromProject)
     EVT_MENU(idMenuAddFilePopup,             ProjectManagerUI::OnAddFileToProject)
     EVT_MENU(idMenuAddFilesRecursivelyPopup, ProjectManagerUI::OnAddFilesToProjectRecursively)
+    EVT_MENU(idMenuManageGlobs,              ProjectManagerUI::OnManageGlobs)
     EVT_MENU(idMenuRemoveFolderFilesPopup,   ProjectManagerUI::OnRemoveFileFromProject)
     EVT_MENU(idMenuOpenFolderFilesPopup,     ProjectManagerUI::OnOpenFolderFiles)
     EVT_MENU(idMenuRemoveFilePopup,          ProjectManagerUI::OnRemoveFileFromProject)
@@ -371,6 +376,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_UPDATE_UI(idMenuFileProperties,      ProjectManagerUI::OnUpdateUI)
     EVT_UPDATE_UI(idMenuProjectProperties,   ProjectManagerUI::OnUpdateUI)
     EVT_UPDATE_UI(idMenuAddFile,             ProjectManagerUI::OnUpdateUI)
+    EVT_UPDATE_UI(idMenuManageGlobs,         ProjectManagerUI::OnUpdateUI)
     EVT_UPDATE_UI(idMenuAddFilesRecursively, ProjectManagerUI::OnUpdateUI)
     EVT_UPDATE_UI(idMenuRemoveFile,          ProjectManagerUI::OnUpdateUI)
     EVT_UPDATE_UI(idMenuProjectTreeProps,    ProjectManagerUI::OnUpdateUI)
@@ -417,6 +423,9 @@ ProjectManagerUI::ProjectManagerUI() :
     // Constructors and destructors must always follow the LIFO rule:
     // Last in, first out.
     Manager::Get()->GetAppWindow()->PushEventHandler(this);
+
+
+    m_fileSystemTimer.Bind(wxEVT_TIMER, &ProjectManagerUI::OnFileSystemTimer, this);
 }
 
 ProjectManagerUI::~ProjectManagerUI()
@@ -526,8 +535,47 @@ void ProjectManagerUI::UnfreezeTree(cb_unused bool force)
     }
 }
 
-void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* newProject,
-                                           bool refresh)
+void ProjectManagerUI::ReloadFileSystemWatcher(cbProject* prj)
+{
+    auto oldPrjItr = m_FileSystemWatcherMap.find(prj);
+    if (oldPrjItr != m_FileSystemWatcherMap.end())
+    {
+        for (const auto& watcher : oldPrjItr->second)
+        {
+            watcher.watcher->Unbind(wxEVT_FSWATCHER, watcher.handler);
+        }
+        m_FileSystemWatcherMap.erase(oldPrjItr);
+    }
+
+    std::vector<FileSystemWatcher> projectWatches;
+    ProjectLoader loader(prj);
+    bool refresh = false;
+    for (const ProjectGlob& glob : prj->GetGlobs())
+    {
+        FileSystemWatcher newWatcher;
+        newWatcher.watcher = std::unique_ptr<wxFileSystemWatcher>(new wxFileSystemWatcher());
+        wxFileName fname = wxFileName::DirName(glob.GetPath());
+        if (fname.IsRelative())
+            fname.MakeAbsolute(wxFileName(prj->GetFilename()).GetPath());
+        if (glob.GetRecursive())
+            newWatcher.watcher->AddTree(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
+        else
+            newWatcher.watcher->Add(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
+
+        newWatcher.handler = [=](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
+        newWatcher.watcher->Bind(wxEVT_FSWATCHER, newWatcher.handler, wxID_ANY, wxID_ANY, new FileSystemEventObject(prj, glob));
+        projectWatches.push_back(std::move(newWatcher));
+        refresh |= loader.UpdateGlob(glob);
+    }
+
+    m_FileSystemWatcherMap[prj] = std::move(projectWatches);
+
+    if (refresh)
+        RebuildTree();
+}
+
+
+void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* newProject, bool refresh)
 {
     if (oldProject)
         m_pTree->SetItemBold(oldProject->GetProjectNode(), false);
@@ -538,6 +586,44 @@ void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* new
             m_pTree->SetItemBold(newProject->GetProjectNode(), true);
     }
 
+    auto oldPrjItr = m_FileSystemWatcherMap.find(oldProject);
+    if (oldPrjItr != m_FileSystemWatcherMap.end())
+    {
+        for (const auto& watcher : oldPrjItr->second)
+        {
+            watcher.watcher->Unbind(wxEVT_FSWATCHER, watcher.handler);
+        }
+
+        m_FileSystemWatcherMap.erase(oldPrjItr);
+    }
+
+    std::vector<FileSystemWatcher> projectWatches;
+    ProjectLoader loader(newProject);
+
+    for (const ProjectGlob& glob : newProject->GetGlobs())
+    {
+        FileSystemWatcher newWatcher;
+        newWatcher.watcher = std::unique_ptr<wxFileSystemWatcher>(new wxFileSystemWatcher());
+        wxFileName fname = wxFileName::DirName(glob.GetPath());
+        if (fname.IsRelative())
+            fname.MakeAbsolute(wxFileName(newProject->GetFilename()).GetPath());
+        if (glob.GetRecursive())
+        {
+            newWatcher.watcher->AddTree(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
+        }
+        else
+        {
+            newWatcher.watcher->Add(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
+        }
+
+        newWatcher.handler = [=](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
+        newWatcher.watcher->Bind(wxEVT_FSWATCHER, newWatcher.handler, wxID_ANY, wxID_ANY, new FileSystemEventObject(newProject, glob));
+        projectWatches.push_back(std::move(newWatcher));
+        refresh |= loader.UpdateGlob(glob);
+    }
+
+    m_FileSystemWatcherMap[newProject] = std::move(projectWatches);
+
     if (refresh)
         RebuildTree();
     if (newProject)
@@ -546,8 +632,52 @@ void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* new
     m_pTree->Refresh();
 }
 
+void ProjectManagerUI::OnFileSystemEvent(wxFileSystemWatcherEvent& evt)
+{
+    if (Manager::IsAppShuttingDown())
+        return;
+
+    FileSystemEventObject* obj = (FileSystemEventObject*) evt.GetEventUserData();
+    int type = evt.GetChangeType();
+    if (type == wxFSW_EVENT_CREATE || type == wxFSW_EVENT_DELETE || type == wxFSW_EVENT_RENAME)
+    {
+        if (std::find(m_globsToUpdate.cbegin(), m_globsToUpdate.cend(), *obj) == m_globsToUpdate.end())
+            m_globsToUpdate.push_back(*obj);
+        if (!m_fileSystemTimer.IsRunning())
+            m_fileSystemTimer.StartOnce(1000);
+    }
+}
+
+void ProjectManagerUI::OnFileSystemTimer(wxTimerEvent& evt)
+{
+    wxStopWatch timer;
+    for (auto itr = m_globsToUpdate.begin(); itr != m_globsToUpdate.end();)
+    {
+        ProjectLoader loader(itr->project);
+        loader.UpdateGlob(itr->glob);
+        itr = m_globsToUpdate.erase(itr);
+    }
+    long time = timer.Time();
+    Manager::Get()->GetLogManager()->Log(wxString::Format("Loading globs took: %f s", time / 1000.0));
+    timer.Start();
+    RebuildTree();
+    time = timer.Time();
+    Manager::Get()->GetLogManager()->Log(wxString::Format("Rebuilding tree took: %f s", time / 1000.0));
+}
+
 void ProjectManagerUI::RemoveProject(cbProject* project)
 {
+    auto prjItr = m_FileSystemWatcherMap.find(project);
+    if (prjItr != m_FileSystemWatcherMap.end())
+    {
+        for (const auto& watcher : prjItr->second)
+        {
+            watcher.watcher->Unbind(wxEVT_FSWATCHER, watcher.handler);
+        }
+
+        m_FileSystemWatcherMap.erase(prjItr);
+    }
+
     m_pTree->Delete(project->GetProjectNode());
 }
 
@@ -662,6 +792,7 @@ void ProjectManagerUI::CreateMenu(wxMenuBar* menuBar)
                 menu->AppendSeparator();
             menu->Append(idMenuAddFile,             _("Add files..."),             _("Add files to the project"));
             menu->Append(idMenuAddFilesRecursively, _("Add files recursively..."), _("Add files recursively to the project"));
+            menu->Append(idMenuManageGlobs,         _("Automatic source paths..."),_("Manage automatic source paths"));
             menu->Append(idMenuRemoveFile,          _("Remove files..."),          _("Remove files from the project"));
 
             menu->AppendSeparator();
@@ -827,9 +958,15 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
                 menu.Append(idMenuRenameFile, _("Rename file..."));
                 menu.Enable(idMenuRenameFile, PopUpMenuOption);
             }
-            menu.AppendSeparator();
-            menu.Append(idMenuRemoveFilePopup, _("Remove file from project"));
-            menu.Enable(idMenuRemoveFilePopup, PopUpMenuOption);
+
+            // project files loaded by a glob can not be removed from the project.
+            // they will added automatically on next reload
+            if (pf->IsGlobValid())
+            {
+                menu.AppendSeparator();
+                menu.Append(idMenuRemoveFilePopup, _("Remove file from project"));
+                menu.Enable(idMenuRemoveFilePopup, PopUpMenuOption);
+            }
         }
 
         // if it is a folder...
@@ -1515,6 +1652,13 @@ void ProjectManagerUI::OnAddFilesToProjectRecursively(wxCommandEvent& event)
     // finally add the files
     pm->AddMultipleFilesToProject(array, prj, targets);
     RebuildTree();
+}
+
+void ProjectManagerUI::OnManageGlobs(cb_unused wxCommandEvent& event)
+{
+    ManageGlobsDlg globManager(Manager::Get()->GetProjectManager()->GetActiveProject(), Manager::Get()->GetAppWindow());
+    PlaceWindow(&globManager);
+    globManager.ShowModal();
 }
 
 void ProjectManagerUI::OnAddFileToProject(wxCommandEvent& event)
@@ -2627,8 +2771,8 @@ void ProjectManagerUI::OnUpdateUI(wxUpdateUIEvent& event)
     else if (event.GetId() == idMenuProjectProperties || event.GetId() == idMenuAddFile
              || event.GetId() == idMenuAddFilesRecursively || event.GetId() == idMenuRemoveFile
              || event.GetId() == idMenuProjectTreeProps || event.GetId() == idMenuAddVirtualFolder
-             || event.GetId() == idMenuDeleteVirtualFolder || event.GetId() == idMenuExecParams
-             || event.GetId() == idMenuProjectNotes)
+             || event.GetId() == idMenuDeleteVirtualFolder || event.GetId() == idMenuManageGlobs
+             || event.GetId() == idMenuProjectNotes || event.GetId() == idMenuExecParams )
     {
         ProjectManager *projectManager = Manager::Get()->GetProjectManager();
         if (!projectManager || (projectManager->GetIsRunning() != nullptr))

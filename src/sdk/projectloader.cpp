@@ -28,6 +28,7 @@
 
 #include <wx/dir.h>
 #include <string>
+#include <sstream>
 
 #include <algorithm>
 #include "filefilters.h"
@@ -920,7 +921,7 @@ void ProjectLoader::DoEnvironment(TiXmlElement* parentNode, CompileOptionsBase* 
 
 namespace
 {
-wxString makePathAbsoluteIfNeeded(const wxString& path, const wxString& basePath)
+wxString MakePathAbsoluteIfNeeded(const wxString& path, const wxString& basePath)
 {
     wxString absolute = path;
     wxFileName fname = path;
@@ -932,33 +933,98 @@ wxString makePathAbsoluteIfNeeded(const wxString& path, const wxString& basePath
     return absolute;
 }
 
-wxString makePathRelativeIfNeeded(const wxString& path, const wxString& basePath)
+bool IsRelative(wxString path)
 {
-    wxString relative = path;
-    wxFileName fname = path;
-    if (fname.IsAbsolute())
-    {
-        fname.MakeRelativeTo(basePath);
-        relative = fname.GetFullPath();
-    }
-    return relative;
+    return !(path.GetChar(1) == ':' || path.GetChar(0) == '/');
 }
 
-wxArrayString makePathsRelativeIfNeeded(const wxArrayString& paths, const wxString& basePath)
+
+void SplitPath(wxString path, std::vector<std::string>& out)
 {
+    path.Replace("\\","/");
+    std::stringstream f(path.ToStdString());
+    std::string s;
+    while (std::getline(f, s, '/')) {
+        out.push_back(s);
+    }
+}
+
+
+wxString MakePathRelativeIfNeeded(const wxString& path, const wxString& basePath)
+{
+    // This code is inspired heavily from the boost::filesystem::relative function.
+    // This code is used instead of the wxWidgets internal function, because it is
+    // ~1000 times faster on my machine
+    // using std::string vs wxString makes this function 24x faster
+    // ! WE DO NOT HANDLE SYMLINKS !
+
+    if (IsRelative(path))
+        return path;
+
+    std::string pathSeparator;
+    if (platform::windows)
+        pathSeparator = "\\";
+    else
+        pathSeparator = "/";
+
+
+    std::vector<std::string> vPath;
+    std::vector<std::string> vBasePath;
+
+    SplitPath(path, vPath);
+    SplitPath(basePath, vBasePath);
+
+    std::vector<std::string>::iterator b = vPath.begin(), e = vPath.end(), base_b = vBasePath.begin(), base_e = vBasePath.end();
+    std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> mm = std::mismatch(b, e, base_b);
+    if (mm.first == b && mm.second == base_b)
+      return path;
+    if (mm.first == e && mm.second == base_e)
+      return ".";
+
+    std::ptrdiff_t n = 0;
+    for (; mm.second != base_e; ++mm.second)
+    {
+      std::string const& p = *mm.second;
+      if (p == "..")
+        --n;
+      else if (!p.empty() && p != ".")
+        ++n;
+    }
+    if (n < 0)
+      return path;
+    if (n == 0 && (mm.first == e || mm.first->empty()))
+      return ".";
+
+    std::string tmp;
+    for (; n > 0; --n)
+      tmp += ".." + pathSeparator;
+    for (; mm.first != e; ++mm.first)
+    {
+        if (tmp != "")
+            tmp += pathSeparator;
+        tmp += *mm.first;
+    }
+
+    return wxString(tmp);
+}
+
+wxArrayString MakePathsRelativeIfNeeded(const wxArrayString& paths, const wxString& basePath)
+{
+    wxStopWatch timer;
     wxArrayString relatives = paths;
-    for(std::size_t index = 0U; index < paths.Count(); ++index)
+    for (std::size_t index = 0U; index < paths.Count(); ++index)
     {
         wxString& path = relatives[index];
-        path = makePathRelativeIfNeeded(path, basePath);
+        wxString ret = MakePathRelativeIfNeeded(path, basePath);
+        path = ret;
     }
     return relatives;
 }
 
-std::vector<wxString> filterOnWildcards(const wxArrayString& files, const wxString& wildCard)
+std::vector<wxString> FilterOnWildcards(const wxArrayString& files, const wxString& wildCard)
 {
     wxString wild = wildCard;
-    if(wild.IsEmpty())
+    if (wild.IsEmpty())
     {
         FilesGroupsAndMasks fgm;
         for (unsigned i = 0; i < fgm.GetGroupsCount(); ++i)
@@ -969,7 +1035,7 @@ std::vector<wxString> filterOnWildcards(const wxArrayString& files, const wxStri
 
     const wxArrayString wilds = GetArrayFromString(wild, ";");
     std::vector<wxString> finalFiles;
-    for(std::size_t file = 0; file < files.Count(); ++file)
+    for (std::size_t file = 0; file < files.Count(); ++file)
     {
         const wxString& fileName = files[file];
         bool MatchesWildCard = false;
@@ -981,7 +1047,7 @@ std::vector<wxString> filterOnWildcards(const wxArrayString& files, const wxStri
                 break;
             }
         }
-        if(MatchesWildCard)
+        if (MatchesWildCard)
         {
             finalFiles.push_back(fileName);
         }
@@ -989,22 +1055,116 @@ std::vector<wxString> filterOnWildcards(const wxArrayString& files, const wxStri
     return finalFiles;
 }
 
-std::vector<wxString> filesInDir(const wxString& directory, const wxString& wildCard, bool recursive, const wxString& basePath)
+void LogTime(const wxString& message, long time)
 {
-    const wxString directoryPath = makePathAbsoluteIfNeeded(directory, basePath);
+    if(time > 100)
+        Manager::Get()->GetLogManager()->Log(wxString::Format(message, time / 1000.0) );
+}
+
+std::vector<wxString> FilesInDir(const wxString& directory, const wxString& wildCard, bool recursive, const wxString& basePath)
+{
+    const wxString directoryPath = MakePathAbsoluteIfNeeded(directory, basePath);
     std::vector<wxString> files;
 
     int flags = wxDIR_FILES;
-    if(recursive)
+    if (recursive)
     {
         flags = flags | wxDIR_DIRS;
     }
+    wxStopWatch timer;
     wxArrayString filesUnfiltered;
     wxDir::GetAllFiles(directoryPath, &filesUnfiltered, wxEmptyString, flags);
-    filesUnfiltered = makePathsRelativeIfNeeded(filesUnfiltered, basePath);
-    return filterOnWildcards(filesUnfiltered, wildCard);
+    LogTime("wxDir::GetAllFiles %f s", timer.Time());
+    timer.Start();
+    filesUnfiltered = MakePathsRelativeIfNeeded(filesUnfiltered, basePath);
+    LogTime("makePathsRelativeIfNeeded %f s", timer.Time());
+    timer.Start();
+    std::vector<wxString> ret = FilterOnWildcards(filesUnfiltered, wildCard);
+    LogTime("filterOnWildcards %f s", timer.Time());
+    return ret;
 }
+
 } // namespace
+
+bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
+{
+    wxStopWatch timer;
+    bool modified = false;
+    const wxString directory = glob.GetPath();
+    const wxString wildCard = glob.GetWildCard();
+    const bool isRecursive = glob.GetRecursive();
+    std::vector<wxString> globFiles = FilesInDir(directory, wildCard, isRecursive, m_pProject->GetBasePath());
+    LogTime("Loading directories took %f s", timer.Time());
+    timer.Start();
+    // Sort the paths so we can use binary_search
+    std::sort(globFiles.begin(), globFiles.end());
+    LogTime("Sorting took %f s", timer.Time());
+    timer.Start();
+    std::vector<ProjectFile*> projectGlobFiles;     // We have to search in this files if the glob is present
+    std::vector<ProjectFile*> projectFilesToRemove; // This files are in this glob, but are no longer on the file system
+    // First search for valid project files (glob id) and also for project files we have to remove
+    for (ProjectFile* file : m_pProject->GetFilesList())
+    {
+        if (file->globId == glob.GetId())
+        {
+            bool fileExists = std::binary_search(globFiles.cbegin(), globFiles.cend(), file->relativeFilename);
+            if (!fileExists)
+                projectFilesToRemove.push_back(file);
+            else
+                projectGlobFiles.push_back(file);
+        }
+    }
+    LogTime("First loop took %f s", timer.Time());
+    timer.Start();
+    if(projectFilesToRemove.size() > 0)
+        modified = true;
+    // Now remove all files from the project that are not present on the filesystem
+    for(ProjectFile* pf :  projectFilesToRemove)
+        m_pProject->RemoveFile(pf);
+    LogTime("Removing took %f s", timer.Time());
+    timer.Start();
+    // Now lets sort the valid project files for a fast binary search
+    std::sort(projectGlobFiles.begin(), projectGlobFiles.end(),[](ProjectFile *a,ProjectFile *b){ return a->relativeFilename < b->relativeFilename; } );
+    LogTime("Second sorting took %f s", timer.Time());
+    timer.Start();
+    // We have to define a custom comparator, to compare wxString <-> ProjectFile
+    struct Comparator
+    {
+       bool operator() ( const ProjectFile* lhs, const wxString& rhs )
+       {
+          return lhs->relativeFilename < rhs;
+       }
+       bool operator() ( const wxString& lhs, const ProjectFile* rhs )
+       {
+          return lhs < rhs->relativeFilename;
+       }
+    };
+
+    // Now search for the new files, and add them
+    for (const wxString& file : globFiles)
+    {
+        wxStopWatch searchTimer;
+        searchTimer.Start();
+        bool sear = std::binary_search(projectGlobFiles.cbegin(), projectGlobFiles.cend(), file, Comparator());
+        if (!sear)
+        {
+            ProjectFile* pf = m_pProject->AddFile(-1, UnixFilename(file));
+            if (!pf)
+                Manager::Get()->GetLogManager()->DebugLog(_T("Can't load file ") + file);
+            else
+            {
+                modified = true;
+                const TiXmlElement dummyUnitWithoutOptions("Unit");
+                DoUnitOptions(&dummyUnitWithoutOptions, pf);
+                pf->globId = glob.GetId();
+            }
+        }
+    }
+    LogTime("Adding took %f s", timer.Time() );
+    timer.Start();
+
+    return modified;
+}
 
 void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
 {
@@ -1013,41 +1173,38 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
 
     int count = 0;
 
-    // TODO : we need to store all the globs, so that at save time we can filter files out, globs derived ones should not be stored as <Unit ... >
-    std::vector<cbProject::Glob> unitsGlobs;
-
     const std::string UnitsGlobLabel("UnitsGlob");
     const TiXmlElement* unitsGlob = parentNode->FirstChildElement(UnitsGlobLabel.c_str());
     while (unitsGlob)
     {
         const wxString directory = cbC2U(unitsGlob->Attribute("directory"));
         const wxString wildCard = cbC2U(unitsGlob->Attribute("wildcard"));
+        const wxString id = cbC2U(unitsGlob->Attribute("id"));
 
-        int recursive = 1;
+        int recursive = 0;
         unitsGlob->QueryIntAttribute("recursive", &recursive);
 
         if (!directory.IsEmpty())
         {
-            const bool isRecursive = (recursive)?true:false;
-            unitsGlobs.push_back(cbProject::Glob(directory, wildCard, isRecursive));
-            std::vector<wxString> files = filesInDir(directory, wildCard, isRecursive, m_pProject->GetBasePath());
-            for (std::size_t index = 0; index < files.size(); ++index)
+            const bool isRecursive = (recursive == 1) ? true:false;
+
+            ProjectGlob glob;
+            long long idNr = -0;
+            if (!id.ToLongLong(&idNr))
             {
-                const wxString filename = files[index];
-                ProjectFile* file = m_pProject->AddFile(-1, UnixFilename(filename));
-                if (!file)
-                    Manager::Get()->GetLogManager()->DebugLog("Can't load file " + filename);
-                else
-                {
-                    ++count;
-                    const TiXmlElement dummyUnitWithoutOptions("Unit");
-                    DoUnitOptions(&dummyUnitWithoutOptions, file);
-                }
+                  Manager::Get()->GetLogManager()->DebugLog(_T("Can't read glob id for glob ") + directory);
+                  glob = ProjectGlob(directory, wildCard, isRecursive);
             }
+            else
+            {
+                glob = ProjectGlob((GlobId) idNr, directory, wildCard, isRecursive);
+            }
+
+            m_pProject->AddGlob(glob);
         }
         unitsGlob = unitsGlob->NextSiblingElement(UnitsGlobLabel.c_str());
     }
-    m_pProject->SetGlobs(unitsGlobs);
+
 
     const TiXmlElement* unit = parentNode->FirstChildElement("Unit");
     while (unit)
@@ -1061,7 +1218,8 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
             else
             {
                 ++count;
-                DoUnitOptions(unit, file);
+                if (!DoUnitOptions(unit, file))
+                    m_pProject->RemoveFile(file);
             }
         }
 
@@ -1071,7 +1229,7 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%d files loaded", count));
 }
 
-void ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* file)
+bool ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* file)
 {
     int tempval = 0;
     bool foundCompile = false;
@@ -1134,6 +1292,20 @@ void ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* f
                 noTarget = true;
         }
 
+        // Loading project globs
+        if (node->Attribute("glob"))
+        {
+            wxString id = cbC2U(node->Attribute("glob"));
+            ProjectGlob glob = m_pProject->SearchGlob(id);
+            if (!glob.IsValid())
+            {
+                Manager::Get()->GetLogManager()->DebugLog(F(_T("Could not find project glob with id %s for file %s"), id, file->GetBaseName().wx_str()));
+                return false;
+            }
+            else
+                file->globId = glob.GetId();
+        }
+
         node = node->NextSiblingElement("Option");
     }
 
@@ -1157,6 +1329,8 @@ void ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* f
             file->AddBuildTarget(m_pProject->GetBuildTarget(i)->GetTitle());
         }
     }
+
+    return true;
 }
 
 // convenience function, used in Save()
@@ -1550,21 +1724,16 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
             AddElement(node, "Mode", "after", wxString("always"));
     }
 
-    std::vector<wxString> filesThrougGlobs;
-    const std::vector<cbProject::Glob>& unitGlobs = m_pProject->GetGlobs();
-    for (std::size_t index = 0; index < unitGlobs.size(); ++index)
-    {
-        const cbProject::Glob& glob = unitGlobs[index];
-        if (TiXmlElement* unitsGlobNode = AddElement(prjnode, "UnitsGlob", "directory", glob.m_Path))
-        {
-            unitsGlobNode->SetAttribute("recursive", glob.m_Recursive ? "1" : "0");
-            unitsGlobNode->SetAttribute("wildcard", cbU2C(glob.m_WildCard));
-        }
-        std::vector<wxString> files = filesInDir(glob.m_Path, glob.m_WildCard, glob.m_Recursive, m_pProject->GetBasePath());
-        std::copy(files.begin(), files.end(), std::back_inserter(filesThrougGlobs));
-    }
 
     ProjectFileArray pfa(ProjectFile::CompareProjectFiles);
+
+    for (const ProjectGlob& glob : m_pProject->GetGlobs())
+    {
+        TiXmlElement *element = AddElement(prjnode, "UnitsGlob", "directory", glob.GetPath());
+        element->SetAttribute("wildcard", glob.GetWildCard());
+        element->SetAttribute("recursive", glob.GetRecursive() ? 1 : 0);
+        element->SetAttribute("id", wxString::Format("%lld", glob.GetId()));
+    }
 
     for (FilesList::iterator it = m_pProject->GetFilesList().begin(); it != m_pProject->GetFilesList().end(); ++it)
     {
@@ -1573,10 +1742,6 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
         // do not save auto-generated files
         if (f->AutoGeneratedBy())
             continue;
-
-        if (std::find(filesThrougGlobs.begin(), filesThrougGlobs.end(), f->relativeFilename) != filesThrougGlobs.end())
-            continue;
-
         // do not save project files that do not belong in the target we 're exporting
         if (onlytgt && (onlytgt->GetFilesList().find(f) == onlytgt->GetFilesList().end()))
             continue;
@@ -1616,6 +1781,11 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
 
         if (!f->virtual_path.IsEmpty())
             AddElement(unitnode, "Option", "virtualFolder", UnixFilename(f->virtual_path, wxPATH_UNIX));
+
+        if (f->IsGlobValid())
+        {
+            AddElement(unitnode, "Option", "glob", f->globId);
+        }
 
         // loop and save custom build commands
         for (pfCustomBuildMap::iterator it = f->customBuild.begin(); it != f->customBuild.end(); ++it)

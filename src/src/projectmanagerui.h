@@ -8,6 +8,9 @@
  */
 
 #include "projectmanager.h"
+#include <wx/fswatcher.h>
+#include <wx/timer.h>
+#include "cbproject.h"
 
 #include <wx/dnd.h>
 #include <wx/dataobj.h>
@@ -176,6 +179,8 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void OnSetActiveProject(wxCommandEvent& event);
         void OnAddFilesToProjectRecursively(wxCommandEvent& event);
         void OnAddFileToProject(wxCommandEvent& event);
+        void OnManageGlobs(wxCommandEvent& event);
+        void OnManageGlobsContext(cb_unused wxCommandEvent& event);
         void OnRemoveFileFromProject(wxCommandEvent& event);
         void OnRenameFile(wxCommandEvent& event);
         void OnSaveProject(wxCommandEvent& event);
@@ -207,6 +212,7 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void OnKeyDown(wxTreeEvent& event);
 
 
+
         /** Move a project up in the project manager tree. This effectively
           * re-orders the projects build order.
           * @param project The project to move up.
@@ -231,7 +237,33 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void BuildProjectTree(cbProject* project, cbTreeCtrl* tree, const wxTreeItemId& root,
                               int ptvs, FilesGroupsAndMasks* fgam);
 
+        /** Reload the File system watcher for the project prj **/
+        void ReloadFileSystemWatcher(cbProject* prj);
+
     private:
+
+        struct FileSystemWatcher
+        {
+            std::unique_ptr<wxFileSystemWatcher> watcher;
+            std::function<void(wxFileSystemWatcherEvent&)> handler;
+        };
+
+        struct FileSystemEventObject : public wxObject
+        {
+            FileSystemEventObject(cbProject* pj,ProjectGlob gl) : project(pj), glob(gl) {};
+            cbProject* project;
+            ProjectGlob glob;
+
+            bool operator==(const FileSystemEventObject& rhs) const
+            {
+                return project == rhs.project && glob == rhs.glob;
+            }
+        };
+
+        void OnFileSystemEvent(wxFileSystemWatcherEvent& evt);
+        void OnFileSystemTimer(wxTimerEvent& evt);
+        std::vector<FileSystemEventObject> m_globsToUpdate;
+
         cbAuiNotebook*       m_pNotebook;
         cbTreeCtrl*          m_pTree;
         wxTreeItemId         m_TreeRoot;
@@ -241,6 +273,8 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         wxArrayTreeItemIds   m_DraggingSelection;
         wxTreeItemId         m_RightClickItem;
         bool                 m_isCheckingForExternallyModifiedProjects;
+        std::map<cbProject*, std::vector<FileSystemWatcher>> m_FileSystemWatcherMap;
+        wxTimer              m_fileSystemTimer;
 
     private:
         DECLARE_EVENT_TABLE()
@@ -293,4 +327,6 @@ class BatchProjectManagerUI : public cbProjectManagerUI
         void ConfigureProjectDependencies(cb_unused cbProject* base,
                                           cb_unused wxWindow *parent) override {}
         void SwitchToProjectsPage() override {}
+        void ReloadFileSystemWatcher(cbProject* prj) override {}
 };
+

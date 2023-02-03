@@ -1747,7 +1747,8 @@ void EditorManager::OnPageContextMenu(wxAuiNotebookEvent& event)
             ProjectFile *projectFile = ed->GetProjectFile();
             if (projectFile)
             {
-                pop->Append(idNBRemoveFileFromProject, _("Remove file from project"));
+                if (!projectFile->IsGlobValid())
+                    pop->Append(idNBRemoveFileFromProject, _("Remove file from project"));
                 pop->Append(idNBShowFileInTree, _("Show file in the project tree"));
             }
             else

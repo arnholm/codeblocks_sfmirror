@@ -738,6 +738,20 @@ namespace ScriptBindings
         return 1;
     }
 
+    SQInteger cbProject_AddGlob(HSQUIRRELVM v)
+    {
+
+        ExtractParams4<cbProject*, const wxString*, const wxString*, bool>  extractor(v);
+        if (!extractor.Process("cbProject::AddGlob"))
+            return extractor.ErrorMessage();
+
+        ProjectGlob gl = ProjectGlob(*extractor.p1, *extractor.p2, extractor.p3);
+        extractor.p0->AddGlob(gl);
+
+        return SQ_OK;
+    }
+
+
     SQInteger cbProject_GetBuildTarget(HSQUIRRELVM v)
     {
         // this, index or targetName
@@ -2177,6 +2191,7 @@ namespace ScriptBindings
         wxString *result = &const_cast<wxString&>(extractor.p0->GetFolder());
         return ConstructAndReturnNonOwnedPtr(v, result);
     }
+
 
     SQInteger FileTreeData_SetKind(HSQUIRRELVM v)
     {

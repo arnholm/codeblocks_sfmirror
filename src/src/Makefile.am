@@ -45,12 +45,14 @@ codeblocks_SOURCES = app.cpp \
 			dlgaboutplugin.cpp \
 			editkeywordsdlg.cpp \
 			editorconfigurationdlg.cpp \
+			editprojectglobsdlg.cpp \
 			environmentsettingsdlg.cpp \
 			examinememorydlg.cpp \
 			find_replace.cpp \
 			goto_file.cpp \
 			infopane.cpp \
 			main.cpp \
+			manageglobsdlg.cpp \
 			notebookstyles.cpp \
 			printdlg.cpp \
 			projectmanagerui.cpp \
@@ -84,12 +86,14 @@ noinst_HEADERS = app.h \
 			dlgaboutplugin.h \
 			editkeywordsdlg.h \
 			editorconfigurationdlg.h \
+			editprojectglobsdlg.h \
 			environmentsettingsdlg.h \
 			examinememorydlg.h \
 			find_replace.h \
 			goto_file.h \
 			infopane.h \
 			main.h \
+			manageglobsdlg.h \
 			notebookstyles.h \
 			printdlg.h \
 			projectmanagerui.h \

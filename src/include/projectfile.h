@@ -17,8 +17,11 @@
 #include <wx/hashset.h>
 
 class cbProject;
+class ProjectGlob;
 class ProjectBuildTarget;
 class pfDetails;
+
+
 
 WX_DECLARE_HASH_MAP(ProjectBuildTarget*, pfDetails*, wxPointerHash, wxPointerEqual, PFDMap);
 
@@ -190,6 +193,11 @@ class DLLIMPORT ProjectFile
         /** An array of strings, containing the names of all the build targets this file belongs to. */
         wxArrayString buildTargets;
 
+        /** If this file is part of a project glob, the id for glob will be stored here, InvalidGlobId otherwise **/
+        GlobId globId;
+
+        bool IsGlobValid() const { return globId != InvalidGlobId; }
+
         /** A string that represents the virtual folder this file will appear in.
           * This is a relative path which doesn't have to exist in the filesystem
           * hierarchy. */
@@ -270,3 +278,4 @@ class pfDetails
 };
 
 #endif // PROJECTFILE_H
+
