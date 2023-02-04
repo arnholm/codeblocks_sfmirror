@@ -751,7 +751,6 @@ namespace ScriptBindings
         return SQ_OK;
     }
 
-
     SQInteger cbProject_GetBuildTarget(HSQUIRRELVM v)
     {
         // this, index or targetName
@@ -2191,7 +2190,6 @@ namespace ScriptBindings
         wxString *result = &const_cast<wxString&>(extractor.p0->GetFolder());
         return ConstructAndReturnNonOwnedPtr(v, result);
     }
-
 
     SQInteger FileTreeData_SetKind(HSQUIRRELVM v)
     {

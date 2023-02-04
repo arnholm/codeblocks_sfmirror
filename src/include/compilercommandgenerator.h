@@ -41,7 +41,7 @@ class DLLIMPORT CompilerCommandGenerator
             wxString *macro;
             bool processedCppFile = false;
 
-            explicit Result(wxString *macro) : macro(macro) {}
+            explicit Result(wxString *_macro) : macro(_macro) {}
         };
 
         struct Params

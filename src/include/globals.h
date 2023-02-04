@@ -519,7 +519,6 @@ constexpr int cbCountOf(const T (&)[N])
     return N;
 }
 
-
 typedef int64_t GlobId;                 /// Typedef for project globs id (see cbproject.h)
 static const GlobId InvalidGlobId = -1; /// Invalid porject glob id (see cbproject.h)
 

@@ -1057,9 +1057,9 @@ struct MemberBool : MemberBase<ClassType>
 {
     using MemberType = bool ClassType::*;
 
-    MemberBool(const SQChar *name, MemberType memberPtr) :
-        MemberBase<ClassType>(name),
-        memberPtr(memberPtr)
+    MemberBool(const SQChar *_name, MemberType _memberPtr) :
+        MemberBase<ClassType>(_name),
+        memberPtr(_memberPtr)
     {
     }
 
@@ -1086,9 +1086,9 @@ struct MemberInt : MemberBase<ClassType>
 {
     using MemberType = int ClassType::*;
 
-    MemberInt(const SQChar *name, MemberType memberPtr) :
-        MemberBase<ClassType>(name),
-        memberPtr(memberPtr)
+    MemberInt(const SQChar *_name, MemberType _memberPtr) :
+        MemberBase<ClassType>(_name),
+        memberPtr(_memberPtr)
     {
     }
 
@@ -1115,9 +1115,9 @@ struct MemberUInt : MemberBase<ClassType>
 {
     using MemberType = UIntType ClassType::*;
 
-    MemberUInt(const SQChar *name, MemberType memberPtr) :
-        MemberBase<ClassType>(name),
-        memberPtr(memberPtr)
+    MemberUInt(const SQChar *_name, MemberType _memberPtr) :
+        MemberBase<ClassType>(_name),
+        memberPtr(_memberPtr)
     {
     }
 
@@ -1148,9 +1148,9 @@ struct MemberFloat : MemberBase<ClassType>
 {
     using MemberType = float ClassType::*;
 
-    MemberFloat(const SQChar *name, MemberType memberPtr) :
-        MemberBase<ClassType>(name),
-        memberPtr(memberPtr)
+    MemberFloat(const SQChar *_name, MemberType _memberPtr) :
+        MemberBase<ClassType>(_name),
+        memberPtr(_memberPtr)
     {
     }
 
@@ -1175,9 +1175,9 @@ struct MemberRef : MemberBase<ClassType>
 {
     using MemberType = RefType ClassType::*;
 
-    MemberRef(const SQChar *name, MemberType memberPtr) :
-        MemberBase<ClassType>(name),
-        memberPtr(memberPtr)
+    MemberRef(const SQChar *_name, MemberType _memberPtr) :
+        MemberBase<ClassType>(_name),
+        memberPtr(_memberPtr)
     {
     }
 

@@ -30,7 +30,6 @@
     #include "configmanager.h"
     #include "editormanager.h"
     #include "logmanager.h"
-
 #endif
 
 #include <unordered_map>
@@ -423,7 +422,6 @@ ProjectManagerUI::ProjectManagerUI() :
     // Constructors and destructors must always follow the LIFO rule:
     // Last in, first out.
     Manager::Get()->GetAppWindow()->PushEventHandler(this);
-
 
     m_fileSystemTimer.Bind(wxEVT_TIMER, &ProjectManagerUI::OnFileSystemTimer, this);
 }
@@ -3829,8 +3827,7 @@ void ProjectManagerUI::BuildProjectTree(cbProject* project, cbTreeCtrl* tree,
 
     // add our project's root item
     FileTreeData* ftd = new FileTreeData(project, FileTreeData::ftdkProject);
-    project->SetProjectNode(tree->AppendItem(
-                                             root, project->GetTitle(), prjIdx, prjIdx, ftd));
+    project->SetProjectNode(tree->AppendItem(root, project->GetTitle(), prjIdx, prjIdx, ftd));
     wxTreeItemId  others, generated;
     others = generated = project->GetProjectNode();
     wxTreeItemId* pGroupNodes = nullptr; // file group nodes (if enabled)

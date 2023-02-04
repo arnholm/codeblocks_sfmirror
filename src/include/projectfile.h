@@ -21,8 +21,6 @@ class ProjectGlob;
 class ProjectBuildTarget;
 class pfDetails;
 
-
-
 WX_DECLARE_HASH_MAP(ProjectBuildTarget*, pfDetails*, wxPointerHash, wxPointerEqual, PFDMap);
 
 struct pfCustomBuild
@@ -278,4 +276,3 @@ class pfDetails
 };
 
 #endif // PROJECTFILE_H
-
