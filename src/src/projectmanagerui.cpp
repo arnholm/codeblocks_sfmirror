@@ -2688,15 +2688,10 @@ void ProjectManagerUI::OnRenameVirtualFolder(cb_unused wxCommandEvent& event)
     if (!prj)
         return;
 
-    wxString oldName(ftd->GetFolder());
-    if (oldName.EndsWith(wxFILE_SEP_PATH))
-        oldName.RemoveLast(1);
-
-    oldName = oldName.AfterLast(wxFILE_SEP_PATH);
     wxTextEntryDialog dlg(Manager::Get()->GetAppWindow(),
                           _("Please enter the new name for the virtual folder:"),
                           _("Rename Virtual Folder"),
-                          oldName,
+                          m_pTree->GetItemText(sel),
                           wxOK | wxCANCEL | wxCENTRE);
 
     if (dlg.ShowModal() == wxID_OK)
@@ -3675,11 +3670,12 @@ static bool ProjectHasVirtualFolder(const wxString &folderName, const wxArrayStr
         if (virtualFolders[i].StartsWith(folderName))
         {
             cbMessageBox(_("A virtual folder with the same name already exists."),
-                        _("Error"), wxICON_WARNING);
-            return false;
+                         _("Error"), wxICON_WARNING);
+            return true;
         }
     }
-    return true;
+
+    return false;
 }
 
 static bool ProjectVirtualFolderAdded(cbProject* project, wxTreeCtrl* tree,
@@ -3693,7 +3689,7 @@ static bool ProjectVirtualFolderAdded(cbProject* project, wxTreeCtrl* tree,
         foldername << wxFILE_SEP_PATH;
 
     const wxArrayString &virtualFolders = project->GetVirtualFolders();
-    if (!ProjectHasVirtualFolder(foldername, virtualFolders))
+    if (ProjectHasVirtualFolder(foldername, virtualFolders))
         return false;
     project->AppendUniqueVirtualFolder(foldername);
 
@@ -3741,7 +3737,7 @@ static void ProjectVirtualFolderDeleted(cbProject* project, wxTreeCtrl* tree, wx
 static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wxTreeItemId node,
                                         const wxString& new_name)
 {
-    if (new_name.IsEmpty())
+    if (new_name.empty())
         return false;
 
     if (new_name.find_first_of(";/\\") != std::string::npos)
@@ -3756,7 +3752,8 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
         return false;
 
     // is it a different name?
-    if (tree->GetItemText(node) == new_name)
+    const wxString old_name(tree->GetItemText(node));
+    if (old_name == new_name)
         return false;
 
     // if no data associated with it, disallow
@@ -3770,9 +3767,7 @@ static bool ProjectVirtualFolderRenamed(cbProject* project, wxTreeCtrl* tree, wx
 
     const wxString old_foldername(GetRelativeFolderPath(tree, node));
     const wxString new_foldername(GetRelativeFolderPath(tree, tree->GetItemParent(node)) + new_name + wxFILE_SEP_PATH);
-
-    const wxArrayString &virtualFolders = project->GetVirtualFolders();
-    if (!ProjectHasVirtualFolder(new_foldername, virtualFolders))
+    if (ProjectHasVirtualFolder(new_foldername, project->GetVirtualFolders()))
         return false;
 
     project->ReplaceVirtualFolder(old_foldername, new_foldername);
