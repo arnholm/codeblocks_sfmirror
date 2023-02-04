@@ -20,7 +20,7 @@ class ClangLocator
         wxArrayString GetEnvPaths() const;
         std::size_t ScanForFiles(wxString path, wxArrayString& foundFiles, wxString mask);
         bool ReadMSWInstallLocation(const wxString& regkey, wxString& installPath, wxString& llvmVersion);
-        wxString GetClangdVersion(const wxString& clangBinary);
+        wxString GetClangdVersion(const wxString& clangBinary, wxString& versionNative);
         wxString GetClangdVersionID(const wxString& clangdBinary);
 
         // PATH environment variable separator

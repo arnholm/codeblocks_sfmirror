@@ -580,9 +580,16 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)       //
     }
 
     // Verify clangd version is above 12
-    wxString clangdVersion = clangLocator.GetClangdVersion(fnClangdPath.GetFullPath());
+    wxString versionNative;
+    wxString clangdVersion = clangLocator.GetClangdVersion(fnClangdPath.GetFullPath(), versionNative);
     //eg., clangd version 13.0,0
     clangdVersion = clangdVersion.BeforeFirst('.').AfterLast(' ');
+    if (clangdVersion.IsEmpty())
+    {
+        cbMessageBox("clangd version could not be determined from string '" + versionNative + "'");
+        return;
+    }
+
     int versionNum = std::stoi(clangdVersion.ToStdString());
     if (versionNum < 13)
     {

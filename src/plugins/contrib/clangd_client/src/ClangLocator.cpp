@@ -286,9 +286,18 @@ wxString ClangLocator::Locate_ClangdDir()
     {
         // clangd must be version 13 or newer
         // Version 12 crashes when changing lines at bottom of .h files
-        wxString version = GetClangdVersion(fnClangdPath.GetFullPath());
-        //eg., clangd version 10.0,0
+        wxString versionNative;
+        wxString version = GetClangdVersion(fnClangdPath.GetFullPath(), versionNative);
+        // eg., clangd version 10.0,0
         version = version.BeforeFirst('.').AfterLast(' ');
+        if (version.IsEmpty())
+        {
+            wxString msg = _("clangd version could not be determined from string '" + versionNative + "'");
+            cbMessageBox(msg, _("Error"));
+            pLogMgr->LogError(msg);
+            return wxString();
+        }
+
         int versionNum = std::stoi(version.ToStdString());
         if (versionNum < 13)
         {
@@ -364,7 +373,8 @@ bool ClangLocator::ReadMSWInstallLocation(const wxString& regkey, wxString& inst
     wxRegKey reg(wxRegKey::HKLM, regkey);
     installPath.Clear();
     llvmVersion.Clear();
-    if(reg.Exists()) {
+    if (reg.Exists())
+    {
         reg.QueryValue("DisplayIcon", installPath);
         reg.QueryValue("DisplayVersion", llvmVersion);
     }
@@ -374,15 +384,17 @@ bool ClangLocator::ReadMSWInstallLocation(const wxString& regkey, wxString& inst
 #endif
 }
 // ----------------------------------------------------------------------------
-wxString ClangLocator::GetClangdVersion(const wxString& clangBinary)
+wxString ClangLocator::GetClangdVersion(const wxString& clangBinary, wxString& versionNative)
 // ----------------------------------------------------------------------------
 {
     wxString command;
     wxArrayString stdoutArr;
     command << clangBinary << " --version";
     ProcUtils::SafeExecuteCommand(command, stdoutArr);
-    if(not stdoutArr.IsEmpty()) {
-        wxString versionString = stdoutArr.Item(0);
+    if (not stdoutArr.IsEmpty())
+    {
+        versionNative = stdoutArr.Item(0);
+        wxString versionString(versionNative);
         if (wxFound(versionString.Find("(")) )
         {
             //versionString = versionString.AfterLast('(');
