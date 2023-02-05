@@ -1063,13 +1063,22 @@ void cbProject::RemoveVirtualFolders(const wxString &folder)
     SetModified(true);
 }
 
-void cbProject::ReplaceVirtualFolder(const wxString &oldFolder, const wxString &newFolder)
+void cbProject::ReplaceVirtualFolder(const wxString& oldFolder, const wxString& newFolder)
 {
-    int idx = m_VirtualFolders.Index(oldFolder);
-    if (idx != wxNOT_FOUND)
-        m_VirtualFolders[idx] = newFolder;
-    else
+    bool found = false;
+    for (wxString& folder : m_VirtualFolders)
+    {
+        if (folder.StartsWith(oldFolder))
+        {
+            folder.Replace(oldFolder, newFolder);
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
         m_VirtualFolders.Add(newFolder);
+    }
 
     // now loop all project files and rename this virtual folder
     for (FilesList::iterator it = m_Files.begin(); it != m_Files.end(); ++it)
@@ -1084,7 +1093,6 @@ void cbProject::ReplaceVirtualFolder(const wxString &oldFolder, const wxString &
 
     SetModified(true);
 }
-
 
 void cbProject::SetVirtualFolders(const wxArrayString& folders)
 {
