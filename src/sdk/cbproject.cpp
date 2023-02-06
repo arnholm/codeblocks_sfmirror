@@ -1070,7 +1070,7 @@ void cbProject::ReplaceVirtualFolder(const wxString& oldFolder, const wxString& 
     {
         if (folder.StartsWith(oldFolder))
         {
-            folder.Replace(oldFolder, newFolder);
+            folder.Replace(oldFolder, newFolder, false);
             found = true;
         }
     }
@@ -1087,7 +1087,7 @@ void cbProject::ReplaceVirtualFolder(const wxString& oldFolder, const wxString& 
         if (f && !f->virtual_path.IsEmpty())
         {
             if (f->virtual_path.StartsWith(oldFolder))
-                f->virtual_path.Replace(oldFolder, newFolder);
+                f->virtual_path.Replace(oldFolder, newFolder, false);
         }
     }
 
