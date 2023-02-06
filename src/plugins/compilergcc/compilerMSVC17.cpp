@@ -66,8 +66,8 @@ AutoDetectResult CompilerMSVC17::AutoDetectInstallationDir()
         wxString Programs = _T("C:\\Program Files");
         // what's the "Program Files" location
         wxGetEnv(_T("ProgramFiles"), &Programs);
-        m_MasterPath = Programs + _T("\\Microsoft Visual Studio 17.0\\VC");
-        idepath = Programs + _T("\\Microsoft Visual Studio 17.0\\Common7\\IDE");
+        m_MasterPath = Programs + _T("\\Microsoft Visual Studio\\2017\\WDExpress\\VC");
+        idepath = Programs + _T("\\Microsoft Visual Studio\\2017\\WDExpress\\Common7\\IDE");
     }
 
     if (!m_MasterPath.IsEmpty())
