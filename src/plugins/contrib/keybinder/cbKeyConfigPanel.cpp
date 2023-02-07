@@ -289,7 +289,7 @@ void UsrConfigPanel::OnApply()
         // erase <global accels>; they'll be updated by the menu accel review
         if ( parentMenu.empty() or desc.StartsWith(_T("<global>")) )
             {iter = accelMap.erase(iter); goto nextItem;}
-        if (pCmd) switch(true) //now have a matching wxCmd array entry
+        if (pCmd) switch(1) //now have a matching wxCmd array entry
         {
             default:
             wxArrayString cmdShortcuts = pCmd->GetShortcutsList();

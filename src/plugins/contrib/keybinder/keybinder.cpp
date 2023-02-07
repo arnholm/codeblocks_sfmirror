@@ -1204,7 +1204,7 @@ bool wxKeyBinder::LoadFromString(const wxString& cfgCmdString)
     //m_arrCmd.Clear();
 
     //-cont = p->GetFirstEntry(str, idx);
-    switch(true)
+    switch(1)
     {
         default:
         // try to decode this entry
@@ -1448,9 +1448,9 @@ void wxKeyMonitorTextCtrl::OnKey(wxKeyEvent &event)
             wxLogMessage( _T("KeyStrokString[%s]"),keyStrokeString.c_str() );
         #endif
 
-        switch (keyStrokeString.IsEmpty())
+        switch (keyStrokeString.IsEmpty() ? 1 : 0)
         {
-            case true: break;
+            case 1: break;
             default:
             if (keyStrokeString.Length() < 2) { keyStrokeString.Clear(); break;}
             if ( (keyStrokeString[0] == 'F') && (keyStrokeString.Mid(1,1).IsNumber()) ) break;
