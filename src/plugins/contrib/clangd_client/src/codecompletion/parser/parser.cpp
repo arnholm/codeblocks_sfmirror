@@ -950,7 +950,7 @@ cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)          
             EncodingDetector detector(filename, false);
             if (not detector.IsOK())
             {
-                wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, filename));
+                wxString msg(wxString::Format(_("%s():%d failed EncodingDetector for %s"), __FUNCTION__, __LINE__, filename));
                 Manager::Get()->GetLogManager()->Log(msg);
                 delete control;
                 return nullptr;
@@ -2916,7 +2916,7 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
         }//end OnLSP_RenameResponse() try
         catch (std::exception &e)
         {
-            wxString msg = wxString::Format(_("OnLSP_RenameResponse %s"), e.what());
+            wxString msg = wxString::Format("OnLSP_RenameResponse %s", e.what());
             CCLogger::Get()->DebugLog(msg);
             cbMessageBox(msg);
         }
@@ -3252,8 +3252,8 @@ bool Parser::LSP_GetSymbolsByType(json* pJson, std::set<LSP_SymbolKind>& symbols
         }//end for
     } catch (std::exception &e)
     {
-        wxString msg = wxString::Format("%s() Error:%s", __FUNCTION__, e.what());
-        cbMessageBox(msg, "json Exception");
+        wxString msg = wxString::Format(_("%s() Error:%s"), __FUNCTION__, e.what());
+        cbMessageBox(msg, _("json Exception"));
     }
 
    return true;
@@ -3310,8 +3310,8 @@ void Parser::WalkDocumentSymbols(json& jref, wxString& filename, int& nextVector
         }//endfor
     } catch (std::exception &e)
     {
-        wxString msg = wxString::Format("%s() Error:%s", __FUNCTION__, e.what());
-        cbMessageBox(msg, "json Exception");
+        wxString msg = wxString::Format(_("%s() Error:%s"), __FUNCTION__, e.what());
+        cbMessageBox(msg, _("json Exception"));
     }
 
    return;

@@ -480,7 +480,7 @@ void HelpPlugin::LaunchHelp(const wxString &c_helpfile, bool isExecutable, bool 
   {
     wxString msg;
     msg << _("Couldn't find the help file:\n")
-        << the_helpfile.GetFullPath() << _("\n")
+        << the_helpfile.GetFullPath() << '\n'
         << _("Do you want to run the associated program anyway?");
     if (!(cbMessageBox(msg, _("Warning"), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxID_YES))
         return;
