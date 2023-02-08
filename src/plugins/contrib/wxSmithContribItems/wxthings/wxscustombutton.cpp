@@ -226,7 +226,7 @@ void wxsCustomButton::OnEnumWidgetProperties(cb_unused long Flags)
     WXS_BITMAP(wxsCustomButton,m_Bitmap,_("Bitmap"),_T("bitmap"),_T("wxART_OTHER"));
     WXS_BITMAP(wxsCustomButton,m_BitmapSelected,_("Selected bmp"),_T("selected"),_T("wxART_OTHER"));
     WXS_BITMAP(wxsCustomButton,m_BitmapFocused,_("Focused bmp"),_T("focused"),_T("wxART_OTHER"));
-    WXS_BITMAP(wxsCustomButton,m_BitmapDisabled,_("Disbled bmp"),_T("disabled"),_T("wxART_OTHER"));
+    WXS_BITMAP(wxsCustomButton,m_BitmapDisabled,_("Disabled bmp"),_T("disabled"),_T("wxART_OTHER"));
     WXS_SIZE(wxsCustomButton,m_Margins,_("Default margin"),_("Margin width"),_("Margin height"),_("Margin in Dialog Units"),_T("margin"));
     WXS_SIZE(wxsCustomButton,m_LabelMargins,_("Default label margin"),_("Label marg. width"),_("Label marg. height"),_("Label marg. in Dialog Units"),_T("label_margin"));
     WXS_SIZE(wxsCustomButton,m_BitmapMargins,_("Default bitmap margin"),_("Bitmap marg. width"),_("Bitmap marg. height"),_("Bitmap marg. in Dialog Units"),_T("bitmap_margin"));
