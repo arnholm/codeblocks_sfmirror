@@ -82,7 +82,7 @@ void wxsScrolledWindow::OnEnumContainerProperties(long Flags)
 {
     if ( Flags & flSource )
     {
-        WXS_TWOLONG( wxsScrolledWindow, m_scrollRate,  _("Default scroll rate"), _("Rate x"), _("Rate y"), _("scrollrate"), -1, -1);
+        WXS_TWOLONG( wxsScrolledWindow, m_scrollRate,  _("Default scroll rate"), _("Rate x"), _("Rate y"), "scrollrate", -1, -1);
     }
 }
 
