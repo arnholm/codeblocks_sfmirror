@@ -59,7 +59,7 @@ EditProjectGlobsDlg::EditProjectGlobsDlg(const ProjectGlob& glob, wxWindow* pare
 	chkRecursive = new wxCheckBox(this, ID_CHECK_RECURSIVE, _("Recursive"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECK_RECURSIVE"));
 	chkRecursive->SetValue(false);
 	BoxSizer2->Add(chkRecursive, 0, wxRIGHT|wxALIGN_CENTER_VERTICAL, 10);
-	StaticText2 = new wxStaticText(this, wxID_ANY, _("Wildcart: "), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+	StaticText2 = new wxStaticText(this, wxID_ANY, _("Wildcard: "), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
 	BoxSizer2->Add(StaticText2, 0, wxALIGN_CENTER_VERTICAL, 5);
 	txtWildcart = new wxTextCtrl(this, ID_TXT_WILDCART, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_WILDCART"));
 	BoxSizer2->Add(txtWildcart, 1, wxALIGN_CENTER_VERTICAL, 5);
