@@ -926,12 +926,12 @@ void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
     else
     {
         static int untitledCounter = 1;
-        wxString f;
         cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
+        wxString f;
         if (prj)
-            f.Printf(_("%sUntitled%d"), prj->GetBasePath().c_str(), untitledCounter++);
-        else
-            f.Printf(_("Untitled%d"), untitledCounter++);
+            f = prj->GetBasePath();
+
+        f << _("Untitled") << untitledCounter++;
 
         InitFilename(f);
     }
