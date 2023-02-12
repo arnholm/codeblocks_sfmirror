@@ -330,7 +330,7 @@ static const wxChar* TypeNames[]  = {_T("Simple Button"), _T("Toggle Button"), _
     WXS_LONG(  wxsSpeedButton, mGlyphCount, _("Glyph Count"),         _T("glyphcount"), 0)
     WXS_BOOL(  wxsSpeedButton, mUseInclude, _("Use XPM As #include"), _T("useinclude"), true);
     WXS_LONG(  wxsSpeedButton, mMargin,     _("Margin Space"),        _T("margin"),     2)
-    WXS_BOOL(  wxsSpeedButton, mButtonDown, _("Button DOWN"),         _("buttondown"),  false);
+    WXS_BOOL(  wxsSpeedButton, mButtonDown, _("Button DOWN"),         _T("buttondown"), false);
     WXS_ENUM(  wxsSpeedButton, mButtonType, _("Button Type"),         _T("buttontype"), TypeValues, TypeNames, 1);
     WXS_LONG(  wxsSpeedButton, mGroupIndex, _("Group Index"),         _T("groupindex"), 0)
     WXS_BOOL(  wxsSpeedButton, mAllowAllUp, _("Allow All Up"),        _T("allowallup"), true);
