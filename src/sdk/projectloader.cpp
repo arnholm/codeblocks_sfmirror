@@ -1299,7 +1299,7 @@ bool ProjectLoader::DoUnitOptions(const TiXmlElement* parentNode, ProjectFile* f
             ProjectGlob glob = m_pProject->SearchGlob(id);
             if (!glob.IsValid())
             {
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("Could not find project glob with id %s for file %s"), id, file->GetBaseName().wx_str()));
+                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Could not find project glob with id %s for file %s", id, file->GetBaseName()));
                 return false;
             }
             else
