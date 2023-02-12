@@ -323,7 +323,7 @@ function GetFuseBytes()
     for ( local i = 0 ; i < parts.GetCount() ; i+=1)
     {
         if ( part.Matches( parts.Item(i) ) )
-            return fuses.Item(i);
+            return _T("") + fuses.Item(i);
     }
     return _T("[]");
 }
