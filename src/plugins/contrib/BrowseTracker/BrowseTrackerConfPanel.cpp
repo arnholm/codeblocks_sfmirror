@@ -50,12 +50,13 @@ BrowseTrackerConfPanel::BrowseTrackerConfPanel(BrowseTracker& browseTrackerPlugi
 	m_pConfigPanel->Cfg_WrapJumpEntries->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( BrowseTrackerConfPanel::OnWrapJumpEntries ), NULL, this );
 	m_pConfigPanel->Cfg_ShowToolbar->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( BrowseTrackerConfPanel::OnShowToolbar ), NULL, this );
 	m_pConfigPanel->Cfg_ActivatePrevEd->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( BrowseTrackerConfPanel::OnActivatePrevEd ), NULL, this ); //2020/06/15
+	m_pConfigPanel->Cfg_JumpTrackerSpinCtrl->Connect( wxEVT_SPINCTRL, wxSpinEventHandler( BrowseTrackerConfPanel::OnJumpTrackerSpinCtrl ), NULL, this ); //(ph 2023/01/21)
 	m_pConfigPanel->Cfg_ToggleKey->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( BrowseTrackerConfPanel::OnToggleBrowseMarkKey ), NULL, this );
 	m_pConfigPanel->Cfg_ClearAllKey->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( BrowseTrackerConfPanel::OnClearAllBrowseMarksKey ), NULL, this );
 
     // FIXME (ph#): Something fishy here. On the first use of View/BrowseTracker/Settings
     // the BrowseMark is not set to the BookMark style when selected.
-    // It does work when the Editor/Config BrowseTracker settings is used
+    // It does work when the Editor/Config BrowseTracker settings is used.
     // save some old data for later comparison
     m_BrowseTrackerPlugin.m_OldUserMarksStyle = m_BrowseTrackerPlugin.m_UserMarksStyle;
     m_BrowseTrackerPlugin.m_OldBrowseMarksEnabled = m_BrowseTrackerPlugin.m_BrowseMarksEnabled;
@@ -86,7 +87,9 @@ void BrowseTrackerConfPanel::OnApply()
     m_BrowseTrackerPlugin.m_ConfigShowToolbar   = m_pConfigPanel->Cfg_ShowToolbar->GetValue();
     m_BrowseTrackerPlugin.ShowBrowseTrackerToolBar(m_BrowseTrackerPlugin.m_ConfigShowToolbar);
 
-    m_BrowseTrackerPlugin.m_CfgActivatePrevEd      = m_pConfigPanel->Cfg_ActivatePrevEd->GetValue(); //2020/06/15
+    m_BrowseTrackerPlugin.m_CfgActivatePrevEd   = m_pConfigPanel->Cfg_ActivatePrevEd->GetValue(); //2020/06/15
+
+    m_BrowseTrackerPlugin.m_CfgJumpViewRowCount = m_pConfigPanel->Cfg_JumpTrackerSpinCtrl->GetValue(); //(ph 2023/01/21)
 
     // write user options to config file
 	m_BrowseTrackerPlugin.SaveUserOptions( m_BrowseTrackerPlugin.GetBrowseTrackerCfgFilename() );
@@ -115,6 +118,7 @@ void BrowseTrackerConfPanel::GetUserOptions(wxString configFullPath)
 	m_pConfigPanel->Cfg_ClearAllKey->SetSelection( m_BrowseTrackerPlugin.m_ClearAllKey ) ;
 
     m_pConfigPanel->Cfg_ActivatePrevEd->SetValue(m_BrowseTrackerPlugin.m_CfgActivatePrevEd); //2020/06/15
+    m_pConfigPanel->Cfg_JumpTrackerSpinCtrl->SetValue(m_BrowseTrackerPlugin.m_CfgJumpViewRowCount); //(ph 2023/01/21)
 
 //-m_pConfigPanel->Cfg_ShowToolbar->SetValue(m_BrowseTrackerPlugin.IsViewToolbarEnabled());
     m_pConfigPanel->Cfg_ShowToolbar->SetValue(m_BrowseTrackerPlugin.m_ConfigShowToolbar);
@@ -185,6 +189,14 @@ void BrowseTrackerConfPanel::OnActivatePrevEd( wxCommandEvent& event ) //2020/12
         //-m_pConfigPanel->Cfg_ActivatePrevEd->Enable(true); dont do this
     }
     event.Skip();
+}
+// ----------------------------------------------------------------------------
+void BrowseTrackerConfPanel::OnJumpTrackerSpinCtrl( wxSpinEvent& event ) //(ph 2023/01/21)
+// ----------------------------------------------------------------------------
+{
+
+    //int debugLook = m_pConfigPanel->Cfg_JumpTrackerSpinCtrl->GetValue();
+
 }
 // ----------------------------------------------------------------------------
 void BrowseTrackerConfPanel::OnShowToolbar( wxCommandEvent& event )

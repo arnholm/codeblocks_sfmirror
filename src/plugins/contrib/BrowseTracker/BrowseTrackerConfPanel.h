@@ -69,6 +69,7 @@ class BrowseTrackerConfPanel: public cbConfigurationPanel
     virtual void OnWrapJumpEntries( wxCommandEvent& event );
     virtual void OnShowToolbar( wxCommandEvent& event );
     virtual void OnActivatePrevEd( wxCommandEvent& event );
+    virtual void OnJumpTrackerSpinCtrl( wxSpinEvent& event );
 
 };
 #endif // BROWSETRACKER_CONF_PANEL_H

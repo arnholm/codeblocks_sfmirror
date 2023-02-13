@@ -205,7 +205,10 @@ class BrowseTracker : public cbPlugin
         bool        LineHasBookMarker(cbStyledTextCtrl* pControl, int line) const;
 
         void        ReadUserOptions(wxString configFullPath);
+        void        LoadConfOptions();
+
         void        SaveUserOptions(wxString configFullPath);
+        void        SaveConfOptions();
         wxFileConfig* GetBrowseTrackerCfgFile(){return m_pCfgFile; }
         wxString      GetBrowseTrackerCfgFilename(){return m_CfgFilenameStr;}
 
@@ -222,7 +225,8 @@ class BrowseTracker : public cbPlugin
         bool            m_WrapJumpEntries;    //wrap jump entries when top or botton reached
         bool            m_ToolbarIsShown;     // Show BrowseTracker toolbar
         bool            m_ConfigShowToolbar;  // Show BrowseTracker toolbar
-        bool            m_CfgActivatePrevEd;     // Activate previously activated editor
+        bool            m_CfgActivatePrevEd;  // Activate previously activated editor
+        int             m_CfgJumpViewRowCount;// Max number of JumpView rows
 
 	private:
 
@@ -357,7 +361,8 @@ class BrowseTracker : public cbPlugin
         bool            m_bAppShutdown;
         int             m_nProjectClosingFileCount;
 
-        JumpTracker*    m_pJumpTracker;
+        //JumpTracker*    m_pJumpTracker;
+        std::unique_ptr<JumpTracker> m_pJumpTracker;
 
         // Activated editors stack maintenance pointers //(2021/06/19)
         cbAuiNotebook*             m_pNotebook;

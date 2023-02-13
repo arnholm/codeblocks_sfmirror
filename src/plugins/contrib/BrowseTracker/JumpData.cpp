@@ -5,12 +5,13 @@
 #include "Version.h"
 
 // ----------------------------------------------------------------------------
-JumpData::JumpData(const wxString& filename, const long posn)
+JumpData::JumpData(const wxString& filename, const long posn, long lineNo)
 // ----------------------------------------------------------------------------
 {
     //ctor
     m_Filename = filename;
     m_Posn = posn;
+    m_LineNo = lineNo;
 }
 
 // ----------------------------------------------------------------------------

@@ -7,6 +7,10 @@
 
 #include "wx/wxprec.h"
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif //__BORLANDC__
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif //WX_PRECOMP
@@ -46,14 +50,22 @@ ConfigPanel::ConfigPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 
 	wxBoxSizer* bSizer711;
 	bSizer711 = new wxBoxSizer( wxHORIZONTAL );
-
 	Cfg_ActivatePrevEd = new wxCheckBox( this, wxID_ANY, _("On editor close, activate previously active editor"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer711->Add( Cfg_ActivatePrevEd, 0, wxALL, 5 );
-
-
 	bSizer711->Add( 0, 50, 1, wxEXPAND, 5 );
-
 	bSizer3->Add( bSizer711, 0, wxEXPAND, 5 );
+
+    // JumpTracker max rows
+	wxBoxSizer* bSizer712;
+	bSizer712 = new wxBoxSizer( wxHORIZONTAL );
+	m_staticText712 = new wxStaticText( this, wxID_ANY, _("Max number of JumpView window rows"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText712->Wrap( -1 );
+	bSizer712->Add( m_staticText712, 0, wxALL|wxEXPAND, 5 );
+	Cfg_JumpTrackerSpinCtrl = new wxSpinCtrl( this, wxID_ANY,"20", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 20, 100, 20);
+	bSizer712->Add( Cfg_JumpTrackerSpinCtrl, 0, wxALL, 5 );
+	bSizer712->Add( 0, 50, 1, wxEXPAND, 5 );
+	bSizer3->Add( bSizer712, 0, wxEXPAND, 5 );
+
 
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxVERTICAL );
@@ -100,6 +112,7 @@ ConfigPanel::ConfigPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	Cfg_BrowseMarksEnabled->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnEnableBrowseMarks ), NULL, this );
 	Cfg_WrapJumpEntries->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnWrapJumpEntries ), NULL, this );
 	Cfg_ShowToolbar->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnShowToolbar ), NULL, this );
+	Cfg_JumpTrackerSpinCtrl->Connect( wxEVT_SPINCTRL, wxSpinEventHandler( ConfigPanel::OnJumpTrackerSpinCtrl ), NULL, this );
 	Cfg_ActivatePrevEd->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnEnableBrowseMarks ), NULL, this );
 	Cfg_ToggleKey->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( ConfigPanel::OnToggleBrowseMarkKey ), NULL, this );
 	Cfg_ClearAllKey->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( ConfigPanel::OnClearAllBrowseMarksKey ), NULL, this );
@@ -112,6 +125,7 @@ ConfigPanel::~ConfigPanel()
 	Cfg_WrapJumpEntries->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnWrapJumpEntries ), NULL, this );
 	Cfg_ShowToolbar->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnShowToolbar ), NULL, this );
 	Cfg_ActivatePrevEd->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( ConfigPanel::OnEnableBrowseMarks ), NULL, this );
+	Cfg_JumpTrackerSpinCtrl->Disconnect( wxEVT_SPINCTRL, wxSpinEventHandler( ConfigPanel::OnJumpTrackerSpinCtrl ), NULL, this );
 	Cfg_ToggleKey->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( ConfigPanel::OnToggleBrowseMarkKey ), NULL, this );
 	Cfg_ClearAllKey->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( ConfigPanel::OnClearAllBrowseMarksKey ), NULL, this );
 

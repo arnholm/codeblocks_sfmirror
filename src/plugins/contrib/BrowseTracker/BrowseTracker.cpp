@@ -249,7 +249,7 @@ void BrowseTracker::OnAttach()
     if (m_bAppShutdown)
         return;
 
-    m_pJumpTracker = new JumpTracker();
+    m_pJumpTracker.reset( new JumpTracker());
     m_pJumpTracker->OnAttach();
     m_pJumpTracker->m_IsAttached = true;
 
@@ -289,9 +289,9 @@ void BrowseTracker::OnAttach()
 	pInfo->version = pgmVersion.GetVersion();
 
     // ---------------------------------------
-    // determine location of settings
+    // determine location of old settings file
     // ---------------------------------------
-    // memorize the key file name as {%HOME%}\codesnippets.ini
+    // memorize the key file name as {%HOME%}\BrowseTracker.ini
     m_ConfigFolder = Manager::Get()->GetConfigManager(_T("app"))->GetConfigFolder();
     #if defined(LOGGING)
      LOGIT( _T("BT Argv[0][%s] Cwd[%s]"), wxTheApp->argv[0], ::wxGetCwd().GetData() );
@@ -307,16 +307,18 @@ void BrowseTracker::OnAttach()
     wxString m_Personality = Manager::Get()->GetPersonalityManager()->GetPersonality();
     m_CfgFilenameStr = m_ConfigFolder +sep + m_Personality + _T(".") +m_AppName + _T(".ini"); //(pecan 2019/08/30)
 
-    // If no <personality.>BrowseTracker.ini, try for plain "BrowseTracker.ini"
-    if (not wxFileExists(m_CfgFilenameStr))
-    {
-        wxString ancientIni = m_ConfigFolder + sep + m_AppName + _T(".ini");
-        if (wxFileExists(ancientIni) ) //ancient standalone BrowseTracker.ini
-            wxCopyFile(ancientIni, m_CfgFilenameStr);
-    }
-    // if config dir doesn't exist, create it
-    if (not ::wxDirExists(m_ConfigFolder))
-        ::wxMkdir(m_ConfigFolder);
+    // **Deprecated** //(ph 2023/01/20)
+    //// If no <personality.>BrowseTracker.ini, try for plain "BrowseTracker.ini"
+    //if (not wxFileExists(m_CfgFilenameStr))
+    //{
+    //    wxString ancientIni = m_ConfigFolder + sep + m_AppName + _T(".ini");
+    //    if (wxFileExists(ancientIni) ) //ancient standalone BrowseTracker.ini
+    //        wxCopyFile(ancientIni, m_CfgFilenameStr);
+    //}
+    // if config dir doesn't exist, create it were done
+    //-if (not ::wxDirExists(m_ConfigFolder))
+    //-    ::wxMkdir(m_ConfigFolder);
+
     // ---------------------------------------
     // Initialize Globals
     // ---------------------------------------
@@ -398,7 +400,7 @@ void BrowseTracker::OnRelease(bool appShutDown)
     {
         m_pJumpTracker->OnRelease(appShutDown);
         m_pJumpTracker->m_IsAttached = false;
-        delete m_pJumpTracker; //causes crash on CB exit (heap area already freed)
+        //- is now std::unique_ptr delete m_pJumpTracker; //causes crash on CB exit (heap area already freed)
         m_pJumpTracker = nullptr;
         m_ToolbarIsShown = IsViewToolbarEnabled();
     }
@@ -460,8 +462,17 @@ void BrowseTracker::BuildMenu(wxMenuBar* menuBar)
 	m_InitDone = true;
 
 
+    wxString cfgFilename = GetBrowseTrackerCfgFilename();
     delete m_pCfgFile;
     m_pCfgFile = nullptr;
+    // The old <personality>.BrowseTracker.ini file has had it's
+    // data copied into the CB <personality>.conf file. //(2023/01/20)
+    // Force usage of codeblocks.conf file from now on
+    if (wxFileExists(cfgFilename))
+    {
+        bool ok = wxCopyFile(cfgFilename, cfgFilename + ".bak");
+        if (ok) wxRemoveFile(cfgFilename);
+    }
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::BuildModuleMenu(const ModuleType type, wxMenu* popup, const FileTreeData* /*data*/)
@@ -555,6 +566,18 @@ cbConfigurationPanel* BrowseTracker::GetConfigurationPanel(wxWindow* parent)
 void BrowseTracker::ReadUserOptions(wxString configFullPath)
 // ----------------------------------------------------------------------------
 {
+    // This is using the old BrowseTracker.ini file.
+    // This is never called again after the OnAttach() routine tranfers the data
+    // to the CodeBlocks.conf file.
+    // CodeBlocks .conf file.
+
+    if (configFullPath.empty()     //(ph 2023/01/20)
+        or (not wxFileExists(configFullPath)))
+    {
+        LoadConfOptions();
+        return;
+    }
+
     if (not m_pCfgFile) m_pCfgFile = new wxFileConfig(
                     wxEmptyString,              // appname
                     wxEmptyString,              // vendor
@@ -577,18 +600,51 @@ void BrowseTracker::ReadUserOptions(wxString configFullPath)
 	cfgFile.Read( wxT("ShowToolbar"),               &m_ConfigShowToolbar, 0 ) ;
 	cfgFile.Read( wxT("ActivatePrevEd"),            &m_CfgActivatePrevEd, 0 ) ; //2020/06/18
 
+	SaveConfOptions();  //Transfer old.ini file data to CB .conf file
+
+}
+// ----------------------------------------------------------------------------
+void BrowseTracker::LoadConfOptions()
+// ----------------------------------------------------------------------------
+{
+    // Read options from the <personality>.codeblocks.conf file
+
+    ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("BrowseTracker");
+
+	m_BrowseMarksEnabled =  pCfgMgr->ReadBool( "BrowseMarksEnabled", false ) ;
+	m_UserMarksStyle = pCfgMgr->ReadInt("BrowseMarksStyle", BookMarksStyle);
+	if (m_BrowseMarksEnabled) m_UserMarksStyle = BookMarksStyle;
+
+	m_ToggleKey         = pCfgMgr->ReadInt( "BrowseMarksToggleKey", Left_Mouse ) ;
+	m_LeftMouseDelay    = pCfgMgr->ReadInt( "LeftMouseDelay", 200 ) ;
+	m_ClearAllKey       = pCfgMgr->ReadInt( "BrowseMarksClearAllMethod", ClearAllOnSingleClick );
+	m_WrapJumpEntries   = pCfgMgr->ReadBool("WrapJumpEntries", 0);
+	m_ConfigShowToolbar = pCfgMgr->ReadBool("ShowToolbar", false);
+	m_CfgActivatePrevEd = pCfgMgr->ReadBool("ActivatePrevEd", 0);
+	m_CfgJumpViewRowCount = pCfgMgr->ReadInt("JumpViewRowCount", 20); //(ph 2023/01/21)
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::SaveUserOptions(wxString configFullPath)
 // ----------------------------------------------------------------------------
 {
-    if (not m_pCfgFile) m_pCfgFile = new wxFileConfig(
-                    wxEmptyString,              // appname
-                    wxEmptyString,              // vendor
-                    configFullPath,             // local filename
-                    wxEmptyString,              // global file
-                    wxCONFIG_USE_LOCAL_FILE);
-                    //0);
+//    if (not m_pCfgFile) m_pCfgFile = new wxFileConfig(
+//                    wxEmptyString,              // appname
+//                    wxEmptyString,              // vendor
+//                    configFullPath,             // local filename
+//                    wxEmptyString,              // global file
+//                    wxCONFIG_USE_LOCAL_FILE);
+//                    //0);
+
+    // This is using the old BrowseTracker.ini file.
+    // This is never called after the OnAttach() routine tranfers the data
+    // to the CodeBlocks.conf file.
+    // CodeBlocks .conf file.
+
+    if (configFullPath.empty() or (not wxFileExists(configFullPath)))
+    {   SaveConfOptions();  //save to CB .conf file
+        return;
+    }
+
     wxFileConfig& cfgFile = *m_pCfgFile;
 
 	cfgFile.Write( wxT("BrowseMarksEnabled"),       m_BrowseMarksEnabled ) ;
@@ -599,8 +655,29 @@ void BrowseTracker::SaveUserOptions(wxString configFullPath)
 	cfgFile.Write( wxT("WrapJumpEntries"),          m_WrapJumpEntries ) ;
 	cfgFile.Write( wxT("ShowToolbar"),              m_ConfigShowToolbar ) ;
 	cfgFile.Write( wxT("ActivatePrevEd"),           m_CfgActivatePrevEd ) ; //2020/06/18
+	cfgFile.Write( wxT("JumpViewRowCount"),         m_CfgJumpViewRowCount ) ; //(ph 2023/01/21)
 
     cfgFile.Flush();
+    SaveConfOptions();
+
+}//SaveUserOptions
+// ----------------------------------------------------------------------------
+void BrowseTracker::SaveConfOptions()
+// ----------------------------------------------------------------------------
+{
+    // write user options to <personality>.codeblocks.conf file
+
+    ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("BrowseTracker");
+
+	pCfgMgr->Write( "BrowseMarksEnabled",       m_BrowseMarksEnabled ) ;
+	pCfgMgr->Write( "BrowseMarksStyle",         m_UserMarksStyle ) ;
+    pCfgMgr->Write( "BrowseMarksToggleKey",     m_ToggleKey ) ;
+    pCfgMgr->Write( "LeftMouseDelay",           m_LeftMouseDelay ) ;
+    pCfgMgr->Write( "BrowseMarksClearAllMethod",m_ClearAllKey ) ;
+	pCfgMgr->Write( "WrapJumpEntries",          m_WrapJumpEntries ) ;
+	pCfgMgr->Write( "ShowToolbar",              m_ConfigShowToolbar ) ;
+	pCfgMgr->Write( "ActivatePrevEd",           m_CfgActivatePrevEd ) ;
+	pCfgMgr->Write( "JumpViewRowCount",         m_CfgJumpViewRowCount ) ; //(ph 2023/01/21)
 
 }//SaveUserOptions
 // ----------------------------------------------------------------------------

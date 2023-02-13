@@ -16,8 +16,12 @@
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #endif
+#include <wx/listctrl.h>
 
 #include <cbplugin.h> // for "class cbPlugin"
+#include "configmanager.h"
+#include "JumpTrackerView.h"
+
 // we must forward declare the array because it is used inside the class
 // declaration
 class JumpData;
@@ -99,7 +103,7 @@ class JumpTracker : public cbPlugin
         virtual void OnRelease(bool appShutDown);
 
         // CodeBlocks events
-        void OnEditorUpdateEvent(CodeBlocksEvent& event);
+        void OnEditorUpdateUIEvent(CodeBlocksEvent& event);
         void OnEditorActivated(CodeBlocksEvent& event);
         void OnEditorDeactivated(CodeBlocksEvent& event);
         void OnEditorClosed(CodeBlocksEvent& event);
@@ -118,19 +122,43 @@ class JumpTracker : public cbPlugin
         //-bool IsAttached() {return m_IsAttached;}
         //bool m_IsAttached;
 
-        void SetWrapJumpEntries(const bool tf);
+        void SetWrapJumpEntries(const bool trueOrFalse);
+
 
     private:
         void JumpDataAdd(const wxString& filename, const long posn, const long edlineNum);
-        bool JumpDataContains(const int indx, const wxString& filename, const long posn);
-        int  FindJumpDataContaining(const wxString& filename, const long posn);
+////        bool JumpDataContains(const int indx, const wxString& filename, const long posn);
+////        int  FindJumpDataContaining(const wxString& filename, const long posn);
+        void CreateJumpTrackerView(); //(ph 2023/01/17)
+        void OnSwitchViewLayout(CodeBlocksLayoutEvent& event);
+        void OnSwitchedViewLayout(CodeBlocksLayoutEvent& event);
+        void OnDockWindowVisability(CodeBlocksDockEvent& event);
+
+        void UpdateViewWindow();
+        JumpTrackerView* GetJumpTrackerView(){return m_pJumpTrackerView.get();}
+        wxWindow* GetJumpTrackerViewControl()
+        {
+            return dynamic_cast<wxWindow*>(m_pJumpTrackerView->m_pControl);
+        }
+		void OnViewJumpTrackerWindow(wxCommandEvent& event);
+		bool GetConfigBool(const wxString& parm)
+		{
+            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager(_T("BrowseTracker"));
+            return pCfgMgr->ReadBool(parm);
+		}
+		void SetConfigString(const wxString& key, const wxString& value)
+		{
+            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager(_T("BrowseTracker"));
+            pCfgMgr->Write(key,value);
+		}
+        void SettingsSaveWinPosition();
 
         wxToolBar*      m_pToolBar;
         wxLogWindow*    m_pPlgnLog;
         wxString m_FilenameLast;
         long     m_PosnLast;
-        int      m_cursor;
-        int      m_insertNext;
+        int      m_ArrayCursor;
+        //-int      m_insertNext;
         bool     m_bShuttingDown;
         bool     m_bProjectClosing;      // project close in progress
         bool     m_bJumpInProgress;
@@ -139,9 +167,24 @@ class JumpTracker : public cbPlugin
         int      GetNextIndex(const int idx);
 
         enum{ maxJumpEntries = 20};
-        //#warning maxJumpEntries is incorrect
         // FIXME (ph#): allow user to set entry count
         ArrayOfJumpData m_ArrayOfJumpData;
+        std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;
+
+        void SetLastViewedIndex(int arrayIdx)
+        {
+            m_pJumpTrackerView->m_lastDoubleClickIndex = arrayIdx;
+        }
+        int GetLastViewedIndex()
+        {
+            return m_pJumpTrackerView->m_lastDoubleClickIndex;
+        }
+        bool GetJumpInProgress()
+        {
+            if (m_bJumpInProgress) return true;
+            if (m_pJumpTrackerView->m_bJumpInProgress) return true;
+            return false;
+        }
 
     private:
         DECLARE_EVENT_TABLE();
