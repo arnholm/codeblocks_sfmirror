@@ -64,8 +64,8 @@ namespace appglobals
 #endif
 
     const wxString AppBuildTimestamp     = (  wxString(wxT(__DATE__)) + wxT(", ")
-                                            + wxT(__TIME__) + wxT(" - wx")
-                                            + wxString(wxT(wxVERSION_NUM_DOT_STRING))
+                                            + wxT(__TIME__) + wxT(" - ")
+                                            + wxVERSION_STRING
 #if defined(__clang__)
                                             + wxString::Format(wxT(" - clang %d.%d.%d"),
                                                                __clang_major__, __clang_minor__, __clang_patchlevel__)
