@@ -959,7 +959,7 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
 
             // project files loaded by a glob can not be removed from the project.
             // they will added automatically on next reload
-            if (pf->IsGlobValid())
+            if (!pf->IsGlobValid())
             {
                 menu.AppendSeparator();
                 menu.Append(idMenuRemoveFilePopup, _("Remove file from project"));
