@@ -152,7 +152,7 @@
 												<option>1</option>
 											</object>
 										</object>
-										<flag>wxALL|wxALIGN_BOTTOM</flag>
+										<flag>wxALIGN_BOTTOM</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -164,7 +164,7 @@
 											</content>
 											<selection>0</selection>
 										</object>
-										<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALIGN_CENTER_VERTICAL</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
@@ -187,7 +187,7 @@
 												<option>1</option>
 											</object>
 										</object>
-										<flag>wxALL|wxALIGN_BOTTOM</flag>
+										<flag>wxALIGN_BOTTOM</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -199,7 +199,7 @@
 											</content>
 											<selection>0</selection>
 										</object>
-										<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALIGN_CENTER_VERTICAL</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
@@ -222,7 +222,7 @@
 												<option>1</option>
 											</object>
 										</object>
-										<flag>wxALL|wxALIGN_BOTTOM</flag>
+										<flag>wxALIGN_BOTTOM</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -234,7 +234,7 @@
 											</content>
 											<selection>0</selection>
 										</object>
-										<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALIGN_CENTER_VERTICAL</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
@@ -256,7 +256,7 @@
 												<option>1</option>
 											</object>
 										</object>
-										<flag>wxALL|wxALIGN_BOTTOM</flag>
+										<flag>wxALIGN_BOTTOM</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -268,7 +268,7 @@
 											</content>
 											<selection>0</selection>
 										</object>
-										<flag>wxALL|wxALIGN_BOTTOM</flag>
+										<flag>wxALIGN_BOTTOM</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
@@ -284,7 +284,6 @@
 										</object>
 										<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
 										<border>5</border>
-										<option>1</option>
 									</object>
 									<object class="sizeritem">
 										<object class="wxSpinCtrl" name="idIncSearchComboMaxItems">
