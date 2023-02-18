@@ -20,6 +20,7 @@ libBrowseTracker_la_SOURCES = BrowseTracker.cpp \
 			ConfigPanel.cpp \
 			ProjectData.cpp \
 			JumpTracker.cpp \
+			JumpTrackerView.cpp \
 			JumpData.cpp \
 			btswitcherdlg.cpp
 
@@ -32,6 +33,7 @@ noinst_HEADERS =  	BrowseTracker.h \
 			ConfigPanel.h \
 			ProjectData.h \
 			JumpTracker.h \
+			JumpTrackerView.h \
 			JumpData.h \
 			btswitcherdlg.h
 
