@@ -74,9 +74,9 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="lblGlobId">
-												<label>This file is part of glob:</label>
+												<label>This file is part of&#x0A;auto. src. dirs:</label>
 											</object>
-											<flag>wxBOTTOM|wxALIGN_CENTER_HORIZONTAL</flag>
+											<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 											<border>8</border>
 										</object>
 										<object class="sizeritem">

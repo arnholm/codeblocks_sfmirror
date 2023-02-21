@@ -9,6 +9,8 @@
 #include <wx/statline.h>
 //*)
 
+#include <unordered_map>
+
 class ManageGlobsDlg: public wxDialog
 {
 	public:
@@ -46,11 +48,30 @@ class ManageGlobsDlg: public wxDialog
 		void OnlstGlobsListItemActivated(wxListEvent& event);
 		//*)
 
+		struct TemporaryGlobHolder {
+
+		    TemporaryGlobHolder(const ProjectGlob& g)
+		    {
+		        glob = g;
+		        targetsModified = false;
+		    }
+
+		    ProjectGlob glob;
+		    bool targetsModified;
+
+		    bool operator==(const TemporaryGlobHolder& other)
+		    {
+		        return this->glob == other.glob;
+		    }
+		};
+
 		void PopulateList();
 		bool GlobsChanged();
 		void EditSelectedItem();
 
-		std::vector<ProjectGlob> m_GlobList;
+		void ReassignTargets(const ProjectGlob& glob);
+
+		std::vector<TemporaryGlobHolder> m_GlobList;
 
 		DECLARE_EVENT_TABLE()
 		cbProject* m_Prj;

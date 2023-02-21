@@ -29,6 +29,7 @@
 #include <wx/dir.h>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
 #include <algorithm>
 #include "filefilters.h"
@@ -38,6 +39,7 @@
 #include "configmanager.h"
 #include "tinywxuni.h"
 #include "filegroupsandmasks.h"
+
 
 ProjectLoader::ProjectLoader(cbProject* project)
     : m_pProject(project),
@@ -1154,9 +1156,17 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
             else
             {
                 modified = true;
-                const TiXmlElement dummyUnitWithoutOptions("Unit");
+                TiXmlElement dummyUnitWithoutOptions("Unit");
+                for(const wxString& target : glob.GetTargets())
+                {
+                    TiXmlElement elem("Option");
+                    elem.SetAttribute("target", cbU2C(target));
+                    dummyUnitWithoutOptions.InsertEndChild(elem);
+                }
+
                 DoUnitOptions(&dummyUnitWithoutOptions, pf);
                 pf->globId = glob.GetId();
+
             }
         }
     }
@@ -1171,8 +1181,6 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
     Manager::Get()->GetLogManager()->DebugLog("Loading project files...");
     m_pProject->BeginAddFiles();
 
-    int count = 0;
-
     const std::string UnitsGlobLabel("UnitsGlob");
     const TiXmlElement* unitsGlob = parentNode->FirstChildElement(UnitsGlobLabel.c_str());
     while (unitsGlob)
@@ -1183,6 +1191,8 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
 
         int recursive = 0;
         unitsGlob->QueryIntAttribute("recursive", &recursive);
+        int addToProject = 0;
+        unitsGlob->QueryIntAttribute("addToProject", &addToProject);
 
         if (!directory.IsEmpty())
         {
@@ -1200,12 +1210,27 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
                 glob = ProjectGlob((GlobId) idNr, directory, wildCard, isRecursive);
             }
 
+            glob.SetAddToProject((addToProject == 1) ? true:false);
+
+            // Load other options like targets ecc...
+            const TiXmlElement* options = unitsGlob->FirstChildElement("Option");
+            wxArrayString targets;
+            while(options)
+            {
+                if (options->Attribute("target"))
+                {
+                    wxString targetName = cbC2U(options->Attribute("target"));
+                    targets.Add(targetName);
+                }
+                options = options->NextSiblingElement("Option");
+            }
+            glob.SetTargets(targets);
             m_pProject->AddGlob(glob);
         }
         unitsGlob = unitsGlob->NextSiblingElement(UnitsGlobLabel.c_str());
     }
 
-
+    int count = 0;
     const TiXmlElement* unit = parentNode->FirstChildElement("Unit");
     while (unit)
     {
@@ -1225,6 +1250,9 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
 
         unit = unit->NextSiblingElement("Unit");
     }
+
+
+
     m_pProject->EndAddFiles();
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%d files loaded", count));
 }
@@ -1733,6 +1761,15 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
         element->SetAttribute("wildcard", glob.GetWildCard());
         element->SetAttribute("recursive", glob.GetRecursive() ? 1 : 0);
         element->SetAttribute("id", wxString::Format("%lld", glob.GetId()));
+        element->SetAttribute("addToProject", glob.GetAddToProject() ? 1 : 0);
+        const wxArrayString targets = glob.GetTargets();
+        if(targets.size() > 0)
+        {
+            for (const wxString& target : targets)
+            {
+                AddElement(element, "Option", "target", target);
+            }
+        }
     }
 
     for (FilesList::iterator it = m_pProject->GetFilesList().begin(); it != m_pProject->GetFilesList().end(); ++it)
@@ -1745,6 +1782,13 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
         // do not save project files that do not belong in the target we 're exporting
         if (onlytgt && (onlytgt->GetFilesList().find(f) == onlytgt->GetFilesList().end()))
             continue;
+        // do not save if glob do not want it to be added to the project
+        if (f->IsGlobValid())
+        {
+            const ProjectGlob glob = m_pProject->SearchGlob(f->globId);
+            if (glob.IsValid() && !glob.GetAddToProject())
+                continue;
+        }
 
         pfa.Add(f);
     }
@@ -1784,7 +1828,7 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
 
         if (f->IsGlobValid())
         {
-            AddElement(unitnode, "Option", "glob", f->globId);
+            AddElement(unitnode, "Option", "glob", wxString::Format("%lld", f->globId) );
         }
 
         // loop and save custom build commands

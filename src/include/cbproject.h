@@ -97,6 +97,17 @@ enum PCHMode
   * dynamically. This directory should be loaded continuously or at least during
   * load of the project (for non GUI mode). The loading of the files is handled in
   * the ProjectLoader.
+  *
+  * For each glob it is possible to set targets, the file gets added to when loaded from disk
+  * targets are NOT hashed in the id, because when a target changes it is not needed to reload
+  * directories watcher, this changes only file properties. It is not possible to have two
+  * globs with same path/recursive option and different targets. So the id has to be the same
+  *
+  * A user can set if files are added to project or not on saving. If the user adds files
+  * to the project he can modify compiler flags and targets per file.
+  * If he does not add them to the project file, thy can not be saved.
+  * Also this is not part of the hash id
+  *
   * @see ProjectManagerUI, ProjectLoader
   */
 class ProjectGlob
@@ -151,6 +162,12 @@ class ProjectGlob
         wxString GetPath()       const { return m_Path; }
         wxString GetWildCard()   const { return m_WildCard; }
         bool GetRecursive()      const { return m_Recursive; }
+        bool GetAddToProject()   const { return m_AddToProject; }
+        wxArrayString GetTargets() const { return m_Targets; }
+        void SetTargets(const wxArrayString& targets) { m_Targets = targets; }
+
+        void SetAddToProject(bool addToProject) { m_AddToProject = addToProject; }
+
 
         void Set(const wxString& path, const wxString& wildCard, bool rec)
         {
@@ -218,6 +235,8 @@ class ProjectGlob
         wxString m_Path;
         wxString m_WildCard;
         bool m_Recursive;
+        bool m_AddToProject;
+        wxArrayString m_Targets;
 
 };
 
@@ -597,17 +616,17 @@ class DLLIMPORT cbProject : public CompileTargetBase
         const std::vector<ProjectGlob> GetGlobs() const;
 
         /** Check if the glob exists and return it
-          * @return if found a valid weak pointer, if not found the pointer is invalid
+          * @return if found a valid ProjectGlob (Check with ProjectGlob::IsValid())
           */
         ProjectGlob SearchGlob(const wxString& path, const wxString& wildCard, bool recursive) const;
 
         /** Check if the glob exists and return it
-          * @return if found a valid weak pointer, if not found the pointer is invalid
+          * @return if found a valid ProjectGlob (Check with ProjectGlob::IsValid())
           */
         ProjectGlob SearchGlob(const GlobId& id) const;
 
         /** Check if the glob exists and return it
-          * @return if found a valid weak pointer, if not found the pointer is invalid
+          * @return if found a valid ProjectGlob (Check with ProjectGlob::IsValid())
           */
         ProjectGlob SearchGlob(const wxString& id) const;
 

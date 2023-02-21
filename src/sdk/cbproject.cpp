@@ -1961,7 +1961,6 @@ void cbProject::AddGlob(const ProjectGlob& glob)
     if (glob.IsValid() && !SearchGlob(glob.GetId()).IsValid())
     {
         m_Globs.push_back(glob);
-        Touch();
     }
 }
 
@@ -1978,7 +1977,6 @@ void cbProject::SetGlobs(std::vector<ProjectGlob>& globs)
     }
     RemoveGlobs(toRemove);
     m_Globs = globs;
-    Touch();
 }
 
 const std::vector<ProjectGlob> cbProject::GetGlobs() const
@@ -2006,18 +2004,14 @@ ProjectGlob cbProject::SearchGlob(const GlobId& id) const
 
 ProjectGlob cbProject::SearchGlob(const wxString& id) const
 {
-    long tmp;
-    if (id.ToLong(&tmp))
+    long long tmp = std::stoll(id.ToStdString());
+    for (const ProjectGlob& gl : m_Globs)
     {
-        for (const ProjectGlob& gl : m_Globs)
+        if (gl.GetId() == tmp)
         {
-            if (gl.GetId() == tmp)
-            {
-                return gl;
-            }
+            return gl;
         }
     }
-
     return ProjectGlob();   // invalid glob
 }
 

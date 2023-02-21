@@ -25,6 +25,7 @@
     #include "configmanager.h"
     #include "editormanager.h"
     #include "logmanager.h" // for F
+
 #endif
 
 #include <wx/html/htmlwin.h>
@@ -33,6 +34,7 @@
 #include "cbcolourmanager.h"
 #include "cbstyledtextctrl.h"
 #include "editor_hooks.h"
+#include "debuggermanager.h"
 
 namespace CCManagerHelper
 {
@@ -1384,6 +1386,15 @@ void CCManager::DoShowDocumentation(cbEditor* ed)
     {
         DoHidePopup();
         return;
+    }
+
+    cbDebuggerPlugin *plugin = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
+    if(plugin)
+    {
+        if(plugin->IsRunning() && plugin->ShowValueTooltip(0))
+        {
+            return; // Do not Show doc popup when the debigger is running
+        }
     }
 
     m_pPopup->Freeze();

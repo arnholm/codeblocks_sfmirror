@@ -76,7 +76,9 @@ ManageGlobsDlg::ManageGlobsDlg(cbProject* prj, wxWindow* parent,wxWindowID id,co
     if (prj != nullptr)
     {
         m_Prj = prj;
-        m_GlobList = m_Prj->GetGlobs();
+        for (const ProjectGlob& g : m_Prj->GetGlobs())
+            m_GlobList.push_back(TemporaryGlobHolder(g));
+
         wxString title = m_Prj->GetTitle();
         this->SetTitle(wxString::Format(_("Edit automatic source paths of %s"), title.wx_str()));
     }
@@ -87,11 +89,13 @@ ManageGlobsDlg::ManageGlobsDlg(cbProject* prj, wxWindow* parent,wxWindowID id,co
     m_ListGlobs->InsertColumn(0, _("Path"));
     m_ListGlobs->InsertColumn(1, _("Recursive"), wxLIST_FORMAT_CENTRE);
     m_ListGlobs->InsertColumn(2, _("Wildcard"));
+    m_ListGlobs->InsertColumn(3, _("Targets"));
 
     m_GlobsChanged = false;
 
     PopulateList();
 
+    Fit();
 }
 
 ManageGlobsDlg::~ManageGlobsDlg()
@@ -104,12 +108,14 @@ void ManageGlobsDlg::PopulateList()
 {
     m_ListGlobs->DeleteAllItems();
     int i = 0;
-    for (const ProjectGlob& globObj : m_GlobList)
+    for (const TemporaryGlobHolder& tmpGlobObj : m_GlobList)
     {
+        const ProjectGlob& globObj = tmpGlobObj.glob;
         m_ListGlobs->InsertItem(i, globObj.GetPath());
         wxString rec = wxString::Format(wxT("%i"), globObj.GetRecursive());
         m_ListGlobs->SetItem(i, 1, rec);
         m_ListGlobs->SetItem(i, 2, globObj.GetWildCard());
+        m_ListGlobs->SetItem(i, 3, wxJoin(globObj.GetTargets(), ','));
         ++i;
     }
 }
@@ -117,13 +123,13 @@ void ManageGlobsDlg::PopulateList()
 void ManageGlobsDlg::OnAddClick(wxCommandEvent& event)
 {
     ProjectGlob tmpGlob = ProjectGlob();
-    EditProjectGlobsDlg dlg(tmpGlob, nullptr);
+    EditProjectGlobsDlg dlg(m_Prj, tmpGlob, nullptr);
     if (dlg.ShowModal() == wxID_OK)
     {
         tmpGlob = dlg.WriteGlob();
-        if (std::find_if(m_GlobList.begin(), m_GlobList.end(), [&tmpGlob](const ProjectGlob& a){ return tmpGlob.GetId() == a.GetId(); }) == m_GlobList.end())
+        if (std::find_if(m_GlobList.begin(), m_GlobList.end(), [&tmpGlob](const TemporaryGlobHolder& a){ return tmpGlob.GetId() == a.glob.GetId(); }) == m_GlobList.end())
         {
-            m_GlobList.push_back(tmpGlob);
+            m_GlobList.push_back(TemporaryGlobHolder(tmpGlob));
             PopulateList();
             m_GlobsChanged = true;
         }
@@ -135,7 +141,7 @@ void ManageGlobsDlg::OnAddClick(wxCommandEvent& event)
 void ManageGlobsDlg::OnDeleteClick(wxCommandEvent& event)
 {
     int item = -1;
-    std::vector<ProjectGlob> itemsToDelete;
+    std::vector<TemporaryGlobHolder> itemsToDelete;
     for ( ;; )
     {
         item = m_ListGlobs->GetNextItem(item,
@@ -146,7 +152,7 @@ void ManageGlobsDlg::OnDeleteClick(wxCommandEvent& event)
         itemsToDelete.push_back(m_GlobList[item]);
     }
 
-    for (std::vector<ProjectGlob>::iterator itr = m_GlobList.begin(); itr != m_GlobList.end(); )
+    for (std::vector<TemporaryGlobHolder>::iterator itr = m_GlobList.begin(); itr != m_GlobList.end(); )
     {
         if (std::find(itemsToDelete.begin(),itemsToDelete.end(), *itr ) != itemsToDelete.end())
             itr = m_GlobList.erase(itr);
@@ -173,12 +179,34 @@ void  ManageGlobsDlg::EditSelectedItem()
     if ( item == -1 )
         return;
 
-    EditProjectGlobsDlg dlg(m_GlobList[item], this);
+    const GlobId oldId = m_GlobList[item].glob.GetId();
+    const wxArrayString oldTargets = m_GlobList[item].glob.GetTargets();
+    EditProjectGlobsDlg dlg(m_Prj, m_GlobList[item].glob, this);
     if (dlg.ShowModal() == wxID_OK)
     {
-        m_GlobList[item] = dlg.WriteGlob();
+        m_GlobList[item].glob            =  dlg.WriteGlob();
+        // We mark targets only modified if the have changed AND the path is the same as the old.
+        // If the path changed we have to remove/add files anyway, so it is like a new glob and we override the old
+        m_GlobList[item].targetsModified =  oldTargets !=  m_GlobList[item].glob.GetTargets() && oldId == m_GlobList[item].glob.GetId();
         m_GlobsChanged = true;
         PopulateList();
+    }
+}
+
+void ManageGlobsDlg::ReassignTargets(const ProjectGlob& glob)
+{
+    for (ProjectFile* file : m_Prj->GetFilesList())
+    {
+        const wxArrayString newTargets = glob.GetTargets();
+        for (const wxString& target : newTargets)
+        {
+            file->AddBuildTarget(target);
+        }
+        for (const wxString& target : wxArrayString(file->GetBuildTargets()))
+        {
+            if (newTargets.Index(target) == wxNOT_FOUND)
+                file->RemoveBuildTarget(target);
+        }
     }
 }
 
@@ -187,7 +215,26 @@ void ManageGlobsDlg::OnOkClick(wxCommandEvent& event)
     if (m_Prj != nullptr && GlobsChanged())
     {
         m_Prj->SetModified(true);
-        m_Prj->SetGlobs(m_GlobList);
+        std::vector<ProjectGlob> globList;
+        for (const TemporaryGlobHolder& tmpGlobObj : m_GlobList)
+        {
+            globList.push_back(tmpGlobObj.glob);
+            if (tmpGlobObj.targetsModified)
+            {
+                int ret = cbMessageBox(
+                             wxString::Format(_("Targets for path %s have changed.\nDo you want to change all existing source files to match the new target?\n\nYes: All existing project files for this path will get assigned to the new target\nNo: Only newly added files will be added to the new target. Old files will not be changed."),
+                                              tmpGlobObj.glob.GetPath()),
+                             _("Reassign targets for current files?"),
+                             wxYES_NO | wxICON_QUESTION);
+                if (ret == wxID_YES)
+                    ReassignTargets(tmpGlobObj.glob);
+            }
+        }
+
+
+        m_Prj->SetGlobs(globList);
+        m_Prj->Touch();
+
         Manager::Get()->GetProjectManager()->GetUI().ReloadFileSystemWatcher(m_Prj);
         Manager::Get()->GetProjectManager()->GetUI().RebuildTree();
     }
