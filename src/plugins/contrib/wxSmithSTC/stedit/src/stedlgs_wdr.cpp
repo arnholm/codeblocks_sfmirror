@@ -982,7 +982,7 @@ wxSizer *wxSTEditorFoldPrefsSizer( wxWindow *parent, bool call_fit, bool set_siz
         _("Preprocessor folding"), 
         _("At \"else\" folding"), 
         _("HTML folding"), 
-        _("HTML preprocessor folding      "), 
+        _("HTML preprocessor folding"), 
         _("Directive folding"), 
         _("Python comment folding"), 
         _("Python quote folding"), 
