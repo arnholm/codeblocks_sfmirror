@@ -35,6 +35,7 @@
 #include "filemanager.h"
 
 #include <wx/filedlg.h>
+#include <wx/textfile.h>
 #include <wx/unichar.h>
 #include <ctype.h>
 
@@ -121,6 +122,7 @@ class UsrGlblMgrEditDialog : public wxScrollingDialog
     void NewSet(wxCommandEvent&    event);
     void DeleteVar(wxCommandEvent& event);
     void DeleteSet(wxCommandEvent& event);
+    void ExportSet(wxCommandEvent& event);
     // handler for the folder selection button
     void OnFS(wxCommandEvent& event);
 
@@ -444,6 +446,7 @@ BEGIN_EVENT_TABLE(UsrGlblMgrEditDialog, wxScrollingDialog)
     EVT_BUTTON(XRCID("cloneSet"), UsrGlblMgrEditDialog::CloneSet)
     EVT_BUTTON(XRCID("newSet"), UsrGlblMgrEditDialog::NewSet)
     EVT_BUTTON(XRCID("deleteSet"), UsrGlblMgrEditDialog::DeleteSet)
+    EVT_BUTTON(XRCID("exportSet"), UsrGlblMgrEditDialog::ExportSet)
     EVT_BUTTON(XRCID("help"), UsrGlblMgrEditDialog::Help)
     EVT_BUTTON(wxID_OK, UsrGlblMgrEditDialog::OnOK)
     EVT_CLOSE(UsrGlblMgrEditDialog::CloseHandler)
@@ -611,6 +614,53 @@ void UsrGlblMgrEditDialog::DeleteSet(cb_unused wxCommandEvent& event)
         m_CurrentVar = wxEmptyString;
         UpdateChoices();
         Load();
+    }
+}
+
+void UsrGlblMgrEditDialog::ExportSet(cb_unused wxCommandEvent& event)
+{
+    wxFileDialog fileDlg(this, _("Export set to file"), wxEmptyString, m_CurrentSet+".set", _("Exported sets (*.set)|*.set|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    PlaceWindow(&fileDlg);
+    if (fileDlg.ShowModal() == wxID_OK)
+    {
+        const wxString srcPath("/sets/" + m_CurrentSet + '/');
+        wxArrayString existing = m_CfgMan->EnumerateSubPaths(srcPath);
+        existing.Sort();
+
+        wxArrayString result;
+        result.Add('[' + m_CurrentSet + ']');
+        for (const wxString& varName : existing)
+        {
+            wxArrayString members = m_CfgMan->EnumerateKeys(srcPath + varName + '/');
+            for (const wxString& memberName : members)
+                result.Add(varName + '.' + memberName + '=' + m_CfgMan->Read(srcPath + varName + '/' + memberName));
+        }
+
+        wxTextFile textFile(fileDlg.GetPath());
+        bool success;
+        if (textFile.Exists())
+        {
+            success = textFile.Open();
+            if (success)
+                textFile.Clear();
+        }
+        else
+        {
+            success = textFile.Create();
+        }
+
+        if (success)
+        {
+            for (const wxString& line : result)
+                textFile.AddLine(line);
+
+            textFile.Write();
+            textFile.Close();
+        }
+        else
+        {
+            InfoWindow::Display(_("Export Set"), _("Cannot open the file for writing"));
+        }
     }
 }
 
