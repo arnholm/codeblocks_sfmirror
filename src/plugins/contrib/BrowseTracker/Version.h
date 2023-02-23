@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.113 23/02/13")
+#define VERSION wxT("1.4.114 23/02/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -66,6 +66,8 @@ class AppVersion
 #endif // VERSION_H
 
 // ----------------------------------------------------------------------------
+// 1.4.114 Commit 2023/02/23
+//          Fix crashes in jumptrackerView using unvalidated editor->Control() in Head 13210
 // 1.4.113  Commit 23/02/13
 //          2023/01/21 Allow user to set the number of JumpTracker view rows.
 //          2023/01/20 JumpTracker view docking window

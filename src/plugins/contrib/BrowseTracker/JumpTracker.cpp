@@ -517,8 +517,10 @@ void JumpTracker::OnEditorDeactivated(CodeBlocksEvent& event)
     EditorBase* pEdBase = event.GetEditor();
     wxString edFilename = pEdBase->GetFilename();
     cbEditor* pcbEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(pEdBase);
+    if (not pcbEd) return;
 
     cbStyledTextCtrl* pControl = pcbEd->GetControl();
+    if (not pControl) return;
     if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
         return;
 
@@ -557,7 +559,7 @@ void JumpTracker::OnEditorClosed(CodeBlocksEvent& event)
             // remove the entry
             if (m_ArrayOfJumpData[ii].GetFilename() == filePath)
                 m_ArrayOfJumpData.RemoveAt(ii);
-            // reset m_ArrayCursor ot previous entry
+            // reset m_ArrayCursor to previous entry
             if (((int)m_ArrayOfJumpData.GetCount()-1) < m_ArrayCursor)
                 m_ArrayCursor = GetPreviousIndex(m_ArrayCursor);
         }
@@ -671,6 +673,9 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
         {
             int jdLineNo = 0;
             cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+            if (not pEd) return;
+            cbStyledTextCtrl* pControl = pEd->GetControl();
+            if (not pControl) return;
             jdLineNo = pEd->GetControl()->LineFromPosition(jdPosn);
             if (jdLineNo == inLineNum)
                 return;
@@ -771,7 +776,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
     if (pcbEd) switch(1)
     {
         default:
-        int idx = lastViewedIndex;;
+        int idx = lastViewedIndex;
         idx = GetPreviousIndex(idx);
         if ( idx == wxNOT_FOUND)
             break;
@@ -833,11 +838,9 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
         GetLastViewedIndex() == knt-1)
             return;
 
-
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     EditorBase* pEdBase = pEdMgr->GetActiveEditor();
     cbEditor* pcbEd = (pEdBase ? pEdMgr->GetBuiltinEditor(pEdBase) : nullptr);
-
     if (not pcbEd)
         return;
 
@@ -918,8 +921,8 @@ void JumpTracker::OnMenuJumpDump(wxCommandEvent &/*event*/)
             pstc = ed->GetControl();
             if (not pstc) pstc = 0;
             if (pstc)
-            edLine = pstc->LineFromPosition(jumpData.GetPosition());
-            edLine +=1; //editors are 0 origin
+                edLine = pstc->LineFromPosition(jumpData.GetPosition());
+            edLine +=1; //editors are 1 origin
         }
 
         wxString msg = wxString::Format(_T("[%d][%s][%ld][%ld]"), count, edFilename.c_str(), edPosn, edLine);

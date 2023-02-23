@@ -6,8 +6,6 @@
  * http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-// A new line to force svn to commit this file.
-
 #include <wx/string.h>
 #include <wx/panel.h>
 

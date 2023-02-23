@@ -7,8 +7,6 @@
  * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/LSPclient/lspdiagresultslog.cpp $
  */
 
-// A new line to force commit to include this file //(ph 2023/02/14)
-
 //#include "sdk_precomp.h" gets not used because `EXPORT_LIB' not defined [-Winvalid-pch] error
 #include "sdk.h"
 
@@ -139,9 +137,8 @@ void JumpTrackerView::SyncEditor(int selIndex)
     ed->Activate();
     ed->GotoLine(line);
 
-    if (cbStyledTextCtrl* ctrl = ed->GetControl()) {
+    if (cbStyledTextCtrl* ctrl = ed->GetControl())
         ctrl->EnsureVisible(line);
-    }
 }
 
 // ----------------------------------------------------------------------------
