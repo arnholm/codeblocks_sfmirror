@@ -146,10 +146,14 @@ class ProjectGlob
 
         bool operator==(const ProjectGlob& other) const
         {
-            if (other.GetId() != this->GetId())
+            if (other.GetId() != this->GetId() )
                 return false;
             // If the ID is the same, we make a deep comparison, to evade collisions...
-            return this->m_WildCard == other.m_WildCard && this->m_Recursive == other.m_Recursive && this->m_Path == other.m_Path;
+            return this->m_WildCard == other.m_WildCard &&
+                   this->m_Recursive == other.m_Recursive &&
+                   this->m_Path == other.m_Path &&
+                   this->m_Targets == other.m_Targets &&
+                   this->m_AddToProject == other.m_AddToProject;
         }
 
         /** \brief Check if this glob is valid

@@ -83,6 +83,8 @@ ManageGlobsDlg::ManageGlobsDlg(cbProject* prj, wxWindow* parent,wxWindowID id,co
         this->SetTitle(wxString::Format(_("Edit automatic source paths of %s"), title.wx_str()));
     }
 
+    m_OldGlobList = m_GlobList;
+
     btnEdit->Disable();
     btnDelete->Disable();
 
@@ -90,8 +92,6 @@ ManageGlobsDlg::ManageGlobsDlg(cbProject* prj, wxWindow* parent,wxWindowID id,co
     m_ListGlobs->InsertColumn(1, _("Recursive"), wxLIST_FORMAT_CENTRE);
     m_ListGlobs->InsertColumn(2, _("Wildcard"));
     m_ListGlobs->InsertColumn(3, _("Targets"));
-
-    m_GlobsChanged = false;
 
     PopulateList();
 
@@ -131,7 +131,6 @@ void ManageGlobsDlg::OnAddClick(wxCommandEvent& event)
         {
             m_GlobList.push_back(TemporaryGlobHolder(tmpGlob));
             PopulateList();
-            m_GlobsChanged = true;
         }
         else
             cbMessageBox("Path already in list", "Info");
@@ -160,9 +159,6 @@ void ManageGlobsDlg::OnDeleteClick(wxCommandEvent& event)
             ++itr;
     }
 
-    if (itemsToDelete.size() > 0)
-        m_GlobsChanged = true;
-
     PopulateList();
 }
 
@@ -188,7 +184,6 @@ void  ManageGlobsDlg::EditSelectedItem()
         // We mark targets only modified if the have changed AND the path is the same as the old.
         // If the path changed we have to remove/add files anyway, so it is like a new glob and we override the old
         m_GlobList[item].targetsModified =  oldTargets !=  m_GlobList[item].glob.GetTargets() && oldId == m_GlobList[item].glob.GetId();
-        m_GlobsChanged = true;
         PopulateList();
     }
 }
@@ -243,7 +238,7 @@ void ManageGlobsDlg::OnOkClick(wxCommandEvent& event)
 
 bool ManageGlobsDlg::GlobsChanged()
 {
-    return m_GlobsChanged;
+    return m_OldGlobList != m_GlobList;
 }
 
 void ManageGlobsDlg::OnlstGlobsListItemSelect(wxListEvent& event)

@@ -59,7 +59,7 @@ class ManageGlobsDlg: public wxDialog
 		    ProjectGlob glob;
 		    bool targetsModified;
 
-		    bool operator==(const TemporaryGlobHolder& other)
+		    bool operator==(const TemporaryGlobHolder& other) const
 		    {
 		        return this->glob == other.glob;
 		    }
@@ -72,10 +72,10 @@ class ManageGlobsDlg: public wxDialog
 		void ReassignTargets(const ProjectGlob& glob);
 
 		std::vector<TemporaryGlobHolder> m_GlobList;
+		std::vector<TemporaryGlobHolder> m_OldGlobList;
 
 		DECLARE_EVENT_TABLE()
 		cbProject* m_Prj;
-		bool m_GlobsChanged;
 };
 
 #endif
