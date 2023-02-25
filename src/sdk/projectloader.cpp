@@ -1091,6 +1091,8 @@ std::vector<wxString> FilesInDir(const wxString& directory, const wxString& wild
 bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
 {
     wxStopWatch timer;
+    // Remember if the project was modified before updating globs
+    bool prjModified = m_pProject->GetModified();
     bool modified = false;
     const wxString directory = glob.GetPath();
     const wxString wildCard = glob.GetWildCard();
@@ -1172,6 +1174,12 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
     }
     LogTime("Adding took %f s", timer.Time() );
     timer.Start();
+
+    // If the project was not modified before updating globs
+    // and this glob does not store things in project file
+    // we have to reset the modified flag
+    if(!prjModified && !glob.GetAddToProject())
+        m_pProject->SetModified(false);
 
     return modified;
 }
