@@ -199,14 +199,14 @@ void wxsBitmapComboBox::OnEnumWidgetProperties(cb_unused long Flags) {
 
     pImageNames[n] = nullptr;
 
-    WXS_EDITENUM(wxsBitmapComboBox, mImageList, _("Image List"), _("mImageList"), pImageNames, _("<none>"))
+    WXS_EDITENUM(wxsBitmapComboBox, mImageList, _("Image List"), "mImageList", pImageNames, _("<none>"))
 
 // the list of items to appear in the combo box
 
     UpdateComboItemList();
 
-    WXS_IMAGECOMBO(wxsBitmapComboBox, mItems, _("Combo Items"), _("mItems"));
-    WXS_ARRAYSTRING(wxsBitmapComboBox, mItems, _("Items as Text"), _("mItemsText"), _("item2"));
+    WXS_IMAGECOMBO(wxsBitmapComboBox, mItems, _("Combo Items"), "mItems");
+    WXS_ARRAYSTRING(wxsBitmapComboBox, mItems, _("Items as Text"), "mItemsText", _("item2"));
 }
 
 //------------------------------------------------------------------------------
