@@ -746,9 +746,9 @@ void UsrGlblMgrEditDialog::ImportSet(cb_unused wxCommandEvent& event)
         textFile.Close();
         UpdateChoices();
         if (errors)
-            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (%i errors)"), setName, vars, errors), _("Import set"), wxOK | wxICON_WARNING, this);
+            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (%i errors)"), setName, vars, errors), _("Import Set"), wxOK | wxICON_WARNING, this);
         else
-            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (no errors)"), setName, vars), _("Import set"), wxOK | wxICON_INFORMATION, this);
+            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (no errors)"), setName, vars), _("Import Set"), wxOK | wxICON_INFORMATION, this);
     }
 }
 
