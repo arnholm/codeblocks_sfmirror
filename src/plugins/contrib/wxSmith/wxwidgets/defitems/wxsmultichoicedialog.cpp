@@ -88,7 +88,7 @@ void wxsMultiChoiceDialog::OnBuildCreatingCode()
 
 void wxsMultiChoiceDialog::OnEnumToolProperties(cb_unused long Flags)
 {
-    WXS_SHORT_STRING(wxsMultiChoiceDialog,m_Message,_("Message"),_T("message"),_T(""),false);
-    WXS_SHORT_STRING(wxsMultiChoiceDialog,m_Caption,_("Caption"),_T("caption"),_T(""),false);
-    WXS_ARRAYSTRING (wxsMultiChoiceDialog,m_Content,_("Items"),  _T("content"),_T("item"));
+    WXS_SHORT_STRING(wxsMultiChoiceDialog,m_Message, _("Message"), _T("message"), _T(""), false);
+    WXS_SHORT_STRING(wxsMultiChoiceDialog,m_Caption, _("Caption"), _T("caption"), _T(""), false);
+    WXS_ARRAYSTRING (wxsMultiChoiceDialog,m_Content, _("Items"),   _T("content"), _("item"));
 }

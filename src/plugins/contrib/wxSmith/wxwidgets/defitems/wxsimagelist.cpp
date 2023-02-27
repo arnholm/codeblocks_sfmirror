@@ -127,8 +127,8 @@ void wxsImageList::OnEnumToolProperties(cb_unused long Flags)
     m_Context = GetCoderContext();
 
     // details for the image list
-    WXS_IMAGELIST(wxsImageList, m_ImageData, _T("Image List"), _T("image_list"));
-    WXS_ARRAYSTRING(wxsImageList, m_ImageData, _("Images as Text"), _T("image_text"), _T("item2"));
+    WXS_IMAGELIST(wxsImageList, m_ImageData, _("Image List"), _T("image_list"));
+    WXS_ARRAYSTRING(wxsImageList, m_ImageData, _("Images as Text"), _T("image_text"), _("item2"));
     WXS_LONG(wxsImageList, m_Width,   _("Image Width"),      _T("image_width"),   16);
     WXS_LONG(wxsImageList, m_Height,  _("Image Height"),     _T("image_height"),  16);
     WXS_LONG(wxsImageList, m_Count,   _("Image Count"),      _T("image_count"),   0);
