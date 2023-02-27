@@ -951,6 +951,17 @@ void SplitPath(wxString path, std::vector<std::string>& out)
     }
 }
 
+// We have to use our own implementation of mismatch, because the std::mismatch with last2 is only available after c++20
+template<class InputIt1, class InputIt2>
+std::pair<InputIt1, InputIt2>
+    cb_mismatch(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
+{
+    while (first1 != last1 && first2 != last2 && *first1 == *first2)
+        ++first1, ++first2;
+
+    return std::make_pair(first1, first2);
+}
+
 
 wxString MakePathRelativeIfNeeded(const wxString& path, const wxString& basePath)
 {
@@ -977,7 +988,7 @@ wxString MakePathRelativeIfNeeded(const wxString& path, const wxString& basePath
     SplitPath(basePath, vBasePath);
 
     std::vector<std::string>::iterator b = vPath.begin(), e = vPath.end(), base_b = vBasePath.begin(), base_e = vBasePath.end();
-    std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> mm = std::mismatch(b, e, base_b);
+    std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> mm = cb_mismatch(b, e, base_b, base_e);
     if (mm.first == b && mm.second == base_b)
       return path;
     if (mm.first == e && mm.second == base_e)
