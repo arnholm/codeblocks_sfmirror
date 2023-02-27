@@ -123,6 +123,7 @@ class UsrGlblMgrEditDialog : public wxScrollingDialog
     void DeleteVar(wxCommandEvent& event);
     void DeleteSet(wxCommandEvent& event);
     void ExportSet(wxCommandEvent& event);
+    void ImportSet(wxCommandEvent& event);
     // handler for the folder selection button
     void OnFS(wxCommandEvent& event);
 
@@ -447,6 +448,7 @@ BEGIN_EVENT_TABLE(UsrGlblMgrEditDialog, wxScrollingDialog)
     EVT_BUTTON(XRCID("newSet"), UsrGlblMgrEditDialog::NewSet)
     EVT_BUTTON(XRCID("deleteSet"), UsrGlblMgrEditDialog::DeleteSet)
     EVT_BUTTON(XRCID("exportSet"), UsrGlblMgrEditDialog::ExportSet)
+    EVT_BUTTON(XRCID("importSet"), UsrGlblMgrEditDialog::ImportSet)
     EVT_BUTTON(XRCID("help"), UsrGlblMgrEditDialog::Help)
     EVT_BUTTON(wxID_OK, UsrGlblMgrEditDialog::OnOK)
     EVT_CLOSE(UsrGlblMgrEditDialog::CloseHandler)
@@ -661,6 +663,92 @@ void UsrGlblMgrEditDialog::ExportSet(cb_unused wxCommandEvent& event)
         {
             InfoWindow::Display(_("Export Set"), _("Cannot open the file for writing"));
         }
+    }
+}
+
+void UsrGlblMgrEditDialog::ImportSet(cb_unused wxCommandEvent& event)
+{
+    wxFileDialog fileDlg(this, _("Import set from file"), wxEmptyString, wxEmptyString, _("Exported sets (*.set)|*.set|All files (*.*)|*.*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    PlaceWindow(&fileDlg);
+    if (fileDlg.ShowModal() == wxID_OK)
+    {
+        wxTextFile textFile(fileDlg.GetPath());
+        if (!textFile.Open())
+        {
+            InfoWindow::Display(_("Import Set"), _("Cannot open the file for reading"));
+            return;
+        }
+
+        wxString setName = textFile.GetFirstLine();
+        if (setName.empty())
+        {
+            textFile.Close();
+            InfoWindow::Display(_("Import Set"), _("The file is empty"));
+            return;
+        }
+
+        if (!setName.StartsWith("[") || !setName.EndsWith("]"))
+        {
+            textFile.Close();
+            InfoWindow::Display(_("Import Set"), _("Set name unknown"));
+            return;
+        }
+
+        setName = setName.Mid(1, setName.length()-2);
+        Sanitise(setName);
+
+        const wxArrayString existing(m_CfgMan->EnumerateSubPaths("/sets"));
+        while (setName.empty() || (existing.Index(setName) != wxNOT_FOUND))
+        {
+            const wxString msg(setName.empty() ? _("Please input a valid set name")
+                                               : _("This set already exists, please rename..."));
+            wxTextEntryDialog entryDlg(this, msg, _("Edit set name"), setName);
+            PlaceWindow(&entryDlg);
+            if (entryDlg.ShowModal() != wxID_OK)
+            {
+                textFile.Close();
+                return;
+            }
+
+            setName = entryDlg.GetValue();
+            Sanitise(setName);
+        }
+
+        const wxString dstPath("/sets/" + setName + "/");
+        int errors = 0, vars = 0;
+
+        while (!textFile.Eof())
+        {
+            const wxString str(textFile.GetNextLine());
+            if (!str.empty())
+            {
+                wxString varValue;
+                const wxString variable(str.BeforeFirst('=', &varValue));
+                if (variable.empty() || varValue.empty())
+                {
+                    errors++;
+                    continue;
+                }
+
+                wxString varMember;
+                const wxString varName(variable.BeforeFirst('.', &varMember));
+                if (varName.empty() || varMember.empty())
+                {
+                    errors++;
+                    continue;
+                }
+
+                m_CfgMan->Write(dstPath + varName + "/" + varMember, varValue);
+                vars++;
+            }
+        }
+
+        textFile.Close();
+        UpdateChoices();
+        if (errors)
+            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (%i errors)"), setName, vars, errors), _("Import set"), wxOK | wxICON_WARNING, this);
+        else
+            cbMessageBox(wxString::Format(_("Created set '%s' with %i values (no errors)"), setName, vars), _("Import set"), wxOK | wxICON_INFORMATION, this);
     }
 }
 
