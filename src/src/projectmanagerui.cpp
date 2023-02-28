@@ -1770,23 +1770,24 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
         // remove multiple-files
         wxArrayString files;
         FindFiles(files, *m_pTree, sel);
-
-        if (files.Count()==0)
+        if (files.IsEmpty())
         {
             cbMessageBox(_("This project does not contain any files to remove."),
                          _("Error"), wxICON_WARNING);
             return;
         }
+
         files.Sort();
         wxString msg;
-        msg.Printf(_("Select files to remove from %s:"), prj->GetTitle().c_str());
-        MultiSelectDlg dlg(nullptr, files, true, msg);
+        msg.Printf(_("Select files to remove from %s:"), prj->GetTitle());
+        MultiSelectDlg dlg(nullptr, files, false, msg);  // deselect all files
         PlaceWindow(&dlg);
         if (dlg.ShowModal() == wxID_OK)
         {
             wxArrayInt indices = dlg.GetSelectedIndices();
-            if (indices.GetCount() == 0)
+            if (indices.IsEmpty())
                 return;
+
             if (cbMessageBox(_("Are you sure you want to remove these files from the project?"),
                              _("Confirmation"),
                              wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT) != wxID_YES)
@@ -1825,8 +1826,8 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
             if (time >= 100)
             {
                 LogManager *log = Manager::Get()->GetLogManager();
-                log->Log(wxString::Format(_("ProjectManagerUI::OnRemoveFileFromProject took: %.3f seconds for %d files."),
-                                          time / 1000.0f, int(indices.GetCount())));
+                log->Log(wxString::Format(_("ProjectManagerUI::OnRemoveFileFromProject took: %.3f seconds for %zu files."),
+                                          time / 1000.0f, indices.GetCount()));
             }
 
             RebuildTree();
