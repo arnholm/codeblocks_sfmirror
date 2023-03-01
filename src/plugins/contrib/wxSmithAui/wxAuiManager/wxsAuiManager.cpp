@@ -91,6 +91,7 @@ namespace
         WXS_ST(wxAUI_MGR_RECTANGLE_HINT)
         WXS_ST(wxAUI_MGR_HINT_FADE)
         WXS_ST(wxAUI_MGR_NO_VENETIAN_BLINDS_FADE)
+        WXS_ST(wxAUI_MGR_LIVE_RESIZE)
         WXS_ST(wxAUI_MGR_DEFAULT)
     WXS_ST_END()
 
@@ -200,7 +201,7 @@ void wxsAuiPaneInfoExtra::OnEnumProperties(long /*Flags*/)
     WXS_BOOL_P(wxsAuiPaneInfoExtra,m_DestroyOnClose,_("AUI Destroy on close"),_T("destroyonclose"),true,900)
 
     //First time add
-    WXS_FIRSTADD(wxsAuiPaneInfoExtra,m_FirstAdd,_("firstadd"),true)
+    WXS_FIRSTADD(wxsAuiPaneInfoExtra,m_FirstAdd,_T("firstadd"),true)
 }
 
 void wxsAuiPaneInfoExtra::OnPropertyChanged()
