@@ -594,7 +594,7 @@ private:
     /** active Parser object pointer */
     ParserBase*                  m_Parser;
     /** Proxy Parser object pointer used to parse non-project owned files*/
-    ParserBase*                  m_pProxyParser;
+    ParserBase*                  m_pProxyParser = nullptr;
 
 ////    /** a delay timer to parser every project in sequence */
 ////    wxTimer                      m_TimerParsingOneByOne;

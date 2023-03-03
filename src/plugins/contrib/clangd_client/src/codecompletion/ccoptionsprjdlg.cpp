@@ -38,7 +38,7 @@ CCOptionsProjectDlg::CCOptionsProjectDlg(wxWindow* parent, cbProject* project, P
     m_ParseManager(np),
     m_Parser(&np->GetParser())
 {
-    wxXmlResource::Get()->LoadPanel(this, parent, _T("pnlCldProjectCCOptions"));
+    wxXmlResource::Get()->LoadPanel(this, parent, "pnlCldProjectCCOptions");
     m_OldPaths = m_ParseManager->ParseProjectSearchDirs(*m_Project);
 
     wxListBox* control = XRCCTRL(*this, "lstPaths", wxListBox);

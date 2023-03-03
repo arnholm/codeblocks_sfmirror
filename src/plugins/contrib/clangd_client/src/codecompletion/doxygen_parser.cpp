@@ -1227,6 +1227,7 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
     while (it != tokensIdx.end())
     {
         const Token* token = tree->at(*it);
+        if (not token) continue; //(ph 2023/02/28)
 
         html += token->GetNamespace() + CommandToAnchorInt(cmdDisplayToken, token->m_Name, token->m_Index);
         html += nbsp + nbsp + token->GetTokenKindString();
@@ -1340,6 +1341,7 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
         {
             EditorManager* edMan = Manager::Get()->GetEditorManager();
             const Token* token = tree->at(tokenIdx);
+            if (not token) break;   //(ph 2023/02/28)
             cbEditor* targetEditor = edMan->Open(token->GetFilename());
             if (targetEditor)
             {
@@ -1354,6 +1356,7 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
         {
             EditorManager* edMan = Manager::Get()->GetEditorManager();
             const Token* token = tree->at(tokenIdx);
+            if (not token) break;
             cbEditor* targetEditor = edMan->Open(token->GetImplFilename());
             if (targetEditor)
             {

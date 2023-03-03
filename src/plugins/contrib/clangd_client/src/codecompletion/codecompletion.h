@@ -238,6 +238,7 @@ private:
     void OnLSP_SelectedFileReparse(wxCommandEvent& event);  //(ph 2021/05/13)
     void OnEditorFileReparse(wxCommandEvent& event);        //(ph 2021/11/16)
     void OnLSP_EditorFileReparse(wxCommandEvent& event);    //(ph 2021/11/16)
+    void OnSpecifiedFileReparse(wxCommandEvent& event);     //(ph 2023/02/27)
     void ClearReparseConditions();
 
     // event handlers for the standard events sent from sdk core

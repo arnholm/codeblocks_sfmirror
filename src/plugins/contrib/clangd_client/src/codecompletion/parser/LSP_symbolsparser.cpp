@@ -1066,7 +1066,8 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
     } catch (std::exception &e)
     {
         wxString msg = wxString::Format("%s() Error:%s", __FUNCTION__, e.what());
-        cbMessageBox(msg, "json Exception");
+        //cbMessageBox(msg, "json Exception");
+        CCLogger::Get()->DebugLogError("json Exception: " + msg); //(ph 2023/02/27)
     }
 
    return true;

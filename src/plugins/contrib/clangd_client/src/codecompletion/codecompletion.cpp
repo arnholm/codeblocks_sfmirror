@@ -373,6 +373,8 @@ int LSPeventID                  = wxNewId(); //(ph 2020/11/4)
 int idPauseParsing              = wxNewId(); //(ph 2021/07/28)
 int idStartupDelayTimer         = wxNewId(); //(ph 2022/04/19)
 
+int idSpecifiedFileReparse      = wxNewId();    //(ph 2023/02/27)
+
 // all the below delay time is in milliseconds units
 // when the user enables the parsing while typing option, this is the time delay when parsing
 // would happen after the editor has changed.
@@ -413,8 +415,9 @@ BEGIN_EVENT_TABLE(ClgdCompletion, cbCodeCompletionPlugin)
     EVT_MENU(idCurrentProjectReparse,              ClgdCompletion::OnCurrentProjectReparse )
     EVT_MENU(idSelectedProjectReparse,             ClgdCompletion::OnReparseSelectedProject)
     EVT_MENU(idSelectedFileReparse,                ClgdCompletion::OnSelectedFileReparse   )
+    EVT_MENU(idSpecifiedFileReparse,               ClgdCompletion::OnSpecifiedFileReparse  ) //(ph 2023/03/28)
     EVT_MENU(idEditorFileReparse,                  ClgdCompletion::OnEditorFileReparse   )
-    EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing ) //(ph 2021/07/28)
+    EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing )  //(ph 2021/07/28)
 
     // CC's toolbar
     EVT_CHOICE(XRCID("chcCodeCompletionScope"),    ClgdCompletion::OnScope   )
@@ -1463,7 +1466,7 @@ static int CalcStcFontSize(cbStyledTextCtrl *stc)
     return fontSize;
 }
 // ----------------------------------------------------------------------------
-// unused for clangd at present (2021/10/14) but may be useful in the future
+// UNUSED for clangd at present (2021/10/14) but may be useful in the future
 void ClgdCompletion::DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEditor* ed, std::vector<CCToken>& tokens)
 // ----------------------------------------------------------------------------
 {
@@ -1512,6 +1515,7 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
 // ----------------------------------------------------------------------------
 {
     std::vector<CCCallTip> tips;
+
     if (!IsAttached() || !m_InitDone || style == wxSCI_C_WXSMITH || !GetParseManager()->GetParser().Done())
         return tips;
     if (m_CC_initDeferred) return tips;
@@ -1548,6 +1552,7 @@ wxString ClgdCompletion::GetDocumentation(const CCToken& token)
     // reissue the GetDocumentation request
 
     if (token.id == -1) return wxString();
+
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pProject) return wxString();
     Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
@@ -1575,6 +1580,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
 // ----------------------------------------------------------------------------
 {
     std::vector<CCToken> tokens;
+
     if (!IsAttached() || !m_InitDone)
         return tokens; //It's empty
     if (m_CC_initDeferred) return tokens;
@@ -2394,7 +2400,7 @@ void ClgdCompletion::OnRenameSymbols(cb_unused wxCommandEvent& event)
         if (pEdMgr->GetEditor(ii)->GetModified())
         {
             wxString msg = _("Some editors may need saving\n before refactoring can be successful.");
-            InfoWindow::Display(_("Some editors modified"), msg, 6000);
+            InfoWindow::Display(_("Some editors modified"), msg, 7000);
             break;
         }
     }
@@ -2702,7 +2708,7 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event) //(ph 2020/11
         CCLogger::Get()->SetExternalLog(logStat);
         wxString infoTitle = wxString::Format(_("External CCLogging is %s"), logStat?_("ON"):_("OFF"));
         wxString infoText = wxString::Format(_("External CCLogging now %s"), logStat?_("ON"):_("OFF"));
-        InfoWindow::Display(infoTitle, infoText, 6000);
+        InfoWindow::Display(infoTitle, infoText, 7000);
 
         return;
     }
@@ -2730,8 +2736,7 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event) //(ph 2020/11
             pParser->SetUserParsingPaused(paused);
             wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
             wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
-            InfoWindow::Display(infoTitle, infoText, 6000);
-            //CCLogger::Get()->->Log(infoLSP); done by infowindow.cpp:297
+            InfoWindow::Display(infoTitle, infoText, 7000);
         }
     }
 }//end OnSelectedPauseParsing
@@ -2849,6 +2854,69 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
         {
             wxString msg = _("File does not appear to be included within a project.");
             cbMessageBox(msg, "__FUNCTION__");
+        }
+    }//end if exists
+}
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // Reparse a file
+    wxString filename = event.GetString();
+    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    if (not pEditor) return;
+
+    wxFileName fnFilename = pEditor->GetFilename();
+
+    if (fnFilename.Exists())
+    {
+        ProjectFile* pf = pEditor->GetProjectFile();
+        cbProject* pProject = pf ? pf->GetParentProject() : nullptr;
+        if (pProject and pf)
+        {
+            ProcessLanguageClient* pClient = GetLSPclient(pProject);
+            if (not pClient)
+            {
+                wxString msg = _("The project needs to be parsed first.");
+                cbMessageBox(msg, __FUNCTION__);
+                return;
+            }
+            // if file is open in editor, send a didSave() causing a clangd reparse
+            // if file is not open in editor do a didOpen()/didClose() sequence
+            //      to cause a background parse.
+            wxString filename = pf->file.GetFullPath();
+
+            //// **Debugging** show status of parse pausing map
+            //wxArrayString pauseParsingReasons;
+            //Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+            //if (pParser) pParser->GetArrayOfPauseParsingReasons(pauseParsingReasons);
+            //LogManager* pLogMgr = Manager::Get()->GetLogManager();
+            //for (size_t ii=0; ii < pauseParsingReasons.GetCount(); ++ii)
+            //{
+            //    if (0==ii) pLogMgr->DebugLog("--- Parser pause reasons ---");
+            //    pLogMgr->DebugLog("\t" + pauseParsingReasons[ii]);
+            //}
+            ClearReparseConditions();
+
+            if (pEditor and pClient and pClient->GetLSP_IsEditorParsed(pEditor))
+                pClient->LSP_DidSave(pEditor);
+            else {
+                // do didOpen(). It will be didClose()ed in OnLSP_RequestedSymbolsResponse();
+                // If its a header file, OnLSP_DiagnosticsResponse() will do the LSP idClose().
+                // We don't ask for symbols on headers because they incorrectly clobbler the TokenTree .cpp symbols.
+                pClient->LSP_DidOpen(filename, pProject);
+            }
+            wxString msg = _("Reparsing\n"); msg << fnFilename.GetPath() << "\n" << fnFilename.GetFullName();
+            InfoWindow::Display("Reparsing File", msg, 8000);
+
+        }//endif project and pf
+        else
+        {
+            wxString msg = _("File does not appear to be included within a project.\n");
+            //cbMessageBox(msg, "__FUNCTION__");
+            msg << fnFilename.GetPath() << "\n" << fnFilename.GetFullName();
+            InfoWindow::Display("Reparsing File", msg, 8000);
+
         }
     }//end if exists
 }
@@ -3190,7 +3258,7 @@ bool ClgdCompletion::DoLockClangd_CacheAccess(cbProject* pcbProject)
             return true;
         }
         if (lineItemCBP == fnCBPfile.GetFullPath().Lower() )
-            break; //This is the .cbp were looking for
+            break; //This is the .cbp we're looking for
     }
 
     // If lockFile owning pid not our pid; is the lockFile owning pid still running ?
@@ -3582,7 +3650,23 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
                 return;
             if (errorMsg == "Request cancelled because the document was modified")
                 return;
-            cbMessageBox("LSP: " + errorMsg);
+            if (errorMsg == "invalid AST")
+            {
+                // Queue this file for a reparse. Error usually caused during or after
+                // running the debugger.
+                //11:22:37.546 >>> readJson() len:207:{"error":{"code":-32001,"message":"invalid AST"},"id":"textDocument/semanticTokens/full\u0002file:///F:/usr/Proj/Clangd_Client-work/trunk/clangd_client/src/codecompletion/codecompletion.cpp","jsonrpc":"2.0"}
+                if ( filename.Length() and wxFileExists(filename) )
+                {
+                    wxCommandEvent reParseEvt(wxEVT_COMMAND_MENU_SELECTED, idSpecifiedFileReparse);
+                    reParseEvt.SetString(filename);
+                    Manager::Get()->GetAppWindow()->GetEventHandler()->AddPendingEvent(reParseEvt);
+                }
+                return;
+            }//if errormsg
+
+            CCLogger::Get()->DebugLogError("LSP Error: " + errorMsg);  //(ph 2023/02/27)
+            //cbMessageBox("LSP: " + errorMsg); // **Debugging**
+            InfoWindow::Display("LSP Error", errorMsg);    //(ph 2023/02/27)
         }
 
         // clear any call back for this request/response id
@@ -4187,166 +4271,195 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
 
     LogManager* pLogMgr = Manager::Get()->GetLogManager(); wxUnusedVar(pLogMgr);
 
-    if ((not ProjectManager::IsBusy()) && IsAttached() && m_InitDone && event.GetEditor())
+    if (ProjectManager::IsBusy()) return;
+    if (not IsAttached()) return;
+    if (not m_InitDone) return;
+    if (not event.GetEditor()) return;
+
+    m_LastEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(event.GetEditor());
+
+    TRACE(_T("CodeCompletion::OnEditorActivated(): Starting m_TimerEditorActivated."));
+
+    // Timer that updates the Compiler toolbar (showing current class and function)
+    if (m_TimerToolbar.IsRunning())
+        m_TimerToolbar.Stop();
+
+    // The LSP didOpen is issued here because OnEditorOpen() does not have the editors ProjectFile ptr set.
+    // Verify that it was OnEditorOpen() that activated this editor.
+    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(event.GetEditor());
+    if (not pEd) return;
+
+    if (pEd and m_OnEditorOpenEventOccured)
     {
-        m_LastEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(event.GetEditor());
+        // ---------------------------------
+        // New editor has been opened
+        // ---------------------------------
+        m_OnEditorOpenEventOccured = false;
+        // Here for Language Service Process to send didOpen().
+        // The OnEditorOpen() event cannot be used because the editor does not yet have
+        // a ProjectFile pointer to determine the file's parent project.
 
-        TRACE(_T("CodeCompletion::OnEditorActivated(): Starting m_TimerEditorActivated."));
+        // FYI: This OnEditorActivated() event occurs prior to OnProjectActivated().
+        // The LSP server may not be initialized when editors are opened during project load.
+        // To compensate for any missed editor opens, LSP_Initialize() will scan the editors notebook
+        // and send didOpen() for files already opened before event OnProjectActivated().
 
-        if (m_TimerToolbar.IsRunning())
-            m_TimerToolbar.Stop();
+        // Here, we check for editors opened AFTER OnProjectActivated() to send a single
+        // didOpen() to the LSP server. The m_OnEditorOpenEventOccured flag indicates
+        // this was a valid open event, not just a user click on the notebook tab, or a
+        // mouse focus activation.
 
-        // The LSP didOpen is issued here because OnEditorOpen() does not have the ProjectFile set.
-        // Verify that it was OnEditorOpen() that activated this editor.
-        cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(event.GetEditor());
-        if (not pEd) return;
-
-        if (pEd and m_OnEditorOpenEventOccured)
+        // Find the project and ProjectFile on which this editor is dependent.
+        // For an editor that's not associated with the active project
+        // we need the associated non-active project and base project .cbp file location
+        // in order to do a LSP didOpen() on a file.
+        cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+        if (not pActiveProject) return;
+        ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
+        if (not pActiveProjectClient)
         {
-            m_OnEditorOpenEventOccured = false;
-            // Here for Language Service Process to send didOpen().
-            // The OnEditorOpen() event cannot be used because the editor does not yet have
-            // a ProjectFile pointer to determine the file's project parent.
-
-            // This OnEditorActivated() event is occuring prior to OnProjectActivated().
-            // The LSP server may not be initialized when editors are opened during project load.
-            // To compensate for any missed editor opens, LSP_Initialize() will scan the editors notebook
-            // and send didOpen() for files already opened before event OnProjectActivated().
-
-            // Here, we check for editors opened AFTER OnProjectActivated() to send a single
-            // didOpen() to the LSP server. The m_OnEditorOpenEventOccured flag indicates
-            // this was a valid open event, not just a user click on the notebook tab, or a
-            // mouse focus activation.
-
-            // Find the project and ProjectFile this editor is dependent on.
-            // We need a project and base project .cbp file location
-            // to do a didOpen() on a file belonging to a non-active project.
-            cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
-            if (not pActiveProject) return;
-            ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
-            if (not pActiveProjectClient)
+            // No active project client fully initialized yet. Call back later.
+            GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::OnEditorActivatedCallback, event.GetEditor()->GetFilename(), true);
+            return;
+        }
+        // We have an active project. Get the ProjectFile ptr for this editor.
+        ProjectFile* pProjectFile = pEd->GetProjectFile();
+        if (not pProjectFile)
+        {
+            // The ProjectFile* has not yet been entered into the cbEditor object.
+            // Will there ever be a ProjectFile ptr ? (Not for standalone files.)
+            // Ask ProjectManager if there will ever be a ProjectFile ptr in the editor.
+            Manager::Get()->GetProjectManager()->FindProjectForFile(pEd->GetFilename(), &pProjectFile, false, false);
+            if (pProjectFile)
             {
-                // No active project client fully initialized yet. Call back later.
+                // After this event returns, ProjectManager will enter the project file ptr into the editor.
+                // So callback when the ProjectFile* has actually been stowed into the editor.
                 GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::OnEditorActivatedCallback, event.GetEditor()->GetFilename(), true);
                 return;
             }
-            ProjectFile* pProjectFile = pEd->GetProjectFile();
-            if (not pProjectFile)
+            else //Activated editor has a non-project file, let the ProxyProject handle it.
             {
-                // The ProjectFile* has not yet been entered into the cbEditor object.
-                // Will there ever be a ProjectFile* ? (Not for standalone files.)
-                Manager::Get()->GetProjectManager()->FindProjectForFile(pEd->GetFilename(), &pProjectFile, false, false);
-                if (pProjectFile)
+                if (wxFileExists(pEd->GetFilename()))
                 {
-                    // Callback when the ProjectFile* has actually been stowed into the cbProject.
-                    GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::OnEditorActivatedCallback, event.GetEditor()->GetFilename(), true);
+                    // Add this non-project file to the proxyParser
+                    pProjectFile = GetParseManager()->GetProxyProject()->AddFile(0, pEd->GetFilename(), true, false);
+                    pEd->SetProjectFile(pProjectFile);
+                    //(ph 2023/02/11) experimental optimization
+                    // Add file to ProxyParser to get parsed
+                    GetParseManager()->GetProxyParser()->AddFile(pEd->GetFilename(), GetParseManager()->GetProxyProject());
                     return;
                 }
-                else //Activated editor has non-project file
-                {
-                    if (wxFileExists(pEd->GetFilename()))
-                    {
-                        // Add this non-project file to the proxyParser
-                        //-unused-ParserBase* pParser = GetParseManager()->GetParserByProject(pActiveProject);
-                        pProjectFile = GetParseManager()->GetProxyProject()->AddFile(0, pEd->GetFilename(), true, false);
-                        pEd->SetProjectFile(pProjectFile);
-                    }
-                }
-            }//endif not projectfile
-            if (not pProjectFile) return;
-            cbProject* pEdProject = pProjectFile->GetParentProject();
-            if (not pEdProject) return;
-            Parser* pParser = dynamic_cast<Parser*>( GetParseManager()->GetParserByProject(pEdProject));
-            // Open only ParserCommon::EFileType extensions specified in config
-            ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename);
-            bool fileTypeOK = (filetype == ParserCommon::ftHeader) or (filetype == ParserCommon::ftSource);
-            bool didOpenOk = false;
-            if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK)
-            {
-                if (not (didOpenOk = GetLSPclient(pEd)->GetLSP_EditorIsOpen(pEd)) )
-                    didOpenOk = GetLSPclient(pEd)->LSP_DidOpen(pEd);
-                if (not didOpenOk)
-                {
-                    wxString msg = wxString::Format("%s Failed to LSP_DidOpen()\n%s", __FUNCTION__, pEd->GetFilename());
-                    cbMessageBox(msg, "Failed LSP_DidOpen()");
-                } else CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s", __FUNCTION__, pEd->GetFilename()));
-
             }
-        }//if pEd
+        }//endif not projectfile
 
-        //-if (pEd and GetLSPclient(pEd)) Ticket#57 bug. Should be checking to see if editors project ptr is set
-        cbProject* pEdProject = pEd->GetProjectFile() ? pEd->GetProjectFile()->GetParentProject() : nullptr;
-        if (pEd and pEdProject)
+        if (not pProjectFile) return;
+
+        // ----------------------------------------------------------------------------
+        // We now have an active project, and an active editor with a project file ptr
+        // ----------------------------------------------------------------------------
+        cbProject* pEdProject = pProjectFile->GetParentProject();
+        if (not pEdProject) return;
+        Parser* pParser = dynamic_cast<Parser*>( GetParseManager()->GetParserByProject(pEdProject));
+        // LSP Open files only with specified ParserCommon::EFileType extensions (specified in config)
+        ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename);
+        bool fileTypeOK = (filetype == ParserCommon::ftHeader) or (filetype == ParserCommon::ftSource);
+        bool didOpenOk = false; //assume LSP will fail open, then do LSP didOpen()
+        if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK)
         {
-            // switch ClassBrowser to this editor project/file
-            // and update the namespace/function toolbar if needed.
-            GetIdleCallbackHandler(pEdProject)->QueueCallback(this, &ClgdCompletion::NotifyParserEditorActivated, event);
+            // If editor not already LSP didOpen()'ed, do a LSP didOpen() call
+            // cland does not like us doing multiple opens on a file.
+            if (not (didOpenOk = GetLSPclient(pEd)->GetLSP_EditorIsOpen(pEd)) )
+                didOpenOk = GetLSPclient(pEd)->LSP_DidOpen(pEd);
+            if (not didOpenOk)
+            {
+                wxString msg = wxString::Format("%s Failed to LSP_DidOpen()\n%s", __FUNCTION__, pEd->GetFilename());
+                cbMessageBox(msg, "Failed LSP_DidOpen()");
+            } else CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s", __FUNCTION__, pEd->GetFilename()));
+
+        }
+    }//endif (pEd and m_OnEditorOpenEventOccured)
+
+    // ----------------------------------------------------------------------------
+    //This is an editor activation that's not preceeded by an Editor open event
+    // ----------------------------------------------------------------------------
+    cbProject* pEdProject = pEd->GetProjectFile() ? pEd->GetProjectFile()->GetParentProject() : nullptr;
+    // If the editor has been fully initialized by ProjectManager, switch to editor's ClassBrowser
+    if (pEd and pEdProject)
+    {
+        // switch ClassBrowser to this editor project/file via callback.
+        // and update the namespace/function toolbar if needed.
+        GetIdleCallbackHandler(pEdProject)->QueueCallback(this, &ClgdCompletion::NotifyParserEditorActivated, event);
+    }
+
+    // ----------------------------------------------------------------------------
+    // Handle editors containing a file that does not belong to this project
+    // ----------------------------------------------------------------------------
+    // We might have an editor that belongs to a non-active project.
+    // Ususally caused by having saved/loaded a workspace layout with open editors
+    // belonging to a non-active project.
+    cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
+    ProcessLanguageClient* pEdClient = GetLSPclient(pEdProject);
+    cbProject* pProxyProject = GetParseManager()->GetProxyProject();
+
+    if (pActiveProject and pEd and pEdProject and pEdClient
+                and (pEdProject == pProxyProject) )
+    {
+        // If we previouly used the ProxyProject, see if we can now use the ActiveProject
+        // This situation can be caused by Menu/File/New/File... beging added to the active project
+        // or a previously opened non-project file now being opened by it's newly activated project.
+        // See if this file belongs to the active project.
+        ProjectFile* pActiveProjectFile = pActiveProject->GetFileByFilename(pEd->GetFilename(),false);
+        // If just got a ProjectFile ptr, this file belongs to the active project
+        if (pActiveProjectFile)
+        {
+            // This editor and file now belong to the active project
+            // If the ProxyProject currently owns this editor
+            // tell LSP to didClose() this open editor and didOpen() it for the active project.
+            if (pEdClient->GetLSP_EditorIsOpen(pEd))
+                pEdClient->LSP_DidClose(pEd);
+            // Switch this editor ProjectFile to active project
+            pEd->SetProjectFile(pActiveProjectFile);    //reset the editors projectfile to the active project
+            pEdClient = pActiveProjectClient;
+            // If the file has been LSP didOpend()ed, reparse the editors file if needed.
+            if (not GetLSP_IsEditorParsed(pEd))
+                GetParseManager()->AddFileToParser(pActiveProject, pEd->GetFilename());
+            // else tell LSP to didOpen() the file using the active project
+            else if ( not pEdClient->GetLSP_EditorIsOpen(pEd) )
+            {
+                bool ok = pEdClient->LSP_DidOpen(pEd);
+                if (ok)
+                    CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, pEd->GetFilename()));
+            }
+        }//endif pActiveProjectFile
+    }//endif  (pActiveProject and pEd and pEdProject and pEdClient and (pEdProject == pProxyProject) )
+
+    // ----------------------------------------------------------------------------
+    // We've got an editor that belongs to a non-active project in the workspace.
+    // ----------------------------------------------------------------------------
+    // If the editor's project has no LSP client yet, assign the editor to the ProxyProject
+    if (pEd and pEdProject and (not pEdClient) )
+    {
+        // If the active project contains this file, use it's LSP_client, else use the ProxyProject
+        ProjectFile* pActiveProjectFile = pActiveProject ? pActiveProject->GetFileByFilename(pEd->GetFilename(),false) : nullptr;
+        if (pActiveProjectFile)
+            pEd->SetProjectFile(pActiveProjectFile);
+        else //use the ProxyProjects LSP_client to do the parsing.
+        {
+            // Use the ProxyProject to parse this editor
+            ProjectFile* pProjectFile = pProxyProject->AddFile(0, pEd->GetFilename(), true, false);
+            if (pProjectFile) //can be nullptr if addFile fails
+                pEd->SetProjectFile(pProjectFile);
+        }
+        // We have an editor, a project and may have added the file to the ProxyProject
+        if (GetLSPclient(pEd)) //if no client, we found no ProjectFile ptr from the editor
+        {
+            // We now have an assigned LSP client, tell LSP client to didOpen() the file.
+            bool ok = GetLSPclient(pEd)->LSP_DidOpen(pEd);
+            if (ok) CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, pEd->GetFilename()));
         }
 
-        // We might have an editor that belongs to a non-active project
-        // Ususally caused by having saved/loaded a workspace layout with open editors
-        // belonging to a non-active project.
-        cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
-        ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
-        ProcessLanguageClient* pEdClient = GetLSPclient(pEdProject);
-        cbProject* pProxyProject = GetParseManager()->GetProxyProject();
-
-        if (pActiveProject and pEd and pEdProject and pEdClient
-                    and (pEdProject == pProxyProject) )
-        {
-            // If we previouly used the ProxyProject, see if we can now use the ActiveProject
-            // This situation can be caused by Menu/File/New/File... beging added to the active project
-            // or a previously opened non-project file now being opened by it's newly activated project.
-            ProjectFile* pActiveProjectFile = pActiveProject->GetFileByFilename(pEd->GetFilename(),false);
-            // If now have ProjectFile, this file blongs to the active project
-            if (pActiveProjectFile)
-            {
-                // The ProxyProject currently owns this editor
-                //Tell LSP to close this open editor if in the proxyProject
-                if (pEdClient->GetLSP_EditorIsOpen(pEd))
-                    pEdClient->LSP_DidClose(pEd);
-                // Switch this editor ProjectFile to active project
-                pEd->SetProjectFile(pActiveProjectFile);    //reset the editors projectfile to the active project
-                pEdClient = pActiveProjectClient;
-                // If the newly activated project's client is not yet initialized requeue the editor activation
-                if (not GetLSP_IsEditorParsed(pEd))
-                {
-                    //GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClgdCompletion::OnEditorActivatedCallback, pEd->GetFilename());
-                    //ParserBase* pParser = GetParseManager()->GetParserByProject(pActiveProject);
-                    GetParseManager()->AddFileToParser(pActiveProject, pEd->GetFilename());
-                }
-                // Tell LSP to open the file using the active project
-                else if ( not pEdClient->GetLSP_EditorIsOpen(pEd) )
-                {
-                    bool ok = pEdClient->LSP_DidOpen(pEd);
-                    if (ok)
-                        CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, pEd->GetFilename()));
-                }
-            }
-        }
-        if (pEd and pEdProject and (not pEdClient) )
-        {
-            // We've got an editor that belongs to a non-active project in the workspace.
-            // If the active project contains this file, use it's LSP_client, else use the ProxyProject
-            ProjectFile* pActiveProjectFile = pActiveProject ? pActiveProject->GetFileByFilename(pEd->GetFilename(),false) : nullptr;
-            if (pActiveProjectFile)
-                pEd->SetProjectFile(pActiveProjectFile);
-            else //use the ProxyProjects LSP_client
-            {
-                // Use the ProxyProject to parse this editor
-                ProjectFile* pProjectFile = pProxyProject->AddFile(0, pEd->GetFilename(), true, false);
-                if (pProjectFile) //can be nullptr if addFile fails
-                    pEd->SetProjectFile(pProjectFile);
-            }
-
-            if (GetLSPclient(pEd)) //if no client, we found no ProjectFile for the editor
-            {
-                bool ok = GetLSPclient(pEd)->LSP_DidOpen(pEd);
-                if (ok) CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, pEd->GetFilename()));
-            }
-
-        }//endif parse non-ActiveProject editor
-    }//endif not projectManager busy
+    }//endif parse non-ActiveProject editor
 
     TRACE(_T("CodeCompletion::OnEditorActivated(): Leave"));
 }

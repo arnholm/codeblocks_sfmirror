@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.62 23/01/14")
+#define VERSION wxT("1.2.63 23/02/28")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,21 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.63    2023/02/28
+//          Validate assorted token ptrs. Double clicking on Doc popup "Go to declaration" crashed.
+//              Single click works ok.2023/02/28
+//          Windows 11: Smart App & Browser Control was stalling wxExecute(clangd.exe) for 6 seconds.
+//              Changing it from "evaluate" to "off" solved the stall problem. 2023/02/28
+//          Output log and info msg when "invalid AST" occurs and try to reparse the file. 2023/02/27
+//          Re-instated parsemanager.cpp::677 lock. Skipping lock may have cause crash
+//              using stale token ptr. 2023/02/26
+//          Test without the utf8 verification code
+//          Try return after "if (pEd and m_OnEditorOpenEventOccured)"
+//          Remove ellipsis and bullet chars in Parser::OnLSP_CompletionResponse()
+//              Response starting to feel snappier.
+//          Still gets ellipsis and bullet chars in completions after ommitting
+//              utf8 validation scan in client.cpp ReadJson()
+//          Test without the utf8 verification code in ProcessLanguageClient::readJson()
 //1.2.62   1.2.62 2023/01/14
 //          Minor text changes and logmsg to identify which log belongs to a project
 //1.2.61    Commit 1.2.61 2022/12/24

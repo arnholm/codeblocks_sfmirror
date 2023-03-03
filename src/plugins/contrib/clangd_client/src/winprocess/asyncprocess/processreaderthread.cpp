@@ -201,3 +201,85 @@ void ProcessReaderThread::Resume()
         wxThread::Sleep(1);
     }
 }
+// ----------------------------------------------------------------------------
+// The original CodeLite read code (for reference) 2023/01/26
+// An important fact I did not understand was that "b.Swap(buff)" was actually
+// converting the data to utf8 only if the native character set was set to utf8. //(ph 2023/01/26)
+// ----------------------------------------------------------------------------
+//void* ProcessReaderThread::Entry()
+//{
+//    while(true) {
+//        // Did we get a request to terminate?
+//        if(TestDestroy()) {
+//            break;
+//        }
+//
+//        if(m_suspend.load() && (m_is_suspended.load() == false)) {
+//            // request to suspend thread, but the status is not suspended
+//            m_is_suspended.store(true);
+//        } else if(m_is_suspended.load() && m_suspend.load() == false) {
+//            // request to resume thread but the status is suspended
+//            m_is_suspended.store(false);
+//        }
+//
+//        if(m_is_suspended.load()) {
+//            wxThread::Sleep(5);
+//            continue;
+//        }
+//
+//        if(m_process) {
+//            wxString buff;
+//            wxString buffErr;
+//            if(m_process->IsRedirect()) {
+//                if(m_process->Read(buff, buffErr)) {
+//                    if(!buff.IsEmpty() || !buffErr.IsEmpty()) {
+//                        // If we got a callback object, use it
+//                        if(m_process && m_process->GetCallback()) {
+//                            m_process->GetCallback()->CallAfter(&IProcessCallback::OnProcessOutput, buff);
+//
+//                        } else {
+//                            // We fire an event per data (stderr/stdout)
+//                            if(!buff.IsEmpty() && m_notifiedWindow) {
+//                                // fallback to the event system
+//                                // we got some data, send event to parent
+//                                clProcessEvent e(wxEVT_ASYNC_PROCESS_OUTPUT);
+//                                wxString& b = const_cast<wxString&>(e.GetOutput());
+//                                b.swap(buff);
+//                                e.SetProcess(m_process);
+//                                m_notifiedWindow->AddPendingEvent(e);
+//                            }
+//                            if(!buffErr.IsEmpty() && m_notifiedWindow) {
+//                                // we got some data, send event to parent
+//                                clProcessEvent e(wxEVT_ASYNC_PROCESS_STDERR);
+//                                wxString& b = const_cast<wxString&>(e.GetOutput());
+//                                b.swap(buffErr);
+//                                e.SetProcess(m_process);
+//                                m_notifiedWindow->AddPendingEvent(e);
+//                            }
+//                        }
+//                    }
+//                } else {
+//
+//                    // Process terminated, exit
+//                    // If we got a callback object, use it
+//                    NotifyTerminated();
+//                    break;
+//                }
+//            } else {
+//                // Check if the process is alive
+//                if(!m_process->IsAlive()) {
+//                    // Notify about termination
+//                    NotifyTerminated();
+//                    break;
+//                } else {
+//                    wxThread::Sleep(5);
+//                }
+//            }
+//        } else {
+//            // No process??
+//            break;
+//        }
+//    }
+//    m_process = NULL;
+//    return NULL;
+//}

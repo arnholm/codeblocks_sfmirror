@@ -2329,6 +2329,14 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             // CCToken(int _id, const wxString& dispNm, int categ = -1) :
             //                id(_id), category(categ), weight(5), displayName(dispNm), name(dispNm) {}
 
+            // Remove the elipsis and bullet chars in responses //(ph 2023/01/26)
+            wxString badBytes  = wxString::FromUTF8("\xE2\x80\xA2"); // single dot bullet
+            wxString badBytes2 = wxString::FromUTF8("\xE2\x80\xA6"); // 3dots ellipsis
+            if (labelValue.Contains(badBytes) )
+                labelValue.Replace(badBytes,"");    // remove single dot bullet
+            if (labelValue.Contains(badBytes2) )    // remove 3dot ellipsis
+                labelValue.Replace(badBytes2,"");
+
             wxString filterText = GetwxUTF8Str(valueItems[itemNdx].at("filterText").get<std::string>());
             int labelKind = valueItems[itemNdx].at("kind").get<int>();
             ClgdCCToken ccctoken(-1, labelValue, labelValue);    //id and name

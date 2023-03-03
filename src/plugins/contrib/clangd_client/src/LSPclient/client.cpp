@@ -559,7 +559,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
             writeClientLog(logLine);
 
             if (lspClientLogFile.IsOpened())
-                CCLogger::Get()->DebugLog("New Clangd Client log @:" + logFilename);
+                CCLogger::Get()->DebugLog(_("New Clangd Client log @:") + logFilename);
         }
     }
 
@@ -1230,28 +1230,33 @@ bool ProcessLanguageClient::readJson(json &json)
     if (stdStrInputbuf.size())
         writeClientLog(StdString_Format(">>> readJson() len:%d:\n%s", length, stdStrInputbuf.c_str()) );
 
-    // remove any invalid utf8 chars
-    bool validData = DoValidateUTF8data(stdStrInputbuf);
-
-    // Remove some extended ascii chars that have clobber completion and hover responses
-    if (stdStrInputbuf.find("{\"id\":\"textDocument/hover") != std::string::npos) //{"id":"textDocument/hover
-    {
-        std::string badBytes =  "\xE2\x86\x92" ; //Wierd chars in hover results
-        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
-    }
-    if (stdStrInputbuf.find("{\"id\":\"textDocument/completion") != std::string::npos) //{"id":"textDocument/completion
-    {
-        std::string badBytes =  "\xE2\x80\xA2" ; //Wierd chars in completion empty params
-        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
-        badBytes = "\xE2\x80\xA6"; // wx3.0 produces an empty string
-        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
-    }
-
-
-    if (not validData)
-    {
-        //message to log that data had illegal utf8 already written
-    }
+    //(ph 2023/01/26) Test removing this check to see if any faster response.
+    // Still getting the 3dots in empty param area like "Bind(...)" xE2 x80 xA6
+    // and completions have the bullet dot prefixed. xE2 x80 xA2
+    // These will be removed in the OnLSP_CompletionPopupHoverResponse() function.
+    //
+    //    // remove any invalid utf8 chars
+    //    bool validData = DoValidateUTF8data(stdStrInputbuf);
+    //
+    //    // Remove some extended ascii chars that have clobbered completion and hover responses
+    //    if (stdStrInputbuf.find("{\"id\":\"textDocument/hover") != std::string::npos) //{"id":"textDocument/hover
+    //    {
+    //        std::string badBytes =  "\xE2\x86\x92" ; //Wierd chars in hover results
+    //        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
+    //    }
+    //    if (stdStrInputbuf.find("{\"id\":\"textDocument/completion") != std::string::npos) //{"id":"textDocument/completion
+    //    {
+    //        std::string badBytes =  "\xE2\x80\xA2" ; //Wierd chars in completion empty params
+    //        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
+    //        badBytes = "\xE2\x80\xA6"; // wx3.0 produces an empty string // 3dots
+    //        StdString_ReplaceAll(stdStrInputbuf, badBytes, " ");
+    //    }
+    //
+    //    if (not validData)
+    //    {
+    //        // ** Debugging **
+    //        //message to log that data had illegal utf8 already written
+    //    }
 
     int retryCount = 0;
     while (++retryCount)

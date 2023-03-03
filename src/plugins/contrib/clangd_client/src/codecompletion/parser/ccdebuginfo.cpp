@@ -632,6 +632,7 @@ void CCDebugInfo::OnFindClick(cb_unused wxCommandEvent& event)
         }
     }
 
+    // DisplayTokenInfo() will verify if m_Token has a value //(ph 2023/02/28)
     DisplayTokenInfo();
 }
 
@@ -792,6 +793,7 @@ void CCDebugInfo::OnSave(cb_unused wxCommandEvent& event)
                             for (TokenIdxSet::const_iterator it = result.begin(); it != result.end(); ++it)
                             {
                                 const Token* token = tree->at(*it);
+                                if (not token) continue; //(ph 2023/02/28)
                                 fileTokens << token->GetTokenKindString() << _T(" ");
                                 if (token->m_TokenKind == tkFunction)
                                     fileTokens << token->m_Name << token->GetFormattedArgs() << _T("\t");

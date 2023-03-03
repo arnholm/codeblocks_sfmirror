@@ -669,24 +669,28 @@ void ParseManagerBase::RemoveLastFunctionChildren(TokenTree* tree,
     // and any changes just before a code completion request
     // clangd re-parses the file and sends back all current variables which are then
     // (re)inserted by Parser::OnLSP_DocumentSymbols();
+
     /// Experiment, don't remove variables. This routine may not be needed for clangd
     //(ph 2022/02/26) So far this has been working ok since 211005
     return ;
-////    // -------------------------------------------
-////    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)   //TokenTree lock
-////    // -------------------------------------------
-////
-////    Token* token = tree->at(lastFuncTokenIdx);
-////    if (token)
-////    {
-////        lastFuncTokenIdx = -1;
-////        if (token->m_TokenKind & tkAnyFunction)
-////            token->DeleteAllChildren();
-////    }
-////
-////    // -----------------------------------------------
-////    CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //TokenTree UnLock
-////    // -----------------------------------------------
+    // //(ph 2023/02/26) a crash occured using token ptr may have been caused by this optimization
+    //-return ;
+    // FIXME (ph#): Use a TryLock() and if failure, try to reschedule this function like other locks.
+    // -------------------------------------------
+    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)   //TokenTree lock
+    // -------------------------------------------
+
+    Token* token = tree->at(lastFuncTokenIdx);
+    if (token)
+    {
+        lastFuncTokenIdx = -1;
+        if (token->m_TokenKind & tkAnyFunction)
+            token->DeleteAllChildren();
+    }
+
+    // -----------------------------------------------
+    CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //TokenTree UnLock
+    // -----------------------------------------------
 }
 
 // Breaks up the phrase for code-completion.

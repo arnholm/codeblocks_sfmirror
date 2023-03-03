@@ -85,6 +85,8 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
     // Use clangd to get the clang version
     cmdLine.Append (" --version");
     wxArrayString clangdResponse;
+    // If on first run, wxExecute() stalls on Windows 11 for 3-6 seconds,
+    // change Windows Settings>Windows security>App and Browser control>Smart App Control Settings>off
     wxExecute(cmdLine, clangdResponse);
     if (not clangdResponse.Count())
         return wxString(); //somethings wrong with clangd.exe
@@ -94,7 +96,7 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         cmdLine = clangdResponse[0]; //usually "clangd version 13.0.1" followed by a space or -+whatever
         CCLogger::Get()->DebugLog("Using Clangd version: " + clangdResponse[0]);
         size_t sBgn = cmdLine.find("version ");
-        if (sBgn) sBgn += 8; //jump over "verson"
+        if (sBgn) sBgn += 8; //jump over "version"
         size_t sEnd = sBgn;
         for( ; sEnd < cmdLine.length(); ++sEnd)
         {
