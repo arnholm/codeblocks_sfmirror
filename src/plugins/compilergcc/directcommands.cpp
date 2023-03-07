@@ -233,7 +233,8 @@ void DirectCommands::CheckForToLongCommandLine(wxString& executableCmd, wxArrayS
 
         // Begin from the back of the command line and search for a position to split it. A suitable position is a white space
         // so that the resulting command line inclusive response file is shorter than the length limit
-        const int responseFileLength = responseFilePath.length();
+        // we have to subtract the ' @""' characters from the response file length and the ' ' from the rfind, so totally 5 characters
+        const int responseFileLength = responseFilePath.length() + 5;
         size_t startPos = executableCmd.rfind(' ', maxLength - responseFileLength);
         if (startPos == 0 || startPos == wxString::npos)   // Try to find the first command again...
             startPos = executableCmd.find(' ');
