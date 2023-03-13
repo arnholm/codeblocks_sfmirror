@@ -24,15 +24,16 @@
 #define WXSMENUEDITOR_H
 
 //(*Headers(wxsMenuEditor)
-#include <wx/treectrl.h>
+#include <wx/bmpbuttn.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/panel.h>
+#include <wx/radiobut.h>
 #include <wx/sizer.h>
+#include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/statline.h>
-#include <wx/radiobut.h>
-#include <wx/panel.h>
-#include <wx/button.h>
+#include <wx/treectrl.h>
 //*)
 
 #include "wxsmenu.h"
@@ -187,32 +188,32 @@ class wxsMenuEditor: public wxPanel
         //*)
 
         //(*Declarations(wxsMenuEditor)
-        wxButton* Button4;
-        wxStaticText* StaticText2;
-        wxRadioButton* m_TypeNormal;
-        wxButton* Button1;
-        wxStaticText* StaticText6;
-        wxTreeCtrl* m_Content;
-        wxRadioButton* m_TypeRadio;
-        wxStaticText* StaticText1;
-        wxStaticText* StaticText3;
-        wxCheckBox* m_Checked;
-        wxButton* Button2;
-        wxStaticLine* StaticLine2;
-        wxButton* Button6;
-        wxRadioButton* m_TypeCheck;
-        wxRadioButton* m_TypeSeparator;
+        wxBitmapButton* BitmapButton1;
+        wxBitmapButton* BitmapButton2;
+        wxBitmapButton* BitmapButton3;
+        wxBitmapButton* BitmapButton4;
         wxButton* Button5;
-        wxButton* Button3;
-        wxStaticText* StaticText5;
+        wxButton* Button6;
+        wxCheckBox* m_Checked;
         wxCheckBox* m_Enabled;
-        wxStaticLine* StaticLine1;
         wxRadioButton* m_TypeBreak;
+        wxRadioButton* m_TypeCheck;
+        wxRadioButton* m_TypeNormal;
+        wxRadioButton* m_TypeRadio;
+        wxRadioButton* m_TypeSeparator;
+        wxStaticLine* StaticLine1;
+        wxStaticLine* StaticLine2;
+        wxStaticText* StaticText1;
+        wxStaticText* StaticText2;
+        wxStaticText* StaticText3;
         wxStaticText* StaticText4;
-        wxTextCtrl* m_Label;
+        wxStaticText* StaticText5;
+        wxStaticText* StaticText6;
+        wxTextCtrl* m_Accelerator;
         wxTextCtrl* m_Help;
         wxTextCtrl* m_Id;
-        wxTextCtrl* m_Accelerator;
+        wxTextCtrl* m_Label;
+        wxTreeCtrl* m_Content;
         //*)
 
 };

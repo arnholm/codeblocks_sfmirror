@@ -30,6 +30,9 @@
 #include <prep.h>
 
 //(*InternalHeaders(wxsMenuEditor)
+#include <wx/artprov.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
@@ -93,13 +96,13 @@ void wxsMenuEditor::CreateContent(wxWindow* parent)
 {
     wxWindowID id = wxID_ANY;
     //(*Initialize(wxsMenuEditor)
-    wxStaticBoxSizer* StaticBoxSizer2;
-    wxBoxSizer* BoxSizer2;
-    wxGridSizer* GridSizer1;
     wxBoxSizer* BoxSizer1;
-    wxStaticBoxSizer* StaticBoxSizer1;
-    wxFlexGridSizer* FlexGridSizer1;
+    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
+    wxFlexGridSizer* FlexGridSizer1;
+    wxGridSizer* GridSizer1;
+    wxStaticBoxSizer* StaticBoxSizer1;
+    wxStaticBoxSizer* StaticBoxSizer2;
 
     Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -165,14 +168,14 @@ void wxsMenuEditor::CreateContent(wxWindow* parent)
     StaticLine2 = new wxStaticLine(this, ID_STATICLINE2, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
     StaticBoxSizer2->Add(StaticLine2, 0, wxALL|wxEXPAND, 4);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-    Button1 = new wxButton(this, ID_BUTTON1, _("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
-    BoxSizer2->Add(Button1, 1, wxLEFT|wxRIGHT|wxEXPAND, 2);
-    Button2 = new wxButton(this, ID_BUTTON2, _(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
-    BoxSizer2->Add(Button2, 1, wxLEFT|wxRIGHT|wxEXPAND, 2);
-    Button3 = new wxButton(this, ID_BUTTON3, _("^"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON3"));
-    BoxSizer2->Add(Button3, 1, wxLEFT|wxRIGHT|wxEXPAND, 2);
-    Button4 = new wxButton(this, ID_BUTTON4, _("v"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON4"));
-    BoxSizer2->Add(Button4, 1, wxLEFT|wxRIGHT|wxEXPAND, 2);
+    BitmapButton1 = new wxBitmapButton(this, ID_BUTTON1, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_GO_BACK")),wxART_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BUTTON1"));
+    BoxSizer2->Add(BitmapButton1, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+    BitmapButton2 = new wxBitmapButton(this, ID_BUTTON2, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_GO_FORWARD")),wxART_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BUTTON2"));
+    BoxSizer2->Add(BitmapButton2, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+    BitmapButton3 = new wxBitmapButton(this, ID_BUTTON3, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_GO_UP")),wxART_MENU), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BUTTON3"));
+    BoxSizer2->Add(BitmapButton3, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+    BitmapButton4 = new wxBitmapButton(this, ID_BUTTON4, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_GO_DOWN")),wxART_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BUTTON4"));
+    BoxSizer2->Add(BitmapButton4, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     StaticBoxSizer2->Add(BoxSizer2, 0, wxALIGN_CENTER_HORIZONTAL, 4);
     StaticBoxSizer2->Add(-1,-1,1, wxEXPAND, 5);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
@@ -183,22 +186,20 @@ void wxsMenuEditor::CreateContent(wxWindow* parent)
     StaticBoxSizer2->Add(BoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL, 4);
     BoxSizer1->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 4);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
-    BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,wxTreeEventHandler(wxsMenuEditor::OnContentSelectionChanged));
-    Connect(ID_RADIOBUTTON1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
-    Connect(ID_RADIOBUTTON4,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
-    Connect(ID_RADIOBUTTON2,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
-    Connect(ID_RADIOBUTTON5,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
-    Connect(ID_RADIOBUTTON3,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(wxsMenuEditor::OnLabelChanged));
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonLeftClick));
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonRightClick));
-    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonUpClick));
-    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonDownClick));
-    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonNewClick));
-    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonDelClick));
+    Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,(wxObjectEventFunction)&wxsMenuEditor::OnContentSelectionChanged);
+    Connect(ID_RADIOBUTTON1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
+    Connect(ID_RADIOBUTTON4,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
+    Connect(ID_RADIOBUTTON2,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
+    Connect(ID_RADIOBUTTON5,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
+    Connect(ID_RADIOBUTTON3,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&wxsMenuEditor::OnLabelChanged);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonLeftClick);
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonRightClick);
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonUpClick);
+    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonDownClick);
+    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonNewClick);
+    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonDelClick);
     //*)
 }
 

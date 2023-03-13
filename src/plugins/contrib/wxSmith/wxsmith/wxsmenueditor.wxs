@@ -9,12 +9,12 @@
 						<object class="wxTreeCtrl" name="ID_TREECTRL1" variable="m_Content" member="yes">
 							<image_list></image_list>
 							<tree_items>
-								<item>m_Content</item>
-								<item></item>
+								<elemento>m_Content</elemento>
+								<elemento></elemento>
 							</tree_items>
 							<items_text>
-								<item2>m_Content</item2>
-								<item2></item2>
+								<elemento2>m_Content</elemento2>
+								<elemento2></elemento2>
 							</items_text>
 							<size>200,295</size>
 							<style>wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE</style>
@@ -212,42 +212,38 @@
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer2" member="no">
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
-									<label>&lt;</label>
-									<style>wxBU_EXACTFIT</style>
+								<object class="wxBitmapButton" name="ID_BUTTON1" variable="BitmapButton1" member="yes">
+									<bitmap stock_id="wxART_GO_BACK" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonLeftClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON2" variable="Button2" member="yes">
-									<label>&gt;</label>
-									<style>wxBU_EXACTFIT</style>
+								<object class="wxBitmapButton" name="ID_BUTTON2" variable="BitmapButton2" member="yes">
+									<bitmap stock_id="wxART_GO_FORWARD" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonRightClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON3" variable="Button3" member="yes">
-									<label>^</label>
-									<style>wxBU_EXACTFIT</style>
+								<object class="wxBitmapButton" name="ID_BUTTON3" variable="BitmapButton3" member="yes">
+									<bitmap stock_id="wxART_GO_UP" stock_client="wxART_MENU" />
 									<handler function="OnButtonUpClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxButton" name="ID_BUTTON4" variable="Button4" member="yes">
-									<label>v</label>
-									<style>wxBU_EXACTFIT</style>
+								<object class="wxBitmapButton" name="ID_BUTTON4" variable="BitmapButton4" member="yes">
+									<bitmap stock_id="wxART_GO_DOWN" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonDownClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
