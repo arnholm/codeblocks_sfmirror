@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.63 23/02/28")
+#define VERSION wxT("1.2.64 23/03/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.64    2023/03/14
+//          Fix "untitled" project appearing in wxSmith resources by removing <Extensions>
+//              from the cbp avoiding LoadHook confusion.
 //1.2.63    2023/02/28
 //          Validate assorted token ptrs. Double clicking on Doc popup "Go to declaration" crashed.
 //              Single click works ok.2023/02/28

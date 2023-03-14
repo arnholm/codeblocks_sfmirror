@@ -729,7 +729,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
     wxFFile lspServerLogFile;
 
     explicit ProcessLanguageClient(const cbProject* pProject, const char* program = "", const char* arguments = "");
-            ~ProcessLanguageClient() override;
+    ~ProcessLanguageClient() override;
 
     bool Has_LSPServerProcess();
     void OnClangd_stderr(wxThreadEvent& event);

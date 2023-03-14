@@ -3063,6 +3063,12 @@ bool ParseManager::InstallClangdProxyProject()
     wxFileSystem::AddHandler(new wxZipFSHandler);
 
     bool done = true;
+
+    // Fix 1.2.64 23/03/14 Remove "<Extensions>" from the proxproject.cbp to avoid
+    // CB issuing the LoadHook calls and confusing other plugins (like wxSmith).
+    if (wxFileExists(userDataFolder + "/CC_ProxyProject.cbp"))
+        wxRemove(userDataFolder + "/CC_ProxyProject.cbp");
+
     if (not wxFileExists(userDataFolder + "/CC_ProxyProject.cbp"))
     {
         done = false;
@@ -3073,7 +3079,7 @@ bool ParseManager::InstallClangdProxyProject()
           wxInputStream* in = zip->GetStream();
           if ( in != NULL )
           {
-            wxFileOutputStream out( userDataFolder + "CC_ProxyProject.cbp" );
+            wxFileOutputStream out( userDataFolder + "/CC_ProxyProject.cbp" );
             out.Write(*in);
             out.Close();
             done = true;
