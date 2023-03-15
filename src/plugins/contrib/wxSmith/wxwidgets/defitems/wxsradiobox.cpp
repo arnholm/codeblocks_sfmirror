@@ -114,8 +114,8 @@ wxObject* wxsRadioBox::OnBuildPreview(wxWindow* Parent,long Flags)
 
 void wxsRadioBox::OnEnumWidgetProperties(cb_unused long Flags)
 {
-    WXS_SHORT_STRING(wxsRadioBox,Label, _("Label"), _T("label"), _T(""),true)
-    WXS_ARRAYSTRING(wxsRadioBox,ArrayChoices, _("Choices"), _T("content"), _("item"))
-    WXS_LONG(wxsRadioBox,DefaultSelection, _("Default"), _T("default"), 0)
-    WXS_LONG(wxsRadioBox,Dimension, _("Dimension"), _T("dimension"), 1)
+    WXS_SHORT_STRING(wxsRadioBox,Label, _("Label"), "label", "",true)
+    WXS_ARRAYSTRING(wxsRadioBox,ArrayChoices, _("Choices"), "content", "item")
+    WXS_LONG(wxsRadioBox,DefaultSelection, _("Default"), "default", 0)
+    WXS_LONG(wxsRadioBox,Dimension, _("Dimension"), "dimension", 1)
 }

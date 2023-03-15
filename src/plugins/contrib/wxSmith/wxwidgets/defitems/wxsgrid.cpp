@@ -240,8 +240,8 @@ void wxsGrid::OnEnumWidgetProperties(long Flags)
         WXS_LONG       ( wxsGrid, m_DefaultColSize,  _("Default Column Width"), _T("defaultcolsize"), -1);
         WXS_COLOUR     ( wxsGrid, m_LabelTextColour, _("Label Text Colour"),    _T("labeltextcolour") );
         WXS_FONT       ( wxsGrid, m_LabelFont,       _("Label Text Font"),      _T("labelfont") );
-        WXS_ARRAYSTRING( wxsGrid, m_ColLabels,       _("Column Labels"),        _T("collabels"), _("item"));
-        WXS_ARRAYSTRING( wxsGrid, m_RowLabels,       _("Row Labels"),           _T("rowlabels"), _("item"));
-        WXS_ARRAYSTRING( wxsGrid, m_CellText,        _("Cell Data"),            _T("celltext"),  _("item"));
+        WXS_ARRAYSTRING( wxsGrid, m_ColLabels,       _("Column Labels"),        _T("collabels"), "item");
+        WXS_ARRAYSTRING( wxsGrid, m_RowLabels,       _("Row Labels"),           _T("rowlabels"), "item");
+        WXS_ARRAYSTRING( wxsGrid, m_CellText,        _("Cell Data"),            _T("celltext"),  "item");
     }
 }

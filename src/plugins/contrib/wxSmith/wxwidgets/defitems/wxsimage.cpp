@@ -123,7 +123,7 @@ void wxsImage::OnEnumToolProperties(cb_unused long Flags)
 
     // details
     WXS_IMAGE(wxsImage, m_ImageData, _("Image"), _T("image"));
-    WXS_ARRAYSTRING(wxsImage, m_ImageData, _("Image as Text"), _T("image_text"), _("item2"));
+    WXS_ARRAYSTRING(wxsImage, m_ImageData, _("Image as Text"), _T("image_text"), "item2");
     WXS_BOOL(wxsImage, m_Include, _("Use Include File"), _T("use_include"), false);
 };
 

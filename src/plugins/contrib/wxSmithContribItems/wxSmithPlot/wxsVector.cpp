@@ -341,6 +341,6 @@ static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mp
     WXS_BOOL(        wxsVector, mContinuous, _("Continuous Line"), "mContinuous", true);
     WXS_COLOUR(      wxsVector, mPenColour,  _("Pen Colour"),      "mPenColour");
     WXS_FONT(        wxsVector, mPenFont,    _("Pen Font"),        "mPenFont");
-    WXS_ARRAYSTRING( wxsVector, mXYData,     _("X,Y Data"),        "mXYData",     _("nums"));
+    WXS_ARRAYSTRING( wxsVector, mXYData,     _("X,Y Data"),        "mXYData",     "nums");
 
 }

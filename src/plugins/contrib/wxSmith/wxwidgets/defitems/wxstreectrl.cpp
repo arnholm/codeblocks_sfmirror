@@ -351,7 +351,7 @@ void wxsTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
     UpdateTreeItemList();
 
     WXS_IMAGETREE(wxsTreeCtrl, m_arrItems, _("Tree Items"), "tree_items");
-    WXS_ARRAYSTRING(wxsTreeCtrl, m_arrItems, _("Items as Text"), "items_text", _("item2"));
+    WXS_ARRAYSTRING(wxsTreeCtrl, m_arrItems, _("Items as Text"), "items_text", "item2");
     WXS_BOOL(wxsTreeCtrl, m_bExpand, _("Expand All"), "expand_all", false);
 }
 

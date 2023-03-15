@@ -108,6 +108,6 @@ wxObject* wxsListBox::OnBuildPreview(wxWindow* Parent,long Flags)
 
 void wxsListBox::OnEnumWidgetProperties(cb_unused long Flags)
 {
-      WXS_ARRAYSTRING(wxsListBox,ArrayChoices, _("Choices"), _T("content"), _("item"))
-      WXS_LONG(wxsListBox,DefaultSelection, _("Default"), _T("default"), 0)
+      WXS_ARRAYSTRING(wxsListBox,ArrayChoices, _("Choices"), "content", "item")
+      WXS_LONG(wxsListBox,DefaultSelection, _("Default"), "default", 0)
 }

@@ -127,6 +127,6 @@ wxObject *wxsSimpleHtmlListBox::OnBuildPreview(wxWindow *Parent, long Flags)
  */
 void wxsSimpleHtmlListBox::OnEnumWidgetProperties(cb_unused long Flags)
 {
-    WXS_ARRAYSTRING(wxsSimpleHtmlListBox, ArrayChoices, _("Choices"), _T("content"), _("item"))
-    WXS_LONG(wxsSimpleHtmlListBox, DefaultSelection, _("Default"), _T("default"), 0)
+    WXS_ARRAYSTRING(wxsSimpleHtmlListBox, ArrayChoices, _("Choices"), "content", "item")
+    WXS_LONG(wxsSimpleHtmlListBox, DefaultSelection, _("Default"), "default", 0)
 }

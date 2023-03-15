@@ -127,12 +127,12 @@ void wxsImageList::OnEnumToolProperties(cb_unused long Flags)
     m_Context = GetCoderContext();
 
     // details for the image list
-    WXS_IMAGELIST(wxsImageList, m_ImageData, _("Image List"), _T("image_list"));
-    WXS_ARRAYSTRING(wxsImageList, m_ImageData, _("Images as Text"), _T("image_text"), _("item2"));
-    WXS_LONG(wxsImageList, m_Width,   _("Image Width"),      _T("image_width"),   16);
-    WXS_LONG(wxsImageList, m_Height,  _("Image Height"),     _T("image_height"),  16);
-    WXS_LONG(wxsImageList, m_Count,   _("Image Count"),      _T("image_count"),   0);
-    WXS_BOOL(wxsImageList, m_Include, _("Use Include File"), _T("use_include"), false);
+    WXS_IMAGELIST(wxsImageList, m_ImageData, _("Image List"), "image_list");
+    WXS_ARRAYSTRING(wxsImageList, m_ImageData, _("Images as Text"), "image_text", "item2");
+    WXS_LONG(wxsImageList, m_Width,   _("Image Width"),      "image_width",  16);
+    WXS_LONG(wxsImageList, m_Height,  _("Image Height"),     "image_height", 16);
+    WXS_LONG(wxsImageList, m_Count,   _("Image Count"),      "image_count",   0);
+    WXS_BOOL(wxsImageList, m_Include, _("Use Include File"), "use_include", false);
 };
 
 /*! \brief Save XPM data either in the code or in a separate header file.
