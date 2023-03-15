@@ -9,12 +9,12 @@
 						<object class="wxTreeCtrl" name="ID_TREECTRL1" variable="m_Content" member="yes">
 							<image_list></image_list>
 							<tree_items>
-								<elemento>m_Content</elemento>
-								<elemento></elemento>
+								<item>m_Content</item>
+								<item></item>
 							</tree_items>
 							<items_text>
-								<elemento2>m_Content</elemento2>
-								<elemento2></elemento2>
+								<item2>m_Content</item2>
+								<item2></item2>
 							</items_text>
 							<size>200,295</size>
 							<style>wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE</style>
@@ -251,11 +251,6 @@
 						<flag>wxALIGN_CENTER_HORIZONTAL</flag>
 						<border>4</border>
 					</object>
-					<object class="spacer">
-						<flag>wxEXPAND</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer3" member="no">
 							<object class="sizeritem">
@@ -281,6 +276,11 @@
 						</object>
 						<flag>wxALIGN_CENTER_HORIZONTAL</flag>
 						<border>4</border>
+					</object>
+					<object class="spacer">
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<option>1</option>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
