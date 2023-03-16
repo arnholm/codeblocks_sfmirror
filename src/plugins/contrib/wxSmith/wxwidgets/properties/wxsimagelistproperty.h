@@ -80,7 +80,7 @@ class wxsImageListProperty: public wxsCustomEditorProperty
  *  \param DataName name used in Xml / Data Streams
  */
 #define WXS_IMAGELIST(ClassName,VarName,PGName,DataName) \
-    { static wxsImageListProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName)); \
+    { static wxsImageListProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName)); \
       Property(_Property); }
 
 /** \brief Macro automatically declaring wxImageList property with custom priority
@@ -91,7 +91,7 @@ class wxsImageListProperty: public wxsCustomEditorProperty
  *  \param Priority priority of property
  */
 #define WXS_IMAGELIST_P(ClassName,VarName,PGName,DataName,Priority) \
-    { static wxsImageListProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName),Priority); \
+    { static wxsImageListProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName),Priority); \
       Property(_Property); }
 
 /** \} */

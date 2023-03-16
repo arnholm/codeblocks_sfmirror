@@ -80,7 +80,7 @@ class wxsImageComboProperty: public wxsCustomEditorProperty
  *  \param DataName name used in Xml / Data Streams
  */
 #define WXS_IMAGECOMBO(ClassName,VarName,PGName,DataName) \
-    { static wxsImageComboProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName)); \
+    { static wxsImageComboProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName)); \
       Property(_Property); }
 
 /** \brief Macro automatically declaring wxsImageComboProperty property with custom priority
@@ -91,7 +91,7 @@ class wxsImageComboProperty: public wxsCustomEditorProperty
  *  \param Priority priority of property
  */
 #define WXS_IMAGECOMBO_P(ClassName,VarName,PGName,DataName,Priority) \
-    { static wxsImageComboProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName),Priority); \
+    { static wxsImageComboProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName),Priority); \
       Property(_Property); }
 
 /** \} */

@@ -74,7 +74,7 @@ class wxsImageTreeProperty: public wxsCustomEditorProperty
  *  \param DataSubName name for subelement used in Xml / Data Streams
  */
 #define WXS_IMAGETREE(ClassName,VarName,PGName,DataName) \
-    { static wxsImageTreeProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName)); \
+    { static wxsImageTreeProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName)); \
       Property(_Property); }
 
 /** \brief Macro automatically declaring wxArrayString property with custom priority
@@ -86,7 +86,7 @@ class wxsImageTreeProperty: public wxsCustomEditorProperty
  *  \param Priority priority of property
  */
 #define WXS_IMAGETREE_P(ClassName,VarName,PGName,DataName,Priority) \
-    { static wxsImageTreeProperty _Property(PGName,DataName,_("item"),wxsOFFSET(ClassName,VarName),Priority); \
+    { static wxsImageTreeProperty _Property(PGName,DataName,"item",wxsOFFSET(ClassName,VarName),Priority); \
       Property(_Property); }
 
 /** \} */
