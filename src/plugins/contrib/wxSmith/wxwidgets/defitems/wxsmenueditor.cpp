@@ -176,13 +176,13 @@ void wxsMenuEditor::CreateContent(wxWindow* parent)
     BoxSizer2->Add(BitmapButton3, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
     BitmapButton4 = new wxBitmapButton(this, ID_BUTTON4, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_GO_DOWN")),wxART_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BUTTON4"));
     BoxSizer2->Add(BitmapButton4, 1, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-    StaticBoxSizer2->Add(BoxSizer2, 0, wxALIGN_CENTER_HORIZONTAL, 4);
+    StaticBoxSizer2->Add(BoxSizer2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 2);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     Button5 = new wxButton(this, ID_BUTTON5, _("New"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON5"));
     BoxSizer3->Add(Button5, 1, wxRIGHT|wxEXPAND, 4);
     Button6 = new wxButton(this, ID_BUTTON6, _("Delete"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON6"));
     BoxSizer3->Add(Button6, 1, wxLEFT|wxEXPAND, 4);
-    StaticBoxSizer2->Add(BoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL, 4);
+    StaticBoxSizer2->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 2);
     StaticBoxSizer2->Add(-1,-1,1, wxEXPAND, 5);
     BoxSizer1->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 4);
     SetSizer(BoxSizer1);
