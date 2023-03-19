@@ -244,11 +244,11 @@ void EditProjectGlobsDlg::UpdateTargetCheckBox()
     wxArrayInt checkedItems;
     size_t checkedItemsCnt = lstTargets->GetCheckedItems(checkedItems);
     size_t totalCnt = lstTargets->GetStrings().size();
-    if(checkedItemsCnt == totalCnt)
+    if (checkedItemsCnt == totalCnt)
     {
         chkAllNone->Set3StateValue(wxCHK_CHECKED );
     }
-    else if(checkedItemsCnt == 0)
+    else if (checkedItemsCnt == 0)
     {
         chkAllNone->Set3StateValue(wxCHK_UNCHECKED );
     }
@@ -268,11 +268,12 @@ void EditProjectGlobsDlg::OnAllNoneClick(wxCommandEvent& event)
     wxCheckBoxState state = chkAllNone->Get3StateValue();
     if (state == wxCHK_CHECKED)
     {
-        for(size_t i = 0; i < lstTargets->GetStrings().size(); i++)
+        for (size_t i = 0; i < lstTargets->GetStrings().size(); i++)
             lstTargets->Check(i);
-    } else if (state == wxCHK_UNCHECKED)
+    }
+    else if (state == wxCHK_UNCHECKED)
     {
-        for(size_t i = 0; i < lstTargets->GetStrings().size(); i++)
+        for (size_t i = 0; i < lstTargets->GetStrings().size(); i++)
             lstTargets->Check(i, false);
     }
 }

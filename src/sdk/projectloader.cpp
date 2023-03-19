@@ -40,7 +40,6 @@
 #include "tinywxuni.h"
 #include "filegroupsandmasks.h"
 
-
 ProjectLoader::ProjectLoader(cbProject* project)
     : m_pProject(project),
     m_Upgraded(false),
@@ -1170,7 +1169,7 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
             {
                 modified = true;
                 TiXmlElement dummyUnitWithoutOptions("Unit");
-                for(const wxString& target : glob.GetTargets())
+                for (const wxString& target : glob.GetTargets())
                 {
                     TiXmlElement elem("Option");
                     elem.SetAttribute("target", cbU2C(target));
@@ -1179,7 +1178,6 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
 
                 DoUnitOptions(&dummyUnitWithoutOptions, pf);
                 pf->globId = glob.GetId();
-
             }
         }
     }
@@ -1189,7 +1187,7 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
     // If the project was not modified before updating globs
     // and this glob does not store things in project file
     // we have to reset the modified flag
-    if(!prjModified && !glob.GetAddToProject())
+    if (!prjModified && !glob.GetAddToProject())
         m_pProject->SetModified(false);
 
     return modified;
@@ -1234,7 +1232,7 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
             // Load other options like targets ecc...
             const TiXmlElement* options = unitsGlob->FirstChildElement("Option");
             wxArrayString targets;
-            while(options)
+            while (options)
             {
                 if (options->Attribute("target"))
                 {
@@ -1269,8 +1267,6 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
 
         unit = unit->NextSiblingElement("Unit");
     }
-
-
 
     m_pProject->EndAddFiles();
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("%d files loaded", count));
@@ -1782,7 +1778,7 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
         element->SetAttribute("id", wxString::Format("%lld", glob.GetId()));
         element->SetAttribute("addToProject", glob.GetAddToProject() ? 1 : 0);
         const wxArrayString targets = glob.GetTargets();
-        if(targets.size() > 0)
+        if (targets.size() > 0)
         {
             for (const wxString& target : targets)
             {

@@ -48,8 +48,8 @@ class ManageGlobsDlg: public wxDialog
 		void OnlstGlobsListItemActivated(wxListEvent& event);
 		//*)
 
-		struct TemporaryGlobHolder {
-
+		struct TemporaryGlobHolder
+    {
 		    TemporaryGlobHolder(const ProjectGlob& g)
 		    {
 		        glob = g;

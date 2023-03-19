@@ -25,7 +25,6 @@
     #include "configmanager.h"
     #include "editormanager.h"
     #include "logmanager.h" // for F
-
 #endif
 
 #include <wx/html/htmlwin.h>
@@ -1389,9 +1388,9 @@ void CCManager::DoShowDocumentation(cbEditor* ed)
     }
 
     cbDebuggerPlugin *plugin = Manager::Get()->GetDebuggerManager()->GetActiveDebugger();
-    if(plugin)
+    if (plugin)
     {
-        if(plugin->IsRunning() && plugin->ShowValueTooltip(0))
+        if (plugin->IsRunning() && plugin->ShowValueTooltip(0))
         {
             return; // Do not Show doc popup when the debigger is running
         }
