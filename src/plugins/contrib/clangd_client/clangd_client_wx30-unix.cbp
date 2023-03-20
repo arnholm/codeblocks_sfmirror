@@ -35,6 +35,7 @@
 					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
 					<Add after="if [ -e clangd_client.cbplugin ]; then rm clangd_client.cbplugin; fi;" />
 					<Add after="zip -jq9 clangd_client.zip src/resources/manifest.xml src/resources/*.xrc" />
+					<Add after="zip -jq9 clangd_client.zip src/resources/manifest.xml src/resources/*.xrc src/resources/*.cbp" />
 					<Add after="cd src/resources &amp;&amp; zip -rq9 ../../clangd_client.zip images &amp;&amp; cd ../.." />
 					<Add after="cp clangd_client.zip ../../../devel30/share/codeblocks/clangd_client.zip" />
 					<Add after="if [ -e clangd_client.zip ]; then rm clangd_client.zip; fi;" />
