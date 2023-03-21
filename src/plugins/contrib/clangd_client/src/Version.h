@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.64 23/03/14")
+#define VERSION wxT("1.2.65 23/03/21")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.65    2023/03/21
+//          Fix failure to find cland resources folder. Clangd version and resources dir name no longer match in llvm 16.0.0 .
 //1.2.64    2023/03/14
 //          Fix "untitled" project appearing in wxSmith resources by removing <Extensions>
 //              from the cbp avoiding LoadHook confusion.

@@ -49,6 +49,7 @@ namespace   //anonymous
 
     wxString fileSep = wxFILE_SEP_PATH;
     bool wxFound(int result){return result != wxNOT_FOUND;};
+    wxChar sep = wxFileName::GetPathSeparator();
 }
 // ----------------------------------------------------------------------------
 ClangLocator::ClangLocator()
@@ -131,7 +132,31 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
 
     if (fnClangdExecutablePath.DirExists())
         return fnClangdExecutablePath.GetPath();
-    else return wxString();
+    else
+    {
+        // The lib resource name did not match the version given by "clangd[.exe] --version"
+        // Example: \llvm\lib\16.0.0\ not found bec the clangd version does not match
+        // lib dir \llvm\lib\16\ (why do they keep changing their naming convention ?)
+        // So, back up from end of version name to see if we can find a like dir. It might have a shorter name.
+        wxString dirname = fnClangdExecutablePath.GetPath();
+        wxChar chr = dirname.Last();
+        while (dirname.Length() and (chr != sep) )
+        {
+            dirname.RemoveLast();
+            if (dirname.Last() == '.') dirname.RemoveLast();
+            if (dirname.EndsWith(sep)) break;
+            if (wxDirExists(dirname))
+                return dirname;
+            chr = dirname.Last();
+        }
+    }
+
+    // Say that we can't find the clangd resource directory
+    wxString msg = wxString::Format(_("Error: clangd version (%s) was unable to locate the necessary clangd resource directory.\n"), clangdVersion);
+    msg << '\t' << fnClangdExecutablePath.GetPath();
+    CCLogger::Get()->DebugLogError(msg);
+
+    return wxString();
 }
 // ----------------------------------------------------------------------------
 wxString ClangLocator::Locate_ClangdDir()
