@@ -79,6 +79,7 @@ static const wxChar* PredefinedIds[] =
     _T("wxART_NEW"),
     _T("wxART_UNDO"),
     _T("wxART_REDO"),
+    _T("wxART_CLOSE"),
     _T("wxART_QUIT"),
     _T("wxART_FIND"),
     _T("wxART_FIND_AND_REPLACE"),
