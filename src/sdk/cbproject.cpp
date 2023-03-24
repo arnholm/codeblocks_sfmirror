@@ -397,6 +397,12 @@ void cbProject::Open()
         m_Loaded = loader.Open(m_Filename, &m_pExtensionsElement);
         fileUpgraded = loader.FileUpgraded();
         fileModified = loader.FileModified();
+
+        // First time update globs on project load
+        // This is needed so on workspace loading so all projects are up to date after first loading
+        for (const ProjectGlob& glob : m_Globs)
+            loader.UpdateGlob(glob);
+
         m_CurrentlyLoading = false;
 
         if (m_Loaded)
