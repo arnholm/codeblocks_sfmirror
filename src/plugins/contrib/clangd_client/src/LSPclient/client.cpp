@@ -26,9 +26,11 @@
     #include "globals.h"
 #endif
 
+#include <wx/dir.h>
+#include "wx/textfile.h"        //to modify .Clangd file containing log and cache file lock
+
 #include "macrosmanager.h"
 #include "compilercommandgenerator.h"
-#include "wx/textfile.h"        //to modify .Clangd file containing log and cache file lock
 #include "infowindow.h"
 
 #include <lspdiagresultslog.h>   // LSP diagnostics log
@@ -712,6 +714,25 @@ ProcessLanguageClient::~ProcessLanguageClient()
         m_pServerProcess = nullptr;
         delete pProcess;
     }
+
+    // Possibly remove .cache dir and compile_command.json
+    // because the project got moved/copied and the filenames are invalid.
+    if (m_vProjectNeedsCleanup.size())
+    {
+        for (wxString cbpFilename : m_vProjectNeedsCleanup )
+        {
+            wxFileName fnProjectFilename(cbpFilename);
+            if (cbpFilename.Length())
+            {
+                wxString dirName = fnProjectFilename.GetPath();
+                if (wxDirExists(dirName + fileSep + ".cache"))
+                    wxDir::Remove(dirName + fileSep + ".cache", wxPATH_RMDIR_RECURSIVE);
+                if (wxFileExists(dirName + fileSep + "compile_commands.json"))
+                    wxRemoveFile(dirName + fileSep + "compile_commands.json");
+            }
+        }//endfor
+        m_vProjectNeedsCleanup.clear();
+    }//endif
 
     return;
 }//end ~ProcessLanguageClient()
@@ -2514,7 +2535,7 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
     // LSP Rename
 
     #if defined(cbDEBUG)
-    cbAssertNonFatal(pEd && "LSP_FindReferences called with nullptr");
+    cbAssertNonFatal(pEd && "LSP_RequestRename called with nullptr");
     #endif
     if (not pEd) return;
 
@@ -2523,8 +2544,6 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
         cbMessageBox(_("LSP: attempt to LSP_RequestRename() before initialization."));
         return ;
     }
-
-    if (not pEd)  return;
 
     if (not GetLSP_IsEditorParsed(pEd))
     {
@@ -2561,9 +2580,6 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
     DocumentUri docuri = DocumentUri(stdFileURI.c_str());
 
     Position position;
-    //-const int posn      = pCtrl->GetCurrentPos();
-    //-int startPosn = pCtrl->WordStartPosition(caretPosn, true);
-    //-const int endPosn   = pCtrl->WordEndPosition(posn, true); //not needed
     position.line       = edLineNum;
     position.character  = edColumn;
     writeClientLog(StdString_Format("<<< RequestRename:\n%s,line[%d], char[%d]", docuri.c_str(), position.line, position.character) );
@@ -2571,20 +2587,20 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
     // Report changes to server else reported line references will be wrong.
     LSP_DidChange(pEd);
 
-    string_ref newNameStrRef(newName.c_str()); //(ph 2022/01/3)
-    try { Rename(docuri, position, newNameStrRef); }
+    string_ref newNameStrRef(newName.c_str());
+    try { Rename(docuri, position, newNameStrRef); } //LSP invocation.
     catch(std::exception &err)
     {
-        wxString errMsg(wxString::Format("\nLSP_FindReferences() error: %s\n%s", err.what(), docuri.c_str()) );
+        wxString errMsg(wxString::Format("\nLSP_RequestRename() error: %s\n%s", err.what(), docuri.c_str()) );
         writeClientLog(errMsg.ToStdString());
         cbMessageBox(errMsg);
     }
 
     //-SetLSP_EditorRequest(pEd, "textDocument/references", argCaretPosition);
-    SetLastLSP_Request(pEd->GetFilename(), "textDocument/references");
+    SetLastLSP_Request(pEd->GetFilename(), "textDocument/rename");
 
     return ;
-}//end LSP_FindReferences()
+}//end LSP_RequestRename
 
 // ----------------------------------------------------------------------------
 void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)

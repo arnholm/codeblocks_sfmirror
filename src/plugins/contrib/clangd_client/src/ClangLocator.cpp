@@ -49,7 +49,6 @@ namespace   //anonymous
 
     wxString fileSep = wxFILE_SEP_PATH;
     bool wxFound(int result){return result != wxNOT_FOUND;};
-    wxChar sep = wxFileName::GetPathSeparator();
 }
 // ----------------------------------------------------------------------------
 ClangLocator::ClangLocator()
@@ -134,11 +133,12 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         return fnClangdExecutablePath.GetPath();
     else
     {
-        // The lib resource name did not match the version given by "clangd[.exe] --version"
-        // Example: \llvm\lib\16.0.0\ not found bec the clangd version does not match
-        // lib dir \llvm\lib\16\ (why do they keep changing their naming convention ?)
-        // So, back up from end of version name to see if we can find a like dir. It might have a shorter name.
+        // Example: \llvm\lib\16.0.0\ not found because the clangd version does not match
+        // lib name \llvm\lib\16\ . (Why do they keep changing the naming convention?)
+        // so, back up from end of version string to see if we can find it.
+        // It might have a shorter folder name.
         wxString dirname = fnClangdExecutablePath.GetPath();
+        wxString sep = fnClangdExecutablePath.GetPathSeparator();
         wxChar chr = dirname.Last();
         while (dirname.Length() and (chr != sep) )
         {

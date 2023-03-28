@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.65 23/03/21")
+#define VERSION wxT("1.2.67 23/03/28")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,8 +50,17 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.65    2023/03/21
-//          Fix failure to find cland resources folder. Clangd version and resources dir name no longer match in llvm 16.0.0 .
+//1.2.67    2023/03/28
+//          For Insert/refactor/renameSymbols, ignore files that do not belong to the active project.
+//          Tag .cache and compile_commands.json as invalid.
+//          Invalid names are being reported by clangd when the project was moved/copied to a new
+//          location and not deleting the .cache dir and compiler_commands.json file.
+//          In clangd client termination, remove .cache dir and json file that have been tagged invalid.
+//1.2.66    23/03/21
+//          Fix crashes after debugging when clangd_client was closed for debugging itself.
+//          Add many sanity checks when clangd_client debugging self.
+//1.2.65    2023/03/21 commit
+//          Fix Not finding cland resources when version number does not match lib version.
 //1.2.64    2023/03/14
 //          Fix "untitled" project appearing in wxSmith resources by removing <Extensions>
 //              from the cbp avoiding LoadHook confusion.

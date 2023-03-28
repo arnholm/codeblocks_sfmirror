@@ -959,6 +959,8 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
         return;
     if (m_CC_initDeferred) return;
 
+    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+
     if (type == mtEditorManager)
     {
         if (cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor())
@@ -982,7 +984,7 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 menu->Insert(1, wxID_SEPARATOR, wxEmptyString);
                 pluginManager->RegisterFindMenuItems(true, 2);
             }
-            else
+            else if (pEditor and GetLSP_Initialized(pEditor) ) //(ph 2023/03/20) Fix crash when client shutdown
             {
                 int initialPos = pluginManager->GetFindMenuItemFirst();
                 int pos = initialPos;
@@ -993,8 +995,7 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 msg.Printf(_("Find implementation of: '%s'"), NameUnderCursor.wx_str());
                 menu->Insert(pos++, idGotoImplementation, msg);
 
-                cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor(); //(ph 2021/01/18)
-                if (GetParseManager()->GetParser().Done())
+                if (pEditor and GetLSPclient(pEditor) and GetParseManager()->GetParser().Done())    //(ph 2023/03/20) fix crash when client is shutdown.
                 {
                     msg.Printf(_("Find references of: '%s'"), NameUnderCursor.wx_str());
                     menu->Insert(pos++, idMenuFindReferences, msg);
@@ -1012,7 +1013,7 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
         }
 
         const int insertId = menu->FindItem(_("Insert/Refactor"));
-        if (insertId != wxNOT_FOUND)
+        if ( wxFound(insertId) and pEditor and GetLSP_Initialized(pEditor) )
         {
             if (wxMenuItem* insertMenu = menu->FindItem(insertId, 0))
             {
@@ -1029,21 +1030,24 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 }
                 else
                     CCLogger::Get()->DebugLog(_T("Could not find Insert menu 3!"));
-
-                if (wxFound(insertId)) //(ph 2021/11/16)
-                {
-                    // insert "Reparse this file" under "Insert/Refactor"
-                    size_t posn = 0;
-                    wxMenuItem* insertMenuItem = menu->FindChildItem(insertId, &posn);
-                    if (insertMenuItem)
-                        menu->Insert(posn+1, idEditorFileReparse, _("Reparse this file"), _("Reparse current editors file"));
-                }
             }
             else
                 CCLogger::Get()->DebugLog(_T("Could not find Insert menu 2!"));
         }
-        else
+        else if (not wxFound(insertId))
             CCLogger::Get()->DebugLog(_T("Could not find Insert menu!"));
+
+        if (wxFound(insertId) and pEditor /* and GetLSP_Initialized(pEditor)*/)
+        {
+            // insert "Reparse this file" under "Insert/Refactor"
+            size_t posn = 0;
+            wxMenuItem* insertMenuItem = menu->FindChildItem(insertId, &posn);
+            if (insertMenuItem)
+                menu->Insert(posn+1, idEditorFileReparse, _("Reparse this file"), _("Reparse current editors file"));
+        }
+        if (wxFound(insertId) and pEditor and (not GetLSP_Initialized(pEditor)) )
+            menu->Enable(insertId, false);
+
     }
     else if (type == mtProjectManager)
     {
@@ -1323,6 +1327,8 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         return tokens;
     if (m_CC_initDeferred) return tokens;
 
+    if (not GetLSP_Initialized(ed)) return tokens; //(ph 2023/03/20)
+
     cbStyledTextCtrl* stc = ed->GetControl();
     const int style = stc->GetStyleAt(tknEnd);
     const wxChar curChar = stc->GetCharAt(tknEnd - 1);
@@ -1516,6 +1522,7 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
 {
     std::vector<CCCallTip> tips;
 
+    if (not GetLSP_Initialized(ed)) return tips; //empty tips //(ph 2023/03/20)
     if (!IsAttached() || !m_InitDone || style == wxSCI_C_WXSMITH || !GetParseManager()->GetParser().Done())
         return tips;
     if (m_CC_initDeferred) return tips;
@@ -1652,6 +1659,8 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)     
 {
     // wxScintilla Callback after code completion selection
     ///NB: the token.id is an index into the parsers m_CompletionTokens vector or -1. It's NOT a CCToken.id
+
+    if (not GetLSP_Initialized(ed)) return;
 
     struct UnlockTokenTree
     {
@@ -1881,6 +1890,7 @@ void ClgdCompletion::EditorEventHook(cbEditor* editor, wxScintillaEvent& event)
         event.Skip();
         return;
     }
+    if (not GetLSP_Initialized(editor)) { event.Skip(); return;} //(ph 2023/03/20)
 
     cbStyledTextCtrl* control = editor->GetControl();
 
@@ -2031,11 +2041,13 @@ void ClgdCompletion::OnUpdateUI(wxUpdateUIEvent& event)
     wxString NameUnderCursor;
     bool IsInclude = false;
     const bool HasNameUnderCursor = CodeCompletionHelper::EditorHasNameUnderCursor(NameUnderCursor, IsInclude);
+    bool HasEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor() != 0;
+    bool hasLSPclient = HasEd ? GetLSP_Initialized(Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor()) : false; //(ph 2023/03/20)
+    HasEd = HasEd and hasLSPclient;
 
-    const bool HasEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor() != 0;
     if (m_EditMenu)
     {
-        const bool RenameEnable = HasNameUnderCursor && !IsInclude && GetParseManager()->GetParser().Done();
+        const bool RenameEnable = hasLSPclient and HasNameUnderCursor && !IsInclude && GetParseManager()->GetParser().Done();
         m_EditMenu->Enable(idMenuRenameSymbols, RenameEnable);
     }
 
@@ -2129,7 +2141,7 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
     TokenTree* tree = nullptr;
 
     //the clgdCompletion way to gather functions from token tree
-    tree = GetParseManager()->GetParser().GetTokenTree();
+    tree = GetLSP_Initialized(ed) ? GetParseManager()->GetParser().GetTokenTree() : nullptr ; //(ph 2023/03/20)
 
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
@@ -2531,7 +2543,10 @@ void ClgdCompletion::ClearReparseConditions()
     }
 
     if (msg.Length())
-        InfoWindow::Display(_(" Paused reason(s) "), msg, 7000);
+    {
+        msg.Prepend(_("Cleared:\n"));
+        InfoWindow::Display(_(" Pause(s) Cleared. "), msg, 7000);
+    }
     return;
 }
 // ----------------------------------------------------------------------------
@@ -2712,6 +2727,17 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event) //(ph 2020/11
 
         return;
     }
+
+    // if shift key is down, do a client Shutdown to allow testing (restart, menu status etc)
+    // without having to debug the debugees debugee (two levels of debuggers).
+    if (wxGetKeyState(WXK_SHIFT))
+    {
+        cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+        if (pProject)
+            ShutdownLSPclient(pProject);
+        return;
+    }
+
     //Toggle pause LSP parsing on or off for selected project
     wxTreeCtrl* tree = Manager::Get()->GetProjectManager()->GetUI().GetTree();
     if (!tree) return;
@@ -3929,6 +3955,9 @@ void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
                 waitLimit -= 1;
             }
 
+            pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+            if (pParser) pParser->SetLSP_Client(nullptr); //(ph 2023/03/20)
+
             // The event project just got deleted, see if there's another project we can use
             // to get client info.
             cbProject* pActiveProject =  Manager::Get()->GetProjectManager()->GetActiveProject();
@@ -4574,10 +4603,11 @@ int ClgdCompletion::DoClassMethodDeclImpl()
     if ( (eft != ParserCommon::ftHeader) && (eft != ParserCommon::ftSource) && (ft != ftTemplateSource) ) // only parse source/header files
         return -4;
 
-    if (!GetParseManager()->GetParser().Done())
+    //-if (!GetParseManager()->GetParser().Done())
+    if (not GetLSP_Initialized(ed)) //(ph 2023/03/20)
     {
         wxString msg = _("The Parser is still parsing files.");
-        msg += GetParseManager()->GetParser().NotDoneReason();
+        //-msg += GetParseManager()->GetParser().NotDoneReason();
         CCLogger::Get()->DebugLog(msg);
         return -5;
     }
@@ -4649,6 +4679,8 @@ int ClgdCompletion::DoAllMethodsImpl()
     //LogManager* pLogMgr = Manager::Get()->GetLogManager();
 
     if (!ed)
+        return -3;
+    if (not GetLSP_Initialized(ed)) //(ph 2023/03/20)
         return -3;
 
     //FileType ft = FileTypeOf(ed->GetShortName()); //(ph 2022/06/1)-
@@ -5085,6 +5117,8 @@ void ClgdCompletion::ParseFunctionsAndFillToolbar()
         return;
     }
 
+    if (not GetLSP_Initialized(ed)) return;   //(ph 2023/03/20)
+
     const wxString filename = ed->GetFilename();
     if (filename.IsEmpty())
         return;
@@ -5428,6 +5462,7 @@ void ClgdCompletion::UpdateEditorSyntax(cbEditor* ed)
         ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (!ed || ed->GetControl()->GetLexer() != wxSCI_LEX_CPP)
         return;
+    if (not GetLSP_Initialized(ed)) return; //(ph 2023/03/20)
 
     TokenIdxSet result;
     int flags = tkAnyContainer | tkAnyFunction;

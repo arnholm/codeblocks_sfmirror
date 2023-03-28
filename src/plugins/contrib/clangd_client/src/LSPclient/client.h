@@ -376,6 +376,10 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         bool            m_LSP_initialized = false;
         bool            m_LSP_responseStatus = false;
 
+        // Project needs to remove .cache and compile_commands.json at close
+        // probably because they were copied when the project moved.
+        std::vector<wxString> m_vProjectNeedsCleanup; //project .cbp full path names
+
         // FIXME (ph#): This is no longer needed since clangd version 12
         ////-int             m_LSP_CompileCommandsChangedTime = 0; //contains eon time-of-day in milliseconds
 
@@ -565,6 +569,14 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         const LSP_EditorStatusTuple emptyEditorStatus = LSP_EditorStatusTuple(false,0,false,false,false);
         std::map<cbEditor*,LSP_EditorStatusTuple> m_LSP_EditorStatusMap;
 
+        // Remove the .cache and compile_commands.json on client termination
+        // probably because the project has been move and now they're invalid
+        // ----------------------------------------------------------------------------
+        void SetProjectNeedsCleanup(wxString projectFilename)
+        // ----------------------------------------------------------------------------
+        {
+            m_vProjectNeedsCleanup.push_back(projectFilename);;
+        }
         // ----------------------------------------------------------------------------
         LSP_EditorStatusTuple GetLSP_EditorStatus(cbEditor* pEditor)
         // ----------------------------------------------------------------------------

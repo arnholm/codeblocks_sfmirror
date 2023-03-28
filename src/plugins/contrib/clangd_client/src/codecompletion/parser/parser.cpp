@@ -459,6 +459,8 @@ bool Parser::IsOkToUpdateClassBrowserView()
 void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
 // ----------------------------------------------------------------------------
 {
+    if (not GetLSPClient()) return;
+
     // Validate that this parser is associated with a project
     cbProject* pProject = m_ParsersProject;
     if (not pProject) return;
@@ -734,6 +736,8 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event) //(ph 2021/03/17)
 // ----------------------------------------------------------------------------
 {
     // The pJsonData must be copied because the data will be freed on return to caller.
+
+    if (not GetLSPClient()) return;
 
     // Validate that this file belongs to this projects parser
     cbProject* pProject = m_ParsersProject;
@@ -1255,6 +1259,8 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     // textDocument/publishDiagnostics
 
     if (GetIsShuttingDown()) return;
+    if (not GetLSPClient()) return;
+
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     cbEditor* pActiveEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -1609,6 +1615,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (GetIsShuttingDown()) return;
+    if (not GetLSPClient()) return;
 
     // ----------------------------------------------------
     // textDocument references event
@@ -1949,6 +1956,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (GetIsShuttingDown()) return;
+    if (not GetLSPClient()) return;
 
     // ----------------------------------------------------------------------------
     // textDocument/declaration textDocument/definition event
@@ -2094,6 +2102,7 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)  //(ph 2021/0
     // This is a callback after requesting textDocument/Symbol (request done in OnLSP_DiagnosticsResponse)
 
     if (GetIsShuttingDown() ) return;
+    if (not GetLSPClient()) return;
 
     // ----------------------------------------------------------------------------
     ///  GetClientData() contains ptr to json object
@@ -2152,6 +2161,8 @@ void Parser::RequestSemanticTokens(cbEditor* pEditor)
 {
     // Issue request for textDocument/semanticTokens to update vSemanticTokens  //(ph 2022/06/10)
 
+    if (not GetLSPClient()) return;
+
     bool useDocumentationPopup = Manager::Get()->GetConfigManager("ccmanager")->ReadBool("/documentation_popup", false);
     if (not useDocumentationPopup) return;
     cbEditor* pActiveEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -2166,6 +2177,7 @@ void Parser::OnLSP_RequestedSemanticTokensResponse(wxCommandEvent& event)  //(ph
 // ----------------------------------------------------------------------------
 {
     if (GetIsShuttingDown()) return;
+    if (not GetLSPClient()) return;
 
     // This is a callback after requesting textDocument/Symbol (request done at end of OnLSP_RequestedSymbolsResponse() )
     // Currently, we allow SemanticTokens for the BuiltinActiveEditor only,
@@ -2401,6 +2413,8 @@ wxString Parser::GetCompletionPopupDocumentation(const ClgdCCToken& token)
     // For clangd client we issue a hover request to get clangd data
     // OnLSP_CompletionPopupHoverResponse will push the data int m_HoverTokens and
     // reissue the GetDocumentation request
+
+    if (not GetLSPClient()) return wxString();
 
     if (m_HoverCompletionString.empty()) //if empty data, ask for hover data
     {
@@ -2803,7 +2817,7 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
 
     // ----------------------------------------------------------------------------
     ///  GetClientData() contains a unique_ptr to json object
-    ///  dont free it, The return to OnLSP_Event will free it
+    ///  do not free it, The return to OnLSP_Event will free it
     // ----------------------------------------------------------------------------
     json* pJson = (json*)event.GetClientData();
 
@@ -2848,23 +2862,33 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
         try
         {
             json result = pJson->at("result");
-            //size_t changesCount = result.at("changes").size();
-            //json changes = result.at("changes");
             auto changes = result.at("changes").get<json::object_t>();
             for (auto& item : changes)
             {
                 wxString URI = item.first;
                 json fileChanges = item.second;
-                wxFileName curFilename = fileUtils.FilePathFromURI(URI);  //(ph 2021/12/21)
+                wxFileName curFilename = fileUtils.FilePathFromURI(URI);
                 wxString absFilename = curFilename.GetFullPath();
                 if (not wxFileExists(absFilename))
                     return;
 
-                // 1) verify already open or re-open the affected file
-                 // check if the file is already opened in built-in editor and do search in it
+                // If the file does not belong to the active project, ignore it.
+                // This is caused by dragging a project to a new directory and not
+                // deleting the (now) invalid .cache and compile_commands_json files.
+                if (not pProject->GetFileByFilename(absFilename))
+                {
+                    // Mark the project as needing to remove .cache and compile_commands.json
+                    ProcessLanguageClient* pClient = GetLSPClient();
+                    if (not pClient) continue;
+                    pClient->SetProjectNeedsCleanup(pProject->GetFilename());
+                    continue;
+                }
+
+                // verify already open file or re-open the affected file
+                // verify if the file is already opened in built-in editor and do search in it
                 cbEditor* ed = pEdMgr->IsBuiltinOpen(absFilename);
                 cbStyledTextCtrl* control = ed ? ed->GetControl() : nullptr;
-                if (!ed)
+                if (not ed)
                 {
                     ProjectFile* pf = pProject ? pProject->GetFileByFilename(absFilename) : 0;
                     ed = pEdMgr->Open(absFilename, 0, pf);
