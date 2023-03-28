@@ -607,7 +607,7 @@ void UsrGlblMgrEditDialog::Load()
             members.erase(itr);
     }
 
-    int i = 0;
+    size_t i = 0;
     for (const wxString& member : members)
     {
         if (member.IsEmpty())
@@ -649,7 +649,7 @@ void UsrGlblMgrEditDialog::Save()
         var.SetValue(buildInVar, value);
     }
 
-    int i = 0;
+    size_t i = 0;
     for (i = 0; i < m_Name.size() ; ++i)
     {
         const wxString name  = m_Name[i]->GetValue();
