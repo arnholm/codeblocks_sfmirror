@@ -51,6 +51,7 @@
 #include "sdk_events.h"
 #include "splashscreen.h"
 #include "uservarmanager.h"
+#include "uservardlgs.h"
 
 #if defined(__APPLE__) && defined(__MACH__)
     #include <sys/param.h>
@@ -255,6 +256,12 @@ const wxCmdLineEntryDesc cmdLineDesc[] =
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_OPTION, CMD_ENTRY(""),   CMD_ENTRY("profile"),               CMD_ENTRY("synonym to personality"),
       wxCMD_LINE_VAL_STRING, wxCMD_LINE_NEEDS_SEPARATOR },
+    // Command line for global user variables
+    { wxCMD_LINE_SWITCH, CMD_ENTRY("S"),  CMD_ENTRY("set"),                   CMD_ENTRY("specify the active global user variable set"),
+      wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+    { wxCMD_LINE_SWITCH, CMD_ENTRY("D"),  CMD_ENTRY(""),                      CMD_ENTRY("set value for global variable. For example: -D [set.]name[.member]=value to set the optional \"member\" value of variable \"name\" in the optional \"set\" to \"value\""),
+      wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+    // Build command lines
     { wxCMD_LINE_SWITCH, CMD_ENTRY(""),   CMD_ENTRY("rebuild"),               CMD_ENTRY("clean and then build the project/workspace"),
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_SWITCH, CMD_ENTRY(""),   CMD_ENTRY("build"),                 CMD_ENTRY("just build the project/workspace"),
@@ -728,6 +735,10 @@ bool CodeBlocksApp::OnInit()
             g_DDEServer->Create(wxString::Format(DDE_SERVICE, wxGetUserId()));
         }
 
+        if (!m_Batch)
+            Manager::Get()->GetUserVariableManager()->SetUI(std::unique_ptr<UserVarManagerUI>(new UserVarManagerGUI()));
+
+
         // Splash screen moved to this place, otherwise it would be short visible, even if we only pass filenames via DDE/IPC
         // we also don't need it, if only a single instance is allowed
         Splash splash(!m_Batch && m_Script.IsEmpty() && m_Splash &&
@@ -1156,6 +1167,9 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
         {
             m_HasProject = false;
             m_HasWorkSpace = false;
+
+            Manager::Get()->GetUserVariableManager()->ParseCommandLine(parser);
+
             int count = parser.GetParamCount();
 
             parser.Found(_T("file"), &m_AutoFile);

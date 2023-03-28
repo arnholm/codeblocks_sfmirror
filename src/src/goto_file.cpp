@@ -12,12 +12,12 @@
 
 #ifndef WX_PRECOMP
     //(*InternalHeadersPCH(GotoFile)
-    #include <wx/sizer.h>
     #include <wx/listctrl.h>
-    #include <wx/string.h>
-    #include <wx/intl.h>
+    #include <wx/sizer.h>
     #include <wx/stattext.h>
     #include <wx/textctrl.h>
+    #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 
     #include <algorithm>
@@ -64,7 +64,6 @@ void GotoFile::BuildContent(wxWindow* parent, IncrementalSelectIterator *iterato
     m_ResultList->SetMinSize(wxSize(500,300));
     m_sizer->Add(m_ResultList, 1, wxALL|wxEXPAND, 5);
     SetSizer(m_sizer);
-    m_sizer->Fit(this);
     m_sizer->SetSizeHints(this);
     //*)
 
