@@ -108,14 +108,14 @@ public:
  */
 namespace UserVariableManagerConsts
 {
-static const wxString cBase = wxString (_T("base"));        //!> Base variable value
+static const wxString cBase     = wxString (_T("base"));        //!> Base variable value
 static const wxString cInclude  = wxString (_T("include"));
 static const wxString cLib      = wxString (_T("lib"));
 static const wxString cObj      = wxString (_T("obj"));
 static const wxString cBin      = wxString (_T("bin"));
 static const wxString cCflags   = wxString (_T("cflags"));
 static const wxString cLflags   = wxString (_T("lflags"));
-static const std::vector<wxString> cBuiltinMembers = {"base", "include", "lib", "obj", "bin", "cflags", "lflags"};
+static const std::vector<wxString> cBuiltinMembers = {cBase, cInclude, cLib, cObj, cBin, cCflags, cLflags};
 static const wxString cSets     (_T("/sets/"));
 static const wxString cDir      (_T("dir"));
 
