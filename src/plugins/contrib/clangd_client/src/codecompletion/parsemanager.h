@@ -71,7 +71,7 @@ public:
     ~ParseManager();
 
     /** return a reference to the current active Parser object */
-    ParserBase& GetParser() { return *m_Parser; }
+    ParserBase& GetParser() { return *m_ActiveParser; }
 
     /** return the Parser pointer corresponding to the input C::B project
      * @param project input C::B project pointer
@@ -592,7 +592,7 @@ private:
     /** a temp Parser object pointer */
     ParserBase*                  m_TempParser = nullptr;
     /** active Parser object pointer */
-    ParserBase*                  m_Parser;
+    ParserBase*                  m_ActiveParser;
     /** Proxy Parser object pointer used to parse non-project owned files*/
     ParserBase*                  m_pProxyParser = nullptr;
 

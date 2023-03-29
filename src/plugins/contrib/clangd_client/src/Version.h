@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.67 23/03/28")
+#define VERSION wxT("1.2.68 23/03/29")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.68    23/03/29
+//          Fix Insert/refactor/rename to verify with relative filenames, not absolute filenames.
+
 //1.2.67    2023/03/28
 //          For Insert/refactor/renameSymbols, ignore files that do not belong to the active project.
 //          Tag .cache and compile_commands.json as invalid.

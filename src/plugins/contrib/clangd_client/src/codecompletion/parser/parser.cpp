@@ -2875,7 +2875,10 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
                 // If the file does not belong to the active project, ignore it.
                 // This is caused by dragging a project to a new directory and not
                 // deleting the (now) invalid .cache and compile_commands_json files.
-                if (not pProject->GetFileByFilename(absFilename))
+                wxFileName fnRelFilename = absFilename;
+                fnRelFilename.MakeRelativeTo(wxPathOnly(pProject->GetFilename()));
+                //-wxString lookie = fnRelFilename.GetFullPath(); // **Debugging**
+                if (not pProject->GetFileByFilename(fnRelFilename.GetFullPath()))
                 {
                     // Mark the project as needing to remove .cache and compile_commands.json
                     ProcessLanguageClient* pClient = GetLSPClient();

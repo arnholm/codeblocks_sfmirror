@@ -225,7 +225,7 @@ ParseManager::ParseManager( LSPEventCallbackHandler* pLSPEventSinkHandler ) :
 {
     // parser used when no project is loaded, holds options etc
     m_TempParser = new Parser(this, nullptr); // null pProject
-    m_Parser     = m_TempParser;
+    m_ActiveParser     = m_TempParser;
 
     m_ParserPerWorkspace = false; //(ph 2021/08/26)
 
@@ -513,7 +513,7 @@ wxArrayString ParseManager::GetAllPathsByFilename(const wxString& filename)
     if (files.GetCount() == 1)
     {
         cbProject* project = IsParserPerWorkspace() ? GetActiveEditorProject()
-                                                    : GetProjectByParser(m_Parser);
+                                                    : GetProjectByParser(m_ActiveParser);
         // search in the project
         if (project)
         {
@@ -667,9 +667,9 @@ ParserBase* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
 
     // If current parser is the temp or proxy parser activate the new parser
     Parser* pProxyParser = (Parser*)GetParserByProject(GetProxyProject());
-    if ( m_Parser == m_TempParser)
+    if ( m_ActiveParser == m_TempParser)
         SetParser(parser); // Also updates class browser
-    else if (m_Parser == pProxyParser)
+    else if (m_ActiveParser == pProxyParser)
         SetParser(parser); // Also updates class browser
 
     if (m_ParserPerWorkspace) //always false for clangd
@@ -723,9 +723,9 @@ bool ParseManager::DeleteParser(cbProject* project)
         m_ParserList.erase(parserList_it); // remove deleted parser from parser list
 
         // if the active parser is deleted, set the active parser to nullptr
-        if (pDeletedParser == m_Parser)
+        if (pDeletedParser == m_ActiveParser)
         {
-            m_Parser = nullptr;
+            m_ActiveParser = nullptr;
             SetParser(m_TempParser); // Also updates class browser; do not use SetParser(m_TempParser) //(ph 2022/06/6)-
         }
 
@@ -820,8 +820,8 @@ void ParseManager::RereadParserOptions()
         RemoveClassBrowser();
 
     // re-read the .conf options
-    ParserOptions opts = m_Parser->Options();
-    m_Parser->ReadOptions();
+    ParserOptions opts = m_ActiveParser->Options();
+    m_ActiveParser->ReadOptions();
     m_ParserPerWorkspace = false;
 }
 // ----------------------------------------------------------------------------
@@ -836,8 +836,8 @@ void ParseManager::ReparseCurrentProject()
         TRACE(_T("ParseManager::ReparseCurrentProject: Calling DeleteParser() and CreateParser()"));
 
         // Save the current parser options //(ph 2021/05/25)
-        ParserOptionsSave(m_Parser);
-        BrowserOptionsSave(m_Parser);
+        ParserOptionsSave(m_ActiveParser);
+        BrowserOptionsSave(m_ActiveParser);
 
         DeleteParser(pProject);
         // The old options have just been overwritten by DeleteParser();
@@ -858,8 +858,8 @@ void ParseManager::ReparseCurrentEditor()
         TRACE(_T("ParseManager::ReparseCurrentProject: Calling DeleteParser() and CreateParser()"));
 
         // Save the current parser options //(ph 2021/05/25)
-        ParserOptionsSave(m_Parser);
-        BrowserOptionsSave(m_Parser);
+        ParserOptionsSave(m_ActiveParser);
+        BrowserOptionsSave(m_ActiveParser);
 
         DeleteParser(project);
         // The old options have just been overwritten by DeleteParser();
@@ -1156,7 +1156,7 @@ void ParseManager::CreateClassBrowser()
 
     // Dreaded DDE-open bug related: do not touch unless for a good reason
     // TODO (Morten): ? what's bug? I test it, it's works well now.
-    m_ClassBrowser->SetParser(m_Parser); // Also updates class browser
+    m_ClassBrowser->SetParser(m_ActiveParser); // Also updates class browser
 
     TRACE(_T("ParseManager::CreateClassBrowser: Leave"));
 }
@@ -1193,8 +1193,8 @@ void ParseManager::UpdateClassBrowser()
 
     TRACE(_T("ParseManager::UpdateClassBrowser()"));
 
-    if ( m_Parser != m_TempParser
-        && m_Parser->Done()
+    if ( m_ActiveParser != m_TempParser
+        && m_ActiveParser->Done()
         && (not Manager::IsAppShuttingDown()) )
     {
         m_ClassBrowser->UpdateClassBrowserView();
@@ -1419,7 +1419,7 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
 bool ParseManager::SwitchParser(cbProject* project, ParserBase* parser)
 // ----------------------------------------------------------------------------
 {
-    if (!parser || parser == m_Parser || GetParserByProject(project) != parser)
+    if (!parser || parser == m_ActiveParser || GetParserByProject(project) != parser)
     {
         TRACE(_T("ParseManager::SwitchParser: No need to / cannot switch."));
         return false;
@@ -1441,7 +1441,7 @@ void ParseManager::SetParser(ParserBase* parser)
 // ----------------------------------------------------------------------------
 {
     // if the active parser is the same as the old active parser, nothing need to be done
-    if (m_Parser == parser)
+    if (m_ActiveParser == parser)
         return;
 
     #if defined(cbDEBUG)
@@ -1450,7 +1450,7 @@ void ParseManager::SetParser(ParserBase* parser)
         wxString fromProject = "*NONE*";
         wxString toProject = "*NONE*";
         // The parser and project pointers can be null; Esp., for the TempParser
-        fromProject = (m_Parser and ((Parser*)m_Parser)->GetParsersProject()) ? ((Parser*)m_Parser)->GetParsersProject()->GetTitle() : "*NONE*";
+        fromProject = (m_ActiveParser and ((Parser*)m_ActiveParser)->GetParsersProject()) ? ((Parser*)m_ActiveParser)->GetParsersProject()->GetTitle() : "*NONE*";
         toProject   = (  parser and ((Parser*)  parser)->GetParsersProject()) ? ((Parser*)  parser)->GetParsersProject()->GetTitle() : "*NONE*";
         wxString msg = wxString::Format("Switching parser/project from %s to %s", fromProject, toProject); //(ph 2022/06/4)
         CCLogger::Get()->DebugLog(msg);
@@ -1459,14 +1459,14 @@ void ParseManager::SetParser(ParserBase* parser)
 
     // a new parser is active, so remove the old parser's local variable tokens.
     // if m_Parser == nullptr, this means the active parser is already deleted.
-    if (m_Parser)
-        RemoveLastFunctionChildren(m_Parser->GetTokenTree(), m_LastFuncTokenIdx);
+    if (m_ActiveParser)
+        RemoveLastFunctionChildren(m_ActiveParser->GetTokenTree(), m_LastFuncTokenIdx);
 
     // refresh code completion related variables
     InitCCSearchVariables();
 
     // switch the active parser
-    m_Parser = parser;
+    m_ActiveParser = parser;
 
     if (m_ClassBrowser)
         m_ClassBrowser->SetParser(parser); // Also updates class browser
@@ -1557,7 +1557,7 @@ std::pair<cbProject*, ParserBase*> ParseManager::GetParserInfoByCurrentEditor()
 void ParseManager::SetCBViewMode(const BrowserViewMode& mode)
 // ----------------------------------------------------------------------------
 {
-    m_Parser->ClassBrowserOptions().showInheritance = (mode == bvmInheritance) ? true : false;
+    m_ActiveParser->ClassBrowserOptions().showInheritance = (mode == bvmInheritance) ? true : false;
     UpdateClassBrowser();
 }
 
@@ -1747,11 +1747,11 @@ int ParseManager::FindCurrentFunctionStart(bool callerHasTreeLock,
     // we have all the tokens in the current file, then just do a loop on all
     // the tokens, see if the line is in the token's imp.
     TokenIdxSet result;
-    size_t num_results = m_Parser->FindTokensInFile(callerHasTreeLock, searchData->file, result, tkAnyFunction | tkClass);
+    size_t num_results = m_ActiveParser->FindTokensInFile(callerHasTreeLock, searchData->file, result, tkAnyFunction | tkClass);
     if (s_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format(_T("FindCurrentFunctionStart() Found %lu results"), static_cast<unsigned long>(num_results)));
 
-    TokenTree* tree = m_Parser->GetTokenTree();
+    TokenTree* tree = m_ActiveParser->GetTokenTree();
 
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     cbAssert(callerHasTreeLock && "Caller must own TokenTree lock");
@@ -2990,7 +2990,7 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
         }
     }
 
-    if (parser != m_Parser)
+    if (parser != m_ActiveParser)
     {
         CCLogger::Get()->DebugLog(_T("Start switch from OnEditorActivatedTimer"));
         SwitchParser(project, parser); // Calls SetParser() which also calls UpdateClassBrowserView()
@@ -2998,10 +2998,10 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
 
     if (m_ClassBrowser)
     {
-        if (m_Parser->ClassBrowserOptions().displayFilter == bdfFile)
+        if (m_ActiveParser->ClassBrowserOptions().displayFilter == bdfFile)
             m_ClassBrowser->UpdateClassBrowserView(true); // check header and implementation file swap
         else if (   m_ParserPerWorkspace // project view only available in case of one parser per WS //m_ParserPerWorkspace always false for clangd
-                 && m_Parser->ClassBrowserOptions().displayFilter == bdfProject)
+                 && m_ActiveParser->ClassBrowserOptions().displayFilter == bdfProject)
             m_ClassBrowser->UpdateClassBrowserView();
     }
 }
