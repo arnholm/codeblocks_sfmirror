@@ -646,7 +646,10 @@ void UsrGlblMgrEditDialog::Save()
     for (const wxString& buildInVar : knownMembers)
     {
         wxString value = ((wxTextCtrl*) FindWindow(buildInVar))->GetValue();
-        var.SetValue(buildInVar, value);
+        if (value == "")
+            var.RemoveMember(buildInVar);
+        else
+            var.SetValue(buildInVar, value);
     }
 
     size_t i = 0;
