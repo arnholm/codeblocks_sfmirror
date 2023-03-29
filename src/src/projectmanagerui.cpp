@@ -1797,7 +1797,7 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
 
             wxStopWatch timer;
             wxProgressDialog progress(_("Project Manager"),
-                                      _("Please wait while removing files to project..."),
+                                      _("Please wait while removing files from the project..."),
                                       indices.GetCount(),
                                       Manager::Get()->GetAppFrame());
 
