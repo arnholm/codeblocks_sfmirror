@@ -124,6 +124,7 @@
 						<object class="wxBoxSizer">
 							<object class="sizeritem">
 								<object class="wxSplitterWindow" name="splitter">
+									<sashpos>300</sashpos>
 									<minsize>275</minsize>
 									<orientation>vertical</orientation>
 									<style>wxSP_3D|wxSP_3DSASH|wxSP_LIVE_UPDATE</style>
@@ -479,8 +480,15 @@
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
-						<object class="wxButton" name="wxID_OK">
-							<label>Close</label>
+						<object class="wxButton" name="saveSet">
+							<label>Save</label>
+						</object>
+						<flag>wxALIGN_BOTTOM</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="wxID_CANCEL">
+							<label>Cancel</label>
 						</object>
 						<flag>wxALIGN_BOTTOM</flag>
 						<border>5</border>
