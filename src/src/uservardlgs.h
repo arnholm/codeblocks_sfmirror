@@ -20,6 +20,7 @@
     #include <wx/button.h>
     #include "scrollingdialog.h"
     #include <wx/intl.h>
+    #include <wx/filedlg.h>
     #include <wx/xrc/xmlres.h>
     #include <wx/textctrl.h>
     #include <wx/textdlg.h>
