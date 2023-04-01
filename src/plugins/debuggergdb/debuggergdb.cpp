@@ -158,7 +158,7 @@ BEGIN_EVENT_TABLE(DebuggerGDB, cbDebuggerPlugin)
 END_EVENT_TABLE()
 
 DebuggerGDB::DebuggerGDB() :
-    cbDebuggerPlugin(wxT("GDB/CDB debugger"), wxT("gdb_debugger")),
+    cbDebuggerPlugin(_("GDB/CDB debugger"), wxT("gdb_debugger")),
     m_State(this),
     m_pProcess(nullptr),
     m_LastExitCode(0),
@@ -513,7 +513,7 @@ void DebuggerGDB::DoWatches()
     {
         if (m_localsWatch == nullptr)
         {
-            m_localsWatch = cb::shared_ptr<GDBWatch>(new GDBWatch(wxT("Locals")));
+            m_localsWatch = cb::shared_ptr<GDBWatch>(new GDBWatch(_("Locals")));
             m_localsWatch->Expand(true);
             m_localsWatch->MarkAsChanged(false);
             cbWatchesDlg *watchesDialog = Manager::Get()->GetDebuggerManager()->GetWatchesDialog();
@@ -525,7 +525,7 @@ void DebuggerGDB::DoWatches()
     {
         if (m_funcArgsWatch == nullptr)
         {
-            m_funcArgsWatch = cb::shared_ptr<GDBWatch>(new GDBWatch(wxT("Function arguments")));
+            m_funcArgsWatch = cb::shared_ptr<GDBWatch>(new GDBWatch(_("Function arguments")));
             m_funcArgsWatch->Expand(true);
             m_funcArgsWatch->MarkAsChanged(false);
             cbWatchesDlg *watchesDialog = Manager::Get()->GetDebuggerManager()->GetWatchesDialog();
@@ -545,7 +545,7 @@ static wxString GetShellString()
     // GDB expects the SHELL variable's value to be a path to the shell's executable, so we need to
     // remove all parameters and do some trimming.
     shell.Trim(false);
-    wxString::size_type pos = shell.find(wxT(' '));
+    wxString::size_type pos = shell.find(' ');
     if (pos != wxString::npos)
         shell.erase(pos);
     shell.Trim();
@@ -597,12 +597,12 @@ int DebuggerGDB::LaunchProcess(const wxString& cmd, const wxString& cwd)
         DebugLog(wxString::Format( _("Executing: %s"), psCmd.wx_str()) );
         int result = wxExecute(psCmd, psOutput, psErrors, wxEXEC_SYNC);
 
-        mypidStr << wxT(" ");
+        mypidStr << ' ';
 
         for (int i = 0; i < psOutput.GetCount(); ++i)
         { //  PPID   PID COMMAND
            wxString psLine = psOutput.Item(i);
-           if (psLine.StartsWith(mypidStr) && psLine.Contains(wxT("gdb")))
+           if (psLine.StartsWith(mypidStr) && psLine.Contains("gdb"))
            {
                wxString pidStr = psLine.Mid(mypidStr.Length());
                pidStr = pidStr.BeforeFirst(' ');
@@ -1724,7 +1724,7 @@ void DebuggerGDB::DoBreak(bool temporary)
                     CloseHandle(proc);
                 }
                 else
-                    Log(wxT("Interrupting debugger failed :("), Logger::error);
+                    Log(_("Interrupting debugger failed :("), Logger::error);
             }
         }
         else
@@ -1734,7 +1734,7 @@ void DebuggerGDB::DoBreak(bool temporary)
                 Log(_("Trying to interrupt the process by sending CTRL-C event to the console!"));
                 if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0)
                 {
-                    Log(wxT("Interrupting debugger failed :("), Logger::error);
+                    Log(_("Interrupting debugger failed :("), Logger::error);
                     return;
                 }
             }
@@ -2271,7 +2271,7 @@ bool DebuggerGDB::SetWatchValue(cb::shared_ptr<cbWatch> watch, const wxString &v
                 temp_watch->GetSymbol(symbol);
                 temp_watch = temp_watch->GetParent();
 
-                if (symbol.find(wxT('*')) != wxString::npos || symbol.find(wxT('&')) != wxString::npos)
+                if (symbol.find('*') != wxString::npos || symbol.find('&') != wxString::npos)
                     symbol = wxT('(') + symbol + wxT(')');
 
                 if (full_symbol.empty())
