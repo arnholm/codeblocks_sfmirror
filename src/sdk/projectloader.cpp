@@ -1773,9 +1773,9 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
     for (const ProjectGlob& glob : m_pProject->GetGlobs())
     {
         TiXmlElement *element = AddElement(prjnode, "UnitsGlob", "directory", glob.GetPath());
-        element->SetAttribute("wildcard", glob.GetWildCard());
+        element->SetAttribute("wildcard", glob.GetWildCard().c_str());
         element->SetAttribute("recursive", glob.GetRecursive() ? 1 : 0);
-        element->SetAttribute("id", wxString::Format("%lld", glob.GetId()));
+        element->SetAttribute("id", wxString::Format("%lld", glob.GetId()).c_str());
         element->SetAttribute("addToProject", glob.GetAddToProject() ? 1 : 0);
         const wxArrayString targets = glob.GetTargets();
         if (targets.size() > 0)
