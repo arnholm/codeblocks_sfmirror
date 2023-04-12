@@ -1708,7 +1708,7 @@ void CodeSnippetsTreeCtrl::EditSnippetWithMimeOrCB()
     LOGIT( _T("EditSnippetWithMime[%s]"), fileName.c_str() );
     if ( fileName.IsEmpty() ) return;
 
-    if (fileName.StartsWith('\"') and fileName.ends_with('\"'))
+    if (fileName.StartsWith('\"') and fileName.EndsWith('\"'))
         fileName = fileName.Mid(1, fileName.Length()-2);
     wxFileName file(fileName);
     wxString fileExt = file.GetExt();
