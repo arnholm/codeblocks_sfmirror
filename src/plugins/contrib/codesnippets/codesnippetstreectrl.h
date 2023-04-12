@@ -70,7 +70,7 @@ class CodeSnippetsTreeCtrl : public wxTreeCtrl
         void        EditSnippetAsFileLink();
         void        SaveSnippetAsFileLink();
         void        EditSnippetAsText();
-        void        EditSnippetWithMIME();
+        void        EditSnippetWithMimeOrCB();
 
         void OnEditorSave(CodeBlocksEvent& event);
         void OnEditorClose(CodeBlocksEvent& event);
