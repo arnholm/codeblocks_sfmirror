@@ -38,6 +38,7 @@
 #include "manager.h"
 #include "editormanager.h"
 #include "logmanager.h"
+#include "projectmanager.h"
 #include "globals.h"
 #include "infowindow.h"
 #endif
