@@ -48,7 +48,7 @@
 #include <cbworkspace.h>
 
 #include "parsemanager.h"
-#include "F:\usr\Proj\Clangd_Client-work\trunk\clangd_client\src\codecompletion\parsemanager_base.h"
+#include "parsemanager_base.h"
 
 #include "parser/parser.h"
 
