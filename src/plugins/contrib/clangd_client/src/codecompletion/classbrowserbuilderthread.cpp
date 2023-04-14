@@ -28,7 +28,7 @@
 
 #include "classbrowserbuilderthread.h"
 #include "classbrowser.h"
-#include "parser/cclogger.h" //(ph 2021/07/27)
+#include "parser/cclogger.h"
 
 
 // sanity check for the build tree functions, this function should only be called in a worker thread
@@ -66,7 +66,7 @@
     #define TRACE2(format, args...)
 #endif
 
-wxMutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member //(ph 2022/05/5)
+wxMutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member
 // ----------------------------------------------------------------------------
 ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem) :
 // ----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         return success = m_Busy = false;
     }
     m_ClassBrowserBuilderThreadMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
-    /// This Unlocks the ClassBrowserBuilderThreadMutex after any return statement //(ph 2022/05/5)
+    // This structs dtor unlocks the ClassBrowserBuilderThreadMutex after any return statement in this function
     struct ClassBrowserBuilderThreadMutexUnlock
     {
         ClassBrowserBuilderThreadMutexUnlock(){}
@@ -252,7 +252,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     }
 
     // ----------------------------------------------------------------
-    //CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)   //deprecated //(ph 2022/05/5)
+    //CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)   //deprecated
     // Unlocked by dtor of above struct ClassBrowserBuilderThreadMutexUnlock
     // ----------------------------------------------------------------
     m_Busy = false;
@@ -298,12 +298,12 @@ void* ClassBrowserBuilderThread::Entry()
 
         m_Busy = false;
         if (TestDestroy())
-            break; //(ph 2022/05/6)
+            break;
     }
 
     m_ParseManager = nullptr;
-    //-m_CCTreeTop = nullptr;       Leak! CCTree dtor won't be called from ~ClassBrowserBuilderThread().    //(ph 2022/05/7)
-    //-m_CCTreeBottom = nullptr;    Leak! CCTree dtor won't be called from ~ClassBrowserBuilderThread().    //(ph 2022/05/7)
+    //-m_CCTreeTop = nullptr;       Leak! CCTree dtor won't be called from ~ClassBrowserBuilderThread().    //(2022/05/7)
+    //-m_CCTreeBottom = nullptr;    Leak! CCTree dtor won't be called from ~ClassBrowserBuilderThread().    //(2022/05/7)
 
     return nullptr;
 }
@@ -463,8 +463,8 @@ void ClassBrowserBuilderThread::BuildTree()
     wxStopWatch sw_total;
 #endif
 
-    cbAssert(m_CCTreeTop != nullptr); //(ph 2022/04/2)
-    if (not m_CCTreeTop) return;    //(ph 2022/04/2)
+    cbAssert(m_CCTreeTop != nullptr);
+    if (not m_CCTreeTop) return;
     // 1.) Create initial root node, if not already there
     CCTreeItem* root = m_CCTreeTop->GetRootItem();
     if (!root)
@@ -650,7 +650,7 @@ bool ClassBrowserBuilderThread::CreateSpecialFolders(CCTree* tree, CCTreeItem* p
 
     // loop all tokens in global namespace and see if we have matches
     TokenTree* tt = m_ParseManager->GetParser().GetTokenTree();
-    if (not tt) return false; //(ph 2022/04/2) avoid crash during project close
+    if (not tt) return false; // avoid crash during project close
     // -------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -------------------------------------------

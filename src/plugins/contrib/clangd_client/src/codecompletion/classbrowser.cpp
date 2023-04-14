@@ -39,14 +39,14 @@
 
 #include "classbrowser.h" // class's header file
 #include "parsemanager.h"
-#include "parser/cclogger.h" //(ph 2021/07/27)
+#include "parser/cclogger.h"
 
 #include "parser/ccdebuginfo.h"
 
 #include <stack>
 
 #define CC_CLASS_BROWSER_DEBUG_OUTPUT 0
-//(ph 2021/06/3)
+//(2021/06/3)
 //-#undef CC_CLASS_BROWSER_DEBUG_OUTPUT
 //-#define CC_CLASS_BROWSER_DEBUG_OUTPUT 1
 
@@ -180,14 +180,14 @@ ClassBrowser::~ClassBrowser()
         // awake the thread so it can terminate
         m_ClassBrowserSemaphore.Post();
         // free the system-resources
-        //- m_ClassBrowserBuilderThread->Wait(); removed, trying to fix MACOS hang //(ph 2022/05/6)
-        // ^^ The above causes infinite wait on  Mac OS //(ph 2022/05/7)
+        //- m_ClassBrowserBuilderThread->Wait(); removed, trying to fix MACOS hang
+        // ^^ The above causes infinite wait on  Mac OS //(2022/05/7)
 
-        #if not defined(__WXMAC__)      //(ph 2022/05/8)
+        #if not defined(__WXMAC__)      //(2022/05/8)
         // But this delete causes crashes on MacOS with the following message:
         // "Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'NSWindow drag regions should only be invalidated on the Main Thread!'"
         // Eliminating this delete on the Mac solved the crash. This needs further investigation.
-        // FIXME (ph#): Investigate crash when deleting ClassBrowserBuilderThread on MacOS //(ph 2022/05/7)
+        // FIXME (ph#): Investigate crash when deleting ClassBrowserBuilderThread on MacOS //(2022/05/7)
             m_ClassBrowserBuilderThread->Delete();
         #endif
 
@@ -213,14 +213,14 @@ void ClassBrowser::SetParser(ParserBase* parser)
             filter = bdfProject;
 
         m_Parser->ClassBrowserOptions().displayFilter = filter;
-        // Note: (ph#) The next statement is about to clobber the global setting with the current parser setting. //(ph 2021/05/25)
+        // Note: (ph#) The next statement is about to clobber the global setting with the current parser setting.
         // eg. If you have just set"Display inheritance info" to yes, it'll now be clobbered with
         // the old parser settings with which the plugin started. What the ... ?
         // This means there is no way to reparse a project with inheritance when the previous parser
         // did not have it already set.
         // The only way out is to set "Show inheritance" before starting CodeBlocks.
         // DeleteParser() calls SetParser() calls ClassBrowser->SetParser() calls WriteOptions()
-        //-m_Parser->WriteOptions(); //(ph 2021/05/25) removed
+        //-m_Parser->WriteOptions();  removed to avoid clobbering settings
         UpdateClassBrowserView();
     }
     else
@@ -258,7 +258,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     if (pEditor)
     {
         m_ActiveFilename = pEditor->GetFilename();
-        //(ph 2022/04/2) Only active project updates class browser
+        // Only active project updates class browser
         ProjectFile* pPf = pEditor->GetProjectFile();
         if(not pPf) return;
         cbProject* pEdProject = pPf->GetParentProject();
@@ -286,19 +286,19 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
 
     cbProject* pActiveProject = nullptr;
     if (not m_ParseManager->IsParserPerWorkspace()) //IsParserPerWorkspace always false for clangd_client
-        pActiveProject = m_ParseManager->GetProjectByParser(m_Parser); //<== always executed
+        pActiveProject = m_ParseManager->GetProjectByParser((Parser*)m_Parser); //<== always executed
     else
         pActiveProject = m_ParseManager->GetActiveEditorProject();
 
     if (not pActiveProject)
     {
         CCLogger::Get()->DebugLog("ClassBrowser::UpdateClassBrowserView(): No active project available.");
-        return; //(ph 2022/08/01)
+        return;
     }
 
-    //-ThreadedBuildTree(activeProject); // (Re-) create tree UI //(ph 2021/09/27)- //(ph 2021/09/27)
+    //-ThreadedBuildTree(activeProject); // (Re-) create tree UI //(21/09/27) deprecated
 
-    if ( not m_ClassBrowserBuilderThread ) //(ph 2021/09/26)
+    if ( not m_ClassBrowserBuilderThread )
     {
         ThreadedBuildTree(pActiveProject);   // create tree UI
         if (not m_ClassBrowserBuilderThread->IsPaused())
@@ -306,7 +306,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     }
     else if (m_ClassBrowserBuilderThread->IsBusy())
     {
-        // re-schedule this call on the Idle time Callback queue //(ph 2021/09/27)
+        // re-schedule this call on the Idle time Callback queue
         GetParseManager()->GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClassBrowser::UpdateClassBrowserView, checkHeaderSwap);
         return;
     }
@@ -376,7 +376,7 @@ void ClassBrowser::ShowMenu(wxTreeCtrl* tree, wxTreeItemId id, cb_unused const w
         if (menu->GetMenuItemCount() != 0)
             menu->AppendSeparator();
 
-        // FIXME (ph#): Show inherited is causing loop when no inherited class //(ph 2022/05/31)
+        // FIXME (ph#): Show inherited is causing loop when no inherited class //(2022/05/31)
         //?menu->AppendCheckItem(idCBViewInheritance, _("Show inherited members"));
         menu->AppendCheckItem(idCBExpandNS,        _("Auto-expand namespaces"));
         menu->Append         (idMenuRefreshTree,   _("&Refresh tree"));
@@ -394,7 +394,7 @@ void ClassBrowser::ShowMenu(wxTreeCtrl* tree, wxTreeItemId id, cb_unused const w
             menu->Check(idMenuDebugSmartSense, s_DebugSmartSense);
         }
 
-        // FIXME (ph#): Show Inheritance is causing a loop //(ph 2022/05/31)
+        // FIXME (ph#): Show Inheritance is causing a loop //(2022/05/31)
         // restore this: menu->Check(idCBViewInheritance, m_Parser ? options.showInheritance : false);
         menu->Check(idCBExpandNS,        m_Parser ? options.expandNS        : false);
     }
@@ -565,7 +565,7 @@ void ClassBrowser::OnJumpTo(wxCommandEvent& event)
 
         cbProject* project;
         if (!m_ParseManager->IsParserPerWorkspace())
-            project = m_ParseManager->GetProjectByParser(m_Parser);
+            project = m_ParseManager->GetProjectByParser((Parser*)m_Parser);
         else
             project = m_ParseManager->GetActiveEditorProject();
 
@@ -677,7 +677,7 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
 
         cbProject* project = nullptr;
         if (!m_ParseManager->IsParserPerWorkspace())
-            project = m_ParseManager->GetProjectByParser(m_Parser);
+            project = m_ParseManager->GetProjectByParser((Parser*)m_Parser);
         else
             project = m_ParseManager->GetActiveEditorProject();
 
@@ -707,8 +707,8 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
         }
     }
 
-    CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)         //(ph 2021/09/29)
-    return;                                                 //(ph 2021/09/29)
+    CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    return;
 }
 // ----------------------------------------------------------------------------
 void ClassBrowser::OnRefreshTree(cb_unused wxCommandEvent& event)
@@ -722,7 +722,7 @@ void ClassBrowser::OnForceReparse(cb_unused wxCommandEvent& event)
 {
     // Invoked via Symbols context menu "Re-parse now"
 
-    // Issue event for idCurrentProjectReparse  //(ph 2021/06/13)
+    // Issue event for idCurrentProjectReparse
     // Will be caught by codecompletion::ReparseCurrentProject event
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED);
     int reparse = wxFindMenuItemId(Manager::Get()->GetAppFrame(), "Project", "Reparse active project");
@@ -743,22 +743,22 @@ void ClassBrowser::OnCBViewMode(wxCommandEvent& event)
     if (event.GetId() == idCBViewInheritance)
     {
         options.showInheritance = event.IsChecked();
-        pCfgMgr->Write("/browser_show_inheritance", bool(event.IsChecked()));    //(ph 2021/05/25)
+        pCfgMgr->Write("/browser_show_inheritance", bool(event.IsChecked()));
     }
 
     if (event.GetId() == idCBExpandNS)
     {
         options.expandNS = event.IsChecked();
-        pCfgMgr->Write("/browser_expand_ns", bool(event.IsChecked()));    //(ph 2021/05/25)
+        pCfgMgr->Write("/browser_expand_ns", bool(event.IsChecked()));
 
     }
     if (event.GetId() == idCBBottomTree)
     {
         options.treeMembers = event.IsChecked();
-        pCfgMgr->Write("/browser_tree_members", bool(event.IsChecked()));    //(ph 2021/05/25)
+        pCfgMgr->Write("/browser_tree_members", bool(event.IsChecked()));
     }
 
-    //-m_Parser->WriteOptions();    //(ph 2021/05/25)
+    //-m_Parser->WriteOptions();
     UpdateClassBrowserView();
 }
 // ----------------------------------------------------------------------------
@@ -771,9 +771,9 @@ void ClassBrowser::OnCBExpandNS(wxCommandEvent& event)
     if (event.GetId() == idCBExpandNS)
         m_Parser->ClassBrowserOptions().expandNS = event.IsChecked();
 
-    //-m_Parser->WriteOptions();    //(ph 2021/05/25)
+    //-m_Parser->WriteOptions();
     UpdateClassBrowserView();
-    Manager::Get()->GetConfigManager("clangd_client")->Write("/browser_expand_ns", bool(event.IsChecked()));    //(ph 2021/05/25)
+    Manager::Get()->GetConfigManager("clangd_client")->Write("/browser_expand_ns", bool(event.IsChecked()));
 
 }
 // ----------------------------------------------------------------------------
@@ -794,10 +794,10 @@ void ClassBrowser::OnViewScope(wxCommandEvent& event)
         }
 
         m_Parser->ClassBrowserOptions().displayFilter = filter;
-        //-m_Parser->WriteOptions();    //(ph 2021/05/25)
+        //-m_Parser->WriteOptions();
         UpdateClassBrowserView();
     }
-    //-else  //(ph 2021/05/25)
+
     {
         // we have no parser; just write the setting in the configuration
         Manager::Get()->GetConfigManager("clangd_client")->Write("/browser_display_filter", sel);
@@ -823,17 +823,17 @@ void ClassBrowser::OnSetSortType(wxCommandEvent& event)
     if (m_Parser)
     {
         m_Parser->ClassBrowserOptions().sortType = bst;
-        //-m_Parser->WriteOptions(); //(ph 2021/05/25)
+        //-m_Parser->WriteOptions();
         UpdateClassBrowserView();
     }
-    //-else //(ph 2021/05/25)
-        Manager::Get()->GetConfigManager("clangd_client")->Write("/browser_sort_type", (int)bst);
+
+    Manager::Get()->GetConfigManager("clangd_client")->Write("/browser_sort_type", (int)bst);
 }
 // ----------------------------------------------------------------------------
 template <typename T, typename T1, typename P1>
 bool ClassBrowser::GetTokenTreeLock(void (T::*method)(T1 x1), P1 event)
 // ----------------------------------------------------------------------------
-{ //(ph 2021/09/29)
+{
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
@@ -1063,7 +1063,7 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
     // To avoid blocking the UI, check if busy thread before calling.
     if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy())
     {
-        // re-schedule this call on the Idle time Callback queue //(ph 2021/09/30)
+        // re-schedule this call on the Idle time Callback queue )
         cbAssert(m_Parser);
         if (m_Parser)
             m_Parser->GetIdleCallbackHandler()->QueueCallback(this, &ClassBrowser::ThreadedBuildTree, activeProject);

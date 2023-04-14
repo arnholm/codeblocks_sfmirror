@@ -88,7 +88,7 @@ CCLogger::CCLogger() :
 void CCLogger::SetExternalLog(bool OnOrOff)
 // ----------------------------------------------------------------------------
 {
-    //(ph 2021/08/30) create external logging
+    // create external logging
 
     m_ExternLogActive = OnOrOff;
     if (m_ExternLogActive)
@@ -211,7 +211,7 @@ void CCLogger::DebugLog(const wxString& msg, int id)
         #endif
     }
 
-    //(ph 2021/08/30) write debugging msgs to external file.
+    // write debugging msgs to external file.
     if (m_ExternLogActive and m_ExternLogFile.IsOpened())
     {
         wxDateTime now = wxDateTime::Now();

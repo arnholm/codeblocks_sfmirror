@@ -19,7 +19,9 @@
 /** debug only variable, used to print the AI match related log message */
 extern bool s_DebugSmartSense;
 
+// ----------------------------------------------------------------------------
 class ParseManagerBase
+// ----------------------------------------------------------------------------
 {
 public:
     /** divide a statement to several pieces(parser component), each component has a type member */

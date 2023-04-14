@@ -671,9 +671,10 @@ void ParseManagerBase::RemoveLastFunctionChildren(TokenTree* tree,
     // (re)inserted by Parser::OnLSP_DocumentSymbols();
 
     /// Experiment, don't remove variables. This routine may not be needed for clangd
-    //(ph 2022/02/26) So far this has been working ok since 211005
+    // So far this has been working ok since 21/10/05
     return ;
-    // //(ph 2023/02/26) a crash occured using token ptr may have been caused by this optimization
+    // 2023/02/26 a crash occured using token ptr may have been caused by this optimization
+    // I could not recreate the situation, so I added if(token) checks to every use of token ptr
     //-return ;
     // FIXME (ph#): Use a TryLock() and if failure, try to reschedule this function like other locks.
     // -------------------------------------------

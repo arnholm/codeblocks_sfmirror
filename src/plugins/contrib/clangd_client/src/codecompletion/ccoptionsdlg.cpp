@@ -144,11 +144,11 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     // Page "C / C++ parser"
     // NOTE (Morten#1#): Keep this in sync with files in the XRC file (settings.xrc) and ParseManager.cpp
     XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/max_threads"), 1));
-    XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->Enable(true);   //(ph 2021/07/17)
+    XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->Enable(true);
     XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/max_parsers_while_compiling"), 0));
-    XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->Enable(true);   //(ph 2022/04/25)
+    XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->Enable(true);
 
-    XRCCTRL(*this, "txtMasterPath",            wxTextCtrl)->SetValue(cfg->Read("/LLVM_MasterPath", wxString())); //(ph 2022/12/22)
+    XRCCTRL(*this, "txtMasterPath",            wxTextCtrl)->SetValue(cfg->Read("/LLVM_MasterPath", wxString()));
 
     // Page "C / C++ parser (adv.)"
     // NOTE (Morten#1#): Keep this in sync with files in the XRC file (settings.xrc) and parser.cpp
@@ -192,15 +192,15 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
 
     m_Old_LLVM_MasterPath = m_Parser.Options().LLVM_MasterPath; //save for onApply() check
 
-    // FIXME (ph#): implement these unused hidden check boxes ?
-    XRCCTRL(*this, "chkLocals",        wxCheckBox)->Hide(); //(ph 2021/11/9)
+    // FIXME (ph#): implement these unused hidden check boxes ? //(22/12/22)
+    XRCCTRL(*this, "chkLocals",        wxCheckBox)->Hide();
     XRCCTRL(*this, "chkGlobals",       wxCheckBox)->Hide();
     XRCCTRL(*this, "chkPreprocessor",  wxCheckBox)->Hide();
     XRCCTRL(*this, "chkComplexMacros", wxCheckBox)->Hide();
 
     // Page "Symbol browser"
     XRCCTRL(*this, "chkInheritance",        wxCheckBox)->SetValue(m_Parser.ClassBrowserOptions().showInheritance);
-    // FIXME (ph#): Display inheritance is causin a loop //(ph 2022/05/31)
+    // FIXME (ph#): Display inheritance is causin a loop //(2022/05/31)
     XRCCTRL(*this, "chkInheritance",        wxCheckBox)->SetValue(false);
     XRCCTRL(*this, "chkExpandNS",           wxCheckBox)->SetValue(m_Parser.ClassBrowserOptions().expandNS);
     XRCCTRL(*this, "chkTreeMembers",        wxCheckBox)->SetValue(m_Parser.ClassBrowserOptions().treeMembers);
@@ -340,7 +340,7 @@ void CCOptionsDlg::OnApply()
     m_Parser.Options().lspMsgsClearOnSaveCheck = XRCCTRL(*this, "chkLSPMsgsClearOnSave",  wxCheckBox)->GetValue();
     m_Parser.Options().LLVM_MasterPath         = XRCCTRL(*this, "txtMasterPath",          wxTextCtrl)->GetValue();
 
-    // The LLVM_MasterPath may contain macros like $(TARGET_COMPILER_DIR); so deprecate the following //(ph 2022/03/23)
+    // The LLVM_MasterPath may contain macros like $(TARGET_COMPILER_DIR); so deprecate the following //(2022/03/23)
     //if (wxFileExists(m_Parser.Options().LLVM_MasterPath))
     //    m_Parser.Options().LLVM_MasterPath  = XRCCTRL(*this, "txtMasterPath",         wxTextCtrl)->GetValue();
     //else {
@@ -460,7 +460,7 @@ void CCOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     XRCCTRL(*this, "chkLogPluginDebug",             wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkLSPMsgsFocusOnSave",         wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkLSPMsgsClearOnSave",         wxCheckBox)->Enable(en);
-    XRCCTRL(*this, "txtMasterPath",                 wxTextCtrl)->Enable(en);    //(ph 2021/11/7)
+    XRCCTRL(*this, "txtMasterPath",                 wxTextCtrl)->Enable(en);
 
     // Page "C / C++ parser (adv.)"
     en = ccmcfg->ReadBool(_T("/clangd_client"), true);
@@ -554,7 +554,7 @@ bool CCOptionsDlg::ValidateReplacementToken(wxString& from, wxString& to)
     return true;
 }
 // ----------------------------------------------------------------------------
-void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)       //(ph 2021/11/8)
+void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // OnLLVM_AutoDetect clangd location
@@ -599,7 +599,7 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)       //
 
     if (fnClangdPath.Exists() )
         m_Parser.Options().LLVM_MasterPath = fnClangdPath.GetFullPath();
-    XRCCTRL(*this, "txtMasterPath", wxTextCtrl)->SetValue(m_Parser.Options().LLVM_MasterPath);  //(ph 2021/11/8)
+    XRCCTRL(*this, "txtMasterPath", wxTextCtrl)->SetValue(m_Parser.Options().LLVM_MasterPath);
     return;
 }
 // ----------------------------------------------------------------------------

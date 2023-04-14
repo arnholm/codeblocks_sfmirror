@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.68 23/03/29")
+#define VERSION wxT("1.2.69 23/04/11")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,13 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.70 T  23/04/11
+//          Add request to cleanout .cache and compile_command.json on user request
+//              to reparse the project.
+//1.2.69 T  23/04/7
+//          Remove most debugging tags for //(ph <date>)
+//          Remove the un-needed Clangd-cache.lock file for the ProxyProject
+//          Refactoring and cleanup, no functional changes
 //1.2.68    23/03/29
 //          Fix Insert/refactor/rename to verify with relative filenames, not absolute filenames.
 

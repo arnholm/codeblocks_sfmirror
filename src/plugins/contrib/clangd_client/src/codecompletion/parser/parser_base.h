@@ -12,23 +12,24 @@
 #include <wx/timer.h>
 #include <wx/treectrl.h>
 
-#include <set> //(ph 2021/07/27)
-#include <list> //(ph 2021/07/27)
+#include <set>
+#include <list>
 
 #include "configmanager.h"
 
-#include "json.hpp" //nlohmann json lib //(ph 2021/03/23)
-#include "../IdleCallbackHandler.h"     //(ph 2022/08/01)
-#include "LSP_symbolsparser.h"  //(ph 2021/07/27)
-#include "prep.h" //cb_unused //(ph 2021/07/27)
+#include "json.hpp" //nlohmann json lib
+#include "../IdleCallbackHandler.h"
+#include "LSP_symbolsparser.h"
+#include "prep.h" //cb_unused
 #include "cbproject.h"
 #include "tokentree.h"
+#include "ParserCommon.h"
 
 using json = nlohmann::json;
 class ProcessLanguageClient;
 
 // ----------------------------------------------------------------------------
-// Definitions from old parserthread.h //(ph 2021/07/27)
+// Definitions from old parserthread.h
 // ----------------------------------------------------------------------------
 struct NameSpace
 {
@@ -40,8 +41,8 @@ typedef std::vector<NameSpace> NameSpaceVec;
 
 // no browser related class!
 
-typedef std::set<wxString>  StringSet;
-typedef std::list<wxString> StringList;
+//-typedef std::set<wxString>  StringSet;
+//-typedef std::list<wxString> StringList;
 
 // ----------------------------------------------------------------------------
 // Language Server symbol kinds.
@@ -153,126 +154,128 @@ namespace LSP_SemanticTokenModifier //LSP definitions for textDocument/documentS
 	UNUSED const int FileScope      = 11;
 	UNUSED const int GlobalScope    = 12;
 }
-// ----------------------------------------------------------------------------
-namespace ParserCommon
-// ----------------------------------------------------------------------------
-{
-    /** the enum type of the file type */
-    enum EFileType
-    {
-        ftHeader,
-        ftSource,
-        ftOther
-    };
+// Moved to ParserCommon.h
+//// ----------------------------------------------------------------------------
+//namespace ParserCommon
+//// ----------------------------------------------------------------------------
+//{
+//    /** the enum type of the file type */
+//    enum EFileType
+//    {
+//        ftHeader,
+//        ftSource,
+//        ftOther
+//    };
+//
+//    /** return a file type, which can be either header files or implementation files or other files
+//     *  @param filename the input file name
+//     *  @param force_refresh read the user's option of file extension to classify the file type
+//     */
+//    EFileType FileType(const wxString& filename, bool force_refresh = false);
+//}// namespace ParserCommon
 
-    /** return a file type, which can be either header files or implementation files or other files
-     *  @param filename the input file name
-     *  @param force_refresh read the user's option of file extension to classify the file type
-     */
-    EFileType FileType(const wxString& filename, bool force_refresh = false);
-}// namespace ParserCommon
+///** specify the scope of the shown symbols */
+//enum BrowserDisplayFilter
+//{
+//    bdfFile = 0,  /// display symbols of current file
+//    bdfProject,   /// display symbols of current project
+//    bdfWorkspace, /// display symbols of current workspace
+//    bdfEverything /// display every symbols
+//};
 
-/** specify the scope of the shown symbols */
-enum BrowserDisplayFilter
-{
-    bdfFile = 0,  /// display symbols of current file
-    bdfProject,   /// display symbols of current project
-    bdfWorkspace, /// display symbols of current workspace
-    bdfEverything /// display every symbols
-};
+// Moved to ParserCommon.h
+///** specify the sort order of the symbol tree nodes */
+//enum BrowserSortType
+//{
+//    bstAlphabet = 0, /// alphabetical
+//    bstKind,         /// class, function, macros
+//    bstScope,        /// public, protected, private
+//    bstLine,         /// code like order
+//    bstNone
+//};
 
-/** specify the sort order of the symbol tree nodes */
-enum BrowserSortType
-{
-    bstAlphabet = 0, /// alphabetical
-    bstKind,         /// class, function, macros
-    bstScope,        /// public, protected, private
-    bstLine,         /// code like order
-    bstNone
-};
+//// ----------------------------------------------------------------------------
+///** Options for the symbol browser, this specify how the symbol browser will shown */
+//struct BrowserOptions
+//// ----------------------------------------------------------------------------
+//{
+//    BrowserOptions():
+//        showInheritance(false),
+//        expandNS(false),
+//        treeMembers(true),
+//        displayFilter(bdfFile),
+//        sortType(bstKind)
+//    {}
+//
+//    /** whether the base class or derive class information is shown as a child node
+//     * default: false
+//     */
+//    bool                 showInheritance;
+//
+//    /** whether a namespaces node is auto-expand
+//     * auto-expand means the child of the namespace is automatically added.
+//     * default: false, so the user has to click on the '+' icon to expand the namespace, and
+//     * at this time, the child will be added.
+//     */
+//    bool                 expandNS;
+//
+//    /** show members in the bottom tree. default: true */
+//    bool                 treeMembers;
+//
+//    /** token filter option
+//     *  @see  BrowserDisplayFilter for details
+//     *  default: bdfFile
+//     */
+//    BrowserDisplayFilter displayFilter;
+//
+//    /** token sort option in the tree
+//     *  default: bstKind
+//     */
+//    BrowserSortType      sortType;
+//};
 
-// ----------------------------------------------------------------------------
-/** Options for the symbol browser, this specify how the symbol browser will shown */
-struct BrowserOptions
-// ----------------------------------------------------------------------------
-{
-    BrowserOptions():
-        showInheritance(false),
-        expandNS(false),
-        treeMembers(true),
-        displayFilter(bdfFile),
-        sortType(bstKind)
-    {}
-
-    /** whether the base class or derive class information is shown as a child node
-     * default: false
-     */
-    bool                 showInheritance;
-
-    /** whether a namespaces node is auto-expand
-     * auto-expand means the child of the namespace is automatically added.
-     * default: false, so the user has to click on the '+' icon to expand the namespace, and
-     * at this time, the child will be added.
-     */
-    bool                 expandNS;
-
-    /** show members in the bottom tree. default: true */
-    bool                 treeMembers;
-
-    /** token filter option
-     *  @see  BrowserDisplayFilter for details
-     *  default: bdfFile
-     */
-    BrowserDisplayFilter displayFilter;
-
-    /** token sort option in the tree
-     *  default: bstKind
-     */
-    BrowserSortType      sortType;
-};
-
-// ----------------------------------------------------------------------------
-/** Setting of the Parser, some of them will be passed down to ParserThreadOptions */
-struct ParserOptions
-// ----------------------------------------------------------------------------
-{
-    ParserOptions():
-        followLocalIncludes(true),
-        followGlobalIncludes(true),
-        caseSensitive(true),
-        wantPreprocessor(true),
-        useSmartSense(true),
-        whileTyping(true),
-        parseComplexMacros(true),
-        platformCheck(true),
-        logClangdClientCheck(false),
-        logClangdServerCheck(false),
-        logPluginInfoCheck(false),
-        logPluginDebugCheck(false),
-        lspMsgsFocusOnSaveCheck(false),
-        lspMsgsClearOnSaveCheck(false),
-        LLVM_MasterPath(""),        //(ph 2021/11/7)
-        storeDocumentation(true)
-    {}
-
-    bool followLocalIncludes;  /// parse XXX.h in directive #include "XXX.h"
-    bool followGlobalIncludes; /// parse XXX.h in directive #include <XXX.h>
-    bool caseSensitive;        /// case sensitive in MarkItemsByAI
-    bool wantPreprocessor;     /// handle preprocessor directive in Tokenizer class
-    bool useSmartSense;        /// use real AI(scope sequence match) or not(plain text match)
-    bool whileTyping;          /// reparse the active editor while editing
-    bool parseComplexMacros;   /// this will let the Tokenizer to recursive expand macros
-    bool platformCheck;        /// this will check for the platform of the project/target when adding include folders to the parser
-    bool logClangdClientCheck; /// this will check for user enabled clangd client logging
-    bool logClangdServerCheck; /// this will check for user enabled clangd server logging
-    bool logPluginInfoCheck;   /// this will check for user enabled plugin info logging
-    bool logPluginDebugCheck;  /// this will check for user enabled plugin debug logging
-    bool lspMsgsFocusOnSaveCheck; /// this will check for user enabled Focus LSP messages tab on save text
-    bool lspMsgsClearOnSaveCheck; /// this will check for user enabled LSP messages tab clear on save text
-    wxString LLVM_MasterPath;  /// Path to LLVM install directory //(ph 2021/11/7)
-    bool storeDocumentation;   /// should tokenizer detect and store doxygen documentation?
-
-};
+//// ----------------------------------------------------------------------------
+///** Setting of the Parser, some of them will be passed down to ParserThreadOptions */
+//struct ParserOptions
+//// ----------------------------------------------------------------------------
+//{
+//    ParserOptions():
+//        followLocalIncludes(true),
+//        followGlobalIncludes(true),
+//        caseSensitive(true),
+//        wantPreprocessor(true),
+//        useSmartSense(true),
+//        whileTyping(true),
+//        parseComplexMacros(true),
+//        platformCheck(true),
+//        logClangdClientCheck(false),
+//        logClangdServerCheck(false),
+//        logPluginInfoCheck(false),
+//        logPluginDebugCheck(false),
+//        lspMsgsFocusOnSaveCheck(false),
+//        lspMsgsClearOnSaveCheck(false),
+//        LLVM_MasterPath(""),
+//        storeDocumentation(true)
+//    {}
+//
+//    bool followLocalIncludes;  /// parse XXX.h in directive #include "XXX.h"
+//    bool followGlobalIncludes; /// parse XXX.h in directive #include <XXX.h>
+//    bool caseSensitive;        /// case sensitive in MarkItemsByAI
+//    bool wantPreprocessor;     /// handle preprocessor directive in Tokenizer class
+//    bool useSmartSense;        /// use real AI(scope sequence match) or not(plain text match)
+//    bool whileTyping;          /// reparse the active editor while editing
+//    bool parseComplexMacros;   /// this will let the Tokenizer to recursive expand macros
+//    bool platformCheck;        /// this will check for the platform of the project/target when adding include folders to the parser
+//    bool logClangdClientCheck; /// this will check for user enabled clangd client logging
+//    bool logClangdServerCheck; /// this will check for user enabled clangd server logging
+//    bool logPluginInfoCheck;   /// this will check for user enabled plugin info logging
+//    bool logPluginDebugCheck;  /// this will check for user enabled plugin debug logging
+//    bool lspMsgsFocusOnSaveCheck; /// this will check for user enabled Focus LSP messages tab on save text
+//    bool lspMsgsClearOnSaveCheck; /// this will check for user enabled LSP messages tab clear on save text
+//    wxString LLVM_MasterPath;  /// Path to LLVM install directory
+//    bool storeDocumentation;   /// should tokenizer detect and store doxygen documentation?
+//
+//};
 
 // both the CodeCompletion plugin and the cc_test project share this class, this class holds a Token
 // Tree.
@@ -281,7 +284,7 @@ class ParserBase : public wxEvtHandler
 // ----------------------------------------------------------------------------
 {
 ////    friend class ParserThread;
-    friend class LSP_SymbolsParser; //(ph 2021/03/15)
+    friend class LSP_SymbolsParser;
 
 public:
     ParserBase();
@@ -329,7 +332,7 @@ public:
     /** write Parse options to configure file */
     virtual void            WriteOptions() {}
 
-    // make them virtual, so Parser class can overwrite then!
+    // make them virtual, so Parser class can overwrite them!
     virtual ParserOptions&  Options()             { return m_Options;        }
     virtual BrowserOptions& ClassBrowserOptions() { return m_BrowserOptions; }
 
@@ -339,7 +342,7 @@ public:
     size_t FindTokensInFile(bool callerHasTreeLock, const wxString& filename, TokenIdxSet& result, short int kindMask);
     /** Get a token in specific filename by token name
       */
-    Token* GetTokenInFile(wxString filename, wxString tokenDisplayName, bool callerHasLock); //(ph 2021/10/9)
+    Token* GetTokenInFile(wxString filename, wxString tokenDisplayName, bool callerHasLock);
 
 private:
 ////    virtual bool ParseFile(const wxString& filename, bool isGlobal, bool locked = false);
@@ -380,7 +383,7 @@ private:
     // LSP Parser properties
     // ----------------------------------------------------------------
 
-    // Idle callback Handler pointer //(ph 2022/02/14)
+    // Idle callback Handler pointer
     std::unique_ptr<IdleCallbackHandler> pIdleCallbacks;
 
 public:
@@ -391,8 +394,8 @@ public:
     ProcessLanguageClient* GetLSPClient() {return m_pLSP_Client;}
 
     // LSP legends provided during clangd initialization response
-    TokenKind ConvertLSPSymbolKindToCCTokenKind(int lspSymKind);        //(ph 2022/06/6)
-    int       ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind);  //(ph 2022/06/12)
+    TokenKind ConvertLSPSymbolKindToCCTokenKind(int lspSymKind);
+    int       ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind);
     TokenKind ConvertLSPSemanticTypeToCCTokenKind(int semTokenType);
 
     std::vector<std::string> m_SemanticTokensTypes;
@@ -566,8 +569,8 @@ public:
         return semTypeString;
 	}//end GetSemanticTokenTypeString()
 
-    // Get pointer to Idle callbacks //(ph 2022/08/01)
-    IdleCallbackHandler* GetIdleCallbackHandler() //(ph 2022/08/01)
+    // Get pointer to Idle callbacks
+    IdleCallbackHandler* GetIdleCallbackHandler()
         {
             return pIdleCallbacks.get();
         }

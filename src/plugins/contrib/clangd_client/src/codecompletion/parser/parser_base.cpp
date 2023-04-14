@@ -227,7 +227,7 @@ ParserBase::ParserBase()
     m_TempTokenTree = new TokenTree;
     m_pLSP_Client   = nullptr;  //initialized by SetLSP_Client()
 
-    // create Idle time CallbackHandler     //(ph 2022/08/01)
+    // create Idle time CallbackHandler
     IdleCallbackHandler* pIdleCallBackHandler = new IdleCallbackHandler();
     pIdleCallbacks.reset( pIdleCallBackHandler );
 }
@@ -235,7 +235,7 @@ ParserBase::ParserBase()
 ParserBase::~ParserBase()
 // ----------------------------------------------------------------------------
 {
-    //(ph 2021/11/9)
+
     // Locking the token tree is not necessary.
     // 1) The clangd client has already been shutdown, so no TokenTree updates.
     // 2) Since no updates to TokenTree, UpdateClassBrowserView() will not be called.
@@ -321,7 +321,7 @@ TokenTree* ParserBase::GetTokenTree() const
 ////{
 ////
 ////    cbThrow( wxString(__FUNCTION__) + "Should not be here");
-////    //-ParserThreadOptions opts; //(ph 2021/07/27)
+////    //-ParserThreadOptions opts;
 ////    LSP_SymbolsParserOptions opts;
 ////
 ////    opts.useBuffer            = true;
@@ -524,10 +524,10 @@ Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayNa
         for (size_t i = 0; i < tree->size(); i++)
         {
             Token* pToken = tree->at(i);
-            if (not pToken) continue;                           //(ph 2021/10/27)
+            if (not pToken) continue;
             //-bool isImpl = ParserCommon::FileType(edFilename) == ParserCommon::ftSource;
             wxString tokenFilename = pToken->GetFilename();
-            if ( pToken && (not pToken->GetFilename().StartsWith(edFilename)) ) continue;      //(ph 2021/05/22)
+            if ( pToken && (not pToken->GetFilename().StartsWith(edFilename)) ) continue;
             if ( pToken && (pToken->m_TokenKind & tkUndefined) )
             {
                 // Do we need to clone the internal data of the strings to make them thread safe?
@@ -554,7 +554,7 @@ TokenKind ParserBase::ConvertLSPSymbolKindToCCTokenKind(int docSymKind)
 // ----------------------------------------------------------------------------
 {
 
-    /// FIXME (ph#): the following ccTokenKind(s) may not be correct //(ph 2021/03/22)
+    /// FIXME (ph#): the following ccTokenKind(s) may not be correct
     TokenKind ccTokenKind = tkUndefined;
 
     switch(docSymKind)
@@ -589,7 +589,7 @@ TokenKind ParserBase::ConvertLSPSymbolKindToCCTokenKind(int docSymKind)
     return ccTokenKind;
 }
 // ----------------------------------------------------------------------------
-int ParserBase::ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind)   //(ph 2022/06/12)
+int ParserBase::ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind)
 // ----------------------------------------------------------------------------
 {
     int semTknType = LSP_SemanticTokenType::Unknown;
@@ -631,7 +631,7 @@ TokenKind ParserBase::ConvertLSPSemanticTypeToCCTokenKind(int semTokenType)
 // ----------------------------------------------------------------------------
 {
 
-    /// FIXME (ph#): the following ccTokenKind(s) may not be correct //(ph 2021/03/22)
+    /// FIXME (ph#): the following ccTokenKind(s) may not be correct
     TokenKind ccTokenKind = tkUndefined;
 
     switch(semTokenType)

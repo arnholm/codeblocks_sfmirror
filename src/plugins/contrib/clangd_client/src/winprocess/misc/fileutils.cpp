@@ -50,7 +50,7 @@
 #include <memory>
 
 #include <wx/filename.h>
-#include <wx/stdpaths.h>    //(ph 2021/12/12)
+#include <wx/stdpaths.h>
 
 using namespace std;
 // internal helper method
@@ -533,7 +533,7 @@ wxString FileUtils::GetOSXTerminalCommand(const wxString& command, const wxStrin
 // ----------------------------------------------------------------------------
 {
     //-wxFileName script(clStandardPaths::Get().GetBinFolder(), "osx-terminal.sh");
-    wxFileName script( wxStandardPaths::Get().GetExecutablePath(), "osx-terminal.sh"); //(ph 2021/12/12))
+    wxFileName script( wxStandardPaths::Get().GetExecutablePath(), "osx-terminal.sh");
     wxString cmd;
     cmd << EscapeString(script.GetFullPath()) << " \"";
     if(!workingDirectory.IsEmpty()) {
@@ -687,7 +687,7 @@ void FileUtils::OpenBuiltInTerminal(const wxString& wd, const wxString& user_com
     wxString title(user_command);
 
     //-wxFileName fnCodeliteTerminal(clStandardPaths::Get().GetExecutablePath());
-    wxFileName fnCodeliteTerminal(wxStandardPaths::Get().GetExecutablePath()); //(ph 2021/12/13))
+    wxFileName fnCodeliteTerminal(wxStandardPaths::Get().GetExecutablePath());
     fnCodeliteTerminal.SetFullName("codelite-terminal");
 
     wxString newCommand;

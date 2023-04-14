@@ -18,7 +18,7 @@
 #include "parsemanager.h"
 
 #include "parser/token.h" // TokenIdxSet
-#include "ClgdCCToken.h" //(ph 2022/07/11)
+#include "ClgdCCToken.h"
 
 class ClgdCompletion;
 class TokenTree;
@@ -144,8 +144,8 @@ public:
     void OnRelease();
     wxString GenerateHTML(int tokenIdx, TokenTree* tree);
     wxString GenerateHTML(const TokenIdxSet& tokensIdx, TokenTree* tree);
-    wxString GenerateHTML(int tokenIdx, wxString& hoverString, ParserBase* pParser);      //(ph 2022/06/11)
-    wxString GenerateHTMLbyHover(const ClgdCCToken& ccToken, wxString& hoverString, ParserBase* pParser);  //(ph 2022/06/18)
+    wxString GenerateHTML(int tokenIdx, wxString& hoverString, ParserBase* pParser);
+    wxString GenerateHTMLbyHover(const ClgdCCToken& ccToken, wxString& hoverString, ParserBase* pParser);
     void RereadOptions(ConfigManager* cfg);
     void WriteOptions(ConfigManager* cfg);
 

@@ -41,7 +41,7 @@
 #include "configmanager.h"
 #include "encodingdetector.h"
 
-#include "codecompletion/parser/parser.h" //(ph 2022/03/30)
+#include "codecompletion/parser/parser.h"
 
 class TextCtrlLogger;
 
@@ -127,7 +127,7 @@ class LanguageClient : public JsonTransport
             params.wantDiagnostics = wantDiagnostics;
             SendNotify("textDocument/didChange", params);
         }
-        //(ph 2021/02/11)
+        //(cb 2021/02/11)
         void NotifyDidChangeConfiguration(ConfigurationSettings &settings) {
             DidChangeConfigurationParams params;
             params.settings = std::move(settings);
@@ -319,7 +319,7 @@ class LanguageClient : public JsonTransport
             params.settings = std::move(settings);
             return SendRequest("workspace/didChangeConfiguration", std::move(params));
         }
-        RequestID SemanticTokensByID(DocumentUri uri, std::string reqID) {         //(ph 2021/03/16)
+        RequestID SemanticTokensByID(DocumentUri uri, std::string reqID) { //(cb 2021/03/16)
             DocumentSymbolParams params;
             params.textDocument.uri = std::move(uri);
             return SendRequestByID("textDocument/semanticTokens/full", reqID, std::move(params));
@@ -425,10 +425,10 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
 
         int  GetCompilationDatabaseEntry(wxArrayString& returnArray, cbProject* pProject, wxString filename);
         void UpdateCompilationDatabase(cbProject* pProject, wxString filename);
-        bool AddFileToCompileDBJson(cbProject* pProject, ProjectBuildTarget* pTarget, const wxString& argFullFilePath, json* pJson);    //(ph 2021/01/4)
+        bool AddFileToCompileDBJson(cbProject* pProject, ProjectBuildTarget* pTarget, const wxString& argFullFilePath, json* pJson);
         wxArrayString GetCompileFileCommand(ProjectBuildTarget* target, ProjectFile* pf) const ;
         size_t GetCompilerDriverIncludesByFile(wxArrayString& resultArray, cbProject* pProject, wxString filename);
-        wxString CreateLSPClientLogName(int pid, const cbProject* pProject); //(ph 2021/02/12)
+        wxString CreateLSPClientLogName(int pid, const cbProject* pProject);
 
         // \brief Check if the command line is too long for the current running system and create a response file if necessary
         //
@@ -457,7 +457,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         void CreateDiagnosticsLog(); //Formated Diagnostic messages from LSP server
 
         // Number to append to log filename to differentiate logs
-        int  GetLogIndex(const wxString& logRequest); //(ph 2021/01/14)
+        int  GetLogIndex(const wxString& logRequest);
         // Set when LSP responds to the initialize request
         bool GetLSP_Initialized() {return m_LSP_initialized;}
         void SetLSP_Initialized(bool trueOrFalse) {m_LSP_initialized = trueOrFalse;}
@@ -551,7 +551,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
 
         // The project respresented by this client/server
         void       SetCBProject(cbProject* pProject) {m_pCBProject = pProject;}
-        void       SetParser(Parser* pParser) {m_pParser = pParser;} //(ph 2022/03/30)
+        void       SetParser(Parser* pParser) {m_pParser = pParser;}
         cbProject* GetClientsCBProject(){return m_pCBProject;}
 
         wxString GetwxUTF8Str(const std::string stdString)
@@ -690,7 +690,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
                 return true;
             return false;
         }
-        //(ph 2022/07/24)
+
         // ----------------------------------------------------------------------------
         bool GetLSP_EditorHasSymbols(cbEditor* pEditor)
         // ----------------------------------------------------------------------------
@@ -718,7 +718,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         }
 
     // ------------------------------------------------------------------------
-    //Client callbacks             //(ph 2021/02/9)
+    //Client callbacks
     // ------------------------------------------------------------------------
     typedef void(ProcessLanguageClient::*LSP_ClientFnc)(cbEditor*);
     typedef std::map<cbEditor*, LSP_ClientFnc> LSP_ClientCallBackMap;
@@ -766,21 +766,21 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
 
     void LSP_Initialize(cbProject* pProject);
     bool LSP_DidOpen(cbEditor* pcbEd);
-    bool LSP_DidOpen(wxString filename, cbProject* pProject); //(ph 2021/04/10)
+    bool LSP_DidOpen(wxString filename, cbProject* pProject); //(cb 2021/04/10)
     void LSP_DidClose(cbEditor* pcbEd);
     void LSP_DidClose(wxString filename, cbProject* pProject);
     void LSP_DidSave(cbEditor* pcbEd);
     void LSP_GoToDefinition(cbEditor* pcbEd, int edCaretPosition, size_t rrid=0);
     void LSP_GoToDeclaration(cbEditor* pcbEd, int edCaretPosition, size_t rrid=0);
     void LSP_FindReferences(cbEditor* pEd, int caretPosn);
-    void LSP_RequestRename(cbEditor* pEd, int argCaretPosition, wxString newName);        //(ph 2021/10/12)
+    void LSP_RequestRename(cbEditor* pEd, int argCaretPosition, wxString newName);        //(cb 2021/10/12)
     void LSP_RequestSymbols(cbEditor* pEd, size_t rrid=0);
     void LSP_RequestSymbols(wxString filename, cbProject* pProject, size_t rrid=0);
-    void LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid=0); //(ph 2021/03/16)
-    void LSP_RequestSemanticTokens(wxString filename, cbProject* pProject, size_t rrid=0); //(ph 2022/06/8)
+    void LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid=0); //(cb 2021/03/16)
+    void LSP_RequestSemanticTokens(wxString filename, cbProject* pProject, size_t rrid=0); //(cb 2022/06/8)
     void LSP_DidChange(cbEditor* pEd);
     void LSP_CompletionRequest(cbEditor* pEd, int rrid=0);
-    void LSP_Hover(cbEditor* pEd, int posn, int rrid=0); //(ph 2022/06/15)
+    void LSP_Hover(cbEditor* pEd, int posn, int rrid=0);
     void LSP_SignatureHelp(cbEditor* pEd, int posn);
 
     void writeClientLog(const std::string& logmsg);
@@ -817,7 +817,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         return m_LSP_aIgnoredDiagnostics;
     }
 
-    cbStyledTextCtrl* GetNewHiddenEditor(const wxString& filename);              //(ph 2021/04/10)
+    cbStyledTextCtrl* GetNewHiddenEditor(const wxString& filename);
 
     // Verify that an event handler is still in the chain of event handlers
     // ----------------------------------------------------------------------------

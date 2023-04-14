@@ -7,7 +7,7 @@
 #define CCLOGGER_H
 
 #include <wx/string.h>
-#include <wx/ffile.h>   //(ph 2021/08/30) ExternLogFile
+#include <wx/ffile.h>    // ExternLogFile
 #include <wx/thread.h>
 
 #include <memory> // unique_ptr

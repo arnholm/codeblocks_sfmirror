@@ -22,7 +22,7 @@
 
 #include <cbstyledtextctrl.h>
 
-#include "parser/parser_base.h" //(ph 2022/06/13)
+#include "parser/parser_base.h"
 #include "doxygen_parser.h"
 
 #include "cbcolourmanager.h"
@@ -653,7 +653,7 @@ DocumentationHelper::Command DocumentationHelper::HrefToCommand(const wxString& 
 const wxChar   DocumentationHelper::separatorTag = _T('+');
 const wxString DocumentationHelper::commandTag = _T("cmd=");
 
-//DocumentationHelper::DocumentationHelper(ClgdCompletion* cc) : //(ph 2022/06/15)
+//DocumentationHelper::DocumentationHelper(ClgdCompletion* cc) :
 //    m_CC(cc),
 // ----------------------------------------------------------------------------
 DocumentationHelper::DocumentationHelper(ParseManager* pParseManager) :
@@ -686,10 +686,10 @@ void DocumentationHelper::OnRelease()
     // TODO: Is this function still needed?
 }
 // ----------------------------------------------------------------------------
-wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, ParserBase* pParser)       //(ph 2022/06/11)
+wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, ParserBase* pParser)
 // ----------------------------------------------------------------------------
 {
-    //LSP version //(ph 2022/06/13)
+    //LSP version
 
     //http://docs.wxwidgets.org/2.8/wx_wxhtml.html#htmltagssupported
 
@@ -736,7 +736,6 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     wxString doxyDoc = wxString();
     m_CurrentTokenIdx = tokenIdx;
 
-    /// FIXME (ph#): Show a simplified Documentation Popup until we learn how wxHTML works. //(ph 2022/06/17)
     html += pre1;
     for (size_t ii=0; ii<vHoverInfo.size(); ++ii)
     {
@@ -766,7 +765,7 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     return html;
 }
 // ----------------------------------------------------------------------------
-wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, wxString& hoverString, ParserBase* pParser)    //(ph 2022/06/18)
+wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, wxString& hoverString, ParserBase* pParser)
 // ----------------------------------------------------------------------------
 {
     //http://docs.wxwidgets.org/2.8/wx_wxhtml.html#htmltagssupported
@@ -1227,7 +1226,7 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
     while (it != tokensIdx.end())
     {
         const Token* token = tree->at(*it);
-        if (not token) continue; //(ph 2023/02/28)
+        if (not token) continue;
 
         html += token->GetNamespace() + CommandToAnchorInt(cmdDisplayToken, token->m_Name, token->m_Index);
         html += nbsp + nbsp + token->GetTokenKindString();
@@ -1341,7 +1340,7 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
         {
             EditorManager* edMan = Manager::Get()->GetEditorManager();
             const Token* token = tree->at(tokenIdx);
-            if (not token) break;   //(ph 2023/02/28)
+            if (not token) break;
             cbEditor* targetEditor = edMan->Open(token->GetFilename());
             if (targetEditor)
             {

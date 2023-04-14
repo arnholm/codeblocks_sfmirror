@@ -8,7 +8,7 @@
  */
 
 #include <sdk.h>
-#include <time.h> //(ph 2021/04/16)
+#include <time.h>
 
 #ifndef CB_PRECOMP
     #include <cctype>
@@ -17,7 +17,7 @@
     #include <wx/log.h> // for wxSafeShowMessage()
     #include <wx/regex.h>
     #include <wx/wfstream.h>
-    #include <wx/window.h>  //(ph 2021/04/15)
+    #include <wx/window.h>
 
     #include <cbauibook.h>
     #include <cbeditor.h>
@@ -37,8 +37,8 @@
 #endif
 
 #include <wx/tokenzr.h>
-#include <wx/filefn.h>      //(ph 2021/04/16)
-#include <wx/datetime.h>    //(ph 2021/04/17)
+#include <wx/filefn.h>
+#include <wx/datetime.h>
 #include <wx/fs_zip.h>      // to unzip proxy project .cbp from resouce file
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -48,14 +48,17 @@
 #include <cbworkspace.h>
 
 #include "parsemanager.h"
-#include "classbrowser.h"
+#include "F:\usr\Proj\Clangd_Client-work\trunk\clangd_client\src\codecompletion\parsemanager_base.h"
+
 #include "parser/parser.h"
+
+#include "classbrowser.h"
 #include "parser/profiletimer.h"
-#include "IdleCallbackHandler.h"    //(ph 2021/09/25)//(ph 2022/02/14)
+#include "IdleCallbackHandler.h"
 
 
 #define CC_ParseManager_DEBUG_OUTPUT 0
-//#define CC_ParseManager_DEBUG_OUTPUT 1      //(ph 2021/05/1)
+//#define CC_ParseManager_DEBUG_OUTPUT 1
 
 #if defined (CC_GLOBAL_DEBUG_OUTPUT)
     #if CC_GLOBAL_DEBUG_OUTPUT == 1
@@ -227,9 +230,9 @@ ParseManager::ParseManager( LSPEventCallbackHandler* pLSPEventSinkHandler ) :
     m_TempParser = new Parser(this, nullptr); // null pProject
     m_ActiveParser     = m_TempParser;
 
-    m_ParserPerWorkspace = false; //(ph 2021/08/26)
+    m_ParserPerWorkspace = false;
 
-    m_pLSPEventSinkHandler = pLSPEventSinkHandler; //(ph 2021/10/23)
+    m_pLSPEventSinkHandler = pLSPEventSinkHandler;
 }
 // ----------------------------------------------------------------------------
 ParseManager::~ParseManager()
@@ -239,12 +242,12 @@ ParseManager::~ParseManager()
 ////    Disconnect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ParseManager::OnParserEnd));
 ////    Disconnect(idTimerParsingOneByOne,      wxEVT_TIMER,                 wxTimerEventHandler(ParseManager::OnParsingOneByOneTimer));
 
-    // clear any Idle time callbacks //(ph 2022/08/01)
+    // clear any Idle time callbacks
     ClearAllIdleCallbacks();
 
     RemoveClassBrowser();
     ClearParsers();
-    if (m_TempParser) //(ph 2022/04/13)
+    if (m_TempParser)
         Delete(m_TempParser);
 
     if (m_pProxyProject)
@@ -252,7 +255,19 @@ ParseManager::~ParseManager()
 
 }
 // ----------------------------------------------------------------------------
-ParserBase* ParseManager::GetParserByProject(cbProject* project)
+void ParseManager::ParserOptionsSave(Parser* pParser)
+// ----------------------------------------------------------------------------
+{
+    m_OptionsSaved = pParser->Options();
+}
+// ----------------------------------------------------------------------------
+void ParseManager::BrowserOptionsSave(Parser* pParser)
+// ----------------------------------------------------------------------------
+{
+    m_BrowserOptionsSaved = pParser->ClassBrowserOptions();
+}
+// ----------------------------------------------------------------------------
+Parser* ParseManager::GetParserByProject(cbProject* project)
 // ----------------------------------------------------------------------------
 {
     // Returns parser associated with project from either the
@@ -279,14 +294,14 @@ ParserBase* ParseManager::GetParserByProject(cbProject* project)
     return nullptr;
 }
 // ----------------------------------------------------------------------------
-ParserBase* ParseManager::GetParserByFilename(const wxString& filename)
+Parser* ParseManager::GetParserByFilename(const wxString& filename)
 // ----------------------------------------------------------------------------
 {
     cbProject* project = GetProjectByFilename(filename);
     return GetParserByProject(project);
 }
 // ----------------------------------------------------------------------------
-cbProject* ParseManager::GetProjectByParser(ParserBase* parser)
+cbProject* ParseManager::GetProjectByParser(Parser* parser)
 // ----------------------------------------------------------------------------
 {
     for (ParserList::const_iterator it = m_ParserList.begin(); it != m_ParserList.end(); ++it)
@@ -307,7 +322,7 @@ cbProject* ParseManager::GetProjectByFilename(const wxString& filename)
     if (activeProject)
     {
         // Get the parser for the active project
-        ParserBase* parser = GetParserByProject(activeProject);
+        Parser* parser = GetParserByProject(activeProject);
         //If (active parser parsed file) or (file belongs to active project) return active project
         if ( (parser && parser->IsFileParsed(filename)) //Why?
             || activeProject->GetFileByFilename(filename, false, true) )
@@ -581,7 +596,7 @@ void ParseManager::AddPaths(wxArrayString& dirs, const wxString& path, bool hasE
         dirs.Add(s);
 }
 // ----------------------------------------------------------------------------
-wxString ParseManager::GetHeaderForSourceFile(cbProject* pProject, wxString& filename)  //(ph 2021/05/19)
+wxString ParseManager::GetHeaderForSourceFile(cbProject* pProject, wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // find the matching header file to this source file
@@ -605,14 +620,14 @@ wxString ParseManager::GetHeaderForSourceFile(cbProject* pProject, wxString& fil
     return wxString();
 }
 // ----------------------------------------------------------------------------
-wxString ParseManager::GetSourceForHeaderFile(cbProject* pProject, wxString& filename)   //(ph 2021/05/19)
+wxString ParseManager::GetSourceForHeaderFile(cbProject* pProject, wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // find the matching source file to this header file
     //-ProjectFile* pProjectFile = pProject->GetFileByFilename(filename, false);
     wxFileName fnFilename(filename);
-    //-if (FileTypeOf(filename) == ftSource) return wxString(); //already a source file //(ph 2022/06/01)-
-    if (ParserCommon::FileType(filename) == ParserCommon::ftSource) return wxString(); //already a source file //(ph 2022/06/1)-
+    //-if (FileTypeOf(filename) == ftSource) return wxString(); //already a source file
+    if (ParserCommon::FileType(filename) == ParserCommon::ftSource) return wxString(); //already a source file -
     for (FilesList::const_iterator flist_it = pProject->GetFilesList().begin(); flist_it != pProject->GetFilesList().end(); ++flist_it)
     {
         ProjectFile* pf = *flist_it;
@@ -624,7 +639,7 @@ wxString ParseManager::GetSourceForHeaderFile(cbProject* pProject, wxString& fil
     return wxString();
 }
 // ----------------------------------------------------------------------------
-wxString ParseManager::GetSourceOrHeaderForFile(cbProject* pProject, wxString& filename)    //(ph 2021/05/19)
+wxString ParseManager::GetSourceOrHeaderForFile(cbProject* pProject, wxString& filename)
 // ----------------------------------------------------------------------------
 {
     if (ParserCommon::FileType(filename) == ParserCommon::ftHeader)
@@ -634,7 +649,7 @@ wxString ParseManager::GetSourceOrHeaderForFile(cbProject* pProject, wxString& f
     return wxString();
 }
 // ----------------------------------------------------------------------------
-ParserBase* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)    //(ph 2021/05/25)
+Parser* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
 // ----------------------------------------------------------------------------
 {
     if ( GetParserByProject(project) )
@@ -650,10 +665,10 @@ ParserBase* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
 
     TRACE(_T("ParseManager::CreateParser: Calling DoFullParsing()"));
 
-    ParserBase* parser = new Parser(this, project); //read options, connect events, & stages files to parse
+    Parser* parser = new Parser(this, project); //read options, connect events, & stages files to parse
 
-    // if using previous parser options get and set them into this parser   //(ph 2021/05/25)
-    if (useSavedOptions)            //(ph 2021/05/25)
+    // if using previous parser options get and set them into this parser
+    if (useSavedOptions)
     {
         parser->Options() = GetSavedOptions();
         parser->ClassBrowserOptions() =  GetSavedBrowserOptions();
@@ -718,7 +733,7 @@ bool ParseManager::DeleteParser(cbProject* project)
         // The logic here is : firstly delete the parser instance, then see whether we need an
         // active parser switch (call SetParser())
         //ollydbg crash fix 2022/10/28 Reply#230 https://forums.codeblocks.org/index.php/topic,24357.msg171551.html#msg171551
-        ParserBase* pDeletedParser = parserList_it->second;
+        Parser* pDeletedParser = parserList_it->second;
         delete parserList_it->second;      // delete the instance first, then remove from the list
         m_ParserList.erase(parserList_it); // remove deleted parser from parser list
 
@@ -726,7 +741,7 @@ bool ParseManager::DeleteParser(cbProject* project)
         if (pDeletedParser == m_ActiveParser)
         {
             m_ActiveParser = nullptr;
-            SetParser(m_TempParser); // Also updates class browser; do not use SetParser(m_TempParser) //(ph 2022/06/6)-
+            SetParser(m_TempParser); // Also updates class browser; do not use SetParser(m_TempParser)
         }
 
         return true;
@@ -757,7 +772,7 @@ bool ParseManager::DeleteParser(cbProject* project)
 ////    return parser->Reparse(filename);
 ////}
 // ----------------------------------------------------------------------------
-bool ParseManager::AddFileToParser(cbProject* project, const wxString& filename, ParserBase* parser)
+bool ParseManager::AddFileToParser(cbProject* project, const wxString& filename, Parser* parser)
 // ----------------------------------------------------------------------------
 {
     if (ParserCommon::FileType(filename) == ParserCommon::ftOther)
@@ -782,7 +797,7 @@ bool ParseManager::AddFileToParser(cbProject* project, const wxString& filename,
 void ParseManager::RemoveFileFromParser(cbProject* project, const wxString& filename)
 // ----------------------------------------------------------------------------
 {
-    ParserBase* parser = GetParserByProject(project);
+    Parser* parser = GetParserByProject(project);
     if (!parser)
         return ;
 
@@ -821,7 +836,7 @@ void ParseManager::RereadParserOptions()
 
     // re-read the .conf options
     ParserOptions opts = m_ActiveParser->Options();
-    m_ActiveParser->ReadOptions();
+    dynamic_cast<ParserBase*>(m_ActiveParser)->ReadOptions();
     m_ParserPerWorkspace = false;
 }
 // ----------------------------------------------------------------------------
@@ -835,7 +850,7 @@ void ParseManager::ReparseCurrentProject()
     {
         TRACE(_T("ParseManager::ReparseCurrentProject: Calling DeleteParser() and CreateParser()"));
 
-        // Save the current parser options //(ph 2021/05/25)
+        // Save the current parser options
         ParserOptionsSave(m_ActiveParser);
         BrowserOptionsSave(m_ActiveParser);
 
@@ -857,7 +872,7 @@ void ParseManager::ReparseCurrentEditor()
     {
         TRACE(_T("ParseManager::ReparseCurrentProject: Calling DeleteParser() and CreateParser()"));
 
-        // Save the current parser options //(ph 2021/05/25)
+        // Save the current parser options
         ParserOptionsSave(m_ActiveParser);
         BrowserOptionsSave(m_ActiveParser);
 
@@ -1201,7 +1216,7 @@ void ParseManager::UpdateClassBrowser()
     }
 }
 // ----------------------------------------------------------------------------
-void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbProject* pProject)     //(ph 2021/11/11)
+void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
@@ -1224,7 +1239,7 @@ void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbPr
             // For LSP, file must belong to a project, because LSP needs target compiler parameters.
             if (not pFilesProject) break;
             if (pFilesProject != pProject) break; //file doesnt belong to this project
-            ParserCommon::EFileType ft = ParserCommon::FileType(pEditor->GetShortName()); //(ph 2022/06/01)
+            ParserCommon::EFileType ft = ParserCommon::FileType(pEditor->GetShortName());
             //-if ( ft != ftHeader && ft != ftSource && ft != ftTemplateSource) // only parse source/header files
             if (ft == ParserCommon::ftOther)
                 break;
@@ -1266,8 +1281,8 @@ void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbPr
                 if (not pFilesProject) continue;
                 if (pFilesProject != pProject) continue;
                 // only parse source/header files
-                ParserCommon::EFileType ft = ParserCommon::FileType(pEditor->GetShortName());             //(ph 2022/06/01)
-                if ( (ft != ParserCommon::ftHeader) && (ft != ParserCommon::ftSource)                     //(ph 2022/06/01)
+                ParserCommon::EFileType ft = ParserCommon::FileType(pEditor->GetShortName());
+                if ( (ft != ParserCommon::ftHeader) && (ft != ParserCommon::ftSource)
                     && (FileTypeOf(pEditor->GetShortName()) != ftTemplateSource) )
                     continue;
 
@@ -1278,7 +1293,7 @@ void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbPr
     }
 }
 // ----------------------------------------------------------------------------
-bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
+bool ParseManager::DoFullParsing(cbProject* project, Parser* parser)
 // ----------------------------------------------------------------------------
 {
     //-wxStopWatch timer;
@@ -1299,8 +1314,8 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
                                    project->GetBasePath(), parser);
         }
 
-        AddCompilerAndIncludeDirs(project, parser); //(ph 2021/11/4)
-        //(ph 2021/11/4) // **debugging*
+        AddCompilerAndIncludeDirs(project, parser);
+         // **debugging*
         for (size_t ii=0; ii<parser->GetIncludeDirs().Count(); ++ii)
         {
             if (ii == 0 ) CCLogger::Get()->DebugLog("IncludeDirs array:");
@@ -1310,14 +1325,14 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
     }//end if project
 
     //FIXME (ph#): ShowInheritance config setting and context menu setting is out of sync. Only saved on exit.
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));     //(ph 2021/05/24)
+    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
     bool cfgShowInheritance = cfg->ReadBool(_T("/browser_show_inheritance"),    false);
     BrowserOptions& options = parser->ClassBrowserOptions();
     if (cfgShowInheritance or options.showInheritance) cfgShowInheritance = true;
 
     StringList localSources;
 
-    if (project)  //LSP sorts the filenames by modification time //(ph 2021/04/16)
+    if (project)  //LSP sorts the filenames by modification time
     {
         // Note: Windows 10 file access time is not updated when the volume is > 128 Gig
         //  unless the user has issued "fsutil behavior set disablelastaccess <0-3>"
@@ -1331,7 +1346,7 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
         //  https://www.tenforums.com/tutorials/139015-enable-disable-ntfs-last-access-time-stamp-updates-windows-10-a.html
         // So here, we sort by modification time since read access time is usually invalid.
 
-        // For LSP, sort the filenames by modification time //(ph 2021/04/16)
+        // For LSP, sort the filenames by modification time
         // so that the latest modified files get parsed first.
         std::multimap<wxDateTime,wxString>sortedSources;
         for (FilesList::const_iterator fl_it = project->GetFilesList().begin();
@@ -1340,7 +1355,7 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
             ProjectFile* pf = *fl_it;
             if (!pf)
                 continue;
-            // If the file is already open, it'll be skipped later by OnBatchTimer(). //(ph 2021/06/11)
+            // If the file is already open, it'll be skipped later by OnBatchTimer().
             // It needs to be included so that it's header/source is background parsed
             // Sort the source files by recently "file modified time".
             ParserCommon::EFileType ft = ParserCommon::FileType(pf->relativeFilename);
@@ -1416,7 +1431,7 @@ bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
     return true;
 }
 // ----------------------------------------------------------------------------
-bool ParseManager::SwitchParser(cbProject* project, ParserBase* parser)
+bool ParseManager::SwitchParser(cbProject* project, Parser* parser)
 // ----------------------------------------------------------------------------
 {
     if (!parser || parser == m_ActiveParser || GetParserByProject(project) != parser)
@@ -1437,7 +1452,7 @@ bool ParseManager::SwitchParser(cbProject* project, ParserBase* parser)
     return true;
 }
 // ----------------------------------------------------------------------------
-void ParseManager::SetParser(ParserBase* parser)
+void ParseManager::SetParser(Parser* parser)
 // ----------------------------------------------------------------------------
 {
     // if the active parser is the same as the old active parser, nothing need to be done
@@ -1452,7 +1467,7 @@ void ParseManager::SetParser(ParserBase* parser)
         // The parser and project pointers can be null; Esp., for the TempParser
         fromProject = (m_ActiveParser and ((Parser*)m_ActiveParser)->GetParsersProject()) ? ((Parser*)m_ActiveParser)->GetParsersProject()->GetTitle() : "*NONE*";
         toProject   = (  parser and ((Parser*)  parser)->GetParsersProject()) ? ((Parser*)  parser)->GetParsersProject()->GetTitle() : "*NONE*";
-        wxString msg = wxString::Format("Switching parser/project from %s to %s", fromProject, toProject); //(ph 2022/06/4)
+        wxString msg = wxString::Format("Switching parser/project from %s to %s", fromProject, toProject);
         CCLogger::Get()->DebugLog(msg);
     }
     #endif
@@ -1539,10 +1554,10 @@ void ParseManager::ClearParsers()
 ////    TRACE(_T("ParseManager::RemoveObsoleteParsers: Leave"));
 ////}
 // ----------------------------------------------------------------------------
-std::pair<cbProject*, ParserBase*> ParseManager::GetParserInfoByCurrentEditor()
+std::pair<cbProject*, Parser*> ParseManager::GetParserInfoByCurrentEditor()
 // ----------------------------------------------------------------------------
 {
-    std::pair<cbProject*, ParserBase*> info(nullptr, nullptr);
+    std::pair<cbProject*, Parser*> info(nullptr, nullptr);
     cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
 
     if ( editor ) //No need to check editor->GetFilename, because a built-in editor always have a filename
@@ -2133,7 +2148,7 @@ int ParseManager::FindCurrentFunctionStart(bool callerHasTreeLock,
 ////    return false;
 ////}
 // ----------------------------------------------------------------------------
-bool ParseManager::AddCompilerAndIncludeDirs(cbProject* project, ParserBase* parser)
+bool ParseManager::AddCompilerAndIncludeDirs(cbProject* project, Parser* parser)
 // ----------------------------------------------------------------------------
 {
     if (!parser)
@@ -2219,383 +2234,8 @@ bool ParseManager::AddCompilerAndIncludeDirs(cbProject* project, ParserBase* par
     TRACE(_T("ParseManager::AddCompilerDirs: Leave"));
     return true;
 }
-////bool ParseManager::AddCompilerDirs(cbProject* project, ParserBase* parser)
-////{
-////    if (!parser)
-////        return false;
-////
-////    TRACE(_T("ParseManager::AddCompilerDirs: Enter"));
-////
-////    // If there is no project, work on default compiler
-////    if (!project)
-////    {
-////        AddCompilerIncludeDirsToParser(CompilerFactory::GetDefaultCompiler(), parser);
-////        TRACE(_T("ParseManager::AddCompilerDirs: Leave"));
-////        return true;
-////    }
-////
-////    // Otherwise (if there is a project), work on the project's compiler...
-////    wxString base = project->GetBasePath();
-////    parser->AddIncludeDir(base); // add project's base path
-////    TRACE(_T("ParseManager::AddCompilerDirs: Adding project base dir to parser: ") + base);
-////
-////    // ...so we can access post-processed project's search dirs
-////    Compiler* compiler = CompilerFactory::GetCompiler(project->GetCompilerID());
-////    cb::shared_ptr<CompilerCommandGenerator> generator(compiler ? compiler->GetCommandGenerator(project) : nullptr);
-////
-////    // get project include search dirs
-////    if (   !parser->Options().platformCheck
-////        || (parser->Options().platformCheck && project->SupportsCurrentPlatform()) )
-////    {
-////        AddIncludeDirsToParser(project->GetIncludeDirs(), base, parser);
-////    }
-////
-////    // alloc array for project compiler AND "no. of targets" times target compilers
-////    int nCompilers = 1 + project->GetBuildTargetsCount();
-////    Compiler** Compilers = new Compiler* [nCompilers];
-////    memset(Compilers, 0, sizeof(Compiler*) * nCompilers);
-////    nCompilers = 0; // reset , use as insert index in the next for loop
-////
-////    // get targets include dirs
-////    for (int i = 0; i < project->GetBuildTargetsCount(); ++i)
-////    {
-////        ProjectBuildTarget* target = project->GetBuildTarget(i);
-////        if (!target) continue;
-////
-////        if (   !parser->Options().platformCheck
-////            || (parser->Options().platformCheck && target->SupportsCurrentPlatform()) )
-////        {
-////            // post-processed search dirs (from build scripts)
-////            if (compiler && generator)
-////                AddIncludeDirsToParser(generator->GetCompilerSearchDirs(target), base, parser);
-////
-////            // apply target vars
-//////            target->GetCustomVars().ApplyVarsToEnvironment();
-////            AddIncludeDirsToParser(target->GetIncludeDirs(), base, parser);
-////
-////            // get the compiler
-////            wxString CompilerIndex = target->GetCompilerID();
-////            Compiler* tgtCompiler = CompilerFactory::GetCompiler(CompilerIndex);
-////            if (tgtCompiler)
-////            {
-////                Compilers[nCompilers] = tgtCompiler;
-////                ++nCompilers;
-////            }
-////        } // if (target)
-////    } // end loop over the targets
-////
-////    // add the project compiler to the array of compilers
-////    if (compiler)
-////    {   // note it might be possible that this compiler is already in the list
-////        // no need to worry since the compiler list of the parser will filter out duplicate
-////        // entries in the include dir list
-////        Compilers[nCompilers++] = compiler;
-////    }
-////
-////    // add compiler include dirs
-////    for (int idxCompiler = 0; idxCompiler < nCompilers; ++idxCompiler)
-////        AddCompilerIncludeDirsToParser(Compilers[idxCompiler], parser);
-////
-////    if (!nCompilers)
-////        CCLogger::Get()->DebugLog(_T("ParseManager::AddCompilerDirs: No compilers found!"));
-////
-////    delete [] Compilers;
-////    TRACE(_T("ParseManager::AddCompilerDirs: Leave"));
-////    return true;
-////}
-
-////bool ParseManager::AddCompilerPredefinedMacros(cbProject* project, ParserBase* parser)
-////{
-////    if (!parser)
-////        return false;
-////
-////    if (!parser->Options().wantPreprocessor)
-////        return false;
-////
-////    TRACE(_T("ParseManager::AddCompilerPredefinedMacros: Enter"));
-////
-////    // Default compiler is used for for single file parser (non project)
-////    wxString compilerId = project ? project->GetCompilerID() : CompilerFactory::GetDefaultCompilerID();
-////
-////    wxString defs;
-////    // gcc
-////    if (compilerId.Contains(_T("gcc")))
-////    {
-////        if ( !AddCompilerPredefinedMacrosGCC(compilerId, project, defs, parser) )
-////            return false;
-////    }
-////    // vc
-////    else if (compilerId.StartsWith(_T("msvc")))
-////    {
-////        if ( !AddCompilerPredefinedMacrosVC(compilerId, defs, parser) )
-////          return false;
-////    }
-////
-////    TRACE(_T("ParseManager::AddCompilerPredefinedMacros: Add compiler predefined preprocessor macros:\n%s"), defs.wx_str());
-////    parser->AddPredefinedMacros(defs);
-////
-////    TRACE(_T("ParseManager::AddCompilerPredefinedMacros: Leave"));
-////    if ( defs.IsEmpty() )
-////        return false;
-////
-////    return true;
-////}
-
-////bool ParseManager::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cbProject* project, wxString& defs, ParserBase* parser)
-////{
-////    Compiler* compiler = CompilerFactory::GetCompiler(compilerId);
-////    if (!compiler)
-////        return false;
-////
-////    if (parser->Options().platformCheck && !compiler->SupportsCurrentPlatform())
-////    {
-////        TRACE(_T("ParseManager::AddCompilerPredefinedMacrosGCC: Not supported on current platform!"));
-////        return false;
-////    }
-////
-////    wxString sep = (platform::windows ? _T("\\") : _T("/"));
-////    wxString cpp_compiler = compiler->GetMasterPath() + sep + _T("bin") + sep + compiler->GetPrograms().CPP;
-////    Manager::Get()->GetMacrosManager()->ReplaceMacros(cpp_compiler);
-////
-////    static std::map<wxString, wxString> gccDefsMap;
-////    if ( gccDefsMap[cpp_compiler].IsEmpty() )
-////    {
-////        // Check if user set language standard version to use
-////        wxString standard = GetCompilerStandardGCC(compiler, project);
-////
-////        // Different command on Windows and other OSes
-////#ifdef __WXMSW__
-////        const wxString args(wxString::Format(_T(" -E -dM -x c++ %s nul"), standard.wx_str()) );
-////#else
-////        const wxString args(wxString::Format(_T(" -E -dM -x c++ %s /dev/null"), standard.wx_str()) );
-////#endif
-////
-////        wxArrayString output, error;
-////        if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetPrograms().CPP, args, output, error) )
-////            return false;
-////
-////        // wxExecute can be a long action and C::B might have been shutdown in the meantime...
-////        if ( Manager::IsAppShuttingDown() )
-////            return false;
-////
-////        wxString& gccDefs = gccDefsMap[cpp_compiler];
-////        for (size_t i = 0; i < output.Count(); ++i)
-////            gccDefs += output[i] + _T("\n");
-////
-////        CCLogger::Get()->DebugLog(_T("ParseManager::AddCompilerPredefinedMacrosGCC: Caching predefined macros for compiler '")
-////                                  + cpp_compiler + _T("':\n") + gccDefs);
-////    }
-////
-////    defs = gccDefsMap[cpp_compiler];
-////
-////    return true;
-////}
-
-////wxString ParseManager::GetCompilerStandardGCC(Compiler* compiler, cbProject* project)
-////{
-////    // Check if user set language standard version to use
-////    // 1.) Global compiler settings are first to search in
-////    wxString standard = GetCompilerUsingStandardGCC(compiler->GetCompilerOptions());
-////    if (standard.IsEmpty() && project)
-////    {
-////        // 2.) Project compiler setting are second
-////        standard = GetCompilerUsingStandardGCC(project->GetCompilerOptions());
-////
-////        // 3.) And targets are third in row to look for standard
-////        // NOTE: If two targets use different standards, only the one we
-////        //       encounter first (eg. c++98) will be used, and any other
-////        //       disregarded (even if it would be c++1y)
-////        if (standard.IsEmpty())
-////        {
-////            for (int i=0; i<project->GetBuildTargetsCount(); ++i)
-////            {
-////                ProjectBuildTarget* target = project->GetBuildTarget(i);
-////                standard = GetCompilerUsingStandardGCC(target->GetCompilerOptions());
-////
-////                if (!standard.IsEmpty())
-////                    break;
-////            }
-////        }
-////    }
-////    return standard;
-////}
-
-////wxString ParseManager::GetCompilerUsingStandardGCC(const wxArrayString& compilerOptions)
-////{
-////    wxString standard;
-////    for (wxArrayString::size_type i=0; i<compilerOptions.Count(); ++i)
-////    {
-////        if (compilerOptions[i].StartsWith(_T("-std=")))
-////        {
-////            standard = compilerOptions[i];
-////            CCLogger::Get()->DebugLog(wxString::Format(_T("ParseManager::GetCompilerUsingStandardGCC: Using language standard: %s"), standard.wx_str()));
-////            break;
-////        }
-////    }
-////    return standard;
-////}
-
-////bool ParseManager::AddCompilerPredefinedMacrosVC(const wxString& compilerId, wxString& defs, ParserBase* parser)
-////{
-////    static wxString vcDefs;
-////    static bool     firstExecute = true;
-////
-////    if (!firstExecute)
-////    {
-////        defs = vcDefs;
-////        return true;
-////    }
-////
-////    firstExecute = false;
-////    Compiler* compiler = CompilerFactory::GetCompiler(compilerId);
-////    if (!compiler)
-////        return false;
-////
-////    if (parser->Options().platformCheck && !compiler->SupportsCurrentPlatform())
-////    {
-////        TRACE(_T("ParseManager::AddCompilerPredefinedMacrosVC: Not supported on current platform!"));
-////        return false;
-////    }
-////
-////    wxArrayString output, error;
-////    if ( !SafeExecute(compiler->GetMasterPath(), compiler->GetPrograms().C, wxEmptyString, output, error) )
-////        return false;
-////
-////    // wxExecute can be a long action and C::B might have been shutdown in the meantime...
-////    if ( Manager::IsAppShuttingDown() )
-////        return false;
-////
-////    if (error.IsEmpty())
-////    {
-////        TRACE(_T("ParseManager::AddCompilerPredefinedMacrosVC: Can't get pre-defined macros for MSVC."));
-////        return false;
-////    }
-////
-////    wxString compilerVersionInfo = error[0];
-////    wxString tmp(_T("Microsoft (R) "));
-////    int pos = compilerVersionInfo.Find(tmp);
-////    if (pos != wxNOT_FOUND)
-////    {
-////        // in earlier versions of MSVC the compiler shows "32 bit" or "64 bit"
-////        // in more recent MSVC version the architecture (x86 or x64) is shown instead
-////        wxString bit = compilerVersionInfo.Mid(pos + tmp.Length(), 2);
-////        if      ( (bit.IsSameAs(_T("32"))) || compilerVersionInfo.Contains(_T("x86")) )
-////            defs += _T("#define _WIN32") _T("\n");
-////        else if ( (bit.IsSameAs(_T("64"))) || compilerVersionInfo.Contains(_T("x64")) )
-////            defs += _T("#define _WIN64") _T("\n");
-////    }
-////
-////    tmp = _T("Compiler Version ");
-////    pos = compilerVersionInfo.Find(tmp);
-////    if (pos != wxNOT_FOUND)
-////    {
-////        wxString ver = compilerVersionInfo.Mid(pos + tmp.Length(), 4); // is i.e. 12.0
-////        pos = ver.Find(_T('.'));
-////        if (pos != wxNOT_FOUND)
-////        {
-////            // out of "12.0" make "1200" for the #define
-////            ver[pos]     = ver[pos + 1]; // move the mintor version first number to the dot position
-////            ver[pos + 1] = _T('0');      // add another zero at the end
-////            defs += _T("#define _MSC_VER ") + ver;
-////            // Known to now (see https://en.wikipedia.org/wiki/Visual_C%2B%2B):
-////            // MSVC++ 12.0 _MSC_VER = 1800 (Visual Studio 2013)
-////            // MSVC++ 11.0 _MSC_VER = 1700 (Visual Studio 2012)
-////            // MSVC++ 10.0 _MSC_VER = 1600 (Visual Studio 2010)
-////            // MSVC++ 9.0  _MSC_VER = 1500 (Visual Studio 2008)
-////            // MSVC++ 8.0  _MSC_VER = 1400 (Visual Studio 2005)
-////            // MSVC++ 7.1  _MSC_VER = 1310 (Visual Studio 2003)
-////            // MSVC++ 7.0  _MSC_VER = 1300
-////            // MSVC++ 6.0  _MSC_VER = 1200
-////            // MSVC++ 5.0  _MSC_VER = 1100
-////        }
-////    }
-////
-////    defs = vcDefs;
-////    return true;
-////}
-
-////bool ParseManager::AddProjectDefinedMacros(cbProject* project, ParserBase* parser)
-////{
-////    if (!parser)
-////        return false;
-////
-////    if (!project)
-////        return true;
-////
-////    TRACE(_T("ParseManager::AddProjectDefinedMacros: Enter"));
-////
-////    wxString compilerId = project->GetCompilerID();
-////    wxString defineCompilerSwitch(wxEmptyString);
-////    if (compilerId.Contains(_T("gcc")))
-////        defineCompilerSwitch = _T("-D");
-////    else if (compilerId.StartsWith(_T("msvc")))
-////        defineCompilerSwitch = _T("/D");
-////
-////    if (defineCompilerSwitch.IsEmpty())
-////        return false; // no compiler options, return false
-////
-////    wxString defs;
-////    wxArrayString opts;
-////    if (   !parser->Options().platformCheck
-////        || (parser->Options().platformCheck && project->SupportsCurrentPlatform()) )
-////    {
-////        opts = project->GetCompilerOptions();
-////    }
-////
-////    ProjectBuildTarget* target = project->GetBuildTarget(project->GetActiveBuildTarget());
-////    if (target != NULL)
-////    {
-////        if (   !parser->Options().platformCheck
-////            || (parser->Options().platformCheck && target->SupportsCurrentPlatform()) )
-////        {
-////            wxArrayString targetOpts = target->GetCompilerOptions();
-////            for (size_t i = 0; i < targetOpts.GetCount(); ++i)
-////                opts.Add(targetOpts[i]);
-////        }
-////    }
-////    // In case of virtual targets, collect the defines from all child targets.
-////    wxArrayString targets = project->GetExpandedVirtualBuildTargetGroup(project->GetActiveBuildTarget());
-////    for (size_t i = 0; i < targets.GetCount(); ++i)
-////    {
-////        target = project->GetBuildTarget(targets[i]);
-////        if (target != NULL)
-////        {
-////            if (   !parser->Options().platformCheck
-////                || (parser->Options().platformCheck && target->SupportsCurrentPlatform()) )
-////            {
-////                wxArrayString targetOpts = target->GetCompilerOptions();
-////                for (size_t j = 0; j < targetOpts.GetCount(); ++j)
-////                    opts.Add(targetOpts[j]);
-////            }
-////        }
-////    }
-////
-////    for (size_t i = 0; i < opts.GetCount(); ++i)
-////    {
-////        wxString def = opts[i];
-////        Manager::Get()->GetMacrosManager()->ReplaceMacros(def);
-////        if ( !def.StartsWith(defineCompilerSwitch) )
-////            continue;
-////
-////        def = def.Right(def.Length() - defineCompilerSwitch.Length());
-////        int pos = def.Find(_T('='));
-////        if (pos != wxNOT_FOUND)
-////            def[pos] = _T(' ');
-////
-////        defs += _T("#define ") + def + _T("\n");
-////    }
-////
-////    TRACE(_T("Add project and current build target defined preprocessor macros:\n%s"), defs.wx_str());
-////    parser->AddPredefinedMacros(defs);
-////    TRACE(_T("ParseManager::AddProjectDefinedMacros: Leave"));
-////    if ( defs.IsEmpty() )
-////        return false;
-////
-////    return true;
-////}
-
 // ----------------------------------------------------------------------------
-void ParseManager::AddCompilerIncludeDirsToParser(const Compiler* compiler, ParserBase* parser)
+void ParseManager::AddCompilerIncludeDirsToParser(const Compiler* compiler, Parser* parser)
 // ----------------------------------------------------------------------------
 {
     if (!compiler || !parser) return;
@@ -2689,7 +2329,7 @@ const wxArrayString& ParseManager::GetGCCCompilerDirs(const wxString& cpp_path, 
     return dirs[cpp_compiler];
 }
 
-void ParseManager::AddGCCCompilerDirs(const wxString& masterPath, const wxString& compilerCpp, ParserBase* parser)
+void ParseManager::AddGCCCompilerDirs(const wxString& masterPath, const wxString& compilerCpp, Parser* parser)
 {
     const wxArrayString& gccDirs = GetGCCCompilerDirs(masterPath, compilerCpp);
     TRACE(_T("ParseManager::AddGCCCompilerDirs: Adding %lu cached gcc dirs to parser..."), static_cast<unsigned long>(gccDirs.GetCount()));
@@ -2700,7 +2340,7 @@ void ParseManager::AddGCCCompilerDirs(const wxString& masterPath, const wxString
     }
 }
 
-void ParseManager::AddIncludeDirsToParser(const wxArrayString& dirs, const wxString& base, ParserBase* parser)
+void ParseManager::AddIncludeDirsToParser(const wxArrayString& dirs, const wxString& base, Parser* parser)
 {
     for (unsigned int i = 0; i < dirs.GetCount(); ++i)
     {
@@ -2770,175 +2410,6 @@ bool ParseManager::SafeExecute(const wxString& app_path, const wxString& app, co
 
     return true;
 }
-////// ----------------------------------------------------------------------------
-////void ParseManager::OnParserStart(wxCommandEvent& event)
-////// ----------------------------------------------------------------------------
-////{
-////    TRACE(_T("ParseManager::OnParserStart: Enter"));
-////
-////    cbProject* project = static_cast<cbProject*>(event.GetClientData());
-////    wxString   prj     = (project ? project->GetTitle() : _T("*NONE*"));
-////    const ParserCommon::ParserState state = static_cast<ParserCommon::ParserState>(event.GetInt());
-////
-////    switch (state)
-////    {
-////        case ParserCommon::ptCreateParser:
-////            CCLogger::Get()->DebugLog(wxString::Format(_("ParseManager::OnParserStart: Starting batch parsing for project '%s'..."), prj.wx_str()));
-////            {
-////                std::pair<cbProject*, ParserBase*> info = GetParserInfoByCurrentEditor();
-////                if (info.second && m_Parser != info.second)
-////                {
-////                    CCLogger::Get()->DebugLog(_T("ParseManager::OnParserStart: Start switch from OnParserStart::ptCreateParser"));
-////                    SwitchParser(info.first, info.second); // Calls SetParser() which also calls UpdateClassBrowserView()
-////                }
-////            }
-////            break;
-////
-////        case ParserCommon::ptAddFileToParser:
-////            CCLogger::Get()->DebugLog(wxString::Format(_("ParseManager::OnParserStart: Starting add file parsing for project '%s'..."), prj.wx_str()));
-////            break;
-////
-////        case ParserCommon::ptReparseFile:
-////            CCLogger::Get()->DebugLog(wxString::Format(_("ParseManager::OnParserStart: Starting re-parsing for project '%s'..."), prj.wx_str()));
-////            break;
-////
-////        case ParserCommon::ptUndefined:
-////            if (event.GetString().IsEmpty())
-////                CCLogger::Get()->DebugLog(wxString::Format(_("ParseManager::OnParserStart: Batch parsing error in project '%s'"), prj.wx_str()));
-////            else
-////                CCLogger::Get()->DebugLog(wxString::Format(_("ParseManager::OnParserStart: %s in project '%s'"), event.GetString().wx_str(), prj.wx_str()));
-////            return;
-////
-////        default:
-////            break;
-////    }
-////
-////    event.Skip();
-////
-////    TRACE(_T("ParseManager::OnParserStart: Leave"));
-////}
-
-////// ----------------------------------------------------------------------------
-////void ParseManager::OnParserEnd(wxCommandEvent& event)
-////// ----------------------------------------------------------------------------
-////{
-////    TRACE(_T("ParseManager::OnParserEnd: Enter"));
-////
-////    ParserBase* parser = reinterpret_cast<ParserBase*>(event.GetEventObject());
-////    cbProject* project = static_cast<cbProject*>(event.GetClientData());
-////    wxString prj = (project ? project->GetTitle() : _T("*NONE*"));
-////    const ParserCommon::ParserState state = static_cast<ParserCommon::ParserState>(event.GetInt());
-////
-////    switch (state)
-////    {
-////        case ParserCommon::ptCreateParser:
-////            {
-////                wxString log(wxString::Format(_("ParseManager::OnParserEnd: Project '%s' parsing stage done!"), prj.wx_str()));
-////                CCLogger::Get()->Log(log);
-////                CCLogger::Get()->DebugLog(log);
-////            }
-////            break;
-////
-////        case ParserCommon::ptAddFileToParser:
-////            break;
-////
-////        case ParserCommon::ptReparseFile:
-////            if (parser != m_Parser)
-////            {
-////                std::pair<cbProject*, ParserBase*> info = GetParserInfoByCurrentEditor();
-////                if (info.second && info.second != m_Parser)
-////                {
-////                    CCLogger::Get()->DebugLog(_T("ParseManager::OnParserEnd: Start switch from OnParserEnd::ptReparseFile"));
-////                    SwitchParser(info.first, info.second); // Calls SetParser() which also calls UpdateClassBrowserView()
-////                }
-////            }
-////            break;
-////
-////        case ParserCommon::ptUndefined:
-////            CCLogger::Get()->DebugLog(wxString::Format(_T("ParseManager::OnParserEnd: Parser event handling error of project '%s'"), prj.wx_str()));
-////            return;
-////
-////        default:
-////            break;
-////    }
-////
-////    if (!event.GetString().IsEmpty())
-////        CCLogger::Get()->DebugLog(event.GetString());
-////
-////    UpdateClassBrowser();
-////
-////    // In this case, the parser will record all the cbprojects' token, so this will start parsing
-////    // the next cbproject.
-////    TRACE(_T("ParseManager::OnParserEnd: Starting m_TimerParsingOneByOne."));
-////    m_TimerParsingOneByOne.Start(500, wxTIMER_ONE_SHOT);
-////
-////    // both ParseManager and CodeCompletion class need to handle this event
-////    event.Skip();
-////    TRACE(_T("ParseManager::OnParserEnd: Leave"));
-////}
-
-////void ParseManager::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
-////{
-////    TRACE(_T("ParseManager::OnParsingOneByOneTimer: Enter"));
-////
-////    std::pair<cbProject*, ParserBase*> info = GetParserInfoByCurrentEditor();
-////    if (m_ParserPerWorkspace)
-////    {
-////        // If there is no parser and an active editor file can be obtained, parse the file according the active project
-////        if (!info.second && Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor())
-////        {
-////            // NOTE (Morten#1#): Shouldn't this actually be a temp parser??? I think this screws things with re-opening files on load of a projects...
-////            AddProjectToParser(info.first);
-////            CCLogger::Get()->DebugLog(_T("ParseManager::OnParsingOneByOneTimer: Add foreign active editor to current active project's parser."));
-////        }
-////        // Otherwise, there is a parser already present
-////        else
-////        {
-////            // First: try to parse the active project (if any)
-////            cbProject* activeProject = Manager::Get()->GetProjectManager()->GetActiveProject();
-////            if (m_ParsedProjects.find(activeProject) == m_ParsedProjects.end())
-////            {
-////                AddProjectToParser(activeProject);
-////                CCLogger::Get()->DebugLog(_T("ParseManager::OnParsingOneByOneTimer: Add new (un-parsed) active project to parser."));
-////            }
-////            // Else: add remaining projects one-by-one (if any)
-////            else
-////            {
-////                ProjectsArray* projs = Manager::Get()->GetProjectManager()->GetProjects();
-////                // loop on the whole workspace, and only add a new project to the parser
-////                // here the "new" means a project haven't been parsed. Once it was parsed, it is
-////                // added to the m_ParsedProjects
-////                for (size_t i = 0; i < projs->GetCount(); ++i)
-////                {
-////                    // Only add, if the project is not already parsed
-////                    if (m_ParsedProjects.find(projs->Item(i)) == m_ParsedProjects.end())
-////                    {
-////                        // AddProjectToParser return true means there are something need to parse, otherwise, it is false
-////                        if (!AddProjectToParser(projs->Item(i)))
-////                        {
-////                            CCLogger::Get()->Log(_T("ParseManager::OnParsingOneByOneTimer: nothing need to parse in this project, try next project."));
-////                            continue;
-////                        }
-////
-////                        CCLogger::Get()->DebugLog(_T("ParseManager::OnParsingOneByOneTimer: Add additional (next) project to parser."));
-////                        break;
-////                    }
-////                }
-////            }
-////        }
-////    }
-////    else if (info.first && !info.second)
-////    {
-////        info.second = CreateParser(info.first);
-////        if (info.second && info.second != m_Parser)
-////        {
-////            CCLogger::Get()->DebugLog(_T("ParseManager::OnParsingOneByOneTimer: Start switch from OnParsingOneByOneTimer"));
-////            SwitchParser(info.first, info.second); // Calls SetParser() which also calls UpdateClassBrowserView()
-////        }
-////    }
-////    TRACE(_T("ParseManager::OnParsingOneByOneTimer: Leave"));
-////}
-
 // ----------------------------------------------------------------------------
 void ParseManager::OnEditorActivated(EditorBase* editor)
 // ----------------------------------------------------------------------------
@@ -2962,7 +2433,7 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
             RemoveFileFromParser(NULL, activatedFile);
     }
 
-    ParserBase* parser = GetParserByProject(project);
+    Parser* parser = GetParserByProject(project);
     if (!parser)
     {
         ParserCommon::EFileType ft = ParserCommon::FileType(activatedFile);
@@ -3164,7 +2635,7 @@ void ParseManager::SetProxyProject(cbProject* pActiveProject)
     //This is what happens: m_ParserList.push_back(std::make_pair(m_pProxyProject, pProxyParser));
     // ProxyProject will now look like a regular cbProject to the parsers and clangd_client.
     // We'll be able to add and remove non-project files to the hidden cbProject.
-    ParserBase* pProxyParser = CreateParser(m_pProxyProject, false);
+    Parser* pProxyParser = CreateParser(m_pProxyProject, false);
 
     if (pProxyParser) m_pProxyParser = pProxyParser;
 
@@ -3210,18 +2681,42 @@ void ParseManager::SetProxyProject(cbProject* pActiveProject)
     return;
 }
 // ----------------------------------------------------------------------------
+void ParseManager::SetPluginIsShuttingDown()
+// ----------------------------------------------------------------------------
+{
+    m_PluginIsShuttingDown = true;
+
+    ParserList::iterator parserList_it = m_ParserList.begin();
+    for (; parserList_it != m_ParserList.end(); ++parserList_it)
+    {
+        Parser* pParser = parserList_it->second;
+        if (pParser and pParser->GetIdleCallbackHandler())
+            pParser->GetIdleCallbackHandler()->SetPluginIsShuttingDown();
+    }
+}
+// Get pointer to Idle callbacks
+// ----------------------------------------------------------------------------
+IdleCallbackHandler* ParseManager::GetIdleCallbackHandler(cbProject* pProject)
+// ----------------------------------------------------------------------------
+{
+    cbAssert(pProject);
+    Parser* pParser = GetParserByProject(pProject);
+    cbAssert(pParser);
+    return pParser->GetIdleCallbackHandler();
+}
+// ----------------------------------------------------------------------------
 void ParseManager::ClearAllIdleCallbacks()
 // ----------------------------------------------------------------------------
 {
-    // clear any Idle time callbacks //(ph 2022/08/01)
+    // clear any Idle time callbacks
     if (m_ParserList.size())
     {
-        ParserList::iterator parserList_it = m_ParserList.begin();  //(ph 2022/08/01)
+        ParserList::iterator parserList_it = m_ParserList.begin();
         for (; parserList_it != m_ParserList.end(); ++parserList_it)
         {
-            ParserBase* pParserBase = parserList_it->second;
-            if (pParserBase and pParserBase->GetIdleCallbackHandler())
-                pParserBase->GetIdleCallbackHandler()->ClearIdleCallbacks();
+            Parser* pParser = parserList_it->second;
+            if (pParser and pParser->GetIdleCallbackHandler())
+                pParser->GetIdleCallbackHandler()->ClearIdleCallbacks();
         }
     }
 }

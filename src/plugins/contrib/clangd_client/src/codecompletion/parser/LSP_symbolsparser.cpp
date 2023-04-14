@@ -31,7 +31,7 @@
 #include "parser.h"
 #include "expression.h" // used to calculate the enumerator value
 
-#define CC_LSP_SymbolsParser_DEBUG_OUTPUT 0 //(ph 2021/04/5)
+#define CC_LSP_SymbolsParser_DEBUG_OUTPUT 0
 
 #if defined(CC_GLOBAL_DEBUG_OUTPUT)
     #if CC_GLOBAL_DEBUG_OUTPUT == 1
@@ -84,7 +84,7 @@
 //#define IS_ALIVE !TestDestroy()
 //#endif
 
-#define IS_ALIVE true //(ph 2021/03/15) //(ph 2021/03/23)
+#define IS_ALIVE true
 // ----------------------------------------------------------------------------
 namespace
 // ----------------------------------------------------------------------------
@@ -231,7 +231,7 @@ LSP_SymbolsParser::LSP_SymbolsParser(ParserBase*          parent,
     m_Tokenizer.SetTokenizerOption(LSP_SymbolsParserOptions.wantPreprocessor,
                                    LSP_SymbolsParserOptions.storeDocumentation);
     if (!m_TokenTree)
-        //cbThrow(_T("m_TokenTree is a nullptr?!")); //cbThrow does not work from within a ctor //(ph 2022/07/31)
+        //cbThrow(_T("m_TokenTree is a nullptr?!")); //cbThrow does not work from within a ctor
         cbAssert(m_TokenTree && "m_TokenTree is a nullptr?!");
 }
 
@@ -340,7 +340,7 @@ bool LSP_SymbolsParser::ParseBufferForNamespaces(const wxString& buffer, NameSpa
 // ----------------------------------------------------------------------------
 {
     int startTime = 0;
-    RECORD_TIME(startTime);  //(ph 2021/09/7)
+    RECORD_TIME(startTime);
 
     m_Tokenizer.InitFromBuffer(buffer);
     if (!m_Tokenizer.IsOK())
@@ -354,7 +354,7 @@ bool LSP_SymbolsParser::ParseBufferForNamespaces(const wxString& buffer, NameSpa
 
     while (m_Tokenizer.NotEOF() && IS_ALIVE)
     {
-        CHECK_TIME(startTime, 1000); //(ph 2021/09/7)
+        CHECK_TIME(startTime, 1000);
 
         wxString token = m_Tokenizer.GetToken();
         if (token.IsEmpty())
@@ -518,7 +518,7 @@ bool LSP_SymbolsParser::InitTokenizer(json* pJson)
                     ret = m_Tokenizer.Init(m_Filename, m_Options.loader);
 
                     // must delete the loader, since it was allocated by SDK's Load() function
-                    if (m_Options.loader)       //(ph 2021/03/19)
+                    if (m_Options.loader)
                         Delete(m_Options.loader);
 
                     if (!ret)
@@ -632,12 +632,12 @@ bool LSP_SymbolsParser::Parse(json* pJson, cbProject* pProject)
     return result;
 }
 // ----------------------------------------------------------------------------
-bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject) //(ph 2021/03/15)
+bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     /// Do Not free pJson, it will be freed in CodeCompletion::LSP_Event()
     int startTime = 0;
-    RECORD_TIME(startTime) //(ph 2021/09/7)
+    RECORD_TIME(startTime)
 
     bool debugging = false;
 
@@ -661,7 +661,7 @@ bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject) 
     if (not pProject->GetFileByFilename(filename,false)) return false;
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     cbEditor* pEditor = pEdMgr->GetBuiltinEditor(filename);
-    cbStyledTextCtrl* pEdCtrl =  nullptr;           //(ph 2021/04/12)
+    cbStyledTextCtrl* pEdCtrl =  nullptr;
     if (pEditor)
         pEdCtrl = pEditor->GetControl();
     else
@@ -707,7 +707,7 @@ bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject) 
 
         for (size_t symidx=0; symidx < dataCount; ++symidx)
         {
-            CHECK_TIME(startTime, 2000) //(ph 2021/09/7)
+            CHECK_TIME(startTime, 2000)
 
             // [   { deltaLine: 2, deltaStartChar: 5, length: 3, tokenType: 0, tokenModifiers: 3 },  // first token
             //     { deltaLine: 0, deltaStartChar: 5, length: 4, tokenType: 1, tokenModifiers: 0 },  // second token
@@ -828,12 +828,12 @@ For example, the above assigns the first token (foo) the modifiers 0b11, indicat
 0th and the 1st token modifier are active, and all other modifiers do not apply to this token.
 */
 // ----------------------------------------------------------------------------
-bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject) //(ph 2021/03/15)
+bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     /// Do Not free pJson, it will be freed in CodeCompletion::LSP_Event()
     int startTime = 0;
-    RECORD_TIME(startTime) //(ph 2021/09/7)
+    RECORD_TIME(startTime)
 
     bool debugging = false;
 
@@ -857,7 +857,7 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
     if (not pProject->GetFileByFilename(filename,false)) return false;
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     cbEditor* pEditor = pEdMgr->GetBuiltinEditor(filename);
-    cbStyledTextCtrl* pEdCtrl =  nullptr;           //(ph 2021/04/12)
+    cbStyledTextCtrl* pEdCtrl =  nullptr;
     if (pEditor)
         pEdCtrl = pEditor->GetControl();
     else
@@ -894,7 +894,7 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
         TRACE(wxString::Format("%s() json contains %d major symbols", __FUNCTION__, defcnt));
         for (size_t symidx=0; symidx<defcnt; ++symidx)
         {
-            CHECK_TIME(startTime, 2000) //(ph 2021/09/7)
+            CHECK_TIME(startTime, 2000)
 
             wxString name =   result.at(symidx)["name"].get<std::string>();
             int kind =        result.at(symidx)["kind"].get<int>();
@@ -995,7 +995,7 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
                         wxString nmspce = name.SubString(0,posn-1).Trim(true).Trim(false);
                         m_EncounteredNamespaces.push(nmspce);
                         name = name.Mid(posn+2).Trim(true).Trim(false);
-                        // FIXME (ph#): m_Str already set, remove this code //(ph 2022/09/23)
+                        // FIXME (ph#): m_Str already set, remove this code
                         //if (kind == LSP_DocumentSymbolKind::Method)
                         //{
                         //    if (wxFound(posn = lineTxt.Find(nmspce)))
@@ -1047,13 +1047,13 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
                                                   );
                     if (newToken and pProject->GetFileByFilename(filename, false) )
                     {
-                        newToken->m_UserData = pProject;                                //(ph 2021/04/22)
+                        newToken->m_UserData = pProject;
 
                     }
 
                 }//end default
             }//endswitch kind
-            if (childcnt and newToken)                   //(ph 2021/06/12) added newToken check
+            if (childcnt and newToken)                   // added newToken check
             {
                 savedLastParent = m_LastParent; //save current parent level
                 m_LastParent = newToken;
@@ -1067,25 +1067,25 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
     {
         wxString msg = wxString::Format("%s() Error:%s", __FUNCTION__, e.what());
         //cbMessageBox(msg, "json Exception");
-        CCLogger::Get()->DebugLogError("json Exception: " + msg); //(ph 2023/02/27)
+        CCLogger::Get()->DebugLogError("json Exception: " + msg);
     }
 
    return true;
 }
 // ----------------------------------------------------------------------------
-void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Token* pParentToken, size_t level) //(ph 2021/03/13)
+void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Token* pParentToken, size_t level)
 // ----------------------------------------------------------------------------
 {
     bool debugging = false;
 
     int startTime = 0;
     Token* savedLastParent = nullptr;
-    RECORD_TIME(startTime) //(ph 2021/09/7)
+    RECORD_TIME(startTime)
 
     size_t indentLevel = level++ ? level : 1;
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     cbEditor* pEditor = pEdMgr->GetBuiltinEditor(filename);
-    cbStyledTextCtrl* pEdCtrl = nullptr;        //(ph 2021/04/12)
+    cbStyledTextCtrl* pEdCtrl = nullptr;
     if (pEditor)
         pEdCtrl = pEditor->GetControl();
     else
@@ -1149,7 +1149,7 @@ void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Toke
                     wxString nmspce = name.SubString(0,posn-1).Trim(true).Trim(false);
                     m_EncounteredNamespaces.push(nmspce);
                     name = name.Mid(posn+2).Trim(true).Trim(false);
-                    // FIXME (ph#): m_Str already set, remove this code //(ph 2022/09/23)
+                    // FIXME (ph#): m_Str already set, remove this code
                     //if (kind == LSP_DocumentSymbolKind::Method)
                     //{
                     //    if (wxFound(posn = lineTxt.Find(nmspce)))
@@ -1159,7 +1159,7 @@ void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Toke
                     //    }
                     //}
                 }//endif method
-                // FIXME (ph#): mStr already set, remove this code //(ph 2022/09/23)
+                // FIXME (ph#): mStr already set, remove this code
                 //// fetch function return type
                 //if (kind == LSP_DocumentSymbolKind::Function)
                 //{
@@ -1199,12 +1199,12 @@ void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Toke
                                               );
             }
 
-            if (newToken and pParentToken)                                       //(ph 2021/06/12) added pParentToken check
-                newToken->m_UserData = pParentToken->m_UserData;                                //(ph 2021/04/22)
+            if (newToken and pParentToken)          //  added pParentToken check
+                newToken->m_UserData = pParentToken->m_UserData;
 
-            CHECK_TIME(startTime, 2000) //(ph 2021/09/7)
+            CHECK_TIME(startTime, 2000)
 
-            if (childcnt and pParentToken)                                      //(ph 2021/06/12) add pParentToken check
+            if (childcnt and pParentToken)             // add pParentToken check
             {
                 savedLastParent = m_LastParent;  //save current parent level
                 json jChildren = result.at(symidx)["children"];
@@ -1224,7 +1224,7 @@ void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Toke
 wxString LSP_SymbolsParser::DoHandleSemanticTokenFunction()
 // ----------------------------------------------------------------------------
 {
-        // info                                     //(ph 2021/03/22)
+        // info
         //m_Tokenizer.m_SemanticTokenIndex      == m_SemanticTokensIdx;
         //m_Tokenizer.m_SemanticTokenLineNumber == lineNum;
         //m_Tokenizer.m_SemanticTokenColumn     == colNum;
@@ -1250,7 +1250,7 @@ TokenKind LSP_SymbolsParser::ConvertDocSymbolKindToCCTokenKind(int docSymKind)
 // ----------------------------------------------------------------------------
 {
 
-    /// FIXME (ph#): the following ccTokenKind(s) may not be correct //(ph 2021/03/22)
+    /// FIXME (ph#): the following ccTokenKind(s) may not be correct
     TokenKind ccTokenKind = tkUndefined;
 
     switch(docSymKind)
@@ -1786,7 +1786,7 @@ Token* LSP_SymbolsParser::DoAddToken(TokenKind       kind,
           newToken->m_BaseType.wx_str(), m_TokenTree->at(newToken->m_ParentIndex) ?
           m_TokenTree->at(newToken->m_ParentIndex)->m_Name.wx_str() : wxEmptyString,
           newToken->m_ParentIndex);
-          //(ph 2021/10/30) **debugging**
+        // **debugging**
         //wxString AddedTokenStr = wxString::Format(_T("DoAddToken() : Added/updated token '%s' (%d), kind '%s', type '%s', actual '%s'. Parent is %s (%d)"),
         //      name.wx_str(), newToken->m_Index, newToken->GetTokenKindString().wx_str(), newToken->m_FullType.wx_str(),
         //      newToken->m_BaseType.wx_str(), m_TokenTree->at(newToken->m_ParentIndex) ?
@@ -1795,7 +1795,7 @@ Token* LSP_SymbolsParser::DoAddToken(TokenKind       kind,
         //CCLogger::Get()->DebugLog(AddedTokenStr);
         ADDTOKEN(_T("Token: Index %7d Line %7d: Type: %s: -> '%s'"),
                  newToken->m_Index, line, newToken->GetTokenKindString().wx_str(), name.wx_str());
-        //(ph 2021/10/30) **debugging**
+        //  **debugging**
         //AddedTokenStr = wxString::Format(_T("Token: Index %7d Line %7d: Type: %s: -> '%s'"),
         //         newToken->m_Index, line, newToken->GetTokenKindString().wx_str(), name.wx_str());
         //CCLogger::Get()->DebugLog(AddedTokenStr);
@@ -2035,7 +2035,7 @@ void LSP_SymbolsParser::HandleNamespace()
     }
 }
 // ----------------------------------------------------------------------------
-Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastLineNumber, int endCol)            //(ph 2021/05/15)
+Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastLineNumber, int endCol)
 // ----------------------------------------------------------------------------
 {
     // need to force the tokenizer _not_ skip anything
@@ -2048,13 +2048,13 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
     int lineNr = m_Tokenizer.GetLineNumber(); //just checking
     wxString ancestors;
     wxString lastCurrent;
-    Token* newToken = nullptr;  //(ph 2021/05/30)
+    Token* newToken = nullptr;
 
     cbStyledTextCtrl* pTextCtrl = m_Tokenizer.m_pControl;
     // FIXME (ph#): change code to use cbStyledTextCtrl directly. Quite moving text
     // In Tokenizer init, text from cbStyledTextCtrl should have been copied to Tokenizer.m_Buffer
     if ((not pTextCtrl) or (not pTextCtrl->GetLength()) )
-        return nullptr; //(ph 2021/05/30)
+        return nullptr;
 
     //set current parsing position to beginning of lineNumber param
     m_Tokenizer.SetTokenIndex(pTextCtrl->PositionFromLine(lineNumber));
@@ -2066,7 +2066,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
 
     while (IS_ALIVE)
     {
-        CHECK_TIME(startTime, 1000) //(ph 2021/09/8)
+        CHECK_TIME(startTime, 1000)
 
         wxString current = m_Tokenizer.GetToken(); // class name
         wxString next    = m_Tokenizer.PeekToken();
@@ -2104,7 +2104,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             m_Tokenizer.GetToken(); // eat ":"
             while (IS_ALIVE)
             {
-                CHECK_TIME(startTime, 1000) //(ph 2021/09/8)
+                CHECK_TIME(startTime, 1000)
 
                 wxString tmp = m_Tokenizer.GetToken();
                 next = m_Tokenizer.PeekToken();
@@ -2164,7 +2164,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                               (ct == ctClass ? _T("Class") : (ct == ctUnion ? _T("Union") : _T("Struct"))),
                               m_FileIdx, static_cast<unsigned long>(m_StructUnionUnnamedCount++));
             //-Token* newToken = DoAddToken(tkClass, unnamedTmp, lineNr);
-            newToken = DoAddToken(tkClass, unnamedTmp, lineNr); //(ph 2021/05/30)
+            newToken = DoAddToken(tkClass, unnamedTmp, lineNr);
             // Maybe it is a bug here. I just fixed it.
             if (!newToken)
             {
@@ -2204,7 +2204,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                 //-cbMessageBox(msg, "Assert(non fatal)");
                 CCLogger::Get()->DebugLog(msg);
             #endif
-            break; //(ph 2021/10/13)
+            break;
             /// DoParse(); // recursion
 
             m_LastParent     = lastParent;
@@ -2246,7 +2246,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             wxString args;
             while (tkz.HasMoreTokens())
             {
-                CHECK_TIME(startTime, 1000)     //(ph 2021/09/8)
+                CHECK_TIME(startTime, 1000)
 
                 const wxString& ancestor = tkz.GetNextToken();
                 if (ancestor.IsEmpty())
@@ -2263,14 +2263,14 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                 args.Prepend(ParserConsts::lt + GetStringFromArray(formals, ParserConsts::comma, false) + ParserConsts::gt);
 
             //-Token* newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);
-            newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);    //(ph 2021/05/30)
+            newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);
             if (!newToken)
             {
                 TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
 
                 // restore tokenizer's functionality
                 m_Tokenizer.SetState(oldState);
-                return newToken; //(ph 2021/05/30)
+                return newToken;
             }
             newToken->m_AncestorsString = ancestors;
 
@@ -2297,7 +2297,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             newToken->m_TemplateType = formals;
             m_TemplateArgument.Clear();
 
-            /// ------- Dont parse class for LSP ----------------------------------- //(ph 2021/05/27)
+            /// ------- Dont parse class for LSP -----------------------------------
             //-DoParse();
             // Set Tokenizer last line number to end of Class code
             cbStyledTextCtrl* pTextCtrl = m_Tokenizer.m_pControl;
@@ -2308,12 +2308,12 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             m_Tokenizer.SetTokenIndex(endOfClassTokenIndex);
             wxString token = m_Tokenizer.GetToken();
             wxString peektoken = m_Tokenizer.PeekToken();
-            // unterminated class with '}'causes loop //(ph 2021/09/8)
+            // unterminated class with '}'causes loop
             //while ( (token != '}' ) and (m_Tokenizer.GetLineNumber() <= (size_t)lastLineNumber) )
             //{
             //    token = m_Tokenizer.GetToken();
             //}
-            wxString classLastLine = pTextCtrl->GetLine(lastLineNumber); //(ph 2021/09/8)
+            wxString classLastLine = pTextCtrl->GetLine(lastLineNumber);
             if (classLastLine[endCol?endCol-1:endCol] == '}')
                 token = '}';
             else  token = "";
@@ -2381,7 +2381,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                 wxString args;
 
                 //-Token* newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);
-                newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args); //(ph 2021/05/30)
+                newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);
 
                 if (!newToken)
                 {
@@ -2389,7 +2389,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
 
                     // restore tokenizer's functionality
                     m_Tokenizer.SetState(oldState);
-                    return newToken; //(ph 2021/05/30)
+                    return newToken;
                 }
                 newToken->m_AncestorsString = ancestors;
 
@@ -2450,7 +2450,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                                     || farnext == ParserConsts::comma ))
                         {
 
-                            CHECK_TIME(startTime, 1000) //(ph 2021/09/8)
+                            CHECK_TIME(startTime, 1000)
 
                             if (m_Str.IsEmpty())
                                 m_Str = current;
@@ -2483,7 +2483,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
 
     // restore tokenizer's functionality
     m_Tokenizer.SetState(oldState);
-    return newToken;    //(ph 2021/05/30)
+    return newToken;
 }
 // ----------------------------------------------------------------------------
 void LSP_SymbolsParser::HandleClass(EClassType ct) //not used until implementing HandleTypedefs
@@ -4404,7 +4404,7 @@ void LSP_SymbolsParser::RemoveTemplateArgs(const wxString &exp, wxString &expNoA
 
 bool LSP_SymbolsParser::IsStillAlive(cb_unused const wxString& funcInfo)
 {
-    //const bool alive = !TestDestroy(); //(ph 2021/03/15)
+    //const bool alive = !TestDestroy();
     const bool alive = IS_ALIVE;
     if (!alive)
     {

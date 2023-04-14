@@ -454,7 +454,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     int max_parallel_processes = std::max(1, wxThread::GetCPUCount());
     if (max_parallel_processes > 1) max_parallel_processes = max_parallel_processes >> 1; //use only half of cpus
 
-    // Restrict the "~ProxyProject~" to avoid excess cpu usage since active project will use half of processes     //(ph 2022/05/31)
+    // Restrict the "~ProxyProject~" to avoid excess cpu usage since active project will use half of processes
     if (pProject->GetTitle() == "~ProxyProject~") max_parallel_processes = 1;
 
     // I dont think I want to set "maximum usable threads" to the same as "max parsing threads". Some threads should
@@ -475,7 +475,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     // use --compile-commands-dir=<path> to restrict compilation database search to to <path>
     //https://clangd.llvm.org/faq#how-do-i-fix-errors-i-get-when-opening-headers-outside-of-my-project-directory
 
-    // Get number of code completions returned from  config max_matches //(ph 2022/10/06)
+    // Get number of code completions returned from  config max_matches
     int ccMaxMatches = cfg->ReadInt(_T("/max_matches"), 20);
     command += wxString::Format(" --limit-results=%d", ccMaxMatches);
 
@@ -544,7 +544,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     bool isClientLogging = cfg->ReadBool("/logClangdClient_check", false);
     if (isClientLogging)
     {
-        logFilename = CreateLSPClientLogName(processServerPID, pProject); //(ph 2021/02/12)
+        logFilename = CreateLSPClientLogName(processServerPID, pProject);
         if (logFilename.Length())
         {
             wxString clientLogFilename = logFilename;
@@ -625,7 +625,7 @@ ProcessLanguageClient::~ProcessLanguageClient()
     m_MapMsgHndlr.SetLSP_TerminateFlag(1);
 
     if (m_pServerProcess and platform::windows)
-        m_pServerProcess->Detach(); //ignore any further messages //(ph 2022/08/08)
+        m_pServerProcess->Detach(); //ignore any further messages
         //Detach() for linux is done in unixProcess dtor. Doing it here causes hangs and crashes
 
     if (lspClientLogFile.IsOpened())
@@ -715,8 +715,9 @@ ProcessLanguageClient::~ProcessLanguageClient()
         delete pProcess;
     }
 
-    // Possibly remove .cache dir and compile_command.json
+    // Possibly remove .cache dirs and compile_command.json files
     // because the project got moved/copied and the filenames are invalid.
+    // or "ReparseThisProject" was requested.
     if (m_vProjectNeedsCleanup.size())
     {
         for (wxString cbpFilename : m_vProjectNeedsCleanup )
@@ -796,7 +797,7 @@ void ProcessLanguageClient::writeServerLog(const std::string& logmsg)
     lspServerLogFile.Write(logmsg.c_str(), logmsg.size());
     lspServerLogFile.Flush();
 
-    //(ph 2022/02/16)
+    //(2022/02/16)
     // V[10:58:51.183] Reusing preamble version 0 for version 0 of F:\usr\Proj\HelloWorld\HelloWorld3.h
     // clangd does not always respond when it reuses a file (esp., with didOpen() )
     // So here we check if that's what happend by checking the server log response.
@@ -867,7 +868,7 @@ size_t ProcessLanguageClient::GetDurationMilliSeconds(int startMillis)
     return nowMillis - startMillis;
 }
 // ----------------------------------------------------------------------------
-cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& filename)              //(ph 2021/04/10)
+cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // Create new hidden editor and load its data
@@ -941,7 +942,7 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
             return;
         }
 
-    // Ignore any clangd data when app is shutting down. //(ph 2022/07/29)
+    // Ignore any clangd data when app is shutting down.
     if (Manager::IsAppShuttingDown()) return;
 
     // Append clangd incomming response data to buffer;
@@ -1012,7 +1013,7 @@ void ProcessLanguageClient::OnLSP_Idle(wxIdleEvent& event)
 {
     event.Skip(); //always event.Skip() to allow others use of idle events
 
-    if (Manager::IsAppShuttingDown()) return;       //(ph 2022/07/29)
+    if (Manager::IsAppShuttingDown()) return;
 
     // ----------------------------------------------------------------------------
     // Invoke any queued client call backs
@@ -1139,7 +1140,7 @@ int ProcessLanguageClient::ReadLSPinputLength()
                     pLogMgr->DebugLogError(wxString::Format("\tCorrected data length is %d", jdataLength));
                     return jdataLength;
                 }
-                else // try to match beginning '{' with ending '}' to get actual length //(ph 2022/10/10)
+                else // try to match beginning '{' with ending '}' to get actual length
                 {
                     int idx = StdString_FindClosingEnclosureChar(&m_std_LSP_IncomingStr[jdataPosn], 0);
                     if (idx > 0)
@@ -1251,7 +1252,7 @@ bool ProcessLanguageClient::readJson(json &json)
     if (stdStrInputbuf.size())
         writeClientLog(StdString_Format(">>> readJson() len:%d:\n%s", length, stdStrInputbuf.c_str()) );
 
-    //(ph 2023/01/26) Test removing this check to see if any faster response.
+    // Test removing this check to see if any faster response.
     // Still getting the 3dots in empty param area like "Bind(...)" xE2 x80 xA6
     // and completions have the bullet dot prefixed. xE2 x80 xA2
     // These will be removed in the OnLSP_CompletionPopupHoverResponse() function.
@@ -1319,7 +1320,7 @@ bool ProcessLanguageClient::readJson(json &json)
 
     if (StdString_StartsWith(stdStrInputbuf, R"({"jsonrpc":"2.0","method":"textDocument/publishDiagnostics")") )
     {
-        // whenever diagnostics arrive, an open, save or didModified was issued. //(ph 2021/02/9)
+        // whenever diagnostics arrive, an open, save or didModified was issued.
         // clear busy and modified flags
         SetDidChangeTimeBusy(0);
     }
@@ -1517,7 +1518,7 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
                     OnMethodParams(event);
                 }
             }
-            else if (pJson->contains("Exit!")) //(ph 2020/09/26)
+            else if (pJson->contains("Exit!"))
             {
                 //This never occurs
             }
@@ -1554,7 +1555,7 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
     if (pJson->contains("id"))
     {
         wxString idValue;
-        try { idValue = GetwxUTF8Str(pJson->at("id").get<std::string>()); }     //(ph 2022/10/01)
+        try { idValue = GetwxUTF8Str(pJson->at("id").get<std::string>()); }
         catch(std::exception &err)
         {
             wxString errMsg(wxString::Format("\nOnIDResult() error: %s", err.what()) );
@@ -1575,8 +1576,8 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
         {
             m_LSP_initialized = false;
             // Terminate the input thread
-            m_terminateLSP = true; //tell the read thread to terminate //(ph 2021/01/15)
-            m_MapMsgHndlr.SetLSP_TerminateFlag(1); //(ph 2021/07/8)
+            m_terminateLSP = true; //tell the read thread to terminate
+            m_MapMsgHndlr.SetLSP_TerminateFlag(1);
             lspevt.SetString("LSP_Initialized:false");
         }
 
@@ -1603,7 +1604,7 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
         else if(idValue.StartsWith("textDocument/documentSymbol") )
         {
             //{"jsonrpc":"2.0","id":"textDocument/documentSymbol","result":[{"name":"wxbuildinfoformat","detail":"enum wxbuildinfoformat {}","kind":10,"range":{"start":{"line":19,"character":0},"end":{"line":20,"character":21}},"selectionRange":{"start":{"line":19,"character":5},"end":{"line":19,"character":22}},"children":[]},{"name":"short_f","detail":"short_f","kind":22,"range":{"start":{"line":20,"character":4},"end":{"line":20,"character":11}},"selectionRange":{"start":{"line":20,"character":4},"end":{"line":20,"character":11}},...etc
-            //debugging wxString showit = pJson->dump(3); //pretty print with 3 tabs spacing //(ph 2020/10/30)
+            //debugging wxString showit = pJson->dump(3); //pretty print with 3 tabs spacing
             //debugging writeClientLog(showit);
             //debugging return;
             lspevt.SetString(idValue + STX + "result");
@@ -1656,7 +1657,7 @@ void ProcessLanguageClient::OnIDError(wxCommandEvent& event)
     json* pJson = (json*)event.GetClientData();
 
     wxString idValue;
-    try { idValue = GetwxUTF8Str(pJson->at("id").get<std::string>()); }     //(ph 2022/10/01)
+    try { idValue = GetwxUTF8Str(pJson->at("id").get<std::string>()); }
     catch(std::exception &err)
     {
         wxString errMsg(wxString::Format("\nOnIDError() error: %s", err.what()) );
@@ -1951,7 +1952,7 @@ bool ProcessLanguageClient::LSP_DidOpen(cbEditor* pcbEd)
         StdString_ReplaceAll(srcDirname, "\\","/");
     }
 
-    wxString fileURI = fileUtils.FilePathToURI(infilename); //(ph 2022/01/5)
+    wxString fileURI = fileUtils.FilePathToURI(infilename);
     fileURI.Replace("\\", "/");
     //-DocumentUri docuri = DocumentUri(fileURI.c_str());
     std::string stdFileURI = GetstdUTF8Str(fileURI); //(ollydbg 2022/10/30) ticket #78
@@ -1970,14 +1971,14 @@ bool ProcessLanguageClient::LSP_DidOpen(cbEditor* pcbEd)
     //    #if wxCHECK_VERSION(3,1,5) //3.1.5 or higher
     //    wxString strText = pCntl->GetText().utf8_string(); //solves most illegal utf8chars
     //    #else
-    //    //const char* pText = strText.mb_str();         //works //(ph 2022/01/17)
+    //    //const char* pText = strText.mb_str();         //works //(2022/01/17)
     //    wxString strText = pCntl->GetText().ToUTF8();  //ollydbg  220115 did not solve illegal utf8chars
     //      #endif
     //
     //const char* pText = strText.c_str();
 
     wxString strText = pCntl->GetText();
-    //-const char* pText = strText.mb_str();        //works //(ph 2022/01/17)
+    //-const char* pText = strText.mb_str();        //works //(2022/01/17)
     const char* pText = strText.ToUTF8();           //ollydbg  220115 did not solve illegal utf8char
 
     writeClientLog(StdString_Format("<<< LSP_DidOpen:%s", docuri.c_str()) );
@@ -2033,7 +2034,7 @@ bool ProcessLanguageClient::LSP_DidOpen(wxString filename, cbProject* pProject)
     // Open only .c* or .h* file types
     ProjectFile* pProjectFile = pProject->GetFileByFilename(filename, false);
     if (not pProjectFile) return false;
-    ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename); //(ph 2022/06/1)
+    ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename);
     if ( filetype == ParserCommon::ftOther) // if not header or source
         return false;
 
@@ -2194,7 +2195,7 @@ void ProcessLanguageClient::LSP_DidClose(wxString filename, cbProject* pProject)
     cbEditor* pcbEd = pEdMgr->IsBuiltinOpen(filename);
     if (pcbEd)
     {
-        SetLSP_EditorIsParsed(pcbEd, false); //(ph 2021/11/10)
+        SetLSP_EditorIsParsed(pcbEd, false);
         SetLSP_EditorIsOpen(pcbEd, false);
         SetLSP_EditorRemove(pcbEd);
         SetLSP_EditorHasSymbols(pcbEd, false);
@@ -2260,7 +2261,7 @@ void ProcessLanguageClient::LSP_DidSave(cbEditor* pcbEd)
     ConfigManager* pCfg = Manager::Get()->GetConfigManager("clangd_client");
     bool doClear = pCfg->ReadBool("/lspMsgsClearOnSave_check", false);
     if (doClear and m_pDiagnosticsLog )
-        m_pDiagnosticsLog->Clear(); //(ph 2022/07/13)
+        m_pDiagnosticsLog->Clear();
 
     pcbEd->SetErrorLine(-1);            ;//clear any error indicator in editor
 
@@ -2628,8 +2629,6 @@ void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)
         return;
     }
 
-    //Does this really matter ?
-    //-if ((not pEd) or (not ClientProjectOwnsFile(pEd)) ) return; //(ph 2021/11/9)
     if (not pEd) return;
 
     wxString fileURI = fileUtils.FilePathToURI(pEd->GetFilename());
@@ -2671,7 +2670,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)
     return ;
 }//end LSP_RequestSymbols()
 // ----------------------------------------------------------------------------
-void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pProject, size_t rrid) //(ph 2021/04/11)
+void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pProject, size_t rrid)
 // ----------------------------------------------------------------------------
 {
     #if defined(cbDEBUG)
@@ -2727,7 +2726,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
     return ;
 }//end LSP_RequestSymbols()
 // ----------------------------------------------------------------------------
-void ProcessLanguageClient::LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid)            //(ph 2021/03/16)
+void ProcessLanguageClient::LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid)
 // ----------------------------------------------------------------------------
 {
     // goto signature
@@ -2973,7 +2972,7 @@ void ProcessLanguageClient::LSP_DidChange(cbEditor* pEd)
     wxString edText;
     // If line count has changed, send full text, else send changed line.
     // Also, special handling for last line of text
-        ///- hasChangedLineCount = true; //(ph 2021/07/26) //(ph 2021/10/11) clangd v13 looks ok
+        //- hasChangedLineCount = true; //(2021/07/26) //(2021/10/11) clangd v13 looks ok
     if ( (hasChangedLineCount) or (lineChangedNbr >= oldLineCount-1) )
         // send the whole editor text to the server.
 
@@ -2981,7 +2980,7 @@ void ProcessLanguageClient::LSP_DidChange(cbEditor* pEd)
         // when using chinese chars.
         // Assure text is UTF8 before handing to DidChange()
         //#if wxCHECK_VERSION(3,1,5) //3.1.5 or higher
-        //edText = pCtrl->GetText().utf8_string();    //(ph 2022/06/22)
+        //edText = pCtrl->GetText().utf8_string();    //(2022/06/22)
         //#else
         //edText = pCtrl->GetText().ToUTF8();
         //#endif
@@ -3091,7 +3090,7 @@ void ProcessLanguageClient::LSP_CompletionRequest(cbEditor* pEd, int rrid)
     size_t relativeTokenStart = tknStart - lineStartPosn;
     size_t relativeTokenEnd   = tknEnd - lineStartPosn;
 
-    position.character   = relativeTokenEnd; //(ph 2021/07/31)
+    position.character   = relativeTokenEnd;
     CompletionContext context;
     context.triggerKind = CompletionTriggerKind::Invoked;
     context.triggerCharacter = ".";
@@ -3453,7 +3452,7 @@ wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* p
     wxArrayString retArray;
     wxArrayString ret_generatedArray;
 
-    // Sanity checks                     //(ph 2022/10/17)
+    // Sanity checks
     #if defined(cbDEBUG)
     cbAssertNonFatal(pTarget && "null ProjectBuildTarget pointer");
     cbAssertNonFatal(pf && "null ProjectFile pointer");
@@ -3502,7 +3501,7 @@ wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* p
     // lookup file's type
     const FileType ft = FileTypeOf(pf->relativeFilename);
     bool is_resource = (ft == ftResource);
-    bool is_header   = (ft == ftHeader) or (ParserCommon::FileType(pf->relativeFilename) == ParserCommon::ftHeader); //(ph 2022/06/1)
+    bool is_header   = (ft == ftHeader) or (ParserCommon::FileType(pf->relativeFilename) == ParserCommon::ftHeader);
 
     // allowed resources under all platforms: makes sense when cross-compiling for
     // windows under linux.
@@ -3614,7 +3613,7 @@ wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* p
     return retArray;
 }//end GetCompileFileCommand()
 // ----------------------------------------------------------------------------
-bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectBuildTarget* pTarget, const wxString& argFullFilePath, json* pJson)    //(ph 2020/12/1)
+bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectBuildTarget* pTarget, const wxString& argFullFilePath, json* pJson)
 // ----------------------------------------------------------------------------
 {
     // Add file to compile_commands.json if not already present.
@@ -3708,13 +3707,13 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
     }
 
     compileCommand.Replace("\\", "/");
-    wxString cbWorkingDir = wxPathOnly(pProject->GetFilename()); //(ph 2021/01/15)
+    wxString cbWorkingDir = wxPathOnly(pProject->GetFilename());
     cbWorkingDir.Replace("\\", "/");
 
     json newEntry;
     //-newEntry["directory"] = cbWorkingDir; //(ollydbg 2022/10/30) ticket #78
     //-newEntry["command"]   = compileCommand;
-    //-newEntry["file"]      = newFullFilePath; //(ph 2021/01/15) must be fullpath
+    //-newEntry["file"]      = newFullFilePath; // must be fullpath
     //-newEntry["output"]    = buildTargets[0];
     newEntry["directory"] = GetstdUTF8Str(cbWorkingDir); //(ollydbg 2022/10/30) ticket #78
     newEntry["command"]   = GetstdUTF8Str(compileCommand);
@@ -4018,7 +4017,7 @@ void ProcessLanguageClient::CreateDiagnosticsLog()
         return;
     }
 
-    if (not m_pDiagnosticsLog ) //(ph 2021/01/8)
+    if (not m_pDiagnosticsLog )
     {
 
         wxArrayInt widths;
@@ -4097,7 +4096,7 @@ int ProcessLanguageClient::GetLogIndex (const wxString& logRequest)
                 lm_CodeBlocksDebugLogIndex = i;
             if ( logSlot.title.IsSameAs (wxT ("Search results") ) )             //(pecan 2018/04/6)
                 lm_CodeBlocksSearchResultsLogIndex = i;
-            if ( logSlot.title.IsSameAs (wxT ("LSP messages") ) )             //(ph 2021/01/14)
+            if ( logSlot.title.IsSameAs (wxT ("LSP messages") ) )
                 lm_CodeBlocksLSPMessagesLogIndex = i;
         }
     }//for

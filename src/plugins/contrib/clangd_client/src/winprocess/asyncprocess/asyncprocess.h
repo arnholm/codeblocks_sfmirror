@@ -28,7 +28,7 @@
 #include <wx/string.h>
 #include <wx/utils.h>
 
-// ----------------------------- usefule typedefs -----from macros.h-----//(ph 2021/12/12)
+// ----------------------------- useful typedefs -----from macros.h-----
 //-typedef std::unordered_map<wxString, bool> wxStringBoolMap_t;
 typedef std::map<wxString, wxString> wxStringTable_t;
 //-typedef std::unordered_set<wxString> wxStringSet_t;

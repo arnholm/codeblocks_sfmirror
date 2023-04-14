@@ -85,7 +85,7 @@ void* ProcessReaderThread::Entry()
                                 //m_notifiedWindow->AddPendingEvent(e);
                                 //std::string stdstr = buff.ToStdString(); loses data
                                 #if wxCHECK_VERSION(3,1,5)
-                                std::string stdstr = buff.utf8_string(); //(ph 2022/06/20)
+                                std::string stdstr = buff.utf8_string();
                                 #else
                                 std::string stdstr = buff.ToStdString(wxConvUTF8);
                                 #endif
@@ -204,7 +204,7 @@ void ProcessReaderThread::Resume()
 // ----------------------------------------------------------------------------
 // The original CodeLite read code (for reference) 2023/01/26
 // An important fact I did not understand was that "b.Swap(buff)" was actually
-// converting the data to utf8 only if the native character set was set to utf8. //(ph 2023/01/26)
+// converting the data to utf8 only if the native character set was set to utf8.
 // ----------------------------------------------------------------------------
 //void* ProcessReaderThread::Entry()
 //{

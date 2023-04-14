@@ -14,15 +14,15 @@
 #include <stack>
 #include <list>
 
-#include "json.hpp" //nlohmann json lib //(ph 2021/03/20)
+#include "json.hpp" //nlohmann json lib
 using json = nlohmann::json;
 
-#include "tokenizer.h"          //(ph 2021/03/19) to get
-#include "cbeditor.h"           //(ph 2021/03/19)
-#include <cbstyledtextctrl.h>   //(ph 2021/03/19)
+#include "tokenizer.h"
+#include "cbeditor.h"
+#include <cbstyledtextctrl.h>
 
-// These comment out because they're define in and conflict with tokenizer.h //(ph 2021/03/20)
-///// Enum defines the skip state of the Tokenizer //(ph 2021/03/19)
+// These comment out because they're define in and conflict with tokenizer.h
+///// Enum defines the skip state of the Tokenizer
 //enum TokenizerState
 //{
 //    /** read parentheses as a single token */
@@ -31,7 +31,7 @@ using json = nlohmann::json;
 //    tsRawExpression = 0x0001
 //};
 
-///// Enum categorizing C-preprocessor directives //(ph 2021/03/19)
+///// Enum categorizing C-preprocessor directives
 //enum PreprocessorType
 //{
 //    ptIf                = 0x0001,   //!< #if
@@ -47,7 +47,7 @@ using json = nlohmann::json;
 //    ptOthers            = 0x000B    //!< #include #warning and other #xxx
 //};
 
-///// Whether we need to handle C-preprocessor directives //(ph 2021/03/19)
+///// Whether we need to handle C-preprocessor directives
 //struct TokenizerOptions
 //{
 //    /** do we expand the macros in #if like conditional preprocessor directives */
@@ -140,7 +140,7 @@ public:
     {
         return m_LineNumber;
     };
-    /** Set the line number of the current token string */ //(ph 2021/05/15)
+    /** Set the line number of the current token string */
     void SetLineNumber(int lineNum)
     {
         m_LineNumber = lineNum;
@@ -276,10 +276,10 @@ public:
     /** a Token is added, associate doxygen style documents(comments before the variables) to the Token */
     void SetLastTokenIdx(int tokenIdx);
     // set position to end of last token
-    void SetTokenIndex(int position){ m_TokenIndex = position; }            // LSP //(ph 2021/05/27)
-    void SetPeekTokenIndex(int position){ m_PeekTokenIndex = position; }    // LSP //(ph 2021/06/12)
-    void SetPeekAvailable(bool torf){m_PeekAvailable = torf;}               //(ph 2021/06/12)
-    wxString& GetBufferData(){ return m_Buffer; }  //(ph 2021/03/19)
+    void SetTokenIndex(int position){ m_TokenIndex = position; }            // LSP
+    void SetPeekTokenIndex(int position){ m_PeekTokenIndex = position; }    // LSP
+    void SetPeekAvailable(bool torf){m_PeekAvailable = torf;}
+    wxString& GetBufferData(){ return m_Buffer; }
 
     // ----------------------------------------------------------------------------
     //  LSP
@@ -304,12 +304,12 @@ public:
 
      size_t m_SemanticTokensIdx;    //current semantic token being examined
     // LSP semantic token info
-    unsigned int         m_SemanticTokenIndex      ;    // offset into LSP semantic tokens //(ph 2021/03/19)
-    unsigned int         m_SemanticTokenLineNumber ;    //(ph 2021/03/19)
-    unsigned int         m_SemanticTokenColumn     ;    //(ph 2021/03/19)
-    unsigned int         m_SemanticTokenLength     ;    //(ph 2021/03/19)
-    unsigned int         m_SemanticTokenType       ;    //(ph 2021/03/19)
-    unsigned int         m_SemanticTokenModifier;  ;    //(ph 2021/03/19)
+    unsigned int         m_SemanticTokenIndex      ;    // offset into LSP semantic tokens
+    unsigned int         m_SemanticTokenLineNumber ;
+    unsigned int         m_SemanticTokenColumn     ;
+    unsigned int         m_SemanticTokenLength     ;
+    unsigned int         m_SemanticTokenType       ;
+    unsigned int         m_SemanticTokenModifier;  ;
 
 protected:
     /** Initialize some member variables */
@@ -577,7 +577,7 @@ private:
      */
     unsigned int         m_TokenIndex;
     /** line offset in buffer, please note that it is 1 based, not 0 based
-        ^^Not true for me!, debugger shows line number zero based. One less than editor line number. //(ph 2021/03/19)
+        ^^Not true for me!, debugger shows line number zero based. One less than editor line number.
     */
     unsigned int         m_LineNumber;
     /** keep track of block nesting { } */

@@ -20,9 +20,9 @@
 
 #include "cclogger.h"
 #include "expression.h"
-//#include "tokenizer.h"        //(ph 2021/03/19)
+//#include "tokenizer.h"
 
-#include "LSP_tokenizer.h"      //(ph 2021/03/19)
+#include "LSP_tokenizer.h"
 #include "tokentree.h"
 
 #define CC_TOKENIZER_DEBUG_OUTPUT 0
@@ -120,7 +120,7 @@ LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, const wxString& filename) :
     if (!m_Filename.IsEmpty())
         Init(m_Filename);
 
-    m_SemanticTokensIdx = 0;    //(ph 2021/03/22)
+    m_SemanticTokensIdx = 0;
     m_pControl =  nullptr;
 }
 
@@ -179,7 +179,7 @@ bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 
     m_IsOK = true;
 
-    m_pControl = CreateEditor(); //(ph 2021/03/19)
+    m_pControl = CreateEditor();
     m_pControl->InsertText(0, GetBufferData());
     // -testing- size_t lineCnt = m_pControl->GetLineCount();
 
@@ -201,7 +201,7 @@ bool LSP_Tokenizer::InitFromBuffer(const wxString& buffer, const wxString& fileO
 
     m_FileIdx = m_TokenTree->GetFileIndex(m_Filename);
 
-    // create cbStyledTextCtrl   //(ph 2021/03/19)
+    // create cbStyledTextCtrl
     m_pControl = CreateEditor();
     //-m_pControl->InsertText(0, GetBufferData()); //GetBufferData is file name string
     if (wxFileExists(GetBufferData()))
@@ -239,12 +239,12 @@ void LSP_Tokenizer::BaseInit()
     m_NextTokenDoc.clear();
     m_LastTokenIdx         = -1;
 
-    m_SemanticTokenIndex      = 0;    // offset into LSP semantic tokens //(ph 2021/03/19)
-    m_SemanticTokenLineNumber = 0;    //(ph 2021/03/19)
-    m_SemanticTokenColumn     = 0;    //(ph 2021/03/19)
-    m_SemanticTokenLength     = 0;    //(ph 2021/03/19)
-    m_SemanticTokenType       = 0;    //(ph 2021/03/19)
-    m_SemanticTokenModifier   = 0;    //(ph 2021/03/19)
+    m_SemanticTokenIndex      = 0;    // offset into LSP semantic tokens
+    m_SemanticTokenLineNumber = 0;
+    m_SemanticTokenColumn     = 0;
+    m_SemanticTokenLength     = 0;
+    m_SemanticTokenType       = 0;
+    m_SemanticTokenModifier   = 0;
 
 }
 

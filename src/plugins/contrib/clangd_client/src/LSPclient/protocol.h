@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 // Most of the code comes from clangd(Protocol.h)
 
-#include "cbexception.h" //(ph 2022/11/19)
+#include "cbexception.h" //(cb 2022/11/19)
 
 #ifndef LSP_PROTOCOL_H
 #define LSP_PROTOCOL_H
@@ -346,7 +346,7 @@ JSON_SERIALIZE(ClientCapabilities,MAP_JSON(
                 ),
                 MAP_KV("codeAction", MAP_TO("codeActionLiteralSupport", CodeActionStructure)),
                 MAP_KV("documentSymbol", MAP_TO("hierarchicalDocumentSymbolSupport", HierarchicalDocumentSymbol)),
-                MAP_KV("semanticTokens", MAP_TO("dynamicRegistration",SemanticTokensSupport)),        //(ph 2021/03/16)
+                MAP_KV("semanticTokens", MAP_TO("dynamicRegistration",SemanticTokensSupport)), //(cb 2021/03/16)
 
                 MAP_KV("hover",  //HoverClientCapabilities
                         MAP_TO("contentFormat", HoverContentFormat)),
@@ -621,7 +621,7 @@ struct SelectionRangeParams {
 };
 JSON_SERIALIZE(SelectionRangeParams, MAP_JSON(MAP_KEY(textDocument), MAP_KEY(positions)), {});
 
-//(ph 2022/11/18) https://stackoverflow.com/questions/64054795/how-can-i-use-make-unique-with-c11
+//(cb 2022/11/18) https://stackoverflow.com/questions/64054795/how-can-i-use-make-unique-with-c11
 // Test for availability of c++14 std::make_unique
 #if __cplusplus < 201304L //Test for c++14 or better
 // #warning "C++14 or better is not available"
@@ -642,7 +642,7 @@ struct SelectionRange {
 JSON_SERIALIZE(SelectionRange, {}, {
     FROM_KEY(range);
     if (j.contains("parent")) {
-        //(ph 2022/11/18) change to allow compilation via -std=c++11
+        //(cb 2022/11/18) change to allow compilation via -std=c++11
         // as of 2022/11/19 there's no clangd_client reference to this routine.
       #if __cplusplus < 201304L //if c++14 not available, use c++11
         cbAssertNonFatal(0 && "This needs validation. Has never been tested.")

@@ -5,14 +5,14 @@
 #ifndef LSP_TRANSPORT_H
 #define LSP_TRANSPORT_H
 
-#include <wx/event.h> //(ph 2020/10/1)
-#include <wx/frame.h> //(ph 2020/10/1)
+#include <wx/event.h> //(cb 2020/10/1)
+#include <wx/frame.h> //(cb 2020/10/1)
 
 #include "uri.h" // this is local uri.h not system or wx uri.h
 #include <functional>
 #include <utility>
 
-#include "manager.h" //(ph 2020/12/14) //for log writes
+#include "manager.h"  //for log writes
 
 using value = json;
 using RequestID = std::string;
@@ -33,7 +33,7 @@ public:
     void  SetLSP_EventID(int _id) {id = _id;}
     //void* GetLSP_ClientID() {return clientID;}
     //-void  SetLSP_ClientID(void* ID) {clientID = ID;}
-    // Termination control from ProcessLanguageClient //(ph 2021/07/8)
+    // Termination control from ProcessLanguageClient //(cb 2021/07/8)
     int m_LSP_TerminateFlag = 0;
     int GetLSP_TerminateFlag(){ return m_LSP_TerminateFlag;}
     void SetLSP_TerminateFlag(int terminateFlag){m_LSP_TerminateFlag = terminateFlag;}
@@ -103,7 +103,7 @@ class MapMessageHandler : public MessageHandler
         void onResponse(value &ID, value &result) override
         // ----------------------------------------------------------------------------
         {
-            //-for (int i = 0; i < m_requests.size(); ++i) { //(ph 2020/08/19)  .size is "size_t" not int
+            //-for (int i = 0; i < m_requests.size(); ++i) { //(cb 2020/08/19)  .size is "size_t" not int
             for (size_t i = 0; i < m_requests.size(); ++i)
             {
                 if (ID == m_requests[i].first)
@@ -141,7 +141,7 @@ class Transport
         virtual void request(string_ref method, value &params, RequestID &id) = 0;
         virtual int loop(MessageHandler &) = 0;
 
-        wxString GetwxUTF8Str(const std::string stdString)  //(ph 2022/10/01)
+        wxString GetwxUTF8Str(const std::string stdString) //(cb 2022/10/01)
         {
             return wxString(stdString.c_str(), wxConvUTF8);
         }
@@ -163,7 +163,7 @@ class JsonTransport : public Transport
 
         while (true)
         {
-            if (handler.GetLSP_TerminateFlag()) break; //(ph 2021/07/8)
+            if (handler.GetLSP_TerminateFlag()) break; //(cb 2021/07/8)
             try
             {
                 json value;
@@ -221,10 +221,10 @@ class JsonTransport : public Transport
                             evt.SetPayload(new json(value));
                             Manager::Get()->GetAppFrame()->GetEventHandler()->QueueEvent(evt.Clone());
                             if (methodValue == "exit")
-                                break; //end the input thread //(ph 2021/01/15)
+                                break; //end the input thread //(cb 2021/01/15)
                         }
                     }
-                    else if (value.contains("Exit!")) //(ph 2020/09/26)
+                    else if (value.contains("Exit!")) //(cb 2020/09/26)
                     {
                         evt.SetString("Exit!:Exit!");
                         //evt.SetClientData(&value);
@@ -237,7 +237,7 @@ class JsonTransport : public Transport
             catch (std::exception &e)
             {
                 //printf("error -> %s\n", e.what());
-                wxString msg = wxString::Format("JsonTransport:loop() error -> %s\n", e.what()); //(ph 2020/08/21)
+                wxString msg = wxString::Format("JsonTransport:loop() error -> %s\n", e.what()); //(cb 2020/08/21)
                 // This code is in a thread. How to write the message to CB?
             }
         }

@@ -32,7 +32,8 @@
 
 #include "coderefactoring.h"
 #include "parsemanager.h"
-#include "parser/cclogger.h" //(ph 2021/07/27)
+#include "parser/parser.h"
+#include "parser/cclogger.h"
 
 #define CC_CODEREFACTORING_DEBUG_OUTPUT 0
 

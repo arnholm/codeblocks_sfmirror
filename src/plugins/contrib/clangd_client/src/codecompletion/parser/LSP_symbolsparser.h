@@ -19,14 +19,14 @@
 #include <logmanager.h> // F()
 
 #include "cclogger.h"
-#include "LSP_tokenizer.h"  //(ph 2021/03/19)
+#include "LSP_tokenizer.h"
 #include "token.h"
 #include "tokentree.h"
 
 #if defined(_WIN32)
-#include "winprocess/misc/fileutils.h"      //(ph 2021/12/21)
+#include "winprocess/misc/fileutils.h"
 #else
-#include "unixprocess/fileutils.h"      //(ph 2021/12/21)
+#include "unixprocess/fileutils.h"
 #endif //_WIN32
 
 #include "json.hpp" //nlohmann json lib
@@ -140,7 +140,7 @@ struct LSP_SymbolsParserOptions
     bool        lspMsgsClearOnSaveCheck;
 
     /** path to LLVM */
-    wxString    LLVM_MasterPath; //(ph 2021/11/7)
+    wxString    LLVM_MasterPath;
 
     /** whether to parse the functions */
     bool        handleFunctions;
@@ -193,7 +193,7 @@ public:
 
     /** Do the main job (syntax analysis) here
       */
-    bool Parse(json* pJson, cbProject* pProject);   //(ph 2021/03/24)
+    bool Parse(json* pJson, cbProject* pProject);
 
     /** Get the context "namespace XXX { ... }" directive. It is used to find the initial search scope
       * before CC prompt a suggestion list.
@@ -249,9 +249,9 @@ protected:
     /** actually run the syntax analysis*/
     void DoParse();
     bool DoParseDocumentSymbols(json* pJson, cbProject* pProject);
-    bool DoParseSemanticTokens(json* pJson, cbProject* pProject); //(ph 2022/06/7)
+    bool DoParseSemanticTokens(json* pJson, cbProject* pProject);
 
-    void WalkDocumentSymbols(json& jref, wxString& filename, Token* parentToken, size_t level); //(ph 2021/03/24)
+    void WalkDocumentSymbols(json& jref, wxString& filename, Token* parentToken, size_t level);
 
     /** skip blocks {} */
     void SkipBlock();
@@ -281,7 +281,7 @@ protected:
       * @param endCol points to '}' endng the class
       *
      */
-    Token* DoHandleClass(EClassType ct, int linenumber, int lastLineNumber, int endCol); //(ph 2021/05/27)
+    Token* DoHandleClass(EClassType ct, int linenumber, int lastLineNumber, int endCol);
 
     /** handle function declaration or definition
       * @param name function name

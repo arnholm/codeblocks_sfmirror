@@ -7,6 +7,7 @@
 #define CODEREFACTORING_H
 
 #include "parsemanager.h"
+#include "parser/token.h"
 
 struct crSearchData
 {

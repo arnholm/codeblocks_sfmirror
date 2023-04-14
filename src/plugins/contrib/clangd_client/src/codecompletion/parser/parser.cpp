@@ -31,35 +31,37 @@
 
 #include <wx/tokenzr.h>
 #include <cbstyledtextctrl.h>
-#include <wx/xrc/xmlres.h> //XRCID //(ph 2021/03/15)
+#include <wx/xrc/xmlres.h> //XRCID
 
 #if defined(_WIN32)
-#include "winprocess/misc/fileutils.h"      //(ph 2021/12/20) fix the URI intrpretation problem
+#include "winprocess/misc/fileutils.h"       // fix the URI intrpretation problem
 #else
 #include "unixprocess/fileutils.h"
 #endif
 
-#include "parser.h"
 //-deprecated- #include "parserthreadedtask.h"
 
 #include "../classbrowser.h"
 #include "../classbrowserbuilderthread.h"
-#include <encodingdetector.h>       //(ph 2021/04/10)
-#include "client.h"                 //(ph 2021/03/10)
-#include "LSP_symbolsparser.h"      //(ph 2021/03/15)
-#include "debuggermanager.h"        //(ph 2021/04/28)
-#include "../parsemanager.h"           //(ph 2021/08/18)
-#include "cbauibook.h"              //(ph 2021/09/16)
-#include "../IdleCallbackHandler.h" //(ph 2021/09/27)
+#include <encodingdetector.h>
+#include "client.h"
+#include "LSP_symbolsparser.h"
+#include "debuggermanager.h"
+
+#include "../parsemanager.h"
+#include "parser.h"
+
+#include "cbauibook.h"
+#include "../IdleCallbackHandler.h"
 #include "../gotofunctiondlg.h"
-#include "ccmanager.h"              //(ph 2022/06/15)
+#include "ccmanager.h"
 
 #ifndef CB_PRECOMP
     #include "editorbase.h"
 #endif
 
 #define CC_PARSER_DEBUG_OUTPUT 0
-//#define CC_PARSER_DEBUG_OUTPUT 1    //(ph 2021/05/4)
+//#define CC_PARSER_DEBUG_OUTPUT 1
 
 #if defined(CC_GLOBAL_DEBUG_OUTPUT)
     #if CC_GLOBAL_DEBUG_OUTPUT == 1
@@ -109,11 +111,11 @@ namespace ParserCommon
     // the instances of the Parser class, it should be a member variable of the Parser class.
     // Maybe, the author of this locker (Loaden?) thought that accessing to different Parser instances
     // from different threads should also be avoided.
-    // Note: (ph#): //(ph 2021/09/29) changed for the above reason
+    // Note: (ph#): //(2021/09/29) changed for the above reason
     //static          wxMutex  s_ParserMutex;
     //-wxMutex  s_ParserMutex;
-    //static          wxString       s_ParserMutex_Owner;     //(ph 2021/09/5)
-    //wxString       s_ParserMutex_Owner;     //(ph 2021/09/5)
+    //static          wxString       s_ParserMutex_Owner;
+    //wxString       s_ParserMutex_Owner;
 
 }// namespace ParserCommon
 //extern wxString ParserCommon::g_Owner_s_ParserMutex;
@@ -142,7 +144,7 @@ Parser::Parser(ParseManager* parent, cbProject* project) :
     m_ParsersProject(project),
     m_BatchTimer(this, wxNewId()),
     m_ParserState(ParserCommon::ptCreateParser),
-    m_DocHelper(parent)           //(ph 2022/06/15) parent must be ClgdCompletion*
+    m_DocHelper(parent)            // parent must be ClgdCompletion*
 {
     m_LSP_ParserDone = false;
 
@@ -182,7 +184,7 @@ Parser::~Parser()
 void Parser::ConnectEvents()
 // ----------------------------------------------------------------------------
 {
-    Manager::Get()->GetAppWindow()->PushEventHandler(this); //(ph 2021/03/15)
+    Manager::Get()->GetAppWindow()->PushEventHandler(this);
     Connect(m_BatchTimer.GetId(),   wxEVT_TIMER, wxTimerEventHandler(Parser::OnLSP_BatchTimer));
 }
 // ----------------------------------------------------------------------------
@@ -191,8 +193,8 @@ void Parser::DisconnectEvents()
 {
     Disconnect(m_BatchTimer.GetId(),   wxEVT_TIMER, wxTimerEventHandler(Parser::OnLSP_BatchTimer));
 
-    if ( GetParseManager()->FindEventHandler(this))                //(ph 2021/08/20)
-        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);  //(ph 2021/03/15)
+    if ( GetParseManager()->FindEventHandler(this))
+        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
 // ----------------------------------------------------------------------------
 void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
@@ -224,7 +226,7 @@ bool Parser::Done()
 // ----------------------------------------------------------------------------
 {
     // ----------------------------------------------------------------------------
-    // LSP              //(ph 2021/03/22)
+    // LSP
     // ----------------------------------------------------------------------------
 
     // if the active projects active editor has been parsed, then we're good to go.
@@ -318,7 +320,7 @@ void Parser::AddBatchParse(const StringList& filenames)
         m_BatchTimer.Stop();
 
     //// CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
-    // Nothing here that needs to be locked now //(ph 2021/11/3)
+    // Nothing here that needs to be locked now
 
     if (m_BatchParseFiles.empty())
         m_BatchParseFiles = filenames;
@@ -344,7 +346,7 @@ void Parser::ClearBatchParse()
         m_BatchTimer.Stop();
 
     //// CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
-    // Nothing here that needs to be locked now //(ph 2021/11/3)
+    // Nothing here that needs to be locked now
 
     if (m_BatchParseFiles.empty())
         return;
@@ -400,7 +402,7 @@ void Parser::AddParse(const wxString& filename)
     CC_LOCKER_TRACK_P_MTX_UNLOCK(s_ParserMutex);
 }
 // ----------------------------------------------------------------------------
-void Parser::LSP_OnClientInitialized(cbProject* pProject)         //(ph 2021/11/11)
+void Parser::LSP_OnClientInitialized(cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     // Once the LSP client is initialized, do call LSP DidOpen()s for project files
@@ -437,7 +439,7 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)         //(ph 2021/11/
 bool Parser::IsOkToUpdateClassBrowserView()
 // ----------------------------------------------------------------------------
 {
-    // Don't update Symbol browser window if it's being used. //(ph 2021/09/16)
+    // Don't update Symbol browser window if it's being used.
     // User may be working within the symbols browser window
 
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
@@ -456,7 +458,7 @@ bool Parser::IsOkToUpdateClassBrowserView()
     return true;
 }
 // ----------------------------------------------------------------------------
-void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
+void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (not GetLSPClient()) return;
@@ -529,7 +531,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
         if (locker_result != wxMUTEX_NO_ERROR)
         {
-            // **Debugging** //(ph 2021/11/3)
+            // **Debugging**
             //wxString locker_result_reason;
             //if (locker_result == wxMUTEX_DEAD_LOCK)
             //    locker_result_reason += "wxMUTEX_DEAD_LOCK";
@@ -538,7 +540,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
             //wxString msg= wxString::Format("LOCK FAILED:TokenTree %s @(%s:%d)",locker_result_reason, __FUNCTION__, __LINE__);
             //msg += wxString::Format("\nOwner: %s", s_TokenTreeMutex_Owner);
             //-CCLogger::Get()->DebugLogError(msg); // **DEBUGGING**
-            //-wxSafeShowMessage("TokenTree Lock fail", msg); //(ph 2021/09/27) **DEBUGGING**
+            //-wxSafeShowMessage("TokenTree Lock fail", msg);  // **DEBUGGING**
 
             // Pause parsing if the queue is too backed up. Caused by a dialog holding the TokenTree lock.
             if ((LSP_ParserDocumentSymbolsQueue.size() > 4) and (PauseParsingCount(__FUNCTION__)==0) )
@@ -576,7 +578,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
         opts.followGlobalIncludes  = m_Options.followGlobalIncludes;
         opts.wantPreprocessor      = m_Options.wantPreprocessor;
         opts.parseComplexMacros    = m_Options.parseComplexMacros;
-        opts.LLVM_MasterPath       = m_Options.LLVM_MasterPath; //(ph 2021/11/7)
+        opts.LLVM_MasterPath       = m_Options.LLVM_MasterPath;
         opts.platformCheck         = m_Options.platformCheck;
         opts.logClangdClientCheck  = m_Options.logClangdClientCheck;
         opts.logClangdServerCheck  = m_Options.logClangdServerCheck;
@@ -593,7 +595,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
         bool isLocal = true;
         m_LSP_ParserDone = false;
 
-        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree); //(ph 2021/03/15)
+        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree);
         // move semantic legend to associated parser
         pLSP_SymbolsParser->m_SemanticTokensTypes = m_SemanticTokensTypes;
         pLSP_SymbolsParser->m_SemanticTokensModifiers = m_SemanticTokensModifiers;
@@ -682,7 +684,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
 }
 // ** Debugging routine to print json contents **
 //// ----------------------------------------------------------------------------
-//void Parser::LSP_WalkTextDocumentSymbolResponse(json& jref, wxString& filename, size_t level) //(ph 2021/03/13)
+//void Parser::LSP_WalkTextDocumentSymbolResponse(json& jref, wxString& filename, size_t level)
 //// ----------------------------------------------------------------------------
 //{
 //    size_t indentLevel = level?level:1;
@@ -732,7 +734,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event) //(ph 2021/03/15)
 //   return;
 //}
 // ----------------------------------------------------------------------------
-void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event) //(ph 2021/03/17)
+void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // The pJsonData must be copied because the data will be freed on return to caller.
@@ -760,7 +762,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event) //(ph 2021/03/17)
     opts.followGlobalIncludes  = m_Options.followGlobalIncludes;
     opts.wantPreprocessor      = m_Options.wantPreprocessor;
     opts.parseComplexMacros    = m_Options.parseComplexMacros;
-    opts.LLVM_MasterPath       = m_Options.LLVM_MasterPath; //(ph 2021/11/7)
+    opts.LLVM_MasterPath       = m_Options.LLVM_MasterPath;
     opts.platformCheck         = m_Options.platformCheck;
     opts.logClangdClientCheck  = m_Options.logClangdClientCheck;
     opts.logClangdServerCheck  = m_Options.logClangdServerCheck;
@@ -816,7 +818,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event) //(ph 2021/03/17)
 
     // **Sanity checks**
     ProcessLanguageClient* pClient = GetLSPClient();
-    bool isEditorInitialized  = pClient ? pClient->GetLSP_Initialized(pProject) : false;     //(ph 2022/07/23)
+    bool isEditorInitialized  = pClient ? pClient->GetLSP_Initialized(pProject) : false;
     bool isEditorOpen         = isEditorInitialized ? pClient->GetLSP_EditorIsOpen(pEditor) : false;
     bool isFileParsing        = pClient ? pClient->IsServerFilesParsing(pEditor->GetFilename()) : false;
     bool isEditorParsed       = isEditorOpen ? pClient->GetLSP_IsEditorParsed(pEditor) : false;
@@ -930,7 +932,7 @@ bool Parser::UpdateParsingProject(cbProject* project)
     }
 }
 // ----------------------------------------------------------------------------
-cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)              //(ph 2021/04/10)
+cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // Create new hidden editor and load its data
@@ -967,7 +969,7 @@ cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)          
     return control;
 }
 // ----------------------------------------------------------------------------
-void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 2021/04/10)
+void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (Manager::IsAppShuttingDown())
@@ -997,11 +999,11 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
     if (parallel_parsing > 1) parallel_parsing = parallel_parsing >> 1; //use only half of cpu threads
     parallel_parsing = std::min(parallel_parsing, m_cfg_parallel_processes);
     int max_parsers_while_compiling = std::min(parallel_parsing, m_cfg_max_parsers_while_compiling);
-    // ** Debbuging ** //(ph 2021/09/15)
+    // ** Debbuging **
     //wxString msg = wxString::Format("LSP Parsing stat: parsing(%d) of allowed(%d)",int(pClient->LSP_GetServerFilesParsingCount()), parallel_parsing );
     //pLogMgr->DebugLog(msg);
 
-    // If compiler is busy, check for max allowed parsers running while compiling. (user may have set max==zero) //(ph 2022/04/25)
+    // If compiler is busy, check for max allowed parsers running while compiling. (user may have set max==zero)
     if (GetParseManager()->IsCompilerRunning() )
     {
         if (int(pClient->LSP_GetServerFilesParsingCount()) >= max_parsers_while_compiling)
@@ -1080,7 +1082,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
         EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
         cbEditor* pEditor = pEdMgr->IsBuiltinOpen(filename);
         if (pEditor)
-            AddIncludeDir(wxFileName(filename).GetPath()); //(ph 2021/11/4)
+            AddIncludeDir(wxFileName(filename).GetPath());
 
         // send LSP server didOpen notifier for open editor not yet LSP_DidOpen()'ed
         bool ok = false;
@@ -1089,7 +1091,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
             break; //didOpen already done for this editor and file
         if (pClient and pEditor and pClient->GetLSP_IsEditorParsed(pEditor))
             break; //didOpen already done for this editor and file
-        if (pClient and pEditor and pClient->IsServerFilesParsing(filename)) //(ph 2022/12/23)
+        if (pClient and pEditor and pClient->IsServerFilesParsing(filename))
             break;
 
         //send LSP_server didOpen notifier for open editor files not yet parsed
@@ -1122,7 +1124,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)            //(ph 20
     }
     else
     {
-        wxString msg = "Background file parsing queue now empty."; //(ph 2021/04/15)
+        wxString msg = "Background file parsing queue now empty.";
         CCLogger::Get()->DebugLog(msg);
         msg = wxString::Format("LSP Server is processing %zu remaining files.", pClient->LSP_GetServerFilesParsingCount() );
         CCLogger::Get()->DebugLog(msg);
@@ -1213,7 +1215,7 @@ void Parser::ReadOptions()
 
     // Max number of parallel files allowed to parse
     m_cfg_parallel_processes = std::max(cfg->ReadInt("/max_threads", 1), 1);  //don't allow 0
-    m_cfg_max_parsers_while_compiling = std::min(cfg->ReadInt("/max_parsers_while_compiling", 0), m_cfg_parallel_processes);  //(ph 2022/04/25)
+    m_cfg_max_parsers_while_compiling = std::min(cfg->ReadInt("/max_parsers_while_compiling", 0), m_cfg_parallel_processes);
 
 }
 // ----------------------------------------------------------------------------
@@ -1285,7 +1287,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         return;
     }
 
-    // Avoid an empty textDocument/publishDiagnostics with a missing version entry.      //(ph 2022/12/23)
+    // Avoid an empty textDocument/publishDiagnostics with a missing version entry.
     // It's sent as a response to a DidClose()
     // This solves the "LSP: file not yet parsed" loop.
     // see https://forums.codeblocks.org/index.php/topic,24357.msg171622.html#msg171622
@@ -1301,7 +1303,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
 
     if (uri.Length())
     {
-        cbFilename = fileUtils.FilePathFromURI(uri); //(ph 2021/12/21)
+        cbFilename = fileUtils.FilePathFromURI(uri);
 
         // Find the editor matching this files diagnostics
         EditorBase* pEdBase = pEdMgr->GetEditor(cbFilename);
@@ -1316,7 +1318,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             pProject = pProjectFile->GetParentProject();
 
             // Inform user when editor has finished parsing stage
-            if (pClient )                                                       //(ph 2022/12/23)
+            if (pClient )
             {
                 pClient->SetLSP_EditorIsParsed(pEditor, true);
                 pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
@@ -1384,7 +1386,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     if (lastLSP_Request.EndsWith("didClose") ) return;
 
     // ----------------------------------------------------------------------------
-    // If this file belongs to the Proxy Poject of non-project files, return. //(ph 2022/03/30)
+    // If this file belongs to the Proxy Poject of non-project files, return.
     // We do this to avoid massive textdocument/diagnostics errors on external files
     // because they were parsed/compiled by clangd with this projects compiler settings
     // which may have nothing to do with an external file for which we have no compile info.
@@ -1395,7 +1397,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
 
     if (not pEditor)    // Background parsing response has no associated editor.
     {
-        ParserCommon::EFileType filetype = ParserCommon::FileType(cbFilename);  //(ph 2022/06/1)
+        ParserCommon::EFileType filetype = ParserCommon::FileType(cbFilename);
         // If usr didn't set "show inheritance" skip symbols request for headers
         if ( not (filetype == ParserCommon::ftSource) )
         {
@@ -1406,7 +1408,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             if (not cfgShowInheritance) return;
         }
         // This is a background parse response for files not open in an editor.
-        // Issue request for textDocument/documentSymbol to update TokenTree     //(ph 2021/03/16)
+        // Issue request for textDocument/documentSymbol to update TokenTree
         if (pProject and pProject->GetFileByFilename(cbFilename,false) and wxFileExists(cbFilename) )
         {
                 GetLSPClient()->LSP_RequestSymbols(cbFilename, pProject);
@@ -1440,7 +1442,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         return;
     }
 
-    if ( (not GetLSPClient()) or (not GetLSPClient()->LSP_GetLog()) ) //(ph 2022/07/09)
+    if ( (not GetLSPClient()) or (not GetLSPClient()->LSP_GetLog()) )
         return;
     //message parts to LSP diagnostics: log filename, line number, diagnostic message
     wxArrayString LSPdiagnostic;
@@ -1592,7 +1594,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     }
 
     // ----------------------------------------------------------------------------
-    // Issue request for textDocument/documentSymbol to update TokenTree     //(ph 2021/03/16)
+    // Issue request for textDocument/documentSymbol to update TokenTree
     // ----------------------------------------------------------------------------
     if (pEditor and GetLSPClient()->GetLSP_Initialized(pEditor) )
     {
@@ -1609,7 +1611,6 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
 
 }//end OnLSP_DiagnosticsResponse
 
-//(ph 2021/10/23)
 // ----------------------------------------------------------------------------
 void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
@@ -1666,7 +1667,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
 
             searchLog->Clear();
             searchLog->SetBasePath(editorBasePath);
-            SetLogFileBase(editorBasePath); //(ph 2021/11/6)
+            SetLogFileBase(editorBasePath);
 
             // empty any stale references
             m_pReferenceValues->Empty();
@@ -1677,7 +1678,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
             for (size_t ii=0; ii < entryCount; ++ii)
             {
                 wxString URI = GetwxUTF8Str(valueResult[ii].at("uri").get<std::string>());
-                URI = fileUtils.FilePathFromURI(URI);   //(ph 2021/12/21)
+                URI = fileUtils.FilePathFromURI(URI);
                 wxFileName curFn = URI;
                 wxString absFilename = curFn.GetFullPath();
                 if (not wxFileExists(absFilename))
@@ -1830,7 +1831,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
             for (size_t ii=0; ii < entryCount; ++ii)
             {
                 wxString URI = GetwxUTF8Str(valueResult[ii].at("uri").get<std::string>());
-                URI = fileUtils.FilePathFromURI(URI);   //(ph 2021/12/21)
+                URI = fileUtils.FilePathFromURI(URI);
                 wxFileName curFn = URI;
                 wxString absFilename = curFn.GetFullPath();
                 if (not wxFileExists(absFilename))
@@ -1839,7 +1840,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
                     continue;
                 }
 
-                curFn.MakeRelativeTo(GetLogFileBase()); //(ph 2021/11/6)
+                curFn.MakeRelativeTo(GetLogFileBase());
                 int linenum   = valueResult[ii].at("range").at("start").at("line").get<int>();
                 wxString text = GetLineTextFromFile(absFilename, linenum);
                 wxString linenumStr = wxString::Format("%d", linenum+1); //adapt for 1 CB origin
@@ -1893,7 +1894,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
 
 }//end OnLSP_ReferencesResponse
 // ----------------------------------------------------------------------------
-wxString Parser::GetLineTextFromFile(const wxString& file, const int lineNum) //(ph 2020/10/26)
+wxString Parser::GetLineTextFromFile(const wxString& file, const int lineNum)
 // ----------------------------------------------------------------------------
 {
     // Fetch a single line from a text file
@@ -1999,7 +2000,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
             }
             //-cbMessageBox(_("Requested token Not found"), _("Warning"), wxICON_WARNING);
             wxString msg = _("Requested token Not found; LSP returned empty response.");
-            InfoWindow::Display("LSP " + wxString(__FUNCTION__), msg, 7000); //(ph 2022/07/10)
+            InfoWindow::Display("LSP " + wxString(__FUNCTION__), msg, 7000);
 
             return;
         }
@@ -2023,7 +2024,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
 ////            filenameStr.Replace("%3A", ":");
 ////            if (platform::windows)
 ////                filenameStr.Replace("/", "\\");
-            filenameStr = fileUtils.FilePathFromURI(filenameStr);   //(ph 2021/12/21)
+            filenameStr = fileUtils.FilePathFromURI(filenameStr);
             EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
 
             if (resultKnt == 1)
@@ -2096,7 +2097,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
     }//end if declaration/definition error
 }//end OnLSP_DeclDefResponse
 // ----------------------------------------------------------------------------
-void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)  //(ph 2021/03/12)
+void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // This is a callback after requesting textDocument/Symbol (request done in OnLSP_DiagnosticsResponse)
@@ -2114,7 +2115,7 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)  //(ph 2021/0
     if (URI.Contains(STX))
         URI = URI.BeforeFirst(STX); //filename
 
-    wxString uriFilename = fileUtils.FilePathFromURI(URI);      //(ph 2021/12/21)
+    wxString uriFilename = fileUtils.FilePathFromURI(URI);
     cbEditor*  pEditor =  nullptr;
     cbProject* pProject = nullptr;
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
@@ -2135,7 +2136,7 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)  //(ph 2021/0
     ProcessLanguageClient* pClient = GetLSPClient();
 
     // Queue the the json data to OnLSP_ParseDocumentSymbols() event, passing it the json pointer
-    // The json data will be placed in a queue to be processed during OnIdle() events. //(ph 2021/09/11)
+    // The json data will be placed in a queue to be processed during OnIdle() events.
     wxCommandEvent symEvent(wxEVT_COMMAND_MENU_SELECTED, XRCID("textDocument/documentSymbol"));
     symEvent.SetString(uriFilename);
     symEvent.SetClientData(pJson);
@@ -2159,7 +2160,7 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)  //(ph 2021/0
 void Parser::RequestSemanticTokens(cbEditor* pEditor)
 // ----------------------------------------------------------------------------
 {
-    // Issue request for textDocument/semanticTokens to update vSemanticTokens  //(ph 2022/06/10)
+    // Issue request for textDocument/semanticTokens to update vSemanticTokens
 
     if (not GetLSPClient()) return;
 
@@ -2167,13 +2168,13 @@ void Parser::RequestSemanticTokens(cbEditor* pEditor)
     if (not useDocumentationPopup) return;
     cbEditor* pActiveEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (pActiveEditor != pEditor) return; //may have been closed or de-activated
-    // **Debugging** //(ph 2022/06/29)
+    // **Debugging**
     // Manager::Get()->Get()->GetLogManager()->DebugLog(wxString::Format("%s() Requesting SemanticTokens for %s", __FUNCTION__, pEditor->GetFilename()));
     if (pEditor and GetLSPClient())
         GetLSPClient()->LSP_RequestSemanticTokens(pEditor);
 }
 // ----------------------------------------------------------------------------
-void Parser::OnLSP_RequestedSemanticTokensResponse(wxCommandEvent& event)  //(ph 2021/03/12)
+void Parser::OnLSP_RequestedSemanticTokensResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (GetIsShuttingDown()) return;
@@ -2192,7 +2193,7 @@ void Parser::OnLSP_RequestedSemanticTokensResponse(wxCommandEvent& event)  //(ph
     if (URI.Contains(STX))
         URI = URI.BeforeFirst(STX); //filename
 
-    wxString uriFilename = fileUtils.FilePathFromURI(URI);      //(ph 2021/12/21)
+    wxString uriFilename = fileUtils.FilePathFromURI(URI);
     cbEditor*  pEditor =  nullptr;
     cbProject* pProject = nullptr;
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
@@ -2215,7 +2216,7 @@ void Parser::OnLSP_RequestedSemanticTokensResponse(wxCommandEvent& event)  //(ph
     ProcessLanguageClient* pClient = GetLSPClient();
 
     // Queue the the json data to OnLSP_ParseDocumentSymbols() event, passing it the json pointer
-    // The json data will be placed in a queue to be processed during OnIdle() events. //(ph 2021/09/11)
+    // The json data will be placed in a queue to be processed during OnIdle() events.
     wxCommandEvent symEvent(wxEVT_COMMAND_MENU_SELECTED, XRCID("textDocument/semanticTokens"));
     symEvent.SetString(uriFilename);
     symEvent.SetClientData(pJson);
@@ -2333,15 +2334,15 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
         for (size_t itemNdx=0; (itemNdx < valueItemsCount) && (itemNdx < ccMaxMatches); ++itemNdx)
         {
             wxString labelValue = GetwxUTF8Str(valueItems[itemNdx].at("label").get<std::string>());
-            labelValue.Trim(true).Trim(false); //(ph 2022/06/25) clangd returning prefixed blank
+            labelValue.Trim(true).Trim(false); // clangd returning prefixed blank
 
-            if (labelValue.empty()) continue; //(ph 2022/02/8) this happens on Linux clangd ver13
+            if (labelValue.empty()) continue; // this happens on Linux clangd ver13
             // Example code from old CC code:
             // tokens.push_back(CCToken(token->m_Index, token->m_Name + dispStr, token->m_Name, token->m_IsTemp ? 0 : 5, iidx));
             // CCToken(int _id, const wxString& dispNm, int categ = -1) :
             //                id(_id), category(categ), weight(5), displayName(dispNm), name(dispNm) {}
 
-            // Remove the elipsis and bullet chars in responses //(ph 2023/01/26)
+            // Remove the elipsis and bullet chars in responses
             wxString badBytes  = wxString::FromUTF8("\xE2\x80\xA2"); // single dot bullet
             wxString badBytes2 = wxString::FromUTF8("\xE2\x80\xA6"); // 3dots ellipsis
             if (labelValue.Contains(badBytes) )
@@ -2354,12 +2355,12 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             ClgdCCToken ccctoken(-1, labelValue, labelValue);    //id and name
             ccctoken.id = -1;                                            //needed Documentation popups, set below.
             // cctoken.category used by CB for image index // FIXME (ph#): implement completion images?
-            ccctoken.category = -1;                                      //used by CB for image index //(ph 2021/12/31)
+            ccctoken.category = -1;                                      //used by CB for image index
             ccctoken.weight = 5;                                         // FIXME (ph#): could use this to good effect
             ccctoken.displayName = labelValue;
             ccctoken.name = labelValue;
-            if (filterText.size()) ccctoken.name = filterText;   //(ph 2022/06/20)
-            // if using HTML popup change id to a matching tokens index in m_SemanticTokensVec //(ph 2022/06/14)
+            if (filterText.size()) ccctoken.name = filterText;
+            // if using HTML popup change id to a matching tokens index in m_SemanticTokensVec
             ccctoken.semanticTokenID = -1;
             if (useDocumentationPopup)
                 ccctoken.semanticTokenID = FindSemanticTokenEntryFromCompletion(ccctoken, labelKind);
@@ -2454,9 +2455,9 @@ wxString Parser::GetCompletionPopupDocumentation(const ClgdCCToken& token)
     else // have hover info, format it and return completion documentation popup
     {
         // we have hover data to pass to the html popup routine
-        //return m_DocHelper.GenerateHTML(int(token.id), &GetParseManager()->GetParser()); //(ph 2022/06/11)
-        // -save - wxString htmlInfo = m_DocHelper.GenerateHTML(int(m_HoverCCTokenPending.id), m_HoverCompletionString,  &GetParseManager()->GetParser()); //(ph 2022/06/11)
-        wxString htmlInfo = m_DocHelper.GenerateHTMLbyHover(token, m_HoverCompletionString,  &GetParseManager()->GetParser()); //(ph 2022/06/18)
+        //return m_DocHelper.GenerateHTML(int(token.id), &GetParseManager()->GetParser());
+        // -save - wxString htmlInfo = m_DocHelper.GenerateHTML(int(m_HoverCCTokenPending.id), m_HoverCompletionString,  &GetParseManager()->GetParser());
+        wxString htmlInfo = m_DocHelper.GenerateHTMLbyHover(token, m_HoverCompletionString,  &GetParseManager()->GetParser());
         m_HoverCompletionString.Clear();
         return htmlInfo;
     }
@@ -2468,7 +2469,7 @@ void Parser::OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event)
 {
     if (GetIsShuttingDown()) return;
 
-    // receives hover response issued for Documentation popup info //(ph 2022/06/14)
+    // receives hover response issued for Documentation popup info
     // ----------------------------------------------------
     // textDocument hover event
     // ----------------------------------------------------
@@ -2746,7 +2747,7 @@ void Parser::OnLSP_SignatureHelpResponse(wxCommandEvent& event, std::vector<cbCo
         size_t resultCount = pJson->at("result").size();
         if (not resultCount) return;
 
-        // Nothing for ShowCalltip is ever in the signature array //(ph 2021/11/1)
+        // Nothing for ShowCalltip is ever in the signature array
         // Show Tootip vs ShowCalltip is so damn confusing !!!
         // **debugging**std::string dumpit = pJson->dump();
 
@@ -3161,7 +3162,7 @@ void Parser::OnLSP_GoToFunctionResponse(wxCommandEvent& event)  //unused
                 symLine += 1; //make 1 origin
 
                 GotoFunctionDlg::FunctionToken ft;
-                // We need to clone the internal data of the strings to make them thread safe.//(ph 2020/12/14) This probably not true for LSP response
+                // We need to clone the internal data of the strings to make them thread safe. // This probably not true for LSP response
                 ft.displayName = wxString(symName.c_str());
                 ft.name = wxString(symName.c_str());
                 ft.line =symLine;
@@ -3205,7 +3206,7 @@ void Parser::OnLSP_GoToFunctionResponse(wxCommandEvent& event)  //unused
 }//end OnLSP_GoToFunctionResponse
 
 // ----------------------------------------------------------------------------
-bool Parser::LSP_GetSymbolsByType(json* pJson, std::set<LSP_SymbolKind>& symbolset, std::vector<LSP_SymbolsTupleType>& LSP_VectorOfSymbolsFound) //(ph 2021/03/15)
+bool Parser::LSP_GetSymbolsByType(json* pJson, std::set<LSP_SymbolKind>& symbolset, std::vector<LSP_SymbolsTupleType>& LSP_VectorOfSymbolsFound)
 // ----------------------------------------------------------------------------
 {
     /// Do Not free pJson, it will be freed in CodeCompletion::LSP_Event()
@@ -3294,7 +3295,7 @@ bool Parser::LSP_GetSymbolsByType(json* pJson, std::set<LSP_SymbolKind>& symbols
    return true;
 }
 // ----------------------------------------------------------------------------
-void Parser::WalkDocumentSymbols(json& jref, wxString& filename, int& nextVectorSlot, std::set<LSP_SymbolKind>& symbolset, std::vector<LSP_SymbolsTupleType>& LSP_VectorOfSymbolsFound) //(ph 2022/03/5)
+void Parser::WalkDocumentSymbols(json& jref, wxString& filename, int& nextVectorSlot, std::set<LSP_SymbolKind>& symbolset, std::vector<LSP_SymbolsTupleType>& LSP_VectorOfSymbolsFound)
 // ----------------------------------------------------------------------------
 {
     bool debugging = false;

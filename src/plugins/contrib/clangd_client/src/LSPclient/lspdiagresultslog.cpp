@@ -75,7 +75,7 @@ LSPDiagnosticsResultsLog::~LSPDiagnosticsResultsLog()
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
     if (FindEventHandler(this))
-        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);   //(ph 2021/04/17)
+        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
 // ----------------------------------------------------------------------------
 wxWindow* LSPDiagnosticsResultsLog::CreateControl(wxWindow* parent)

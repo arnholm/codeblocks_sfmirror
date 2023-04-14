@@ -297,7 +297,7 @@ private:
      * that only one thread can access to those member variables.
      */
 
-    static wxMutex   m_ClassBrowserBuilderThreadMutex; //(ph 2022/05/5)
+    static wxMutex   m_ClassBrowserBuilderThreadMutex;
     ParseManager*    m_ParseManager;
 
     /** pointers to the CCTree */

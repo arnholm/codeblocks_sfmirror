@@ -236,7 +236,7 @@ wxString Token::GetStrippedArgs() const
 
     if (args.Last() != _T(')'))
         args << _T(')');
-    if (not args.StartsWith('(')) //(ph 2022/09/23)
+    if (not args.StartsWith('('))
         args.Prepend('(');
 
     return args;

@@ -227,7 +227,7 @@ class IdleCallbackHandler: public wxEvtHandler
     // ----------------------------------------------------------------------------
     {
         event.Skip();
-        if (Manager::IsAppShuttingDown() or m_PluginIsShuttingDown)       //(ph 2022/07/27)
+        if (Manager::IsAppShuttingDown() or m_PluginIsShuttingDown)
         {
             ClearIdleCallbacks();
             return;

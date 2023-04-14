@@ -175,7 +175,7 @@ public:
         return res;
     }
     static std::string Decode(sview input) {
-        //-static const char *reserved = ":/?#[]@!$&'()*+,;="; //(ph 2020/09/22) unused
+        //-static const char *reserved = ":/?#[]@!$&'()*+,;="; //(2020/09/22) unused
         std::string res;
         res.reserve(input.size());
         for (auto iter = input.begin(), end = input.end(); iter != end; ++iter) {

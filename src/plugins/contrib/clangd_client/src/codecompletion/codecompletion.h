@@ -10,20 +10,20 @@
 #include <cbplugin.h>
 #include <cbproject.h>
 #include <sdk_events.h>
-#include <infowindow.h> //(ph 2021/06/28)
+#include <infowindow.h>
 #include <filefilters.h>
 
-//#include <iostream> //json input/output //(ph 2020/12/1)
+//#include <iostream> //json input/output
 //#include <fstream>
 
 #include "coderefactoring.h"
 #include "parsemanager.h"
 #include "doxygen_parser.h"
-#include "client.h"                  //(ph 2020/10/2)
-#include "LSPEventCallbackHandler.h" //(ph 2021/10/23)
+#include "client.h"
+#include "LSPEventCallbackHandler.h"
 
 #if defined(_WIN32)
-    #include "winprocess/misc/fileutils.h"               //(ph 2021/12/21)
+    #include "winprocess/misc/fileutils.h"
 #else
     #include "unixprocess/fileutils.h"
 #endif //_Win32
@@ -128,7 +128,7 @@ public:
     // callback from wxScintilla/ccmanager to insert a completion into the editor. cf: cbpluign.h
     void                   DoAutocomplete(const CCToken& token, cbEditor* ed) override;
     // ccmanager call to complete the editor insertion of a selected completion item
-    void                   LSP_DoAutocomplete(const CCToken& token, cbEditor* ed); //(ph 2021/03/9)
+    void                   LSP_DoAutocomplete(const CCToken& token, cbEditor* ed);
 
     /** handle all the editor event */
     void EditorEventHook(cbEditor* editor, wxScintillaEvent& event);
@@ -137,7 +137,7 @@ public:
     void RereadOptions(); // called by the configuration panel
 
     // Get the filename from a LSP response json string
-    wxString GetFilenameFromLSP_Response(wxCommandEvent& event);  //(ph 2022/03/29)
+    wxString GetFilenameFromLSP_Response(wxCommandEvent& event);
 
     // Find wxTopLevelWindow from the windows list
     // ----------------------------------------------------------------------------
@@ -235,10 +235,10 @@ private:
     void OnCurrentProjectReparse(wxCommandEvent& event);
     void OnReparseSelectedProject(wxCommandEvent& event);
     void OnSelectedFileReparse(wxCommandEvent& event);
-    void OnLSP_SelectedFileReparse(wxCommandEvent& event);  //(ph 2021/05/13)
-    void OnEditorFileReparse(wxCommandEvent& event);        //(ph 2021/11/16)
-    void OnLSP_EditorFileReparse(wxCommandEvent& event);    //(ph 2021/11/16)
-    void OnSpecifiedFileReparse(wxCommandEvent& event);     //(ph 2023/02/27)
+    void OnLSP_SelectedFileReparse(wxCommandEvent& event);
+    void OnEditorFileReparse(wxCommandEvent& event);
+    void OnLSP_EditorFileReparse(wxCommandEvent& event);
+    void OnSpecifiedFileReparse(wxCommandEvent& event);
     void ClearReparseConditions();
 
     // event handlers for the standard events sent from sdk core
@@ -253,7 +253,7 @@ private:
 
     /** SDK project related events */
     void OnProjectActivated(CodeBlocksEvent& event);
-    void OnProjectOpened(CodeBlocksEvent& event); //(ph 2020/10/3)
+    void OnProjectOpened(CodeBlocksEvent& event);
     void OnProjectClosed(CodeBlocksEvent& event);
     void OnProjectSaved(CodeBlocksEvent& event);
     void OnProjectFileAdded(CodeBlocksEvent& event);
@@ -270,7 +270,7 @@ private:
     void OnCompilerFinished(CodeBlocksEvent& event);
     void OnCompilerMenuSelected(wxCommandEvent& event);
 
-    void OnEditorActivatedCallback(wxString filename, bool IsOpening=false); //(ph 2022/04/25)
+    void OnEditorActivatedCallback(wxString filename, bool IsOpening=false);
 
     /** CC's own logger, to handle log events sent from other worker threads or itself(the main GUI
      * thread), the log messages will be printed in the "Code::Blocks" log panel.
@@ -357,7 +357,7 @@ private:
 
     /** delayed for toolbar update */
     void OnToolbarTimer(wxTimerEvent& event);
-    void InvokeToolbarTimer(wxCommandEvent& event); //(ph 2022/08/31)
+    void InvokeToolbarTimer(wxCommandEvent& event);
 
     /** delayed running of editor activated event, only the last activated editor should be considered */
     //-old- void OnEditorActivatedTimer(wxTimerEvent& event);
@@ -634,7 +634,7 @@ private:
         return nullptr;
     }
 
-    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject);                //(ph 2020/11/4)
+    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject);
 
     // ---------------------------------------------------------
     bool GetLSP_Initialized(cbProject* pProject)
@@ -657,13 +657,13 @@ private:
         if (not pClient) return false;
         if (not pClient->GetLSP_Initialized(pProject) )
             return false;
-        //-if (pClient->GetLSP_IsEditorParsed(pEd)) //(ph 2022/07/23)
+        //-if (pClient->GetLSP_IsEditorParsed(pEd))
         //-    return true;
         return true;
     }
 
     // ---------------------------------------------------------
-    bool GetLSP_IsEditorParsed(cbEditor* pEd)       //(ph 2022/07/23)
+    bool GetLSP_IsEditorParsed(cbEditor* pEd)
     // ---------------------------------------------------------
     {
         ProjectFile* pPrjFile = pEd->GetProjectFile();
@@ -690,13 +690,13 @@ private:
     void OnLSP_ProjectFileAdded(cbProject* pProject, wxString filename);
 
     bool DoLockClangd_CacheAccess(cbProject* pcbProject);
-    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject);    //(ph 2021/03/13)
+    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject);
     void ShutdownLSPclient(cbProject* pProject);
     void CleanUpLSPLogs();
     void CleanOutClangdTempFiles();
-    wxString GetLineTextFromFile(const wxString& file, const int lineNum); //(ph 2020/10/26)
-    wxString VerifyEditorParsed(cbEditor* pEd);      //(ph 2022/07/25)
-    wxString VerifyEditorHasSymbols(cbEditor* pEd);  //(ph 2022/07/26)
+    wxString GetLineTextFromFile(const wxString& file, const int lineNum);
+    wxString VerifyEditorParsed(cbEditor* pEd);
+    wxString VerifyEditorHasSymbols(cbEditor* pEd);
 
     IdleCallbackHandler* GetIdleCallbackHandler(cbProject* pProjectParm = nullptr)
     {
@@ -709,7 +709,7 @@ private:
             cbAssert(pProject);
         ParserBase* pParser = GetParseManager()->GetParserByProject(pProject);
         if (not pParser) pParser = GetParseManager()->GetProxyParser();
-        // **Debugging** Trying to catch on Linux first run, I get null GetIdleCallBackHandler() //(ph 2022/08/04)
+        // **Debugging** Trying to catch on Linux first run, I get null GetIdleCallBackHandler()
         //      from ClgdCompletion::ParseFunctionsAndFillToolbar() 4688
         //      But when I added the following 2 checks, the asserts disappeared.
         if (not pParser)
@@ -724,11 +724,11 @@ private:
     // ------------------------------------------------------------------------
 
     // LSPEventCallbackHandler pointer
-    std::unique_ptr<LSPEventCallbackHandler> pLSPEventSinkHandler;    //(ph 2021/10/23)
+    std::unique_ptr<LSPEventCallbackHandler> pLSPEventSinkHandler;
     // Get pointer to LSP event callbacks
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return pLSPEventSinkHandler.get();}
 
-    void OnSelectedPauseParsing(wxCommandEvent& event); //(ph 2021/07/28)
+    void OnSelectedPauseParsing(wxCommandEvent& event);
 
     // ----------------------------------------------------------------
     inline int GetCaretPosition(cbEditor* pEditor)
@@ -740,7 +740,7 @@ private:
         return pCntl->GetCurrentPos();
     }
 
-    wxString GetTargetsOutFilename(cbProject* pProject);                  //(ph 2021/05/11)
+    wxString GetTargetsOutFilename(cbProject* pProject);
     // Check if allowable files parsing are maxed out.
     bool ParsingIsVeryBusy();
 
@@ -752,7 +752,7 @@ private:
     // Initial condition of Clangd_Client at ctor (enabled/disabled);
     bool m_ctorClientStartupStatusEnabled = false;
 
-    // FIXME (ph#): This is unecessary after a nightly for rev 12975 //(ph 2022/10/13)
+    // This is unecessary after a nightly for rev 12975
     cbPlugin* m_pCompilerPlugin =  nullptr;
 
     // ----------------------------------------------------------------------------

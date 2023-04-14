@@ -250,7 +250,7 @@ wxString ClangLocator::Locate_ClangdDir()
             size_t cnt = ScanForFiles(path, clangLocations, clangdexe);
             for (size_t ii=0; ii<cnt; ++ii)
             {
-                fnClangdPath.Assign(clangLocations[ii]); //(ph 2022/12/22)
+                fnClangdPath.Assign(clangLocations[ii]);
                 if (fnClangdPath.FileExists())
                 {
                     CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), fnClangdPath.GetPath()));
@@ -376,10 +376,10 @@ size_t ClangLocator::ScanForFiles(wxString path, wxArrayString& foundFiles, wxSt
         //    /mnt/c/usr/bin:/snap/bin
 
     // Eliminate WSL windows mount points, else the search takes forever..
-    if (path.Matches("/mnt/?/*")) return 0; //eliminate massive number of wsl windows paths //(ph 2021/12/18)
+    if (path.Matches("/mnt/?/*")) return 0; //eliminate massive number of wsl windows paths
     #endif
 
-    if (not wxDirExists(path)) return 0; //(ph 2021/12/18))
+    if (not wxDirExists(path)) return 0;
 
     wxString filename = wxFindFirstFile(path + wxFILE_SEP_PATH + mask, wxFILE);
     while(filename.Length())
