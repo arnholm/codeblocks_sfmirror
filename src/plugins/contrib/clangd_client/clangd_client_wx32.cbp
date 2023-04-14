@@ -145,6 +145,7 @@
 		<Unit filename="src/codecompletion/parser/tokenizer.h" />
 		<Unit filename="src/codecompletion/parser/tokentree.cpp" />
 		<Unit filename="src/codecompletion/parser/tokentree.h" />
+        <Unit filename="src/codecompletion/parser/ParserCommon.h" />
 		<Unit filename="src/codecompletion/selectincludefile.cpp" />
 		<Unit filename="src/codecompletion/selectincludefile.h" />
 		<Unit filename="src/codecompletion/wxsmith/goto_function.wxs" />

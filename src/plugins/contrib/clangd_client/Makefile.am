@@ -55,6 +55,7 @@ libclangd_client_la_SOURCES = \
 			src/codecompletion/parser/token.cpp \
 			src/codecompletion/parser/tokenizer.cpp \
 			src/codecompletion/parser/tokentree.cpp \
+			src/codecompletion/parser/ParserCommon.h \
 			src/codecompletion/selectincludefile.cpp \
 			src/codecompletion/wxsmith/CCTestFrame.wxs \
 			src/LSPclient/client.cpp \
