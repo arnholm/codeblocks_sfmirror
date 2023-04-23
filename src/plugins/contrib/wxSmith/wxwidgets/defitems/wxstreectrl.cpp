@@ -141,7 +141,7 @@ void wxsTreeCtrl::OnBuildCreatingCode()
 
                     // make a name for the new item
                     n += 1;
-                    sItem.Printf(_("_Item%d"), n);
+                    sItem.Printf("_Item%d", n);
                     sItem = sVarName + sItem;
 
                     arrItems[iLevel] = sItem;
