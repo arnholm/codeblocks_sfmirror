@@ -648,7 +648,7 @@ void CodeSnippetsTreeCtrl::SaveItemsToFile(const wxString& fileName)
     if(not rc)
     {
         wxString msg = wxString::Format(_("ERROR: Failed to save %s"), fileName);
-        wxMessageBox(msg, "ERROR");
+        wxMessageBox(msg, _("Error"));
     }
     SetFileChanged(false);
     SnippetTreeItemData::SetSnippetsItemsChangedCount(0);
