@@ -608,12 +608,12 @@ void CodeSnippetsTreeCtrl::LoadItemsFromXmlNode(const TiXmlElement* node, const 
             }
             else
             {
-                wxMessageBox(_T("CodeSnippets: Error loading XML file; element \"snippet\" cannot be found."));
+                wxMessageBox(_("CodeSnippets: Error loading XML file; element \"snippet\" cannot be found."));
             }
         }
         else
         {
-            wxMessageBox(_T("CodeSnippets: Error loading XML file; attribute \"type\" is \"") + itemType + _T("\" which is invalid item type."));
+            wxMessageBox(wxString::Format(_("CodeSnippets: Error loading XML file; attribute \"type\" is \"%s\" which is invalid item type."), itemType));
             return;
         }
     } // end for
@@ -647,8 +647,8 @@ void CodeSnippetsTreeCtrl::SaveItemsToFile(const wxString& fileName)
     int rc = doc.SaveFile(fileName.mb_str());
     if(not rc)
     {
-        wxString msg = wxString::Format(_T("ERROR: Failed to save %s"), fileName.c_str());
-        wxMessageBox(msg, _T("ERROR"));
+        wxString msg = wxString::Format(_("ERROR: Failed to save %s"), fileName);
+        wxMessageBox(msg, "ERROR");
     }
     SetFileChanged(false);
     SnippetTreeItemData::SetSnippetsItemsChangedCount(0);
@@ -708,8 +708,8 @@ bool CodeSnippetsTreeCtrl::LoadItemsFromFile(const wxString& fileName, bool bApp
             }
             else //IsApplication
             {
-                wxMessageBox(_T("CodeSnippets: Cannot load file \"") + fileName + _T("\": ") + csC2U(doc.ErrorDesc()));
-                wxMessageBox(_T("CodeSnippets: Backup of the failed file has been created."));
+                wxMessageBox(wxString::Format(_("CodeSnippets: Cannot load file \"%s\": %s"), fileName, csC2U(doc.ErrorDesc())));
+                wxMessageBox(_("CodeSnippets: Backup of the failed file has been created."));
             }
             //-#endif
         }
@@ -722,7 +722,7 @@ bool CodeSnippetsTreeCtrl::LoadItemsFromFile(const wxString& fileName, bool bApp
     wxString nameOnly;
     wxFileName::SplitPath( fileName, 0, &nameOnly, 0);
     // Edit the root node's title so that the user sees file name
-    SetItemText( GetRootItem(), wxString::Format(_("%s"), nameOnly.GetData()));
+    SetItemText( GetRootItem(), wxString::Format("%s", nameOnly.GetData()));
 
     if (not SnippetTreeItemData::GetSnippetsItemsChangedCount() )
         SetFileChanged(false);
@@ -840,8 +840,8 @@ bool CodeSnippetsTreeCtrl::RemoveItem(const wxTreeItemId RemoveItemId)
             // if this was a FileLink, ask if user wants to delete file
             if ( not filename.IsEmpty() )
             {
-                int answer = wxMessageBox( wxT("Delete physical file?\n\n")+filename,
-                                           wxT("Delete"),wxYES_NO );
+                int answer = wxMessageBox(_("Delete physical file?\n\n")+filename,
+                                          _("Delete"), wxYES_NO);
                 if ( answer == wxYES)
                     /*int done =*/ ::wxRemoveFile(filename);
             }
@@ -1481,10 +1481,12 @@ void CodeSnippetsTreeCtrl::EditSnippetAsText()
 #elif defined(__UNIX__)
         editorName = wxT("vi");
 #endif
-        wxString msg(wxT("Using default editor: ")+editorName+wxT("\n"));
-        if (GetConfig()->IsApplication() ) msg = msg + wxT("Use Menu->");
-        else msg = msg + wxT("Right click Root item. Use ");
-        msg = msg + wxT("Settings to set a better editor.\n");
+        wxString msg(wxString::Format(_("Using default editor: %s\n"), editorName));
+        if (GetConfig()->IsApplication())
+            msg = msg + _("Use Menu->Settings to set a better editor.");
+        else
+            msg = msg + _("Right click Root item. Use Settings to set a better editor.");
+
         wxMessageBox( msg );
     }
 
@@ -1503,7 +1505,7 @@ void CodeSnippetsTreeCtrl::EditSnippetAsText()
         if (::wxFileExists(filename))
             ::wxExecute( execString, wxEXEC_ASYNC);
         else
-            cbMessageBox(_T("File does not Exist\n")+filename, _T("Error"));
+            cbMessageBox(_("File does not exist\n")+filename, _("Error"));
     }
     else
         EditSnippet(pSnippetTreeItemData);
@@ -1532,16 +1534,16 @@ void CodeSnippetsTreeCtrl::SaveSnippetAsFileLink()
     {
         // item snippet is already a filename
         answer = wxMessageBox(
-                     wxT("Item is already a file link named:\n")+fileName
-                     + wxT(" \n\nAre you sure you want to rewrite the file?\n"),
-                     wxT("Warning"),wxYES|wxNO); //, GetMainFrame(), mousePosn.x, mousePosn.y);
+                     _("Item is already a file link named:\n")+fileName
+                     + _("\n\nAre you sure you want to rewrite the file?"),
+                     _("Warning"), wxYES|wxNO); //, GetMainFrame(), mousePosn.x, mousePosn.y);
         if ( wxYES == answer)
         {
             // read data from old file
             wxFile oldFile( fileName, wxFile::read);
             if (not oldFile.IsOpened() )
             {
-                wxMessageBox(wxT("Abort. Error reading data file."));
+                wxMessageBox(_("Abort. Error reading data file."));
                 return;
             }
             unsigned long fileSize = oldFile.Length();
@@ -1598,7 +1600,7 @@ void CodeSnippetsTreeCtrl::SaveSnippetAsFileLink()
     wxFile newFile( newFileName, wxFile::write);
     if (not newFile.IsOpened() )
     {
-        wxMessageBox(wxT("Open failed for:")+newFileName);
+        wxMessageBox(_("Open failed for:")+newFileName);
         return ;
     }
     newFile.Write( csU2C(snippetData), snippetData.Length());
@@ -1680,7 +1682,7 @@ void CodeSnippetsTreeCtrl::EditSnippet(SnippetTreeItemData* pSnippetTreeItemData
             cbEditor* m_pcbEditor = Manager::Get()->GetEditorManager()->New( m_TmpFileName );
             if (not m_pcbEditor)
             {
-                InfoWindow::Display(_T("File Error"), wxString::Format(_T("File Error: %s"),m_TmpFileName.c_str()),9000);
+                InfoWindow::Display(_("File Error"), wxString::Format(_("File Error: %s"), m_TmpFileName), 9000);
                 return;
             }
             m_pcbEditor->GetControl()->SetText(m_EditSnippetText);
@@ -1821,11 +1823,11 @@ void CodeSnippetsTreeCtrl::EditSnippetWithMimeOrCB()
         wxFileType *filetype = m_mimeDatabase->GetFileTypeFromExtension(fileNameExt);
         if ( not filetype )
         {
-            msg << _("Unknown mime extension '") << fileNameExt << _T("'\n");
-            msg << _("Try adding the file type to the default mime database or\n");
-            msg << _("For Windows: Menu > Settings > Environment > Set File Associations\n");
-            msg << _("\"Set now\" or \"Manage\" button.\n");
-            msg << _("Or drag the Snippet into the CodeBlocks window.");
+            msg << wxString::Format(_("Unknown mime extension '%s'\n"), fileNameExt);
+            msg << _("Try adding the file type to the default mime database or\n"
+                     "For Windows: Menu > Settings > Environment > Set File Associations\n"
+                     "\"Set now\" or \"Manage\" button.\n"
+                     "Or drag the Snippet into the CodeBlocks window.");
             cbMessageBox(msg, _("Snippets Mime Error"), wxOK, Manager::Get()->GetAppWindow() );
             return;
         }
@@ -1965,7 +1967,7 @@ void CodeSnippetsTreeCtrl::SaveAllOpenEditors()
             // Save local XML data (snippet text)
             if (eb->GetModified())
             {
-                int rep = cbMessageBox(wxString::Format(_T("Save? %s"),eb->GetName().wx_str()), _T("Save File?"), wxOK|wxCANCEL, this);
+                int rep = cbMessageBox(wxString::Format(_("Save? %s"), eb->GetName()), _("Save File?"), wxOK|wxCANCEL, this);
                 if (wxID_OK == rep)
                     eb->Save();
                 //SaveEditorsXmlData((cbEditor*)eb) called by eb->Save();
