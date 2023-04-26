@@ -20,18 +20,23 @@
 #include "configmanager.h"
 #include "clKeyboardManager.h"
 
+// ----------------------------------------------------------------------------
 class  clKeyboardBindingConfig
+// ----------------------------------------------------------------------------
 {
-    MenuItemDataMap_t m_bindings;
-public:
+    MenuItemDataVec_t m_bindings;
+ public:
     clKeyboardBindingConfig();
     virtual ~clKeyboardBindingConfig();
 
     clKeyboardBindingConfig& Load();
     clKeyboardBindingConfig& Save();
-    bool SortBindings( std::vector<MenuItemDataMap_t::iterator>& sortedIters);
+    bool SortBindings( std::vector<MenuItemDataVec_t::iterator>& sortedIters);
 
-    bool Exists() const {
+    // ----------------------------------------------------------------
+    bool Exists() const
+    // ----------------------------------------------------------------
+    {
         wxFileName fn(ConfigManager::GetConfigFolder(), _T("cbKeyBinder20.conf"));
         wxString personality = Manager::Get()->GetPersonalityManager()->GetPersonality();
         fn.SetName(personality + _T(".") + fn.GetName());
@@ -42,14 +47,17 @@ public:
         return fn.FileExists();
     }
 
-    clKeyboardBindingConfig& SetBindings(const MenuItemDataMap_t& menus, const MenuItemDataMap_t& globals)
+    // ----------------------------------------------------------------
+    clKeyboardBindingConfig& SetBindings(const MenuItemDataVec_t& menus, const MenuItemDataVec_t& globals)
+    // ----------------------------------------------------------------
     {
         this->m_bindings = menus;
-        this->m_bindings.insert(globals.begin(), globals.end());
+        this->m_bindings.insert(m_bindings.end(), globals.begin(), globals.end());
         return *this;
     }
-    const MenuItemDataMap_t& GetBindings() const { return m_bindings; }
-
+    // ----------------------------------------------------------------
+    const MenuItemDataVec_t& GetBindings() const { return m_bindings; }
+    // ----------------------------------------------------------------
 };
 
 #endif // CLKEYBOARDBINDINGCONFIG_H

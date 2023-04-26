@@ -111,7 +111,7 @@ void UsrConfigPanel::GetKeyConfigPanelPhaseII(wxMenuBar* pMenuBar, UsrConfigPane
     // Return to allow CB to display the configuration panel.
     // OnApply() will be called when the user clicks OK
 
-    MenuItemDataMap_t accels;
+    MenuItemDataVec_t accels;
     m_pkbMgr->GetAllAccelerators(accels);
     #if defined(LOGGING)
         size_t knt = accels.size(); wxUnusedVar(knt);
@@ -130,10 +130,10 @@ void UsrConfigPanel::GetKeyConfigPanelPhaseII(wxMenuBar* pMenuBar, UsrConfigPane
     GlobalAccelMap_t globalAccelMap;
     bool updateMenuStructure = false;
 
-    for(MenuItemDataMap_t::const_iterator iter = accels.begin(); iter != accels.end(); ++iter)
+    for(MenuItemDataVec_t::const_iterator iter = accels.begin(); iter != accels.end(); ++iter)
     {
-        wxString resourceIDString = iter->first;
-        MenuItemData itemData = iter->second;
+        wxString resourceIDString = iter->resourceID;
+        MenuItemData itemData = *iter;
         long resourceID; itemData.resourceID.ToLong(&resourceID);
         wxString accel      = itemData.accel;
         wxString desc       = itemData.action;      //Help description
@@ -250,7 +250,7 @@ void UsrConfigPanel::OnApply()
 
     if (not cmdCount) return; //nothing to do
 
-    MenuItemDataMap_t accelMap;
+    MenuItemDataVec_t accelMap;
     pKBmgr->GetAllAccelerators(accelMap);
 
     // Iterate through the accelMap comparing to the wxCmdArray.
@@ -267,15 +267,15 @@ void UsrConfigPanel::OnApply()
     // wxCmd shortcuts 1  |  set wx shortcut     set wx shortcut     erase
     // wxCmd shortcuts 2  |  Add Global Accel    Add Global accel    erase
 
-    for(MenuItemDataMap_t::iterator iter = accelMap.begin(); iter != accelMap.end(); ++iter)
+    for(MenuItemDataVec_t::iterator iter = accelMap.begin(); iter != accelMap.end(); ++iter)
     {
         nextItem:   //'goto nextItem;' is necessary since 'iter = prev(iter)' causes crashes after erase
                     //After an erase, iter has pointer to the following item.
                     //The item following erase() will be missed if the 'for' statement is allowed to execute.
 
         if (iter == accelMap.end() ) break;
-        wxString resourceIDString = iter->first;
-        MenuItemData itemData = iter->second;
+        wxString resourceIDString = iter->resourceID;
+        MenuItemData itemData = *iter;
         long resourceID; itemData.resourceID.ToLong(&resourceID);
         wxString accel      = itemData.accel;
         wxString desc       = itemData.action;      //Help description
@@ -285,10 +285,16 @@ void UsrConfigPanel::OnApply()
         #endif
         wxCmd* pCmd = pKeyProfile->GetCmd(resourceID);
         if (not pCmd) //menu item no longer exists
-            {iter = accelMap.erase(iter); goto nextItem;}
+        {
+            iter = accelMap.erase(iter);
+            goto nextItem;
+        }
         // erase <global accels>; they'll be updated by the menu accel review
         if ( parentMenu.empty() or desc.StartsWith(_T("<global>")) )
-            {iter = accelMap.erase(iter); goto nextItem;}
+        {
+            iter = accelMap.erase(iter);
+            goto nextItem;
+            }
         if (pCmd) switch(1) //now have a matching wxCmd array entry
         {
             default:
@@ -299,14 +305,14 @@ void UsrConfigPanel::OnApply()
             {
                 case 0: continue;
                 case 2: CreateGlobalAccel(pCmd);  /*falls through*/
-                case 1: iter->second.accel = cmdShortcuts[0];
+                case 1: iter->accel = cmdShortcuts[0];
                 continue;
             }
             if (not accel.empty() ) switch(shortcutCount)
             {
-                case 0: iter->second.accel = _T(""); continue;
+                case 0: iter->accel = _T(""); continue;
                 case 2: CreateGlobalAccel(pCmd);  /*falls through*/
-                case 1: iter->second.accel = cmdShortcuts[0];
+                case 1: iter->accel = cmdShortcuts[0];
                 continue;
             }
         }//endif pCmd switch(true)
@@ -316,18 +322,19 @@ void UsrConfigPanel::OnApply()
     m_pkbMgr->CheckForDuplicateAccels(accelMap);
 
     // Append cashed global accelerators to end of accelMap
-    for(MenuItemDataMap_t::iterator iter = m_cachedGlobalAccelMap.begin(); iter != m_cachedGlobalAccelMap.end(); ++iter)
+    for(MenuItemDataVec_t::iterator iter = m_cachedGlobalAccelMap.begin(); iter != m_cachedGlobalAccelMap.end(); ++iter)
     {
         #if defined(LOGGING)
-            wxString resourceIDString = iter->first;
-            MenuItemData itemData = iter->second;
+            wxString resourceIDString = iter->resourceID;
+            MenuItemData itemData = *iter;
             long resourceID; itemData.resourceID.ToLong(&resourceID);
             wxString accel      = itemData.accel;
             wxString desc       = itemData.action;      //Help description
             wxString parentMenu = itemData.parentMenu;  //menu path with :: separators
         #endif
 
-        accelMap.insert(std::make_pair(iter->first, iter->second));
+        //-accelMap.insert(std::make_pair(iter->first, iter->second));
+        accelMap.push_back(*iter);
     }
 
     // update the menu and global accelerators
@@ -351,7 +358,8 @@ void UsrConfigPanel::CreateGlobalAccel(wxCmd* pCmd)
         itemData.accel      = cmdShortcuts[1];
         itemData.action     = _T("<global>") + pCmd->GetDescription();    //Help description
         itemData.parentMenu = _T("");                                     //globals have no parent
-        m_cachedGlobalAccelMap.insert(std::make_pair(itemData.resourceID, itemData));
+        //m_cachedGlobalAccelMap.insert(std::make_pair(itemData.resourceID, itemData));
+        m_cachedGlobalAccelMap.push_back(itemData);
 }
 // ----------------------------------------------------------------------------
 bool UsrConfigPanel::VerifyGlobalAccel(MenuItemData* pMenuItemData) //(2019/9/18)

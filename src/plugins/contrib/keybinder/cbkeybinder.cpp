@@ -153,6 +153,12 @@ void cbKeyBinder::OnRelease(bool /*appShutDown*/)
     // which means you must not use any of the SDK Managers
     // NB: after this function, the inherited member variable
     // IsAttached() will be FALSE...
+    if (m_pKBMgr)   //(ph 2023/03/04)
+    {
+        // Release() will invoke pKBMgr->Save() to write final KeyBinder.conf file data;
+        m_pKBMgr->Release();
+    }
+
 }
 // ----------------------------------------------------------------------------
 //  cbKeyBinder GetConfigurationPanel()  //phaseI
@@ -832,7 +838,6 @@ int cbKeyBinder::ConvertOldKeybinderIniToAcceratorsConf(wxString oldKeybinderFil
         #if defined(LOGGING)
             LOGIT( _T("[%s]"), msg.wx_str());
         #endif
-        //-return missingMenuItems; deprecated; ok if some items missing
     }
 
     // Merge CodeBlocks global AcceratorTable into the new keyMnuAccels.conf file.
@@ -1138,7 +1143,6 @@ wxArrayString cbKeyBinder::GetArrayFromStrings(const wxString& text, const wxStr
             part.Trim(false);
             part.Trim(true);
         }
-        //-if (!part.IsEmpty()) keybinder needs the empty strings
             out.Add(part);
     }
     return out;

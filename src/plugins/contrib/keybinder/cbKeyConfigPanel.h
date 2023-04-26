@@ -43,7 +43,7 @@ class UsrConfigPanel : public cbConfigurationPanel
     wxKeyProfileArray*  m_pKeyProfileArray;
     wxKeyProfile*       m_pPrimaryProfile;
     wxKeyConfigPanel*   m_pwxKeyConfigPanel;
-    MenuItemDataMap_t   m_cachedGlobalAccelMap;
+    MenuItemDataVec_t   m_cachedGlobalAccelMap;
     int                 m_mode;
 
     void CreateGlobalAccel(wxCmd* pCmd);
