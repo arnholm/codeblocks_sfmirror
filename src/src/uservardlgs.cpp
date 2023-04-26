@@ -645,8 +645,8 @@ void UsrGlblMgrEditDialog::Save()
     UserVariable& var = itrVar->second;
     for (const wxString& buildInVar : knownMembers)
     {
-        wxString value = ((wxTextCtrl*) FindWindow(buildInVar))->GetValue();
-        if (value == "")
+        const wxString value = ((wxTextCtrl*) FindWindow(buildInVar))->GetValue();
+        if (value.empty())
             var.RemoveMember(buildInVar);
         else
             var.SetValue(buildInVar, value);
