@@ -576,12 +576,17 @@ void ProjectManagerUI::ReloadFileSystemWatcher(cbProject* prj)
 void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* newProject, bool refresh)
 {
     if (oldProject)
-        m_pTree->SetItemBold(oldProject->GetProjectNode(), false);
+    {
+        wxTreeItemId tid = oldProject->GetProjectNode();
+        if (tid)
+            m_pTree->SetItemBold(tid, false);
+    }
+
     if (newProject)
     {
         wxTreeItemId tid = newProject->GetProjectNode();
         if (tid)
-            m_pTree->SetItemBold(newProject->GetProjectNode(), true);
+            m_pTree->SetItemBold(tid, true);
     }
 
     auto oldPrjItr = m_FileSystemWatcherMap.find(oldProject);
