@@ -32,6 +32,7 @@
 
 #include "msvcworkspaceloader.h"
 #include "importers_globals.h"
+#include "filefilters.h"
 
 MSVCWorkspaceLoader::MSVCWorkspaceLoader()
 {
@@ -116,8 +117,8 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
                               100, 0, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_CAN_ABORT);
 
     int count = 0;
-    cbProject* project = 0;
-    cbProject* firstproject = 0;
+    cbProject* project = nullptr;
+    cbProject* firstproject = nullptr;
     wxFileName wfname = filename;
     wfname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
     Manager::Get()->GetLogManager()->DebugLog(_T("Workspace dir: ") + wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
@@ -194,19 +195,28 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
             if (!progress.Update(percentage, _("Importing project: ") + prjTitle))
                 break;
 
+            ++count;
+
+            // project will always be NULL, because the Project Manager use the MIME plugin method "OpenFile"
+            // this method returns only an int.
             project = Manager::Get()->GetProjectManager()->LoadProject(fname.GetFullPath(), false);
+            if (!project)
+            {
+                // try to find the opened project
+                wxFileName sCodeBlockProject(fname);
+                sCodeBlockProject = fname.GetFullPath();
+                sCodeBlockProject.SetExt(FileFilters::CODEBLOCKS_EXT);
+
+                project = Manager::Get()->GetProjectManager()->IsOpen(sCodeBlockProject.GetFullPath());
+            }
+
             if (!firstproject)
                 firstproject = project;
 
-            if (!project)
-                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Warning: Unable to load project '%s' from '%s'"), prjTitle, fname.GetFullPath()));
-            else
-            {
-                Manager::Get()->GetLogManager()->Log(wxString::Format(_("Registering project '%s' from '%s'"), prjTitle, fname.GetFullPath()));
+            if (project)
                 registerProject(project->GetTitle(), project);
-                ++count;
-            }
         }
+
         /*
          * example wanted line:
          * Project_Dep_Name VstSDK
