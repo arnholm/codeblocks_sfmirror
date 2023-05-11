@@ -3,8 +3,8 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-#ifndef CODECOMPLETION_H
-#define CODECOMPLETION_H
+#ifndef CLGDCOMPLETION_H
+#define CLGDCOMPLETION_H
 
 #include <settings.h> // SDK
 #include <cbplugin.h>
@@ -12,9 +12,6 @@
 #include <sdk_events.h>
 #include <infowindow.h>
 #include <filefilters.h>
-
-//#include <iostream> //json input/output
-//#include <fstream>
 
 #include "coderefactoring.h"
 #include "parsemanager.h"
@@ -43,23 +40,19 @@ class wxScintillaEvent;
 class wxChoice;
 class DocumentationHelper;
 
-/** Code completion plugin has those features:
+/** Clangd_completion plugin has those features:
  * show tool-tip when the mouse hover over the variables/functions.
  * show call-tip when you hit the ( after the function name
  * automatically auto-completion lists prompted while entering code.
  * navigate the source files, jump between declarations and implementations.
  * find symbol usage, or even rename a symbol(code re-factoring).
- *
- * We later use "CC" as an abbreviation of Code Completion plugin.
- * See the general architecture of code completion plugin on wiki page
- *  http://wiki.codeblocks.org/index.php?title=Code_Completion_Design
  */
 // ----------------------------------------------------------------------------
 class ClgdCompletion : public cbCodeCompletionPlugin
 // ----------------------------------------------------------------------------
 {
 public:
-    /** Identify a function body's position, the underline data structure of the second wxChoice of
+    /** Identify a function body's position, the data structure of the second wxChoice of
      * CC's toolbar
      */
     struct FunctionScope
@@ -98,7 +91,7 @@ public:
     /** Destructor */
     ~ClgdCompletion() override;
 
-    // the function below were virtual functions from the base class
+    // the functions below were virtual functions from the base class
     void OnAttach() override;
     void OnRelease(bool appShutDown) override;
     int  GetConfigurationGroup() const override { return cgEditor; }
@@ -244,7 +237,7 @@ private:
     // event handlers for the standard events sent from sdk core
     /** SDK event when application has started up */
     void OnAppStartupDone(CodeBlocksEvent& event);
-    void OnPluginEnabled(); //Used as CallAfter() ot OnAppStartupDone();
+    void OnPluginEnabled(); //Used as CallAfter() in OnPluginAtached();
 
     /** SDK workspace related events */
     void OnWorkspaceChanged(CodeBlocksEvent& event);
@@ -281,16 +274,13 @@ private:
      */
     void OnCCDebugLogger(CodeBlocksThreadEvent& event);
 
-    /** receive event from SystemHeadersThread */
-    void OnSystemHeadersThreadMessage(CodeBlocksThreadEvent& event);
-    void OnSystemHeadersThreadFinish(CodeBlocksThreadEvent& event);
-
     /** fill the tokens with correct preprocessor directives, such as #i will prompt "if", "include"
      * @param tknStart the start of the completed word
      * @param tknEnd current caret location
      * @param ed current active editor
      * @param tokens results storing all the suggesting texts
      */
+     // Currently unused, may be useful for the future 2023/04/21
     void DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEditor* ed, std::vector<CCToken>& tokens);
 
     /** ContextMenu->Insert-> declaration/implementation */
@@ -328,12 +318,12 @@ private:
     /** Toolbar select event */
     void OnFunction(wxCommandEvent& event);
 
-    /** normally the editor has changed, then CC need to parse the document again, and (re)construct
+    /** when the editor has changed, CC needs to parse the document again, and (re)construct
      * the internal database, and refresh the toolbar(wxChoice's content)
      */
     void ParseFunctionsAndFillToolbar();
 
-    /** the caret has changed, so the wxChoice need to be updated to indicates which scope and
+    /** the caret has changed, so the wxChoice needs to be updated to indicates which scope and
      * function in which the caret locates.
      */
     void FindFunctionAndUpdate(int currentLine);
@@ -360,7 +350,7 @@ private:
     void InvokeToolbarTimer(wxCommandEvent& event);
 
     /** delayed running of editor activated event, only the last activated editor should be considered */
-    //-old- void OnEditorActivatedTimer(wxTimerEvent& event);
+    //-old- void OnEditorActivatedTimer(wxTimerEvent& event); (Deprecated)
     void NotifyParserEditorActivated(wxCommandEvent& event);
 
     std::vector<ClgdCCToken>* GetCompletionTokens() {return &m_CompletionTokens;}
@@ -563,22 +553,18 @@ private:
     static std::vector<ClgdCCToken> m_CompletionTokens; //cache
     std::vector<ClgdCCToken> m_HoverTokens;
     std::vector<CCCallTip> m_SignatureTokens;
-    bool m_OnEditorOpenEventOccured = false;
+    bool m_OnEditorOpenEventOccured  = false;
     int  m_LastModificationMilliTime = 0;
-    bool m_PendingCompletionRequest = false;
-    int  m_MenuFleSaveFileID = 0;
-    bool m_PluginNeedsAppRestart = false;
-    int  m_HoverLastPosition = 0;
-    bool m_HoverIsActive = false;
-    cbProject* m_PrevProject = nullptr;
-    cbProject* m_CurrProject = nullptr;
+    bool m_PendingCompletionRequest  = false;
+    int  m_MenuFleSaveFileID         = 0;
+    bool m_PluginNeedsAppRestart     = false;
+    int  m_HoverLastPosition         = 0;
+    bool m_HoverIsActive             = false;
+    cbProject* m_PrevProject         = nullptr;
+    cbProject* m_CurrProject         = nullptr;
     wxString m_PreviousCompletionPattern = "~~abuseme~~";
 
     FileUtils fileUtils;
-
-    // project pointers and their associated LSP client pointers
-    typedef std::map<cbProject*, ProcessLanguageClient*> LSPClientsMapType;
-    LSPClientsMapType m_LSP_Clients; //map of all LSP clients by project*
 
     wxString m_RenameSymbolToReplace; //Holds original target of RenameSymbols()
     wxString GetRenameSymbolToReplace() {return m_RenameSymbolToReplace;}
@@ -587,60 +573,12 @@ private:
     std::vector<std::string> m_SemanticTokensTypes;
     std::vector<std::string> m_SemanticTokensModifiers;
 
-    ProcessLanguageClient* m_pLSP_ClientForDebugging =  nullptr;
-
-    // ----------------------------------------------------------------
-    ProcessLanguageClient* GetLSPclientAllocated(cbProject* pProject)
-    // ----------------------------------------------------------------
-    {
-        ProcessLanguageClient* pClient =  nullptr;
-        if (not pProject) return nullptr;
-
-        if (m_LSP_Clients.count(pProject))
-            pClient =  m_LSP_Clients[pProject];
-        if (pClient)
-            return pClient;
-
-        return nullptr;
-    }
-    // ----------------------------------------------------------------
-    ProcessLanguageClient* GetLSPclient(cbProject* pProject)
-    // ----------------------------------------------------------------
-    {
-        ProcessLanguageClient* pClient =  nullptr;
-        if (not pProject) return nullptr;
-
-        if (m_LSP_Clients.count(pProject))
-            pClient =  m_LSP_Clients[pProject];
-        if (pClient and pClient->GetLSP_Initialized(pProject))
-            return pClient;
-
-        return nullptr;
-    }
-    // ---------------------------------------------------------
-    ProcessLanguageClient* GetLSPclient(cbEditor* pEd)
-    // ---------------------------------------------------------
-    {
-        // Return client ptr or nullptr
-
-        if (not pEd) return nullptr;
-        ProjectFile* pProjectFile = pEd->GetProjectFile();
-        if (not pProjectFile)
-            return nullptr;
-        cbProject* pEdProject = pProjectFile->GetParentProject();
-        if (not pEdProject) return nullptr;
-        if (GetLSPclient(pEdProject))
-            return GetLSPclient(pEdProject);
-        return nullptr;
-    }
-
-    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject);
 
     // ---------------------------------------------------------
     bool GetLSP_Initialized(cbProject* pProject)
     // ---------------------------------------------------------
     {
-        ProcessLanguageClient* pClient = GetLSPclient(pProject);
+        ProcessLanguageClient* pClient = GetParseManager()->GetLSPclient(pProject);
         if (pClient and pClient->GetLSP_Initialized(pProject) )
             return true;
         return false;
@@ -653,12 +591,10 @@ private:
         if (not pPrjFile) return false;
         cbProject* pProject = pPrjFile->GetParentProject();
         if (not pProject) return false;
-        ProcessLanguageClient* pClient = GetLSPclient(pProject);
+        ProcessLanguageClient* pClient = GetParseManager()->GetLSPclient(pProject);
         if (not pClient) return false;
         if (not pClient->GetLSP_Initialized(pProject) )
             return false;
-        //-if (pClient->GetLSP_IsEditorParsed(pEd))
-        //-    return true;
         return true;
     }
 
@@ -670,13 +606,23 @@ private:
         if (not pPrjFile) return false;
         cbProject* pProject = pPrjFile->GetParentProject();
         if (not pProject) return false;
-        ProcessLanguageClient* pClient = GetLSPclient(pProject);
+        ProcessLanguageClient* pClient = GetParseManager()->GetLSPclient(pProject);
         if (not pClient) return false;
         if (not pClient->GetLSP_Initialized(pProject) )
             return false;
         if (pClient->GetLSP_IsEditorParsed(pEd))
             return true;
         return false;
+    }
+
+    ProcessLanguageClient*  GetLSPClient(cbEditor* pEditor)
+    {
+       return  GetParseManager()->GetLSPclient(pEditor);
+    }
+
+    ProcessLanguageClient*  GetLSPClient(cbProject* pProject)
+    {
+        return GetParseManager()->GetLSPclient(pProject);
     }
 
     void OnLSP_Event(wxCommandEvent& event);
@@ -686,11 +632,8 @@ private:
     void OnPluginLoadingComplete(CodeBlocksEvent& event);
 
 
-    // Handle responses from LSPserver
+    // Callback to parse an added file.
     void OnLSP_ProjectFileAdded(cbProject* pProject, wxString filename);
-
-    bool DoLockClangd_CacheAccess(cbProject* pcbProject);
-    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject);
     void ShutdownLSPclient(cbProject* pProject);
     void CleanUpLSPLogs();
     void CleanOutClangdTempFiles();
@@ -698,8 +641,11 @@ private:
     wxString VerifyEditorParsed(cbEditor* pEd);
     wxString VerifyEditorHasSymbols(cbEditor* pEd);
 
+    // ----------------------------------------------------------------------------
     IdleCallbackHandler* GetIdleCallbackHandler(cbProject* pProjectParm = nullptr)
+    // ----------------------------------------------------------------------------
     {
+        // Sanity checks when obtaining pointer to the IdleCallbackHandler for a project
         cbProject* pProject = pProjectParm;
         if (not pProject)
             pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
@@ -720,7 +666,7 @@ private:
         return pParser->GetIdleCallbackHandler();
     }
     // ------------------------------------------------------------------------
-    //LSP callbacks             (ph 2020/11/11)
+    //LSP callbacks
     // ------------------------------------------------------------------------
 
     // LSPEventCallbackHandler pointer
@@ -728,6 +674,7 @@ private:
     // Get pointer to LSP event callbacks
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return pLSPEventSinkHandler.get();}
 
+    // Pause a selected project, or toggle ccLogger, or test shutdown for a projects client
     void OnSelectedPauseParsing(wxCommandEvent& event);
 
     // ----------------------------------------------------------------
@@ -744,16 +691,13 @@ private:
     // Check if allowable files parsing are maxed out.
     bool ParsingIsVeryBusy();
 
-    // This is set to false if ctor completes.
+    // This is set to false if ClgdCompletion ctor completes ok.
     // Forces CB restart when clangd_client first enabled
     bool m_CC_initDeferred = true;
     // Set to true when the old CodeCompletion plugin is enabled
     bool m_OldCC_enabled = true;
     // Initial condition of Clangd_Client at ctor (enabled/disabled);
     bool m_ctorClientStartupStatusEnabled = false;
-
-    // This is unecessary after a nightly for rev 12975
-    cbPlugin* m_pCompilerPlugin =  nullptr;
 
     // ----------------------------------------------------------------------------
     void SetClangdClient_Disabled()
@@ -769,7 +713,7 @@ private:
     bool IsOldCCEnabled()
     // ----------------------------------------------------------------------------
     {
-        // Determine if CodeCompletion is enabled and its plugin lib exists.
+        // Determine if old CodeCompletion is enabled and its plugin lib exists.
         // Note: if the .conf has no info for the plugin CB reports it disabled but runs it anyway.
         wxString sep = wxFILE_SEP_PATH;
         bool bCCLibExists = false;
@@ -790,4 +734,4 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-#endif // CODECOMPLETION_H
+#endif // CLGDCOMPLETION_H

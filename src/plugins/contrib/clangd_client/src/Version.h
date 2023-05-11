@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.69 23/04/11")
+#define VERSION wxT("1.2.70 23/05/11")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,14 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.70 T  23/04/11
+//1.2.70    2023/05/11
+//          Translate the the project folder name to UTF-8 for clangd initialization (Trigger fix)
+//1.2.70    2023/04/19
+//          Remove any reference to std::Mem_fn(). It's too obtuse to use.
+//              Clangd_Client-work_230419_130422.7z
+//          Refactoring: Move clangd client creation functions to ParseManager.
+//              zipped to Clangd_Client-work_230419_124432.7z
+//1.2.69    23/04/11
 //          Add request to cleanout .cache and compile_command.json on user request
 //              to reparse the project.
 //1.2.69 T  23/04/7

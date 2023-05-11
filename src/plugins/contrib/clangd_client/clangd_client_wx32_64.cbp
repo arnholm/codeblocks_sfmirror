@@ -124,6 +124,7 @@
 		<Unit filename="src/codecompletion/parser/LSP_symbolsparser.h" />
 		<Unit filename="src/codecompletion/parser/LSP_tokenizer.cpp" />
 		<Unit filename="src/codecompletion/parser/LSP_tokenizer.h" />
+		<Unit filename="src/codecompletion/parser/ParserCommon.h" />
 		<Unit filename="src/codecompletion/parser/ccdebuginfo.cpp" />
 		<Unit filename="src/codecompletion/parser/ccdebuginfo.h" />
 		<Unit filename="src/codecompletion/parser/cclogger.cpp" />
@@ -144,7 +145,6 @@
 		<Unit filename="src/codecompletion/parser/tokenizer.h" />
 		<Unit filename="src/codecompletion/parser/tokentree.cpp" />
 		<Unit filename="src/codecompletion/parser/tokentree.h" />
-		<Unit filename="src/codecompletion/parser/ParserCommon.h" />
 		<Unit filename="src/codecompletion/selectincludefile.cpp" />
 		<Unit filename="src/codecompletion/selectincludefile.h" />
 		<Unit filename="src/codecompletion/wxsmith/goto_function.wxs" />

@@ -42,19 +42,27 @@
 #include <wx/fs_zip.h>      // to unzip proxy project .cbp from resouce file
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
+#include <wx/textfile.h>
 
 #include <cbstyledtextctrl.h>
 #include <compilercommandgenerator.h>
 #include <cbworkspace.h>
 
+#if defined(_WIN32)
+#include "winprocess/asyncprocess/procutils.h" // LSP //(ph 2023/04/19)
+#else
+#include "procutils.h"
+#endif //_Win32
+
+
 #include "parsemanager.h"
 #include "parsemanager_base.h"
-
 #include "parser/parser.h"
 
 #include "classbrowser.h"
 #include "parser/profiletimer.h"
 #include "IdleCallbackHandler.h"
+#include "client.h" //(ph 2023/04/18)
 
 
 #define CC_ParseManager_DEBUG_OUTPUT 0
@@ -227,8 +235,8 @@ ParseManager::ParseManager( LSPEventCallbackHandler* pLSPEventSinkHandler ) :
     m_LastResult(-1)
 {
     // parser used when no project is loaded, holds options etc
-    m_TempParser = new Parser(this, nullptr); // null pProject
-    m_ActiveParser     = m_TempParser;
+    m_NullParser = new Parser(this, nullptr); // null pProject
+    m_ActiveParser     = m_NullParser;
 
     m_ParserPerWorkspace = false;
 
@@ -247,8 +255,8 @@ ParseManager::~ParseManager()
 
     RemoveClassBrowser();
     ClearParsers();
-    if (m_TempParser)
-        Delete(m_TempParser);
+    if (m_NullParser)
+        Delete(m_NullParser);
 
     if (m_pProxyProject)
         m_pProxyProject->SetModified(false);
@@ -659,7 +667,7 @@ Parser* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
     }
 
     // Easy case for "one parser per workspace" that has already been created:
-    // m_ParserPerWorkspace always false for clangd
+    // Note: m_ParserPerWorkspace always false for clangd
     if (m_ParserPerWorkspace && (not m_ParsedProjects.empty()) )
         return m_ParserList.begin()->second;
 
@@ -682,7 +690,7 @@ Parser* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
 
     // If current parser is the temp or proxy parser activate the new parser
     Parser* pProxyParser = (Parser*)GetParserByProject(GetProxyProject());
-    if ( m_ActiveParser == m_TempParser)
+    if ( m_ActiveParser == m_NullParser)
         SetParser(parser); // Also updates class browser
     else if (m_ActiveParser == pProxyParser)
         SetParser(parser); // Also updates class browser
@@ -741,7 +749,7 @@ bool ParseManager::DeleteParser(cbProject* project)
         if (pDeletedParser == m_ActiveParser)
         {
             m_ActiveParser = nullptr;
-            SetParser(m_TempParser); // Also updates class browser; do not use SetParser(m_TempParser)
+            SetParser(m_NullParser); // Also updates class browser;
         }
 
         return true;
@@ -753,6 +761,330 @@ bool ParseManager::DeleteParser(cbProject* project)
     CCLogger::Get()->DebugLog(_T("ParseManager::DeleteParser: Deleting parser failed!"));
     return false;
 }
+// ----------------------------------------------------------------------------
+ProcessLanguageClient* ParseManager::CreateNewLanguageServiceProcess(cbProject* pcbProject, int LSPeventID)
+// ----------------------------------------------------------------------------
+{
+    #if defined(cbDEBUG)
+    cbAssertNonFatal(pcbProject && "CreateNewLanguageServiceProcess requires a project");
+    #endif
+    if (not pcbProject) return nullptr;
+
+    // Don't allow a second process to write to the current clangd symbol caches
+    if (not DoLockClangd_CacheAccess(pcbProject) ) return nullptr;
+
+    ProcessLanguageClient* pLSPclient = nullptr;
+    if (m_LSP_Clients.count(pcbProject) and GetLSPclient(pcbProject))
+        pLSPclient = m_LSP_Clients[pcbProject];
+    else
+    {
+        pLSPclient = new ProcessLanguageClient(pcbProject);
+        if (pLSPclient and  pLSPclient->GetLSP_Server_PID() )
+            CCLogger::Get()->DebugLog("LSP: Started new LSP client/server for "
+                              + pcbProject->GetFilename() + " @("
+                              + pLSPclient->LSP_GetTimeHMSM() + ")"
+                             );
+    }
+    if ( (not pLSPclient) or (not pLSPclient->GetLSP_Server_PID()) )
+    {
+        if (pLSPclient)
+            delete pLSPclient;
+        pLSPclient = nullptr;
+        DoUnlockClangd_CacheAccess(pcbProject);
+    }
+    else
+    {
+        m_LSP_Clients[pcbProject] = pLSPclient;
+        pLSPclient->SetCBProject(pcbProject);
+        pLSPclient->SetLSP_UserEventID(LSPeventID);
+
+        wxFileName cbpName(pcbProject->GetFilename());
+        wxString rootURI = cbpName.GetPath();
+
+        Parser* pParser = GetParserByProject(pcbProject);
+        if (not pParser)
+        {
+            wxString msg("CreateNewLanguageServiceProcess() CC pParser is null.");
+            cbMessageBox(msg, "Error");
+        }
+        if (pParser)
+        {
+            pParser->SetLSP_Client(pLSPclient);
+            pLSPclient->SetParser( pParser);
+        }
+
+        pLSPclient->LSP_Initialize(pcbProject);
+    }
+
+    return pLSPclient;
+}//end CreateNewLanguageServiceProcess()
+// ----------------------------------------------------------------------
+void ParseManager::CloseAllClients()
+// ----------------------------------------------------------------------
+{
+    // From OnRelease() processing //(ph 2023/04/18))
+    // ----------------------------------------------------------------
+    // m_LSP_Clients contains map [pProject, pLSP_Client]
+    if (m_LSP_Clients.size())    // shutdown LSP servers
+    {
+        for (auto const& client : m_LSP_Clients)
+        {
+            //key: pProject; value: pProcessLanguageClient;
+            if (client.second)
+            {
+                client.second->LSP_Shutdown();
+                if (client.second)
+                    delete client.second; //delete the LSP client
+                m_LSP_Clients[client.first] = nullptr; //set [pProject,nullptr]
+            }
+        }
+    }//endif any LSP_Clients
+}
+// ----------------------------------------------------------------
+ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)    //(ph 2023/04/18)
+// ----------------------------------------------------------------
+{
+    ProcessLanguageClient* pClient =  nullptr;
+    if (not pProject) return nullptr;
+
+    if (m_LSP_Clients.count(pProject))
+        pClient =  m_LSP_Clients[pProject];
+    if (pClient and pClient->GetLSP_Initialized(pProject))
+        return pClient;
+
+    return nullptr;
+}
+// ---------------------------------------------------------
+ProcessLanguageClient* ParseManager::GetLSPclient(cbEditor* pEd)
+// ---------------------------------------------------------
+{
+    // Return client ptr or nullptr
+
+    if (not pEd) return nullptr;
+    ProjectFile* pProjectFile = pEd->GetProjectFile();
+    if (not pProjectFile)
+        return nullptr;
+    cbProject* pEdProject = pProjectFile->GetParentProject();
+    if (not pEdProject) return nullptr;
+    if (GetLSPclient(pEdProject))
+        return GetLSPclient(pEdProject);
+    return nullptr;
+}
+// ----------------------------------------------------------------------------
+cbProject* ParseManager::GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& filename) //(ph 2023/04/19)
+// ----------------------------------------------------------------------------
+{
+    // Find the project that owns this file
+    cbProject* pProject = nullptr;
+
+    LSPClientsMapType::iterator it = m_LSP_Clients.begin();
+    while (it != m_LSP_Clients.end())
+    {
+        cbProject* pMapProject = it->first;
+        ProcessLanguageClient* pMapClient = it->second;
+        if (pMapClient == pClient)
+        {
+            pProject = pMapProject;
+            // if no filename, ignore the proxy project and get active project
+            if (filename.empty() and (pProject->GetTitle() == "~ProxyProject~"))
+                {it++; continue;}
+            // Keep looking if the filename not contained by this project
+            if ( filename.Length() and (pProject != GetProjectByFilename(filename)))
+                { it++; continue;}
+            break;
+        }
+        it++;
+    }
+    return pProject;
+}
+
+// ----------------------------------------------------------------------------
+bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
+// ----------------------------------------------------------------------------
+{
+    // Multiple processes must not write to the Clangd cashe else crashes happen
+    // from bad cache indexes or asserts.
+
+    // Create a cache lock file containing the pid and windows label of the first
+    // process to use the Clangd-cache file.
+    // On subsequent attempts to use the cache, verify that it's the same process that
+    // first opened the Clangd-cache.
+
+    // Entries in the lock file look like lines of:
+    //   OwningCodeBlocksPID;PathToOwningEXEfile;PathToProjectCBPfile
+
+    bool success = false;
+    if (not pcbProject) return success = false;
+    //Do not add an entry for the ~ProxyProject~
+    if (pcbProject == GetProxyProject())
+        return false;
+
+    wxFileName fnCBPfile = pcbProject->GetFilename();
+    wxString cbpDirectory = fnCBPfile.GetPath();
+
+    // if no .cache dir, create one
+    wxString Clangd_cacheDir = cbpDirectory + "/.cache";
+    success = wxDirExists(Clangd_cacheDir);
+    if (not success )
+        success = wxFileName::Mkdir(Clangd_cacheDir);
+    if (not success) return success = false;
+
+    wxString lockFilename = Clangd_cacheDir + "/Clangd-cache.lock";
+    if (platform::windows) lockFilename.Replace("/", "\\");
+    // Get this process PID
+
+    long ourPid = wxGetProcessId();
+    wxString ourPidStr = std::to_string(ourPid);
+    // Get this process exec path
+    wxString newExePath =  ProcUtils::GetProcessNameByPid(ourPid);
+    wxString lockEntry;
+    lockEntry << ourPidStr << ";" << newExePath << ";" << fnCBPfile.GetFullPath();
+
+   wxTextFile lockFile(lockFilename);
+
+    if (not wxFileExists(lockFilename) )
+    {
+        lockFile.Create();
+        lockFile.AddLine(lockEntry);
+        lockFile.Write();
+        lockFile.Close();
+        return success = true;
+    }
+    // lock file already exists. Check if it's ours or another process owns it
+    bool opened = lockFile.Open();
+    if (not opened) return success = false; //lock file in use
+
+    long     lineItemPid = 0;
+    wxString lineItemCBP = wxString();
+    wxString lineItemExe = wxString();
+    // If lockfile contains pid with this .cbp file, we own clangd cache
+    for (size_t ii=0; ii<lockFile.GetLineCount(); ++ii)
+    {
+        wxString lineItem = lockFile.GetLine(ii);
+        lineItem.BeforeFirst(';').ToLong(&lineItemPid);
+        lineItemCBP = lineItem.AfterLast(';').Lower();
+        lineItemExe = lineItem.AfterFirst(';').BeforeLast(';').Lower();
+        if ( (lineItemPid == ourPid) and (lineItemCBP == fnCBPfile.GetFullPath().Lower()) )
+        {   // Our pid already owns this cbp file
+            lockFile.Close();
+            return true;
+        }
+        if (lineItemCBP == fnCBPfile.GetFullPath().Lower() )
+            break; //This is the .cbp we're looking for
+    }
+
+    // If lockFile owning pid not our pid; is the lockFile owning pid still running ?
+    if ( (lineItemCBP == fnCBPfile.GetFullPath().Lower()) and  (lineItemPid != ourPid) )
+    {
+        long owningPid = lineItemPid;
+        wxString owningPidProcessName = ProcUtils::GetProcessNameByPid(owningPid);
+
+        // if pidProcessName not empty, owningPid is running
+        if (owningPidProcessName.Length()) switch(1)
+        {
+            default: //owning pid is alive, but is it CodeBlocks
+            // The owning pid is running but is it a reused pid? (not codeblocks)
+            // if the running pid process name is different from lockFile pid process name
+            // it's a reused pid. Probably from a system reboot or previous "stop debugger" command.
+            wxFileName fnLineItemExeName = lineItemExe;
+            wxFileName fnOwningExeProcessName  = owningPidProcessName;
+
+            // Is it CodeBlocks executable
+            if (fnOwningExeProcessName.GetPath().Lower() == fnLineItemExeName.GetPath().Lower())
+            {
+                // same dir, same project, different alive pid
+                // A running pid is using the old stale lockFile pid, and it's running CodeBlocks
+
+                // Summary:
+                // These's already a running process that's using the cache and it's running codeblocks.
+                // And THIS process is trying to access the same cache that the running process owns.
+                // If it walks, quacks, and looks like a duck ...
+                wxString deniedMsg = wxString::Format( _(
+                                   "Process: %s Pid(%d)\nis denied access to:\n%s"
+                                   "\nbeing used by\n"
+                                   "process: %s Pid(%d)"),
+                                    fnCBPfile.GetFullPath(), int(ourPid),
+                                    Clangd_cacheDir,
+                                    owningPidProcessName, int(owningPid)
+                                   );
+                deniedMsg += _("\n\nTo debug without this problem, debug a clone of the project directory.");
+                deniedMsg += _("\nDelete the .cache directory and the compile_commands.json file from the clone");
+                deniedMsg += _("\nbecause they contain references to the original files.");
+                cbMessageBox(deniedMsg);
+                lockFile.Close();
+                return success = false;
+            }//endif execs match
+        }//endif switch
+    }//owningPid not out pid
+
+    // old owning pid no longer exists; Set this process as new owning pid
+    lockFile.AddLine(lockEntry);
+    lockFile.Write();
+    lockFile.Close();
+    return success = true;
+
+    return success = false;
+}
+// ----------------------------------------------------------------------------
+bool ParseManager::DoUnlockClangd_CacheAccess(cbProject* pcbProject)
+// ----------------------------------------------------------------------------
+{
+    // Multiple processes must not write to the Clangd cache else crashes/asserts
+    // happen from bad cache indexes.
+
+   // Call this function to remove the cache Access lock
+
+    bool success = false;
+    if (not pcbProject) return success = false;
+
+    wxFileName fnCBPfile = pcbProject->GetFilename();
+    wxString cbpDirectory = fnCBPfile.GetPath();
+
+    // if no .Clangd-cache dir, just return
+    wxString Clangd_cacheDir = cbpDirectory + "/.cache";
+    success = wxDirExists(Clangd_cacheDir);
+    if (not success) return success = false;
+
+    //avoid file not found error when closing nultiple .cbp in workspace
+    wxLogNull noLog;
+
+    wxString lockFilename = Clangd_cacheDir + "/Clangd-cache.lock";
+    if (platform::windows) lockFilename.Replace("/", "\\");
+
+    wxTextFile lockFile(lockFilename);
+    bool opened = lockFile.Open();
+    if (not opened) return success = false; //lock file in use
+
+    long     lineItemPid = 0;
+    wxString lineItemCBP = wxString();
+    wxString lineItemExe = wxString();
+    success = false;
+    for (size_t ii=lockFile.GetLineCount(); ii-- >0; ) //loop from last line to first
+    {
+        wxString lineItem = lockFile.GetLine(ii);
+        lineItem.BeforeFirst(';').ToLong(&lineItemPid);
+        lineItemCBP = lineItem.AfterLast(';').Lower();
+        lineItemExe = lineItem.AfterFirst(';').BeforeLast(';').Lower();
+        // if pid is not alive, remove the lineItem
+        wxString pidProcessName = ProcUtils::GetProcessNameByPid(lineItemPid);
+        if (pidProcessName.empty() )
+        {
+            lockFile.RemoveLine(ii);
+            continue;
+        }
+        if (lineItemCBP == fnCBPfile.GetFullPath().Lower() )
+        {
+            lockFile.RemoveLine(ii);
+            success = true;
+        }
+    }//endFor
+    lockFile.Write();
+    if (lockFile.GetLineCount() == 0)
+        wxRemoveFile(lockFilename);
+
+    return success;
+}
+
 ////// ----------------------------------------------------------------------------
 ////bool ParseManager::ReparseFile(cbProject* project, const wxString& filename)
 ////// ----------------------------------------------------------------------------
@@ -1208,7 +1540,7 @@ void ParseManager::UpdateClassBrowser()
 
     TRACE(_T("ParseManager::UpdateClassBrowser()"));
 
-    if ( m_ActiveParser != m_TempParser
+    if ( m_ActiveParser != m_NullParser
         && m_ActiveParser->Done()
         && (not Manager::IsAppShuttingDown()) )
     {
@@ -2447,7 +2779,7 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
             }
         }
         else
-            parser = m_TempParser; // do *not* use SetParser(m_TempParser)
+            parser = m_NullParser;
     }
     else if (!project)
     {

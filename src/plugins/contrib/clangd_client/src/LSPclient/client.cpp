@@ -1890,7 +1890,9 @@ void ProcessLanguageClient::LSP_Initialize(cbProject* pProject)
         writeClientLog(StdString_Format("<<< Initialize(): %s", stdDirName.c_str()) );
 
         // Set the project folder as the folder containing the commands file. //(ollydbg 2022/10/19) Ticket #75
-        try { Initialize(string_ref(fileUtils.FilePathToURI(dirname)), string_ref(dirname.ToUTF8())); } //(ollydbg 2022/10/19) ticket #75
+        //-try { Initialize(string_ref(fileUtils.FilePathToURI(dirname)), string_ref(dirname.ToUTF8())); } //(ollydbg 2022/10/19) ticket #75
+        try { Initialize(string_ref(fileUtils.FilePathToURI(dirname.ToUTF8())), string_ref(dirname.ToUTF8())); } //(Trigger fix 2023/05/10)
+
         catch(std::exception &err)
         {
             //printf("read error -> %s\nread -> %s\n ", e.what(), read.c_str());

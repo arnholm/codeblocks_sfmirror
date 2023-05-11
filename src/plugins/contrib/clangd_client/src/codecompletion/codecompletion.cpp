@@ -148,11 +148,8 @@ namespace
         wxString oldCC_PluginLibName("libcodecompletion" + FileFilters::DYNAMICLIB_DOT_EXT);
     #endif
 
-////    bool ns_ClangdClientAttached = false;
-////    bool ns_CompilerAttached = false;
     wxString ns_DefaultCompilerMasterPath = wxString(); //Default compiler master path
 
-    //int ns_CompilerEventId = 0; no longer needed after Nightly 221022
 }
 // ----------------------------------------------------------------------------
 namespace CodeCompletionHelper
@@ -370,7 +367,7 @@ int idToolbarTimer              = XRCID("idToolbarTimer");
 int idProjectSavedTimer         = wxNewId();
 int idReparsingTimer            = wxNewId();
 int idEditorActivatedTimer      = wxNewId();
-int LSPeventID                  = wxNewId();
+int LSPeventID                  = wxNewId(); //(ph 2023/04/18)
 int idPauseParsing              = wxNewId();
 int idStartupDelayTimer         = wxNewId();
 
@@ -528,6 +525,7 @@ ClgdCompletion::ClgdCompletion() :
 
     // ParseManager / CodeRefactoring creation
     m_pParseManager.reset( new ParseManager(pNewLSPEventSinkHandler) );
+    GetParseManager()->SetClientEventHandler(this); //(ph 2023/04/18)
     m_pCodeRefactoring = new CodeRefactoring(m_pParseManager.get());
     m_pDocHelper = new DocumentationHelper(m_pParseManager.get());
 
@@ -551,6 +549,8 @@ ClgdCompletion::ClgdCompletion() :
 
     Connect(XRCID("idLSP_Process_Terminated"), wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
+
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID); //(ph 2023/04/19)
 
     // Disable old Codecompletion plugin for safety (to avoid conflict crashes)
     // Note that if there's no plugin entry in the .conf, a plugin gets loaded and run
@@ -579,6 +579,9 @@ ClgdCompletion::~ClgdCompletion()
 
     Disconnect(XRCID("idLSP_Process_Terminated"), wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
+
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID); //(ph 2023/04/19)
+
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnAttach()
@@ -802,24 +805,7 @@ void ClgdCompletion::OnRelease(bool appShutDown)
 
     m_pDocHelper->OnRelease();
 
-    // ----------------------------------------------------------------
-    // LSP OnRelease() processing
-    // ----------------------------------------------------------------
-    // m_LSP_Clients contains map [pProject, pLSP_Client]
-    if (m_LSP_Clients.size())    // shutdown LSP servers
-    {
-        for (auto const& client : m_LSP_Clients)
-        {
-            //key: pProject; value: pProcessLanguageClient;
-            if (client.second)
-            {
-                client.second->LSP_Shutdown();
-                if (client.second)
-                    delete client.second; //delete the LSP client
-                m_LSP_Clients[client.first] = nullptr; //set [pProject,nullptr]
-            }
-        }
-    }//endif any LSP_Clients
+    GetParseManager()->CloseAllClients();
 
     // Remove the Proxy Project's compile_commands.json clangd database (if there is one)
     wxString userDataFolder = ConfigManager::GetConfigFolder();
@@ -994,12 +980,12 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 msg.Printf(_("Find implementation of: '%s'"), NameUnderCursor.wx_str());
                 menu->Insert(pos++, idGotoImplementation, msg);
 
-                if (pEditor and GetLSPclient(pEditor) and GetParseManager()->GetParser().Done())     // fix crash when client is shutdown.
+                if (pEditor and GetLSPClient(pEditor) and GetParseManager()->GetParser().Done())     // fix crash when client is shutdown.
                 {
                     msg.Printf(_("Find references of: '%s'"), NameUnderCursor.wx_str());
                     menu->Insert(pos++, idMenuFindReferences, msg);
                 }
-                else if ( pEditor and GetLSPclient(pEditor)
+                else if ( pEditor and GetLSPClient(pEditor)
                             and GetLSP_IsEditorParsed(pEditor) )
                  {
                      msg.Printf(_("Find references of: '%s'"), NameUnderCursor.wx_str());
@@ -1161,10 +1147,6 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
             // Tell Manager to disable Clangd_client
             SetClangdClient_Disabled();
         }
-
-        // FIXME (ph#): This is unecessary after a nightly for rev 12975
-        if (infoName =="compiler")
-            m_pCompilerPlugin = pPlugin;
     }
 
     // Old CodeCompletion should never be running at same time as clangd_client
@@ -1418,7 +1400,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         }
 
         //For users who type faster, say at 75 WPM, the gap that would indicate the end of typing would be only 0.3 seconds (300 milliseconds.)
-        int mSecsSinceLastModify = GetLSPclient(ed)->GetDurationMilliSeconds(m_LastModificationMilliTime);
+        int mSecsSinceLastModify = GetLSPClient(ed)->GetDurationMilliSeconds(m_LastModificationMilliTime);
         if (mSecsSinceLastModify > m_CCDelay)
         {
             // FYI: LSP_Completion() will send LSP_DidChange() notification to LSP server for the current line.
@@ -1431,7 +1413,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
 
             //- m_CompletionTokens.clear(); //clear to use next time and return the token
             /// ^^ Don't clear; a call to show html documentation popup may need them.
-            GetLSPclient(ed)->LSP_CompletionRequest(ed);
+            GetLSPClient(ed)->LSP_CompletionRequest(ed);
         }
         else {
             // time between typed keys too short. Wait awhile.
@@ -1534,8 +1516,8 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
     // the m_SignatureTokens.
     if (0 == m_SignatureTokens.size())
     {
-        if (not GetLSPclient(ed)) return tips; //empty tips
-        GetLSPclient(ed)->LSP_SignatureHelp(ed, pos);
+        if (not GetLSPClient(ed)) return tips; //empty tips
+        GetLSPClient(ed)->LSP_SignatureHelp(ed, pos);
         return tips; //empty tips
     }
     for(unsigned ii=0; ii < m_SignatureTokens.size(); ++ii)
@@ -1562,7 +1544,7 @@ wxString ClgdCompletion::GetDocumentation(const CCToken& token)
     if (not pParser) return wxString();
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (not pEditor) return wxString();
-    ProcessLanguageClient* pClient = GetLSPclient(pEditor); // gets this editors LSP_client
+    ProcessLanguageClient* pClient = GetLSPClient(pEditor); // gets this editors LSP_client
     if (not pClient) return wxString();
     if (pClient and (not pClient->GetLSP_IsEditorParsed(pEditor)) )
         return wxString();
@@ -1626,7 +1608,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
     {
         m_HoverIsActive = true;
         m_HoverLastPosition = pos;
-        GetLSPclient(ed)->LSP_Hover(ed, pos);
+        GetLSPClient(ed)->LSP_Hover(ed, pos);
     }
     tokens.clear();
     return tokens; //return empty tokens on first call from ccmanager.
@@ -1911,19 +1893,19 @@ void ClgdCompletion::EditorEventHook(cbEditor* editor, wxScintillaEvent& event)
     // ----------------------------------------------------------------------------
     if (   ((event.GetModificationType() & wxSCI_MOD_INSERTTEXT)
             || (event.GetModificationType() & wxSCI_MOD_DELETETEXT))
-            and (GetLSPclient(editor))
+            and (GetLSPClient(editor))
         )
     {
         // set time of modification
-        m_LastModificationMilliTime =  GetLSPclient(editor)->GetNowMilliSeconds();
-        GetLSPclient(editor)->SetLSP_EditorModified(editor, true);
+        m_LastModificationMilliTime =  GetLSPClient(editor)->GetNowMilliSeconds();
+        GetLSPClient(editor)->SetLSP_EditorModified(editor, true);
 
         // Ctrl-Z undo and redo may not set EditorBase::SetModified() especially on
         // the last undo/redo which places the editor text in the original condition.
         // But this leaves the LSP server in an out of sync condition.
         // Resync the LSP server to the current editor text.
         if (not editor->GetModified())
-            GetLSPclient(editor)->LSP_DidChange(editor);
+            GetLSPClient(editor)->LSP_DidChange(editor);
     }
 
     if (control->GetCurrentLine() != m_CurrentLine)
@@ -2104,7 +2086,7 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
     // --------------------------------------------------------
     cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pActiveProject) return;
-    if (not GetLSPclient(pActiveProject) )
+    if (not GetLSPClient(pActiveProject) )
         return;
 
     // If file owned by proxy project, ask for symbols
@@ -2117,7 +2099,7 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
         // Register a callback redirected to OnLSP_GoToFunctionResponse() for the LSP response
         size_t id = GetParseManager()->GetLSPEventSinkHandler()->LSP_RegisterEventSink(XRCID("textDocument/documentSymbol"), pParser, &Parser::OnLSP_GoToFunctionResponse, event);
         // Ask clangd for symbols in this editor, OnLSP_GoToFunctionResponse() will handle the response
-        GetLSPclient(ed)->LSP_RequestSymbols(ed, id);
+        GetLSPClient(ed)->LSP_RequestSymbols(ed, id);
         return;
     }
 
@@ -2231,7 +2213,7 @@ void ClgdCompletion::OnGotoPrevFunction(cb_unused wxCommandEvent& event)
     // Register a callback redirected to OnLSP_GoToPrevFunctionResponse() for the LSP response
     size_t id = GetParseManager()->GetLSPEventSinkHandler()->LSP_RegisterEventSink(XRCID("textDocument/documentSymbol"), pParser, &Parser::OnLSP_GoToPrevFunctionResponse, event);
     // Ask clangd for symbols in this editor, OnLSP_GoToPrevFunctionResponse() will handle the response
-    GetLSPclient(ed)->LSP_RequestSymbols(ed, id);
+    GetLSPClient(ed)->LSP_RequestSymbols(ed, id);
     return;
 }
 // ----------------------------------------------------------------------------
@@ -2250,7 +2232,7 @@ void ClgdCompletion::OnGotoNextFunction(cb_unused wxCommandEvent& event)
     // Register a callback redirected to OnLSP_GoToNextFunctionResponse() for the LSP response
     size_t id = GetParseManager()->GetLSPEventSinkHandler()->LSP_RegisterEventSink(XRCID("textDocument/documentSymbol"), pParser, &Parser::OnLSP_GoToNextFunctionResponse, event);
     // Ask clangd for symbols in this editor. OnLSP_GoToNextFunctionResponse() will handle the response.
-    GetLSPclient(ed)->LSP_RequestSymbols(ed, id);
+    GetLSPClient(ed)->LSP_RequestSymbols(ed, id);
     return;
 }
 // ----------------------------------------------------------------------------
@@ -2281,7 +2263,7 @@ void ClgdCompletion::OnGotoDeclaration(wxCommandEvent& event)
 
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     cbProject* pActiveProject = pPrjMgr->GetActiveProject();
-    if (not GetLSPclient(pActiveProject)) return;
+    if (not GetLSPClient(pActiveProject)) return;
 
     EditorManager* pEdMgr  = Manager::Get()->GetEditorManager();
     cbEditor*      pActiveEditor = pEdMgr->GetBuiltinActiveEditor();
@@ -2322,12 +2304,12 @@ void ClgdCompletion::OnGotoDeclaration(wxCommandEvent& event)
    // if caret is already on the definition (.h) clangd wont find it
     if (isDecl)
     {
-        GetLSPclient(pActiveEditor)->LSP_GoToDeclaration(pActiveEditor, GetCaretPosition(pActiveEditor));
+        GetLSPClient(pActiveEditor)->LSP_GoToDeclaration(pActiveEditor, GetCaretPosition(pActiveEditor));
     }
     // Confusing behaviour of clangd which switches back and forth between def and decl
     if (isImpl)
     {
-        GetLSPclient(pActiveEditor)->LSP_GoToDefinition(pActiveEditor, GetCaretPosition(pActiveEditor));
+        GetLSPClient(pActiveEditor)->LSP_GoToDefinition(pActiveEditor, GetCaretPosition(pActiveEditor));
     }
     return;
 }//end OnGotoDeclaration()
@@ -2347,7 +2329,7 @@ void ClgdCompletion::OnFindReferences(cb_unused wxCommandEvent& event)
     cbProject* pEdProject = pProjectFile ? pProjectFile->GetParentProject() : nullptr;
 
     // LSP: differentiate missing project vs clangd_client
-    ProcessLanguageClient* pClient = GetLSPclient(pEditor);
+    ProcessLanguageClient* pClient = GetLSPClient(pEditor);
     wxString filename = pEditor->GetFilename();
 
     if ( (not pEdProject) or (not pClient) )
@@ -2375,7 +2357,7 @@ void ClgdCompletion::OnFindReferences(cb_unused wxCommandEvent& event)
     // check count of currently parsing files, and print info msg if max is parsing.
     if  (ParsingIsVeryBusy()) {;}
 
-    GetLSPclient(pEditor)->LSP_FindReferences(pEditor, GetCaretPosition(pEditor));
+    GetLSPClient(pEditor)->LSP_FindReferences(pEditor, GetCaretPosition(pEditor));
     return;
 }
 // ----------------------------------------------------------------------------
@@ -2413,7 +2395,7 @@ void ClgdCompletion::OnRenameSymbols(cb_unused wxCommandEvent& event)
     if (not replaceText.IsEmpty() && (replaceText != targetText) )
     {
         GetParseManager()->SetRenameSymbolToChange(targetText);
-        GetLSPclient(pEditor)->LSP_RequestRename(pEditor, pos, replaceText);
+        GetLSPClient(pEditor)->LSP_RequestRename(pEditor, pos, replaceText);
     }
 }
 // ----------------------------------------------------------------------------
@@ -2578,8 +2560,8 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     if (pProject)
     {
         // Send a shutdown command with "needs cleanup" request.//(ph 2023/04/11)
-        if (GetLSPclient(pProject))
-            GetLSPclient(pProject)->SetProjectNeedsCleanup(pProject->GetFilename());
+        if (GetLSPClient(pProject))
+            GetLSPClient(pProject)->SetProjectNeedsCleanup(pProject->GetFilename());
         ShutdownLSPclient(pProject);
         // Close and create a new parser
         GetParseManager()->ReparseCurrentProject();
@@ -2592,7 +2574,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
             // Freeze parsing for this parser and create a client.
             // The response to LSP initialization will unfreeze the parser.
             pParser->PauseParsingForReason("AwaitClientInitialization", true);
-            ProcessLanguageClient* pClient = CreateNewLanguageServiceProcess(pProject);
+            ProcessLanguageClient* pClient = GetParseManager()->CreateNewLanguageServiceProcess(pProject, LSPeventID);
             if (not pClient)
             {
                 // stop the batch parse timer and clear the Batch parsing queue
@@ -2664,8 +2646,8 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
                 ClearReparseConditions();
 
                 // Send a quit command with cleanup flag //(ph 2023/04/11)
-                if (GetLSPclient(project))
-                    GetLSPclient(project)->SetProjectNeedsCleanup(project->GetFilename());
+                if (GetLSPClient(project))
+                    GetLSPClient(project)->SetProjectNeedsCleanup(project->GetFilename());
                 ShutdownLSPclient(project);
                 // Close and create a new parser
                 GetParseManager()->ReparseSelectedProject();
@@ -2678,7 +2660,7 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
                     // Freeze parsing for this parser and create a client.
                     // The response to LSP initialization will unfreeze the parser.
                     pParser->PauseParsingForReason("AwaitClientInitialization", true);
-                    ProcessLanguageClient* pClient = CreateNewLanguageServiceProcess(project);
+                    ProcessLanguageClient* pClient = GetParseManager()->CreateNewLanguageServiceProcess(project, LSPeventID);
                     if (not pClient)
                     {
                         // stop the batch parse timer and clear the Batch parsing queue
@@ -2704,7 +2686,7 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
 void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    // if Ctrl-Shift keys are down, toggle ccLogger external logging on/off
+    // if Alt-Shift keys are down, toggle ccLogger external logging on/off
     if (wxGetKeyState(WXK_ALT) && wxGetKeyState(WXK_SHIFT))
     {
         bool logStat = CCLogger::Get()->GetExternalLogStatus();
@@ -2717,6 +2699,7 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
         return;
     }
 
+    // **Debugging**
     // if shift key is down, do a client Shutdown to allow testing (restart, menu status etc)
     // without having to debug the debugees debugee (two levels of debuggers).
     if (wxGetKeyState(WXK_SHIFT))
@@ -2788,7 +2771,7 @@ void ClgdCompletion::OnLSP_SelectedFileReparse(wxCommandEvent& event)
 
         if (project and pf)
         {
-            ProcessLanguageClient* pClient = GetLSPclient(project);
+            ProcessLanguageClient* pClient = GetLSPClient(project);
             if (not pClient) return;
             Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(project);
             if (pParser) ClearReparseConditions();
@@ -2832,7 +2815,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
         cbProject* pProject = pf ? pf->GetParentProject() : nullptr;
         if (pProject and pf)
         {
-            ProcessLanguageClient* pClient = GetLSPclient(pProject);
+            ProcessLanguageClient* pClient = GetLSPClient(pProject);
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
@@ -2889,7 +2872,7 @@ void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
         cbProject* pProject = pf ? pf->GetParentProject() : nullptr;
         if (pProject and pf)
         {
-            ProcessLanguageClient* pClient = GetLSPclient(pProject);
+            ProcessLanguageClient* pClient = GetLSPClient(pProject);
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
@@ -3058,7 +3041,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
                 GetParseManager()->CreateParser(pActiveProject);
                 Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pActiveProject);
                 if (pParser and (not pParser->GetLSPClient()) )
-                    LSPsucceeded = CreateNewLanguageServiceProcess(pActiveProject);
+                    LSPsucceeded = GetParseManager()->CreateNewLanguageServiceProcess(pActiveProject, LSPeventID);
             }
 
             // Update the Function toolbar
@@ -3081,7 +3064,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
                 {
                     // don't re-open an already open editor
                     // An opened editor will have, at least, a didOpen requested
-                    ProcessLanguageClient* pClient = GetLSPclient(pcbEd);
+                    ProcessLanguageClient* pClient = GetLSPClient(pcbEd);
                     if (pClient) continue; //file already processed
 
                     // Find the ProjectFile and project containing this editors file.
@@ -3095,7 +3078,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
                     if (not pParser) continue;
                     if (pParser->GetLSPClient()) continue;
                     // creating the client/server, will initialize it and issue LSP didOpen for its open project files.
-                    CreateNewLanguageServiceProcess(pActiveProject);
+                    GetParseManager()->CreateNewLanguageServiceProcess(pActiveProject, LSPeventID);
                 }//endif pcbEd
             }//endfor editor count
         }//endif project
@@ -3165,9 +3148,9 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
     if (IsAttached() && m_InitDone & (not pPrjMgr->IsClosingWorkspace()) )
     {
         cbProject* pProject = event.GetProject();
-        if ( (not GetLSPclient(pProject)) //if no project yet
+        if ( (not GetLSPClient(pProject)) //if no project yet
             and GetParseManager()->GetParserByProject(pProject) ) // but has Parser
-            CreateNewLanguageServiceProcess(pProject);
+            GetParseManager()->CreateNewLanguageServiceProcess(pProject, LSPeventID);
         // Pause parsing for the previous, deactivated project
         if (m_PrevProject and (m_PrevProject != m_CurrProject) )
         {
@@ -3205,192 +3188,6 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
 
 }//end OnProjectActivated()
 // ----------------------------------------------------------------------------
-bool ClgdCompletion::DoLockClangd_CacheAccess(cbProject* pcbProject)
-// ----------------------------------------------------------------------------
-{
-    // Multiple processes must not write to the Clangd cashe else crashes happen
-    // from bad cache indexes or asserts.
-
-    // Create a cache lock file containing the pid and windows label of the first
-    // process to use the Clangd-cache file.
-    // On subsequent attempts to use the cache, verify that it's the same process that
-    // first opened the Clangd-cache.
-
-    // Entries in the lock file look like lines of:
-    //   OwningCodeBlocksPID;PathToOwningEXEfile;PathToProjectCBPfile
-
-    bool success = false;
-    if (not pcbProject) return success = false;
-    //Do not add an entry for the ~ProxyProject~
-    if (pcbProject == GetParseManager()->GetProxyProject())
-        return false;
-
-    wxFileName fnCBPfile = pcbProject->GetFilename();
-    wxString cbpDirectory = fnCBPfile.GetPath();
-
-    // if no .cache dir, create one
-    wxString Clangd_cacheDir = cbpDirectory + "/.cache";
-    success = wxDirExists(Clangd_cacheDir);
-    if (not success )
-        success = wxFileName::Mkdir(Clangd_cacheDir);
-    if (not success) return success = false;
-
-    wxString lockFilename = Clangd_cacheDir + "/Clangd-cache.lock";
-    if (platform::windows) lockFilename.Replace("/", "\\");
-    // Get this process PID
-
-    long ourPid = wxGetProcessId();
-    wxString ourPidStr = std::to_string(ourPid);
-    // Get this process exec path
-    wxString newExePath =  ProcUtils::GetProcessNameByPid(ourPid);
-    wxString lockEntry;
-    lockEntry << ourPidStr << ";" << newExePath << ";" << fnCBPfile.GetFullPath();
-
-   wxTextFile lockFile(lockFilename);
-
-    if (not wxFileExists(lockFilename) )
-    {
-        lockFile.Create();
-        lockFile.AddLine(lockEntry);
-        lockFile.Write();
-        lockFile.Close();
-        return success = true;
-    }
-    // lock file already exists. Check if it's ours or another process owns it
-    bool opened = lockFile.Open();
-    if (not opened) return success = false; //lock file in use
-
-    long     lineItemPid = 0;
-    wxString lineItemCBP = wxString();
-    wxString lineItemExe = wxString();
-    // If lockfile contains pid with this .cbp file, we own clangd cache
-    for (size_t ii=0; ii<lockFile.GetLineCount(); ++ii)
-    {
-        wxString lineItem = lockFile.GetLine(ii);
-        lineItem.BeforeFirst(';').ToLong(&lineItemPid);
-        lineItemCBP = lineItem.AfterLast(';').Lower();
-        lineItemExe = lineItem.AfterFirst(';').BeforeLast(';').Lower();
-        if ( (lineItemPid == ourPid) and (lineItemCBP == fnCBPfile.GetFullPath().Lower()) )
-        {   // Our pid already owns this cbp file
-            lockFile.Close();
-            return true;
-        }
-        if (lineItemCBP == fnCBPfile.GetFullPath().Lower() )
-            break; //This is the .cbp we're looking for
-    }
-
-    // If lockFile owning pid not our pid; is the lockFile owning pid still running ?
-    if ( (lineItemCBP == fnCBPfile.GetFullPath().Lower()) and  (lineItemPid != ourPid) )
-    {
-        long owningPid = lineItemPid;
-        wxString owningPidProcessName = ProcUtils::GetProcessNameByPid(owningPid);
-
-        // if pidProcessName not empty, owningPid is running
-        if (owningPidProcessName.Length()) switch(1)
-        {
-            default: //owning pid is alive, but is it CodeBlocks
-            // The owning pid is running but is it a reused pid? (not codeblocks)
-            // if the running pid process name is different from lockFile pid process name
-            // it's a reused pid. Probably from a system reboot or previous "stop debugger" command.
-            wxFileName fnLineItemExeName = lineItemExe;
-            wxFileName fnOwningExeProcessName  = owningPidProcessName;
-
-            // Is it CodeBlocks executable
-            if (fnOwningExeProcessName.GetPath().Lower() == fnLineItemExeName.GetPath().Lower())
-            {
-                // same dir, same project, different alive pid
-                // A running pid is using the old stale lockFile pid, and it's running CodeBlocks
-
-                // Summary:
-                // These's already a running process that's using the cache and it's running codeblocks.
-                // And THIS process is trying to access the same cache that the running process owns.
-                // If it walks, quacks, and looks like a duck ...
-                wxString deniedMsg = wxString::Format( _(
-                                   "Process: %s Pid(%d)\nis denied access to:\n%s"
-                                   "\nbeing used by\n"
-                                   "process: %s Pid(%d)"),
-                                    fnCBPfile.GetFullPath(), int(ourPid),
-                                    Clangd_cacheDir,
-                                    owningPidProcessName, int(owningPid)
-                                   );
-                deniedMsg += _("\n\nTo debug without this problem, debug a clone of the project directory.");
-                deniedMsg += _("\nDelete the .cache directory and the compile_commands.json file from the clone");
-                deniedMsg += _("\nbecause they contain references to the original files.");
-                cbMessageBox(deniedMsg);
-                lockFile.Close();
-                return success = false;
-            }//endif execs match
-        }//endif switch
-    }//owningPid not out pid
-
-    // old owning pid no longer exists; Set this process as new owning pid
-    lockFile.AddLine(lockEntry);
-    lockFile.Write();
-    lockFile.Close();
-    return success = true;
-
-    return success = false;
-}
-// ----------------------------------------------------------------------------
-bool ClgdCompletion::DoUnlockClangd_CacheAccess(cbProject* pcbProject)
-// ----------------------------------------------------------------------------
-{
-    // Multiple processes must not write to the Clangd cache else crashes/asserts
-    // happen from bad cache indexes.
-
-   // Call this function to remove the cache Access lock
-
-    bool success = false;
-    if (not pcbProject) return success = false;
-
-    wxFileName fnCBPfile = pcbProject->GetFilename();
-    wxString cbpDirectory = fnCBPfile.GetPath();
-
-    // if no .Clangd-cache dir, just return
-    wxString Clangd_cacheDir = cbpDirectory + "/.cache";
-    success = wxDirExists(Clangd_cacheDir);
-    if (not success) return success = false;
-
-    //avoid file not found error when closing nultiple .cbp in workspace
-    wxLogNull noLog;
-
-    wxString lockFilename = Clangd_cacheDir + "/Clangd-cache.lock";
-    if (platform::windows) lockFilename.Replace("/", "\\");
-
-    wxTextFile lockFile(lockFilename);
-    bool opened = lockFile.Open();
-    if (not opened) return success = false; //lock file in use
-
-    long     lineItemPid = 0;
-    wxString lineItemCBP = wxString();
-    wxString lineItemExe = wxString();
-    success = false;
-    for (size_t ii=lockFile.GetLineCount(); ii-- >0; ) //loop from last line to first
-    {
-        wxString lineItem = lockFile.GetLine(ii);
-        lineItem.BeforeFirst(';').ToLong(&lineItemPid);
-        lineItemCBP = lineItem.AfterLast(';').Lower();
-        lineItemExe = lineItem.AfterFirst(';').BeforeLast(';').Lower();
-        // if pid is not alive, remove the lineItem
-        wxString pidProcessName = ProcUtils::GetProcessNameByPid(lineItemPid);
-        if (pidProcessName.empty() )
-        {
-            lockFile.RemoveLine(ii);
-            continue;
-        }
-        if (lineItemCBP == fnCBPfile.GetFullPath().Lower() )
-        {
-            lockFile.RemoveLine(ii);
-            success = true;
-        }
-    }//endFor
-    lockFile.Write();
-    if (lockFile.GetLineCount() == 0)
-        wxRemoveFile(lockFilename);
-
-    return success;
-}
-// ----------------------------------------------------------------------------
 void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
@@ -3401,7 +3198,7 @@ void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)
     if (not pProject) return;
 
     //The pipe died, not the client.
-    ProcessLanguageClient* pClient = GetLSPclient(pProject);
+    ProcessLanguageClient* pClient = GetLSPClient(pProject);
 
     //The I/O pipeProcess died for this project, close the LSP client and the Parser
     if (pClient)
@@ -3423,7 +3220,7 @@ void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)
         ShutdownLSPclient(pProject);
         // MS Windows had a lock on closed clangd logs until the project was closed.
         CleanUpLSPLogs();
-        DoUnlockClangd_CacheAccess(pProject);
+        GetParseManager()->DoUnlockClangd_CacheAccess(pProject);
         CleanOutClangdTempFiles();
         if (pProject && GetParseManager()->GetParserByProject(pProject))
         {
@@ -3434,63 +3231,63 @@ void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)
 
     return;
 }
-// ----------------------------------------------------------------------------
-ProcessLanguageClient* ClgdCompletion::CreateNewLanguageServiceProcess(cbProject* pcbProject)
-// ----------------------------------------------------------------------------
-{
-    #if defined(cbDEBUG)
-    cbAssertNonFatal(pcbProject && "CreateNewLanguageServiceProcess requires a project");
-    #endif
-    if (not pcbProject) return nullptr;
-
-    // Don't allow a second process to write to the current clangd symbol caches
-    if (not DoLockClangd_CacheAccess(pcbProject) ) return nullptr;
-
-    ProcessLanguageClient* pLSPclient = nullptr;
-    if (m_LSP_Clients.count(pcbProject) and GetLSPclient(pcbProject))
-        pLSPclient = m_LSP_Clients[pcbProject];
-    else
-    {
-        pLSPclient = new ProcessLanguageClient(pcbProject);
-        if (pLSPclient and  pLSPclient->GetLSP_Server_PID() )
-            CCLogger::Get()->DebugLog("LSP: Started new LSP client/server for "
-                              + pcbProject->GetFilename() + " @("
-                              + pLSPclient->LSP_GetTimeHMSM() + ")"
-                             );
-    }
-    if ( (not pLSPclient) or (not pLSPclient->GetLSP_Server_PID()) )
-    {
-        if (pLSPclient)
-            delete pLSPclient;
-        pLSPclient = nullptr;
-        DoUnlockClangd_CacheAccess(pcbProject);
-    }
-    else
-    {
-        m_LSP_Clients[pcbProject] = pLSPclient;
-        pLSPclient->SetCBProject(pcbProject);
-        pLSPclient->SetLSP_UserEventID(LSPeventID);
-        Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
-        wxFileName cbpName(pcbProject->GetFilename());
-        wxString rootURI = cbpName.GetPath();
-
-        Parser* pParser = GetParseManager()->GetParserByProject(pcbProject);
-        if (not pParser)
-        {
-            wxString msg("CreateNewLanguageServiceProcess() CC pParser is null.");
-            cbMessageBox(msg, "Error");
-        }
-        if (pParser)
-        {
-            pParser->SetLSP_Client(pLSPclient);
-            pLSPclient->SetParser( pParser);
-        }
-
-        pLSPclient->LSP_Initialize(pcbProject);
-    }
-
-    return pLSPclient;
-}
+//// ----------------------------------------------------------------------------
+//ProcessLanguageClient* ClgdCompletion::CreateNewLanguageServiceProcess(cbProject* pcbProject)
+//// ----------------------------------------------------------------------------
+//{
+//    #if defined(cbDEBUG)
+//    cbAssertNonFatal(pcbProject && "CreateNewLanguageServiceProcess requires a project");
+//    #endif
+//    if (not pcbProject) return nullptr;
+//
+//    // Don't allow a second process to write to the current clangd symbol caches
+//    if (not DoLockClangd_CacheAccess(pcbProject) ) return nullptr;
+//
+//    ProcessLanguageClient* pLSPclient = nullptr;
+//    if (m_LSP_Clients.count(pcbProject) and GetLSPClient(pcbProject))
+//        pLSPclient = m_LSP_Clients[pcbProject];
+//    else
+//    {
+//        pLSPclient = new ProcessLanguageClient(pcbProject);
+//        if (pLSPclient and  pLSPclient->GetLSP_Server_PID() )
+//            CCLogger::Get()->DebugLog("LSP: Started new LSP client/server for "
+//                              + pcbProject->GetFilename() + " @("
+//                              + pLSPclient->LSP_GetTimeHMSM() + ")"
+//                             );
+//    }
+//    if ( (not pLSPclient) or (not pLSPclient->GetLSP_Server_PID()) )
+//    {
+//        if (pLSPclient)
+//            delete pLSPclient;
+//        pLSPclient = nullptr;
+//        DoUnlockClangd_CacheAccess(pcbProject);
+//    }
+//    else
+//    {
+//        m_LSP_Clients[pcbProject] = pLSPclient;
+//        pLSPclient->SetCBProject(pcbProject);
+//        pLSPclient->SetLSP_UserEventID(LSPeventID);
+//        Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
+//        wxFileName cbpName(pcbProject->GetFilename());
+//        wxString rootURI = cbpName.GetPath();
+//
+//        Parser* pParser = GetParseManager()->GetParserByProject(pcbProject);
+//        if (not pParser)
+//        {
+//            wxString msg("CreateNewLanguageServiceProcess() CC pParser is null.");
+//            cbMessageBox(msg, "Error");
+//        }
+//        if (pParser)
+//        {
+//            pParser->SetLSP_Client(pLSPclient);
+//            pLSPclient->SetParser( pParser);
+//        }
+//
+//        pLSPclient->LSP_Initialize(pcbProject);
+//    }
+//
+//    return pLSPclient;
+//}
 // ----------------------------------------------------------------------------
 wxString ClgdCompletion::GetLineTextFromFile(const wxString& file, const int lineNum)
 // ----------------------------------------------------------------------------
@@ -3595,24 +3392,27 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     if (pClient)
     {
         // Find the project that owns this file
-        LSPClientsMapType::iterator it = m_LSP_Clients.begin();
-        while (it != m_LSP_Clients.end())
-        {
-            cbProject* pMapProject = it->first;
-            ProcessLanguageClient* pMapClient = it->second;
-            if (pMapClient == pClient)
-            {
-                pProject = pMapProject;
-                // if no filename, ignore the proxy project and get active project
-                if (filename.empty() and (pProject->GetTitle() == "~ProxyProject~"))
-                    {it++; continue;}
-                // Keep looking if the filename not contained by this project
-                if ( filename.Length() and (pProject != GetParseManager()->GetProjectByFilename(filename)))
-                    { it++; continue;}
-                break;
-            }
-            it++;
-        }
+        pProject = GetParseManager()->GetProjectByClientAndFilename(pClient, filename); //(ph 2023/04/19)
+
+        //// this code moved to ParseManager to access m_LSP_Clients map
+        //LSPClientsMapType::iterator it = GetParseManager()->m_LSP_Clients.begin();
+        //while (it != GetParseManager()->m_LSP_Clients.end())
+        //{
+        //    cbProject* pMapProject = it->first;
+        //    ProcessLanguageClient* pMapClient = it->second;
+        //    if (pMapClient == pClient)
+        //    {
+        //        pProject = pMapProject;
+        //        // if no filename, ignore the proxy project and get active project
+        //        if (filename.empty() and (pProject->GetTitle() == "~ProxyProject~"))
+        //            {it++; continue;}
+        //        // Keep looking if the filename not contained by this project
+        //        if ( filename.Length() and (pProject != GetParseManager()->GetProjectByFilename(filename)))
+        //            { it++; continue;}
+        //        break;
+        //    }
+        //    it++;
+        //}
     }
     if ( not (pClient and pProject) )
     {
@@ -3826,7 +3626,7 @@ void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
         // ------------------------------------------------------------
         //  LSP client/server
         // ------------------------------------------------------------
-        ProcessLanguageClient* pClient = GetLSPclient(pProject);
+        ProcessLanguageClient* pClient = GetLSPClient(pProject);
         if (pClient)
         {
             // Stop all parsing for this parser
@@ -3851,13 +3651,13 @@ void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
                     ProjectFile* pPrjFile = pcbEd->GetProjectFile();
                     if (not pPrjFile) continue;
                     if (pPrjFile->GetParentProject() == pProject)
-                        GetLSPclient(pProject)->LSP_DidClose(pcbEd);
+                        GetLSPClient(pProject)->LSP_DidClose(pcbEd);
                 }
             long closing_pid = pClient->GetLSP_Server_PID();
 
             // Tell LSP server to quit
             pClient->LSP_Shutdown();
-            m_LSP_Clients.erase(pProject); // erase first or crash
+            GetParseManager()->m_LSP_Clients.erase(pProject); // erase first or crash
             delete pClient;
             pClient = nullptr;
 
@@ -3881,8 +3681,8 @@ void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
             // The event project just got deleted, see if there's another project we can use
             // to get client info.
             cbProject* pActiveProject =  Manager::Get()->GetProjectManager()->GetActiveProject();
-            if (pActiveProject && GetLSPclient(pActiveProject) )
-                CCLogger::Get()->DebugLog(wxString::Format("LSP OnProjectClosed duration:%zu millisecs. ", GetLSPclient(pActiveProject)->GetDurationMilliSeconds(startMillis)) );
+            if (pActiveProject && GetLSPClient(pActiveProject) )
+                CCLogger::Get()->DebugLog(wxString::Format("LSP OnProjectClosed duration:%zu millisecs. ", GetLSPClient(pActiveProject)->GetDurationMilliSeconds(startMillis)) );
 
         }//endif m_pLSPclient
     }
@@ -4054,14 +3854,14 @@ void ClgdCompletion::OnProjectClosed(CodeBlocksEvent& event)
         // ------------------------------------------------------------
         //  LSP client/server
         // ------------------------------------------------------------
-        if (GetLSPclient(project))
+        if (GetLSPClient(project))
         {
             // Tell LSP server to didClose() all open files for this project
             // and delete LSP client/server for this project
             ShutdownLSPclient(project);
             // MS Windows had a lock on closed clangd logs until the project was closed.
             CleanUpLSPLogs();
-            DoUnlockClangd_CacheAccess(project);
+            GetParseManager()->DoUnlockClangd_CacheAccess(project);
             CleanOutClangdTempFiles();
 
         }//endif m_pLSPclient
@@ -4092,15 +3892,15 @@ void ClgdCompletion::OnProjectFileAdded(CodeBlocksEvent& event)
     {
         default:
         cbProject* pProject = event.GetProject();
-        if (not GetLSPclient(pProject)) break;
+        if (not GetLSPClient(pProject)) break;
         wxString filename = event.GetString();
         cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
         if (not pEditor) break;
-        if (GetLSPclient(pProject)->GetLSP_EditorIsOpen(pEditor))
+        if (GetLSPClient(pProject)->GetLSP_EditorIsOpen(pEditor))
             break;
 
         // CodeBlocks has not yet added the ProjectFile* prior to calling this event.
-        // Delay GetLSPclient(pProject)->LSP_DidOpen(pEditor) with a callback.
+        // Delay GetLSPClient(pProject)->LSP_DidOpen(pEditor) with a callback.
         // Allows ProjectManager to add ProjectFile* to the project following this
         // event but before the callback event is invoked.
          CallAfter(&ClgdCompletion::OnLSP_ProjectFileAdded, pProject, filename);
@@ -4121,15 +3921,15 @@ void ClgdCompletion::OnLSP_ProjectFileAdded(cbProject* pProject, wxString filena
     // ------------------------------------------------------------
     //  LSP client/server
     // ------------------------------------------------------------
-    if (not GetLSPclient(pProject)) return;
+    if (not GetLSPClient(pProject)) return;
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
     if (not pEditor) return;
-    if (GetLSPclient(pProject)->GetLSP_EditorIsOpen(pEditor))
+    if (GetLSPClient(pProject)->GetLSP_EditorIsOpen(pEditor))
         return;
     ProjectFile* pProjectFile = pProject->GetFileByFilename(filename, false);
     if (not pProjectFile)
         return;
-    bool ok = GetLSPclient(pProject)->LSP_DidOpen(pEditor);
+    bool ok = GetLSPClient(pProject)->LSP_DidOpen(pEditor);
     if (ok) CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, filename));
 }
 // ----------------------------------------------------------------------------
@@ -4174,7 +3974,7 @@ void ClgdCompletion::OnEditorSave(CodeBlocksEvent& event)
         // diagnostics for unchanged editors. Check if changed.
         if (GetLSP_IsEditorParsed(pcbEd) or pcbEd->GetModified())
         {
-            GetLSPclient(pcbEd)->LSP_DidSave(pcbEd);
+            GetLSPClient(pcbEd)->LSP_DidSave(pcbEd);
         }
         return;
     }
@@ -4276,7 +4076,7 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
         // in order to do a LSP didOpen() on a file.
         cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
         if (not pActiveProject) return;
-        ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
+        ProcessLanguageClient* pActiveProjectClient = GetLSPClient(pActiveProject);
         if (not pActiveProjectClient)
         {
             // No active project client fully initialized yet. Call back later.
@@ -4329,8 +4129,8 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
         {
             // If editor not already LSP didOpen()'ed, do a LSP didOpen() call
             // cland does not like us doing multiple opens on a file.
-            if (not (didOpenOk = GetLSPclient(pEd)->GetLSP_EditorIsOpen(pEd)) )
-                didOpenOk = GetLSPclient(pEd)->LSP_DidOpen(pEd);
+            if (not (didOpenOk = GetLSPClient(pEd)->GetLSP_EditorIsOpen(pEd)) )
+                didOpenOk = GetLSPClient(pEd)->LSP_DidOpen(pEd);
             if (not didOpenOk)
             {
                 wxString msg = wxString::Format("%s Failed to LSP_DidOpen()\n%s", __FUNCTION__, pEd->GetFilename());
@@ -4359,8 +4159,8 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
     // Ususally caused by having saved/loaded a workspace layout with open editors
     // belonging to a non-active project.
     cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
-    ProcessLanguageClient* pActiveProjectClient = GetLSPclient(pActiveProject);
-    ProcessLanguageClient* pEdClient = GetLSPclient(pEdProject);
+    ProcessLanguageClient* pActiveProjectClient = GetLSPClient(pActiveProject);
+    ProcessLanguageClient* pEdClient = GetLSPClient(pEdProject);
     cbProject* pProxyProject = GetParseManager()->GetProxyProject();
 
     if (pActiveProject and pEd and pEdProject and pEdClient
@@ -4413,10 +4213,10 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
                 pEd->SetProjectFile(pProjectFile);
         }
         // We have an editor, a project and may have added the file to the ProxyProject
-        if (GetLSPclient(pEd)) //if no client, we found no ProjectFile ptr from the editor
+        if (GetLSPClient(pEd)) //if no client, we found no ProjectFile ptr from the editor
         {
             // We now have an assigned LSP client, tell LSP client to didOpen() the file.
-            bool ok = GetLSPclient(pEd)->LSP_DidOpen(pEd);
+            bool ok = GetLSPClient(pEd)->LSP_DidOpen(pEd);
             if (ok) CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s",__FUNCTION__, pEd->GetFilename()));
         }
 
@@ -4448,11 +4248,11 @@ void ClgdCompletion::OnEditorClosed(CodeBlocksEvent& event)
     // Invoke didClose for the event editor, not the active editor
     // This file may have already been didClose'd by OnProjectClose() LSP shutdown.
     cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(event.GetEditor());
-    ProcessLanguageClient* pClient = GetLSPclient(pcbEd);
-    //-if (pcbEd and GetLSP_Initialized(pcbEd) and GetLSPclient(pcbEd) )
+    ProcessLanguageClient* pClient = GetLSPClient(pcbEd);
+    //-if (pcbEd and GetLSP_Initialized(pcbEd) and GetLSPClient(pcbEd) )
     //^^ NoteToSelf: editor would not show initialized if it never got diagnostics
     if (pcbEd and pClient and pClient->GetLSP_EditorIsOpen(pcbEd))
-            GetLSPclient(pcbEd)->LSP_DidClose(pcbEd);
+            GetLSPClient(pcbEd)->LSP_DidClose(pcbEd);
 
     if (m_LastEditor == event.GetEditor())
     {
@@ -5356,13 +5156,13 @@ void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
     GetParseManager()->SetProxyProject(nullptr); // create the hidden proxy project
     cbProject* pProxyProject = GetParseManager()->GetProxyProject();
     // Create a ProxyClient to hold non-project file info and the clangd interface.
-    ProcessLanguageClient* pProxyClient = CreateNewLanguageServiceProcess(pProxyProject);
+    ProcessLanguageClient* pProxyClient = GetParseManager()->CreateNewLanguageServiceProcess(pProxyProject, LSPeventID);
     // Parser was already created by SetProxyProject();
     Parser* pProxyParser = GetParseManager()->GetParserByProject(pProxyProject);
     // Set the ProxyProject to use this new clangd client.
     if (pProxyProject and pProxyClient and pProxyParser)
     {
-        m_LSP_Clients[pProxyProject] = pProxyClient;
+        GetParseManager()->m_LSP_Clients[pProxyProject] = pProxyClient;
         pProxyParser->SetLSP_Client(pProxyClient);
         pProxyClient->SetParser((Parser*)pProxyParser);
     }
@@ -5570,9 +5370,9 @@ void ClgdCompletion::NotifyParserEditorActivated(wxCommandEvent& event)
     cbProject* pProject = pcbEd ? GetParseManager()->GetProjectByEditor(pcbEd) : nullptr;
     if (pProject && GetParseManager()->GetParserByProject(pProject))
     {
-        if (not GetLSPclientAllocated(pProject))
+        if (not GetParseManager()->GetLSPclientAllocated(pProject))
         {
-            ProcessLanguageClient* pClient = CreateNewLanguageServiceProcess(pProject);
+            ProcessLanguageClient* pClient = GetParseManager()->CreateNewLanguageServiceProcess(pProject, LSPeventID);
             if (pClient)
             {
                 wxCommandEvent reparse_evt(wxEVT_COMMAND_MENU_SELECTED);
@@ -5712,7 +5512,7 @@ void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
 {
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     PluginManager* pPlugMgr = Manager::Get()->GetPluginManager();
-    ProcessLanguageClient* pClient = GetLSPclient(pProject);
+    ProcessLanguageClient* pClient = GetLSPClient(pProject);
     if (not pClient) return;
 
     PluginElement* pPlugElements = pPlugMgr->FindElementByName("clangd_client");
@@ -5746,7 +5546,7 @@ void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
     ShutdownLSPclient(pProject); //Shutdown
     // Remove this CodeBlocks pid (this debugger) from the clangd cache lock file
     // for this project. Allow debuggee to clobber current clangd index files.
-    DoUnlockClangd_CacheAccess(pProject);
+    GetParseManager()->DoUnlockClangd_CacheAccess(pProject);
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
@@ -5754,7 +5554,7 @@ void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
 {
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pProject) return;
-    ProcessLanguageClient* pClient = GetLSPclient(pProject);
+    ProcessLanguageClient* pClient = GetLSPClient(pProject);
     if (not pClient) return;
 
     // Tell the project's parser that the debugger finished
@@ -5778,7 +5578,7 @@ bool ClgdCompletion::ParsingIsVeryBusy()
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (not pEditor) return false;
 
-    ProcessLanguageClient* pClient = GetLSPclient(pEditor);
+    ProcessLanguageClient* pClient = GetLSPClient(pEditor);
     if ( int(pClient->LSP_GetServerFilesParsingCount()) > max_parallel_processes)
     {
         wxString msg = _("Parsing is very busy, response may be delayed.");
@@ -5804,15 +5604,15 @@ wxString ClgdCompletion::VerifyEditorParsed(cbEditor* pEd)
         return msg;
     }
 
-    ProcessLanguageClient* pClient = GetLSPclient(pProject);
-    if (not GetLSPclient(pProject) )
+    ProcessLanguageClient* pClient = GetLSPClient(pProject);
+    if (not GetLSPClient(pProject) )
     {
         msg += _("\nNo associated Clangd Client");
         return msg;
     }
 
     bool isEditorInitialized  = pClient ? GetLSP_Initialized(pProject) : false;
-    bool isEditorOpen         = isEditorInitialized ? GetLSPclient(pEd)->GetLSP_EditorIsOpen(pEd) : false;
+    bool isEditorOpen         = isEditorInitialized ? GetLSPClient(pEd)->GetLSP_EditorIsOpen(pEd) : false;
     bool isFileParsing        = pClient ? pClient->IsServerFilesParsing(pEd->GetFilename()) : false;
     bool isEditorParsed       = isEditorOpen ? GetLSP_IsEditorParsed(pEd) : false;
 
@@ -5858,7 +5658,7 @@ wxString ClgdCompletion::VerifyEditorHasSymbols(cbEditor* pEd)
     cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     ProjectFile* pProjectFile = pEd->GetProjectFile();
     cbProject* pProject = pProjectFile ? pProjectFile->GetParentProject() : nullptr;
-    ProcessLanguageClient* pClient = GetLSPclient(pProject);
+    ProcessLanguageClient* pClient = GetLSPClient(pProject);
 
     bool hasDocSymbols = pClient ? pClient->GetLSP_EditorHasSymbols(pEd) : false;
     if ( (not hasDocSymbols)

@@ -6,18 +6,18 @@
 #ifndef ParseManager_H
 #define ParseManager_H
 
+#include <queue>
+#include <map>
+#include <memory>
+#include <unordered_map>
+#include <wx/event.h>
+
 #include "parsemanager_base.h"
 //-#include "parser/parser_base.h"
 #include "parser/cclogger.h"
 #include "LSPEventCallbackHandler.h"
 //-#include "IdleCallbackHandler.h"
 
-#include <queue>
-#include <map>
-#include <memory>
-#include <unordered_map>
-
-#include <wx/event.h>
 
 /** debug only variable, used to print the AI match related log message*/
 extern bool s_DebugSmartSense;
@@ -40,6 +40,8 @@ struct ParserOptions;
 struct BrowserOptions;
 class  IdleCallbackHandler;
 class  ProjectFile;
+class  ProcessLanguageClient;
+class  ClgdCompletion;
 
 ////// TODO (ollydbg#1#), this class is dirty, I'm going to change its name like CursorLocation
 /////** Search location combination, a pointer to cbStyledTextCtrl and a filename is enough */
@@ -318,6 +320,9 @@ public:
         return nowMillis - startMillis;
     }
 
+    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject, int LSPeventID);  //(ph 2023/04/18)
+    bool DoLockClangd_CacheAccess(cbProject* pcbProject);                           //(ph 2023/04/18)
+
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return m_pLSPEventSinkHandler;}
 
     /** Set from CodeCompletion::OnCompiler{Started|Finished}() event */
@@ -349,6 +354,25 @@ public:
         return false;
     }
     void SetPluginIsShuttingDown();
+    // ----------------------------------------------------------------
+    ProcessLanguageClient* GetLSPclientAllocated(cbProject* pProject) //(ph 2023/04/18)
+    // ----------------------------------------------------------------
+    {
+        ProcessLanguageClient* pClient =  nullptr;
+        if (not pProject) return nullptr;
+
+        if (m_LSP_Clients.count(pProject))
+            pClient =  m_LSP_Clients[pProject];
+        if (pClient)
+            return pClient;
+
+        return nullptr;
+    }
+
+    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject); //(ph 2023/04/18)
+    ProcessLanguageClient* GetLSPclient(cbProject* pProject);
+    ProcessLanguageClient* GetLSPclient(cbEditor* pEd);
+    cbProject* GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& Filename); //(ph 2023/04/19)
 
 
 protected:
@@ -577,8 +601,8 @@ private:
      * m_ParserList.begin()->second is the common parser for all the projects in workspace.
      */
     ParserList               m_ParserList;
-    /** a temp Parser object pointer */
-    Parser*                  m_TempParser = nullptr;
+    /** a temp Parser object pointer used when there's no available parser */
+    Parser*                  m_NullParser = nullptr;
     /** active Parser object pointer */
     Parser*                  m_ActiveParser;
     /** Proxy Parser object pointer used to parse non-project owned files*/
@@ -623,7 +647,16 @@ private:
     ParserOptions   m_OptionsSaved;
     BrowserOptions  m_BrowserOptionsSaved;
 
+    // project pointers and their associated LSP client pointers
+    typedef std::map<cbProject*, ProcessLanguageClient*> LSPClientsMapType;
+    LSPClientsMapType m_LSP_Clients; //map of all LSP clients by project*
+    void CloseAllClients();          //shutdown //(ph 2023/04/18)
+
+
     LSPEventCallbackHandler* m_pLSPEventSinkHandler;
+    ClgdCompletion* m_pClientEventHandler;
+    void SetClientEventHandler(ClgdCompletion* pClientEventHandler)
+            {m_pClientEventHandler = (ClgdCompletion*)pClientEventHandler;}
 
     // Idle callback Handler pointer  moved to parser_base.h
     //- 2022/08/1 std::unique_ptr<IdleCallbackHandler> pIdleCallbacks;
