@@ -176,7 +176,7 @@ void wxsTreeCtrl::OnBuildCreatingCode()
                     iBlue = colour.Blue();
                     if((colour.IsOk()) && ((iRed + iGreen + iBlue) != 0))
                     {
-                        sSource.Printf(_("%d,%d,%d"), iRed, iGreen, iBlue);
+                        sSource.Printf("%d,%d,%d", iRed, iGreen, iBlue);
                         Codef(_T("%ASetItemTextColour(%s, wxColour(%s));\n"), sItem.wx_str(), sSource.wx_str());
                     }
 
