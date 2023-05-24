@@ -125,13 +125,17 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
             {
                 if ( !m_Functions[i].empty() )
                 {
+                    const wxString Method("(wxObjectEventFunction)&" + ClassName + "::" + m_Functions[i]);
                     switch ( m_EventArray[i].ET )
                     {
                         case wxsEventDesc::Id:
-                            Context->m_EventsConnectingCode
-                                 << _T("Connect(") << IdString << _T(",")
-                                 << m_EventArray[i].Type << _T(",(wxObjectEventFunction)&")
-                                 << ClassName << _T("::") << m_Functions[i] << _T(");\n");
+                            Context->m_EventsConnectingCode << "Connect("
+                                                            << IdString
+                                                            << ", "
+                                                            << m_EventArray[i].Type
+                                                            << ", "
+                                                            << Method
+                                                            << ");\n";
                             break;
 
                         case wxsEventDesc::NoId:
@@ -139,18 +143,20 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
                             if ( Context->m_Flags & flRoot )
                             {
                                 // If this is root item, it's threaded as Id one
-                                Context->m_EventsConnectingCode
-                                     << _T("Connect(")
-                                     << m_EventArray[i].Type << _T(",(wxObjectEventFunction)&")
-                                     << ClassName << _T("::") << m_Functions[i] << _T(");\n");
+                                Context->m_EventsConnectingCode << "Connect("
+                                                                << m_EventArray[i].Type
+                                                                << ", "
+                                                                << Method
+                                                                << ");\n";
                             }
                             else
                             {
-                                Context->m_EventsConnectingCode
-                                     << VarNameString << _T("->Connect(")
-                                     << m_EventArray[i].Type
-                                     << _T(",(wxObjectEventFunction)&") << ClassName << _T("::") << m_Functions[i]
-                                     << _T(",0,this);\n");
+                                Context->m_EventsConnectingCode << VarNameString
+                                                                << "->Connect("
+                                                                << m_EventArray[i].Type
+                                                                << ", "
+                                                                << Method
+                                                                << ", NULL, this);\n";
                             }
                             break;
 
