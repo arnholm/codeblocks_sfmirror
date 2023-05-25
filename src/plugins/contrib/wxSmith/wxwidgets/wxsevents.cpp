@@ -116,7 +116,9 @@ void wxsEvents::XmlSaveFunctions(TiXmlElement* Element)
 
 void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdString,const wxString& VarNameString)
 {
-    wxString ClassName = m_Item->GetResourceData()->GetClassName();
+    const wxString ClassName(m_Item->GetResourceData()->GetClassName());
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
+    const bool UseBind = cfg->ReadBool("/usebind", false);
     switch ( Context->m_Language )
     {
         case wxsCPP:
@@ -125,38 +127,32 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
             {
                 if ( !m_Functions[i].empty() )
                 {
-                    const wxString Method("(wxObjectEventFunction)&" + ClassName + "::" + m_Functions[i]);
+                    const wxString Method("&" + ClassName + "::" + m_Functions[i]);
+                    const wxString Type(m_EventArray[i].Type);
                     switch ( m_EventArray[i].ET )
                     {
                         case wxsEventDesc::Id:
-                            Context->m_EventsConnectingCode << "Connect("
-                                                            << IdString
-                                                            << ", "
-                                                            << m_EventArray[i].Type
-                                                            << ", "
-                                                            << Method
-                                                            << ");\n";
+                            if (UseBind)
+                                Context->m_EventsConnectingCode << "Bind(" << Type << ", " << Method << ", this, " << IdString << ");\n";
+                            else
+                                Context->m_EventsConnectingCode << "Connect(" << IdString << ", " << Type << ", (wxObjectEventFunction)" << Method << ");\n";
                             break;
 
                         case wxsEventDesc::NoId:
 
                             if ( Context->m_Flags & flRoot )
                             {
-                                // If this is root item, it's threaded as Id one
-                                Context->m_EventsConnectingCode << "Connect("
-                                                                << m_EventArray[i].Type
-                                                                << ", "
-                                                                << Method
-                                                                << ");\n";
+                                if (UseBind)  // If this is root item, it's threaded as Id one
+                                    Context->m_EventsConnectingCode << "Bind(" << Type << ", " << Method << ", this);\n";
+                                else
+                                    Context->m_EventsConnectingCode << "Connect(" << Type << ", (wxObjectEventFunction)" << Method << ");\n";
                             }
                             else
                             {
-                                Context->m_EventsConnectingCode << VarNameString
-                                                                << "->Connect("
-                                                                << m_EventArray[i].Type
-                                                                << ", "
-                                                                << Method
-                                                                << ", NULL, this);\n";
+                                if (UseBind)
+                                    Context->m_EventsConnectingCode << VarNameString << "->Bind(" << Type << ", " << Method << ", this);\n";
+                                else
+                                    Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", NULL, this);\n";
                             }
                             break;
 

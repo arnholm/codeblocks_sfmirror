@@ -80,6 +80,7 @@ private:
     static const long ID_SPINCTRL3;
     static const long ID_CHECKBOX8;
     static const long ID_CHECKBOX10;
+    static const long ID_CHECKBOX13;
     static const long ID_CHECKBOX12;
     static const long ID_RADIOBUTTON5;
     static const long ID_RADIOBUTTON6;
@@ -99,6 +100,7 @@ private:
     wxCheckBox* m_SizeExpand;
     wxCheckBox* m_SizeShaped;
     wxCheckBox* m_UniqueIDsOnly;
+    wxCheckBox* m_UseBind;
     wxCheckBox* m_UseGrid;
     wxCheckBox* m_UseI18N;
     wxChoice* m_BrowserPlacements;

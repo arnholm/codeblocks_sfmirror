@@ -58,6 +58,7 @@ const long wxsSettings::ID_CHOICE1 = wxNewId();
 const long wxsSettings::ID_SPINCTRL3 = wxNewId();
 const long wxsSettings::ID_CHECKBOX8 = wxNewId();
 const long wxsSettings::ID_CHECKBOX10 = wxNewId();
+const long wxsSettings::ID_CHECKBOX13 = wxNewId();
 const long wxsSettings::ID_CHECKBOX12 = wxNewId();
 const long wxsSettings::ID_RADIOBUTTON5 = wxNewId();
 const long wxsSettings::ID_RADIOBUTTON6 = wxNewId();
@@ -240,6 +241,9 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     m_RemovePrefix = new wxCheckBox(this, ID_CHECKBOX10, _("Auto remove variable prefix for event handler function"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX10"));
     m_RemovePrefix->SetValue(false);
     StaticBoxSizer4->Add(m_RemovePrefix, 0, wxEXPAND, 5);
+    m_UseBind = new wxCheckBox(this, ID_CHECKBOX13, _("Use Bind() instead of Connect()"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX13"));
+    m_UseBind->SetValue(false);
+    StaticBoxSizer4->Add(m_UseBind, 0, wxTOP|wxEXPAND, 5);
     BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
     m_UseI18N = new wxCheckBox(this, ID_CHECKBOX12, _("Use _() in I18N-enabled windows"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX12"));
     m_UseI18N->SetValue(true);
@@ -263,7 +267,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     FlexGridSizer6->Add(StaticBoxSizer4, 1, wxEXPAND, 5);
     SetSizer(FlexGridSizer6);
 
-    Connect(ID_CHECKBOX7,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsSettings::OnUseGridClick);
+    Connect(ID_CHECKBOX7, wxEVT_COMMAND_CHECKBOX_CLICKED, (wxObjectEventFunction)&wxsSettings::OnUseGridClick);
     //*)
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
@@ -304,6 +308,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
 
     m_Continous->SetValue(cfg->ReadBool("/continousinsert", false));
     m_RemovePrefix->SetValue(cfg->ReadBool("/removeprefix", false));
+    m_UseBind->SetValue(cfg->ReadBool("/usebind", false));
 
     m_UseI18N->SetValue(cfg->ReadBool("/useI18N", true));
     switch (cfg->ReadInt("/noneI18N", 0))
@@ -400,6 +405,7 @@ void wxsSettings::OnApply()
 
     cfg->Write("/continousinsert", m_Continous->GetValue());
     cfg->Write("/removeprefix", m_RemovePrefix->GetValue());
+    cfg->Write("/usebind", m_UseBind->GetValue());
 
     cfg->Write("/useI18N", m_UseI18N->GetValue());
     if (m_NoneI18N_T->GetValue())
