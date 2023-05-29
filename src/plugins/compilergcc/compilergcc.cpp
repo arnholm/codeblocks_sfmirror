@@ -1911,6 +1911,32 @@ int CompilerGCC::RunSingleFile(const wxString& filename)
     return 0;
 }
 
+bool CompilerGCC::ExecutableExists(cbProject* prj)
+{
+    bool exists = false;
+    if (prj)
+    {
+        ProjectBuildTarget* pTarget = prj->GetBuildTarget(prj->GetActiveBuildTarget());
+        if (pTarget)
+        {
+            if (pTarget->GetTargetType() == ttCommandsOnly)
+            {
+                exists = true;
+            }
+            else
+            {
+                wxString out = UnixFilename(pTarget->GetOutputFilename());
+                Manager::Get()->GetMacrosManager()->ReplaceEnvVars(out);
+                wxFileName file(out);
+                file.MakeAbsolute(prj->GetBasePath());
+                exists = file.FileExists();
+            }
+        }
+    }
+
+    return exists;
+}
+
 int CompilerGCC::Run(const wxString& target)
 {
     if (!CheckProject())
@@ -3507,7 +3533,9 @@ void CompilerGCC::OnUpdateUI(wxUpdateUIEvent& event)
     cbProject* prj = projectManager->GetActiveProject();
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
 
-    if (id == idMenuCompile || id == idMenuCompileAndRun || id == idMenuRun)
+    if (id == idMenuRun)
+        event.Enable(ExecutableExists(prj));
+    else if (id == idMenuCompile || id == idMenuCompileAndRun)
         event.Enable(prj || ed);
     else if (id == idMenuBuildWorkspace || id == idMenuRebuild || id == idMenuRebuildWorkspace
         || id == idMenuClean || id == idMenuCleanWorkspace || id == idMenuSelectTarget

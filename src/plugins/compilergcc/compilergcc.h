@@ -244,6 +244,9 @@ class CompilerGCC : public cbCompilerPlugin
         wxString GetErrWarnStr();
         wxString GetMinSecStr();
 
+        // test if executable exists
+        bool ExecutableExists(cbProject* project);
+
         // when a build is about to start, a preprocessing step runs
         // in PreprocessJob(), that fills m_BuildJobTargetsList with
         // BuildJobTarget. It is a simple pair of project->target which
