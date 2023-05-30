@@ -2132,6 +2132,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         // if they didn't specify $SCRIPT, append:
         cmd << command;
 
+    // This block could be removed after r13278, but better safe than sorry...
     Manager::Get()->GetLogManager()->Log(_("Checking for existence: ") + f.GetFullPath(), m_PageIndex);
     if ( (target->GetTargetType() != ttCommandsOnly) && !wxFileExists(f.GetFullPath()) )
     {
@@ -2155,6 +2156,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
                 return -1;
         }
     }
+    // End of block
 
     const wxString& message = wxString::Format(_("Executing: %s (in %s)"), cmd, m_CdRun);
     m_CommandQueue.Add(new CompilerCommand(cmd, message, m_pProject, target, true));
