@@ -793,10 +793,10 @@ void ProjectManagerUI::CreateMenu(wxMenuBar* menuBar)
         {
             if (menu->GetMenuItemCount())
                 menu->AppendSeparator();
-            menu->Append(idMenuAddFile,             _("Add files..."),             _("Add files to the project"));
-            menu->Append(idMenuAddFilesRecursively, _("Add files recursively..."), _("Add files recursively to the project"));
-            menu->Append(idMenuManageGlobs,         _("Automatic source paths..."),_("Manage automatic source paths"));
-            menu->Append(idMenuRemoveFile,          _("Remove files..."),          _("Remove files from the project"));
+            menu->Append(idMenuAddFile,             _("Add files..."),              _("Add files to the project"));
+            menu->Append(idMenuAddFilesRecursively, _("Add files recursively..."),  _("Add files recursively to the project"));
+            menu->Append(idMenuManageGlobs,         _("Automatic source paths..."), _("Manage automatic source paths"));
+            menu->Append(idMenuRemoveFile,          _("Remove files..."),           _("Remove files from the project"));
 
             menu->AppendSeparator();
             CreateMenuTreeProps(menu, false);
