@@ -9,7 +9,11 @@
             for="C"/>
         <Search path="C:\mingw-w64"
             for="C"/>
-        <Search path="C:\mingw-w64\mingw32"
+        <Search path="C:\mingw\mingw64"
+            for="C"/>
+        <Search macro="$(CODEBLOCKS)\MinGW64"
+            for="C"/>
+        <Search macro="$(CODEBLOCKS)\MinGW"
             for="C"/>
         <Fallback path="C:\mingw-w64\mingw64"/>
     </Path>

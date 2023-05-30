@@ -7,6 +7,12 @@
     <Path type="master">
         <Search path="C:\msys64\mingw32"
             for="C"/>
+        <Search path="C:\msys32\mingw32"
+            for="C"/>
+        <Search path="C:\msys32"
+            for="C"/>
+        <Search path="C:\msys"
+            for="C"/>
         <Fallback path="C:\msys64\mingw32"/>
     </Path>
     <Path type="include">
