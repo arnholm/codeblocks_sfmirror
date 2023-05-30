@@ -54,7 +54,7 @@ CompilerCommandGenerator* CompilerMINGW::GetCommandGenerator(cbProject *project)
 
 AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
 {
-    // try to find MinGW in environment variable PATH first
+    // Try to find MinGW in environment variable PATH first
     wxString pathValues;
     wxGetEnv(_T("PATH"), &pathValues);
     if (!pathValues.IsEmpty())
@@ -78,17 +78,19 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
     wxString sep = wxFileName::GetPathSeparator();
     if (platform::windows)
     {
-        // look first if MinGW was installed with Code::Blocks (new in beta6)
+        // Look first if MinGW was installed with Code::Blocks (new in beta6)
         m_MasterPath = ConfigManager::GetExecutableFolder();
         if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
-            // if that didn't do it, look under C::B\MinGW, too (new in 08.02)
+            // If that didn't do it, look under [C::B]\MinGW, too (new in 08.02)
             m_MasterPath += sep + _T("MinGW");
+
         if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
         {
-            // no... search for MinGW installation dir
+            // No... now search for MinGW installation dir
             wxString windir = wxGetOSDirectory();
             wxFileConfig ini(_T(""), _T(""), windir + _T("/MinGW.ini"), _T(""), wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
             m_MasterPath = ini.Read(_T("/InstallSettings/InstallPath"), _T("C:\\MinGW"));
+
             if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
             {
 #ifdef __WXMSW__ // for wxRegKey
@@ -163,7 +165,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
         m_MasterPath = _T("/usr");
 
     AutoDetectResult ret = wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C) ? adrDetected : adrGuessed;
-    // don't add lib/include dirs. GCC knows where its files are located
+    // Don't add lib/include dirs for MinGW/GCC. GCC knows itself where its files are located
 
     SetVersionString();
     return ret;

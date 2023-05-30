@@ -986,34 +986,36 @@ void CompilerGCC::DoRegisterCompilers()
             Manager::Get()->GetLogManager()->Log(wxString::Format(_("Error: Invalid Code::Blocks compiler definition '%s'."), compilers[i]));
         else
         {
-            bool val = true;
-            wxString test;
-            if (!nonPlatComp && compiler.GetRoot()->GetAttribute(wxT("platform"), &test))
+            bool compatible_compiler = true;
+            wxString compiler_platform;
+            if (!nonPlatComp && compiler.GetRoot()->GetAttribute(wxT("platform"), &compiler_platform))
             {
-                if (test == wxT("windows"))
-                    val = platform::windows;
-                else if (test == wxT("macosx"))
-                    val = platform::macosx;
-                else if (test == wxT("linux"))
-                    val = platform::Linux;
-                else if (test == wxT("freebsd"))
-                    val = platform::freebsd;
-                else if (test == wxT("netbsd"))
-                    val = platform::netbsd;
-                else if (test == wxT("openbsd"))
-                    val = platform::openbsd;
-                else if (test == wxT("darwin"))
-                    val = platform::darwin;
-                else if (test == wxT("solaris"))
-                    val = platform::solaris;
-                else if (test == wxT("unix"))
-                    val = platform::Unix;
+                if (compiler_platform == wxT("windows"))
+                    compatible_compiler = platform::windows;
+                else if (compiler_platform == wxT("macosx"))
+                    compatible_compiler = platform::macosx;
+                else if (compiler_platform == wxT("linux"))
+                    compatible_compiler = platform::Linux;
+                else if (compiler_platform == wxT("freebsd"))
+                    compatible_compiler = platform::freebsd;
+                else if (compiler_platform == wxT("netbsd"))
+                    compatible_compiler = platform::netbsd;
+                else if (compiler_platform == wxT("openbsd"))
+                    compatible_compiler = platform::openbsd;
+                else if (compiler_platform == wxT("darwin"))
+                    compatible_compiler = platform::darwin;
+                else if (compiler_platform == wxT("solaris"))
+                    compatible_compiler = platform::solaris;
+                else if (compiler_platform == wxT("unix"))
+                    compatible_compiler = platform::Unix;
             }
-            if (val)
+            if (compatible_compiler)
+            {
                 CompilerFactory::RegisterCompiler(
-                                   new CompilerXML(compiler.GetRoot()->GetAttribute(wxT("name"), wxEmptyString),
-                                                   compiler.GetRoot()->GetAttribute(wxT("id"), wxEmptyString),
-                                                   compilers[i]));
+                  new CompilerXML(compiler.GetRoot()->GetAttribute(wxT("name"), wxEmptyString),
+                                  compiler.GetRoot()->GetAttribute(wxT("id"),   wxEmptyString),
+                                  compilers[i]));
+            }
         }
     }
 
@@ -1023,7 +1025,7 @@ void CompilerGCC::DoRegisterCompilers()
 
 const wxString& CompilerGCC::GetCurrentCompilerID()
 {
-    static wxString def = wxEmptyString;//_T("gcc");
+    static wxString def = wxEmptyString;
     return CompilerFactory::GetCompiler(m_CompilerId) ? m_CompilerId : def;
 }
 
