@@ -95,7 +95,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
             {
 #ifdef __WXMSW__ // for wxRegKey
                 // not found...
-                // look for dev-cpp installation
+                // Look for dev-cpp installation
                 wxRegKey key; // defaults to HKCR
                 key.SetName(_T("HKEY_LOCAL_MACHINE\\Software\\Dev-C++"));
                 if (key.Exists() && key.Open(wxRegKey::Read))
@@ -105,7 +105,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                 }
                 else
                 {
-                    // installed by inno-setup
+                    // Installed by inno-setup
                     // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Minimalist GNU for Windows 4.1_is1
                     // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TDM-GCC
                     wxString name;
@@ -148,7 +148,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                 }
 #endif
             }
-            // check for PortableApps.com installation
+            // Check for PortableApps.com installation
             if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
             {
                 wxString drive = wxFileName(ConfigManager::GetExecutableFolder()).GetVolume() + wxT(":\\");
