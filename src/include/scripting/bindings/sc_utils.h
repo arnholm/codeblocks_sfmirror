@@ -1015,7 +1015,7 @@ enum class MatchResult
 template<typename ClassType>
 struct MemberBase
 {
-    MemberBase(const SQChar *name) : name(name)
+    MemberBase(const SQChar *_name) : name(_name)
     {}
     virtual ~MemberBase() {}
 
