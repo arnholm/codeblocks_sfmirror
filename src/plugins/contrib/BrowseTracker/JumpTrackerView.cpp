@@ -2,9 +2,9 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU Lesser General Public License, version 3
  * http://www.gnu.org/licenses/lgpl-3.0.html
  *
- * $Revision: 63 $
- * $Id: lspdiagresultslog.cpp 63 2022-05-20 17:21:14Z pecanh $
- * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/LSPclient/lspdiagresultslog.cpp $
+ * $Revision$
+ * $Id$
+ * $HeadURL$
  */
 
 //#include "sdk_precomp.h" gets not used because `EXPORT_LIB' not defined [-Winvalid-pch] error

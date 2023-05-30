@@ -2,9 +2,9 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU General Public License, version 3
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
- * $Revision: 81 $
- * $Id: token.cpp 81 2022-09-26 18:47:50Z pecanh $
- * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/codecompletion/parser/token.cpp $
+ * $Revision$
+ * $Id$
+ * $HeadURL$
  */
 
 #include <wx/event.h>

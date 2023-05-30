@@ -2,9 +2,9 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU General Public License, version 3
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
- * $Revision: 72 $
- * $Id: cclogger.cpp 72 2022-08-17 18:02:14Z pecanh $
- * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/codecompletion/parser/cclogger.cpp $
+ * $Revision$
+ * $Id$
+ * $HeadURL$
  */
 
 #include "cclogger.h"

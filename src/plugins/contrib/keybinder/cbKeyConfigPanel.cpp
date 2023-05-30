@@ -5,7 +5,7 @@
  * Copyright: (c) Pecan Heber etal.
  * License:   GPL
  **************************************************************/
-// RCS-ID:      $Id: cbkeybinder.cpp 11580 2019-03-31 16:55:24Z pecanh $
+// RCS-ID:      $Id$
 
 // The majority of this code was lifted from wxKeyBinder and
 // its "minimal.cpp" sample program

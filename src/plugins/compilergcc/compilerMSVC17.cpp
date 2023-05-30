@@ -2,9 +2,9 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU General Public License, version 3
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
- * $Revision: 8649 $
- * $Id: compilerMSVC17.cpp 8649 2012-12-12 19:18:18Z mortenmacfly $
- * $HeadURL: file:///svn/p/codeblocks/code/trunk/src/plugins/compilergcc/compilerMSVC10.cpp $
+ * $Revision$
+ * $Id$
+ * $HeadURL$
  */
 
 #include <sdk.h>

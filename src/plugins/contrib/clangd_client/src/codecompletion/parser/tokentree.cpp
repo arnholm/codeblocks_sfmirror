@@ -2,9 +2,9 @@
  * This file is part of the Code::Blocks IDE and licensed under the GNU General Public License, version 3
  * http://www.gnu.org/licenses/gpl-3.0.html
  *
- * $Revision: 68 $
- * $Id: tokentree.cpp 68 2022-07-18 19:45:22Z pecanh $
- * $HeadURL: https://svn.code.sf.net/p/cb-clangd-client/code/trunk/clangd_client/src/codecompletion/parser/tokentree.cpp $
+ * $Revision$
+ * $Id$
+ * $HeadURL$
  */
 
 #include "tokentree.h"

@@ -16,9 +16,9 @@
 * You should have received a copy of the GNU General Public License
 * along with wxSmith. If not, see <http://www.gnu.org/licenses/>.
 *
-* $Revision: $
-* $Id: $
-* $HeadURL: $
+* $Revision$
+* $Id$
+* $HeadURL$
 */
 
 #include "wxstwolongproperty.h"
