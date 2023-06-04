@@ -1170,7 +1170,7 @@ struct OpenContainingFolderData
     bool supportSelect;
 
     OpenContainingFolderData() : supportSelect(false) {}
-    OpenContainingFolderData(const wxString &command, bool select) : command(command), supportSelect(select) {}
+    OpenContainingFolderData(const wxString &_command, bool select) : command(_command), supportSelect(select) {}
 };
 
 #if !defined(__WXMSW__) && !defined(__WXMAC__)
