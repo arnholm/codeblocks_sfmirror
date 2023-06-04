@@ -151,7 +151,7 @@ void Font::Create(const char *faceName, int characterSet, int size, bool bold, b
                     false,
                     stc2wx(faceName),
                     encoding);
-    font->SetNoAntiAliasing(!extraFontFlag);
+    //font->SetNoAntiAliasing(!extraFontFlag);
     id = font;
 }
 
@@ -680,7 +680,7 @@ void Window::SetFont(Font &font) {
 }
 
 void Window::SetCursor(Cursor curs) {
-    int cursorId;
+    wxStockCursor cursorId;
 
     switch (curs) {
     case cursorText:

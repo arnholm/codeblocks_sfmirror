@@ -544,7 +544,7 @@ void wxSmithDemoFrame::CreateStyles()
     wxRichTextAttr indentedAttr2;
     indentedAttr2.SetFontFaceName(romanFont.GetFaceName());
     indentedAttr2.SetFontSize(12);
-    indentedAttr2.SetFontWeight(wxBOLD);
+    indentedAttr2.SetFontWeight(wxFONTWEIGHT_BOLD);
     indentedAttr2.SetTextColour(*wxRED);
     indentedAttr2.SetFontSize(12);
     indentedAttr2.SetLeftIndent(100, 0);
@@ -571,7 +571,7 @@ void wxSmithDemoFrame::CreateStyles()
     wxRichTextAttr boldAttr;
     boldAttr.SetFontFaceName(romanFont.GetFaceName());
     boldAttr.SetFontSize(12);
-    boldAttr.SetFontWeight(wxBOLD);
+    boldAttr.SetFontWeight(wxFONTWEIGHT_BOLD);
     // We only want to affect boldness
     boldAttr.SetFlags(wxTEXT_ATTR_FONT_WEIGHT);
     boldDef->SetStyle(boldAttr);
@@ -582,7 +582,7 @@ void wxSmithDemoFrame::CreateStyles()
     wxRichTextAttr italicAttr;
     italicAttr.SetFontFaceName(romanFont.GetFaceName());
     italicAttr.SetFontSize(12);
-    italicAttr.SetFontStyle(wxITALIC);
+    italicAttr.SetFontStyle(wxFONTSTYLE_ITALIC);
     // We only want to affect italics
     italicAttr.SetFlags(wxTEXT_ATTR_FONT_ITALIC);
     italicDef->SetStyle(italicAttr);
@@ -593,7 +593,7 @@ void wxSmithDemoFrame::CreateStyles()
     wxRichTextAttr redAttr;
     redAttr.SetFontFaceName(romanFont.GetFaceName());
     redAttr.SetFontSize(12);
-    redAttr.SetFontWeight(wxBOLD);
+    redAttr.SetFontWeight(wxFONTWEIGHT_BOLD);
     redAttr.SetTextColour(*wxRED);
     // We only want to affect colour, weight and face
     redAttr.SetFlags(wxTEXT_ATTR_FONT_FACE|wxTEXT_ATTR_FONT_WEIGHT|wxTEXT_ATTR_TEXT_COLOUR);

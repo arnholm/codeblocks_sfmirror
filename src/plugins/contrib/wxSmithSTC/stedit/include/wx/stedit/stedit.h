@@ -394,6 +394,7 @@ public :
     int GetLineLength(int iLine) const;   ///< excluding any cr/lf at end.
 
     virtual void SetEditable(bool editable);
+    virtual bool IsEditable() const;
 
     void SetReadOnly(bool readOnly) { SetEditable(!readOnly); } // overload to use our overridden implementation
     bool GetReadOnly() const        { return !IsEditable();   } // overload to use overridden implementation in a derived class
