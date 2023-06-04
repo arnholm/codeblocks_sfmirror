@@ -170,10 +170,10 @@ void PrintSquirrelToWxString(wxString& msg, const SQChar* s, va_list& vl)
         const int bufferSize = retvalue + 20;
         std::unique_ptr<SQChar[]> tmpBuffer(new SQChar[bufferSize]);
 
-        va_list tmpVL;
-        va_copy(tmpVL, vl);
-        const int retvalue2 = scvsprintf(tmpBuffer.get(), bufferSize, s, tmpVL);
-        va_end(tmpVL);
+        va_list tmpVL_;
+        va_copy(tmpVL_, vl);
+        const int retvalue2 = scvsprintf(tmpBuffer.get(), bufferSize, s, tmpVL_);
+        va_end(tmpVL_);
         cbAssert(retvalue2 != -1);
         if (retvalue2 >= bufferSize)
         {
