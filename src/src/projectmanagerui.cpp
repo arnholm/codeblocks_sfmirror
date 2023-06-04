@@ -83,6 +83,7 @@ const int idMenuAddFilesRecursivelyPopup = wxNewId();
 const int idMenuAddFile                  = wxNewId();
 const int idMenuAddFilesRecursively      = wxNewId();
 const int idMenuManageGlobs              = wxNewId();
+const int idMenuManageGlobsPopup         = wxNewId();
 const int idMenuRemoveFolderFilesPopup   = wxNewId();
 const int idMenuOpenFolderFilesPopup     = wxNewId();
 const int idMenuRemoveFilePopup          = wxNewId();
@@ -339,6 +340,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_MENU(idMenuAddFilePopup,             ProjectManagerUI::OnAddFileToProject)
     EVT_MENU(idMenuAddFilesRecursivelyPopup, ProjectManagerUI::OnAddFilesToProjectRecursively)
     EVT_MENU(idMenuManageGlobs,              ProjectManagerUI::OnManageGlobs)
+    EVT_MENU(idMenuManageGlobsPopup,         ProjectManagerUI::OnManageGlobs)
     EVT_MENU(idMenuRemoveFolderFilesPopup,   ProjectManagerUI::OnRemoveFileFromProject)
     EVT_MENU(idMenuOpenFolderFilesPopup,     ProjectManagerUI::OnOpenFolderFiles)
     EVT_MENU(idMenuRemoveFilePopup,          ProjectManagerUI::OnRemoveFileFromProject)
@@ -900,6 +902,8 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
             menu.Enable(idMenuAddFilePopup, PopUpMenuOption);
             menu.Append(idMenuAddFilesRecursivelyPopup, _("Add files recursively..."));
             menu.Enable(idMenuAddFilesRecursivelyPopup, PopUpMenuOption);
+            menu.Append(idMenuManageGlobsPopup,         _("Automatic source paths..."));
+            menu.Enable(idMenuManageGlobsPopup, PopUpMenuOption);
             menu.Append(idMenuRemoveFile,               _("Remove files..."));
             menu.AppendSeparator();
             menu.Append(idMenuFindFile,                 _("Find file..."));
@@ -979,6 +983,8 @@ void ProjectManagerUI::ShowMenu(wxTreeItemId id, const wxPoint& pt)
             menu.Enable(idMenuAddFilePopup, PopUpMenuOption);
             menu.Append(idMenuAddFilesRecursivelyPopup, _("Add files recursively..."));
             menu.Enable(idMenuAddFilesRecursivelyPopup, PopUpMenuOption);
+            menu.Append(idMenuManageGlobsPopup,         _("Automatic source paths..."));
+            menu.Enable(idMenuManageGlobsPopup, PopUpMenuOption);
             menu.AppendSeparator();
             menu.Append(idMenuRemoveFile,               _("Remove files..."));
             menu.AppendSeparator();
