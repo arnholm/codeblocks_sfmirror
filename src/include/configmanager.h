@@ -168,13 +168,13 @@ public:
     * Query "standard" paths that work across platforms.
     * NEVER hard-code a path like "C:\CodeBlocks\share\data". Always use one of the following functions to compose a path.
     */
-    static wxString GetHomeFolder() { return GetFolder(sdHome); }
-    static wxString GetConfigFolder(){ return GetFolder(sdConfig); }
-    static wxString GetPluginsFolder(bool global = true){ return GetFolder(global ? sdPluginsGlobal : sdPluginsUser); }
-    static wxString GetScriptsFolder(bool global = true){ return GetFolder(global ? sdScriptsGlobal : sdScriptsUser); }
-    static wxString GetDataFolder(bool global = true){ return GetFolder(global ? sdDataGlobal : sdDataUser); }
-    static wxString GetExecutableFolder(){ return GetFolder(sdBase); }
-    static wxString GetTempFolder(){ return GetFolder(sdTemp); }
+    static wxString GetHomeFolder()                      { return GetFolder(sdHome); }
+    static wxString GetConfigFolder()                    { return GetFolder(sdConfig); }
+    static wxString GetPluginsFolder(bool global = true) { return GetFolder(global ? sdPluginsGlobal : sdPluginsUser); }
+    static wxString GetScriptsFolder(bool global = true) { return GetFolder(global ? sdScriptsGlobal : sdScriptsUser); }
+    static wxString GetDataFolder(bool global = true)    { return GetFolder(global ? sdDataGlobal    : sdDataUser); }
+    static wxString GetExecutableFolder()                { return GetFolder(sdBase); }
+    static wxString GetTempFolder()                      { return GetFolder(sdTemp); }
 
     /*
     *  Network proxy for HTTP/FTP transfers
