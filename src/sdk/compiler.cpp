@@ -671,7 +671,7 @@ void Compiler::LoadSettings(const wxString& baseKey)
         }
     }
 
-    // switches
+    // Compiler switches
     m_Switches.includeDirs             = cfg->Read(tmp + _T("/switches/includes"),                    m_Switches.includeDirs);
     m_Switches.libDirs                 = cfg->Read(tmp + _T("/switches/libs"),                        m_Switches.libDirs);
     m_Switches.linkLibs                = cfg->Read(tmp + _T("/switches/link"),                        m_Switches.linkLibs);
@@ -681,7 +681,7 @@ void Compiler::LoadSettings(const wxString& baseKey)
     m_Switches.needDependencies        = cfg->ReadBool(tmp + _T("/switches/deps"),                    m_Switches.needDependencies);
     m_Switches.forceCompilerUseQuotes  = cfg->ReadBool(tmp + _T("/switches/forceCompilerQuotes"),     m_Switches.forceCompilerUseQuotes);
     m_Switches.forceLinkerUseQuotes    = cfg->ReadBool(tmp + _T("/switches/forceLinkerQuotes"),       m_Switches.forceLinkerUseQuotes);
-    m_Switches.logging = (CompilerLoggingType)cfg->ReadInt(tmp + _T("/switches/logging"),             m_Switches.logging);
+    m_Switches.logging                 = (CompilerLoggingType)cfg->ReadInt(tmp + _T("/switches/logging"), m_Switches.logging);
     m_Switches.libPrefix               = cfg->Read(tmp + _T("/switches/libPrefix"),                   m_Switches.libPrefix);
     m_Switches.libExtension            = cfg->Read(tmp + _T("/switches/libExtension"),                m_Switches.libExtension);
     m_Switches.linkerNeedsLibPrefix    = cfg->ReadBool(tmp + _T("/switches/linkerNeedsLibPrefix"),    m_Switches.linkerNeedsLibPrefix);
@@ -693,7 +693,7 @@ void Compiler::LoadSettings(const wxString& baseKey)
     m_Switches.UseFlatObjects          = cfg->ReadBool(tmp + _T("/switches/UseFlatObjects"),          m_Switches.UseFlatObjects);
     m_Switches.UseFullSourcePaths      = cfg->ReadBool(tmp + _T("/switches/UseFullSourcePaths"),      m_Switches.UseFullSourcePaths);
     m_Switches.Use83Paths              = cfg->ReadBool(tmp + _T("/switches/Use83Paths"),              m_Switches.Use83Paths);
-    m_Switches.includeDirSeparator  = (wxChar)cfg->ReadInt(tmp + _T("/switches/includeDirSeparator"), (int)m_Switches.includeDirSeparator);
+    m_Switches.includeDirSeparator     = (wxChar)cfg->ReadInt(tmp + _T("/switches/includeDirSeparator"), (int)m_Switches.includeDirSeparator);
     m_Switches.libDirSeparator         = (wxChar)cfg->ReadInt(tmp + _T("/switches/libDirSeparator"),  (int)m_Switches.libDirSeparator);
     m_Switches.objectSeparator         = (wxChar)cfg->ReadInt(tmp + _T("/switches/objectSeparator"),  (int)m_Switches.objectSeparator);
     m_Switches.statusSuccess           = cfg->ReadInt(tmp + _T("/switches/statusSuccess"),            m_Switches.statusSuccess);
@@ -1356,7 +1356,7 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
             if (name.empty() || (name == "exec") || (name == "default"))
                 continue;
 
-            // Matchs a regular expression or compares versions, dpeending on Value
+            // Matches a regular expression or compares versions, depending on Value
             // If Value == "expression", looks for match in all output lines
             // If value == "expression;op;version" applies operator 'op' between match and version. Example: "([0-9]+\.[0-9]+\.[0-9]+);ge;4.2.0"
             // Possible operators: gt, ge, eq, ne, le, lt
@@ -1531,7 +1531,7 @@ wxString Compiler::GetExecName(const wxString& name)
 // However, wxExecute in asynchronous mode does not do this. The caveat is that we must wait
 // in a loop for the end of the task and extract the command output in a separate step.
 
-// This auxiliary class is needed for detecting the end of the task and retrieving the ouput.
+// This auxiliary class is needed for detecting the end of the task and retrieving the output.
 // OnTerminate() will be called when the task ends with the return code of the task, and then
 // the task output can be retrieved (as a stream).
 

@@ -69,7 +69,6 @@ wxString ConfigManager::plugin_path_global;
 wxString ConfigManager::app_path;
 wxString ConfigManager::temp_folder;
 
-
 namespace CfgMgrConsts
 {
     const wxString app_path(_T("app_path"));
@@ -77,7 +76,6 @@ namespace CfgMgrConsts
     const wxString dotDot(_T(".."));
     const int version = 1;
 }
-
 
 namespace
 {
@@ -130,7 +128,6 @@ namespace
     }
 }
 
-
 inline void ConfigManager::Collapse(wxString& str) const
 {
     const wxChar *src = str.c_str();
@@ -158,9 +155,6 @@ ISerializable::ISerializable()
 
 ISerializable::~ISerializable()
 {}
-
-
-
 
 /* ------------------------------------------------------------------------------------------------------------------
 *  "Builder pattern" class for ConfigManager
@@ -193,7 +187,6 @@ CfgMgrBldr::CfgMgrBldr() : doc(nullptr), volatile_doc(nullptr), r(false)
     }
     SwitchTo(cfg);
 }
-
 
 wxString CfgMgrBldr::FindConfigFile(const wxString& filename)
 {
@@ -407,12 +400,10 @@ void CfgMgrBldr::Close()
     doc = nullptr;
 }
 
-
 ConfigManager* CfgMgrBldr::GetConfigManager(const wxString& name_space)
 {
     return Get()->Build(name_space);
 }
-
 
 ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
 {
@@ -512,7 +503,6 @@ wxString ConfigManager::GetProxy()
     return Manager::Get()->GetConfigManager(_T("app"))->Read(_T("network_proxy"));
 }
 
-
 wxString ConfigManager::GetFolder(SearchDirs dir)
 {
     static bool once = 1;
@@ -593,7 +583,6 @@ inline wxString ConfigManager::GetUserDataFolder()
 #endif // __WINDOWS__
 }
 
-
 bool ConfigManager::SetUserDataFolder(const wxString &user_data_path)
 {
     wxString udp = wxFileName::DirName(user_data_path).GetFullPath();
@@ -647,8 +636,6 @@ wxString ConfigManager::LocateDataFile(const wxString& filename, int search_dirs
     return searchPaths.FindValidPath(filename);
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------
 *  ConfigManager
 */
@@ -656,9 +643,6 @@ wxString ConfigManager::LocateDataFile(const wxString& filename, int search_dirs
 ConfigManager::ConfigManager(TiXmlElement* r) : doc(r->GetDocument()), root(r), pathNode(r)
 {
 }
-
-
-
 
 /* ------------------------------------------------------------------------------------------------------------------
 *  Configuration path handling
@@ -701,7 +685,6 @@ wxString ConfigManager::InvalidNameMessage(const wxString& what, const wxString&
 
     return s;
 }
-
 
 TiXmlElement* ConfigManager::AssertPath(wxString& path)
 {
@@ -753,7 +736,6 @@ TiXmlElement* ConfigManager::AssertPath(wxString& path)
 
     return localPath;
 }
-
 
 /* -----------------------------------------------------------------------------------------------------
 *  Clear all nodes from your namespace or delete the namespace alltogether (removing it from the config file).
@@ -825,8 +807,6 @@ void ConfigManager::SetNodeText(TiXmlElement* n, const TiXmlText& t)
     else
         n->InsertEndChild(t);
 }
-
-
 
 /* ------------------------------------------------------------------------------------------------------------------
 *  Write and read values
@@ -1009,7 +989,6 @@ bool ConfigManager::Read(const wxString& name,  int* value)
     return false;
 }
 
-
 void ConfigManager::Write(const wxString& name,  bool value)
 {
     wxString key(name);
@@ -1045,7 +1024,6 @@ bool ConfigManager::Read(const wxString& name,  bool* value)
     return false;
 }
 
-
 void ConfigManager::Write(const wxString& name,  double value)
 {
     wxString key(name);
@@ -1078,7 +1056,6 @@ bool ConfigManager::Read(const wxString& name,  double* value)
     return false;
 }
 
-
 void ConfigManager::Set(const wxString& name)
 {
     wxString key(name);
@@ -1105,8 +1082,6 @@ bool ConfigManager::Exists(const wxString& name)
 
     return leaf;
 }
-
-
 
 void ConfigManager::Write(const wxString& name,  const wxArrayString& arrayString)
 {
@@ -1199,7 +1174,6 @@ wxString ConfigManager::ReadBinary(const wxString& name)
     return wxEmptyString;
 }
 
-
 wxArrayString ConfigManager::EnumerateSubPaths(const wxString& path)
 {
     wxString key(path + _T('/')); // the trailing slash hack is required because AssertPath expects a key name
@@ -1280,7 +1254,6 @@ void ConfigManager::DeleteSubPath(const wxString& thePath)
         }
     }
 }
-
 
 wxArrayString ConfigManager::EnumerateKeys(const wxString& path)
 {
@@ -1429,11 +1402,6 @@ ConfigManagerContainer::IntToStringMap ConfigManager::ReadISMap(const wxString& 
     return ret;
 }
 
-
-
-
-
-
 void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::StringSet& set)
 {
     wxString key(name);
@@ -1458,7 +1426,6 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::St
     }
 }
 
-
 void ConfigManager::Read(const wxString& name, ConfigManagerContainer::StringSet* set)
 {
     wxString key(name);
@@ -1482,7 +1449,6 @@ ConfigManagerContainer::StringSet ConfigManager::ReadSSet(const wxString& name)
     return ret;
 }
 
-
 void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::SerializableObjectMap* map)
 {
     wxString key(name);
@@ -1502,7 +1468,6 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::Se
         mNode->InsertEndChild(s);
     }
 }
-
 
 void ConfigManager::InitPaths()
 {
@@ -1658,6 +1623,7 @@ bool ConfigManagerWrapper::Read(const wxString& key, wxString* str)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     return c->Read(key, str);
 }
+
 void ConfigManagerWrapper::Write(const wxString& key, const char* str)
 {
     if (m_namespace.empty())
@@ -1673,6 +1639,7 @@ void ConfigManagerWrapper::Write(const wxString& name, int value)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     c->Write(m_basepath + name, value);
 }
+
 bool ConfigManagerWrapper::Read(const wxString& name, int* value)
 {
     if (m_namespace.empty())
@@ -1696,6 +1663,7 @@ void ConfigManagerWrapper::Write(const wxString& name, bool value)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     c->Write(m_basepath + name, value);
 }
+
 bool ConfigManagerWrapper::Read(const wxString& name, bool* value)
 {
     if (m_namespace.empty())
@@ -1703,6 +1671,7 @@ bool ConfigManagerWrapper::Read(const wxString& name, bool* value)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     return c->Read(m_basepath + name, value);
 }
+
 bool ConfigManagerWrapper::ReadBool(const wxString& name, bool defaultVal)
 {
     if (m_namespace.empty())
@@ -1718,6 +1687,7 @@ void ConfigManagerWrapper::Write(const wxString& name, double value)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     c->Write(m_basepath + name, value);
 }
+
 bool ConfigManagerWrapper::Read(const wxString& name, double* value)
 {
     if (m_namespace.empty())
@@ -1725,6 +1695,7 @@ bool ConfigManagerWrapper::Read(const wxString& name, double* value)
     ConfigManager *c = Manager::Get()->GetConfigManager(m_namespace);
     return c->Read(m_basepath + name, value);
 }
+
 double ConfigManagerWrapper::ReadDouble(const wxString& name, double defaultVal)
 {
     if (m_namespace.empty())
