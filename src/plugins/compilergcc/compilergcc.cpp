@@ -1915,28 +1915,30 @@ int CompilerGCC::RunSingleFile(const wxString& filename)
 
 bool CompilerGCC::ExecutableExists(cbProject* prj)
 {
-    bool exists = false;
-    if (prj)
-    {
-        ProjectBuildTarget* pTarget = prj->GetBuildTarget(prj->GetActiveBuildTarget());
-        if (pTarget)
-        {
-            if (pTarget->GetTargetType() == ttCommandsOnly)
-            {
-                exists = true;
-            }
-            else
-            {
-                wxString out = UnixFilename(pTarget->GetOutputFilename());
-                Manager::Get()->GetMacrosManager()->ReplaceEnvVars(out);
-                wxFileName file(out);
-                file.MakeAbsolute(prj->GetBasePath());
-                exists = file.FileExists();
-            }
-        }
-    }
+    // A project is not mandatory to execute the file in the editor
+    if (!prj)
+        return true;
 
-    return exists;
+    // Get target name
+    const wxString activeTarget(prj->GetActiveBuildTarget());
+
+    // Is a virtual target?
+    if (prj->HasVirtualBuildTarget(activeTarget))
+        return true;
+
+    ProjectBuildTarget* pTarget = prj->GetBuildTarget(activeTarget);
+    if (!pTarget)
+        return false;
+
+    if (pTarget->GetTargetType() == ttCommandsOnly)
+        return true;
+
+    // Check if the output filename exists
+    wxString out = UnixFilename(pTarget->GetOutputFilename());
+    Manager::Get()->GetMacrosManager()->ReplaceEnvVars(out);
+    wxFileName file(out);
+    file.MakeAbsolute(prj->GetBasePath());
+    return file.FileExists();
 }
 
 int CompilerGCC::Run(const wxString& target)
@@ -2132,7 +2134,6 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         // if they didn't specify $SCRIPT, append:
         cmd << command;
 
-    // This block could be removed after r13278, but better safe than sorry...
     Manager::Get()->GetLogManager()->Log(_("Checking for existence: ") + f.GetFullPath(), m_PageIndex);
     if ( (target->GetTargetType() != ttCommandsOnly) && !wxFileExists(f.GetFullPath()) )
     {
@@ -2156,7 +2157,6 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
                 return -1;
         }
     }
-    // End of block
 
     const wxString& message = wxString::Format(_("Executing: %s (in %s)"), cmd, m_CdRun);
     m_CommandQueue.Add(new CompilerCommand(cmd, message, m_pProject, target, true));
