@@ -1,10 +1,10 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <!DOCTYPE CodeBlocks_compiler_options>
 <CodeBlocks_compiler_options>
     <Category name="General">
         <Option name="In C mode, this is equivalent to -std=c89, in C++ mode, it is equivalent to -std=c++98"
                 option="-ansi"
-                supersedes="-std=c90 -std=gnu90 -std=c++98 -std=gnu++98 -std=c99 -std=gnu99 -std=c11 -std=gnu11 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c17 -std=gnu17 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                supersedes="-std=c90 -std=gnu90 -std=c++98 -std=gnu++98 -std=c99 -std=gnu99 -std=c11 -std=gnu11 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c17 -std=gnu17 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26 "/>
         <Option name="Have gcc follow the 2017 ISO C language standard"
                 option="-std=c17"
                 supersedes="-std=c90 -std=gnu90 -std=c99 -std=gnu99 -std=c11 -std=gnu11 -ansi"/>
@@ -31,10 +31,10 @@
                 supersedes="-std=c99 -std=gnu99 -std=c11 -std=gnu11 -std=c17 -std=gnu17 -ansi"/>
         <Option name="Have g++ follow the 1998 ISO C++ language standard"
                 option="-std=c++98"
-                supersedes="-std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu+14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                supersedes="-std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu+14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
         <Option name="Have g++ follow the 1998 GNU C++ language standard (ISO C++ plus GNU extensions)"
                 option="-std=gnu++98"
-                supersedes="-std=c++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu+14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                supersedes="-std=c++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu+14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
         <if exec="C -dumpversion"
             version_greater_equal="4.7"
             default="true">
@@ -43,48 +43,57 @@
                     supersedes="-std=c++98 -std=c++14 -std=c++17 -std=c++20"/>
             <Option name="Have g++ follow the C++11 GNU C++ language standard (ISO C++ plus GNU extensions)"
                     option="-std=gnu++11"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
         </if>
         <if exec="C -dumpversion"
             version_greater_equal="5"
             default="true">
             <Option name="Have g++ follow the C++14 ISO C++ language standard"
                     option="-std=c++14"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
             <Option name="Have g++ follow the C++14 GNU C++ language standard (ISO C++ plus GNU extensions)"
                     option="-std=gnu++14"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
         </if>
         <if exec="C -dumpversion"
             version_greater_equal="7"
             default="true">
             <Option name="Have g++ follow the C++17 ISO C++ language standard"
                     option="-std=c++17"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
             <Option name="Have g++ follow the C++17 GNU C++ language standard (ISO C++ plus GNU extensions)"
                     option="-std=gnu++17"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=c++20 -std=gnu++20 -std=c++2a -std=gnu++2a"/>
-        </if>
-        <if exec="C -dumpversion"
-            version_greater_equal="8"
-            version_less="10"
-            default="true">
-            <Option name="Have g++ follow the C++20 ISO C++ language standard"
-                    option="-std=c++2a"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=gnu++2a"/>
-            <Option name="Have g++ follow the C++20 GNU C++ language standard (ISO C++ plus GNU extensions)"
-                    option="-std=gnu++2a"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++2a"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
         </if>
         <if exec="C -dumpversion"
             version_greater_equal="10"
             default="true">
             <Option name="Have g++ follow the C++20 ISO C++ language standard"
                     option="-std=c++20"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=gnu++20"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
             <Option name="Have g++ follow the C++20 GNU C++ language standard (ISO C++ plus GNU extensions)"
                     option="-std=gnu++20"
-                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20"/>
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=c++23 -std=gnu++23 -std=c++26 -std=gnu++26"/>
+        </if>
+        <if exec="C -dumpversion"
+            version_greater_equal="13"
+            default="true">
+            <Option name="Have g++ follow the C++23 ISO C++ language standard"
+                    option="-std=c++23"
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=gnu++23 -std=c++26 -std=gnu++26"/>
+            <Option name="Have g++ follow the C++23 GNU C++ language standard (ISO C++ plus GNU extensions)"
+                    option="-std=gnu++23"
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=c++26 -std=gnu++26"/>
+        </if>
+        <if exec="C -dumpversion"
+            version_greater_equal="14"
+            default="true">
+            <Option name="Have g++ follow the C++26 ISO C++ language standard"
+                    option="-std=c++26"
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=c++23 -std=gnu++20 -std=gnu++23 -std=gnu++26"/>
+            <Option name="Have g++ follow the C++26 GNU C++ language standard (ISO C++ plus GNU extensions)"
+                    option="-std=gnu++26"
+                    supersedes="-std=c++98 -std=gnu++98 -std=c++11 -std=gnu++11 -std=c++14 -std=gnu++14 -std=c++17 -std=gnu++17 -std=c++20 -std=gnu++20 -std=c++23 -std=gnu++23 -std=c++26"/>
         </if>
     </Category>
     <Category name="Warnings">
