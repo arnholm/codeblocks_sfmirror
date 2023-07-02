@@ -75,12 +75,12 @@
         CCLogger::Get()->DebugLog(F(format, ##args))
     #define TRACE2(format, args...)
 #elif CC_CODECOMPLETION_DEBUG_OUTPUT == 2
-    #define TRACE(format, args...)                                              \
-        do                                                                      \
-        {                                                                       \
-            if (g_EnableDebugTrace)                                             \
-                CCLogger::Get()->DebugLog(F(format, ##args));                   \
-        }                                                                       \
+    #define TRACE(format, args...)                            \
+        do                                                    \
+        {                                                     \
+            if (g_EnableDebugTrace)                           \
+                CCLogger::Get()->DebugLog(F(format, ##args)); \
+        }                                                     \
         while (false)
     #define TRACE2(format, args...) \
         CCLogger::Get()->DebugLog(F(format, ##args))
@@ -851,13 +851,13 @@ void CodeCompletion::DoCodeComplete(int caretPos, cbEditor* ed, std::vector<CCTo
     if (   m_NativeParser.MarkItemsByAI(result, m_NativeParser.GetParser().Options().useSmartSense, true, caseSens, caretPos)
         || m_NativeParser.LastAISearchWasGlobal() ) // enter even if no match (code-complete C++ keywords)
     {
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxString::Format("%zu results", result.size()));
         TRACE(wxString::Format("%zu results", result.size()));
 
         if (result.size() <= m_CCMaxMatches)
         {
-            if (s_DebugSmartSense)
+            if (g_DebugSmartSense)
                 CCLogger::Get()->DebugLog(wxT("Generating tokens list..."));
 
             const int fontSize = CalcStcFontSize(stc);
@@ -917,7 +917,7 @@ void CodeCompletion::DoCodeComplete(int caretPos, cbEditor* ed, std::vector<CCTo
             if (m_NativeParser.LastAISearchWasGlobal() && !preprocessorOnly)
             {
                 // empty or partial search phrase: add theme keywords in search list
-                if (s_DebugSmartSense)
+                if (g_DebugSmartSense)
                     CCLogger::Get()->DebugLog(_T("Last AI search was global: adding theme keywords in list"));
 
                 EditorColourSet* colour_set = ed->GetColourSet();
@@ -971,7 +971,7 @@ void CodeCompletion::DoCodeComplete(int caretPos, cbEditor* ed, std::vector<CCTo
     }
     else if (!stc->CallTipActive())
     {
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxT("0 results"));
 
         if (!m_NativeParser.GetParser().Done())

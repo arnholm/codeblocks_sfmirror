@@ -14,9 +14,6 @@
 #include "parser/token.h"
 #include "parser/tokentree.h"
 
-/** debug only variable, used to print the AI match related log message */
-extern bool s_DebugSmartSense;
-
 class NativeParserBase
 {
 public:

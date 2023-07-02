@@ -50,12 +50,12 @@
         CCLogger::Get()->DebugLog(F(format, ##args))
     #define TRACE2(format, args...)
 #elif CC_BUILDERTHREAD_DEBUG_OUTPUT == 2
-    #define TRACE(format, args...)                                              \
-        do                                                                      \
-        {                                                                       \
-            if (g_EnableDebugTrace)                                             \
-                CCLogger::Get()->DebugLog(F(format, ##args));                   \
-        }                                                                       \
+    #define TRACE(format, args...)                            \
+        do                                                    \
+        {                                                     \
+            if (g_EnableDebugTrace)                           \
+                CCLogger::Get()->DebugLog(F(format, ##args)); \
+        }                                                     \
         while (false)
     #define TRACE2(format, args...) \
         CCLogger::Get()->DebugLog(F(format, ##args))
@@ -278,8 +278,8 @@ void ClassBrowserBuilderThread::ExpandItem(CCTreeItem* item)
             case sfRoot:
             {
                 CreateSpecialFolders(m_CCTreeTop, item);
-                if( !(   m_BrowserOptions.displayFilter == bdfFile
-                      && m_ActiveFilename.IsEmpty() ) )
+                if ( !(   m_BrowserOptions.displayFilter == bdfFile
+                       && m_ActiveFilename.IsEmpty() ) )
                     AddChildrenOf(m_CCTreeTop, item, -1, ~(tkFunction | tkVariable | tkMacroDef | tkTypedef | tkMacroUse));
                 break;
             }
@@ -1355,6 +1355,7 @@ int CCTree::CompareFunction(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs
                     return (lhs->m_Token->m_Line > rhs->m_Token->m_Line) * 2 - 1; // from 0,1 to -1,1
                 return (lhs->m_Token->m_FileIdx > rhs->m_Token->m_FileIdx) * 2 - 1;
                 break;
+            case bstNone: // fall-trough
             default:
                 return 0;
         }

@@ -141,6 +141,9 @@ private:
     /** whether print the debug log message */
     void OnDebugSmartSense(wxCommandEvent& event);
 
+    /** whether or not tracing the code completion process (requires TRACE marcos to be compiled in by #defining CC_DEBUG_GLOBAL to 2 */
+    void OnEnableDebugTrace(wxCommandEvent& event);
+
     /** sort type changed */
     void OnSetSortType(wxCommandEvent& event);
 

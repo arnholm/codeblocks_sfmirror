@@ -26,6 +26,7 @@ class wxEvtHandler;
     #define CC_PROCESS_LOG_EVENT_TO_PARENT 1
 #endif
 
+extern bool           g_DebugSmartSense;  //!< Debug only variable, used to print semantic match related log message
 extern bool           g_EnableDebugTrace; //!< Toggles tracing into file.
 extern const wxString g_DebugTraceFile;   //!< Trace file name (if above is enabled).
 extern long           g_idCCAddToken;

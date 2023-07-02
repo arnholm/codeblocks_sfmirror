@@ -64,12 +64,12 @@
         CCLogger::Get()->DebugLog(F(format, ##args))
     #define TRACE2(format, args...)
 #elif CC_CLASS_BROWSER_DEBUG_OUTPUT == 2
-    #define TRACE(format, args...)                                              \
-        do                                                                      \
-        {                                                                       \
-            if (g_EnableDebugTrace)                                             \
-                CCLogger::Get()->DebugLog(F(format, ##args));                   \
-        }                                                                       \
+    #define TRACE(format, args...)                            \
+        do                                                    \
+        {                                                     \
+            if (g_EnableDebugTrace)                           \
+                CCLogger::Get()->DebugLog(F(format, ##args)); \
+        }                                                     \
         while (false)
     #define TRACE2(format, args...) \
         CCLogger::Get()->DebugLog(F(format, ##args))
@@ -85,6 +85,7 @@ int idCBViewInheritance        = wxNewId();
 int idCBExpandNS               = wxNewId();
 int idMenuForceReparse         = wxNewId();
 int idMenuDebugSmartSense      = wxNewId();
+int idMenuEnableDebugTrace     = wxNewId();
 int idCBNoSort                 = wxNewId();
 int idCBSortByAlpabet          = wxNewId();
 int idCBSortByKind             = wxNewId();
@@ -117,6 +118,7 @@ BEGIN_EVENT_TABLE(ClassBrowser, wxPanel)
     EVT_MENU(idCBViewInheritance,                        ClassBrowser::OnCBViewMode)
     EVT_MENU(idCBExpandNS,                               ClassBrowser::OnCBExpandNS)
     EVT_MENU(idMenuDebugSmartSense,                      ClassBrowser::OnDebugSmartSense)
+    EVT_MENU(idMenuEnableDebugTrace,                     ClassBrowser::OnEnableDebugTrace)
     EVT_MENU(idCBNoSort,                                 ClassBrowser::OnSetSortType)
     EVT_MENU(idCBSortByAlpabet,                          ClassBrowser::OnSetSortType)
     EVT_MENU(idCBSortByKind,                             ClassBrowser::OnSetSortType)
@@ -333,8 +335,10 @@ void ClassBrowser::ShowMenu(wxTreeCtrl* tree, wxTreeItemId id, cb_unused const w
         if (wxGetKeyState(WXK_CONTROL) && wxGetKeyState(WXK_SHIFT))
         {
             menu->AppendSeparator();
-            menu->AppendCheckItem(idMenuDebugSmartSense, _("Debug SmartSense"));
-            menu->Check(idMenuDebugSmartSense, s_DebugSmartSense);
+            menu->AppendCheckItem(idMenuDebugSmartSense,  _("Debug SmartSense"));
+            menu->Check(idMenuDebugSmartSense,  g_DebugSmartSense);
+            menu->AppendCheckItem(idMenuEnableDebugTrace, _("Enable Debug Trace (requires trace macros to be compiled in)."));
+            menu->Check(idMenuEnableDebugTrace, g_EnableDebugTrace);
         }
 
         menu->Check(idCBViewInheritance, m_Parser ? options.showInheritance : false);
@@ -700,7 +704,12 @@ void ClassBrowser::OnViewScope(wxCommandEvent& event)
 
 void ClassBrowser::OnDebugSmartSense(cb_unused wxCommandEvent& event)
 {
-    s_DebugSmartSense = !s_DebugSmartSense;
+    g_DebugSmartSense = !g_DebugSmartSense;
+}
+
+void ClassBrowser::OnEnableDebugTrace(cb_unused wxCommandEvent& event)
+{
+    g_EnableDebugTrace = !g_EnableDebugTrace;
 }
 
 void ClassBrowser::OnSetSortType(wxCommandEvent& event)

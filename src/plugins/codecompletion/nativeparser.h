@@ -16,9 +16,6 @@
 
 #include <wx/event.h>
 
-/** debug only variable, used to print the AI match related log message*/
-extern bool s_DebugSmartSense;
-
 extern const int g_EditorActivatedDelay;
 
 // forward declaration

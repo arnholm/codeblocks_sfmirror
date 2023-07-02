@@ -61,12 +61,12 @@
         CCLogger::Get()->DebugLog(F(format, ##args))
     #define TRACE2(format, args...)
 #elif CC_NATIVEPARSER_DEBUG_OUTPUT == 2
-    #define TRACE(format, args...)                                              \
-        do                                                                      \
-        {                                                                       \
-            if (g_EnableDebugTrace)                                             \
-                CCLogger::Get()->DebugLog(F(format, ##args));   \
-        }                                                                       \
+    #define TRACE(format, args...)                            \
+        do                                                    \
+        {                                                     \
+            if (g_EnableDebugTrace)                           \
+                CCLogger::Get()->DebugLog(F(format, ##args)); \
+        }                                                     \
         while (false)
     #define TRACE2(format, args...) \
         CCLogger::Get()->DebugLog(F(format, ##args))
@@ -121,9 +121,6 @@ namespace NativeParserHelper
 
 /** event id for the sequence project parsing timer */
 int idTimerParsingOneByOne = wxNewId();
-
-/** if this option is enabled, there will be many log messages when doing semantic match */
-bool s_DebugSmartSense = false;
 
 static void AddToImageList(wxImageList* list, const wxString &path, int size)
 {
@@ -852,7 +849,7 @@ size_t NativeParser::MarkItemsByAI(TokenIdxSet& result,
                                    bool         caseSensitive,
                                    int          caretPos)
 {
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog("MarkItemsByAI_1()");
 
     cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -1306,7 +1303,7 @@ size_t NativeParser::AI(TokenIdxSet&    result,
     }
 
     // Do the whole job here
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
     {
         CCLogger::Get()->DebugLog("AI() =========================================================");
         CCLogger::Get()->DebugLog(wxString::Format("AI() Doing AI for '%s':", actual_search));
@@ -1355,7 +1352,7 @@ size_t NativeParser::AI(TokenIdxSet&    result,
 
     ResolveExpression(tree, components, *search_scope, result, caseSensitive, isPrefix);
 
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format("AI() AI leave, returned %zu results", result.size()));
 
     return result.size();
@@ -1422,7 +1419,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
     int pos = caretPos == -1 ? searchData->control->GetCurrentPos() : caretPos;
     if ((pos < 0) || (pos > searchData->control->GetLength()))
     {
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Cannot determine position. caretPos=%d, control=%d",
                                                        caretPos, searchData->control->GetCurrentPos()));
         return -1;
@@ -1439,14 +1436,14 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
         if (procName)      *procName      = m_LastPROC;
         if (functionIndex) *functionIndex = m_LastFunctionIndex;
 
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Cached namespace='%s', cached proc='%s' (returning %d)",
                                                        m_LastNamespace, m_LastPROC, m_LastResult));
 
         return m_LastResult;
     }
 
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Looking for tokens in '%s'", searchData->file));
     m_LastFile    = searchData->file;
     m_LastControl = searchData->control;
@@ -1456,7 +1453,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
     // the tokens, see if the line is in the token's imp.
     TokenIdxSet result;
     size_t num_results = m_Parser->FindTokensInFile(searchData->file, result, tkAnyFunction | tkClass);
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Found %zu results", num_results));
 
     TokenTree* tree = m_Parser->GetTokenTree();
@@ -1468,7 +1465,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
     if (token)
     {
         // got it :)
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Current function: '%s' (at line %u)",
                                                        token->DisplayName(), token->m_ImplLine));
 
@@ -1487,7 +1484,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
                     break;
                 else if (ch == 0)
                 {
-                    if (s_DebugSmartSense)
+                    if (g_DebugSmartSense)
                         CCLogger::Get()->DebugLog(_T("FindCurrentFunctionStart() Can't determine functions opening brace..."));
 
                     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
@@ -1502,7 +1499,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
         if (procName)      *procName      = m_LastPROC;
         if (functionIndex) *functionIndex = token->m_Index;
 
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(wxString::Format("FindCurrentFunctionStart() Namespace='%s', proc='%s' (returning %d)",
                                                        m_LastNamespace, m_LastPROC, m_LastResult));
 
@@ -1512,7 +1509,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
 
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
 
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog("FindCurrentFunctionStart() Can't determine current function...");
 
     m_LastResult = -1;
@@ -1521,7 +1518,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
 
 bool NativeParser::ParseUsingNamespace(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
 {
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseUsingNamespace() Parse file scope for \"using namespace\""));
     TRACE(_T("NativeParser::ParseUsingNamespace()"));
 
@@ -1564,7 +1561,7 @@ bool NativeParser::ParseBufferForUsingNamespace(const wxString& buffer, TokenIdx
             parentIdx = id;
         }
 
-        if (s_DebugSmartSense && parentIdx != -1)
+        if (g_DebugSmartSense && parentIdx != -1)
         {
             const Token* token = tree->at(parentIdx);
             if (token)
@@ -1581,7 +1578,7 @@ bool NativeParser::ParseBufferForUsingNamespace(const wxString& buffer, TokenIdx
 
 bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos)
 {
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseFunctionArguments() Parse function arguments"));
     TRACE(_T("NativeParser::ParseFunctionArguments()"));
 
@@ -1592,7 +1589,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
     size_t found_at = FindCurrentFunctionToken(searchData, proc_result, caretPos);
     if (!found_at)
     {
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(_T("ParseFunctionArguments() Could not determine current function's namespace..."));
         TRACE(_T("ParseFunctionArguments() Could not determine current function's namespace..."));
         return false;
@@ -1621,7 +1618,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
         if (curLine < token->m_ImplLineStart || curLine > token->m_ImplLineEnd)
             continue;
 
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(_T("ParseFunctionArguments() + Function match: ") + token->m_Name);
         TRACE(_T("ParseFunctionArguments() + Function match: ") + token->m_Name);
 
@@ -1638,7 +1635,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
             // Finally we have            "int my_int; const TheClass* my_class; float f;"
             buffer.Trim();
 
-            if (s_DebugSmartSense)
+            if (g_DebugSmartSense)
                 CCLogger::Get()->DebugLog(wxString::Format("ParseFunctionArguments() Parsing arguments: \"%s\"", buffer));
 
             if (!buffer.IsEmpty())
@@ -1665,7 +1662,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
 
         if (   !buffer.IsEmpty()
             && !m_Parser->ParseBuffer(buffer, false, false, true, searchData->file, tokenIdx, initLine)
-            && s_DebugSmartSense)
+            && g_DebugSmartSense)
         {
             CCLogger::Get()->DebugLog(_T("ParseFunctionArguments() Error parsing arguments."));
         }
@@ -1679,7 +1676,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
 
 bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
 {
-    if (s_DebugSmartSense)
+    if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseLocalBlock() Parse local block"));
     TRACE(_T("NativeParser::ParseLocalBlock()"));
 
@@ -1718,7 +1715,7 @@ bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search
         const int blockEnd    = stc->GetLineEndPosition(line);
         if (blockEnd < 0 || blockEnd > stc->GetLength())
         {
-            if (s_DebugSmartSense)
+            if (g_DebugSmartSense)
             {
                 CCLogger::Get()->DebugLog(wxString::Format("ParseLocalBlock() ERROR blockEnd=%d and edLength=%d?!",
                                                            blockEnd, stc->GetLength()));
@@ -1800,12 +1797,12 @@ bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search
         if (   !buffer.IsEmpty()
             && !m_Parser->ParseBuffer(buffer, false, false, true, searchData->file, m_LastFuncTokenIdx, initLine) )
         {
-            if (s_DebugSmartSense)
+            if (g_DebugSmartSense)
                 CCLogger::Get()->DebugLog(_T("ParseLocalBlock() ERROR parsing block:\n") + buffer);
         }
         else
         {
-            if (s_DebugSmartSense)
+            if (g_DebugSmartSense)
             {
                 CCLogger::Get()->DebugLog(wxString::Format("ParseLocalBlock() Block:\n%s", buffer));
                 CCLogger::Get()->DebugLog("ParseLocalBlock() Local tokens:");
@@ -1834,7 +1831,7 @@ bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search
     }
     else
     {
-        if (s_DebugSmartSense)
+        if (g_DebugSmartSense)
             CCLogger::Get()->DebugLog(_T("ParseLocalBlock() Could not determine current block start..."));
     }
     return false;
@@ -2543,11 +2540,11 @@ void NativeParser::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
                         // AddProjectToParser return true means there are something need to parse, otherwise, it is false
                         if (!AddProjectToParser(projs->Item(i)))
                         {
-                            CCLogger::Get()->Log(_("NativeParser::OnParsingOneByOneTimer: nothing need to parse in this project, try next project."));
+                            CCLogger::Get()->Log(_("NativeParser::OnParsingOneByOneTimer: Nothing needs to be parseed in this project, switching to next project..."));
                             continue;
                         }
 
-                        CCLogger::Get()->DebugLog(_T("NativeParser::OnParsingOneByOneTimer: Add additional (next) project to parser."));
+                        CCLogger::Get()->DebugLog(_T("NativeParser::OnParsingOneByOneTimer: Add new (next) project to parser."));
                         break;
                     }
                 }

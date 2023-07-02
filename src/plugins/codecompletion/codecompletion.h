@@ -525,7 +525,7 @@ private:
         };
 
         ImageId() : id(Last), size(-1) {}
-        ImageId(Id id, int size) : id(id), size(size) {}
+        ImageId(Id _id, int _size) : id(_id), size(_size) {}
 
         bool operator==(const ImageId &o) const
         {

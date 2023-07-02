@@ -18,36 +18,22 @@
 
 std::unique_ptr<CCLogger> CCLogger::s_Inst;
 
+bool           g_DebugSmartSense      = false; // If this option is enabled, there will be many log messages when doing semantic match
 bool           g_EnableDebugTrace     = false;
-bool           g_EnableDebugTraceFile = false; // true
 const wxString g_DebugTraceFile       = wxEmptyString;
 long           g_idCCAddToken         = wxNewId();
 long           g_idCCLogger           = wxNewId();
 long           g_idCCDebugLogger      = wxNewId();
-#define TRACE_TO_FILE(msg)                                           \
-    if (g_EnableDebugTraceFile && !g_DebugTraceFile.IsEmpty())       \
-    {                                                                \
-        wxTextFile f(g_DebugTraceFile);                              \
-        if ((f.Exists() && f.Open()) || (!f.Exists() && f.Create())) \
-        {                                                            \
-            f.AddLine(msg);                                          \
-            bool exp = f.Write() && f.Close();                       \
-            cbAssert(exp);                                           \
-        }                                                            \
-    }                                                                \
 
-#define TRACE_THIS_TO_FILE(msg)                                      \
-    if (!g_DebugTraceFile.IsEmpty())                                 \
-    {                                                                \
-        wxTextFile f(g_DebugTraceFile);                              \
-        if ((f.Exists() && f.Open()) || (!f.Exists() && f.Create())) \
-        {                                                            \
-            f.AddLine(msg);                                          \
-            bool exp = f.Write() && f.Close()                        \
-            cbAssert(exp);                                           \
-        }                                                            \
-    }                                                                \
-
+// Set CC_GLOBAL_DEBUG_OUTPUT via #define in the project options to 0:
+// --> No debugging output for CC will be generated (this is the default)
+// Set CC_GLOBAL_DEBUG_OUTPUT via #define in the project options to 1:
+// --> Debugging output for CC will be generated
+// Set CC_GLOBAL_DEBUG_OUTPUT via #define in the project options to 2:
+// --> Debugging output for CC will be generated only, when the user enabled this
+//     through the menu in the symbols browser (similar to debug smart sense)
+// For single files only, the same applies to the individual #define per file
+// (like CC_BUILDERTHREAD_DEBUG_OUTPUT, CC_NATIVEPARSER_DEBUG_OUTPUT, etc.)
 
 CCLogger::CCLogger() :
     m_Parent(nullptr),
