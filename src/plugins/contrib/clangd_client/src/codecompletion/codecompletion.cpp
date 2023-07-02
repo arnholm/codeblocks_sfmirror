@@ -1511,19 +1511,21 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
         return tips;    //empty tips
 
     // If not waiting for Hover response, and the signature help tokens are empty,
-    // issue a LSP_SignatureHelp request.
-    // This routine will be re-invoked after OnLSP_SignatureHelpResponse() fills in
-    // the m_SignatureTokens.
+    // issue a LSP_Hover request via GetTokenAt().
+    // Note that m_SignatureTokens is no longer used. 2023/07/2
+    //  because asking for LsP_SignatureHelp always return empty results.
     if (0 == m_SignatureTokens.size())
     {
         if (not GetLSPClient(ed)) return tips; //empty tips
-        GetLSPClient(ed)->LSP_SignatureHelp(ed, pos);
+
+        //LSP_SignatureHelp always returns empty. Try using Hover instead.//(ph 2023/07/01)
+        //-GetLSPClient(ed)->LSP_SignatureHelp(ed, pos);
+        bool allowCallTip = true;
+        GetTokenAt(pos, ed, allowCallTip);
+
         return tips; //empty tips
     }
-    for(unsigned ii=0; ii < m_SignatureTokens.size(); ++ii)
-    {
-        tips.push_back(m_SignatureTokens[ii]);
-    }
+
     m_SignatureTokens.clear(); //so we can ask for Signatures again
     return tips; //signature Help entries from clangd
 

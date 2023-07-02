@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.70 23/05/11")
+#define VERSION wxT("1.2.71 23/07/2")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.71   2023/07/2
+//          Fix non-responsive Show Call Tip (GetCallTips()) in keyboard only mode.
+//          Ask for Hover data, not SignatureHelp data.SignatureHelp response is always empty.
 //1.2.70    2023/05/11
 //          Translate the the project folder name to UTF-8 for clangd initialization (Trigger fix)
 //1.2.70    2023/04/19
