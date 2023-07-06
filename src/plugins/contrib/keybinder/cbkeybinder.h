@@ -23,7 +23,7 @@
 // Modified Keybinder for CodeBlocks KeyBnder v2.0
 
 // --Version-Rlease-Feature-Fix-------
-#define VERSION "2.0.18 23/04/25"
+#define VERSION "2.0.19 23/07/4"
 // -----------------------------------
 class wxKeyConfigPanel;
 class wxWindow;
@@ -92,6 +92,16 @@ class cbKeyBinder : public cbPlugin
             return fnTempOldFmtMnuScan.GetFullPath();
         }
 
+        void ReportThisFailure(const wxString& text); //Report error to forum
+        void SetCallingFunction(const wxString& funcName, int funcLine)
+        {
+            callingFunction = wxString::Format("%s:%d", funcName, funcLine) ;
+        }
+        void ClearCallingFunction()
+        {
+            callingFunction.Empty();
+        }
+
         wxWindow*       pcbWindow;              //main app window
 
     private:
@@ -105,11 +115,19 @@ class cbKeyBinder : public cbPlugin
 
         clKeyboardManager* m_pKBMgr;
 
+        // Trying to catch a failure call; see ReportThisFailure()
+        wxString callingFunction;
+
 		DECLARE_EVENT_TABLE()
 
 };//class cbKeyBinder
 
 #endif // CBKEYBINDER_H
+// ----------------------------------------------------------------------------
+// Commit   2.0.19 23/07/4
+//          Add code to catch missing globals in keybinder20.conf file
+//          Fix scrambled bindings caused by multiple duplicate id's within the
+//          global accelerator table that reference menu entries.
 // ----------------------------------------------------------------------------
 // Commit   2.0.18 23/04/25
 //          2.0.18 23/03/8

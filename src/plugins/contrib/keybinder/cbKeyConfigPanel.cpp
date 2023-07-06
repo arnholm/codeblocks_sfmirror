@@ -38,6 +38,8 @@
 #if defined(LOGGING)
     #include "debugging.h"
 #endif
+
+#include "logmanager.h"
 #include "menuutils.h"
 #include "cbkeybinder.h"
 #include "clKeyboardManager.h"
@@ -106,7 +108,7 @@ UsrConfigPanel::~UsrConfigPanel()
 void UsrConfigPanel::GetKeyConfigPanelPhaseII(wxMenuBar* pMenuBar, UsrConfigPanel* pUsrConfigPanel, int mode)
 // ----------------------------------------------------------------------------
 {
-    // Add all mapped menu items to the primary profile table
+    // Add all menu items to the primary profile table
     // Then scan the menu structure to catch any new menu items
     // Return to allow CB to display the configuration panel.
     // OnApply() will be called when the user clicks OK

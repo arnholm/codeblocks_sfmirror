@@ -335,7 +335,7 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
 
     // First, try to load accelerators from %appdata%\<personality>.cbkeybinder<version>.conf
     //      containing merged default + user defined accerators
-    // Second, try loading from default accelerators in previously create in %temp% dir
+    // Second, try loading from default accelerators previously created in %temp% dir
 
     clKeyboardBindingConfig config;
     if( not config.Exists()) //does cbKeyBinder__.conf exist? eg. %appdata%\<personality>.cbKeyBinder<version>.conf
@@ -406,18 +406,17 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
     // wxString msg = wxString::Format("Number of DFT items %zu", defaultEntries.size());
     //msg << wxString::Format("\nNumber of USR items %zu", m_menuTable.size());
     // cbMessageBox(msg, "Menu Item Count");
-
+    LogManager* pLogManager = Manager::Get()->GetLogManager();
     // ----------------------------------------------------------------------------
-    // Remove/Replace any map items nolonger matching the current menu structure
+    // Remove/Replace any items nolonger matching the current menu structure
     // ----------------------------------------------------------------------------
     for (MenuItemDataVec_t::iterator usrIter = m_menuTable.begin(); usrIter != m_menuTable.end(); ++usrIter)
     {
+        ContinueAfterErase:
         if (usrIter == m_menuTable.end()) break;
 
-        ContinueAfterErase:
         //search menu structure map for menuId from .conf file
         MenuItemData* pUsrMenuItemData = &(*usrIter);
-        //-if ( defaultEntries.count(usrIter->first) == 0) //(ph 2023/03/07)
         MenuItemData* pDftTableEntry = FindMenuTableEntryByPath(defaultEntries, pUsrMenuItemData);
         if (not pDftTableEntry)
         {   // menuID nolonger exists in CB
@@ -438,17 +437,17 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
             wxString usrParent    = usrIter->parentMenu;
             wxString dftMnuParent = pDftTableEntry->parentMenu;
 
-            bool isGlobal = (usrParent.empty() or dftMnuParent.empty()); //(2020/07/14)
+            bool isGlobal = (usrParent.empty() or dftMnuParent.empty());
             if (isGlobal) continue;    //skip .conf global accelerators
 
-            {
+            {//Code block: labels match
                 // accel mismatch for same path names (software change or user accel)
                 wxString usrMnuID  = usrIter->resourceID;
                 wxString usrAccel  = usrIter->accel;
                 wxString dftMnuID  = pDftTableEntry->resourceID;
                 wxString dftAccel  = pDftTableEntry->accel;
                 // Change the users menuID to match this menu label/accelerator
-                // if users accel is different than menu structure, update the user usr menu //2020/04/6
+                // if users accel is different than menu structure, update the user usr menu
                 if (pDftTableEntry and
                         ((usrAccel != dftAccel) or (usrMnuID != dftMnuID)))
                 {
@@ -464,7 +463,7 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
                     #endif
                     Manager::Get()->GetLogManager()->DebugLog(F(_T("KeyBinder:Setting Path/Accel mismatch[%s][%s][%s]"), usrMnuID.wx_str(), usrParent.wx_str(), usrAccel.wx_str()));
                 }
-            }//endif label compare
+            }//endBlock labels match
         }//endif else have matching resourceID
     }//endfor vecIter
 
@@ -475,41 +474,74 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
     // ----------------------------------------------------------------------------
     // Add any new entries from %temp%/<personality>.keyMnuAccels_pid.conf (the current menu structure)
     // ----------------------------------------------------------------------------
-    for (MenuItemDataVec_t::iterator dftvecIter = defaultEntries.begin(); dftvecIter != defaultEntries.end(); ++dftvecIter)
+    for (MenuItemDataVec_t::iterator dftVecIter = defaultEntries.begin(); dftVecIter != defaultEntries.end(); ++dftVecIter)
     {
-        int dftResourceID = std::stoi(dftvecIter->resourceID.ToStdString());
+        int dftResourceID = std::stoi(dftVecIter->resourceID.ToStdString());
         MenuItemData* pUsrMenuItemData = FindMenuTableEntryByID(m_menuTable, dftResourceID );
         if (not pUsrMenuItemData)
         {   // add missing dft menu item
-            m_menuTable.push_back(*dftvecIter); // add missing dft menu item if not in menuTable
-            wxString dftMenuItemStr = dftvecIter->resourceID + _T("|") + dftvecIter->parentMenu + _T("|") + dftvecIter->accel;
+            m_menuTable.push_back(*dftVecIter); // add missing dft menu item if not in menuTable
+            wxString dftMenuItemStr = dftVecIter->resourceID + _T("|") + dftVecIter->parentMenu + _T("|") + dftVecIter->accel;
             #if defined(LOGGING)
                 LOGIT( _T("KeyBinder: adding missing menuItem[%s]"), dftMenuItemStr.wx_str());
             #endif
             Manager::Get()->GetLogManager()->DebugLog(F(_T("KeyBinder: adding missing menuItem[%s] "), dftMenuItemStr.wx_str()));
         }
-        else // found item by this ID in .conf file, but is it the same path
+        else // found item by this ID in user .conf file, but is it the same path
         {
-            MenuItemData* pDftMenuItemData = &(*dftvecIter);
-            // Compare default path with .conf path
+            MenuItemData* pDftMenuItemData = &(*dftVecIter);
+            // Compare default menu path with user .conf path
             if (pDftMenuItemData->parentMenu != pUsrMenuItemData->parentMenu)
-            {   //Correct the menu item in .conf
+            {
+                if (pDftMenuItemData->parentMenu.Length() and pUsrMenuItemData->parentMenu.empty() )
+                    continue; //Do not clobber a menu item with a global.
+                //Correct the menu item in user .conf
+                wxString vDftMenuItem = pDftMenuItemData->resourceID + _T("|") + pDftMenuItemData->parentMenu + _T("|") + pDftMenuItemData->action + "|" + pDftMenuItemData->accel;
+                #if defined(LOGGING)
+                wxString vusrMenuItem  = pUsrMenuItemData->resourceID + _T("|") + pUsrMenuItemData->parentMenu + _T("|") + pUsrMenuItemData->action + "|" + pUsrMenuItemData->accel;
+                wxString logMsg = wxString("Changing: ") << vDftMenuItem << " to: " << vusrMenuItem;
+                LOGIT(logMsg);
+                #endif
                 pUsrMenuItemData->accel = pDftMenuItemData->accel;
                 pUsrMenuItemData->action = pDftMenuItemData->action;
                 pUsrMenuItemData->parentMenu = pDftMenuItemData->parentMenu;
-                wxString vdfltMenuItem = dftvecIter->resourceID + _T("|") + dftvecIter->parentMenu + _T("|") + dftvecIter->accel;
                 #if defined(LOGGING)
-                    LOGIT( _T("KeyBinder: adding default menuItem[%s]"), vdfltMenuItem.wx_str());
+                    LOGIT( _T("KeyBinder: adding default menuItem[%s]"), vDftMenuItem.wx_str());
                 #endif
-                Manager::Get()->GetLogManager()->DebugLog(F(_T("KeyBinder: adding default menuItem[%s]"), vdfltMenuItem.wx_str()));
+                pLogManager->DebugLog(F(_T("KeyBinder: adding default menuItem[%s]"), vDftMenuItem.wx_str()));
             }
-            #if defined(LOGGING)
-            else
+            else //parentMenus are equal. What about the accelerators?
             {
-                wxString vdfltMenuItem = dftvecIter->resourceID + _T("|") + dftvecIter->parentMenu + _T("|") + dftvecIter->accel;
-                LOGIT( _T("Keybinder: skipping already defined menuItem[%s]"), vdfltMenuItem.wx_str());
+                // Are the accelerators equal
+                if (pDftMenuItemData->accel == pUsrMenuItemData->accel)
+                {
+                    #if defined(LOGGING)
+                    wxString vDftMenuItem = dftVecIter->resourceID + _T("|") + dftVecIter->parentMenu + _T("|") + dftVecIter->accel;
+                    LOGIT( _T("Keybinder: skipping already defined menuItem[%s]"), vDftMenuItem.wx_str());
+                    #endif
+                }
+                else //Menu labels match but accelerators are different
+                {
+                    if (not pDftMenuItemData->parentMenu.empty())
+                        continue; //looking for globals only
+                    #if defined(LOGGING)
+                    wxString vDftMenuItem = pDftMenuItemData->resourceID + _T("|") + pDftMenuItemData->parentMenu + _T("|") + pDftMenuItemData->action + "|" + pDftMenuItemData->accel;
+                    wxString vUsrMenuItem  = pUsrMenuItemData->resourceID + _T("|") + pUsrMenuItemData->parentMenu + _T("|") + pUsrMenuItemData->action + "|" + pUsrMenuItemData->accel;
+                    wxString logMsg = wxString("Replacing: ") << vUsrMenuItem << " with: " << vDftMenuItem;
+                    LOGIT(logMsg);
+                    #endif
+
+                    // Ignore duplicates of Ctrl-W and Shift-Ctrl-W
+                    if ( (pDftMenuItemData->accel == "Ctrl-F4")
+                        or (pDftMenuItemData->accel == "Shift-Ctrl-F4") )
+                        continue; //special case of duplicate glbals referencing a menu item.
+                    // user .conf file gets default item
+                    pUsrMenuItemData->accel = pDftMenuItemData->accel;
+                    //-nopUsrMenuItemData->action = pDftMenuItemData->action;
+                    //-no no no pUsrMenuItemData->parentMenu = pDftMenuItemData->parentMenu;
+
+                }
             }
-            #endif
         }
     };
 
@@ -528,9 +560,9 @@ void clKeyboardManager::Initialize(bool isRefreshRequest)
     //- config.SetBindings(m_menuTable, m_globalTable).Save();
 
     #if defined(LOGGING)
-        Logit("MenuLog 3 -----User Keybindings separated out ----------------");
+        LOGIT("MenuLog 3 -----User Keybindings separated out ----------------");
         LogAccelerators(m_menuTable, "MenuLog 3");
-        Logit("GlobalLog 3 -----Global Keybindings separated out ------------");
+        LOGIT("GlobalLog 3 -----Global Keybindings separated out ------------");
         LogAccelerators(m_globalTable, "GlobalsLog 3");
     #endif
 
