@@ -432,7 +432,12 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
             }
     }
     // allow parsing to proceed
-    PauseParsingForReason("AwaitClientInitialization", false);
+    if (int cnt = PauseParsingForReason("AwaitClientInitialization", false) != 0)
+    {
+        // error if !=  0 **Debugging** //(ph 2023/07/09)
+        wxString msg = wxString::Format("%s: PauseParsing count(%d) > 1", __FUNCTION__, cnt);
+        Manager::Get()->GetLogManager()->DebugLogError(msg);
+    }
 
 }
 // ----------------------------------------------------------------------------
@@ -1326,9 +1331,9 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 if (not remainingToParse)
                 {
                     remainingToParse = pClient->LSP_GetServerFilesParsingCount();
-                    if (remainingToParse) remainingToParse -= 1; //subract this finished file
+                    if (remainingToParse) remainingToParse -= 1; //subtract this finished file
                 }
-                wxString msg = wxString::Format("LSP opened editor parse FINISHED for (%s) %s (%d ms) (%zu more)", pProject->GetTitle(), pEditor->GetFilename(),
+                wxString msg = wxString::Format("LSP (editor) parse FINISHED for (%s) %s (%d ms) (%zu more)", pProject->GetTitle(), pEditor->GetFilename(),
                 pClient->LSP_GetServerFilesParsingDurationTime(pEditor->GetFilename()), remainingToParse);
                 CCLogger::Get()->DebugLog( msg);
                 CCLogger::Get()->Log( msg);

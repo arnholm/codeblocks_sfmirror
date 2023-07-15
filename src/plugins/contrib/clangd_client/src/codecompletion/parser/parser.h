@@ -319,9 +319,9 @@ private:
                 return true;
             return false;
         }
-    void SetUserParsingPaused(bool newStatus)
+    int SetUserParsingPaused(bool newStatus)
         {
-            PauseParsingForReason("UserPausedParsing", newStatus);
+            return PauseParsingForReason("UserPausedParsing", newStatus);
         }
 
     /** stops the batch parse timer and clears the list of waiting files to be parsed */
@@ -372,7 +372,7 @@ private:
         return true;
     }
     // ----------------------------------------------------------------------------
-    bool PauseParsingForReason(wxString reason, bool increment)
+    int PauseParsingForReason(wxString reason, bool increment)
     // ----------------------------------------------------------------------------
     {
         //wxString the_project = m_Project->GetTitle();
@@ -382,12 +382,12 @@ private:
         {   ++m_PauseParsingMap[the_reason];
             wxString reasonMsg = wxString::Format("Pausing parser(%s) for reason %s(%d)", the_project, reason, m_PauseParsingMap[the_reason]);
             CCLogger::Get()->DebugLog(reasonMsg);
-            return true;
+            return m_PauseParsingMap[the_reason];
         }
         else  if (increment) //doesnt exist and increment, create it
         {   m_PauseParsingMap[the_reason] = 1;
             CCLogger::Get()->DebugLog(wxString::Format("Pausing parser(%s) for %s", the_project, reason));
-            return true;
+            return m_PauseParsingMap[the_reason];
         }
         else if (not PauseParsingExists(the_reason) and (increment==false))
         {    //decrement but doesnt exist, is an error
@@ -397,7 +397,7 @@ private:
             cbMessageBox(msg, "Assert(non fatal)");
             #endif
             CCLogger::Get()->DebugLogError(wxString::Format("PauseParsing request Error:%s", reason));
-            return false;
+            return m_PauseParsingMap[the_reason];
         }
         else
         {   // decrement the pause reason
@@ -409,9 +409,9 @@ private:
                 CCLogger::Get()->DebugLogError("Un-pausing parser count below zero for reason: " + reason);
                 m_PauseParsingMap[the_reason] = 0;
             }
-            return true;
+            return m_PauseParsingMap[the_reason];
         }
-        return false;
+        return m_PauseParsingMap[the_reason];
     }
     // ----------------------------------------------------------------------------
     size_t GetArrayOfPauseParsingReasons(wxArrayString& aryReasons)

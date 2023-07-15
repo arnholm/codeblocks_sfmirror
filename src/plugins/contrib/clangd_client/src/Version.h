@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.71 23/07/2")
+#define VERSION wxT("1.2.72 23/07/15")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,10 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.71   2023/07/2
+//1.2.72    2023/07/15
+//          Fix unresponsive "Reparse this file" problem
+//          Fix failure to create Clangd-client for ~ProxyProject~
+//1.2.71    2023/07/2
 //          Fix non-responsive Show Call Tip (GetCallTips()) in keyboard only mode.
 //          Ask for Hover data, not SignatureHelp data.SignatureHelp response is always empty.
 //1.2.70    2023/05/11

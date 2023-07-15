@@ -62,7 +62,9 @@
 #include "classbrowser.h"
 #include "parser/profiletimer.h"
 #include "IdleCallbackHandler.h"
-#include "client.h" //(ph 2023/04/18)
+#include "client.h"
+#include "infowindow.h"
+
 
 
 #define CC_ParseManager_DEBUG_OUTPUT 0
@@ -770,8 +772,21 @@ ProcessLanguageClient* ParseManager::CreateNewLanguageServiceProcess(cbProject* 
     #endif
     if (not pcbProject) return nullptr;
 
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+
     // Don't allow a second process to write to the current clangd symbol caches
-    if (not DoLockClangd_CacheAccess(pcbProject) ) return nullptr;
+    if (not DoLockClangd_CacheAccess(pcbProject) )
+    {
+        // FIXME (ph#): Is this caused by a crashed debugging session? //(ph 2023/07/15)
+        if (pcbProject != GetProxyProject()) //ok if ~ProxyProject~ //(ph 2023/07/14)
+        {
+            wxString msg = wxString::Format("%s failed to Lock access to Clangd cache for %s", __FUNCTION__, pcbProject->GetTitle());
+            msg << "\n\tAllocation of Clangd_client will fail.";
+            pLogMgr->LogError(msg);
+            pLogMgr->DebugLogError(msg);
+            return nullptr;
+        }
+    }
 
     ProcessLanguageClient* pLSPclient = nullptr;
     if (m_LSP_Clients.count(pcbProject) and GetLSPclient(pcbProject))
@@ -845,12 +860,33 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)    //(ph 
 // ----------------------------------------------------------------
 {
     ProcessLanguageClient* pClient =  nullptr;
-    if (not pProject) return nullptr;
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+
+    if (not pProject)
+    {
+       pLogMgr->DebugLog(wxString(__FUNCTION__) + ": param pProject is missing"); //(ph 2023/07/08)
+        return nullptr;
+    }
+    wxString projectTitle = pProject->GetTitle();
 
     if (m_LSP_Clients.count(pProject))
         pClient =  m_LSP_Clients[pProject];
+
+    if (not pClient)
+    {
+        #if defined(cbDEBUG)
+        pLogMgr->DebugLog(wxString(__FUNCTION__) + ": No associated pClient in m_LSP_Clients[pProject] " << projectTitle); //(ph 2023/07/08)
+        #endif
+        return nullptr;
+    }
+
     if (pClient and pClient->GetLSP_Initialized(pProject))
         return pClient;
+
+    #if defined(cbDEBUG)
+    wxString clientPtr = wxString::Format("%p", pClient);
+    pLogMgr->DebugLog(wxString(__FUNCTION__) + ": pClient is not yet initialized. " + clientPtr); //(ph 2023/07/08)
+    #endif
 
     return nullptr;
 }
@@ -2902,7 +2938,7 @@ void ParseManager::SetProxyProject(cbProject* pActiveProject)
     // We'll add all opened non-project files to this proxy.
     // This allows us to manage non-project files without mangling the active cbProject.
 
-    wxString msg = "Creating ProxyProject/Clangd_clinet/Parser for non-project files.";
+    wxString msg = "Creating ProxyProject/client/Parser for non-project files.";
     CCLogger::Get()->DebugLog(msg);
 
     if (not m_pProxyProject)

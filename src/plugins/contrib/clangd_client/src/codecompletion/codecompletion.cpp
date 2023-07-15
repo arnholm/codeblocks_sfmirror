@@ -1518,7 +1518,7 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
     {
         if (not GetLSPClient(ed)) return tips; //empty tips
 
-        //LSP_SignatureHelp always returns empty. Try using Hover instead.//(ph 2023/07/01)
+        //LSP_SignatureHelp always returns empty. Try using Hover instead
         //-GetLSPClient(ed)->LSP_SignatureHelp(ed, pos);
         bool allowCallTip = true;
         GetTokenAt(pos, ed, allowCallTip);
@@ -2539,7 +2539,6 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     if (locker_result != wxMUTEX_NO_ERROR)
     {
         // lock failed, do not block the UI thread, call back when idle
-        // Parser* pParser = static_cast<Parser*>(m_Parser);
         if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
             GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::OnCurrentProjectReparse,event);
         return;
@@ -2561,7 +2560,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (pProject)
     {
-        // Send a shutdown command with "needs cleanup" request.//(ph 2023/04/11)
+        // Send a shutdown command with "needs cleanup" request.
         if (GetLSPClient(pProject))
             GetLSPClient(pProject)->SetProjectNeedsCleanup(pProject->GetFilename());
         ShutdownLSPclient(pProject);
@@ -2575,7 +2574,13 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
             // The new parser has already queued files to be parsed.
             // Freeze parsing for this parser and create a client.
             // The response to LSP initialization will unfreeze the parser.
-            pParser->PauseParsingForReason("AwaitClientInitialization", true);
+            if ( int cnt = pParser->PauseParsingForReason("AwaitClientInitialization", true) > 1)
+            {
+                // error if greater than 1 **Debugging** //(ph 2023/07/09)
+                wxString msg = wxString::Format("%s: AwaitClientInitialization count(%d) > 1", __FUNCTION__, cnt);
+                //cbMessageBox(msg, "Error");
+                Manager::Get()->GetLogManager()->DebugLogError(msg);
+            }
             ProcessLanguageClient* pClient = GetParseManager()->CreateNewLanguageServiceProcess(pProject, LSPeventID);
             if (not pClient)
             {
@@ -2661,7 +2666,13 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
                     // The new parser has already queued files to be parsed.
                     // Freeze parsing for this parser and create a client.
                     // The response to LSP initialization will unfreeze the parser.
-                    pParser->PauseParsingForReason("AwaitClientInitialization", true);
+                    if ( int cnt = pParser->PauseParsingForReason("AwaitClientInitialization", true) > 1)
+                    {
+                        // error if greater than 1 **Debugging** //(ph 2023/07/09)
+                        wxString msg = wxString::Format("%s: AwaitClientInitialization count(%d) > 1", __FUNCTION__, cnt);
+                        //cbMessageBox(msg, "Error");
+                        Manager::Get()->GetLogManager()->DebugLogError(msg);
+                    }
                     ProcessLanguageClient* pClient = GetParseManager()->CreateNewLanguageServiceProcess(project, LSPeventID);
                     if (not pClient)
                     {
@@ -2821,7 +2832,9 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
-                cbMessageBox(msg, __FUNCTION__);
+                msg << _("\n Reason: Did not find associated Clangd client"); //(ph 2023/07/08)
+                //cbMessageBox(msg, __FUNCTION__);
+                InfoWindow::Display(__FUNCTION__, msg, 7000);
                 return;
             }
             // if file is open in editor, send a didSave() causing a clangd reparse
@@ -2878,7 +2891,9 @@ void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
-                cbMessageBox(msg, __FUNCTION__);
+                msg << _("\n Did not find associated Clangd client."); //(ph 2023/07/08)
+                //cbMessageBox(msg, __FUNCTION__);
+                InfoWindow::Display(__FUNCTION__, msg, 7000);
                 return;
             }
             // if file is open in editor, send a didSave() causing a clangd reparse
@@ -4162,7 +4177,7 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
     // belonging to a non-active project.
     cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     ProcessLanguageClient* pActiveProjectClient = GetLSPClient(pActiveProject);
-    ProcessLanguageClient* pEdClient = GetLSPClient(pEdProject);
+    ProcessLanguageClient* pEdClient = (pEdProject ? GetLSPClient(pEdProject) : nullptr); //(ph 2023/07/08)
     cbProject* pProxyProject = GetParseManager()->GetProxyProject();
 
     if (pActiveProject and pEd and pEdProject and pEdClient
@@ -5152,13 +5167,22 @@ void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
     // here on a timer, the splash screen is closed and Code::Blocks doesn't appear
     // to take so long in starting.
 
-
     m_InitDone = true;
+    wxString msg;
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+
     // Create a ProxyProject to use for non-project files (if not already existent )
     GetParseManager()->SetProxyProject(nullptr); // create the hidden proxy project
     cbProject* pProxyProject = GetParseManager()->GetProxyProject();
     // Create a ProxyClient to hold non-project file info and the clangd interface.
     ProcessLanguageClient* pProxyClient = GetParseManager()->CreateNewLanguageServiceProcess(pProxyProject, LSPeventID);
+    if (not pProxyClient)
+    {
+        msg = wxString::Format("Error: %s failed to allocate a Clangd client for %s",
+                                __FUNCTION__, pProxyProject->GetTitle());
+        pLogMgr->LogError(msg);
+        pLogMgr->DebugLogError(msg);
+    }
     // Parser was already created by SetProxyProject();
     Parser* pProxyParser = GetParseManager()->GetParserByProject(pProxyProject);
     // Set the ProxyProject to use this new clangd client.
