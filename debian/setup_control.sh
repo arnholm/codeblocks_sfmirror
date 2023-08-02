@@ -19,17 +19,28 @@ fi
 echo "Debian version: $version"
 
 if [ -z "${version##*squeeze*}" ] || \
+   [ -z "${version##*6.*}" ] || \
    [ -z "${version##*wheezy*}" ] || \
+   [ -z "${version##*7.*}" ] || \
    [ -z "${version##*jessie*}" ] || \
+   [ -z "${version##*8.*}" ] || \
+   [ -z "${version##*stretch*}" ] || \
+   [ -z "${version##*9.*}" ] || \
    [ -z "${version##*buster*}" ] || \
-   [ -z "${version##*stretch*}" ];
+   [ -z "${version##*10.*}" ];
 then
     echo "Distro is matching wxGTK 3.0 + GTK2"
     CB_WXGTK_DEPS=libwxgtk3.0-dev
     CB_GTK_DEPS=libgtk2.0-dev
-else
+elif [ -z "${version##*bullseye*}" ] || \
+     [ -z "${version##*11.*}" ];
+then
     echo "Distro is matching wxGTK 3.0 + GTK3"
     CB_WXGTK_DEPS=libwxgtk3.0-gtk3-dev
+    CB_GTK_DEPS=libgtk-3-dev
+else
+    echo "Distro is matching wxGTK 3.2 + GTK3"
+    CB_WXGTK_DEPS=libwxgtk3.2-dev
     CB_GTK_DEPS=libgtk-3-dev
 fi
 
