@@ -26,6 +26,14 @@
 using namespace Scintilla;
 #endif
 
+/* C::B begin */
+#include <wx/version.h>
+#if wxCHECK_VERSION(3, 1, 4) && defined(__WXMSW__)
+// For for Platform::GetActiveWindowDPIScal2Factor()
+#include "Windows.h" //OS Window not wx window
+#endif
+/* C::B end */
+
 CallTip::CallTip() {
 	wCallTip = 0;
 	inCallTipMode = false;
@@ -283,7 +291,23 @@ PRectangle CallTip::CallTipStart(Sci::Position pos, Point pt, int textHeight, co
 		look = newline + 1;
 		numLines++;
 	}
+
 	lineHeight = RoundXYPosition(surfaceMeasure->Height(font));
+
+/* C::B begin */
+    #if wxCHECK_VERSION(3, 1, 4) && defined(__WXMSW__)
+    // Scale the popup window size for DefaultWrite (not DirectWrite) mode
+	if (technology == SC_TECHNOLOGY_DEFAULT)
+    {
+      	double sysScaling = Platform::GetActiveWindowDPIScaleFactor();
+      	// scale, then push the right border away from the last character
+      	int* pWidth = const_cast<int*>(&width);
+      	*pWidth = ((width*sysScaling)) + (fp.size*2);
+      	// Lift the text off the bottom border
+        borderHeight = 5; //This was previously initialized as value 2
+    }
+    #endif
+/* C::B end */
 
 	// The returned
 	// rectangle is aligned to the right edge of the last arrow encountered in

@@ -71,6 +71,10 @@
 
 #endif
 
+/* C::B begin */
+#include <wx/version.h> //Platform::GetActiveWindowDPIScaleFactor()
+/* C::B end */
+
 #ifdef SCI_NAMESPACE
 namespace Scintilla {
 #endif
@@ -518,6 +522,13 @@ public:
 	static bool ShowAssertionPopUps(bool assertionPopUps_);
 	static void Assert(const char *c, const char *file, int line) CLANG_ANALYZER_NORETURN;
 	static int Clamp(int val, int minVal, int maxVal);
+
+/* C::B begin */
+    #if wxCHECK_VERSION(3, 1, 4) && defined(__WXMSW__)
+	static double GetActiveWindowDPIScaleFactor();
+	#endif
+/* C::B end */
+
 };
 
 #ifdef  NDEBUG

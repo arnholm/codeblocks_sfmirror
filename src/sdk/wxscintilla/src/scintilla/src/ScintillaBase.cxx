@@ -60,6 +60,13 @@
 #include "AutoComplete.h"
 #include "ScintillaBase.h"
 
+/* C::B begin */
+#if wxCHECK_VERSION(3, 1, 4) && defined(__WXMSW__)
+// For Platform::GetActiveWindowDPIScal2Factor()
+#include <Windows.h> // OS windows (not wxWindow)
+#endif
+/* C::B end */
+
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
 #endif
@@ -428,7 +435,6 @@ int ScintillaBase::AutoCompleteGetCurrentText(char *buffer) const {
 		*buffer = '\0';
 	return 0;
 }
-
 void ScintillaBase::CallTipShow(Point pt, const char *defn) {
 	ac.Cancel();
 	// If container knows about STYLE_CALLTIP then use it in place of the
@@ -443,6 +449,25 @@ void ScintillaBase::CallTipShow(Point pt, const char *defn) {
 		pt.x += ptOrigin.x;
 		pt.y += ptOrigin.y;
 	}
+
+    /* C::B begin */
+	#if wxCHECK_VERSION(3, 1, 4) && defined(__WXMSW__)
+	// Correct non-DirectWrite sizeZoomed for defaultWrite mode
+	if (vs.technology == SC_TECHNOLOGY_DEFAULT)
+    {
+        double sysScaleFactor = Platform::GetActiveWindowDPIScaleFactor();
+        int fontsize = vs.styles[ctStyle].size;
+        double dsizeZoomed = fontsize + vs.zoomLevel * SC_FONT_SIZE_MULTIPLIER;
+        // dscale = (72.0 /(72.0 * sysScaleFactor)) desiredDPI/rawDPI; simplified at next line
+        double dscale = (1.0 / sysScaleFactor) +0.01; //+0.01 to push border off last char of some fonts
+        dsizeZoomed = dsizeZoomed * dscale;
+        if (dsizeZoomed <= 2 * SC_FONT_SIZE_MULTIPLIER)	// Hangs if sizeZoomed <= 1
+            dsizeZoomed = 2 * SC_FONT_SIZE_MULTIPLIER;
+        vs.styles[ctStyle].sizeZoomed = dsizeZoomed;
+    }
+    #endif // wxCHECK_VERSION
+	/* C::B end */
+
 	PRectangle rc = ct.CallTipStart(sel.MainCaret(), pt,
 		vs.lineHeight,
 		defn,
