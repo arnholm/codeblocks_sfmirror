@@ -119,8 +119,6 @@ int main(int argc, char** argv)
 
     std::string revision;
     std::string date;
-    std::string comment;
-    std::string old;
 
     QueryVersionControl(workingDir, vcsExecutable, revision, date);
     WriteOutput(outputFile, revision, date);
