@@ -87,11 +87,11 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
     grdChanges->SetColLabelValue(1, _("Description"));
 
     grdChanges->AutoSize();
-	grdChanges->SetColSize(0, 60);
-	grdChanges->SetColSize(1, 645);
+    grdChanges->SetColSize(0, 60);
+    grdChanges->SetColSize(1, 645);
 
-	btnEdit->Enable(false);
-	btnDelete->Enable(false);
+    btnEdit->Enable(false);
+    btnDelete->Enable(false);
 }
 
 avChangesDlg::~avChangesDlg()
@@ -108,7 +108,7 @@ void avChangesDlg::OnBtnAddClick(wxCommandEvent& /*event*/)
     grdChanges->SetGridCursor(grdChanges->GetNumberRows()-1, 0);
     grdChanges->EnableCellEditControl(true);
     btnEdit->Enable(true);
-	btnDelete->Enable(true);
+    btnDelete->Enable(true);
 }
 
 void avChangesDlg::OnBtnEditClick(wxCommandEvent& /*event*/)
@@ -252,7 +252,7 @@ void avChangesDlg::SetTemporaryChangesFile(const wxString& fileName)
         grdChanges->AutoSize();
         grdChanges->EndBatch();
         btnEdit->Enable(grdChanges->GetNumberRows() != 0);
-	    btnDelete->Enable(grdChanges->GetNumberRows() != 0);
+        btnDelete->Enable(grdChanges->GetNumberRows() != 0);
     }
 }
 
