@@ -91,6 +91,7 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
 	grdChanges->SetColSize(1, 645);
 
 	btnEdit->Enable(false);
+	btnDelete->Enable(false);
 }
 
 avChangesDlg::~avChangesDlg()
@@ -107,6 +108,7 @@ void avChangesDlg::OnBtnAddClick(wxCommandEvent& /*event*/)
     grdChanges->SetGridCursor(grdChanges->GetNumberRows()-1, 0);
     grdChanges->EnableCellEditControl(true);
     btnEdit->Enable(true);
+	btnDelete->Enable(true);
 }
 
 void avChangesDlg::OnBtnEditClick(wxCommandEvent& /*event*/)
@@ -119,18 +121,22 @@ void avChangesDlg::OnBtnEditClick(wxCommandEvent& /*event*/)
 
 void avChangesDlg::OnBtnDeleteClick(wxCommandEvent& /*event*/)
 {
-    const int rows = grdChanges->GetNumberRows();
-    if (rows != 0)
+    const int row = grdChanges->GetGridCursorRow();
+    if (row != -1)
     {
-        const int row = grdChanges->GetGridCursorRow();
         grdChanges->SelectRow(row);
         if (wxMessageBox(_("You are about to delete the selected row"), _("Warning"), wxICON_EXCLAMATION|wxOK|wxCANCEL, this) == wxOK)
         {
             grdChanges->DeleteRows(row, 1, true);
-            if (rows == 1)
+            if (grdChanges->GetNumberRows() == 0)
+            {
                 btnEdit->Enable(false);
+                btnDelete->Enable(false);
+            }
         }
     }
+    else
+        wxBell();
 }
 
 void avChangesDlg::OnBtnSaveClick(wxCommandEvent& /*event*/)
@@ -246,6 +252,7 @@ void avChangesDlg::SetTemporaryChangesFile(const wxString& fileName)
         grdChanges->AutoSize();
         grdChanges->EndBatch();
         btnEdit->Enable(grdChanges->GetNumberRows() != 0);
+	    btnDelete->Enable(grdChanges->GetNumberRows() != 0);
     }
 }
 
