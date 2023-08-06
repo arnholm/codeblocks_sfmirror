@@ -23,6 +23,7 @@ void test(const char *path)
 }
 #endif
 
+void depsOK(void);
 void depsOK(void)
 {
     int error = depsError();

@@ -4,11 +4,11 @@
  * This file is part of depslib.
  *
  * License is hereby granted to use this software and distribute it
- * freely, as long as this copyright notice is retained and modifications 
+ * freely, as long as this copyright notice is retained and modifications
  * are clearly marked.
  *
  * ALL WARRANTIES ARE HEREBY DISCLAIMED.
- * 
+ *
  * Modifications:
  * - D support (search for "D support")
  * - Depth level counting (needed for D support)
@@ -34,6 +34,7 @@ static regexp *hdrre = 0;
 /*D support*/
 static regexp *dimpre = 0;
 
+LIST *headers1(const char *file, int depth);
 LIST *headers1(const char *file, int depth)
 {
 	FILE *f;
@@ -41,7 +42,7 @@ LIST *headers1(const char *file, int depth)
 	LIST *result = 0;
 	char buf[1024];
 	int fnlen=strlen(file);
-	
+
 	/*D support */
 	int dMode=0;
 	int dState=0;
@@ -65,7 +66,7 @@ LIST *headers1(const char *file, int depth)
 	if (!hdrre)
 		hdrre = my_regcomp("^[ 	]*#[ 	]*include[ 	]*([<\"])([^\">]*)([\">]).*$");
 	re = hdrre;
-	
+
 	/* D support */
 	if(dMode)
 	{
@@ -74,7 +75,7 @@ LIST *headers1(const char *file, int depth)
 				"^.*import[ \t]*([[A-Za-z_ \t]+=[ \t]*)?([A-Za-z_\\.]+)(\\:.+)?;.*$");
 		re = dimpre;
 	}
-	
+
 	while (fgets(buf, sizeof(buf), f))
 	{
 		/* D support */
@@ -93,7 +94,7 @@ LIST *headers1(const char *file, int depth)
 					--dState;
 			}
 		}
-		
+
 		/* Simple reduction of regex overhead */
 		if(strstr(buf, dMode ? "import" : "include"))
 			if (my_regexec(re, buf))
@@ -116,7 +117,7 @@ LIST *headers1(const char *file, int depth)
 						if(dState == 0)
 							continue;
 					}
-					
+
 					buf2[0] = '<';
 					const char* p;
 					int j = 0;
@@ -138,7 +139,7 @@ LIST *headers1(const char *file, int depth)
 				if (DEBUG_HEADER)
 					printf("header found: %s\n", buf2);
 			}
-		
+
 		/* D support */
 		if(dMode)
 		{
@@ -146,7 +147,7 @@ LIST *headers1(const char *file, int depth)
 			{
 				if(strchr(buf, ';'))
 					dState=0;
-				
+
 				if(strchr(buf, '}'))
 					dState=0;
 			}
@@ -162,6 +163,7 @@ LIST *headers1(const char *file, int depth)
 
 static ALLOC *hdralloc = 0;
 
+HEADERS *headerentry(HEADERS *chain, HEADER *header);
 HEADERS *headerentry(HEADERS *chain, HEADER *header)
 {
 	HEADERS *c;
@@ -183,6 +185,7 @@ HEADERS *headerentry(HEADERS *chain, HEADER *header)
 	return chain;
 }
 
+HEADER *headersDepth(const char *t, time_t time, int depth);
 HEADER *headersDepth(const char *t, time_t time, int depth)
 {
 	HEADER hdr, *h = &hdr;
@@ -196,7 +199,7 @@ HEADER *headersDepth(const char *t, time_t time, int depth)
 		strcpy((char*)cachekey,"source:");
 		strcpy((char*)cachekey+7,t);
 	}
-	
+
 	if (!headerhash)
 		headerhash = hashinit(sizeof(HEADER), "headers");
 

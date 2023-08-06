@@ -81,6 +81,7 @@ static HDR *hdr_enter(const char *file)
 #define CACHE_OK 1 /* file is a depslib cache file */
 #define CACHE_BAD 2 /* file is not a depslib cache file */
 
+int check_cache_file(const char *path, int *vmajor, int *vminor);
 int check_cache_file(const char *path, int *vmajor, int *vminor)
 {
 	FILE *f;
@@ -131,7 +132,8 @@ void cache_read(const char *path)
 
 		if (buf[0] == '\t')
 		{
-			h->includes = list_new(h->includes, buf + 1, 0);
+			if (h)
+        h->includes = list_new(h->includes, buf + 1, 0);
 			continue;
 		}
 
@@ -139,7 +141,7 @@ void cache_read(const char *path)
 		#if defined(_WIN64)
 		sscanf(buf, "%I64d %n", &timeval, &n);
 		#else
-		sscanf(buf, "%ld %n", &timeval, &n);
+		sscanf(buf, "%lld %n", &timeval, &n);
 		#endif
 		h = hdr_enter (buf + n);
 		h->time = timeval;
@@ -170,7 +172,7 @@ void cache_write(const char *path)
 		#if defined(_WIN64)
 		fprintf(f, "%I64d %s\n", h->time, h->file);
 		#else
-		fprintf(f, "%ld %s\n", h->time, h->file);
+		fprintf(f, "%lld %s\n", h->time, h->file);
 		#endif
 		for (l = h->includes; l; l = list_next (l))
 		{
