@@ -46,7 +46,7 @@ private:
     struct Data
     {
         Data() : hasFormatting(false) {}
-        Data(const wxString &path, bool hasFormatting) : path(path), hasFormatting(hasFormatting) {}
+        Data(const wxString &_path, bool _hasFormatting) : path(_path), hasFormatting(_hasFormatting) {}
 
         wxString path;
         bool hasFormatting;
