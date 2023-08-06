@@ -70,7 +70,7 @@ class NullProjectManagerUI : public cbProjectManagerUI
         void ConfigureProjectDependencies(cb_unused cbProject* base,
                                           cb_unused wxWindow *parent) override {}
         void SwitchToProjectsPage() override {}
-        void ReloadFileSystemWatcher(cbProject* prj) override {}
+        void ReloadFileSystemWatcher(cb_unused cbProject* prj) override {}
 };
 
 // class constructor

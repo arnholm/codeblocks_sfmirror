@@ -1030,6 +1030,7 @@ bool IsSuffixOfPath(wxFileName const & suffix, wxFileName const & path)
 bool cbResolveSymLinkedDirPath(wxString& dirpath)
 {
 #ifdef _WIN32
+    wxUnusedVar(dirpath);
     return false;
 #else
     if (dirpath.empty())
@@ -1163,7 +1164,7 @@ wxBitmap cbLoadBitmap(const wxString& filename, wxBitmapType bitmapType, wxFileS
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
-wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename, int minSize, wxBitmapType bitmapType, wxFileSystem* fs)
+wxBitmapBundle cbLoadBitmapBundle(const wxString& prefix, const wxString& filename, int minSize, wxBitmapType bitmapType, cb_unused wxFileSystem* fs)
 {
     static const int imageSize[] = {16, 20, 24, 28, 32, 40, 48, 56, 64};
 

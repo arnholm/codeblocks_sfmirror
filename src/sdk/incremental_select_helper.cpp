@@ -19,7 +19,7 @@ IncrementalSelectIterator::~IncrementalSelectIterator()
 {
 }
 
-int IncrementalSelectIterator::GetColumnWidth(int column) const
+int IncrementalSelectIterator::GetColumnWidth(cb_unused int column) const
 {
     return wxLIST_AUTOSIZE;
 }
@@ -271,7 +271,7 @@ void IncrementalSelectHandler::OnKeyDown(wxKeyEvent& event)
     }
 }
 
-void IncrementalSelectHandler::OnItemActivated(wxListEvent &event)
+void IncrementalSelectHandler::OnItemActivated(cb_unused wxListEvent &event)
 {
     m_parent->EndModal(wxID_OK);
 }
@@ -315,11 +315,11 @@ const wxString& IncrementalSelectArrayIterator::GetItemFilterString(int index) c
 {
     return m_items[index];
 }
-wxString IncrementalSelectArrayIterator::GetDisplayText(int index, int column) const
+wxString IncrementalSelectArrayIterator::GetDisplayText(int index, cb_unused int column) const
 {
     return m_items[m_indices[index]];
 }
-int IncrementalSelectArrayIterator::GetColumnWidth(int column) const
+int IncrementalSelectArrayIterator::GetColumnWidth(cb_unused int column) const
 {
     return m_columnWidth;
 }

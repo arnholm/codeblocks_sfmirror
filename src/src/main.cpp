@@ -5151,9 +5151,10 @@ void MainFrame::OnBackticks(cb_unused wxCommandEvent& event)
 
     // Add Buttons
     wxStdDialogButtonSizer *btnSizer = new wxStdDialogButtonSizer();
-    auto endModalHandler = [&dialog](wxCommandEvent &event) {
-        dialog.EndModal(event.GetId());
-        event.Skip();
+    auto endModalHandler = [&dialog](wxCommandEvent &evt)
+    {
+        dialog.EndModal(evt.GetId());
+        evt.Skip();
     };
 
     wxButton *clearButton = new wxButton(&dialog, wxID_APPLY, wxString(_("C&lear and close")));
