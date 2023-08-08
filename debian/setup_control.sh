@@ -11,20 +11,19 @@
 
 if [ "$#" -ne 1 ] || [ -z "${1##*detect*}" ]; then
     echo "Doing version detection"
-    version=`cat /etc/debian_version`
+    distId=`lsb_release -is`
+    if [ $distId = "Debian" ] || [ $distId = "Ubuntu" ]; then
+        version=`lsb_release -cs`
+    else
+        version=`cat /etc/debian_version`
+    fi
 else
     version=$1
 fi
 
-echo "Debian version: $version"
+echo "Found version: $version"
 
-if [ -z "${version##*squeeze*}" ] || \
-   [ -z "${version##*6.*}" ] || \
-   [ -z "${version##*wheezy*}" ] || \
-   [ -z "${version##*7.*}" ] || \
-   [ -z "${version##*jessie*}" ] || \
-   [ -z "${version##*8.*}" ] || \
-   [ -z "${version##*stretch*}" ] || \
+if [ -z "${version##*stretch*}" ] || \
    [ -z "${version##*9.*}" ] || \
    [ -z "${version##*buster*}" ] || \
    [ -z "${version##*10.*}" ];
@@ -32,7 +31,9 @@ then
     echo "Distro is matching wxGTK 3.0 + GTK2"
     CB_WXGTK_DEPS=libwxgtk3.0-dev
     CB_GTK_DEPS=libgtk2.0-dev
-elif [ -z "${version##*bullseye*}" ] || \
+elif [ $version = "bullseye" ] || \
+     [ $version = "focal" ] || \
+     [ $version = "jammy" ] || \
      [ -z "${version##*11.*}" ];
 then
     echo "Distro is matching wxGTK 3.0 + GTK3"
