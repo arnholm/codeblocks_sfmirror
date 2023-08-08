@@ -24,7 +24,7 @@ AM_INIT_AUTOMAKE([foreign dist-bzip2 no-dist-gzip subdir-objects])
 AC_DISABLE_STATIC
 
 LT_INIT
-
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_HEADER([src/include/config.h])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
