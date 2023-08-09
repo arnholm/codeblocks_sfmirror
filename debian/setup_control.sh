@@ -11,9 +11,10 @@
 
 if [ "$#" -ne 1 ] || [ -z "${1##*detect*}" ]; then
     echo "Doing version detection"
-    distId=`lsb_release -is`
-    if [ $distId = "Debian" ] || [ $distId = "Ubuntu" ]; then
-        version=`lsb_release -cs`
+    test -e /etc/os-release && os_release='/etc/os-release' || os_release='/usr/lib/os-release'
+    . "$os_release"
+    if [ $ID = "debian" ] || [ $ID = "ubuntu" ]; then
+        version=$VERSION_CODENAME
     else
         version=`cat /etc/debian_version`
     fi
