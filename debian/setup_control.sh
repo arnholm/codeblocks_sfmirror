@@ -34,7 +34,7 @@ then
     CB_GTK_DEPS=libgtk2.0-dev
 elif [ $version = "bullseye" ] || \
      [ $version = "focal" ] || \
-     [ $version = "jammy" ] || \
+     [ $version = "jammy" ] || \
      [ -z "${version##*11.*}" ];
 then
     echo "Distro is matching wxGTK 3.0 + GTK3"
