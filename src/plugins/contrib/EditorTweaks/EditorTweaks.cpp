@@ -34,7 +34,7 @@ namespace
 
     const unsigned int defaultStoredAlignerEntries = 4;
 
-    wxString defaultNames[defaultStoredAlignerEntries] = { _T("Equality Operator"), _T("C/C++ line Comment "), _T("VHDL Signal Assignment"), _T("VHDL named association")};
+    wxString defaultNames[defaultStoredAlignerEntries] = { _("Equality Operator"), _("C/C++ line Comment "), _("VHDL Signal Assignment"), _("VHDL named association")};
     wxString defaultStrings[defaultStoredAlignerEntries] = { _T("="), _T("//"), _T("<="), _T("=>") };
 
 }
@@ -276,10 +276,10 @@ void EditorTweaks::BuildMenu(wxMenuBar* menuBar)
     submenu->AppendCheckItem( id_et_TabChar, _( "Use Tab Character" ), _( "Use Tab Character" ) );
     submenu->AppendCheckItem( id_et_TabIndent, _( "Tab Indents" ), _( "Tab Indents" ) );
     wxMenu *tabsizemenu=new wxMenu();
-    tabsizemenu->AppendRadioItem( id_et_TabSize2, _( "2" ), _( "Tab Width of 2" ) );
-    tabsizemenu->AppendRadioItem( id_et_TabSize4, _( "4" ), _( "Tab Width of 4" ) );
-    tabsizemenu->AppendRadioItem( id_et_TabSize6, _( "6" ), _( "Tab Width of 6" ) );
-    tabsizemenu->AppendRadioItem( id_et_TabSize8, _( "8" ), _( "Tab Width of 8" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize2, "2", _( "Tab Width of 2" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize4, "4", _( "Tab Width of 4" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize6, "6", _( "Tab Width of 6" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize8, "8", _( "Tab Width of 8" ) );
     submenu->Append(wxID_ANY,_("Tab Size"),tabsizemenu);
     submenu->Append( id_et_ConsistentIndent, _( "Make Indents Consistent" ),  _( "Convert leading tabs/spaces to the active setting" ) );
     submenu->AppendCheckItem(id_et_ShowWhitespaceChars, _("Show whitespace characters"),
@@ -289,7 +289,7 @@ void EditorTweaks::BuildMenu(wxMenuBar* menuBar)
     eolmenu->AppendRadioItem( id_et_EOLCRLF, _( "CR LF" ), _( "Carriage Return - Line Feed (Windows Default)" ) );
     eolmenu->AppendRadioItem( id_et_EOLCR,   _( "CR" ),    _( "Carriage Return (Mac Default)" ) );
     eolmenu->AppendRadioItem( id_et_EOLLF,   _( "LF" ),    _( "Line Feed (Unix Default)" ) );
-    submenu->Append(wxID_ANY,_("End-of-Line Mode"),eolmenu);
+    submenu->Append(wxID_ANY, _("End-of-Line Mode"),eolmenu);
     submenu->AppendCheckItem( id_et_ShowEOL,    _( "Show EOL Chars" ),            _( "Show End-of-Line Characters" ) );
     submenu->Append( id_et_StripTrailingBlanks, _( "Strip Trailing Blanks Now" ), _( "Strip trailing blanks from each line" ) );
     submenu->Append( id_et_EnsureConsistentEOL, _( "Make EOLs Consistent Now" ),  _( "Convert End-of-Line Characters to the Active Setting" ) );
@@ -298,7 +298,7 @@ void EditorTweaks::BuildMenu(wxMenuBar* menuBar)
     submenu->AppendCheckItem( id_et_SuppressInsertKey, _("Suppress Insert Key"),                   _("Disable the effect of the insert key (toggle between insert and overwrite mode)") );
     submenu->AppendCheckItem( id_et_ConvertBraces,     _("Convert Matching Braces"),               _("Selecting a brace and typing a new brace character will change the matching brace appropriately") );
     submenu->AppendSeparator();
-    submenu->Append( id_et_align_last,        _("Last Align"), _("repeat last Align command") );
+    submenu->Append( id_et_align_last,        _("Last Align"), _("Repeat last Align command") );
     submenu->Append( id_et_align_auto,        _("Auto Align"), _("Align lines automatically") );
 
 
@@ -314,26 +314,26 @@ void EditorTweaks::BuildMenu(wxMenuBar* menuBar)
     }
     if (!foldmenu)
     {
-        Manager::Get()->GetLogManager()->DebugLog(_("Editor Tweaks plugin: Folding menu"));
+        Manager::Get()->GetLogManager()->DebugLog("Editor Tweaks plugin: Folding menu");
         return;
     }
 
     foldmenu->AppendSeparator();
     wxMenu *foldlevelmenu=new wxMenu();
-    foldlevelmenu->Append( id_et_Fold1, _( "1" ), _( "Fold all code to the first level" ) );
-    foldlevelmenu->Append( id_et_Fold2, _( "2" ), _( "Fold all code to the second level" ) );
-    foldlevelmenu->Append( id_et_Fold3, _( "3" ), _( "Fold all code to the third level" ) );
-    foldlevelmenu->Append( id_et_Fold4, _( "4" ), _( "Fold all code to the fourth level" ) );
-    foldlevelmenu->Append( id_et_Fold5, _( "5" ), _( "Fold all code to the fifth level" ) );
-    foldmenu->Append(wxID_ANY,_("Fold all above level"),foldlevelmenu);
+    foldlevelmenu->Append( id_et_Fold1, "1", _( "Fold all code to the first level" ) );
+    foldlevelmenu->Append( id_et_Fold2, "2", _( "Fold all code to the second level" ) );
+    foldlevelmenu->Append( id_et_Fold3, "3", _( "Fold all code to the third level" ) );
+    foldlevelmenu->Append( id_et_Fold4, "4", _( "Fold all code to the fourth level" ) );
+    foldlevelmenu->Append( id_et_Fold5, "5", _( "Fold all code to the fifth level" ) );
+    foldmenu->Append(wxID_ANY, _("Fold all above level"),foldlevelmenu);
 
     wxMenu *unfoldlevelmenu=new wxMenu();
-    unfoldlevelmenu->Append( id_et_Unfold1, _( "1" ), _( "Unfold all code to the first level" ) );
-    unfoldlevelmenu->Append( id_et_Unfold2, _( "2" ), _( "Unfold all code to the second level" ) );
-    unfoldlevelmenu->Append( id_et_Unfold3, _( "3" ), _( "Unfold all code to the third level" ) );
-    unfoldlevelmenu->Append( id_et_Unfold4, _( "4" ), _( "Unfold all code to the fourth level" ) );
-    unfoldlevelmenu->Append( id_et_Unfold5, _( "5" ), _( "Unfold all code to the fifth level" ) );
-    foldmenu->Append(wxID_ANY,_("Unfold all above level"),unfoldlevelmenu);
+    unfoldlevelmenu->Append( id_et_Unfold1, "1", _( "Unfold all code to the first level" ) );
+    unfoldlevelmenu->Append( id_et_Unfold2, "2", _( "Unfold all code to the second level" ) );
+    unfoldlevelmenu->Append( id_et_Unfold3, "3", _( "Unfold all code to the third level" ) );
+    unfoldlevelmenu->Append( id_et_Unfold4, "4", _( "Unfold all code to the fourth level" ) );
+    unfoldlevelmenu->Append( id_et_Unfold5, "5", _( "Unfold all code to the fifth level" ) );
+    foldmenu->Append(wxID_ANY, _("Unfold all above level"),unfoldlevelmenu);
 
     UpdateUI();
 }
@@ -621,11 +621,11 @@ void EditorTweaks::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fi
         alignerMenu->Append(AlignerMenuEntries[i].id, AlignerMenuEntries[i].MenuName + _T("\t")  + _T("[") + AlignerMenuEntries[i].ArgumentString + _T("]"));
     alignerMenu->AppendSeparator();
     alignerMenu->Append(id_et_align_auto,   _("Auto"));
-    alignerMenu->Append(id_et_align_last,   _("Last Align"), _("repeat last Align command") );
+    alignerMenu->Append(id_et_align_last,   _("Last Align"), _("Repeat last Align command") );
     alignerMenu->Append(id_et_align_others, _("More ..."));
 
     // attach aligner menu
-    const wxString label = wxT("Aligner");
+    const wxString label = _("Aligner");
     const int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, label);
     menu->Insert(position, wxID_ANY, label, alignerMenu);
 
@@ -661,16 +661,16 @@ void EditorTweaks::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fi
         submenu->Check(id_et_TabIndent,true);
 
     wxMenu *tabsizemenu=new wxMenu();
-    tabsizemenu->AppendRadioItem( id_et_TabSize2, _( "2" ), _( "Tab Width of 2" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize2, "2", _( "Tab Width of 2" ) );
     if (control->GetTabWidth()==2)
         tabsizemenu->Check(id_et_TabSize2,true);
-    tabsizemenu->AppendRadioItem( id_et_TabSize4, _( "4" ), _( "Tab Width of 4" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize4, "4", _( "Tab Width of 4" ) );
     if (control->GetTabWidth()==4)
         tabsizemenu->Check(id_et_TabSize4,true);
-    tabsizemenu->AppendRadioItem( id_et_TabSize6, _( "6" ), _( "Tab Width of 6" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize6, "6", _( "Tab Width of 6" ) );
     if (control->GetTabWidth()==6)
         tabsizemenu->Check(id_et_TabSize6,true);
-    tabsizemenu->AppendRadioItem( id_et_TabSize8, _( "8" ), _( "Tab Width of 8" ) );
+    tabsizemenu->AppendRadioItem( id_et_TabSize8, "8", _( "Tab Width of 8" ) );
     if (control->GetTabWidth()==8)
         tabsizemenu->Check(id_et_TabSize8,true);
     submenu->Append(wxID_ANY,_("Tab Size"),tabsizemenu);
@@ -687,7 +687,7 @@ void EditorTweaks::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fi
     eolmenu->AppendRadioItem( id_et_EOLLF, _( "LF" ), _( "Line Feed (Unix Default)" ) );
     if (control->GetEOLMode()==wxSCI_EOL_LF)
         eolmenu->Check(id_et_EOLLF,true);
-    submenu->Append(wxID_ANY,_("End-of-Line Mode"),eolmenu);
+    submenu->Append(wxID_ANY, _("End-of-Line Mode"),eolmenu);
 
     submenu->AppendCheckItem( id_et_ShowEOL, _( "Show EOL Chars" ), _( "Show End-of-Line Characters" ) );
     if (control->GetViewEOL())
@@ -697,7 +697,7 @@ void EditorTweaks::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fi
 
     submenu->Append( id_et_EnsureConsistentEOL, _( "Make EOLs Consistent Now" ), _( "Convert End-of-Line Characters to the Active Setting" ) );
 
-    menu->Append(wxID_ANY, _T("Editor Tweaks"), submenu);
+    menu->Append(wxID_ANY, _("Editor Tweaks"), submenu);
 #endif
 }
 
