@@ -212,8 +212,8 @@ wxArrayString nsEnvVars::GetEnvvarsBySetPath(const wxString& set_path)
       return envvars;
 
     const wxArrayString envvars_keys(cfg->EnumerateKeys(set_path));
-    const unsigned long num_envvars = envvars_keys.GetCount();
-    for (unsigned long i = 0; i < num_envvars; ++i)
+    const size_t num_envvars = envvars_keys.GetCount();
+    for (size_t i = 0; i < num_envvars; ++i)
     {
         const wxString envvar(cfg->Read(set_path+'/'+envvars_keys[i]));
         if (!envvar.empty())
@@ -222,7 +222,7 @@ wxArrayString nsEnvVars::GetEnvvarsBySetPath(const wxString& set_path)
             EV_DBGLOG("Warning: empty envvar '%s' detected and skipped.", envvars_keys[i]);
     }
 
-    EV_DBGLOG("Read %zu/%lu envvars in path '%s'.", envvars.GetCount(), num_envvars, set_path);
+    EV_DBGLOG("Read %zu/%zu envvars in path '%s'.", envvars.GetCount(), num_envvars, set_path);
 
     return envvars;
 }// GetEnvvarsBySetPath
