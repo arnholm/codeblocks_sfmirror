@@ -14,7 +14,7 @@
 										<label>Options</label>
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
-											<object class="wxCheckBox" name="chkUseSmartSense">
+											<object class="wxCheckBox" name="chkDisableSmartSense">
 												<label>Disable SmartSense</label>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>

@@ -157,7 +157,7 @@ void GotoFunctionDlg::BuildContent(wxWindow* parent, Iterator* iterator)
     Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&GotoFunctionDlg::OnModeClick);
     //*)
 
-    if (Manager::Get()->GetConfigManager(_T("clangd_client"))->ReadBool(_T("goto_function_window/column_mode")))
+    if (Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("goto_function_window/column_mode")))
         m_mode->SetValue(true);
 
     m_list->SetIterator(iterator);
@@ -198,7 +198,7 @@ void GotoFunctionDlg::SwitchMode()
 
 void GotoFunctionDlg::OnModeClick(wxCommandEvent& event)
 {
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("clangd_client");
     cfg->Write(_T("goto_function_window/column_mode"), m_mode->IsChecked());
 
     SwitchMode();

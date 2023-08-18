@@ -730,7 +730,6 @@ private:
         return (oldCC_enabled and bCCLibExists);
     }
 
-
     DECLARE_EVENT_TABLE()
 };
 

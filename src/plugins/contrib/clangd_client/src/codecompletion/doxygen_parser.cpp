@@ -1256,7 +1256,7 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
 void DocumentationHelper::RereadOptions(ConfigManager* cfg)
 {
     if (!cfg)
-        cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+        cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     m_Enabled = cfg->ReadBool(_T("/use_documentation_helper"), true);
 
@@ -1270,7 +1270,7 @@ void DocumentationHelper::RereadOptions(ConfigManager* cfg)
 void DocumentationHelper::WriteOptions(ConfigManager* cfg)
 {
     if (!cfg)
-        cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+        cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     cfg->Write(_T("/use_documentation_helper"), m_Enabled);
 }

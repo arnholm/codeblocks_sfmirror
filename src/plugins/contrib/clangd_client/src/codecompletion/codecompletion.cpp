@@ -1943,7 +1943,7 @@ void ClgdCompletion::RereadOptions()
 {
     // Keep this in sync with CCOptionsDlg::CCOptionsDlg and CCOptionsDlg::OnApply
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     m_LexerKeywordsToInclude[0] = cfg->ReadBool(_T("/lexer_keywords_set1"), true);
     m_LexerKeywordsToInclude[1] = cfg->ReadBool(_T("/lexer_keywords_set2"), true);
@@ -1983,7 +1983,7 @@ void ClgdCompletion::RereadOptions()
 void ClgdCompletion::UpdateToolBar()
 // ----------------------------------------------------------------------------
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     const bool showScope = cfg->ReadBool(_T("/scope_filter"), true);
     const int scopeLength = cfg->ReadInt(_T("/toolbar_scope_length"), 280);
     const int functionLength = cfg->ReadInt(_T("/toolbar_function_length"), 660);
@@ -2062,7 +2062,7 @@ void ClgdCompletion::OnUpdateUI(wxUpdateUIEvent& event)
 void ClgdCompletion::OnViewClassBrowser(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (!Manager::Get()->GetConfigManager(_T("clangd_client"))->ReadBool(_T("/use_symbols_browser"), true))
+    if (!Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("/use_symbols_browser"), true))
     {
         cbMessageBox(_("The symbols browser is disabled in code-completion options.\n"
                         "Please enable it there first..."), _("Information"), wxICON_INFORMATION);
@@ -2874,7 +2874,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
 void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    // Reparse a file
+    // Reparse a file by filename within open cbEditor
     wxString filename = event.GetString();
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
     if (not pEditor) return;
@@ -2921,8 +2921,8 @@ void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
                 // We don't ask for symbols on headers because they incorrectly clobbler the TokenTree .cpp symbols.
                 pClient->LSP_DidOpen(filename, pProject);
             }
-            wxString msg = _("Reparsing\n"); msg << fnFilename.GetPath() << "\n" << fnFilename.GetFullName();
-            InfoWindow::Display("Reparsing File", msg, 8000);
+            wxString msg = _("LSP Reparsing: "); msg << fnFilename.GetFullName();
+            Manager::Get()->GetLogManager()->DebugLog(msg);
 
         }//endif project and pf
         else
@@ -2947,7 +2947,9 @@ void ClgdCompletion::OnPluginEnabled()
 void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
+    // ----------------------------------------------------------------------------
     // Verify an existent clangd.exe path before creating a proxy project
+    // ----------------------------------------------------------------------------
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     wxString cfgClangdMasterPath = cfg->Read("/LLVM_MasterPath", wxEmptyString);
 
@@ -4545,7 +4547,7 @@ int ClgdCompletion::DoAllMethodsImpl()
         int line = control->LineFromPosition(pos);
         control->GotoPos(control->PositionFromLine(line));
 
-        bool addDoxgenComment = Manager::Get()->GetConfigManager(_T("clangd_client"))->ReadBool(_T("/add_doxgen_comment"), false);
+        bool addDoxgenComment = Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("/add_doxgen_comment"), false);
 
         wxArrayInt indices = dlg.GetSelectedIndices();
 
@@ -5586,6 +5588,28 @@ void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
     // Tell the project's parser that the debugger finished
     Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
     if (pParser) pParser->OnDebuggerFinished(event);
+    else return;
+
+    // Reparse open editors for the active project because their clangd info
+    // becomes empty after debugging. I don't know why. //(ph 2023/08/05)
+    // FIXME (ph#): Find out why clangd info becomes empty after using he debugger.
+    EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
+    int edCount = pClient ? pEdMgr->GetEditorsCount() : 0;
+    for (int ii=0; ii< edCount; ++ii)
+    {
+        cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(ii);
+        if (not pcbEd) continue; //happens because of "Start here" tab
+        ProjectFile* pPrjFile = pcbEd->GetProjectFile();
+        if (not pPrjFile) continue;
+        if (pPrjFile->GetParentProject() == pProject)
+        {
+            wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idSpecifiedFileReparse);
+            evt.SetString(pcbEd->GetFilename());
+            //Event to call OnSpecifiedFileReparse(evt with cbEditor filename);
+            Manager::Get()->GetAppFrame()->GetEventHandler()->AddPendingEvent(evt);
+        }
+    }
+
 }
 // ----------------------------------------------------------------------------
 bool ClgdCompletion::ParsingIsVeryBusy()
@@ -5594,7 +5618,7 @@ bool ClgdCompletion::ParsingIsVeryBusy()
     // suggestion: max parallel files parsing should be no more than half of processors
     int max_parallel_processes = std::max(1, wxThread::GetCPUCount());
     if (max_parallel_processes > 1) max_parallel_processes = max_parallel_processes >> 1; //use only half of cpus
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     int cfg_parallel_processes    = std::max(cfg->ReadInt("/max_threads", 1), 1);            //don't allow 0
     max_parallel_processes        = std::min(max_parallel_processes, cfg_parallel_processes);
 

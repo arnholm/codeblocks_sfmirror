@@ -1180,7 +1180,7 @@ void ParseManager::RemoveFileFromParser(cbProject* project, const wxString& file
 void ParseManager::RereadParserOptions()
 // ----------------------------------------------------------------------------
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     bool useSymbolBrowser = cfg->ReadBool(_T("/use_symbols_browser"), true);
 
     if (useSymbolBrowser)
@@ -1502,7 +1502,7 @@ void ParseManager::SetProjectSearchDirs(cbProject &project, const wxArrayString 
 void ParseManager::CreateClassBrowser()
 // ----------------------------------------------------------------------------
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     if (m_ClassBrowser || !cfg->ReadBool(_T("/use_symbols_browser"), true))
         return;
 
@@ -1693,7 +1693,7 @@ bool ParseManager::DoFullParsing(cbProject* project, Parser* parser)
     }//end if project
 
     //FIXME (ph#): ShowInheritance config setting and context menu setting is out of sync. Only saved on exit.
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     bool cfgShowInheritance = cfg->ReadBool(_T("/browser_show_inheritance"),    false);
     BrowserOptions& options = parser->ClassBrowserOptions();
     if (cfgShowInheritance or options.showInheritance) cfgShowInheritance = true;
@@ -1883,7 +1883,7 @@ void ParseManager::ClearParsers()
 ////
 ////    TRACE(_T("ParseManager::RemoveObsoleteParsers: Enter"));
 ////
-////    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+////    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
 ////    const size_t maxParsers = cfg->ReadInt(_T("/max_parsers"), 5);
 ////    wxArrayString removedProjectNames;
 ////    std::pair<cbProject*, ParserBase*> info = GetParserInfoByCurrentEditor();

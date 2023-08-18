@@ -113,7 +113,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     m_Parser(np->GetParser()),
     m_Documentation(dh)
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgCldSettings"));
 
@@ -173,7 +173,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     // -----------------------------------------------------------------------
 
     // Page "clangd_client"
-    XRCCTRL(*this, "chkUseSmartSense",      wxCheckBox)->SetValue(!m_Parser.Options().useSmartSense);
+    XRCCTRL(*this, "chkDisableSmartSense",  wxCheckBox)->SetValue( ! m_Parser.Options().useSmartSense); //(2023/08/07)
     XRCCTRL(*this, "chkWhileTyping",        wxCheckBox)->SetValue(m_Parser.Options().whileTyping);
 
     // Page "C / C++ parser"
@@ -193,6 +193,8 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     m_Old_LLVM_MasterPath = m_Parser.Options().LLVM_MasterPath; //save for onApply() check
 
     // FIXME (ph#): implement these unused hidden check boxes ? //(22/12/22)
+    //XRCCTRL(*this, "chkDisableSmartSense", wxCheckBox)->SetValue(false);     //(2023/08/06)
+    XRCCTRL(*this, "chkDisableSmartSense", wxCheckBox)->Hide();
     XRCCTRL(*this, "chkLocals",        wxCheckBox)->Hide();
     XRCCTRL(*this, "chkGlobals",       wxCheckBox)->Hide();
     XRCCTRL(*this, "chkPreprocessor",  wxCheckBox)->Hide();
@@ -254,7 +256,7 @@ void CCOptionsDlg::OnApply()
 
     // Page "clangd_client"
     cfg->Write(_T("/semantic_keywords"),    (bool)!XRCCTRL(*this, "chkNoSemantic",         wxCheckBox)->GetValue());
-    cfg->Write(_T("/use_SmartSense"),       (bool) XRCCTRL(*this, "chkUseSmartSense",      wxCheckBox)->GetValue());
+    cfg->Write(_T("/use_SmartSense"),       (bool) XRCCTRL(*this, "chkDisableSmartSense",  wxCheckBox)->GetValue());
     cfg->Write(_T("/while_typing"),         (bool) XRCCTRL(*this, "chkWhileTyping",        wxCheckBox)->GetValue());
     cfg->Write(_T("/auto_add_parentheses"), (bool) XRCCTRL(*this, "chkAutoAddParentheses", wxCheckBox)->GetValue());
     cfg->Write(_T("/detect_implementation"),(bool) XRCCTRL(*this, "chkDetectImpl",         wxCheckBox)->GetValue());
@@ -323,7 +325,8 @@ void CCOptionsDlg::OnApply()
     m_Parser.ReadOptions();
 
     // Page "clangd_client"
-    m_Parser.Options().useSmartSense = !XRCCTRL(*this, "chkUseSmartSense",    wxCheckBox)->GetValue();
+    m_Parser.Options().useSmartSense = !XRCCTRL(*this, "chkDisableSmartSense",wxCheckBox)->GetValue(); //(2023/08/07)
+    m_Parser.Options().useSmartSense = true; //(2023/08/07) override to always true for clangd_client
     m_Parser.Options().whileTyping   =  XRCCTRL(*this, "chkWhileTyping",      wxCheckBox)->GetValue();
 
     // Page "C / C++ parser"
@@ -424,7 +427,7 @@ void CCOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     bool aap = XRCCTRL(*this, "chkAutoAddParentheses", wxCheckBox)->GetValue();
 
     // Page "clangd_client"
-    XRCCTRL(*this, "chkUseSmartSense",              wxCheckBox)->Enable(en);
+    XRCCTRL(*this, "chkDisableSmartSense",          wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkWhileTyping",                wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkAutoAddParentheses",         wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkDetectImpl",                 wxCheckBox)->Enable(en && aap);

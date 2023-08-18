@@ -219,7 +219,6 @@ void Parser::OnDebuggerFinished(CodeBlocksEvent& event)
         wxString msg = wxString::Format("LSP background parsing CONTINUED after debugging project(%s)", pProject->GetTitle());
         CCLogger::Get()->DebugLog(msg);
     }
-
 }
 // ----------------------------------------------------------------------------
 bool Parser::Done()
@@ -434,7 +433,7 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
     // allow parsing to proceed
     if (int cnt = PauseParsingForReason("AwaitClientInitialization", false) != 0)
     {
-        // error if !=  0 **Debugging** //(ph 2023/07/09)
+        // error if !=  0 **Debugging**
         wxString msg = wxString::Format("%s: PauseParsing count(%d) > 1", __FUNCTION__, cnt);
         Manager::Get()->GetLogManager()->DebugLogError(msg);
     }
@@ -1227,7 +1226,7 @@ void Parser::ReadOptions()
 void Parser::WriteOptions()
 // ----------------------------------------------------------------------------
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     // Page "clangd_client"
     cfg->Write(_T("/use_SmartSense"),                m_Options.useSmartSense);
@@ -1406,7 +1405,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         // If usr didn't set "show inheritance" skip symbols request for headers
         if ( not (filetype == ParserCommon::ftSource) )
         {
-            ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+            ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
             bool cfgShowInheritance = cfg->ReadBool(_T("/browser_show_inheritance"),    false);
             BrowserOptions& options = pParser->ClassBrowserOptions();
             if (cfgShowInheritance or options.showInheritance) cfgShowInheritance = true;
@@ -2333,7 +2332,7 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
         // -unused- Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
         wxString filename = pEditor->GetFilename();
 
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
         size_t ccMaxMatches = cfg->ReadInt(_T("/max_matches"), 256);
 
         for (size_t itemNdx=0; (itemNdx < valueItemsCount) && (itemNdx < ccMaxMatches); ++itemNdx)

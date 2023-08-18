@@ -137,7 +137,7 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool fo
 
     if (!cfg_read || force_refresh)
     {
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
         empty_ext               = cfg->ReadBool(_T("/empty_ext"), true);
         wxString header_ext_str = cfg->Read(_T("/header_ext"), _T("h,hpp,hxx,hh,h++,tcc,tpp,xpm"));
         wxString source_ext_str = cfg->Read(_T("/source_ext"), _T("c,cpp,cxx,cc,c++"));

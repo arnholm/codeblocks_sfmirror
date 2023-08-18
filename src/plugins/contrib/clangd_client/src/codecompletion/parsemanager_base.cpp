@@ -634,7 +634,7 @@ wxString ParseManagerBase::GetNextCCToken(const wxString& line,
             if (IsOpeningBracket(startAt, line))
                 ++nest;
             //NOTE: do not skip successive closing brackets. Eg,
-            // "GetConfigManager(_T("clangd_client"))->ReadBool"
+            // "GetConfigManager("clangd_client")->ReadBool"
             //                                        ^
             if (IsClosingBracket(startAt, line))
             {

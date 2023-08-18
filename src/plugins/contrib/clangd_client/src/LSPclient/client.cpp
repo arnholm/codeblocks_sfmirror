@@ -361,7 +361,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
 
     wxString tempDir = wxFileName::GetTempDir();
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("clangd_client"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     wxString cfgClangdMasterPath = cfg->Read("/LLVM_MasterPath", wxString());
     if (cfgClangdMasterPath.Length())
     {

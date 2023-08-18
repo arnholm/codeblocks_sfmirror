@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.72 23/07/15")
+#define VERSION wxT("1.2.73 23/08/18")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,11 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.73    2023/08/18
+//          Fix crash and loop in clangd_client classbrowser.cpp when no acitve project.
+//          Make config manager key "clangd_client" non-tranlatable
+//          Remove unused chkBox config option "Disable SmartSense".
+//          After Debugger finished, reparse open editors to re-obtain clangd info.
 //1.2.72    2023/07/15
 //          Fix unresponsive "Reparse this file" problem
 //          Fix failure to create Clangd-client for ~ProxyProject~
