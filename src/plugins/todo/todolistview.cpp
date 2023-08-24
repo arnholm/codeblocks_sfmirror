@@ -393,7 +393,10 @@ void ToDoListView::SortList()
                         wxDateTime date2;
                         date1.ParseDate(item1.date.c_str());
                         date2.ParseDate(item2.date.c_str());
-                        if      (date1 > date2)
+                        // avoid "invalid date" assertion
+                        if (not date1.IsValid()) date1.SetToCurrent();
+                        if (not date2.IsValid()) date2.SetToCurrent();
+                        if (date1 > date2)
                             swap =  1;
                         else if (date1 < date2)
                             swap = -1;
