@@ -244,9 +244,19 @@ function SetupProject(project)
 
     SetupTarget(target, true, WxVersion);
 
+    local pluginSharedLibName = target.GetOutputFilename();
+    if (0 == pluginSharedLibName.Find(_T("lib")))
+    {
+        local startIdx = 3;
+        local endIdx = pluginSharedLibName.Length()-1;
+        pluginSharedLibName = pluginSharedLibName.Mid(startIdx, endIdx);
+        target.AddCommandsAfterBuild(_T("cp -f ") + target.GetOutputFilename() + _T(" ") +
+                                pluginSharedLibName );
+    }
+
     // Create plugin distribution file.
     target.AddCommandsAfterBuild(_T("zip -j9 ") + PluginSettings.Name + _T(".cbplugin ") +
-                                target.GetOutputFilename() + _T(" ") +
+                                pluginSharedLibName + _T(" ") +
                                 PluginSettings.Name + _T(".zip"));
 
     // Create the "to_codeblocks_wx28" target
