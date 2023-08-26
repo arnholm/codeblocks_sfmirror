@@ -66,6 +66,10 @@ int HunspellInterface::InitializeSpellCheckEngine()
 #endif
         wxCharBuffer affixFileCharBuffer      = ConvertToUnicode(lpPrefix + strAffixFile);
         wxCharBuffer dictionaryFileCharBuffer = ConvertToUnicode(lpPrefix + strDictionaryFile);
+        if (m_pHunhandle)
+        {
+            Hunspell_destroy(m_pHunhandle);
+        }
         m_pHunhandle = Hunspell_create(affixFileCharBuffer, dictionaryFileCharBuffer);
     }
 
