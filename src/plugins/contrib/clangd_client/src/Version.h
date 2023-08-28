@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.73 23/08/18")
+#define VERSION wxT("1.2.74 23/08/28")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.74    2023/08/28 Apply patch 1406 for pJson leak in client.cpp (Thanks Christo).
 //1.2.73    2023/08/18
 //          Fix crash and loop in clangd_client classbrowser.cpp when no acitve project.
 //          Make config manager key "clangd_client" non-tranlatable

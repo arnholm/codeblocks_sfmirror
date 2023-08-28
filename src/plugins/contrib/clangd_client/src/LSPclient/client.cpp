@@ -1491,6 +1491,8 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
 
     try
     {
+        // Each of these routines allocate a separate json object (pJsonData) for further processing,
+        // so pJson needs to be freed before returning.
         if (pJson->size())
         {
             if (pJson->count("id"))
@@ -1529,9 +1531,12 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
         wxString errMsg(wxString::Format("\nOnLSP_Response() error: %s", err.what()) );
         writeClientLog(errMsg.ToStdString());
         cbMessageBox(errMsg);
-        return;
+        //-return; <== this is a leak of the json object from the wxThreadEvent payload !! 2023/08/28
     }
 
+     // delete the wxThreadEvent payload json object. CB patch 1406
+     // https://sourceforge.net/p/codeblocks/tickets/1406/ Thanks Christo
+    delete pJson;
     return;
 }//end OnLSP_Response()
 // ----------------------------------------------------------------------------
