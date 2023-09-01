@@ -179,28 +179,28 @@ wxObject* wxsSizer::OnBuildPreview(wxWindow* Parent,long Flags)
         // We pass either Parent passed to current BuildPreview function
         // or pointer to additional parent currently created
         wxObject* ChildPreview = Child->BuildPreview(NewParent,Flags);
-        if ( !ChildPreview ) continue;
+        if (!ChildPreview)
+            continue;
 
-        wxSizer* ChildAsSizer = wxDynamicCast(ChildPreview,wxSizer);
-        wxWindow* ChildAsWindow = wxDynamicCast(ChildPreview,wxWindow);
-        wxSizerItem* ChildAsItem = wxDynamicCast(ChildPreview,wxSizerItem);
+        const long Flags = wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags);
+        const long Proportion = SizerExtra->Proportion;
+        const long Pixels = SizerExtra->Border.GetPixels(Parent);
+        wxSizer* ChildAsSizer = wxDynamicCast(ChildPreview, wxSizer);
+        wxWindow* ChildAsWindow = wxDynamicCast(ChildPreview, wxWindow);
+        wxSizerItem* ChildAsItem = wxDynamicCast(ChildPreview, wxSizerItem);
         if ( ChildAsSizer )
         {
-            Sizer->Add(ChildAsSizer,SizerExtra->Proportion,
-                wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags),
-                SizerExtra->Border.GetPixels(Parent));
+            Sizer->Add(ChildAsSizer, Proportion, Flags, Pixels);
         }
         else if ( ChildAsWindow )
         {
-            Sizer->Add(ChildAsWindow,SizerExtra->Proportion,
-                wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags),
-                SizerExtra->Border.GetPixels(Parent));
+            Sizer->Add(ChildAsWindow, (Flags & wxSHAPED) ? 0 : Proportion, Flags, Pixels);
         }
         else if ( ChildAsItem )
         {
-            ChildAsItem->SetProportion(SizerExtra->Proportion);
-            ChildAsItem->SetFlag(wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags));
-            ChildAsItem->SetBorder(SizerExtra->Border.GetPixels(Parent));
+            ChildAsItem->SetProportion(Proportion);
+            ChildAsItem->SetFlag(Flags);
+            ChildAsItem->SetBorder(Pixels);
             Sizer->Add(ChildAsItem);
         }
     }
