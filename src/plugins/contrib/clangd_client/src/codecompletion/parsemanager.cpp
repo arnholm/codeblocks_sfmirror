@@ -874,7 +874,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)    //(ph 
 
     if (not pClient)
     {
-        #if defined(cbDEBUG)
+        #if defined(ccDEBUG)
         pLogMgr->DebugLog(wxString(__FUNCTION__) + ": No associated pClient in m_LSP_Clients[pProject] " << projectTitle); //(ph 2023/07/08)
         #endif
         return nullptr;
@@ -883,7 +883,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)    //(ph 
     if (pClient and pClient->GetLSP_Initialized(pProject))
         return pClient;
 
-    #if defined(cbDEBUG)
+    #if defined(ccDEBUG)
     wxString clientPtr = wxString::Format("%p", pClient);
     pLogMgr->DebugLog(wxString(__FUNCTION__) + ": pClient is not yet initialized. " + clientPtr); //(ph 2023/07/08)
     #endif
