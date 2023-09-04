@@ -414,9 +414,12 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
         GetIdleCallbackHandler()->QueueCallback(this, &Parser::LSP_OnClientInitialized, pProject);
         return;
     }
+
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     int edCount = pClient ? pEdMgr->GetEditorsCount() : 0;
-    for (int ii=0; ii< edCount; ++ii)
+    bool paused = GetUserParsingPaused();    //Get pause condition //(ph 2023/09/03)
+    //if not paused, send open editor files to clangd to be parsed
+    for (int ii=0; (ii< edCount) and (not paused); ++ii)
     {
         cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(ii);
         if (not pcbEd) continue; //happens because of "Start here" tab

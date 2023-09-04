@@ -229,7 +229,7 @@ private:
     void OnReparseSelectedProject(wxCommandEvent& event);
     void OnSelectedFileReparse(wxCommandEvent& event);
     void OnLSP_SelectedFileReparse(wxCommandEvent& event);
-    void OnEditorFileReparse(wxCommandEvent& event);
+    void OnActiveEditorFileReparse(wxCommandEvent& event);
     void OnLSP_EditorFileReparse(wxCommandEvent& event);
     void OnSpecifiedFileReparse(wxCommandEvent& event);
     void ClearReparseConditions();
@@ -674,8 +674,10 @@ private:
     // Get pointer to LSP event callbacks
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return pLSPEventSinkHandler.get();}
 
-    // Pause a selected project, or toggle ccLogger, or test shutdown for a projects client
+    // Pause a selected tree project, or toggle ccLogger, or test shutdown for a projects client
     void OnSelectedPauseParsing(wxCommandEvent& event);
+    // Pause a project on or off. Event string must contain "on" or "off" //(ph 2023/09/03)
+    void OnProjectPauseParsing(wxCommandEvent& event);
 
     // ----------------------------------------------------------------
     inline int GetCaretPosition(cbEditor* pEditor)

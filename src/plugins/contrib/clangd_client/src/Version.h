@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.75 23/09/2")
+#define VERSION wxT("1.2.76 23/09/4")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.76    2023/09/4 Pause parsing for custom makefiles until user requests clangd parsing.
+//              User must right-click projects tree entry and toggle "Pause parsing" to unchecked
+//              or select "Reparse this project".
 //1.2.75    2023/09/2 Fix clangd_client selection of build target. Guard some debugging msgs.
 //1.2.74    2023/08/28 Apply patch 1406 for pJson leak in client.cpp (Thanks Christo).
 //1.2.73    2023/08/18

@@ -369,6 +369,7 @@ int idReparsingTimer            = wxNewId();
 int idEditorActivatedTimer      = wxNewId();
 int LSPeventID                  = wxNewId(); //(ph 2023/04/18)
 int idPauseParsing              = wxNewId();
+int idProjectPauseParsing       = wxNewId(); //(ph 2023/09/03)
 int idStartupDelayTimer         = wxNewId();
 
 int idSpecifiedFileReparse      = wxNewId();
@@ -414,8 +415,9 @@ BEGIN_EVENT_TABLE(ClgdCompletion, cbCodeCompletionPlugin)
     EVT_MENU(idSelectedProjectReparse,             ClgdCompletion::OnReparseSelectedProject)
     EVT_MENU(idSelectedFileReparse,                ClgdCompletion::OnSelectedFileReparse   )
     EVT_MENU(idSpecifiedFileReparse,               ClgdCompletion::OnSpecifiedFileReparse  )
-    EVT_MENU(idEditorFileReparse,                  ClgdCompletion::OnEditorFileReparse   )
+    EVT_MENU(idEditorFileReparse,                  ClgdCompletion::OnActiveEditorFileReparse   )
     EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing )
+    EVT_MENU(idProjectPauseParsing,                ClgdCompletion::OnProjectPauseParsing ) //(ph 2023/09/03)
 
     // CC's toolbar
     EVT_CHOICE(XRCID("chcCodeCompletionScope"),    ClgdCompletion::OnScope   )
@@ -2747,9 +2749,35 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
             pParser->SetUserParsingPaused(paused);
             wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
             wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
+            infoText << _("\nRight-click project in  Projects tree to toggle.");      //(ph 2023/09/03)
             InfoWindow::Display(infoTitle, infoText, 7000);
         }
     }
+}//end OnSelectedPauseParsing
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnProjectPauseParsing(wxCommandEvent& event) //(ph 2023/09/03)
+// ----------------------------------------------------------------------------
+{
+    //Toggle pause LSP parsing on or off for project
+    // event string must contain "on" or "off",else status will toggle
+
+        cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+        if (not pProject) return;
+
+        Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+        if (pParser) //active parser
+        {
+            wxString projectTitle = pProject->GetTitle();
+            bool paused = pParser->GetUserParsingPaused();
+            paused = (not paused); //toggle
+            if (event.GetString() == "on") paused = true;
+            if (event.GetString() == "off") paused = false;
+            pParser->SetUserParsingPaused(paused);
+            wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
+            wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
+            infoText << _("\nRight-click project in  Projects tree to toggle."); //(ph 2023/09/03)
+            InfoWindow::Display(infoTitle, infoText, 7000);
+        }
 }//end OnSelectedPauseParsing
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnSelectedFileReparse(wxCommandEvent& event)
@@ -2808,7 +2836,7 @@ void ClgdCompletion::OnLSP_SelectedFileReparse(wxCommandEvent& event)
     event.Skip();
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnEditorFileReparse(wxCommandEvent& event)
+void ClgdCompletion::OnActiveEditorFileReparse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Redirection to OnLSP_EditorFileReparse()
@@ -3167,6 +3195,7 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
     if (IsAttached() && m_InitDone & (not pPrjMgr->IsClosingWorkspace()) )
     {
         cbProject* pProject = event.GetProject();
+
         if ( (not GetLSPClient(pProject)) //if no project yet
             and GetParseManager()->GetParserByProject(pProject) ) // but has Parser
             GetParseManager()->CreateNewLanguageServiceProcess(pProject, LSPeventID);
@@ -3183,6 +3212,14 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
             Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(m_CurrProject);
             if (pParser and pParser->PauseParsingCount("Deactivated"))
                 pParser->PauseParsingForReason("Deactivated",false);
+        }
+        // Pause parsing if this is a makefile project //(ph 2023/09/03)
+        if (m_CurrProject->IsMakefileCustom())
+        {
+            wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idProjectPauseParsing);
+            evt.SetString("on"); // turn on pause
+            cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("clangd_client");
+            if (pPlgn) pPlgn->ProcessEvent(evt);
         }
 
     }//endif attached
@@ -4144,7 +4181,9 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
         ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename);
         bool fileTypeOK = (filetype == ParserCommon::ftHeader) or (filetype == ParserCommon::ftSource);
         bool didOpenOk = false; //assume LSP will fail open, then do LSP didOpen()
-        if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK)
+        bool paused = pParser->GetUserParsingPaused(); // get paused status
+
+        if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK and (not paused))
         {
             // If editor not already LSP didOpen()'ed, do a LSP didOpen() call
             // cland does not like us doing multiple opens on a file.
