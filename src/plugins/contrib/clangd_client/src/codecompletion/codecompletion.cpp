@@ -3083,13 +3083,23 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
         if (pActiveProject)
         {
             bool LSPsucceeded = false;
-            if (!GetParseManager()->GetParserByProject(pActiveProject))
+            if (not GetParseManager()->GetParserByProject(pActiveProject))
             {
                 GetParseManager()->CreateParser(pActiveProject);
                 Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pActiveProject);
                 if (pParser and (not pParser->GetLSPClient()) )
                     LSPsucceeded = GetParseManager()->CreateNewLanguageServiceProcess(pActiveProject, LSPeventID);
-            }
+
+                // Pause parsing if this is a makefile project //(ph 2023/09/03)
+                if ( pParser and LSPsucceeded and pActiveProject->IsMakefileCustom())
+                {
+                    wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idProjectPauseParsing);
+                    evt.SetString("on"); // turn on pause
+                    cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("clangd_client");
+                    if (pPlgn) pPlgn->ProcessEvent(evt);
+                }
+
+            }//if not parser
 
             // Update the Function toolbar
             TRACE(_T("CodeCompletion::OnWorkspaceChanged: Starting m_TimerToolbar."));
