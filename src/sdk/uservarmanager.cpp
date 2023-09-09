@@ -40,6 +40,11 @@
 
 #include <ctype.h>
 
+namespace
+{
+    bool userVariableMgrIsBusy = false; //non-blocking mutex
+}
+
 template<> UserVariableManager* Mgr<UserVariableManager>::instance   = nullptr;
 template<> bool                 Mgr<UserVariableManager>::isShutdown = false;
 
@@ -167,6 +172,19 @@ wxString UserVariableManager::Replace(const wxString& variable, std::vector<wxSt
         }
         else
         {
+            // Guard against an infinite loop here because this code is rooted in the wxAppBase::DoIdle()/OnUpdateUI() event
+            // and can be called from the idle loop until the "Global Variable Editor dialog" is dismissed.
+            if (userVariableMgrIsBusy)
+                return value;
+
+            // Instantiation/deallocation of this struct acts as a non-blocking code guard.
+            // Any return from this point forward will set the guard to false.
+            struct usrVarMgr_t
+            {
+                usrVarMgr_t()  { userVariableMgrIsBusy = true; }
+                ~usrVarMgr_t() { userVariableMgrIsBusy = false; }
+            } UsrVarMgr;
+
             wxString msg;
             msg.Printf(_("In the currently active set, Code::Blocks does not know\n"
                          "the global compiler variable \"%s\".\n\n"
