@@ -143,6 +143,9 @@ namespace ParseManagerHelper
         const wxString& m_ExcludeDir;
         wxArrayString&  m_Files;
     };
+
+    bool CreateParserGuardBusy = false;
+
 }// namespace ParseManagerHelper
 
 //// /** event id for the sequence project parsing timer */
@@ -667,6 +670,18 @@ Parser* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
         CCLogger::Get()->DebugLog(_T("ParseManager::CreateParser: Parser for this project already exists!"));
         return nullptr;
     }
+
+    // Guarantee that we're not waiting on a Blobal Variable Editor dialog.
+    // which may have been invoked by a previous call to DoFullParsing() below.
+    // This happens when the dialog Help button returns.
+    if (ParseManagerHelper::CreateParserGuardBusy)
+        return nullptr;
+    // Set this function busy, and clear it on any return stmt.
+    struct CreateParserGuard_t
+    {
+        CreateParserGuard_t() {ParseManagerHelper::CreateParserGuardBusy = true;}
+        ~CreateParserGuard_t() {ParseManagerHelper::CreateParserGuardBusy = false;}
+    } CreateParserGuard;
 
     // Easy case for "one parser per workspace" that has already been created:
     // Note: m_ParserPerWorkspace always false for clangd

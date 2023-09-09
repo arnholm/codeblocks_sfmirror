@@ -50,7 +50,10 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.78    2023/09/9
+//1.2.79    2023/09/9
+//          Avoid re-entry into CreateParser() causing crashes at termination
+//          because a duplicate project was pushed to the parser list.
+//1.2.78    23/09/9
 //          Revert UpdateCompilationDatabase() to previous method of finding a build target.
 //1.2.77    Check for IsCustomMakefile in Workspace changed event also.
 //1.2.76    2023/09/4 Pause parsing for custom makefiles until user requests clangd parsing.
