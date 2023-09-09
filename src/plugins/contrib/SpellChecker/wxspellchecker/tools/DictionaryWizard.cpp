@@ -426,7 +426,7 @@ void WizardPage2::OnButtonDownloadClick( wxCommandEvent& event )
 
 wxString WizardPage2::GenerateDictionarySummary()
 {
-  wxString strReturn = "";
+  wxString strReturn;
   DictionaryWizard* pWizard = (DictionaryWizard*)GetParent();
   if (pWizard)
   {
@@ -434,7 +434,7 @@ wxString WizardPage2::GenerateDictionarySummary()
     if (pDictionaryArray)
     {
       for (unsigned int i=0; i<pDictionaryArray->GetCount(); i++)
-        strReturn += pDictionaryArray->Item(i) + _("\n");
+        strReturn += pDictionaryArray->Item(i) + '\n';
     }
   }
   return strReturn;
