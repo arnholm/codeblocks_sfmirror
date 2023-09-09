@@ -3871,46 +3871,36 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         // If the target is a virtual target like "All", cbProject returns a nullptr.
         // If the user has deleted a project, ProjectFile may still return it as valid.
         // So get the actual target by making ProjectFile and cbProject agree with one another.
-        wxArrayString vBuildTargets = pProjectFile->GetBuildTargets();
-        if (not vBuildTargets.GetCount()) return;
-        int vBuildTargetsCount = vBuildTargets.GetCount();
-        wxString activeTargetTitle = pProject->GetActiveBuildTarget();
-        // Is this a virtual target
-        wxArrayString realTargets = pProject->GetExpandedVirtualBuildTargetGroup(activeTargetTitle);
-        bool isVirtualTarget = realTargets.GetCount() > 0;
-        if (isVirtualTarget) vBuildTargets = realTargets;
-        int targetidx = 0;
-        while ( targetidx < vBuildTargetsCount)
+        wxArrayString pfBuildTargets = pProjectFile->GetBuildTargets();
+        if (not pfBuildTargets.Count()) return;
+        int prjTargetsCount = pProject->GetBuildTargetsCount();
+        for (size_t pfbtx=0; pfbtx < pfBuildTargets.GetCount(); ++pfbtx)
         {
             // Match the list from ProjectFile targets to the Project targets
             // to find the non-virtual, active compile target
-            if (pProject->BuildTargetValid(vBuildTargets[targetidx], false))
+            if (pProject->BuildTargetValid(pfBuildTargets[pfbtx], false))
             {
-                wxString vBuildfTargetTitle = vBuildTargets[targetidx];
-                // Is this a virtual target? //(ph 230902)
-                if (isVirtualTarget)
+                wxString pfTargetTitle = pfBuildTargets[pfbtx];
+                for (int prjbtx=0; prjbtx < prjTargetsCount; ++prjbtx)
                 {
-                    // The TargetTitle was virtual
-                    // There's no way to find the actual target, use the first one.
-                    pTarget = pProject->GetBuildTarget(0);
-                    CCLogger::Get()->DebugLog(_("Clangd_client is using project target: ") + vBuildfTargetTitle );
-                    break;
+                    wxString prjTargetTitle = pProject->GetBuildTarget(prjbtx)->GetTitle();
+                    if ( pfTargetTitle == prjTargetTitle )
+                    {
+                        pTarget = pProject->GetBuildTarget(prjbtx);
+                        break;
+                    }
                 }
-                if ( activeTargetTitle == vBuildfTargetTitle )
-                {
-                    pTarget = pProject->GetBuildTarget(targetidx);
-                    CCLogger::Get()->DebugLog(_("Clangd_client is using project target: ") + vBuildfTargetTitle );
-                    break;
-                }
-
+                if (pTarget) break;
             }//endfor prjBuildTargets
-            ++targetidx ;
         }//endfor pfBuildTargets
-    }//endif not target
+    }
     if (not pTarget)
     {   CCLogger::Get()->Log(_("Clangd_client found no usable project target."));
+        CCLogger::Get()->DebugLog(_("Clangd_client found no usable project target."));
         return;
     }
+    else
+        CCLogger::Get()->DebugLog(_("Clangd_client using project target:" + pTarget->GetTitle()));
 
     Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
     wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
