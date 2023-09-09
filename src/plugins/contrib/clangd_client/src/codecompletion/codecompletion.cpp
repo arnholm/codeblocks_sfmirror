@@ -4191,10 +4191,12 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
         ParserCommon::EFileType filetype = ParserCommon::FileType(pProjectFile->relativeFilename);
         bool fileTypeOK = (filetype == ParserCommon::ftHeader) or (filetype == ParserCommon::ftSource);
         bool didOpenOk = false; //assume LSP will fail open, then do LSP didOpen()
-        bool paused = pParser->GetUserParsingPaused(); // get paused status
 
-        if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK and (not paused))
+        if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK ) do
         {
+            bool paused = pParser->GetUserParsingPaused(); // get paused status //(ph 2023/09/09)
+            if (paused) break;
+
             // If editor not already LSP didOpen()'ed, do a LSP didOpen() call
             // cland does not like us doing multiple opens on a file.
             if (not (didOpenOk = GetLSPClient(pEd)->GetLSP_EditorIsOpen(pEd)) )
@@ -4205,7 +4207,7 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
                 cbMessageBox(msg, "Failed LSP_DidOpen()");
             } else CCLogger::Get()->DebugLog(wxString::Format("%s() DidOpen %s", __FUNCTION__, pEd->GetFilename()));
 
-        }
+        }while(0);
     }//endif (pEd and m_OnEditorOpenEventOccured)
 
     // ----------------------------------------------------------------------------
