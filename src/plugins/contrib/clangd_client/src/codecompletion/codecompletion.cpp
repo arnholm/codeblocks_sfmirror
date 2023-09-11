@@ -367,7 +367,7 @@ int idToolbarTimer              = XRCID("idToolbarTimer");
 int idProjectSavedTimer         = wxNewId();
 int idReparsingTimer            = wxNewId();
 int idEditorActivatedTimer      = wxNewId();
-int LSPeventID                  = wxNewId(); //(ph 2023/04/18)
+int LSPeventID                  = wxNewId();
 int idPauseParsing              = wxNewId();
 int idProjectPauseParsing       = wxNewId(); //(ph 2023/09/03)
 int idStartupDelayTimer         = wxNewId();
@@ -527,7 +527,7 @@ ClgdCompletion::ClgdCompletion() :
 
     // ParseManager / CodeRefactoring creation
     m_pParseManager.reset( new ParseManager(pNewLSPEventSinkHandler) );
-    GetParseManager()->SetClientEventHandler(this); //(ph 2023/04/18)
+    GetParseManager()->SetClientEventHandler(this);
     m_pCodeRefactoring = new CodeRefactoring(m_pParseManager.get());
     m_pDocHelper = new DocumentationHelper(m_pParseManager.get());
 
@@ -552,7 +552,7 @@ ClgdCompletion::ClgdCompletion() :
     Connect(XRCID("idLSP_Process_Terminated"), wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
 
-    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID); //(ph 2023/04/19)
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
 
     // Disable old Codecompletion plugin for safety (to avoid conflict crashes)
     // Note that if there's no plugin entry in the .conf, a plugin gets loaded and run
@@ -582,7 +582,7 @@ ClgdCompletion::~ClgdCompletion()
     Disconnect(XRCID("idLSP_Process_Terminated"), wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
 
-    Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID); //(ph 2023/04/19)
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
 
 }
 // ----------------------------------------------------------------------------
@@ -2578,7 +2578,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
             // The response to LSP initialization will unfreeze the parser.
             if ( int cnt = pParser->PauseParsingForReason("AwaitClientInitialization", true) > 1)
             {
-                // error if greater than 1 **Debugging** //(ph 2023/07/09)
+                // error if greater than 1 **Debugging**
                 wxString msg = wxString::Format("%s: AwaitClientInitialization count(%d) > 1", __FUNCTION__, cnt);
                 //cbMessageBox(msg, "Error");
                 Manager::Get()->GetLogManager()->DebugLogError(msg);
@@ -2654,7 +2654,7 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
             {
                 ClearReparseConditions();
 
-                // Send a quit command with cleanup flag //(ph 2023/04/11)
+                // Send a quit command with cleanup flag
                 if (GetLSPClient(project))
                     GetLSPClient(project)->SetProjectNeedsCleanup(project->GetFilename());
                 ShutdownLSPclient(project);
@@ -2670,7 +2670,7 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
                     // The response to LSP initialization will unfreeze the parser.
                     if ( int cnt = pParser->PauseParsingForReason("AwaitClientInitialization", true) > 1)
                     {
-                        // error if greater than 1 **Debugging** //(ph 2023/07/09)
+                        // error if greater than 1 **Debugging**
                         wxString msg = wxString::Format("%s: AwaitClientInitialization count(%d) > 1", __FUNCTION__, cnt);
                         //cbMessageBox(msg, "Error");
                         Manager::Get()->GetLogManager()->DebugLogError(msg);
@@ -3458,7 +3458,7 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     if (pClient)
     {
         // Find the project that owns this file
-        pProject = GetParseManager()->GetProjectByClientAndFilename(pClient, filename); //(ph 2023/04/19)
+        pProject = GetParseManager()->GetProjectByClientAndFilename(pClient, filename);
 
         //// this code moved to ParseManager to access m_LSP_Clients map
         //LSPClientsMapType::iterator it = GetParseManager()->m_LSP_Clients.begin();

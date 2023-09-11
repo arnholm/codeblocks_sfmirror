@@ -417,7 +417,7 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     int edCount = pClient ? pEdMgr->GetEditorsCount() : 0;
-    bool paused = GetUserParsingPaused();    //Get pause condition //(ph 2023/09/03)
+    bool paused = GetUserParsingPaused();    //Get pause condition
     //if not paused, send open editor files to clangd to be parsed
     for (int ii=0; (ii< edCount) and (not paused); ++ii)
     {

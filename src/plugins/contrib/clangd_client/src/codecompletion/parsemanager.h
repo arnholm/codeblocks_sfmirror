@@ -320,8 +320,8 @@ public:
         return nowMillis - startMillis;
     }
 
-    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject, int LSPeventID);  //(ph 2023/04/18)
-    bool DoLockClangd_CacheAccess(cbProject* pcbProject);                           //(ph 2023/04/18)
+    ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject, int LSPeventID);
+    bool DoLockClangd_CacheAccess(cbProject* pcbProject);
 
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return m_pLSPEventSinkHandler;}
 
@@ -355,7 +355,7 @@ public:
     }
     void SetPluginIsShuttingDown();
     // ----------------------------------------------------------------
-    ProcessLanguageClient* GetLSPclientAllocated(cbProject* pProject) //(ph 2023/04/18)
+    ProcessLanguageClient* GetLSPclientAllocated(cbProject* pProject)
     // ----------------------------------------------------------------
     {
         ProcessLanguageClient* pClient =  nullptr;
@@ -369,10 +369,10 @@ public:
         return nullptr;
     }
 
-    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject); //(ph 2023/04/18)
+    bool DoUnlockClangd_CacheAccess(cbProject* pcbProject);
     ProcessLanguageClient* GetLSPclient(cbProject* pProject);
     ProcessLanguageClient* GetLSPclient(cbEditor* pEd);
-    cbProject* GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& Filename); //(ph 2023/04/19)
+    cbProject* GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& Filename);
 
 
 protected:
@@ -650,7 +650,7 @@ private:
     // project pointers and their associated LSP client pointers
     typedef std::map<cbProject*, ProcessLanguageClient*> LSPClientsMapType;
     LSPClientsMapType m_LSP_Clients; //map of all LSP clients by project*
-    void CloseAllClients();          //shutdown //(ph 2023/04/18)
+    void CloseAllClients();          //shutdown
 
 
     LSPEventCallbackHandler* m_pLSPEventSinkHandler;

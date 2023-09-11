@@ -49,7 +49,7 @@
 #include <cbworkspace.h>
 
 #if defined(_WIN32)
-#include "winprocess/asyncprocess/procutils.h" // LSP //(ph 2023/04/19)
+#include "winprocess/asyncprocess/procutils.h" // LSP
 #else
 #include "procutils.h"
 #endif //_Win32
@@ -671,9 +671,13 @@ Parser* ParseManager::CreateParser(cbProject* project, bool useSavedOptions)
         return nullptr;
     }
 
-    // Guarantee that we're not waiting on a Blobal Variable Editor dialog.
+    // Guarantee that we're not waiting on a Global Variable Editor dialog.
     // which may have been invoked by a previous call to DoFullParsing() below.
-    // This happens when the dialog Help button returns.
+    // This happens (sometimes) when the dialog Help button returns; CB is refocused and the idle loop activates.
+    // This can cause OnEditorActivated (the parent of the dlg) to be re-invoked and end up here again.
+    // (the Global Variable Editor dlg is rooted from OnUpdateUI() which is re-invoked from the idle loop).
+    // This could be a wxWidgets error. It seems correct that the dlg should be re-focused/re-activated,
+    // but the parent cbEditor should not be.
     if (ParseManagerHelper::CreateParserGuardBusy)
         return nullptr;
     // Set this function busy, and clear it on any return stmt.
@@ -852,7 +856,7 @@ ProcessLanguageClient* ParseManager::CreateNewLanguageServiceProcess(cbProject* 
 void ParseManager::CloseAllClients()
 // ----------------------------------------------------------------------
 {
-    // From OnRelease() processing //(ph 2023/04/18))
+    // From OnRelease() processing
     // ----------------------------------------------------------------
     // m_LSP_Clients contains map [pProject, pLSP_Client]
     if (m_LSP_Clients.size())    // shutdown LSP servers
@@ -871,7 +875,7 @@ void ParseManager::CloseAllClients()
     }//endif any LSP_Clients
 }
 // ----------------------------------------------------------------
-ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)    //(ph 2023/04/18)
+ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)
 // ----------------------------------------------------------------
 {
     ProcessLanguageClient* pClient =  nullptr;
@@ -922,7 +926,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbEditor* pEd)
     return nullptr;
 }
 // ----------------------------------------------------------------------------
-cbProject* ParseManager::GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& filename) //(ph 2023/04/19)
+cbProject* ParseManager::GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // Find the project that owns this file
