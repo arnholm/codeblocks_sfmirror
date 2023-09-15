@@ -521,7 +521,9 @@ public:
     std::string GetSemanticTokenNameAt(size_t idx)
     // ----------------------------------------------------------------------------
     {
-        if (idx <= m_SemanticTokensVec.size())
+        // patch 1408 svn:r13354 Thanks Martin Strunz 2023/09/15
+        //-error: if (idx <= m_SemanticTokensVec.size()) out of bounds - should be idx < ...
+        if (idx < m_SemanticTokensVec.size())
             return std::get<stTOKENNAME>(m_SemanticTokensVec[idx]);
         return std::string();
     }

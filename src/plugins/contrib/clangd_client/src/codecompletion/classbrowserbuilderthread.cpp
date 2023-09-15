@@ -131,6 +131,20 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     } classBrowserBuilderThreadMutexUnlock;
 
     m_ParseManager     = pParseManager;
+    // patch 1407 svn:r13354 Thanks Christo 2023/09/15
+    // Patch forces the tree to be created again which is required as all the items are rebuilt,
+    //  and the tokens are not valid anymore.
+    m_topCrc32         = CRC32_CCITT;
+    m_bottomCrc32      = CRC32_CCITT;
+    if (m_CCTreeTop)
+    {
+        delete m_CCTreeTop;
+    }
+    if (m_CCTreeBottom)
+    {
+        delete m_CCTreeBottom;
+    }
+    // End patch 1407
     m_CCTreeTop        = new CCTree();
     m_CCTreeBottom     = new CCTree();
     m_ActiveFilename   = active_filename;

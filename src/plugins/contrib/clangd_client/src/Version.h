@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.80 23/09/9")
+#define VERSION wxT("1.2.81 23/09/15")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.81    2023/09/15 Apply patch 1407 & 1408 Fix leak and out-of-bounds errors
 //1.2.80    2023/09/9
 //          Fix crash in OnEditorActivate() using nullptr pParser.
 //1.2.79    2023/09/9
