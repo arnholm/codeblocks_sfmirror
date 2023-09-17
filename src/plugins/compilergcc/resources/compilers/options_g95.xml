@@ -200,7 +200,7 @@
            msg="4;5"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)\.([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+)\.([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
@@ -212,7 +212,7 @@
            msg="1;2;4"
            file="2"
            line="3">
-        <![CDATA[(In file) ([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)(\.[0-9]+.*:)*]]>
+        <![CDATA[(In file) ([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+)(\.[0-9]+.*:)*]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
@@ -234,7 +234,7 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+): (undefined reference.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+): (undefined reference.*)]]>
     </RegEx>
     <RegEx name="Compiler warning (2)"
            type="warning"
@@ -248,14 +248,14 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Nn]ote:.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]]([Nn]ote:.*)]]>
     </RegEx>
     <RegEx name="Info line (2)"
            type="info"
            msg="1"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):]]>
     </RegEx>
     <RegEx name="Internal compiler error"
            type="error"

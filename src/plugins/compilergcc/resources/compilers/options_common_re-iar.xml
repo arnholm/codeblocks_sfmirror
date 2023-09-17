@@ -11,28 +11,28 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Rr]emark\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?,([0-9]+)[[:blank:]]+([Rr]emark\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ww]arning\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?,([0-9]+)[[:blank:]]+([Ww]arning\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?,([0-9]+)[[:blank:]]+([Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Compiler fatal error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?,([0-9]+)[[:blank:]]+([Ff]atal[[:blank:]]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?,([0-9]+)[[:blank:]]+([Ff]atal[[:blank:]]+[Ee]rror\[[0-9A-Za-z]*\]:.*)]]>
     </RegEx>
     <RegEx name="Linker warning"
            type="warning"

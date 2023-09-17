@@ -318,28 +318,28 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9:]+[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9:]+[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]]([Ww]arning[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]](.*[Ee]rror[:[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]](.*[Ee]rror[:[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error (2)"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9:]+ (.*: No such .*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9:]+ (.*: No such .*)]]>
     </RegEx>
     <RegEx name="Linker warning"
            type="warning"

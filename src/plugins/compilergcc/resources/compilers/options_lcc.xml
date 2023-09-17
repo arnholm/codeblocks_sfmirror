@@ -118,33 +118,33 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[cpp:[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?:([0-9]+)[[:blank:]](.*)]]>
+        <![CDATA[cpp:[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?:([0-9]+)[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[[Ww]arning[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?:[[:blank:]]([0-9]+)[[:blank:]]+(.*)]]>
+        <![CDATA[[Ww]arning[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?:[[:blank:]]([0-9]+)[[:blank:]]+(.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[[Ee]rror[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?:[[:blank:]]([0-9]+)[[:blank:]]+(.*)]]>
+        <![CDATA[[Ee]rror[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?:[[:blank:]]([0-9]+)[[:blank:]]+(.*)]]>
     </RegEx>
     <RegEx name="Linker error"
            type="error"
            msg="1;2"
            file="2">
-        <![CDATA[(cannot open)[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?]]>
+        <![CDATA[(cannot open)[[:blank:]]"?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?]]>
     </RegEx>
     <RegEx name="Undefined reference"
            type="error"
            msg="2"
            file="1">
-        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)"?[[:blank:]].text:[[:blank:]](undefined reference.*)]]>
+        <![CDATA["?([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)"?[[:blank:]].text:[[:blank:]](undefined reference.*)]]>
     </RegEx>
     <RegEx name="General warning"
            type="warning"

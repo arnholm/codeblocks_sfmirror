@@ -190,21 +190,21 @@
            type="error"
            msg="2"
            file="1">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]+:[[:blank:]]+(.*error LNK[0-9]+.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)[[:blank:]]+:[[:blank:]]+(.*error LNK[0-9]+.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*[Ww][Aa][Rr][Nn][Ii][Nn][Gg][[:blank:]]*(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*[Ww][Aa][Rr][Nn][Ii][Nn][Gg][[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)\(([0-9]+)\)[[:blank:]]*:[[:blank:]]*(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"

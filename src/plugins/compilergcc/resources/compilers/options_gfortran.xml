@@ -178,14 +178,14 @@
            msg="4;5"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)[\.:]{1}([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+)[\.:]{1}([0-9]+):.*(Fatal Error:.*)at \([0-9]+\)(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
            msg="4;5"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):([0-9]+):.*([Ff]+atal [Ee]+rror:.*: )(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):([0-9]+):.*([Ff]+atal [Ee]+rror:.*: )(.*)]]>
     </RegEx>
     <RegEx name="Fatal error"
            type="error"
@@ -197,14 +197,14 @@
            msg="1;4"
            file="2"
            line="3">
-        <![CDATA[([Ww]arning:)[[:blank:]]+([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):([[:blank:]]+Illegal.*)]]>
+        <![CDATA[([Ww]arning:)[[:blank:]]+([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):([[:blank:]]+Illegal.*)]]>
     </RegEx>
     <RegEx name="Info line"
            type="info"
            msg="0"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+)([\.:]{1}[0-9]+(\-[0-9]+)?:)[\t ]*$]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+)([\.:]{1}[0-9]+(\-[0-9]+)?:)[\t ]*$]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
@@ -226,56 +226,56 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+): (undefined reference.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+): (undefined reference.*)]]>
     </RegEx>
     <RegEx name="Compiler warning (2)"
            type="warning"
            msg="4;3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[ ]*([0-9]+)[ ]*(:[ ]*[0-9]+)[ ]*:[[:blank:]]*(warning:.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):[ ]*([0-9]+)[ ]*(:[ ]*[0-9]+)[ ]*:[[:blank:]]*(warning:.*)]]>
     </RegEx>
     <RegEx name="Compiler warning (3)"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[ ]*([0-9]+)[ ]*:[[:blank:]]*(warning:.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):[ ]*([0-9]+)[ ]*:[[:blank:]]*(warning:.*)]]>
     </RegEx>
     <RegEx name="Note"
            type="info"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Nn]ote:.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]]([Nn]ote:.*)]]>
     </RegEx>
     <RegEx name="Error"
            type="error"
            msg="4"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):([0-9]+):[[:blank:]]+([Ee]rror.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):([0-9]+):[[:blank:]]+([Ee]rror.*)]]>
     </RegEx>
     <RegEx name="Error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]+([Ee]rror.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]]+([Ee]rror.*)]]>
     </RegEx>
     <RegEx name="Include in..."
            type="normal"
            msg="0"
            file="0"
            line="0">
-        <![CDATA[(Included at [][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):]]>
+        <![CDATA[(Included at [][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):]]>
     </RegEx>
     <RegEx name="Info line (2)"
            type="info"
            msg="0"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):]]>
     </RegEx>
     <RegEx name="Internal compiler error"
            type="error"
@@ -290,7 +290,7 @@
     <RegEx name="No file error"
            type="error"
            msg="1;2;3">
-        <![CDATA[([[:blank:]]*gfortran.*:)([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)(:[[:blank:]]*No such file or directory.*)]]>
+        <![CDATA[([[:blank:]]*gfortran.*:)([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)(:[[:blank:]]*No such file or directory.*)]]>
     </RegEx>
     <Common name="re-gf"/>
 </CodeBlocks_compiler_options>

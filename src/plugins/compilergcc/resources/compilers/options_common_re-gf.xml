@@ -6,28 +6,28 @@
            msg="4"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):([0-9]+):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):([0-9]+):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Preprocessor error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9]+:[[:blank:]](.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9]+:[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Compiler warning"
            type="warning"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error (2)"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[[:blank:]](.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Compiler error (3)"
            type="error"
@@ -38,26 +38,26 @@
            type="warning"
            msg="2"
            file="1">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):\(\.text\+[0-9a-fA-FxX]+\):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):\(\.text\+[0-9a-fA-FxX]+\):[[:blank:]]([Ww]arning:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Linker error"
            type="error"
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9]+:[[:blank:]](.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9]+:[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Linker error (2)"
            type="error"
            msg="2"
            file="1">
-        <![CDATA[[][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+\(.text\+[0-9A-Za-z]+\):([[:blank:]A-Za-z0-9_:+/\.-]+):[[:blank:]](.*)]]>
+        <![CDATA[[][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+\(.text\+[0-9A-Za-z]+\):([[:blank:]A-Za-z0-9_:+/\.-]+):[[:blank:]](.*)]]>
     </RegEx>
     <RegEx name="Linker error (3)"
            type="error"
            msg="2"
            file="1">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):\(\.text\+[0-9a-fA-FxX]+\):(.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):\(\.text\+[0-9a-fA-FxX]+\):(.*)]]>
     </RegEx>
     <RegEx name="Linker error (lib not found)"
            type="error"
@@ -75,7 +75,7 @@
            type="error"
            msg="2"
            file="1">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):[[:blank:]](undefined reference.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):[[:blank:]](undefined reference.*)]]>
     </RegEx>
     <RegEx name="General warning"
            type="warning"

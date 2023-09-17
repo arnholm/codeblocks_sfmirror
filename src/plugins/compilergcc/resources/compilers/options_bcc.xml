@@ -199,14 +199,14 @@
            msg="1;4"
            file="2"
            line="3">
-        <![CDATA[(^Warning[[:blank:]]W[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
+        <![CDATA[(^Warning[[:blank:]]W[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Compiler error"
            type="error"
            msg="1;4"
            file="2"
            line="3">
-        <![CDATA[(^Error[[:blank:]]E[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
+        <![CDATA[(^Error[[:blank:]]E[0-9]+)[[:blank:]]([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+)[[:blank:]]([0-9]+)(:[[:blank:]].*)]]>
     </RegEx>
     <RegEx name="Unknown error"
            type="error"

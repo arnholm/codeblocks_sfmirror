@@ -246,7 +246,7 @@
            msg="3"
            file="1"
            line="2">
-        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\.-]+):([0-9]+):[0-9]+: note:[[:blank:]]+([Ii]n [Ii]nstantiation.*)]]>
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9]+: note:[[:blank:]]+([Ii]n [Ii]nstantiation.*)]]>
     </RegEx>
 
     <Common name="re"/>
