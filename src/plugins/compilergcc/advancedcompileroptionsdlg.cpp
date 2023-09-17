@@ -481,7 +481,8 @@ void AdvancedCompilerOptionsDlg::OnRegexTest(wxCommandEvent& WXUNUSED(event))
 
     // test-run
     compiler->SetRegExArray(m_Regexes);
-    CompilerLineType clt = compiler->CheckForWarningsAndErrors(text);
+    long regex_id; wxString regex_desc;
+    CompilerLineType clt = compiler->CheckForWarningsAndErrors(text, regex_id, regex_desc);
 
     // restore regexes
     compiler->SetRegExArray(regex_copy);
@@ -492,13 +493,15 @@ void AdvancedCompilerOptionsDlg::OnRegexTest(wxCommandEvent& WXUNUSED(event))
                  "Type: %s message\n"
                  "Filename: %s\n"
                  "Line number: %s\n"
-                 "Message: %s"),
+                 "Message: %s\n\n"
+                 "Matching regex-id: %ld ('%s')"),
                     clt == cltNormal ? _("Normal")
                  : (clt == cltInfo   ? _("Info")
                  : (clt == cltError  ? _("Error") : _("Warning") ) ),
                 compiler->GetLastErrorFilename(),
                 compiler->GetLastErrorLine(),
-                compiler->GetLastError()
+                compiler->GetLastError(),
+                regex_id, regex_desc
               );
 
     cbMessageBox(msg, _("Test results"), wxICON_INFORMATION, this);

@@ -283,6 +283,8 @@ class DLLIMPORT Compiler : public CompileOptionsBase
 
         /** @brief Check if the supplied string is a compiler warning/error */
         virtual CompilerLineType CheckForWarningsAndErrors(const wxString& line);
+        /** @brief Check if the supplied string is a compiler warning/error and additionally return information abut the regex that matched */
+        virtual CompilerLineType CheckForWarningsAndErrors(const wxString& line, long& regex_id, wxString& regex_desc);
         /** @brief Returns warning/error filename. Use it after a call to CheckForWarningsAndErrors() */
         virtual wxString GetLastErrorFilename()             { return m_ErrorFilename; }
         /** @brief Returns warning/error line number (as a string). Use it after a call to CheckForWarningsAndErrors() */
