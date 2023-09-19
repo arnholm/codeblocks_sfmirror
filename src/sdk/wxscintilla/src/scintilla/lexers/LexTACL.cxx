@@ -183,10 +183,7 @@ static void ColouriseTACLDoc(Sci_PositionU startPos, Sci_Position length, int in
 				state = SCE_C_IDENTIFIER;
 			} else if (ch == '{') {
 				ColourTo(styler, i-1, state, bInAsm);
-				state = SCE_C_COMMENT;
-			} else if (ch == '{' && chNext == '*') {
-				ColourTo(styler, i-1, state, bInAsm);
-				state = SCE_C_COMMENTDOC;
+				state = (chNext == '*') ? SCE_C_COMMENTDOC : SCE_C_COMMENT;
 			} else if (ch == '=' && chNext == '=') {
 				ColourTo(styler, i-1, state, bInAsm);
 				state = SCE_C_COMMENTLINE;
