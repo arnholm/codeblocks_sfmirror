@@ -1728,7 +1728,6 @@ void CIntelDynamicLinker::Reset(const CPlatform::OS_Type OS)
         m_LibraryDirSwitch = "-L";
         m_LinkLibrarySwitch = "-l";
         m_ObjectExtension = "o";
-        m_LibraryPrefix = "";
         m_LibraryPrefix = "lib";
         m_LibraryExtension = "a";
         m_NeedLibraryPrefix = false;
