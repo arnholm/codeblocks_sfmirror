@@ -15,13 +15,14 @@
 #include "globals.h"
 
 ASStreamIterator::ASStreamIterator(cbEditor* cbe, const wxChar* in) :
-  m_Ed(cbe),
-  m_CharPtr(in),
-  m_SavedCharPtr(0),
-  m_CurChar(0),
-  m_CurLine(0),
-  m_FoundBookmark(false),
-  m_FoundBreakpoint(false)
+    m_Ed(cbe),
+    m_CharPtr(in),
+    m_SavedCharPtr(0),
+    m_CurChar(0),
+    m_SavedCurChar(0),
+    m_CurLine(0),
+    m_FoundBookmark(false),
+    m_FoundBreakpoint(false)
 {
 }
 
