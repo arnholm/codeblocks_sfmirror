@@ -773,6 +773,12 @@ void Compiler::LoadSettings(const wxString& baseKey)
 
 CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line)
 {
+    long regex_id; wxString regex_desc; // dummy;
+    return CheckForWarningsAndErrors(line, regex_id, regex_desc);
+}
+
+CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line, long& regex_id, wxString& regex_desc)
+{
     if (!m_MultiLineMessages || (m_MultiLineMessages && !m_Error.IsEmpty()))
     {
         m_ErrorFilename.Clear();
@@ -780,6 +786,8 @@ CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line)
         m_Error.Clear();
     }
 
+    regex_id   = -1;
+    regex_desc = _("(Unknown)");
     for (size_t i = 0; i < m_RegExes.size(); ++i)
     {
         RegExStruct& rs = m_RegExes[i];
@@ -801,6 +809,8 @@ CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line)
                     m_Error << regex.GetMatch(line, rs.msg[x]);
                 }
             }
+            regex_id   = i;
+            regex_desc = rs.desc;
             return rs.lt;
         }
     }
