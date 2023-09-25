@@ -105,6 +105,43 @@ private:
     fd_set readset;
 };
 
+struct FAMData
+{
+    FAMRequest* request;
+    wxString* path;
+    FAMData(): request(nullptr), path(nullptr){};
+    ~FAMData()
+    {
+        if (request)
+        {
+            delete request;
+            request = nullptr;
+        }
+        if (path)
+        {
+            delete path;
+            path = nullptr;
+        }
+    }
+    FAMData(const FAMData& ) = delete;
+    FAMData& operator=(FAMData& ) = delete;
+    FAMData(FAMData&& other) noexcept
+    {
+        std::swap(request, other.request);
+        std::swap(path, other.path);
+    }
+    FAMData& operator=(FAMData&& other) noexcept
+    {
+        std::swap(request, other.request);
+        std::swap(path, other.path);
+        return *this;
+    }
+    void deleteRequest() noexcept
+    {
+        delete request;
+        request = nullptr;
+    }
+};
 
 class DirMonitorThread : public wxThread
 {
@@ -128,17 +165,16 @@ public:
     }
     void UpdatePathsThread(MonDescriptors &fd)
     {
-        std::vector<FAMRequest *> new_h(m_update_paths.GetCount(),NULL); //TODO: initialize vector size
+        std::vector<FAMData> new_h(m_update_paths.GetCount());
         for(size_t i=0;i<m_pathnames.GetCount();i++) //delete monitors that aren't needed
         {
             int index=m_update_paths.Index(m_pathnames[i]);
             if(index==wxNOT_FOUND)
             {
-                if(m_h[i])
+                if(m_h[i].request)
                 {
-                    FAMCancelMonitor(fd.fam(),m_h[i]);
-                    //m_active_count--;
-                    delete m_h[i];
+                    FAMCancelMonitor(fd.fam(),m_h[i].request);
+                    m_h[i].deleteRequest();
                 }
             }
         }
@@ -147,20 +183,26 @@ public:
             int index=m_pathnames.Index(m_update_paths[i]);
             if(index!=wxNOT_FOUND)
             {
-                new_h[i]=m_h[index];
+                new_h[i]=std::move(m_h[index]);
             }
             else
             {
                 FAMRequest *fr=new FAMRequest;
-                if(FAMMonitorDirectory(fd.fam(),m_update_paths[i].mb_str(wxConvLocal),fr,new wxString(m_update_paths[i].c_str()))>=0)
+                wxString* path = new wxString(m_update_paths[i].c_str());
+                if(FAMMonitorDirectory(fd.fam(),m_update_paths[i].mb_str(wxConvLocal),fr, path)>=0)
                 {
-                    new_h[i]=fr;
+                    new_h[i].request = fr;
+                    new_h[i].path = path;
                     m_active_count++;
-                } else
+                }
+                else
+                {
                     delete fr;
+                    delete path;
+                }
             }
         }
-        m_h=new_h; //replace the old with the new
+        m_h = std::move(new_h); //replace the old with the new
         m_pathnames=m_update_paths;
     }
     void *Entry()
@@ -217,10 +259,6 @@ public:
                             case FAMExists:
                                 break;
                             case FAMAcknowledge:
-                                if(fe.userdata)
-                                {
-                                    delete (wxString*)fe.userdata;
-                                }
                                 m_active_count--;
                                 break;
                             case FAMStartExecuting:
@@ -306,7 +344,7 @@ public:
     wxArrayString m_pathnames, m_update_paths;
     int m_notifyfilter;
     MonMap m_monmap;
-    std::vector<FAMRequest *> m_h;
+    std::vector<FAMData> m_h;
     wxEvtHandler *m_parent;
 };
 
