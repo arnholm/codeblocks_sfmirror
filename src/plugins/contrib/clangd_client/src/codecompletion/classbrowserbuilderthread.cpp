@@ -138,11 +138,15 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     m_bottomCrc32      = CRC32_CCITT;
     if (m_CCTreeTop)
     {
-        delete m_CCTreeTop;
+        CCTree* deleteMe = m_CCTreeTop; //(ph 2023/09/24)
+        m_CCTreeTop = nullptr;
+        delete deleteMe;
     }
     if (m_CCTreeBottom)
     {
-        delete m_CCTreeBottom;
+        CCTree* deleteMe = m_CCTreeBottom; //(ph 2023/09/24)
+        m_CCTreeBottom = nullptr;
+        delete deleteMe;
     }
     // End patch 1407
     m_CCTreeTop        = new CCTree();
@@ -175,7 +179,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         auto lock_result = s_TokenTreeMutex.LockTimeout(250);
         if (lock_result != wxMUTEX_NO_ERROR)
         {
-            ///Unlock m_ClassBrowserBuilderThreadMutex !!
+            //Unlock m_ClassBrowserBuilderThreadMutex done by struct above!!
             return success = m_Busy = false;
         }
         s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
@@ -435,21 +439,32 @@ void ClassBrowserBuilderThread::ExpandItem(CCTreeItem* item)
     if (locked)
         CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
 }
-
+// ----------------------------------------------------------------------------
 void ClassBrowserBuilderThread::SelectGUIItem()
+// ----------------------------------------------------------------------------
 {
     TRACE("ClassBrowserBuilderThread::SelectItem");
 
     if (!m_targetItem)
         return;
 
-    CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex)
+
+    CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex) //(ph 2023/09/24)
+    // struct dtor unlocks the ClassBrowserBuilderThreadMutex after any return following this struct
+    struct ClassBrowserBuilderThreadMutexUnlock
+    {
+        ClassBrowserBuilderThreadMutexUnlock() { }
+        ~ClassBrowserBuilderThreadMutexUnlock(){ CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex);}
+    } classBrowserBuilderThreadMutexUnlock;
+
 
 #ifdef CC_BUILDTREE_MEASURING
     wxStopWatch sw;
 #endif
 
     CCTree* tree = (m_BrowserOptions.treeMembers) ? m_CCTreeBottom : m_CCTreeTop;
+    if (not tree)  //(ph 2023/09/24)
+        return;
     if ( !(   m_BrowserOptions.displayFilter == bdfFile
            && m_ActiveFilename.IsEmpty() ) )
         AddMembersOf(tree, m_targetItem);
@@ -458,7 +473,8 @@ void ClassBrowserBuilderThread::SelectGUIItem()
     CCLogger::Get()->DebugLog(wxString::Format("SelectGUIItem (internally) took : %ld ms", sw.Time()));
 #endif
 
-    CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
+    // unlocked above by deallocation of struct //(ph 2023/09/24)
+    //-deprecated- CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
 }
 
 // Main worker functions
@@ -1176,6 +1192,8 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
 // ----------------------------------------------------------------------------
 {
     CCTree* localTree = top ? m_CCTreeTop : m_CCTreeBottom;
+    if (not localTree)  //(ph 2023/09/24)
+        return;
 
     // When Code Completion information changes refreshing is made in two steps:
     //   1.- Top is refreshed and bottom is cleared. Top refresh calls ReselectItem()

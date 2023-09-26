@@ -92,6 +92,7 @@ int idCBSortByKind             = wxNewId();
 int idCBSortByScope            = wxNewId();
 int idCBSortByLine             = wxNewId();
 int idCBBottomTree             = wxNewId();
+int idSearchSymbolTimer        = wxNewId(); //patch 1409
 
 /** the event ID which will be sent from worker thread to ClassBrowser */
 int idThreadEvent              = wxNewId();
@@ -135,13 +136,14 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     m_TreeForPopupMenu(nullptr),
     m_Parser(nullptr),
     m_ClassBrowserSemaphore(0, 1),  // initial count, max count
-    m_ClassBrowserBuilderThread(nullptr)
+    m_ClassBrowserBuilderThread(nullptr),
+    m_TimerSymbolSearchWaitForBottomTree(this, idSearchSymbolTimer) //patch 1409
 {
     wxXmlResource::Get()->LoadPanel(this, parent, "pnlCldClassBrowser"); // panel class browser -> pnlCB
     m_Search = XRCCTRL(*this, "cmbSearch", wxComboBox);
 
-    if (platform::windows)
-        m_Search->SetWindowStyle(wxTE_PROCESS_ENTER); // it's a must on windows to catch EVT_TEXT_ENTER
+    //patch 1409 removed "if (platform::windows)" so that it works on Linux
+    m_Search->SetWindowStyle(wxTE_PROCESS_ENTER); // it's a must on windows to catch EVT_TEXT_ENTER
 
     // Subclassed in XRC file, for reference see here: http://wiki.wxwidgets.org/Resource_Files
     m_CCTreeCtrl       = XRCCTRL(*this, "treeAll",     CCTreeCntrl);
@@ -161,11 +163,14 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     // so we force the correct colour for the panel here...
     XRCCTRL(*this, "pnlCldMainPanel", wxPanel)->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 
+    Connect(idSearchSymbolTimer, wxEVT_TIMER, wxTimerEventHandler(ClassBrowser::DoSearchBottomTree));    //patch 1409
+
 }
 
 // class destructor
 ClassBrowser::~ClassBrowser()
 {
+    Disconnect(idSearchSymbolTimer,    wxEVT_TIMER, wxTimerEventHandler(ClassBrowser::DoSearchBottomTree));   //patch 1409
     const int pos = XRCCTRL(*this, "splitterWin", wxSplitterWindow)->GetSashPosition();
     Manager::Get()->GetConfigManager("clangd_client")->Write("/splitter_pos", pos);
 
@@ -490,7 +495,8 @@ wxTreeItemId ClassBrowser::FindChild(const wxString& search, wxTreeCtrl* tree, c
                 return res;
         }
 
-        res = m_CCTreeCtrl->GetNextChild(start, cookie);
+        //-res = m_CCTreeCtrl->GetNextChild(start, cookie);  //patch 1409
+        res = tree->GetNextChild(start, cookie);             //patch 1409
     }
 
     res.Unset();
@@ -1005,11 +1011,39 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
         else
         {
             // search in bottom tree too
-            res = FindChild(token->m_Name, m_CCTreeCtrlBottom, m_CCTreeCtrlBottom->GetRootItem(), true, true);
-            if (res.IsOk())
-                m_CCTreeCtrlBottom->SelectItem(res);
+            //-res = FindChild(token->m_Name, m_CCTreeCtrlBottom, m_CCTreeCtrlBottom->GetRootItem(), true, true);
+            //-if (res.IsOk())
+            //-    m_CCTreeCtrlBottom->SelectItem(res);
+            //patch 1409 remove the above code
+            m_LastSearchedSymbol = token->m_Name;   //patch 1409
+            SearchBottomTree(true);                 //patch 1409
+
         }
     }
+}
+// ----------------------------------------------------------------------------
+void ClassBrowser::SearchBottomTree(bool firstTry)   //patch 1409
+// ----------------------------------------------------------------------------
+{
+    wxTreeItemId bottomRoot = m_CCTreeCtrlBottom->GetRootItem();
+    if (!bottomRoot.IsOk())
+    {
+        if (firstTry)
+        {
+            m_TimerSymbolSearchWaitForBottomTree.Start(100, wxTIMER_ONE_SHOT);
+            return;
+        }
+    }
+    wxTreeItemId res = FindChild(m_LastSearchedSymbol, m_CCTreeCtrlBottom, bottomRoot, true, true);
+    if (res.IsOk()) {
+        m_CCTreeCtrlBottom->SelectItem(res);
+    }
+}
+// ----------------------------------------------------------------------------
+void ClassBrowser::DoSearchBottomTree(wxTimerEvent& event)  //patch 1409
+// ----------------------------------------------------------------------------
+{
+    SearchBottomTree(false);
 }
 
 /* There are several cases:
