@@ -451,11 +451,19 @@ void CompilerOptionsDlg::DoFillCompilerSets(int compilerIdx)
 {
     wxChoice* cmb = XRCCTRL(*this, "cmbCompiler", wxChoice);
     cmb->Clear();
+    const int defaultCompilerIdx = CompilerFactory::GetCompilerIndex(CompilerFactory::GetDefaultCompilerID());
     for (unsigned int i = 0; i < CompilerFactory::GetCompilersCount(); ++i)
     {
         Compiler* compiler = CompilerFactory::GetCompiler(i);
         if (compiler) // && (!m_pProject || compiler->IsValid()))
-            cmb->Append(compiler->GetName(), new IntClientData(i));
+        {
+            wxString compilerName = compiler->GetName();
+            if (i == defaultCompilerIdx)
+                compilerName += " " + _("(default)");
+
+            cmb->Append(compilerName, new IntClientData(i));
+        }
+
     }
 
 //    int compilerIdx = CompilerFactory::GetCompilerIndex(CompilerFactory::GetDefaultCompilerID());
@@ -2180,6 +2188,8 @@ void CompilerOptionsDlg::OnSetDefaultCompilerClick(cb_unused wxCommandEvent& eve
     Compiler* compiler = CompilerFactory::GetDefaultCompiler();
     msg.Printf(_("%s is now selected as the default compiler for new projects"), compiler ? compiler->GetName() : _("[invalid]"));
     cbMessageBox(msg);
+
+    DoFillCompilerSets(idx);
 } // OnSetDefaultCompilerClick
 
 void CompilerOptionsDlg::OnAddCompilerClick(cb_unused wxCommandEvent& event)
