@@ -452,7 +452,8 @@ void CompilerOptionsDlg::DoFillCompilerSets(int compilerIdx)
     wxChoice* cmb = XRCCTRL(*this, "cmbCompiler", wxChoice);
     cmb->Clear();
     const int defaultCompilerIdx = CompilerFactory::GetCompilerIndex(CompilerFactory::GetDefaultCompilerID());
-    for (unsigned int i = 0; i < CompilerFactory::GetCompilersCount(); ++i)
+    const int compilerCount = CompilerFactory::GetCompilersCount();
+    for (int i = 0; i < compilerCount; ++i)
     {
         Compiler* compiler = CompilerFactory::GetCompiler(i);
         if (compiler) // && (!m_pProject || compiler->IsValid()))
