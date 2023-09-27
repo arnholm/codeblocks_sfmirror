@@ -40,21 +40,21 @@ int main(int argc, char** argv)
   } else {
     fprintf(stderr,"correct syntax is:\n"); 
     fprintf(stderr,"unmunch dic_file affix_file\n");
-    exit(1);
+    return 1;
   }
   if (argv[2]) {
        af = mystrdup(argv[2]);
   } else {
     fprintf(stderr,"correct syntax is:\n"); 
     fprintf(stderr,"unmunch dic_file affix_file\n");
-    exit(1);
+    return 1;
   }
 
   /* open the affix file */
   afflst = fopen(af,"r");
   if (!afflst) {
     fprintf(stderr,"Error - could not open affix description file\n");
-    exit(1);
+    return 1;
   }
 
   /* step one is to parse the affix file building up the internal
@@ -74,11 +74,15 @@ int main(int argc, char** argv)
   wrdlst = fopen(wf,"r");
   if (!wrdlst) {
     fprintf(stderr,"Error - could not open word list file\n");
-    exit(1);
+    return 1;
   }
 
   /* skip over the hash table size */
-  if (! fgets(ts, MAX_LN_LEN-1,wrdlst)) return 2;
+  if (!fgets(ts,MAX_LN_LEN-1,wrdlst)) {
+    fclose(wrdlst);
+    return 2;
+  }
+
   mychomp(ts);
 
   while (fgets(ts,MAX_LN_LEN-1,wrdlst)) {
