@@ -2185,9 +2185,9 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             newToken->m_TemplateType = formals;
             m_TemplateArgument.Clear();
 
-            Token*     lastParent     = m_LastParent;
-            TokenScope lastScope      = m_LastScope;
-            bool       parsingTypedef = m_ParsingTypedef;
+            //-unused- Token*     lastParent     = m_LastParent;
+            //-unused- TokenScope lastScope      = m_LastScope;
+            //-unused- bool       parsingTypedef = m_ParsingTypedef;
 
             m_LastParent     = newToken;
             // default scope is: private for classes, public for structs, public for unions
@@ -2202,36 +2202,38 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
                 // FIXME (ph#): Find out why this happens when trying to find a class ancestor.
                 wxString msg((wxString::Format("Trying to DoParse recursion in %s():%d", __FUNCTION__, __LINE__)));
                 //-cbMessageBox(msg, "Assert(non fatal)");
-                CCLogger::Get()->DebugLog(msg);
+                CCLogger::Get()->DebugLogError(msg);
             #endif
             break;
-            /// DoParse(); // recursion
+            /// DoParse(); // recursion not done by Clangd_client
 
-            m_LastParent     = lastParent;
-            m_LastScope      = lastScope;
-            m_ParsingTypedef = parsingTypedef;
-
-            m_LastUnnamedTokenName = unnamedTmp; // used for typedef'ing anonymous class/struct/union
-
-            // we should now be right after the closing brace
-            // no vars are defined on a typedef, only types
-            // In the former example, aa is not part of the typedef.
-            if (m_ParsingTypedef)
-            {
-                m_Str.Clear();
-                TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
-                if ( !ReadClsNames(newToken->m_Name) )
-                {   TRACE(_T("HandleClass() : ReadClsNames returned false [1].")); }
-                break;
-            }
-            else
-            {
-                m_Str = newToken->m_Name;
-                if ( !ReadVarNames() )
-                {   TRACE(_T("HandleClass() : ReadVarNames returned false [1].")); }
-                m_Str.Clear();
-                break;
-            }
+            // This is original CodeCompletion code unused by Clangd_client
+            // but may be useful in the future
+            //    m_LastParent     = lastParent;
+            //    m_LastScope      = lastScope;
+            //    m_ParsingTypedef = parsingTypedef;
+            //
+            //    m_LastUnnamedTokenName = unnamedTmp; // used for typedef'ing anonymous class/struct/union
+            //
+            //    // we should now be right after the closing brace
+            //    // no vars are defined on a typedef, only types
+            //    // In the former example, aa is not part of the typedef.
+            //    if (m_ParsingTypedef)
+            //    {
+            //        m_Str.Clear();
+            //        TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
+            //        if ( !ReadClsNames(newToken->m_Name) )
+            //        {   TRACE(_T("HandleClass() : ReadClsNames returned false [1].")); }
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        m_Str = newToken->m_Name;
+            //        if ( !ReadVarNames() )
+            //        {   TRACE(_T("HandleClass() : ReadVarNames returned false [1].")); }
+            //        m_Str.Clear();
+            //        break;
+            //    }
         }
         // -------------------------------------------------------------------
         else if (next == ParserConsts::opbrace)

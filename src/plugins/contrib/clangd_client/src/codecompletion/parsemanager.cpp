@@ -1078,7 +1078,7 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
     lockFile.Close();
     return success = true;
 
-    return success = false;
+    // unused original codeCompletion code --> return success = false;
 }
 // ----------------------------------------------------------------------------
 bool ParseManager::DoUnlockClangd_CacheAccess(cbProject* pcbProject)

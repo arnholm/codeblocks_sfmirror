@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.82 23/09/26")
+#define VERSION wxT("1.2.83 23/09/27")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.83    2023/09/27 Apply fixes 1412 and 1414 unreachable code
 //1.2.82    2023/09/26 Symbols tree sanity checks Christo fixes ticket 1409
 //          to avoid asserts and crashes when Symbols bottom tree is absent
 //1.2.81    2023/09/15 Apply patch 1407 & 1408 Fix leak and out-of-bounds errors

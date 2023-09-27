@@ -117,11 +117,13 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     // --------------------------------------------------------------
     // CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex); //LOCK ClassBrowser
     // --------------------------------------------------------------
-    auto lock_result = m_ClassBrowserBuilderThreadMutex.LockTimeout(250);
-    if (lock_result != wxMUTEX_NO_ERROR)
-    {
-        return success = m_Busy = false;
-    }
+    { //Codeblock
+        auto lock_result = m_ClassBrowserBuilderThreadMutex.LockTimeout(250);
+        if (lock_result != wxMUTEX_NO_ERROR)
+        {
+            return success = m_Busy = false;
+        }
+    }// end Codeblock
     m_ClassBrowserBuilderThreadMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
     // This structs dtor unlocks the ClassBrowserBuilderThreadMutex after any return statement in this function
     struct ClassBrowserBuilderThreadMutexUnlock
