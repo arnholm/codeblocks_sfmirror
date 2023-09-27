@@ -2264,19 +2264,23 @@ void CompilerOptionsDlg::OnAddCompilerClick(cb_unused wxCommandEvent& event)
 
 void CompilerOptionsDlg::OnEditCompilerClick(cb_unused wxCommandEvent& event)
 {
-    wxChoice* cmb = XRCCTRL(*this, "cmbCompiler", wxChoice);
-    const wxString curValue(cmb->GetStringSelection());
-    const wxString value(cbGetTextFromUser(_("Please edit the compiler's name:"), _("Rename compiler"), curValue, this));
-    if (!value.empty() && (value != curValue))
+    Compiler* compiler = CompilerFactory::GetCompiler(m_CurrentCompilerIdx);
+    if (compiler)
     {
-        Compiler* compiler = CompilerFactory::GetCompiler(m_CurrentCompilerIdx);
-        if (compiler)
-            compiler->SetName(value);
+        const wxString curValue(compiler->GetName());
+        wxString newValue(cbGetTextFromUser(_("Please edit the compiler's name:"), _("Rename compiler"), curValue, this));
+        if (!newValue.empty() && (newValue != curValue))
+        {
+            compiler->SetName(newValue);
+            if (compiler == CompilerFactory::GetDefaultCompiler())
+                newValue << ' ' << _("(default)");
 
-        // Delete and reappend to keep order
-        cmb->Delete(GetIndexPosition(cmb, m_CurrentCompilerIdx));
-        const int Pos = cmb->Append(value, new IntClientData(m_CurrentCompilerIdx));
-        cmb->SetSelection(Pos);
+            // Delete and reappend to keep order
+            wxChoice* cmb = XRCCTRL(*this, "cmbCompiler", wxChoice);
+            cmb->Delete(GetIndexPosition(cmb, m_CurrentCompilerIdx));
+            const int pos = cmb->Append(newValue, new IntClientData(m_CurrentCompilerIdx));
+            cmb->SetSelection(pos);
+        }
     }
 } // OnEditCompilerClick
 
