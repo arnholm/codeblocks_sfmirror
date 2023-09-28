@@ -969,7 +969,7 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
     //   OwningCodeBlocksPID;PathToOwningEXEfile;PathToProjectCBPfile
 
     bool success = false;
-    if (not pcbProject) return success = false;
+    if (not pcbProject) return success = false; // make success false and return it
     //Do not add an entry for the ~ProxyProject~
     if (pcbProject == GetProxyProject())
         return false;
@@ -982,7 +982,7 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
     success = wxDirExists(Clangd_cacheDir);
     if (not success )
         success = wxFileName::Mkdir(Clangd_cacheDir);
-    if (not success) return success = false;
+    if (not success) return success = false; // make success false and return it
 
     wxString lockFilename = Clangd_cacheDir + "/Clangd-cache.lock";
     if (platform::windows) lockFilename.Replace("/", "\\");
@@ -1003,11 +1003,11 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
         lockFile.AddLine(lockEntry);
         lockFile.Write();
         lockFile.Close();
-        return success = true;
+        return success = true; //make success true and return it
     }
     // lock file already exists. Check if it's ours or another process owns it
     bool opened = lockFile.Open();
-    if (not opened) return success = false; //lock file in use
+    if (not opened) return success = false; //lock file in use // make success false and return it
 
     long     lineItemPid = 0;
     wxString lineItemCBP = wxString();
@@ -1067,7 +1067,7 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
                 deniedMsg += _("\nbecause they contain references to the original files.");
                 cbMessageBox(deniedMsg);
                 lockFile.Close();
-                return success = false;
+                return success = false; // make success false and return it
             }//endif execs match
         }//endif switch
     }//owningPid not out pid
@@ -1076,7 +1076,7 @@ bool ParseManager::DoLockClangd_CacheAccess(cbProject* pcbProject)
     lockFile.AddLine(lockEntry);
     lockFile.Write();
     lockFile.Close();
-    return success = true;
+    return success = true; //make success true and return it
 
     // unused original codeCompletion code --> return success = false;
 }
@@ -1090,7 +1090,7 @@ bool ParseManager::DoUnlockClangd_CacheAccess(cbProject* pcbProject)
    // Call this function to remove the cache Access lock
 
     bool success = false;
-    if (not pcbProject) return success = false;
+    if (not pcbProject) return success = false; // make success false and return it
 
     wxFileName fnCBPfile = pcbProject->GetFilename();
     wxString cbpDirectory = fnCBPfile.GetPath();
@@ -1098,7 +1098,7 @@ bool ParseManager::DoUnlockClangd_CacheAccess(cbProject* pcbProject)
     // if no .Clangd-cache dir, just return
     wxString Clangd_cacheDir = cbpDirectory + "/.cache";
     success = wxDirExists(Clangd_cacheDir);
-    if (not success) return success = false;
+    if (not success) return success = false; // make success false and return it
 
     //avoid file not found error when closing nultiple .cbp in workspace
     wxLogNull noLog;
@@ -1108,7 +1108,7 @@ bool ParseManager::DoUnlockClangd_CacheAccess(cbProject* pcbProject)
 
     wxTextFile lockFile(lockFilename);
     bool opened = lockFile.Open();
-    if (not opened) return success = false; //lock file in use
+    if (not opened) return success = false; //lock file in use // make success false and return it
 
     long     lineItemPid = 0;
     wxString lineItemCBP = wxString();

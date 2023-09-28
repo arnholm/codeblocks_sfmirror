@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.83 23/09/27")
+#define VERSION wxT("1.2.84 23/09/28")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.84    2023/09/28 Clarified stmt "return success = false;" means assigment
 //1.2.83    2023/09/27 Apply fixes 1412 and 1414 unreachable code
 //1.2.82    2023/09/26 Symbols tree sanity checks Christo fixes ticket 1409
 //          to avoid asserts and crashes when Symbols bottom tree is absent

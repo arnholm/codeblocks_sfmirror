@@ -276,7 +276,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     // Unlocked by dtor of above struct ClassBrowserBuilderThreadMutexUnlock
     // ----------------------------------------------------------------
     m_Busy = false;
-    return success = true;
+    return success = true; //make success true and return it
 }
 
 // ----------------------------------------------------------------------------
