@@ -886,6 +886,9 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
     if (Manager::IsAppShuttingDown() || !m_Parser)
         return;
 
+    if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy()) //(ph 2023/10/08)
+        return;
+
     TRACE("ClassBrowser: ThreadedBuildTree started.");
 
     // create the thread if needed
