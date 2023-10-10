@@ -887,7 +887,7 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
         return;
 
     if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy()) //(2023/10/10) ticket 1393
-        return; // Do not block the main thread when the builder thread is slready busy.
+        return; // Do not block the main thread when the builder thread is already busy.
 
     TRACE("ClassBrowser: ThreadedBuildTree started.");
 
