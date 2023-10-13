@@ -301,7 +301,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
         return;
     }
 
-    //-ThreadedBuildTree(activeProject); // (Re-) create tree UI //(21/09/27) deprecated
+    //-ThreadedBuildTree(pActiveProject); // (Re-) create tree UI //(21/09/27) deprecated
 
     if ( not m_ClassBrowserBuilderThread )
     {
@@ -548,9 +548,6 @@ void ClassBrowser::OnTreeItemRightClick(wxTreeEvent& event)
     wxTreeCtrl* tree = (wxTreeCtrl*)event.GetEventObject();
     if (!tree)
         return;
-    // if no active project, ignore, else causes crash
-    cbProject* pProject =  Manager::Get()->GetProjectManager()->GetActiveProject(); //(ph 2023/08/07)
-    if (not pProject) return;
 
     tree->SelectItem(event.GetItem());
     ShowMenu(tree, event.GetItem(), event.GetPoint());
@@ -1061,6 +1058,13 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
 
     TRACE("ClassBrowser: ThreadedBuildTree started.");
 
+    // Do not block the main thread. (Legacy CodeCompletion Ticket 1393).
+    // When UpdateClassBrowser is called twice immediately, CB freezes because
+    // the worker thread is paused (below) holding the mutex, then init() blocks the main Gui
+    // attempting to obtain the mutex, causing a deadly embrace.The worker thread can't free the mutex.
+    if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy()) //(ph 2023/10/08)
+        return; // Do not block the main thread when the builder thread is busy. Ticket #1393
+
     // create the thread if needed
     bool thread_needs_run = false;
     if ( not m_ClassBrowserBuilderThread)
@@ -1140,9 +1144,6 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
 
 void ClassBrowser::OnTreeItemExpanding(wxTreeEvent& event)
 {
-    if (not Manager::Get()->GetProjectManager()->GetActiveProject())
-        return; //(ph 2023/08/07)
-
     if (m_ClassBrowserBuilderThread && !m_ClassBrowserBuilderThread->IsBusy())  // targets can't be changed while busy
     {
         if (event.GetItem().IsOk() && !m_CCTreeCtrl->GetChildrenCount(event.GetItem(), false))
@@ -1157,9 +1158,6 @@ void ClassBrowser::OnTreeItemExpanding(wxTreeEvent& event)
 
 void ClassBrowser::OnTreeSelChanged(wxTreeEvent& event)
 {
-    if (not Manager::Get()->GetProjectManager()->GetActiveProject())
-        return; //(ph 2023/08/07)
-
     if (m_ClassBrowserBuilderThread && m_Parser && m_Parser->ClassBrowserOptions().treeMembers)
     {
         m_ClassBrowserBuilderThread->SetNextJob(JobSelectTree, GetItemPtr(event.GetItem()));
@@ -1228,10 +1226,6 @@ void ClassBrowser::TreeOperation(ETreeOperator op, CCTreeItem* item)
 
     if (!m_targetTreeCtrl)
       return;
-
-    // avoid crashes and loops when no active project
-    if (not (Manager::Get()->GetProjectManager()->GetActiveProject())) //(ph 2023/08/07)
-        return;
 
     switch (op)
       {

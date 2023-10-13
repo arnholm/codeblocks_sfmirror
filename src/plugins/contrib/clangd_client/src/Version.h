@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.84 23/09/28")
+#define VERSION wxT("1.2.88 23/10/12")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,15 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.88    2023/10/12 Fix stall when user set option Environment/OpenDefaultWorkspace
+//          OnProjectActivaded being called before internal init was finished.
+//          Change ParseManager::GetIdleCallbackHandler to not crash on assert.
+//          Also fixes Assert described in https://forums.codeblocks.org/index.php?topic=25532.msg173810#msg173810
+//1.2.87    2023/10/11 Ticket 1393 from legacy CodeComplete CBfreeze.
+//          Remove misunderstood active project checks that keep Symbols window cleanup after wksp close.
+//1.2.86    2023/10/9 Hack to fix crash when Tokens.end() < Tokens.begin()
+//          See ClassBrowserBuilderThread 1005 (Tagged //(ph 2023/10/07))
+//1.2.85    2023/10/4 Sanity check for ClassBrowserBilderThread:902 crash
 //1.2.84    2023/09/28 Clarified stmt "return success = false;" means assigment
 //1.2.83    2023/09/27 Apply fixes 1412 and 1414 unreachable code
 //1.2.82    2023/09/26 Symbols tree sanity checks Christo fixes ticket 1409

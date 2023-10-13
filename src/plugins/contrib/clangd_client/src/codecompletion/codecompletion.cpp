@@ -553,6 +553,7 @@ ClgdCompletion::ClgdCompletion() :
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
 
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnReActivateProject, this,XRCID("OnReActivateProject"));
 
     // Disable old Codecompletion plugin for safety (to avoid conflict crashes)
     // Note that if there's no plugin entry in the .conf, a plugin gets loaded and run
@@ -583,6 +584,7 @@ ClgdCompletion::~ClgdCompletion()
             wxCommandEventHandler(ClgdCompletion::OnLSP_ProcessTerminated));
 
     Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnReActivateProject, this,XRCID("OnReActivateProject"));
 
 }
 // ----------------------------------------------------------------------------
@@ -3166,6 +3168,19 @@ void ClgdCompletion::OnProjectOpened(CodeBlocksEvent& event)
     }
     return;
 }
+
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnReActivateProject(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // event issued locally to re-activate the project after m_InitDone is set.
+    // Do NOT event.skip(); own the event
+    if (not m_InitDone) return;
+    CodeBlocksEvent evt;
+    evt.SetProject(Manager::Get()->GetProjectManager()->GetActiveProject() );
+    if (evt.GetProject() )
+        OnProjectActivated(evt);
+}
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
@@ -5220,7 +5235,7 @@ void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
     // here on a timer, the splash screen is closed and Code::Blocks doesn't appear
     // to take so long in starting.
 
-    m_InitDone = true;
+    m_InitDone = false; //set this true before return
     wxString msg;
     LogManager* pLogMgr = Manager::Get()->GetLogManager();
 
@@ -5254,11 +5269,26 @@ void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
     if (editor)
         GetParseManager()->OnEditorActivated(editor);
 
-    //// (ph#): This is unecessary after a nightly for rev 12975
-    //// Catch compiler Run() command to avoid hanging on missing EVT_COMPILER_FINISHED notificaiton
-    //if (m_pCompilerPlugin)
-    //    m_pCompilerPlugin->Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnCompilerMenuSelected, this);
+    //If ProxyProject and active project and (not Clangd_Client),
+    // and Settings/Environment/OPenDefaultWorkspace selected, re-activate the project to create a clangd_client
+    // This is necessary because when "Open default project" option is set, the
+    // first OnProjectActivated() is called before local initialization is done.
+    ConfigManager *appcfg = Manager::Get()->GetConfigManager(_T("app"));
+    bool isOpenDefaultWkspOption = not appcfg->ReadBool("/environment/blank_workspace");
+    bool reactivateTheProject = isOpenDefaultWkspOption
+            and Manager::Get()->GetProjectManager()->GetActiveProject()
+            and pProxyParser;
 
+    m_InitDone = true;
+
+    if (reactivateTheProject)
+    {
+        // There's an active project loaded before our OnProjectActivated() could create a clangd_client.
+        // Now that init is done, re-activate the project with a local event.
+        wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, XRCID("OnReActivateProject"));
+        cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("clangd_client");
+        if (pPlgn) pPlgn->AddPendingEvent(evt);
+    }
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::UpdateEditorSyntax(cbEditor* ed)
@@ -5378,6 +5408,7 @@ void ClgdCompletion::InvokeToolbarTimer(wxCommandEvent& event)
     // Allow others to call OnToolbarTimer() via event.
     // Invoked by Parser::OnLSP_ParseDocumentSymbols() to update the scope toolbar
 
+    if (not m_InitDone) return;
     m_ToolbarNeedReparse = true;
     m_ToolbarNeedRefresh = true;
 
@@ -5396,7 +5427,7 @@ void ClgdCompletion::OnToolbarTimer(cb_unused wxTimerEvent& event)
     if (m_TimerToolbar.IsRunning())
         m_TimerToolbar.Stop();
 
-    if (not ProjectManager::IsBusy())
+    if (m_InitDone and (not ProjectManager::IsBusy()))
         ParseFunctionsAndFillToolbar();
     else
     {

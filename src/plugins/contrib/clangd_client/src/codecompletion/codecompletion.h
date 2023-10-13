@@ -640,6 +640,8 @@ private:
     wxString GetLineTextFromFile(const wxString& file, const int lineNum);
     wxString VerifyEditorParsed(cbEditor* pEd);
     wxString VerifyEditorHasSymbols(cbEditor* pEd);
+    void OnReActivateProject(wxCommandEvent& event);
+
 
     // ----------------------------------------------------------------------------
     IdleCallbackHandler* GetIdleCallbackHandler(cbProject* pProjectParm = nullptr)
@@ -658,6 +660,7 @@ private:
         // **Debugging** Trying to catch on Linux first run, I get null GetIdleCallBackHandler()
         //      from ClgdCompletion::ParseFunctionsAndFillToolbar() 4688
         //      But when I added the following 2 checks, the asserts disappeared.
+        // Answer: A timer poped before StartupDelay timer initialized ProxyParser.
         if (not pParser)
             wxMessageBox(wxString::Format("NULL pParser: %s() %d",__PRETTY_FUNCTION__, __LINE__ ), "Assert");
         if (pParser and (not pParser->GetIdleCallbackHandler()))

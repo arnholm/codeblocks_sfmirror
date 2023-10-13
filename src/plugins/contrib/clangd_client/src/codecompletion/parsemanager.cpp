@@ -3086,9 +3086,11 @@ void ParseManager::SetPluginIsShuttingDown()
 IdleCallbackHandler* ParseManager::GetIdleCallbackHandler(cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
-    cbAssert(pProject);
+    cbAssertNonFatal(pProject && "pProject is null");
     Parser* pParser = GetParserByProject(pProject);
-    cbAssert(pParser);
+    cbAssertNonFatal(pParser && "Project has no pParser");
+    if ((not pProject ) or (not pParser))
+        return nullptr;
     return pParser->GetIdleCallbackHandler();
 }
 // ----------------------------------------------------------------------------

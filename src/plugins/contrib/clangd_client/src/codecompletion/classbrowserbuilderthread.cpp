@@ -879,6 +879,8 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
         return;
 
     CCTreeCtrlData* data = m_CCTreeTop->GetItemData(node);
+    if (not data) //(ph 2023/10/04)
+        return;
 
     const bool bottom = (tree == m_CCTreeBottom);
     if (bottom)
@@ -1001,6 +1003,14 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
     }
 
     TokenIdxSet::const_iterator end = tokens->end();
+    //(ph 2023/10/07) Sanity hack Avoiding crash bec. end < begin
+    TokenIdxSet::const_iterator start = tokens->begin(); //(ph 2023/10/07)
+    // Convert iterators to integer indices to avoid crash
+    int endIndex = std::distance(tokens->begin(), end);
+    int startIndex = std::distance(tokens->begin(), start);
+    // This usually happens when a project is restarted after a close.
+    // Note that the Symbols tree had stale data from a previous wksp close
+    if (startIndex < endIndex) //(ph 2023/10/07)
     for (TokenIdxSet::const_iterator start = tokens->begin(); start != end; ++start)
     {
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
