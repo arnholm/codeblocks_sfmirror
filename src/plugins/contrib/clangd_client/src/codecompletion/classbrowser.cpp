@@ -298,7 +298,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     if (not pActiveProject)
     {
         CCLogger::Get()->DebugLog("ClassBrowser::UpdateClassBrowserView(): No active project available.");
-        return;
+        //-return; <== do not return, else classBrower tree will not clear and contain trash. //(ph 2023/10/14)
     }
 
     //-ThreadedBuildTree(pActiveProject); // (Re-) create tree UI //(21/09/27) deprecated

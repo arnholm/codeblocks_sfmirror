@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.88 23/10/12")
+#define VERSION wxT("1.2.89 23/10/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.89    2023/10/14 Temporary "fixme" to prevent crash @ ClassBrowserBuilderThread::AddMembersOf(} tagged://(ph 2023/10/14)
+//          Fix crash candidate: UpdateClassBrowserView was returning before clearing Symbols tree.
 //1.2.88    2023/10/12 Fix stall when user set option Environment/OpenDefaultWorkspace
 //          OnProjectActivaded being called before internal init was finished.
 //          Change ParseManager::GetIdleCallbackHandler to not crash on assert.

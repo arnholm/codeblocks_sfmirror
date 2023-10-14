@@ -881,6 +881,18 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
     CCTreeCtrlData* data = m_CCTreeTop->GetItemData(node);
     if (not data) //(ph 2023/10/04)
         return;
+    // FIXME (ph#):Getting crash here with data == -1 as a ptr (0xFFFFFFFFFFFFFFFF) //(ph 2023/10/14)
+    // I believe this problem is fixed by version 1.2.89 (see version.h)
+    std::uintptr_t dataptrAsInt = reinterpret_cast<std::uintptr_t>(data);
+    #if IS_64_BIT
+        if (dataptrAsInt == LONG_MAX)
+    #else
+        if (dataptrAsInt == INT_MAX)
+    #endif
+    {
+        cbAssertNonFatal( (dataptrAsInt < 0xFFFFFFFFFFFFFFFF) && "data ptr out of range");
+        return;
+    }
 
     const bool bottom = (tree == m_CCTreeBottom);
     if (bottom)
@@ -976,7 +988,7 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
                 break;
         }
     }
-}
+}//AddMembersOf
 // ----------------------------------------------------------------------------
 bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const TokenIdxSet* tokens,
                                          short int tokenKindMask, int tokenScopeMask, bool allowGlobals)
@@ -1011,55 +1023,55 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
     // This usually happens when a project is restarted after a close.
     // Note that the Symbols tree had stale data from a previous wksp close
     if (startIndex < endIndex) //(ph 2023/10/07)
-    for (TokenIdxSet::const_iterator start = tokens->begin(); start != end; ++start)
-    {
-        CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
-
-        Token* token = m_TokenTree->at(*start);
-
-        CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
-
-        if (    token
-            && (token->m_TokenKind & tokenKindMask)
-            && (tokenScopeMask == 0 || token->m_Scope == tokenScopeMask)
-            && (allowGlobals || token->m_IsLocal || TokenMatchesFilter(token)) )
+        for (TokenIdxSet::const_iterator start = tokens->begin(); start != end; ++start)
         {
-            if (   tree == m_CCTreeTop
-                && tickets.find(token->GetTicket()) != tickets.end() )
-                continue; // duplicate node
-            ++count;
-            int img = m_ParseManager->GetTokenKindImage(token);
+            CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
-            wxString str = token->m_Name;
-            if (   (token->m_TokenKind == tkFunction)
-                || (token->m_TokenKind == tkConstructor)
-                || (token->m_TokenKind == tkDestructor)
-                || (token->m_TokenKind == tkMacroUse)
-                || (token->m_TokenKind == tkClass) )
-            {
-                str << token->GetFormattedArgs();
-            }
-            if (!token->m_FullType.IsEmpty())
-                str = str + " : " + token->m_FullType + token->m_TemplateArgument;
+            Token* token = m_TokenTree->at(*start);
 
-            CCTreeItem* child = tree->AppendItem(parent, str, img, img, new CCTreeCtrlData(sfToken, token, tokenKindMask));
+            CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
 
-            // mark as expanding if it is a container
-            int kind = tkClass | tkNamespace | tkEnum;
-            if (token->m_TokenKind == tkClass)
+            if (    token
+                && (token->m_TokenKind & tokenKindMask)
+                && (tokenScopeMask == 0 || token->m_Scope == tokenScopeMask)
+                && (allowGlobals || token->m_IsLocal || TokenMatchesFilter(token)) )
             {
-                if (!m_BrowserOptions.treeMembers)
-                    kind |= tkTypedef | tkFunction | tkVariable | tkEnum | tkMacroUse;
-                tree->SetItemHasChildren(child, m_BrowserOptions.showInheritance || TokenContainsChildrenOfKind(token, kind));
-            }
-            else if (token->m_TokenKind & (tkNamespace | tkEnum))
-            {
-                if (!m_BrowserOptions.treeMembers)
-                    kind |= tkTypedef | tkFunction | tkVariable | tkEnumerator | tkMacroUse;
-                tree->SetItemHasChildren(child, TokenContainsChildrenOfKind(token, kind));
-            }
-        }
-    }
+                if (   tree == m_CCTreeTop
+                    && tickets.find(token->GetTicket()) != tickets.end() )
+                    continue; // duplicate node
+                ++count;
+                int img = m_ParseManager->GetTokenKindImage(token);
+
+                wxString str = token->m_Name;
+                if (   (token->m_TokenKind == tkFunction)
+                    || (token->m_TokenKind == tkConstructor)
+                    || (token->m_TokenKind == tkDestructor)
+                    || (token->m_TokenKind == tkMacroUse)
+                    || (token->m_TokenKind == tkClass) )
+                {
+                    str << token->GetFormattedArgs();
+                }
+                if (!token->m_FullType.IsEmpty())
+                    str = str + " : " + token->m_FullType + token->m_TemplateArgument;
+
+                CCTreeItem* child = tree->AppendItem(parent, str, img, img, new CCTreeCtrlData(sfToken, token, tokenKindMask));
+
+                // mark as expanding if it is a container
+                int kind = tkClass | tkNamespace | tkEnum;
+                if (token->m_TokenKind == tkClass)
+                {
+                    if (!m_BrowserOptions.treeMembers)
+                        kind |= tkTypedef | tkFunction | tkVariable | tkEnum | tkMacroUse;
+                    tree->SetItemHasChildren(child, m_BrowserOptions.showInheritance || TokenContainsChildrenOfKind(token, kind));
+                }
+                else if (token->m_TokenKind & (tkNamespace | tkEnum))
+                {
+                    if (!m_BrowserOptions.treeMembers)
+                        kind |= tkTypedef | tkFunction | tkVariable | tkEnumerator | tkMacroUse;
+                    tree->SetItemHasChildren(child, TokenContainsChildrenOfKind(token, kind));
+                }
+            }//end if token
+        }//endfor
 
     tree->SortChildren(parent);
 //    tree->RemoveDoubles(parent);
