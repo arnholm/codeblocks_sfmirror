@@ -3087,7 +3087,7 @@ IdleCallbackHandler* ParseManager::GetIdleCallbackHandler(cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     cbAssertNonFatal(pProject && "pProject is null");
-    Parser* pParser = GetParserByProject(pProject);
+    Parser* pParser = pProject ? GetParserByProject(pProject) : nullptr;
     cbAssertNonFatal(pParser && "Project has no pParser");
     if ((not pProject ) or (not pParser))
         return nullptr;

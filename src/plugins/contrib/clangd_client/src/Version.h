@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.89 23/10/14")
+#define VERSION wxT("1.2.90 23/10/18")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.90    2023/10/18 Fix crash caused by null pActiveProject in classbrowser.cpp 315
 //1.2.89    2023/10/14 Temporary "fixme" to prevent crash @ ClassBrowserBuilderThread::AddMembersOf(} tagged://(ph 2023/10/14)
 //          Fix crash candidate: UpdateClassBrowserView was returning before clearing Symbols tree.
 //1.2.88    2023/10/12 Fix stall when user set option Environment/OpenDefaultWorkspace

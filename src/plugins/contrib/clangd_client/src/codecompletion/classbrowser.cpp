@@ -312,7 +312,8 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     else if (m_ClassBrowserBuilderThread->IsBusy())
     {
         // re-schedule this call on the Idle time Callback queue
-        GetParseManager()->GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClassBrowser::UpdateClassBrowserView, checkHeaderSwap);
+        if (pActiveProject) //(ph 2023/10/18) prevent crash
+            GetParseManager()->GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClassBrowser::UpdateClassBrowserView, checkHeaderSwap);
         return;
     }
     else ThreadedBuildTree(pActiveProject); // Re-create tree UI
@@ -1105,8 +1106,8 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
     if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy())
     {
         // re-schedule this call on the Idle time Callback queue )
-        cbAssert(m_Parser);
-        if (m_Parser)
+        cbAssertNonFatal(m_Parser); //(ph 2023/10/18)
+        if (m_Parser and activeProject) //(ph 2023/10/18)
             m_Parser->GetIdleCallbackHandler()->QueueCallback(this, &ClassBrowser::ThreadedBuildTree, activeProject);
         return;
     }
