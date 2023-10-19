@@ -90,11 +90,20 @@ AutoDetectCompilers::AutoDetectCompilers(wxWindow* parent)
                 {
                     // No path setup before OR path detected as it was setup before
                     if (path.empty() || path == pathDetected || path_no_macros == pathDetected)
+                    {
                         list->SetItem(idx, 1, _("Detected")); // OK
+                        highlight = 0;
+                    }
                     else
-                        list->SetItem(idx, 1, _("User-defined")); // OK
-
-                    highlight = 0;
+                    {
+                        // The detected path does not match the configured one, restore user configuration:
+                        compiler->SetMasterPath(path);
+                        if (wxFileName::DirExists(path_no_macros))
+                        {
+                            list->SetItem(idx, 1, _("User-defined")); // OK
+                            highlight = 0;
+                        }
+                    }
                 }
                 // In case auto-detection failed but a path was setup before:
                 else if (!path.empty())
