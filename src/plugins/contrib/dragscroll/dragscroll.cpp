@@ -25,6 +25,8 @@
 #include <wx/fileconf.h> // wxFileConfig
 #include <wx/html/htmlwin.h>
 #include <wx/tokenzr.h>
+#include <wx/window.h>
+
 #include "cbstyledtextctrl.h"
 #include "dragscroll.h"
 #include "dragscrollcfg.h"
@@ -231,7 +233,7 @@ void cbDragScroll::OnAttach()
         LOGIT(_T("MouseHtmlFontSize:%d"),       m_MouseHtmlFontSize ) ;
         LOGIT(_T("ZoomWindowIds:[%s]"),         m_ZoomWindowIds.c_str() ) ;
         LOGIT(_T("ZoomFontSizes:[%s]"),         m_ZoomFontSizes.c_str() ) ;
-        LOGIT(_T("MouseWheelZoomReverse:[%d]"), m_MouseWheelZoomReverse.c_str() ) ; //2019/03/30
+        LOGIT(_T("MouseWheelZoomReverse:[%d]"), m_MouseWheelZoomReverse ) ;
     #endif //LOGGING
 
     // Fill ZoomWindowIds and ZoomFontSizes arrays from config strings
@@ -426,7 +428,7 @@ void cbDragScroll::OnDialogDone(cbDragScrollCfg* pDlg)
      LOGIT(_T("MouseContextDelay:%d"),          MouseContextDelay);
      LOGIT(_T("MouseMouseWheelZoom:%d"),        MouseWheelZoom);
      LOGIT(_T("PropagateLogZoomSize:%d"),       PropagateLogZoomSize);
-     LOGIT(_T("MouseMouseWheelZoomReverse:%d"), MouseWheelZoomReverse); //2019/03/30
+     LOGIT(_T("MouseMouseWheelZoomReverse:%d"), m_MouseWheelZoomReverse); //2019/03/30
      LOGIT(_T("-----------------------------"));
     #endif //LOGGING
 
@@ -593,7 +595,12 @@ void cbDragScroll::OnDragScrollEventRemoveWindow(wxCommandEvent& event )
 
     #if defined(LOGGING)
     int windowID = event.GetId();
-    LOGIT( _T("cbDragScroll::OnDragScrollEvent RemoveWindow[%d][%p][%s]"), windowID, pWin, pWin->GetName().c_str());
+    wxString winName = "NotFound";
+    if (winExists(pWin))
+        winName = pWin->GetName();
+    //Don't try to obtain window internals. Window could be destroyed already.
+    //wxString winName = pWin->GetName().GetData(); <== causes crash
+    LOGIT( _T("cbDragScroll::OnDragScrollEvent RemoveWindow[%d][%p][%s]"), windowID, pWin, winName);
     #endif
 }
 // ----------------------------------------------------------------------------
@@ -1133,18 +1140,18 @@ void cbDragScroll::OnStartShutdown(CodeBlocksEvent& /*event*/)
         for (size_t i=0; i<m_WindowPtrs.GetCount(); ++i )
         {
             #if defined(LOGGING)
-            //LOGIT( _T("OnStartShutdown[%d][%p][%d]"), i, m_WindowPtrs.Item(i),((wxWindow*)m_WindowPtrs.Item(i))->GetId());
+            LOGIT( _T("OnStartShutdown[%d][%p][%d]"), int(i), m_WindowPtrs.Item(i),int(((wxWindow*)m_WindowPtrs.Item(i))->GetId()));
             #endif
             zoomWindowIds << wxString::Format(_T("%d,"),((wxWindow*)m_WindowPtrs.Item(i))->GetId() );
             wxFont font = ((wxWindow*)m_WindowPtrs.Item(i))->GetFont();
             zoomFontSizes << wxString::Format(_T("%d,"),font.GetPointSize() );
-            //#if defined(LOGGING)
-            //LOGIT( _T("WindowPtr[%p]Id[%d]fontSize[%d]"),
-            //    m_WindowPtrs.Item(i),
-            //    ((wxWindow*)m_WindowPtrs.Item(i))->GetId(),
-            //    font.GetPointSize()
-            //);
-            //#endif
+            #if defined(LOGGING)
+            LOGIT( _T("WindowPtr[%p]Id[%d]fontSize[%d]"),
+                m_WindowPtrs.Item(i),
+                ((wxWindow*)m_WindowPtrs.Item(i))->GetId(),
+                font.GetPointSize()
+            );
+            #endif
         }
         // Remove trailing comma
         zoomWindowIds.Truncate(zoomWindowIds.Length()-1);
@@ -1187,9 +1194,9 @@ void cbDragScroll::OnWindowOpen(wxEvent& event)
         wxWindow* pWindow = (wxWindow*)(event.GetEventObject());
         if ( pWindow )
         {
-            //#if defined(LOGGING)
-            //LOGIT( _T("OnWindowOpen by[%s]"), pWindow->GetName().GetData());
-            //#endif
+            #if defined(LOGGING)
+            LOGIT( _T("OnWindowOpen by[%s]"), pWindow->GetName().GetData());
+            #endif
             if ( (pWindow->GetName() ==  _T("SCIwindow"))
                 or (pWindow->GetName() ==  _T("htmlWindow")) )
             {
@@ -1202,7 +1209,7 @@ void cbDragScroll::OnWindowOpen(wxEvent& event)
                     LOGIT( _T("OnWindowOpen Attaching:%p name: %s"),
                             pWindow, pWindow->GetName().GetData() );
                 #endif //LOGGING
-
+                // Cleanly re-attach the window
                 Attach(pWindow);
             }
         }//fi (ed)

@@ -27,7 +27,7 @@
 // ---------------------------------------------------------------------------
 
 //----------------------------------------
-#define VERSION "1.3.31 2022/11/12"
+#define VERSION "1.3.32 23/10/23"
 //----------------------------------------
 
 //-#undef LOGGING
@@ -476,6 +476,8 @@ private:
 // 1.3.31   2022/11/12
 //          For focus-follows-mouse, give focus to windows with mouse movement and no clicks
 //          Allows log windows to re-click/scroll just by moving mouse.
+// 1.3.32   2023/10/23
+//          Comments and debug Logging text updates, no functional changes
 // ----------------------------------------------------------------------------
 //  ToDo
 // ----------------------------------------------------------------------------
