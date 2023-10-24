@@ -277,8 +277,10 @@ public:
     void RemoveClassBrowser(bool appShutDown = false);
 
     /** update the class browser tree */
-    //void UpdateClassBrowser();
     void UpdateClassBrowser();
+
+    /** check if ok to update the ClassBrower Symbols window */
+    bool IsOkToUpdateClassBrowserView(); //(ph 2023/10/21)
 
     // save current options and BrowserOptions
     void ParserOptionsSave(Parser* pParser);

@@ -984,7 +984,7 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 msg.Printf(_("Find implementation of: '%s'"), NameUnderCursor.wx_str());
                 menu->Insert(pos++, idGotoImplementation, msg);
 
-                if (pEditor and GetLSPClient(pEditor) and GetParseManager()->GetParser().Done())     // fix crash when client is shutdown.
+                if (pEditor and GetLSPClient(pEditor) and GetParseManager()->GetParser().Done())     // This fixes crash when client is shutdown.
                 {
                     msg.Printf(_("Find references of: '%s'"), NameUnderCursor.wx_str());
                     menu->Insert(pos++, idMenuFindReferences, msg);
@@ -2066,7 +2066,7 @@ void ClgdCompletion::OnUpdateUI(wxUpdateUIEvent& event)
 void ClgdCompletion::OnViewClassBrowser(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (!Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("/use_symbols_browser"), true))
+    if (!Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("/use_symbols_browser"), false))
     {
         cbMessageBox(_("The symbols browser is disabled in code-completion options.\n"
                         "Please enable it there first..."), _("Information"), wxICON_INFORMATION);

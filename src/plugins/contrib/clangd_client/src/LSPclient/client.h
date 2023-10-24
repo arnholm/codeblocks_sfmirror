@@ -740,6 +740,9 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
     wxFFile lspClientLogFile;
     wxFFile lspServerLogFile;
 
+    wxMutex m_MutexInputBufGuard; //jsonread buffer guard //(Christo ticket 1423 2023/10/16)
+    wxCondition m_CondInputBuf;                           //(Christo ticket 1423 2023/10/16)
+
     explicit ProcessLanguageClient(const cbProject* pProject, const char* program = "", const char* arguments = "");
     ~ProcessLanguageClient() override;
 

@@ -522,6 +522,7 @@
 								<object class="sizeritem">
 									<object class="wxCheckBox" name="chkNoSB">
 										<label>Disable symbols browser</label>
+										<checked>1</checked>
 									</object>
 									<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
 									<border>8</border>

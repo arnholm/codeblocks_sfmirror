@@ -129,6 +129,7 @@ namespace
 
     const char STX = '\u0002';  //start of text
 
+    // a counter to indicate when to update the GUI Symbols tree
     int prevDocumentSymbolsFilesProcessed = 0;
 
     std::deque<json*> LSP_ParserDocumentSymbolsQueue; // cf: OnLSP_ParseDocumentSysmbols()
@@ -239,12 +240,14 @@ bool Parser::Done()
     ProcessLanguageClient* pClient = GetLSPClient();
     if (not pClient) return done;
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    if (not pEditor) return done;
     cbProject* pEdProject = nullptr;
 
-    ProjectFile* pPrjfile = pEditor->GetProjectFile();
-    if (pPrjfile and pPrjfile->GetParentProject())
-        pEdProject = pPrjfile->GetParentProject();
+    if (pEditor) //(ph 2023/10/18)
+    {
+        ProjectFile* pPrjfile = pEditor->GetProjectFile();
+        if (pPrjfile and pPrjfile->GetParentProject())
+            pEdProject = pPrjfile->GetParentProject();
+    }
 
     if (pClient and pEditor)
     {
@@ -276,9 +279,33 @@ bool Parser::Done()
             }//endfor
         }//endif not done
     }//if client and editor
+
+    // No editor is open but there's a client and an active project //(ph 2023/10/18)
+    // Parser::LSP_ParseDocumentSymbols() counts the number of files processed.
+    // This logic can fail, infrequently, on small projects with no open editors
+    // that have less than 4 files. But it usually succeeds.
+    // If all other checks fail, we verify the small project has at least 1 file
+    // and return "done = true" anyway.
+    // The user can right-click Symbols/Refresh context menu to update tree any time.
+    if ( (not pEditor) and pClient and pActiveProject )
+    {
+        // reply done(true) if number of files parsed >=4 or no more files to process
+        if ( (prevDocumentSymbolsFilesProcessed >= 4)
+            or (GetFilesRemainingToParse() == 0) )
+            done = true;
+
+        if (not done)
+        {
+            // If files greater than 0 and less than 4, say done = true anyway
+            // just to kick the Symbols tree into action for small projects.
+            int filesCount = pActiveProject->GetFilesCount();
+            if ((filesCount > 0) and (filesCount <= 4) )
+                done = true;
+        }
+    }
+
     return done;
 }
-
 // ----------------------------------------------------------------------------
 wxString Parser::NotDoneReason()
 // ----------------------------------------------------------------------------
@@ -441,28 +468,6 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
         Manager::Get()->GetLogManager()->DebugLogError(msg);
     }
 
-}
-// ----------------------------------------------------------------------------
-bool Parser::IsOkToUpdateClassBrowserView()
-// ----------------------------------------------------------------------------
-{
-    // Don't update Symbol browser window if it's being used.
-    // User may be working within the symbols browser window
-
-    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
-    wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
-    if (pCurrentPage == m_pParseManager->GetClassBrowser())
-    {
-        if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
-        {
-            //cbAssertNonFatal(0 && "Mouse in ClassBrowser window."); // **Debugging **
-            return false;
-        }
-    }
-
-    return true;
 }
 // ----------------------------------------------------------------------------
 void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
@@ -648,7 +653,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer
 
         // Update ClassBrowser Symbols tab and CC toolBar when appropriate
-        if ( IsOkToUpdateClassBrowserView() and
+        if ( GetParseManager()->IsOkToUpdateClassBrowserView() and //(ph 2023/10/21)
                 ( (++prevDocumentSymbolsFilesProcessed >= 4) or (pClient->LSP_GetServerFilesParsingCount() == 0)) )
         {
             //update after x file parsed or when last file was parsed by LSP server
@@ -925,7 +930,7 @@ bool Parser::UpdateParsingProject(cbProject* project)
 {
     if (m_ParsersProject == project)
         return true;
-    else if (!Done())
+    else if (not Done())
     {
         wxString msg(_T("Parser::UpdateParsingProject(): The Parser is not done."));
         msg += NotDoneReason();
@@ -1488,11 +1493,18 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             wxString severity;
             switch (diagSeverity)
             {
+                //case 0: severity = "unknown";  break;
+                //case 1: severity = "note";     break;
+                //case 2: severity = "warning";  break;
+                //case 3: severity = "error";    break;
+                //case 4: severity = "fatal";    break;
+
+                //Christo patch ticket 1426 2023/10/23 //(ph 2023/10/23 christo)
                 case 0: severity = "unknown";  break;
-                case 1: severity = "note";     break;
+                case 1: severity = "error";    break;
                 case 2: severity = "warning";  break;
-                case 3: severity = "error";    break;
-                case 4: severity = "fatal";    break;
+                case 3: severity = "note";     break;
+                case 4: severity = "remark";   break;
             }
             wxString logMsg(wxString::Format("LSP:diagnostic:%s %d:%d  %s: %s", cbFilename, diagLine+1, diagColstrt+1, severity, diagMsg));
            // CCLogger::Get()->Log(logMsg);

@@ -323,7 +323,7 @@ namespace //annonymous
     bool wxFound(int result){return result != wxNOT_FOUND;};
     bool stdFound(size_t result){return result != std::string::npos;}
 
-    static wxMutex m_MutexInputBufGuard; //jsonread buffer guard
+    //-static wxMutex m_MutexInputBufGuard; //jsonread buffer guard //(Christo ticket 1423 2023/10/16)
 
 
 }//end namespace
@@ -354,6 +354,7 @@ LSPDiagnosticsResultsLog* ProcessLanguageClient::m_pDiagnosticsLog = nullptr;
 
 // ----------------------------------------------------------------------------
 ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const char* program, const char* arguments)
+    : m_MutexInputBufGuard(), m_CondInputBuf(m_MutexInputBufGuard) //(Christo ticket 1423 2023/10/16)
 // ----------------------------------------------------------------------------
 {
     LogManager* pLogMgr = Manager::Get()->GetLogManager();
@@ -688,11 +689,16 @@ ProcessLanguageClient::~ProcessLanguageClient()
     }
     if ( m_pJsonReadThread and (jsonTerminationThreadRC < 2) )
     {
-        // return should have been 2 //0=running; 1=terminateRequested; 2=Terminated
+        m_CondInputBuf.Signal(); //(Christo ticket 1423 2023/10/16)
         m_pJsonReadThread->join();
-        wxString msg = wxString::Format("%s() Json read thread termination error rc:%d\n", __FUNCTION__, int(jsonTerminationThreadRC) );
-        if (not Manager::IsAppShuttingDown()) //skip logging when shutting down, else we hang in linux
-            CCLogger::Get()->DebugLogError(msg);
+        // return should have been 2 //0=running; 1=terminateRequested; 2=Terminated
+        // The join() could have changed the return code.
+        if (jsonTerminationThreadRC < 2)  //(ph 2023/10/16) //(Christo ticket 1423 2023/10/16)
+        {
+            wxString msg = wxString::Format("%s() Json read thread termination error rc:%d\n", __FUNCTION__, int(jsonTerminationThreadRC) );
+            if (not Manager::IsAppShuttingDown()) //skip logging when shutting down, else we hang in linux
+                CCLogger::Get()->DebugLogError(msg);
+        }
     }
 
     // setting terminateLSP above should have already caused read thread to exit.
@@ -943,7 +949,12 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
         }
 
     // Ignore any clangd data when app is shutting down.
-    if (Manager::IsAppShuttingDown()) return;
+    //-if (Manager::IsAppShuttingDown()) return; //(Christo ticket 1423 2023/10/16)
+    if (Manager::IsAppShuttingDown())            //(Christo ticket 1423 2023/10/16)
+    {
+        m_MutexInputBufGuard.Unlock();
+        return;
+    }
 
     // Append clangd incomming response data to buffer;
     std::string* pRawOutput = event.GetPayload<std::string*>();
@@ -953,6 +964,7 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
     }
     std::string std_clangdRawOutput = *pRawOutput;
     m_std_LSP_IncomingStr.append(*pRawOutput);
+    m_CondInputBuf.Signal(); //(Christo ticket 1423 2023/10/16)
 
     /// unlock the input buffer
     m_MutexInputBufGuard.Unlock();
@@ -1231,8 +1243,9 @@ bool ProcessLanguageClient::readJson(json &json)
     if (not length)
     {
         /// no data, UNlock the input buffer
+        m_CondInputBuf.Wait(); //(Christo ticket 1423 2023/10/16)
         m_MutexInputBufGuard.Unlock();
-        wxMilliSleep(250);
+        //-wxMilliSleep(250); //(Christo ticket 1423 2023/10/16)
         return false;
     }
 

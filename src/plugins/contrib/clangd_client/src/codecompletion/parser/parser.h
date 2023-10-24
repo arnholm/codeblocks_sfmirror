@@ -165,7 +165,6 @@ public:
     void LSP_ParseDocumentSymbols(wxCommandEvent& event);
     void LSP_ParseSemanticTokens(wxCommandEvent& event);
     void LSP_OnClientInitialized(cbProject* pProject);
-    bool IsOkToUpdateClassBrowserView();
 
     #define SYMBOL_NAME 0  //string
     #define SYMBOL_TYPE 1  //LSP_SymbolKind

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.90 23/10/18")
+#define VERSION wxT("1.2.91 23/10/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,14 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.91    23/10/23
+//          2023/10/16 Apply Christo ticket 1423 using wxCondition instead of client input sleep/polling.
+//          2023/10/17 Disable ClassBrowser Symbols window by default
+//          2023/10/18 Fix Symbols window not updating when no editors open. Done() was replying false.
+//          2023/10/20 Rework ticket 1393 in ThreadedBuildTree() to attempt a callback.
+//          2023/10/21 Mod parser::Done() & move IsOktoUpdateClassBrowserView() to parseManager
+//                     to guarantee small projects (with no open editors) can update the Symbols tab.
+//          2023/10/23 Apply Christo ticket 1426 error serverity id mismatches.
 //1.2.90    2023/10/18 Fix crash caused by null pActiveProject in classbrowser.cpp 315
 //1.2.89    2023/10/14 Temporary "fixme" to prevent crash @ ClassBrowserBuilderThread::AddMembersOf(} tagged://(ph 2023/10/14)
 //          Fix crash candidate: UpdateClassBrowserView was returning before clearing Symbols tree.

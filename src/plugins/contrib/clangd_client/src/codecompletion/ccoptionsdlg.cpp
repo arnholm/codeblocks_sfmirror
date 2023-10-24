@@ -157,7 +157,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     XRCCTRL(*this, "txtCCFileExtSource",       wxTextCtrl)->SetValue(cfg->Read(_T("/source_ext"),    _T("c,cpp,cxx,cc,c++")));
 
     // Page "Symbol browser"
-    XRCCTRL(*this, "chkNoSB",        wxCheckBox)->SetValue(!cfg->ReadBool(_T("/use_symbols_browser"), true));
+    XRCCTRL(*this, "chkNoSB",        wxCheckBox)->SetValue(!cfg->ReadBool("/use_symbols_browser", false));
     XRCCTRL(*this, "chkFloatCB",     wxCheckBox)->SetValue(cfg->ReadBool(_T("/as_floating_window"), false));
 
     // The toolbar section

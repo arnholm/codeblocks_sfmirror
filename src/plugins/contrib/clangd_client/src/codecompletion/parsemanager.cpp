@@ -392,7 +392,7 @@ bool ParseManager::Done()
     bool done = true;
     for (ParserList::const_iterator it = m_ParserList.begin(); it != m_ParserList.end(); ++it)
     {
-        if (!it->second->Done())
+        if (not it->second->Done())
         {
             done = false;
             break;
@@ -766,18 +766,17 @@ bool ParseManager::DeleteParser(cbProject* project)
         delete parserList_it->second;      // delete the instance first, then remove from the list
         m_ParserList.erase(parserList_it); // remove deleted parser from parser list
 
-        // if the active parser is deleted, set the active parser to nullptr
+        // if the active parser is deleted, set the active parser to m_NullParser
         if (pDeletedParser == m_ActiveParser)
         {
             m_ActiveParser = nullptr;
             SetParser(m_NullParser); // Also updates class browser;
+            cbAssertNonFatal(m_ActiveParser && "SetParser() failed to set valid ptr"); //(ph 2023/10/18)
+            if (not m_ActiveParser) m_ActiveParser =  m_NullParser;                    //(ph 2023/10/18)
         }
 
         return true;
     }
-
-////    if (removeProjectFromParser)
-////        return true;
 
     CCLogger::Get()->DebugLog(_T("ParseManager::DeleteParser: Deleting parser failed!"));
     return false;
@@ -1200,7 +1199,7 @@ void ParseManager::RereadParserOptions()
 // ----------------------------------------------------------------------------
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
-    bool useSymbolBrowser = cfg->ReadBool(_T("/use_symbols_browser"), true);
+    bool useSymbolBrowser = cfg->ReadBool(_T("/use_symbols_browser"), false);
 
     if (useSymbolBrowser)
     {
@@ -1522,7 +1521,7 @@ void ParseManager::CreateClassBrowser()
 // ----------------------------------------------------------------------------
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
-    if (m_ClassBrowser || !cfg->ReadBool(_T("/use_symbols_browser"), true))
+    if (m_ClassBrowser || !cfg->ReadBool(_T("/use_symbols_browser"), false))
         return;
 
     TRACE(_T("ParseManager::CreateClassBrowser: Enter"));
@@ -1595,12 +1594,38 @@ void ParseManager::UpdateClassBrowser()
 
     TRACE(_T("ParseManager::UpdateClassBrowser()"));
 
+    // If user is using the Symbols tab delay the update.
+    if (not IsOkToUpdateClassBrowserView()) //(ph 2023/10/21)
+        return;
+
     if ( m_ActiveParser != m_NullParser
         && m_ActiveParser->Done()
         && (not Manager::IsAppShuttingDown()) )
     {
         m_ClassBrowser->UpdateClassBrowserView();
     }
+}
+// ----------------------------------------------------------------------------
+bool ParseManager::IsOkToUpdateClassBrowserView() //(ph 2023/10/21)
+// ----------------------------------------------------------------------------
+{
+    // Don't update Symbol browser window if it's being used.
+    // User may be working within the symbols browser window
+
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
+    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
+    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+    if (pCurrentPage == GetClassBrowser())
+    {
+        if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
+        {
+            //cbAssertNonFatal(0 && "Mouse in ClassBrowser window."); // **Debugging **
+            return false;
+        }
+    }
+
+    return true;
 }
 // ----------------------------------------------------------------------------
 void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbProject* pProject)
@@ -1861,7 +1886,7 @@ void ParseManager::SetParser(Parser* parser)
 
     // a new parser is active, so remove the old parser's local variable tokens.
     // if m_Parser == nullptr, this means the active parser is already deleted.
-    if (m_ActiveParser)
+    if (m_ActiveParser) //(ph 2023/10/18)
         RemoveLastFunctionChildren(m_ActiveParser->GetTokenTree(), m_LastFuncTokenIdx);
 
     // refresh code completion related variables
