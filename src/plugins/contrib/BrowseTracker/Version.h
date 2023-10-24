@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.114 23/02/23")
+#define VERSION wxT("1.4.115 23/10/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -66,6 +66,11 @@ class AppVersion
 #endif // VERSION_H
 
 // ----------------------------------------------------------------------------
+// 1.4.115  2023/10/23 Deprecate OnEditorActivated() to stop OnEditorActivated() from
+//          entering the current location of the activated editor before OnEditorUpdateUIEvent()
+//          gets to enters the location of the Clangd_client response causing the next
+//          jumpBack to jump to the incorrect location.
+//          Allow user to set number of jump entries minimum to 10 for faster debugging..
 // 1.4.114 Commit 2023/02/23
 //          Fix crashes in jumptrackerView using unvalidated editor->Control() in Head 13210
 // 1.4.113  Commit 23/02/13

@@ -104,7 +104,7 @@ class JumpTracker : public cbPlugin
 
         // CodeBlocks events
         void OnEditorUpdateUIEvent(CodeBlocksEvent& event);
-        void OnEditorActivated(CodeBlocksEvent& event);
+        //-void OnEditorActivated(CodeBlocksEvent& event); deprecated //(ph 2023/10/23)
         void OnEditorDeactivated(CodeBlocksEvent& event);
         void OnEditorClosed(CodeBlocksEvent& event);
 

@@ -130,7 +130,7 @@ void JumpTracker::OnAttach()
 
     // Codeblocks Events registration
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_UPDATE_UI   , new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorUpdateUIEvent));
-    Manager::Get()->RegisterEventSink(cbEVT_EDITOR_ACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorActivated));
+    //-Manager::Get()->RegisterEventSink(cbEVT_EDITOR_ACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorActivated)); deprecated //(ph 2023/10/23)
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_DEACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorDeactivated));
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_CLOSE, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorClosed));
 
@@ -454,51 +454,56 @@ void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
 
     return;
 }//OnEditorUpdateEvent
-// ----------------------------------------------------------------------------
-void JumpTracker::OnEditorActivated(CodeBlocksEvent& event)
-// ----------------------------------------------------------------------------
-{
-    // Record this activation event and place activation in history
-    // NB: Editor Activated is not called on project loading.
-    //  So we miss the first activated editor
-    event.Skip();
-
-    if (m_bShuttingDown) return;
-    if (not IsAttached()) return;
-
-    // Don't record closing editor activations
-    if (m_bProjectClosing)
-        return;
-
-    EditorBase* eb = event.GetEditor();
-    wxString edFilename = eb->GetFilename();
-    cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
-
-    if (not cbed)
-    {
-        // Since wxAuiNotebook added, there's no cbEditor associated during
-        // an initial cbEVT_EDITOR_ACTIVATED event. So we ignore the inital
-        // call and get OnEditorOpened() to re-issue OnEditorActivated() when
-        // it does have a cbEditor, but no cbProject associated;
-        #if defined(LOGGING)
-        LOGIT( _T("JT [OnEditorActivated ignored:no cbEditor[%s]"), edFilename.c_str());
-        #endif
-        return;
-    }
-
-    #if defined(LOGGING)
-    LOGIT( _T("JT Editor Activated[%s]"), eb->GetShortName().c_str() );
-    #endif
-
-    cbStyledTextCtrl* pControl = cbed->GetControl();
-    if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
-        return;
-
-    long edPosn = pControl->GetCurrentPos();
-    JumpDataAdd(edFilename, edPosn, pControl->GetCurrentLine());
-    return;
-
-}//OnEditorActivated
+//// ----------------------------------------------------------------------------
+//void JumpTracker::OnEditorActivated(CodeBlocksEvent& event) deprecated //(ph 2023/10/23)
+//// ----------------------------------------------------------------------------
+//{
+//    // This is causing the new activated editor to enter it's current line location //(ph 2023/10/22)
+//    // before entering the clangd_client target of "Find declaration" causing the next
+//    // jump back to jump to an out of sequence location.
+//    return; This function deparecated //(ph 2023/10/23)
+//
+//    // Record this activation event and place activation in history
+//    // NB: Editor Activated is not called on project loading.
+//    //  So we miss the first activated editor
+//    event.Skip();
+//
+//    if (m_bShuttingDown) return;
+//    if (not IsAttached()) return;
+//
+//    // Don't record closing editor activations
+//    if (m_bProjectClosing)
+//        return;
+//
+//    EditorBase* eb = event.GetEditor();
+//    wxString edFilename = eb->GetFilename();
+//    cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
+//
+//    if (not cbed)
+//    {
+//        // Since wxAuiNotebook added, there's no cbEditor associated during
+//        // an initial cbEVT_EDITOR_ACTIVATED event. So we ignore the inital
+//        // call and get OnEditorOpened() to re-issue OnEditorActivated() when
+//        // it does have a cbEditor, but no cbProject associated;
+//        #if defined(LOGGING)
+//        LOGIT( _T("JT [OnEditorActivated ignored:no cbEditor[%s]"), edFilename.c_str());
+//        #endif
+//        return;
+//    }
+//
+//    #if defined(LOGGING)
+//    LOGIT( _T("JT Editor Activated[%s]"), eb->GetShortName().c_str() );
+//    #endif
+//
+//    cbStyledTextCtrl* pControl = cbed->GetControl();
+//    if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
+//        return;
+//
+//    long edPosn = pControl->GetCurrentPos();
+//    JumpDataAdd(edFilename, edPosn, pControl->GetCurrentLine());
+//    return;
+//
+//}//OnEditorActivated
 // ----------------------------------------------------------------------------
 void JumpTracker::OnEditorDeactivated(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
