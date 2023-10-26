@@ -53,26 +53,26 @@ namespace
 
 wxsItemEditor::wxsItemEditor(wxWindow* parent,wxsItemRes* Resource):
     wxsEditor(parent,wxEmptyString,Resource),
-    m_Data(0),
-    m_Content(0),
-    m_WidgetsSet(0),
-    m_VertSizer(0),
-    m_HorizSizer(0),
-    m_QPSizer(0),
-    m_OpsSizer(0),
-    m_QPArea(0),
-    m_InsIntoBtn(0),
-    m_InsBeforeBtn(0),
-    m_InsAfterBtn(0),
-    m_DelBtn(0),
-    m_PreviewBtn(0),
-    m_QuickPanelBtn(0),
-    m_TopPreview(0),
-    m_PreviewBackground(0),
+    m_Data(nullptr),
+    m_Content(nullptr),
+    m_WidgetsSet(nullptr),
+    m_VertSizer(nullptr),
+    m_HorizSizer(nullptr),
+    m_QPSizer(nullptr),
+    m_OpsSizer(nullptr),
+    m_QPArea(nullptr),
+    m_InsIntoBtn(nullptr),
+    m_InsBeforeBtn(nullptr),
+    m_InsAfterBtn(nullptr),
+    m_DelBtn(nullptr),
+    m_PreviewBtn(nullptr),
+    m_QuickPanelBtn(nullptr),
+    m_TopPreview(nullptr),
+    m_PreviewBackground(nullptr),
     m_InsType(itPoint),
     m_InsTypeMask(itPoint),
     m_QuickPropsOpen(false),
-    m_PopupCaller(0)
+    m_PopupCaller(nullptr)
 {
     InitializeResourceData();
     InitializeVisualStuff();
@@ -196,10 +196,10 @@ void wxsItemEditor::RebuildPreview()
     // If there's previous preview, deleting it
     if ( m_PreviewBackground )
     {
-        m_Content->SetSizer(0);
+        m_Content->SetSizer(nullptr);
         m_PreviewBackground->Destroy();
-        m_PreviewBackground = 0;
-        m_TopPreview = 0;
+        m_PreviewBackground = nullptr;
+        m_TopPreview = nullptr;
     }
 
     // Generating preview
@@ -210,8 +210,8 @@ void wxsItemEditor::RebuildPreview()
     {
         Manager::Get()->GetLogManager()->DebugLog(_T("One of root items returned class not derived from wxWindow"));
         m_PreviewBackground->Destroy();
-        m_PreviewBackground = 0;
-        m_TopPreview = 0;
+        m_PreviewBackground = nullptr;
+        m_TopPreview = nullptr;
     }
     else
     {
