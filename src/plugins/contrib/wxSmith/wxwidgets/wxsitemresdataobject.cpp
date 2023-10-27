@@ -107,24 +107,24 @@ int wxsItemResDataObject::GetItemCount() const
 
 wxsItem* wxsItemResDataObject::BuildItem(wxsItemResData* Data,int Index) const
 {
-    if ( Index < 0 || Index >= m_ItemCount ) return 0;
+    if ( Index < 0 || Index >= m_ItemCount ) return nullptr;
 
     TiXmlElement* Root = m_XmlElem->FirstChildElement("object");
-    if ( !Root ) return 0;
+    if ( !Root ) return nullptr;
     while ( Index )
     {
         Index--;
         Root = Root->NextSiblingElement("object");
-        if ( !Root ) return 0;
+        if ( !Root ) return nullptr;
     }
     const char* Class = Root->Attribute("class");
-    if ( !Class || !*Class ) return 0;
+    if ( !Class || !*Class ) return nullptr;
 
     wxsItem* Item = wxsItemFactory::Build(cbC2U(Class),Data);
     if ( !Item )
     {
         Item = wxsItemFactory::Build(_T("Custom"),Data);
-        if ( !Item ) return 0;
+        if ( !Item ) return nullptr;
     }
 
     Item->XmlRead(Root,true,true);

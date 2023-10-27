@@ -190,7 +190,7 @@ wxsChoicebook::wxsChoicebook(wxsItemResData* Data):
         &Reg.Info,
         wxsChoicebookEvents,
         wxsChoicebookStyles),
-    m_CurrentSelection(0)
+    m_CurrentSelection(nullptr)
 {
 }
 
@@ -319,7 +319,7 @@ bool wxsChoicebook::OnEnsureChildPreviewVisible(wxsItem* Child)
 
 void wxsChoicebook::UpdateCurrentSelection()
 {
-    wxsItem* NewCurrentSelection = 0;
+    wxsItem* NewCurrentSelection = nullptr;
     for ( int i=0; i<GetChildCount(); i++ )
     {
         if ( m_CurrentSelection == GetChild(i) ) return;

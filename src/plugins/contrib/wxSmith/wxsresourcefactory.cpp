@@ -24,11 +24,11 @@
 
 // TODO: Support dynamic loading / unloading of factories
 
-wxsResourceFactory* wxsResourceFactory::m_UpdateQueue = 0;
-wxsResourceFactory* wxsResourceFactory::m_Initialized = 0;
+wxsResourceFactory* wxsResourceFactory::m_UpdateQueue = nullptr;
+wxsResourceFactory* wxsResourceFactory::m_Initialized = nullptr;
 wxsResourceFactory::HashT wxsResourceFactory::m_Hash;
 wxString wxsResourceFactory::m_LastExternalName;
-wxsResourceFactory* wxsResourceFactory::m_LastExternalFactory = 0;
+wxsResourceFactory* wxsResourceFactory::m_LastExternalFactory = nullptr;
 bool wxsResourceFactory::m_AllAttached = false;
 
 wxsResourceFactory::wxsResourceFactory()
@@ -85,7 +85,7 @@ wxsResource* wxsResourceFactory::Build(const wxString& ResourceType,wxsProject* 
     ResourceInfo& Info = m_Hash[ResourceType];
     if ( !Info.m_Factory )
     {
-        return 0;
+        return nullptr;
     }
     return Info.m_Factory->OnCreate(Info.m_Number,Project);
 }
@@ -103,7 +103,7 @@ bool wxsResourceFactory::CanHandleExternal(const wxString& FileName)
         }
     }
     m_LastExternalName = wxEmptyString;
-    m_LastExternalFactory = 0;
+    m_LastExternalFactory = nullptr;
     return false;
 }
 
@@ -119,7 +119,7 @@ wxsResource* wxsResourceFactory::BuildExternal(const wxString& FileName)
         wxsResource* Res = Factory->OnBuildExternal(FileName);
         if ( Res ) return Res;
     }
-    return 0;
+    return nullptr;
 }
 
 void wxsResourceFactory::BuildSmithMenu(wxMenu* menu)

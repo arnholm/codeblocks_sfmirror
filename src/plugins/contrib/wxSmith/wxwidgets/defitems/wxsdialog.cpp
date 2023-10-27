@@ -100,8 +100,8 @@ void wxsDialog::OnBuildCreatingCode()
 
 wxObject* wxsDialog::OnBuildPreview(wxWindow* Parent,long Flags)
 {
-    wxWindow* NewItem = 0;
-    wxDialog* Dlg = 0;
+    wxWindow* NewItem = nullptr;
+    wxDialog* Dlg = nullptr;
 
     // In case of frame and dialog when in "Exact" mode, we do not create
     // new object, but use Parent and call Create for it.

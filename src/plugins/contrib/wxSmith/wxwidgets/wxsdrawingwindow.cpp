@@ -64,7 +64,7 @@ END_EVENT_TABLE()
 
 wxsDrawingWindow::wxsDrawingWindow(wxWindow* Parent,wxWindowID id,const wxPoint& pos,const wxSize& size,long style,const wxString& name):
     wxScrolledWindow(Parent,id,pos,size,style,name),
-    m_Bitmap(0),
+    m_Bitmap(nullptr),
     m_IsBlockFetch(false),
     m_DuringFetch(false),
     m_DuringChangeCnt(0),
@@ -86,7 +86,7 @@ wxsDrawingWindow::~wxsDrawingWindow()
 {
     m_IsDestroyed = true;
     delete m_Bitmap;
-    m_Bitmap = 0;
+    m_Bitmap = nullptr;
 }
 
 void wxsDrawingWindow::BeforeContentChanged()

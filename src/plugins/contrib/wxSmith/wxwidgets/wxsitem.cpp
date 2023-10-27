@@ -44,10 +44,10 @@ namespace
 wxsItem::wxsItem(wxsItemResData* ResourceData,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet):
     m_Info(Info),
     m_Events(Events,this),
-    m_Parent(0),
+    m_Parent(nullptr),
     m_ResourceData(ResourceData),
     m_PropertiesFlags(PropertiesFlags),
-    m_LastPreview(0),
+    m_LastPreview(nullptr),
     m_IsSelected(false),
     m_IsExpanded(false)
 {

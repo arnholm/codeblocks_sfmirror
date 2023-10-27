@@ -38,7 +38,7 @@ wxsImageTreeProperty::wxsImageTreeProperty(const wxString& PGName,const wxString
 
 bool wxsImageTreeProperty::ShowEditor(wxsPropertyContainer* Object)
 {
-    wxsImageTreeEditorDlg Dlg(0);
+    wxsImageTreeEditorDlg Dlg(nullptr);
     return Dlg.Execute(VALUE);
 }
 

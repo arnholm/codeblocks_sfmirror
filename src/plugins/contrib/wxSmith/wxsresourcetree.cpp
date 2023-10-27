@@ -50,7 +50,7 @@ namespace
     };
 }
 
-wxsResourceTree* wxsResourceTree::m_Singleton = 0;
+wxsResourceTree* wxsResourceTree::m_Singleton = nullptr;
 int wxsResourceTree::m_RootImageId = LoadImage(_T("/images/wxsmith/wxSmith16.png"));
 int wxsResourceTree::m_ProjectImageId = LoadImage(_T("/images/codeblocks.png"));
 int wxsResourceTree::m_ExternalImageId = LoadImage(_T("/images/wxsmith/deletewidget16.png"));
@@ -67,7 +67,7 @@ wxsResourceTree::wxsResourceTree(wxWindow* Parent)
     : wxTreeCtrl(Parent,-1)
     , m_IsExt(false)
     , m_BlockCount(0)
-    , m_Data(0)
+    , m_Data(nullptr)
 {
     m_Singleton = this;
     SetImageList(&GetGlobalImageList());
@@ -76,7 +76,7 @@ wxsResourceTree::wxsResourceTree(wxWindow* Parent)
 
 wxsResourceTree::~wxsResourceTree()
 {
-    if ( m_Singleton == this ) m_Singleton = 0;
+    if ( m_Singleton == this ) m_Singleton = nullptr;
 }
 
 wxsResourceItemId wxsResourceTree::NewProjectItem(const wxString& ProjectTitle,wxsProject* Project)
@@ -103,9 +103,7 @@ wxsResourceItemId wxsResourceTree::ExternalResourcesId()
 {
     if ( !m_IsExt )
     {
-        m_ExtId = AppendItem(GetRootItem(),
-            _("External resources"),m_ExternalImageId,m_ExternalImageId,
-            0);
+        m_ExtId = AppendItem(GetRootItem(), _("External resources"), m_ExternalImageId, m_ExternalImageId, 0);
         m_IsExt = true;
     }
     return m_ExtId;
@@ -211,7 +209,7 @@ void wxsResourceTree::InvalidateItemData(wxsResourceTreeItemData* ItemData)
 {
     if ( m_Data == ItemData )
     {
-        m_Data = 0;
+        m_Data = nullptr;
     }
 }
 

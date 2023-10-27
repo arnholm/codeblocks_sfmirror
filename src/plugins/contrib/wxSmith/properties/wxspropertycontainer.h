@@ -189,7 +189,7 @@ class PLUGIN_EXPORT wxsPropertyContainer
         }
 
         /** \brief Function building quick properties window */
-        virtual wxsQuickPropsPanel* OnCreateQuickProperties(cb_unused wxWindow* Parent) { return 0; }
+        virtual wxsQuickPropsPanel* OnCreateQuickProperties(cb_unused wxWindow* Parent) { return nullptr; }
 
         /** \brief Function notifying that one of properties has changed
          *

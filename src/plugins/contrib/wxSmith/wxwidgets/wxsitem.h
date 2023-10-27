@@ -228,13 +228,13 @@ class PLUGIN_EXPORT wxsItem: public wxsPropertyContainer, public wxsCodeGenerato
          *  \return Pointer to wxsParent class or 0 if class hasn't been
          *          derived from it
          */
-        virtual wxsParent* ConvertToParent() { return 0; }
+        virtual wxsParent* ConvertToParent() { return nullptr; }
 
         /** \brief Function converting this item to wxsTool class
          *  \return Pointer to wxsTool class or 0 if class hasn't been
          *          derived from it
          */
-        virtual wxsTool* ConvertToTool() { return 0; }
+        virtual wxsTool* ConvertToTool() { return nullptr; }
 
         /** \brief Function returning pointer to wxsBaseProperties class if item uses it. */
         virtual wxsBaseProperties* GetBaseProps() { return &m_BaseProperties; }

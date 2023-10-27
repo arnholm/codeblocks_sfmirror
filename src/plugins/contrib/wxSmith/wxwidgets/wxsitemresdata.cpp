@@ -73,9 +73,9 @@ wxsItemResData::wxsItemResData(
         m_ToolsNodeIsExpanded(false),
         m_Editor(Editor),
         m_Functions(Functions),
-        m_RootItem(0),
-        m_RootSelection(0),
-        m_Preview(0),
+        m_RootItem(nullptr),
+        m_RootSelection(nullptr),
+        m_Preview(nullptr),
         m_Corrector(this),
         m_IsOK(false),
         m_LockCount(0),
@@ -133,8 +133,8 @@ wxsItemResData::~wxsItemResData()
         RebuildFiles();
     }
     delete m_RootItem;
-    m_RootItem = 0;
-    m_RootSelection = 0;
+    m_RootItem = nullptr;
+    m_RootSelection = nullptr;
     for ( int i=0; i<GetToolsCount(); i++ )
     {
         delete m_Tools[i];
@@ -994,7 +994,7 @@ void wxsItemResData::MarkExtraDataChanged()
 
 bool wxsItemResData::ValidateRootSelection()
 {
-    wxsItem* NewSelection = 0;
+    wxsItem* NewSelection = nullptr;
     if ( ValidateRootSelectionReq(m_RootItem,NewSelection) )
     {
         return true;
@@ -1096,7 +1096,7 @@ void wxsItemResData::Paste(wxsParent* Parent,int Position)
         {
             BeginChange();
             m_RootItem->ClearSelection();
-            m_RootSelection = 0;
+            m_RootSelection = nullptr;
             for ( int i=0; i<Cnt; i++ )
             {
                 wxsItem* Insert = Data.BuildItem(this,i);
@@ -1490,7 +1490,7 @@ bool wxsItemResData::HidePreview()
         return false;
     }
     m_Preview->Destroy();
-    m_Preview = 0;
+    m_Preview = nullptr;
     return true;
 }
 

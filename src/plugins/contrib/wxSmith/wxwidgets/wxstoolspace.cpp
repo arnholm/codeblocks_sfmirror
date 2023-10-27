@@ -72,7 +72,7 @@ void wxsToolSpace::BeforePreviewChanged()
 
 void wxsToolSpace::AfterPreviewChanged()
 {
-    Entry* Last = 0;
+    Entry* Last = nullptr;
 
     // Clearing current content
     while ( m_First )
@@ -106,7 +106,7 @@ void wxsToolSpace::AfterPreviewChanged()
 
     if ( Last )
     {
-        Last->m_Next = 0;
+        Last->m_Next = nullptr;
     }
 
     m_Unstable = false;
@@ -251,14 +251,14 @@ void wxsToolSpace::RecalculateVirtualSize()
 wxsToolSpace::Entry* wxsToolSpace::FindEntry(int& PosX,int& PosY)
 {
     // TODO: Check if mouse coordinates are yet shifted to virtual area
-    if ( PosY < ExtraBorderSize ) return 0;
-    if ( PosY >= ExtraBorderSize + IconSize ) return 0;
+    if ( PosY < ExtraBorderSize ) return nullptr;
+    if ( PosY >= ExtraBorderSize + IconSize ) return nullptr;
 
     int ToolNumber = PosX / (ExtraBorderSize + IconSize);
     int InToolPos  = PosX % (ExtraBorderSize + IconSize);
 
-    if ( ToolNumber >= m_Count ) return 0;
-    if ( InToolPos < ExtraBorderSize ) return 0;
+    if ( ToolNumber >= m_Count ) return nullptr;
+    if ( InToolPos < ExtraBorderSize ) return nullptr;
 
     PosY -= ExtraBorderSize;
     PosX -= ExtraBorderSize + ToolNumber*(ExtraBorderSize+IconSize);

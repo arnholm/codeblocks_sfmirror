@@ -38,7 +38,7 @@ wxsImageListProperty::wxsImageListProperty(const wxString& PGName,const wxString
 
 bool wxsImageListProperty::ShowEditor(wxsPropertyContainer* Object)
 {
-    wxsImageListEditorDlg Dlg(0);
+    wxsImageListEditorDlg Dlg(nullptr);
     return Dlg.Execute(DataName, VALUE);
 }
 

@@ -95,7 +95,7 @@ class wxsResourceFactory
         virtual bool OnCanHandleExternal(cb_unused const wxString& FileName) { return false; }
 
         /** \brief Building external resource object */
-        virtual wxsResource* OnBuildExternal(cb_unused const wxString& FileName) { return 0; }
+        virtual wxsResource* OnBuildExternal(cb_unused const wxString& FileName) { return nullptr; }
 
         /** \brief Function creating new resource object
          *
@@ -117,7 +117,7 @@ class wxsResourceFactory
             int m_Number;
             wxString m_GUI;
             int m_MenuId;
-            ResourceInfo(): m_Factory(0), m_Number(0), m_MenuId(-1) {}
+            ResourceInfo(): m_Factory(nullptr), m_Number(0), m_MenuId(-1) {}
         };
 
         WX_DECLARE_STRING_HASH_MAP(ResourceInfo,HashT);

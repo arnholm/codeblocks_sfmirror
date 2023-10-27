@@ -101,8 +101,8 @@ void wxsScrollingDialog::OnBuildCreatingCode()
 
 wxObject* wxsScrollingDialog::OnBuildPreview(wxWindow* Parent,long Flags)
 {
-    wxWindow* NewItem = 0;
-    wxScrollingDialog* Dlg = 0;
+    wxWindow* NewItem = nullptr;
+    wxScrollingDialog* Dlg = nullptr;
 
     // In case of frame and dialog when in "Exact" mode, we do not create
     // new object, but use Parent and call Create for it.

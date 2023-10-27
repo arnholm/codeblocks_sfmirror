@@ -49,8 +49,8 @@ wxsParent::~wxsParent()
 
 wxsItem* wxsParent::GetChild(int Index)
 {
-    if ( Index < 0 ) return 0;
-    if ( Index >= GetChildCount() ) return 0;
+    if ( Index < 0 ) return nullptr;
+    if ( Index >= GetChildCount() ) return nullptr;
     return Children[Index];
 }
 
@@ -202,8 +202,8 @@ void wxsParent::OnAddChildQPP(wxsItem* Child,wxsAdvQPP* QPP)
 
 wxsPropertyContainer* wxsParent::GetChildExtra(int Index)
 {
-    if ( Index < 0 ) return 0;
-    if ( Index >= GetChildCount() ) return 0;
+    if ( Index < 0 ) return nullptr;
+    if ( Index >= GetChildCount() ) return nullptr;
     return Extra[Index];
 }
 

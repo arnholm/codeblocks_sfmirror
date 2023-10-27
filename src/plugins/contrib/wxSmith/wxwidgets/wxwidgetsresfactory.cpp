@@ -218,7 +218,7 @@ wxsResource* wxWidgetsResFactory::OnCreate(int Number,wxsProject* Project)
         case wxPanelId:           return new wxsPanelRes(Project);
         default:                  break;
     }
-    return 0;
+    return nullptr;
 }
 
 bool wxWidgetsResFactory::OnCanHandleExternal(const wxString& FileName)
@@ -229,7 +229,7 @@ bool wxWidgetsResFactory::OnCanHandleExternal(const wxString& FileName)
 wxsResource* wxWidgetsResFactory::OnBuildExternal(const wxString& FileName)
 {
     TiXmlDocument Doc;
-    if ( !TinyXML::LoadDocument(FileName,&Doc) ) return 0;
+    if ( !TinyXML::LoadDocument(FileName,&Doc) ) return nullptr;
 
     wxArrayString ResourcesFound;
     wxArrayElement XmlElements;
@@ -237,7 +237,7 @@ wxsResource* wxWidgetsResFactory::OnBuildExternal(const wxString& FileName)
     if ( !Res )
     {
         // TODO: Some message box about invalid XRC resource structure
-        return 0;
+        return nullptr;
     }
 
     for ( TiXmlElement* Object = Res->FirstChildElement("object"); Object; Object=Object->NextSiblingElement("object") )
@@ -254,7 +254,7 @@ wxsResource* wxWidgetsResFactory::OnBuildExternal(const wxString& FileName)
     if ( ResourcesFound.empty() )
     {
         // TODO: Message box that there are no resoures which could be edited here
-        return 0;
+        return nullptr;
     }
 
     int Choice = 0;
@@ -267,12 +267,12 @@ wxsResource* wxWidgetsResFactory::OnBuildExternal(const wxString& FileName)
             ResourcesFound);
         if ( Choice<0 )
         {
-            return 0;
+            return nullptr;
         }
     }
 
     TiXmlElement* Object = XmlElements[Choice];
-    if ( !Object ) return 0;
+    if ( !Object ) return nullptr;
 
     wxString Class = cbC2U(Object->Attribute("class"));
     switch ( Names.Index(Class) )
@@ -283,12 +283,12 @@ wxsResource* wxWidgetsResFactory::OnBuildExternal(const wxString& FileName)
         case wxPanelId:           return new wxsPanelRes(FileName,Object);
         default:                  break;
     }
-    return 0;
+    return nullptr;
 }
 
 bool wxWidgetsResFactory::OnNewWizard(int Number,wxsProject* Project)
 {
-    wxsNewWindowDlg Dlg(0,NamesPtr[Number],Project);
+    wxsNewWindowDlg Dlg(nullptr, NamesPtr[Number], Project);
     PlaceWindow(&Dlg);
     return Dlg.ShowModal() == wxID_OK;
 }

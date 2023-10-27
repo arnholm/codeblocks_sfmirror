@@ -58,7 +58,7 @@ cbConfigurationPanel* wxWidgetsGUI::OnBuildConfigurationPanel(wxWindow* Parent)
 void wxWidgetsGUI::OnRebuildApplicationCode()
 {
     bool IsAnyXRC = false;
-    wxWidgetsRes* MainResPtr = 0;
+    wxWidgetsRes* MainResPtr = nullptr;
 
     size_t Count = GetProject()->GetResourcesCount();
     for ( size_t i=0; i<Count; i++ )

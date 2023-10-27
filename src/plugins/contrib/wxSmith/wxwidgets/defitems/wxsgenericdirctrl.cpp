@@ -50,7 +50,7 @@ wxsGenericDirCtrl::wxsGenericDirCtrl(wxsItemResData* Data):
         &Reg.Info,
         wxsGenericDirCtrlEvents,
         wxsGenericDirCtrlStyles),
-    DefaultFilter(0)
+        DefaultFilter(0)
 {}
 
 

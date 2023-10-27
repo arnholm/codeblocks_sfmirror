@@ -105,7 +105,7 @@ class wxsTool: public wxsParent
         virtual wxsTool* ConvertToTool() { return this; }
 
         /** \brief Tools don't generate preview */
-        virtual wxObject* OnBuildPreview(wxWindow* /*Parent*/, long /*Flags*/) { return 0; }
+        virtual wxObject* OnBuildPreview(wxWindow* /*Parent*/, long /*Flags*/) { return nullptr; }
 };
 
 

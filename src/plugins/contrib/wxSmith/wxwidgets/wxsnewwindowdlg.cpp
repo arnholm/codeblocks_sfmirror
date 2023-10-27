@@ -471,7 +471,7 @@ void wxsNewWindowDlg::OnCreate(cb_unused wxCommandEvent& event)
     }
 
     // Creating new resource
-    wxsItemRes* NewResource = 0;
+    wxsItemRes* NewResource = nullptr;
 
     if ( m_Type == _T("wxDialog") )
     {

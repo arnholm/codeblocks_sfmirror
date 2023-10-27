@@ -38,7 +38,7 @@ wxsImageComboProperty::wxsImageComboProperty(const wxString& PGName,const wxStri
 
 bool wxsImageComboProperty::ShowEditor(wxsPropertyContainer* Object)
 {
-    wxsImageComboEditorDlg Dlg(0);
+    wxsImageComboEditorDlg Dlg(nullptr);
     return Dlg.Execute(VALUE);
 }
 

@@ -336,7 +336,7 @@ bool wxsNotebook::OnEnsureChildPreviewVisible(wxsItem* Child)
 
 void wxsNotebook::UpdateCurrentSelection()
 {
-    wxsItem* NewCurrentSelection = 0;
+    wxsItem* NewCurrentSelection = nullptr;
     for ( int i=0; i<GetChildCount(); i++ )
     {
         if ( m_CurrentSelection == GetChild(i) ) return;

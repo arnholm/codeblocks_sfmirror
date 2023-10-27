@@ -832,7 +832,7 @@ void wxsItemEditor::RebuildQuickProps(wxsItem* Selection)
     int QPx, QPy;
     // TODO: Check if content of previous QPPanel shouldn't be stored into item
     m_QPArea->GetViewStart(&QPx,&QPy);
-    m_QPArea->SetSizer(0);
+    m_QPArea->SetSizer(nullptr);
     m_QPArea->DestroyChildren();
     m_QPSizer = new wxBoxSizer(wxVERTICAL);
     m_QPArea->SetSizer(m_QPSizer);

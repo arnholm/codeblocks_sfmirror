@@ -188,7 +188,7 @@ wxsListbook::wxsListbook(wxsItemResData* Data):
         &Reg.Info,
         wxsListbookEvents,
         wxsListbookStyles),
-    m_CurrentSelection(0)
+    m_CurrentSelection(nullptr)
 {
 }
 
@@ -322,7 +322,7 @@ bool wxsListbook::OnEnsureChildPreviewVisible(wxsItem* Child)
 
 void wxsListbook::UpdateCurrentSelection()
 {
-    wxsItem* NewCurrentSelection = 0;
+    wxsItem* NewCurrentSelection = nullptr;
     for ( int i=0; i<GetChildCount(); i++ )
     {
         if ( m_CurrentSelection == GetChild(i) ) return;

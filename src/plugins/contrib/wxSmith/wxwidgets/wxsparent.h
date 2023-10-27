@@ -123,7 +123,7 @@ class PLUGIN_EXPORT wxsParent: public wxsItem
          * This function may be overridden in child classes to add extra
          * configuration for each child, f.ex. configuration of sizer entries.
          */
-        virtual wxsPropertyContainer* OnBuildExtra() { return 0; }
+        virtual wxsPropertyContainer* OnBuildExtra() { return nullptr; }
 
         /** \brief Returning name of additional object created for child items
          *

@@ -47,8 +47,8 @@ wxsQuickPropsPanel::~wxsQuickPropsPanel()
     // Notifying container that quick properties object does no longer exist
     if ( Container )
     {
-        Container->CurrentQP = 0;
-        Container = 0;
+        Container->CurrentQP = nullptr;
+        Container = nullptr;
     }
 }
 

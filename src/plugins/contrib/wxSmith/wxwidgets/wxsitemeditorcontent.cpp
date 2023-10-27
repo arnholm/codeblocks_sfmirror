@@ -42,13 +42,13 @@ wxsItemEditorContent::wxsItemEditorContent(wxWindow* Parent,wxsItemResData* Data
     m_Editor(Editor),
     m_RebuildMaps(false),
     m_MouseState(msIdle),
-    m_CurDragPoint(0),
-    m_CurDragItem(0),
-    m_Assist(0),
-    m_AssistTarget(0),
-    m_AssistParent(0),
+    m_CurDragPoint(nullptr),
+    m_CurDragItem(nullptr),
+    m_Assist(nullptr),
+    m_AssistTarget(nullptr),
+    m_AssistParent(nullptr),
     m_AssistAddAfter(false),
-    m_TargetInfo(0)
+    m_TargetInfo(nullptr)
 {
     m_Assist = new wxsItemEditorDragAssist(this);
 }
@@ -236,12 +236,12 @@ wxsItem* wxsItemEditorContent::FindItemAtPos(int PosX,int PosY,wxsItem* SearchIn
     int itemSizeX;
     int itemSizeY;
 
-    if ( !FindAbsoluteRect(SearchIn,itemPosX,itemPosY,itemSizeX,itemSizeY) ) return 0;
+    if ( !FindAbsoluteRect(SearchIn,itemPosX,itemPosY,itemSizeX,itemSizeY) ) return nullptr;
 
-    if ( PosX < itemPosX ) return 0;
-    if ( PosX >= (itemPosX+itemSizeX) ) return 0;
-    if ( PosY < itemPosY ) return 0;
-    if ( PosY >= (itemPosY+itemSizeY) ) return 0;
+    if ( PosX < itemPosX ) return nullptr;
+    if ( PosX >= (itemPosX+itemSizeX) ) return nullptr;
+    if ( PosY < itemPosY ) return nullptr;
+    if ( PosY >= (itemPosY+itemSizeY) ) return nullptr;
 
     wxsParent* parent = SearchIn->ConvertToParent();
     if ( parent )
@@ -276,7 +276,7 @@ wxsItemEditorContent::DragPointData* wxsItemEditorContent::FindDragPointAtPos(in
 
 // TODO (SpOoN#1#): Search for edges
 
-    return 0;
+    return nullptr;
 }
 
 wxsItemEditorContent::DragPointData* wxsItemEditorContent::FindDragPointFromItem(wxsItem* Item)
@@ -288,7 +288,7 @@ wxsItemEditorContent::DragPointData* wxsItemEditorContent::FindDragPointFromItem
             return m_DragPoints[i];
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void wxsItemEditorContent::OnMouse(wxMouseEvent& event)
@@ -689,8 +689,8 @@ void wxsItemEditorContent::OnMouseDraggingItem(wxMouseEvent& event)
             m_DragPoints[i]->PosY = m_DragPoints[i]->DragInitPosY;
         }
         m_MouseState = msIdle;
-        m_AssistParent = 0;
-        m_AssistTarget = 0;
+        m_AssistParent = nullptr;
+        m_AssistTarget = nullptr;
         m_AssistAddAfter = false;
         m_Assist->NewDragging();
         return;
@@ -710,8 +710,8 @@ void wxsItemEditorContent::OnMouseDraggingItem(wxMouseEvent& event)
         if ( m_CurDragPoint->PosX != m_CurDragPoint->DragInitPosX ||
              m_CurDragPoint->PosY != m_CurDragPoint->DragInitPosY )
         {
-            wxsParent* NewParent = 0;
-            wxsItem* AtCursor = 0;
+            wxsParent* NewParent = nullptr;
+            wxsItem* AtCursor = nullptr;
             bool AddAfter = true;
             if ( FindDraggingItemTarget(event.GetX(),event.GetY(),m_CurDragItem,NewParent,AtCursor,AddAfter) )
             {
@@ -777,8 +777,8 @@ void wxsItemEditorContent::OnMouseDraggingItem(wxMouseEvent& event)
             }
         }
         m_MouseState = msIdle;
-        m_AssistTarget = 0;
-        m_AssistParent = 0;
+        m_AssistTarget = nullptr;
+        m_AssistParent = nullptr;
         m_AssistAddAfter = false;
         m_Assist->NewDragging();
         m_Data->EndChange();
@@ -790,8 +790,8 @@ void wxsItemEditorContent::OnMouseDraggingItem(wxMouseEvent& event)
 
     if ( !FindDraggingItemTarget(event.GetX(),event.GetY(),m_CurDragItem,m_AssistParent,m_AssistTarget,m_AssistAddAfter) )
     {
-        m_AssistTarget = 0;
-        m_AssistParent = 0;
+        m_AssistTarget = nullptr;
+        m_AssistParent = nullptr;
         m_AssistAddAfter = false;
     }
     else
@@ -830,9 +830,9 @@ void wxsItemEditorContent::OnMouseTargetSearch(wxMouseEvent& event)
     {
         // Getting out of point-by-mouse state
         m_MouseState = msIdle;
-        m_TargetInfo = 0;
-        m_AssistParent = 0;
-        m_AssistTarget = 0;
+        m_TargetInfo = nullptr;
+        m_AssistParent = nullptr;
+        m_AssistTarget = nullptr;
         m_AssistAddAfter = false;
         m_Assist->NewDragging();
         FastRepaint();
@@ -851,15 +851,15 @@ void wxsItemEditorContent::OnMouseTargetSearch(wxMouseEvent& event)
             }
             AddItemAtTarget(m_AssistParent,Position,m_TargetInfo,event.GetX(),event.GetY());
         }
-        m_AssistParent = 0;
-        m_AssistTarget = 0;
+        m_AssistParent = nullptr;
+        m_AssistTarget = nullptr;
         m_AssistAddAfter = false;
         m_Assist->NewDragging();
 
         if ( !IsContinousInsert() )
         {
             m_MouseState = msIdle;
-            m_TargetInfo = 0;
+            m_TargetInfo = nullptr;
             FastRepaint();
         }
 
@@ -871,8 +871,8 @@ void wxsItemEditorContent::OnMouseTargetSearch(wxMouseEvent& event)
     m_TargetY = event.GetY();
     if ( !FindDraggingItemTarget(event.GetX(),event.GetY(),0,m_AssistParent,m_AssistTarget,m_AssistAddAfter) )
     {
-        m_AssistTarget = 0;
-        m_AssistParent = 0;
+        m_AssistTarget = nullptr;
+        m_AssistParent = nullptr;
         m_AssistAddAfter = false;
     }
     FastRepaint();
@@ -896,7 +896,7 @@ bool wxsItemEditorContent::FindDraggingItemTarget(int PosX,int PosY,wxsItem* Dra
 
     if ( NewParent && !::wxGetKeyState(WXK_ALT) )
     {
-        AtCursor = 0;
+        AtCursor = nullptr;
         AddAfter = true;
         return true;
     }
@@ -928,7 +928,7 @@ bool wxsItemEditorContent::FindDraggingItemTarget(int PosX,int PosY,wxsItem* Dra
     }
     else
     {
-        AtCursor = 0;
+        AtCursor = nullptr;
         AddAfter = true;
     }
     return true;
@@ -954,17 +954,17 @@ void wxsItemEditorContent::ScreenShootTaken()
         RecalculateMaps();
     }
     RebuildDragPoints();
-    m_AssistParent = 0;
-    m_AssistTarget = 0;
+    m_AssistParent = nullptr;
+    m_AssistTarget = nullptr;
     m_AssistAddAfter = false;
     m_Assist->NewDragging();
 }
 
 wxWindow* wxsItemEditorContent::GetPreviewWindow(wxsItem* Item)
 {
-    if ( !Item ) return 0;
+    if ( !Item ) return nullptr;
     ItemToWindowT::iterator i = m_ItemToWindow.find(Item);
-    if ( i==m_ItemToWindow.end() ) return 0;
+    if ( i==m_ItemToWindow.end() ) return nullptr;
     return (*i).second;
 }
 

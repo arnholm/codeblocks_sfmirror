@@ -27,7 +27,7 @@
 wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
 {
     ItemMapT::iterator it = ItemMap().find(Name);
-    if ( it == ItemMap().end() ) return 0;
+    if ( it == ItemMap().end() ) return nullptr;
     wxsItem* Item = it->second->OnBuild(Data);
 
     // Checking few things in item's info
@@ -38,7 +38,7 @@ wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
             {
                 // Fake item
                 delete Item;
-                return 0;
+                return nullptr;
             }
             break;
 
@@ -47,7 +47,7 @@ wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
             {
                 // Fake item
                 delete Item;
-                return 0;
+                return nullptr;
             }
             break;
 
@@ -59,7 +59,7 @@ wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
         case wxsTInvalid:
         default:
             delete Item;
-            return 0;
+            return nullptr;
     }
 
     return Item;
@@ -68,21 +68,21 @@ wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
 const wxsItemInfo* wxsItemFactory::GetInfo(const wxString& Name)
 {
     ItemMapT::iterator it = ItemMap().find(Name);
-    if ( it == ItemMap().end() ) return 0;
+    if ( it == ItemMap().end() ) return nullptr;
     return it->second->m_Info;
 }
 
 const wxsItemInfo* wxsItemFactory::GetFirstInfo()
 {
     m_Iter = ItemMap().begin();
-    return (m_Iter==ItemMap().end()) ? 0 : m_Iter->second->m_Info;
+    return (m_Iter==ItemMap().end()) ? nullptr : m_Iter->second->m_Info;
 }
 
 const wxsItemInfo* wxsItemFactory::GetNextInfo()
 {
-    if ( m_Iter==ItemMap().end() ) return 0;
+    if ( m_Iter==ItemMap().end() ) return nullptr;
     ++m_Iter;
-    return (m_Iter==ItemMap().end()) ? 0 : m_Iter->second->m_Info;
+    return (m_Iter==ItemMap().end()) ? nullptr : m_Iter->second->m_Info;
 }
 
 wxImageList& wxsItemFactory::GetImageList()

@@ -75,7 +75,7 @@ namespace
     inline int GetBrowserPlacements() { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/browserplacements"),0); }
 }
 
-wxSmith* wxSmith::m_Singleton = 0;
+wxSmith* wxSmith::m_Singleton = nullptr;
 
 BEGIN_EVENT_TABLE(wxSmith, cbPlugin)
     EVT_UPDATE_UI(ViewWxSmithId,wxSmith::OnUpdateUI)
@@ -101,7 +101,7 @@ void wxSmith::OnAttach()
     // No more instances of wxSmith class can be found here,
     // even if it's on another dll/so, m_Singleton will point
     // to different memory locations
-    wxASSERT(m_Singleton == 0);
+    wxASSERT(m_Singleton == nullptr);
 
     // Creating properties and resource browser
     BuildBrowsers();
@@ -127,9 +127,9 @@ void wxSmith::OnAttach()
 void wxSmith::BuildBrowserParents()
 {
     // Zero pointers to minimize segfault possibility ;)
-    m_Splitter = 0;
-    m_ResourceBrowserParent = 0;
-    m_PropertyBrowserParent = 0;
+    m_Splitter = nullptr;
+    m_ResourceBrowserParent = nullptr;
+    m_PropertyBrowserParent = nullptr;
 
     switch ( GetBrowserPlacements() )
     {
@@ -224,7 +224,7 @@ void wxSmith::OnRelease(cb_unused bool appShutDown)
         if ( i->second )
         {
             delete i->second;
-            i->second = 0;
+            i->second = nullptr;
         }
     }
     wxsExtResManager::Get()->DeleteAll();
@@ -235,7 +235,7 @@ void wxSmith::OnRelease(cb_unused bool appShutDown)
 
     if ( m_Singleton == this )
     {
-        m_Singleton = 0;
+        m_Singleton = nullptr;
     }
 }
 
@@ -247,7 +247,7 @@ cbConfigurationPanel* wxSmith::GetConfigurationPanel(wxWindow* parent)
 cbConfigurationPanel* wxSmith::GetProjectConfigurationPanel(wxWindow* parent, cbProject* project)
 {
     ProjectMapI i = m_ProjectMap.find(project);
-    if ( i == m_ProjectMap.end() ) return 0;
+    if ( i == m_ProjectMap.end() ) return nullptr;
     return i->second->GetProjectConfigurationPanel(parent);
 }
 

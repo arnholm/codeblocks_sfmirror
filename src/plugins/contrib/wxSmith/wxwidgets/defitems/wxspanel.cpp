@@ -88,7 +88,7 @@ void wxsPanel::OnBuildCreatingCode()
 
 wxObject* wxsPanel::OnBuildPreview(wxWindow* Parent,long Flags)
 {
-    wxWindow* NewItem = 0;
+    wxWindow* NewItem = nullptr;
     if ( Flags & pfExact )
     {
         NewItem = new wxPanel(Parent,GetId(),Pos(Parent),Size(Parent),Style());

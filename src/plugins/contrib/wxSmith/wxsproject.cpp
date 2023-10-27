@@ -39,7 +39,7 @@ namespace
 
 wxsProject::wxsProject(cbProject* Project):
     m_Project(Project),
-    m_GUI(0),
+    m_GUI(nullptr),
     m_UnknownConfig("unknown_config"),
     m_UnknownResources("unknown_resource"),
     m_WasModifiedDuringLoad(false)
@@ -57,12 +57,12 @@ wxsProject::wxsProject(cbProject* Project):
 wxsProject::~wxsProject()
 {
     delete m_GUI;
-    m_GUI = 0;
+    m_GUI = nullptr;
 
     for ( size_t i=m_Resources.Count(); i-->0; )
     {
         delete m_Resources[i];
-        m_Resources[i] = 0;
+        m_Resources[i] = nullptr;
     }
     m_Resources.Clear();
 
@@ -279,7 +279,7 @@ wxsResource* wxsProject::FindResource(const wxString& Name)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void wxsProject::Configure()
@@ -318,7 +318,7 @@ cbConfigurationPanel* wxsProject::GetProjectConfigurationPanel(wxWindow* parent)
             return m_GUI->BuildConfigurationPanel(parent);
         }
     }
-    return 0;
+    return nullptr;
 }
 
 wxString wxsProject::GetProjectPath()

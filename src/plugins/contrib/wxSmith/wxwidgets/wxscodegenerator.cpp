@@ -1,12 +1,12 @@
 #include "wxscodegenerator.h"
 
-wxsCodeGenerator::wxsCodeGenerator(): m_Context(0)
+wxsCodeGenerator::wxsCodeGenerator(): m_Context(nullptr)
 {
 }
 
 wxsCodeGenerator::~wxsCodeGenerator()
 {
-    m_Context = 0;
+    m_Context = nullptr;
 }
 
 void wxsCodeGenerator::BuildCode(wxsCoderContext* Context)
