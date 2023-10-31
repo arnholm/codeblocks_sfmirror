@@ -3374,7 +3374,7 @@ static char *scan_request(char *c)
                         }
                     }
                     c=skip_till_newline(c);
-                    /* center next i lines */
+                    /* center next i productive lines */
                     if (i>0)
                     {
                         out_html("<CENTER>\n");
@@ -3388,10 +3388,10 @@ static char *scan_request(char *c)
                                 {
                                     out_html(line);
                                     out_html("<BR>\n");
+                                    i--;
                                 }
 
                                 delete [] line;
-                                i--;
                             }
                         }
                         out_html("</CENTER>\n");
