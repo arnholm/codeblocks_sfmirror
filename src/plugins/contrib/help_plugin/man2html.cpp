@@ -2833,9 +2833,9 @@ static void request_while( char*& c, int j, bool mdoc )
                 break;
             }
             if ( mdoc )
-                scan_troff_mandoc( help, false, 0 );
+                scan_troff_mandoc( help, false, NULL );
             else
-                scan_troff( help, false, 0 );
+                scan_troff( help, false, NULL );
         }
         delete[] liveloop;
     }
@@ -3073,7 +3073,7 @@ static char* process_quote(char* c, int j, const char* open, const char* close)
     c+=j;
     if (*c=='\n') c++; // ### TODO: why? Quote requests cannot be empty!
     out_html(open);
-    c=scan_troff_mandoc(c,1,0);
+    c=scan_troff_mandoc(c,1,NULL);
     out_html(close);
     out_html(NEWLINE);
     if (fillout)
@@ -3241,12 +3241,11 @@ static char *scan_request(char *c)
                     // ### TODO find a way to display it to the user
                     kDebug(7107) << "Aborting: .ab " << (c+j);
                     return 0;
-                    break;
                 }
             case REQ_An: // mdoc(7) "Author Name"
                 {
                     c+=j;
-                    c=scan_troff_mandoc(c,1,0);
+                    c=scan_troff_mandoc(c,1,NULL);
                     break;
                 }
                 case REQ_di: // groff(7) "end current DIversion"
@@ -3382,12 +3381,16 @@ static char *scan_request(char *c)
                         while (i && *c)
                         {
                             char *line=NULL;
-                            c=scan_troff(c,1, &line);
-                            if (line && qstrncmp(line, "<BR>", 4))
+                            c=scan_troff(c, 1, &line);
+                            if (line)
                             {
-                                out_html(line);
-                                out_html("<BR>\n");
-                                delete [] line; // ### FIXME: memory leak!
+                                if (qstrncmp(line, "<BR>", 4))
+                                {
+                                    out_html(line);
+                                    out_html("<BR>\n");
+                                }
+
+                                delete [] line;
                                 i--;
                             }
                         }
@@ -4518,9 +4521,9 @@ static char *scan_request(char *c)
                     else if (request==REQ_Ux)
                         out_html("UNIX ");
                     if (parsable)
-                        c=scan_troff_mandoc(c,1,0);
+                        c=scan_troff_mandoc(c,1,NULL);
                     else
-                        c=scan_troff(c,1,0);
+                        c=scan_troff(c,1,NULL);
                     if (fillout)
                         curpos++;
                     else
