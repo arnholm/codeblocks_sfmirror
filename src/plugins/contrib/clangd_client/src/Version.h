@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.91 23/10/23")
+#define VERSION wxT("1.2.92 23/10/28")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.92    23/10/28
+//          Changed check for crash to use hex values instead of macros @ ClassBrowserBuilderThead:line 890
 //1.2.91    23/10/23
 //          2023/10/16 Apply Christo ticket 1423 using wxCondition instead of client input sleep/polling.
 //          2023/10/17 Disable ClassBrowser Symbols window by default
