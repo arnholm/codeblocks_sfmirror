@@ -2182,15 +2182,15 @@ static char *scan_table(char *c)
         c++;
         *c='\0';
         g=NULL;
-        scan_troff(h,0,&g);
-        scan_troff(itemreset, 0, &g);
+        scan_troff(h, false, &g);
+        scan_troff(itemreset, false, &g);
         *c='T';
         c+=3;
         if (currow->has(curfield)) {
         currow->at(curfield).setContents(g);
                 FORWARDCUR;
         }
-            delete [] g;
+        delete [] g;
 
         if (c[-1]=='\n') {
         currow=next_row(currow);
@@ -2212,10 +2212,10 @@ static char *scan_table(char *c)
         finished=1;
         while (*c++!='\n');
         if (currow->prev)
-        currow->prev->next=NULL;
+            currow->prev->next = NULL;
         currow->prev=NULL;
-            clear_table(currow);
-            currow = 0;
+        clear_table(currow);
+        currow = 0;
         } else if (*c=='.' && c[-1]=='\n' && !isdigit(c[1])) {
         /* skip troff request inside table (usually only .sp ) */
         while (*c++!='\n');
@@ -2234,13 +2234,13 @@ static char *scan_table(char *c)
         h=h+3;
         } else {
         g=NULL;
-        h=scan_troff(h,1,&g);
-        scan_troff(itemreset,0, &g);
+        h = scan_troff(h, true, &g);
+        scan_troff(itemreset, false, &g);
         if (currow->has(curfield)) {
             currow->at(curfield).setContents(g);
                     FORWARDCUR;
         }
-                delete [] g;
+        delete [] g;
         }
         if (i) *c=itemsep;
         c=h;
@@ -2398,14 +2398,14 @@ static char *scan_expression( char *c, int *result, const unsigned int numLoop )
     h=c;
     while (*c!= sep && (!tcmp || qstrncmp(c,tcmp,4))) c++;
     *c='\n';
-    scan_troff(h, 1, &st1);
+    scan_troff(h, true, &st1);
     *c=sep;
     if (tcmp) c=c+3;
     c++;
     h=c;
     while (*c!=sep && (!tcmp || qstrncmp(c,tcmp,4))) c++;
     *c='\n';
-    scan_troff(h,1,&st2);
+    scan_troff(h, true, &st2);
     *c=sep;
     if (!st1 && !st2) value=1;
     else if (!st1 || !st2) value=0;
@@ -2833,9 +2833,9 @@ static void request_while( char*& c, int j, bool mdoc )
                 break;
             }
             if ( mdoc )
-                scan_troff_mandoc( help, false, NULL );
+                scan_troff_mandoc(help, false, NULL);
             else
-                scan_troff( help, false, NULL );
+                scan_troff(help, false, NULL);
         }
         delete[] liveloop;
     }
@@ -2864,7 +2864,7 @@ static void request_mixed_fonts( char*& c, int j, const char* font1, const char*
         }
         wordlist[i][-1]=' ';
         out_html( set_font( (i&1) ? font2 : font1 ) );
-        scan_troff(wordlist[i],1,NULL);
+        scan_troff(wordlist[i], true, NULL);
     }
     out_html(set_font("R"));
     if (mode)
@@ -3073,7 +3073,7 @@ static char* process_quote(char* c, int j, const char* open, const char* close)
     c+=j;
     if (*c=='\n') c++; // ### TODO: why? Quote requests cannot be empty!
     out_html(open);
-    c=scan_troff_mandoc(c,1,NULL);
+    c = scan_troff_mandoc(c, true, NULL);
     out_html(close);
     out_html(NEWLINE);
     if (fillout)
@@ -3187,9 +3187,9 @@ static char *scan_request(char *c)
             {
                 char *h=NULL;
                 if (mandoc_command)
-                    scan_troff_mandoc(wordlist[i],1,&h);
+                    scan_troff_mandoc(wordlist[i], true, &h);
                 else
-                    scan_troff(wordlist[i],1,&h);
+                    scan_troff(wordlist[i], true, &h);
                 wordlist[i] = qstrdup(h);
                 delete [] h;
             }
@@ -3211,9 +3211,9 @@ static char *scan_request(char *c)
                 }
                 const int onff=newline_for_fun;
                 if (mandoc_command)
-                    scan_troff_mandoc( work + 1, 0, NULL );
+                    scan_troff_mandoc(work+1, false, NULL);
                 else
-                    scan_troff( work + 1, 0, NULL);
+                    scan_troff(work+1, false, NULL);
                 delete[] work;
                 newline_for_fun=onff;
                 s_argumentList = oldArgumentList;
@@ -3245,7 +3245,7 @@ static char *scan_request(char *c)
             case REQ_An: // mdoc(7) "Author Name"
                 {
                     c+=j;
-                    c=scan_troff_mandoc(c,1,NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     break;
                 }
                 case REQ_di: // groff(7) "end current DIversion"
@@ -3264,7 +3264,7 @@ static char *scan_request(char *c)
                     while (*c && qstrncmp(c,".di",3)) while (*c && *c++!='\n');
                     *c='\0';
                     char* result=0;
-                    scan_troff(h,0,&result);
+                    scan_troff(h, false, &result);
                     QMap<QByteArray,StringDefinition>::iterator it=s_stringDefinitionMap.find(name);
                     if (it==s_stringDefinitionMap.end())
                     {
@@ -3298,8 +3298,8 @@ static char *scan_request(char *c)
                     if (*c && *c=='"') c++;
                     single_escape=true;
                     curpos=0;
-                    char* result=0;
-                    c=scan_troff(c,1,&result);
+                    char* result = NULL;
+                    c = scan_troff(c, true, &result);
                     QMap<QByteArray,StringDefinition>::iterator it=s_stringDefinitionMap.find(name);
                     if (it==s_stringDefinitionMap.end())
                     {
@@ -3380,8 +3380,8 @@ static char *scan_request(char *c)
                         out_html("<CENTER>\n");
                         while (i && *c)
                         {
-                            char *line=NULL;
-                            c=scan_troff(c, 1, &line);
+                            char *line = NULL;
+                            c = scan_troff(c, true, &line);
                             if (line)
                             {
                                 if (qstrncmp(line, "<BR>", 4))
@@ -3468,7 +3468,7 @@ static char *scan_request(char *c)
                     {
                         c=c+j;
                         c[-1]='\n';
-                        c=scan_troff(c,1,NULL);
+                        c = scan_troff(c, true, NULL);
                     }
                     else
                         c=skip_till_newline(c+j);
@@ -3496,7 +3496,7 @@ static char *scan_request(char *c)
                     {
                         *c='\n';
                         c++;
-                        c=scan_troff(c,1,NULL);
+                        c = scan_troff(c, true, NULL);
                     }
                     else
                         c=skip_till_newline(c);
@@ -3591,7 +3591,7 @@ static char *scan_request(char *c)
                     }
                     while (*c!='\n') c++;
                     *c='\0';
-                    scan_troff(h,1, &name);
+                    scan_troff(h, true, &name);
                     if (name[3]=='/')
                         h=name+3;
                     else
@@ -3607,7 +3607,7 @@ static char *scan_request(char *c)
                         out_html("</BLOCKQUOTE>\n");
                     }
                     else
-                        scan_troff(buf+1,0,NULL);
+                        scan_troff(buf+1, false, NULL);
                     delete [] buf;
                     delete [] name;
 
@@ -3664,7 +3664,7 @@ static char *scan_request(char *c)
                     fill_words(c, wordlist, &words, false, 0);
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff(c, 1, NULL);
+                    c = scan_troff(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -3687,7 +3687,7 @@ static char *scan_request(char *c)
                             out_html( set_font ( "R" ) );
                         else
                             out_html( set_font ( "B" ) );
-                        scan_troff(wordlist[i],1,NULL);
+                        scan_troff(wordlist[i], true, NULL);
                         out_html(" ");
                     }
                     // In the mdoc synopsis, there are automatical line breaks (### TODO: before or after?)
@@ -3718,7 +3718,7 @@ static char *scan_request(char *c)
                                 out_html( set_font( "I" ) );
                             else
                                 out_html( set_font( "B" ) );
-                            scan_troff(wordlist[i],1,NULL);
+                            scan_troff(wordlist[i], true, NULL);
                             out_html( set_font( "R" ) );
                             if (i==0)
                             {
@@ -3754,7 +3754,7 @@ static char *scan_request(char *c)
                     {
                         wordlist[i][-1]=' ';
                         out_html(set_font(font[i&1]));
-                        scan_troff(wordlist[i],1,NULL);
+                        scan_troff(wordlist[i], true, NULL);
                         if (i==0)
                         {
                             out_html(" (");
@@ -3812,7 +3812,7 @@ static char *scan_request(char *c)
                     for (i=0; i<words; i++)
                     {
                         wordlist[i][-1]=' ';
-                        scan_troff(wordlist[i],1,NULL);
+                        scan_troff(wordlist[i], true, NULL);
                     }
                     out_html(set_font("R"));
                     if (!fillout)
@@ -3885,7 +3885,7 @@ static char *scan_request(char *c)
                     }
                     out_html("<DT>");
                     if (words)
-                        scan_troff(wordlist[0], 1,NULL);
+                        scan_troff(wordlist[0], true, NULL);
                     out_html("<DD>");
                     curpos=0;
                     break;
@@ -3910,7 +3910,7 @@ static char *scan_request(char *c)
                             // We have a comment, so skip the line
                             c=skip_till_newline(c);
                         }
-                        c=scan_troff(c,1,NULL);
+                        c = scan_troff(c, true, NULL);
                         out_html("<DD>");
                     }
                     curpos=0;
@@ -3993,7 +3993,7 @@ static char *scan_request(char *c)
                     out_html(set_font("B"));
                     out_html("<small>");
                     trans_char(c,'"','\a'); // ### VERIFY
-                    c=scan_troff(c+j, 1, NULL);
+                    c = scan_troff(c+j, true, NULL);
                     out_html("</small>");
                     out_html(set_font("R"));
                     break;
@@ -4004,7 +4004,7 @@ static char *scan_request(char *c)
                     if (*c=='\n') c++;
                     out_html("<small>");
                     trans_char(c,'"','\a'); // ### VERIFY
-                    c=scan_troff(c,1,NULL);
+                    c = scan_troff(c, true, NULL);
                     out_html("</small>");
                     break;
                 }
@@ -4045,7 +4045,7 @@ static char *scan_request(char *c)
                     else
                         out_html("\n<H2>");
                     mandoc_synopsis = qstrncmp(c, "SYNOPSIS", 8) == 0;
-                    c = mandoc_command ? scan_troff_mandoc(c,1,NULL) : scan_troff(c,1,NULL);
+                    c = mandoc_command ? scan_troff_mandoc(c, true, NULL) : scan_troff(c, true, NULL);
                     if (mode)
                         out_html("</H3>\n");
                     else
@@ -4063,7 +4063,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff(c, 1, NULL);
+                    c = scan_troff(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -4110,7 +4110,7 @@ static char *scan_request(char *c)
 //                             out_html("\">\n");
 #endif
                             out_html("<TITLE>");
-                                out_html(scan_troff(wordlist[0], 0, NULL));
+                                out_html(scan_troff(wordlist[0], false, NULL));
                             out_html( " Manpage</TITLE>\n");
                             /*out_html( "<link rel=\"stylesheet\" href=\"");
                             out_html(htmlPath);
@@ -4138,22 +4138,22 @@ static char *scan_request(char *c)
                             out_html("/top-left.png\" style=\"margin: 0pt\" alt=\"Top left\">\n");
                             out_html("</div>\n");
                             out_html("<div style=\"position: absolute; top: 25pt; right: 100pt; text-align: right; font-size: xx-large; font-weight: bold; text-shadow: #fff 0pt 0pt 5pt; color: #444\">\n");
-                            out_html( scan_troff(wordlist[0], 0, NULL ) );
+                            out_html(scan_troff(wordlist[0], false, NULL));
                             out_html("</div>\n");
                             out_html("</div>\n");*/
                             out_html("<div style=\"margin-left: 5em; margin-right: 5em;\">\n");
                             out_html("<h1>" );
-                                out_html( scan_troff(wordlist[0], 0, NULL ) );
-                            out_html( "</h1>\n" );
+                            out_html(scan_troff(wordlist[0], false, NULL));
+                            out_html("</h1>\n");
                             if (words>1)
                             {
                                 out_html("Section: " );
                                 if (!mandoc_command && words>4)
-                                    out_html(scan_troff(wordlist[4], 0, NULL) );
+                                    out_html(scan_troff(wordlist[4], false, NULL));
                                 else
                                     out_html(section_name(wordlist[1]));
                                 out_html(" (");
-                                out_html(scan_troff(wordlist[1], 0, NULL));
+                                out_html(scan_troff(wordlist[1], false, NULL));
                                 out_html(")\n");
                             }
                             else
@@ -4441,12 +4441,12 @@ static char *scan_request(char *c)
                         {
                             /* Don't allow embedded comms after a newline */
                             c++;
-                            c=scan_troff(c,1,NULL);
+                            c = scan_troff(c, true, NULL);
                         }
                         else
                         {
                             /* Do allow embedded comms on the same line. */
-                            c=scan_troff_mandoc(c,1,NULL);
+                            c = scan_troff_mandoc(c, true, NULL);
                         }
                         out_html(set_font("R"));
                         out_html(NEWLINE);
@@ -4455,7 +4455,7 @@ static char *scan_request(char *c)
                     else if (dl_set[itemdepth] & (BL_BULLET_LIST | BL_ENUM_LIST))
                     {
                         out_html("<LI>");
-                        c=scan_troff_mandoc(c,1,NULL);
+                        c = scan_troff_mandoc(c, true, NULL);
                         out_html(NEWLINE);
                     }
                     if (fillout)
@@ -4472,7 +4472,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(NEWLINE);
                     if (fillout)
                         curpos++;
@@ -4521,9 +4521,9 @@ static char *scan_request(char *c)
                     else if (request==REQ_Ux)
                         out_html("UNIX ");
                     if (parsable)
-                        c=scan_troff_mandoc(c,1,NULL);
+                        c = scan_troff_mandoc(c, true, NULL);
                     else
-                        c=scan_troff(c,1,NULL);
+                        c = scan_troff(c, true, NULL);
                     if (fillout)
                         curpos++;
                     else
@@ -4536,7 +4536,7 @@ static char *scan_request(char *c)
                     out_html(NEWLINE);
                     out_html("<BLOCKQUOTE>");
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html("</BLOCKQUOTE>");
                     if (fillout)
                         curpos++;
@@ -4659,7 +4659,7 @@ static char *scan_request(char *c)
                     }
                     *bufptr = '\n';
                     bufptr[1] = 0;
-                    scan_troff_mandoc(buff, 1, NULL);
+                    scan_troff_mandoc(buff, true, NULL);
                     out_html(NEWLINE);
                     if (fillout)
                         curpos++;
@@ -4683,14 +4683,14 @@ static char *scan_request(char *c)
                         {
                             if (ispunct(wordlist[i][0]) && wordlist[i][0]!='-')
                             {
-                                scan_troff_mandoc(wordlist[i], 1, NULL);
+                                scan_troff_mandoc(wordlist[i], true, NULL);
                             }
                             else
                             {
                                 if (i>0)
                                     out_html(" "); // Put a space between flags
                                 out_html("-");
-                                scan_troff_mandoc(wordlist[i], 1, NULL);
+                                scan_troff_mandoc(wordlist[i], true, NULL);
                             }
                         }
                     }
@@ -4708,7 +4708,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(NEWLINE);
                     if (fillout)
                         curpos++;
@@ -4753,7 +4753,7 @@ static char *scan_request(char *c)
                     if (*c=='\n') c++;
                     out_html(set_font("R"));
                     out_html("[");
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html("]");
                     out_html(NEWLINE);
@@ -4770,7 +4770,7 @@ static char *scan_request(char *c)
                     if (*c=='\n') c++;
                     out_html(set_font("R"));
                     out_html("[");
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     if (fillout)
                         curpos++;
                     else
@@ -4781,7 +4781,7 @@ static char *scan_request(char *c)
                 {
                     trans_char(c,'"','\a');
                     c=c+j;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html("]");
                     if (fillout)
@@ -4812,7 +4812,7 @@ static char *scan_request(char *c)
                      */
                     if (*sp) *sp = '\n';
                     out_html("`");    /* Quote the text */
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html("'");
                     out_html(NEWLINE);
                     if (fillout)
@@ -4833,7 +4833,7 @@ static char *scan_request(char *c)
                         out_html("file ...");
                     }
                     else
-                        c=scan_troff_mandoc(c, 1, NULL);
+                        c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -4848,7 +4848,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c+=j;
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html("</em>");
                     out_html(NEWLINE);
                     if (fillout)
@@ -4866,7 +4866,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -4881,7 +4881,7 @@ static char *scan_request(char *c)
                     c=c+j;
                     if (*c=='\n') c++;
                     out_html(" - ");
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(NEWLINE);
                     if (fillout)
                         curpos++;
@@ -4924,7 +4924,7 @@ static char *scan_request(char *c)
                     if ((tolower(*c) >= 'a' && tolower(*c) <= 'z' ) || (*c >= '0' && *c <= '9'))
                     {
                         // alphanumeric argument
-                        c=scan_troff_mandoc(c, 1, NULL);
+                        c = scan_troff_mandoc(c, true, NULL);
                         out_html(set_font("R"));
                         out_html(NEWLINE);
                     }
@@ -4956,7 +4956,7 @@ static char *scan_request(char *c)
                     trans_char(c,'"','\a');
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -4979,7 +4979,7 @@ static char *scan_request(char *c)
                     c=c+j;
                     if (*c=='\n') c++;
                     out_html(set_font("B"));
-                    c=scan_troff_mandoc(c, 1, NULL);
+                    c = scan_troff_mandoc(c, true, NULL);
                     out_html(set_font("R"));
                     out_html(NEWLINE);
                     if (fillout)
@@ -4998,7 +4998,7 @@ static char *scan_request(char *c)
                 {
                     c=c+j;
                     if (*c=='\n') c++;
-                    c=scan_troff(c, 1, NULL); /* Don't allow embedded mandoc coms */
+                    c = scan_troff(c, true, NULL); /* Don't allow embedded mandoc coms */
                     if (fillout)
                         curpos++;
                     else
@@ -5013,7 +5013,7 @@ static char *scan_request(char *c)
                     c=c+j;
                     out_html(set_font("I"));
                     if (*c=='\n') c++;
-                    c=scan_troff(c, 1, NULL); /* Don't allow embedded mandoc coms */
+                    c = scan_troff(c, true, NULL); /* Don't allow embedded mandoc coms */
                     out_html(set_font("R"));
                     if (fillout)
                         curpos++;
@@ -5283,7 +5283,7 @@ static char *scan_request(char *c)
                         trans_char(c,'"','\a');
                         if (*c=='\n') c++;
                         out_html(set_font("R"));
-                        c=scan_troff(c, 1, NULL);
+                        c = scan_troff(c, true, NULL);
                         out_html(NEWLINE);
                         if (fillout)
                             curpos++;
@@ -5562,7 +5562,7 @@ void scan_man_page(const char *man_page)
 
     kDebug(7107) << "Parse man page";
 
-    scan_troff(buf+1,0,NULL);
+    scan_troff(buf+1, false, NULL);
 
     kDebug(7107) << "Man page parsed!";
 
