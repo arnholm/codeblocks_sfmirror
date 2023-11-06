@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.92 23/10/28")
+#define VERSION wxT("1.2.93 2023/11/6")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.93    2023/11/6 Appy Christo patch ticket 1430. Don't clobber custom make file entries in CompilerCommands.json
 //1.2.92    23/10/28
 //          Changed check for crash to use hex values instead of macros @ ClassBrowserBuilderThead:line 890
 //1.2.91    23/10/23

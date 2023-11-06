@@ -3747,6 +3747,8 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
 
     // Remove the older entry if any
     size_t found = 0, changed = 0;
+    const bool isMakefileCustom = pProject->IsMakefileCustom(); //Christo patch 1430
+
     for (int ii=0; ii<entryknt; ++ii)
     {
         json entry;
@@ -3757,25 +3759,30 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
             writeClientLog(GetstdUTF8Str(errMsg));
             cbMessageBox(errMsg);
         }
-        //wxString look = entry.dump(); //debugging
-        std::string ccjDir     = entry["directory"];
-        std::string ccjFile    = entry["file"];
-        std::string ccjCommand = entry["command"];
 
-        //-wxString ccjPath = ccjDir + filesep + ccjFile ;
-        //-if (ccjFile == newFullFilePath)         // make compile_commands file fullpath
+        // **Debugging**
+        //wxString look = entry.dump();
+        //std::string ccjDir     = entry["directory"];
+        //std::string ccjFile    = entry["file"];
+        //std::string ccjCommand = entry["command"];
+
+        const std::string& ccjFile    = entry["file"];  //Christo patch 1430
+
         if (ccjFile == GetstdUTF8Str(newFullFilePath) ) // make compile_commands file fullpath //(ollydbg 2022/10/30) ticket #78
-
         {
             // filename and directory name have matched.
             // If commands match, leave entry alone.
             if (not found)
             {
                 found++;    //update first entry only
-                if (ccjCommand != newEntry["command"])
+                if (not isMakefileCustom)    //Christo patch 1430
                 {
-                    pJson->at(ii) = newEntry;
-                    changed++;
+                    const std::string& ccjCommand = entry["command"];  //Christo patch 1430
+                    if (ccjCommand != newEntry["command"])
+                    {
+                        pJson->at(ii) = newEntry;
+                        changed++;
+                    }
                 }
                 continue;
             }
