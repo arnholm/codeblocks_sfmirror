@@ -54,15 +54,31 @@ CompilerCommandGenerator* CompilerMINGW::GetCommandGenerator(cbProject *project)
 
 AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
 {
-    Manager::Get()->GetLogManager()->DebugLog("MinGW compiler detection for compiler ID: '" + GetID() + "' (parent ID= '" + GetParentID()
-                                              + "') - C program '" + m_Programs.C + "' or 'mingw32-" + m_Programs.C + "'");
+    LogManager* logMgr = Manager::Get()->GetLogManager();
+    logMgr->DebugLog("MinGW compiler detection for compiler ID: '" + GetID() + "' (parent ID= '" + GetParentID()
+                   + "') - C program '" + m_Programs.C + "' or 'mingw32-" + m_Programs.C + "'");
 
-    wxString sep            = wxFileName::GetPathSeparator();
+    const wxString sep(wxFileName::GetPathSeparator());
+
+    // Check if current configuration (after translating macros) is valid
+    if (!m_MasterPath.empty())
+    {
+        wxString path_no_macros(m_MasterPath);
+        Manager::Get()->GetMacrosManager()->ReplaceMacros(path_no_macros);
+        wxString program_no_macros(m_Programs.C);
+        Manager::Get()->GetMacrosManager()->ReplaceMacros(program_no_macros);
+        if (wxFileExists(path_no_macros + sep + "bin" + sep + program_no_macros))
+        {
+            logMgr->DebugLog("Already configured MinGW master path='" + path_no_macros + "', compiler='" + program_no_macros + "'");
+            return adrDetected;
+        }
+    }
+
     wxString bin_gcc        = sep + "bin" + sep + m_Programs.C;
     wxString bin_mingw32gcc = sep + "bin" + sep + "mingw32-" + m_Programs.C;
 
     // Try to find MinGW in environment variable PATH first
-    Manager::Get()->GetLogManager()->DebugLog("Checking [PATH] master path='" + m_MasterPath + "'");
+    logMgr->DebugLog("Checking [PATH] master path='" + m_MasterPath + "'");
     wxString pathValues;
     wxGetEnv("PATH", &pathValues);
     if (!pathValues.IsEmpty())
@@ -80,7 +96,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                     m_MasterPath = pathArray[i].BeforeLast(path_sep);
                     if (wxFileExists(m_MasterPath + bin_mingw32gcc))
                         m_Programs.C = "mingw32-" + m_Programs.C;
-                    Manager::Get()->GetLogManager()->DebugLog("Final MinGW master path='" + m_MasterPath + "', compiler='" + m_Programs.C + "'");
+                    logMgr->DebugLog("Final MinGW master path='" + m_MasterPath + "', compiler='" + m_Programs.C + "'");
                     return adrDetected;
                 }
             }
@@ -92,7 +108,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
         // Look first if MinGW was installed with Code::Blocks (new in beta6)
         m_MasterPath = ConfigManager::GetExecutableFolder();
 
-        Manager::Get()->GetLogManager()->DebugLog("Checking [C::B\\bin] master path='" + m_MasterPath + "'");
+        logMgr->DebugLog("Checking [C::B\\bin] master path='" + m_MasterPath + "'");
         if (   !wxFileExists(m_MasterPath + bin_gcc)
             && !wxFileExists(m_MasterPath + bin_mingw32gcc) )
         {
@@ -102,7 +118,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
         else if (wxFileExists(m_MasterPath + bin_mingw32gcc))
             m_Programs.C = "mingw32-" + m_Programs.C;
 
-        Manager::Get()->GetLogManager()->DebugLog("Checking [C::B\\MinGW] master path='" + m_MasterPath + "'");
+        logMgr->DebugLog("Checking [C::B\\MinGW] master path='" + m_MasterPath + "'");
         if (   !wxFileExists(m_MasterPath + bin_gcc)
             && !wxFileExists(m_MasterPath + bin_mingw32gcc) )
         {
@@ -111,7 +127,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
             wxFileConfig ini("", "", windir + sep + "MinGW.ini", "", wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
             m_MasterPath = ini.Read("/InstallSettings/InstallPath", "C:\\MinGW");
 
-            Manager::Get()->GetLogManager()->DebugLog("Checking [INI] master path='" + m_MasterPath + "'");
+            logMgr->DebugLog("Checking [INI] master path='" + m_MasterPath + "'");
             if (!wxFileExists(m_MasterPath + bin_gcc))
             {
 #ifdef __WXMSW__ // for wxRegKey
@@ -122,7 +138,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                 {
                     // found; read it
                     key.QueryValue("Install_Dir", m_MasterPath);
-                    Manager::Get()->GetLogManager()->DebugLog("Checking [registry] master path='" + m_MasterPath + "'");
+                    logMgr->DebugLog("Checking [registry] master path='" + m_MasterPath + "'");
                 }
                 else
                 {
@@ -148,7 +164,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                             if (key.Exists() && key.Open(wxRegKey::Read))
                             {
                                 key.QueryValue("InstallLocation", m_MasterPath);
-                                Manager::Get()->GetLogManager()->DebugLog("Checking [registry] master path='" + m_MasterPath + "'");
+                                logMgr->DebugLog("Checking [registry] master path='" + m_MasterPath + "'");
 
                                 // Determine compiler executable, eg: "x86_64-w64-mingw32-gcc.exe", "mingw32-gcc.exe" or "gcc.exe"
                                 wxDir binFolder(m_MasterPath + sep + "bin");
@@ -179,9 +195,9 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
                                    && !wxFileExists(m_MasterPath + bin_mingw32gcc) )
             {
                 wxString drive = wxFileName(ConfigManager::GetExecutableFolder()).GetVolume() + ":\\";
-                Manager::Get()->GetLogManager()->DebugLog("Checking [PortableApps] master path='" + drive + "PortableApps\\CommonFiles\\MinGW" + "'");
-                Manager::Get()->GetLogManager()->DebugLog("Checking [PortableApps] master path='" + drive + "CommonFiles\\MinGW"               + "'");
-                Manager::Get()->GetLogManager()->DebugLog("Checking [PortableApps] master path='" + drive + "MinGW"                            + "'");
+                logMgr->DebugLog("Checking [PortableApps] master path='" + drive + "PortableApps\\CommonFiles\\MinGW" + "'");
+                logMgr->DebugLog("Checking [PortableApps] master path='" + drive + "CommonFiles\\MinGW"               + "'");
+                logMgr->DebugLog("Checking [PortableApps] master path='" + drive + "MinGW"                            + "'");
                 if (   wxFileExists(drive + "PortableApps\\CommonFiles\\MinGW" + bin_gcc)
                     || wxFileExists(drive + "PortableApps\\CommonFiles\\MinGW" + bin_mingw32gcc) )
                 {
@@ -213,7 +229,7 @@ AutoDetectResult CompilerMINGW::AutoDetectInstallationDir()
     else
         m_MasterPath = "/usr";
 
-    Manager::Get()->GetLogManager()->DebugLog("Final MinGW master path='" + m_MasterPath + "', compiler='" + m_Programs.C + "'");
+    logMgr->DebugLog("Final MinGW master path='" + m_MasterPath + "', compiler='" + m_Programs.C + "'");
     AutoDetectResult ret = (wxFileExists(m_MasterPath + bin_gcc) || (wxFileExists(m_MasterPath + bin_mingw32gcc))) ? adrDetected : adrGuessed;
     // Don't add lib/include dirs for MinGW/GCC. GCC knows itself where its files are located
 
