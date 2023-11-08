@@ -311,6 +311,10 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     }
     else if (m_ClassBrowserBuilderThread->IsBusy())
     {
+       #if defined(RESCHEDULE_CLASSBROWSER_BUSY) // **Debugging** //(ph 2023/11/08)
+       // A rescheduled ThreadedBuildTree call is sometimes crashing the thread.
+       // Do not do a callback until the reason is found and fixed.
+
         // re-schedule this call on the Idle time Callback queue
         if (pActiveProject)
         {
@@ -320,7 +324,9 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
             #endif
         }
         else
-            CCLogger::Get()->DebugLogError("ClassBrowserBuildThred is busy; Could NOT reschedule.");
+       #endif //RESCHEDULE_CLASSBROWSER_BUSY
+            CCLogger::Get()->DebugLogError("ClassBrowserBuildThred is busy; did not reschedule.");
+            //-cbAssertNonFatal(0 && "Did not reschedule busy UpdateClassBrowser call."); // **Debugging** //(ph 2023/11/08)
 
         return;
     }
