@@ -3458,6 +3458,8 @@ void CodeCompletion::OnEditorActivatedTimer(cb_unused wxTimerEvent& event)
 wxBitmap CodeCompletion::GetImage(ImageId::Id id, int fontSize)
 {
     const int size = cbFindMinSize16to64(fontSize);
+
+    // Check if it is in the cache
     const ImageId key(id, size);
     ImagesMap::const_iterator it = m_images.find(key);
     if (it != m_images.end())
@@ -3507,6 +3509,10 @@ wxBitmap CodeCompletion::GetImage(ImageId::Id id, int fontSize)
             Manager::Get()->GetLogManager()->LogError(msg);
         }
     }
+
+    // If the bitmap is invalid create a valid one (a black square) for visual feedback
+    if (!bitmap.IsOk())
+        bitmap.Create(size, size);
 
     m_images[key] = bitmap;
     return bitmap;
