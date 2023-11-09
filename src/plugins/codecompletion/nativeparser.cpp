@@ -131,7 +131,10 @@ static void AddToImageList(wxImageList* list, const wxString &path, int size)
 #endif
 
     if (!bmp.IsOk())
+    {
+        bmp.Create(size, size);
         printf("failed to load: %s\n", path.utf8_str().data());
+    }
 
     list->Add(bmp);
 }
