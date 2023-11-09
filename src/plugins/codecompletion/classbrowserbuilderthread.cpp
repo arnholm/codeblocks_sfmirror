@@ -86,6 +86,7 @@ ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, w
 
 ClassBrowserBuilderThread::~ClassBrowserBuilderThread()
 {
+    // This dtor only invoked at progam termination
     delete m_CCTreeTop;
     delete m_CCTreeBottom;
 }
@@ -102,6 +103,20 @@ void ClassBrowserBuilderThread::Init(NativeParser*         np,
     CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex);
 
     m_NativeParser     = np;
+    // patch 1407 Thanks Christo
+    // Fix to delete leaked upper and/or lower display tree before allocating anew.
+    m_topCrc32         = CRC32_CCITT;
+    m_bottomCrc32      = CRC32_CCITT;
+    if (m_CCTreeTop)
+    {
+        delete m_CCTreeTop;
+    }
+    if (m_CCTreeBottom)
+    {
+        delete m_CCTreeBottom;
+    }
+    // End patch 1407
+
     m_CCTreeTop        = new CCTree();
     m_CCTreeBottom     = new CCTree();
     m_ActiveFilename   = active_filename;
