@@ -297,6 +297,10 @@ protected:
     /** Skip any "tab" "white-space" */
     bool SkipWhiteSpace();
 
+   /** Skip any invalid utf8 chars */
+   bool SkipInvalid();
+   int IsChrValidUTF8(uint32_t c);
+
     /** Skip backslash before newline */
     bool SkipBackslashBeforeEOL();
 

@@ -273,6 +273,32 @@ bool Tokenizer::SkipWhiteSpace()
 
     return true;
 }
+// ----------------------------------------------------------------------------
+int Tokenizer::IsChrValidUTF8(uint32_t c)
+// ----------------------------------------------------------------------------
+{
+    // https://stackoverflow.com/questions/66715611/check-for-valid-utf-8-encoding-in-c
+    if (c <= 0x7F) return 1;
+    if (0xC080 == c) return 1;   // Accept 0xC080 as representation for '\0'
+    if (0xC280 <= c && c <= 0xDFBF) return ((c & 0xE0C0) == 0xC080);
+    if (0xEDA080 <= c && c <= 0xEDBFBF) return 0; // Reject UTF-16 surrogates
+    if (0xE0A080 <= c && c <= 0xEFBFBF) return ((c & 0xF0C0C0) == 0xE08080);
+    if (0xF0908080 <= c && c <= 0xF48FBFBF) return ((c & 0xF8C0C0C0) == 0xF0808080);
+    return 0;
+}
+// ----------------------------------------------------------------------------
+bool Tokenizer::SkipInvalid()
+// ----------------------------------------------------------------------------
+{
+    uint32_t c = uint32_t(CurrentChar());
+    int valid = IsChrValidUTF8(c);
+    if (not valid)
+    {
+        MoveToNextChar();
+        return true;
+    }
+    return false;
+}
 
 bool Tokenizer::SkipBackslashBeforeEOL()
 {
@@ -843,7 +869,7 @@ bool Tokenizer::SkipPreprocessorBranch()
 
 bool Tokenizer::SkipUnwanted()
 {
-    while (SkipWhiteSpace() || SkipComment() || SkipPreprocessorBranch())
+    while (SkipWhiteSpace() || SkipComment() || SkipPreprocessorBranch() || SkipInvalid())
         ;
 
     return NotEOF();
