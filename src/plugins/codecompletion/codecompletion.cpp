@@ -2920,12 +2920,31 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
 {
     TRACE(_T("ParseFunctionsAndFillToolbar() : m_ToolbarNeedReparse=%d, m_ToolbarNeedRefresh=%d, "),
           m_ToolbarNeedReparse?1:0, m_ToolbarNeedRefresh?1:0);
+
     EditorManager* edMan = Manager::Get()->GetEditorManager();
     if (!edMan) // Closing the app?
         return;
 
     cbEditor* ed = edMan->GetBuiltinActiveEditor();
-    if (!ed || !ed->GetControl())
+
+    bool isCC_FileType = true;
+    // Process only CC specified file types. //(2023/11/11)
+    if (ed and ed->GetControl())
+    {
+        switch (ParserCommon::FileType(ed->GetFilename()))
+        {
+            case ParserCommon::ftHeader:
+            case ParserCommon::ftSource:
+                isCC_FileType = true; break;
+            case ParserCommon::ftOther:
+                isCC_FileType = false; break;
+            default:
+                isCC_FileType  = false; break;
+        }
+    }
+
+    // When not CC editor or file type, clear toolbar display
+    if (!ed || !ed->GetControl() || (not isCC_FileType))
     {
         if (m_Function)
             m_Function->Clear();
