@@ -184,8 +184,8 @@ void wxsItem::OnBuildIdCode()
             wxString Name = GetIdName();
             if ( !wxsPredefinedIDs::Check(Name) )
             {
-                wxString Enumeration = _T("static const long ") + Name + _T(";");
-                wxString Initialization =  + _T("const long ") + GetResourceData()->GetClassName() + _T("::") + Name + _T(" = wxNewId();");
+                wxString Enumeration = _T("static const wxWindowID ") + Name + _T(";");
+                wxString Initialization =  + _T("const wxWindowID ") + GetResourceData()->GetClassName() + _T("::") + Name + _T(" = wxNewId();");
                 if ( GetCoderContext()->m_IdEnumerations.Index(Enumeration) == wxNOT_FOUND )
                 {
                     AddIdCode(Enumeration,Initialization);
