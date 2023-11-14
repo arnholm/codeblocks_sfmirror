@@ -133,6 +133,8 @@ namespace
     int prevDocumentSymbolsFilesProcessed = 0;
 
     std::deque<json*> LSP_ParserDocumentSymbolsQueue; // cf: OnLSP_ParseDocumentSysmbols()
+    std::deque<json*> LSP_ParserSemanticTokensQueue;  // cf: LSP_ParseSemanticTokens()
+    json* pJsonST = nullptr; //SemanticToken json from queue; //(ph 2023/11/14)
 
     __attribute__((used))
     bool wxFound(int result){return result != wxNOT_FOUND;};
@@ -473,14 +475,10 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
 void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (not GetLSPClient()) return;
-
-    // Validate that this parser is associated with a project
-    cbProject* pProject = m_ParsersProject;
-    if (not pProject) return;
+    if (GetIsShuttingDown() ) return;
 
     /// Do Not free the input pJson pointer, it will be freed on return to caller CodeCompletion::LSP_Event()
-    json*  pJson = (json*)event.GetClientData();
+    json*  pJson = (json*)event.GetClientData(); //<== original json*
 
     // ----------------------------------------------------------------------------
     // queue a copy of input json data. then queue a callback for OnIdle() which will have a nullptr for json ptr
@@ -498,6 +496,13 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
     // When called from OnIdle(), process only one entry per idle time waiting in queue
     if (LSP_ParserDocumentSymbolsQueue.size())
     {
+        // Validate that parser and project are associated
+        cbProject* pProject = m_ParsersProject;
+        if (not pProject)
+        {
+            if (pJson)  Delete(pJson);  //don't leak the local allocated json
+            LSP_ParserDocumentSymbolsQueue.pop_front(); //remove the current json queue pointer
+        }
 
         // record time this routine started
         size_t startMillis = m_pParseManager->GetNowMilliSeconds();
@@ -512,7 +517,8 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         {
             wxString errMsg(wxString::Format("ERROR: %s:%s", __FUNCTION__, err.what()) );
             CCLogger::Get()->DebugLogError(errMsg);
-            LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer
+            if (pJson)  Delete(pJson);  //don't leak the local allocated json
+            LSP_ParserDocumentSymbolsQueue.pop_front(); //remove the current json queue pointer
             return;
         }
         // Get filename from between the STX chars
@@ -527,11 +533,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         if ( (not pClient) or (not pProjectFile))
         {
             LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer
-            if (pJson)
-            {
-                Delete(pJson);
-                pJson = nullptr;
-            }
+            if (pJson) Delete(pJson);
             return;
         }
 
@@ -749,21 +751,135 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
 void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    if (GetIsShuttingDown() ) return;
+
     // The pJsonData must be copied because the data will be freed on return to caller.
 
-    if (not GetLSPClient()) return;
+    /// Do Not free the original incoming pJson; it will be freed in CodeCompletion::LSP_Event()
+    json*  pJsonOrg = (json*)event.GetClientData();
 
-    // Validate that this file belongs to this projects parser
-    cbProject* pProject = m_ParsersProject;
-    if (not pProject) return;
-    wxString filename = event.GetString();
-    if (not pProject->GetFileByFilename(filename,false))
+
+    // ----------------------------------------------------------------------------
+    // queue a copy of input json data. then queue a callback for OnIdle() which will have a nullptr for json ptr
+    // ----------------------------------------------------------------------------
+    if (pJsonOrg)
+    {
+        //LSP_ParserSemanticTokensQueue is in anonymous namespace above
+        LSP_ParserSemanticTokensQueue.push_back(new json(*pJsonOrg));
+        wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, XRCID("textDocument/semanticTokens"));
+        evt.SetClientData(nullptr); //indicate to use top pJson on queue
+        evt.SetString(event.GetString());
+        GetIdleCallbackHandler()->QueueCallback(this, &Parser::LSP_ParseSemanticTokens, evt);
         return;
+    }
 
-    /// Do Not free pJson, it will be freed in CodeCompletion::LSP_Event()
-    json*  pJson = (json*)event.GetClientData();
+    if (LSP_ParserSemanticTokensQueue.size() == 0) return;
 
-    // most ParserThreadOptions was copied from m_Options
+    // When called from OnIdle(), process only one entry per idle time waiting in queue
+
+        // Retrieve and the oldest entry from the queue
+        pJsonST = LSP_ParserSemanticTokensQueue.front();
+
+
+        cbProject* pProject = m_ParsersProject;
+        wxString filename = event.GetString();
+
+        if (not GetLSPClient())
+        {
+            LSP_ParserSemanticTokensQueue.pop_front(); //delete the current json queue pointer
+            if (pJsonST) Delete(pJsonST);
+            return;
+        }
+
+        // Validate that this file belongs to this projects parser
+        wxString idValue;
+        try {
+            idValue = GetwxUTF8Str(pJsonST->at("id").get<std::string>());
+
+            // Validate that this file belongs to this projects parser
+            if ( (not pProject) or
+                (not pProject->GetFileByFilename(filename,false)))
+                    throw std::runtime_error("Err: wrong project or filename");
+        }//try
+        catch(std::exception &err)
+        {
+            wxString errMsg(wxString::Format("ERROR: %s:%s", __FUNCTION__, err.what()) );
+            CCLogger::Get()->DebugLogError(errMsg);
+            LSP_ParserSemanticTokensQueue.pop_front(); //delete the current json queue pointer
+            if (pJsonST) Delete(pJsonST);
+            return;
+        }
+
+        // Get filename from between the STX chars
+        wxString URI = idValue.AfterFirst(STX);
+        if (URI.Contains(STX))
+            URI = URI.BeforeFirst(STX); //filename
+        filename = fileUtils.FilePathFromURI(URI);
+
+        // Verify client, project and files are still legitimate
+        ProcessLanguageClient* pClient = GetLSPClient();
+        ProjectFile* pProjectFile = pProject->GetFileByFilename(filename,false);
+        if ( (not pClient) or (not pProjectFile))
+        {
+            LSP_ParserSemanticTokensQueue.pop_front(); //delete the current json queue pointer
+            if (pJsonST) Delete(pJsonST);
+            return;
+        }
+
+        // --------------------------------------------------
+        // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+        // --------------------------------------------------
+        // Avoid blocking the UI. If lock is busy, queue a callback for idle time.
+        auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+        wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+        if (locker_result != wxMUTEX_NO_ERROR)
+        {
+            // **Debugging**
+            //wxString locker_result_reason;
+            //if (locker_result == wxMUTEX_DEAD_LOCK)
+            //    locker_result_reason += "wxMUTEX_DEAD_LOCK";
+            //if (locker_result == wxMUTEX_TIMEOUT)
+            //    locker_result_reason += "wxMUTEX_TIMEOUT";
+            //wxString msg= wxString::Format("LOCK FAILED:TokenTree %s @(%s:%d)",locker_result_reason, __FUNCTION__, __LINE__);
+            //msg += wxString::Format("\nOwner: %s", s_TokenTreeMutex_Owner);
+            //-CCLogger::Get()->DebugLogError(msg); // **DEBUGGING**
+            //-wxSafeShowMessage("TokenTree Lock fail", msg);  // **DEBUGGING**
+
+            // Pause parsing if the queue is too backed up. Caused by a dialog holding the TokenTree lock.
+            if ((LSP_ParserSemanticTokensQueue.size() > 4) and (PauseParsingCount(__FUNCTION__)==0) )
+                PauseParsingForReason(__FUNCTION__, true); //stop parsing until we can get the TokenTree lock
+
+            // When here: the event is already an idle callback, we can just reuse it.
+            // Queue this call to the the idle time callback queue.
+            if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine)) //verify max retries
+                GetIdleCallbackHandler()->QueueCallback(this, &Parser::LSP_ParseSemanticTokens, event);
+            // The lock FAILED above, no need to unlock
+            return;
+        }
+        else
+        { //now have the lock
+            s_TokenTreeMutex_Owner = wxString::Format("%s %d", __FUNCTION__, __LINE__); /*record owner*/
+            GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
+
+            if (PauseParsingCount(__FUNCTION__))
+                PauseParsingForReason(__FUNCTION__, false);
+        }
+
+
+
+    ///This struct guarantees TokenTreeMutex is unlocked on any return
+    // beyond the allocation of this struct.
+    struct UnlockTokenTree_t
+    {
+        UnlockTokenTree_t(){;}
+        ~UnlockTokenTree_t()
+        {   CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+            LSP_ParserSemanticTokensQueue.pop_front(); //remove the current json queue pointer
+            if (pJsonST) Delete(pJsonST);
+        }
+    } unlockTokenTree;
+
+    // most ParserThreadOptions were copied from m_Options
     LSP_SymbolsParserOptions opts;
 
     opts.useBuffer             = false;
@@ -829,7 +945,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
     //    }
 
     // **Sanity checks**
-    ProcessLanguageClient* pClient = GetLSPClient();
+    pClient = GetLSPClient();
     bool isEditorInitialized  = pClient ? pClient->GetLSP_Initialized(pProject) : false;
     bool isEditorOpen         = isEditorInitialized ? pClient->GetLSP_EditorIsOpen(pEditor) : false;
     bool isFileParsing        = pClient ? pClient->IsServerFilesParsing(pEditor->GetFilename()) : false;
@@ -848,7 +964,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
 
     bool parse_rc = false;
     try{
-        parse_rc = pLSP_SymbolsParser->Parse(pJson, pProject);
+        parse_rc = pLSP_SymbolsParser->Parse(pJsonST, pProject);
     }
     catch (cbException& e)
     { e.ShowErrorMessage(); }
@@ -860,7 +976,8 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         CCLogger::Get()->DebugLog(wxString::Format("%s() Added Semantic tokens for %s", __FUNCTION__, filename));
 
     if (pLSP_SymbolsParser)
-        delete pLSP_SymbolsParser;
+        Delete( pLSP_SymbolsParser);
+
     m_LSP_ParserDone = true;
 
    return;

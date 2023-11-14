@@ -884,7 +884,7 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
 
      // FIXME (ph#):Getting crash here with data == -1 as a ptr (0xFFFFFFFFFFFFFFFF) //(ph 2023/10/14)
      // I believe this problem is fixed by version 1.2.89 (see version.h)
-    // It was NOT fixed. Got crash again (2023/10/28) using 0xFFFFFFFFFFFFFFFF as ptr.
+    // It was NOT fixed. Got crash again (2023/10/28) (2023/11/14) using 0xFFFFFFFFFFFFFFFF as ptr.
     // codeblocks.exe caused an Access Violation at location 00007FF89CCEDD23 in module clangd_client.dll Reading from location FFFFFFFFFFFFFFFF.                                         )
     // @ Line 919 "switch (data->m_SpecialFolder)"
      std::uintptr_t dataptrAsInt = reinterpret_cast<std::uintptr_t>(data);
