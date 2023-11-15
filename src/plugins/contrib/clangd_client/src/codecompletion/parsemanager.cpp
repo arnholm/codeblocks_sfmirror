@@ -1625,6 +1625,9 @@ bool ParseManager::IsOkToUpdateClassBrowserView() //(ph 2023/10/21)
         }
     }
 
+    if (GetClassBrowser() and GetClassBrowser()->IsBusyClassBrowserBuilderThread())
+        return false; // say not ok to update //(ph 2023/11/15)
+
     return true;
 }
 // ----------------------------------------------------------------------------

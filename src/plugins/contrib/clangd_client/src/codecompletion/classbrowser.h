@@ -110,6 +110,14 @@ public:
     void ReselectItem();
 
     ParseManager* GetParseManager(){return m_ParseManager;}
+    bool IsBusyClassBrowserBuilderThread()
+        {
+            if (not m_ClassBrowserBuilderThread) return false;
+            if (m_ClassBrowserBuilderThread->IsBusy())
+                return true;
+            return false;
+        }
+
 
 private:
     /** handler for the mouse double click on a tree item, we usually make a jump to the

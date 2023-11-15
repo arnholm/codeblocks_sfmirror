@@ -493,22 +493,24 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         return;
     }
 
+    // Control is here because a null pJson indicates this function was called from the waiting queue.
     // When called from OnIdle(), process only one entry per idle time waiting in queue
     if (LSP_ParserDocumentSymbolsQueue.size())
     {
+        // Retrieve the the oldest entry from the queue
+        pJson = LSP_ParserDocumentSymbolsQueue.front();
+
         // Validate that parser and project are associated
         cbProject* pProject = m_ParsersProject;
         if (not pProject)
         {
             if (pJson)  Delete(pJson);  //don't leak the local allocated json
             LSP_ParserDocumentSymbolsQueue.pop_front(); //remove the current json queue pointer
+            return;
         }
 
         // record time this routine started
         size_t startMillis = m_pParseManager->GetNowMilliSeconds();
-
-        // Retrieve and the oldest entry from the queue
-        pJson = LSP_ParserDocumentSymbolsQueue.front();
 
         // Validate that this file belongs to this projects parser
         wxString idValue;
@@ -649,7 +651,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         if (pJson)
         {
             Delete(pJson);
-            pJson = nullptr;
+            //-pJson = nullptr; not needed when using big D Delete()
         }
 
         LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer

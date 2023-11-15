@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.94 23/11/8")
+#define VERSION wxT("1.2.95 23/11/11")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,11 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.95    2023/11/11
+//          Remove all idle time re-scheduling or callbacks to UpdateClassBrowserView()
+//          Add a check for ClassBrowserBuilderThread busy on any call to UpdateClassBrowser()
+//          The above is response to the dreaded ClassBrowserBuilderThread crash using an invalid pointer.
+//          Rearrange code to avoid json leaks in LSP_ParseDocumentSymbols() and LSP_ParseSemanticTokens()
 //1.2.94    2023/11/8 Do not reschedule callback for busy ClassBrowserBuilderThread until reason for crash is found.
 //1.2.93    2023/11/6 Appy Christo patch ticket 1430. Don't clobber custom make file entries in CompilerCommands.json
 //1.2.92    23/10/28

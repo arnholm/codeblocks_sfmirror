@@ -306,28 +306,30 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     if ( not m_ClassBrowserBuilderThread )
     {
         ThreadedBuildTree(pActiveProject);   // create tree UI
-        if (not m_ClassBrowserBuilderThread->IsPaused())
+        if ( m_ClassBrowserBuilderThread and (not m_ClassBrowserBuilderThread->IsPaused()))
                 return; //failure to lock TokenTree
     }
     else if (m_ClassBrowserBuilderThread->IsBusy())
     {
-       #if defined(RESCHEDULE_CLASSBROWSER_BUSY) // **Debugging** //(ph 2023/11/08)
-       // A rescheduled ThreadedBuildTree call is sometimes crashing the thread.
-       // Do not do a callback until the reason is found and fixed.
+        // Dont reschedule UpdateClassBrowserView() callback to see if it avoids
+        // ClassBrowserBuildeThread crash. //(ph 2023/11/15)
+            ////   #if defined(RESCHEDULE_CLASSBROWSER_BUSY) // **Debugging** //(ph 2023/11/08)
+            ////   // A rescheduled ThreadedBuildTree call is sometimes crashing the thread.
+            ////   // Do not do a callback until the reason is found and fixed.
+            ////
+            ////    // re-schedule this call on the Idle time Callback queue
+            ////    if (pActiveProject)
+            ////    {
+            ////        GetParseManager()->GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClassBrowser::UpdateClassBrowserView, checkHeaderSwap);
+            ////        #if defined(cbDEBUG) //debugging
+            ////        CCLogger::Get()->DebugLog("ClassBrowserBuildThread is busy; call rescheduled.");
+            ////        #endif
+            ////    }
+            ////    else
+            ////   #endif //RESCHEDULE_CLASSBROWSER_BUSY
 
-        // re-schedule this call on the Idle time Callback queue
-        if (pActiveProject)
-        {
-            GetParseManager()->GetIdleCallbackHandler(pActiveProject)->QueueCallback(this, &ClassBrowser::UpdateClassBrowserView, checkHeaderSwap);
-            #if defined(cbDEBUG) //debugging
-            CCLogger::Get()->DebugLog("ClassBrowserBuildThread is busy; call rescheduled.");
-            #endif
-        }
-        else
-       #endif //RESCHEDULE_CLASSBROWSER_BUSY
-            CCLogger::Get()->DebugLogError("ClassBrowserBuildThred is busy; did not reschedule.");
+        CCLogger::Get()->DebugLogError("ClassBrowserBuildThred is busy; did not reschedule.");
             //-cbAssertNonFatal(0 && "Did not reschedule busy UpdateClassBrowser call."); // **Debugging** //(ph 2023/11/08)
-
         return;
     }
     else
@@ -336,7 +338,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
         wxString msg = wxString::Format("ThreadedBuildTree Re-create/cleanup called(%s).", pActiveProject ? pActiveProject->GetTitle() : "NoProject");
         CCLogger::Get()->DebugLog(msg);
         #endif
-        ThreadedBuildTree(pActiveProject); // Re-create tree UI
+        ThreadedBuildTree(pActiveProject); // Re-create ClassBrowser tree UI
     }
 
 
@@ -1086,23 +1088,24 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
     // attempting to obtain the mutex, causing a deadly embrace.The paused worker thread can't free the mutex.
     if (m_ClassBrowserBuilderThread and m_ClassBrowserBuilderThread->IsBusy()) //(ph 2023/10/08)
     {
-        // re-schedule this call on the Idle time Callback queue //(ph 2023/10/20)
-        #if defined(cbDEBUG) //debugging
-        wxString projectTitle = activeProject ? activeProject->GetTitle() : "NullProjectPtr";
-        #endif
-        if (m_Parser and activeProject) // avoid crash
-        {
-            m_Parser->GetIdleCallbackHandler()->QueueCallback(this, &ClassBrowser::ThreadedBuildTree, activeProject);
-            #if defined(cbDEBUG) //debugging
-            CCLogger::Get()->DebugLog("ThreadedBuildTree() rescheduled callback for " + projectTitle);
-            #endif
-        }
-        else
-        {
-            #if defined(cbDEBUG) //debugging
-            CCLogger::Get()->DebugLogError("ThreadedBuildTree() unable to reschedule callback for." + projectTitle);
-            #endif
-        }
+        // Try avoiding the dreaded thread crash by NOT re-scheduling a callback. //(ph 2023/11/15)
+        ////        // re-schedule this call on the Idle time Callback queue //(ph 2023/10/20)
+        ////        #if defined(cbDEBUG) //debugging
+        ////        wxString projectTitle = activeProject ? activeProject->GetTitle() : "NullProjectPtr";
+        ////        #endif
+        ////        if (m_Parser and activeProject) // avoid crash
+        ////        {
+        ////            m_Parser->GetIdleCallbackHandler()->QueueCallback(this, &ClassBrowser::ThreadedBuildTree, activeProject);
+        ////            #if defined(cbDEBUG) //debugging
+        ////            CCLogger::Get()->DebugLog("ThreadedBuildTree() rescheduled callback for " + projectTitle);
+        ////            #endif
+        ////        }
+        ////        else
+        ////        {
+        ////            #if defined(cbDEBUG) //debugging
+        ////            CCLogger::Get()->DebugLogError("ThreadedBuildTree() unable to reschedule callback for." + projectTitle);
+        ////            #endif
+        ////        }
         return;
     }
     // create the thread if needed
