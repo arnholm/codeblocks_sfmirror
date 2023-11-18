@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.95 23/11/11")
+#define VERSION wxT("1.2.96 23/11/17")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.96    2023/11/17
+//          Do not update ClassBrowser symbols tree when debugger is running
+//          Removed rescheduled failed TokeTree lock in GetTokenTreeLock()
 //1.2.95    2023/11/11
 //          Remove all idle time re-scheduling or callbacks to UpdateClassBrowserView()
 //          Add a check for ClassBrowserBuilderThread busy on any call to UpdateClassBrowser()

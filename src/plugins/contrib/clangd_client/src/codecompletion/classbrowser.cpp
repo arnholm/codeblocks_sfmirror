@@ -244,6 +244,10 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
 {
     TRACE("ClassBrowser::UpdateClassBrowserView(), m_ActiveFilename = %s", m_ActiveFilename);
 
+    // Dont update symbols window when debugger is running
+    if (GetParseManager()->IsDebuggerRunning()) //(ph 2023/11/17)
+        return;
+
     // Only the Active project updates the classBrowser View
     // Don't update ClassBrowser UI if parsing is paused
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
@@ -834,8 +838,9 @@ void ClassBrowser::OnViewScope(wxCommandEvent& event)
         CCLogger::Get()->DebugLog("OnViewScope: No parser available.");
     }
 }
-
+// ----------------------------------------------------------------------------
 void ClassBrowser::OnDebugSmartSense(cb_unused wxCommandEvent& event)
+// ----------------------------------------------------------------------------
 {
     s_DebugSmartSense = !s_DebugSmartSense;
 }
@@ -868,18 +873,12 @@ bool ClassBrowser::GetTokenTreeLock(void (T::*method)(T1 x1), P1 event)
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
     auto locker_result = s_TokenTreeMutex.LockTimeout(250);
-    wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
     if (locker_result != wxMUTEX_NO_ERROR)
     {
-        // lock failed, do not block the UI thread, insead, do call back when idle
-        if (m_Parser->GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine)) //verify max tries
-            m_Parser->GetIdleCallbackHandler()->QueueCallback(this, method, event);
+        // Do not reschedule a failed token tree lock //(ph 2023/11/17)
+        // here. It makes no sense to return, then retry the lock for a caller
+        // that will nolonger be waiting for the lock.
         return false;
-    }
-    else /*lock succeeded*/
-    {
-        s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
-        m_Parser->GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
     }
     return true;
 }

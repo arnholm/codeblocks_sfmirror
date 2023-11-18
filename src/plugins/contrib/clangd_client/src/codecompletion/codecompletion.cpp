@@ -5620,6 +5620,8 @@ wxString ClgdCompletion::GetTargetsOutFilename(cbProject* pProject)
 void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
+    GetParseManager()->SetDebuggerIsRunning(true); //(ph 2023/11/17)
+
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     PluginManager* pPlugMgr = Manager::Get()->GetPluginManager();
     ProcessLanguageClient* pClient = GetLSPClient(pProject);
@@ -5662,6 +5664,8 @@ void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
 void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
+    GetParseManager()->SetDebuggerIsRunning(false); //(ph 2023/11/17)
+
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pProject) return;
     ProcessLanguageClient* pClient = GetLSPClient(pProject);

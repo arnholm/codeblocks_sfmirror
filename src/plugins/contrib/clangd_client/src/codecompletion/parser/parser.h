@@ -273,8 +273,6 @@ private:
     /** referring to the C::B cbp project currently parsing owned project files */
     cbProject*                m_ParsersProject;
 
-    bool m_DebuggerRunning = false;
-
 private:
 
     /** a timer to delay the operation of batch parsing, see OnBatchTimer() member function as a

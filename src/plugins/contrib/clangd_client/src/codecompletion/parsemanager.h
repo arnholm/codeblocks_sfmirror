@@ -376,6 +376,8 @@ public:
     ProcessLanguageClient* GetLSPclient(cbEditor* pEd);
     cbProject* GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& Filename);
 
+    bool IsDebuggerRunning() {return m_DebuggerIsRunning;} //(ph 2023/11/17)
+    void SetDebuggerIsRunning(bool torf) {m_DebuggerIsRunning = torf;}
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:
@@ -671,6 +673,8 @@ private:
     std::vector<ProjectFile*> ProxyProjectFiles;
 
     bool m_PluginIsShuttingDown = false;
+    bool m_DebuggerIsRunning = false;   //(ph 2023/11/17)
+
 };
 
 #endif // ParseManager_H

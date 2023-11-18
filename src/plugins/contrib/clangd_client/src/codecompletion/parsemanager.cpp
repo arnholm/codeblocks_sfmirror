@@ -1589,6 +1589,11 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
 void ParseManager::UpdateClassBrowser()
 // ----------------------------------------------------------------------------
 {
+    // Dont update symbols window when debugger is running
+    if (IsDebuggerRunning())    //(ph 2023/11/17)
+        return;
+
+
     if (not m_ClassBrowser)
           return;
 
@@ -1609,6 +1614,10 @@ void ParseManager::UpdateClassBrowser()
 bool ParseManager::IsOkToUpdateClassBrowserView() //(ph 2023/10/21)
 // ----------------------------------------------------------------------------
 {
+    // Dont update Sysmbols when debugger is running
+    if (IsDebuggerRunning()) //(ph 2023/11/17)
+        return false;
+
     // Don't update Symbol browser window if it's being used.
     // User may be working within the symbols browser window
 

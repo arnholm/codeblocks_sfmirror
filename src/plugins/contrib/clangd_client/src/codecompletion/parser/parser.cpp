@@ -203,7 +203,6 @@ void Parser::DisconnectEvents()
 void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    m_DebuggerRunning = true;
     if ( not m_BatchParseFiles.empty() )
     {
         cbProject* pProject = GetParsersProject(); //This parsers cbProject
@@ -215,7 +214,6 @@ void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
 void Parser::OnDebuggerFinished(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    m_DebuggerRunning = false;
     if ( not m_BatchParseFiles.empty() )
     {
         cbProject* pProject = GetParsersProject(); //This parsers cbProject
@@ -1155,7 +1153,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         return;
     }
     // If debugger is running, don't parse background files
-    if (m_DebuggerRunning)
+    if (GetParseManager()->IsDebuggerRunning()) //(ph 2023/11/17)
     {
         // Debugger is running and active, try later
 
