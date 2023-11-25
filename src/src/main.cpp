@@ -1863,13 +1863,36 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
 
     // We have to force an update here, because the m_LayoutManager.GetAllPanes()
     // would not report correct values if not updated here.
-    m_LayoutManager.LoadPerspective(layout, false);
 
-    // Fix translations on load (captions are saved in the config file)
-    wxAuiPaneInfoArray &panes = m_LayoutManager.GetAllPanes();
-    const size_t paneCount = panes.GetCount();
-    for (size_t i = 0; i < paneCount; ++i)
-        panes[i].caption = _(panes[i].caption);
+    // Check if translation is active
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/locale/enable"))
+    {
+        // Yes, translate the captions after loading
+        m_LayoutManager.LoadPerspective(layout, false);
+        // Fix translations on load (captions are saved in the config file)
+        wxAuiPaneInfoArray &panes = m_LayoutManager.GetAllPanes();
+        const size_t paneCount = panes.GetCount();
+        for (size_t i = 0; i < paneCount; ++i)
+            panes[i].caption = _(panes[i].caption);
+    }
+    else
+    {
+        // No, save the english captions and restore them afterwards so
+        // undesired translated captions are reset to english
+        std::map <wxString, wxString> englishCaptions;
+        const wxAuiPaneInfoArray &panes = m_LayoutManager.GetAllPanes();
+        const size_t paneCount = panes.GetCount();
+        for (size_t i = 0; i < paneCount; ++i)
+            englishCaptions[panes[i].name] = panes[i].caption;
+
+        m_LayoutManager.LoadPerspective(layout, false);
+        for (std::map <wxString, wxString>::iterator it = englishCaptions.begin(); it != englishCaptions.end(); ++it)
+        {
+            wxAuiPaneInfo& info = m_LayoutManager.GetPane(it->first);
+            if (info.IsOk())
+                info.caption = it->second;
+        }
+    }
 
     m_LayoutManager.Update();
 
