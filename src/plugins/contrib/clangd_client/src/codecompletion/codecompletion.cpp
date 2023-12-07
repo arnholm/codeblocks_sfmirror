@@ -1651,7 +1651,12 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
         ~UnlockTokenTree()
         {
             if (m_CCHasTreeLock)
+            {
+                // -----------------------------------------------
                 CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+                s_TokenTreeMutex_Owner = wxString();
+                // -----------------------------------------------
+            }
             //-m_CompletionTokens.clear(); //Say we're done with the completion list
             // ^^^ Don't clear the cache, user may ask for html documentation
         }
@@ -2143,7 +2148,10 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
 
     if ( (not tree) or tree->empty())
     {
+        // ----------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+        s_TokenTreeMutex_Owner = wxString();
+        // ----------------------------------------------
         cbMessageBox(_("No functions parsed in this file.\n(Empty symbols tree)."),
                      wxString::Format("%s",__FUNCTION__));
     }
@@ -2181,6 +2189,7 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
 
         // ----------------------------------------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+        s_TokenTreeMutex_Owner = wxString();
         // ----------------------------------------------------------------------------
 
         iterator.Sort();
@@ -2557,7 +2566,12 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     struct TokenTreeUnlock
     {   //CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
         TokenTreeUnlock(){}
-        ~TokenTreeUnlock(){ CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);}
+        ~TokenTreeUnlock() {
+                // ---------------------------------------------------
+                CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+                // ---------------------------------------------------
+                s_TokenTreeMutex_Owner = wxString();
+            }
     } tokenTreeUnlock;
 
 
@@ -2631,7 +2645,12 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
     struct TokenTreeUnlock
     {   //CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
         TokenTreeUnlock(){}
-        ~TokenTreeUnlock(){ CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);}
+        ~TokenTreeUnlock(){
+             // ------------------------------------------------
+             CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+             // ------------------------------------------------
+             s_TokenTreeMutex_Owner = wxString();
+             }
     } tokenTreeUnlock;
 
 
@@ -3109,7 +3128,10 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
 
             // Update the class browser
             if (GetParseManager()->GetParser().ClassBrowserOptions().displayFilter == bdfProject)
+            {
+                s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
                 GetParseManager()->UpdateClassBrowser();
+            }
 
             // ----------------------------------------------------------------------------
             // create LSP process for any editor of the active project that may have been missed during project loading
@@ -3202,7 +3224,10 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
             GetParseManager()->CreateParser(project); //Reads options and connects events to new parser
 
         if (GetParseManager()->GetParser().ClassBrowserOptions().displayFilter == bdfProject)
+        {
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
             GetParseManager()->UpdateClassBrowser();
+        }
     }
 
     // when debugging, the cwd may be the executable path, not project path
@@ -3378,7 +3403,8 @@ wxString ClgdCompletion::GetLineTextFromFile(const wxString& file, const int lin
     EditorManager* edMan = Manager::Get()->GetEditorManager();
 
     wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); Dont eat up IDs when not needed
+    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("GetLineTextFromFileEditor"), wxDefaultPosition, wxSize(0, 0));
     control->Show(false);
 
     wxString resultText;
@@ -4375,7 +4401,10 @@ void ClgdCompletion::OnEditorClosed(CodeBlocksEvent& event)
         m_AllFunctionsScopes[filename].parsed = false;
 
         if (GetParseManager()->GetParser().ClassBrowserOptions().displayFilter == bdfFile)
+        {
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
             GetParseManager()->UpdateClassBrowser();
+        }
     }
 
     event.Skip();
@@ -4478,7 +4507,10 @@ int ClgdCompletion::DoClassMethodDeclImpl()
         success = 0;
     }
 
+    // ---------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    // ---------------------------------------------------
+    s_TokenTreeMutex_Owner = wxString();
 
     return success;
 }
@@ -4534,7 +4566,10 @@ int ClgdCompletion::DoAllMethodsImpl()
         ~UnlockTokenTree()
         {
             if (m_CCHasTreeLock)
+            {
                 CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+                s_TokenTreeMutex_Owner = wxString();
+            }
         }
 
     } unlockTokenTree;
@@ -5027,7 +5062,10 @@ void ClgdCompletion::ParseFunctionsAndFillToolbar()
             }
         }
 
+        // ----------------------------------------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+        // ----------------------------------------------------------------------------
+        s_TokenTreeMutex_Owner = wxString();
 
         FunctionsScopeVec& functionsScopes = funcdata->m_FunctionsScope;
         NameSpaceVec& nameSpaces = funcdata->m_NameSpaces;
@@ -5387,6 +5425,7 @@ void ClgdCompletion::UpdateEditorSyntax(cbEditor* ed)
     // ---------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
     // ---------------------------------------------------
+    s_TokenTreeMutex_Owner = wxString();
 
     EditorColourSet* colour_set = Manager::Get()->GetEditorManager()->GetColourSet();
     if (!colour_set)

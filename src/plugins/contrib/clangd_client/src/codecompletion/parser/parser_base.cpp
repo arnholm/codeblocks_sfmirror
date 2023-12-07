@@ -249,6 +249,7 @@ ParserBase::~ParserBase()
     Delete(m_TempTokenTree);
 
     // CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //UNlock TokenTree
+    s_TokenTreeMutex_Owner = wxString();
 }
 // ----------------------------------------------------------------------------
 TokenTree* ParserBase::GetTokenTree() const
@@ -509,9 +510,13 @@ Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayNa
     if ( (not tree) or tree->empty())
     {
         if (not callerHasLock)
+        {
             // ---------------------------------------------
             CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex) //UNlock TokenTree
             // ---------------------------------------------
+            s_TokenTreeMutex_Owner = wxString();
+        }
+
        return nullptr;
     }
     else
@@ -541,9 +546,12 @@ Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayNa
         }//endfor
 
         if (not callerHasLock)
+        {
             // -------------------------------------------------
             CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //UNlock TokenTree
             // -------------------------------------------------
+            s_TokenTreeMutex_Owner = wxString();
+        }
 
     }//end else
 

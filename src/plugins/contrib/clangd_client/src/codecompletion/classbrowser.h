@@ -113,13 +113,26 @@ public:
     bool IsBusyClassBrowserBuilderThread()
         {
             if (not m_ClassBrowserBuilderThread) return false;
-            if (m_ClassBrowserBuilderThread->IsBusy())
+            if (m_ClassBrowserBuilderThread->GetIsBusy())
                 return true;
             return false;
         }
+    ClassBrowserBuilderThread* GetClassBrowserBuilderThread() { return m_ClassBrowserBuilderThread;}
 
+    bool GetIsStale()
+    {
+        if (m_ClassBrowserViewIsStale)
+            CCLogger::Get()->DebugLog("ClassBrowser Symbols are stale.");
+        return m_ClassBrowserViewIsStale;  //(ph 2023/11/25)
+    }
+    void SetIsStale(bool torf) {m_ClassBrowserViewIsStale = torf;} //(ph 2023/11/25)
+
+    bool IsSymbolsWindowFocused(){return m_SymbolsWindowHasFocus;} //(ph 2023/12/06)
 
 private:
+
+    void OnClassBrowserFocusChanged(wxFocusEvent& event); //(ph 2023/12/05)
+
     /** handler for the mouse double click on a tree item, we usually make a jump to the
      *  associated token's position.
      */
@@ -242,6 +255,9 @@ private:
     /** the search combobox in the header of the window */
     wxComboBox*                m_Search;
 
+    /** the choice box in the header of the window */
+     wxChoice*                 m_cmbView; //(ph 2023/12/05)
+
     /** a pointer to the associated parser object */
     ParserBase*                m_Parser;
 
@@ -267,6 +283,10 @@ private:
 
     /** Store last searched symbol */
     wxString                   m_LastSearchedSymbol;   //patch 1409
+
+    // If stale, Symbols tree view needs updating //(ph 2023/11/25)
+    bool m_ClassBrowserViewIsStale = true;  //(ph 2023/11/25)
+    bool m_SymbolsWindowHasFocus = false; //(ph 2023/12/05)
 
     DECLARE_EVENT_TABLE()
 };

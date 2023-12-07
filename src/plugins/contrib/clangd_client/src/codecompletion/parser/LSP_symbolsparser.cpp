@@ -635,6 +635,8 @@ bool LSP_SymbolsParser::Parse(json* pJson, cbProject* pProject)
 bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
+    // add semantic tokens from clangd to a local cache vector
+
     /// Do Not free pJson, it will be freed in CodeCompletion::LSP_Event()
     int startTime = 0;
     RECORD_TIME(startTime)
@@ -730,7 +732,7 @@ bool LSP_SymbolsParser::DoParseSemanticTokens(json* pJson, cbProject* pProject)
             wxString symbolName = lineText.Mid(columnNumber, textLength);
             symbolName.Trim(true).Trim(false);
 
-            // Create a SemanticTokenTuple  of store away.
+            // Create a SemanticTokenTuple to store away.
             //    typedef std::tuple<bool,int,bool,bool> LSP_EditorStatusTuple; //fileOpenInServer, editorPosn, editor is ready, editor is modified
             //    #define stLINENUM   0 //position of semantic token line number
             //    #define stCOLNUM    1 //position of semantic token col number

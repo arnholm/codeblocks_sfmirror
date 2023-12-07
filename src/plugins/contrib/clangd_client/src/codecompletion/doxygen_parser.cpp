@@ -999,6 +999,7 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
         /// Unlock the token tree
         // -------------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //UNlock TokenTree
+        s_TokenTreeMutex_Owner = wxString();
     }
 
     if ( (wxFound(ccTokenIdx) and pTokenTree))
@@ -1044,8 +1045,10 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
     Token* token = tree->at(tokenIdx);
     if (!token || token->m_Name.IsEmpty())
     {
+        // ----------------------------------------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //UNlock TokenTree
-
+        // ----------------------------------------------------------------------------
+        s_TokenTreeMutex_Owner = wxString();
         return wxString();
     }
 
@@ -1174,6 +1177,7 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
     }
 
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    s_TokenTreeMutex_Owner = wxString();
 
     html += br + br;
 
@@ -1236,6 +1240,7 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
     }
 
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //UNlock Token tree
+    s_TokenTreeMutex_Owner = wxString();
 
     html += _T("<br>");
 

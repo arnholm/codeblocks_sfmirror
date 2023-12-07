@@ -13,6 +13,7 @@
 #include <wx/utils.h>
 #include <wx/file.h>
 #include <wx/msgdlg.h>
+#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
 
 #include "globals.h"
 #include "logmanager.h"
@@ -2160,7 +2161,9 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
     size.x = 0; //std::max(size.x, -1);
     size.y = 0; //std::max(size.y, -1);
 
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), wxNewId(), wxDefaultPosition, size);
+    //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), wxNewId(), wxDefaultPosition, size);
+    // In wx323 the above gets assert id out of range //(ph 2023/12/04)
+    cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("LSP_Tokenizer::CreateEditor()"), wxDefaultPosition, size);
     control->UsePopUp(false);
 
     ConfigManager *config = Manager::Get()->GetConfigManager(_T("editor"));

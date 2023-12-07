@@ -130,7 +130,7 @@ namespace
     const char STX = '\u0002';  //start of text
 
     // a counter to indicate when to update the GUI Symbols tree
-    int prevDocumentSymbolsFilesProcessed = 0;
+    /* int prevDocumentSymbolsFilesProcessed = 0; */
 
     std::deque<json*> LSP_ParserDocumentSymbolsQueue; // cf: OnLSP_ParseDocumentSysmbols()
     std::deque<json*> LSP_ParserSemanticTokensQueue;  // cf: LSP_ParseSemanticTokens()
@@ -139,6 +139,8 @@ namespace
     __attribute__((used))
     bool wxFound(int result){return result != wxNOT_FOUND;};
     bool wxFound(size_t result){return result != wxString::npos;}
+
+    bool isBusyParsing = false; //(ph 2023/12/02)
 }
 // ----------------------------------------------------------------------------
 Parser::Parser(ParseManager* parent, cbProject* project) :
@@ -290,8 +292,8 @@ bool Parser::Done()
     if ( (not pEditor) and pClient and pActiveProject )
     {
         // reply done(true) if number of files parsed >=4 or no more files to process
-        if ( (prevDocumentSymbolsFilesProcessed >= 4)
-            or (GetFilesRemainingToParse() == 0) )
+        if ( /* (prevDocumentSymbolsFilesProcessed >= 4)
+            or */ (GetFilesRemainingToParse() == 0) )
             done = true;
 
         if (not done)
@@ -470,6 +472,9 @@ void Parser::LSP_OnClientInitialized(cbProject* pProject)
 
 }
 // ----------------------------------------------------------------------------
+bool  Parser::IsBusyParsing(){return isBusyParsing;} //(ph 2023/12/02)
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
@@ -479,7 +484,8 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
     json*  pJson = (json*)event.GetClientData(); //<== original json*
 
     // ----------------------------------------------------------------------------
-    // queue a copy of input json data. then queue a callback for OnIdle() which will have a nullptr for json ptr
+    // queue a copy of input json data. then queue a callback for OnIdle() which will call back here with
+    // a nullptr for json ptr to indicate that this is a callback from the idle time queue.
     // ----------------------------------------------------------------------------
     if (pJson)
     {
@@ -491,9 +497,17 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         return;
     }
 
-    // Control is here because a null pJson indicates this function was called from the waiting queue.
-    // When called from OnIdle(), process only one entry per idle time waiting in queue
-    if (LSP_ParserDocumentSymbolsQueue.size())
+    struct IsBusyParsing_t //(ph 2023/12/02)
+    {
+        IsBusyParsing_t(){isBusyParsing = true;}
+        ~IsBusyParsing_t(){isBusyParsing = false;}
+    } isBusyLSP_ParseDocumentSymbols;
+
+    // Control is here because a null pJson indicates this function was called from the OnIdle() waiting queue.
+    // When called from OnIdle(), process all entries waiting in the clangd response queue.
+    // If we cannot update the classBrowser Symbols window is enabled but busy, we'll just re-queue this callback until
+    // Class Browser is nolonger busy.
+    while (LSP_ParserDocumentSymbolsQueue.size())
     {
         // Retrieve the the oldest entry from the queue
         pJson = LSP_ParserDocumentSymbolsQueue.front();
@@ -504,7 +518,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         {
             if (pJson)  Delete(pJson);  //don't leak the local allocated json
             LSP_ParserDocumentSymbolsQueue.pop_front(); //remove the current json queue pointer
-            return;
+            continue; //try next entry //(ph 2023/11/28)
         }
 
         // record time this routine started
@@ -519,7 +533,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
             CCLogger::Get()->DebugLogError(errMsg);
             if (pJson)  Delete(pJson);  //don't leak the local allocated json
             LSP_ParserDocumentSymbolsQueue.pop_front(); //remove the current json queue pointer
-            return;
+            continue; //(ph 2023/11/28)
         }
         // Get filename from between the STX chars
         wxString URI = idValue.AfterFirst(STX);
@@ -534,17 +548,38 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         {
             LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer
             if (pJson) Delete(pJson);
+            continue; //try next entry
+        }
+
+        //(ph 2023/11/28)
+        // If classBrowser Symbols UI is busy, we can't add this json data to the TokenTree
+        // because classBrowser UI tree will then contain invalid pointers. So we requeue for a callback.
+        if (GetParseManager()->IsClassBrowserEnabled()
+            and (GetParseManager()->IsOkToUpdateClassBrowserView()) ) //(ph 2023/12/06)
+        {
+            // ClassBrowser is enabled but Symbols tab is being used (has focus).
+            // Changing the tokens tree during it's use will cause a crash in the
+            // Symbols tab update process.
+            // Re-Queue this call to the the idle time callback queue.
+            wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+            GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine); //(ph 2023/12/06)
+            if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine)) //verify max retries
+                GetIdleCallbackHandler()->QueueCallback(this, &Parser::LSP_ParseDocumentSymbols, event);
+            // **Debugging**
+            //-wxString msg = wxString::Format(_("QUEUED for callback[%d]:%s"), GetIdleCallbackHandler()->GetQCallbackCount(lockFuncLine),filename);
+            //-CCLogger::Get()->DebugLog(msg);
             return;
         }
 
         // --------------------------------------------------
-        // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+        /// CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
         // --------------------------------------------------
         // Avoid blocking the UI. If lock is busy, queue a callback for idle time.
         auto locker_result = s_TokenTreeMutex.LockTimeout(250);
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
         if (locker_result != wxMUTEX_NO_ERROR)
         {
+            /// lock failed
             // **Debugging**
             //wxString locker_result_reason;
             //if (locker_result == wxMUTEX_DEAD_LOCK)
@@ -568,13 +603,17 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
             return;
         }
         else
-        { //now have the lock
+        { ///now have the lock
             s_TokenTreeMutex_Owner = wxString::Format("%s %d", __FUNCTION__, __LINE__); /*record owner*/
             GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
 
             if (PauseParsingCount(__FUNCTION__))
                 PauseParsingForReason(__FUNCTION__, false);
         }
+
+        // Say class browser symbols view is now stale because the
+        // token tree is about to be updated.
+        GetParseManager()->GetClassBrowser()->SetIsStale(true);
 
         ///
         /// No 'return' statements beyond here until TokenTree Unlock !!!
@@ -645,6 +684,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         // ----------------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
         // ----------------------------------------------------
+        s_TokenTreeMutex_Owner = wxString();
 
         if (pJson)
         {
@@ -652,26 +692,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
             //-pJson = nullptr; not needed when using big D Delete()
         }
 
-        LSP_ParserDocumentSymbolsQueue.pop_front(); //delete the current json queue pointer
-
-        // Update ClassBrowser Symbols tab and CC toolBar when appropriate
-        if ( GetParseManager()->IsOkToUpdateClassBrowserView() and //(ph 2023/10/21)
-                ( (++prevDocumentSymbolsFilesProcessed >= 4) or (pClient->LSP_GetServerFilesParsingCount() == 0)) )
-        {
-            //update after x file parsed or when last file was parsed by LSP server
-            m_pParseManager->UpdateClassBrowser();
-            prevDocumentSymbolsFilesProcessed = 0;
-
-            //Refresh the CC toolbar internal data if this file is the active editors file
-            //   ie, if the user is currently looking at this file.
-            cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-            if (pEditor and (pEditor->GetFilename() == filename) )
-            {
-                wxCommandEvent toolBarTimerEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idToolbarTimer"));
-                //-wxCommandEvent toolBarTimerEvt(wxEVT_TIMER, XRCID("idToolbarTimer"));
-                AddPendingEvent(toolBarTimerEvt);
-            }
-        }
+        LSP_ParserDocumentSymbolsQueue.pop_front(); //De-queue the current json queue pointer
 
         // Time to insert textDocument/documentSymbols
         size_t durationMillis = m_pParseManager->GetDurationMilliSeconds(startMillis);
@@ -687,12 +708,33 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         {
             pClient->SetLSP_EditorHasSymbols(pEditor, true);
             // Ask for SemanticTokens usable by CodeCompletion since there are no local variables
-            // in the document/sysmbols response. (only if Document popup is option is checked)
+            // in the document/sysmbols response. (only if "Settings/Editor/Documentation popup" option is checked)
             if (pEditor and (pEditor == pEdMgr->GetActiveEditor()) )
                 RequestSemanticTokens(pEditor);
         }//endif pEditor
 
-    }//while entries in queue
+    }//endWhile entries in queue
+
+    // ----------------------------------------------------------------
+    // Update ClassBrowser Symbols tab and CC toolBar when appropriate
+    // ----------------------------------------------------------------
+    ProcessLanguageClient* pClient = GetLSPClient();
+    if ( (pClient and GetParseManager()->IsOkToUpdateClassBrowserView())  //(ph 2023/11/27)
+            or (pClient->LSP_GetServerFilesParsingCount() == 0)
+        )
+    {
+////        s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__); //(ph 2023/12/05)
+////        m_pParseManager->UpdateClassBrowser();
+
+        //Refresh the CC toolbar internal data if this file is the active editors file
+        //   ie, if the user is currently looking at this file.
+        cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+        if (pEditor)
+        {
+            wxCommandEvent toolBarTimerEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idToolbarTimer"));
+            AddPendingEvent(toolBarTimerEvt);
+        }
+    }
 
     return;
 }
@@ -827,7 +869,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         }
 
         // --------------------------------------------------
-        // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+        /// CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
         // --------------------------------------------------
         // Avoid blocking the UI. If lock is busy, queue a callback for idle time.
         auto locker_result = s_TokenTreeMutex.LockTimeout(250);
@@ -874,8 +916,10 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         UnlockTokenTree_t(){;}
         ~UnlockTokenTree_t()
         {   CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex);
+            s_TokenTreeMutex_Owner = wxString();
+
             LSP_ParserSemanticTokensQueue.pop_front(); //remove the current json queue pointer
-            if (pJsonST) Delete(pJsonST);
+            if (pJsonST) Delete(pJsonST);   // avoid any leak of the json ptr
         }
     } unlockTokenTree;
 
@@ -1016,6 +1060,7 @@ void Parser::RemoveFile(const wxString& filename)
     m_TokenTree->EraseFilesToBeReparsedByIndex(fileIdx);
 
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    s_TokenTreeMutex_Owner = wxString();
 
     //-return result;
     return;
@@ -1073,7 +1118,8 @@ cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)
     {
         EditorManager* edMan = Manager::Get()->GetEditorManager();
         wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-        control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+        //control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); dont eat up IDs //(ph 2023/12/07)
+        control = new cbStyledTextCtrl(parent, XRCID("Parser::GetNewHiddenEditor"), wxDefaultPosition, wxSize(0, 0));
         control->Show(false);
 
         // check if the file is already opened in built-in editor
@@ -1162,6 +1208,14 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         //wxString msg = "Batch background parsing paused because debugger is running";
         //pLogMgr->DebugLog(msg);
 
+        m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY_LONG<<1, wxTIMER_ONE_SHOT);
+        return;
+    }
+
+    // If this parser response queue is > 1, it's getting backed up.
+    // pause parsing until the queue is back to 1 or less. //(ph 2023/11/28)
+    if (LSP_ParserDocumentSymbolsQueue.size() > 1)
+    {
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY_LONG<<1, wxTIMER_ONE_SHOT);
         return;
     }
@@ -2038,7 +2092,8 @@ wxString Parser::GetLineTextFromFile(const wxString& file, const int lineNum)
     EditorManager* edMan = Manager::Get()->GetEditorManager();
 
     wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); dont eat up dynamic IDs //(ph 2023/12/07)
+    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("Parser::GetLineTextFromFile"), wxDefaultPosition, wxSize(0, 0));
     control->Show(false);
 
     wxString resultText;

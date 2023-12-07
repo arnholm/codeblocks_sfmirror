@@ -204,10 +204,11 @@ public:
      */
     void SetNextJob(EThreadJob job, CCTreeItem *item = nullptr) {m_nextJob = job; m_targetItem = item;}
 
-    /** Check if the thread is busy
-     * @return @a true if busy
+    /** Increment or decrement the thread busy count
+     * @return @a busy count
      */
-    bool IsBusy() const {return m_Busy;}
+    int SetIsBusy(bool torf);
+    int GetIsBusy(); //just return the count
 
 protected:
      void* Entry() override;
@@ -326,7 +327,7 @@ private:
 
     ExpandedItemVect m_ExpandedVect;
     bool             m_InitDone;
-    bool             m_Busy;
+    //-bool             m_Busy; moved to anonymous namespace //(ph 2023/12/02)
 
     /** if this variable is true, the Entry() function should return */
     bool             m_TerminationRequested;

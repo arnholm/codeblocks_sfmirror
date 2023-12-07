@@ -38,7 +38,7 @@ extern long           g_idCCDebugErrorLogger;
 extern wxString       s_TokenTreeMutex_Owner;     // location of the last tree lock
 extern wxString       s_ParserMutex_Owner;        // location of the last parser lock
 extern wxString       m_ClassBrowserBuilderThreadMutex_Owner;
-
+extern wxString       s_ClassBrowserCaller;
 class CCLogger
 {
 public:
@@ -269,7 +269,15 @@ private:
                 M##_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); \
         } while (false);
 
-    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) M.Unlock();
+//    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) M.Unlock();
+    //(ph 2023/12/02) cleared Owner
+  #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) \
+        do {                        \
+            M.Unlock();             \
+            M##_Owner = wxString(); \
+        } while(false);
+
+
     #define CC_LOCKER_TRACK_CBBT_MTX_LOCK    CC_LOCKER_TRACK_TT_MTX_LOCK
     #define CC_LOCKER_TRACK_CBBT_MTX_UNLOCK  CC_LOCKER_TRACK_TT_MTX_UNLOCK
     #define CC_LOCKER_TRACK_P_MTX_LOCK       CC_LOCKER_TRACK_TT_MTX_LOCK

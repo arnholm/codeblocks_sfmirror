@@ -10,6 +10,9 @@
 #include <deque>
 #include "wx/event.h"
 #include "wx/window.h"
+#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
+
+
 #include "logmanager.h"
 
 #ifdef HAVE_OVERRIDE
@@ -25,7 +28,8 @@ class AsyncMethodCallEvent : public wxEvent
 {
 public:
     AsyncMethodCallEvent(wxObject* object)
-        : wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL)
+        //: wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL) //(ph 2023/12/07)
+        : wxEvent(XRCID("AsyncMethodCallEvent"), wxEVT_ASYNC_METHOD_CALL)
     {
         SetEventObject(object);
     }
@@ -382,7 +386,13 @@ class IdleCallbackHandler: public wxEvtHandler
     //Eg., IncrQCallbackOk(wxString::Format("%s_%d", __FUNCTION__, __LINE__);
     bool IncrQCallbackOk(wxString funcLine)
     {
-        m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine]++;
+        return true; /// FIXME (ph#)://(ph 2023/12/06)
+        //-m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 1 ; //(ph 2023/12/06)
+        m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 0; //(ph 2023/12/06)
+        // FIXME (ph#): This was a programming error that got built upon.
+        // The line used to read "m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine]++;"
+        // which never actually iincrement the count. Changing ++ to "+ 1;" works but
+        // changing it now causes multiple errors. It's currently useless.
         if (m_QCallbackPosn[funcLine] > 8 )
         {
             wxString msg = wxString::Format("%s Callback Failure, count exceeded.", funcLine);
@@ -395,7 +405,10 @@ class IdleCallbackHandler: public wxEvtHandler
     }
     int ClearQCallbackPosn(wxString funcLine)
     {
-        return m_QCallbackPosn[funcLine] = 0;
+        auto it = m_QCallbackPosn.find(funcLine);
+        if (it != m_QCallbackPosn.end())
+            m_QCallbackPosn.erase(it);
+        return true;
     }
     int GetQCallbackCount(wxString funcLine)
     {

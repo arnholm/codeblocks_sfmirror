@@ -50,7 +50,6 @@ LSPDiagnosticsResultsLog::LSPDiagnosticsResultsLog(const wxArrayString& titles_i
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
 
-
 }
 // ----------------------------------------------------------------------------
 wxEvtHandler* LSPDiagnosticsResultsLog::FindEventHandler(wxEvtHandler* pEvtHdlr)

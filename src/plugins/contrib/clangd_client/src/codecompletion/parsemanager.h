@@ -206,6 +206,9 @@ public:
     /** when user changes the CC option, we should re-read the option */
     void RereadParserOptions();
 
+    /** Is Settings/Editor/Clangd_client/Symbols browser/ enabled/disabled */
+    bool IsClassBrowserEnabled();       //(ph 2023/11/29)
+
     /** re-parse the active Parser (the project associated with m_Parser member variable) */
     void ReparseCurrentEditor();
 
@@ -280,7 +283,7 @@ public:
     void UpdateClassBrowser();
 
     /** check if ok to update the ClassBrower Symbols window */
-    bool IsOkToUpdateClassBrowserView(); //(ph 2023/10/21)
+    bool IsOkToUpdateClassBrowserView(bool force=false); //(ph 2023/10/21)
 
     // save current options and BrowserOptions
     void ParserOptionsSave(Parser* pParser);
@@ -291,6 +294,8 @@ public:
     wxString m_RenameSymbolToChange;
     void SetRenameSymbolToChange(wxString sysmbolToChange){m_RenameSymbolToChange = sysmbolToChange;}
     wxString GetRenameSymbolToChange(){return m_RenameSymbolToChange;}
+
+    void RefreshSymbolsTab(); //(ph 2023/11/30)
 
     // ----------------------------------------------------------------------------
     wxEvtHandler* FindEventHandler(wxEvtHandler* pEvtHdlr)

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.96 23/11/17")
+#define VERSION wxT("1.2.98 23/12/7")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,18 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.98    2023/12/6-7
+//          Fix crash in classBrower updating from stale token tree pointers.
+//          Fix assertion caused by eating up all the event ids.(LSP_tokenizer.cpp:2165)
+//          Add functions to check EVT_SET/KILL_FOCUS in Symbols tab controls.
+//          Reverse logic of IsOkToUpdateClassBrowser() and Parser::LSP_ParseDocumentSymbols()
+//              to give the focused Smbols tab priority over stowing symbols into the token tree.
+//          Try to fix out-of-range wIDs assert by switching wxID_ANY to XRCID("<someUniqueText>") for temporary controls.
+//          Add ability to catch Symbols tab stale data and ClassBrowser busy update conditions.
+//1.2.97    2023/11/30
+//          Fix crash caused by not updating the ClassBrowser when the has the mouse
+//              inside the Symbols tab.
+//          Fix Symbols tab not displaying data after unchecking "Disable Symbols browser".
 //1.2.96    2023/11/17
 //          Do not update ClassBrowser symbols tree when debugger is running
 //          Removed rescheduled failed TokeTree lock in GetTokenTreeLock()

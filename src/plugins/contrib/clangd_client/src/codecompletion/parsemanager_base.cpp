@@ -692,6 +692,7 @@ void ParseManagerBase::RemoveLastFunctionChildren(TokenTree* tree,
     // -----------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)     //TokenTree UnLock
     // -----------------------------------------------
+    s_TokenTreeMutex_Owner = wxString();
 }
 
 // Breaks up the phrase for code-completion.

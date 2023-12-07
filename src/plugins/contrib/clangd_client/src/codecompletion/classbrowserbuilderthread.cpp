@@ -33,6 +33,7 @@
 
 // sanity check for the build tree functions, this function should only be called in a worker thread
 // also, there should be no termination requested, otherwise, it will return false
+// This macro return FALSE when this is not the main thread and not terminationRequestd or not shutting down
 #define CBBT_SANITY_CHECK ((!::wxIsMainThread() && m_TerminationRequested) || Manager::IsAppShuttingDown())
 
 #define CC_BUILDERTHREAD_DEBUG_OUTPUT 0
@@ -68,6 +69,38 @@
 
 wxMutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member
 // ----------------------------------------------------------------------------
+namespace
+// ----------------------------------------------------------------------------
+{
+    int m_Busy = 0;
+}
+
+// ----------------------------------------------------------------------------
+int ClassBrowserBuilderThread::SetIsBusy(bool torf)
+// ----------------------------------------------------------------------------
+{
+    torf ? ++m_Busy : --m_Busy;
+    if (m_Busy < 0)
+    {
+        asm("nop"); /**Debugging**/
+        cbAssertNonFatal(0 && "ClassBrowserBuilderThread SetIsBusy went negative.")
+        m_Busy = 0;
+    }
+    return m_Busy;
+}
+int ClassBrowserBuilderThread::GetIsBusy()
+{
+    if (m_Busy < 0)
+    {
+        asm("nop"); /**Debugging**/
+        cbAssertNonFatal(0 && "ClassBrowserBuilderThread::GetIsBusy() is negative.")
+        m_Busy = 0;
+    }
+    return m_Busy;
+}
+
+
+// ----------------------------------------------------------------------------
 ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem) :
 // ----------------------------------------------------------------------------
     wxThread(wxTHREAD_JOINABLE),
@@ -81,7 +114,7 @@ ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, w
     m_BrowserOptions(),
     m_TokenTree(nullptr),
     m_InitDone(false),
-    m_Busy(false),
+    //-m_Busy(false), Move to anonymouse namespace //(ph 2023/12/02)
     m_TerminationRequested(false),
     m_idThreadEvent(wxID_NONE),
     m_topCrc32(CRC32_CCITT),
@@ -112,7 +145,6 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     // Init() also called for every update of the symbol browser window
     // from the UI thread, including every editor and project (re)activation.
 
-    m_Busy = true;
     bool success = false;
     // --------------------------------------------------------------
     // CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex); //LOCK ClassBrowser
@@ -121,15 +153,25 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         auto lock_result = m_ClassBrowserBuilderThreadMutex.LockTimeout(250);
         if (lock_result != wxMUTEX_NO_ERROR)
         {
-            return success = m_Busy = false;
+            return (success = false);
         }
     }// end Codeblock
+    //SetIsBusy(true);
+    m_Busy = 1;
     m_ClassBrowserBuilderThreadMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
+    // ----------------------------------------------------------------------------
     // This structs dtor unlocks the ClassBrowserBuilderThreadMutex after any return statement in this function
+    //CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
+    // ----------------------------------------------------------------------------
     struct ClassBrowserBuilderThreadMutexUnlock
     {
         ClassBrowserBuilderThreadMutexUnlock(){}
-        ~ClassBrowserBuilderThreadMutexUnlock(){ CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex);}
+        ~ClassBrowserBuilderThreadMutexUnlock()
+            {
+                CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex); //unlock
+                m_ClassBrowserBuilderThreadMutex_Owner = wxString();
+                --m_Busy;
+            }
     } classBrowserBuilderThreadMutexUnlock;
 
     m_ParseManager     = pParseManager;
@@ -181,8 +223,8 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         auto lock_result = s_TokenTreeMutex.LockTimeout(250);
         if (lock_result != wxMUTEX_NO_ERROR)
         {
-            //Unlock m_ClassBrowserBuilderThreadMutex done by struct above!!
-            return success = m_Busy = false;
+            //Unlock m_ClassBrowserBuilderThreadMutex done by at beginning of function!!
+            return (success = false);
         }
         s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
 
@@ -197,6 +239,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         // ----------------------------------------------
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex) //UNLOCK TokenTree
         // ----------------------------------------------
+        s_TokenTreeMutex_Owner = wxString();
     }
     else if ( m_BrowserOptions.displayFilter == bdfProject
              && m_UserData )
@@ -207,7 +250,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         auto lock_result = s_TokenTreeMutex.LockTimeout(250);
         if (lock_result != wxMUTEX_NO_ERROR)
         {
-            return success = m_Busy = false;
+            return (success = false);
         }
         s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
 
@@ -241,7 +284,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         auto lock_result = s_TokenTreeMutex.LockTimeout(250);
         if (lock_result != wxMUTEX_NO_ERROR)
         {
-            return success = m_Busy = false;
+            return (success = false);
         }
         s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
 
@@ -275,8 +318,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     //CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)   //deprecated
     // Unlocked by dtor of above struct ClassBrowserBuilderThreadMutexUnlock
     // ----------------------------------------------------------------
-    m_Busy = false;
-    return success = true; //make success true and return it
+    return (success = true); //make success true and return it
 }
 
 // ----------------------------------------------------------------------------
@@ -284,7 +326,7 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
 void* ClassBrowserBuilderThread::Entry()
 // ----------------------------------------------------------------------------
 {
-    while (!m_TerminationRequested && !Manager::IsAppShuttingDown())
+    while (not m_TerminationRequested && !Manager::IsAppShuttingDown())
     {
         // waits here, until the ClassBrowser unlocks
         // we put a semaphore wait function in the while loop, so the first time if
@@ -297,26 +339,32 @@ void* ClassBrowserBuilderThread::Entry()
         if (m_TerminationRequested || Manager::IsAppShuttingDown() )
             break;
 
-        m_Busy = true;
 
         // The thread can do many jobs:
         switch (m_nextJob)
-          {
+        {
           case JobBuildTree:  // build internal trees and transfer to GUI ones
+              SetIsBusy(true);
               BuildTree();
+              if (not m_BrowserOptions.treeMembers)
+                SetIsBusy(false);
               break;
           case JobSelectTree: // fill the bottom tree with data relative to the selected item
+              if (not GetIsBusy())
+                SetIsBusy(true);
               SelectGUIItem();
               FillGUITree(false);
+              SetIsBusy(false);
               break;
           case JobExpandItem: // add child items on the fly
+              SetIsBusy(true);
               ExpandGUIItem();
+              SetIsBusy(false);
               break;
           default:
               ;
-          }
+        }//endSwitch
 
-        m_Busy = false;
         if (TestDestroy())
             break;
     }
@@ -328,7 +376,9 @@ void* ClassBrowserBuilderThread::Entry()
     return nullptr;
 }
 
+// ----------------------------------------------------------------------------
 void ClassBrowserBuilderThread::ExpandGUIItem()
+// ----------------------------------------------------------------------------
 {
     if (m_targetItem)
     {
@@ -338,7 +388,9 @@ void ClassBrowserBuilderThread::ExpandGUIItem()
     }
 }
 
+// ----------------------------------------------------------------------------
 void ClassBrowserBuilderThread::ExpandItem(CCTreeItem* item)
+// ----------------------------------------------------------------------------
 {
     bool locked = false;
     if (m_InitDone)
@@ -450,13 +502,19 @@ void ClassBrowserBuilderThread::SelectGUIItem()
     if (!m_targetItem)
         return;
 
-
+    // ----------------------------------------------------------------------------
     CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex) //(ph 2023/09/24)
+    // ----------------------------------------------------------------------------
     // struct dtor unlocks the ClassBrowserBuilderThreadMutex after any return following this struct
     struct ClassBrowserBuilderThreadMutexUnlock
     {
         ClassBrowserBuilderThreadMutexUnlock() { }
-        ~ClassBrowserBuilderThreadMutexUnlock(){ CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex);}
+        ~ClassBrowserBuilderThreadMutexUnlock()
+        {
+            // ----------------------------------------------------------------------------
+            CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex);
+            // ----------------------------------------------------------------------------
+        }
     } classBrowserBuilderThreadMutexUnlock;
 
 
@@ -518,6 +576,7 @@ void ClassBrowserBuilderThread::BuildTree()
 
     // 4.) Remove any nodes no longer valid (due to update)
     RemoveInvalidNodes(m_CCTreeTop, root);
+
 #ifdef CC_BUILDTREE_MEASURING
     CCLogger::Get()->DebugLog(wxString::Format("Removing invalid nodes (top tree) took : %ld ms", sw.Time()));
     sw.Start();
@@ -538,6 +597,7 @@ void ClassBrowserBuilderThread::BuildTree()
         m_Parent->CallAfter(&ClassBrowser::BuildTreeStartOrStop, false);
         return;
     }
+
 #ifdef CC_BUILDTREE_MEASURING
     CCLogger::Get()->DebugLog(wxString::Format("TestDestroy() took : %ld ms", sw.Time()));
     sw.Start();
@@ -545,6 +605,7 @@ void ClassBrowserBuilderThread::BuildTree()
 
     // 6.) Expand item
     ExpandItem(root);
+
 #ifdef CC_BUILDTREE_MEASURING
     CCLogger::Get()->DebugLog(wxString::Format("Expanding root item took : %ld ms", sw.Time()));
     sw.Start();
@@ -552,6 +613,7 @@ void ClassBrowserBuilderThread::BuildTree()
 
     // 7.) Expand the items saved before
     ExpandSavedItems(m_CCTreeTop, root, 0);
+
 #ifdef CC_BUILDTREE_MEASURING
     CCLogger::Get()->DebugLog(wxString::Format("Expanding saved items took : %ld ms", sw.Time()));
     sw.Start();
@@ -566,9 +628,11 @@ void ClassBrowserBuilderThread::BuildTree()
     sw.Start();
 #endif
 
-    m_Parent->CallAfter(&ClassBrowser::BuildTreeStartOrStop, false);
 
-    if (CBBT_SANITY_CHECK)
+    //m_Parent->CallAfter(&ClassBrowser::BuildTreeStartOrStop, false);
+    // ^^^ moved below to include FillGuiTree() call //(ph 2023/12/04)
+
+    if (CBBT_SANITY_CHECK) //Return if shutting down or termination requested
         return;
 
     // 9.) Fill top GUI tree, the bottom GUI tree will be filled later when making a selection
@@ -580,6 +644,8 @@ void ClassBrowserBuilderThread::BuildTree()
     // posting the semaphore from ClassBrowser.
 
     m_InitDone = true;
+    if (not m_BrowserOptions.treeMembers) //if no bottom tree, say it's done
+        m_Parent->CallAfter(&ClassBrowser::BuildTreeStartOrStop, false); //(ph 2023/12/04)
 }
 // ----------------------------------------------------------------------------
 void ClassBrowserBuilderThread::RemoveInvalidNodes(CCTree* tree, CCTreeItem* parent)
@@ -607,11 +673,15 @@ void ClassBrowserBuilderThread::RemoveInvalidNodes(CCTree* tree, CCTreeItem* par
         {
             const Token* token = nullptr;
             {
+                // ------------------------------------------------
                 CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+                // ------------------------------------------------
 
                 token = m_TokenTree->at(data->m_TokenIndex);
 
+                // ------------------------------------------------
                 CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+                // ------------------------------------------------
             }
             if (    token != data->m_Token
                 || (data->m_Ticket && data->m_Ticket != data->m_Token->GetTicket())
@@ -792,7 +862,9 @@ bool ClassBrowserBuilderThread::AddChildrenOf(CCTree* tree,
     bool parentTokenError = false;
     const TokenIdxSet* tokens = nullptr;
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+    // ------------------------------------------------
 
     if (parentTokenIdx == -1)
     {
@@ -814,7 +886,9 @@ bool ClassBrowserBuilderThread::AddChildrenOf(CCTree* tree,
             tokens = &parentToken->m_Children;
     }
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    // ------------------------------------------------
 
     if (parentTokenError)
         return false;
@@ -831,14 +905,17 @@ bool ClassBrowserBuilderThread::AddAncestorsOf(CCTree* tree, CCTreeItem* parent,
     if (CBBT_SANITY_CHECK)
         return false;
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+    // ------------------------------------------------
 
     Token* token = m_TokenTree->at(tokenIdx);
     if (token)
         m_TokenTree->RecalcInheritanceChain(token);
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
-
+    // ------------------------------------------------
     if (!token)
         return false;
 
@@ -853,13 +930,17 @@ bool ClassBrowserBuilderThread::AddDescendantsOf(CCTree* tree, CCTreeItem* paren
     if (CBBT_SANITY_CHECK)
         return false;
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+    // ------------------------------------------------
 
     Token* token = m_TokenTree->at(tokenIdx);
     if (token)
         m_TokenTree->RecalcInheritanceChain(token);
 
+    // ------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    // ------------------------------------------------
 
     if (!token)
         return false;
@@ -870,8 +951,9 @@ bool ClassBrowserBuilderThread::AddDescendantsOf(CCTree* tree, CCTreeItem* paren
     m_BrowserOptions.showInheritance = oldShowInheritance;
     return ret;
 }
-
+// ----------------------------------------------------------------------------
 void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
+// ----------------------------------------------------------------------------
 {
     TRACE("ClassBrowserBuilderThread::AddMembersOf");
 
@@ -1030,11 +1112,15 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
     if (startIndex < endIndex) //(ph 2023/10/07)
         for (TokenIdxSet::const_iterator start = tokens->begin(); start != end; ++start)
         {
+            // ----------------------------------------------
             CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+            // ----------------------------------------------
 
             Token* token = m_TokenTree->at(*start);
 
+            // -------------------------------------------------
             CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+            // -------------------------------------------------
 
             if (    token
                 && (token->m_TokenKind & tokenKindMask)
@@ -1116,7 +1202,12 @@ bool ClassBrowserBuilderThread::TokenMatchesFilter(const Token* token, bool lock
             const Token* curr_token = m_TokenTree->at(*tis_it);
 
             if (!locked)
+            {
+                // ------------------------------------------------
                 CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+                s_TokenTreeMutex_Owner = wxString();
+                // ------------------------------------------------
+            }
 
             if (!curr_token)
                 break;
@@ -1154,7 +1245,10 @@ bool ClassBrowserBuilderThread::TokenContainsChildrenOfKind(const Token* token, 
         }
     }
 
+    // ----------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+    s_TokenTreeMutex_Owner = wxString();
+    // ----------------------------------------------
 
     return isOfKind;
 }
@@ -1221,7 +1315,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
 // ----------------------------------------------------------------------------
 {
     CCTree* localTree = top ? m_CCTreeTop : m_CCTreeBottom;
-    if (not localTree)  //(ph 2023/09/24)
+    if (not localTree)  //sanity check //(ph 2023/09/24)
         return;
 
     // When Code Completion information changes refreshing is made in two steps:
@@ -1277,6 +1371,9 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpShowFirst, nullptr);
 
     m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpEnd, nullptr);
+
+    if (m_BrowserOptions.treeMembers) //if bottom tree, say done //(ph 2023/12/04)
+        m_Parent->CallAfter(&ClassBrowser::BuildTreeStartOrStop, false);
 }
 
 // Copies all children of parent under destination's current node in the GUI tree
@@ -1324,8 +1421,9 @@ CCTreeItem::CCTreeItem(CCTreeItem* parent, const wxString& text, int image, int 
     m_image[wxTreeItemIcon_Expanded]         = image;
     m_image[wxTreeItemIcon_SelectedExpanded] = selImage;
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem::~CCTreeItem()
+// ----------------------------------------------------------------------------
 {
     // Kill my children
     DeleteChildren();
@@ -1351,8 +1449,9 @@ CCTreeItem::~CCTreeItem()
             m_parent->m_hasChildren = false;
     }
 }
-
+// ----------------------------------------------------------------------------
 void CCTreeItem::Swap(CCTreeItem* a, CCTreeItem* b)
+// ----------------------------------------------------------------------------
 {
     // Swap the payload part, leaving the pointers untouched
     std::swap(a->m_text,        b->m_text);
@@ -1366,48 +1465,56 @@ void CCTreeItem::Swap(CCTreeItem* a, CCTreeItem* b)
 /*
  * CCTree
  */
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::AddRoot(const wxString& text, int image, int selImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     wxASSERT_MSG(!m_root, "CCTree can have only a single root");
 
     m_root = new CCTreeItem(nullptr, text, image, selImage, data);
     return m_root;
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::AppendItem(CCTreeItem* parent, const wxString& text, int image, int selImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     return DoInsertItem(parent, (size_t)-1, text, image, selImage, data);
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::PrependItem(CCTreeItem* parent, const wxString& text, int image, int selImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     return DoInsertItem(parent, 0U, text, image, selImage, data);
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::InsertItem(CCTreeItem* parent, CCTreeItem* idPrevious, const wxString& text, int image, int selImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     return DoInsertAfter(parent, idPrevious, text, image, selImage, data);
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::InsertItem(CCTreeItem* parent, size_t pos, const wxString& text, int image, int selImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     return DoInsertItem(parent, pos, text, image, selImage, data);
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::GetFirstChild(CCTreeItem* item, CCCookie& cookie) const
+// ----------------------------------------------------------------------------
 {
     cookie.SetCurrent(item ? item->m_firstChild : nullptr);
     return cookie.GetCurrent();
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::GetNextChild(CCTreeItem* item, CCCookie& cookie) const
+// ----------------------------------------------------------------------------
 {
     cookie.SetCurrent((item && cookie.GetCurrent()) ? cookie.GetCurrent()->m_nextSibling : nullptr);
     return cookie.GetCurrent();
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::GetLastChild(CCTreeItem* item) const
+// ----------------------------------------------------------------------------
 {
     CCTreeItem* last = nullptr;
     if (item)
@@ -1418,8 +1525,9 @@ CCTreeItem* CCTree::GetLastChild(CCTreeItem* item) const
 
     return last;
 }
-
+// ----------------------------------------------------------------------------
 size_t CCTree::GetChildrenCount(CCTreeItem* item, bool recursively) const
+// ----------------------------------------------------------------------------
 {
     size_t count = 0;
     if (item)
@@ -1434,8 +1542,9 @@ size_t CCTree::GetChildrenCount(CCTreeItem* item, bool recursively) const
 
     return count;
 }
-
+// ----------------------------------------------------------------------------
 void CCTree::QuickSort(CCTreeItem* first, CCTreeItem* last)
+// ----------------------------------------------------------------------------
 {
     if (first && last && (first != last))
     {
@@ -1467,8 +1576,9 @@ void CCTree::QuickSort(CCTreeItem* first, CCTreeItem* last)
 }
 
 // Returns a negative value if lhs < rhs, 0 if they are equal and positive if lhs > rhs
-
+// ----------------------------------------------------------------------------
 int CCTree::CompareFunction(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs) const
+// ----------------------------------------------------------------------------
 {
     if (lhs && rhs)
     {
@@ -1511,8 +1621,9 @@ int CCTree::CompareFunction(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs
 
     return 1;
 }
-
+// ----------------------------------------------------------------------------
 int CCTree::AlphabetCompare(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs) const
+// ----------------------------------------------------------------------------
 {
     if (!lhs || !rhs)
         return 1;
@@ -1522,8 +1633,9 @@ int CCTree::AlphabetCompare(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs
         return 1;
     return wxStricmp(lhs->m_Token->m_Name, rhs->m_Token->m_Name);
 }
-
+// ----------------------------------------------------------------------------
 int CCTree::KindCompare(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs) const
+// ----------------------------------------------------------------------------
 {
     if (!lhs || !rhs)
         return 1;
@@ -1533,8 +1645,9 @@ int CCTree::KindCompare(const CCTreeCtrlData* lhs, const CCTreeCtrlData* rhs) co
         return AlphabetCompare(lhs, rhs);
     return lhs->m_TokenKind - rhs->m_TokenKind;
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::DoInsertAfter(CCTreeItem* parent, CCTreeItem* hInsertAfter, const wxString& text, int image, int selectedImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     CCTreeItem* newItem = nullptr;
     if (parent)
@@ -1562,8 +1675,9 @@ CCTreeItem* CCTree::DoInsertAfter(CCTreeItem* parent, CCTreeItem* hInsertAfter, 
 
     return newItem;
 }
-
+// ----------------------------------------------------------------------------
 CCTreeItem* CCTree::DoInsertItem(CCTreeItem* parent, size_t index, const wxString& text, int image, int selectedImage, CCTreeCtrlData* data)
+// ----------------------------------------------------------------------------
 {
     CCTreeItem* idPrev = nullptr;
     if (parent)
@@ -1581,8 +1695,9 @@ CCTreeItem* CCTree::DoInsertItem(CCTreeItem* parent, size_t index, const wxStrin
 
     return DoInsertAfter(parent, idPrev, text, image, selectedImage, data);
 }
-
+// ----------------------------------------------------------------------------
 uint32_t CCTree::GetCrc32() const
+// ----------------------------------------------------------------------------
 {
     Crc32 crc;
 
@@ -1592,8 +1707,9 @@ uint32_t CCTree::GetCrc32() const
 
     return crc.GetCrc();
 }
-
+// ----------------------------------------------------------------------------
 void CCTree::CalculateCrc32(CCTreeItem* parent, Crc32 &crc) const
+// ----------------------------------------------------------------------------
 {
     CCCookie cookie;
     for (CCTreeItem* child = GetFirstChild(parent, cookie); child; child = GetNextChild(parent, cookie))

@@ -1206,7 +1206,10 @@ void ParseManager::RereadParserOptions()
         if (!m_ClassBrowser)
         {
             CreateClassBrowser();
-            UpdateClassBrowser();
+            //-UpdateClassBrowser(); //(ph 2023/11/30)
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
+            m_ClassBrowser->UpdateClassBrowserView(); //(ph 2023/11/30)
+
         }
         // change class-browser docking settings
         else if (m_ClassBrowserIsFloating != cfg->ReadBool(_T("/as_floating_window"), false))
@@ -1214,7 +1217,9 @@ void ParseManager::RereadParserOptions()
             RemoveClassBrowser();
             CreateClassBrowser();
             // force re-update
-            UpdateClassBrowser();
+            //-UpdateClassBrowser(); //(ph 2023/11/30)
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
+            m_ClassBrowser->UpdateClassBrowserView(); //(ph 2023/11/30)
         }
     }
     else if (!useSymbolBrowser && m_ClassBrowser)
@@ -1224,6 +1229,14 @@ void ParseManager::RereadParserOptions()
     ParserOptions opts = m_ActiveParser->Options();
     dynamic_cast<ParserBase*>(m_ActiveParser)->ReadOptions();
     m_ParserPerWorkspace = false;
+}
+// ----------------------------------------------------------------------------
+bool ParseManager::IsClassBrowserEnabled()
+// ----------------------------------------------------------------------------
+{
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
+    bool useSymbolBrowser = cfg->ReadBool(_T("/use_symbols_browser"), false);
+    return useSymbolBrowser;
 }
 // ----------------------------------------------------------------------------
 void ParseManager::ReparseCurrentProject()
@@ -1559,7 +1572,48 @@ void ParseManager::CreateClassBrowser()
     // TODO (Morten): ? what's bug? I test it, it's works well now.
     m_ClassBrowser->SetParser(m_ActiveParser); // Also updates class browser
 
+    RefreshSymbolsTab(); //(ph 2023/11/30)
+
     TRACE(_T("ParseManager::CreateClassBrowser: Leave"));
+}
+// ----------------------------------------------------------------------------
+void ParseManager::RefreshSymbolsTab()
+// ----------------------------------------------------------------------------
+{
+    //(ph 2023/11/30)
+    // When the Symbols tab is disabled from the options dialog and then
+    // re-enabled, it never displays its data in the Symbols tab again, even
+    // though the data is acutally there. To display the data, the panel holding the
+    // Symbols data panel has to be resized. This has got to be some sort of wxAUI bug.
+    // To solve the problem, this function jiggles the height of the notebook page.
+
+    if (Manager::IsAppShuttingDown())
+        return;
+
+    cbAuiNotebook* pNotebook = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
+    int pageKnt = pNotebook->GetPageCount();
+    int pageID = -1;
+    for (int ii=0; ii<pageKnt; ++ii)
+    {
+        wxString tabtext = pNotebook->GetPageText(ii);
+        if (tabtext == _("Symbols") )
+        {
+            pageID = ii;
+            break;
+        }
+    }
+    if (pageID == -1) return;
+    wxWindow* pSymbolsPage = pNotebook->GetPage(pageID);
+    if (pSymbolsPage)
+    {
+        // calling wxWindow Update(),Refresh(). Layout(), etc did not work
+        wxSize wsize = pSymbolsPage->GetSize();
+        wsize.SetHeight(wsize.GetHeight()-1);
+        pSymbolsPage->SetSize(wsize);
+        wsize.SetHeight(wsize.GetHeight()+1);
+        pSymbolsPage->SetSize(wsize);
+    }
+    return;
 }
 // ----------------------------------------------------------------------------
 void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
@@ -1582,6 +1636,7 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
         if (idx != -1)
             Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->RemovePage(idx);
     }
+
     m_ClassBrowser->Destroy();
     m_ClassBrowser = NULL;
 }
@@ -1589,6 +1644,12 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
 void ParseManager::UpdateClassBrowser()
 // ----------------------------------------------------------------------------
 {
+    //(ph 2023/11/29)
+    //Note, This function must NOT be called when Re-enabling "Disable Symbol browser"
+    // because m_ActiveParser->Done() returns false and the ClassBrowser UI Symbols tab
+    // will not get updated and will cause crashes using stale pointeers.
+    // UpdateClassBrowserView() is called directly from the CdreateClassBrowser() function.
+
     // Dont update symbols window when debugger is running
     if (IsDebuggerRunning())    //(ph 2023/11/17)
         return;
@@ -1607,36 +1668,70 @@ void ParseManager::UpdateClassBrowser()
         && m_ActiveParser->Done()
         && (not Manager::IsAppShuttingDown()) )
     {
+        //-s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
         m_ClassBrowser->UpdateClassBrowserView();
     }
 }
 // ----------------------------------------------------------------------------
-bool ParseManager::IsOkToUpdateClassBrowserView() //(ph 2023/10/21)
+bool ParseManager::IsOkToUpdateClassBrowserView(bool force) //(ph 2023/10/21)
 // ----------------------------------------------------------------------------
 {
+    static size_t startMillisTOD;
+
     // Dont update Sysmbols when debugger is running
     if (IsDebuggerRunning()) //(ph 2023/11/17)
         return false;
 
-    // Don't update Symbol browser window if it's being used.
-    // User may be working within the symbols browser window
-
-    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
-    wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
-    if (pCurrentPage == GetClassBrowser())
+    bool isSymbolsTabFocused = GetClassBrowser() ? GetClassBrowser()->IsSymbolsWindowFocused() : false;
+    // Only update Symbol browser window if it has focus.
+    // Check again, wxWidgets focus event can be really slow sometimes
+    // Experience shows this routine is faster than wxEVT_SET/KILL_FOCUS event.
+    if (not isSymbolsTabFocused)
     {
-        if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
+        ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+        wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
+        int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
+        wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+        if (pCurrentPage == GetClassBrowser())
         {
-            //cbAssertNonFatal(0 && "Mouse in ClassBrowser window."); // **Debugging **
-            return false;
+            if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
+                isSymbolsTabFocused = true;
+            else isSymbolsTabFocused = false;
         }
     }
 
-    if (GetClassBrowser() and GetClassBrowser()->IsBusyClassBrowserBuilderThread())
-        return false; // say not ok to update //(ph 2023/11/15)
+    bool isBusyClassBrowserBuilderThread = GetClassBrowser() ? GetClassBrowser()->IsBusyClassBrowserBuilderThread() : false;
 
+    if (isBusyClassBrowserBuilderThread)
+    {
+        if (not startMillisTOD)
+            startMillisTOD = GetNowMilliSeconds(); //remember the start busy time-of-day
+        size_t durationMillis = GetDurationMilliSeconds(startMillisTOD);
+        // Somehow ClassBrowserBuilderThread::m_IsBusy is getting stuck at busy count == 1;
+        // The following insures it gets unstuck until the problem is found.
+        if ((durationMillis > 3000) and (not IsDebuggerRunning()) )
+        {
+            startMillisTOD = 0; //clear to get a new busy tod
+            if (GetClassBrowser()->GetClassBrowserBuilderThread())
+            {
+                int knt = GetClassBrowser()->GetClassBrowserBuilderThread()->GetIsBusy();
+                wxString msg = wxString::Format(_("ClassBrowserBuilderThread::m_IsBusy is stuck at %d"), knt);
+                //-GetClassBrowser()->GetClassBrowserBuilderThread()->SetIsBusy(false);
+                CCLogger::Get()->DebugLogError(msg);
+
+            }
+        }
+        return false; // say not ok to update //(ph 2023/11/15)
+    }
+
+    if ((not isSymbolsTabFocused) or isBusyClassBrowserBuilderThread)
+        return false; //cannot update, Symbols tab is unfocused or builderthread is busy
+
+    // FIXME (ph#): #warning this is in the wrong place. Put it just after classBrowserCreation //(ph 2023/12/07)
+    // or after "Disable symbols browser"has been unclicked
+    //- RefreshSymbolsTab(); //(ph 2023/11/30)
+
+    startMillisTOD = 0;
     return true;
 }
 // ----------------------------------------------------------------------------
@@ -1997,6 +2092,7 @@ void ParseManager::SetCBViewMode(const BrowserViewMode& mode)
 // ----------------------------------------------------------------------------
 {
     m_ActiveParser->ClassBrowserOptions().showInheritance = (mode == bvmInheritance) ? true : false;
+    s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
     UpdateClassBrowser();
 }
 
@@ -2223,7 +2319,11 @@ int ParseManager::FindCurrentFunctionStart(bool callerHasTreeLock,
                     if (s_DebugSmartSense)
                         CCLogger::Get()->DebugLog(_T("FindCurrentFunctionStart() Can't determine functions opening brace..."));
 
+                    // ----------------------------------------------
                     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+                    // ----------------------------------------------
+                    s_TokenTreeMutex_Owner = wxString();
+
                     return -1;
                 }
 
@@ -2894,10 +2994,16 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
     if (m_ClassBrowser)
     {
         if (m_ActiveParser->ClassBrowserOptions().displayFilter == bdfFile)
+        {
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
             m_ClassBrowser->UpdateClassBrowserView(true); // check header and implementation file swap
+        }
         else if (   m_ParserPerWorkspace // project view only available in case of one parser per WS //m_ParserPerWorkspace always false for clangd
                  && m_ActiveParser->ClassBrowserOptions().displayFilter == bdfProject)
+        {
+            s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
             m_ClassBrowser->UpdateClassBrowserView();
+        }
     }
 }
 // ----------------------------------------------------------------------------

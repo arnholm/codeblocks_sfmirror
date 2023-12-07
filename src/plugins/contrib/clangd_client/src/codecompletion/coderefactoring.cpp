@@ -25,6 +25,7 @@
 #endif
 
 #include <wx/progdlg.h>
+#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
 
 #include <cbstyledtextctrl.h>
 #include <encodingdetector.h>
@@ -71,8 +72,9 @@ class ScopeDialog : public wxDialog
 // ----------------------------------------------------------------------------
 {
 public:
-    ScopeDialog(wxWindow* parent, const wxString& title) :
-        wxDialog(parent, wxID_ANY, title)
+    ScopeDialog(wxWindow* parent, const wxString& title)  //(ph 2023/12/07)
+        // : wxDialog(parent, wxID_ANY, title)
+        : wxDialog(parent, XRCID("ScopeDialog"), title)
     {
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
         wxBoxSizer* infoSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -256,7 +258,8 @@ size_t CodeRefactoring::SearchInFiles(const wxArrayString& files, const wxString
 
     // now that list is filled, we'll search
     wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); Dont eat up IDs
+    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("SearchInFilesEditor"), wxDefaultPosition, wxSize(0, 0));
     control->Show(false);
 
     // let's create a progress dialog because it might take some time depending on the files count
@@ -319,8 +322,8 @@ size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxSt
 //    }
 //
 //    // now that list is filled, we'll search
-//    cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), wxID_ANY, wxDefaultPosition,
-//                                                     wxSize(0, 0));
+//    //cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), wxID_ANY, wxDefaultPosition ,wxSize(0, 0)); dont eat up IDs //(ph 2023/12/07)
+//    cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), XRCID("CodeRefactoring::VerifyResult"), wxDefaultPosition ,wxSize(0, 0));
 //    control->Show(false);
 //
 //    // styled the text to support control->GetStyleAt()

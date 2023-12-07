@@ -886,7 +886,9 @@ cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& file
     {
         EditorManager* edMan = Manager::Get()->GetEditorManager();
         wxWindow* parent = Manager::Get()->GetAppWindow();
-        control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+        //control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
+        // Dont eat up all the IDs with wxID_ANY //(ph 2023/12/07)
+        control = new cbStyledTextCtrl(parent, XRCID("GetNewHiddenEditor"), wxDefaultPosition, wxSize(0, 0)); //(ph 2023/12/07)
         control->Show(false);
 
         // check if the file is already opened in built-in editor

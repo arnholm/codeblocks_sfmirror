@@ -11,6 +11,8 @@
 #include "wx/defs.h"
 #include "wx/event.h"
 #include "wx/window.h"
+#include <wx/xrc/xmlres.h>
+
 #include "manager.h"
 #include "logmanager.h"
 
@@ -27,7 +29,8 @@ class LSPMethodCallbackEvent : public wxEvent
 {
 public:
     LSPMethodCallbackEvent(wxObject* object)
-        : wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL)
+        //: wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL) //(ph 2023/12/07)
+        : wxEvent(XRCID("LSPMethodCallbackEvent"), wxEVT_ASYNC_METHOD_CALL)
     {
         SetEventObject(object);
     }

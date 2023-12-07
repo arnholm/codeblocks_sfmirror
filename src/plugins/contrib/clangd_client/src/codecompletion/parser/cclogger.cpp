@@ -32,6 +32,7 @@ long            g_idCCDebugErrorLogger = wxNewId();
 wxString        s_TokenTreeMutex_Owner = wxString();     // location of the last tree lock
 wxString        s_ParserMutex_Owner    = wxString();     // location of the last parser lock
 wxString        m_ClassBrowserBuilderThreadMutex_Owner = wxString();
+wxString        s_ClassBrowserCaller   = wxString();    // Latest __FUNCTION:__LINE of caller
 
 #define TRACE_TO_FILE(msg)                                           \
     if (g_EnableDebugTraceFile && !g_DebugTraceFile.IsEmpty())       \

@@ -294,6 +294,8 @@ private:
     // LSP
     // ----------------------------------------------------------------------------
     bool m_LSP_ParserDone;
+    bool IsBusyParsing(); //(ph 2023/12/02)
+
     cbStyledTextCtrl* GetNewHiddenEditor(const wxString& filename);
 
     int  m_cfg_parallel_processes;
