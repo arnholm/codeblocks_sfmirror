@@ -22,7 +22,7 @@ struct TargetFilesData
 {
     TargetFilesData() : activeFile(nullptr) {} // ctor
 
-    typedef std::set<ProjectFile*, std::less<ProjectFile*>> OpenFilesSet;
+    typedef std::set <const ProjectFile*, std::less <const ProjectFile*> > OpenFilesSet;
     ProjectFile* activeFile;
     OpenFilesSet openFiles;
 };
