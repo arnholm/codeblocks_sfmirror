@@ -415,10 +415,10 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap )
     }
     else
     {
-        #if defined(cbDEBUG) //debugging
-        wxString msg = wxString::Format("ThreadedBuildTree Re-create/cleanup called(%s).", pActiveProject ? pActiveProject->GetTitle() : "NoProject");
-        CCLogger::Get()->DebugLog(msg);
-        #endif
+        //#if defined(cbDEBUG) // **Debugging**
+        //wxString msg = wxString::Format("ThreadedBuildTree Re-create/cleanup called(%s).", pActiveProject ? pActiveProject->GetTitle() : "NoProject");
+        //CCLogger::Get()->DebugLog(msg);
+        //#endif
         ThreadedBuildTree(pActiveProject); // Re-create ClassBrowser tree UI
     }
 

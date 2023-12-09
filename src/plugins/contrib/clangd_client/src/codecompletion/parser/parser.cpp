@@ -141,17 +141,39 @@ namespace
     bool wxFound(size_t result){return result != wxString::npos;}
 
     bool isBusyParsing = false; //(ph 2023/12/02)
-}
+
+    // **Debugging**
+    //int Starting_wxID = 0;
+    //int Ending_wxID = 0;
+//    void ShowUsed_wxIDs(int Starting_wxID, int Ending_wxID)
+//    {
+//        // **Debugging** //(ph 2023/12/08)
+//        if (Starting_wxID)
+//        {
+//            Ending_wxID = wxNewId();
+//            int used_wxIDs = Ending_wxID - Starting_wxID;
+//            wxString msg = wxString::Format("Used IDs %d", used_wxIDs);
+//            msg += wxString::Format(" Starting:%d Ending:%d",Starting_wxID, Ending_wxID);
+//            CCLogger::Get()->DebugLogError(msg);
+//            Starting_wxID = Ending_wxID;
+//        }
+//
+//    }//endShowUsed_wxIDs
+
+}//endAnonymous namespace
 // ----------------------------------------------------------------------------
-Parser::Parser(ParseManager* parent, cbProject* project) :
+Parser::Parser(ParseManager* parent, cbProject* project)
 // ----------------------------------------------------------------------------
-    m_pParseManager(parent),
-    m_ParsersProject(project),
-    m_BatchTimer(this, wxNewId()),
-    m_ParserState(ParserCommon::ptCreateParser),
-    m_DocHelper(parent)            // parent must be ClgdCompletion*
+   : m_pParseManager(parent),
+     m_ParsersProject(project),
+     m_BatchTimer(this, wxNewId()),
+     m_ParserState(ParserCommon::ptCreateParser),
+     m_DocHelper(parent)            // parent must be ClgdCompletion*
 {
     m_LSP_ParserDone = false;
+
+//    if (Starting_wxID == 0)
+//        Starting_wxID = wxNewId(); // **Debugging** //(ph 2023/12/08)
 
     if (m_ParsersProject and (m_ParsersProject->GetTitle() == "~ProxyProject~"))
         m_ProxyProject = m_ParsersProject;
@@ -613,7 +635,8 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
 
         // Say class browser symbols view is now stale because the
         // token tree is about to be updated.
-        GetParseManager()->GetClassBrowser()->SetIsStale(true);
+        if (GetParseManager()->GetClassBrowser())
+            GetParseManager()->GetClassBrowser()->SetIsStale(true);
 
         ///
         /// No 'return' statements beyond here until TokenTree Unlock !!!
@@ -716,7 +739,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
     }//endWhile entries in queue
 
     // ----------------------------------------------------------------
-    // Update ClassBrowser Symbols tab and CC toolBar when appropriate
+    // Update CC toolBar when appropriate
     // ----------------------------------------------------------------
     ProcessLanguageClient* pClient = GetLSPClient();
     if ( (pClient and GetParseManager()->IsOkToUpdateClassBrowserView())  //(ph 2023/11/27)
@@ -1515,6 +1538,9 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 pClient->LSP_GetServerFilesParsingDurationTime(pEditor->GetFilename()), remainingToParse);
                 CCLogger::Get()->DebugLog( msg);
                 CCLogger::Get()->Log( msg);
+
+                //if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
+                //  ShowUsed_wxIDs(Starting_wxID, Ending_wxID);
             }
         }
     }//endif uri
@@ -1563,6 +1589,9 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         msg += wxString::Format(" (%zu more)", remainingToParse);
         CCLogger::Get()->DebugLog(msg);
         CCLogger::Get()->Log(msg);
+
+        //if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
+        //    ShowUsed_wxIDs(Starting_wxID, Ending_wxID);
     }
 
     // This could be a /publishDiagnostics response from a didClose() request. Idiot server!!

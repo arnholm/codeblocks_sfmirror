@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.98 23/12/7")
+#define VERSION wxT("1.2.99 23/12/9")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.99    2023/12/9
+//          Fix crash when ClassBroswer is diabled (parser.cpp 638)
 //1.2.98    2023/12/6-7
 //          Fix crash in classBrower updating from stale token tree pointers.
 //          Fix assertion caused by eating up all the event ids.(LSP_tokenizer.cpp:2165)
