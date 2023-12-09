@@ -33,6 +33,7 @@ libwxsmith_wxwidgets_defitems_la_SOURCES = \
 ./wxsspinbutton.cpp \
 ./wxsbutton.cpp \
 ./wxslistbox.cpp \
+./wxseditablelistbox.cpp \
 ./wxsgauge.cpp \
 ./wxsradiobutton.cpp \
 ./wxspanel.cpp \
@@ -144,6 +145,7 @@ noinst_HEADERS = \
 ./wxsboxsizer.h \
 ./wxsflexgridsizer.h \
 ./wxslistbox.h \
+./wxseditablelistbox.h \
 ./wxshtmlwindow.h \
 ./wxsscrolledwindow.h \
 ./wxsstddialogbuttonsizer.h \
