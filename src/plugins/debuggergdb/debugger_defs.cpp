@@ -247,7 +247,10 @@ void GDBWatch::GetFullWatchString(wxString &full_watch) const
     if (parent)
     {
         parent->GetFullWatchString(full_watch);
-        full_watch += wxT(".") + m_symbol;
+        if (full_watch.StartsWith("*"))
+            full_watch = "(" + full_watch + ")";
+
+        full_watch += "." + m_symbol;
     }
     else
         full_watch = m_symbol;
