@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="All contrib plugins wx3.2.x (Unix)">
+		<Project filename="tools/cb_share_config/cb_share_config_wx32-unix.cbp" />
+		<Project filename="tools/cbp2make/cbp2make_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx32-unix.cbp">
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
+			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp" />
+		</Project>
+		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx32-unix.cbp">
+			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp" />
+		</Project>
+		<Project filename="plugins/contrib/AutoVersioning/AutoVersioning_wx32-unix.cbp" active="1" />
+		<Project filename="plugins/contrib/BrowseTracker/BrowseTracker_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/byogames/byogames_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/cb_koders/cb_koders_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/Cccc/Cccc_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/codesnippets/codesnippets_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/codestat/codestat_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/copystrings/copystrings_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/CppCheck/CppCheck_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/Cscope/Cscope_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/DoxyBlocks/DoxyBlocks_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/dragscroll/DragScroll_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/EditorConfig/EditorConfig_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/EditorTweaks/EditorTweaks_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/envvars/envvars_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/FileManager/FileManager_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/FortranProject/FortranProject_cbsvn_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/headerfixup/headerfixup_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/help_plugin/help-plugin_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/HexEditor/HexEditor_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/IncrementalSearch/IncrementalSearch_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/keybinder/keybinder_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/lib_finder/lib_finder_wx32-unix.cbp">
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
+		</Project>
+		<Project filename="plugins/contrib/MouseSap/MouseSap_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/NassiShneiderman/NassiShneiderman_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/profiler/cbprofiler_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/ProjectOptionsManipulator/ProjectOptionsManipulator_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/regex_testbed/RegExTestbed_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/ReopenEditor/ReopenEditor_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/rndgen/rndgen_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/clangd_client/clangd_client_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/SmartIndent/SmartIndent_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/source_exporter/Exporter_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/SpellChecker/SpellChecker_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/symtab/symtab_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx32-unix.cbp">
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
+		</Project>
+		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/Valgrind/Valgrind_wx32-unix.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
