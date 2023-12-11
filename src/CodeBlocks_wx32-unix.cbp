@@ -399,7 +399,7 @@
 			<Environment>
 				<Variable name="GTK_VERSION" value="gtk+-3.0" />
 				<Variable name="WX_CFG" value="" />
-				<Variable name="WX_CONFIG" value="wx-config --version=3.0" />
+				<Variable name="WX_CONFIG" value="wx-config --version=3.2" />
 				<Variable name="WX_SUFFIX" value="u" />
 				<Variable name="WX_VERSION" value="32" />
 			</Environment>
