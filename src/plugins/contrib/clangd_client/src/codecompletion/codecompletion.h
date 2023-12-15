@@ -637,7 +637,6 @@ private:
     void ShutdownLSPclient(cbProject* pProject);
     void CleanUpLSPLogs();
     void CleanOutClangdTempFiles();
-    wxString GetLineTextFromFile(const wxString& file, const int lineNum);
     wxString VerifyEditorParsed(cbEditor* pEd);
     wxString VerifyEditorHasSymbols(cbEditor* pEd);
     void OnReActivateProject(wxCommandEvent& event);

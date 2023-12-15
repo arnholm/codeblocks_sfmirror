@@ -55,7 +55,7 @@ namespace //annonymous
     // unused const char STX = '\u0002';
     int an_SavedFileMethod = 0;
 
-    const int idBuildLog = wxNewId();
+    //-unused- const int idBuildLog = wxNewId();
 
     #if defined(_WIN32)
         wxString clangexe("clang.exe");
@@ -874,27 +874,30 @@ size_t ProcessLanguageClient::GetDurationMilliSeconds(int startMillis)
     return nowMillis - startMillis;
 }
 // ----------------------------------------------------------------------------
-cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& filename)
+cbStyledTextCtrl* ProcessLanguageClient::GetStaticHiddenEditor(const wxString& filename)
 // ----------------------------------------------------------------------------
 {
     // Create new hidden editor and load its data
 
     wxString resultText;
-    cbStyledTextCtrl* control = nullptr;
+
+    cbStyledTextCtrl* pControl = nullptr;
 
     if (wxFileExists(filename))
     {
         EditorManager* edMan = Manager::Get()->GetEditorManager();
         wxWindow* parent = Manager::Get()->GetAppWindow();
-        //control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0));
-        // Dont eat up all the IDs with wxID_ANY //(ph 2023/12/07)
-        control = new cbStyledTextCtrl(parent, XRCID("GetNewHiddenEditor"), wxDefaultPosition, wxSize(0, 0)); //(ph 2023/12/07)
-        control->Show(false);
+        // Use a static reusable hidden editor so we don't eat up wxIDs
+        if (pHiddenEditor.get() == nullptr)
+            pHiddenEditor.reset( new cbStyledTextCtrl(parent, XRCID("HiddenEditor"), wxDefaultPosition, wxSize(0, 0))); //(ph 2023/12/11)
+        pControl = pHiddenEditor.get();
+        pControl->SetText("");
+        pControl->Show(false);
 
         // check if the file is already opened in built-in editor
         cbEditor* ed = edMan->IsBuiltinOpen(filename);
         if (ed)
-            control->SetText(ed->GetControl()->GetText());
+            pControl->SetText(ed->GetControl()->GetText());
         else // else load the file in the control
         {
             EncodingDetector detector(filename, false);
@@ -902,15 +905,15 @@ cbStyledTextCtrl* ProcessLanguageClient::GetNewHiddenEditor(const wxString& file
             {
                 wxString msg(wxString::Format(_("%s():%d failed EncodingDetector for %s"), __FUNCTION__, __LINE__, filename));
                 Manager::Get()->GetLogManager()->Log(msg);
-                delete control;
+                pControl->SetText("");
                 return nullptr;
             }
-            control->SetText(detector.GetWxStr());
+            pControl->SetText(detector.GetWxStr());
         }//else
 
     }//swith
 
-    return control;
+    return pControl;
 }
 // ----------------------------------------------------------------------------
 void ProcessLanguageClient::OnClangd_stderr(wxThreadEvent& event)
@@ -1478,6 +1481,24 @@ bool ProcessLanguageClient::DoValidateUTF8data(std::string& strdata)
 void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
 // ----------------------------------------------------------------------------
 {
+
+    #if defined(MEASURE_wxIDS)
+    int startingID = wxGetCurrentId();  //(ph 2023/12/14)
+
+    struct kntids_t
+    {
+        int startid = 0;
+        int endid = 0;
+        kntids_t(int startidin) {startid = startidin;}
+        ~kntids_t()
+        { endid = wxGetCurrentId();
+          if (endid-startid)
+            asm("nop"); /**Debugging**/
+        }
+
+    } kntids(startingID);
+    #endif
+
     // This member event was Connected() in ProcessLanguageClient() constructor;
     // and issued from  transport.h in "loop(MessageHandler &handler)"
     // with event.clientdata set to incoming json data
@@ -1565,6 +1586,23 @@ void ProcessLanguageClient::OnIDMethod(wxCommandEvent& event)
 void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDS)
+    int startingID = wxGetCurrentId();  //(ph 2023/12/14)
+
+    struct kntids_t
+    {
+        int startid = 0;
+        int endid = 0;
+        kntids_t(int startidin) {startid = startidin;}
+        ~kntids_t()
+        { endid = wxGetCurrentId();
+          if (endid-startid)
+            asm("nop"); /**Debugging**/
+        }
+
+    } kntids(startingID);
+    #endif
+
     json* pJson = (json*)event.GetClientData();
     //#if defined(cbDEBUG)
     //    std::string see = pJson->dump(); //debugging
@@ -2085,7 +2123,7 @@ bool ProcessLanguageClient::LSP_DidOpen(wxString filename, cbProject* pProject)
     std::string stdFileURI = GetstdUTF8Str(fileURI); //(ollydbg 2022/10/30) ticket #78
     DocumentUri docuri = DocumentUri(stdFileURI.c_str());
 
-    cbStyledTextCtrl* pCtrl = GetNewHiddenEditor(filename);
+    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename);
     if (not pCtrl) return false;
 
     #if wxCHECK_VERSION(3,1,0)
@@ -2116,8 +2154,6 @@ bool ProcessLanguageClient::LSP_DidOpen(wxString filename, cbProject* pProject)
     //LogManager* pLogMgr = Manager::Get()->GetLogManager();
     //pLogMgr->DebugLog(wxString::Format("%s(): %s",__FUNCTION__, infilename));
 
-    if (pCtrl)
-        delete pCtrl;
     return true;
 
 }//end LSP_DidOpen()
@@ -2716,7 +2752,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
     fileURI.Replace("\\", "/");
     //-fileURI.MakeLower().Replace("f:", "");
 
-    std::unique_ptr<cbStyledTextCtrl> pCtrl = std::unique_ptr<cbStyledTextCtrl>(GetNewHiddenEditor(filename));
+    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename); //(ph 2023/12/11)
     if (not pCtrl) return;
 
     //-DocumentUri docuri = DocumentUri(fileURI.c_str());
@@ -2853,7 +2889,7 @@ void ProcessLanguageClient::LSP_RequestSemanticTokens(wxString filename, cbProje
     fileURI.Replace("\\", "/");
     //-fileURI.MakeLower().Replace("f:", "");
 
-    std::unique_ptr<cbStyledTextCtrl> pCtrl = std::unique_ptr<cbStyledTextCtrl>(GetNewHiddenEditor(filename));
+    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename); //(ph 2023/12/11)
     if (not pCtrl) return;
 
     //-DocumentUri docuri = DocumentUri(fileURI.c_str());

@@ -296,7 +296,7 @@ private:
     bool m_LSP_ParserDone;
     bool IsBusyParsing(); //(ph 2023/12/02)
 
-    cbStyledTextCtrl* GetNewHiddenEditor(const wxString& filename);
+    cbStyledTextCtrl* GetStaticHiddenEditor(const wxString& filename); //(ph 2023/12/11)
 
     int  m_cfg_parallel_processes;
     int  m_cfg_max_parsers_while_compiling;
@@ -335,6 +335,9 @@ private:
     cbCodeCompletionPlugin::CCToken m_HoverCCTokenPending = {-1,"", "", -1, -1};
     /** Provider of documentation for the popup window */
     DocumentationHelper m_DocHelper;
+
+    /** Static Hidden Utility cbEditor  */
+    std::unique_ptr<cbStyledTextCtrl> pHiddenEditor = nullptr;
 
   public:
     // ----------------------------------------------------------------------------
@@ -430,7 +433,7 @@ private:
     void SetLogFileBase(wxString filebase){m_LogFileBase = filebase;}
     wxString GetLogFileBase(){return m_LogFileBase;}
 
-    wxString GetLineTextFromFile(const wxString& file, const int lineNum);
+    wxString GetLineTextFromFile(const wxString& filename, const int lineNum);
     bool FindDuplicateEntry(wxArrayString* pArray, wxString fullPath, wxString& lineNum, wxString& text);
 
     // ----------------------------------------------------------------
@@ -450,6 +453,13 @@ private:
     {
         return wxString(stdString.c_str(), wxConvUTF8);
     }
+
+    #if defined(MEASURE_wxIDS)
+    // Reset this for the beginning of the measurement //(ph 2023/12/14)
+    int Starting_wxID = wxGetCurrentId(); // **Debugging** //(ph 2023/12/08)
+    void SetStarting_wxID(int startID) {Starting_wxID = startID;}
+    int GetStarting_wxID() { return Starting_wxID;}
+    #endif
 };
 
 #endif // PARSER_H

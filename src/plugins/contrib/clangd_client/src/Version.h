@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.99 23/12/9")
+#define VERSION wxT("1.2.100 23/12/15")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.100   2023/12/11 Halve wxID usage when parsing files and projects
 //1.2.99    2023/12/9
 //          Fix crash when ClassBroswer is diabled (parser.cpp 638)
 //1.2.98    2023/12/6-7
@@ -61,7 +62,7 @@ class AppVersion
 //          Try to fix out-of-range wIDs assert by switching wxID_ANY to XRCID("<someUniqueText>") for temporary controls.
 //          Add ability to catch Symbols tab stale data and ClassBrowser busy update conditions.
 //1.2.97    2023/11/30
-//          Fix crash caused by not updating the ClassBrowser when the has the mouse
+//          Fix crash caused by not updating the ClassBrowser when the user has the mouse
 //              inside the Symbols tab.
 //          Fix Symbols tab not displaying data after unchecking "Disable Symbols browser".
 //1.2.96    2023/11/17

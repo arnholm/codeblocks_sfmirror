@@ -82,7 +82,6 @@ int ClassBrowserBuilderThread::SetIsBusy(bool torf)
     torf ? ++m_Busy : --m_Busy;
     if (m_Busy < 0)
     {
-        asm("nop"); /**Debugging**/
         cbAssertNonFatal(0 && "ClassBrowserBuilderThread SetIsBusy went negative.")
         m_Busy = 0;
     }
@@ -92,7 +91,6 @@ int ClassBrowserBuilderThread::GetIsBusy()
 {
     if (m_Busy < 0)
     {
-        asm("nop"); /**Debugging**/
         cbAssertNonFatal(0 && "ClassBrowserBuilderThread::GetIsBusy() is negative.")
         m_Busy = 0;
     }

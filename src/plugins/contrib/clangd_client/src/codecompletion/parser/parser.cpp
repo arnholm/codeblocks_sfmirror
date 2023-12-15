@@ -142,23 +142,27 @@ namespace
 
     bool isBusyParsing = false; //(ph 2023/12/02)
 
-    // **Debugging**
-    //int Starting_wxID = 0;
-    //int Ending_wxID = 0;
-//    void ShowUsed_wxIDs(int Starting_wxID, int Ending_wxID)
-//    {
-//        // **Debugging** //(ph 2023/12/08)
-//        if (Starting_wxID)
-//        {
-//            Ending_wxID = wxNewId();
-//            int used_wxIDs = Ending_wxID - Starting_wxID;
-//            wxString msg = wxString::Format("Used IDs %d", used_wxIDs);
-//            msg += wxString::Format(" Starting:%d Ending:%d",Starting_wxID, Ending_wxID);
-//            CCLogger::Get()->DebugLogError(msg);
-//            Starting_wxID = Ending_wxID;
-//        }
-//
-//    }//endShowUsed_wxIDs
+    #if defined(MEASURE_wxIDS)
+    // **Debugging** //(ph 2023/12/14)
+    //-int Starting_wxID = 0; //Reinitilied in ctor;
+    //-int Ending_wxID = 0;
+    // --------------------------------------------------------
+    void ShowUsed_wxIDs(int Starting_wxID, int Ending_wxID, wxString funcName, int funcLine)
+    // --------------------------------------------------------
+    {
+        // **Debugging** //(ph 2023/12/08)
+        if (Starting_wxID)
+        {
+            Ending_wxID = wxGetCurrentId();
+            int used_wxIDs = Ending_wxID - Starting_wxID;
+            wxString msg = wxString::Format("Used IDs %d", used_wxIDs);
+            msg += wxString::Format(" Starting:%d Ending:%d %s:%d",Starting_wxID, Ending_wxID, funcName, funcLine);
+            CCLogger::Get()->DebugLogError(msg);
+            Starting_wxID = Ending_wxID;
+        }
+
+    }//endShowUsed_wxIDs
+    #endif
 
 }//endAnonymous namespace
 // ----------------------------------------------------------------------------
@@ -166,14 +170,12 @@ Parser::Parser(ParseManager* parent, cbProject* project)
 // ----------------------------------------------------------------------------
    : m_pParseManager(parent),
      m_ParsersProject(project),
-     m_BatchTimer(this, wxNewId()),
+     //?m_BatchTimer(this, wxNewId()),
+     m_BatchTimer(this, XRCID("BatchTimer")),  //(ph 2023/12/11)
      m_ParserState(ParserCommon::ptCreateParser),
      m_DocHelper(parent)            // parent must be ClgdCompletion*
 {
     m_LSP_ParserDone = false;
-
-//    if (Starting_wxID == 0)
-//        Starting_wxID = wxNewId(); // **Debugging** //(ph 2023/12/08)
 
     if (m_ParsersProject and (m_ParsersProject->GetTitle() == "~ProxyProject~"))
         m_ProxyProject = m_ParsersProject;
@@ -1129,26 +1131,28 @@ bool Parser::UpdateParsingProject(cbProject* project)
     }
 }
 // ----------------------------------------------------------------------------
-cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)
+cbStyledTextCtrl* Parser::GetStaticHiddenEditor(const wxString& filename) //(ph 2023/12/11)
 // ----------------------------------------------------------------------------
 {
     // Create new hidden editor and load its data
 
     wxString resultText;
-    cbStyledTextCtrl* control = nullptr;
+    cbStyledTextCtrl* pControl = nullptr;
 
     if (wxFileExists(filename))
     {
         EditorManager* edMan = Manager::Get()->GetEditorManager();
         wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-        //control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); dont eat up IDs //(ph 2023/12/07)
-        control = new cbStyledTextCtrl(parent, XRCID("Parser::GetNewHiddenEditor"), wxDefaultPosition, wxSize(0, 0));
-        control->Show(false);
+        if (pHiddenEditor.get() == nullptr)
+            pHiddenEditor.reset( new cbStyledTextCtrl(parent, XRCID("ParserHiddenEditor"), wxDefaultPosition, wxSize(0, 0))); //(ph 2023/12/11)
+        pControl = pHiddenEditor.get();
+        pControl->SetText("");
+        pControl->Show(false);
 
         // check if the file is already opened in built-in editor
         cbEditor* ed = edMan->IsBuiltinOpen(filename);
         if (ed)
-            control->SetText(ed->GetControl()->GetText());
+            pControl->SetText(ed->GetControl()->GetText());
         else // else load the file in the control
         {
             EncodingDetector detector(filename, false);
@@ -1156,15 +1160,15 @@ cbStyledTextCtrl* Parser::GetNewHiddenEditor(const wxString& filename)
             {
                 wxString msg(wxString::Format(_("%s():%d failed EncodingDetector for %s"), __FUNCTION__, __LINE__, filename));
                 Manager::Get()->GetLogManager()->Log(msg);
-                delete control;
+                pControl->SetText("");
                 return nullptr;
             }
-            control->SetText(detector.GetWxStr());
+            pControl->SetText(detector.GetWxStr());
         }//else
 
     }//swith
 
-    return control;
+    return pControl;
 }
 // ----------------------------------------------------------------------------
 void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
@@ -1539,8 +1543,11 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 CCLogger::Get()->DebugLog( msg);
                 CCLogger::Get()->Log( msg);
 
-                //if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
-                //  ShowUsed_wxIDs(Starting_wxID, Ending_wxID);
+                #if defined(MEASURE_wxIDS)
+                // When no more work to do, show the wxIDs used
+                if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
+                  ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
+                #endif
             }
         }
     }//endif uri
@@ -1590,8 +1597,10 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         CCLogger::Get()->DebugLog(msg);
         CCLogger::Get()->Log(msg);
 
-        //if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
-        //    ShowUsed_wxIDs(Starting_wxID, Ending_wxID);
+        #if defined(MEASURE_wxIDS)
+        if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
+            ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
+        #endif
     }
 
     // This could be a /publishDiagnostics response from a didClose() request. Idiot server!!
@@ -1823,6 +1832,11 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             // **debugging**
             cbProject* pProject = GetLSPClient()->GetClientsCBProject();
             wxString projectTitle = pProject->GetTitle();
+
+            #if defined(MEASURE_wxIDS)
+            //(ph 2023/12/14) // **Debugging**
+            if (pParser) pParser->SetStarting_wxID(wxGetCurrentId());
+            #endif
 
             GetLSPClient()->LSP_RequestSymbols(pEditor);
         }
@@ -2113,47 +2127,44 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
 
 }//end OnLSP_ReferencesResponse
 // ----------------------------------------------------------------------------
-wxString Parser::GetLineTextFromFile(const wxString& file, const int lineNum)
+wxString Parser::GetLineTextFromFile(const wxString& filename, const int lineNum)
 // ----------------------------------------------------------------------------
 {
     // Fetch a single line from a text file
 
     EditorManager* edMan = Manager::Get()->GetEditorManager();
 
-    wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); dont eat up dynamic IDs //(ph 2023/12/07)
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("Parser::GetLineTextFromFile"), wxDefaultPosition, wxSize(0, 0));
-    control->Show(false);
+    //-unused- wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
+    cbStyledTextCtrl* pControl = GetStaticHiddenEditor(filename); //(ph 2023/12/11)
 
-    wxString resultText;
+   wxString resultText;
    switch(1) //once only
     {
         default:
 
         // check if the file is already opened in built-in editor and do search in it
-        cbEditor* ed = edMan->IsBuiltinOpen(file);
+        cbEditor* ed = edMan->IsBuiltinOpen(filename);
         if (ed)
-            control->SetText(ed->GetControl()->GetText());
+            pControl->SetText(ed->GetControl()->GetText());
         else // else load the file in the control
         {
-            EncodingDetector detector(file, false);
+            EncodingDetector detector(filename, false);
             if (not detector.IsOK())
             {
-                wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, file));
+                wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, filename));
                 CCLogger::Get()->Log(msg);
-                delete control;
+                pControl->SetText("");
                 return wxString();
             }
-            control->SetText(detector.GetWxStr());
+        pControl->SetText(detector.GetWxStr());
         }
 
-            resultText = control->GetLine(lineNum).Trim(true).Trim(false);
+            resultText = pControl->GetLine(lineNum).Trim(true).Trim(false);
             break;
     }
 
-    delete control; // done with it
-
     return resultText;
+
 }//end GetLineTextFromFile
 // ----------------------------------------------------------------------------
 bool Parser::FindDuplicateEntry(wxArrayString* pArray, wxString fullPath, wxString& lineNum, wxString& text)
@@ -2373,6 +2384,12 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)
     // Didnt we already remove the file in publishDiagnostics response event?
     // But just in case we didnt get here from there...
     pClient->LSP_RemoveFromServerFilesParsing(uriFilename);
+
+    #if defined(MEASURE_wxIDS)
+    // The starting id was set in OnLSP_DiagnosticsResponse() //(ph 2023/12/14)
+    // Search for "SetStarting_wxID("
+    ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
+    #endif
 
     return;
 }

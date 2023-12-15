@@ -473,6 +473,8 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
 
     private:
         std::map<wxString, wxString> m_LSP_LastRequestPerFile;
+        std::unique_ptr<cbStyledTextCtrl> pHiddenEditor = nullptr;
+
     public:
         void SetLastLSP_Request(wxString filename, wxString lspRequest)
             {m_LSP_LastRequestPerFile[filename] = lspRequest;}
@@ -820,7 +822,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         return m_LSP_aIgnoredDiagnostics;
     }
 
-    cbStyledTextCtrl* GetNewHiddenEditor(const wxString& filename);
+    cbStyledTextCtrl* GetStaticHiddenEditor(const wxString& filename);
 
     // Verify that an event handler is still in the chain of event handlers
     // ----------------------------------------------------------------------------

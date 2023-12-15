@@ -78,7 +78,7 @@ void* ProcessReaderThread::Entry()
                                 // fallback to the event system
                                 // we got some data, send event to parent
                                 //clProcessEvent e(wxEVT_ASYNC_PROCESS_OUTPUT);
-                                wxThreadEvent e(wxEVT_ASYNC_PROCESS_OUTPUT);
+                                wxThreadEvent e(wxEVT_ASYNC_PROCESS_OUTPUT, wxID_NONE);
                                 //-wxString& b = const_cast<wxString&>(e.GetOutput());
                                 //-b.swap(buff);
                                 //e.SetProcess(m_process);
@@ -95,7 +95,7 @@ void* ProcessReaderThread::Entry()
                             if(!buffErr.IsEmpty() && m_notifiedWindow) {
                                 // we got some data, send event to parent
                                 //clProcessEvent e(wxEVT_ASYNC_PROCESS_STDERR);
-                                wxThreadEvent e(wxEVT_ASYNC_PROCESS_STDERR);
+                                wxThreadEvent e(wxEVT_ASYNC_PROCESS_STDERR, wxID_NONE);
                                 //wxString& b = const_cast<wxString&>(e.GetOutput());
                                 //b.swap(buffErr);
                                 //e.SetProcess(m_process);

@@ -82,7 +82,9 @@ wxWindow* LSPDiagnosticsResultsLog::CreateControl(wxWindow* parent)
 {
     ListCtrlLogger::CreateControl(parent);
     control->SetId(ID_List);
-    Connect(ID_List, -1, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
+    //Connect(ID_List, -1, wxEVT_COMMAND_LIST_ITEM_ACTIVATED, //(ph 2023/12/14)
+    //                ^^^ a range of IDs is not necessary
+    Connect(ID_List, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnDoubleClick);
     Manager::Get()->GetAppWindow()->PushEventHandler(this);

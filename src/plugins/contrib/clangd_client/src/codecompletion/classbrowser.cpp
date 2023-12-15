@@ -268,7 +268,6 @@ void ClassBrowser::OnClassBrowserFocusChanged(wxFocusEvent& event) //(ph 2023/12
     {
         if (m_SymbolsWindowHasFocus)
         {
-            asm("nop"); /**Debugging**/
             if (GetParseManager()->IsOkToUpdateClassBrowserView(/*force=*/true))
                 UpdateClassBrowserView();
         }
@@ -766,8 +765,6 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
         if (wxGetKeyState(WXK_ALT) && wxGetKeyState(WXK_SHIFT))
         {
 //            TokenTree* tree = m_Parser->GetTokenTree(); // the one used inside CCDebugInfo
-
-
             CCDebugInfo info(wx_tree, m_Parser, ctd->m_Token);
             PlaceWindow(&info);
             info.ShowModal();
@@ -1394,7 +1391,6 @@ void ClassBrowser::BuildTreeStartOrStop(bool start)
     if (m_ClassBrowserBuilderThread)
     {
         int busyKnt = m_ClassBrowserBuilderThread->GetIsBusy();
-        asm("nop"); /**Debugging**/
         wxUnusedVar(busyKnt);
     }
 

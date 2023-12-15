@@ -2870,11 +2870,12 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (not pEditor) return;
     wxFileName fnFilename = pEditor->GetFilename();
+    cbProject* pProject = nullptr;
 
     if (fnFilename.Exists())
     {
         ProjectFile* pf = pEditor->GetProjectFile();
-        cbProject* pProject = pf ? pf->GetParentProject() : nullptr;
+        pProject = pf ? pf->GetParentProject() : nullptr;
         if (pProject and pf)
         {
             ProcessLanguageClient* pClient = GetLSPClient(pProject);
@@ -2902,6 +2903,13 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             //    pLogMgr->DebugLog("\t" + pauseParsingReasons[ii]);
             //}
             ClearReparseConditions();
+
+            #if defined(MEASURE_wxIDS)
+            //(ph 2023/12/14) // **Debugging** 3 ids are used up betwn reparses
+            Parser* pParser = nullptr;
+            if (pProject) pParser = GetParseManager()->GetParserByProject(pProject);
+            if (pParser) pParser->SetStarting_wxID(wxGetCurrentId());
+            #endif
 
             if (pEditor and pClient and pClient->GetLSP_IsEditorParsed(pEditor))
                 pClient->LSP_DidSave(pEditor);
@@ -3336,106 +3344,6 @@ void ClgdCompletion::OnLSP_ProcessTerminated(wxCommandEvent& event)
     }
 
     return;
-}
-//// ----------------------------------------------------------------------------
-//ProcessLanguageClient* ClgdCompletion::CreateNewLanguageServiceProcess(cbProject* pcbProject)
-//// ----------------------------------------------------------------------------
-//{
-//    #if defined(cbDEBUG)
-//    cbAssertNonFatal(pcbProject && "CreateNewLanguageServiceProcess requires a project");
-//    #endif
-//    if (not pcbProject) return nullptr;
-//
-//    // Don't allow a second process to write to the current clangd symbol caches
-//    if (not DoLockClangd_CacheAccess(pcbProject) ) return nullptr;
-//
-//    ProcessLanguageClient* pLSPclient = nullptr;
-//    if (m_LSP_Clients.count(pcbProject) and GetLSPClient(pcbProject))
-//        pLSPclient = m_LSP_Clients[pcbProject];
-//    else
-//    {
-//        pLSPclient = new ProcessLanguageClient(pcbProject);
-//        if (pLSPclient and  pLSPclient->GetLSP_Server_PID() )
-//            CCLogger::Get()->DebugLog("LSP: Started new LSP client/server for "
-//                              + pcbProject->GetFilename() + " @("
-//                              + pLSPclient->LSP_GetTimeHMSM() + ")"
-//                             );
-//    }
-//    if ( (not pLSPclient) or (not pLSPclient->GetLSP_Server_PID()) )
-//    {
-//        if (pLSPclient)
-//            delete pLSPclient;
-//        pLSPclient = nullptr;
-//        DoUnlockClangd_CacheAccess(pcbProject);
-//    }
-//    else
-//    {
-//        m_LSP_Clients[pcbProject] = pLSPclient;
-//        pLSPclient->SetCBProject(pcbProject);
-//        pLSPclient->SetLSP_UserEventID(LSPeventID);
-//        Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
-//        wxFileName cbpName(pcbProject->GetFilename());
-//        wxString rootURI = cbpName.GetPath();
-//
-//        Parser* pParser = GetParseManager()->GetParserByProject(pcbProject);
-//        if (not pParser)
-//        {
-//            wxString msg("CreateNewLanguageServiceProcess() CC pParser is null.");
-//            cbMessageBox(msg, "Error");
-//        }
-//        if (pParser)
-//        {
-//            pParser->SetLSP_Client(pLSPclient);
-//            pLSPclient->SetParser( pParser);
-//        }
-//
-//        pLSPclient->LSP_Initialize(pcbProject);
-//    }
-//
-//    return pLSPclient;
-//}
-// ----------------------------------------------------------------------------
-wxString ClgdCompletion::GetLineTextFromFile(const wxString& file, const int lineNum)
-// ----------------------------------------------------------------------------
-{
-    // Fetch a single line from a text file
-
-    EditorManager* edMan = Manager::Get()->GetEditorManager();
-
-    wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); Dont eat up IDs when not needed
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("GetLineTextFromFileEditor"), wxDefaultPosition, wxSize(0, 0));
-    control->Show(false);
-
-    wxString resultText;
-   switch(1) //once only
-    {
-        default:
-
-        // check if the file is already opened in built-in editor and do search in it
-        cbEditor* ed = edMan->IsBuiltinOpen(file);
-        if (ed)
-            control->SetText(ed->GetControl()->GetText());
-        else // else load the file in the control
-        {
-            EncodingDetector detector(file, false);
-            if (not detector.IsOK())
-            {
-                wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, file));
-                CCLogger::Get()->Log(msg);
-                delete control;
-                return wxString();
-            }
-            control->SetText(detector.GetWxStr());
-        }
-
-            resultText = control->GetLine(lineNum).Trim(true).Trim(false);
-            break;
-    }
-
-    delete control; // done with it
-
-    return resultText;
 }
 // ----------------------------------------------------------------------------
 wxString ClgdCompletion::GetFilenameFromLSP_Response(wxCommandEvent& event)
