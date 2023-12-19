@@ -19,6 +19,8 @@
 ////#include <cbthreadpool.h>
 #include <sdk_events.h>
 #include <cbplugin.h>
+#include <cbStyledTextCtrl.h>
+#include <cbEditor.h>
 #include "searchresultslog.h"
 #include "../doxygen_parser.h"
 
@@ -454,12 +456,6 @@ private:
         return wxString(stdString.c_str(), wxConvUTF8);
     }
 
-    #if defined(MEASURE_wxIDS)
-    // Reset this for the beginning of the measurement //(ph 2023/12/14)
-    int Starting_wxID = wxGetCurrentId(); // **Debugging** //(ph 2023/12/08)
-    void SetStarting_wxID(int startID) {Starting_wxID = startID;}
-    int GetStarting_wxID() { return Starting_wxID;}
-    #endif
 };
 
 #endif // PARSER_H

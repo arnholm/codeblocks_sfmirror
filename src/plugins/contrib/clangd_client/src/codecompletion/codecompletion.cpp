@@ -2541,6 +2541,10 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
 
     // Invoked from menu event "Reparse active project" and Symbols window root context menu "Re-parse now"
 
+    #if defined(MEASURE_wxIDs)
+    CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
+    #endif
+
     ClearReparseConditions();
 
     // ----------------------------------------------------
@@ -2904,11 +2908,9 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             //}
             ClearReparseConditions();
 
-            #if defined(MEASURE_wxIDS)
-            //(ph 2023/12/14) // **Debugging** 3 ids are used up betwn reparses
-            Parser* pParser = nullptr;
-            if (pProject) pParser = GetParseManager()->GetParserByProject(pProject);
-            if (pParser) pParser->SetStarting_wxID(wxGetCurrentId());
+            #if defined(MEASURE_wxIDs)
+            //(ph 2023/12/16) // **Debugging** 3 ids are used up betwn reparses
+            CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__) ;  //(ph 2023/12/16)
             #endif
 
             if (pEditor and pClient and pClient->GetLSP_IsEditorParsed(pEditor))

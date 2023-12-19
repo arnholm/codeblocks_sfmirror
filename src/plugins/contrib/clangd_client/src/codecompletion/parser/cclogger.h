@@ -39,7 +39,10 @@ extern wxString       s_TokenTreeMutex_Owner;     // location of the last tree l
 extern wxString       s_ParserMutex_Owner;        // location of the last parser lock
 extern wxString       m_ClassBrowserBuilderThreadMutex_Owner;
 extern wxString       s_ClassBrowserCaller;
+
+// ----------------------------------------------------------------------------
 class CCLogger
+// ----------------------------------------------------------------------------
 {
 public:
     static CCLogger* Get();
@@ -55,6 +58,49 @@ public:
 
     bool GetExternalLogStatus(){return m_ExternLogActive;}
     void SetExternalLog(bool OnOrOff);
+
+   #if defined(MEASURE_wxIDs)
+    // ----------------------------------------------------
+    // Get Local count (within a function) of wxID usage //(ph 2023/12/16)
+    // ----------------------------------------------------
+    struct ShowLocalUsedwxIDs_t //Get a count of all wxIDs used until a return
+    {
+        int startingID = wxGetCurrentId();
+        int endingID = startingID;
+        wxString funcName ;
+        int lineNum;
+        ShowLocalUsedwxIDs_t(wxString funcNameIn, int lineNumIn)
+        { funcName = funcNameIn; lineNum = lineNumIn;  }
+        ~ShowLocalUsedwxIDs_t()
+        { //dtor
+            endingID = wxGetCurrentId();
+            int usedIDs = endingID-startingID;
+            CCLogger::Get()->DebugLogError(wxString::Format("LocalUsedIDs %d Range[%d:%d] %s:%d ", usedIDs, startingID, endingID, funcName, lineNum));
+        }
+    };
+    // ----------------------------------------------------------------------------
+    //  Get global count of wxID usage
+    //  Get a count of all wxIDs used from the time SetGlobalwxIDStart() is issued
+    // ----------------------------------------------------------------------------
+    int m_GlobalwxIDStart = 0;
+    int m_GlobalwxIDEnd = 0;
+    void SetGlobalwxIDStart(wxString funcName, int lineNum, int startID = wxGetCurrentId())
+    {
+        m_GlobalwxIDStart = startID;
+        DebugLogError(wxString::Format("SetGlobalwxIDStart(%d):\t%s:%d", m_GlobalwxIDStart, funcName, lineNum));
+    }
+    void SetGlobalwxIDEnd(int endID){ m_GlobalwxIDEnd = endID; }
+    void ShowGlobalUsedwxIDs(wxString funcName, int lineNum, int globalwxIDEndParm = wxGetCurrentId())
+    {
+        int startingID = m_GlobalwxIDStart;
+        int endingID = globalwxIDEndParm;
+        int usedIDs = endingID-startingID;
+        if (m_GlobalwxIDStart)
+            CCLogger::Get()->DebugLogError(wxString::Format("GlobalUsedIDs %d range[%d:%d]\t%s:%d", usedIDs, startingID, endingID, funcName, lineNum));
+        else
+            CCLogger::Get()->DebugLogError("CCLogger::Get()->SetGlobalwxIDStart() was never initialized!");
+    };
+   #endif //MEASURE_wxIDs
 
 protected:
     CCLogger();

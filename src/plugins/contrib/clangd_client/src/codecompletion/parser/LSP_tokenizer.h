@@ -18,7 +18,7 @@
 using json = nlohmann::json;
 
 #include "tokenizer.h"
-#include "cbeditor.h"
+//#include "cbeditor.h"
 #include <cbstyledtextctrl.h>
 
 // These comment out because they're define in and conflict with tokenizer.h
@@ -76,7 +76,7 @@ public:
     /** Tokenizer constructor.
      * @param filename the file to be opened.
      */
-    LSP_Tokenizer(TokenTree* tokenTree, const wxString& filename = wxEmptyString);
+    LSP_Tokenizer(TokenTree* tokenTree, cbStyledTextCtrl* pHiddenEditor, const wxString& filename = wxEmptyString);
 
     /** Tokenizer destructor.*/
     ~LSP_Tokenizer();
@@ -96,8 +96,8 @@ public:
     bool InitFromBuffer(const wxString& buffer, const wxString& fileOfBuffer = wxEmptyString,
                         size_t initLineNumber = 0);
 
-    cbStyledTextCtrl* CreateEditor(); //hidden cbEditor to access scintilla support
-    cbStyledTextCtrl* m_pControl;
+    cbStyledTextCtrl* GetParsersHiddenEditor(); //hidden cbEditor to access scintilla support
+    cbStyledTextCtrl* m_pControl = nullptr;     // Set in ctor, do not delete
 
     /** Consume and return the current token string. */
     wxString GetToken();

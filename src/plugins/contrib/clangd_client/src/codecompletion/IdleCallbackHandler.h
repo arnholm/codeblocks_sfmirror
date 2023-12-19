@@ -14,6 +14,7 @@
 
 
 #include "logmanager.h"
+#include "parser/cclogger.h" //(ph 2023/12/16)
 
 #ifdef HAVE_OVERRIDE
     #define wxOVERRIDE override
@@ -29,6 +30,7 @@ class AsyncMethodCallEvent : public wxEvent
 public:
     AsyncMethodCallEvent(wxObject* object)
         //: wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL) //(ph 2023/12/07)
+        //: wxEvent(XRCID("AsyncMethodCallEvent"), wxEVT_ASYNC_METHOD_CALL)
         : wxEvent(XRCID("AsyncMethodCallEvent"), wxEVT_ASYNC_METHOD_CALL)
     {
         SetEventObject(object);
@@ -240,6 +242,10 @@ class IdleCallbackHandler: public wxEvtHandler
         //while (GetIdleCallbackQueue()->size())
         if (GetIdleCallbackQueue()->size())
         {
+            #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
+            CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+            #endif
+
             AsyncMethodCallEvent* pAsyncCall = GetIdleCallbackQueue()->front();
             AsyncMethodCallEvent* pCall =  (AsyncMethodCallEvent*)pAsyncCall->Clone();
             delete(pAsyncCall);

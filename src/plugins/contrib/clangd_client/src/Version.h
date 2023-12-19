@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.100 23/12/15")
+#define VERSION wxT("1.2.101 23/12/18")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,7 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
-//1.2.100   2023/12/11 Halve wxID usage when parsing files and projects
+//1.2.101   2023/12/18 Eliminate wxID usage when (re)parsing files.
+//          Use only 4 wxIDs when (re)parsing projects.
+//1.2.100   2023/12/15 Halve wxID usage when parsing files and projects
 //1.2.99    2023/12/9
 //          Fix crash when ClassBroswer is diabled (parser.cpp 638)
 //1.2.98    2023/12/6-7

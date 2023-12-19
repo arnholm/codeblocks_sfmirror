@@ -141,28 +141,7 @@ namespace
     bool wxFound(size_t result){return result != wxString::npos;}
 
     bool isBusyParsing = false; //(ph 2023/12/02)
-
-    #if defined(MEASURE_wxIDS)
-    // **Debugging** //(ph 2023/12/14)
-    //-int Starting_wxID = 0; //Reinitilied in ctor;
-    //-int Ending_wxID = 0;
-    // --------------------------------------------------------
-    void ShowUsed_wxIDs(int Starting_wxID, int Ending_wxID, wxString funcName, int funcLine)
-    // --------------------------------------------------------
-    {
-        // **Debugging** //(ph 2023/12/08)
-        if (Starting_wxID)
-        {
-            Ending_wxID = wxGetCurrentId();
-            int used_wxIDs = Ending_wxID - Starting_wxID;
-            wxString msg = wxString::Format("Used IDs %d", used_wxIDs);
-            msg += wxString::Format(" Starting:%d Ending:%d %s:%d",Starting_wxID, Ending_wxID, funcName, funcLine);
-            CCLogger::Get()->DebugLogError(msg);
-            Starting_wxID = Ending_wxID;
-        }
-
-    }//endShowUsed_wxIDs
-    #endif
+    std::unique_ptr<cbStyledTextCtrl> ns_pHiddenEditor = nullptr; //reset iin ctor
 
 }//endAnonymous namespace
 // ----------------------------------------------------------------------------
@@ -182,6 +161,17 @@ Parser::Parser(ParseManager* parent, cbProject* project)
 
     ReadOptions();
     ConnectEvents();
+
+    #if defined(MEASURE_wxIDs) //(ph 2023/12/16)
+    CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
+    #endif
+
+    if (not ns_pHiddenEditor.get())
+    {
+        wxSize hiddenSize = wxSize(0,0);
+        ns_pHiddenEditor.reset( new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("ParserHiddenEditor"), wxDefaultPosition, hiddenSize));
+    }
+
 }
 // ----------------------------------------------------------------------------
 Parser::~Parser()
@@ -521,6 +511,10 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         return;
     }
 
+//    #if defined(MEASURE_wxIDs)
+//    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+//    #endif
+
     struct IsBusyParsing_t //(ph 2023/12/02)
     {
         IsBusyParsing_t(){isBusyParsing = true;}
@@ -644,7 +638,6 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         /// No 'return' statements beyond here until TokenTree Unlock !!!
         ///
 
-        // most ParserThreadOptions were copied from m_Options
         LSP_SymbolsParserOptions opts;
 
         //opts.useBuffer             = false;
@@ -673,7 +666,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         bool isLocal = true;
         m_LSP_ParserDone = false;
 
-        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree);
+        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, ns_pHiddenEditor.get()); //(ph 2023/12/18)
         // move semantic legend to associated parser
         pLSP_SymbolsParser->m_SemanticTokensTypes = m_SemanticTokensTypes;
         pLSP_SymbolsParser->m_SemanticTokensModifiers = m_SemanticTokensModifiers;
@@ -987,7 +980,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         return;
     }
 
-    LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree);
+    LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, ns_pHiddenEditor.get()); //(ph 2023/12/18)
 
     // move semantic legends to associated parser
     if (pLSP_SymbolsParser->m_SemanticTokensTypes.size() == 0)
@@ -1134,7 +1127,9 @@ bool Parser::UpdateParsingProject(cbProject* project)
 cbStyledTextCtrl* Parser::GetStaticHiddenEditor(const wxString& filename) //(ph 2023/12/11)
 // ----------------------------------------------------------------------------
 {
-    // Create new hidden editor and load its data
+    // Create hidden editor and load its data. This hidden editor is used
+    // whenever necessary to obtain cbStyledEditor resources.
+    // Only one is allocated to be used by all functions of this parser.
 
     wxString resultText;
     cbStyledTextCtrl* pControl = nullptr;
@@ -1143,11 +1138,15 @@ cbStyledTextCtrl* Parser::GetStaticHiddenEditor(const wxString& filename) //(ph 
     {
         EditorManager* edMan = Manager::Get()->GetEditorManager();
         wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
+
+        // Allocate (only once) a hidden editor to be used by this parser
+        // Doing it here allows zero wxID usage to reparse a file and only 4 wIDs to reparse a project.
         if (pHiddenEditor.get() == nullptr)
             pHiddenEditor.reset( new cbStyledTextCtrl(parent, XRCID("ParserHiddenEditor"), wxDefaultPosition, wxSize(0, 0))); //(ph 2023/12/11)
         pControl = pHiddenEditor.get();
-        pControl->SetText("");
         pControl->Show(false);
+        pControl->SetText("");
+        pControl->UsePopUp(false);
 
         // check if the file is already opened in built-in editor
         cbEditor* ed = edMan->IsBuiltinOpen(filename);
@@ -1470,9 +1469,13 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
 {
     // textDocument/publishDiagnostics
 
+    #if defined(MEASURE_wxIDs)
+    // When no more work to do, show the wxIDs used on any return
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
     if (GetIsShuttingDown()) return;
     if (not GetLSPClient()) return;
-
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     cbEditor* pActiveEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -1542,12 +1545,6 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 pClient->LSP_GetServerFilesParsingDurationTime(pEditor->GetFilename()), remainingToParse);
                 CCLogger::Get()->DebugLog( msg);
                 CCLogger::Get()->Log( msg);
-
-                #if defined(MEASURE_wxIDS)
-                // When no more work to do, show the wxIDs used
-                if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
-                  ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
-                #endif
             }
         }
     }//endif uri
@@ -1597,10 +1594,6 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         CCLogger::Get()->DebugLog(msg);
         CCLogger::Get()->Log(msg);
 
-        #if defined(MEASURE_wxIDS)
-        if (remainingToParse == 0) // **Debugging** //(ph 2023/12/08)
-            ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
-        #endif
     }
 
     // This could be a /publishDiagnostics response from a didClose() request. Idiot server!!
@@ -1832,11 +1825,6 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             // **debugging**
             cbProject* pProject = GetLSPClient()->GetClientsCBProject();
             wxString projectTitle = pProject->GetTitle();
-
-            #if defined(MEASURE_wxIDS)
-            //(ph 2023/12/14) // **Debugging**
-            if (pParser) pParser->SetStarting_wxID(wxGetCurrentId());
-            #endif
 
             GetLSPClient()->LSP_RequestSymbols(pEditor);
         }
@@ -2331,6 +2319,10 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
 void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDs)
+    //CCLogger::ShowLocalUsedwxIDs_t show_LocalwxIDS(__FUNCTION__, __LINE__) ; // **Debugging** //(ph 2023/12/16)
+    #endif
+
     // This is a callback after requesting textDocument/Symbol (request done in OnLSP_DiagnosticsResponse)
 
     if (GetIsShuttingDown() ) return;
@@ -2384,12 +2376,6 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)
     // Didnt we already remove the file in publishDiagnostics response event?
     // But just in case we didnt get here from there...
     pClient->LSP_RemoveFromServerFilesParsing(uriFilename);
-
-    #if defined(MEASURE_wxIDS)
-    // The starting id was set in OnLSP_DiagnosticsResponse() //(ph 2023/12/14)
-    // Search for "SetStarting_wxID("
-    ShowUsed_wxIDs(Starting_wxID, wxGetCurrentId(), __FUNCTION__, __LINE__);
-    #endif
 
     return;
 }

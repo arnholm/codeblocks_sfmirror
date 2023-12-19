@@ -91,7 +91,7 @@ namespace TokenizerConsts
 // maximum macro replacement stack size
 static const size_t s_MaxMacroReplaceDepth = 5;
 
-LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, const wxString& filename) :
+LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, cbStyledTextCtrl* pHiddenEditor, const wxString& filename) : //(ph 2023/12/18)
     m_TokenTree(tokenTree),
     m_Filename(filename),
     m_BufferLen(0),
@@ -122,20 +122,25 @@ LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, const wxString& filename) :
         Init(m_Filename);
 
     m_SemanticTokensIdx = 0;
-    m_pControl =  nullptr;
+    m_pControl =  pHiddenEditor; //(ph 2023/12/18)
 }
 
 // ----------------------------------------------------------------------------
 LSP_Tokenizer::~LSP_Tokenizer()
 // ----------------------------------------------------------------------------
 {
-    if (m_pControl)
-        delete m_pControl;
+    // Do not delete m_pControl, its a unique_ptr in parser.cpp anonymous namespace
 }
 // ----------------------------------------------------------------------------
 bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
+        // most ParserThreadOptions were copied from m_Options
+
     m_Loader = loader;
     BaseInit();
     if ( filename.IsEmpty() )
@@ -180,7 +185,7 @@ bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 
     m_IsOK = true;
 
-    m_pControl = CreateEditor();
+    m_pControl = GetParsersHiddenEditor();
     m_pControl->InsertText(0, GetBufferData());
     // -testing- size_t lineCnt = m_pControl->GetLineCount();
 
@@ -190,6 +195,12 @@ bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 bool LSP_Tokenizer::InitFromBuffer(const wxString& buffer, const wxString& fileOfBuffer, size_t initLineNumber)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
+        // most ParserThreadOptions were copied from m_Options
+
     BaseInit();
 
     m_BufferLen  = buffer.Length();
@@ -203,7 +214,7 @@ bool LSP_Tokenizer::InitFromBuffer(const wxString& buffer, const wxString& fileO
     m_FileIdx = m_TokenTree->GetFileIndex(m_Filename);
 
     // create cbStyledTextCtrl
-    m_pControl = CreateEditor();
+    m_pControl = GetParsersHiddenEditor();
     //-m_pControl->InsertText(0, GetBufferData()); //GetBufferData is file name string
     if (wxFileExists(GetBufferData()))
         //load the data into the m_pControl
@@ -248,8 +259,9 @@ void LSP_Tokenizer::BaseInit()
     m_SemanticTokenModifier   = 0;
 
 }
-
+// ----------------------------------------------------------------------------
 bool LSP_Tokenizer::ReadFile()
+// ----------------------------------------------------------------------------
 {
     bool success = false;
     wxString fileName = wxEmptyString;
@@ -300,7 +312,9 @@ bool LSP_Tokenizer::ReadFile()
 }
 
 // Behaviour consistent with SkipComment
+// ----------------------------------------------------------------------------
 bool LSP_Tokenizer::SkipWhiteSpace()
+// ----------------------------------------------------------------------------
 {
     if (CurrentChar() > _T(' ') || IsEOF())
         return false;
@@ -314,7 +328,9 @@ bool LSP_Tokenizer::SkipWhiteSpace()
     return true;
 }
 
+// ----------------------------------------------------------------------------
 bool LSP_Tokenizer::SkipBackslashBeforeEOL()
+// ----------------------------------------------------------------------------
 {
     if (CurrentChar() == _T('\\'))
     {
@@ -2153,19 +2169,30 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
     SetLastTokenIdx(token->m_Index);
 }
  // ----------------------------------------------------------------------------
- cbStyledTextCtrl* LSP_Tokenizer::CreateEditor()
+ cbStyledTextCtrl* LSP_Tokenizer::GetParsersHiddenEditor() //(ph 2023/12/18)
  // ----------------------------------------------------------------------------
 {
-    // avoid gtk-critical because of sizes less than -1 (can happen with wxAuiNotebook/cbAuiNotebook)
-    wxSize size = m_pControl ? wxDefaultSize : wxDefaultSize;//-GetSize();
-    size.x = 0; //std::max(size.x, -1);
-    size.y = 0; //std::max(size.y, -1);
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
+    // most ParserThreadOptions were copied from m_Options
+
+    if (not m_pControl) //should have been initialized in ctor
+    {
+        cbAssert(m_pControl && "LSP_Tokenizer hidden editor is missing!");
+    }
+
+//    // avoid gtk-critical because of sizes less than -1 (can happen with wxAuiNotebook/cbAuiNotebook)
+//    wxSize size = m_pControl ? wxDefaultSize : wxDefaultSize;//-GetSize();
+//    size.x = 0; //std::max(size.x, -1);
+//    size.y = 0; //std::max(size.y, -1);
 
     //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), wxNewId(), wxDefaultPosition, size);
     // In wx323 the above gets assert id out of range //(ph 2023/12/04)
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("LSP_Tokenizer::CreateEditor()"), wxDefaultPosition, size);
-    control->UsePopUp(false);
+    //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("LSP_Tokenizer::CreateEditor"), wxDefaultPosition, size);
 
+    m_pControl->UsePopUp(false);
     ConfigManager *config = Manager::Get()->GetConfigManager(_T("editor"));
     wxString encodingName = config->Read(_T("/default_encoding"), wxLocale::GetSystemEncodingName());
 //    m_pData->m_encoding = wxFontMapper::GetEncodingFromName(encodingName);
@@ -2173,9 +2200,9 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
 //        m_pData->m_encoding = wxFont::GetDefaultEncoding();
 
     for (int marker = 0 ; marker <= wxSCI_MARKNUM_LASTUNUSED ; ++marker)
-        control->MarkerDefine(marker, wxSCI_MARK_EMPTY);
+        m_pControl->MarkerDefine(marker, wxSCI_MARK_EMPTY);
 
-    return control;
+    return m_pControl;
 }//end CreateEditor
 // ----------------------------------------------------------------------------
 bool LSP_Tokenizer::LSP_ConvertSemanticTokens(json* pJson)

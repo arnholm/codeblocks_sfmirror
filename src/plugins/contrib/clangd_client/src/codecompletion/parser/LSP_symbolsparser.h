@@ -186,7 +186,8 @@ public:
                  const wxString&      bufferOrFilename,
                  bool                 isLocal,
                  LSP_SymbolsParserOptions& LSP_SymbolsParserOptions,
-                 TokenTree*           tokenTree);
+                 TokenTree*           tokenTree,
+                 cbStyledTextCtrl*    pHiddenEditor );
 
     /** LSP_SymbolsParser destructor.*/
     virtual ~LSP_SymbolsParser();
@@ -564,6 +565,7 @@ private:
     // Get the type from the clangd "detail" response entry containing type and arguments
     wxString GetFullTypeFromDetail(const wxString& detail);
 
+    cbStyledTextCtrl* m_pHiddenEditor;
 };
 
 #endif // LSP_SymbolsParser_H

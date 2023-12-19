@@ -1481,24 +1481,6 @@ bool ProcessLanguageClient::DoValidateUTF8data(std::string& strdata)
 void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
 // ----------------------------------------------------------------------------
 {
-
-    #if defined(MEASURE_wxIDS)
-    int startingID = wxGetCurrentId();  //(ph 2023/12/14)
-
-    struct kntids_t
-    {
-        int startid = 0;
-        int endid = 0;
-        kntids_t(int startidin) {startid = startidin;}
-        ~kntids_t()
-        { endid = wxGetCurrentId();
-          if (endid-startid)
-            asm("nop"); /**Debugging**/
-        }
-
-    } kntids(startingID);
-    #endif
-
     // This member event was Connected() in ProcessLanguageClient() constructor;
     // and issued from  transport.h in "loop(MessageHandler &handler)"
     // with event.clientdata set to incoming json data
@@ -1573,6 +1555,7 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
      // delete the wxThreadEvent payload json object. CB patch 1406
      // https://sourceforge.net/p/codeblocks/tickets/1406/ Thanks Christo
     delete pJson;
+
     return;
 }//end OnLSP_Response()
 // ----------------------------------------------------------------------------
@@ -1580,27 +1563,16 @@ void ProcessLanguageClient::OnIDMethod(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     //- unused- json* pJson = (json*)event.GetClientData();
-
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
 }
 // ----------------------------------------------------------------------------
 void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    #if defined(MEASURE_wxIDS)
-    int startingID = wxGetCurrentId();  //(ph 2023/12/14)
-
-    struct kntids_t
-    {
-        int startid = 0;
-        int endid = 0;
-        kntids_t(int startidin) {startid = startidin;}
-        ~kntids_t()
-        { endid = wxGetCurrentId();
-          if (endid-startid)
-            asm("nop"); /**Debugging**/
-        }
-
-    } kntids(startingID);
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
     #endif
 
     json* pJson = (json*)event.GetClientData();
@@ -1708,6 +1680,10 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
 void ProcessLanguageClient::OnIDError(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
     wxCommandEvent lspevt(wxEVT_COMMAND_MENU_SELECTED, GetLSP_UserEventID());
 
     //{"jsonrpc":"2.0","id":"textDocument/declaration","error":{"code":-32600,"message":"not indexed"}}
@@ -1752,6 +1728,10 @@ void ProcessLanguageClient::OnIDError(wxCommandEvent& event)
 void ProcessLanguageClient::OnMethodParams(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
+    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    #endif
+
     wxString methodValue;
     json* pJson = nullptr;
     try
