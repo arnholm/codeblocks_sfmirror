@@ -19,8 +19,8 @@
 ////#include <cbthreadpool.h>
 #include <sdk_events.h>
 #include <cbplugin.h>
-#include <cbStyledTextCtrl.h>
-#include <cbEditor.h>
+#include <cbstyledtextctrl.h>
+#include <cbeditor.h>
 #include "searchresultslog.h"
 #include "../doxygen_parser.h"
 
