@@ -541,7 +541,7 @@ bool LSP_SymbolsParser::InitTokenizer(json* pJson)
         else
         {
             #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-            CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+            //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
             #endif
 
         // most ParserThreadOptions were copied from m_Options
@@ -575,7 +575,7 @@ bool LSP_SymbolsParser::Parse(json* pJson, cbProject* pProject)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
     #endif
 
         // most ParserThreadOptions were copied from m_Options

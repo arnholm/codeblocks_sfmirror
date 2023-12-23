@@ -248,12 +248,14 @@ ParseManager::ParseManager( LSPEventCallbackHandler* pLSPEventSinkHandler ) :
     m_pLSPEventSinkHandler = pLSPEventSinkHandler;
 
     // allocate a global hidden editor used for temporary symbol management //(ph 2023/12/22)
-    // and avoiding massive allocation of wxIDs
+    // to avoid massive allocation of wxIDs
     if (not m_pHiddenEditor.get()) //(ph 2023/12/22)
     {
         m_pHiddenEditor.reset( new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("ParserHiddenEditor"), wxDefaultPosition, wxSize(0,0)));
+        GetHiddenEditor()->Show(false);
+        GetHiddenEditor()->UsePopUp(false);
+        GetHiddenEditor()->SetText("");
     }
-    asm("nop"); /**Debugging**/
 }
 // ----------------------------------------------------------------------------
 ParseManager::~ParseManager()

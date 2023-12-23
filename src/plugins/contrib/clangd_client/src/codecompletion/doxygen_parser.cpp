@@ -718,7 +718,7 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     int semCol    = pParser->GetSemanticTokenColumnNumAt(tokenIdx);
     int semLine   = pParser->GetSemanticTokenLineNumAt(tokenIdx);
     int semMods   = pParser->GetSemanticTokenModifierAt(tokenIdx);
-    if (semLength or semType or semCol or semLength or semMods) {;}//don't show as unused
+    if (semLength or semType or semCol or semMods) {;}//don't show as unused
 
     if (semName.empty())
         return wxString();

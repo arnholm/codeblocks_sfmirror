@@ -503,7 +503,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         return;
     }
 
-//    #if defined(MEASURE_wxIDs)
+//    #if defined(MEASURE_wxIDs) // **Debugging**
 //    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
 //    #endif
 
@@ -733,9 +733,6 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
             or (pClient->LSP_GetServerFilesParsingCount() == 0)
         )
     {
-////        s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__); //(ph 2023/12/05)
-////        m_pParseManager->UpdateClassBrowser();
-
         //Refresh the CC toolbar internal data if this file is the active editors file
         //   ie, if the user is currently looking at this file.
         cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -1329,6 +1326,9 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         CCLogger::Get()->DebugLog(msg);
         msg = wxString::Format("LSP Server is processing %zu remaining files.", pClient->LSP_GetServerFilesParsingCount() );
         CCLogger::Get()->DebugLog(msg);
+        #if defined(MEASURE_wxIDs)
+            CCLogger::Get()->ShowGlobalUsedwxIDs(__FUNCTION__, __LINE__);
+        #endif
     }
 }
 // ----------------------------------------------------------------------------
@@ -1801,8 +1801,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     }
     else if (pEditor == pActiveEditor)
     {
-        // when no diagnostics for active editor clear error markers and clear the log
-        //-GetLSPClient(pEditor)->LSP_GetLog()->Clear(); dont clear the header
+        // when no diagnostics for active editor clear error markers
         pEditor->SetErrorLine(-1);
     }
 
@@ -1815,8 +1814,8 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         if (not lastLSPrequest.Contains("/completion"))
         {
             // **debugging**
-            cbProject* pProject = GetLSPClient()->GetClientsCBProject();
-            wxString projectTitle = pProject->GetTitle();
+            //cbProject* pProject = GetLSPClient()->GetClientsCBProject();
+            //wxString projectTitle = pProject->GetTitle();
 
             GetLSPClient()->LSP_RequestSymbols(pEditor);
         }
@@ -2552,6 +2551,14 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             labelValue.Trim(true).Trim(false); // clangd returning prefixed blank
 
             if (labelValue.empty()) continue; // this happens on Linux clangd ver13
+
+            // Christo Ticket 1441
+            // codecompletion of else doesn't work as expected. On pressing enter, it gives else()
+            // I think the issue is due to InsertTextFormat.Snippet is not implemented.
+            // I workaround this issue with following change by discarding InsertTextFormat.Snippet
+            // FIXME (ph#): Look into supporting InsertTextFormat.Snippet
+            if (valueItems[itemNdx].at("insertTextFormat").get<int>() == 2) continue; //InsertTextFormat.Snippet not supported
+
             // Example code from old CC code:
             // tokens.push_back(CCToken(token->m_Index, token->m_Name + dispStr, token->m_Name, token->m_IsTemp ? 0 : 5, iidx));
             // CCToken(int _id, const wxString& dispNm, int categ = -1) :

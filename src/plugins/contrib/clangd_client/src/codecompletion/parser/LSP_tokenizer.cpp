@@ -136,7 +136,7 @@ bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
     #endif
 
         // most ParserThreadOptions were copied from m_Options
@@ -196,7 +196,7 @@ bool LSP_Tokenizer::InitFromBuffer(const wxString& buffer, const wxString& fileO
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
     #endif
 
         // most ParserThreadOptions were copied from m_Options
@@ -2173,7 +2173,7 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
  // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
     #endif
 
     // most ParserThreadOptions were copied from m_Options

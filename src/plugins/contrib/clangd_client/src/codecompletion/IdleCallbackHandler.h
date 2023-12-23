@@ -243,7 +243,7 @@ class IdleCallbackHandler: public wxEvtHandler
         if (GetIdleCallbackQueue()->size())
         {
             #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-            CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+            //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
             #endif
 
             AsyncMethodCallEvent* pAsyncCall = GetIdleCallbackQueue()->front();
