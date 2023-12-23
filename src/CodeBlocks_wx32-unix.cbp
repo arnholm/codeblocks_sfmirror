@@ -1387,7 +1387,7 @@
 		<Unit filename="plugins/compilergcc/resources/compilers/compiler_lm8-gcc.xml">
 			<Option target="Compiler" />
 		</Unit>
-		<Unit filename="plugins/compilergcc/resources/compilers/compiler_msp432-gcc.xml">
+		<Unit filename="plugins/compilergcc/resources/compilers/compiler_msp430-gcc.xml">
 			<Option target="Compiler" />
 		</Unit>
 		<Unit filename="plugins/compilergcc/resources/compilers/compiler_mw.xml">
@@ -1522,7 +1522,7 @@
 		<Unit filename="plugins/compilergcc/resources/compilers/options_lm8-gcc.xml">
 			<Option target="Compiler" />
 		</Unit>
-		<Unit filename="plugins/compilergcc/resources/compilers/options_msp432-gcc.xml">
+		<Unit filename="plugins/compilergcc/resources/compilers/options_msp430-gcc.xml">
 			<Option target="Compiler" />
 		</Unit>
 		<Unit filename="plugins/compilergcc/resources/compilers/options_msvc10.xml">
