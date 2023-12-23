@@ -141,7 +141,6 @@ namespace
     bool wxFound(size_t result){return result != wxString::npos;}
 
     bool isBusyParsing = false; //(ph 2023/12/02)
-    std::unique_ptr<cbStyledTextCtrl> ns_pHiddenEditor = nullptr; //reset iin ctor
 
 }//endAnonymous namespace
 // ----------------------------------------------------------------------------
@@ -165,13 +164,6 @@ Parser::Parser(ParseManager* parent, cbProject* project)
     #if defined(MEASURE_wxIDs) //(ph 2023/12/16)
     CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
     #endif
-
-    if (not ns_pHiddenEditor.get())
-    {
-        wxSize hiddenSize = wxSize(0,0);
-        ns_pHiddenEditor.reset( new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("ParserHiddenEditor"), wxDefaultPosition, hiddenSize));
-    }
-
 }
 // ----------------------------------------------------------------------------
 Parser::~Parser()
@@ -666,7 +658,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         bool isLocal = true;
         m_LSP_ParserDone = false;
 
-        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, ns_pHiddenEditor.get()); //(ph 2023/12/18)
+        LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, GetParseManager()->GetHiddenEditor()); //(ph 2023/12/22)
         // move semantic legend to associated parser
         pLSP_SymbolsParser->m_SemanticTokensTypes = m_SemanticTokensTypes;
         pLSP_SymbolsParser->m_SemanticTokensModifiers = m_SemanticTokensModifiers;
@@ -980,7 +972,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         return;
     }
 
-    LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, ns_pHiddenEditor.get()); //(ph 2023/12/18)
+    LSP_SymbolsParser* pLSP_SymbolsParser = new LSP_SymbolsParser(this, filename, isLocal, opts, m_TokenTree, GetParseManager()-> GetHiddenEditor()); //(ph 2023/12/22)
 
     // move semantic legends to associated parser
     if (pLSP_SymbolsParser->m_SemanticTokensTypes.size() == 0)

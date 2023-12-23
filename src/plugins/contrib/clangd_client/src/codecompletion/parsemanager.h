@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <wx/event.h>
 
+#include <cbstyledtextctrl.h> //(ph 2023/12/22)
 #include "parsemanager_base.h"
 //-#include "parser/parser_base.h"
 #include "parser/cclogger.h"
@@ -384,6 +385,9 @@ public:
     bool IsDebuggerRunning() {return m_DebuggerIsRunning;} //(ph 2023/11/17)
     void SetDebuggerIsRunning(bool torf) {m_DebuggerIsRunning = torf;}
 
+    // Get pointer to hidden cbStyledTextCtrl //(ph 2023/12/22)
+    cbStyledTextCtrl* GetHiddenEditor(){return m_pHiddenEditor.get();} //(ph 2023/12/22)
+
 protected:
     /** When a Parser is created, we need a full parsing stage including:
      * 1, parse the priority header files firstly.
@@ -679,6 +683,10 @@ private:
 
     bool m_PluginIsShuttingDown = false;
     bool m_DebuggerIsRunning = false;   //(ph 2023/11/17)
+
+    // a global hidden temp cbStyledTextCtrl for symbol/src/line searches
+    // to avoid constantly allocating wxIDs.
+    std::unique_ptr<cbStyledTextCtrl> m_pHiddenEditor = nullptr; //(ph 2023/12/22)
 
 };
 

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.101 23/12/18")
+#define VERSION wxT("1.2.102 23/12/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.102   2023/12/22 Move hidden editor unique_ptr out of namespace and into ParseManager to
+//                     try and eliminate exception on linux. Ticket 1440
 //1.2.101   2023/12/18 Eliminate wxID usage when (re)parsing files.
 //          Use only 4 wxIDs when (re)parsing projects.
 //1.2.100   2023/12/15 Halve wxID usage when parsing files and projects
