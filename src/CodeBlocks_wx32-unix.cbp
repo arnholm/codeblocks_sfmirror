@@ -62,7 +62,7 @@
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="`pkg-config gdk-2.0 --cflags`" />
+					<Add option="`pkg-config gdk-3.0 --cflags`" />
 					<Add option="-D__WX__" />
 					<Add option="-DGTK" />
 					<Add option="-DLINK_LEXERS" />
@@ -2921,6 +2921,9 @@
 		<Unit filename="sdk/scripting/bindings/sc_progress.cpp">
 			<Option target="sdk" />
 		</Unit>
+		<Unit filename="sdk/scripting/bindings/sc_tinyxml.cpp">
+			<Option target="sdk" />
+		</Unit>
 		<Unit filename="sdk/scripting/bindings/sc_util_dialogs.cpp">
 			<Option target="sdk" />
 		</Unit>
@@ -2928,9 +2931,6 @@
 			<Option target="sdk" />
 		</Unit>
 		<Unit filename="sdk/scripting/bindings/sc_wxtypes.cpp">
-			<Option target="sdk" />
-		</Unit>
-		<Unit filename="sdk/scripting/bindings/sc_tinyxml.cpp">
 			<Option target="sdk" />
 		</Unit>
 		<Unit filename="sdk/scripting/bindings/scriptbindings.cpp">
@@ -3805,18 +3805,6 @@
 		<Unit filename="src/dlgaboutplugin.h">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="src/editprojectglobsdlg.cpp">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/editprojectglobsdlg.h">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/manageglobsdlg.cpp">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/manageglobsdlg.h">
-			<Option target="src" />
-		</Unit>
 		<Unit filename="src/editkeywordsdlg.cpp">
 			<Option target="src" />
 		</Unit>
@@ -3827,6 +3815,12 @@
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/editorconfigurationdlg.h">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/editprojectglobsdlg.cpp">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/editprojectglobsdlg.h">
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/environmentsettingsdlg.cpp">
@@ -3863,6 +3857,12 @@
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/main.h">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/manageglobsdlg.cpp">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/manageglobsdlg.h">
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/notebookstyles.cpp">
@@ -4081,10 +4081,10 @@
 		<Unit filename="wxsmith/editprojectglobsdlg.wxs">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="wxsmith/manageglobsdlg.wxs">
+		<Unit filename="wxsmith/goto_file.wxs">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="wxsmith/goto_file.wxs">
+		<Unit filename="wxsmith/manageglobsdlg.wxs">
 			<Option target="src" />
 		</Unit>
 		<Extensions>
