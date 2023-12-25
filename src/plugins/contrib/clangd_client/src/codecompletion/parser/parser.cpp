@@ -2557,7 +2557,8 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             // I think the issue is due to InsertTextFormat.Snippet is not implemented.
             // I workaround this issue with following change by discarding InsertTextFormat.Snippet
             // FIXME (ph#): Look into supporting InsertTextFormat.Snippet
-            if (valueItems[itemNdx].at("insertTextFormat").get<int>() == 2) continue; //InsertTextFormat.Snippet not supported
+            // Revert Ticket 1441, it's eliminating all local coompletion functions //(ph 2023/12/25)
+            //-if (valueItems[itemNdx].at("insertTextFormat").get<int>() == 2) continue; //InsertTextFormat.Snippet not supported
 
             // Example code from old CC code:
             // tokens.push_back(CCToken(token->m_Index, token->m_Name + dispStr, token->m_Name, token->m_IsTemp ? 0 : 5, iidx));
