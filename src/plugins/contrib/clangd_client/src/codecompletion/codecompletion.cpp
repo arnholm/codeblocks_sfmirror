@@ -1759,7 +1759,8 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
         }
 
         wxString tokenArgs;
-        if (clgdCCTokenIdx >= 0)
+        if ( (clgdCCTokenIdx >= 0)
+            and (cccToken.semanticTokenID != LSP_SemanticTokenType::Unknown) )
         {
             wxString tknName = cccToken.displayName.BeforeFirst('(', &tokenArgs);
             bool addParentheses = not tokenArgs.empty();
