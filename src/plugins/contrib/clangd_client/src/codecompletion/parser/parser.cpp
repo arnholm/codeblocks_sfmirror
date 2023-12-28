@@ -2576,12 +2576,12 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             ccctoken.name = labelValue;
             if (filterText.size()) ccctoken.name = filterText;
             ccctoken.semanticTokenID = -1;
+            ccctoken.semanticTokenType = -1;
 
             //The ccctoken.id index is returned to us if item is selected at popup display time.
             if (useDocumentationPopup)
                 ccctoken.semanticTokenID = FindSemanticTokenEntryFromCompletion(ccctoken, labelKind);
-            if ( (not useDocumentationPopup) or (ccctoken.semanticTokenID == -1) )
-                ccctoken.semanticTokenID = ConvertLSPCompletionSymbolKindToSemanticTokenType(labelKind);
+            ccctoken.semanticTokenType = ConvertLSPCompletionSymbolKindToSemanticTokenType(labelKind); //(ph 2023/12/27)
 
             ccctoken.id = v_CompletionTokens.size();
             v_CompletionTokens.push_back(ccctoken);

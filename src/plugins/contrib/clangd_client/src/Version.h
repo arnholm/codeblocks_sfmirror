@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.105 23/12/26")
+#define VERSION wxT("1.2.105 23/12/27")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.105   2023/12/27 For completions, add support for var ClgdCCToken::semanticTokenType.
+//                     Disable support for clangd snippets (for now).
+//                     This is phase-2 (final) to fix ticket 1441. Thanks Christo.
 //1.2.104   2023/12/26 For completions, examine the LSP_SemanticTokenType to avoid appending parens to non-functions.
 //                     This is a phase-1 fix for Ticket 1441
 //1.2.103   2023/12/25 Revert Ticket 1441 changes; It's elimination all completion local functions.

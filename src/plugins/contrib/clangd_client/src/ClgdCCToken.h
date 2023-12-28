@@ -13,8 +13,11 @@ struct ClgdCCToken : public cbCodeCompletionPlugin::CCToken
     ClgdCCToken(int ccId, wxString& ccDispNm, wxString& ccNm, int ccWeight=5, int ccCateg=-1)
       : CCToken(ccId, ccDispNm, ccNm, ccWeight, ccCateg)
     {}
+    // note that a semanticToken comes from a textDocument/semanticTokens response, not a textDocument/Completion response
+    // and indexes into the m_SemanticTokensVec array;
     int semanticTokenID = -1;
-
+    // Semantic token type converted from a clangd completion label kind by ConvertLSPCompletionSymbolKindToSemanticTokenType(labelKind);
+    int semanticTokenType = -1;
 };
 
 #endif //CLGDCCTOKEN_H
