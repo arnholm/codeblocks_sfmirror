@@ -1398,7 +1398,8 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         if (   stc->IsString(style)
             || stc->IsComment(style)
             || stc->IsCharacter(style)
-            || stc->IsPreprocessor(style) )
+            //- || stc->IsPreprocessor(style) ) allow preprocessors //(ph 2023/12/28)
+             )
         {
             return tokens; //For styles above ignore this request
         }
@@ -1657,7 +1658,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
                 s_TokenTreeMutex_Owner = wxString();
                 // -----------------------------------------------
             }
-            //-m_CompletionTokens.clear(); //Say we're done with the completion list
+            //- do not m_CompletionTokens.clear(); //Say we're done with the completion list
             // ^^^ Don't clear the cache, user may ask for html documentation
         }
 
@@ -1667,7 +1668,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
     if (not pProject) pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pProject) return;
 
-    wxString itemText = CodeCompletionHelper::AutocompGetName(token.displayName);
+    wxString itemText = CodeCompletionHelper::AutocompGetName(token.displayName); //clips to "(: "
     cbStyledTextCtrl* stc = ed->GetControl();
 
     int curPos = stc->GetCurrentPos();
@@ -1682,6 +1683,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
 
     if (stc->IsPreprocessor(stc->GetStyleAt(curPos)))
     {
+        itemText = token.displayName; //(ph 2023/12/28) use the unclipped text
         curPos = stc->GetLineEndPosition(stc->GetCurrentLine()); // delete rest of line
         bool addComment = (itemText == wxT("endif"));
         for (int i = stc->GetCurrentPos(); i < curPos; ++i)
@@ -1720,18 +1722,18 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
             }
         }
         needReparse = true;
-
-        int   pos = startPos - 1;
-        wxChar ch = stc->GetCharAt(pos);
-        while (ch != _T('<') && ch != _T('"') && ch != _T('#') && (pos>0))
-            ch = stc->GetCharAt(--pos);
-        if (ch == _T('<') || ch == _T('"'))
-            startPos = pos + 1;
-
-        if (ch == _T('"'))
-            itemText << _T('"');
-        else if (ch == _T('<'))
-            itemText << _T('>');
+        //(ph 2023/12/28) remove this code after some time using 1.2.106; clangd presents the snippet correctly
+        //        int   pos = startPos - 1;
+        //        wxChar ch = stc->GetCharAt(pos);
+        //        while (ch != _T('<') && ch != _T('"') && ch != _T('#') && (pos>0))
+        //            ch = stc->GetCharAt(--pos);
+        //        if (ch == _T('<') || ch == _T('"'))
+        //            startPos = pos + 1;
+        //
+        //        if (ch == _T('"'))
+        //            itemText << _T('"');
+        //        else if (ch == _T('<'))
+        //            itemText << _T('>');
     }
     else
     {
@@ -4123,7 +4125,6 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
                     // Add this non-project file to the proxyParser
                     pProjectFile = GetParseManager()->GetProxyProject()->AddFile(0, pEd->GetFilename(), true, false);
                     pEd->SetProjectFile(pProjectFile);
-                    //(2023/02/11) experimental optimization
                     // Add file to ProxyParser to get parsed
                     GetParseManager()->GetProxyParser()->AddFile(pEd->GetFilename(), GetParseManager()->GetProxyProject());
                     return;
