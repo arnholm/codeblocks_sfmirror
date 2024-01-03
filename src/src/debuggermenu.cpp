@@ -391,13 +391,15 @@ void DebuggerMenuHandler::RebuildMenus()
         DebuggerManager::ConfigurationVector::const_iterator itConf = configs.begin();
         std::advance(itConf, m_activeDebugger->GetIndexOfActiveConfig());
 
-        if (itConf != configs.end())
-            menu->Check((*itConf)->GetMenuId(), true);
-        else
-            menu->Check(configs.front()->GetMenuId(), true);
+        const int id = (itConf != configs.end()) ? (*itConf)->GetMenuId() : configs.front()->GetMenuId();
+        if (menu->FindItem(id))
+            menu->Check(id, true);
     }
     else
-        menu->Check(idMenuDebugActiveTargetsDefault, true);
+    {
+        if (menu->FindItem(idMenuDebugActiveTargetsDefault))
+            menu->Check(idMenuDebugActiveTargetsDefault, true);
+    }
 }
 
 void DebuggerMenuHandler::BuildContextMenu(wxMenu &menu, const wxString& word_at_caret, bool is_running)
