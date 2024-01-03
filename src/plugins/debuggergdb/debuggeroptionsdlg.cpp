@@ -58,7 +58,7 @@ class DebuggerConfigurationPanel : public wxPanel
             if (dlg.ShowModal() == wxID_OK)
             {
                 wxString newPath = dlg.GetPath();
-                XRCCTRL(*this, "txtExecutablePath", wxTextCtrl)->ChangeValue(newPath);
+                XRCCTRL(*this, "txtExecutablePath", wxTextCtrl)->SetValue(newPath);
             }
         }
 
