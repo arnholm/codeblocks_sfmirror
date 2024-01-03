@@ -4176,9 +4176,6 @@
 		<Unit filename="src/resources/ask_assocs.xrc">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="src/resources/ask_global_uservar.xrc">
-			<Option target="src" />
-		</Unit>
 		<Unit filename="src/resources/debugger_menu.xrc">
 			<Option target="src" />
 		</Unit>
