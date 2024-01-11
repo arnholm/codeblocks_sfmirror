@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.106 23/12/28")
+#define VERSION wxT("1.2.107 24/01/11")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.107   2024/01/11 Appy patch 1444 Thanks tigerbeard
 //1.2.106   2023/12/28 Fix completions to not ignore clangd #preprocessor suggestions
 //1.2.105   2023/12/27 For completions, add support for var ClgdCCToken::semanticTokenType.
 //                     Disable support for clangd snippets (for now).
