@@ -1147,7 +1147,9 @@ void ClassBrowser::SelectSavedItem()
             item = m_CCTreeCtrl->GetNextSibling(item);
     }
 
-    if (parent.IsOk() && m_ClassBrowserBuilderThread && m_Parser && m_Parser->ClassBrowserOptions().treeMembers)
+    //-if (parent.IsOk() && m_ClassBrowserBuilderThread && m_Parser && m_Parser->ClassBrowserOptions().treeMembers) tigerbeard ticket 1447
+    // Ticket 1447 allows the top tree to update when the bottom tree is disabled.
+    if (parent.IsOk() && m_ClassBrowserBuilderThread && m_Parser)
     {
         m_CCTreeCtrl->SelectItem(parent);
         m_CCTreeCtrl->EnsureVisible(parent);
