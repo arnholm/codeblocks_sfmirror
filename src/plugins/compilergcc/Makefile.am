@@ -6,7 +6,11 @@ AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		-I$(top_srcdir)/src/sdk/wxscintilla/include \
 		-I$(top_srcdir)/src/plugins/compilergcc/depslib/src
 
-AM_CXXFLAGS = -DDEPSLIB_UNIX
+if CODEBLOCKS_NT
+AM_CPPFLAGS += -DDEPSLIB_WINDOWS
+else
+AM_CPPFLAGS += -DDEPSLIB_UNIX
+endif
 
 pluginlibdir = $(pkglibdir)/plugins
 

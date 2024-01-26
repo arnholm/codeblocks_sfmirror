@@ -263,6 +263,15 @@ case $WX_BASENAME in
     ;;
     *wx_msw*)
         AC_MSG_RESULT(wxMSW)
+
+		if test "x$BUILD_SPELLCHECKER_TRUE" = "x" ; then
+			if test "x$HAVE_PKG_CONFIG" = "xyes"; then
+				PKG_CHECK_MODULES([HUNSPELL], [hunspell])
+			fi
+		fi
+
+		CB_HUNSPELL_CFLAGS="$HUNSPELL_CFLAGS"
+		CB_HUNSPELL_LIBS="$HUNSPELL_LIBS"
     ;;
     *wx_mac*)
         AC_MSG_RESULT(wxMac)

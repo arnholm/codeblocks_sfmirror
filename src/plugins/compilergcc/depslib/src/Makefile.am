@@ -1,4 +1,10 @@
-AM_CFLAGS = -Wall -g -DDEPSLIB_UNIX -fno-strict-aliasing
+AM_CFLAGS = -Wall -g -fno-strict-aliasing
+
+if CODEBLOCKS_NT
+AM_CFLAGS += -DDEPSLIB_WINDOWS
+else
+AM_CFLAGS += -DDEPSLIB_UNIX
+endif
 
 noinst_LTLIBRARIES = libdepslib.la
 

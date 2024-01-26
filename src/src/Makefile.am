@@ -69,6 +69,11 @@ codeblocks_SOURCES = app.cpp \
 			virtualbuildtargetsdlg.cpp \
 			watchesdlg.cpp
 
+if CODEBLOCKS_NT
+codeblocks_LDADD += -lexchndl -lcomctl32 -lgdi32
+codeblocks_SOURCES += associations.cpp
+endif
+
 noinst_HEADERS = app.h \
 			appglobals.h \
 			backtracedlg.h \
