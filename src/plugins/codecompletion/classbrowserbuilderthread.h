@@ -170,7 +170,7 @@ public:
      * @param evtHandler parent window notification events will sent to
      * @param sem a semaphore reference which is used synchronize the GUI and the builder thread
      */
-    ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem);
+    ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem, wxSemaphore& semCallAfter);
 
     /** destructor */
     ~ClassBrowserBuilderThread() override;
@@ -199,7 +199,11 @@ public:
     /** Check if the thread is busy
      * @return @a true if busy
      */
-    bool IsBusy() const {return m_Busy;}
+    /** Increment or decrement the thread busy count
+     * @return @a busy count
+     */
+    int SetIsBusy(bool torf, EThreadJob threadJob);
+    int GetIsBusy(); //just return the count
 
 protected:
      void* Entry() override;
@@ -281,6 +285,7 @@ protected:
 private:
     wxEvtHandler*    m_Parent;
     wxSemaphore&     m_ClassBrowserSemaphore;
+    wxSemaphore&     m_ClassBrowserCallAfterSemaphore;
 
     /** Some member functions of ClassBrowserBuilderThread such as ExpandItem() can either be called
      * from the main GUI thread(in ClassBrowser::OnTreeItemExpanding(wxTreeEvent& event)), or be
@@ -317,7 +322,6 @@ private:
 
     ExpandedItemVect m_ExpandedVect;
     bool             m_InitDone;
-    bool             m_Busy;
 
     /** if this variable is true, the Entry() function should return */
     bool             m_TerminationRequested;

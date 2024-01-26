@@ -216,7 +216,6 @@ private:
     /** CC's own debug logger, to handle log event sent from other worker threads or itself(the main
      * GUI thread), the log messages will be printed in the "Code::Blocks Debug" log panel.
      */
-    void OnCCDebugLogger(CodeBlocksThreadEvent& event);
 
     /** batch parsing start event
      * this event usually be fired when an Parser object try to start parsing tasks in the thread

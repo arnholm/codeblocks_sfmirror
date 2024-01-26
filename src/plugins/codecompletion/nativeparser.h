@@ -245,6 +245,19 @@ public:
     /** update the class browser tree */
     void UpdateClassBrowser();
 
+    //(ph 2024/01/25)
+    bool GetParsingIsBusy(){ return m_ParsingIsBusy;}
+    void SetParsingIsBusy(bool trueOrFalse){ m_ParsingIsBusy = trueOrFalse;}
+    //(ph 2024/01/25)
+    bool GetUpdatingClassBrowserBusy(){ return m_UpdateClassBrowserViewBusy;}
+    void SetUpdatingClassBrowserBusy(bool trueOrFalse){ m_UpdateClassBrowserViewBusy = trueOrFalse;}
+    //(ph 2024/01/25)
+    bool GetClassBrowserViewIsStale() {return m_ClassBrowserViewIsStale;}
+    void SetClassBrowserViewIsStale(bool trueOrFalse) {m_ClassBrowserViewIsStale = trueOrFalse;}
+    //(ph 2024/01/25)
+    void SetSymbolsWindowHasFocus(bool trueOrFalse){ m_SymbolsWindowHasFocus = trueOrFalse;}
+    bool GetSymbolsWindowHasFocus(){return m_SymbolsWindowHasFocus;}
+
 protected:
     /** When a Parser is created, we need a full parsing stage including:
      * 1, parse the priority header files firstly.
@@ -507,6 +520,13 @@ private:
     wxString          m_LastPROC;
     int               m_LastResult;
     /* CC Search Member Variables => END */
+
+    //(ph 2024/01/25)
+    bool m_ParsingIsBusy = false;
+    bool m_UpdateClassBrowserViewBusy = false;
+    bool m_ClassBrowserViewIsStale = true;
+    bool m_SymbolsWindowHasFocus = false;
+
 };
 
 #endif // NATIVEPARSER_H

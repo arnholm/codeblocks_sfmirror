@@ -6,7 +6,8 @@
 #ifndef NATIVEPARSERBASE_H
 #define NATIVEPARSERBASE_H
 
-#include <wx/wxcrt.h> // wxIsalnum
+//-#include <wx/wxcrt.h> // wxIsalnum causes clangd parse errors
+#include <ctype.h>       // using this instead
 
 #include <map>
 #include <queue>
@@ -484,7 +485,8 @@ protected:
     {
         return (   (startAt >= 0)
                 && ((size_t)startAt < line.Len())
-                && (   (wxIsalnum(line.GetChar(startAt)))
+                //-&& (   (wxIsalnum(line.GetChar(startAt))) //(ph 2024/01/25)
+                && (   (isalnum(line.GetChar(startAt)))
                     || (line.GetChar(startAt) == '_') ) );
     }
 
@@ -499,7 +501,8 @@ protected:
     {
         while (   (startAt >= 0)
                && ((size_t)startAt < line.Len())
-               && (   (wxIsalnum(line.GetChar(startAt)))
+               //-&& (   (wxIsalnum(line.GetChar(startAt))) //(ph 2024/01/25)
+               && (   (isalnum(line.GetChar(startAt)))
                    || (line.GetChar(startAt) == '_') ) )
             --startAt;
         return startAt;
@@ -508,7 +511,8 @@ protected:
     {
         if (   (startAt > 0)
             && ((size_t)startAt < line.Len() + 1)
-            && (   (wxIsalnum(line.GetChar(startAt - 1)))
+            //-&& (   (wxIsalnum(line.GetChar(startAt - 1))) //(ph 2024/01/25)
+            && (   (isalnum(line.GetChar(startAt - 1)))
                 || (line.GetChar(startAt - 1) == '_') ) )
             --startAt;
         return startAt;

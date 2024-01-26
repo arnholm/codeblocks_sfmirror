@@ -382,14 +382,14 @@ CodeCompletion::CodeCompletion() :
 {
     // CCLogger are the log event bridges, those events were finally handled by its parent, here
     // it is the CodeCompletion plugin ifself.
-    CCLogger::Get()->Init(this, g_idCCLogger, g_idCCDebugLogger);
+    CCLogger::Get()->Init(this, g_idCCLogger, g_idCCErrorLogger, g_idCCDebugLogger, g_idCCDebugErrorLogger); //(ph 2024/01/25)
 
     if (!Manager::LoadResource(_T("codecompletion.zip")))
         NotifyMissingFile(_T("codecompletion.zip"));
 
     // handling events send from CCLogger
-    Connect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)     );
-    Connect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCDebugLogger));
+    //-Connect(g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
+    Connect(g_idCCLogger,g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)); //(ph 2024/01/25)
 
     // the two events below were generated from NativeParser, as currently, CodeCompletionPlugin is
     // set as the next event handler for m_NativeParser, so it get chance to handle them.
@@ -410,8 +410,8 @@ CodeCompletion::CodeCompletion() :
 
 CodeCompletion::~CodeCompletion()
 {
-    Disconnect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
-    Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCDebugLogger));
+    Disconnect(g_idCCLogger,g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
+    //-Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)); //(ph 2024/01/25)
     Disconnect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserStart));
     Disconnect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserEnd));
 
@@ -2409,20 +2409,30 @@ void CodeCompletion::OnEditorClosed(CodeBlocksEvent& event)
     event.Skip();
 }
 
+// ----------------------------------------------------------------------------
 void CodeCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
+// ----------------------------------------------------------------------------
 {
-    if (!Manager::IsAppShuttingDown())
+    if (Manager::IsAppShuttingDown()) return;
+
+    if (event.GetId() == g_idCCErrorLogger)
+        Manager::Get()->GetLogManager()->LogError(event.GetString());
+    else if (event.GetId() == g_idCCLogger)
         Manager::Get()->GetLogManager()->Log(event.GetString());
+    else if (event.GetId() == g_idCCDebugLogger)
+     Manager::Get()->GetLogManager()->DebugLog(event.GetString());
+    else if (event.GetId() == g_idCCDebugErrorLogger)
+     Manager::Get()->GetLogManager()->DebugLogError(event.GetString());
+
 }
 
-void CodeCompletion::OnCCDebugLogger(CodeBlocksThreadEvent& event)
-{
-    if (!Manager::IsAppShuttingDown())
-        Manager::Get()->GetLogManager()->DebugLog(event.GetString());
-}
-
+// ----------------------------------------------------------------------------
 void CodeCompletion::OnParserStart(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
 {
+    //-CCLogger::Get()->DebugLogError("---- ParserStart ----"); //(ph 2024/01/25)
+    CCLogger::Get()->DebugLog("---- ParserStart ----"); //(ph 2024/01/25)
+
     cbProject*                project = static_cast<cbProject*>(event.GetClientData());
     ParserCommon::ParserState state   = static_cast<ParserCommon::ParserState>(event.GetInt());
     // Parser::OnBatchTimer will send this Parser Start event
@@ -2446,10 +2456,16 @@ void CodeCompletion::OnParserStart(wxCommandEvent& event)
         cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
         if (m_NativeParser.GetProjectByEditor(editor) == project)
             EnableToolbarTools(false);
+
+
     }
+    m_NativeParser.SetParsingIsBusy(true); //(ph 2024/01/25)
+    m_NativeParser.SetClassBrowserViewIsStale(true); //(ph 2024/01/25)
 }
 
+// ----------------------------------------------------------------------------
 void CodeCompletion::OnParserEnd(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
 {
     EditorManager* edMan = Manager::Get()->GetEditorManager();
     cbEditor* editor = edMan->GetBuiltinActiveEditor();
@@ -2471,8 +2487,16 @@ void CodeCompletion::OnParserEnd(wxCommandEvent& event)
         m_NeedsBatchColour = false;
     }
 
+    m_NativeParser.SetParsingIsBusy(false);
+    m_NativeParser.SetClassBrowserViewIsStale(true); //(ph 2024/01/25)
+    if (m_NativeParser.GetSymbolsWindowHasFocus())
+        m_NativeParser.UpdateClassBrowser();
+
+    //CCLogger::Get()->DebugLogError("---- Parser End ----"); //(ph 2024/01/25)
+    CCLogger::Get()->DebugLog("---- Parser End ----"); //(ph 2024/01/25)
+
     event.Skip();
-}
+}//end OnParserEnd
 
 void CodeCompletion::OnSystemHeadersThreadMessage(CodeBlocksThreadEvent& event)
 {

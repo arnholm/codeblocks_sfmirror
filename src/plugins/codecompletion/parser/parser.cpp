@@ -72,7 +72,9 @@
     #define TRACE2(format, args...)
 #endif
 
+// ----------------------------------------------------------------------------
 namespace ParserCommon
+// ----------------------------------------------------------------------------
 {
     static const int PARSER_BATCHPARSE_TIMER_DELAY           = 300;
     static const int PARSER_BATCHPARSE_TIMER_RUN_IMMEDIATELY = 10;
@@ -95,7 +97,9 @@ namespace ParserCommon
 
 }// namespace ParserCommon
 
+// ----------------------------------------------------------------------------
 Parser::Parser(wxEvtHandler* parent, cbProject* project) :
+    // ----------------------------------------------------------------------------
     m_Parent(parent),
     m_Project(project),
     m_UsingCache(false),
@@ -270,7 +274,9 @@ void Parser::AddParse(const wxString& filename)
     CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex)
 }
 
+// ----------------------------------------------------------------------------
 bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
+// ----------------------------------------------------------------------------
 {
     // most ParserThreadOptions was copied from m_Options
     ParserThreadOptions opts;
@@ -323,6 +329,14 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
         // if m_NeedsReparse is true, thus means we need to load the file content from the editor
         // buffer instead of the hard disk.
         opts.loader = Manager::Get()->GetFileManager()->Load(filename, m_NeedsReparse);
+
+        //(ph 2024/01/26)
+        cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+        if (pProject)
+        {
+            if (pProject->GetFileByFilename(filename, /*isRelative*/false))
+                CCLogger::Get()->DebugLog("Parsing: " + filename); //(ph 2024/01/26)
+        }
 
         // we are going to parse this file, so create a ParserThread
         ParserThread* thread = new ParserThread(this, filename, isLocal, opts, m_TokenTree);
@@ -700,7 +714,9 @@ void Parser::OnReparseTimer(wxTimerEvent& event)
     event.Skip();
 }
 
+// ----------------------------------------------------------------------------
 void Parser::OnBatchTimer(cb_unused wxTimerEvent& event)
+// ----------------------------------------------------------------------------
 {
     if (Manager::IsAppShuttingDown())
         return;

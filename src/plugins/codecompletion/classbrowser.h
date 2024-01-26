@@ -101,12 +101,16 @@ public:
     void UpdateSash();
 
     /** Called from the worker thread using CallAfter() */
-    void BuildTreeStartOrStop(bool start);
+    void BuildTreeStartOrStop(bool start, EThreadJob threadJob);
     void SelectTargetTree(bool top);
     void TreeOperation(ETreeOperator op, CCTreeItem* item);
     void SaveSelectedItem();
     void SelectSavedItem();
     void ReselectItem();
+
+    /** Determine if the mouse in withing the Symbols tab windows //(ph 2024/01/25)
+    */
+    void OnClassBrowserSetFocus(wxFocusEvent& event);
 
 private:
     /** handler for the mouse double click on a tree item, we usually make a jump to the
@@ -235,6 +239,7 @@ private:
      *  post the semaphore, the waiting thread start doing the job
      */
     wxSemaphore                m_ClassBrowserSemaphore;
+    wxSemaphore                m_ClassBrowserCallAfterSemaphore;
 
     /** a wxThread used to build the wxTreeCtrl for the top and bottom in the class(symbol) browser
      *  because it always take many seconds to build the trees, so those work were delegated to a

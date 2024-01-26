@@ -323,9 +323,12 @@ cbProject* NativeParser::GetCurrentProject()
     return project;
 }
 
+// ----------------------------------------------------------------------------
 bool NativeParser::Done()
+// ----------------------------------------------------------------------------
 {
     bool done = true;
+
     for (ParserList::const_iterator it = m_ParserList.begin(); it != m_ParserList.end(); ++it)
     {
         if (!it->second->Done())
@@ -2447,7 +2450,9 @@ void NativeParser::OnParserStart(wxCommandEvent& event)
     TRACE(_T("NativeParser::OnParserStart: Leave"));
 }
 
+// ----------------------------------------------------------------------------
 void NativeParser::OnParserEnd(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
 {
     TRACE(_T("NativeParser::OnParserEnd: Enter"));
 
@@ -2502,7 +2507,7 @@ void NativeParser::OnParserEnd(wxCommandEvent& event)
     // both NativeParser and CodeCompletion class need to handle this event
     event.Skip();
     TRACE(_T("NativeParser::OnParserEnd: Leave"));
-}
+}//end OnParserEnd
 
 void NativeParser::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
 {

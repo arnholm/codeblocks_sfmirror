@@ -31,17 +31,28 @@ extern bool           g_EnableDebugTrace; //!< Toggles tracing into file.
 extern const wxString g_DebugTraceFile;   //!< Trace file name (if above is enabled).
 extern long           g_idCCAddToken;
 extern long           g_idCCLogger;
+extern long           g_idCCErrorLogger;
 extern long           g_idCCDebugLogger;
+extern long           g_idCCDebugErrorLogger;
 
+// ----------------------------------------------------------------------------
 class CCLogger
+// ----------------------------------------------------------------------------
 {
 public:
     static CCLogger* Get();
 
-    void Init(wxEvtHandler* parent, int logId, int debugLogId, int addTokenId = -1);
+    //-void Init(wxEvtHandler* parent, int logId, int debugLogId, int addTokenId = -1);
+    void Init(wxEvtHandler* parent, int logId, int logErrorId, int debugLogId, int debugLogErrorId, int addTokenId = -1);
+
     void AddToken(const wxString& msg);
-    void Log(const wxString& msg);
-    void DebugLog(const wxString& msg);
+
+    void Log(const wxString& msg, int id=g_idCCLogger);
+    void LogError(const wxString& msg);
+
+    //void DebugLog(const wxString& msg);
+    void DebugLog(const wxString& msg, int id=g_idCCDebugLogger);
+    void DebugLogError(const wxString& msg);
 
 protected:
     CCLogger();
@@ -56,8 +67,12 @@ protected:
 private:
     wxEvtHandler* m_Parent;
     int           m_LogId;
+    int           m_LogErrorId;
     int           m_DebugLogId;
+    int           m_DebugLogErrorId;
     int           m_AddTokenId;
+
+    ConfigManager* m_pCfgMgr = nullptr;    //config manager
 };
 
 // For tracking, either uncomment:
