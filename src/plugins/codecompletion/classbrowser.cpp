@@ -25,6 +25,7 @@
     #include <wx/tipwin.h>
     #include <wx/xrc/xmlres.h>
 
+    #include <cbauibook.h>
     #include <cbeditor.h>
     #include <cbproject.h>
     #include <configmanager.h>

@@ -42,7 +42,6 @@ class CCLogger
 public:
     static CCLogger* Get();
 
-    //-void Init(wxEvtHandler* parent, int logId, int debugLogId, int addTokenId = -1);
     void Init(wxEvtHandler* parent, int logId, int logErrorId, int debugLogId, int debugLogErrorId, int addTokenId = -1);
 
     void AddToken(const wxString& msg);

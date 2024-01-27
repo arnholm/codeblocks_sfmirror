@@ -50,8 +50,11 @@ namespace CCTestAppGlobal
     extern wxArrayString s_filesParsed;
 }// CCTestAppGlobal
 
-int idCCLogger   = wxNewId();
-int idCCAddToken = wxNewId();
+long idCCLogger           = wxNewId();
+long idCCErrorLogger      = wxNewId();
+long idCCDebugLogger      = wxNewId();
+long idCCDebugErrorLogger = wxNewId();
+long idCCAddToken         = wxNewId();
 
 const int C_FOLDING_MARGIN = 3; // as in C::B (fwiw...)
 
@@ -63,8 +66,12 @@ BEGIN_EVENT_TABLE(CCTestFrame, wxFrame)
     EVT_FIND_REPLACE    (wxID_ANY,     CCTestFrame::OnFindDialog)
     EVT_FIND_REPLACE_ALL(wxID_ANY,     CCTestFrame::OnFindDialog)
     EVT_FIND_CLOSE      (wxID_ANY,     CCTestFrame::OnFindDialog)
-    EVT_MENU            (idCCLogger,   CCTestFrame::OnCCLogger  )
-    EVT_MENU            (idCCAddToken, CCTestFrame::OnCCAddToken)
+
+    EVT_MENU(g_idCCLogger,           CCTestFrame::OnCCLogger)
+    EVT_MENU(g_idCCErrorLogger,      CCTestFrame::OnCCLogger)
+    EVT_MENU(g_idCCDebugLogger,      CCTestFrame::OnCCLogger)
+    EVT_MENU(g_idCCDebugErrorLogger, CCTestFrame::OnCCLogger)
+    EVT_MENU(g_idCCAddToken,         CCTestFrame::OnCCAddToken)
 END_EVENT_TABLE()
 
 CCTestFrame::CCTestFrame(const wxString& main_file) :
@@ -136,31 +143,23 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
     m_Control = new wxScintilla(panParserInput,wxID_ANY,wxDefaultPosition,wxDefaultSize);
     bszParserInput->Add(m_Control, 1, wxEXPAND, 5);
     panParserInput->SetSizer(bszParserInput);
-    bszParserInput->Fit(panParserInput);
-    bszParserInput->SetSizeHints(panParserInput);
     panParserOutput = new wxPanel(m_ParserCtrl, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     bszParserOutput = new wxBoxSizer(wxVERTICAL);
     m_LogCtrl = new wxTextCtrl(panParserOutput, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH2|wxHSCROLL, wxDefaultValidator, _T("wxID_ANY"));
     m_LogCtrl->SetMinSize(wxSize(640,250));
     bszParserOutput->Add(m_LogCtrl, 1, wxEXPAND, 5);
     panParserOutput->SetSizer(bszParserOutput);
-    bszParserOutput->Fit(panParserOutput);
-    bszParserOutput->SetSizeHints(panParserOutput);
     panParserSearchTree = new wxPanel(m_ParserCtrl, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     bszParserSearchTree = new wxBoxSizer(wxVERTICAL);
     m_TreeCtrl = new wxTextCtrl(panParserSearchTree, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH2|wxHSCROLL, wxDefaultValidator, _T("wxID_ANY"));
     m_TreeCtrl->SetMinSize(wxSize(640,150));
     bszParserSearchTree->Add(m_TreeCtrl, 1, wxEXPAND, 5);
     panParserSearchTree->SetSizer(bszParserSearchTree);
-    bszParserSearchTree->Fit(panParserSearchTree);
-    bszParserSearchTree->SetSizeHints(panParserSearchTree);
     panCompletionTest = new wxPanel(m_ParserCtrl, wxID_ANY, wxPoint(274,5), wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     bszCompletionTest = new wxBoxSizer(wxHORIZONTAL);
     m_CompletionTestCtrl = new wxTextCtrl(panCompletionTest, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_RICH2|wxHSCROLL, wxDefaultValidator, _T("wxID_ANY"));
     bszCompletionTest->Add(m_CompletionTestCtrl, 1, wxALL|wxEXPAND, 5);
     panCompletionTest->SetSizer(bszCompletionTest);
-    bszCompletionTest->Fit(panCompletionTest);
-    bszCompletionTest->SetSizeHints(panCompletionTest);
     m_ParserCtrl->AddPage(panParserInput, _("Parser input"), true);
     m_ParserCtrl->AddPage(panParserOutput, _("Parser output"), false);
     m_ParserCtrl->AddPage(panParserSearchTree, _("Parser search tree"), false);
@@ -198,23 +197,22 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
     m_StatuBar->SetFieldsCount(1,__wxStatusBarWidths_1);
     m_StatuBar->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(m_StatuBar);
-    m_OpenFile = new wxFileDialog(this, _("Select Test Source File"), _("."), wxEmptyString, _("*.cpp;*.h"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
-    m_SaveFile = new wxFileDialog(this, _("Select file"), _("."), _("log.txt"), _("*.txt"), wxFD_SAVE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
-    bsz_main->Fit(this);
+    m_OpenFile = new wxFileDialog(this, _("Select Test Source File"), _T("."), wxEmptyString, _("*.cpp;*.h"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
+    m_SaveFile = new wxFileDialog(this, _("Select file"), _T("."), _("log.txt"), _("*.txt"), wxFD_SAVE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
     bsz_main->SetSizeHints(this);
     Center();
 
-    Connect(wxID_TEST_SINGLE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCTestFrame::OnTestSingle);
-    Connect(wxID_PARSE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCTestFrame::OnParse);
-    Connect(wxID_PRINT_TREE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCTestFrame::OnPrintTree);
-    Connect(wxID_SAVE_TEST_RESULT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCTestFrame::OnSaveTestResultClick);
-    Connect(wxID_OPEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuOpenSelected);
-    Connect(wxID_REFRESH,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuReparseSelected);
-    Connect(wxID_SAVE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuSaveSelected);
-    Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuQuitSelected);
-    Connect(wxID_FIND,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuFindSelected);
-    Connect(wxID_TOKEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuTokenSelected);
-    Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&CCTestFrame::OnMenuAboutSelected);
+    Connect(wxID_TEST_SINGLE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnTestSingle));
+    Connect(wxID_PARSE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnParse));
+    Connect(wxID_PRINT_TREE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnPrintTree));
+    Connect(wxID_SAVE_TEST_RESULT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnSaveTestResultClick));
+    Connect(wxID_OPEN,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuOpenSelected));
+    Connect(wxID_REFRESH,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuReparseSelected));
+    Connect(wxID_SAVE,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuSaveSelected));
+    Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuQuitSelected));
+    Connect(wxID_FIND,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuFindSelected));
+    Connect(wxID_TOKEN,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuTokenSelected));
+    Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuAboutSelected));
     //*)
 
     // redirect the wxLogMessage to the text ctrl of the frame
@@ -239,7 +237,7 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
                             gcc_base + mingwver + wxT("\\include")                                                    + wxT("\n"));
 
 
-    CCLogger::Get()->Init(this, idCCLogger, idCCLogger, idCCAddToken);
+    CCLogger::Get()->Init(this, idCCLogger, idCCErrorLogger, idCCDebugLogger, idCCDebugErrorLogger, idCCAddToken);
     m_StatuBar->SetStatusText(_("Ready!"));
 
     InitControl();
@@ -249,6 +247,8 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
 CCTestFrame::~CCTestFrame()
 {
     //(*Destroy(CCTestFrame)
+    m_OpenFile->Destroy();
+    m_SaveFile->Destroy();
     //*)
     delete m_FRDlg;
 }

@@ -17,8 +17,8 @@
     #include <wx/utils.h>    // wxWindowDisabler
 
     //(*InternalHeaders(CCDebugInfo)
-    #include <wx/string.h>
     #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 
     #include <cbeditor.h>
@@ -142,54 +142,54 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     m_Token(token)
 {
     //(*Initialize(CCDebugInfo)
-    wxStaticText* lblParent;
-    wxFlexGridSizer* FlexGridSizer1;
-    wxStaticText* lblArgs;
-    wxPanel* Panel1;
-    wxBoxSizer* BoxSizer3;
-    wxStaticLine* StaticLine2;
-    wxButton* btnGoParent;
-    wxStaticText* lblID;
     wxBoxSizer* BoxSizer10;
-    wxStaticText* lblIsOp;
-    wxStaticText* lblName;
-    wxBoxSizer* BoxSizer7;
-    wxStaticText* lblKind;
-    wxStaticText* lblAncestors;
     wxBoxSizer* BoxSizer13;
-    wxStaticText* lblDescendants;
-    wxBoxSizer* BoxSizer2;
-    wxPanel* Panel2;
-    wxButton* btnFind;
-    wxStaticText* lblIsConst;
-    wxBoxSizer* BoxSizer9;
-    wxStaticText* lblIsLocal;
-    wxButton* btnGoAsc;
-    wxStaticLine* StaticLine1;
-    wxBoxSizer* BoxSizer4;
-    wxStaticText* lblChildren;
-    wxPanel* Panel3;
-    wxStaticText* lblImplfile;
-    wxBoxSizer* BoxSizer8;
-    wxButton* btnGoDesc;
     wxBoxSizer* BoxSizer1;
-    wxStaticText* lblIsTemp;
-    wxStaticText* lblScope;
-    wxNotebook* Notebook1;
-    wxStaticText* lblArgsStripped;
-    wxStaticText* lblFullType;
-    wxStaticText* lblDeclFile;
-    wxButton* btnGoDecl;
-    wxStaticText* lblNameSpace;
-    wxStaticText* lblUserData;
-    wxButton* btnGoImpl;
-    wxStaticText* StaticText29;
-    wxStaticText* lblTemplateArg;
+    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer6;
-    wxStdDialogButtonSizer* StdDialogButtonSizer1;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer9;
+    wxButton* btnFind;
+    wxButton* btnGoAsc;
     wxButton* btnGoChildren;
+    wxButton* btnGoDecl;
+    wxButton* btnGoDesc;
+    wxButton* btnGoImpl;
+    wxButton* btnGoParent;
+    wxFlexGridSizer* FlexGridSizer1;
+    wxNotebook* Notebook1;
+    wxPanel* Panel1;
+    wxPanel* Panel2;
+    wxPanel* Panel3;
+    wxStaticLine* StaticLine1;
+    wxStaticLine* StaticLine2;
+    wxStaticText* StaticText29;
+    wxStaticText* lblAncestors;
+    wxStaticText* lblArgs;
+    wxStaticText* lblArgsStripped;
     wxStaticText* lblBaseType;
+    wxStaticText* lblChildren;
+    wxStaticText* lblDeclFile;
+    wxStaticText* lblDescendants;
+    wxStaticText* lblFullType;
+    wxStaticText* lblID;
+    wxStaticText* lblImplfile;
+    wxStaticText* lblIsConst;
+    wxStaticText* lblIsLocal;
     wxStaticText* lblIsNoExcept;
+    wxStaticText* lblIsOp;
+    wxStaticText* lblIsTemp;
+    wxStaticText* lblKind;
+    wxStaticText* lblName;
+    wxStaticText* lblNameSpace;
+    wxStaticText* lblParent;
+    wxStaticText* lblScope;
+    wxStaticText* lblTemplateArg;
+    wxStaticText* lblUserData;
+    wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     Create(parent, wxID_ANY, _("Code-completion debug tool"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL, _T("wxID_ANY"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -199,7 +199,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
     StaticText29 = new wxStaticText(Panel1, wxID_ANY, _("Find:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     BoxSizer4->Add(StaticText29, 0, wxALIGN_CENTER_VERTICAL, 5);
-    txtFilter = new wxTextCtrl(Panel1, ID_TEXTCTRL1, _("*"), wxDefaultPosition, wxSize(401,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    txtFilter = new wxTextCtrl(Panel1, ID_TEXTCTRL1, _T("*"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     BoxSizer4->Add(txtFilter, 1, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     btnFind = new wxButton(Panel1, ID_BUTTON1, _("Find"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
     btnFind->SetDefault();
@@ -274,7 +274,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
     txtParent = new wxStaticText(Panel1, ID_STATICTEXT24, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT24"));
     BoxSizer7->Add(txtParent, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoParent = new wxButton(Panel1, ID_BUTTON4, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
+    btnGoParent = new wxButton(Panel1, ID_BUTTON4, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
     BoxSizer7->Add(btnGoParent, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer7, 0, wxEXPAND, 0);
     lblChildren = new wxStaticText(Panel1, wxID_ANY, _("Children:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -282,7 +282,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     cmbChildren = new wxComboBox(Panel1, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX3"));
     BoxSizer8->Add(cmbChildren, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoChildren = new wxButton(Panel1, ID_BUTTON5, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON5"));
+    btnGoChildren = new wxButton(Panel1, ID_BUTTON5, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
     BoxSizer8->Add(btnGoChildren, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer8, 0, wxEXPAND, 0);
     lblAncestors = new wxStaticText(Panel1, wxID_ANY, _("Ancestors:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -290,7 +290,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
     cmbAncestors = new wxComboBox(Panel1, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX2"));
     BoxSizer6->Add(cmbAncestors, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoAsc = new wxButton(Panel1, ID_BUTTON3, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
+    btnGoAsc = new wxButton(Panel1, ID_BUTTON3, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
     BoxSizer6->Add(btnGoAsc, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer6, 0, wxEXPAND, 0);
     lblDescendants = new wxStaticText(Panel1, wxID_ANY, _("Descendants:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -298,7 +298,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
     cmbDescendants = new wxComboBox(Panel1, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
     BoxSizer5->Add(cmbDescendants, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoDesc = new wxButton(Panel1, ID_BUTTON2, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    btnGoDesc = new wxButton(Panel1, ID_BUTTON2, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
     BoxSizer5->Add(btnGoDesc, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer5, 0, wxEXPAND, 0);
     lblDeclFile = new wxStaticText(Panel1, wxID_ANY, _("Decl. filename:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -306,7 +306,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
     txtDeclFile = new wxStaticText(Panel1, ID_STATICTEXT26, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT26"));
     BoxSizer11->Add(txtDeclFile, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoDecl = new wxButton(Panel1, ID_BUTTON7, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON7"));
+    btnGoDecl = new wxButton(Panel1, ID_BUTTON7, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
     BoxSizer11->Add(btnGoDecl, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer11, 0, wxEXPAND, 0);
     lblImplfile = new wxStaticText(Panel1, wxID_ANY, _("Impl. filename:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -314,7 +314,7 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
     txtImplFile = new wxStaticText(Panel1, ID_STATICTEXT28, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT28"));
     BoxSizer12->Add(txtImplFile, 1, wxALIGN_CENTER_VERTICAL, 0);
-    btnGoImpl = new wxButton(Panel1, ID_BUTTON8, _("Go"), wxDefaultPosition, wxSize(36,23), 0, wxDefaultValidator, _T("ID_BUTTON8"));
+    btnGoImpl = new wxButton(Panel1, ID_BUTTON8, _("Go"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
     BoxSizer12->Add(btnGoImpl, 0, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer1->Add(BoxSizer12, 0, wxEXPAND, 0);
     lblUserData = new wxStaticText(Panel1, wxID_ANY, _("User data:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
@@ -323,29 +323,21 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     FlexGridSizer1->Add(txtUserData, 0, wxALIGN_TOP, 0);
     BoxSizer2->Add(FlexGridSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     Panel1->SetSizer(BoxSizer2);
-    BoxSizer2->Fit(Panel1);
-    BoxSizer2->SetSizeHints(Panel1);
     Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     lstFiles = new wxListBox(Panel2, ID_LISTBOX1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
     BoxSizer3->Add(lstFiles, 1, wxALL|wxEXPAND, 5);
     Panel2->SetSizer(BoxSizer3);
-    BoxSizer3->Fit(Panel2);
-    BoxSizer3->SetSizeHints(Panel2);
     Panel3 = new wxPanel(Notebook1, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
     BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
     lstDirs = new wxListBox(Panel3, ID_LISTBOX2, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX2"));
     BoxSizer9->Add(lstDirs, 1, wxALL|wxEXPAND, 5);
     Panel3->SetSizer(BoxSizer9);
-    BoxSizer9->Fit(Panel3);
-    BoxSizer9->SetSizeHints(Panel3);
     Panel4 = new wxPanel(Notebook1, ID_PANEL4, wxPoint(170,6), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
     BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
     lstMacros = new wxListBox(Panel4, ID_LISTBOX3, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX3"));
     BoxSizer13->Add(lstMacros, 1, wxALL|wxEXPAND, 5);
     Panel4->SetSizer(BoxSizer13);
-    BoxSizer13->Fit(Panel4);
-    BoxSizer13->SetSizeHints(Panel4);
     Notebook1->AddPage(Panel1, _("Tokens"), false);
     Notebook1->AddPage(Panel2, _("Files list"), false);
     Notebook1->AddPage(Panel3, _("Search dirs"), false);
@@ -364,19 +356,18 @@ CCDebugInfo::CCDebugInfo(wxWindow* parent, ParserBase* parser, Token* token) :
     StdDialogButtonSizer1->Realize();
     BoxSizer1->Add(StdDialogButtonSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
     Center();
 
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnFindClick);
-    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoParentClick);
-    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoChildrenClick);
-    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoAscClick);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoDescClick);
-    Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoDeclClick);
-    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnGoImplClick);
-    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CCDebugInfo::OnSave);
-    Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CCDebugInfo::OnInit);
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnFindClick));
+    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoParentClick));
+    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoChildrenClick));
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoAscClick));
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoDescClick));
+    Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoDeclClick));
+    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnGoImplClick));
+    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCDebugInfo::OnSave));
+    Connect(wxID_ANY,wxEVT_INIT_DIALOG,wxInitDialogEventHandler(CCDebugInfo::OnInit));
     //*)
 }
 
