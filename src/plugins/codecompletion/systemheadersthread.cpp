@@ -202,6 +202,7 @@ void* SystemHeadersThread::Entry()
             wxPostEvent(m_Parent, evt);
         }
 
+        wxLogNull NoLog; //Don't error out on lock systems dirs or files
         HeaderDirTraverser traverser(this, m_SystemHeadersThreadCS, m_SystemHeadersMap, dirs[i]);
         dir.Traverse(traverser, wxEmptyString, wxDIR_FILES | wxDIR_DIRS);
 
