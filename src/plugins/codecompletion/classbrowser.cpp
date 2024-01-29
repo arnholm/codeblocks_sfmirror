@@ -1198,8 +1198,6 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
             jobType = "Undefined";
     }
 
-    bool bottomTreeEnabled = m_Parser->ClassBrowserOptions().treeMembers;
-
     if (start)
     {
         if (m_ClassBrowserBuilderThread) //m_ClassBrowserBuilderThread->GetIsBusy();
@@ -1225,6 +1223,7 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
 
     //    // **Debugging**
     //    wxString startOrStop = start ? "start" : "stop";
+    //    bool bottomTreeEnabled = m_Parser->ClassBrowserOptions().treeMembers;
     //    CCLogger::Get()->DebugLogError(wxString::Format("%s: Bottom(%s) %s %s",
     //                __FUNCTION__,
     //                bottomTreeEnabled?"Enabled":"Disabled",
