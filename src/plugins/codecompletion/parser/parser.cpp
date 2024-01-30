@@ -334,7 +334,8 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
         cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
         if (pProject)
         {
-            if (pProject->GetFileByFilename(filename, /*isRelative*/false))
+            bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
+            if (canLog and pProject->GetFileByFilename(filename, /*isRelative*/false))
                 CCLogger::Get()->DebugLog("Parsing: " + filename); //(ph 2024/01/26)
         }
 

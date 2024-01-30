@@ -28,6 +28,11 @@ long           g_idCCErrorLogger      = wxNewId();
 long           g_idCCDebugLogger      = wxNewId();
 long           g_idCCDebugErrorLogger = wxNewId();
 
+#define CC_GLOBAL_DEBUG_OUTPUT 0 //(ph 2024/01/29)
+// I cannot get CC_GLOBAL_DEBUG_OUTPUT set to 0.
+// It screws up pch when defined in the project settings
+// and does not work when set locally here.
+
 // Set CC_GLOBAL_DEBUG_OUTPUT via #define in the project options to 0:
 // --> No debugging output for CC will be generated (this is the default)
 // Set CC_GLOBAL_DEBUG_OUTPUT via #define in the project options to 1:

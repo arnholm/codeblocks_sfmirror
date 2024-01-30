@@ -1971,6 +1971,8 @@ bool NativeParser::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cb
     if (!compiler)
         return false;
 
+    bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
+
     if (parser->Options().platformCheck && !compiler->SupportsCurrentPlatform())
     {
         TRACE(_T("NativeParser::AddCompilerPredefinedMacrosGCC: Not supported on current platform!"));
@@ -2006,8 +2008,9 @@ bool NativeParser::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cb
         for (size_t i = 0; i < output.Count(); ++i)
             gccDefs += output[i] + _T("\n");
 
-        CCLogger::Get()->DebugLog(_T("NativeParser::AddCompilerPredefinedMacrosGCC: Caching predefined macros for compiler '")
-                                  + cpp_compiler + _T("':\n") + gccDefs);
+        if (canLog)
+            CCLogger::Get()->DebugLog(_T("NativeParser::AddCompilerPredefinedMacrosGCC: Caching predefined macros for compiler '")
+                                   + cpp_compiler + _T("':\n") + gccDefs);
     }
 
     defs = gccDefsMap[cpp_compiler];
@@ -2244,6 +2247,7 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
     wxString cpp_compiler = cpp_path + sep + _T("bin") + sep + cpp_executable;
     Manager::Get()->GetMacrosManager()->ReplaceMacros(cpp_compiler);
+   bool canLog =  Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
 
     // keep the gcc compiler path's once if found across C::B session
     // makes opening workspaces a *lot* faster by avoiding endless calls to the compiler
@@ -2300,7 +2304,8 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
 
         dirs[cpp_compiler].Add(fname.GetPath());
 
-        CCLogger::Get()->DebugLog(_T("NativeParser::GetGCCCompilerDirs: Caching GCC default include dir: ") + fname.GetPath());
+        if(canLog)
+            CCLogger::Get()->DebugLog(_T("NativeParser::GetGCCCompilerDirs: Caching GCC default include dir: ") + fname.GetPath());
     }
 
     TRACE(_T("NativeParser::GetGCCCompilerDirs: Leave"));

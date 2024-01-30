@@ -2420,7 +2420,11 @@ void CodeCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
     else if (event.GetId() == g_idCCLogger)
         Manager::Get()->GetLogManager()->Log(event.GetString());
     else if (event.GetId() == g_idCCDebugLogger)
-     Manager::Get()->GetLogManager()->DebugLog(event.GetString());
+    {
+        bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
+        if (canLog)
+            Manager::Get()->GetLogManager()->DebugLog(event.GetString());
+    }
     else if (event.GetId() == g_idCCDebugErrorLogger)
      Manager::Get()->GetLogManager()->DebugLogError(event.GetString());
 
@@ -2430,8 +2434,9 @@ void CodeCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
 void CodeCompletion::OnParserStart(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    //-CCLogger::Get()->DebugLogError("---- ParserStart ----"); //(ph 2024/01/25)
-    CCLogger::Get()->DebugLog("---- ParserStart ----"); //(ph 2024/01/25)
+    bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
+    if (canLog)
+        CCLogger::Get()->DebugLog("---- ParserStart ----"); //(ph 2024/01/25)
 
     cbProject*                project = static_cast<cbProject*>(event.GetClientData());
     ParserCommon::ParserState state   = static_cast<ParserCommon::ParserState>(event.GetInt());
@@ -2492,8 +2497,9 @@ void CodeCompletion::OnParserEnd(wxCommandEvent& event)
     if (m_NativeParser.GetSymbolsWindowHasFocus())
         m_NativeParser.UpdateClassBrowser();
 
-    //CCLogger::Get()->DebugLogError("---- Parser End ----"); //(ph 2024/01/25)
-    CCLogger::Get()->DebugLog("---- Parser End ----"); //(ph 2024/01/25)
+    bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
+    if (canLog)
+        CCLogger::Get()->DebugLog("---- Parser End ----"); //(ph 2024/01/25)
 
     event.Skip();
 }//end OnParserEnd

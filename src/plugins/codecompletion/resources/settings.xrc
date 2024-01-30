@@ -415,6 +415,15 @@
 											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 										</object>
+										<!-- Enable CC debugging begin -->
+										<object class="sizeritem">
+											<object class="wxCheckBox" name="chkCCDebugLogging">
+												<label>Enable Debug Logging</label>
+											</object>
+											<flag>wxALL|wxALIGN_LEFT</flag>
+											<border>5</border>
+										</object>
+										 <!-- Enable CC debugging end -->
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>

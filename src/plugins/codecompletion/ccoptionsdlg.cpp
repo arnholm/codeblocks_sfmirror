@@ -132,6 +132,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, NativeParser* np, CodeCompletion* c
     // Page "Symbol browser"
     XRCCTRL(*this, "chkNoSB",        wxCheckBox)->SetValue(!cfg->ReadBool(_T("/use_symbols_browser"), true));
     XRCCTRL(*this, "chkFloatCB",     wxCheckBox)->SetValue(cfg->ReadBool(_T("/as_floating_window"), false));
+    XRCCTRL(*this, "chkCCDebugLogging",        wxCheckBox)->SetValue(cfg->ReadBool(_T("/CCDebugLogging"),   false));
 
     // The toolbar section
     wxCheckBox *scopeFilter = XRCCTRL(*this, "chkScopeFilter", wxCheckBox);
@@ -224,6 +225,7 @@ void CCOptionsDlg::OnApply()
     cfg->Write(_T("/header_ext"),        XRCCTRL(*this, "txtCCFileExtHeader", wxTextCtrl)->GetValue());
     cfg->Write(_T("/empty_ext"),  (bool) XRCCTRL(*this, "chkCCFileExtEmpty",  wxCheckBox)->GetValue());
     cfg->Write(_T("/source_ext"),        XRCCTRL(*this, "txtCCFileExtSource", wxTextCtrl)->GetValue());
+    cfg->Write(_T("/CCDebugLogging"),    XRCCTRL(*this, "chkCCDebugLogging",  wxCheckBox)->GetValue());
 
     // Page "Symbol browser"
     cfg->Write(_T("/use_symbols_browser"),      (bool)!XRCCTRL(*this, "chkNoSB",        wxCheckBox)->GetValue());
@@ -341,6 +343,7 @@ void CCOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     XRCCTRL(*this, "txtCCFileExtHeader",      wxTextCtrl)->Enable(en);
     XRCCTRL(*this, "chkCCFileExtEmpty",       wxCheckBox)->Enable(en);
     XRCCTRL(*this, "txtCCFileExtSource",      wxTextCtrl)->Enable(en);
+    XRCCTRL(*this, "chkCCDebugLogging",       wxCheckBox)->Enable(en);
 
     // Page "Symbol browser"
     en = !XRCCTRL(*this, "chkNoSB",           wxCheckBox)->GetValue();

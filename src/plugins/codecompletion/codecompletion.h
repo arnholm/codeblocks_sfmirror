@@ -553,3 +553,8 @@ private:
 };
 
 #endif // CODECOMPLETION_H
+
+//Version
+//1.0.5 24/01/29 2024/01/29 Enable/Disable CC DebugLogging via chkbox in C/C++ Parser(adv) tab
+//1.0.3 24/01/25 Fixed and stress tested crashes caused by invalid pointers in CodeBrowser.
+
