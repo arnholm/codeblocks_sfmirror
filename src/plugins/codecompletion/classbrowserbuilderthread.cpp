@@ -327,7 +327,7 @@ void ClassBrowserBuilderThread::ExpandGUIItem()
         ExpandItem(m_targetItem);
         AddItemChildrenToGuiTree(m_CCTreeTop, m_targetItem, true);
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpExpandCurrent, nullptr);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
     }
 }
 
@@ -1190,7 +1190,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
         if (top)
         {
             m_Parent->CallAfter(&ClassBrowser::ReselectItem);
-            m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+            m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
         }
 
         return;
@@ -1205,40 +1205,40 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
     if (top)
     {
         m_Parent->CallAfter(&ClassBrowser::SaveSelectedItem);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
     }
 
     m_Parent->CallAfter(&ClassBrowser::SelectTargetTree, top);
-    m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+    m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
     m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpClear, nullptr);
-    m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+    m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
     CCTreeItem* sourceRoot = localTree->GetRootItem();
     if (sourceRoot)
     {
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpAddRoot, sourceRoot);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
         AddItemChildrenToGuiTree(localTree, sourceRoot, true);
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, top ? ClassBrowser::OpExpandRoot : ClassBrowser::OpExpandAll, nullptr);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
     }
 
     if (top)
     {
         m_Parent->CallAfter(&ClassBrowser::SelectSavedItem);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
     }
     else
     {
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpShowFirst, nullptr);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
     }
 
     m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpEnd, nullptr);
-    m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+    m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 }
 
 // Copies all children of parent under destination's current node in the GUI tree
@@ -1252,7 +1252,7 @@ void ClassBrowserBuilderThread::AddItemChildrenToGuiTree(CCTree* localTree, CCTr
             break;
 
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpAddChild, child);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
         // This code replaced by the semaphore.Wait() above //(ph 2024/01/25)
         //- The semaphore prevents flooding message queue. The timeout is needed when C::B shuts down so the thread can exit
@@ -1262,7 +1262,7 @@ void ClassBrowserBuilderThread::AddItemChildrenToGuiTree(CCTree* localTree, CCTr
             AddItemChildrenToGuiTree(localTree, child, recursive);
 
         m_Parent->CallAfter(&ClassBrowser::TreeOperation, ClassBrowser::OpGoUp, nullptr);
-        m_ClassBrowserCallAfterSemaphore.Wait(); // wait for ClassBrowser to execute
+        m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
     }
 }
 
