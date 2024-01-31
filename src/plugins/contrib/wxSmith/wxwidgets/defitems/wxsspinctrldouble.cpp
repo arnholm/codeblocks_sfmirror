@@ -98,5 +98,5 @@ void wxsSpinCtrlDouble::OnEnumWidgetProperties(cb_unused long Flags)
     WXS_FLOAT(wxsSpinCtrlDouble, Min, _("Min"), _T("min"), 0)
     WXS_FLOAT(wxsSpinCtrlDouble, Max, _("Max"), _T("max"), 100)
     WXS_FLOAT(wxsSpinCtrlDouble, Initial, _("Initial"), _T("initial"), 0)
-    WXS_FLOAT(wxsSpinCtrlDouble, Increment, _("Increment"), _T("increment"), 1)
+    WXS_FLOAT(wxsSpinCtrlDouble, Increment, _("Increment"), _T("increment"), 0.01)
 }
