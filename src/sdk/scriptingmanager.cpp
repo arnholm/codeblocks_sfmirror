@@ -45,8 +45,8 @@
 
 static_assert(std::is_same<cbHSQUIRRELVM, HSQUIRRELVM>::value, "Types don't match");
 
-template<> ScriptingManager* Mgr<ScriptingManager>::instance = nullptr;
-template<> bool  Mgr<ScriptingManager>::isShutdown = false;
+template<> ScriptingManager* DLLIMPORT Mgr<ScriptingManager>::instance = nullptr;
+template<> bool DLLIMPORT Mgr<ScriptingManager>::isShutdown = false;
 
 static wxString s_ScriptOutput;
 static wxString s_ScriptErrors;

@@ -33,9 +33,11 @@ libclangd_client_la_LDFLAGS = \
 
 libclangd_client_la_LIBADD = \
 			../../../sdk/libcodeblocks.la \
-			-lutil \
-			$(WX_LIBS) \
-			$(CB_TINYXML_LIBS)
+			$(WX_LIBS)
+
+if ! CODEBLOCKS_NT
+libclangd_client_la_LIBADD += -lutil
+endif
 
 libclangd_client_la_SOURCES = \
 			src/ClangLocator.cpp \

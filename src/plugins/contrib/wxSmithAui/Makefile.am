@@ -14,8 +14,7 @@ libwxSmithAui_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undef
 
 libwxSmithAui_la_LIBADD = ../../../sdk/libcodeblocks.la \
 		       ../wxSmith/libwxsmithlib.la \
-		       $(WX_LIBS) \
-		       $(CB_TINYXML_LIBS)
+		       $(WX_LIBS)
 
 EXTRA_DIST = $(srcdir)/images/*.xpm \
 		$(srcdir)/images/*.xcf \

@@ -201,7 +201,7 @@ private:
     cbSearchResultsLog *m_SearchResultLog;
 };
 
-template <class MgrT> class DLLIMPORT Mgr
+template <class MgrT> class Mgr
 {
     static MgrT *instance;
     static bool isShutdown;

@@ -32,8 +32,8 @@
 #include "filefilters.h"
 #include "newfromtemplatedlg.h"
 
-template<> TemplateManager* Mgr<TemplateManager>::instance = nullptr;
-template<> bool  Mgr<TemplateManager>::isShutdown = false;
+template<> TemplateManager* DLLIMPORT Mgr<TemplateManager>::instance = nullptr;
+template<> bool DLLIMPORT Mgr<TemplateManager>::isShutdown = false;
 
 TemplateManager::TemplateManager()
 {

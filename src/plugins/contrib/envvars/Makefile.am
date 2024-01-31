@@ -11,8 +11,7 @@ pluginlib_LTLIBRARIES = libenvvars.la
 libenvvars_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefined -avoid-version
 
 libenvvars_la_LIBADD = ../../../sdk/libcodeblocks.la \
-			$(WX_LIBS) \
-			$(CB_TINYXML_LIBS)
+			$(WX_LIBS)
 
 libenvvars_la_SOURCES = envvars.cpp \
                         envvars_cfgdlg.cpp \

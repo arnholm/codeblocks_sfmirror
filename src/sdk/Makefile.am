@@ -13,9 +13,13 @@ AM_CPPFLAGS = $(WX_CXXFLAGS) \
 			-I$(top_srcdir)/src/sdk/mozilla_chardet/include/xpcom/base \
 			-I$(top_srcdir)/src/sdk/mozilla_chardet/include/xpcom/glue
 
+if CODEBLOCKS_NT
+AM_CPPFLAGS += -DEXPORT_LIB -DEXPORT_EVENTS -DWXMAKINGDLL_SCI
+endif
+
 lib_LTLIBRARIES = libcodeblocks.la
 
-libcodeblocks_la_LDFLAGS = -version-info @CODEBLOCKS_VERSION_INFO@
+libcodeblocks_la_LDFLAGS = -no-undefined -version-info @CODEBLOCKS_VERSION_INFO@
 
 libcodeblocks_la_LIBADD = scripting/bindings/libsqbindings.la \
 			wxscintilla/libwxscintilla.la \
@@ -24,6 +28,10 @@ libcodeblocks_la_LIBADD = scripting/bindings/libsqbindings.la \
 			$(CB_GLIB2_LIBS) \
 			$(CB_TINYXML_LIBS) \
 			$(CB_SQUIRREL_LIBS)
+
+if CODEBLOCKS_NT
+libcodeblocks_la_LIBADD += -lgdi32
+endif
 
 libcodeblocks_la_SOURCES = annoyingdialog.cpp \
 						autodetectcompilers.cpp \

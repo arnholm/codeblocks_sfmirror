@@ -36,8 +36,8 @@
 //#include "filefilters.h"
 #include "filegroupsandmasks.h"
 
-template<> ProjectManager* Mgr<ProjectManager>::instance = nullptr;
-template<> bool  Mgr<ProjectManager>::isShutdown = false;
+template<> ProjectManager* DLLIMPORT Mgr<ProjectManager>::instance = nullptr;
+template<> bool DLLIMPORT Mgr<ProjectManager>::isShutdown = false;
 
 // static
 bool ProjectManager::s_CanShutdown = true;

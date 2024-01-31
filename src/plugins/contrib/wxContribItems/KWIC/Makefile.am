@@ -7,7 +7,7 @@ wxcontribitemsdir=$(libdir)/codeblocks/wxContribItems
 
 wxcontribitems_LTLIBRARIES = libwxkwic.la
 
-libwxkwic_la_LDFLAGS = -version-info 0:1:0
+libwxkwic_la_LDFLAGS = -no-undefined -version-info 0:1:0
 
 libwxkwic_la_LIBADD = $(WX_LIBS)
 

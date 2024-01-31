@@ -26,7 +26,8 @@ install-exec-hook:
 
 codeblocks_LDADD =  ../sdk/libcodeblocks.la \
 			$(WX_LIBS) \
-			$(WX_GTK_LIBS)
+			$(WX_GTK_LIBS) \
+			$(CB_SQUIRREL_LIBS)
 
 codeblocks_SOURCES = app.cpp \
 			appglobals.cpp \
@@ -70,7 +71,7 @@ codeblocks_SOURCES = app.cpp \
 			watchesdlg.cpp
 
 if CODEBLOCKS_NT
-codeblocks_LDADD += -lexchndl -lcomctl32 -lgdi32
+codeblocks_LDADD += -lexchndl -lcomctl32
 codeblocks_SOURCES += associations.cpp
 endif
 

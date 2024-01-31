@@ -9,8 +9,7 @@ pluginlib_LTLIBRARIES = libEditorConfig.la
 libEditorConfig_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefined -avoid-version
 
 libEditorConfig_la_LIBADD = ../../../sdk/libcodeblocks.la \
-			$(WX_LIBS) \
-			$(CB_TINYXML_LIBS)
+			$(WX_LIBS)
 
 libEditorConfig_la_SOURCES = \
 			EditorConfigUI.cpp \

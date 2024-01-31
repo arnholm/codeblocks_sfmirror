@@ -10,7 +10,7 @@ wxcontribitemsdir=$(libdir)/codeblocks/wxContribItems
 
 wxcontribitems_LTLIBRARIES = libwxled.la
 
-libwxled_la_LDFLAGS = -version-info 0:1:0
+libwxled_la_LDFLAGS = -no-undefined -version-info 0:1:0
 
 libwxled_la_LIBADD = $(WX_LIBS)
 

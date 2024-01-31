@@ -22,6 +22,7 @@
 #include "wx/points.h"
 #include "wx/chartcolors.h"
 #include "wx/chartpoints.h"
+#include "wx/chartdef.h"
 
 // External Classes
 //-----------------

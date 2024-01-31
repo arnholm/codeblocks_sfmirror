@@ -13,8 +13,7 @@ libdebugger_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefin
 
 libdebugger_la_LIBADD = ../../sdk/libcodeblocks.la \
 			$(WX_LIBS) \
-			$(WX_GTK_LIBS) \
-			$(CB_TINYXML_LIBS)
+			$(WX_GTK_LIBS)
 
 libdebugger_la_SOURCES = cdb_driver.cpp \
 			databreakpointdlg.cpp \

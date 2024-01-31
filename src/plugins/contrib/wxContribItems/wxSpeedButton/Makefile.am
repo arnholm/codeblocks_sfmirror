@@ -5,7 +5,7 @@ wxcontribitemsdir=$(libdir)/codeblocks/wxContribItems
 
 wxcontribitems_LTLIBRARIES = libwxspeedbutton.la
 
-libwxspeedbutton_la_LDFLAGS = -version-info 0:1:0
+libwxspeedbutton_la_LDFLAGS = -no-undefined -version-info 0:1:0
 
 libwxspeedbutton_la_LIBADD = $(WX_LIBS)
 

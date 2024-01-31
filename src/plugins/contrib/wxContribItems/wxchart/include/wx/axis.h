@@ -16,6 +16,7 @@
 // Headers
 //----------------------------------------------------------------------------
 #include "wx/charttypes.h"
+#include "wx/chartdef.h"
 
 // External Classes
 //-----------------

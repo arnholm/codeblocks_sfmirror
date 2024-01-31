@@ -15,8 +15,7 @@ libSpellChecker_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-und
 libSpellChecker_la_LIBADD = ../../../sdk/libcodeblocks.la \
 							wxspellchecker/libwxSpellChecker.la \
 							$(WX_LIBS) \
-							$(CB_HUNSPELL_LIBS) \
-							$(CB_TINYXML_LIBS)
+							$(CB_HUNSPELL_LIBS)
 
 libSpellChecker_la_SOURCES = DictionariesNeededDialog.cpp \
                             MySpellingDialog.cpp \

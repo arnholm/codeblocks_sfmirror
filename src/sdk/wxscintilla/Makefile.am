@@ -9,6 +9,10 @@ AM_CPPFLAGS = $(WX_CXXFLAGS) \
 			-DGTK \
 			-D__WX__
 
+if CODEBLOCKS_NT
+AM_CPPFLAGS += -DWXMAKINGDLL_SCI
+endif
+
 noinst_LTLIBRARIES = libwxscintilla.la
 
 libwxscintilla_la_SOURCES = src/PlatWX.cpp \

@@ -27,6 +27,7 @@
 #endif
 
 #include "wx/chartpoints.h"
+#include "wx/chartdef.h"
 
 // External Classes
 //-----------------
