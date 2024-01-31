@@ -264,6 +264,8 @@ case $WX_BASENAME in
     *wx_msw*)
         AC_MSG_RESULT(wxMSW)
 
+		AC_CHECK_TOOL(WINDRES, [windres])
+
 		if test "x$BUILD_SPELLCHECKER_TRUE" = "x" ; then
 			if test "x$HAVE_PKG_CONFIG" = "xyes"; then
 				PKG_CHECK_MODULES([HUNSPELL], [hunspell])
