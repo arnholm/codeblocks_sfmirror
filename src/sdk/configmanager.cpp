@@ -1480,7 +1480,11 @@ void ConfigManager::InitPaths()
     if (data_path_global.IsEmpty())
     {
         if (platform::windows)
+#ifdef CB_AUTOCONF
+            ConfigManager::data_path_global = app_path + _T("/../share/codeblocks");
+#else
             ConfigManager::data_path_global = app_path + _T("\\share\\codeblocks");
+#endif
         else if (platform::macosx)
             ConfigManager::data_path_global = res_path + _T("/share/codeblocks");
         else
@@ -1493,7 +1497,7 @@ void ConfigManager::InitPaths()
     if (plugin_path_global.IsEmpty())
     {
         if (platform::windows)
-            ConfigManager::plugin_path_global = data_path_global;
+            ConfigManager::plugin_path_global = app_path + _T("/../lib/codeblocks/plugins");
         else if (platform::macosx)
             ConfigManager::plugin_path_global = data_path_global + _T("/plugins");
         else
@@ -1707,7 +1711,11 @@ double ConfigManagerWrapper::ReadDouble(const wxString& name, double defaultVal)
 static wxString getCompilerPluginFilename()
 {
     if (platform::windows)
+#ifdef CB_AUTOCONF
+        return wxT("libcompiler.dll");
+#else
         return wxT("compiler.dll");
+#endif
     else if (platform::darwin || platform::macosx)
         return wxT("libcompiler.dylib");
     else

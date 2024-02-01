@@ -374,7 +374,11 @@ bool CodeBlocksApp::LoadConfig()
     wxString data(wxT(APP_PREFIX));
 
     if (platform::windows)
+#ifdef CB_AUTOCONF
+        data = GetAppPath() + _T("/..");
+#else
         data.assign(GetAppPath());
+#endif
     else if (platform::macosx)
     {
         data.assign(GetResourcesDir());                 // CodeBlocks.app/Contents/Resources

@@ -1216,7 +1216,11 @@ bool CodeSnippetsAppFrame::LoadConfig()
 
     if(platform::windows)
     {
+#ifdef CB_AUTOCONF
+        data = GetAppPath() + _T("/..");
+#else
         data.assign(GetAppPath());
+#endif
     }
     else if(platform::macosx)
     {
