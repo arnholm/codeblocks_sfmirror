@@ -8,6 +8,7 @@
 #include <wx/utils.h>
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
+#include <wx/dir.h>
 #if defined(__WXMSW__)
     #include <wx/msw/registry.h>
     #include "winprocess/asyncprocess/procutils.h"
@@ -151,13 +152,136 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         }
     }
 
+    // Failed to find the clangd resource directory //(ph 2024/01/31)
+    // Search the clang path to find a matching resource lib
+    //wxString clangExePath = fnClangdExecutablePath.GetFullPath(); // **Debugging**
+    wxString resourceDir = SearchAllLibDirsForResourceDir(fnClangdExecutablePath);
+    if (resourceDir.Length()) //empty or have "ver|libPath"
+    {
+        wxString verNum = resourceDir.BeforeFirst('|');
+        resourceDir = resourceDir.AfterFirst('|');
+        return resourceDir+fileSep+"clang"+fileSep+verNum;
+    }
+
+    // Failed to find the clangd resource directory
     // Say that we can't find the clangd resource directory
-    wxString msg = wxString::Format(_("Error: clangd version (%s) was unable to locate the necessary clangd resource directory.\n"), clangdVersion);
-    msg << '\t' << fnClangdExecutablePath.GetPath();
+    wxString msg = wxString::Format(_("Error: %s\n clangd version (%s) was unable to locate the necessary clangd resource directory."), __FUNCTION__, clangdVersion);
+    msg << "\n\t" << fnClangdExecutablePath.GetPath();
+    CCLogger::Get()->LogError(msg);
     CCLogger::Get()->DebugLogError(msg);
+    cbMessageBox(msg);
 
     return wxString();
-}
+}//end Locate_ResourceDir
+// ----------------------------------------------------------------------------
+wxString ClangLocator::SearchAllLibDirsForResourceDir(wxFileName ClangExePath)
+// ----------------------------------------------------------------------------
+{
+    // Find all "lib*" dirs that can contain the clang/clangd resource header et.
+
+    // ClangExePath will look like this:
+    //Ref:  F:\\usr\\programs\\msys64_13.0.1\\mingw64\\lib\\clang\\16.0.5\\clang-16.0.5.exe"
+
+    wxString clangPath = ClangExePath.GetPath();
+    // chop it down to just before "lib*" paren, usually "clang"
+    int pos = clangPath.find(fileSep+"lib"+fileSep);
+    clangPath = clangPath.Mid(0,pos);
+
+    // Verify that the lib parent exists
+    if (not wxDirExists(clangPath))
+        return wxString();
+
+    // remember our current directory to be restored later
+    // and set the pwd to the clang dir which might contain the resources
+    wxString priorDir = wxGetCwd();
+    wxSetWorkingDirectory(clangPath);
+    wxString versionNum = ClangExePath.GetPath().Mid(pos);
+    versionNum = versionNum.AfterLast(fileSep[0]);
+
+    // Extract the clangd version number from the input path
+    wxString firstLevelVersionNum = versionNum.BeforeFirst('.');
+    wxArrayString listOfLibDirs;
+    // Find any .../clang/lib* that contains the version number (or partial num),
+    // placing the verNum and path of any dir found.
+    FindClangResourceDirs(clangPath, firstLevelVersionNum, listOfLibDirs);
+
+    // contents of listOfLibDirs is text string of
+    // "version string | fullPath", using '|' as the separator
+    if (listOfLibDirs.GetCount() == 0)
+        return wxString();
+    if (listOfLibDirs.GetCount() == 1)
+       return listOfLibDirs[0];
+    // Find any dir that matches the version number (or partial match)
+    //Backup through the version Number looking for a match,
+    // eg., 17.0.3 or 17.0 or 17
+    // The array entries look like "versionNum|libpath", '|' is a separator char.
+    for(int lvl=0; lvl<3; ++lvl)        // iterate through all version levels
+    {
+        for (size_t ii=0; ii<listOfLibDirs.GetCount();  ++ii) // iterate through the lib dir names
+        {
+            wxString verAndLibPath = listOfLibDirs[ii];
+            wxString ver = verAndLibPath.BeforeFirst('|');
+            //wxString lib = verAndLibPath.AfterFirst('|'); <== not neededd yet
+
+            if (ver == versionNum)
+                return verAndLibPath;
+
+        }
+        versionNum = versionNum.BeforeLast('.'); //Remove last level of version num
+    }
+
+    return wxString();
+
+}//end SearchAllLibDirsForResourceDir
+// ----------------------------------------------------------------------------
+void ClangLocator::FindClangResourceDirs(const wxString& path, wxString& firstLevelVersionNum, wxArrayString& versionPaths)
+// ----------------------------------------------------------------------------
+{
+    // Find all ...\clang\lib* that contain the first level of the clangd version number.
+    // Place the actual found version number and the full path into an array
+    wxDir dir(path);
+    if ( not dir.IsOpened()) {
+        wxString msg = wxString::Format(_(" %s: Error opening directory %s"), __FUNCTION__, path);
+        CCLogger::Get()->LogError(msg);
+        CCLogger::Get()->DebugLogError(msg);
+        return;
+    }
+
+    wxString filename;
+    bool cont = dir.GetFirst(&filename);
+    while (cont) {
+        wxString fullpath = path + wxFileName::GetPathSeparator() + filename;
+
+        if (wxDirExists(fullpath)) {
+            if (filename.StartsWith("lib")) {
+                wxString clangDir = fullpath + wxFileName::GetPathSeparator() + "clang";
+                if (wxDirExists(clangDir)) {
+                    wxDir subDir(clangDir);
+                    wxString subfilename;
+                    bool found = subDir.GetFirst(&subfilename);
+                    bool subDirFound = false; // Flag to check if at least one subdir starts with "14" // **Debugging**
+                    while (found)
+                    {
+                        if (subfilename.StartsWith(firstLevelVersionNum))
+                        {
+                            wxString verStr = subfilename + "|" + fullpath;
+                            versionPaths.push_back(verStr);
+                            subDirFound = true; // Set the flag to true if at least one subdir found // **Debugging**
+                            //wxPrintf("%s found in %s\n", subfilename, fullpath); // **Debugging**
+                        }
+                        found = subDir.GetNext(&subfilename);
+                    }
+                    if (not subDirFound)  // **Debugging**
+                    {
+                        ; //-std::cout << "No subdir starting with " << verNum << " found in: " << fullpath << std::endl;
+                    }
+                }
+            }
+            FindClangResourceDirs(fullpath, firstLevelVersionNum, versionPaths); // Recursive call
+        }
+        cont = dir.GetNext(&filename);
+    }
+}//end FindClangdResourceDirs
 // ----------------------------------------------------------------------------
 wxString ClangLocator::Locate_ClangdDir()
 // ----------------------------------------------------------------------------

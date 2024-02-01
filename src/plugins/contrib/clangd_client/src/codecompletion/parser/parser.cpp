@@ -567,9 +567,10 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         if (GetParseManager()->IsClassBrowserEnabled()
             and (GetParseManager()->IsOkToUpdateClassBrowserView()) ) //(ph 2023/12/06)
         {
-            // ClassBrowser is enabled but Symbols tab is being used (has focus).
-            // Changing the tokens tree during it's use will cause a crash in the
-            // Symbols tab update process.
+            // true == IsOkToUpdateClassBrowserView() means the Sysmbols window is in use.
+            // ClassBrowser is enabled and Symbols tab is being used (has focus).
+            // Changing the tokens tree during its use will cause a crash in the
+            // Symbols tab update process (refering to deleted token tree items).
             // Re-Queue this call to the the idle time callback queue.
             wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
             GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine); //(ph 2023/12/06)
@@ -620,11 +621,6 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
             if (PauseParsingCount(__FUNCTION__))
                 PauseParsingForReason(__FUNCTION__, false);
         }
-
-        // Say class browser symbols view is now stale because the
-        // token tree is about to be updated.
-        if (GetParseManager()->GetClassBrowser())
-            GetParseManager()->GetClassBrowser()->SetIsStale(true);
 
         ///
         /// No 'return' statements beyond here until TokenTree Unlock !!!
@@ -728,8 +724,10 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
     // ----------------------------------------------------------------
     // Update CC toolBar when appropriate
     // ----------------------------------------------------------------
+    // Must have a clangd client running, Symbols window must be idle, or
+    // no more files are being parsed.
     ProcessLanguageClient* pClient = GetLSPClient();
-    if ( (pClient and GetParseManager()->IsOkToUpdateClassBrowserView())  //(ph 2023/11/27)
+    if ( (pClient and (not GetParseManager()->IsOkToUpdateClassBrowserView()))  //(ph 2024/01/18)
             or (pClient->LSP_GetServerFilesParsingCount() == 0)
         )
     {

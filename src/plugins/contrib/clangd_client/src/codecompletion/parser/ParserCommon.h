@@ -23,7 +23,7 @@ enum BrowserDisplayFilter
 {
     bdfFile = 0,  /// display symbols of current file
     bdfProject,   /// display symbols of current project
-    bdfWorkspace, /// display symbols of current workspace
+    bdfWorkspace, /// display symbols of current workspace //unsupported in clangd_client //(ph 2024/01/13)
     bdfEverything /// display every symbols
 };
 

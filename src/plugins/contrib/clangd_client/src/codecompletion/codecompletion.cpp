@@ -3088,6 +3088,17 @@ void ClgdCompletion::OnWorkspaceClosingBegin(CodeBlocksEvent& event)
 void ClgdCompletion::OnWorkspaceClosingEnd(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
+    if (m_WorkspaceClosing
+            and (not ProjectManager::IsBusy())
+            and (not Manager::IsAppShuttingDown()) ) //(ph 2024/01/18)
+    {
+        ProjectsArray* pProjectsArray = Manager::Get()->GetProjectManager()->GetProjects();
+        int prjCount = 0; // count of open projects
+        if (pProjectsArray) prjCount = pProjectsArray->GetCount();
+        if (not prjCount) // projects must be closed
+            GetParseManager()->UpdateClassBrowser(/*force*/true);
+    }
+
     m_WorkspaceClosing = false;
 }
 // ----------------------------------------------------------------------------

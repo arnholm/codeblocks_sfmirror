@@ -94,7 +94,7 @@ public:
      *  the tree should not be updated, because tokens(symbols) in both files were already
      *  shown. False if you need to update the tree without such optimization.
      */
-    void UpdateClassBrowserView(bool checkHeaderSwap = false);
+    void UpdateClassBrowserView(bool checkHeaderSwap = false, bool force=false);
 
     /** update the position sash bar between top tree and the bottom tree, the position (percentage)
      *  of the two trees are saved in the C::B's configuration file.
@@ -102,7 +102,7 @@ public:
     void UpdateSash();
 
     /** Called from the worker thread using CallAfter() */
-    void BuildTreeStartOrStop(bool start);
+    void BuildTreeStartOrStop(bool start, EThreadJob threadJob);
     void SelectTargetTree(bool top);
     void TreeOperation(ETreeOperator op, CCTreeItem* item);
     void SaveSelectedItem();
@@ -119,19 +119,10 @@ public:
         }
     ClassBrowserBuilderThread* GetClassBrowserBuilderThread() { return m_ClassBrowserBuilderThread;}
 
-    bool GetIsStale()
-    {
-        if (m_ClassBrowserViewIsStale)
-            CCLogger::Get()->DebugLog("ClassBrowser Symbols are stale.");
-        return m_ClassBrowserViewIsStale;  //(ph 2023/11/25)
-    }
-    void SetIsStale(bool torf) {m_ClassBrowserViewIsStale = torf;} //(ph 2023/11/25)
-
-    bool IsSymbolsWindowFocused(){return m_SymbolsWindowHasFocus;} //(ph 2023/12/06)
-
 private:
 
-    void OnClassBrowserFocusChanged(wxFocusEvent& event); //(ph 2023/12/05)
+    void OnClassBrowserSetFocus(wxFocusEvent& event); //(ph 2024/01/20)
+    void OnClassBrowserKillFocus(wxFocusEvent& event); //(ph 2024/01/20)
 
     /** handler for the mouse double click on a tree item, we usually make a jump to the
      *  associated token's position.
@@ -268,6 +259,7 @@ private:
      *  post the semaphore, the waiting thread start doing the job
      */
     wxSemaphore                m_ClassBrowserSemaphore;
+    wxSemaphore                m_ClassBrowserCallAfterSemaphore;
 
     /** a wxThread used to build the wxTreeCtrl for the top and bottom in the class(symbol) browser
      *  because it always take many seconds to build the trees, so those work were delegated to a
@@ -283,10 +275,6 @@ private:
 
     /** Store last searched symbol */
     wxString                   m_LastSearchedSymbol;   //patch 1409
-
-    // If stale, Symbols tree view needs updating //(ph 2023/11/25)
-    bool m_ClassBrowserViewIsStale = true;  //(ph 2023/11/25)
-    bool m_SymbolsWindowHasFocus = false; //(ph 2023/12/05)
 
     DECLARE_EVENT_TABLE()
 };

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.107 24/01/11")
+#define VERSION wxT("1.2.109 24/02/01")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,17 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.109   2024/02/01 Expand Clangd resource search to search all .../clang/lib* dirs
+//                     Apply some CodeCompletion fixes to Clangd_client
+//1.2.108  2024/01/19  Update Symbols view when workspace is closed to clear tree
+//                     Cleanup UpdateClassBrowser[view]() code and add project title or status to tree root.
+//                     Remove references to "one parser per workspace" mode
+//                          since supporting it under clangd makes the code too darn confusing.
+//                     Remove unneeded IsStale() code
+//                     Add re-entrancy guards to UpdateClassBrowser[view]() functions.
+//                     UpdateClassBrowser when user clicks or changes to the Symbols Page
+//          2024/01/23 Fix crashes in ClassBrowser and ClassBrowserBuilderThread with semaphore
+//                          waits and post after each CallAfter().
 //1.2.107   2024/01/11 Appy patch 1444 Thanks tigerbeard
 //1.2.106   2023/12/28 Fix completions to not ignore clangd #preprocessor suggestions
 //1.2.105   2023/12/27 For completions, add support for var ClgdCCToken::semanticTokenType.

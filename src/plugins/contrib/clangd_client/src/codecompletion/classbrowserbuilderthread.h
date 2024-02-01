@@ -86,7 +86,7 @@ public:
     bool m_hasChildren;
     wxColour m_colour;
     int m_image[wxTreeItemIcon::wxTreeItemIcon_Max];
-    wxSemaphore m_semaphore;
+    //wxSemaphore m_semaphore;
 };
 
 // Opaque class used by CCTree::GetFirstChild() and CCTree::GetNextChild()
@@ -178,7 +178,7 @@ public:
      * @param evtHandler parent window notification events will sent to
      * @param sem a semaphore reference which is used synchronize the GUI and the builder thread
      */
-    ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem);
+    ClassBrowserBuilderThread(wxEvtHandler* evtHandler, wxSemaphore& sem, wxSemaphore& semCallAfter);
 
     /** destructor */
     ~ClassBrowserBuilderThread() override;
@@ -207,7 +207,7 @@ public:
     /** Increment or decrement the thread busy count
      * @return @a busy count
      */
-    int SetIsBusy(bool torf);
+    int SetIsBusy(bool torf, EThreadJob threadJob);
     int GetIsBusy(); //just return the count
 
 protected:
@@ -290,6 +290,7 @@ protected:
 private:
     wxEvtHandler*    m_Parent;
     wxSemaphore&     m_ClassBrowserSemaphore;
+    wxSemaphore&     m_ClassBrowserCallAfterSemaphore;
 
     /** Some member functions of ClassBrowserBuilderThread such as ExpandItem() can either be called
      * from the main GUI thread(in ClassBrowser::OnTreeItemExpanding(wxTreeEvent& event)), or be

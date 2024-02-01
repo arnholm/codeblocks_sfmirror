@@ -22,6 +22,8 @@ class ClangLocator
         bool ReadMSWInstallLocation(const wxString& regkey, wxString& installPath, wxString& llvmVersion);
         wxString GetClangdVersion(const wxString& clangBinary, wxString& versionNative);
         wxString GetClangdVersionID(const wxString& clangdBinary);
+        wxString SearchAllLibDirsForResourceDir(wxFileName ClangExePath);
+        void FindClangResourceDirs(const wxString& path, wxString& firstLevelVersionNum, wxArrayString& versionPaths);
 
         // PATH environment variable separator
         #ifdef __WXMSW__

@@ -523,6 +523,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     {
         wxString msg = wxString::Format("%s: The child process for clangd failed allocation.", __FUNCTION__);
         //cbMessageBox(msg, "ERROR");
+        CCLogger::Get()->LogError(msg);
         CCLogger::Get()->DebugLogError(msg);
     }
   #endif //_WIN32 vs _nix
@@ -696,8 +697,10 @@ ProcessLanguageClient::~ProcessLanguageClient()
         if (jsonTerminationThreadRC < 2)  //(ph 2023/10/16) //(Christo ticket 1423 2023/10/16)
         {
             wxString msg = wxString::Format("%s() Json read thread termination error rc:%d\n", __FUNCTION__, int(jsonTerminationThreadRC) );
-            if (not Manager::IsAppShuttingDown()) //skip logging when shutting down, else we hang in linux
+            if (not Manager::IsAppShuttingDown()) { //skip logging when shutting down, else we hang in linux
+                CCLogger::Get()->LogError(msg);
                 CCLogger::Get()->DebugLogError(msg);
+            }
         }
     }
 

@@ -11,6 +11,7 @@
 #include <memory>
 #include <unordered_map>
 #include <wx/event.h>
+#include <wx/aui/aui.h> //(ph 2024/01/19)
 
 #include <cbstyledtextctrl.h> //(ph 2023/12/22)
 #include "parsemanager_base.h"
@@ -281,10 +282,14 @@ public:
     void RemoveClassBrowser(bool appShutDown = false);
 
     /** update the class browser tree */
-    void UpdateClassBrowser();
+    void UpdateClassBrowser(bool force=false);
 
     /** check if ok to update the ClassBrower Symbols window */
-    bool IsOkToUpdateClassBrowserView(bool force=false); //(ph 2023/10/21)
+    bool IsOkToUpdateClassBrowserView();
+    bool GetSymbolsWindowHasFocus(){return m_SymbolsWindowHasFocus;} //(ph 2023/12/06)
+    void SetSymbolsWindowHasFocus(bool torf){ m_SymbolsWindowHasFocus = torf; } //(ph 2024/01/20)
+    void SetUpdatingClassBrowserBusy(bool torf) {m_ClassBrowserUpdating = torf;}; //(ph 2024/01/21)
+    bool GetUpdatingClassBrowserBusy(){return m_ClassBrowserUpdating;}
 
     // save current options and BrowserOptions
     void ParserOptionsSave(Parser* pParser);
@@ -297,6 +302,8 @@ public:
     wxString GetRenameSymbolToChange(){return m_RenameSymbolToChange;}
 
     void RefreshSymbolsTab(); //(ph 2023/11/30)
+    void OnAUIProjectPageChanging(wxAuiNotebookEvent& event); //(ph 2024/01/19)
+    void OnAUIProjectPageChanged(wxAuiNotebookEvent& event);  //(ph 2024/01/19)
 
     // ----------------------------------------------------------------------------
     wxEvtHandler* FindEventHandler(wxEvtHandler* pEvtHdlr)
@@ -387,6 +394,9 @@ public:
 
     // Get pointer to hidden cbStyledTextCtrl //(ph 2023/12/22)
     cbStyledTextCtrl* GetHiddenEditor(){return m_pHiddenEditor.get();} //(ph 2023/12/22)
+
+    bool GetParsingIsBusy(){ return m_ParsingIsBusy;}
+    void SetParsingIsBusy(bool trueOrFalse){ m_ParsingIsBusy = trueOrFalse;}
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:
@@ -638,7 +648,7 @@ private:
     /** if true, which means the parser holds tokens of the entire workspace's project, if false
      * then one parser per a cbp
      */
-    bool                         m_ParserPerWorkspace; //m_ParserPerWorkspace always false for clangd
+    bool                         m_ParserPerWorkspace = false; //m_ParserPerWorkspace always false for clangd
 
     /** only used when m_ParserPerWorkspace is true, and holds all the cbps for the common parser */
     std::set<cbProject*>         m_ParsedProjects; //m_ParserPerWorkspace always false for clangd
@@ -682,7 +692,10 @@ private:
     std::vector<ProjectFile*> ProxyProjectFiles;
 
     bool m_PluginIsShuttingDown = false;
-    bool m_DebuggerIsRunning = false;   //(ph 2023/11/17)
+    bool m_DebuggerIsRunning = false;       //(ph 2023/11/17)
+    bool m_SymbolsWindowHasFocus = false;   //(ph 2024/01/20)
+    bool m_ClassBrowserUpdating = false;    //(ph 2024/01/21)
+    bool m_ParsingIsBusy = false;
 
     // a global hidden temp cbStyledTextCtrl for symbol/src/line searches
     // to avoid constantly allocating wxIDs.

@@ -43,6 +43,7 @@
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/textfile.h>
+#include <wx/aui/aui.h>     //(ph 2024/01/19)
 
 #include <cbstyledtextctrl.h>
 #include <compilercommandgenerator.h>
@@ -109,7 +110,16 @@
  *     FindCurrentFunctionToken(), ResolveOperator()
  * FindCurrentFunctionStart() -> GetTokenFromCurrentLine
  */
-
+// ----------------------------------------------------------------------------
+namespace
+// ----------------------------------------------------------------------------
+{
+    //UpdateClassBrowser() re-entrant guard
+    bool n_UpdateClassBrowserBusy = false;  //UpdateClassBrowser is busy
+    bool n_IsSymbolsTabSelected = false;    // user activated Symbols tab status
+    int n_SymbolsPageIdx = -1;              // to become the Symbols tab notebook index
+    bool n_SkipNextSymbolsChangePageCall = false; //working around a wxAUI bug
+}
 // ----------------------------------------------------------------------------
 namespace ParseManagerHelper
 // ----------------------------------------------------------------------------
@@ -1577,6 +1587,10 @@ void ParseManager::CreateClassBrowser()
         Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->AddPage(m_ClassBrowser, _("Symbols"));
         m_ClassBrowser->UpdateSash();
     }
+    wxAuiNotebook* pNotebook = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
+    Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->Bind(wxEVT_AUINOTEBOOK_PAGE_CHANGED,  &ParseManager::OnAUIProjectPageChanged, this);
+    Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->Bind(wxEVT_AUINOTEBOOK_PAGE_CHANGING, &ParseManager::OnAUIProjectPageChanging, this);
+    n_SymbolsPageIdx = pNotebook->GetPageCount() - 1; //assumes index and last added page is same
 
     // Dreaded DDE-open bug related: do not touch unless for a good reason
     // TODO (Morten): ? what's bug? I test it, it's works well now.
@@ -1585,6 +1599,80 @@ void ParseManager::CreateClassBrowser()
     RefreshSymbolsTab(); //(ph 2023/11/30)
 
     TRACE(_T("ParseManager::CreateClassBrowser: Leave"));
+}
+// ----------------------------------------------------------------------------
+void ParseManager::OnAUIProjectPageChanged(wxAuiNotebookEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // Handle the page changed event here and clear the local page changing status info
+    event.Skip();
+
+    int selectedPage = event.GetSelection();
+    wxString pageTitle = Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->GetPageText(selectedPage);
+    n_IsSymbolsTabSelected = false;
+    n_SkipNextSymbolsChangePageCall = false;
+
+    // Only update Symbol browser window if it has focus. //(ph 2024/01/20)
+    // Check again, wxWidgets focus event can be really slow sometimes
+    // Experience shows this routine is faster than wxEVT_SET/KILL_FOCUS event.
+    //if (isSymbolsTabFocused)
+    {
+        ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+        wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
+        int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
+        wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+        if (pCurrentPage == GetClassBrowser())
+        {
+            if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
+                SetSymbolsWindowHasFocus(true);
+            else SetSymbolsWindowHasFocus(false);
+        }
+    }
+
+}
+// ----------------------------------------------------------------------------
+void ParseManager::OnAUIProjectPageChanging(wxAuiNotebookEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // Handle the page change/click event here
+    // using this even allows us to catch page changes as well as a single dclick on the page tab
+    // **BUG**
+    // This event is being call twice in succession (others experience it also)
+    // when switching from one tab to another, but only once when just clicking the active tab.
+    // https://forums.wxwidgets.org/viewtopic.php?t=16795
+
+    event.Skip();
+
+    // When this is the second call of a page change, ( a bug) ignore it.
+    if (n_SkipNextSymbolsChangePageCall)
+    {
+        n_SkipNextSymbolsChangePageCall = false;
+        return;
+    }
+
+    wxWindow* pCurrentPage =  Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->GetCurrentPage();
+    int currentPageIdx = Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
+
+    int selectedPage = event.GetSelection();
+    // if currentPageIdx and selectedPage the same, this is a once off tab click
+    // if currentPageIdx and selectedPage differ, this is a change to another tab
+    bool isPageActivation = false;
+    if (currentPageIdx == selectedPage)
+        isPageActivation = true;
+    if (not isPageActivation)  //this is a page change which happens twice ( a bug)
+    {
+        n_SkipNextSymbolsChangePageCall = true; //ignore the next superfluous page change call
+    }
+    wxString pageTitle = Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->GetPageText(selectedPage);
+    if (pageTitle == _("Symbols") and Manager::Get()->GetProjectManager()->GetActiveProject())
+    {
+        n_IsSymbolsTabSelected = true;  //say the Sysmbols tab is selected
+        SetSymbolsWindowHasFocus(true);
+        UpdateClassBrowser();
+    }
+    else SetSymbolsWindowHasFocus(false);
+    // alway reset the selection status to avoid confusing other's calls to UpdateClassBrowser()
+    n_IsSymbolsTabSelected = false;
 }
 // ----------------------------------------------------------------------------
 void ParseManager::RefreshSymbolsTab()
@@ -1617,6 +1705,7 @@ void ParseManager::RefreshSymbolsTab()
     if (pSymbolsPage)
     {
         // calling wxWindow Update(),Refresh(). Layout(), etc did not work
+        // But jiggling the window up and down does.
         wxSize wsize = pSymbolsPage->GetSize();
         wsize.SetHeight(wsize.GetHeight()-1);
         pSymbolsPage->SetSize(wsize);
@@ -1651,7 +1740,7 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
     m_ClassBrowser = NULL;
 }
 // ----------------------------------------------------------------------------
-void ParseManager::UpdateClassBrowser()
+void ParseManager::UpdateClassBrowser(bool force)
 // ----------------------------------------------------------------------------
 {
     //(ph 2023/11/29)
@@ -1660,30 +1749,44 @@ void ParseManager::UpdateClassBrowser()
     // will not get updated and will cause crashes using stale pointeers.
     // UpdateClassBrowserView() is called directly from the CdreateClassBrowser() function.
 
+    TRACE(_T("ParseManager::UpdateClassBrowser()"));
+
+    // Guarantee that this function is not re-entrant
+    if (n_UpdateClassBrowserBusy)
+        return;
+    struct UpdateClassBrowserBusy_t
+    {
+        UpdateClassBrowserBusy_t() {n_UpdateClassBrowserBusy = true;}
+        ~UpdateClassBrowserBusy_t() {n_UpdateClassBrowserBusy = false;}
+    } updateClassBrowserBusy ;
+
+    if ( Manager::IsAppShuttingDown() )
+        return;
     // Dont update symbols window when debugger is running
     if (IsDebuggerRunning())    //(ph 2023/11/17)
         return;
-
-
+    // If no ClassBrowser, bail
     if (not m_ClassBrowser)
           return;
 
-    TRACE(_T("ParseManager::UpdateClassBrowser()"));
-
     // If user is using the Symbols tab delay the update.
-    if (not IsOkToUpdateClassBrowserView()) //(ph 2023/10/21)
-        return;
-
-    if ( m_ActiveParser != m_NullParser
-        && m_ActiveParser->Done()
-        && (not Manager::IsAppShuttingDown()) )
+    if (not force) //(ph 2024/01/19)
     {
-        //-s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
-        m_ClassBrowser->UpdateClassBrowserView();
+        if (not IsOkToUpdateClassBrowserView()) //(ph 2023/10/21)
+            return;
+
+        if ( m_ActiveParser != m_NullParser
+            && m_ActiveParser->Done() )
+        {
+            //-s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
+            m_ClassBrowser->UpdateClassBrowserView();
+        }
     }
+    else // update is being forced (probably from workspace close to clear the Symbols tree)
+        m_ClassBrowser->UpdateClassBrowserView(/*checkHeaderSwap*/false, /*forceupdate*/force);
 }
 // ----------------------------------------------------------------------------
-bool ParseManager::IsOkToUpdateClassBrowserView(bool force) //(ph 2023/10/21)
+bool ParseManager::IsOkToUpdateClassBrowserView()
 // ----------------------------------------------------------------------------
 {
     static size_t startMillisTOD;
@@ -1692,12 +1795,15 @@ bool ParseManager::IsOkToUpdateClassBrowserView(bool force) //(ph 2023/10/21)
     if (IsDebuggerRunning()) //(ph 2023/11/17)
         return false;
 
-    bool isSymbolsTabFocused = GetClassBrowser() ? GetClassBrowser()->IsSymbolsWindowFocused() : false;
+    bool isSymbolsTabFocused = GetClassBrowser() ? GetSymbolsWindowHasFocus() : false;
+    bool isUpdatingClassBrowserBusy = GetUpdatingClassBrowserBusy();
+    isSymbolsTabFocused = isSymbolsTabFocused or n_IsSymbolsTabSelected;
     // Only update Symbol browser window if it has focus.
     // Check again, wxWidgets focus event can be really slow sometimes
     // Experience shows this routine is faster than wxEVT_SET/KILL_FOCUS event.
     if (not isSymbolsTabFocused)
     {
+        // See if the mouse is inside the Symbols tree window
         ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
         wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
         int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
@@ -1725,7 +1831,8 @@ bool ParseManager::IsOkToUpdateClassBrowserView(bool force) //(ph 2023/10/21)
             if (GetClassBrowser()->GetClassBrowserBuilderThread())
             {
                 int knt = GetClassBrowser()->GetClassBrowserBuilderThread()->GetIsBusy();
-                wxString msg = wxString::Format(_("ClassBrowserBuilderThread::m_IsBusy is stuck at %d"), knt);
+                wxString msg = wxString::Format(_("ClassBrowserBuilderThread::m_IsBusy is stuck at %d for %d msec"), knt, int(durationMillis) );
+                // FIXME (ph#): What should be done? clear it or what?
                 //-GetClassBrowser()->GetClassBrowserBuilderThread()->SetIsBusy(false);
                 CCLogger::Get()->DebugLogError(msg);
 
@@ -1734,14 +1841,10 @@ bool ParseManager::IsOkToUpdateClassBrowserView(bool force) //(ph 2023/10/21)
         return false; // say not ok to update //(ph 2023/11/15)
     }
 
-    if ((not isSymbolsTabFocused) or isBusyClassBrowserBuilderThread)
-        return false; //cannot update, Symbols tab is unfocused or builderthread is busy
+    if ((not isSymbolsTabFocused) or isBusyClassBrowserBuilderThread or isUpdatingClassBrowserBusy)
+        return false; //cannot update, Symbols tab is unfocused or builderthread is busy or already updating
 
-    // FIXME (ph#): #warning this is in the wrong place. Put it just after classBrowserCreation //(ph 2023/12/07)
-    // or after "Disable symbols browser"has been unclicked
-    //- RefreshSymbolsTab(); //(ph 2023/11/30)
-
-    startMillisTOD = 0;
+    startMillisTOD = 0; //clear busy time when is Ok to update classBrowser tree;
     return true;
 }
 // ----------------------------------------------------------------------------
