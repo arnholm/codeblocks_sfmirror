@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.109 24/02/01")
+#define VERSION wxT("1.2.110 24/02/03")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.110   2024/02/01 Optimize clangd resources dir search code using shell commands
+//                     Fix hang at CB exit caused by missing condition.signal()s in client.cpp
 //1.2.109   2024/02/01 Expand Clangd resource search to search all .../clang/lib* dirs
 //                     Apply some CodeCompletion fixes to Clangd_client
 //1.2.108  2024/01/19  Update Symbols view when workspace is closed to clear tree

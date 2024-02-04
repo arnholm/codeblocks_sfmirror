@@ -170,6 +170,9 @@ class JsonTransport : public Transport
 
                 if (readJson(value))
                 {
+                    if (handler.m_LSP_TerminateFlag)
+                        break; //(ph 2024/02/04)
+
                     if (value.count("id"))
                     {
                         if (value.contains("method"))
@@ -240,7 +243,7 @@ class JsonTransport : public Transport
                 wxString msg = wxString::Format("JsonTransport:loop() error -> %s\n", e.what()); //(cb 2020/08/21)
                 // This code is in a thread. How to write the message to CB?
             }
-        }
+        }//while true
         handler.SetLSP_TerminateFlag(2); //report that thread has exited
         return 0;
     }

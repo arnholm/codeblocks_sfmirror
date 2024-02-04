@@ -625,6 +625,7 @@ ProcessLanguageClient::~ProcessLanguageClient()
 
     m_terminateLSP = true; //tell the json read thread to terminate
     m_MapMsgHndlr.SetLSP_TerminateFlag(1);
+    m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait
 
     if (m_pServerProcess and platform::windows)
         m_pServerProcess->Detach(); //ignore any further messages
@@ -972,7 +973,7 @@ void ProcessLanguageClient::OnClangd_stdout(wxThreadEvent& event)
     }
     std::string std_clangdRawOutput = *pRawOutput;
     m_std_LSP_IncomingStr.append(*pRawOutput);
-    m_CondInputBuf.Signal(); //(Christo ticket 1423 2023/10/16)
+    m_CondInputBuf.Signal(); //(Christo ticket 1423 2023/10/16) post jsonRead wait
 
     /// unlock the input buffer
     m_MutexInputBufGuard.Unlock();
@@ -989,8 +990,11 @@ void ProcessLanguageClient::OnLSP_PipedProcessTerminated(wxThreadEvent& event_pi
 
     int processExitCode = 0; //no good, return code is always 0
     if (GetLSP_Initialized()) processExitCode = -1; //terminated while initialized and running.
-    if (m_pServerProcess)
+    if (m_pServerProcess){
         m_terminateLSP = true;   //tell json read thread to exit.
+        m_MapMsgHndlr.SetLSP_TerminateFlag(1); //(ph 2024/02/04)
+        m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait
+    }
 
     #if defined(_WIN32)
     if (m_pServerProcess->GetProcessExitCode(processServerPID, processExitCode))
@@ -1225,11 +1229,14 @@ bool ProcessLanguageClient::readJson(json &json)
     int length = 0;
     std::string stdStrInputbuf;
 
-    if ( m_terminateLSP or (not Has_LSPServerProcess()) )
-    {   // terminate the read loop thread
+    //  exit thread loop on termination flag
+    if ( m_terminateLSP and (not Has_LSPServerProcess()) )
+    {   // terminate the readJson loop thread
+        m_MapMsgHndlr.SetLSP_TerminateFlag(1);
         stdStrInputbuf = "{\"jsonrpc\":\"2.0\",\"Exit!\":\"Exit!\",\"params\":null}";
         length = stdStrInputbuf.length();
         json = json::parse(stdStrInputbuf);
+        // we don't need to signal(), we're in the routine already
         return true;
     }
 
@@ -1251,7 +1258,7 @@ bool ProcessLanguageClient::readJson(json &json)
     if (not length)
     {
         /// no data, UNlock the input buffer
-        m_CondInputBuf.Wait(); //(Christo ticket 1423 2023/10/16)
+        m_CondInputBuf.Wait(); //(Christo ticket 1423 2023/10/16) wait for have input post()
         m_MutexInputBufGuard.Unlock();
         //-wxMilliSleep(250); //(Christo ticket 1423 2023/10/16)
         return false;
@@ -1612,6 +1619,7 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
             m_terminateLSP = true; //tell the read thread to terminate
             m_MapMsgHndlr.SetLSP_TerminateFlag(1);
             lspevt.SetString("LSP_Initialized:false");
+            m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait|
         }
 
         else if(idValue.StartsWith("textDocument/declaration")
