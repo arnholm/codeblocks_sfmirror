@@ -205,22 +205,21 @@ wxString ClangLocator::SearchAllLibDirsForResourceDir(wxFileName ClangExePath)
     // Extract the clangd version number from the input path
     wxString firstLevelVersionNum = versionNum.BeforeFirst('.');
     wxArrayString listOfLibDirs;
-    // Find any .../clang/lib* that contains the version number (or partial num),
-    // placing the verNum and path of any dir found.
+    // Find any .../clang/lib* that contains the version number (or partial version num),
     FindClangResourceDirs(clangPath, firstLevelVersionNum, listOfLibDirs);
 
-    // Restore to the prio directory
+    // Restore to the prior directory
     wxSetWorkingDirectory(priorDir) ;
 
     // contents of listOfLibDirs is text string of
-    // "version string | fullPath", using '|' as the separator
+    //  "version string | fullPath", using '|' as the separator
     if (listOfLibDirs.GetCount() == 0)
         return wxString();
     if (listOfLibDirs.GetCount() == 1)
        return listOfLibDirs[0];
     // Find any dir that matches the version number (or partial match)
-    //Backup through the version Number looking for a match,
-    // eg., 17.0.3 or 17.0 or 17
+    //  Backup through the version Number looking for a match,
+    //  eg., 17.0.3 or 17.0 or 17
     // The array entries look like "versionNum|libpath", '|' is a separator char.
     for(int lvl=0; lvl<3; ++lvl)        // iterate through all version levels
     {
@@ -246,11 +245,12 @@ void ClangLocator::FindClangResourceDirs(const wxString& path, wxString& firstLe
 {
     wxString priorDir = wxGetCwd();
     wxSetWorkingDirectory(path);
-
    // ----------------------------------------------------------------------------
    #if not defined (__WXMSW__) // Linux <=============================
    // ----------------------------------------------------------------------------
-    wxString LinuxCmdTemplate = "sh -c 'ls -ld lib*/clang/%s*'";
+    wxString shellCmd = Manager::Get()->GetConfigManager("app")->Read("console_shell", DEFAULT_CONSOLE_SHELL);
+    // The 'ls ...' command must be enclosed in single quotes to avoid early expansion.
+    wxString LinuxCmdTemplate = shellCmd + " 'ls -ld lib*/clang/%s*'";
     wxString LinuxCmd = wxString::Format(LinuxCmdTemplate, firstLevelVersionNum);
 
     wxSetWorkingDirectory(path);
