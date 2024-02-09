@@ -104,7 +104,7 @@ class ShellCtrlBase : public wxPanel //TODO: make wxPanel a member, not a base??
         virtual void SyncOutput(int maxchars=1000)=0; //use this to respond to ShellManager request to gather output from the running process for display in the panel
 
         virtual bool IsDead()=0;
-        wxString GetName() {return m_name;}
+        wxString GetName() const {return m_name;}
         void SetName(const wxString &name) {m_name=name;}
     protected:
         wxString m_name;
