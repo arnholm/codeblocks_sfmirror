@@ -1060,17 +1060,17 @@ void CompilerGCC::PrepareCompileFile(wxFileName& file)
         // make sure it is saved
         ed->Save();
         file.Assign(ed->GetFilename());
-    }
 
-    // Now activate the project this file belongs to
-    ProjectFile* pf = ed->GetProjectFile();
-    if (pf)
-    {
-        cbProject* CurProject = pf->GetParentProject();
-        if (CurProject)
+        // Now activate the project this file belongs to
+        ProjectFile* pf = ed->GetProjectFile();
+        if (pf)
         {
-            Manager::Get()->GetProjectManager()->SetProject(CurProject, true);
-            CheckProject();
+            cbProject* CurProject = pf->GetParentProject();
+            if (CurProject)
+            {
+                Manager::Get()->GetProjectManager()->SetProject(CurProject, true);
+                CheckProject();
+            }
         }
     }
 }
