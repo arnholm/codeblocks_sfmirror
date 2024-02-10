@@ -93,8 +93,8 @@ template<class T> class ShellCtrlRegistrant
 class ShellCtrlBase : public wxPanel //TODO: make wxPanel a member, not a base??
 {
     public:
-        ShellCtrlBase():wxPanel() {m_id=-1;}
-        ShellCtrlBase(wxWindow* parent, int id, const wxString &name, ShellManager *shellmgr=NULL);
+        ShellCtrlBase() : wxPanel() {m_id = -1;}
+        ShellCtrlBase(wxWindow* parent, int id, const wxString &name, ShellManager *shellmgr = nullptr);
         virtual ~ShellCtrlBase() {}
 
         // Every shell control widget must override the following
@@ -104,10 +104,7 @@ class ShellCtrlBase : public wxPanel //TODO: make wxPanel a member, not a base??
         virtual void SyncOutput(int maxchars=1000)=0; //use this to respond to ShellManager request to gather output from the running process for display in the panel
 
         virtual bool IsDead()=0;
-        wxString GetName() const {return m_name;}
-        void SetName(const wxString &name) {m_name=name;}
     protected:
-        wxString m_name;
         ShellManager *m_shellmgr;
         int m_id;
 //    DECLARE_DYNAMIC_CLASS(ShellCtrlBase)

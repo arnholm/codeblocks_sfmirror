@@ -63,7 +63,6 @@ IMPLEMENT_DYNAMIC_CLASS(PipedProcessCtrl, wxPanel)
 PipedProcessCtrl::PipedProcessCtrl(wxWindow* parent, int id, const wxString &name, ShellManager *shellmgr) : ShellCtrlBase(parent, id, name, shellmgr)
 {
     m_shellmgr=shellmgr;
-    m_name=name;
     m_dead=true;
     m_proc=NULL;
     m_killlevel=0;
