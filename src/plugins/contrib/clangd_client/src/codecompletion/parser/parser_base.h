@@ -397,6 +397,7 @@ public:
     TokenKind ConvertLSPSymbolKindToCCTokenKind(int lspSymKind);
     int       ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind);
     TokenKind ConvertLSPSemanticTypeToCCTokenKind(int semTokenType);
+    TokenKind ConvertLSPCompletionSymbolKindToCCTokenKind(int lspCCKind); //(ph 2024/02/10)
 
     std::vector<std::string> m_SemanticTokensTypes;
     std::vector<std::string> m_SemanticTokensModifiers;

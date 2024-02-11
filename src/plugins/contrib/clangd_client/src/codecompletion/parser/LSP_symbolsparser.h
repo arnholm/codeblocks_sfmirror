@@ -66,6 +66,7 @@ struct LSP_SymbolsParserOptions
         logClangdServerCheck(false),
         logPluginInfoCheck(false),
         logPluginDebugCheck(false),
+        useCompletionIconsCheck(false), //(ph 2024/02/10)
         LLVM_MasterPath(""),
         handleFunctions(true),
         handleVars(true),
@@ -132,6 +133,9 @@ struct LSP_SymbolsParserOptions
 
     /** plugin debug logging  */
     bool        logPluginDebugCheck;
+
+    /** plugin prefix code completion list with icons  */ //(ph 2024/02/10)
+    bool        useCompletionIconsCheck;
 
     /** clangd LSP messages tab option  */
     bool        lspMsgsFocusOnSaveCheck;

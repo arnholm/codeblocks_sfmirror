@@ -138,6 +138,9 @@ public:
     /** Returns the image assigned to a specific token for a symbol browser */
     int GetTokenKindImage(const Token* token);
 
+    /** Returns the image assigned to a specific token from Clangd Semantic Token type */
+    int GetTokenImageFromSemanticTokenType(Token* token);
+
     /** Get the implementation file path if the input is a header file. or Get the header file path
      * if the input is an implementation file.
      * Both the implementation file and header file can be in different directories.
@@ -397,6 +400,9 @@ public:
 
     bool GetParsingIsBusy(){ return m_ParsingIsBusy;}
     void SetParsingIsBusy(bool trueOrFalse){ m_ParsingIsBusy = trueOrFalse;}
+
+    bool GetUseCCIconsOption(); //option to use icons in completion popup
+
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:

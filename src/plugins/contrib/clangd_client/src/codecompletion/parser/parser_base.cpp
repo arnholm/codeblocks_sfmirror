@@ -630,7 +630,7 @@ int ParserBase::ConvertLSPCompletionSymbolKindToSemanticTokenType(int lspSymKind
         case LSP_CompletionSymbolKind::Operator:     semTknType = LSP_SemanticTokenType::Unknown;     break; //not defined as Semantic type
         case LSP_CompletionSymbolKind::TypeParameter: semTknType = LSP_SemanticTokenType::TypeParameter; break;
 
-        default: semTknType = LSP_SemanticTokenType::Unknown;;
+        default: semTknType = LSP_SemanticTokenType::Unknown;
     }//endswitch
     return semTknType;
 }
@@ -664,8 +664,48 @@ TokenKind ParserBase::ConvertLSPSemanticTypeToCCTokenKind(int semTokenType)
         case LSP_SemanticTokenType::Concept:        ccTokenKind = tkUndefined;  break;
         case LSP_SemanticTokenType::Type_3:         ccTokenKind = tkTypedef;    break;
         case LSP_SemanticTokenType::Macro :         ccTokenKind = tkMacroDef;   break;
-        case LSP_SemanticTokenType::Comment:         ccTokenKind = tkUndefined; break;
+        case LSP_SemanticTokenType::Comment:        ccTokenKind = tkUndefined; break;
 
     }//endswitch
+    return ccTokenKind;
+}
+// ----------------------------------------------------------------------------
+TokenKind ParserBase::ConvertLSPCompletionSymbolKindToCCTokenKind(int lspCCKind) //(ph 2024/02/10)
+// ----------------------------------------------------------------------------
+{
+    TokenKind ccTokenKind = tkUndefined;
+
+    switch(lspCCKind)
+    {
+        case LSP_CompletionSymbolKind::Text:        ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::Method:      ccTokenKind = tkFunction;       break;
+        case LSP_CompletionSymbolKind::Function:    ccTokenKind = tkFunction;       break;
+        case LSP_CompletionSymbolKind::Constructor: ccTokenKind = tkConstructor;    break;
+        case LSP_CompletionSymbolKind::Field:       ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::Variable:    ccTokenKind = tkVariable;       break;
+        case LSP_CompletionSymbolKind::Class:       ccTokenKind = tkClass;          break;
+        case LSP_CompletionSymbolKind::Interface:   ccTokenKind = tkClass;          break;
+        case LSP_CompletionSymbolKind::Module:      ccTokenKind = tkClass;          break;
+        case LSP_CompletionSymbolKind::Property:    ccTokenKind = tkVariable;       break;
+        case LSP_CompletionSymbolKind::Unit:        ccTokenKind = tkClass;          break;
+        case LSP_CompletionSymbolKind::Value:       ccTokenKind = tkEnum;           break;
+        case LSP_CompletionSymbolKind::Enum:        ccTokenKind = tkEnum;           break;
+        case LSP_CompletionSymbolKind::Keyword:     ccTokenKind = tkTypedef;        break;
+        case LSP_CompletionSymbolKind::Snippet:     ccTokenKind = tkTypedef;        break;
+        case LSP_CompletionSymbolKind::Color:       ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::File:        ccTokenKind = tkNamespace;      break;
+        case LSP_CompletionSymbolKind::Reference:   ccTokenKind = tkVariable;       break;
+        case LSP_CompletionSymbolKind::Folder:      ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::EnumMember:  ccTokenKind = tkVariable;       break;
+        case LSP_CompletionSymbolKind::Constant:    ccTokenKind = tkVariable;       break;
+        case LSP_CompletionSymbolKind::Struct:      ccTokenKind = tkClass;          break;
+        case LSP_CompletionSymbolKind::Event:       ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::Operator:    ccTokenKind = tkUndefined;      break;
+        case LSP_CompletionSymbolKind::TypeParameter: ccTokenKind = tkUndefined;    break;
+
+        default: ccTokenKind = tkUndefined;
+
+    }//endswitch
+
     return ccTokenKind;
 }

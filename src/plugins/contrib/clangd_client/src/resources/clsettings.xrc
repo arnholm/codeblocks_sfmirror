@@ -68,6 +68,18 @@
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
 											<border>5</border>
 										</object>
+
+                                        <!-- Begin clangd options for Code Completion icons -->
+										<object class="sizeritem">
+											<object class="wxCheckBox" name="chkUseCompletionIcons">
+												<label>Enable Use Code Completion Icons</label>
+                                                <checked>0</checked>
+											</object>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<border>5</border>
+										</object>
+                                        <!-- End clangd options for Code Completion icons -->
+
 										<object class="sizeritem">
 											<object class="wxFlexGridSizer">
 												<cols>2</cols>

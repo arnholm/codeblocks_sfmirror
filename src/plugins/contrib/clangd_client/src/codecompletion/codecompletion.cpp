@@ -435,6 +435,8 @@ END_EVENT_TABLE()
 bool ClgdCompletion::m_CCHasTreeLock; // static member
 std::vector<ClgdCCToken> ClgdCompletion::m_CompletionTokens; // cached tokens
 
+class cbStyledTextCtrl; // Forward declaration
+static int CalcStcFontSize(cbStyledTextCtrl *stc); // Forward declaration
 // ----------------------------------------------------------------------------
 ClgdCompletion::ClgdCompletion() :
 // ----------------------------------------------------------------------------
@@ -1305,13 +1307,15 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
     // This routine will then return a filled-in tokens vector with the completions from m_completionsTokens.
 
 
-    std::vector<CCToken> tokens;
+    std::vector<ClgdCCToken> cldTokens; //extended ccTokens for Clangd (unused)
+    std::vector<CCToken> ccTokens;     // regular ccTokens for ccManager
+
 
     if (!IsAttached() || !m_InitDone)
-        return tokens;
-    if (m_CC_initDeferred) return tokens;
+        return ccTokens;
+    if (m_CC_initDeferred) return ccTokens;
 
-    if (not GetLSP_Initialized(ed)) return tokens;
+    if (not GetLSP_Initialized(ed)) return ccTokens;
 
     cbStyledTextCtrl* stc = ed->GetControl();
     const int style = stc->GetStyleAt(tknEnd);
@@ -1328,7 +1332,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
             || (   wxString(wxT("<\"/")).Find(curChar) != wxNOT_FOUND // #include directive
                 && !stc->IsPreprocessor(style) ) )
         {
-            return tokens;  //return empty tokens container
+            return ccTokens;  //return empty tokens container
         }
     }
 
@@ -1357,11 +1361,19 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         bool caseSensitive = GetParseManager()->GetParser().Options().caseSensitive;
         wxString pattern  = stc->GetTextRange(tknStart, tknEnd);
 
+        // if use CC icons in completion list enabled //(ph 2024/02/10)
+        std::set<int> alreadyRegistered;
+        cbStyledTextCtrl* stc = ed->GetControl();
+        const int fontSize = CalcStcFontSize(stc);
+        wxImageList* ilist = GetParseManager()->GetImageList(fontSize);
+        stc->ClearRegisteredImages();
+        //-#endif
+
         for(size_t ii=0; ii<m_CompletionTokens.size(); ++ii)
         {
             // **debugging** CCToken look = m_CompletionTokens[ii];
-            CCToken cctoken = m_CompletionTokens[ii];
-            wxString tkn_displayName = cctoken.displayName;
+            ClgdCCToken cldToken = m_CompletionTokens[ii]; //(ph 2024/02/10)
+            wxString tkn_displayName = cldToken.displayName; //(ph 2024/02/10)
             if (tkn_displayName.empty() ) continue;
 
             //wxString tkn_name = m_CompletionTokens[ii].name;
@@ -1372,7 +1384,32 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
                 //tkn_name = tkn_name.Lower();
             }
             if (tkn_displayName.StartsWith(pattern))
-                tokens.push_back(cctoken);
+            {
+                ccTokens.push_back(cldToken);
+
+               // if use CC icons in completion list enabled //(ph 2024/02/10)
+               if (GetParseManager()->GetUseCCIconsOption())
+               {
+                    // Set the image index for each token
+                    int semanticTokenType = cldToken.semanticTokenType;
+                    // fake token to use for convertion to image index
+                    Token token(wxString(),0,0,0);
+                    token.m_TokenKind = (TokenKind)semanticTokenType;
+                    if (semanticTokenType == LSP_SemanticTokenType::Unknown)
+                        cldToken.category = (TokenKind)-1;
+                    token.m_TokenKind =  GetParseManager()->GetParser().ConvertLSPSemanticTypeToCCTokenKind(semanticTokenType);
+                    int iidx = GetParseManager()->GetTokenImageFromSemanticTokenType(&token);
+                    if (iidx < 0) iidx = -1; // -1 tells ccManager to ignore this item
+                    cldToken.category = iidx;
+                    if ( (iidx > 0) and (alreadyRegistered.find(iidx) == alreadyRegistered.end()))
+                    {
+                        stc->RegisterImage(iidx, ilist->GetBitmap(iidx));
+                        alreadyRegistered.insert(iidx);
+                    }
+                    // update the category for the last pushed cctoken
+                    ccTokens.back().category = cldToken.category;
+               }
+            }
 
             // **debugging** info
             //wxString cmpltnStr = wxString::Format(
@@ -1387,7 +1424,8 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         }
         // Move clear() to next request for completions to preserve tokens for DoAutoComplete()
         //- Moved - m_CompletionTokens.clear(); //clear to use next time and return the tokens
-        return tokens;
+
+        return ccTokens;
     }
 
     // We have no completion data, issue a LSP_Completion() call, and return.
@@ -1401,7 +1439,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
             //- || stc->IsPreprocessor(style) ) allow preprocessors //(ph 2023/12/28)
              )
         {
-            return tokens; //For styles above ignore this request
+            return ccTokens; //For styles above ignore this request
         }
 
         //For users who type faster, say at 75 WPM, the gap that would indicate the end of typing would be only 0.3 seconds (300 milliseconds.)
@@ -1414,7 +1452,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
             // Ignore completing tokens ending in blank, CR, or LF
             m_PendingCompletionRequest = false;
             if ( (curChar == ' ') or (curChar == '\n') or (curChar == '\r') )
-                return tokens;  //return empty tokens
+                return ccTokens;  //return empty tokens
 
             //- m_CompletionTokens.clear(); //clear to use next time and return the token
             /// ^^ Don't clear; a call to show html documentation popup may need them.
@@ -1427,7 +1465,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         }
     }
 
-    return tokens; //return empty tokens on first call from ccmanager.
+    return ccTokens; //return empty tokens on first call from ccmanager.
 
     // useful debugging output
     //for(size_t ii=0; ii< tokens.size(); ++ii)
@@ -1443,7 +1481,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
     //    CCLogger::Get()->DebugLog(msg);
     //}
 
-    return tokens;
+    return ccTokens;
 }
 // ----------------------------------------------------------------------------
 static int CalcStcFontSize(cbStyledTextCtrl *stc)

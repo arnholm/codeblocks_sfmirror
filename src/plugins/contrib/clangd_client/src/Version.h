@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.111 24/02/08")
+#define VERSION wxT("1.2.112 24/02/10")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.112   2024/02/10 Enable code completion list to show icons.
 //1.2.111   2024/02/08 Don't hard code the "sh -c" cmd, use the app config setting.
 //1.2.110   2024/02/01 Optimize clangd resources dir search code using shell commands
 //                     Fix hang at CB exit caused by missing condition.signal()s in client.cpp

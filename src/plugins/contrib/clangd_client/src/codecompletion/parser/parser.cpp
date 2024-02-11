@@ -645,6 +645,7 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         opts.logPluginDebugCheck   = m_Options.logPluginDebugCheck;
         opts.lspMsgsFocusOnSaveCheck  = m_Options.lspMsgsFocusOnSaveCheck;
         opts.lspMsgsClearOnSaveCheck  = m_Options.lspMsgsClearOnSaveCheck;
+        opts.useCompletionIconsCheck  = m_Options.useCompletionIconsCheck; //(ph 2024/02/10)
 
         // whether to collect doxygen style documents.
         opts.storeDocumentation    = m_Options.storeDocumentation;
@@ -947,6 +948,7 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
     opts.logPluginDebugCheck   = m_Options.logPluginDebugCheck;
     opts.lspMsgsFocusOnSaveCheck  = m_Options.lspMsgsFocusOnSaveCheck;
     opts.lspMsgsClearOnSaveCheck  = m_Options.lspMsgsClearOnSaveCheck;
+    opts.useCompletionIconsCheck  = m_Options.useCompletionIconsCheck; //(ph 2024/02/10)
 
     // whether to collect doxygen style documents.
     opts.storeDocumentation    = m_Options.storeDocumentation;
@@ -1395,6 +1397,7 @@ void Parser::ReadOptions()
     m_Options.logPluginDebugCheck  = cfg->ReadBool(_T("/logPluginDebug_check"),         false);
     m_Options.lspMsgsFocusOnSaveCheck = cfg->ReadBool(_T("/lspMsgsFocusOnSave_check"),  false);
     m_Options.lspMsgsClearOnSaveCheck = cfg->ReadBool(_T("/lspMsgsClearOnSave_check"),  false);
+    m_Options.useCompletionIconsCheck = cfg->ReadBool(_T("/useCompletionIcons_check"),  false); //(ph 2024/02/10)
 
     // Page "Symbol browser"
     m_BrowserOptions.showInheritance = cfg->ReadBool(_T("/browser_show_inheritance"),    false);
@@ -1440,6 +1443,7 @@ void Parser::WriteOptions()
     cfg->Write(_T("/logPluginDebug_check"),          m_Options.logPluginDebugCheck);
     cfg->Write(_T("/lspMsgsFocusOnSave_check"),      m_Options.lspMsgsFocusOnSaveCheck);
     cfg->Write(_T("/lspMsgsClearOnSave_check"),      m_Options.lspMsgsClearOnSaveCheck);
+    cfg->Write(_T("/useCompletionIcons_check"),      m_Options.useCompletionIconsCheck); //(ph 2024/02/10)
 
     // Page "Symbol browser"
     cfg->Write(_T("/browser_show_inheritance"),      m_BrowserOptions.showInheritance);
@@ -2582,6 +2586,13 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             ccctoken.semanticTokenType = ConvertLSPCompletionSymbolKindToSemanticTokenType(labelKind); //(ph 2023/12/27)
 
             ccctoken.id = v_CompletionTokens.size();
+
+            if (GetParseManager()->GetUseCCIconsOption())
+            {
+                ccctoken.category = ConvertLSPCompletionSymbolKindToCCTokenKind(labelKind);
+                ccctoken.semanticTokenType = ConvertLSPCompletionSymbolKindToSemanticTokenType(labelKind); //(ph 2024/02/10)
+            }
+
             v_CompletionTokens.push_back(ccctoken);
 
             // **debugging**
