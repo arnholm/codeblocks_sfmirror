@@ -581,7 +581,6 @@ void ClassBrowserBuilderThread::BuildTree()
     CCTreeItem* root = m_CCTreeTop->GetRootItem();
     if (!root)
         root = m_CCTreeTop->AddRoot(_("Symbols"), PARSER_IMG_SYMBOLS_FOLDER, PARSER_IMG_SYMBOLS_FOLDER, new CCTreeCtrlData(sfRoot));
-    if (not root) asm("int3"); /*trap*/
     if (root) //(ph 2024/01/18) Show root as "Symbols(<project owning editor>)"
     {
         wxString prjTitle = _("Unparsed project");

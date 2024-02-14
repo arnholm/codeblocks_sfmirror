@@ -21,11 +21,11 @@
  #define LOGGING 1
  #undef LOGIT
  #define LOGIT wxLogMessage
- #define TRAP asm("int3")
+ #define TRAP __builtin_trap()
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.112 24/02/10")
+#define VERSION wxT("1.2.113 24/02/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.113   2024/02/14 Remove int3 trap instruction mistakenly left in code.
 //1.2.112   2024/02/10 Enable code completion list to show icons.
 //1.2.111   2024/02/08 Don't hard code the "sh -c" cmd, use the app config setting.
 //1.2.110   2024/02/01 Optimize clangd resources dir search code using shell commands
