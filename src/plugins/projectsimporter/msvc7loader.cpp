@@ -278,7 +278,9 @@ bool MSVC7Loader::DoImport(TiXmlElement* conf)
 
             tmp = ReplaceMSVCMacros(cbC2U(tool->Attribute("OutputFile")));
             tmp = UnixFilename(tmp);
-            if (tmp.Last() == _T('.')) tmp.RemoveLast();
+            if (!tmp.empty() && (tmp.Last() == '.'))
+                tmp.RemoveLast();
+
             if (bt->GetTargetType() == ttStaticLib)
             {
                 // convert the lib name

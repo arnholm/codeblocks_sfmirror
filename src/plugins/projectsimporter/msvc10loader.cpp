@@ -329,7 +329,7 @@ void MSVC10Loader::SetConfigurationValuesPath(const TiXmlElement* root, const ch
             value = (wxString*)((char*)&m_pc[config]+target);
 
         *value = UnixFilename(GetText(e));
-        if ((*value).Last()!=wxFILE_SEP_PATH)
+        if (!value->empty() && (value->Last() != wxFILE_SEP_PATH))
             *value += wxFILE_SEP_PATH;
     }
 }
@@ -948,11 +948,12 @@ wxArrayString MSVC10Loader::GetArrayPaths(const TiXmlElement* e, const SProjectC
             for (size_t i=0; i<aVal.Count(); ++i)
             {
                 val = aVal.Item(i);
-                if (!val.Trim().IsEmpty())
+                if (!val.Trim().empty())
                 {
                     val = UnixFilename(val);
-                    if (val.Last()!=wxFILE_SEP_PATH)
+                    if (!val.empty() && (val.Last() != wxFILE_SEP_PATH))
                         val += wxFILE_SEP_PATH;
+
                     sResult.Add(val);
                 }
             }
