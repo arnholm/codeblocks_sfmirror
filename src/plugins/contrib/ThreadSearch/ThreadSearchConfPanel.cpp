@@ -406,7 +406,7 @@ void ThreadSearchConfPanel::do_layout()
         wxStaticBoxSizer* SizerThreadSearchOptions = new wxStaticBoxSizer(SizerThreadSearchOptions_staticbox, wxVERTICAL);
         SizerThreadSearchOptions->Add(m_pChkThreadSearchEnable, 0, wxALL, 4);
         SizerThreadSearchOptions->Add(m_pChkUseDefaultOptionsForThreadSearch, 0, wxALL, 4);
-        wxStaticText* m_pStaDefaultOptions = new wxStaticText(m_PageGeneral, wxID_ANY, _("       ('Whole word' = true, 'Start word' = false, 'Match case' = true, 'Regular expression' = false)"));
+        wxStaticText* m_pStaDefaultOptions = new wxStaticText(m_PageGeneral, wxID_ANY, _("       ('Whole word' = true, 'Start word' = false, 'Match case' = true, 'Match Comments' = true, 'Regular expression' = false)"));
         SizerThreadSearchOptions->Add(m_pStaDefaultOptions, 0, 0, 0);
         SizerThreadSearchOptions->Add(m_pChkShowMissingFilesError, 0, wxALL, 4);
         SizerThreadSearchOptions->Add(m_pChkShowCantOpenFileError, 0, wxALL, 4);
