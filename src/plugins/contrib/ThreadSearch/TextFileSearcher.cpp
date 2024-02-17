@@ -26,16 +26,17 @@ TextFileSearcher* TextFileSearcher::BuildTextFileSearcher(const wxString& search
                                                           bool matchCase,
                                                           bool matchWordBegin,
                                                           bool matchWord,
+                                                          bool matchInComments,
                                                           bool regEx)
 {
     TextFileSearcher* pFileSearcher = NULL;
     if ( regEx == true )
     {
-        pFileSearcher = new TextFileSearcherRegEx(searchText, matchCase, matchWordBegin, matchWord);
+        pFileSearcher = new TextFileSearcherRegEx(searchText, matchCase, matchWordBegin, matchWord, matchInComments);
     }
     else
     {
-        pFileSearcher = new TextFileSearcherText(searchText, matchCase, matchWordBegin, matchWord);
+        pFileSearcher = new TextFileSearcherText(searchText, matchCase, matchWordBegin, matchWord, matchInComments);
     }
 
     // Tests if construction is OK

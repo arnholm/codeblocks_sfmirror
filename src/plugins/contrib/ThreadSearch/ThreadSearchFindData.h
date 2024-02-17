@@ -47,6 +47,8 @@ public:
     void SetMatchWord      (bool matchWord)             {m_MatchWord       = matchWord;}
     void SetStartWord      (bool startWord)             {m_StartWord       = startWord;}
     void SetMatchCase      (bool matchCase)             {m_MatchCase       = matchCase;}
+    void SetMatchInComments(bool matchInComments)       {m_MatchInComments = matchInComments;}
+
     void SetRegEx          (bool regEx)                 {m_RegEx           = regEx;}
     void SetScope          (int scope)                  {m_Scope           = scope;}
     void SetSearchPath     (const wxString& searchPath) {m_SearchPath      = searchPath;}
@@ -62,6 +64,7 @@ public:
     bool     GetMatchWord()       const {return m_MatchWord;}
     bool     GetStartWord()       const {return m_StartWord;}
     bool     GetMatchCase()       const {return m_MatchCase;}
+    bool     GetMatchInComments() const {return m_MatchInComments;}
     bool     GetRegEx()           const {return m_RegEx;}
     int      GetScope()           const {return m_Scope;}
     wxString GetSearchMask()      const {return m_SearchMask;}
@@ -78,6 +81,7 @@ private:
     bool     m_MatchWord;
     bool     m_StartWord;
     bool     m_MatchCase;
+    bool     m_MatchInComments;
     bool     m_RegEx;
     int      m_Scope;
     wxString m_SearchPath;

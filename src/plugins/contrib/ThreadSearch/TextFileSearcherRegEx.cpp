@@ -19,8 +19,8 @@
 
 
 TextFileSearcherRegEx::TextFileSearcherRegEx(const wxString& searchText, bool matchCase,
-                                             bool matchWordBegin, bool matchWord) :
-    TextFileSearcher(searchText, matchCase, matchWordBegin, matchWord)
+        bool matchWordBegin, bool matchWord, bool matchInComments)
+    : TextFileSearcher(searchText, matchCase, matchWordBegin, matchWord, matchInComments)
 {
 #ifdef wxHAS_REGEX_ADVANCED
     int flags = wxRE_ADVANCED;
@@ -52,13 +52,66 @@ TextFileSearcherRegEx::TextFileSearcherRegEx(const wxString& searchText, bool ma
     m_RegEx.Compile(pattern, flags);
 }
 
-bool TextFileSearcherRegEx::MatchLine(std::vector<int> *outMatchedPositions, const wxString &line)
+bool TextFileSearcherRegEx::MatchLine(std::vector<int>* outMatchedPositions, const wxString& line)
 {
-    if (!m_RegEx.IsValid())
+    wxString lineCopy = line;
+    if(!m_RegEx.IsValid())
         return false;
-
-    const wxChar *lineBuffer = line.wx_str();
-    const bool match = m_RegEx.Matches(lineBuffer, 0, line.length());
+    // skip the C++ comments
+    if (!m_MatchInComments)
+    {
+        lineCopy = lineCopy.Trim (false);
+        if(lineCopy.Left(2) == "//")                // pure comment line
+            return false;                           // simply skip the whole comment line
+        // such as we have a line: int xxx; // xxx
+        // we have to remove the C++ comments, so "// xxx" got removed
+        if (lineCopy.Contains("//"))
+        {
+            // remove EOL comment
+            if (lineCopy.Contains("\"") || lineCopy.Contains("'"))
+            {
+                // remove all "" or '' strings with space (preserve length)
+                wxString lineCopy2 = line;
+                bool bInString1 = false;
+                bool bInString2 = false;
+                wxChar cChar;
+                for (int i = 0; i < (int)lineCopy.Length(); i++)
+                {
+                    cChar = lineCopy.at(i);
+                    if (cChar == '"'  && !bInString1)
+                    {
+                        lineCopy.at(i) = ' ';
+                        bInString1 = true;
+                        continue;
+                    }
+                    if (cChar == '"'  &&  bInString1)
+                    {
+                        lineCopy.at(i) = ' ';
+                        bInString1 = false;
+                        continue;
+                    }
+                    if (cChar == '\'' && !bInString2)
+                    {
+                        lineCopy.at(i) = ' ';
+                        bInString2 = true;
+                        continue;
+                    }
+                    if (cChar == '\'' &&  bInString2)
+                    {
+                        lineCopy.at(i) = ' ';
+                        bInString2 = false;
+                        continue;
+                    }
+                    if (bInString1 || bInString2)
+                        lineCopy.at(i) = ' ';
+                }
+            }
+            int nPos = lineCopy.Find("//");     // simple case first "//" will be the comment
+            lineCopy = line.Left(nPos);
+        }
+    }
+    const wxChar* lineBuffer = lineCopy.wx_str();
+    const bool match = m_RegEx.Matches(lineBuffer, 0, lineCopy.length());
     if (!match)
         return false;
 
@@ -80,7 +133,7 @@ bool TextFileSearcherRegEx::MatchLine(std::vector<int> *outMatchedPositions, con
 
         offset += start + length;
 
-        if (!m_RegEx.Matches(lineBuffer + offset, 0, line.length() - offset))
+        if (!m_RegEx.Matches(lineBuffer + offset, 0, lineCopy.length() - offset))
             break;
     }
 

@@ -37,6 +37,7 @@ public:
                                                    bool matchCase,
                                                    bool matchWordBegin,
                                                    bool matchWord,
+                                                   bool matchInComments,
                                                    bool regEx);
 
 
@@ -73,17 +74,19 @@ public:
 protected:
     /** Constructor. */
     // We don't use ThreadSearchFindData to limit coupling
-    TextFileSearcher(const wxString& searchText, bool matchCase, bool matchWordBegin, bool matchWord):
+    TextFileSearcher(const wxString& searchText, bool matchCase, bool matchWordBegin, bool matchWord, bool matchInComments):
                      m_SearchText(searchText),
                      m_MatchCase(matchCase),
                      m_MatchWordBegin(matchWordBegin),
-                     m_MatchWord(matchWord)
+                     m_MatchWord(matchWord),
+                     m_MatchInComments(matchInComments)
     {}
 
     wxString   m_SearchText;
     bool       m_MatchCase;
     bool       m_MatchWordBegin;
     bool       m_MatchWord;
+    bool       m_MatchInComments;
     wxTextFile m_TextFile;
 };
 

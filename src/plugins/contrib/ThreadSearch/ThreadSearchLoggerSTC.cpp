@@ -349,6 +349,8 @@ void ThreadSearchLoggerSTC::OnSearchBegin(const ThreadSearchFindData& findData)
     wxString optionMessage;
     if (findData.GetMatchCase())
         optionMessage += _("match case");
+    if (findData.GetMatchInComments())
+        optionMessage += _("match in comments");
     if (findData.GetMatchWord())
     {
         if (!optionMessage.empty())

@@ -170,6 +170,7 @@ BEGIN_EVENT_TABLE(ThreadSearchView, wxPanel)
     EVT_MENU(controlIDs.Get(ControlIDs::idOptionWholeWord), ThreadSearchView::OnQuickOptions)
     EVT_MENU(controlIDs.Get(ControlIDs::idOptionStartWord), ThreadSearchView::OnQuickOptions)
     EVT_MENU(controlIDs.Get(ControlIDs::idOptionMatchCase), ThreadSearchView::OnQuickOptions)
+    EVT_MENU(controlIDs.Get(ControlIDs::idOptionMatchInComments), ThreadSearchView::OnQuickOptions)
     EVT_MENU(controlIDs.Get(ControlIDs::idOptionRegEx), ThreadSearchView::OnQuickOptions)
     EVT_MENU(controlIDs.Get(ControlIDs::idOptionResetAll), ThreadSearchView::OnQuickOptions)
 
@@ -177,6 +178,7 @@ BEGIN_EVENT_TABLE(ThreadSearchView, wxPanel)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionWholeWord), ThreadSearchView::OnQuickOptionsUpdateUI)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionStartWord), ThreadSearchView::OnQuickOptionsUpdateUI)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionMatchCase), ThreadSearchView::OnQuickOptionsUpdateUI)
+    EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionMatchInComments), ThreadSearchView::OnQuickOptionsUpdateUI)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionRegEx), ThreadSearchView::OnQuickOptionsUpdateUI)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idOptionResetAll), ThreadSearchView::OnQuickOptionsUpdateUI)
 
@@ -281,6 +283,7 @@ void ThreadSearchView::OnBtnOptionsClick(wxCommandEvent &/*event*/)
     menu.AppendCheckItem(controlIDs.Get(ControlIDs::idOptionStartWord),
                          _("Start word"), _("Matches only word starting with search expression"));
     menu.AppendCheckItem(controlIDs.Get(ControlIDs::idOptionMatchCase), _("Match case"), _("Case sensitive search."));
+    menu.AppendCheckItem(controlIDs.Get(ControlIDs::idOptionMatchInComments), _("Match in C++ style comments"), _("Also searches in C++ style comments ('//')"));
     menu.AppendCheckItem(controlIDs.Get(ControlIDs::idOptionRegEx),
                          _("Regular expression"), _("Search expression is a regular expression"));
     menu.AppendSeparator();
@@ -324,6 +327,11 @@ void ThreadSearchView::OnQuickOptions(wxCommandEvent &event)
         findData.SetMatchCase(event.IsChecked());
         hasChange = true;
     }
+    else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionMatchInComments))
+    {
+        findData.SetMatchInComments(event.IsChecked());
+        hasChange = true;
+    }
     else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionRegEx))
     {
         findData.SetRegEx(event.IsChecked());
@@ -334,6 +342,7 @@ void ThreadSearchView::OnQuickOptions(wxCommandEvent &event)
         findData.SetMatchWord(false);
         findData.SetStartWord(false);
         findData.SetMatchCase(false);
+        findData.SetMatchInComments(false);
         findData.SetRegEx(false);
         hasChange = true;
     }
@@ -391,6 +400,8 @@ void ThreadSearchView::OnQuickOptionsUpdateUI(wxUpdateUIEvent &event)
         event.Check(findData.GetStartWord());
     else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionMatchCase))
         event.Check(findData.GetMatchCase());
+    else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionMatchInComments))
+        event.Check(findData.GetMatchInComments());
     else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionRegEx))
         event.Check(findData.GetRegEx());
     else if (event.GetId() == controlIDs.Get(ControlIDs::idOptionResetAll))

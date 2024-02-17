@@ -89,6 +89,7 @@ ThreadSearchConfPanel::ThreadSearchConfPanel(ThreadSearch& threadSearchPlugin,
     m_pChkWholeWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkWholeWord), _("Whole word"));
     m_pChkStartWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkStartWord), _("Start word"));
     m_pChkMatchCase = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchCase), _("Match case"));
+    m_pChkMatchInComments = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchInComments), _("Match in C++ style comments"));
     m_pChkRegExp = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkRegularExpression), _("Regular expression"));
     m_pChkThreadSearchEnable = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkThreadSearchEnable),
                                                                    _("Enable 'Find occurrences' contextual menu item"));
@@ -275,6 +276,7 @@ void ThreadSearchConfPanel::set_properties()
     m_pChkStartWord->SetToolTip(_("Matches only word starting with search expression"));
     m_pChkMatchCase->SetToolTip(_("Case sensitive search."));
     m_pChkMatchCase->SetValue(1);
+    m_pChkMatchInComments->SetToolTip(_("Also search in C++ style comments ('//')."));
     m_pChkRegExp->SetToolTip(_("Search expression is a regular expression"));
     m_pChkThreadSearchEnable->SetValue(1);
     m_pChkUseDefaultOptionsForThreadSearch->SetValue(1);
@@ -300,6 +302,7 @@ void ThreadSearchConfPanel::set_properties()
     m_pChkWholeWord->SetValue(findData.GetMatchWord());
     m_pChkStartWord->SetValue(findData.GetStartWord());
     m_pChkMatchCase->SetValue(findData.GetMatchCase());
+    m_pChkMatchInComments->SetValue(findData.GetMatchInComments());
     m_pChkRegExp->SetValue(findData.GetRegEx());
     m_pChkThreadSearchEnable->SetValue(m_ThreadSearchPlugin.GetCtxMenuIntegration());
     m_pChkUseDefaultOptionsForThreadSearch->SetValue(m_ThreadSearchPlugin.GetUseDefValsForThreadSearch());
@@ -395,6 +398,7 @@ void ThreadSearchConfPanel::do_layout()
         SizerOptions->Add(m_pChkWholeWord, 0, wxLEFT | wxRIGHT, 4);
         SizerOptions->Add(m_pChkStartWord, 0, wxLEFT | wxRIGHT, 4);
         SizerOptions->Add(m_pChkMatchCase, 0, wxLEFT | wxRIGHT, 4);
+        SizerOptions->Add(m_pChkMatchInComments, 0, wxLEFT | wxRIGHT, 4);
         SizerOptions->Add(m_pChkRegExp, 0, wxLEFT | wxRIGHT, 4);
         SizerSearchIn->Add(SizerOptions, 0, wxALL|wxEXPAND, 4);
         SizerTop->Add(SizerSearchIn, 0, wxALL|wxEXPAND, 4);
@@ -482,6 +486,7 @@ void ThreadSearchConfPanel::OnApply()
     findData.SetMatchWord      (m_pChkWholeWord->IsChecked());
     findData.SetStartWord      (m_pChkStartWord->IsChecked());
     findData.SetMatchCase      (m_pChkMatchCase->IsChecked());
+    findData.SetMatchInComments(m_pChkMatchInComments->IsChecked());
     findData.SetRegEx          (m_pChkRegExp->IsChecked());
 
     findData.UpdateSearchScope(ScopeOpenFiles,      m_pPnlSearchIn->GetSearchInOpenFiles());

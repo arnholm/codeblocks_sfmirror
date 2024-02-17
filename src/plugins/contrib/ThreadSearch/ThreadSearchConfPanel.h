@@ -93,6 +93,7 @@ private:
     wxCheckBox* m_pChkWholeWord;
     wxCheckBox* m_pChkStartWord;
     wxCheckBox* m_pChkMatchCase;
+    wxCheckBox* m_pChkMatchInComments;
     wxCheckBox* m_pChkRegExp;
     wxCheckBox* m_pChkThreadSearchEnable;
     wxCheckBox* m_pChkUseDefaultOptionsForThreadSearch;

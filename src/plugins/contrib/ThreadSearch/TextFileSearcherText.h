@@ -22,7 +22,7 @@ public:
     /** Constructor. */
     // We don't use ThreadSearchFindData to limit coupling
     TextFileSearcherText(const wxString& searchText, bool matchCase, bool matchWordBegin,
-                         bool matchWord);
+                         bool matchWord, bool matchInComments);
 
     /** Return true if Line matches search text.
       * This method is inherited from TextFileSearcher and is used to implement

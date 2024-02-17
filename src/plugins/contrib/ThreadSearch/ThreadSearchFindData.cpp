@@ -19,6 +19,7 @@ ThreadSearchFindData::ThreadSearchFindData()
                      ,m_MatchWord(true)
                      ,m_StartWord(false)
                      ,m_MatchCase(true)
+                     ,m_MatchInComments(true)
                      ,m_RegEx(false)
                      ,m_Scope(ScopeProjectFiles)
                      ,m_SearchPath(wxT("."))
@@ -34,6 +35,7 @@ ThreadSearchFindData::ThreadSearchFindData(const ThreadSearchFindData& findData)
                      ,m_MatchWord      (findData.m_MatchWord)
                      ,m_StartWord      (findData.m_StartWord)
                      ,m_MatchCase      (findData.m_MatchCase)
+                     ,m_MatchInComments(findData.m_MatchInComments)
                      ,m_RegEx          (findData.m_RegEx)
                      ,m_Scope          (findData.m_Scope)
                      ,m_SearchPath     (findData.m_SearchPath)
@@ -53,6 +55,7 @@ ThreadSearchFindData& ThreadSearchFindData::operator=(const ThreadSearchFindData
         m_MatchWord       = findData.m_MatchWord;
         m_StartWord       = findData.m_StartWord;
         m_MatchCase       = findData.m_MatchCase;
+        m_MatchInComments = findData.m_MatchInComments;
         m_RegEx           = findData.m_RegEx;
         m_Scope           = findData.m_Scope;
         m_SearchPath      = findData.m_SearchPath;
@@ -83,5 +86,5 @@ wxString ThreadSearchFindData::GetSearchPath(bool bExpanded) const
 
 bool ThreadSearchFindData::IsOptionEnabled() const
 {
-    return m_MatchCase | m_MatchWord | m_StartWord | m_RegEx;
+    return m_MatchCase | m_MatchWord | m_StartWord | m_MatchInComments | m_RegEx;
 }

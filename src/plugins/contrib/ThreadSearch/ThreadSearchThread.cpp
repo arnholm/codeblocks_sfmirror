@@ -46,6 +46,7 @@ ThreadSearchThread::ThreadSearchThread(ThreadSearchView*           pThreadSearch
                                                                   findData.GetMatchCase(),
                                                                   findData.GetStartWord(),
                                                                   findData.GetMatchWord(),
+                                                                  findData.GetMatchInComments(),
                                                                   findData.GetRegEx());
     if (!m_pTextFileSearcher)
     {
