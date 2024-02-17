@@ -46,6 +46,8 @@ namespace
     const long wxsDelId        = wxNewId();
     const long wxsPreviewId    = wxNewId();
     const long wxsQuickPropsId = wxNewId();
+    const long wxsCutId        = wxNewId();
+    const long wxsCopyId       = wxNewId();
 
     inline int ToolIconSize() { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/tooliconsize"),32L); }
     inline int PalIconSize()  { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/paletteiconsize"),16L); }
@@ -898,7 +900,15 @@ void wxsItemEditor::StartInsertPointSequence(const wxsItemInfo* Info)
 void wxsItemEditor::ShowPopup(wxsItem* Item,wxMenu* Popup)
 {
     m_PopupCaller = Item;
-    PopupMenu(Popup);
+
+    Item->SetIsSelected( true );
+
+    Popup->Append(wxsCutId,_("Cut"));
+    Popup->Append(wxsCopyId,_("Copy"));
+    Popup->Append(wxsInsBeforeId,_("Paste Before Selected"));
+    Popup->Append(wxsInsIntoId,_("Paste Inside Selected"));
+    Popup->Append(wxsInsAfterId,_("Paste After Selected    "));
+    wxWindow::PopupMenu(Popup);
 }
 
 void wxsItemEditor::OnPopup(wxCommandEvent& event)
@@ -950,5 +960,6 @@ BEGIN_EVENT_TABLE(wxsItemEditor,wxsEditor)
     EVT_BUTTON(wxsQuickPropsId,wxsItemEditor::OnQuickProps)
     EVT_BUTTON(-1,wxsItemEditor::OnButton)
     EVT_KEY_DOWN(wxsItemEditor::OnKeyDown)
+    EVT_RIGHT_UP(wxsItemEditor::OnMouseClick)
     EVT_MENU(wxID_ANY,wxsItemEditor::OnPopup)
 END_EVENT_TABLE()

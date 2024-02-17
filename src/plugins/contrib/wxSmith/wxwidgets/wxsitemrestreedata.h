@@ -42,6 +42,7 @@ class wxsItemResTreeData: public wxsResourceTreeItemData
 
         virtual void OnSelect();
         virtual void OnRightClick();
+        virtual bool OnPopup(cb_unused long Id);
 
         wxsItem* m_Item;
 };

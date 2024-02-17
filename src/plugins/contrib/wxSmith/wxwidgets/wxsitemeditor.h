@@ -56,6 +56,21 @@ class wxsItemEditor : public wxsEditor
         /** \brief Notifying that configuration has been changed */
         static void ConfigChanged();
 
+        /** \brief PasteBefore from context menu */
+        void PasteBefore()             { SetInsertionType(itBefore); Paste(); }
+
+        /** \brief PasteInto from context menu */
+        void PasteInto()               { SetInsertionType(itInto); Paste(); }
+
+        /** \brief PasteAfter from context menu */
+        void PasteAfter()              { SetInsertionType(itAfter); Paste(); }
+
+        /** \brief Copying from main menu or context menu*/
+        virtual void Copy();
+
+        /** \brief Cutting from main menu or context menu*/
+        virtual void Cut();
+
     protected:
 
         /** \brief Returns true if resource is modified, false otherwise */
@@ -81,12 +96,6 @@ class wxsItemEditor : public wxsEditor
 
         /** \brief Redoing */
         virtual void Redo();
-
-        /** \brief Cutting */
-        virtual void Cut();
-
-        /** \brief Copying */
-        virtual void Copy();
 
         /** \brief Pasting */
         virtual void Paste();
