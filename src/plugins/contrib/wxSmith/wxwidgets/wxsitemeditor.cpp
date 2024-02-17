@@ -907,7 +907,7 @@ void wxsItemEditor::ShowPopup(wxsItem* Item,wxMenu* Popup)
     Popup->Append(wxsCopyId,_("Copy"));
     Popup->Append(wxsInsBeforeId,_("Paste Before Selected"));
     Popup->Append(wxsInsIntoId,_("Paste Inside Selected"));
-    Popup->Append(wxsInsAfterId,_("Paste After Selected    "));
+    Popup->Append(wxsInsAfterId,_("Paste After Selected"));
     wxWindow::PopupMenu(Popup);
 }
 
