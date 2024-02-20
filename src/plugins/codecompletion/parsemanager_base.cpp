@@ -100,7 +100,7 @@ size_t ParseManagerBase::FindAIMatches(TokenTree*                  tree,
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("FindAIMatches() ----- FindAIMatches - enter -----"));
 
-    TRACE(_T("NativeParser::FindAIMatches()"));
+    TRACE(_T("ParseManager::FindAIMatches()"));
 
     // pop top component
     ParserComponent parser_component = components.front();

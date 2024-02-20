@@ -120,7 +120,7 @@ class Parser : public ParserBase
 
 public:
     /** constructor
-     * @param parent which is actually a NativeParser object
+     * @param parent which is actually a ParseManager object
      * @param project the C::B project associated with the current Parser
      */
     Parser(wxEvtHandler* parent, cbProject* project);
@@ -249,8 +249,8 @@ protected:
      */
     void OnBatchTimer(wxTimerEvent& event);
 
-    /** The parser will let its parent (NativeParser) to handle the event, as the CodeCompletion instance
-     * was set as the next handler of the NativeParser. Those events can finally go to the CodeCompletion's
+    /** The parser will let its parent (ParseManager) to handle the event, as the CodeCompletion instance
+     * was set as the next handler of the ParseManager. Those events can finally go to the CodeCompletion's
      * event handler.
      * @param state the state of the Parser, it could be any kind of enum ParserState
      * @param id either idParserStart or idParserEnd
@@ -282,7 +282,7 @@ private:
     /** connect event handlers of the timers and thread pool */
     void DisconnectEvents();
 
-    /** when initialized, this variable will be an instance of a NativeParser */
+    /** when initialized, this variable will be an instance of a ParseManager */
     wxEvtHandler*             m_Parent;
 
     /** referring to the C::B cbp project currently parsing in one parser per workspace mode */

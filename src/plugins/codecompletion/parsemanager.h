@@ -42,7 +42,7 @@ enum BrowserViewMode
     bvmInheritance
 };
 
-/** @brief NativeParser class is just like a manager class to control Parser objects.
+/** @brief ParseManager class is just like a manager class to control Parser objects.
  *
  * Normally, Each C::B Project (cbp) will have an associated Parser object.
  * In another mode, all C::B projects belong to a C::B workspace share a single Parser object.
