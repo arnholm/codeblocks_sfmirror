@@ -33,7 +33,7 @@ protected:
 
 private:
     cbProject*    m_Project;
-    ParseManager* m_NativeParser;
+    ParseManager* m_ParseManager;
     ParserBase*   m_Parser;
     wxArrayString m_OldPaths;
 

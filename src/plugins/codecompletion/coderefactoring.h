@@ -47,7 +47,7 @@ private:
     bool Parse();
 
 private:
-    ParseManager& m_NativeParser;
+    ParseManager& m_ParseManager;
     SearchDataMap m_SearchDataMap;
 };
 

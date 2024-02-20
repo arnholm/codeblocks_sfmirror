@@ -39,7 +39,7 @@ class TokenTree
     friend class CCDebugInfo;
     friend class CCTest;
     friend class CCTestFrame;
-    friend class NativeParserTest;
+    friend class ParseManagerTest;
 public:
 
     TokenTree();

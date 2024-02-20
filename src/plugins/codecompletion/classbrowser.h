@@ -209,7 +209,7 @@ private:
     CCTreeItem* GetItemPtr(wxTreeItemId ItemId);
 
     /** the pointer to parser manager object */
-    ParseManager*              m_NativeParser;
+    ParseManager*              m_ParseManager;
 
     /** the top(main) level tree control, see above diagram for details */
     CCTreeCtrl*                m_CCTreeCtrl;

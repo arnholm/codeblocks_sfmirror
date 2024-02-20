@@ -156,7 +156,7 @@ namespace
 // ----------------------------------------------------------------------------
 ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     // ----------------------------------------------------------------------------
-    m_NativeParser(np),
+    m_ParseManager(np),
     m_targetTreeCtrl(nullptr),
     m_TreeForPopupMenu(nullptr),
     m_Parser(nullptr),
@@ -174,8 +174,8 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
     m_CCTreeCtrlBottom = XRCCTRL(*this, "treeMembers", CCTreeCtrl);
 
     // Registration of images
-    m_CCTreeCtrl->SetImageList(m_NativeParser->GetImageList(16));
-    m_CCTreeCtrlBottom->SetImageList(m_NativeParser->GetImageList(16));
+    m_CCTreeCtrl->SetImageList(m_ParseManager->GetImageList(16));
+    m_CCTreeCtrlBottom->SetImageList(m_ParseManager->GetImageList(16));
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion");
     const int filter = cfg->ReadInt("/browser_display_filter", bdfFile);
@@ -238,7 +238,7 @@ void ClassBrowser::SetParser(ParserBase* parser)
     {
         const int sel = XRCCTRL(*this, "cmbView", wxChoice)->GetSelection();
         BrowserDisplayFilter filter = static_cast<BrowserDisplayFilter>(sel);
-        if (!m_NativeParser->IsParserPerWorkspace() && filter == bdfWorkspace)
+        if (!m_ParseManager->IsParserPerWorkspace() && filter == bdfWorkspace)
             filter = bdfProject;
 
         m_Parser->ClassBrowserOptions().displayFilter = filter;
@@ -271,10 +271,10 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap)
         return;
 
     // Do not allow ClassBrowser updates until all parsing is done //(ph 2024/01/25)
-    cbProject* pProject = m_NativeParser->GetProjectByParser(m_Parser); //(ph 2024/01/25)
+    cbProject* pProject = m_ParseManager->GetProjectByParser(m_Parser); //(ph 2024/01/25)
     if (pProject and  (not m_Parser->Done()) ) //(ph 2024/01/25)
         return;
-    if (m_NativeParser->GetParsingIsBusy())
+    if (m_ParseManager->GetParsingIsBusy())
         return;
 
     cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -301,10 +301,10 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap)
     }
 
     cbProject* activeProject = nullptr;
-    if (!m_NativeParser->IsParserPerWorkspace())
-        activeProject = m_NativeParser->GetProjectByParser(m_Parser);
+    if (!m_ParseManager->IsParserPerWorkspace())
+        activeProject = m_ParseManager->GetProjectByParser(m_Parser);
     else
-        activeProject = m_NativeParser->GetCurrentProject();
+        activeProject = m_ParseManager->GetCurrentProject();
 
     if (!activeProject)
         CCLogger::Get()->DebugLog("ClassBrowser::UpdateClassBrowserView(): No active project available.");
@@ -358,18 +358,18 @@ void ClassBrowser::OnClassBrowserSetFocus(wxFocusEvent& event) //(ph 2024/01/25)
     wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
     int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
     wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
-    if (pCurrentPage == m_NativeParser->GetClassBrowser())
+    if (pCurrentPage == m_ParseManager->GetClassBrowser())
     {
         if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
-            m_NativeParser->SetSymbolsWindowHasFocus(true);
-        else m_NativeParser->SetSymbolsWindowHasFocus(false);
+            m_ParseManager->SetSymbolsWindowHasFocus(true);
+        else m_ParseManager->SetSymbolsWindowHasFocus(false);
     }
     // If the user is fiddling around in the Symbols windows, update if necessary
     // This seldom happens here since OnParserEnd() does it when parsing ends.
     // We're trying to assure that the tree cannot access stale data and crash.
-    if (m_NativeParser->GetClassBrowserViewIsStale()
-        and (not m_NativeParser->GetUpdatingClassBrowserBusy())
-        and (not m_NativeParser->GetParsingIsBusy()) )
+    if (m_ParseManager->GetClassBrowserViewIsStale()
+        and (not m_ParseManager->GetUpdatingClassBrowserBusy())
+        and (not m_ParseManager->GetParsingIsBusy()) )
         {
             UpdateClassBrowserView();
             //CCLogger::Get()->DebugLogError("-Update From SetFocus.-"); // **Debugging**
@@ -600,7 +600,7 @@ bool ClassBrowser::RecursiveSearch(const wxString& search, wxTreeCtrl* tree, con
 void ClassBrowser::OnTreeItemRightClick(wxTreeEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (m_NativeParser->GetParsingIsBusy()) //(ph 2024/01/25)
+    if (m_ParseManager->GetParsingIsBusy()) //(ph 2024/01/25)
         return;
 
     wxTreeCtrl* tree = (wxTreeCtrl*)event.GetEventObject();
@@ -631,10 +631,10 @@ void ClassBrowser::OnJumpTo(wxCommandEvent& event)
             fname.Assign(ctd->m_Token->GetFilename());
 
         cbProject* project;
-        if (!m_NativeParser->IsParserPerWorkspace())
-            project = m_NativeParser->GetProjectByParser(m_Parser);
+        if (!m_ParseManager->IsParserPerWorkspace())
+            project = m_ParseManager->GetProjectByParser(m_Parser);
         else
-            project = m_NativeParser->GetCurrentProject();
+            project = m_ParseManager->GetCurrentProject();
 
         wxString base;
         if (project)
@@ -667,7 +667,7 @@ void ClassBrowser::OnJumpTo(wxCommandEvent& event)
 void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (m_NativeParser->GetParsingIsBusy()) //(ph 2024/01/25)
+    if (m_ParseManager->GetParsingIsBusy()) //(ph 2024/01/25)
         return;
 
     wxTreeCtrl* wx_tree = (wxTreeCtrl*)event.GetEventObject();
@@ -728,10 +728,10 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
             fname.Assign(ctd->m_Token->GetFilename());
 
         cbProject* project = nullptr;
-        if (!m_NativeParser->IsParserPerWorkspace())
-            project = m_NativeParser->GetProjectByParser(m_Parser);
+        if (!m_ParseManager->IsParserPerWorkspace())
+            project = m_ParseManager->GetProjectByParser(m_Parser);
         else
-            project = m_NativeParser->GetCurrentProject();
+            project = m_ParseManager->GetCurrentProject();
 
         wxString base;
         if (project)
@@ -771,8 +771,8 @@ void ClassBrowser::OnRefreshTree(cb_unused wxCommandEvent& event)
 void ClassBrowser::OnForceReparse(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (m_NativeParser)
-        m_NativeParser->ReparseCurrentProject();
+    if (m_ParseManager)
+        m_ParseManager->ReparseCurrentProject();
 }
 
 // ----------------------------------------------------------------------------
@@ -817,7 +817,7 @@ void ClassBrowser::OnViewScope(wxCommandEvent& event)
     if (m_Parser)
     {
         BrowserDisplayFilter filter = static_cast <BrowserDisplayFilter> (sel);
-        if (!m_NativeParser->IsParserPerWorkspace() && filter == bdfWorkspace)
+        if (!m_ParseManager->IsParserPerWorkspace() && filter == bdfWorkspace)
         {
             cbMessageBox(_("This feature is not supported in combination with\n"
                            "the option \"one parser per whole workspace\"."),
@@ -1073,7 +1073,7 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
     }
 
     // initialise it, this function is called from the GUI main thread.
-    m_ClassBrowserBuilderThread->Init(m_NativeParser,
+    m_ClassBrowserBuilderThread->Init(m_ParseManager,
                                       m_ActiveFilename,
                                       activeProject,
                                       m_Parser->ClassBrowserOptions(),
@@ -1105,7 +1105,7 @@ void ClassBrowser::ThreadedBuildTree(cbProject* activeProject)
 void ClassBrowser::OnTreeItemExpanding(wxTreeEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (m_NativeParser->GetParsingIsBusy()) //(ph 2024/01/25)
+    if (m_ParseManager->GetParsingIsBusy()) //(ph 2024/01/25)
         return;
 
     if (m_ClassBrowserBuilderThread && !m_ClassBrowserBuilderThread->GetIsBusy())  // targets can't be changed while busy
@@ -1125,7 +1125,7 @@ void ClassBrowser::OnTreeSelChanged(wxTreeEvent& event)
 // ----------------------------------------------------------------------------
 {
 
-    if (m_NativeParser->GetParsingIsBusy()) //(ph 2024/01/25)
+    if (m_ParseManager->GetParsingIsBusy()) //(ph 2024/01/25)
         return;
 
     if (m_ClassBrowserBuilderThread && m_Parser && m_Parser->ClassBrowserOptions().treeMembers)
@@ -1202,7 +1202,7 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
     {
         if (m_ClassBrowserBuilderThread) //m_ClassBrowserBuilderThread->GetIsBusy();
         {
-            m_NativeParser->SetUpdatingClassBrowserBusy(true); //(ph 2024/01/25)
+            m_ParseManager->SetUpdatingClassBrowserBusy(true); //(ph 2024/01/25)
             if (not startMillis)
             {
                 startMillis = GetNowMilliSeconds();
@@ -1216,7 +1216,7 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
         {
             size_t durationMillis = GetDurationMilliSeconds(startMillis);
             startMillis = 0;
-            m_NativeParser->SetUpdatingClassBrowserBusy(false); //(ph 2024/01/25)
+            m_ParseManager->SetUpdatingClassBrowserBusy(false); //(ph 2024/01/25)
             CCLogger::Get()->DebugLog(wxString::Format("Class browser updated (%zu msec)", durationMillis));
         }
     }//end else ClassBrowseer symbols updated
@@ -1244,7 +1244,7 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
     //                    ));
 
     if ( stop and (not m_ClassBrowserBuilderThread->GetIsBusy()) )
-        m_NativeParser->SetClassBrowserViewIsStale(false); //(ph 2024/01/25)
+        m_ParseManager->SetClassBrowserViewIsStale(false); //(ph 2024/01/25)
 }//end BuildTreeStartOrStop
 
 // ----------------------------------------------------------------------------

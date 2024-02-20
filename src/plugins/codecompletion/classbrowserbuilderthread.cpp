@@ -123,7 +123,7 @@ ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, w
     m_ClassBrowserSemaphore(sem),
     m_ClassBrowserCallAfterSemaphore(semCallAfter),
     m_ClassBrowserBuilderThreadMutex(),
-    m_NativeParser(nullptr),
+    m_ParseManager(nullptr),
     m_CCTreeTop(nullptr),
     m_CCTreeBottom(nullptr),
     m_UserData(nullptr),
@@ -160,7 +160,7 @@ void ClassBrowserBuilderThread::Init(ParseManager*         np,
 
     CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex);
 
-    m_NativeParser     = np;
+    m_ParseManager     = np;
 
     // patch 1444 tigerbeard 2024/01/11
     if (not m_CCTreeTop )
@@ -184,7 +184,7 @@ void ClassBrowserBuilderThread::Init(ParseManager*         np,
     m_CurrentFileSet.clear();
     m_CurrentTokenSet.clear();
 
-    TokenTree* tree = m_NativeParser->GetParser().GetTokenTree();
+    TokenTree* tree = m_ParseManager->GetParser().GetTokenTree();
 
     // fill filter set for current-file-filter
     if (   m_BrowserOptions.displayFilter == bdfFile
@@ -192,7 +192,7 @@ void ClassBrowserBuilderThread::Init(ParseManager*         np,
     {
         // m_ActiveFilename is the full filename up to the extension dot. No extension though.
         // get all filenames' indices matching our mask
-        wxArrayString paths = m_NativeParser->GetAllPathsByFilename(m_ActiveFilename);
+        wxArrayString paths = m_ParseManager->GetAllPathsByFilename(m_ActiveFilename);
 
         // Should add locker after called m_NativeParser->GetAllPathsByFilename
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
@@ -313,7 +313,7 @@ void* ClassBrowserBuilderThread::Entry()
 
     }
 
-    m_NativeParser = nullptr;
+    m_ParseManager = nullptr;
     m_CCTreeTop = nullptr;
     m_CCTreeBottom = nullptr;
 
@@ -424,7 +424,7 @@ void ClassBrowserBuilderThread::ExpandItem(CCTreeItem* item)
         }
     }
 
-    if (m_NativeParser && !m_BrowserOptions.treeMembers)
+    if (m_ParseManager && !m_BrowserOptions.treeMembers)
         AddMembersOf(m_CCTreeTop, item);
 
 #ifdef CC_BUILDTREE_MEASURING
@@ -466,7 +466,7 @@ void ClassBrowserBuilderThread::SelectGUIItem()
 void ClassBrowserBuilderThread::BuildTree()
 // ----------------------------------------------------------------------------
 {
-    if (CBBT_SANITY_CHECK || !m_NativeParser)
+    if (CBBT_SANITY_CHECK || !m_ParseManager)
         return; // Called before UI tree construction completed?!
 
     // moved to SetIsBusy() //(ph 2024/01/25)
@@ -663,7 +663,7 @@ bool ClassBrowserBuilderThread::CreateSpecialFolders(CCTree* tree, CCTreeItem* p
                             //   token tree, so we don't show such special folder
 
     // loop all tokens in global namespace and see if we have matches
-    TokenTree* tt = m_NativeParser->GetParser().GetTokenTree();
+    TokenTree* tt = m_ParseManager->GetParser().GetTokenTree();
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -994,7 +994,7 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
                 && tickets.find(token->GetTicket()) != tickets.end() )
                 continue; // duplicate node
             ++count;
-            int img = m_NativeParser->GetTokenKindImage(token);
+            int img = m_ParseManager->GetTokenKindImage(token);
 
             wxString str = token->m_Name;
             if (   (token->m_TokenKind == tkFunction)

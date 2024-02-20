@@ -120,7 +120,7 @@ const long ScopeDialog::ID_OPEN_FILES = wxNewId();
 const long ScopeDialog::ID_PROJECT_FILES = wxNewId();
 
 CodeRefactoring::CodeRefactoring(ParseManager& np) :
-    m_NativeParser(np)
+    m_ParseManager(np)
 {
 }
 
@@ -140,11 +140,11 @@ wxString CodeRefactoring::GetSymbolUnderCursor()
     if (control->IsString(style) || control->IsComment(style))
         return wxEmptyString;
 
-    if (!m_NativeParser.GetParser().Done())
+    if (!m_ParseManager.GetParser().Done())
     {
         wxString msg(_("The Parser is still parsing files."));
         cbMessageBox(msg, _("Code Refactoring"), wxOK | wxICON_WARNING);
-        msg += m_NativeParser.GetParser().NotDoneReason();
+        msg += m_ParseManager.GetParser().NotDoneReason();
         CCLogger::Get()->DebugLog(msg);
 
         return wxEmptyString;
@@ -168,7 +168,7 @@ bool CodeRefactoring::Parse()
 
     TokenIdxSet targetResult;
     const int endOfWord = editor->GetControl()->WordEndPosition(editor->GetControl()->GetCurrentPos(), true);
-    m_NativeParser.MarkItemsByAI(targetResult, true, false, true, endOfWord);
+    m_ParseManager.MarkItemsByAI(targetResult, true, false, true, endOfWord);
     if (targetResult.empty())
     {
         cbMessageBox(_("Symbol not found under cursor!"), _("Code Refactoring"), wxOK | wxICON_WARNING);
@@ -178,7 +178,7 @@ bool CodeRefactoring::Parse()
     // handle local variables
     bool isLocalVariable = false;
 
-    TokenTree* tree = m_NativeParser.GetParser().GetTokenTree();
+    TokenTree* tree = m_ParseManager.GetParser().GetTokenTree();
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -193,7 +193,7 @@ bool CodeRefactoring::Parse()
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
 
     wxArrayString files;
-    cbProject* project = m_NativeParser.GetProjectByEditor(editor);
+    cbProject* project = m_ParseManager.GetProjectByEditor(editor);
     if (isLocalVariable || !project)
         files.Add(editor->GetFilename());
     else
@@ -298,7 +298,7 @@ size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxSt
     const Token* parentOfLocalVariable = nullptr;
     if (isLocalVariable)
     {
-        TokenTree* tree = m_NativeParser.GetParser().GetTokenTree();
+        TokenTree* tree = m_ParseManager.GetParser().GetTokenTree();
 
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -374,7 +374,7 @@ size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxSt
             // do cc search
             const int endOfWord = itList->pos + targetText.Len();
             control->GotoPos(endOfWord);
-            m_NativeParser.MarkItemsByAI(&searchData, result, true, false, true, endOfWord);
+            m_ParseManager.MarkItemsByAI(&searchData, result, true, false, true, endOfWord);
             if (result.empty())
             {
                 it->second.erase(itList++);
@@ -398,7 +398,7 @@ size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxSt
                 {
                     bool do_continue = false;
 
-                    TokenTree* tree = m_NativeParser.GetParser().GetTokenTree();
+                    TokenTree* tree = m_ParseManager.GetParser().GetTokenTree();
 
                     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -515,7 +515,7 @@ void CodeRefactoring::DoRenameSymbols(const wxString& targetText, const wxString
     if (!editor)
         return;
 
-    cbProject* project = m_NativeParser.GetProjectByEditor(editor);
+    cbProject* project = m_ParseManager.GetProjectByEditor(editor);
     for (SearchDataMap::iterator it = m_SearchDataMap.begin(); it != m_SearchDataMap.end(); ++it)
     {
         // check if the file is already opened in built-in editor and do search in it
