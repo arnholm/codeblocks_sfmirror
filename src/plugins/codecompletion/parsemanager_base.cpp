@@ -17,15 +17,15 @@
 
 #include "parser/cclogger.h"
 
-#define CC_NATIVEPARSERBASE_DEBUG_OUTPUT 0
+#define CC_PARSEMANAGERBASE_DEBUG_OUTPUT 0
 
 #if defined(CC_GLOBAL_DEBUG_OUTPUT)
     #if CC_GLOBAL_DEBUG_OUTPUT == 1
-        #undef CC_NATIVEPARSERBASE_DEBUG_OUTPUT
-        #define CC_NATIVEPARSERBASE_DEBUG_OUTPUT 1
+        #undef CC_PARSEMANAGERBASE_DEBUG_OUTPUT
+        #define CC_PARSEMANAGERBASE_DEBUG_OUTPUT 1
     #elif CC_GLOBAL_DEBUG_OUTPUT == 2
-        #undef CC_NATIVEPARSERBASE_DEBUG_OUTPUT
-        #define CC_NATIVEPARSERBASE_DEBUG_OUTPUT 2
+        #undef CC_PARSEMANAGERBASE_DEBUG_OUTPUT
+        #define CC_PARSEMANAGERBASE_DEBUG_OUTPUT 2
     #endif
 #endif
 
@@ -37,13 +37,13 @@
     #define TRACE2(format, args...) \
             CCLogger::Get()->DebugLog(F(format, ##args))
 #else
-    #if CC_NATIVEPARSERBASE_DEBUG_OUTPUT == 1
+    #if CC_PARSEMANAGERBASE_DEBUG_OUTPUT == 1
         #define ADDTOKEN(format, args...) \
                 CCLogger::Get()->AddToken(F(format, ##args))
         #define TRACE(format, args...) \
             CCLogger::Get()->DebugLog(F(format, ##args))
         #define TRACE2(format, args...)
-    #elif CC_NATIVEPARSERBASE_DEBUG_OUTPUT == 2
+    #elif CC_PARSEMANAGERBASE_DEBUG_OUTPUT == 2
         #define ADDTOKEN(format, args...) \
                 CCLogger::Get()->AddToken(F(format, ##args))
         #define TRACE(format, args...)                            \

@@ -44,23 +44,23 @@
 #include "parser/parser.h"
 #include "parser/profiletimer.h"
 
-#define CC_NATIVEPARSER_DEBUG_OUTPUT 0
+#define CC_PARSEMANAGER_DEBUG_OUTPUT 0
 
 #if defined (CC_GLOBAL_DEBUG_OUTPUT)
     #if CC_GLOBAL_DEBUG_OUTPUT == 1
-        #undef CC_NATIVEPARSER_DEBUG_OUTPUT
-        #define CC_NATIVEPARSER_DEBUG_OUTPUT 1
+        #undef CC_PARSEMANAGER_DEBUG_OUTPUT
+        #define CC_PARSEMANAGER_DEBUG_OUTPUT 1
     #elif CC_GLOBAL_DEBUG_OUTPUT == 2
-        #undef CC_NATIVEPARSER_DEBUG_OUTPUT
-        #define CC_NATIVEPARSER_DEBUG_OUTPUT 2
+        #undef CC_PARSEMANAGER_DEBUG_OUTPUT
+        #define CC_PARSEMANAGER_DEBUG_OUTPUT 2
     #endif
 #endif
 
-#if CC_NATIVEPARSER_DEBUG_OUTPUT == 1
+#if CC_PARSEMANAGER_DEBUG_OUTPUT == 1
     #define TRACE(format, args...) \
         CCLogger::Get()->DebugLog(F(format, ##args))
     #define TRACE2(format, args...)
-#elif CC_NATIVEPARSER_DEBUG_OUTPUT == 2
+#elif CC_PARSEMANAGER_DEBUG_OUTPUT == 2
     #define TRACE(format, args...)                            \
         do                                                    \
         {                                                     \
