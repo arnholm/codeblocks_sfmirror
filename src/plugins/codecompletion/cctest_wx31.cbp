@@ -61,16 +61,16 @@
 		<Unit filename="cctest/cctest_app.cpp" />
 		<Unit filename="cctest/cctest_frame.cpp" />
 		<Unit filename="cctest/cctest_frame.h" />
-		<Unit filename="cctest/nativeparser_test.cpp" />
-		<Unit filename="cctest/nativeparser_test.h" />
+		<Unit filename="cctest/parsemanager_test.cpp" />
+		<Unit filename="cctest/parsemanager_test.h" />
 		<Unit filename="cctest/resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="cctest/test.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="nativeparser_base.cpp" />
-		<Unit filename="nativeparser_base.h" />
+		<Unit filename="parsemanager_base.cpp" />
+		<Unit filename="parsemanager_base.h" />
 		<Unit filename="parser/ccdebuginfo.cpp" />
 		<Unit filename="parser/ccdebuginfo.h" />
 		<Unit filename="parser/cclogger.cpp" />
@@ -92,15 +92,12 @@
 		<Unit filename="parser/tokentree.h" />
 		<Unit filename="wxsmith/CCTestFrame.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="cctest/cctest_app.cpp" main="-- None --" init_handlers="never" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/CCTestFrame.wxs" src="cctest/cctest_frame.cpp" hdr="cctest/cctest_frame.h" fwddecl="0" i18n="1" name="CCTestFrame" language="CPP" />
 				</resources>
 			</wxsmith>
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
