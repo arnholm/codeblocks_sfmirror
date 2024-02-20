@@ -84,7 +84,7 @@ BEGIN_EVENT_TABLE(CCOptionsDlg, wxPanel)
 END_EVENT_TABLE()
 
 CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* cc, DocumentationHelper* dh) :
-    m_NativeParser(np),
+    m_ParseManager(np),
     m_CodeCompletion(cc),
     m_Parser(np->GetParser()),
     m_Documentation(dh)
@@ -157,8 +157,8 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* c
     XRCCTRL(*this, "chkComplexMacros",      wxCheckBox)->SetValue(m_Parser.Options().parseComplexMacros);
     XRCCTRL(*this, "chkPlatformCheck",      wxCheckBox)->SetValue(m_Parser.Options().platformCheck);
 
-    XRCCTRL(*this, "rdoOneParserPerWorkspace", wxRadioButton)->SetValue( m_NativeParser->IsParserPerWorkspace());
-    XRCCTRL(*this, "rdoOneParserPerProject",   wxRadioButton)->SetValue(!m_NativeParser->IsParserPerWorkspace());
+    XRCCTRL(*this, "rdoOneParserPerWorkspace", wxRadioButton)->SetValue( m_ParseManager->IsParserPerWorkspace());
+    XRCCTRL(*this, "rdoOneParserPerProject",   wxRadioButton)->SetValue(!m_ParseManager->IsParserPerWorkspace());
 
     // Page "Symbol browser"
     XRCCTRL(*this, "chkInheritance",        wxCheckBox)->SetValue(m_Parser.ClassBrowserOptions().showInheritance);
@@ -284,7 +284,7 @@ void CCOptionsDlg::OnApply()
 
     // Now write the parser options and re-read them again to make sure they are up-to-date
     m_Parser.WriteOptions();
-    m_NativeParser->RereadParserOptions();
+    m_ParseManager->RereadParserOptions();
     m_Documentation->WriteOptions(cfg);
     m_CodeCompletion->RereadOptions();
 }

@@ -919,7 +919,7 @@ void DocumentationHelper::SaveTokenIdx()
 //events:
 wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& dismissPopup)
 {
-    TokenTree* tree = m_CC->m_NativeParser.GetParser().GetTokenTree();
+    TokenTree* tree = m_CC->m_ParseManager.GetParser().GetTokenTree();
 
     const wxString& href = event.GetLinkInfo().GetHref();
     wxString args;

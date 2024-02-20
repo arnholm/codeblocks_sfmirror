@@ -35,7 +35,7 @@ private:
     void UpdateCCDelayLabel();
     bool ValidateReplacementToken(wxString& from, wxString& to);
 
-    ParseManager*        m_NativeParser;
+    ParseManager*        m_ParseManager;
     CodeCompletion*      m_CodeCompletion;
     ParserBase&          m_Parser;
     DocumentationHelper* m_Documentation;
