@@ -1206,16 +1206,16 @@
 		<Unit filename="plugins/codecompletion/insertclassmethoddlg.h">
 			<Option target="Code-completion" />
 		</Unit>
-		<Unit filename="plugins/codecompletion/nativeparser.cpp">
+		<Unit filename="plugins/codecompletion/parsemanager.cpp">
 			<Option target="Code-completion" />
 		</Unit>
-		<Unit filename="plugins/codecompletion/nativeparser.h">
+		<Unit filename="plugins/codecompletion/parsemanager.h">
 			<Option target="Code-completion" />
 		</Unit>
-		<Unit filename="plugins/codecompletion/nativeparser_base.cpp">
+		<Unit filename="plugins/codecompletion/parsemanager_base.cpp">
 			<Option target="Code-completion" />
 		</Unit>
-		<Unit filename="plugins/codecompletion/nativeparser_base.h">
+		<Unit filename="plugins/codecompletion/parsemanager_base.h">
 			<Option target="Code-completion" />
 		</Unit>
 		<Unit filename="plugins/codecompletion/parser/ccdebuginfo.cpp">
