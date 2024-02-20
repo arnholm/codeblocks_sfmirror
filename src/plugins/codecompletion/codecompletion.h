@@ -494,7 +494,7 @@ private:
      * ReparsingMap contains such two elements
      * (a.cbp, (a1,cpp))
      * (b.cbp, (b2.cpp, b3.cpp))
-     * there two elements will be passed to m_NativeParser, and m_NativeParser will distribute
+     * there two elements will be passed to m_ParseManager, and m_ParseManager will distribute
      * to each Parser objects
      */
     typedef std::map<cbProject*, wxArrayString> ReparsingMap;
@@ -505,7 +505,7 @@ private:
     /** Provider of documentation for the popup window */
     DocumentationHelper     m_DocHelper;
 
-    // requires access to: m_NativeParser.GetParser().GetTokenTree()
+    // requires access to: m_ParseManager.GetParser().GetTokenTree()
     friend wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent&, bool&);
 
 private:

@@ -69,9 +69,9 @@ public:
 
     /** class constructor
      * @param parent the parent window
-     * @param np the NativeParser instance, which contains all the images for the wxTreeCtrl
+     * @param pm the ParseManager instance, which contains all the images for the wxTreeCtrl
      */
-    ClassBrowser(wxWindow* parent, ParseManager* np);
+    ClassBrowser(wxWindow* parent, ParseManager* pm);
 
     /** class destructor */
     virtual ~ClassBrowser();

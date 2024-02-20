@@ -194,7 +194,7 @@ void ClassBrowserBuilderThread::Init(ParseManager*         np,
         // get all filenames' indices matching our mask
         wxArrayString paths = m_ParseManager->GetAllPathsByFilename(m_ActiveFilename);
 
-        // Should add locker after called m_NativeParser->GetAllPathsByFilename
+        // Should add locker after called m_ParseManager->GetAllPathsByFilename
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
         TokenFileSet result;

@@ -391,8 +391,8 @@ CodeCompletion::CodeCompletion() :
     //-Connect(g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
     Connect(g_idCCLogger,g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)); //(ph 2024/01/25)
 
-    // the two events below were generated from NativeParser, as currently, CodeCompletionPlugin is
-    // set as the next event handler for m_NativeParser, so it get chance to handle them.
+    // the two events below were generated from ParseManager, as currently, CodeCompletionPlugin is
+    // set as the next event handler for m_ParseManager, so it get chance to handle them.
     Connect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserStart)  );
     Connect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserEnd)    );
 
@@ -456,7 +456,7 @@ void CodeCompletion::OnAttach()
     // read options from configure file
     RereadOptions();
 
-    // Events which m_NativeParser does not handle will go to the the next event
+    // Events which m_ParseManager does not handle will go to the the next event
     // handler which is the instance of a CodeCompletion.
     m_ParseManager.SetNextHandler(this);
 
@@ -2258,7 +2258,7 @@ void CodeCompletion::OnProjectSaved(CodeBlocksEvent& event)
 {
     // reparse project (compiler search dirs might have changed)
     m_TimerProjectSaved.SetClientData(event.GetProject());
-    // we need more time for waiting wxExecute in NativeParser::AddCompilerPredefinedMacros
+    // we need more time for waiting wxExecute in ParseManager::AddCompilerPredefinedMacros
     TRACE(_T("CodeCompletion::OnProjectSaved: Starting m_TimerProjectSaved."));
     m_TimerProjectSaved.Start(200, wxTIMER_ONE_SHOT);
 
@@ -2375,7 +2375,7 @@ void CodeCompletion::OnEditorClosed(CodeBlocksEvent& event)
             m_TimerEditorActivated.Stop();
     }
 
-    // tell m_NativeParser that a builtin editor was closed
+    // tell m_ParseManager that a builtin editor was closed
     if ( edm->GetBuiltinEditor(event.GetEditor()) )
         m_ParseManager.OnEditorClosed(event.GetEditor());
 
@@ -2556,7 +2556,7 @@ int CodeCompletion::DoClassMethodDeclImpl()
 
     int success = -6;
 
-//    TokenTree* tree = m_NativeParser.GetParser().GetTokenTree(); // The one used inside InsertClassMethodDlg
+//    TokenTree* tree = m_ParseManager.GetParser().GetTokenTree(); // The one used inside InsertClassMethodDlg
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -3495,7 +3495,7 @@ void CodeCompletion::OnEditorActivatedTimer(cb_unused wxTimerEvent& event)
         return;
     }
 
-    TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Need to notify NativeParser and Refresh toolbar."));
+    TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Need to notify ParseManager and Refresh toolbar."));
 
     m_ParseManager.OnEditorActivated(editor);
     TRACE(_T("CodeCompletion::OnEditorActivatedTimer: Starting m_TimerToolbar."));

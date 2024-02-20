@@ -118,7 +118,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* c
     XRCCTRL(*this, "chkKL_9",               wxCheckBox)->SetValue(cfg->ReadBool(_T("/lexer_keywords_set9"),  false));
 
     // Page "C / C++ parser"
-    // NOTE (Morten#1#): Keep this in sync with files in the XRC file (settings.xrc) and nativeparser.cpp
+    // NOTE (Morten#1#): Keep this in sync with files in the XRC file (settings.xrc) and parsemanager.cpp
     XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/max_threads"), 1));
     XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->Enable(false);
     XRCCTRL(*this, "spnParsersNum",            wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/max_parsers"), 5));
