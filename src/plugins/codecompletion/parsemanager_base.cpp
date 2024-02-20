@@ -12,7 +12,7 @@
 #ifndef CB_PRECOMP
 #endif
 
-#include "nativeparser_base.h"
+#include "parsemanager_base.h"
 #include "parser/tokenizer.h"
 
 #include "parser/cclogger.h"

@@ -6,7 +6,7 @@
 #ifndef NATIVEPARSER_H
 #define NATIVEPARSER_H
 
-#include "nativeparser_base.h"
+#include "parsemanager_base.h"
 #include "parser/parser.h"
 
 #include <queue>

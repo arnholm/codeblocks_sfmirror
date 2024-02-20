@@ -42,7 +42,7 @@
 #include <cbstyledtextctrl.h>
 
 #include "classbrowser.h" // class's header file
-#include "nativeparser.h"
+#include "parsemanager.h"
 
 #include "parser/ccdebuginfo.h"
 

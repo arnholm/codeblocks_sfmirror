@@ -12,7 +12,7 @@
 #include <sdk_events.h>
 
 #include "coderefactoring.h"
-#include "nativeparser.h"
+#include "parsemanager.h"
 #include "systemheadersthread.h"
 #include "doxygen_parser.h"
 

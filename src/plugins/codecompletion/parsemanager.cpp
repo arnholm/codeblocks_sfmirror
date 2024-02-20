@@ -39,7 +39,7 @@
 #include <cbstyledtextctrl.h>
 #include <compilercommandgenerator.h>
 
-#include "nativeparser.h"
+#include "parsemanager.h"
 #include "classbrowser.h"
 #include "parser/parser.h"
 #include "parser/profiletimer.h"

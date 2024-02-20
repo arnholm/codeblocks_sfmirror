@@ -6,7 +6,7 @@
 #ifndef CODEREFACTORING_H
 #define CODEREFACTORING_H
 
-#include "nativeparser.h"
+#include "parsemanager.h"
 
 struct crSearchData
 {

@@ -9,7 +9,7 @@
 #include <wx/intl.h>
 #include "configurationpanel.h"
 #include <settings.h>
-#include "nativeparser.h"
+#include "parsemanager.h"
 #include "parser/parser.h"
 
 class cbProject;

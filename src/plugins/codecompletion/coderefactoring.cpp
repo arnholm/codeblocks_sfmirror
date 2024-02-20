@@ -31,7 +31,7 @@
 #include <searchresultslog.h>
 
 #include "coderefactoring.h"
-#include "nativeparser.h"
+#include "parsemanager.h"
 
 #define CC_CODEREFACTORING_DEBUG_OUTPUT 0
 

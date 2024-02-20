@@ -10,7 +10,7 @@
 #include <wx/treectrl.h>
 
 #include "cctreectrl.h"
-#include "nativeparser.h"
+#include "parsemanager.h"
 #include "parser/token.h"
 #include "parser/parser.h"
 
