@@ -23,8 +23,8 @@ libcodecompletion_la_SOURCES = ccoptionsdlg.cpp \
 			doxygen_parser.cpp \
 			gotofunctiondlg.cpp \
 			insertclassmethoddlg.cpp \
-			nativeparser.cpp \
-			nativeparser_base.cpp \
+			parsemanager.cpp \
+			parsemanager_base.cpp \
 			selectincludefile.cpp \
 			systemheadersthread.cpp \
 			parser/ccdebuginfo.cpp \
@@ -50,8 +50,8 @@ noinst_HEADERS = ccoptionsdlg.h \
 			doxygen_parser.h \
 			gotofunctiondlg.h \
 			insertclassmethoddlg.h \
-			nativeparser.h \
-			nativeparser_base.h \
+			parsemanager.h \
+			parsemanager_base.h \
 			selectincludefile.h \
 			systemheadersthread.h \
 			parser/ccdebuginfo.h \
