@@ -83,7 +83,7 @@ BEGIN_EVENT_TABLE(CCOptionsDlg, wxPanel)
     EVT_COMMAND_SCROLL(XRCID("sldCCDelay"), CCOptionsDlg::OnCCDelayScroll)
 END_EVENT_TABLE()
 
-CCOptionsDlg::CCOptionsDlg(wxWindow* parent, NativeParser* np, CodeCompletion* cc, DocumentationHelper* dh) :
+CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* cc, DocumentationHelper* dh) :
     m_NativeParser(np),
     m_CodeCompletion(cc),
     m_Parser(np->GetParser()),

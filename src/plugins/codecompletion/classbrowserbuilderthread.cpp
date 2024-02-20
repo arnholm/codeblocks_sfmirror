@@ -147,7 +147,7 @@ ClassBrowserBuilderThread::~ClassBrowserBuilderThread()
 }
 
 // ----------------------------------------------------------------------------
-void ClassBrowserBuilderThread::Init(NativeParser*         np,
+void ClassBrowserBuilderThread::Init(ParseManager*         np,
                                      const wxString&       active_filename,
                                      void*                 user_data, // active project
                                      const BrowserOptions& bo,

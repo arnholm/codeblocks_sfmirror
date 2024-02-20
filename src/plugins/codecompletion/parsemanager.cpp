@@ -196,7 +196,7 @@ static wxImageList* LoadImageList(int size)
     return list;
 }
 
-NativeParser::NativeParser() :
+ParseManager::ParseManager() :
     m_TimerParsingOneByOne(this, idTimerParsingOneByOne),
     m_ClassBrowser(nullptr),
     m_ClassBrowserIsFloating(false),
@@ -214,22 +214,22 @@ NativeParser::NativeParser() :
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
     m_ParserPerWorkspace = cfg->ReadBool(_T("/parser_per_workspace"), false);
 
-    Connect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(NativeParser::OnParserStart));
-    Connect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(NativeParser::OnParserEnd));
-    Connect(idTimerParsingOneByOne,      wxEVT_TIMER,                 wxTimerEventHandler(NativeParser::OnParsingOneByOneTimer));
+    Connect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ParseManager::OnParserStart));
+    Connect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ParseManager::OnParserEnd));
+    Connect(idTimerParsingOneByOne,      wxEVT_TIMER,                 wxTimerEventHandler(ParseManager::OnParsingOneByOneTimer));
 }
 
-NativeParser::~NativeParser()
+ParseManager::~ParseManager()
 {
-    Disconnect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(NativeParser::OnParserStart));
-    Disconnect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(NativeParser::OnParserEnd));
-    Disconnect(idTimerParsingOneByOne,      wxEVT_TIMER,                 wxTimerEventHandler(NativeParser::OnParsingOneByOneTimer));
+    Disconnect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ParseManager::OnParserStart));
+    Disconnect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ParseManager::OnParserEnd));
+    Disconnect(idTimerParsingOneByOne,      wxEVT_TIMER,                 wxTimerEventHandler(ParseManager::OnParsingOneByOneTimer));
     RemoveClassBrowser();
     ClearParsers();
     Delete(m_TempParser);
 }
 
-ParserBase* NativeParser::GetParserByProject(cbProject* project)
+ParserBase* ParseManager::GetParserByProject(cbProject* project)
 {
     if (m_ParserPerWorkspace)
     {
@@ -250,13 +250,13 @@ ParserBase* NativeParser::GetParserByProject(cbProject* project)
     return nullptr;
 }
 
-ParserBase* NativeParser::GetParserByFilename(const wxString& filename)
+ParserBase* ParseManager::GetParserByFilename(const wxString& filename)
 {
     cbProject* project = GetProjectByFilename(filename);
     return GetParserByProject(project);
 }
 
-cbProject* NativeParser::GetProjectByParser(ParserBase* parser)
+cbProject* ParseManager::GetProjectByParser(ParserBase* parser)
 {
     for (ParserList::const_iterator it = m_ParserList.begin(); it != m_ParserList.end(); ++it)
     {
@@ -268,7 +268,7 @@ cbProject* NativeParser::GetProjectByParser(ParserBase* parser)
     return NULL;
 }
 
-cbProject* NativeParser::GetProjectByFilename(const wxString& filename)
+cbProject* ParseManager::GetProjectByFilename(const wxString& filename)
 {
     TRACE(_T("NativeParser::GetProjectByFilename: %s"), filename.wx_str());
     cbProject* activeProject = Manager::Get()->GetProjectManager()->GetActiveProject();
@@ -304,7 +304,7 @@ cbProject* NativeParser::GetProjectByFilename(const wxString& filename)
     return nullptr;
 }
 
-cbProject* NativeParser::GetProjectByEditor(cbEditor* editor)
+cbProject* ParseManager::GetProjectByEditor(cbEditor* editor)
 {
     if (!editor)
         return nullptr;
@@ -314,7 +314,7 @@ cbProject* NativeParser::GetProjectByEditor(cbEditor* editor)
     return GetProjectByFilename(editor->GetFilename());
 }
 
-cbProject* NativeParser::GetCurrentProject()
+cbProject* ParseManager::GetCurrentProject()
 {
     cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     cbProject* project = GetProjectByEditor(editor);
@@ -324,7 +324,7 @@ cbProject* NativeParser::GetCurrentProject()
 }
 
 // ----------------------------------------------------------------------------
-bool NativeParser::Done()
+bool ParseManager::Done()
 // ----------------------------------------------------------------------------
 {
     bool done = true;
@@ -341,7 +341,7 @@ bool NativeParser::Done()
     return done;
 }
 
-wxImageList* NativeParser::GetImageList(int maxSize)
+wxImageList* ParseManager::GetImageList(int maxSize)
 {
     const int size = cbFindMinSize16to64(maxSize);
 
@@ -356,7 +356,7 @@ wxImageList* NativeParser::GetImageList(int maxSize)
         return it->second.get();
 }
 
-int NativeParser::GetTokenKindImage(const Token* token)
+int ParseManager::GetTokenKindImage(const Token* token)
 {
     if (!token)
         return PARSER_IMG_NONE;
@@ -456,7 +456,7 @@ int NativeParser::GetTokenKindImage(const Token* token)
     }
 }
 
-wxArrayString NativeParser::GetAllPathsByFilename(const wxString& filename)
+wxArrayString ParseManager::GetAllPathsByFilename(const wxString& filename)
 {
     TRACE(_T("NativeParser::GetAllPathsByFilename: Enter"));
 
@@ -534,7 +534,7 @@ wxArrayString NativeParser::GetAllPathsByFilename(const wxString& filename)
     return dirs;
 }
 
-void NativeParser::AddPaths(wxArrayString& dirs, const wxString& path, bool hasExt)
+void ParseManager::AddPaths(wxArrayString& dirs, const wxString& path, bool hasExt)
 {
     wxString s;
     if (hasExt)
@@ -546,7 +546,7 @@ void NativeParser::AddPaths(wxArrayString& dirs, const wxString& path, bool hasE
         dirs.Add(s);
 }
 
-ParserBase* NativeParser::CreateParser(cbProject* project)
+ParserBase* ParseManager::CreateParser(cbProject* project)
 {
     if ( GetParserByProject(project) )
     {
@@ -586,7 +586,7 @@ ParserBase* NativeParser::CreateParser(cbProject* project)
     return parser;
 }
 
-bool NativeParser::DeleteParser(cbProject* project)
+bool ParseManager::DeleteParser(cbProject* project)
 {
     wxString prj = (project ? project->GetTitle() : _T("*NONE*"));
 
@@ -639,7 +639,7 @@ bool NativeParser::DeleteParser(cbProject* project)
     return false;
 }
 
-bool NativeParser::ReparseFile(cbProject* project, const wxString& filename)
+bool ParseManager::ReparseFile(cbProject* project, const wxString& filename)
 {
     if (ParserCommon::FileType(filename) == ParserCommon::ftOther)
         return false;
@@ -656,7 +656,7 @@ bool NativeParser::ReparseFile(cbProject* project, const wxString& filename)
     return parser->Reparse(filename);
 }
 
-bool NativeParser::AddFileToParser(cbProject* project, const wxString& filename, ParserBase* parser)
+bool ParseManager::AddFileToParser(cbProject* project, const wxString& filename, ParserBase* parser)
 {
     if (ParserCommon::FileType(filename) == ParserCommon::ftOther)
         return false;
@@ -676,7 +676,7 @@ bool NativeParser::AddFileToParser(cbProject* project, const wxString& filename,
     return parser->AddFile(filename, project);
 }
 
-bool NativeParser::RemoveFileFromParser(cbProject* project, const wxString& filename)
+bool ParseManager::RemoveFileFromParser(cbProject* project, const wxString& filename)
 {
     ParserBase* parser = GetParserByProject(project);
     if (!parser)
@@ -687,7 +687,7 @@ bool NativeParser::RemoveFileFromParser(cbProject* project, const wxString& file
     return parser->RemoveFile(filename);
 }
 
-void NativeParser::RereadParserOptions()
+void ParseManager::RereadParserOptions()
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
     bool useSymbolBrowser = cfg->ReadBool(_T("/use_symbols_browser"), true);
@@ -750,7 +750,7 @@ void NativeParser::RereadParserOptions()
         CreateParser(project);
 }
 
-void NativeParser::ReparseCurrentProject()
+void ParseManager::ReparseCurrentProject()
 {
     cbProject* project = GetCurrentProject();
     if (project)
@@ -761,7 +761,7 @@ void NativeParser::ReparseCurrentProject()
     }
 }
 
-void NativeParser::ReparseSelectedProject()
+void ParseManager::ReparseSelectedProject()
 {
     wxTreeCtrl* tree = Manager::Get()->GetProjectManager()->GetUI().GetTree();
     if (!tree)
@@ -790,7 +790,7 @@ void NativeParser::ReparseSelectedProject()
 // Here, we collect the "using namespace XXXX" directives
 // Also, we locate the current caret in which function, then, add the function parameters to Token trie
 // Also, the variables in the function body( local block ) was add to the Token trie
-size_t NativeParser::MarkItemsByAI(ccSearchData* searchData,
+size_t ParseManager::MarkItemsByAI(ccSearchData* searchData,
                                    TokenIdxSet&  result,
                                    bool          reallyUseAI,
                                    bool          isPrefix,
@@ -849,7 +849,7 @@ size_t NativeParser::MarkItemsByAI(ccSearchData* searchData,
     return AI(result, searchData, wxEmptyString, isPrefix, caseSensitive, &search_scope, caretPos);
 }
 
-size_t NativeParser::MarkItemsByAI(TokenIdxSet& result,
+size_t ParseManager::MarkItemsByAI(TokenIdxSet& result,
                                    bool         reallyUseAI,
                                    bool         isPrefix,
                                    bool         caseSensitive,
@@ -871,7 +871,7 @@ size_t NativeParser::MarkItemsByAI(TokenIdxSet& result,
     return MarkItemsByAI(&searchData, result, reallyUseAI, isPrefix, caseSensitive, caretPos);
 }
 
-int NativeParser::GetCallTips(wxArrayString& items, int& typedCommas, cbEditor* ed, int pos)
+int ParseManager::GetCallTips(wxArrayString& items, int& typedCommas, cbEditor* ed, int pos)
 {
     items.Clear();
     typedCommas = 0;
@@ -946,7 +946,7 @@ int NativeParser::GetCallTips(wxArrayString& items, int& typedCommas, cbEditor* 
     return end;
 }
 
-wxArrayString NativeParser::ParseProjectSearchDirs(const cbProject &project)
+wxArrayString ParseManager::ParseProjectSearchDirs(const cbProject &project)
 {
 
     const TiXmlNode *extensionNode = project.GetExtensionsNode();
@@ -976,7 +976,7 @@ wxArrayString NativeParser::ParseProjectSearchDirs(const cbProject &project)
     return pdirs;
 }
 
-void NativeParser::SetProjectSearchDirs(cbProject &project, const wxArrayString &dirs)
+void ParseManager::SetProjectSearchDirs(cbProject &project, const wxArrayString &dirs)
 {
     TiXmlNode *extensionNode = project.GetExtensionsNode();
     if (!extensionNode)
@@ -1004,7 +1004,7 @@ void NativeParser::SetProjectSearchDirs(cbProject &project, const wxArrayString 
     }
 }
 
-void NativeParser::CreateClassBrowser()
+void ParseManager::CreateClassBrowser()
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
     if (m_ClassBrowser || !cfg->ReadBool(_T("/use_symbols_browser"), true))
@@ -1048,7 +1048,7 @@ void NativeParser::CreateClassBrowser()
     TRACE(_T("NativeParser::CreateClassBrowser: Leave"));
 }
 
-void NativeParser::RemoveClassBrowser(cb_unused bool appShutDown)
+void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
 {
     if (!m_ClassBrowser)
         return;
@@ -1071,7 +1071,7 @@ void NativeParser::RemoveClassBrowser(cb_unused bool appShutDown)
     m_ClassBrowser = NULL;
 }
 
-void NativeParser::UpdateClassBrowser()
+void ParseManager::UpdateClassBrowser()
 {
     if (!m_ClassBrowser)
           return;
@@ -1086,7 +1086,7 @@ void NativeParser::UpdateClassBrowser()
     }
 }
 
-bool NativeParser::DoFullParsing(cbProject* project, ParserBase* parser)
+bool ParseManager::DoFullParsing(cbProject* project, ParserBase* parser)
 {
     wxStopWatch timer;
     if (!parser)
@@ -1158,7 +1158,7 @@ bool NativeParser::DoFullParsing(cbProject* project, ParserBase* parser)
     return true;
 }
 
-bool NativeParser::SwitchParser(cbProject* project, ParserBase* parser)
+bool ParseManager::SwitchParser(cbProject* project, ParserBase* parser)
 {
     if (!parser || parser == m_Parser || GetParserByProject(project) != parser)
     {
@@ -1178,7 +1178,7 @@ bool NativeParser::SwitchParser(cbProject* project, ParserBase* parser)
     return true;
 }
 
-void NativeParser::SetParser(ParserBase* parser)
+void ParseManager::SetParser(ParserBase* parser)
 {
     // the active parser is the same as the old active parser, nothing need to be done
     if (m_Parser == parser)
@@ -1199,7 +1199,7 @@ void NativeParser::SetParser(ParserBase* parser)
         m_ClassBrowser->SetParser(parser); // Also updates class browser
 }
 
-void NativeParser::ClearParsers()
+void ParseManager::ClearParsers()
 {
     TRACE(_T("NativeParser::ClearParsers()"));
 
@@ -1215,7 +1215,7 @@ void NativeParser::ClearParsers()
     }
 }
 
-void NativeParser::RemoveObsoleteParsers()
+void ParseManager::RemoveObsoleteParsers()
 {
     TRACE(_T("NativeParser::RemoveObsoleteParsers: Enter"));
 
@@ -1258,7 +1258,7 @@ void NativeParser::RemoveObsoleteParsers()
     TRACE(_T("NativeParser::RemoveObsoleteParsers: Leave"));
 }
 
-std::pair<cbProject*, ParserBase*> NativeParser::GetParserInfoByCurrentEditor()
+std::pair<cbProject*, ParserBase*> ParseManager::GetParserInfoByCurrentEditor()
 {
     std::pair<cbProject*, ParserBase*> info(nullptr, nullptr);
     cbEditor* editor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -1272,7 +1272,7 @@ std::pair<cbProject*, ParserBase*> NativeParser::GetParserInfoByCurrentEditor()
     return info;
 }
 
-void NativeParser::SetCBViewMode(const BrowserViewMode& mode)
+void ParseManager::SetCBViewMode(const BrowserViewMode& mode)
 {
     m_Parser->ClassBrowserOptions().showInheritance = (mode == bvmInheritance) ? true : false;
     UpdateClassBrowser();
@@ -1282,7 +1282,7 @@ void NativeParser::SetCBViewMode(const BrowserViewMode& mode)
 
 // Start an Artificial Intelligence (!) sequence to gather all the matching tokens..
 // The actual AI is in FindAIMatches() below...
-size_t NativeParser::AI(TokenIdxSet&    result,
+size_t ParseManager::AI(TokenIdxSet&    result,
                         ccSearchData*   searchData,
                         const wxString& lineText,
                         bool            isPrefix,
@@ -1366,7 +1366,7 @@ size_t NativeParser::AI(TokenIdxSet&    result,
 
 // find a function where current caret located.
 // We need to find extra class scope, otherwise, we will failed do the cc in a class declaration
-size_t NativeParser::FindCurrentFunctionToken(ccSearchData* searchData, TokenIdxSet& result, int caretPos)
+size_t ParseManager::FindCurrentFunctionToken(ccSearchData* searchData, TokenIdxSet& result, int caretPos)
 {
     TokenIdxSet scope_result;
     wxString procName;
@@ -1415,7 +1415,7 @@ size_t NativeParser::FindCurrentFunctionToken(ccSearchData* searchData, TokenIdx
 }
 
 // returns current function's position (not line) in the editor
-int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
+int ParseManager::FindCurrentFunctionStart(ccSearchData* searchData,
                                            wxString*     nameSpace,
                                            wxString*     procName,
                                            int*          functionIndex,
@@ -1522,7 +1522,7 @@ int NativeParser::FindCurrentFunctionStart(ccSearchData* searchData,
     return -1;
 }
 
-bool NativeParser::ParseUsingNamespace(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
+bool ParseManager::ParseUsingNamespace(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
 {
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseUsingNamespace() Parse file scope for \"using namespace\""));
@@ -1538,7 +1538,7 @@ bool NativeParser::ParseUsingNamespace(ccSearchData* searchData, TokenIdxSet& se
     return ParseBufferForUsingNamespace(buffer, search_scope);
 }
 
-bool NativeParser::ParseBufferForUsingNamespace(const wxString& buffer, TokenIdxSet& search_scope, bool bufferSkipBlocks)
+bool ParseManager::ParseBufferForUsingNamespace(const wxString& buffer, TokenIdxSet& search_scope, bool bufferSkipBlocks)
 {
     wxArrayString ns;
     m_Parser->ParseBufferForUsingNamespace(buffer, ns, bufferSkipBlocks);
@@ -1582,7 +1582,7 @@ bool NativeParser::ParseBufferForUsingNamespace(const wxString& buffer, TokenIdx
     return true;
 }
 
-bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos)
+bool ParseManager::ParseFunctionArguments(ccSearchData* searchData, int caretPos)
 {
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseFunctionArguments() Parse function arguments"));
@@ -1680,7 +1680,7 @@ bool NativeParser::ParseFunctionArguments(ccSearchData* searchData, int caretPos
     return true;
 }
 
-bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
+bool ParseManager::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search_scope, int caretPos)
 {
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(_T("ParseLocalBlock() Parse local block"));
@@ -1843,7 +1843,7 @@ bool NativeParser::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search
     return false;
 }
 
-bool NativeParser::AddCompilerDirs(cbProject* project, ParserBase* parser)
+bool ParseManager::AddCompilerDirs(cbProject* project, ParserBase* parser)
 {
     if (!parser)
         return false;
@@ -1928,7 +1928,7 @@ bool NativeParser::AddCompilerDirs(cbProject* project, ParserBase* parser)
     return true;
 }
 
-bool NativeParser::AddCompilerPredefinedMacros(cbProject* project, ParserBase* parser)
+bool ParseManager::AddCompilerPredefinedMacros(cbProject* project, ParserBase* parser)
 {
     if (!parser)
         return false;
@@ -1965,7 +1965,7 @@ bool NativeParser::AddCompilerPredefinedMacros(cbProject* project, ParserBase* p
     return true;
 }
 
-bool NativeParser::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cbProject* project, wxString& defs, ParserBase* parser)
+bool ParseManager::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cbProject* project, wxString& defs, ParserBase* parser)
 {
     Compiler* compiler = CompilerFactory::GetCompiler(compilerId);
     if (!compiler)
@@ -2018,7 +2018,7 @@ bool NativeParser::AddCompilerPredefinedMacrosGCC(const wxString& compilerId, cb
     return true;
 }
 
-wxString NativeParser::GetCompilerStandardGCC(Compiler* compiler, cbProject* project)
+wxString ParseManager::GetCompilerStandardGCC(Compiler* compiler, cbProject* project)
 {
     // Check if user set language standard version to use
     // 1.) Global compiler settings are first to search in
@@ -2047,7 +2047,7 @@ wxString NativeParser::GetCompilerStandardGCC(Compiler* compiler, cbProject* pro
     return standard;
 }
 
-wxString NativeParser::GetCompilerUsingStandardGCC(const wxArrayString& compilerOptions)
+wxString ParseManager::GetCompilerUsingStandardGCC(const wxArrayString& compilerOptions)
 {
     wxString standard;
     for (wxArrayString::size_type i=0; i<compilerOptions.Count(); ++i)
@@ -2062,7 +2062,7 @@ wxString NativeParser::GetCompilerUsingStandardGCC(const wxArrayString& compiler
     return standard;
 }
 
-bool NativeParser::AddCompilerPredefinedMacrosVC(const wxString& compilerId, wxString& defs, ParserBase* parser)
+bool ParseManager::AddCompilerPredefinedMacrosVC(const wxString& compilerId, wxString& defs, ParserBase* parser)
 {
     static wxString vcDefs;
     static bool     firstExecute = true;
@@ -2141,7 +2141,7 @@ bool NativeParser::AddCompilerPredefinedMacrosVC(const wxString& compilerId, wxS
     return true;
 }
 
-bool NativeParser::AddProjectDefinedMacros(cbProject* project, ParserBase* parser)
+bool ParseManager::AddProjectDefinedMacros(cbProject* project, ParserBase* parser)
 {
     if (!parser)
         return false;
@@ -2221,7 +2221,7 @@ bool NativeParser::AddProjectDefinedMacros(cbProject* project, ParserBase* parse
     return true;
 }
 
-void NativeParser::AddCompilerIncludeDirsToParser(const Compiler* compiler, ParserBase* parser)
+void ParseManager::AddCompilerIncludeDirsToParser(const Compiler* compiler, ParserBase* parser)
 {
     if (!compiler || !parser) return;
 
@@ -2242,7 +2242,7 @@ void NativeParser::AddCompilerIncludeDirsToParser(const Compiler* compiler, Pars
 // These dirs are the built-in search dirs of the compiler itself (GCC).
 // Such as when you install your MinGW GCC in E:/code/MinGW/bin
 // The built-in search dir may contain: E:/code/MinGW/include
-const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, const wxArrayString& extra_path, const wxString& cpp_executable)
+const wxArrayString& ParseManager::GetGCCCompilerDirs(const wxString& cpp_path, const wxArrayString& extra_path, const wxString& cpp_executable)
 {
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
     wxString cpp_compiler = cpp_path + sep + _T("bin") + sep + cpp_executable;
@@ -2312,7 +2312,7 @@ const wxArrayString& NativeParser::GetGCCCompilerDirs(const wxString& cpp_path, 
     return dirs[cpp_compiler];
 }
 
-void NativeParser::AddGCCCompilerDirs(const wxString& masterPath, const wxArrayString& extraPath, const wxString& compilerCpp, ParserBase* parser)
+void ParseManager::AddGCCCompilerDirs(const wxString& masterPath, const wxArrayString& extraPath, const wxString& compilerCpp, ParserBase* parser)
 {
     const wxArrayString& gccDirs = GetGCCCompilerDirs(masterPath, extraPath, compilerCpp);
     TRACE(wxString::Format("NativeParser::AddGCCCompilerDirs: Adding %zu cached gcc dirs to parser...", gccDirs.GetCount()));
@@ -2323,7 +2323,7 @@ void NativeParser::AddGCCCompilerDirs(const wxString& masterPath, const wxArrayS
     }
 }
 
-void NativeParser::AddIncludeDirsToParser(const wxArrayString& dirs, const wxString& base, ParserBase* parser)
+void ParseManager::AddIncludeDirsToParser(const wxArrayString& dirs, const wxString& base, ParserBase* parser)
 {
     for (unsigned int i = 0; i < dirs.GetCount(); ++i)
     {
@@ -2345,7 +2345,7 @@ void NativeParser::AddIncludeDirsToParser(const wxArrayString& dirs, const wxStr
     }
 }
 
-bool NativeParser::SafeExecute(const wxString& app_path, const wxArrayString& extra_path, const wxString& app, const wxString& args, wxArrayString& output, wxArrayString& error)
+bool ParseManager::SafeExecute(const wxString& app_path, const wxArrayString& extra_path, const wxString& app, const wxString& args, wxArrayString& output, wxArrayString& error)
 {
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
     wxString pth = (app_path.IsEmpty() ? _T("") : (app_path + sep + _T("bin") + sep));
@@ -2409,7 +2409,7 @@ bool NativeParser::SafeExecute(const wxString& app_path, const wxArrayString& ex
     return true;
 }
 
-void NativeParser::OnParserStart(wxCommandEvent& event)
+void ParseManager::OnParserStart(wxCommandEvent& event)
 {
     TRACE(_T("NativeParser::OnParserStart: Enter"));
 
@@ -2456,7 +2456,7 @@ void NativeParser::OnParserStart(wxCommandEvent& event)
 }
 
 // ----------------------------------------------------------------------------
-void NativeParser::OnParserEnd(wxCommandEvent& event)
+void ParseManager::OnParserEnd(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     TRACE(_T("NativeParser::OnParserEnd: Enter"));
@@ -2514,7 +2514,7 @@ void NativeParser::OnParserEnd(wxCommandEvent& event)
     TRACE(_T("NativeParser::OnParserEnd: Leave"));
 }//end OnParserEnd
 
-void NativeParser::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
+void ParseManager::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
 {
     TRACE(_T("NativeParser::OnParsingOneByOneTimer: Enter"));
 
@@ -2576,7 +2576,7 @@ void NativeParser::OnParsingOneByOneTimer(cb_unused wxTimerEvent& event)
     TRACE(_T("NativeParser::OnParsingOneByOneTimer: Leave"));
 }
 
-void NativeParser::OnEditorActivated(EditorBase* editor)
+void ParseManager::OnEditorActivated(EditorBase* editor)
 {
     cbEditor* curEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(editor);
     if (!curEditor)
@@ -2641,7 +2641,7 @@ void NativeParser::OnEditorActivated(EditorBase* editor)
     }
 }
 
-void NativeParser::OnEditorClosed(EditorBase* editor)
+void ParseManager::OnEditorClosed(EditorBase* editor)
 {
     // the caller of the function should guarantee its a built-in editor
     wxString filename = editor->GetFilename();
@@ -2656,7 +2656,7 @@ void NativeParser::OnEditorClosed(EditorBase* editor)
     }
 }
 
-void NativeParser::InitCCSearchVariables()
+void ParseManager::InitCCSearchVariables()
 {
     m_LastControl       = nullptr;
     m_LastFunctionIndex = -1;
@@ -2669,7 +2669,7 @@ void NativeParser::InitCCSearchVariables()
     Reset();
 }
 
-bool NativeParser::AddProjectToParser(cbProject* project)
+bool ParseManager::AddProjectToParser(cbProject* project)
 {
     wxString prj = (project ? project->GetTitle() : _T("*NONE*"));
     ParserBase* parser = GetParserByProject(project);
@@ -2756,7 +2756,7 @@ bool NativeParser::AddProjectToParser(cbProject* project)
     return false;
 }
 
-bool NativeParser::RemoveProjectFromParser(cbProject* project)
+bool ParseManager::RemoveProjectFromParser(cbProject* project)
 {
     ParserBase* parser = GetParserByProject(project);
     if (!parser)

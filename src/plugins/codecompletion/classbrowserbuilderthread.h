@@ -176,7 +176,7 @@ public:
     ~ClassBrowserBuilderThread() override;
 
     // Called from external
-    void Init(NativeParser* np, const wxString& active_filename, void* user_data /*active project*/,
+    void Init(ParseManager* np, const wxString& active_filename, void* user_data /*active project*/,
               const BrowserOptions& bo, TokenTree* tt, int idThreadEvent);
 
     /** Populates the bottom tree with info from m_targetItem */
@@ -294,7 +294,7 @@ private:
      * that only one thread can access to those member variables.
      */
     wxMutex          m_ClassBrowserBuilderThreadMutex;
-    NativeParser*    m_NativeParser;
+    ParseManager*    m_NativeParser;
 
     /** pointers to the CCTree */
     CCTree*          m_CCTreeTop;

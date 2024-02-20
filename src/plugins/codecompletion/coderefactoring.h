@@ -26,7 +26,7 @@ class CodeRefactoring
     typedef std::map<wxString, SearchDataList> SearchDataMap;
 
 public:
-    CodeRefactoring(NativeParser& np);
+    CodeRefactoring(ParseManager& np);
     virtual ~CodeRefactoring();
 
     void FindReferences();
@@ -47,7 +47,7 @@ private:
     bool Parse();
 
 private:
-    NativeParser& m_NativeParser;
+    ParseManager& m_NativeParser;
     SearchDataMap m_SearchDataMap;
 };
 

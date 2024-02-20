@@ -33,7 +33,7 @@ BEGIN_EVENT_TABLE(CCOptionsProjectDlg, wxPanel)
     EVT_BUTTON(XRCID("btnDelete"), CCOptionsProjectDlg::OnDelete)
 END_EVENT_TABLE()
 
-CCOptionsProjectDlg::CCOptionsProjectDlg(wxWindow* parent, cbProject* project, NativeParser* np) :
+CCOptionsProjectDlg::CCOptionsProjectDlg(wxWindow* parent, cbProject* project, ParseManager* np) :
     m_Project(project),
     m_NativeParser(np),
     m_Parser(&np->GetParser())

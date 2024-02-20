@@ -343,7 +343,7 @@ private:
     wxMenu*                 m_ProjectMenu;
 
     /** this member will actually manage all the Parser instances */
-    NativeParser            m_NativeParser;
+    ParseManager            m_NativeParser;
 
     /** code re-factoring tool */
     CodeRefactoring         m_CodeRefactoring;

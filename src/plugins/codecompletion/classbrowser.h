@@ -17,7 +17,7 @@
 #include "parser/parser.h"
 #include "parser/token.h"
 
-class NativeParser;
+class ParseManager;
 class wxComboBox;
 class wxTreeCtrl;
 class wxTextCtrl;
@@ -71,7 +71,7 @@ public:
      * @param parent the parent window
      * @param np the NativeParser instance, which contains all the images for the wxTreeCtrl
      */
-    ClassBrowser(wxWindow* parent, NativeParser* np);
+    ClassBrowser(wxWindow* parent, ParseManager* np);
 
     /** class destructor */
     virtual ~ClassBrowser();
@@ -209,7 +209,7 @@ private:
     CCTreeItem* GetItemPtr(wxTreeItemId ItemId);
 
     /** the pointer to parser manager object */
-    NativeParser*              m_NativeParser;
+    ParseManager*              m_NativeParser;
 
     /** the top(main) level tree control, see above diagram for details */
     CCTreeCtrl*                m_CCTreeCtrl;

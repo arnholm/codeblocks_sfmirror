@@ -18,7 +18,7 @@ class DocumentationHelper;
 class CCOptionsDlg : public cbConfigurationPanel
 {
 public:
-    CCOptionsDlg(wxWindow* parent, NativeParser* np, CodeCompletion* cc, DocumentationHelper* dh);
+    CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* cc, DocumentationHelper* dh);
     ~CCOptionsDlg() override;
 
     wxString GetTitle() const override { return _("Code completion"); }
@@ -35,7 +35,7 @@ private:
     void UpdateCCDelayLabel();
     bool ValidateReplacementToken(wxString& from, wxString& to);
 
-    NativeParser*        m_NativeParser;
+    ParseManager*        m_NativeParser;
     CodeCompletion*      m_CodeCompletion;
     ParserBase&          m_Parser;
     DocumentationHelper* m_Documentation;
