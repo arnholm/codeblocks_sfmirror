@@ -3,8 +3,8 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-#ifndef NATIVEPARSERBASE_H
-#define NATIVEPARSERBASE_H
+#ifndef PARSEMANAGER_BASE_H
+#define PARSEMANAGER_BASE_H
 
 //-#include <wx/wxcrt.h> // wxIsalnum causes clangd parse errors
 #include <ctype.h>       // using this instead
@@ -748,4 +748,4 @@ private:
     std::map<wxString, wxString> m_TemplateMap;
 };
 
-#endif // NATIVEPARSERBASE_H
+#endif // PARSEMANAGER_BASE_H

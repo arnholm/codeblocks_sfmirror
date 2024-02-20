@@ -3,8 +3,8 @@
  * http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-#ifndef NATIVEPARSER_H
-#define NATIVEPARSER_H
+#ifndef PARSEMANAGER_H
+#define PARSEMANAGER_H
 
 #include "parsemanager_base.h"
 #include "parser/parser.h"
@@ -529,5 +529,5 @@ private:
 
 };
 
-#endif // NATIVEPARSER_H
+#endif // PARSEMANAGER_H
 
