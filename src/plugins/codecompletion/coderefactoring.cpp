@@ -119,8 +119,8 @@ private:
 const long ScopeDialog::ID_OPEN_FILES = wxNewId();
 const long ScopeDialog::ID_PROJECT_FILES = wxNewId();
 
-CodeRefactoring::CodeRefactoring(ParseManager& np) :
-    m_ParseManager(np)
+CodeRefactoring::CodeRefactoring(ParseManager& pm) :
+    m_ParseManager(pm)
 {
 }
 

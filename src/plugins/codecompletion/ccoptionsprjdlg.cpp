@@ -33,10 +33,10 @@ BEGIN_EVENT_TABLE(CCOptionsProjectDlg, wxPanel)
     EVT_BUTTON(XRCID("btnDelete"), CCOptionsProjectDlg::OnDelete)
 END_EVENT_TABLE()
 
-CCOptionsProjectDlg::CCOptionsProjectDlg(wxWindow* parent, cbProject* project, ParseManager* np) :
+CCOptionsProjectDlg::CCOptionsProjectDlg(wxWindow* parent, cbProject* project, ParseManager* pm) :
     m_Project(project),
-    m_ParseManager(np),
-    m_Parser(&np->GetParser())
+    m_ParseManager(pm),
+    m_Parser(&pm->GetParser())
 {
     wxXmlResource::Get()->LoadPanel(this, parent, _T("pnlProjectCCOptions"));
     m_OldPaths = m_ParseManager->ParseProjectSearchDirs(*m_Project);

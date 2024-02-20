@@ -83,10 +83,10 @@ BEGIN_EVENT_TABLE(CCOptionsDlg, wxPanel)
     EVT_COMMAND_SCROLL(XRCID("sldCCDelay"), CCOptionsDlg::OnCCDelayScroll)
 END_EVENT_TABLE()
 
-CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* cc, DocumentationHelper* dh) :
-    m_ParseManager(np),
+CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* pm, CodeCompletion* cc, DocumentationHelper* dh) :
+    m_ParseManager(pm),
     m_CodeCompletion(cc),
-    m_Parser(np->GetParser()),
+    m_Parser(pm->GetParser()),
     m_Documentation(dh)
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));

@@ -154,9 +154,9 @@ namespace
 
 // class constructor
 // ----------------------------------------------------------------------------
-ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* np) :
+ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* pm) :
     // ----------------------------------------------------------------------------
-    m_ParseManager(np),
+    m_ParseManager(pm),
     m_targetTreeCtrl(nullptr),
     m_TreeForPopupMenu(nullptr),
     m_Parser(nullptr),

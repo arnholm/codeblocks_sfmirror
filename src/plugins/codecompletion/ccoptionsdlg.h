@@ -18,7 +18,7 @@ class DocumentationHelper;
 class CCOptionsDlg : public cbConfigurationPanel
 {
 public:
-    CCOptionsDlg(wxWindow* parent, ParseManager* np, CodeCompletion* cc, DocumentationHelper* dh);
+    CCOptionsDlg(wxWindow* parent, ParseManager* pm, CodeCompletion* cc, DocumentationHelper* dh);
     ~CCOptionsDlg() override;
 
     wxString GetTitle() const override { return _("Code completion"); }

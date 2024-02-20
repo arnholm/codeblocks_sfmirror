@@ -176,7 +176,7 @@ public:
     ~ClassBrowserBuilderThread() override;
 
     // Called from external
-    void Init(ParseManager* np, const wxString& active_filename, void* user_data /*active project*/,
+    void Init(ParseManager* pm, const wxString& active_filename, void* user_data /*active project*/,
               const BrowserOptions& bo, TokenTree* tt, int idThreadEvent);
 
     /** Populates the bottom tree with info from m_targetItem */

@@ -17,7 +17,7 @@ class cbProject;
 class CCOptionsProjectDlg : public cbConfigurationPanel
 {
 public:
-    CCOptionsProjectDlg(wxWindow* parent, cbProject* project, ParseManager* np);
+    CCOptionsProjectDlg(wxWindow* parent, cbProject* project, ParseManager* pm);
     ~CCOptionsProjectDlg() override;
 
     wxString GetTitle() const override { return _("C/C++ parser options"); }

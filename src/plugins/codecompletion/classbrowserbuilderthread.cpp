@@ -147,7 +147,7 @@ ClassBrowserBuilderThread::~ClassBrowserBuilderThread()
 }
 
 // ----------------------------------------------------------------------------
-void ClassBrowserBuilderThread::Init(ParseManager*         np,
+void ClassBrowserBuilderThread::Init(ParseManager*         pm,
                                      const wxString&       active_filename,
                                      void*                 user_data, // active project
                                      const BrowserOptions& bo,
@@ -160,7 +160,7 @@ void ClassBrowserBuilderThread::Init(ParseManager*         np,
 
     CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex);
 
-    m_ParseManager     = np;
+    m_ParseManager     = pm;
 
     // patch 1444 tigerbeard 2024/01/11
     if (not m_CCTreeTop )
