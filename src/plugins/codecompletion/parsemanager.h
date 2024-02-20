@@ -48,7 +48,7 @@ enum BrowserViewMode
  * In another mode, all C::B projects belong to a C::B workspace share a single Parser object.
  * Nativeparser will manage all the Parser objects.
  */
-class NativeParser : public wxEvtHandler, NativeParserBase
+class NativeParser : public wxEvtHandler, ParseManagerBase
 {
 public:
     /** Constructor */

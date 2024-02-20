@@ -15,7 +15,7 @@
 #include "parser/token.h"
 #include "parser/tokentree.h"
 
-class NativeParserBase
+class ParseManagerBase
 {
 public:
     /** divide a statement to several pieces(parser component), each component has a type member */
@@ -81,10 +81,10 @@ public:
     };
 
     /** Constructor */
-    NativeParserBase();
+    ParseManagerBase();
 
     /** Destructor */
-    virtual ~NativeParserBase();
+    virtual ~ParseManagerBase();
 
 protected:
 
