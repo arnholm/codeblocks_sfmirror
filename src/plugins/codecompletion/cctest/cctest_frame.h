@@ -6,7 +6,7 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-#include "nativeparser_test.h"
+#include "parsemanager_test.h"
 
 
 //(*Headers(CCTestFrame)
@@ -106,8 +106,8 @@ private:
     wxFindReplaceDialog* m_FRDlg;
     int                  m_LastIndex;
 
-    /** main testing class, derived from NativeParserBase class */
-    NativeParserTest m_NativeParser;
+    /** main testing class, derived from ParseManagerBase class */
+    ParseManagerTest m_NativeParser;
 
     DECLARE_EVENT_TABLE()
 };

@@ -3,7 +3,7 @@
 #ifndef CB_PRECOMP
 #endif
 
-#include "nativeparser_test.h"
+#include "parsemanager_test.h"
 
 #include "parser/cclogger.h"
 
@@ -64,17 +64,17 @@ namespace CCTestAppGlobal
     extern wxArrayString s_filesParsed;
 }// CCTestAppGlobal
 
-NativeParserTest::NativeParserTest()
+ParseManagerTest::ParseManagerTest()
 {
     m_Parser.Options().wantPreprocessor = true; // Default
     m_Parser.Options().storeDocumentation = true; // Default
 }
 
-NativeParserTest::~NativeParserTest()
+ParseManagerTest::~ParseManagerTest()
 {
 }
 
-bool NativeParserTest::TestExpression(wxString&          expression,
+bool ParseManagerTest::TestExpression(wxString&          expression,
                                       const TokenIdxSet& searchScope,
                                       TokenIdxSet&       result)
 {
@@ -85,12 +85,12 @@ bool NativeParserTest::TestExpression(wxString&          expression,
     ResolveExpression(m_Parser.GetTokenTree(), components, searchScope, result, true, true /*isPrefix*/);
 
     if (s_DebugSmartSense)
-        CCLogger::Get()->DebugLog(wxString::Format("NativeParserTest::TestExpression, returned %zu results", result.size()));
+        CCLogger::Get()->DebugLog(wxString::Format("ParseManagerTest::TestExpression, returned %zu results", result.size()));
 
     return true;
 }
 
-bool NativeParserTest::Parse(wxString& file, bool isLocalFile)
+bool ParseManagerTest::Parse(wxString& file, bool isLocalFile)
 {
     if (isLocalFile)
         return m_Parser.Reparse(file, true);
@@ -98,7 +98,7 @@ bool NativeParserTest::Parse(wxString& file, bool isLocalFile)
     return m_Parser.ParseBuffer(file, true);
 }
 
-void NativeParserTest::PrintList()
+void ParseManagerTest::PrintList()
 {
     const TokenList* tokens = m_Parser.GetTokenTree()->GetTokens();
     for (TokenList::const_iterator it=tokens->begin(); it!=tokens->end(); ++it)
@@ -116,12 +116,12 @@ void NativeParserTest::PrintList()
     }
 }
 
-wxString NativeParserTest::SerializeTree()
+wxString ParseManagerTest::SerializeTree()
 {
     return m_Parser.GetTokenTree()->m_Tree.Serialize();
 }
 
-void NativeParserTest::PrintTokenTree(Token* token)
+void ParseManagerTest::PrintTokenTree(Token* token)
 {
     if (!token)
         return;
@@ -143,7 +143,7 @@ void NativeParserTest::PrintTokenTree(Token* token)
     }
 }
 
-void NativeParserTest::PrintTree()
+void ParseManagerTest::PrintTree()
 {
     const TokenList *tokens = m_Parser.GetTokenTree()->GetTokens();
     for (TokenList::const_iterator it=tokens->begin(); it!=tokens->end(); ++it)
@@ -158,12 +158,12 @@ void NativeParserTest::PrintTree()
     }
 }
 
-void NativeParserTest::Clear()
+void ParseManagerTest::Clear()
 {
     m_Parser.GetTokenTree()->clear();
 }
 
-void NativeParserTest::Init()
+void ParseManagerTest::Init()
 {
     // initialize the include files
     // second, try taking include directories into account
@@ -176,7 +176,7 @@ void NativeParserTest::Init()
     m_Parser.AddIncludeDir(wxGetCwd()+wxT("/testing"));
 }
 
-bool NativeParserTest::ParseAndCodeCompletion(wxString filename, bool isLocalFile)
+bool ParseManagerTest::ParseAndCodeCompletion(wxString filename, bool isLocalFile)
 {
     Clear(); //clear the tree
 

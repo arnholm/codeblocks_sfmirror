@@ -12,22 +12,22 @@
  * CCTestApp():
  * - Creates the CCTestFrame
  *
- * -> CCTestFrame(): contains an instance of NativeParserTest class
+ * -> CCTestFrame(): contains an instance of ParseManagerTest class
  *   -> CCTestFrame::Start():
  *      - Reads all UI values into global vars (includes)
  *      - compiles initial global file queue
  *      - Creates global "Busy" dialog
- *      - Iterates over global file queue and calls NativeParserTest::ParseAndCodeCompletion(file)
+ *      - Iterates over global file queue and calls ParseManagerTest::ParseAndCodeCompletion(file)
  *      - destroys "Busy" dialog
  *
- * -> NativeParserTest(): contains a ParserBase instance, which mimic the NativeParser in C::B.
- *   -> NativeParserTest()::ParseAndCodeCompletion(): parse the file, run tests contains in the file
+ * -> ParseManagerTest(): contains a ParserBase instance, which mimic the NativeParser in C::B.
+ *   -> ParseManagerTest()::ParseAndCodeCompletion(): parse the file, run tests contains in the file
  *      - Determine whether the file should be read from hard disk or wxScintilla control
  *      - parse it by calling ParserBase::ReParse() or ParserBase::ParseBuffer()
  *      - prepares an expression string
- *      - Tests the expression matching algorithms by call NativeParserTest::TestExpression()
+ *      - Tests the expression matching algorithms by call ParseManagerTest::TestExpression()
  *      - Prints results to UI
- *   -> NativeParserTest::Init() the macro replacements are setup
+ *   -> ParseManagerTest::Init() the macro replacements are setup
  *
  * -> ParserBase(): holds tree "TokenTree* m_pTokenTree;" and the include search paths
  *      - ParserCommon::FileType():
@@ -65,9 +65,9 @@
  */
 
 /**
- * In the CCTestFrame class, we have a member of NativeParserTest which is derived from
- * NativeParserBase class.
- * In the NativeParserTest class, we have a member of ParserBase.
+ * In the CCTestFrame class, we have a member of ParseManagerTest which is derived from
+ * ParseManagerBase class.
+ * In the ParseManagerTest class, we have a member of ParserBase.
  *
  * To parse a local file, we need the ParserBase::Reparse() function, which simply create a
  * ParserThread instance, and run ParserThread::Parse().

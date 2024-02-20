@@ -358,7 +358,7 @@ void ParseManagerBase::GetCallTipHighlight(const wxString& calltip,
                                            int*            end,
                                            int             typedCommas)
 {
-    TRACE(_T("NativeParserBase::GetCallTipHighlight()"));
+    TRACE(_T("ParseManagerBase::GetCallTipHighlight()"));
 
     int pos = 0;
     int paramsCloseBracket = calltip.length() - 1;
@@ -683,7 +683,7 @@ size_t ParseManagerBase::BreakUpComponents(const wxString&              actual,
     // break up components of phrase
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Breaking up '%s'", statement));
-    TRACE(_T("NativeParserBase::BreakUpComponents()"));
+    TRACE(_T("ParseManagerBase::BreakUpComponents()"));
 
     while (true)
     {
@@ -1220,7 +1220,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*      tree,
                                            bool            isPrefix,
                                            short int       kindMask)
 {
-    TRACE(_T("NativeParserBase::GenerateResultSet_1()"));
+    TRACE(_T("ParseManagerBase::GenerateResultSet_1()"));
 
     Token* parent = tree->at(parentIdx);
     if (g_DebugSmartSense)
@@ -1374,7 +1374,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*      tree,
  *
  * Walking through the example:
  *
- * [in NativeParserBase::GenerateResultSet()]
+ * [in ParseManagerBase::GenerateResultSet()]
  * CC sees that back() returns const_reference. It searches the TokenTree for const_reference and
  * finds the typedef belonging to allocator:
  *
@@ -1383,7 +1383,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*      tree,
  * CC then checks that back()'s parent, AAA, is an STL container which relies on allocator. Since it
  * is, this typedef is added to the search scope.
  *
- * [in NativeParserBase::AddTemplateAlias()]
+ * [in ParseManagerBase::AddTemplateAlias()]
  * CC sees the typedef in the search scope. It searches AAA's template map for the actual type of
  * "_Tp" and finds "string". So "string" is added to the scope.
  *
@@ -1401,7 +1401,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*          tree,
 {
     if (!tree) return 0;
 
-    TRACE(_T("NativeParserBase::GenerateResultSet_2()"));
+    TRACE(_T("ParseManagerBase::GenerateResultSet_2()"));
 
     if (target.IsEmpty())
     {
@@ -1661,7 +1661,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
                                               size_t             curLine,
                                               const wxString&    file)
 {
-    TRACE(_T("NativeParserBase::GetTokenFromCurrentLine()"));
+    TRACE(_T("ParseManagerBase::GetTokenFromCurrentLine()"));
 
     int result = -1;
     bool found = false;

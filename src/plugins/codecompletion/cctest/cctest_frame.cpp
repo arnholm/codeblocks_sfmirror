@@ -18,7 +18,7 @@
 #include "token.h"
 #include "tokentree.h"
 
-#include "nativeparser_test.h"
+#include "parsemanager_test.h"
 
 //(*InternalHeaders(CCTestFrame)
 #include <wx/intl.h>

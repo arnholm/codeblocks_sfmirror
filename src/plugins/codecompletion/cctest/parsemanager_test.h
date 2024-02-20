@@ -1,15 +1,15 @@
 
-#ifndef NATIVEPARSERTEST_H
-#define NATIVEPARSERTEST_H
+#ifndef PARSEMANAGER_TEST_H
+#define PARSEMANAGER_TEST_H
 
 #include "parser_base.h"
-#include "nativeparser_base.h"
+#include "parsemanager_base.h"
 
-class NativeParserTest : public NativeParserBase
+class ParseManagerTest : public ParseManagerBase
 {
 public:
-    NativeParserTest();
-    ~NativeParserTest();
+    ParseManagerTest();
+    ~ParseManagerTest();
 
     bool TestExpression(wxString&          expression,
                         const TokenIdxSet& searchScope,
@@ -41,4 +41,4 @@ public:
     ParserBase m_Parser;
 };
 
-#endif //NATIVEPARSERTEST_H
+#endif //PARSEMANAGER_TEST_H
