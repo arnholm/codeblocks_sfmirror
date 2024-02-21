@@ -2119,6 +2119,9 @@ private:
     wxListView*         lv;
     CallBackAction      doubleClickAction;
     void*               doubleClickActionData;
+    int iconHeight = 0; int iconWidth = 0; //cached from IconWidth() See ticket #1458
+public:
+
 public:
     wxSCIListBoxWin(wxWindow* parent, wxWindowID id, Point WXUNUSED(location)) :
         wxPopupWindow(parent, wxBORDER_SIMPLE)
@@ -2184,11 +2187,18 @@ public:
     }
 
 
+    // Starting with gtk 3.2, an extra OnSize() is being issued that calls
+    // IconWidth(), but with an invalid lv pointer. So now, we cache iconWidth
+    // while the pointer is still valid. This solves the crash. See ticket #1458.
     int IconWidth() {
+        if (iconWidth)
+            return iconWidth;
         wxImageList* il = lv->GetImageList(wxIMAGE_LIST_SMALL);
         if (il != NULL) {
             int w, h;
             il->GetSize(0, w, h);
+            iconWidth = w;
+            iconHeight = h;
             return w;
         }
         return 0;
