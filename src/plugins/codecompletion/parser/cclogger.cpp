@@ -76,7 +76,7 @@ void CCLogger::Init(wxEvtHandler* parent, int logId, int logErrorId, int debugLo
     m_DebugLogErrorId = debugLogErrorId;
     m_AddTokenId = addTokenId;
     m_AddTokenId = addTokenId;
-    //m_pCfgMgr    = Manager::Get()->GetConfigManager("clangd_client");
+    m_pCfgMgr    = Manager::Get()->GetConfigManager("clangd_client");
 
 }
 

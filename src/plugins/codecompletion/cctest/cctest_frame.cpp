@@ -20,6 +20,8 @@
 
 #include "parsemanager_test.h"
 
+#include "personalitymanager.h"
+
 //(*InternalHeaders(CCTestFrame)
 #include <wx/intl.h>
 #include <wx/settings.h>
@@ -214,6 +216,8 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
     Connect(wxID_TOKEN, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuTokenSelected);
     Connect(wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuAboutSelected);
     //*)
+
+    Manager::Get()->GetPersonalityManager()->MarkAsReady();
 
     // redirect the wxLogMessage to the text ctrl of the frame
     wxLogTextCtrl* textLog = new wxLogTextCtrl(m_CompletionTestCtrl);
