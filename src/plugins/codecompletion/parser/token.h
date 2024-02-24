@@ -75,6 +75,7 @@ enum TokenKind
     /** undefined or just "all" */
     tkUndefined        = 0xFFFF
 };
+
 /** a symbol found in the parsed files, it can be many kinds, such as a variable, a class and so on.
  *  Once constructed, the Token should be always put in the TokenTree, and we can access the Token
  *  by TokenIndex.
@@ -96,7 +97,7 @@ public:
     ~Token();
 
     /** add a child token
-     * @param childIdx int
+     * @param childIdx the child Token index
      * @return return true if success, in the case the childIdx < 0, this function will return false
      */
     bool AddChild(int childIdx);
@@ -115,21 +116,21 @@ public:
     /** @brief get a literal string presentation of the namespace.
      *
      * @return wxString
-     * if the token has the parent token, like a member variable class AAA {int m_BBB;}, then
+     * if the token has the parent token, like a member variable "class AAA {int m_BBB;}", then
      * the string is "AAA::"
      */
     wxString GetNamespace() const;
 
-    /** @brief check to see the current token is inherited from a specified token
+    /** @brief check to see whether the current token instance is inherited from a specified token
      *
      * @param idx the specified token
      * @return true if success
-     * loop the m_DirectAncestors to see it did contains the specified token, also we may check
+     * loop the m_DirectAncestors to see it does contain the specified token, also we may check
      * the specified token is an ancestor of the current ancestor, so recursive call is involved
      */
     bool InheritsFrom(int idx) const;
 
-    /** a short simple string to show the token information, this usually generate for show
+    /** a short simple string to show the token information, this is usually generated for showing
      * the tip message when the user hover a mouse over the text in C::B editor.
      */
     wxString DisplayName() const;
@@ -160,8 +161,8 @@ public:
     /** get the ticket value of the current token */
     size_t GetTicket() const { return m_Ticket; }
 
-    /** see whether the current token belong to any files in the file set, both m_FileIdx and
-     * m_ImplFileIdx is considered
+    /** check to see whether the current token belong to any files in the file set, both m_FileIdx and
+     * m_ImplFileIdx are considered
      * @param files a file(index) set
      * @return true if success
      */
@@ -172,9 +173,9 @@ public:
      */
     TokenTree* GetTree() const { return m_TokenTree; }
 
-    /** build in types are not valid ancestors for a type define token
+    /** build-in types(such as int or float) are not valid ancestors for a type defined token
      * @param ancestor testing type string
-     * @return false if the testing type string is a build in type
+     * @return false if the testing type string is a build-in type
      */
     bool IsValidAncestor(const wxString& ancestor);
 
@@ -187,7 +188,7 @@ public:
     /** Token's name, it can be searched in the TokenTree */
     wxString                     m_Name;
 
-    /** If it is a function Token, then this value is function arguments,
+    /** for a function Token, this value is the function arguments string,
      *  e.g.   (int arg1 = 10, float arg2 = 9.0)
      *  If it is an enumerator, then this is the assigned (inferred) value
      */
@@ -209,7 +210,7 @@ public:
     /** Line index where the token was met, which is 1 based */
     unsigned int                 m_Line;
 
-    /** doxygen style comments */
+    /** doxygen style comments associated with the current token */
     wxString                     m_Doc;
 
     /** function implementation file index */
@@ -230,7 +231,7 @@ public:
     /** public? private? protected? */
     TokenScope                   m_Scope;
 
-    /** See TokenKind class */
+    /** what kinds of Token it is, @see TokenKind class for more details */
     TokenKind                    m_TokenKind;
 
     /** is operator overload function? */
@@ -256,15 +257,15 @@ public:
     /** current Token index in the tree, it is index of the std::vector<Token*>, so use the index,
      *  we can first get a address of the Token, and after a dereference, we can get the Token
      *  instance. Note that the tree is a dynamic object, which means Tokens can be added or removed
-     *  from the tree, so the slot of std::vector<Token*> is reused. So, same index does not point
-     *  to the same Token if TokenTree are updated or changed.
+     *  from the tree, so the slot of std::vector<Token*> is reused. An old index value does not point
+     *  to the same Token instance if TokenTree get updated or changed.
      */
     int                          m_Index;
 
     /** Parent Token index */
     int                          m_ParentIndex;
 
-    /** if it is a class kind token, then it contains all the member tokens */
+    /** if it is a class kind token, then it contains all the member variable or member function tokens */
     TokenIdxSet                  m_Children;
 
     /** all the ancestors in the inheritance hierarchy */
