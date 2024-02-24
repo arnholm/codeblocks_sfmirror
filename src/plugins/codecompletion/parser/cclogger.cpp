@@ -16,6 +16,7 @@
 #include <logmanager.h> // F()
 #include <globals.h>    // cbC2U for cbAssert macro
 #include <configmanager.h>
+#include <pluginmanager.h>
 
 std::unique_ptr<CCLogger> CCLogger::s_Inst;
 
@@ -76,8 +77,16 @@ void CCLogger::Init(wxEvtHandler* parent, int logId, int logErrorId, int debugLo
     m_DebugLogErrorId = debugLogErrorId;
     m_AddTokenId = addTokenId;
     m_AddTokenId = addTokenId;
-    m_pCfgMgr    = Manager::Get()->GetConfigManager("clangd_client");
 
+    m_pCfgMgr = nullptr;
+    wxString configName;
+    #if defined (BUILDING_PLUGIN)
+        PluginInfo* pInfo = (PluginInfo*)(Manager::Get()->GetPluginManager()->GetPluginInfo((cbPlugin*)parent));
+        if (pInfo and (pInfo->name == "CodeCompletion" )) configName = "code_completion";
+        else if (pInfo and (pInfo->name == "clangd_client")) configName = "clangd_client";
+        if (pInfo and configName.Length())
+            m_pCfgMgr = Manager::Get()->GetConfigManager(configName);
+    #endif
 }
 
 // ----------------------------------------------------------------------------
@@ -124,8 +133,9 @@ void CCLogger::DebugLog(const wxString& msg, int id)
 
     if (!m_Parent || m_DebugLogId<1) return;
 
-    bool debugLogging = m_pCfgMgr->ReadBool("/logPluginDebug_check", false);
-    if (not debugLogging and (id==m_DebugLogId)) return;
+    bool debugLogging = false;
+    if (m_pCfgMgr) debugLogging = m_pCfgMgr->ReadBool("/logPluginDebug_check", false);
+    if ((not debugLogging) and (id == m_DebugLogId)) return;
 
     // Always allow debugError log messages
     CodeBlocksThreadEvent evt(wxEVT_COMMAND_MENU_SELECTED, id);
