@@ -42,12 +42,12 @@ public:
 
 protected:
     //(*Identifiers(CCTestFrame)
-    static const long ID_CHK_HIDE;
-    static const long wxID_TEST_SINGLE;
-    static const long wxID_PARSE;
-    static const long wxID_PRINT_TREE;
-    static const long wxID_SAVE_TEST_RESULT;
-    static const long wxID_TOKEN;
+    static const wxWindowID ID_CHK_HIDE;
+    static const wxWindowID wxID_TEST_SINGLE;
+    static const wxWindowID wxID_PARSE;
+    static const wxWindowID wxID_PRINT_TREE;
+    static const wxWindowID wxID_SAVE_TEST_RESULT;
+    static const wxWindowID wxID_TOKEN;
     //*)
 
 private:
