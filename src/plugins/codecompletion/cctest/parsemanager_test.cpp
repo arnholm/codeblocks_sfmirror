@@ -172,6 +172,19 @@ void ParseManagerTest::Init()
         wxString include_dir = CCTestAppGlobal::s_includeDirs.Item(i);
         m_Parser.AddIncludeDir(include_dir);
     }
+
+    wxArrayString includePaths = GetCompilerIncludePaths();
+
+    for (size_t i = 0; i < includePaths.GetCount(); i++)
+    {
+        wxString item = includePaths.Item(i);
+        m_Parser.AddIncludeDir(item);
+    }
+
+    wxString preDefines = AddCompilerPredefinedMacros();
+
+    Parse(preDefines, /*isLocalFile*/ false);
+
     // add the "testing" folder as include search path
     m_Parser.AddIncludeDir(wxGetCwd()+wxT("/testing"));
 }
