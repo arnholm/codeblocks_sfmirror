@@ -38,6 +38,10 @@ public:
      */
     bool ParseAndCodeCompletion(wxString file, bool isLocalFile = true);
 
+    wxArrayString GetCompilerIncludePaths();
+
+
+
     ParserBase m_Parser;
 };
 
