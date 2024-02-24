@@ -20,7 +20,7 @@
  *      - Iterates over global file queue and calls ParseManagerTest::ParseAndCodeCompletion(file)
  *      - destroys "Busy" dialog
  *
- * -> ParseManagerTest(): contains a ParserBase instance, which mimic the NativeParser in C::B.
+ * -> ParseManagerTest(): contains a ParserBase instance, which mimics the ParseManager in C::B.
  *   -> ParseManagerTest()::ParseAndCodeCompletion(): parse the file, run tests contains in the file
  *      - Determine whether the file should be read from hard disk or wxScintilla control
  *      - parse it by calling ParserBase::ReParse() or ParserBase::ParseBuffer()
