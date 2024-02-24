@@ -272,7 +272,7 @@ void CCTestFrame::Start()
     }
 
     // set the macro replacement rule, and include search paths of the Parser object
-    m_NativeParser.Init();
+    m_ParseManager.Init();
 
     if (m_DoHideCtrl && m_DoHideCtrl->IsChecked())
         Hide();
@@ -336,7 +336,7 @@ void CCTestFrame::Start()
         m_StatuBar->SetStatusText(m_CurrentFile);
 
         // parse the file and test the expression solving algorithm
-        m_NativeParser.ParseAndCodeCompletion(m_CurrentFile);
+        m_ParseManager.ParseAndCodeCompletion(m_CurrentFile);
 
         CCTestAppGlobal::s_filesParsed.Add(m_CurrentFile); // done
     }
@@ -530,8 +530,8 @@ void CCTestFrame::OnMenuFindSelected(wxCommandEvent& /*event*/)
 
 void CCTestFrame::OnMenuTokenSelected(wxCommandEvent& /*event*/)
 {
-    ParserBase* pb = &(m_NativeParser.m_Parser);
-    TokenTree*  tt = m_NativeParser.m_Parser.GetTokenTree();
+    ParserBase* pb = &(m_ParseManager.m_Parser);
+    TokenTree*  tt = m_ParseManager.m_Parser.GetTokenTree();
     if (!pb || !tt) return;
     wxTextEntryDialog dlg(this, _("Enter name of token to debug:"), _("CCTest"));
     PlaceWindow(&dlg);
@@ -707,18 +707,18 @@ void CCTestFrame::OnPrintTree(cb_unused wxCommandEvent& event)
 
     m_ProgDlg->Update(-1, _("Creating tree log..."));
     AppendToLog(_("--------------T-r-e-e--L-o-g--------------\n"));
-    m_NativeParser.PrintTree();
+    m_ParseManager.PrintTree();
 
     m_ProgDlg->Update(-1, _("Creating list log..."));
     AppendToLog(_("--------------L-i-s-t--L-o-g--------------\n"));
-    m_NativeParser.PrintList();
+    m_ParseManager.PrintList();
 
     if (m_DoTreeCtrl->IsChecked())
     {
         m_ProgDlg->Update(-1, _("Serializing tree..."));
 
         Freeze();
-        m_TreeCtrl->SetValue( m_NativeParser.SerializeTree() );
+        m_TreeCtrl->SetValue( m_ParseManager.SerializeTree() );
         Thaw();
     }
 
@@ -726,7 +726,7 @@ void CCTestFrame::OnPrintTree(cb_unused wxCommandEvent& event)
 
     if ( !IsShown() ) Show();
 
-    TokenTree* tt = m_NativeParser.m_Parser.GetTokenTree();
+    TokenTree* tt = m_ParseManager.m_Parser.GetTokenTree();
     if (tt)
     {
         AppendToLog((wxString::Format(_("The parser contains %zu tokens, found in %zu files."), tt->size(), tt->m_FileMap.size())));
@@ -741,7 +741,7 @@ void CCTestFrame::OnTestSingle(wxCommandEvent& WXUNUSED(event))
     // read the contents of the Control, and parse it.
     // no need to save the file to hard dist and after parsing, delete it.
     wxString content = m_Control->GetText();
-    m_NativeParser.ParseAndCodeCompletion(content, /* isLocalFile */ false);
+    m_ParseManager.ParseAndCodeCompletion(content, /* isLocalFile */ false);
 }
 
 void CCTestFrame::OnSaveTestResultClick(wxCommandEvent& event)

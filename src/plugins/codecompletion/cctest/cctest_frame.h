@@ -107,7 +107,7 @@ private:
     int                  m_LastIndex;
 
     /** main testing class, derived from ParseManagerBase class */
-    ParseManagerTest m_NativeParser;
+    ParseManagerTest m_ParseManager;
 
     DECLARE_EVENT_TABLE()
 };
