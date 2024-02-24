@@ -273,6 +273,8 @@ void CCTestFrame::Start()
 
     wxArrayString includePaths = m_ParseManager.GetCompilerIncludePaths();
 
+    wxString preDefines = m_ParseManager.AddCompilerPredefinedMacros();
+
     // set the macro replacement rule, and include search paths of the Parser object
     m_ParseManager.Init();
 

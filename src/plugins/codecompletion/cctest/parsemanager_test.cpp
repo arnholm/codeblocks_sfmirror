@@ -420,3 +420,35 @@ wxArrayString ParseManagerTest::GetCompilerIncludePaths()
     }
     return includePaths;
 }
+
+wxString ParseManagerTest::AddCompilerPredefinedMacros()
+{
+    // const wxString& compilerId, cbProject* project, wxString& defs, ParserBase* parser
+
+    wxString cpp_path = "F:\\msys2\\mingw64";
+    wxArrayString extra_path; // empty
+    wxString cpp_executable = "g++.exe";
+
+    wxString sep = (platform::windows ? _T("\\") : _T("/"));
+    wxString cpp_compiler = cpp_path + sep + _T("bin") + sep + cpp_executable;
+    wxString gccDefs;
+
+    // Check if user set language standard version to use
+    wxString standard = "-std=c++11";
+
+        // Different command on Windows and other OSes
+#ifdef __WXMSW__
+        const wxString args(wxString::Format(_T(" -E -dM -x c++ %s nul"), standard.wx_str()) );
+#else
+        const wxString args(wxString::Format(_T(" -E -dM -x c++ %s /dev/null"), standard.wx_str()) );
+#endif
+
+    wxArrayString output, error;
+    if ( wxExecute(cpp_compiler + args, output, error, wxEXEC_SYNC | wxEXEC_NODISABLE) == -1)
+        return gccDefs;
+
+    for (size_t i = 0; i < output.Count(); ++i)
+        gccDefs += output[i] + _T("\n");
+
+    return gccDefs;
+}

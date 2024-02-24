@@ -40,7 +40,7 @@ public:
 
     wxArrayString GetCompilerIncludePaths();
 
-
+    wxString AddCompilerPredefinedMacros();
 
     ParserBase m_Parser;
 };
