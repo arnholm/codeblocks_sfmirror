@@ -372,7 +372,7 @@ int idPauseParsing              = wxNewId();
 int idProjectPauseParsing       = wxNewId(); //(ph 2023/09/03)
 int idStartupDelayTimer         = wxNewId();
 
-int idSpecifiedFileReparse      = wxNewId();
+int idSpecifiedFileReparse      = XRCID("idSpecifiedFileReparse"); //(ph 2024/02/12)
 
 // all the below delay time is in milliseconds units
 // when the user enables the parsing while typing option, this is the time delay when parsing
@@ -556,6 +556,7 @@ ClgdCompletion::ClgdCompletion() :
 
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnReActivateProject, this,XRCID("OnReActivateProject"));
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnRequestCodeActionApply, this, XRCID("idRequestCodeActionApply")); //(ph 2024/02/12)
 
     // Disable old Codecompletion plugin for safety (to avoid conflict crashes)
     // Note that if there's no plugin entry in the .conf, a plugin gets loaded and run
@@ -598,6 +599,12 @@ void ClgdCompletion::OnAttach()
     // Set current plugin version
 	PluginInfo* pInfo = (PluginInfo*)(Manager::Get()->GetPluginManager()->GetPluginInfo(this));
 	pInfo->version = appVersion.GetVersion();
+
+	// Re-Init CCLogger now that we can get PluginInfo
+    // CCLogger are the log event bridges, those events were finally handled by its parent, here
+    // it is the CodeCompletion plugin ifself.
+    CCLogger::Get()->Init(this, g_idCCLogger, g_idCCErrorLogger, g_idCCDebugLogger, g_idCCDebugErrorLogger);
+
 
 	// clangd_client cannot work without a compiler master path
     ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("compiler");
@@ -5780,6 +5787,45 @@ wxString ClgdCompletion::VerifyEditorParsed(cbEditor* pEd)
 
     return msg;
 }//VerifyEditorParsed
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2023/08/16)
+// ----------------------------------------------------------------------------
+{
+    wxString msg;
+    wxString filename = event.GetString().BeforeFirst('|');
+    wxString lineNumText = event.GetString().AfterFirst('|');
+    int lineNumInt = -1; //an impossible line number
+    try { lineNumInt = std::stoi(lineNumText.ToStdString()); }
+    catch(std::exception &e) { lineNumInt = -1;}
+
+    if (filename.empty() or (not wxFileExists(filename)) or (lineNumInt == -1) )
+    {
+        msg = wxString::Format(_("%s or line %s not found.\n"), filename, lineNumText );
+    }
+    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    if (not pEd)
+    {   msg << wxString::Format(_("No open editor for filename:%s\n"), filename);
+    }
+    cbProject* pProject = pEd->GetProjectFile() ? pEd->GetProjectFile()->GetParentProject() : nullptr;
+
+    if (not pProject) pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    if (not pProject)
+    {
+        msg << wxString::Format(_("No project found containing filename:\n %s."), filename);
+    }
+
+    if (not msg.empty())
+    {
+        if (msg.EndsWith('\n')) msg.RemoveLast();
+        InfoWindow::Display(_("Apply fix failed"), msg );
+        return;
+    }
+
+    if (GetLSPClient(pProject) and GetParseManager()->GetParserByProject(pProject))
+        GetParseManager()->GetParserByProject(pProject)->OnRequestCodeActionApply(event);
+
+    return;
+}//OnRequestCodeActionApply
 // ----------------------------------------------------------------------------
 wxString ClgdCompletion::VerifyEditorHasSymbols(cbEditor* pEd)
 // ----------------------------------------------------------------------------

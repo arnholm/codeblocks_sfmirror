@@ -25,6 +25,7 @@
     #include "encodingdetector.h"
     #include "globals.h"
 #endif
+#include <string>
 
 #include <wx/dir.h>
 #include "wx/textfile.h"        //to modify .Clangd file containing log and cache file lock
@@ -1363,6 +1364,7 @@ bool ProcessLanguageClient::writeJson(json& json)
 
     std::string content = json.dump();
     std::string header = "Content-Length: " + std::to_string(content.length()) + "\r\n\r\n" + content;
+
     return WriteHdr(header);
 }
 // ----------------------------------------------------------------------------
@@ -4107,7 +4109,8 @@ void ProcessLanguageClient::CreateDiagnosticsLog()
 
         // Ask DragScroll plugin to apply its support for this log
         wxWindow* pWindow = m_pDiagnosticsLog->m_pControl;
-        cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
+        cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("cbDragScroll");
+
         if (pWindow && pPlgn)
         {
             wxCommandEvent dsEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idDragScrollAddWindow"));

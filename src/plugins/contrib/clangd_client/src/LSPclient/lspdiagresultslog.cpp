@@ -29,10 +29,20 @@
 #include "cbstyledtextctrl.h"
 #include "lspdiagresultslog.h"
 
+//(ph 2024/02/12) three additional includes to support codeActions (aka fix available)
+#include "globals.h"
+#include "logmanager.h"
+#include "infowindow.h"
+
+
 namespace
 {
     const int ID_List = wxNewId();
     const int idMenuIgnoredMsgs = wxNewId();
+    //(ph 2024/02/12) CodeAction Fix Available
+    const int idMenuApplyFixIfAvailable = XRCID("idMenuApplyFixIfAvailable");
+    const int idRequestCodeActionAppy = XRCID("idRequestCodeActionApply");
+
 }
 
 BEGIN_EVENT_TABLE(LSPDiagnosticsResultsLog, wxEvtHandler)
@@ -49,6 +59,8 @@ LSPDiagnosticsResultsLog::LSPDiagnosticsResultsLog(const wxArrayString& titles_i
     Connect(idMenuIgnoredMsgs, -1, wxEVT_COMMAND_MENU_SELECTED,
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
+
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable); //(ph 2024/02/12)
 
 }
 // ----------------------------------------------------------------------------
@@ -73,6 +85,7 @@ LSPDiagnosticsResultsLog::~LSPDiagnosticsResultsLog()
     Disconnect(idMenuIgnoredMsgs, -1, wxEVT_COMMAND_MENU_SELECTED,
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable); //(ph 2024/02/12)
     if (FindEventHandler(this))
         Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
@@ -106,6 +119,7 @@ bool LSPDiagnosticsResultsLog::HasFeature(Feature::Enum feature) const
 void LSPDiagnosticsResultsLog::AppendAdditionalMenuItems(wxMenu &menu)
 // ----------------------------------------------------------------------------
 {
+    menu.Append(idMenuApplyFixIfAvailable, _("Apply fix if available"), _("Apply LSP fix if available")); //(ph 2024/02/12)
     menu.Append(idMenuIgnoredMsgs, _("Show/Set ignore messages"), _("Show/Set ignored messages"));
 }
 
@@ -221,3 +235,59 @@ void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(wxCommandEvent& event)
     }
     return;
 }
+// ----------------------------------------------------------------------------
+void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event) //(ph 2024/02/12)
+// ----------------------------------------------------------------------------
+{
+    // When user right-clicks a log entry that contains "(fix available)"
+    // parse the log line to get filename and line number.
+    // Issue an event to Clgdcompletion to apply the fix which was stored
+    // in the Parsers FixesAvailable map.vectors.
+
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+    wxUnusedVar(pLogMgr); //maybe unused
+
+    wxListCtrl* pListControl = control;
+    wxString selectedLineText = wxString();
+    long itemIndex = -1;
+
+    while ((itemIndex = pListControl->GetNextItem(itemIndex,
+          wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
+    {
+        // Got the selected item index
+        selectedLineText = GetItemAsText(itemIndex);
+        if (not selectedLineText.Contains(" (fix available) "))
+        {
+            wxString msg = wxString::Format(_("No Fix available for logLine(%d)"), int(itemIndex) );
+            InfoWindow::Display(_("NO fix"), msg);
+            return;
+        }
+    }
+    if (selectedLineText.empty()) return;
+
+    // parse the line at '|' chars to get filename, lineNum text, and error text
+    wxArrayString lineItems = GetArrayFromString(selectedLineText, "|", /*trimSpaces*/ true);
+    size_t itemKnt = lineItems.GetCount();
+    if (itemKnt < 3) return;
+    for (size_t ii=0; ii<itemKnt; ++ii)
+    {
+        //-pLogMgr->DebugLog(lineItems[ii]); // **Debugging**
+        if (lineItems[ii].empty()) return;
+    }
+
+    // index 0:filename 1:lineNumber 2:Error text
+    wxString filename = lineItems[0];
+    wxString lineNumStr = lineItems[1];
+
+    // Obtain cbEditor for this file
+    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    if (not pEd) return;
+
+    // Issue a  "textDocument/codeAction" request to ClgdCompletion.
+    // This class does not have addressability to what we need (parser and FixesAvailable).
+    wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idRequestCodeActionAppy);
+    evt.SetString(filename +"|"+lineNumStr);
+    Manager::Get()->GetAppFrame()->GetEventHandler()->AddPendingEvent(evt);
+
+    return;
+}//OnApplyFixIfAvailable

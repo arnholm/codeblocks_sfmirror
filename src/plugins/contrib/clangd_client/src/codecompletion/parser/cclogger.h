@@ -348,7 +348,7 @@ private:
         auto duration = std::chrono::high_resolution_clock::now().time_since_epoch(); \
         int now_millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count(); \
         if ( (now_millis - varNameHoldingMsecs) > allowedMillisecs) \
-            asm("int3"); \
+            __builtin_trap(); \
     }
 // ----------------------------------------------------------------------------
 // Write log message when exceeding allowed msecs set by RECORD_TIME()

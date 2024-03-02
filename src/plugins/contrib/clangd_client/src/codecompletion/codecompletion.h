@@ -630,6 +630,7 @@ private:
     void OnIdle(wxIdleEvent& event);
     void OnPluginAttached(CodeBlocksEvent& event);
     void OnPluginLoadingComplete(CodeBlocksEvent& event);
+    void OnRequestCodeActionApply(wxCommandEvent& event); //(ph 2024/02/12)
 
 
     // Callback to parse an added file.

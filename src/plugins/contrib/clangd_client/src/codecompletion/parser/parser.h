@@ -236,6 +236,7 @@ public:
     void OnLSP_GoToNextFunctionResponse(wxCommandEvent& event);
     void OnLSP_GoToFunctionResponse(wxCommandEvent& event); //unused
     void OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event);
+    void OnRequestCodeActionApply(wxCommandEvent& event); //(ph 2024/02/12)
 
     wxString GetCompletionPopupDocumentation(const ClgdCCToken& token);
     int      FindSemanticTokenEntryFromCompletion( cbCodeCompletionPlugin::CCToken& cctoken, int completionTokenKind);
@@ -340,6 +341,25 @@ private:
 
     /** Static Hidden Utility cbEditor  */
     std::unique_ptr<cbStyledTextCtrl> pHiddenEditor = nullptr;
+
+    // Declare the map of clangd fixes available mapped by filename //(ph 2024/02/12)
+    typedef std::map<wxString, std::vector<wxString> > FixMap_t;
+    FixMap_t FixesAvailable;
+    // Example usage: Insert a filename key and a vector<wxString> json.dump() of
+    //codeAction entry
+    //    FixesAvailable["filename"].push_back("codeActionString");
+    //    // Access and print the data within the map vector
+    //    for (const auto& entry : FixesAvailable) {
+    //        const wxString& filename = entry.first;
+    //        const std::vector<wxString>& vecCodeActions = entry.second;
+    //
+    //        std::cout << "filename: " << filename << std::endl;
+    //        std::cout << "CodeActions: ";
+    //        for (const wxString& codeactionStr : vecCodeActions) {
+    //            std::cout << codeActionStr << " ";
+    //        }
+    //        std::cout << std::endl;
+    //    }
 
   public:
     // ----------------------------------------------------------------------------
