@@ -55,6 +55,10 @@ X_PRJ_FILE_PROJ  ICON "src/resources/icons/proj.ico"
   #if !defined(WX_CPU_X86)
     #define WX_CPU_X86
   #endif
+#elif defined (_M_ARM64)
+  #ifndef WX_CPU_ARM64
+    #define WX_CPU_ARM64
+  #endif
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -126,7 +130,7 @@ VS_VERSION_INFO    VERSIONINFO
     #define wxMANIFEST_ID CREATEPROCESS_MANIFEST_RESOURCE_ID
   #endif
 
-  #if defined(WX_CPU_AMD64)
+  #if defined(WX_CPU_AMD64) || defined(WX_CPU_ARM64)
     #if defined(cbDPI_AWARE_ON)
         wxMANIFEST_ID RT_MANIFEST "amd64_dpi_aware_on.manifest"
         #warning Manifest: amd64_dpi_aware_on.manifest
