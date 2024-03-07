@@ -385,15 +385,14 @@ CodeCompletion::CodeCompletion() :
 
     // CCLogger are the log event bridges, those events were finally handled by its parent, here
     // it is the CodeCompletion plugin ifself.
-    // This is an initial init. We re-init it in OnAttach() for the correct plugin.
-    CCLogger::Get()->Init(this, g_idCCLogger, g_idCCErrorLogger, g_idCCDebugLogger, g_idCCDebugErrorLogger); //(ph 2024/01/25)
+    CCLogger::Get()->Init(this, g_idCCLogger, g_idCCDebugLogger);
 
     if (!Manager::LoadResource(_T("codecompletion.zip")))
         NotifyMissingFile(_T("codecompletion.zip"));
 
     // handling events send from CCLogger
-    //-Connect(g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
-    Connect(g_idCCLogger,g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)); //(ph 2024/01/25)
+    Connect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)     );
+    Connect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCDebugLogger));
 
     // the two events below were generated from ParseManager, as currently, CodeCompletionPlugin is
     // set as the next event handler for m_ParseManager, so it get chance to handle them.
@@ -416,8 +415,8 @@ CodeCompletion::CodeCompletion() :
 CodeCompletion::~CodeCompletion()
 // ----------------------------------------------------------------------------
 {
-    Disconnect(g_idCCLogger,g_idCCDebugErrorLogger, wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
-    //-Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger)); //(ph 2024/01/25)
+    Disconnect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCLogger));
+    Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(CodeCompletion::OnCCDebugLogger));
     Disconnect(ParserCommon::idParserStart, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserStart));
     Disconnect(ParserCommon::idParserEnd,   wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CodeCompletion::OnParserEnd));
 
@@ -460,14 +459,6 @@ void CodeCompletion::OnAttach()
     m_ToolbarNeedRefresh = true; // by default
 
     m_LastFile.clear();
-
-    // Re-init the CCLogger now that we can determine if it's used for CodeCompletion or Clangd_client
-    PluginInfo* pInfo = (PluginInfo*)(Manager::Get()->GetPluginManager()->GetPluginInfo(this)); //(ph 2024/02/24)
-    // CCLogger is the log event bridge, those events were finally handled by its parent,
-    // Here, it is the CodeCompletion plugin ifself.
-    if (pInfo)
-        CCLogger::Get()->Init(this, g_idCCLogger, g_idCCErrorLogger, g_idCCDebugLogger, g_idCCDebugErrorLogger); //(ph 2024/01/25)
-
 
     // read options from configure file
     RereadOptions();
@@ -2429,31 +2420,18 @@ void CodeCompletion::OnEditorClosed(CodeBlocksEvent& event)
 void CodeCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
 // ----------------------------------------------------------------------------
 {
-    if (Manager::IsAppShuttingDown()) return;
-
-    if (event.GetId() == g_idCCErrorLogger)
-        Manager::Get()->GetLogManager()->LogError(event.GetString());
-    else if (event.GetId() == g_idCCLogger)
+    if (!Manager::IsAppShuttingDown())
         Manager::Get()->GetLogManager()->Log(event.GetString());
-    else if (event.GetId() == g_idCCDebugLogger)
-    {
-        bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
-        if (canLog)
-            Manager::Get()->GetLogManager()->DebugLog(event.GetString());
-    }
-    else if (event.GetId() == g_idCCDebugErrorLogger)
-     Manager::Get()->GetLogManager()->DebugLogError(event.GetString());
-
 }
 
-// ----------------------------------------------------------------------------
-void CodeCompletion::OnParserStart(wxCommandEvent& event)
-// ----------------------------------------------------------------------------
+void CodeCompletion::OnCCDebugLogger(CodeBlocksThreadEvent& event)
 {
-    bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
-    if (canLog)
-        CCLogger::Get()->DebugLog("---- ParserStart ----"); //(ph 2024/01/25)
+    if (!Manager::IsAppShuttingDown())
+        Manager::Get()->GetLogManager()->DebugLog(event.GetString());
+}
 
+void CodeCompletion::OnParserStart(wxCommandEvent& event)
+{
     cbProject*                project = static_cast<cbProject*>(event.GetClientData());
     ParserCommon::ParserState state   = static_cast<ParserCommon::ParserState>(event.GetInt());
     // Parser::OnBatchTimer will send this Parser Start event
@@ -2480,13 +2458,9 @@ void CodeCompletion::OnParserStart(wxCommandEvent& event)
 
 
     }
-    m_ParseManager.SetParsingIsBusy(true); //(ph 2024/01/25)
-    m_ParseManager.SetClassBrowserViewIsStale(true); //(ph 2024/01/25)
 }
 
-// ----------------------------------------------------------------------------
 void CodeCompletion::OnParserEnd(wxCommandEvent& event)
-// ----------------------------------------------------------------------------
 {
     EditorManager* edMan = Manager::Get()->GetEditorManager();
     cbEditor* editor = edMan->GetBuiltinActiveEditor();
@@ -2508,17 +2482,8 @@ void CodeCompletion::OnParserEnd(wxCommandEvent& event)
         m_NeedsBatchColour = false;
     }
 
-    m_ParseManager.SetParsingIsBusy(false);
-    m_ParseManager.SetClassBrowserViewIsStale(true); //(ph 2024/01/25)
-    if (m_ParseManager.GetSymbolsWindowHasFocus())
-        m_ParseManager.UpdateClassBrowser();
-
-    bool canLog = Manager::Get()->GetConfigManager("code_completion")->ReadBool("CCDebugLogging");
-    if (canLog)
-        CCLogger::Get()->DebugLog("---- Parser End ----"); //(ph 2024/01/25)
-
     event.Skip();
-}//end OnParserEnd
+}
 
 void CodeCompletion::OnSystemHeadersThreadMessage(CodeBlocksThreadEvent& event)
 {
