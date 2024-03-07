@@ -218,7 +218,7 @@ bool QueryVersionControl(const std::string& workingDir, std::string& vcsExecutab
         if (vcsExecutable.empty())
             vcsExecutable = "git";
 
-        if (GetProcessOutput(output, vcsExecutable + " log --grep=\"git-svn-id\" --max-count=1" + workingDir))
+        if (GetProcessOutput(output, vcsExecutable + " log --grep=\"git-svn-id\" --max-count=1 " + workingDir))
         {
             std::string::size_type lineStart = output.find("git-svn-id");
             if (lineStart != std::string::npos)
