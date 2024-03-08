@@ -793,7 +793,7 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
     int semCol    = pParser->GetSemanticTokenColumnNumAt(semTokenIdx);
     int semLine   = pParser->GetSemanticTokenLineNumAt(semTokenIdx);
     int semMods   = pParser->GetSemanticTokenModifierAt(semTokenIdx);
-    if (semLength or semType or semCol or semLength or semMods) {;}//don't show as unused
+    if (semLength or semType or semCol or semMods) {;}//don't show as unused
 
     if (semName.empty())
         return wxString();
