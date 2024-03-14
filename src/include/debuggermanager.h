@@ -32,6 +32,10 @@ class TextCtrlLogger;
 
 class DLLIMPORT cbBreakpoint
 {
+    public: //typedefs for debuggers gdb/mi and DAP
+        typedef cb::shared_ptr<cbBreakpoint> Pointer;
+        typedef cb::shared_ptr<const cbBreakpoint> ConstPointer;
+
     public:
         virtual ~cbBreakpoint() {}
 
@@ -50,6 +54,10 @@ class DLLIMPORT cbWatch
 {
         cbWatch& operator =(cbWatch &);
         cbWatch(cbWatch &);
+
+    public: //typedefs for gdb/mi and DAP debuggers
+        typedef cb::shared_ptr<cbWatch> Pointer;
+        typedef cb::shared_ptr<const cbWatch> ConstPointer;
 
     public:
         cbWatch();
@@ -115,6 +123,10 @@ cb::shared_ptr<cbWatch> DLLIMPORT cbGetRootWatch(cb::shared_ptr<cbWatch> watch);
 
 class DLLIMPORT cbStackFrame
 {
+    public:  // typedefs for gdb/mi and DAP debuggers
+        typedef cb::shared_ptr<cbStackFrame> Pointer;
+        typedef cb::shared_ptr<const cbStackFrame> ConstPointer;
+
     public:
         cbStackFrame();
 
@@ -142,6 +154,10 @@ class DLLIMPORT cbStackFrame
 
 class DLLIMPORT cbThread
 {
+    public: // typedefs for gdb/mi and DAP debuggers
+        typedef cb::shared_ptr<cbThread> Pointer;
+        typedef cb::shared_ptr<const cbThread> ConstPointer;
+
     public:
         cbThread();
         cbThread(bool active, int number, const wxString& info);
