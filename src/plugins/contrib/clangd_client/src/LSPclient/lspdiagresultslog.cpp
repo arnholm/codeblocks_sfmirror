@@ -256,7 +256,7 @@ void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event) //(p
     {
         // Got the selected item index
         selectedLineText = GetItemAsText(itemIndex);
-        if (not selectedLineText.Contains(" (fix available) "))
+        if (not (selectedLineText.Contains(" (fix available) ") or (selectedLineText.Contains("(fixes available)"))))
         {
             wxString msg = wxString::Format(_("No Fix available for logLine(%d)"), int(itemIndex) );
             InfoWindow::Display(_("NO fix"), msg);

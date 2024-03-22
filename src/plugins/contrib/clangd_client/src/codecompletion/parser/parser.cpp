@@ -1738,23 +1738,58 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
 
             for (int jj = 0; jj < codeActionsKnt; ++jj)
             {
-                std::string jdumpStr = jCodeActions.dump();
-                //CCLogger::Get()->DebugLog(jdumpStr); // **Debugging**
+                std::string jdumpStr = jCodeActions[jj].dump();
+
+                // start **Debugging**
+                //    wxString dbgStr(wxString::Format("%d: %s", jj, jdumpStr));
+                //    CCLogger::Get()->DebugLog(dbgStr);
+                //    // Separate each member into a separate JSON string //(ph 2024/03/21)
+                //    json data = json::parse(jdumpStr);
+                //    std::vector<std::string> separate_json_strings;
+                //    for (const auto& item : data)
+                //    {
+                //        separate_json_strings.push_back(item.dump());
+                //        CCLogger::Get()->DebugLog("---> " + separate_json_strings.back());
+                //    }
+                //    separate_json_strings.clear();
+                // end **Debugging**
 
                 codeActionFilename = jCodeActions[jj]["edit"]["changes"].begin().key();
-               //-unused- codeActionLine =jCodeActions[jj]["edit"]["changes"][codeActionFilename.ToStdString()][0]["range"]["start"]["line"].get<int>();
+                // unused int codeActionLine =jCodeActions[jj]["edit"]["changes"][codeActionFilename.ToStdString()][0]["range"]["start"]["line"].get<int>();
                 codeActionMsg = jCodeActions[jj]["title"].get<std::string>();
                 codeActionFilename = fileUtils.FilePathFromURI(codeActionFilename);
 
+                // I tried 4 hours to access these vars the nlohmann json way and failed.
+                // So I'm going to do it the sane way.
                 size_t newTextEnd = std::string::npos;
                 size_t newTextBegin = jdumpStr.find("{\"newText\"");
                 if (newTextBegin != std::string::npos)
                     newTextEnd = jdumpStr.find("}}}", newTextBegin);
                 if (newTextEnd != std::string::npos)
                     codeActionNewText = jdumpStr.substr(newTextBegin, (newTextEnd-newTextBegin)+3);
-                if (codeActionNewText.Length())             //(ph 2023/08/15)
-                    FixesAvailable[codeActionFilename].push_back(codeActionNewText); //remember the fix
-            }
+                if (codeActionNewText.Length())
+                {
+                    bool duplicateFound = false;
+                    // Check for duplicates before adding fix changes
+                    // Clangd is responding with duplicate fixes.
+                    // It can cause errant changes and deletions of lines.
+                    if (FixesAvailable.find(codeActionFilename) != FixesAvailable.end())
+                    {
+                        // Iterate over the vector associated with the filename
+                        for (const auto& text : FixesAvailable[codeActionFilename])
+                        {
+                            // Check if the fix already exists in the vector of fixes
+                            if (text == codeActionNewText)
+                            {
+                                duplicateFound = true;
+                                break;
+                            }
+                        }
+                    }//endIf FixesAvailable find duplicates
+                    if(not duplicateFound)
+                        FixesAvailable[codeActionFilename].push_back(codeActionNewText); //remember the fix
+                }//endif CodeActionNewText length
+            }//endFor jj
 
             wxString logMsg(wxString::Format("LSP:diagnostic:%s %d:%d  %s: %s", cbFilename, diagLine+1, diagColstrt+1, severity, diagMsg));
            // CCLogger::Get()->Log(logMsg); // **Debugging**
@@ -3688,15 +3723,19 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         int startLine; // 1 origin; needs to be changed to zero origin
         int lineStartCol;
         int lineEndCol;
+        int endLine;
 
         codeActionStr  = FixesFound[ii];
         try {
             // std::string testData = "{\"newText\":\"int\",\"range\":{\"end\":{\"character\":8,\"line\":275},\"start\":{\"character\":4,\"line\":275}}}"; // **Debugging**
             nlohmann::json jCodeAction = nlohmann::json::parse(codeActionStr.ToStdString());
             newText      = jCodeAction["newText"].get<std::string>();
-            startLine    = lineNumInt; // it's already 1 origin
+            startLine    = jCodeAction["range"]["start"]["line"] ;
+             lineStartCol = jCodeAction["range"]["start"]["character"] ;
             lineStartCol = jCodeAction["range"]["start"]["character"] ;
             lineEndCol   = jCodeAction["range"]["end"]["character"] ;
+            endLine      = jCodeAction["range"]["end"]["line"] ;
+
         }
         catch(std::exception &err)
         {
@@ -3708,9 +3747,12 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         // pEd contains the cbEditor ptr from above
         cbStyledTextCtrl* pControl = pEd->GetControl();
          // Replace text; note that the startLine is from the log msg line, so it's 1 origin
-        int linePosn = pControl->PositionFromLine(startLine-1); // use zero origin for line
-        pControl->SetTargetStart(linePosn + lineStartCol);
-        pControl->SetTargetEnd(linePosn + lineEndCol );
+        int linePosn = pControl->PositionFromLine(startLine); // use zero origin for line
+        int targetStart = linePosn + lineStartCol;
+        pControl->SetTargetStart(targetStart);
+        int lineEndPosn = pControl->PositionFromLine(endLine);
+        int targetEnd = lineEndPosn + lineEndCol;
+        pControl->SetTargetEnd(targetEnd);
         pControl->ReplaceTarget(newText);
     }//endfor FixesFound
 

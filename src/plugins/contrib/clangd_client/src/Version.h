@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.114 24/03/2")
+#define VERSION wxT("1.2.115 24/03/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.115   Apply Christo fix for "fixes available"; multi-line fixes.
+//          Avoid duplicate change responses from clangd.
 //1.2.114   Enable clangd "fix available" entries when user right-clicks log line and selects "Apply fix if available".
 //1.2.113   Remove instruction "int3" trap mistakenly left in code. Thanks SharkCZ.
 //          Update to nlohmann Json version 3.11.2
