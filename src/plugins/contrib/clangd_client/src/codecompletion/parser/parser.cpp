@@ -10,7 +10,7 @@
 #include <sdk.h>
 
 #ifndef CB_PRECOMP
-    #include <queue>
+    //#include <queue>
 
     #include <wx/app.h>
     #include <wx/dir.h>
@@ -43,16 +43,16 @@
 //-deprecated- #include "parserthreadedtask.h"
 
 #include "../classbrowser.h"
-#include "../classbrowserbuilderthread.h"
+//#include "../classbrowserbuilderthread.h"
 #include <encodingdetector.h>
 #include "client.h"
 #include "LSP_symbolsparser.h"
-#include "debuggermanager.h"
+//#include "debuggermanager.h"
 
 #include "../parsemanager.h"
 #include "parser.h"
 
-#include "cbauibook.h"
+//#include "cbauibook.h"
 #include "../IdleCallbackHandler.h"
 #include "../gotofunctiondlg.h"
 #include "ccmanager.h"
@@ -1732,9 +1732,9 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             json jCodeActions = diagnostics[ii]["codeActions"];
             int codeActionsKnt = jCodeActions.size();
             //-unused- int codeActionLine = -1;
-            wxString codeActionMsg = wxString();
+            wxString codeActionTitle = wxString();    // text that goes to log
             wxString codeActionFilename = wxString();
-            wxString codeActionNewText =  wxString();
+            wxString codeActionNewText  =  wxString(); //text to change
 
             for (int jj = 0; jj < codeActionsKnt; ++jj)
             {
@@ -1755,8 +1755,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 // end **Debugging**
 
                 codeActionFilename = jCodeActions[jj]["edit"]["changes"].begin().key();
-                // unused int codeActionLine =jCodeActions[jj]["edit"]["changes"][codeActionFilename.ToStdString()][0]["range"]["start"]["line"].get<int>();
-                codeActionMsg = jCodeActions[jj]["title"].get<std::string>();
+                codeActionTitle = jCodeActions[jj]["title"].get<std::string>();
                 codeActionFilename = fileUtils.FilePathFromURI(codeActionFilename);
 
                 // I tried 4 hours to access these vars the nlohmann json way and failed.
@@ -1787,7 +1786,14 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                         }
                     }//endIf FixesAvailable find duplicates
                     if(not duplicateFound)
-                        FixesAvailable[codeActionFilename].push_back(codeActionNewText); //remember the fix
+                    {
+                        // append error line number so we can use it as a search key
+                        //  because codeActions may not have it when the fix is to a
+                        //  different line.
+                        wxString errorLoc = wxString::Format("ErrorLine:%d",diagLine);
+                        wxString stowit = codeActionNewText+STX+errorLoc;
+                        FixesAvailable[codeActionFilename].push_back(stowit); //remember the fix
+                    }
                 }//endif CodeActionNewText length
             }//endFor jj
 
@@ -1809,7 +1815,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             if (codeActionsKnt) //(ph 2024/02/12)
             {
                 if (lspDiagTxt.EndsWith("(fix available)") )
-                    lspDiagTxt.Append(" " + codeActionMsg);
+                    lspDiagTxt.Append(" " + codeActionTitle);
             }
             LSPdiagnostic.Add(lspDiagTxt);
             // hold msg in array
@@ -3625,6 +3631,7 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
     // obtained from the LSP textDocument/Diagnostics response.
 
     wxString msg;
+    //-lookee = event.GetString();     // **Debugging**
     wxString filename = event.GetString().BeforeFirst('|');
     wxString lineNumText = event.GetString().AfterFirst('|');
     int lineNumInt = -1; //an impossible line number
@@ -3669,11 +3676,12 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
     }
 
     wxString searchKey = filename;
-    // Line numbers in codeActions are zero origin, lineNum is from the log; so it's 1 origin.
+    // Line numbers in codeActions are zero origin, lineNumInt is from the log; so it's 1 origin.
     // Find the fix entries in the map array that match this lineNum.
-    wxString searchElement = "\"line\":" + wxString::Format("%d", int(lineNumInt - 1));
+    wxString searchElement = "ErrorLine:" + wxString::Format("%d", int(lineNumInt-1)); //clangd needs zero origin lines
     //wxString searchResult; // **Debugging**
-    wxString codeActionStr; // starts with "{"newText":
+    wxString codeActionReplaceStr; // starts with "{"newText":
+    wxString codeActionErrLineStr;  // "ErrorLine:<intstring>"
     std::vector<wxString>FixesFound;
 
     // Find the fixes
@@ -3693,6 +3701,7 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
                 FixesFound.push_back(codeActionStr);
                 // Modify the element so it can't be used again
                 *elementIt = "removed";
+                break; //(ph 2024/03/25) do one at a time.
             }
             else
             {
@@ -3719,23 +3728,20 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
     // ----------------------------------------------------
     for (size_t ii=FixesFound.size(); ii-- > 0;) //bounds test is made first, then ii is decremented
     {
+        const char STX = '\u0002';
+        codeActionReplaceStr  = FixesFound[ii].BeforeFirst(STX);
+        codeActionErrLineStr = FixesFound[ii].AfterFirst(STX);
         wxString newText;
-        int startLine; // 1 origin; needs to be changed to zero origin
-        int lineStartCol;
-        int lineEndCol;
-        int endLine;
+        int newStartLine; int newStartLineCol; int newEndLine; int newEndLineCol;
 
-        codeActionStr  = FixesFound[ii];
         try {
             // std::string testData = "{\"newText\":\"int\",\"range\":{\"end\":{\"character\":8,\"line\":275},\"start\":{\"character\":4,\"line\":275}}}"; // **Debugging**
-            nlohmann::json jCodeAction = nlohmann::json::parse(codeActionStr.ToStdString());
-            newText      = jCodeAction["newText"].get<std::string>();
-            startLine    = jCodeAction["range"]["start"]["line"] ;
-             lineStartCol = jCodeAction["range"]["start"]["character"] ;
-            lineStartCol = jCodeAction["range"]["start"]["character"] ;
-            lineEndCol   = jCodeAction["range"]["end"]["character"] ;
-            endLine      = jCodeAction["range"]["end"]["line"] ;
-
+            nlohmann::json jCodeAction = nlohmann::json::parse(codeActionReplaceStr.ToStdString());
+            newText    = jCodeAction["newText"].get<std::string>();
+            newStartLine    = jCodeAction["range"]["start"]["line"] ;
+            newStartLineCol = jCodeAction["range"]["start"]["character"] ;
+            newEndLine      = jCodeAction["range"]["end"]["line"] ;
+            newEndLineCol   = jCodeAction["range"]["end"]["character"] ;
         }
         catch(std::exception &err)
         {
@@ -3747,11 +3753,11 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         // pEd contains the cbEditor ptr from above
         cbStyledTextCtrl* pControl = pEd->GetControl();
          // Replace text; note that the startLine is from the log msg line, so it's 1 origin
-        int linePosn = pControl->PositionFromLine(startLine); // use zero origin for line
-        int targetStart = linePosn + lineStartCol;
+        int linePosn = pControl->PositionFromLine(newStartLine); // use zero origin for line
+        int targetStart = linePosn + newStartLineCol;
         pControl->SetTargetStart(targetStart);
-        int lineEndPosn = pControl->PositionFromLine(endLine);
-        int targetEnd = lineEndPosn + lineEndCol;
+        int lineEndPosn = pControl->PositionFromLine(newEndLine);
+        int targetEnd = lineEndPosn + newEndLineCol;
         pControl->SetTargetEnd(targetEnd);
         pControl->ReplaceTarget(newText);
     }//endfor FixesFound
