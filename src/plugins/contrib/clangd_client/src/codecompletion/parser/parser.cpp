@@ -1790,8 +1790,8 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                         // append error line number so we can use it as a search key
                         //  because codeActions may not have it when the fix is to a
                         //  different line.
-                        wxString errorLoc = wxString::Format("ErrorLine:%d",diagLine);
-                        wxString stowit = codeActionNewText+STX+errorLoc;
+                        wxString errorLoc = wxString::Format("%d",diagLine);
+                        wxString stowit = codeActionNewText+STX+errorLoc+STX+codeActionTitle;
                         FixesAvailable[codeActionFilename].push_back(stowit); //remember the fix
                     }
                 }//endif CodeActionNewText length
@@ -3631,26 +3631,28 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
     // obtained from the LSP textDocument/Diagnostics response.
 
     wxString msg;
-    //-lookee = event.GetString();     // **Debugging**
-    wxString filename = event.GetString().BeforeFirst('|');
-    wxString lineNumText = event.GetString().AfterFirst('|');
+    wxArrayString params = GetArrayFromString(event.GetString(),"|", true);
+    wxString logFilename   = params[0];
+    wxString logLineNumStr = params[1];
+    wxString logText       = params[2];
+
     int lineNumInt = -1; //an impossible line number
-    try { lineNumInt = std::stoi(lineNumText.ToStdString()); }
+    try { lineNumInt = std::stoi(logLineNumStr.ToStdString()); }
     catch(std::exception &e) { lineNumInt = -1;}
 
-    if (filename.empty() or (not wxFileExists(filename)) or (lineNumInt == -1) )
+    if (logFilename.empty() or (not wxFileExists(logFilename)) or (lineNumInt == -1) )
     {
-        msg = wxString::Format(_("%s or line %s not found.\n"), filename, lineNumText );
+        msg = wxString::Format(_("%s or line %s not found.\n"), logFilename, logLineNumStr );
     }
-    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(logFilename);
     if (not pEd)
-    {   msg << wxString::Format(_("No open editor for filename:%s\n"), filename);
+    {   msg << wxString::Format(_("No open editor for filename:%s\n"), logFilename);
     }
-    cbProject* pProject = pEd->GetProjectFile() ? pEd->GetProjectFile()->GetParentProject() : nullptr;
 
+    cbProject* pProject = pEd->GetProjectFile() ? pEd->GetProjectFile()->GetParentProject() : nullptr;
     if (not pProject)
     {
-        msg << wxString::Format(_("No project found containing filename:\n %s."), filename);
+        msg << wxString::Format(_("No project found containing filename:\n %s."), logFilename);
     }
 
         // Example of a textDocument/Diagnostics CodeActive entry
@@ -3661,7 +3663,7 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         //        }}} //end edit object changes,
 
     // Verify filename and line number have an entry in available fixes map "FixesAvailable"
-    FixMap_t::iterator it_find = FixesAvailable.find(filename);
+    FixMap_t::iterator it_find = FixesAvailable.find(logFilename);
     if (it_find == FixesAvailable.end())
     {
         //There are no entries for this file
@@ -3675,43 +3677,38 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         return;
     }
 
-    wxString searchKey = filename;
     // Line numbers in codeActions are zero origin, lineNumInt is from the log; so it's 1 origin.
-    // Find the fix entries in the map array that match this lineNum.
-    wxString searchElement = "ErrorLine:" + wxString::Format("%d", int(lineNumInt-1)); //clangd needs zero origin lines
+    // Find the fix entries in the map array that match this log filename, lineNum and title.
+    wxString logLine = wxString::Format("%d", int(lineNumInt-1)); //clangd needs zero origin lines
     //wxString searchResult; // **Debugging**
     wxString codeActionReplaceStr; // starts with "{"newText":
-    wxString codeActionErrLineStr;  // "ErrorLine:<intstring>"
+    wxString codeActionErrLineStr;  // <int string>
+
     std::vector<wxString>FixesFound;
 
-    // Find the fixes
-    FixMap_t::iterator it = FixesAvailable.find(searchKey);
+    // FixesAvailable map contains key:FullFilename element: "<fixText>" STX "line #" STX "<fixTitleText>
+    // Find the fix
+    FixMap_t::iterator it = FixesAvailable.find(logFilename);
     if (it != FixesAvailable.end())
     {
         std::vector<wxString>& mapVector = it->second;
 
         for (std::vector<wxString>::iterator elementIt = mapVector.begin(); elementIt != mapVector.end(); ++elementIt)
         {
-            wxString& codeActionStr = *elementIt; // Pull the vector element string
-            //searchResult << "Checking element: " << codeActionStr ; // **Debugging**
+            wxString& elementFixStr = *elementIt; // Pull the vector element string
+            wxArrayString fixDataStrings = GetArrayFromString(elementFixStr, STX, true);
+            wxString fixCodeActionStr = fixDataStrings[0]; //clangd new text replacement
+            wxString fixErrorLineNum  = fixDataStrings[1]; //clangd error line number
+            wxString fixTitleText     = fixDataStrings[2]; //clangd tix title
 
-            if (codeActionStr.find(searchElement) != wxString::npos)
+            // selected log line info and fix info must match
+            if ( (fixErrorLineNum == logLine)
+               and (logText.find(fixTitleText) != wxString::npos) )
             {
-                //searchResult << "Found: " << searchElement << " in vector associated with key: " << searchKey ; // **Debugging**
-                FixesFound.push_back(codeActionStr);
-                // Modify the element so it can't be used again
-                *elementIt = "removed";
-                break; //(ph 2024/03/25) do one at a time.
-            }
-            else
-            {
-                codeActionStr.clear(); // Didn't find any entries
+                FixesFound.push_back(fixCodeActionStr);
+                break; //apply one at a time.
             }
         }
-    }
-    else
-    {
-        //searchResult << "Key not found in map." ; // **Debugging**
     }
 
     if (not FixesFound.size())
@@ -3768,7 +3765,7 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2024/02/12)
         // Invokes OnSpecifiedFileReparse()
         cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("clangd_client");
         wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idSpecifiedFileReparse"));
-        evt.SetString(filename);
+        evt.SetString(logFilename);
         pPlgn->AddPendingEvent(evt);
     }
 

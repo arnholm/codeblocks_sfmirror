@@ -278,6 +278,7 @@ void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event) //(p
     // index 0:filename 1:lineNumber 2:Error text
     wxString filename = lineItems[0];
     wxString lineNumStr = lineItems[1];
+    wxString logText = lineItems[2];
 
     // Obtain cbEditor for this file
     cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
@@ -286,7 +287,7 @@ void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event) //(p
     // Issue a  "textDocument/codeAction" request to ClgdCompletion.
     // This class does not have addressability to what we need (parser and FixesAvailable).
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idRequestCodeActionAppy);
-    evt.SetString(filename +"|"+lineNumStr);
+    evt.SetString(filename +"|"+lineNumStr+"|"+logText);
     Manager::Get()->GetAppFrame()->GetEventHandler()->AddPendingEvent(evt);
 
     return;

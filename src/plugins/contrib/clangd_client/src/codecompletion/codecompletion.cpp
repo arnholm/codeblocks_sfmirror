@@ -5788,19 +5788,21 @@ wxString ClgdCompletion::VerifyEditorParsed(cbEditor* pEd)
     return msg;
 }//VerifyEditorParsed
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnRequestCodeActionApply(wxCommandEvent& event) //(ph 2023/08/16)
+void ClgdCompletion::OnRequestCodeActionApply(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     wxString msg;
-    wxString filename = event.GetString().BeforeFirst('|');
-    wxString lineNumText = event.GetString().AfterFirst('|');
+    wxArrayString params = GetArrayFromString(event.GetString(),"|",true);
+    wxString filename = params[0];
+    wxString lineNumStr = params[1];
+    wxString logText = params[2];
     int lineNumInt = -1; //an impossible line number
-    try { lineNumInt = std::stoi(lineNumText.ToStdString()); }
+    try { lineNumInt = std::stoi(lineNumStr.ToStdString()); }
     catch(std::exception &e) { lineNumInt = -1;}
 
     if (filename.empty() or (not wxFileExists(filename)) or (lineNumInt == -1) )
     {
-        msg = wxString::Format(_("%s or line %s not found.\n"), filename, lineNumText );
+        msg = wxString::Format(_("%s or line %s not found.\n"), filename, lineNumStr );
     }
     cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
     if (not pEd)

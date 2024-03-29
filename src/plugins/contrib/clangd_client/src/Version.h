@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.116 24/03/25")
+#define VERSION wxT("1.2.117 24/03/29")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.117   2024/03/29 Cleanup and optimization of code for previous commit.
 //1.2.116   2024/03/25 Fix missing "fix available"(s) when error and fix line are different.
 //1.2.115   Apply Christo fix for "fixes available"; multi-line fixes.
 //          Avoid duplicate change responses from clangd.
