@@ -60,6 +60,8 @@ const wxString g_EditorModified = _T("*");
 #define BREAKPOINT_STYLE wxSCI_MARK_CIRCLE
 #define DEBUG_STYLE      wxSCI_MARK_ARROW
 #define DEBUG_STYLE_HIGHLIGHT wxSCI_MARK_BACKGROUND
+#define WARNING_STYLE    wxSCI_MARK_SMALLRECT
+
 
 #define BREAKPOINT_OTHER_MARKER    1
 #define BREAKPOINT_DISABLED_MARKER 2
@@ -68,6 +70,8 @@ const wxString g_EditorModified = _T("*");
 #define ERROR_MARKER               5
 #define DEBUG_MARKER               6
 #define DEBUG_MARKER_HIGHLIGHT     7
+#define WARNING_MARKER             8
+
 
 #define C_LINE_MARGIN      0 // Line numbers
 #define C_MARKER_MARGIN    1 // Bookmarks, Breakpoints...
@@ -891,17 +895,17 @@ public:
         return wxDragNone;
     }
 
-    wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def)
+    wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def) override
     {
         return editor->GetControl()->DoDragEnter(x, y, def);
     }
 
-    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def)
+    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def) override
     {
         return editor->GetControl()->DoDragOver(x, y, def);
     }
 
-    void  OnLeave()
+    void  OnLeave() override
     {
         editor->GetControl()->DoDragLeave();
     }
@@ -1678,7 +1682,8 @@ void cbEditor::InternalSetEditorStyleBeforeFileOpen(cbStyledTextCtrl* control)
                            | (1 << BREAKPOINT_OTHER_MARKER)
                            | (1 << DEBUG_MARKER)
                            | (1 << DEBUG_MARKER_HIGHLIGHT)
-                           | (1 << ERROR_MARKER) );
+                           | (1 << ERROR_MARKER) //(cristo 2024/03/23)
+                           | (1 << WARNING_MARKER) );
 
     // 1.) Marker for Bookmarks etc...
     control->MarkerDefine(BOOKMARK_MARKER, BOOKMARK_STYLE);
@@ -1697,6 +1702,9 @@ void cbEditor::InternalSetEditorStyleBeforeFileOpen(cbStyledTextCtrl* control)
     // 4.) Marker for Errors...
     control->MarkerDefine(ERROR_MARKER, ERROR_STYLE);
     control->MarkerSetBackground(ERROR_MARKER, wxColour(0xFF, 0x00, 0x00));
+
+    control->MarkerDefine(WARNING_MARKER, WARNING_STYLE);
+    control->MarkerSetBackground(WARNING_MARKER, wxColour(0xCC, 0xCC, 0x00));
 
     // changebar margin
     if (mgr->ReadBool(_T("/margin/use_changebar"), true))
@@ -2602,6 +2610,18 @@ void cbEditor::SetDebugLine(int line)
 void cbEditor::SetErrorLine(int line)
 {
     MarkLine(ERROR_MARKER, line);
+}
+
+void cbEditor::SetWarningLine(int line) const
+{
+    GetControl()->MarkerAdd(line, WARNING_MARKER);
+}
+
+void cbEditor::DeleteAllErrorAndWarningMarkers() const
+{
+    cbStyledTextCtrl* control = GetControl();
+    control->MarkerDeleteAll(ERROR_MARKER);
+    control->MarkerDeleteAll(WARNING_MARKER);
 }
 
 void cbEditor::Undo()

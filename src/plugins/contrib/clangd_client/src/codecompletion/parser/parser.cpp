@@ -56,6 +56,7 @@
 #include "../IdleCallbackHandler.h"
 #include "../gotofunctiondlg.h"
 #include "ccmanager.h"
+#include <unordered_map> //(christo 2024/03/23)
 
 #ifndef CB_PRECOMP
     #include "editorbase.h"
@@ -1680,6 +1681,9 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     wxArrayString  aLogLinesToWrite;
     const char STX = '\u0002'; //start-of-text char used as string separator
 
+    std::unordered_map<int, bool> lineWarningMap; //(christo 2024/03/23) 3lines
+    lineWarningMap.reserve(diagnosticsKnt);
+
     try {
         for (int ii=0; ii<diagnosticsKnt; ++ii)
         {
@@ -1821,6 +1825,14 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             // hold msg in array
             aLogLinesToWrite.Add(STX+ LSPdiagnostic[0] +STX+ LSPdiagnostic[1] +STX+ LSPdiagnostic[2]);
 
+            if (diagSeverity >= 2) //(christo 2024/03/23) 8lines
+            {
+                lineWarningMap.insert({ diagLine, true }); //insert if not present
+            }
+            else
+            {
+                lineWarningMap[diagLine] = false; //insert or replace as error takes precedence
+            }
         }//endfor diagnosticsKnt
 
         // ------------------------------------------------------
@@ -1852,15 +1864,35 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             LSPdiagnostic = GetArrayFromString(aLogLinesToWrite[ii], wxString(STX));
             //write msg to log
             GetLSPClient()->LSP_GetLog()->Append(LSPdiagnostic);
+        }//endfor //(christo 2024/03/23) 1line
 
-            // Mark the line if in error ('notes' reads like an error to me)
-            int diagLine = std::stoi(LSPdiagnostic[1].ToStdString());
-            EditorBase* pEb = Manager::Get()->GetEditorManager()->GetEditor(cbFilename);
-            cbEditor* pEd = nullptr;
-            if (pEb) pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(pEb);
-            if (pEd) pEd->SetErrorLine(diagLine-1);
-        }//endfor
-    }
+        EditorBase *pEb = Manager::Get()->GetEditorManager()->GetEditor(cbFilename); //(christo 2024/03/23) 23lines
+        if (pEb)
+        {
+            cbEditor *pEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(pEb);
+            if (pEd)
+            {
+                //-for (const auto& [diagLine, warning] : lineWarningMap) //(christo 2024/03/23) is C++17
+                for (const auto& pair : lineWarningMap) //(ph 2024/03/23) C++11 of the above
+                {
+                    const auto& diagLine = pair.first;
+                    const auto& warning = pair.second;
+                    if (warning)
+                    {
+                        fprintf(stderr, "Parser::%s:%d [%p] set warning. diagLine  %d\n", __FUNCTION__, __LINE__, this,
+                                diagLine);
+                        pEd->SetWarningLine(diagLine);
+                    }
+                    else
+                    {
+                        fprintf(stderr, "Parser::%s:%d [%p] set error. diagLine  %d\n", __FUNCTION__, __LINE__, this,
+                                diagLine);
+                        pEd->SetErrorLine(diagLine);
+                    }
+                }
+            }
+        }
+    } //(christo 2024/03/23) end
     catch ( std::exception &e) {
         wxString errmsg(wxString::Format("LSP OnLSP_DiagnosticsResponse() error:\n%s", e.what()) );
         CCLogger::Get()->DebugLog(errmsg);
@@ -1904,7 +1936,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     else if (pEditor == pActiveEditor)
     {
         // when no diagnostics for active editor clear error markers
-        pEditor->SetErrorLine(-1);
+        pEditor->DeleteAllErrorAndWarningMarkers(); //(christo 2024/03/23)
     }
 
     // ----------------------------------------------------------------------------

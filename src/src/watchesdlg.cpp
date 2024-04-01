@@ -1389,6 +1389,9 @@ ValueTooltip::~ValueTooltip()
 
 void ValueTooltip::UpdateWatch()
 {
+    // Sanity check
+    if (not m_watch)
+        return;
     m_watch->MarkAsChangedRecursive(false);
     ::UpdateWatch(m_grid, GetRealRoot(m_grid), m_watch, true);
     m_grid->Refresh();

@@ -253,6 +253,12 @@ class DLLIMPORT cbEditor : public EditorBase
         /** Highlight the specified line as error. */
         virtual void SetErrorLine(int line);
 
+        /** Highlight the specified line as warning. */
+        void SetWarningLine(int line) const;
+
+        /** Delete all error and warning highlighting. */
+        void DeleteAllErrorAndWarningMarkers() const;
+
         /** Split the editor window.
           * @param split The type of split: horizontal or vertical. */
         void Split(SplitType split);
