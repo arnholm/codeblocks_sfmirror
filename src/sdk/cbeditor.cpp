@@ -39,6 +39,7 @@
 #endif
 #include "cbstyledtextctrl.h"
 #include "cbcolourmanager.h"
+#include "ccmanager.h"
 
 #include <stack>
 
@@ -642,6 +643,8 @@ const int idBreakpointRemove = wxNewId();
 const long idBreakpointEnable = wxNewId();
 const long idBreakpointDisable = wxNewId();
 
+const long idFixAvailableAdd = wxNewId();
+
 BEGIN_EVENT_TABLE(cbEditor, EditorBase)
     EVT_CLOSE(cbEditor::OnClose)
     // we got dynamic events; look in ConnectEvents()
@@ -684,6 +687,7 @@ BEGIN_EVENT_TABLE(cbEditor, EditorBase)
     EVT_MENU(idSplitVert, cbEditor::OnContextMenuEntry)
     EVT_MENU(idUnsplit, cbEditor::OnContextMenuEntry)
     EVT_MENU(idOpenUrl, cbEditor::OnContextMenuEntry)
+    EVT_MENU(idFixAvailableAdd, cbEditor::OnContextMenuEntry)
 
     EVT_SCI_ZOOM(-1, cbEditor::OnZoom)
     EVT_SCI_ZOOM(-1, cbEditor::OnZoom)
@@ -3144,6 +3148,15 @@ bool cbEditor::OnBeforeBuildContextMenu(const wxPoint& position, ModuleType type
 
             popup->Append(idBookmarkRemoveAll, _("Remove all bookmark"));
 
+
+            if (LineHasMarker(WARNING_MARKER, m_pData->m_LastMarginMenuLine)
+                or LineHasMarker(ERROR_MARKER, m_pData->m_LastMarginMenuLine) )
+            {
+                CCManager *ccManager = Manager::Get()->GetCCManager();
+                if (ccManager->GetProviderFor(this))
+                    popup->Append(idFixAvailableAdd, _("Show fix if available"));
+            }
+
             // display menu... wxWindows help says not to force the position
             PopupMenu(popup);
 
@@ -3374,6 +3387,13 @@ void cbEditor::OnContextMenuEntry(wxCommandEvent& event)
         cbBreakpointsDlg *dialog = Manager::Get()->GetDebuggerManager()->GetBreakpointDialog();
         dialog->EnableBreakpoint(m_Filename, m_pData->m_LastMarginMenuLine + 1, false);
     }
+    else if (id == idFixAvailableAdd)
+    {
+        // idFixAvailableAdd does not occur if no diagnostic is available
+        // See: OnBeforeBuildContexMenu()
+        CCManager* ccManager = Manager::Get()->GetCCManager();
+        ccManager->DoShowDiagnostics(this, m_pData->m_LastMarginMenuLine);
+    }
     else
         event.Skip();
     //Manager::Get()->GetLogManager()->DebugLog(_T("Leaving OnContextMenuEntry"));
@@ -3383,10 +3403,20 @@ void cbEditor::OnMarginClick(wxScintillaEvent& event)
 {
     switch (event.GetMargin())
     {
-        case C_MARKER_MARGIN: // bookmarks and breakpoints margin
+        case C_MARKER_MARGIN: // bookmarks, breakpoints, error and warning margin markers
         {
             int lineYpix = event.GetPosition();
             int line = GetControl()->LineFromPosition(lineYpix);
+
+            // if alt key is down, show fix available messageBox
+            if (wxGetKeyState(WXK_ALT)  )
+            {
+                CCManager *ccManager = Manager::Get()->GetCCManager();
+                if (true == ccManager->DoShowDiagnostics(this, line))
+                {
+                    break;
+                }
+            }
 
             ToggleBreakpoint(line);
             break;

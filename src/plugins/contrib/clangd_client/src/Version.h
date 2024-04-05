@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.118 24/03/31")
+#define VERSION wxT("1.2.119 24/04/4")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.119   2024/04/4 Apply christo warning/error diagnostic msgBox patch (with mods)
+//          Add diagnostic "fix availabe" item to margin popup menu.
+//          change left-mouse to alt-left-mouse on margin warning or error marker displays diagnostic msgBox directly.
 //1.2.118   2024/03/31 Apply christo colored warning msg icon tag://(christo 2024/03/23)
 //          watchesdlg: add sanity check to ValueTooltip::UpdateWatch()
 //1.2.117   2024/03/29 Cleanup and optimization of code for previous commit.

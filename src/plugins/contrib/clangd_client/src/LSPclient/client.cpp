@@ -324,6 +324,9 @@ namespace //annonymous
     bool wxFound(int result){return result != wxNOT_FOUND;};
     bool stdFound(size_t result){return result != std::string::npos;}
 
+    //-static wxMutex m_MutexInputBufGuard; //jsonread buffer guard //(Christo ticket 1423 2023/10/16)
+
+
 }//end namespace
 // ----------------------------------------------------------------------------
 namespace ClientHelp
@@ -2311,8 +2314,8 @@ void ProcessLanguageClient::LSP_DidSave(cbEditor* pcbEd)
     if (doClear and m_pDiagnosticsLog )
         m_pDiagnosticsLog->Clear();
 
-//-    pcbEd->SetErrorLine(-1);            ;//clear any error indicator in editor
-    pcbEd->DeleteAllErrorAndWarningMarkers();     ;//clear any error/warning indicator in editor //(christo 2024/03/23)
+    //clear any error/warning indicator in editor //(christo 2024/03/23)
+    pcbEd->DeleteAllErrorAndWarningMarkers();
 
     // There's a bug in clangd that causes completions to stop after a DidSave(uri).
     // Clangd gets an unhandled exception (see server log and clangd #320 bug),

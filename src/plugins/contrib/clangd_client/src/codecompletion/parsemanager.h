@@ -6,9 +6,10 @@
 #ifndef ParseManager_H
 #define ParseManager_H
 
-#include <queue>
+//#include <queue>
 #include <map>
 #include <memory>
+#include <mutex>  //(Christo 2024/03/30)
 #include <unordered_map>
 #include <wx/event.h>
 #include <wx/aui/aui.h> //(ph 2024/01/19)
@@ -403,6 +404,11 @@ public:
 
     bool GetUseCCIconsOption(); //option to use icons in completion popup
 
+    bool DoShowDiagnostics(wxString filename, int line);  //(Christo 2024/03/30)
+
+    void InsertDiagnostics(wxString filename, std::vector<std::pair<int, wxString>> diagnostics);  //(Christo 2024/03/30)
+
+    void ClearDiagnostics(wxString filename);  //(Christo 2024/03/30)
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:
@@ -707,6 +713,12 @@ private:
     // to avoid constantly allocating wxIDs.
     std::unique_ptr<cbStyledTextCtrl> m_pHiddenEditor = nullptr; //(ph 2023/12/22)
 
+    typedef std::unordered_map<wxString, std::vector<std::pair<int, wxString>>> DiagnosticsCache_t;
+    //std::unordered_map<wxString, std::vector<std::pair<int, wxString>>> m_diagnosticsCache;  //(Christo 2024/03/30)
+    DiagnosticsCache_t m_diagnosticsCache;  //(Christo 2024/03/30)
+    //typedef std::vector<std::pair<int, wxString>> InnerMap_t;
+
+    std::mutex m_diagnosticsCacheMutex;
 };
 
 #endif // ParseManager_H

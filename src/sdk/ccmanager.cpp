@@ -1554,3 +1554,11 @@ void CCManager::CallSmartIndentCCDone(cbEditor* ed)
     // post event in the host's event queue
     Manager::Get()->ProcessEvent(event);
 }
+
+// ----------------------------------------------------------------------------
+bool CCManager::DoShowDiagnostics( cbEditor* ed, int line)
+// ----------------------------------------------------------------------------
+{
+	return GetProviderFor(ed)->DoShowDiagnostics(ed, line);
+}
+
