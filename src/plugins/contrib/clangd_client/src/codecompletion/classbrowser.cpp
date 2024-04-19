@@ -895,7 +895,7 @@ void ClassBrowser::OnForceReparse(cb_unused wxCommandEvent& event)
     // Issue event for idCurrentProjectReparse
     // Will be caught by codecompletion::ReparseCurrentProject event
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED);
-    int reparse = wxFindMenuItemId(Manager::Get()->GetAppFrame(), "Project", "Reparse active project");
+    int reparse = wxFindMenuItemId(Manager::Get()->GetAppFrame(), "Project", "Reparse current project");
     evt.SetId(reparse);
     Manager::Get()->GetAppFrame()->GetEventHandler()->AddPendingEvent(evt);
     return;

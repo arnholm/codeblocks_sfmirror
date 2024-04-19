@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.119 24/04/4")
+#define VERSION wxT("1.2.120 24/04/18")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.120   2024/04/18 Addition of and clarification of comments
 //1.2.119   2024/04/4 Apply christo warning/error diagnostic msgBox patch (with mods)
 //          Add diagnostic "fix availabe" item to margin popup menu.
 //          change left-mouse to alt-left-mouse on margin warning or error marker displays diagnostic msgBox directly.
@@ -992,7 +993,7 @@ class AppVersion
 //          Set query-driver agrument from master toolchain 2021/03/4
 //          Verify clang installation and clangd version >= 12.0.0 2021/03/4
 //  0.0.14  2021/02/27
-//          Implemented "Reparse active project" for clangd. Also used to kill/recreate
+//          Implemented "Reparse current project" for clangd. Also used to kill/recreate
 //              the client/server to force re-reading of compile_commands.json.
 //          CleanUpLSPLogs() to remove closed logs locked by windows.
 //          Use clangd12, remove envPath mangling, add log "Ignore Messages" context item

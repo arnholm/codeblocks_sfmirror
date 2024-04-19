@@ -1376,6 +1376,7 @@ bool ProcessLanguageClient::WriteHdr(const std::string& in)
     std::string limitedLogOut(in);
     std::string out(in);
 
+    #ifndef NOLOGSNIP
     // limit "text" output to log at 512 chars
     if (StdString_Contains(limitedLogOut,"\"textDocument/didOpen\"")
         or StdString_Contains(limitedLogOut, "\"textDocument/didChange\"") )
@@ -1401,6 +1402,7 @@ bool ProcessLanguageClient::WriteHdr(const std::string& in)
         else
             limitedLogOut = "<<< Write():\n" + in.substr(0,512) + "<...DATA SNIPPED BY LOG WRITE()...>" ;
     }//endif contains didOpen
+    #endif // NOLOGSNIP
 
     if (not StdString_StartsWith(limitedLogOut,"<<< "))
         limitedLogOut.insert(0,"<<< ");
@@ -3669,11 +3671,12 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
 // ----------------------------------------------------------------------------
 {
     // Add file to compile_commands.json if not already present.
+    // json* pJson is an array of compiler compile commands
 
     // gcc/g++ example flags to get extra includes "./g++.exe --% -E -Wp,-v -xc++ nul"
     // compile_commands.json needs the result of this to add to the command line.
     // else '#include <files> ' will not be found.
-    // This is the resulting data were searching within...
+    // This is the resulting data we're searching within...
     //    #include <...> search starts here:
     //     F:/usr/MinGW810_64seh/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++
     //     F:/usr/MinGW810_64seh/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32
@@ -3698,7 +3701,7 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
     //-ProjectBuildTarget* pTarget = pProject->GetBuildTarget(buildTargets[0]);
     if (not pTarget) return false;
 
-    wxArrayString compileCommands;
+    wxArrayString prjCompileCmdsVec;
 
     // Clangd wants source files, not header files
     if (ParserCommon::FileType(pProjectFile->relativeFilename) == ParserCommon::ftHeader)
@@ -3715,8 +3718,8 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
                 if ((ParserCommon::FileType(pf->relativeFilename) == ParserCommon::ftSource)
                   or (FileTypeOf(pf->relativeFilename) == ftTemplateSource) )
                 {
-                        compileCommands = GetCompileFileCommand(pTarget, pf);
-                        if (not compileCommands.Count()) continue;
+                        prjCompileCmdsVec = GetCompileFileCommand(pTarget, pf);
+                        if (not prjCompileCmdsVec.Count()) continue;
                         wxString workingDir = wxPathOnly(pTarget->GetParentProject()->GetFilename());
                         if (platform::windows) workingDir.Replace("\\", "/");
                         //-compileCommands.Add("-working-directory=" + workingDir);
@@ -3733,21 +3736,21 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
     else
     {
         // Not a header file
-        compileCommands = GetCompileFileCommand(pTarget, pProjectFile);
-        if (not compileCommands.Count()) return false;
+        prjCompileCmdsVec = GetCompileFileCommand(pTarget, pProjectFile);
+        if (not prjCompileCmdsVec.Count()) return false;
     }
 
-    wxString compileCommand;
-    for (size_t ccknt=0; ccknt<compileCommands.Count(); ++ccknt)
+    wxString fileCompileCommand;
+    for (size_t ccknt=0; ccknt<prjCompileCmdsVec.Count(); ++ccknt)
     {
         // Some entries start with "SLOG:g++.exe ..." etc
-        //-wxString look = compileCommands[ccknt]; debugging
-        if ( compileCommands[ccknt].StartsWith("SLOG:") )
+        //-wxString look = compileCommands[ccknt]; // **Debugging**
+        if ( prjCompileCmdsVec[ccknt].StartsWith("SLOG:") )
             continue;
-        compileCommand = compileCommands[ccknt]; // use the first good compile command.
+        fileCompileCommand = prjCompileCmdsVec[ccknt]; // use the first good compile command.
         break;
     }
-    if (compileCommand.empty()) return false;
+    if (fileCompileCommand.empty()) return false;
 
     // Add the extra search directories
     wxString compilerID = pTarget->GetCompilerID();
@@ -3755,10 +3758,10 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
     if (compilerIncludes.Length())
     {
         //-for ( wxString& extraInclude : LSPParseExtraIncludes)
-        compileCommand.Append(" " + compilerIncludes.Trim(true).Trim(false) );
+        fileCompileCommand.Append(" " + compilerIncludes.Trim(true).Trim(false) );
     }
 
-    compileCommand.Replace("\\", "/");
+    fileCompileCommand.Replace("\\", "/");
     wxString cbWorkingDir = wxPathOnly(pProject->GetFilename());
     cbWorkingDir.Replace("\\", "/");
 
@@ -3768,23 +3771,23 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
     //-newEntry["file"]      = newFullFilePath; // must be fullpath
     //-newEntry["output"]    = buildTargets[0];
     newEntry["directory"] = GetstdUTF8Str(cbWorkingDir); //(ollydbg 2022/10/30) ticket #78
-    newEntry["command"]   = GetstdUTF8Str(compileCommand);
+    newEntry["command"]   = GetstdUTF8Str(fileCompileCommand);
     newEntry["file"]      = GetstdUTF8Str(newFullFilePath); //must be fullpath
     newEntry["output"]    = GetstdUTF8Str(buildTargets[0]);
 
     // If this file is already in compile_commands.json just leave it.
     // changing it will cause LSP server to reload the src file and compiler_commands.json
     // because clangd watches the mod time on compiler_commands.json
-    int entryknt = pJson->size();
+    int ccjEntryknt = pJson->size(); //num of entries in compiler_commands.json
 
     // Remove the older entry if any
     size_t found = 0, changed = 0;
     const bool isMakefileCustom = pProject->IsMakefileCustom(); //Christo patch 1430
 
-    for (int ii=0; ii<entryknt; ++ii)
+    for (int ii=0; ii<ccjEntryknt; ++ii)
     {
-        json entry;
-        try { entry =  pJson->at(ii); }
+        json ccjEntry;
+        try { ccjEntry =  pJson->at(ii); }
         catch(std::exception &err)
         {
             wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: %s\n", err.what()) );
@@ -3798,24 +3801,39 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
         //std::string ccjFile    = entry["file"];
         //std::string ccjCommand = entry["command"];
 
-        const std::string& ccjFile    = entry["file"];  //Christo patch 1430
+        const std::string& ccjFile = ccjEntry["file"];  //Christo patch 1430
 
         if (ccjFile == GetstdUTF8Str(newFullFilePath) ) // make compile_commands file fullpath //(ollydbg 2022/10/30) ticket #78
         {
             // filename and directory name have matched.
             // If commands match, leave entry alone.
+            // else re-stow the entry into compile_commands.json file
+
             if (not found)
             {
                 found++;    //update first entry only
                 if (not isMakefileCustom)    //Christo patch 1430
                 {
-                    const std::string& ccjCommand = entry["command"];  //Christo patch 1430
-                    if (ccjCommand != newEntry["command"])
-                    {
-                        pJson->at(ii) = newEntry;
-                        changed++;
+                    // fetch previously stowed compile command from compile_commands.json data
+                    const std::string& ccjCommand = ccjEntry["command"];  //Christo patch 1430
+                    try {
+                          std::string newCompileCmd =  newEntry["command"];
+                          if (ccjCommand != newCompileCmd)
+                          {
+                              // stow new or changed compile command
+                              pJson->at(ii) = newEntry;
+                              changed++;
+                          }
                     }
-                }
+                    catch(std::exception &err)
+                    {
+                        wxString errMsg(wxString::Format("AddFileToCompileDBJson() error: %s\n", err.what()) );
+                        errMsg += wxString::Format("%s", ccjCommand);
+                        writeClientLog(GetstdUTF8Str(errMsg));
+                        cbMessageBox(errMsg);
+                    }
+
+                }//end try
                 continue;
             }
                 // **debugging** write changes to log
@@ -3832,7 +3850,7 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
                 return false;
             }
             changed++; //file has been changed
-            --entryknt;
+            --ccjEntryknt;
             --ii;
         }//endif
     }//endfor

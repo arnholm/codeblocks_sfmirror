@@ -932,7 +932,7 @@ void ClgdCompletion::BuildMenu(wxMenuBar* menuBar)
             if (items[i]->IsSeparator())
             {
                 m_ProjectMenu->InsertSeparator(i);
-                m_ProjectMenu->Insert(i + 1, idCurrentProjectReparse, _("Reparse active project"), _("Reparse of the final switched project"));
+                m_ProjectMenu->Insert(i + 1, idCurrentProjectReparse, _("Reparse current project"), _("Reparse of the final switched project"));
                 inserted = true;
                 break;
             }
@@ -942,7 +942,7 @@ void ClgdCompletion::BuildMenu(wxMenuBar* menuBar)
         if (!inserted)
         {
             m_ProjectMenu->AppendSeparator();
-            m_ProjectMenu->Append(idCurrentProjectReparse, _("Reparse active project"), _("Reparse of the final switched project"));
+            m_ProjectMenu->Append(idCurrentProjectReparse, _("Reparse current project"), _("Reparse of the final switched project"));
         }
     }
     else
@@ -1056,7 +1056,7 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                 int id = menu->FindItem(_("Build"));
                 if (id != wxNOT_FOUND)
                     menu->FindChildItem(id, &position);
-                menu->Insert(position, idSelectedProjectReparse, _("Reparse this project"), _("Reparse current actived project"));
+                menu->Insert(position, idSelectedProjectReparse, _("Reparse current project"), _("Reparse current actived project"));
                 cbProject* pProject = data->GetProject();
                 if (pProject)
                 {
@@ -2587,7 +2587,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     // and this event will become invalid. Let wxWidgets delete it.
     //eventSkip() ==> causes crash;
 
-    // Invoked from menu event "Reparse active project" and Symbols window root context menu "Re-parse now"
+    // Invoked from menu event "Reparse current project" and Symbols window root context menu "Re-parse now"
 
     #if defined(MEASURE_wxIDs)
     CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
@@ -2965,9 +2965,13 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
                 pClient->LSP_DidSave(pEditor);
             else {
                 // do didOpen(). It will be didClose()ed in OnLSP_RequestedSymbolsResponse();
-                // If its a header file, OnLSP_DiagnosticsResponse() will do the LSP idClose().
+                // If its a header file, OnLSP_DiagnosticsResponse() will do the LSP didClose().
                 // We don't ask for symbols on headers because they incorrectly clobbler the TokenTree .cpp symbols.
-                pClient->LSP_DidOpen(filename, pProject);
+
+                //-pClient->LSP_DidOpen(filename, pProject); //for file not in editor
+                if (pClient->GetLSP_EditorIsOpen(pEditor))
+                    pClient->LSP_DidClose(pEditor);
+                if (pClient) pClient->LSP_DidOpen(pEditor); //for file in editor //(ph 2024/04/18)
             }
         }//endif project and pf
         else

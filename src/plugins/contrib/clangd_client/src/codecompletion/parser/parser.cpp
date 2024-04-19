@@ -1487,7 +1487,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
     json* pJson = (json*)event.GetClientData();
 
     wxString uri;
-    int version = -1;
+    int version = -1; //The version of this source file used by clangd (usually 0)
     try {
         uri = GetwxUTF8Str(pJson->at("params").at("uri").get<std::string>());
         if (pJson->at("params").contains("version"))

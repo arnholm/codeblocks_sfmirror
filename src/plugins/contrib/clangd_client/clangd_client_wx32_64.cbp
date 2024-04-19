@@ -54,6 +54,7 @@
 			<Add option="-D_WIN64" />
 			<Add option="-DCC_NO_COLLAPSE_ITEM" />
 			<Add option="-DcbDEBUG" />
+			<Add option="-DDOLOGSNIP" />
 			<Add directory="../../../include" />
 			<Add directory="../../../sdk/wxscintilla/include" />
 			<Add directory="../../../include/tinyxml" />
@@ -172,6 +173,11 @@
 		<Unit filename="src/winprocess/misc/fileutils.h" />
 		<Unit filename="src/winprocess/misc/wxStringHash.h" />
 		<Extensions>
+			<debugger_gdbmi>
+				<breakpoints>
+					<bkpt0>Code;enabled;src\LSPclient\client.cpp;2039;0;false;;false</bkpt0>
+				</breakpoints>
+			</debugger_gdbmi>
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
 				<resources>

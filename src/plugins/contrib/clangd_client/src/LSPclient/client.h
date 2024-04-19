@@ -671,6 +671,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         void SetLSP_EditorIsOpen(cbEditor* pEditor, bool trueOrFalse)
         // ----------------------------------------------------------------------------
         {
+            // Set editor is open in the server true or false
             #if defined(cbDEBUG)
             cbAssertNonFatal(pEditor && "null pEditor");
             #endif
@@ -689,7 +690,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
             if (not pEditor) return false;
             LSP_EditorStatusTuple edStatus = GetLSP_EditorStatus(pEditor);
             if (std::get<EDITOR_STATUS_IS_OPEN>(edStatus) )
-                return true;
+                return true; //editors file is open in server
             return false;
         }
 
