@@ -2232,10 +2232,10 @@ void cbEditor::DoFoldAll(FoldMode fold)
 
         struct FoldRange
         {
-            FoldRange(int start, int end, bool hasContracted) :
-                start(start),
-                end(end),
-                hasContracted(hasContracted)
+            FoldRange(int _start, int _end, bool _hasContracted) :
+                start(_start),
+                end(_end),
+                hasContracted(_hasContracted)
             {}
 
             int start, end;

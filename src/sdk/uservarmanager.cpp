@@ -53,13 +53,13 @@ class UserVarManagerNoGuiUI : public UserVarManagerUI
 public:
     ~UserVarManagerNoGuiUI()    {};
 
-    void DisplayInfoWindow(const wxString &title,const wxString &msg) override
+    void DisplayInfoWindow(cb_unused const wxString &title,const wxString &msg) override
     {
         Manager::Get()->GetLogManager()->LogWarning(msg);
     }
 
-    void OpenEditWindow(const std::set<wxString> &var) override { };
-    wxString GetVariable(wxWindow* parent, const wxString &old) override
+    void OpenEditWindow(cb_unused const std::set<wxString> &var) override { };
+    wxString GetVariable(cb_unused wxWindow* parent, cb_unused const wxString &old) override
     {
         return wxString();
     };
