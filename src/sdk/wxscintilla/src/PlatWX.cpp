@@ -2119,7 +2119,7 @@ private:
     wxListView*         lv;
     CallBackAction      doubleClickAction;
     void*               doubleClickActionData;
-    int iconHeight = 0; int iconWidth = 0; //cached from IconWidth() See ticket #1458
+    int iconHeight = 0; int iconWidth = 0; // Cached from IconWidth() See ticket #1458
 public:
 
 public:
