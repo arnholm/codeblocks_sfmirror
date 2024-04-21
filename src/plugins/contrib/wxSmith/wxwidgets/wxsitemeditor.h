@@ -57,13 +57,13 @@ class wxsItemEditor : public wxsEditor
         static void ConfigChanged();
 
         /** \brief PasteBefore from context menu */
-        void PasteBefore()             { SetInsertionType(itBefore); Paste(); }
+        void PasteBefore() { SetInsertionType(itBefore); Paste(); }
 
         /** \brief PasteInto from context menu */
-        void PasteInto()               { SetInsertionType(itInto); Paste(); }
+        void PasteInto()   { SetInsertionType(itInto);   Paste(); }
 
         /** \brief PasteAfter from context menu */
-        void PasteAfter()              { SetInsertionType(itAfter); Paste(); }
+        void PasteAfter()  { SetInsertionType(itAfter);  Paste(); }
 
         /** \brief Copying from main menu or context menu*/
         virtual void Copy();
