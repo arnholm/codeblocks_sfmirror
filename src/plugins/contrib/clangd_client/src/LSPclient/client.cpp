@@ -3811,10 +3811,10 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
 
             if (not found)
             {
-                found++;    //update first entry only
+                found++; // update first entry only
                 if (not isMakefileCustom) // Christo patch 1430
                 {
-                    const std::string& ccjCommand = entry["command"]; // Christo patch 1430
+                    const std::string& ccjCommand = ccjEntry["command"]; // Christo patch 1430
                     try
                     {
                          std::string newCompileCmd =  newEntry["command"];
@@ -3835,13 +3835,13 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
                 }//end try
                 continue;
             }
-                // **debugging** write changes to log
-                //writeClientLog(wxString::Format("AddFileToCompilerDBJson File:%s", ccjPath.c_str()) );
-                //writeClientLog(wxString::Format("\tOldCommand:%s", ccjCommand.c_str()) );
-                //writeClientLog(wxString::Format("\tNewCommand:%s", newEntry["command"].get<std::string>()) );
+
+            // **debugging** write changes to log
+            //writeClientLog(wxString::Format("AddFileToCompilerDBJson File:%s", ccjPath.c_str()) );
+            //writeClientLog(wxString::Format("\tOldCommand:%s", ccjCommand.c_str()) );
+            //writeClientLog(wxString::Format("\tNewCommand:%s", newEntry["command"].get<std::string>()) );
 
             // This is a duplicate entry
-            // duplicate entries.
             try { pJson->erase(ii); }
             catch (std::exception &err)
             {
@@ -4270,10 +4270,10 @@ wxString ProcessLanguageClient::CreateLSPClientLogName(int pid, const cbProject*
             // The logs are now removed in void CodeCompletion::CleanUpLSPLogs() after
             // the project is closed.
             if (wxFileExists(logFilename))
-                ;//-wxRemoveFile(logFilename);
+            { ; } //-wxRemoveFile(logFilename);
             logFilename.Replace("client", "server");
             if (wxFileExists(logFilename))
-                ;//-wxRemoveFile(logFilename);
+            { ; } //-wxRemoveFile(logFilename);
         }
         clientLogIndexesFile[slot] = logLine;
         lineTxt = tempDir + fileSep + "CBclangd_client-" + pidStr + ".log";
