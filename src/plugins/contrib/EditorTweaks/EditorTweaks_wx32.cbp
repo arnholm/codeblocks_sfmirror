@@ -42,6 +42,7 @@
 				</Linker>
 				<ExtraCommands>
 					<Add after="zip -j9 ..\..\..\devel32\share\CodeBlocks\EditorTweaks.zip manifest.xml *.xrc" />
+					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
 			<Environment>
