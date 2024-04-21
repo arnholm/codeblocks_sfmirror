@@ -52,8 +52,6 @@
 			<Add directory="../../../src" />
 			<Add directory="$(#WX32.include)" />
 			<Add directory="$(#WX32.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
-			<Add directory="Search" />
-			<Add directory="editor" />
 			<Add directory="." />
 		</Compiler>
 		<Linker>
