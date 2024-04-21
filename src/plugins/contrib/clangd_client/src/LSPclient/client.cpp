@@ -3790,7 +3790,7 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
         try { ccjEntry =  pJson->at(ii); }
         catch(std::exception &err)
         {
-            wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: %s\n", err.what()) );
+            wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: '%s' for file '%s'\n", err.what(), newFullFilePath) );
             writeClientLog(GetstdUTF8Str(errMsg));
             cbMessageBox(errMsg);
         }
@@ -3801,9 +3801,9 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
         //std::string ccjFile    = entry["file"];
         //std::string ccjCommand = entry["command"];
 
-        const std::string& ccjFile = ccjEntry["file"];  //Christo patch 1430
+        const std::string& ccjFile = ccjEntry["file"]; // Christo patch 1430
 
-        if (ccjFile == GetstdUTF8Str(newFullFilePath) ) // make compile_commands file fullpath //(ollydbg 2022/10/30) ticket #78
+        if (ccjFile == GetstdUTF8Str(newFullFilePath) ) // make compile_commands file fullpath // (ollydbg 2022/10/30) ticket #78
         {
             // filename and directory name have matched.
             // If commands match, leave entry alone.
@@ -3812,27 +3812,26 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
             if (not found)
             {
                 found++;    //update first entry only
-                if (not isMakefileCustom)    //Christo patch 1430
+                if (not isMakefileCustom) // Christo patch 1430
                 {
-                    // fetch previously stowed compile command from compile_commands.json data
-                    const std::string& ccjCommand = ccjEntry["command"];  //Christo patch 1430
-                    try {
-                          std::string newCompileCmd =  newEntry["command"];
-                          if (ccjCommand != newCompileCmd)
-                          {
-                              // stow new or changed compile command
-                              pJson->at(ii) = newEntry;
-                              changed++;
-                          }
-                    }
-                    catch(std::exception &err)
+                    const std::string& ccjCommand = entry["command"]; // Christo patch 1430
+                    try
                     {
-                        wxString errMsg(wxString::Format("AddFileToCompileDBJson() error: %s\n", err.what()) );
-                        errMsg += wxString::Format("%s", ccjCommand);
+                         std::string newCompileCmd =  newEntry["command"];
+                         if (ccjCommand != newCompileCmd)
+                         {
+                             // stow new or changed compile command
+                             pJson->at(ii) = newEntry;
+                             changed++;
+                         }
+                    }
+                    catch (std::exception &err)
+                    {
+                        wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: '%s' for file: '%s'\n", err.what(), newFullFilePath) );
+                        errMsg += wxString::Format("ccjCommand: '%s'\n", ccjCommand);
                         writeClientLog(GetstdUTF8Str(errMsg));
                         cbMessageBox(errMsg);
                     }
-
                 }//end try
                 continue;
             }
@@ -3841,15 +3840,15 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
                 //writeClientLog(wxString::Format("\tOldCommand:%s", ccjCommand.c_str()) );
                 //writeClientLog(wxString::Format("\tNewCommand:%s", newEntry["command"].get<std::string>()) );
 
-            //This is a duplicate entry
+            // This is a duplicate entry
             // duplicate entries.
-            try {   pJson->erase(ii);
-            } catch (std::exception &e)
+            try { pJson->erase(ii); }
+            catch (std::exception &err)
             {
-                writeClientLog(StdString_Format("\nAddFileToCompileDBJson() error:%s erase", e.what()) );
+                writeClientLog(StdString_Format("\nAddFileToCompileDBJson() error:%s erase", err.what()) );
                 return false;
             }
-            changed++; //file has been changed
+            changed++; // file has been changed
             --ccjEntryknt;
             --ii;
         }//endif
@@ -3970,7 +3969,7 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         return;
     }
     else
-        CCLogger::Get()->DebugLog(_("Clangd_client using project target:" + pTarget->GetTitle()));
+        CCLogger::Get()->DebugLog(_("Clangd_client using project target: " + pTarget->GetTitle()));
 
     Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
     wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
