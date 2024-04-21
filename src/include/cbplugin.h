@@ -973,7 +973,7 @@ class PLUGIN_EXPORT cbCodeCompletionPlugin : public cbPlugin
           */
         virtual void DoAutocomplete(const wxString& token, cbEditor* ed);
 
-        virtual bool DoShowDiagnostics( cbEditor* ed, int line) {return false;}
+        virtual bool DoShowDiagnostics(cb_unused cbEditor* ed, cb_unused int line) {return false;}
 
 
     protected:
