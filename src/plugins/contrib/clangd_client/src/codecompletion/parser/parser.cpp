@@ -2654,7 +2654,7 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
     bool useDocumentationPopup = Manager::Get()->GetConfigManager("ccmanager")->ReadBool("/documentation_popup", false);
 
     // keep a persistent completion array for other routines to use
-    // v_CompletinTokens is a reference to clgdCompletin::m_CompletionTokens vector
+    // v_CompletinTokens is a reference to clgdCompletion::m_CompletionTokens vector
     if (v_CompletionTokens.size())
             v_CompletionTokens.clear();
 
@@ -2910,6 +2910,9 @@ void Parser::OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event)
 void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>& v_HoverTokens, int n_HoverLastPosition)
 // ----------------------------------------------------------------------------
 {
+
+    GetParseManager()->SetHoverRequestIsActive(false); //Hover is now done
+
     if (GetIsShuttingDown()) return;
 
     // ----------------------------------------------------

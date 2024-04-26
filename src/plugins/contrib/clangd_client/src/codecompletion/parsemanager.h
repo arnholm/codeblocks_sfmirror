@@ -410,6 +410,11 @@ public:
 
     void ClearDiagnostics(wxString filename);  //(Christo 2024/03/30)
 
+    bool GetHoverRequestIsActive(){return m_HoverRequestIsActive;} //(ph 2024/04/25)
+    void SetHoverRequestIsActive(bool trueOrFalse) //(ph 2024/04/25)
+        { m_HoverRequestIsActive = trueOrFalse;}
+
+
 protected:
     /** When a Parser is created, we need a full parsing stage including:
      * 1, parse the priority header files firstly.
@@ -719,6 +724,8 @@ private:
     //typedef std::vector<std::pair<int, wxString>> InnerMap_t;
 
     std::mutex m_diagnosticsCacheMutex;
+    bool m_HoverRequestIsActive = false;    //(ph 2024/04/26)
+
 };
 
 #endif // ParseManager_H

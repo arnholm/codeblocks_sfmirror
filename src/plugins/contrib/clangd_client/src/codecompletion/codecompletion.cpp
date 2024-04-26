@@ -59,7 +59,7 @@
 #include "codecompletion.h"
 #include <annoyingdialog.h>
 #include <filefilters.h>
-#include "compilerfactory.h"
+//-#include "compilerfactory.h"
 
 #include "Version.h"
 
@@ -72,7 +72,7 @@
 #include "parser/ccdebuginfo.h"
 #include "parser/cclogger.h"
 #include "parser/parser.h"
-#include "parser/tokenizer.h"
+//-#include "parser/tokenizer.h"
 #include "doxygen_parser.h" // for DocumentationPopup and DoxygenParser
 #include "gotofunctiondlg.h"
 #include <searchresultslog.h>        // LSP references event
@@ -134,7 +134,7 @@ namespace
     const wxString STXstring = "\u0002";
 
     // LSP_Symbol identifiers
-    #include "../LSP_SymbolKind.h" //clangd symbol definitions
+    // #include "../LSP_SymbolKind.h" //clangd symbol definition are here
 
     wxString sep = wxString(wxFileName::GetPathSeparator());
     bool wxFound(int result){return result != wxNOT_FOUND;}
@@ -1364,7 +1364,6 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         //for (size_t tknNdx; tknNdx<m_CompletionTokens.size(); ++tknNdx)
         //for (cbCodeCompletionPlugin::CCToken tknNdx : m_CompletionTokens)
 
-        // **debugging** pLogMgr->DebugLog("-------------------Completions-------------------------");
         bool caseSensitive = GetParseManager()->GetParser().Options().caseSensitive;
         wxString pattern  = stc->GetTextRange(tknStart, tknEnd);
 
@@ -1450,8 +1449,9 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         }
 
         //For users who type faster, say at 75 WPM, the gap that would indicate the end of typing would be only 0.3 seconds (300 milliseconds.)
-        int mSecsSinceLastModify = GetLSPClient(ed)->GetDurationMilliSeconds(m_LastModificationMilliTime);
-        if (mSecsSinceLastModify > m_CCDelay)
+        //-int mSecsSinceLastModify = GetLSPClient(ed)->GetDurationMilliSeconds(m_LastModificationMilliTime);
+        //-if (mSecsSinceLastModify > m_CCDelay) <--- Is this necessary ?
+        if (1) /// <-- experimentation
         {
             // FYI: LSP_Completion() will send LSP_DidChange() notification to LSP server for the current line.
             // else LSP may crash for out-of-range conditions trying to complete text it's never seen.
@@ -1557,7 +1557,7 @@ std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int 
     if (m_CC_initDeferred) return tips;
 
     // If waiting for clangd LSP_HoverResponse() return empty tips
-    if (m_HoverIsActive)
+    if (GetParseManager()->GetHoverRequestIsActive())
         return tips;    //empty tips
 
     // If not waiting for Hover response, and the signature help tokens are empty,
@@ -1622,7 +1622,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
         return tokens; //It's empty
     if (m_CC_initDeferred) return tokens;
 
-    m_HoverIsActive = false;
+    GetParseManager()->SetHoverRequestIsActive(false);
 
     // ignore comments, strings, preprocessors, etc
     cbStyledTextCtrl* stc = ed->GetControl();
@@ -1651,6 +1651,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
             tokens.push_back(m_HoverTokens[ii]);
         }
         m_HoverTokens.clear();
+        GetParseManager()->SetHoverRequestIsActive(false);
         return tokens;
     }
     // On the first call from ccmanager, issue LSP_Hover() to clangd and return empty tokens
@@ -1658,7 +1659,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
     // will re-issue this event (cbEVT_EDITOR_TOOLTIP) to display the results.
     if (GetLSP_IsEditorParsed(ed) )
     {
-        m_HoverIsActive = true;
+        GetParseManager()->SetHoverRequestIsActive(true);
         m_HoverLastPosition = pos;
         GetLSPClient(ed)->LSP_Hover(ed, pos);
     }

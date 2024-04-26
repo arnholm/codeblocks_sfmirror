@@ -475,7 +475,6 @@ private:
     {
         return wxString(stdString.c_str(), wxConvUTF8);
     }
-
 };
 
 #endif // PARSER_H

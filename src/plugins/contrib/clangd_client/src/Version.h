@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.121 24/04/21")
+#define VERSION wxT("1.2.122 24/04/26")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.122   2024/04/26 Fix stall in "Show call tip" when using clangd Hover request
+//          Cf:, changes for m_HoverRequestIsActive
 //1.2.121   2024/04/21 Fix to avoid json throw 302 in ProcessLanguageClient::AddFileToCompileDBJson:3820
 //          using stmt "if (ccjCommand != newEntry["command"])" std::string comparison with json string
 //          which nlohmann json.hpp 3.11.2 does not correctly handle in C++20.
