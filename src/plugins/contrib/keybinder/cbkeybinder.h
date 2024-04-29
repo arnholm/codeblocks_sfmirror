@@ -23,7 +23,7 @@
 // Modified Keybinder for CodeBlocks KeyBnder v2.0
 
 // --Version-Rlease-Feature-Fix-------
-#define VERSION "2.0.19 23/07/4"
+#define VERSION "2.0.20 24/04/29"
 // -----------------------------------
 class wxKeyConfigPanel;
 class wxWindow;
@@ -123,6 +123,10 @@ class cbKeyBinder : public cbPlugin
 };//class cbKeyBinder
 
 #endif // CBKEYBINDER_H
+// ----------------------------------------------------------------------------
+// Versons Release.Interface change.fix
+// ----------------------------------------------------------------------------
+// 2024/04/29 2.0.20 For C++20 change "==" comparisons to function const to avoid constipation errors.
 // ----------------------------------------------------------------------------
 // Commit   2.0.19 23/07/4
 //          Add code to catch missing globals in keybinder20.conf file

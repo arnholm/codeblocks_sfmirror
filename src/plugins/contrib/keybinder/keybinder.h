@@ -114,7 +114,8 @@ public:
     virtual ~wxKeyBind() {}
 
     // Compare two wxKeyBinds       //v0.4.13
-    bool operator==(const wxKeyBind& tocomp) {
+    bool operator==(const wxKeyBind& tocomp) const // const for C++20 //(ph 2024/04/29)
+    {
         if ( m_nFlags   != tocomp.m_nFlags   )
             return false;
         if ( m_nKeyCode != tocomp.m_nKeyCode )
@@ -301,7 +302,8 @@ public:
     virtual ~wxCmd() {}
 
     // Compare two wxCmds       //v0.4.13
-    bool operator==(const wxCmd& tocomp) {
+    bool operator==(const wxCmd& tocomp) const // const for C++20 //(ph 2024/04/29)
+    {
         if ( m_strName != tocomp.m_strName)
             return false;
         if ( m_strDescription != tocomp.m_strDescription )
@@ -311,11 +313,14 @@ public:
         if ( m_nShortcuts != tocomp.m_nShortcuts)
             return false;
         for (int i=0; i < m_nShortcuts; i++)
+        {
             if ( m_keyShortcut[i] == tocomp.m_keyShortcut[i] )
                 continue;
-        else return false;
+            else return false;
+        }
         return true;
     }
+
 
 public:
 
@@ -488,15 +493,18 @@ public:
         DeepCopy(tocopy);
         return *this;
     }
-    bool operator==(const wxCmdArray &tocomp) { //v0.4.13
+    bool operator==(const wxCmdArray &tocomp) const // const for C++20 //(ph 2024/04/29)
+    { //v0.4.13
         if ( (not m_arr.GetCount()) || (not tocomp.m_arr.GetCount()) )
             return false;
         if ( m_arr.GetCount() != tocomp.m_arr.GetCount() )
             return false;
         for (size_t i=0; i < m_arr.GetCount(); i++)
+        {
             if ( *((wxCmd*)m_arr.Item(i)) == *((wxCmd*)tocomp.m_arr.Item(i)) )
                 continue;
-        else return false;
+            else return false;
+        }
         return true;
     }
 
@@ -615,7 +623,8 @@ public:        // miscellaneous
         return *this;
     }
     //v0.4.13 compare two wxCmd arrays        //v0.4.13
-    bool operator==(const wxKeyBinder &tocomp) {
+    bool operator==(const wxKeyBinder &tocomp) const // const for C++20 //(ph 2024/04/29)
+    {
         for (int i=0; i < (int)m_arrCmd.GetCount(); i++)
             if (*m_arrCmd.Item(i) == *tocomp.m_arrCmd.Item(i))
                 continue;
@@ -784,7 +793,8 @@ public:
     }
 
     //v0.4.13 compare two keyprofile array contents     //v0.4.13
-    bool operator==(const wxKeyProfile& tocomp) {
+    bool operator==(const wxKeyProfile& tocomp) const // const for C++20 //(ph 2024/04/29)
+    {
         if (m_strName != tocomp.m_strName)
             return false;
         if (m_strDescription != tocomp.m_strDescription)
@@ -888,7 +898,8 @@ public:
         return *this;
     }
     //v0.4.13 compare two wxKeyProfileArray contents        ///v0.4.13
-    bool operator==(const wxKeyProfileArray &tocomp) {
+    bool operator==(const wxKeyProfileArray &tocomp) const // const for C++20 //(ph 2024/04/29)
+    {
         if  ( (not GetCount()) || (not tocomp.GetCount()) )
             return false;
         const wxKeyProfile* p1 = Item(0);
