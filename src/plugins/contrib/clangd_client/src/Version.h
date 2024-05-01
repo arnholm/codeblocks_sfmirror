@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.122 24/04/26")
+#define VERSION wxT("1.2.123 24/05/01")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.123   2024/05/01 Fix DDE CB cold start not starting cland and parser.
+//          See codecompletion.cpp:5282
 //1.2.122   2024/04/26 Fix stall in "Show call tip" when using clangd Hover request
 //          Cf:, changes for m_HoverRequestIsActive
 //1.2.121   2024/04/21 Fix to avoid json throw 302 in ProcessLanguageClient::AddFileToCompileDBJson:3820

@@ -1313,7 +1313,6 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
     // OnLSP_CompletionsResponse() will reissues the cbEVT_COMPLETE_CODE event to re-enter here the second time.
     // This routine will then return a filled-in tokens vector with the completions from m_completionsTokens.
 
-
     std::vector<ClgdCCToken> cldTokens; //extended ccTokens for Clangd (unused)
     std::vector<CCToken> ccTokens;     // regular ccTokens for ccManager
 
@@ -3474,36 +3473,32 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     {
         // Find the project that owns this file
         pProject = GetParseManager()->GetProjectByClientAndFilename(pClient, filename);
+        if (not pProject)
+        {
+            //There's no associated filename with the initialization event.
+            if (evtString.StartsWith("LSP_Initialized:"))
+                pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+            if (not pProject)
+            {
+                wxString msg = wxString::Format("%s(): No project found for file <%s>",__FUNCTION__, filename);
+                msg += "\nEvent String was: " + evtString;
+                CCLogger::Get()->DebugLogError(msg);
+            }
+        }
 
-        //// this code moved to ParseManager to access m_LSP_Clients map
-        //LSPClientsMapType::iterator it = GetParseManager()->m_LSP_Clients.begin();
-        //while (it != GetParseManager()->m_LSP_Clients.end())
-        //{
-        //    cbProject* pMapProject = it->first;
-        //    ProcessLanguageClient* pMapClient = it->second;
-        //    if (pMapClient == pClient)
-        //    {
-        //        pProject = pMapProject;
-        //        // if no filename, ignore the proxy project and get active project
-        //        if (filename.empty() and (pProject->GetTitle() == "~ProxyProject~"))
-        //            {it++; continue;}
-        //        // Keep looking if the filename not contained by this project
-        //        if ( filename.Length() and (pProject != GetParseManager()->GetProjectByFilename(filename)))
-        //            { it++; continue;}
-        //        break;
-        //    }
-        //    it++;
-        //}
     }
+
+    // Verify Client and Project, but let the clangd response proceed anyway.
     if ( not (pClient and pProject) )
     {
         wxString msg;
         if (not pClient)
-            msg = "OnLSP_Event without a client ptr" ;
+            msg = "OnLSP_Event() without a client ptr (see CB Debug log)" ;
         else if (not pProject)
-            msg = "OnLSP_Event without a Project pointer";
-        cbMessageBox(msg, "OnLSP_Event error");
+            msg = "OnLSP_Event() without a Project pointer";
+        cbMessageBox(msg, "OnLSP_Event()");
     }
+
     // ----------------------------------------------------------------------------
     ///Take ownership of event client data pointer to assure it's freed
     // ----------------------------------------------------------------------------
@@ -5283,23 +5278,31 @@ void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
     if (editor)
         GetParseManager()->OnEditorActivated(editor);
 
-    //If ProxyProject and active project and (not Clangd_Client),
-    // and Settings/Environment/OPenDefaultWorkspace selected, re-activate the project to create a clangd_client
-    // This is necessary because when "Open default project" option is set, the
+    // ------------------------------------------------------------------------
+    //  Check to see if this is a DDE CodeBlocks cold startup
+    // ------------------------------------------------------------------------
+    // This is the "I hate DDE" section.
+    // If ProxyProject and active project and (not Clangd_Client),
+    // re-activate the project to create a clangd_client.
+    // This is necessary because because, for a DDE cold CB startup, the
     // first OnProjectActivated() is called before local initialization is done.
-    ConfigManager *appcfg = Manager::Get()->GetConfigManager(_T("app"));
-    bool isOpenDefaultWkspOption = not appcfg->ReadBool("/environment/blank_workspace");
-    bool reactivateTheProject = isOpenDefaultWkspOption
-            and Manager::Get()->GetProjectManager()->GetActiveProject()
-            and pProxyParser;
-
+    // When CB has been previously started, the DDE is a load workspace, not a
+    // execute CB with a .cbp load at the same time.
+    cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    bool reactivateTheProject = pProject and pProxyParser
+                                and (not GetLSPClient(pProject));
     m_InitDone = true;
 
     if (reactivateTheProject)
     {
+        wxString msg = wxString::Format("%s: ReActivating project from possible DDE event", __FUNCTION__);
+        pLogMgr->DebugLog(msg);
+        // Let all DDE initializations settle, else we get specious error msgs
+        wxMilliSleep(1000);
         // There's an active project loaded before our OnProjectActivated() could create a clangd_client.
         // Now that init is done, re-activate the project with a local event.
         wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, XRCID("OnReActivateProject"));
+        //wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idCurrentProjectReparse); this will work also.
         cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("clangd_client");
         if (pPlgn) pPlgn->AddPendingEvent(evt);
     }
