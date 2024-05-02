@@ -27,7 +27,7 @@
 #include "LSP_symbolsparser.h"
 #include "parser_base.h"
 #include "../parsemanager.h"
-#include "../IdleCallbackHandler.h"
+//#include "../IdleCallbackHandler.h"
 #include "LSP_SymbolKind.h"
 #include "ClgdCCToken.h"
 
@@ -310,6 +310,7 @@ private:
     //-int reportedBadFileReference = 0;
     wxArrayString m_ReportedBadFileReferences; //filenames of bad references
     wxString m_LogFileBase = wxString();
+    bool m_annoyingLogMsgShown = false;
 
   public:
     size_t GetFilesRemainingToParse()

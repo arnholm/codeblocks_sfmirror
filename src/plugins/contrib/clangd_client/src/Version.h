@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.123 24/05/01")
+#define VERSION wxT("1.2.124 24/05/02")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.124   2024/05/2 Show annoying msg re: shortcut keys for apply fix (if available)
 //1.2.123   2024/05/01 Fix DDE CB cold start not starting cland and parser.
 //          See codecompletion.cpp:5282
 //1.2.122   2024/04/26 Fix stall in "Show call tip" when using clangd Hover request

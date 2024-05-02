@@ -405,10 +405,9 @@ public:
     bool GetUseCCIconsOption(); //option to use icons in completion popup
 
     bool DoShowDiagnostics(wxString filename, int line);  //(Christo 2024/03/30)
-
     void InsertDiagnostics(wxString filename, std::vector<std::pair<int, wxString>> diagnostics);  //(Christo 2024/03/30)
-
     void ClearDiagnostics(wxString filename);  //(Christo 2024/03/30)
+    bool HasDiagnostics(wxString filename);    //(ph 2024/05/02)
 
     bool GetHoverRequestIsActive(){return m_HoverRequestIsActive;} //(ph 2024/04/25)
     void SetHoverRequestIsActive(bool trueOrFalse) //(ph 2024/04/25)

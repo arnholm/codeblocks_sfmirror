@@ -3530,6 +3530,18 @@ void ParseManager::InsertDiagnostics(wxString filename, std::vector<std::pair<in
 }
 
 // ----------------------------------------------------------------------------
+bool ParseManager::HasDiagnostics(wxString filename)  //(ph 2024/05/02)
+// ----------------------------------------------------------------------------
+{
+    std::lock_guard < std::mutex > lock(m_diagnosticsCacheMutex);
+    const auto &itr = m_diagnosticsCache.find(filename);
+    if (itr != m_diagnosticsCache.end())
+    {
+        return true;
+    }
+    return false;
+}
+// ----------------------------------------------------------------------------
 void ParseManager::ClearDiagnostics(wxString filename)  //(Christo 2024/03/30)
 // ----------------------------------------------------------------------------
 {
