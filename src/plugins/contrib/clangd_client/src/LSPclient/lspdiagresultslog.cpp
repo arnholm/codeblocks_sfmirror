@@ -8,7 +8,7 @@
  */
 
 //#include "sdk_precomp.h" gets not used because `EXPORT_LIB' not defined [-Winvalid-pch] error
-//#include "sdk.h"
+#include "sdk.h" // needed for wxTextCtr/listLoggerCtrll
 
 #ifndef CB_PRECOMP
     #include <wx/arrstr.h>
