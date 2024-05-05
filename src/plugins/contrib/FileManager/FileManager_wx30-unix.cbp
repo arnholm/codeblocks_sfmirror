@@ -30,7 +30,6 @@
 			<Add option="-Wall" />
 			<Add option="-fPIC" />
 			<Add option="`$(WX_CONFIG) --cflags`" />
-			<Add option="`pkg-config --cflags gamin`" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-fmessage-length=0" />
 			<Add option="-fexceptions" />
@@ -44,7 +43,6 @@
 		</Compiler>
 		<Linker>
 			<Add option="`$(WX_CONFIG) --libs std,aui`" />
-			<Add option="`pkg-config --libs gamin`" />
 			<Add option="-Wl,--no-undefined" />
 			<Add library="codeblocks" />
 			<Add directory="../../../devel30" />
@@ -65,8 +63,6 @@
 		<Unit filename="FileManager.h" />
 		<Unit filename="Resources/CommitBrowser.xrc" />
 		<Unit filename="Resources/fileexplorersettings.xrc" />
-		<Unit filename="directorymonitor.cpp" />
-		<Unit filename="directorymonitor.h" />
 		<Unit filename="manifest.xml" />
 		<Unit filename="se_globals.cpp" />
 		<Unit filename="se_globals.h" />

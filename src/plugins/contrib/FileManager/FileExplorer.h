@@ -10,7 +10,7 @@
 #include <vector>
 #include "FileExplorerSettings.h"
 #include "FileExplorerUpdater.h"
-#include "directorymonitor.h"
+#include <wx/fswatcher.h>
 
 class UpdateQueue;
 
@@ -118,12 +118,14 @@ private:
     void OnAddToProject(wxCommandEvent &event);
 
     // Events related to updating the Tree
-    void OnDirMonitor(wxDirectoryMonitorEvent &e);
+    void OnIdle(wxIdleEvent &e);
+    void OnFsWatcher(wxFileSystemWatcherEvent &e);
+    void OnFsWatcher(const wxString &fullPath);
     void OnUpdateTreeItems(wxCommandEvent &event);
     void OnTimerCheckUpdates(wxTimerEvent &event);
 
     void UpdateAbort();
-    void ResetDirMonitor();
+    void ResetFsWatcher();
 
     void WriteConfig();
     void ReadConfig();
@@ -165,7 +167,7 @@ private:
     wxTreeItemId m_updated_node;
     bool m_update_active;
     UpdateQueue *m_update_queue;
-    wxDirectoryMonitor *m_dir_monitor;
+    wxFileSystemWatcher *m_fs_watcher;
     wxFEDropTarget *m_droptarget;
 
     int m_ticount; //number of selections

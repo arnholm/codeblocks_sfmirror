@@ -71,8 +71,6 @@
 		<Unit filename="Resources/CommitBrowser.xrc" />
 		<Unit filename="Resources/fileexplorersettings.fbp" />
 		<Unit filename="Resources/fileexplorersettings.xrc" />
-		<Unit filename="directorymonitor.cpp" />
-		<Unit filename="directorymonitor.h" />
 		<Unit filename="manifest.xml" />
 		<Unit filename="se_globals.cpp" />
 		<Unit filename="se_globals.h" />

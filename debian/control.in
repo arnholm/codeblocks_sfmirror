@@ -13,7 +13,6 @@ Build-Depends: debhelper (>= 7.4.11~)
  , zip
  , libbz2-dev
  , zlib1g-dev
- , libgamin-dev
  , libboost1.40-dev | libboost-dev (>= 1.40)
  , libboost-system-dev
  , libhunspell-dev

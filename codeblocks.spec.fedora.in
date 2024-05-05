@@ -21,7 +21,6 @@ BuildRequires:	squirrel-devel
 BuildRequires:	astyle-devel
 BuildRequires:	libappstream-glib
 %endif
-BuildRequires:	gamin-devel
 BuildRequires:	zip
 BuildRequires:	dos2unix
 BuildRequires:	desktop-file-utils

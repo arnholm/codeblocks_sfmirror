@@ -136,7 +136,7 @@ Summary:                    Code::Blocks contrib plugins
 Group:                      Development/Tools
 Requires:                   %{name}%{?_isa} = %{version}
 Requires:                   %{name}-contrib-libs%{?_isa} = %{version}
-BuildRequires:              gamin-devel, bzip2-devel, zlib-devel, fontconfig-devel
+BuildRequires:              bzip2-devel, zlib-devel, fontconfig-devel
 %if 0%{?nassi_shneiderman}
 BuildRequires:              boost-devel
 %endif
