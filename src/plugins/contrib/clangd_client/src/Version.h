@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.124 24/05/02")
+#define VERSION wxT("1.2.126 24/05/13")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.126   2024/05/13 Remove warning/error markers when debugging to avoid hiding
+//          debugger active line marker.
+//1.2.125   2024/05/10 Added DisplayPausedStatusOfAllProjects() for debugging
 //1.2.124   2024/05/2 Show annoying msg re: shortcut keys for apply fix (if available)
 //1.2.123   2024/05/01 Fix DDE CB cold start not starting cland and parser.
 //          See codecompletion.cpp:5282

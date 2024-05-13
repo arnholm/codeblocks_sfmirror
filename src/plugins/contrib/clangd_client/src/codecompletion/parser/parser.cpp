@@ -220,6 +220,25 @@ void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
         wxString msg = wxString::Format("LSP background parsing PAUSED while debugging project(%s)", pProject->GetTitle());
         CCLogger::Get()->DebugLog(msg);
     }
+    // Remove all cland_client error and warning margin markers so that they don't
+    // hide the debugger active line marker. //(ph 2024/05/13)
+    EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
+    for (int ii=0; ii< pEdMgr->GetEditorsCount(); ++ii)
+    {
+        cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+        if (not pActiveProject) break;
+        // Find the project and ProjectFile this editor is holding.
+        cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(ii);
+        if (pcbEd)
+        {
+            ProjectFile* pProjectFile = pcbEd->GetProjectFile();
+            if (not pProjectFile) continue;
+            cbProject* pEdProject = pProjectFile->GetParentProject();
+            if (not pEdProject) continue;
+            if (pEdProject != pActiveProject) continue;
+            pcbEd->DeleteAllErrorAndWarningMarkers();
+        }
+    }//endFor
 }
 // ----------------------------------------------------------------------------
 void Parser::OnDebuggerFinished(CodeBlocksEvent& event)

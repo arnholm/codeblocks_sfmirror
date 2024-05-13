@@ -2593,6 +2593,20 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
     #endif
 
+    // **Debugging**  Display pause parse reasons if any. //(ph 2024/05/10)
+    // if Alt-Shift keys are down, Show pause status of all projects in the workspace.
+    // Hold the keys down first then hold down the left mouse continuously
+    // while sliding the mouse from main menu/Project/ onto the submenu item
+    // "Reparse current project"
+    if (wxGetKeyState(WXK_ALT) && wxGetKeyState(WXK_SHIFT))
+    {
+        // Get array of projects in the workspace
+        // Get paused reasons for each project
+        // Display each project and the pause reasons.
+        DisplayPausedStatusOfAllProjects();
+        return;
+    }
+
     ClearReparseConditions();
 
     // ----------------------------------------------------
@@ -2774,29 +2788,29 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
 void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    // if Alt-Shift keys are down, toggle ccLogger external logging on/off
-    if (wxGetKeyState(WXK_ALT) && wxGetKeyState(WXK_SHIFT))
-    {
-        bool logStat = CCLogger::Get()->GetExternalLogStatus();
-        logStat = (not logStat);
-        CCLogger::Get()->SetExternalLog(logStat);
-        wxString infoTitle = wxString::Format(_("External CCLogging is %s"), logStat?_("ON"):_("OFF"));
-        wxString infoText = wxString::Format(_("External CCLogging now %s"), logStat?_("ON"):_("OFF"));
-        InfoWindow::Display(infoTitle, infoText, 7000);
+    //    // if Alt-Shift keys are down, toggle ccLogger external logging on/off
+    //    if (wxGetKeyState(WXK_ALT) && wxGetKeyState(WXK_SHIFT))
+    //    {
+    //        bool logStat = CCLogger::Get()->GetExternalLogStatus();
+    //        logStat = (not logStat);
+    //        CCLogger::Get()->SetExternalLog(logStat);
+    //        wxString infoTitle = wxString::Format(_("External CCLogging is %s"), logStat?_("ON"):_("OFF"));
+    //        wxString infoText = wxString::Format(_("External CCLogging now %s"), logStat?_("ON"):_("OFF"));
+    //        InfoWindow::Display(infoTitle, infoText, 7000);
+    //
+    //        return;
+    //    }
 
-        return;
-    }
-
-    // **Debugging**
-    // if shift key is down, do a client Shutdown to allow testing (restart, menu status etc)
-    // without having to debug the debugees debugee (two levels of debuggers).
-    if (wxGetKeyState(WXK_SHIFT))
-    {
-        cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
-        if (pProject)
-            ShutdownLSPclient(pProject);
-        return;
-    }
+    //    // **Debugging**
+    //    // if shift key is down, do a client Shutdown to allow testing (restart, menu status etc)
+    //    // without having to debug the debugees debugee (two levels of debuggers).
+    //    if (wxGetKeyState(WXK_SHIFT))
+    //    {
+    //        cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    //        if (pProject)
+    //            ShutdownLSPclient(pProject);
+    //        return;
+    //    }
 
     //Toggle pause LSP parsing on or off for selected project
     wxTreeCtrl* tree = Manager::Get()->GetProjectManager()->GetUI().GetTree();
@@ -2908,6 +2922,40 @@ void ClgdCompletion::OnLSP_SelectedFileReparse(wxCommandEvent& event)
 
     event.Skip();
 }
+// ----------------------------------------------------------------------------
+void ClgdCompletion::DisplayPausedStatusOfAllProjects()
+// ----------------------------------------------------------------------------
+{
+    // Get array of projects in the workspace
+    // Get paused reasons for each project
+    // Display each project and the pause reasons.
+
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    ProjectsArray* pPrjArray = pPrjMgr->GetProjects();
+    for (size_t ii=0; ii < pPrjArray->GetCount(); ++ii)
+    {
+        cbProject* pProject = pPrjArray->Item(ii);
+        wxArrayString pauseReasons;
+
+        Parser* pParser = GetParseManager()->GetParserByProject(pProject);
+        wxString msg = pProject->GetTitle() + ": ";
+        if (not pParser)
+        {   msg += "Never activated";
+        }
+        else //have project with parser
+        {
+            pParser->GetArrayOfPauseParsingReasons(pauseReasons);
+            if (not pauseReasons.GetCount())
+                msg.Append(": No pause reasons.");
+            for (size_t ii=0; ii<pauseReasons.GetCount(); ++ii)
+                msg.Append(pauseReasons[ii] + "; ");
+        }
+        if (0 == ii) msg.Prepend('\n');
+        pLogMgr->DebugLog(msg);
+    }
+}
+
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnActiveEditorFileReparse(wxCommandEvent& event)
 // ----------------------------------------------------------------------------

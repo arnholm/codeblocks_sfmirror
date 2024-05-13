@@ -682,6 +682,7 @@ private:
     void OnSelectedPauseParsing(wxCommandEvent& event);
     // Pause a project on or off. Event string must contain "on" or "off" //(ph 2023/09/03)
     void OnProjectPauseParsing(wxCommandEvent& event);
+    void DisplayPausedStatusOfAllProjects(); //(ph 2024/05/10)
 
     // ----------------------------------------------------------------
     inline int GetCaretPosition(cbEditor* pEditor)
