@@ -61,7 +61,8 @@ const wxString g_EditorModified = _T("*");
 #define BREAKPOINT_STYLE wxSCI_MARK_CIRCLE
 #define DEBUG_STYLE      wxSCI_MARK_ARROW
 #define DEBUG_STYLE_HIGHLIGHT wxSCI_MARK_BACKGROUND
-#define WARNING_STYLE    wxSCI_MARK_SMALLRECT
+//-#define WARNING_STYLE    wxSCI_MARK_SMALLRECT // The rectangle hides other smaller markers
+#define WARNING_STYLE    wxSCI_MARK_SHORTARROW   // a smaller icon fits inside other markers
 
 
 #define BREAKPOINT_OTHER_MARKER    1
