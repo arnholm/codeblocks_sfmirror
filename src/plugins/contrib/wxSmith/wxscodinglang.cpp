@@ -195,8 +195,14 @@ namespace wxsCodeMarks
                     // Check if translation is really needed. For now, just check if it contains alphabetic chars
                     if (std::any_of(Source.begin(), Source.end(), [] (wxUniChar c) {return wxIsalpha(c);}))
                     {
-                        Prefix = "_(";
-                        Postfix = ")";
+                        wxString CustomI18N = cfg->Read("/customI18N", _T(""));
+                        if (CustomI18N.IsEmpty())
+                            CustomI18N = _T("_(");
+                        else
+                            CustomI18N += _T("(");
+
+                        Prefix = CustomI18N;
+                        Postfix = _T(")");
                     }
                 }
 

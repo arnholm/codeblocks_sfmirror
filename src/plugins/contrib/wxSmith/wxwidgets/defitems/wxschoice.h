@@ -40,6 +40,7 @@ class wxsChoice: public wxsWidget
 
         wxArrayString ArrayChoices;
         long DefaultSelection;
+        bool UseItemsArray;
 };
 
 #endif

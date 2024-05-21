@@ -69,11 +69,14 @@ void wxsCustomWidget::OnBuildCreatingCode()
     wxString Style = m_Style;
     if (Style.empty())
         Style = "0";
+    wxString IdName = GetIdName();
+    if (IdName.empty())
+        IdName = _T("wxID_ANY");
 
     Result.Replace("$(POS)",       Codef(GetCoderContext(), _T("%P")));
     Result.Replace("$(SIZE)",      Codef(GetCoderContext(), _T("%S")));
     Result.Replace("$(STYLE)",     Style);
-    Result.Replace("$(ID)",        GetIdName());
+    Result.Replace("$(ID)",        IdName);
     Result.Replace("$(THIS)",      GetVarName());
     Result.Replace("$(PARENT)",    GetCoderContext()->m_WindowParent);
     Result.Replace("$(NAME)",      Codef(GetCoderContext(), _T("%N")));

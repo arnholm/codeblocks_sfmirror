@@ -36,6 +36,7 @@
 #include <wx/sizer.h>
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
+#include <wx/textctrl.h>
 //*)
 
 class wxsSettings: public cbConfigurationPanel
@@ -86,6 +87,7 @@ private:
     static const long ID_RADIOBUTTON6;
     static const long ID_RADIOBUTTON7;
     static const long ID_RADIOBUTTON8;
+    static const long ID_TEXTCTRL1;
     //*)
 
     //(*Declarations(wxsSettings)
@@ -96,6 +98,7 @@ private:
     wxCheckBox* m_BorderRight;
     wxCheckBox* m_BorderTop;
     wxCheckBox* m_Continous;
+    wxCheckBox* m_EmptyIDs;
     wxCheckBox* m_RemovePrefix;
     wxCheckBox* m_SizeExpand;
     wxCheckBox* m_SizeShaped;
@@ -120,6 +123,8 @@ private:
     wxSpinCtrl* m_Border;
     wxSpinCtrl* m_GridSize;
     wxSpinCtrl* m_Proportion;
+    wxStaticText* StaticText16;
+    wxTextCtrl* m_CustomI18N;
     //*)
 
     int m_InitialPlacement;

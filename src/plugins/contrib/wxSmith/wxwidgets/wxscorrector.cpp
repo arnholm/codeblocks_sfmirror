@@ -144,11 +144,17 @@ bool wxsCorrector::FillEmpty(wxsItem* Item)
     {
         if ( Item->GetIdName().empty() )
         {
-            Ret = true;
-            SetNewIdName(Item);
-            if (!IsWxWidgetsIdPrefix(Item->GetIdName()))
+            ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
+            const bool EmptyID = cfg->ReadBool("/emptyids", false);
+
+            if (!EmptyID)
             {
-                m_Ids.insert(Item->GetIdName());
+                Ret = true;
+                SetNewIdName(Item);
+                if (!IsWxWidgetsIdPrefix(Item->GetIdName()))
+                {
+                    m_Ids.insert(Item->GetIdName());
+                }
             }
         }
     }

@@ -182,7 +182,7 @@ void wxsItem::OnBuildIdCode()
         case wxsCPP:
         {
             wxString Name = GetIdName();
-            if ( !wxsPredefinedIDs::Check(Name) )
+            if ( (!wxsPredefinedIDs::Check(Name)) && (!Name.IsEmpty()) )
             {
                 wxString Enumeration = _T("static const wxWindowID ") + Name + _T(";");
                 wxString Initialization =  + _T("const wxWindowID ") + GetResourceData()->GetClassName() + _T("::") + Name + _T(" = wxNewId();");
@@ -619,7 +619,14 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
                         {
                             switch ( Language )
                             {
-                                case wxsCPP: Result << GetIdName(); break;
+                                case wxsCPP:
+                                {
+                                    if (GetIdName().IsEmpty())
+                                        Result << _T("wxID_ANY");
+                                    else
+                                        Result << GetIdName();
+                                    break;
+                                }
                                 case wxsUnknownLanguage: // fall-through
                                 default: wxsCodeMarks::Unknown(_T("wxString wxsItem::Codef"),Language);
                             }
@@ -639,7 +646,12 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
                         {
                             if ( Flags & flId )
                             {
-                                Result << wxsCodeMarks::WxString(wxsCPP,GetIdName(),false);
+                                if (GetIdName().IsEmpty())
+                                {
+                                    Result.RemoveLast(2); // Remove the last ,
+                                }
+                                else
+                                    Result << wxsCodeMarks::WxString(wxsCPP,GetIdName(),false);
                             }
                             else
                             {

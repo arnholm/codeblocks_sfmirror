@@ -28,6 +28,19 @@
 								<flag>wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 							</object>
+							<object class="spacer">
+								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxCheckBox" name="" variable="m_EmptyIDs" member="yes">
+									<label>Allow empty IDs</label>
+								</object>
+								<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
 							<object class="sizeritem">
 								<object class="wxStaticText" name="wxID_ANY" variable="StaticText10" member="no">
 									<label>Placement:</label>
@@ -408,7 +421,7 @@
 						<object class="wxCheckBox" name="ID_CHECKBOX10" variable="m_RemovePrefix" member="yes">
 							<label>Auto remove variable prefix for event handler function</label>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxTOP|wxEXPAND</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -483,6 +496,28 @@
 						</object>
 						<flag>wxTOP|wxEXPAND</flag>
 						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxFlexGridSizer" variable="FlexGridSizer8" member="no">
+							<cols>3</cols>
+							<object class="sizeritem">
+								<object class="wxStaticText" name="wxID_ANY" variable="StaticText16" member="yes">
+									<label>Custom macro for I18N (leave empty for default __ ):  </label>
+								</object>
+								<flag>wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="m_CustomI18N" member="yes" />
+								<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+						</object>
+						<flag>wxTOP|wxEXPAND</flag>
+						<border>5</border>
+						<option>1</option>
 					</object>
 				</object>
 				<flag>wxEXPAND</flag>

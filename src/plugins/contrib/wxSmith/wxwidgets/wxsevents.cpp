@@ -119,6 +119,8 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
     const wxString ClassName(m_Item->GetResourceData()->GetClassName());
     ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
     const bool UseBind = cfg->ReadBool("/usebind", false);
+    wxString ItemClassname = m_Item->GetClassName();
+
     switch ( Context->m_Language )
     {
         case wxsCPP:
@@ -132,10 +134,28 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
                     switch ( m_EventArray[i].ET )
                     {
                         case wxsEventDesc::Id:
-                            if (UseBind)
-                                Context->m_EventsConnectingCode << "Bind(" << Type << ", " << Method << ", this, " << IdString << ");\n";
+
+                            if (IdString.IsEmpty())
+                            {
+                                if ((ItemClassname == _T("wxMenuItem")) || (ItemClassname == _T("wxToolBarToolBase")))
+                                {
+                                    wxMessageBox(wxString::Format(_("This widget <%s> need ID for bind function"), VarNameString));
+                                }
+                                else
+                                {
+                                    if (UseBind)
+                                        Context->m_EventsConnectingCode << VarNameString << "->Bind(" << Type << ", " << Method << ", this);\n";
+                                    else
+                                        Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", NULL, this);\n";
+                                }
+                            }
                             else
-                                Context->m_EventsConnectingCode << "Connect(" << IdString << ", " << Type << ", (wxObjectEventFunction)" << Method << ");\n";
+                            {
+                                if (UseBind)
+                                    Context->m_EventsConnectingCode << "Bind(" << Type << ", " << Method << ", this, " << IdString << ");\n";
+                                else
+                                    Context->m_EventsConnectingCode << "Connect(" << IdString << ", " << Type << ", (wxObjectEventFunction)" << Method << ");\n";
+                            }
                             break;
 
                         case wxsEventDesc::NoId:

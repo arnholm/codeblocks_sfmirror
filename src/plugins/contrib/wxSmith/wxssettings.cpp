@@ -64,6 +64,7 @@ const long wxsSettings::ID_RADIOBUTTON5 = wxNewId();
 const long wxsSettings::ID_RADIOBUTTON6 = wxNewId();
 const long wxsSettings::ID_RADIOBUTTON7 = wxNewId();
 const long wxsSettings::ID_RADIOBUTTON8 = wxNewId();
+const long wxsSettings::ID_TEXTCTRL1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsSettings,cbConfigurationPanel)
@@ -83,6 +84,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     wxFlexGridSizer* FlexGridSizer4;
     wxFlexGridSizer* FlexGridSizer5;
     wxFlexGridSizer* FlexGridSizer7;
+    wxFlexGridSizer* FlexGridSizer8;
     wxStaticBoxSizer* StaticBoxSizer1;
     wxStaticBoxSizer* StaticBoxSizer2;
     wxStaticBoxSizer* StaticBoxSizer3;
@@ -114,6 +116,10 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     m_UniqueIDsOnly = new wxCheckBox(this, ID_CHECKBOX11, _("(uncheck if you want to assign the same ID to different widgets)"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX11"));
     m_UniqueIDsOnly->SetValue(true);
     FlexGridSizer7->Add(m_UniqueIDsOnly, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
+    FlexGridSizer7->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_EmptyIDs = new wxCheckBox(this, wxID_ANY, _("Allow empty IDs"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
+    m_EmptyIDs->SetValue(false);
+    FlexGridSizer7->Add(m_EmptyIDs, 1, wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticText10 = new wxStaticText(this, wxID_ANY, _("Placement:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     FlexGridSizer7->Add(StaticText10, 1, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
     m_BrowserPlacements = new wxChoice(this, ID_CHOICE2, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
@@ -240,7 +246,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     StaticBoxSizer4 = new wxStaticBoxSizer(wxVERTICAL, this, _("Other settings"));
     m_RemovePrefix = new wxCheckBox(this, ID_CHECKBOX10, _("Auto remove variable prefix for event handler function"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX10"));
     m_RemovePrefix->SetValue(false);
-    StaticBoxSizer4->Add(m_RemovePrefix, 0, wxEXPAND, 5);
+    StaticBoxSizer4->Add(m_RemovePrefix, 0, wxTOP|wxEXPAND, 5);
     m_UseBind = new wxCheckBox(this, ID_CHECKBOX13, _("Use Bind() instead of Connect()"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX13"));
     m_UseBind->SetValue(false);
     StaticBoxSizer4->Add(m_UseBind, 0, wxTOP|wxEXPAND, 5);
@@ -264,6 +270,12 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     FlexGridSizer1->Add(m_NoneI18NwxS, 0, wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer4->Add(FlexGridSizer1, 1, wxLEFT|wxEXPAND, 5);
     StaticBoxSizer4->Add(BoxSizer4, 0, wxTOP|wxEXPAND, 5);
+    FlexGridSizer8 = new wxFlexGridSizer(0, 3, 0, 0);
+    StaticText16 = new wxStaticText(this, wxID_ANY, _("Custom macro for I18N (leave empty for default _ ):  "), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+    FlexGridSizer8->Add(StaticText16, 1, wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_CustomI18N = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    FlexGridSizer8->Add(m_CustomI18N, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBoxSizer4->Add(FlexGridSizer8, 1, wxTOP|wxEXPAND, 5);
     FlexGridSizer6->Add(StaticBoxSizer4, 1, wxEXPAND, 5);
     SetSizer(FlexGridSizer6);
 
@@ -273,6 +285,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
     ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
 
     m_UniqueIDsOnly->SetValue(cfg->ReadBool("/uniqueids", true));
+    m_EmptyIDs->SetValue(cfg->ReadBool("/emptyids", false));
     m_InitialPlacement = cfg->ReadInt("/browserplacements", 0);
     m_BrowserPlacements->SetSelection(m_InitialPlacement);
 
@@ -328,6 +341,7 @@ wxsSettings::wxsSettings(wxWindow* parent,cb_unused wxWindowID id)
         default:
             break;
     }
+    m_CustomI18N->SetValue(cfg->Read("/customI18N", _T("")));
 
     // Creating wxsSizerExtra structure which will be filled with used data
     wxsSizerExtra Extra;
@@ -387,6 +401,7 @@ void wxsSettings::OnApply()
     ConfigManager* cfg = Manager::Get()->GetConfigManager("wxsmith");
 
     cfg->Write("/uniqueids", (bool)m_UniqueIDsOnly->GetValue());
+    cfg->Write("/emptyids", (bool)m_EmptyIDs->GetValue());
     cfg->Write("/browserplacements", (int)(m_BrowserPlacements->GetSelection()));
     cfg->Write("/dragtargetcol", (int)((((int)ColTarget.Red()) << 16) + (((long)ColTarget.Green()) << 8) + (long)ColTarget.Blue()));
     cfg->Write("/dragparentcol", (int)((((int)ColParent.Red()) << 16) + (((long)ColParent.Green()) << 8) + (long)ColParent.Blue()));
@@ -416,6 +431,7 @@ void wxsSettings::OnApply()
         cfg->Write("/noneI18N", 2);
     else if (m_NoneI18NwxS->GetValue())
         cfg->Write("/noneI18N", 3);
+    cfg->Write("/customI18N", m_CustomI18N->GetValue());
 
     int Flags =  (m_BorderLeft->IsChecked()   ? wxsSizerFlagsProperty::BorderLeft   : 0) |
                  (m_BorderRight->IsChecked()  ? wxsSizerFlagsProperty::BorderRight  : 0) |

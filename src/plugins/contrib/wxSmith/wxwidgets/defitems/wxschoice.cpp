@@ -45,7 +45,8 @@ wxsChoice::wxsChoice(wxsItemResData* Data):
         &Reg.Info,
         wxsChoiceEvents,
         wxsChoiceStyles),
-    DefaultSelection(-1)
+        DefaultSelection(-1),
+        UseItemsArray(false)
 {}
 
 
@@ -56,22 +57,49 @@ void wxsChoice::OnBuildCreatingCode()
         case wxsCPP:
         {
             AddHeader(_T("<wx/choice.h>"),GetInfo().ClassName,hfInPCH);
-            Codef(_T("%C(%W, %I, %P, %S, 0, 0, %T, %V, %N);\n"));
 
-            for ( size_t i = 0; i <  ArrayChoices.GetCount(); ++i )
+            if (UseItemsArray)
             {
-                if ( DefaultSelection == (int)i )
-                {
-                    Codef(_T("%ASetSelection( "));
-                }
-                Codef(_T("%AAppend(%t)"),ArrayChoices[i].wx_str());
-                if ( DefaultSelection == (int)i )
-                {
-                    Codef(_T(" )"));
-                }
-                Codef(_T(";\n"));
-            }
+              size_t count = ArrayChoices.GetCount();
 
+              if (count != 0)
+              {
+                // Create const array of items
+                Codef(_T("const wxString %O_choices[] = {\n"));
+                for ( size_t i = 0; i <  count; ++i )
+                {
+                  Codef(_T("%t,\n"),ArrayChoices[i].wx_str());
+                }
+                Codef(_T("};\n"));
+
+                wxString code = wxString::Format(_T("%%C(%%W, %%I, %%P, %%S, %zu, %%O_choices, %%T, %%V, %%N);\n"), count);
+                Codef(code);
+                if ( DefaultSelection != -1 )
+                  Codef(wxString::Format(_T("%%ASetSelection(%ld);\n"), DefaultSelection));
+              }
+              else
+              {
+                Codef(_T("%C(%W, %I, %P, %S, 0, 0, %T, %V, %N);\n"));
+              }
+            }
+            else
+            {
+                Codef(_T("%C(%W, %I, %P, %S, 0, 0, %T, %V, %N);\n"));
+
+                for ( size_t i = 0; i <  ArrayChoices.GetCount(); ++i )
+                {
+                    if ( DefaultSelection == (int)i )
+                    {
+                        Codef(_T("%ASetSelection( "));
+                    }
+                    Codef(_T("%AAppend(%t)"),ArrayChoices[i].wx_str());
+                    if ( DefaultSelection == (int)i )
+                    {
+                        Codef(_T(" )"));
+                    }
+                    Codef(_T(";\n"));
+                }
+            }
             BuildSetupWindowCode();
             return;
         }
@@ -102,5 +130,6 @@ wxObject* wxsChoice::OnBuildPreview(wxWindow* Parent,long Flags)
 void wxsChoice::OnEnumWidgetProperties(cb_unused long Flags)
 {
     WXS_ARRAYSTRING(wxsChoice,ArrayChoices, _("Choices"), "content", "item")
+    WXS_BOOL(wxsChoice,UseItemsArray, _("Use Items Array"), "use_items_array", false)
     WXS_LONG(wxsChoice,DefaultSelection, _("Selection"), "selection", -1)
 }
