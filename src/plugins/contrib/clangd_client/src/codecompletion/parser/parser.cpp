@@ -1965,7 +1965,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             wxString annoyingMsg = _("Error or warnings occured, see 'LSP messages' log.\n\n"
                                      "Right-mouse click log line to apply fixes (if available)\n"
                                      "or Alt-Left-mouse click on the margin warning/error icon");
-            AnnoyingDialog annoyingDlg(_("Appy fixes (if available)"), annoyingMsg, wxART_INFORMATION,  AnnoyingDialog::OK);
+            AnnoyingDialog annoyingDlg(_("Apply fixes (if available)"), annoyingMsg, wxART_INFORMATION,  AnnoyingDialog::OK);
             annoyingDlg.ShowModal();
         }
     }//endif diagnosticsKnt
