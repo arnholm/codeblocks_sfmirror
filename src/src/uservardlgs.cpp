@@ -470,8 +470,8 @@ void UsrGlblMgrEditDialog::SaveSet(cb_unused wxCommandEvent& event)
 {
     Save();
     m_UserVarMgr->UpdateFromVariableMap(m_varMap);
-    m_UserVarMgr->Save();
     m_UserVarMgr->SetActiveSetName(m_CurrentSetName);
+    m_UserVarMgr->Save();
     EndModal(wxID_OK);
 }
 
