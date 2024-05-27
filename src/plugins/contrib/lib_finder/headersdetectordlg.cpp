@@ -93,9 +93,12 @@ void HeadersDetectorDlg::OnTimer1Trigger(wxTimerEvent& /*event*/)
     Freeze();
     m_FileNameTxt->SetLabel( m_FileName );
     m_ProgressBar->SetValue( m_Progress );
-    if ( m_Finished )
-        EndModal( m_Cancel ? wxID_CANCEL : wxID_OK );
     Thaw();
+    if ( m_Finished )
+    {
+        Timer1.Stop();
+        EndModal( m_Cancel ? wxID_CANCEL : wxID_OK );
+    }
 }
 
 void HeadersDetectorDlg::Cancel(wxCommandEvent& /*event*/)
