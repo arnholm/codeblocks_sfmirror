@@ -10,7 +10,7 @@
 #include <wx/xrc/xmlres.h>
 
 #include "JumpTrackerView.h"
-#include "Version.h"
+//#include "Version.h"
 #include "JumpTracker.h"
 #include "JumpData.h"
 
@@ -719,7 +719,7 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
     }
 
     // record a new jump
-    size_t kount = m_ArrayOfJumpData.GetCount();
+    int kount = m_ArrayOfJumpData.GetCount();
     if (kount  > maxJumpEntries )
     {
         // Remove the top entry;
