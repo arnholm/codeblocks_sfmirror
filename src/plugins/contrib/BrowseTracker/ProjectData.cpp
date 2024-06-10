@@ -42,6 +42,7 @@
 #include "BrowseTrackerDefs.h"
 #include "ProjectData.h"
 #include "BrowseTrackerLayout.h"
+#include "helpers.h"
 
 // ----------------------------------------------------------------------------
 ProjectData::ProjectData()
@@ -61,7 +62,7 @@ ProjectData::ProjectData(cbProject* pcbProject)
     m_pCBProject = pcbProject;
     m_ProjectFilename = pcbProject->GetFilename();
     m_CurrIndexEntry = 0;
-    m_LastIndexEntry = MaxEntries-1;
+    m_LastIndexEntry = Helpers::GetMaxEntries()-1;
     m_pEdMgr = Manager::Get()->GetEditorManager();
     m_ActivationCount = 0;
     m_bLayoutLoaded = false;
@@ -109,7 +110,7 @@ void ProjectData::AddEditor( wxString /*filePath */)
 ////
 ////    // not found, stow new data into arrays
 ////    int index = m_LastIndexEntry;
-////    if (++index >= MaxEntries) index = 0;
+////    if (++index >= Helpers::GetMaxEntries()) index = 0;
 ////    m_LastIndexEntry = index;
 ////    m_EditorBaseArray[index] = eb;
 ////    m_cbEditorArray[index] = cbed;

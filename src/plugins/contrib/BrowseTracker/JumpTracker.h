@@ -21,6 +21,7 @@
 #include <cbplugin.h> // for "class cbPlugin"
 #include "configmanager.h"
 #include "JumpTrackerView.h"
+#include "helpers.h"
 
 // we must forward declare the array because it is used inside the class
 // declaration
@@ -166,8 +167,8 @@ class JumpTracker : public cbPlugin
         int      GetPreviousIndex(const int idx);
         int      GetNextIndex(const int idx);
 
-        enum{ maxJumpEntries = 20};
-        // FIXME (ph#): allow user to set entry count
+        int maxJumpEntries = Helpers::GetMaxEntries();
+
         ArrayOfJumpData m_ArrayOfJumpData;
         std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;
 

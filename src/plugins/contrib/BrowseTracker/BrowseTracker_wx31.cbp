@@ -132,6 +132,9 @@
 		<Unit filename="manifest.xml" />
 		<Unit filename="btswitcherdlg.cpp" />
 		<Unit filename="btswitcherdlg.h" />
+		<Unit filename="helpers.h" />
+		<Unit filename="helpers.cpp" />
+
 		<Extensions>
 			<code_completion />
 			<envvars />

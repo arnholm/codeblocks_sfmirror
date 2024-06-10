@@ -76,6 +76,8 @@
 		<Unit filename="Version.h" />
 		<Unit filename="btswitcherdlg.cpp" />
 		<Unit filename="btswitcherdlg.h" />
+		<Unit filename="helpers.h" />
+		<Unit filename="helpers.cpp" />
 		<Unit filename="manifest.xml" />
 		<Extensions />
 	</Project>

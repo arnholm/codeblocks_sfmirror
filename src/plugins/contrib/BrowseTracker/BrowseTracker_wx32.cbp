@@ -132,6 +132,9 @@
 		<Unit filename="btswitcherdlg.cpp" />
 		<Unit filename="btswitcherdlg.h" />
 		<Unit filename="manifest.xml" />
+		<Unit filename="helpers.h" />
+		<Unit filename="helpers.cpp" />
+
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

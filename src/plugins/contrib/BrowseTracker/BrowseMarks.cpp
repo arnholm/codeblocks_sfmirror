@@ -31,6 +31,7 @@
 #include "cbstyledtextctrl.h"
 #include "BrowseMarks.h"
 #include "BrowseTrackerDefs.h"
+#include "helpers.h"
 #include "Version.h"
 
 // ----------------------------------------------------------------------------
@@ -64,9 +65,9 @@ BrowseMarks::BrowseMarks(wxString fullPath )
     //LOGIT( _T("BT BrowseMarks[%s][%s]"),m_filePath.c_str() ,m_fileShortName.c_str() );
     //#endif
 
-    m_EdPosnArray.SetCount(MaxEntries, -1);     //patch 2886
+    m_EdPosnArray.SetCount(Helpers::GetMaxEntries(), -1);     //patch 2886
     m_currIndex = 0;    //index of current entry
-    m_lastIndex = MaxEntries-1;    //index for insertion of new browse marks
+    m_lastIndex = Helpers::GetMaxEntries()-1;    //index for insertion of new browse marks
     m_pEdMgr = Manager::Get()->GetEditorManager();
 }
 // ----------------------------------------------------------------------------
@@ -141,13 +142,14 @@ int BrowseMarks::GetMarkPrevious()
 {
     int index = m_currIndex;
     int oldPos = m_EdPosnArray[index];
-    if ((--index) < 0) index = MaxEntries-1;
+    if ((--index) < 0) index = Helpers::GetMaxEntries()-1;
     int newPos = m_EdPosnArray[index] ;
+    int maxEntries = Helpers::GetMaxEntries();
     // skip over duplicate positions
-    for (int i=0; i<MaxEntries;++i)
+    for (int i=0; i<maxEntries;++i)
     {
         if ((newPos != -1) && (newPos != oldPos)) break;
-        if ( (--index) < 0 ) index = MaxEntries-1;
+        if ( (--index) < 0 ) index = Helpers::GetMaxEntries()-1;
         newPos = m_EdPosnArray[index] ;
     }
     if (newPos == -1) return oldPos;
@@ -160,13 +162,14 @@ int BrowseMarks::GetMarkNext()
 {
     int index = m_currIndex;
     int oldPos = m_EdPosnArray[index];
-    if ( (++index) >= MaxEntries) index = 0;
+    if ( (++index) >= Helpers::GetMaxEntries()) index = 0;
     int newPos = m_EdPosnArray[index] ;
+    int maxEntries = Helpers::GetMaxEntries();
     // skip over duplicate positions
-    for (int i=0; i<MaxEntries;++i)
+    for (int i=0; i<maxEntries; ++i)
     {
         if ((newPos != oldPos) && (newPos != -1)) break;
-        if ( (++index) >= MaxEntries ) index = 0;
+        if ( (++index) >= Helpers::GetMaxEntries() ) index = 0;
         newPos = m_EdPosnArray[index] ;
     }
     if (newPos == -1) return oldPos;
@@ -184,7 +187,8 @@ int BrowseMarks::FindMark(int Posn)
 // ----------------------------------------------------------------------------
 {
     // Search for posn
-    for (int i=0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i < maxEntries; ++i )
     	if (Posn == m_EdPosnArray[i]) return i;
     return -1;
 }
@@ -193,7 +197,7 @@ int BrowseMarks::GetMark(int index)
 // ----------------------------------------------------------------------------
 {
     // Search for posn
-    if ((index < 0) || ( index >= MaxEntries) )
+    if ((index < 0) || ( index >= Helpers::GetMaxEntries()) )
         return -1;
     return m_EdPosnArray[index];
 }
@@ -203,7 +207,8 @@ int BrowseMarks::GetMarkCount()
 {
     // Count BrowseMarks
     int count = 0;
-    for (int i=0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i < maxEntries; ++i )
         if (m_EdPosnArray[i] not_eq -1) ++count;
     return count;
 }
@@ -214,7 +219,8 @@ void BrowseMarks::CopyMarksFrom(const BrowseMarks& otherBrowse_Marks)
     #if defined(LOGGING)
     //LOGIT( _T("BT CopyMarksFrom BrowseMarks[%p]To[%p]"), &otherBrowse_Marks, this );
     #endif
-    for (int i=0; i<MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i)
     {
         m_EdPosnArray[i] = otherBrowse_Marks.m_EdPosnArray[i];
         //#if defined(LOGGING)
@@ -281,7 +287,8 @@ void BrowseMarks::RecordMarksFrom(BrowseMarks& otherBrowse_Marks)
     cbStyledTextCtrl* control = cbed->GetControl();
     if (not control) return; //2021/11/27 avoid possible crash
 
-    for (int i=0; i<MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i)
     {
         int posn = otherBrowse_Marks.GetMark(i);
         if ( posn != -1 )
@@ -304,7 +311,7 @@ void BrowseMarks::RecordMark(int pos)
     // record the new position
     int index = m_lastIndex;
     ++index;
-    if (index >= MaxEntries) index = 0;
+    if (index >= Helpers::GetMaxEntries()) index = 0;
     m_EdPosnArray[index] = pos;
     m_lastIndex = index;
     m_currIndex = index;
@@ -326,7 +333,7 @@ void BrowseMarks::RecordMark(int pos)
     //    int index = m_currIndex;
     //    int oldPosn = m_EdPosnArray[index];
     //    ++index;
-    //    if (index >= MaxEntries) index = 0;
+    //    if (index >= Helpers::GetMaxEntries()) index = 0;
     //    m_EdPosnArray[index] = pos;
     //    m_currIndex = index;
     //    // record the old position forward; allows user
@@ -338,7 +345,7 @@ void BrowseMarks::RecordMark(int pos)
     //    {
     //        LOGIT( _T("FindMark oldPosn[%d]found[%d]"), oldPosn, FindMark(oldPosn));
     //        ++index;
-    //        if (index >= MaxEntries) index = 0;
+    //        if (index >= Helpers::GetMaxEntries()) index = 0;
     //        m_EdPosnArray[index] = oldPosn;
     //    }
 
@@ -346,7 +353,7 @@ void BrowseMarks::RecordMark(int pos)
     //    int index = m_currIndex;
     //    //int index = m_lastIndex;
     //    ++index;
-    //    if (index >= MaxEntries) index = 0;
+    //    if (index >= Helpers::GetMaxEntries()) index = 0;
     //    m_EdPosnArray[index] = pos;
     //    //m_lastIndex = index;
     //    m_currIndex = index;
@@ -355,7 +362,7 @@ void BrowseMarks::RecordMark(int pos)
     //    //int index = m_currIndex;
     //    int index = m_lastIndex;
     //    ++index;
-    //    if (index >= MaxEntries) index = 0;
+    //    if (index >= Helpers::GetMaxEntries()) index = 0;
     //    m_EdPosnArray[index] = pos;
     //    m_lastIndex = index;
     //    //m_currIndex = index;
@@ -366,17 +373,19 @@ void BrowseMarks::ClearAllBrowse_Marks()
 // ----------------------------------------------------------------------------
 {
     // Clear all browse marks
-    for (int i=0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i < maxEntries; ++i )
     	m_EdPosnArray[i] = -1;
     //-m_EdPosnArray[0] = currPosn; <- causes scintilla marks to get out of sync
     m_currIndex = 0;
-    m_lastIndex = MaxEntries-1;
+    m_lastIndex = Helpers::GetMaxEntries()-1;
 }
 // ----------------------------------------------------------------------------
 void BrowseMarks::ClearMark(int startPos, int endPos)
 // ----------------------------------------------------------------------------
 {
-        for (int i=0; i<MaxEntries; ++i)
+        int maxEntries = Helpers::GetMaxEntries();
+        for (int i=0; i<maxEntries; ++i)
         {
             if (( m_EdPosnArray[i] >= startPos) && (m_EdPosnArray[i] <= endPos) )
                 m_EdPosnArray[i] = -1;
@@ -420,7 +429,8 @@ void BrowseMarks::RebuildBrowse_Marks(cbEditor* cbed, bool addedLines)
     #endif
     if (not cbed) return;
     cbStyledTextCtrl* control = cbed->GetControl();
-    for (int i=0; i<MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i)
     {
         if ( m_EdPosnArray[i] == -1 ) continue;
         int line = control->LineFromPosition( m_EdPosnArray[i]);
@@ -443,7 +453,8 @@ wxString BrowseMarks::GetStringOfBrowse_Marks() const
     // return a comma delimited string of browse marks
 
     wxString browseMarks = wxT("");
-    for (int i = 0; i < MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i = 0; i < maxEntries; ++i)
     {
         if ( m_EdPosnArray[i] == -1 ) continue;
         if (not browseMarks.IsEmpty())  browseMarks << wxT(",") ;
@@ -466,7 +477,8 @@ void BrowseMarks::RemoveMarkerTypes( int markerId )
     //cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (eb) cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
     if (cbed) control = cbed->GetControl();
-    for (int i = 0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i = 0; i < maxEntries; ++i )
     {
             const int pos = m_EdPosnArray[i];
             int line = -1;
@@ -489,7 +501,8 @@ void BrowseMarks::PlaceMarkerTypes( int markerId )
     //cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (eb) cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
     if (cbed) control = cbed->GetControl();
-    for (int i = 0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i = 0; i < maxEntries; ++i )
     {
             const int pos = m_EdPosnArray[i];
             int line = -1;
@@ -514,7 +527,8 @@ void BrowseMarks::Dump()
     if (eb) cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
     if (cbed) control = cbed->GetControl();
     LOGIT( _T("BT Array[%p] Current[%d]Last[%d]"), this, m_currIndex, m_lastIndex);
-    for (int i = 0; i < MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i = 0; i < maxEntries; ++i )
     {
             const int pos = m_EdPosnArray[i];
             if (control && (pos != -1))

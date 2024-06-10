@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.115 23/10/23")
+#define VERSION wxT("1.4.116 24/06/01")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -66,6 +66,7 @@ class AppVersion
 #endif // VERSION_H
 
 // ----------------------------------------------------------------------------
+// 1.4.116  2024/06/1 Allow user to set max entries for jump,browse marks etc.
 // 1.4.115  2023/10/23 Deprecate OnEditorActivated() to stop OnEditorActivated() from
 //          entering the current location of the activated editor before OnEditorUpdateUIEvent()
 //          gets to enters the location of the Clangd_client response causing the next

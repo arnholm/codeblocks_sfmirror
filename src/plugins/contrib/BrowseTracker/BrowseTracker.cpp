@@ -104,6 +104,7 @@
 #include "JumpTracker.h"
 #include "btswitcherdlg.h"      //(2021/04/29)
 #include "cbauibook.h"          //(2021/06/19)
+#include "helpers.h"            //(ph 2024/06/01)
 
 //#define BROWSETRACKER_MARKER        9
 //#define BROWSETRACKER_MARKER_STYLE  wxSCI_MARK_DOTDOTDOT
@@ -255,8 +256,8 @@ void BrowseTracker::OnAttach()
 
 	m_InitDone = false;
 	m_CurrEditorIndex = 0;
-	m_LastEditorIndex = MaxEntries-1;
-    m_apEditors.SetCount(MaxEntries, 0);    //patch 2886
+	m_LastEditorIndex = Helpers::GetMaxEntries()-1;
+    m_apEditors.SetCount(Helpers::GetMaxEntries(), 0);    //patch 2886
 	m_nBrowsedEditorCount = 0;
 	m_UpdateUIFocusEditor = 0;
 	m_nRemoveEditorSentry = 0;
@@ -726,7 +727,8 @@ int BrowseTracker::GetEditor(EditorBase* eb)
 // ----------------------------------------------------------------------------
 {
     // return the editor index from our array of user activated editos
-    for (int i=0; i<MaxEntries; ++i )
+    int numEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<numEntries; ++i )
     	if ( m_apEditors[i] == eb ) return i;
     return -1;
 }
@@ -760,10 +762,11 @@ EditorBase* BrowseTracker::GetPreviousEditor()
     // return the EditorBase* of the previoiusly user activated editor
     EditorBase* p = 0;
     int index = m_CurrEditorIndex;
-    for (int i = 0; i<MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i = 0; i<maxEntries; ++i)
     {
         --index;
-        if (index < 0) index = MaxEntries-1;
+        if (index < 0) index = Helpers::GetMaxEntries()-1;
     	p = GetEditor(index);
     	if ( p != 0 ) break;
     }
@@ -787,10 +790,11 @@ int BrowseTracker::GetPreviousEditorIndex()
     EditorBase* eb = 0;
     int index = m_CurrEditorIndex;
     // scan for previous editor, skipping nulls (null is a closed editors)
-    for (int i=0; i<MaxEntries; ++i)
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i)
     {
         --index;
-        if ( index < 0 ) index = MaxEntries-1;
+        if ( index < 0 ) index = Helpers::GetMaxEntries()-1;
         eb = GetEditor(index);
         if ( eb ) break;
     }//for
@@ -807,7 +811,7 @@ void BrowseTracker::SetSelection(int index)
 {
     // user has selected an editor, make it active
 
-    if ((index < 0) || (index >= MaxEntries )) return;
+    if ((index < 0) || (index >= Helpers::GetMaxEntries() )) return;
 
     EditorBase* eb = GetEditor(index);
     if (eb)
@@ -1115,7 +1119,8 @@ void BrowseTracker::SetBrowseMarksStyle( int userStyle)
     // BrowseMarks, BookMarks, or Hidden style
 
     BrowseMarks* pBrowse_Marks = 0;
-    for (int i=0; i<MaxEntries ; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i )
     {
         EditorBase* eb = GetEditor(i);
         if (eb) pBrowse_Marks = GetBrowse_MarksFromHash(  eb);
@@ -1481,7 +1486,8 @@ void BrowseTracker::OnMenuTrackerDump(wxCommandEvent& WXUNUSED(event))
    #ifdef LOGGING
         LOGIT( _T("BT --Browsed--Editors-------------") );
         LOGIT( _T("BT CurrIndex[%d]LastIndex[%d]count[%d]"), m_CurrEditorIndex, m_LastEditorIndex, GetEditorBrowsedCount() );
-        for (int i=0;i<MaxEntries ;++i )
+        int maxEntries = Helpers::GetMaxEntries();
+        for (int i=0;i<maxEntries;++i )
         {
             wxString edName = GetPageFilename(i);
             LOGIT( _T("BT Index[%d]Editor[%p]Name[%s]"), i, GetEditor(i), edName.wx_str()  );;
@@ -1537,10 +1543,11 @@ void BrowseTracker::TrackerClearAll()
 
     if (IsAttached() && m_InitDone)
     {
-        for (int i=0; i<MaxEntries ; ++i )
+        int maxEntries = Helpers::GetMaxEntries();
+        for (int i=0; i<maxEntries; ++i )
             RemoveEditor(GetEditor(i));
         m_CurrEditorIndex = 0;
-        m_LastEditorIndex = MaxEntries-1;
+        m_LastEditorIndex = Helpers::GetMaxEntries()-1;
     }
 
     // Simulate activation of the current editor. If the list is empty
@@ -1616,11 +1623,12 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
 
         // New editor, append to circular queue
         // remove previous entries for this editor first
-        for (int i=0; i < MaxEntries; ++i)
+        int maxEntries = Helpers::GetMaxEntries();
+        for (int i=0; i < maxEntries; ++i)
             if (eb == GetEditor(i)) ClearEditor(i);
         // compress the array
         if ( GetEditorBrowsedCount() )
-            for (int i=0; i < MaxEntries-1; ++i)
+            for (int i=0; i < maxEntries-1; ++i)
             {
                 if (m_apEditors[i] == 0)
                 {   m_apEditors[i] = m_apEditors[i+1];
@@ -2031,7 +2039,8 @@ void BrowseTracker::OnEditorClosed(CodeBlocksEvent& event)
             pArchBrowse_Marks->CopyMarksFrom(*pCurrBrowse_Marks);
     }
     // Clean up the closed editor and its associated Book/BrowseMarks
-    for (int i=0; i<MaxEntries; ++i )
+    int maxEntries = Helpers::GetMaxEntries();
+    for (int i=0; i<maxEntries; ++i )
         if ( event_eb == GetEditor(i)  )
         {
             #if defined(LOGGING)
@@ -2077,7 +2086,7 @@ void BrowseTracker::AddEditor(EditorBase* eb)
     // Add this editor the array of activated editors
 
     if (not eb) return;
-    if ( ++m_LastEditorIndex >= MaxEntries ) m_LastEditorIndex = 0;
+    if ( ++m_LastEditorIndex >= Helpers::GetMaxEntries() ) m_LastEditorIndex = 0;
     m_apEditors[m_LastEditorIndex] = eb;
     ++m_nBrowsedEditorCount;
     #if defined(LOGGING)
@@ -2146,7 +2155,7 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
 
     if (eb == m_UpdateUIFocusEditor)
         m_UpdateUIFocusEditor = 0;
-
+    int maxEntries = Helpers::GetMaxEntries();
     if (IsAttached() && m_InitDone) do
     {
         #if defined(LOGGING)
@@ -2155,7 +2164,7 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
          //LOGIT( _T("BT RemoveEditor[%p]"), eb );
         #endif
 
-        for (int i=0; i<MaxEntries; ++i )
+        for (int i=0; i<maxEntries; ++i )
             if ( eb == GetEditor(i)  )
                 ClearEditor(i);
 
@@ -2254,9 +2263,10 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
     // didn't manually activate them.
     if (not m_bProjectIsLoading)
     {
+        int maxEntries = Helpers::GetMaxEntries();
         for (FilesList::iterator it = pCBProject->GetFilesList().begin(); it != pCBProject->GetFilesList().end(); ++it)
         {
-            for (int j=0; j<MaxEntries; ++j)
+            for (int j=0; j<maxEntries; ++j)
             {
                 if ( GetEditor(j) == 0 ) continue;
                 //#if defined(LOGGING)
@@ -2429,27 +2439,28 @@ void BrowseTracker::OnProjectActivatedEvent(CodeBlocksEvent& event)
     if ( GetEditorBrowsedCount() )
     {
         ArrayOfEditorBasePtrs tmpArray;
-        tmpArray.Alloc(MaxEntries);
+        int maxEntries = Helpers::GetMaxEntries();
+        tmpArray.Alloc(maxEntries);
         // copy current editors & clear for compression
-        for (int i = 0; i<MaxEntries; ++i)
+        for (int i = 0; i<maxEntries; ++i)
         {
             tmpArray.Add(m_apEditors[i]);   //patch 2886
             m_apEditors[i] = 0;
         }//for
         m_CurrEditorIndex = 0;
-        m_LastEditorIndex = MaxEntries-1;
-        for (int i = 0; i<MaxEntries; ++i)
+        m_LastEditorIndex = maxEntries-1;
+        for (int i = 0; i<maxEntries; ++i)
         {
             if ( tmpArray[index] )
-            {   if (++m_LastEditorIndex >= MaxEntries) m_LastEditorIndex = 0;
+            {   if (++m_LastEditorIndex >= maxEntries) m_LastEditorIndex = 0;
                  m_apEditors[m_LastEditorIndex] = tmpArray[index];
             }
-            if (++index >= MaxEntries) index = 0;
+            if (++index >= maxEntries) index = 0;
         }//for
     }//if
     else
     {   m_CurrEditorIndex = 0;
-        m_LastEditorIndex = MaxEntries-1;
+        m_LastEditorIndex = Helpers::GetMaxEntries()-1;
     }
 
     // Previous project was closing

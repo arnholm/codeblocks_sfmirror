@@ -42,6 +42,7 @@
 #include "BrowseSelector.h"
 #include "Version.h"
 #include "BrowseTrackerDefs.h"
+#include "helpers.h" //(ph 2024/06/01)
 
 wxBitmap BrowseSelector::m_bmp;
 namespace
@@ -313,7 +314,7 @@ int BrowseSelector::PopulateListControl(EditorBase* /*pEditor*/)
 
     // memorize current selection
     int selection = m_pBrowseTracker->GetCurrentEditorIndex();
-    int maxCount  = MaxEntries;
+    int maxCount  = Helpers::GetMaxEntries();
     int maxWidth  = 0;
     int itemIdx   = 0;
 
@@ -350,7 +351,7 @@ void BrowseSelector::CloseDialog()
 {
     m_selectedItem = m_listBox->GetSelection();
 
-    if ((m_selectedItem > -1) && (m_selectedItem < MaxEntries))
+    if ((m_selectedItem > -1) && (m_selectedItem < Helpers::GetMaxEntries()))
     {
         std::map<int, int>::iterator iter = m_indexMap.find(m_selectedItem);
         LOGIT("ListBox[%ld] Map[%d]", m_selectedItem, iter->second);

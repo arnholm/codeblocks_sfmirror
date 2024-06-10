@@ -64,7 +64,7 @@ class BrowseMarks
     private:
         BrowseMarks();
 
-        enum {MaxEntries = 20};
+        //enum {MaxEntries = 20}; //(ph 2024/06/01)
 
         EditorManager* m_pEdMgr;
 
