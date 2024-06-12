@@ -13,7 +13,7 @@
 #include <wx/utils.h>
 #include <wx/file.h>
 #include <wx/msgdlg.h>
-#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
+#include <wx/xrc/xmlres.h>
 
 #include "globals.h"
 #include "logmanager.h"
@@ -91,7 +91,7 @@ namespace TokenizerConsts
 // maximum macro replacement stack size
 static const size_t s_MaxMacroReplaceDepth = 5;
 
-LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, cbStyledTextCtrl* pHiddenEditor, const wxString& filename) : //(ph 2023/12/18)
+LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, cbStyledTextCtrl* pHiddenEditor, const wxString& filename) :
     m_TokenTree(tokenTree),
     m_Filename(filename),
     m_BufferLen(0),
@@ -122,7 +122,7 @@ LSP_Tokenizer::LSP_Tokenizer(TokenTree* tokenTree, cbStyledTextCtrl* pHiddenEdit
         Init(m_Filename);
 
     m_SemanticTokensIdx = 0;
-    m_pControl =  pHiddenEditor; //(ph 2023/12/18)
+    m_pControl =  pHiddenEditor;
 }
 
 // ----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ bool LSP_Tokenizer::Init(const wxString& filename, LoaderBase* loader)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
         // most ParserThreadOptions were copied from m_Options
@@ -196,7 +196,7 @@ bool LSP_Tokenizer::InitFromBuffer(const wxString& buffer, const wxString& fileO
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
         // most ParserThreadOptions were copied from m_Options
@@ -2169,11 +2169,11 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
     SetLastTokenIdx(token->m_Index);
 }
  // ----------------------------------------------------------------------------
- cbStyledTextCtrl* LSP_Tokenizer::GetParsersHiddenEditor() //(ph 2023/12/18)
+ cbStyledTextCtrl* LSP_Tokenizer::GetParsersHiddenEditor()
  // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used by this function
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
     // most ParserThreadOptions were copied from m_Options
@@ -2189,7 +2189,7 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
 //    size.y = 0; //std::max(size.y, -1);
 
     //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), wxNewId(), wxDefaultPosition, size);
-    // In wx323 the above gets assert id out of range //(ph 2023/12/04)
+    // In wx323 the above gets assert id out of range
     //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("LSP_Tokenizer::CreateEditor"), wxDefaultPosition, size);
 
     m_pControl->UsePopUp(false);

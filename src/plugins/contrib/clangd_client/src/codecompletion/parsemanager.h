@@ -12,9 +12,9 @@
 #include <mutex>  //(Christo 2024/03/30)
 #include <unordered_map>
 #include <wx/event.h>
-#include <wx/aui/aui.h> //(ph 2024/01/19)
+#include <wx/aui/aui.h>
 
-#include <cbstyledtextctrl.h> //(ph 2023/12/22)
+#include <cbstyledtextctrl.h>
 #include "parsemanager_base.h"
 //-#include "parser/parser_base.h"
 #include "parser/cclogger.h"
@@ -213,7 +213,7 @@ public:
     void RereadParserOptions();
 
     /** Is Settings/Editor/Clangd_client/Symbols browser/ enabled/disabled */
-    bool IsClassBrowserEnabled();       //(ph 2023/11/29)
+    bool IsClassBrowserEnabled();
 
     /** re-parse the active Parser (the project associated with m_Parser member variable) */
     void ReparseCurrentEditor();
@@ -290,9 +290,9 @@ public:
 
     /** check if ok to update the ClassBrower Symbols window */
     bool IsOkToUpdateClassBrowserView();
-    bool GetSymbolsWindowHasFocus(){return m_SymbolsWindowHasFocus;} //(ph 2023/12/06)
-    void SetSymbolsWindowHasFocus(bool torf){ m_SymbolsWindowHasFocus = torf; } //(ph 2024/01/20)
-    void SetUpdatingClassBrowserBusy(bool torf) {m_ClassBrowserUpdating = torf;}; //(ph 2024/01/21)
+    bool GetSymbolsWindowHasFocus(){return m_SymbolsWindowHasFocus;}
+    void SetSymbolsWindowHasFocus(bool torf){ m_SymbolsWindowHasFocus = torf; }
+    void SetUpdatingClassBrowserBusy(bool torf) {m_ClassBrowserUpdating = torf;};
     bool GetUpdatingClassBrowserBusy(){return m_ClassBrowserUpdating;}
 
     // save current options and BrowserOptions
@@ -305,9 +305,9 @@ public:
     void SetRenameSymbolToChange(wxString sysmbolToChange){m_RenameSymbolToChange = sysmbolToChange;}
     wxString GetRenameSymbolToChange(){return m_RenameSymbolToChange;}
 
-    void RefreshSymbolsTab(); //(ph 2023/11/30)
-    void OnAUIProjectPageChanging(wxAuiNotebookEvent& event); //(ph 2024/01/19)
-    void OnAUIProjectPageChanged(wxAuiNotebookEvent& event);  //(ph 2024/01/19)
+    void RefreshSymbolsTab();
+    void OnAUIProjectPageChanging(wxAuiNotebookEvent& event);
+    void OnAUIProjectPageChanged(wxAuiNotebookEvent& event);
 
     // ----------------------------------------------------------------------------
     wxEvtHandler* FindEventHandler(wxEvtHandler* pEvtHdlr)
@@ -393,11 +393,11 @@ public:
     ProcessLanguageClient* GetLSPclient(cbEditor* pEd);
     cbProject* GetProjectByClientAndFilename(ProcessLanguageClient* pClient, wxString& Filename);
 
-    bool IsDebuggerRunning() {return m_DebuggerIsRunning;} //(ph 2023/11/17)
+    bool IsDebuggerRunning() {return m_DebuggerIsRunning;}
     void SetDebuggerIsRunning(bool torf) {m_DebuggerIsRunning = torf;}
 
-    // Get pointer to hidden cbStyledTextCtrl //(ph 2023/12/22)
-    cbStyledTextCtrl* GetHiddenEditor(){return m_pHiddenEditor.get();} //(ph 2023/12/22)
+    // Get pointer to hidden cbStyledTextCtrl
+    cbStyledTextCtrl* GetHiddenEditor(){return m_pHiddenEditor.get();}
 
     bool GetParsingIsBusy(){ return m_ParsingIsBusy;}
     void SetParsingIsBusy(bool trueOrFalse){ m_ParsingIsBusy = trueOrFalse;}
@@ -407,10 +407,10 @@ public:
     bool DoShowDiagnostics(wxString filename, int line);  //(Christo 2024/03/30)
     void InsertDiagnostics(wxString filename, std::vector<std::pair<int, wxString>> diagnostics);  //(Christo 2024/03/30)
     void ClearDiagnostics(wxString filename);  //(Christo 2024/03/30)
-    bool HasDiagnostics(wxString filename);    //(ph 2024/05/02)
+    bool HasDiagnostics(wxString filename);
 
-    bool GetHoverRequestIsActive(){return m_HoverRequestIsActive;} //(ph 2024/04/25)
-    void SetHoverRequestIsActive(bool trueOrFalse) //(ph 2024/04/25)
+    bool GetHoverRequestIsActive(){return m_HoverRequestIsActive;}
+    void SetHoverRequestIsActive(bool trueOrFalse)
         { m_HoverRequestIsActive = trueOrFalse;}
 
 
@@ -708,14 +708,14 @@ private:
     std::vector<ProjectFile*> ProxyProjectFiles;
 
     bool m_PluginIsShuttingDown = false;
-    bool m_DebuggerIsRunning = false;       //(ph 2023/11/17)
-    bool m_SymbolsWindowHasFocus = false;   //(ph 2024/01/20)
-    bool m_ClassBrowserUpdating = false;    //(ph 2024/01/21)
+    bool m_DebuggerIsRunning = false;
+    bool m_SymbolsWindowHasFocus = false;
+    bool m_ClassBrowserUpdating = false;
     bool m_ParsingIsBusy = false;
 
     // a global hidden temp cbStyledTextCtrl for symbol/src/line searches
     // to avoid constantly allocating wxIDs.
-    std::unique_ptr<cbStyledTextCtrl> m_pHiddenEditor = nullptr; //(ph 2023/12/22)
+    std::unique_ptr<cbStyledTextCtrl> m_pHiddenEditor = nullptr;
 
     typedef std::unordered_map<wxString, std::vector<std::pair<int, wxString>>> DiagnosticsCache_t;
     //std::unordered_map<wxString, std::vector<std::pair<int, wxString>>> m_diagnosticsCache;  //(Christo 2024/03/30)
@@ -723,7 +723,7 @@ private:
     //typedef std::vector<std::pair<int, wxString>> InnerMap_t;
 
     std::mutex m_diagnosticsCacheMutex;
-    bool m_HoverRequestIsActive = false;    //(ph 2024/04/26)
+    bool m_HoverRequestIsActive = false;
 
 };
 

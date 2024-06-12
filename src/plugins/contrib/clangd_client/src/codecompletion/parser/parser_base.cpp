@@ -670,7 +670,7 @@ TokenKind ParserBase::ConvertLSPSemanticTypeToCCTokenKind(int semTokenType)
     return ccTokenKind;
 }
 // ----------------------------------------------------------------------------
-TokenKind ParserBase::ConvertLSPCompletionSymbolKindToCCTokenKind(int lspCCKind) //(ph 2024/02/10)
+TokenKind ParserBase::ConvertLSPCompletionSymbolKindToCCTokenKind(int lspCCKind)
 // ----------------------------------------------------------------------------
 {
     TokenKind ccTokenKind = tkUndefined;

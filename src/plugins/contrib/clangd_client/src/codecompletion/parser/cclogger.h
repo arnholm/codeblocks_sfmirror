@@ -61,7 +61,7 @@ public:
 
    #if defined(MEASURE_wxIDs)
     // ----------------------------------------------------
-    // Get Local count (within a function) of wxID usage //(ph 2023/12/16)
+    // Get Local count (within a function) of wxID usage
     // ----------------------------------------------------
     struct ShowLocalUsedwxIDs_t //Get a count of all wxIDs used until a return
     {
@@ -316,7 +316,7 @@ private:
         } while (false);
 
 //    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) M.Unlock();
-    //(ph 2023/12/02) cleared Owner
+    // cleared Owner
   #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) \
         do {                        \
             M.Unlock();             \

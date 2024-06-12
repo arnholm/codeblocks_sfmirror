@@ -171,7 +171,7 @@ class JsonTransport : public Transport
                 if (readJson(value))
                 {
                     if (handler.m_LSP_TerminateFlag)
-                        break; //(ph 2024/02/04)
+                        break;
 
                     if (value.count("id"))
                     {

@@ -189,7 +189,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     XRCCTRL(*this, "chkLSPMsgsFocusOnSave", wxCheckBox)->SetValue(m_Parser.Options().lspMsgsFocusOnSaveCheck);
     XRCCTRL(*this, "chkLSPMsgsClearOnSave", wxCheckBox)->SetValue(m_Parser.Options().lspMsgsClearOnSaveCheck);
     XRCCTRL(*this, "txtMasterPath",         wxTextCtrl)->SetValue(m_Parser.Options().LLVM_MasterPath);
-    XRCCTRL(*this, "chkUseCompletionIcons", wxCheckBox)->SetValue(m_Parser.Options().useCompletionIconsCheck); //(ph 2024/02/10)
+    XRCCTRL(*this, "chkUseCompletionIcons", wxCheckBox)->SetValue(m_Parser.Options().useCompletionIconsCheck);
     m_Old_LLVM_MasterPath = m_Parser.Options().LLVM_MasterPath; //save for onApply() check
 
     // FIXME (ph#): implement these unused hidden check boxes ? //(22/12/22)
@@ -288,7 +288,7 @@ void CCOptionsDlg::OnApply()
     cfg->Write(_T("/lspMsgsFocusOnSave_check"),      (bool) XRCCTRL(*this, "chkLSPMsgsFocusOnSave",    wxCheckBox)->GetValue());
     cfg->Write(_T("/lspMsgsClearOnSave_check"),      (bool) XRCCTRL(*this, "chkLSPMsgsClearOnSave",    wxCheckBox)->GetValue());
     cfg->Write(_T("/LLVM_MasterPath"),                      XRCCTRL(*this, "txtMasterPath",            wxTextCtrl)->GetValue());
-    cfg->Write(_T("/useCompletionIcons_check"),      (bool) XRCCTRL(*this, "chkUseCompletionIcons",    wxCheckBox)->GetValue()); //(ph 2024/02/10)
+    cfg->Write(_T("/useCompletionIcons_check"),      (bool) XRCCTRL(*this, "chkUseCompletionIcons",    wxCheckBox)->GetValue());
 
     cfg->Write(_T("/max_threads"),                   (int)  XRCCTRL(*this, "spnThreadsNum",            wxSpinCtrl)->GetValue());
     cfg->Write(_T("/max_parsers_while_compiling"),   (int)  XRCCTRL(*this, "spnParsersWhileCompiling", wxSpinCtrl)->GetValue());
@@ -343,7 +343,7 @@ void CCOptionsDlg::OnApply()
     m_Parser.Options().lspMsgsFocusOnSaveCheck = XRCCTRL(*this, "chkLSPMsgsFocusOnSave",  wxCheckBox)->GetValue();
     m_Parser.Options().lspMsgsClearOnSaveCheck = XRCCTRL(*this, "chkLSPMsgsClearOnSave",  wxCheckBox)->GetValue();
     m_Parser.Options().LLVM_MasterPath         = XRCCTRL(*this, "txtMasterPath",          wxTextCtrl)->GetValue();
-    m_Parser.Options().useCompletionIconsCheck = XRCCTRL(*this, "chkUseCompletionIcons",  wxCheckBox)->GetValue(); //(ph 2024/02/10)
+    m_Parser.Options().useCompletionIconsCheck = XRCCTRL(*this, "chkUseCompletionIcons",  wxCheckBox)->GetValue();
 
     // The LLVM_MasterPath may contain macros like $(TARGET_COMPILER_DIR); so deprecate the following //(2022/03/23)
     //if (wxFileExists(m_Parser.Options().LLVM_MasterPath))

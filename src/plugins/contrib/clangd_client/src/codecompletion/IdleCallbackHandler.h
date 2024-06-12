@@ -10,11 +10,11 @@
 #include <deque>
 #include "wx/event.h"
 #include "wx/window.h"
-#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
+#include <wx/xrc/xmlres.h>
 
 
 #include "logmanager.h"
-#include "parser/cclogger.h" //(ph 2023/12/16)
+#include "parser/cclogger.h"
 
 #ifdef HAVE_OVERRIDE
     #define wxOVERRIDE override
@@ -29,7 +29,7 @@ class AsyncMethodCallEvent : public wxEvent
 {
 public:
     AsyncMethodCallEvent(wxObject* object)
-        //: wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL) //(ph 2023/12/07)
+        //: wxEvent(wxID_ANY, wxEVT_ASYNC_METHOD_CALL)
         //: wxEvent(XRCID("AsyncMethodCallEvent"), wxEVT_ASYNC_METHOD_CALL)
         : wxEvent(XRCID("AsyncMethodCallEvent"), wxEVT_ASYNC_METHOD_CALL)
     {
@@ -243,7 +243,7 @@ class IdleCallbackHandler: public wxEvtHandler
         if (GetIdleCallbackQueue()->size())
         {
             #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-            //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+            //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
             #endif
 
             AsyncMethodCallEvent* pAsyncCall = GetIdleCallbackQueue()->front();
@@ -392,9 +392,9 @@ class IdleCallbackHandler: public wxEvtHandler
     //Eg., IncrQCallbackOk(wxString::Format("%s_%d", __FUNCTION__, __LINE__);
     bool IncrQCallbackOk(wxString funcLine)
     {
-        return true; /// FIXME (ph#)://(ph 2023/12/06)
-        //-m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 1 ; //(ph 2023/12/06)
-        m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 0; //(ph 2023/12/06)
+        return true; /// FIXME (ph#)://ph 2023/12/06
+        //-m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 1 ; //ph 2023/12/06
+        m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine] + 0; //ph 2023/12/06
         // FIXME (ph#): This was a programming error that got built upon.
         // The line used to read "m_QCallbackPosn[funcLine] = m_QCallbackPosn[funcLine]++;"
         // which never actually iincrement the count. Changing ++ to "+ 1;" works but

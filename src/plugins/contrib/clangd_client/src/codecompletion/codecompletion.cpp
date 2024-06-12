@@ -369,10 +369,10 @@ int idReparsingTimer            = wxNewId();
 int idEditorActivatedTimer      = wxNewId();
 int LSPeventID                  = wxNewId();
 int idPauseParsing              = wxNewId();
-int idProjectPauseParsing       = wxNewId(); //(ph 2023/09/03)
+int idProjectPauseParsing       = wxNewId();
 int idStartupDelayTimer         = wxNewId();
 
-int idSpecifiedFileReparse      = XRCID("idSpecifiedFileReparse"); //(ph 2024/02/12)
+int idSpecifiedFileReparse      = XRCID("idSpecifiedFileReparse");
 
 // all the below delay time is in milliseconds units
 // when the user enables the parsing while typing option, this is the time delay when parsing
@@ -417,7 +417,7 @@ BEGIN_EVENT_TABLE(ClgdCompletion, cbCodeCompletionPlugin)
     EVT_MENU(idSpecifiedFileReparse,               ClgdCompletion::OnSpecifiedFileReparse  )
     EVT_MENU(idEditorFileReparse,                  ClgdCompletion::OnActiveEditorFileReparse   )
     EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing )
-    EVT_MENU(idProjectPauseParsing,                ClgdCompletion::OnProjectPauseParsing ) //(ph 2023/09/03)
+    EVT_MENU(idProjectPauseParsing,                ClgdCompletion::OnProjectPauseParsing )
 
     // CC's toolbar
     EVT_CHOICE(XRCID("chcCodeCompletionScope"),    ClgdCompletion::OnScope   )
@@ -556,7 +556,7 @@ ClgdCompletion::ClgdCompletion() :
 
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnReActivateProject, this,XRCID("OnReActivateProject"));
-    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnRequestCodeActionApply, this, XRCID("idRequestCodeActionApply")); //(ph 2024/02/12)
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnRequestCodeActionApply, this, XRCID("idRequestCodeActionApply"));
 
     // Disable old Codecompletion plugin for safety (to avoid conflict crashes)
     // Note that if there's no plugin entry in the .conf, a plugin gets loaded and run
@@ -1366,7 +1366,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         bool caseSensitive = GetParseManager()->GetParser().Options().caseSensitive;
         wxString pattern  = stc->GetTextRange(tknStart, tknEnd);
 
-        // if use CC icons in completion list enabled //(ph 2024/02/10)
+        // if use CC icons in completion list enabled
         std::set<int> alreadyRegistered;
         cbStyledTextCtrl* stc = ed->GetControl();
         const int fontSize = CalcStcFontSize(stc);
@@ -1377,8 +1377,8 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         for(size_t ii=0; ii<m_CompletionTokens.size(); ++ii)
         {
             // **debugging** CCToken look = m_CompletionTokens[ii];
-            ClgdCCToken cldToken = m_CompletionTokens[ii]; //(ph 2024/02/10)
-            wxString tkn_displayName = cldToken.displayName; //(ph 2024/02/10)
+            ClgdCCToken cldToken = m_CompletionTokens[ii];
+            wxString tkn_displayName = cldToken.displayName;
             if (tkn_displayName.empty() ) continue;
 
             //wxString tkn_name = m_CompletionTokens[ii].name;
@@ -1392,7 +1392,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
             {
                 ccTokens.push_back(cldToken);
 
-               // if use CC icons in completion list enabled //(ph 2024/02/10)
+               // if use CC icons in completion list enabled
                if (GetParseManager()->GetUseCCIconsOption())
                {
                     // Set the image index for each token
@@ -1441,7 +1441,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
         if (   stc->IsString(style)
             || stc->IsComment(style)
             || stc->IsCharacter(style)
-            //- || stc->IsPreprocessor(style) ) allow preprocessors //(ph 2023/12/28)
+            //- || stc->IsPreprocessor(style) ) allow preprocessors
              )
         {
             return ccTokens; //For styles above ignore this request
@@ -1728,7 +1728,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
 
     if (stc->IsPreprocessor(stc->GetStyleAt(curPos)))
     {
-        itemText = token.displayName; //(ph 2023/12/28) use the unclipped text
+        itemText = token.displayName; // use the unclipped text
         curPos = stc->GetLineEndPosition(stc->GetCurrentLine()); // delete rest of line
         bool addComment = (itemText == wxT("endif"));
         for (int i = stc->GetCurrentPos(); i < curPos; ++i)
@@ -1767,18 +1767,6 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
             }
         }
         needReparse = true;
-        //(ph 2023/12/28) remove this code after some time using 1.2.106; clangd presents the snippet correctly
-        //        int   pos = startPos - 1;
-        //        wxChar ch = stc->GetCharAt(pos);
-        //        while (ch != _T('<') && ch != _T('"') && ch != _T('#') && (pos>0))
-        //            ch = stc->GetCharAt(--pos);
-        //        if (ch == _T('<') || ch == _T('"'))
-        //            startPos = pos + 1;
-        //
-        //        if (ch == _T('"'))
-        //            itemText << _T('"');
-        //        else if (ch == _T('<'))
-        //            itemText << _T('>');
     }
     else
     {
@@ -1807,7 +1795,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
 
         wxString tokenArgs;
         if ( (clgdCCTokenIdx >= 0)
-            and (cccToken.semanticTokenType != LSP_SemanticTokenType::Unknown) ) //(ph 2023/12/27)
+            and (cccToken.semanticTokenType != LSP_SemanticTokenType::Unknown) )
         {
             wxString tknName = cccToken.displayName.BeforeFirst('(', &tokenArgs);
             bool addParentheses = not tokenArgs.empty();
@@ -2593,7 +2581,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__);
     #endif
 
-    // **Debugging**  Display pause parse reasons if any. //(ph 2024/05/10)
+    // **Debugging**  Display pause parse reasons if any.
     // if Alt-Shift keys are down, Show pause status of all projects in the workspace.
     // Hold the keys down first then hold down the left mouse continuously
     // while sliding the mouse from main menu/Project/ onto the submenu item
@@ -2836,13 +2824,13 @@ void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
             pParser->SetUserParsingPaused(paused);
             wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
             wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
-            infoText << _("\nRight-click project in  Projects tree to toggle.");      //(ph 2023/09/03)
+            infoText << _("\nRight-click project in  Projects tree to toggle.");
             InfoWindow::Display(infoTitle, infoText, 7000);
         }
     }
 }//end OnSelectedPauseParsing
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnProjectPauseParsing(wxCommandEvent& event) //(ph 2023/09/03)
+void ClgdCompletion::OnProjectPauseParsing(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     //Toggle pause LSP parsing on or off for project
@@ -2862,7 +2850,7 @@ void ClgdCompletion::OnProjectPauseParsing(wxCommandEvent& event) //(ph 2023/09/
             pParser->SetUserParsingPaused(paused);
             wxString infoTitle = wxString::Format(_("Parsing is %s"), paused?_("PAUSED"):_("ACTIVE"));
             wxString infoText = wxString::Format(_("%s parsing now %s"), projectTitle, paused?_("PAUSED"):_("ACTIVE"));
-            infoText << _("\nRight-click project in  Projects tree to toggle."); //(ph 2023/09/03)
+            infoText << _("\nRight-click project in  Projects tree to toggle.");
             InfoWindow::Display(infoTitle, infoText, 7000);
         }
 }//end OnSelectedPauseParsing
@@ -2982,7 +2970,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
-                msg << _("\n Reason: Did not find associated Clangd client"); //(ph 2023/07/08)
+                msg << _("\n Reason: Did not find associated Clangd client");
                 //cbMessageBox(msg, __FUNCTION__);
                 InfoWindow::Display(__FUNCTION__, msg, 7000);
                 return;
@@ -3005,8 +2993,8 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             ClearReparseConditions();
 
             #if defined(MEASURE_wxIDs)
-            //(ph 2023/12/16) // **Debugging** 3 ids are used up betwn reparses
-            CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__) ;  //(ph 2023/12/16)
+             // **Debugging** 3 ids are used up betwn reparses
+            CCLogger::Get()->SetGlobalwxIDStart(__FUNCTION__, __LINE__) ;
             #endif
 
             if (pEditor and pClient and pClient->GetLSP_IsEditorParsed(pEditor))
@@ -3019,7 +3007,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
                 //-pClient->LSP_DidOpen(filename, pProject); //for file not in editor
                 if (pClient->GetLSP_EditorIsOpen(pEditor))
                     pClient->LSP_DidClose(pEditor);
-                if (pClient) pClient->LSP_DidOpen(pEditor); //for file in editor //(ph 2024/04/18)
+                if (pClient) pClient->LSP_DidOpen(pEditor); //for file in editor
             }
         }//endif project and pf
         else
@@ -3050,7 +3038,7 @@ void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
             if (not pClient)
             {
                 wxString msg = _("The project needs to be parsed first.");
-                msg << _("\n Did not find associated Clangd client."); //(ph 2023/07/08)
+                msg << _("\n Did not find associated Clangd client.");
                 //cbMessageBox(msg, __FUNCTION__);
                 InfoWindow::Display(__FUNCTION__, msg, 7000);
                 return;
@@ -3187,7 +3175,7 @@ void ClgdCompletion::OnWorkspaceClosingEnd(CodeBlocksEvent& event)
 {
     if (m_WorkspaceClosing
             and (not ProjectManager::IsBusy())
-            and (not Manager::IsAppShuttingDown()) ) //(ph 2024/01/18)
+            and (not Manager::IsAppShuttingDown()) )
     {
         ProjectsArray* pProjectsArray = Manager::Get()->GetProjectManager()->GetProjects();
         int prjCount = 0; // count of open projects
@@ -3232,7 +3220,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
                 if (pParser and (not pParser->GetLSPClient()) )
                     LSPsucceeded = GetParseManager()->CreateNewLanguageServiceProcess(pActiveProject, LSPeventID);
 
-                // Pause parsing if this is a makefile project //(ph 2023/09/03)
+                // Pause parsing if this is a makefile project
                 if ( pParser and LSPsucceeded and pActiveProject->IsMakefileCustom())
                 {
                     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idProjectPauseParsing);
@@ -3384,7 +3372,7 @@ void ClgdCompletion::OnProjectActivated(CodeBlocksEvent& event)
             if (pParser and pParser->PauseParsingCount("Deactivated"))
                 pParser->PauseParsingForReason("Deactivated",false);
         }
-        // Pause parsing if this is a makefile project //(ph 2023/09/03)
+        // Pause parsing if this is a makefile project
         if (m_CurrProject->IsMakefileCustom())
         {
             wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idProjectPauseParsing);
@@ -4251,7 +4239,7 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
 
         if ( GetLSP_Initialized(pEdProject) and pParser and fileTypeOK ) do
         {
-            bool paused = pParser->GetUserParsingPaused(); // get paused status //(ph 2023/09/09)
+            bool paused = pParser->GetUserParsingPaused(); // get paused status
             if (paused) break;
 
             // If editor not already LSP didOpen()'ed, do a LSP didOpen() call
@@ -4287,7 +4275,7 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
     // belonging to a non-active project.
     cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     ProcessLanguageClient* pActiveProjectClient = GetLSPClient(pActiveProject);
-    ProcessLanguageClient* pEdClient = (pEdProject ? GetLSPClient(pEdProject) : nullptr); //(ph 2023/07/08)
+    ProcessLanguageClient* pEdClient = (pEdProject ? GetLSPClient(pEdProject) : nullptr);
     cbProject* pProxyProject = GetParseManager()->GetProxyProject();
 
     if (pActiveProject and pEd and pEdProject and pEdClient
@@ -5686,7 +5674,7 @@ wxString ClgdCompletion::GetTargetsOutFilename(cbProject* pProject)
 void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    GetParseManager()->SetDebuggerIsRunning(true); //(ph 2023/11/17)
+    GetParseManager()->SetDebuggerIsRunning(true);
 
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     PluginManager* pPlugMgr = Manager::Get()->GetPluginManager();
@@ -5730,7 +5718,7 @@ void ClgdCompletion::OnDebuggerStarting(CodeBlocksEvent& event)
 void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    GetParseManager()->SetDebuggerIsRunning(false); //(ph 2023/11/17)
+    GetParseManager()->SetDebuggerIsRunning(false);
 
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (not pProject) return;
@@ -5743,7 +5731,7 @@ void ClgdCompletion::OnDebuggerFinished(CodeBlocksEvent& event)
     else return;
 
     // Reparse open editors for the active project because their clangd info
-    // becomes empty after debugging. I don't know why. //(ph 2023/08/05)
+    // becomes empty after debugging. I don't know why.
     // FIXME (ph#): Find out why clangd info becomes empty after using he debugger.
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     int edCount = pClient ? pEdMgr->GetEditorsCount() : 0;

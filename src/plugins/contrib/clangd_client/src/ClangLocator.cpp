@@ -155,7 +155,7 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         }
     }
 
-    // Failed to find the clangd resource directory //(ph 2024/01/31)
+    // Failed to find the clangd resource directory
     // Search the clang path to find a matching resource lib
     //wxString clangExePath = fnClangdExecutablePath.GetFullPath(); // **Debugging**
     wxString resourceDir = SearchAllLibDirsForResourceDir(fnClangdExecutablePath);

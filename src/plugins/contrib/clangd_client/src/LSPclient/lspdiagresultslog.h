@@ -31,7 +31,7 @@ class LSPDiagnosticsResultsLog : public ListCtrlLogger, public wxEvtHandler
         void OnDoubleClick(wxCommandEvent& event);
         void SyncEditor(int selIndex);
         void OnSetIgnoredMsgs(wxCommandEvent& event);
-        void OnApplyFixIfAvailable(wxCommandEvent& event); //(ph 2024/02/12)
+        void OnApplyFixIfAvailable(wxCommandEvent& event);
 
         wxEvtHandler* FindEventHandler(wxEvtHandler* pEvtHdlr);
 

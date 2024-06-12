@@ -236,7 +236,7 @@ public:
     void OnLSP_GoToNextFunctionResponse(wxCommandEvent& event);
     void OnLSP_GoToFunctionResponse(wxCommandEvent& event); //unused
     void OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event);
-    void OnRequestCodeActionApply(wxCommandEvent& event); //(ph 2024/02/12)
+    void OnRequestCodeActionApply(wxCommandEvent& event);
 
     wxString GetCompletionPopupDocumentation(const ClgdCCToken& token);
     int      FindSemanticTokenEntryFromCompletion( cbCodeCompletionPlugin::CCToken& cctoken, int completionTokenKind);
@@ -297,9 +297,9 @@ private:
     // LSP
     // ----------------------------------------------------------------------------
     bool m_LSP_ParserDone;
-    bool IsBusyParsing(); //(ph 2023/12/02)
+    bool IsBusyParsing();
 
-    cbStyledTextCtrl* GetStaticHiddenEditor(const wxString& filename); //(ph 2023/12/11)
+    cbStyledTextCtrl* GetStaticHiddenEditor(const wxString& filename);
 
     int  m_cfg_parallel_processes;
     int  m_cfg_max_parsers_while_compiling;
@@ -343,7 +343,7 @@ private:
     /** Static Hidden Utility cbEditor  */
     std::unique_ptr<cbStyledTextCtrl> pHiddenEditor = nullptr;
 
-    // Declare the map of clangd fixes available mapped by filename //(ph 2024/02/12)
+    // Declare the map of clangd fixes available mapped by filename
     typedef std::map<wxString, std::vector<wxString> > FixMap_t;
     FixMap_t FixesAvailable;
     // Example usage: Insert a filename key and a vector<wxString> json.dump() of

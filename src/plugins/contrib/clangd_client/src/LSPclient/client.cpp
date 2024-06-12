@@ -626,7 +626,7 @@ ProcessLanguageClient::~ProcessLanguageClient()
 
     m_terminateLSP = true; //tell the json read thread to terminate
     m_MapMsgHndlr.SetLSP_TerminateFlag(1);
-    m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait
+    m_CondInputBuf.Signal();  // post jsonRead wait
 
     if (m_pServerProcess and platform::windows)
         m_pServerProcess->Detach(); //ignore any further messages
@@ -696,7 +696,7 @@ ProcessLanguageClient::~ProcessLanguageClient()
         m_pJsonReadThread->join();
         // return should have been 2 //0=running; 1=terminateRequested; 2=Terminated
         // The join() could have changed the return code.
-        if (jsonTerminationThreadRC < 2)  //(ph 2023/10/16) //(Christo ticket 1423 2023/10/16)
+        if (jsonTerminationThreadRC < 2)   //(Christo ticket 1423 2023/10/16)
         {
             wxString msg = wxString::Format("%s() Json read thread termination error rc:%d\n", __FUNCTION__, int(jsonTerminationThreadRC) );
             if (not Manager::IsAppShuttingDown()) { //skip logging when shutting down, else we hang in linux
@@ -894,7 +894,7 @@ cbStyledTextCtrl* ProcessLanguageClient::GetStaticHiddenEditor(const wxString& f
         wxWindow* parent = Manager::Get()->GetAppWindow();
         // Use a static reusable hidden editor so we don't eat up wxIDs
         if (pHiddenEditor.get() == nullptr)
-            pHiddenEditor.reset( new cbStyledTextCtrl(parent, XRCID("HiddenEditor"), wxDefaultPosition, wxSize(0, 0))); //(ph 2023/12/11)
+            pHiddenEditor.reset( new cbStyledTextCtrl(parent, XRCID("HiddenEditor"), wxDefaultPosition, wxSize(0, 0)));
         pControl = pHiddenEditor.get();
         pControl->SetText("");
         pControl->Show(false);
@@ -993,8 +993,8 @@ void ProcessLanguageClient::OnLSP_PipedProcessTerminated(wxThreadEvent& event_pi
     if (GetLSP_Initialized()) processExitCode = -1; //terminated while initialized and running.
     if (m_pServerProcess){
         m_terminateLSP = true;   //tell json read thread to exit.
-        m_MapMsgHndlr.SetLSP_TerminateFlag(1); //(ph 2024/02/04)
-        m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait
+        m_MapMsgHndlr.SetLSP_TerminateFlag(1);
+        m_CondInputBuf.Signal();  // post jsonRead wait
     }
 
     #if defined(_WIN32)
@@ -1578,7 +1578,7 @@ void ProcessLanguageClient::OnIDMethod(wxCommandEvent& event)
 {
     //- unused- json* pJson = (json*)event.GetClientData();
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 }
 // ----------------------------------------------------------------------------
@@ -1586,7 +1586,7 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
     json* pJson = (json*)event.GetClientData();
@@ -1623,7 +1623,7 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
             m_terminateLSP = true; //tell the read thread to terminate
             m_MapMsgHndlr.SetLSP_TerminateFlag(1);
             lspevt.SetString("LSP_Initialized:false");
-            m_CondInputBuf.Signal(); //(ph 2024/02/04) post jsonRead wait|
+            m_CondInputBuf.Signal();  // post jsonRead wait
         }
 
         else if(idValue.StartsWith("textDocument/declaration")
@@ -1696,7 +1696,7 @@ void ProcessLanguageClient::OnIDError(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
     wxCommandEvent lspevt(wxEVT_COMMAND_MENU_SELECTED, GetLSP_UserEventID());
@@ -1744,7 +1744,7 @@ void ProcessLanguageClient::OnMethodParams(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
-    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;  //(ph 2023/12/14)
+    //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
     #endif
 
     wxString methodValue;
@@ -2748,7 +2748,7 @@ void ProcessLanguageClient::LSP_RequestSymbols(wxString filename, cbProject* pPr
     fileURI.Replace("\\", "/");
     //-fileURI.MakeLower().Replace("f:", "");
 
-    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename); //(ph 2023/12/11)
+    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename);
     if (not pCtrl) return;
 
     //-DocumentUri docuri = DocumentUri(fileURI.c_str());
@@ -2885,7 +2885,7 @@ void ProcessLanguageClient::LSP_RequestSemanticTokens(wxString filename, cbProje
     fileURI.Replace("\\", "/");
     //-fileURI.MakeLower().Replace("f:", "");
 
-    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename); //(ph 2023/12/11)
+    cbStyledTextCtrl* pCtrl = GetStaticHiddenEditor(filename);
     if (not pCtrl) return;
 
     //-DocumentUri docuri = DocumentUri(fileURI.c_str());

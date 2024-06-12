@@ -121,8 +121,8 @@ public:
 
 private:
 
-    void OnClassBrowserSetFocus(wxFocusEvent& event); //(ph 2024/01/20)
-    void OnClassBrowserKillFocus(wxFocusEvent& event); //(ph 2024/01/20)
+    void OnClassBrowserSetFocus(wxFocusEvent& event);
+    void OnClassBrowserKillFocus(wxFocusEvent& event);
 
     /** handler for the mouse double click on a tree item, we usually make a jump to the
      *  associated token's position.
@@ -247,7 +247,7 @@ private:
     wxComboBox*                m_Search;
 
     /** the choice box in the header of the window */
-     wxChoice*                 m_cmbView; //(ph 2023/12/05)
+     wxChoice*                 m_cmbView;
 
     /** a pointer to the associated parser object */
     ParserBase*                m_Parser;

@@ -106,7 +106,7 @@ int ClassBrowserBuilderThread::SetIsBusy(bool torf, EThreadJob threadJob)
     //The timeout is needed when C::B shuts down so the thread can exit
     m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
 
-    // if an end-busy call, clear m_Busy status //(ph 2024/01/23)
+    // if an end-busy call, clear m_Busy status
     if (not torf) m_Busy = 0;
     return m_Busy;
 }//end SetIsBusy
@@ -138,7 +138,7 @@ ClassBrowserBuilderThread::ClassBrowserBuilderThread(wxEvtHandler* evtHandler, w
     m_BrowserOptions(),
     m_TokenTree(nullptr),
     m_InitDone(false),
-    //-m_Busy(false), Move to anonymouse namespace //(ph 2023/12/02)
+    //-m_Busy(false), Move to anonymouse namespace
     m_TerminationRequested(false),
     m_idThreadEvent(wxID_NONE),
     m_topCrc32(CRC32_CCITT),
@@ -526,7 +526,7 @@ void ClassBrowserBuilderThread::SelectGUIItem()
         return;
 
     // ----------------------------------------------------------------------------
-    CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex) //(ph 2023/09/24)
+    CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex)
     // ----------------------------------------------------------------------------
     // struct dtor unlocks the ClassBrowserBuilderThreadMutex after any return following this struct
     struct ClassBrowserBuilderThreadMutexUnlock
@@ -546,7 +546,7 @@ void ClassBrowserBuilderThread::SelectGUIItem()
 #endif
 
     CCTree* tree = (m_BrowserOptions.treeMembers) ? m_CCTreeBottom : m_CCTreeTop;
-    if (not tree)  //(ph 2023/09/24)
+    if (not tree)
         return;
     if ( !(   m_BrowserOptions.displayFilter == bdfFile
            && m_ActiveFilename.IsEmpty() ) )
@@ -556,7 +556,7 @@ void ClassBrowserBuilderThread::SelectGUIItem()
     CCLogger::Get()->DebugLog(wxString::Format("SelectGUIItem (internally) took : %ld ms", sw.Time()));
 #endif
 
-    // unlocked above by deallocation of struct //(ph 2023/09/24)
+    // unlocked above by deallocation of struct
     //-deprecated- CC_LOCKER_TRACK_CBBT_MTX_UNLOCK(m_ClassBrowserBuilderThreadMutex)
 }
 
@@ -581,7 +581,7 @@ void ClassBrowserBuilderThread::BuildTree()
     CCTreeItem* root = m_CCTreeTop->GetRootItem();
     if (!root)
         root = m_CCTreeTop->AddRoot(_("Symbols"), PARSER_IMG_SYMBOLS_FOLDER, PARSER_IMG_SYMBOLS_FOLDER, new CCTreeCtrlData(sfRoot));
-    if (root) //(ph 2024/01/18) Show root as "Symbols(<project owning editor>)"
+    if (root) // Show root as "Symbols(<project owning editor>)"
     {
         wxString prjTitle = _("Unparsed project");
         if (not Manager::Get()->GetProjectManager()->GetActiveProject())
@@ -906,7 +906,7 @@ bool ClassBrowserBuilderThread::AddChildrenOf(CCTree* tree,
 
     if (parentTokenIdx == -1)
     {
-//        if (   m_BrowserOptions.displayFilter == bdfWorkspace //not supported in clangd_client //(ph 2024/01/13)
+//        if (   m_BrowserOptions.displayFilter == bdfWorkspace //not supported in clangd_client
 //            || m_BrowserOptions.displayFilter == bdfEverything )
 //            tokens =  m_TokenTree->GetGlobalNameSpaces();
         if ( m_BrowserOptions.displayFilter == bdfEverything )
@@ -1001,10 +1001,10 @@ void ClassBrowserBuilderThread::AddMembersOf(CCTree* tree, CCTreeItem* node)
         return;
 
     CCTreeCtrlData* data = m_CCTreeTop->GetItemData(node);
-    if (not data) //(ph 2023/10/04)
+    if (not data)
         return;
 
-     // FIXME (ph#):Getting crash here with data == -1 as a ptr (0xFFFFFFFFFFFFFFFF) //(ph 2023/10/14)
+     // FIXME (ph#):Getting crash here with data == -1 as a ptr (0xFFFFFFFFFFFFFFFF)
      // I believe this problem is fixed by version 1.2.89 (see version.h)
     // It was NOT fixed. Got crash again (2023/10/28) (2023/11/14) using 0xFFFFFFFFFFFFFFFF as ptr.
     // codeblocks.exe caused an Access Violation at location 00007FF89CCEDD23 in module clangd_client.dll Reading from location FFFFFFFFFFFFFFFF.                                         )
@@ -1142,14 +1142,14 @@ bool ClassBrowserBuilderThread::AddNodes(CCTree* tree, CCTreeItem* parent, const
     }
 
     TokenIdxSet::const_iterator end = tokens->end();
-    //(ph 2023/10/07) Sanity hack Avoiding crash bec. end < begin
-    TokenIdxSet::const_iterator start = tokens->begin(); //(ph 2023/10/07)
+    // Sanity hack Avoiding crash bec. end < begin
+    TokenIdxSet::const_iterator start = tokens->begin();
     // Convert iterators to integer indices to avoid crash
     int endIndex = std::distance(tokens->begin(), end);
     int startIndex = std::distance(tokens->begin(), start);
     // This usually happens when a project is restarted after a close.
     // Note that the Symbols tree had stale data from a previous wksp close
-    if (startIndex < endIndex) //(ph 2023/10/07)
+    if (startIndex < endIndex)
         for (TokenIdxSet::const_iterator start = tokens->begin(); start != end; ++start)
         {
             // ----------------------------------------------
@@ -1221,7 +1221,7 @@ bool ClassBrowserBuilderThread::TokenMatchesFilter(const Token* token, bool lock
         return false;
 
     if (    m_BrowserOptions.displayFilter == bdfEverything
-        /* || (m_BrowserOptions.displayFilter == bdfWorkspace && token->m_IsLocal) ) */ //(ph 2024/01/13) one parser/workspace unsupported in clangd_client
+        /* || (m_BrowserOptions.displayFilter == bdfWorkspace && token->m_IsLocal) ) */  // one parser/workspace unsupported in clangd_client
         )
         return true;
 
@@ -1357,7 +1357,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
 // ----------------------------------------------------------------------------
 {
     CCTree* localTree = top ? m_CCTreeTop : m_CCTreeBottom;
-    if (not localTree)  //sanity check //(ph 2023/09/24)
+    if (not localTree)  //sanity check
         return;
 
     // When Code Completion information changes refreshing is made in two steps:
@@ -1378,7 +1378,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
     CCLogger::Get()->DebugLog(wxString::Format("GetCrc32() took : %ld ms", sw.Time()));
 #endif
 
-    if (NewCrc32 == (top ? m_topCrc32 : m_bottomCrc32))          //(ph 2024/01/18)
+    if (NewCrc32 == (top ? m_topCrc32 : m_bottomCrc32))
     {
         // The bottom tree can change even if the top didn't, force recalculation
         if (top)
@@ -1387,7 +1387,7 @@ void ClassBrowserBuilderThread::FillGUITree(bool top)
             m_ClassBrowserCallAfterSemaphore.WaitTimeout(500); // wait for ClassBrowser to execute
         }
 
-        //-return;  // I want to clear/refresh the top //(ph 2024/01/18)
+        //-return;  // I want to clear/refresh the top
                     //  after the workspace is closed.
     }
 

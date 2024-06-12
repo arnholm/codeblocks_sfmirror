@@ -8,7 +8,9 @@
  */
 
 //#include "sdk_precomp.h" gets not used because `EXPORT_LIB' not defined [-Winvalid-pch] error
-#include "sdk.h" // needed for wxTextCtr/listLoggerCtrll
+#if not defined(__WXMSW__)
+ #include "sdk.h" // needed for wxTextCtr/listLoggerCtrl on linux
+#endif
 
 #ifndef CB_PRECOMP
     #include <wx/arrstr.h>
@@ -29,7 +31,7 @@
 #include "cbstyledtextctrl.h"
 #include "lspdiagresultslog.h"
 
-//(ph 2024/02/12) three additional includes to support codeActions (aka fix available)
+// three additional includes to support codeActions (aka fix available)
 #include "globals.h"
 #include "logmanager.h"
 #include "infowindow.h"
@@ -39,7 +41,7 @@ namespace
 {
     const int ID_List = wxNewId();
     const int idMenuIgnoredMsgs = wxNewId();
-    //(ph 2024/02/12) CodeAction Fix Available
+    // CodeAction Fix Available
     const int idMenuApplyFixIfAvailable = XRCID("idMenuApplyFixIfAvailable");
     const int idRequestCodeActionAppy = XRCID("idRequestCodeActionApply");
 
@@ -60,7 +62,7 @@ LSPDiagnosticsResultsLog::LSPDiagnosticsResultsLog(const wxArrayString& titles_i
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
 
-    Bind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable); //(ph 2024/02/12)
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable);
 
 }
 // ----------------------------------------------------------------------------
@@ -85,7 +87,7 @@ LSPDiagnosticsResultsLog::~LSPDiagnosticsResultsLog()
     Disconnect(idMenuIgnoredMsgs, -1, wxEVT_COMMAND_MENU_SELECTED,
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
             &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
-    Unbind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable); //(ph 2024/02/12)
+    Unbind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable);
     if (FindEventHandler(this))
         Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
@@ -95,7 +97,7 @@ wxWindow* LSPDiagnosticsResultsLog::CreateControl(wxWindow* parent)
 {
     ListCtrlLogger::CreateControl(parent);
     control->SetId(ID_List);
-    //Connect(ID_List, -1, wxEVT_COMMAND_LIST_ITEM_ACTIVATED, //(ph 2023/12/14)
+    //Connect(ID_List, -1, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
     //                ^^^ a range of IDs is not necessary
     Connect(ID_List, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
             (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
@@ -119,7 +121,7 @@ bool LSPDiagnosticsResultsLog::HasFeature(Feature::Enum feature) const
 void LSPDiagnosticsResultsLog::AppendAdditionalMenuItems(wxMenu &menu)
 // ----------------------------------------------------------------------------
 {
-    menu.Append(idMenuApplyFixIfAvailable, _("Apply fix if available"), _("Apply LSP fix if available")); //(ph 2024/02/12)
+    menu.Append(idMenuApplyFixIfAvailable, _("Apply fix if available"), _("Apply LSP fix if available"));
     menu.Append(idMenuIgnoredMsgs, _("Show/Set ignore messages"), _("Show/Set ignored messages"));
 }
 
@@ -236,7 +238,7 @@ void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(wxCommandEvent& event)
     return;
 }
 // ----------------------------------------------------------------------------
-void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event) //(ph 2024/02/12)
+void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // When user right-clicks a log entry that contains "(fix available)"

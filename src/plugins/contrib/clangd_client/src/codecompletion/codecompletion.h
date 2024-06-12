@@ -631,7 +631,7 @@ private:
     void OnIdle(wxIdleEvent& event);
     void OnPluginAttached(CodeBlocksEvent& event);
     void OnPluginLoadingComplete(CodeBlocksEvent& event);
-    void OnRequestCodeActionApply(wxCommandEvent& event); //(ph 2024/02/12)
+    void OnRequestCodeActionApply(wxCommandEvent& event);
 
 
     // Callback to parse an added file.
@@ -680,9 +680,9 @@ private:
 
     // Pause a selected tree project, or toggle ccLogger, or test shutdown for a projects client
     void OnSelectedPauseParsing(wxCommandEvent& event);
-    // Pause a project on or off. Event string must contain "on" or "off" //(ph 2023/09/03)
+    // Pause a project on or off. Event string must contain "on" or "off"
     void OnProjectPauseParsing(wxCommandEvent& event);
-    void DisplayPausedStatusOfAllProjects(); //(ph 2024/05/10)
+    void DisplayPausedStatusOfAllProjects();
 
     // ----------------------------------------------------------------
     inline int GetCaretPosition(cbEditor* pEditor)

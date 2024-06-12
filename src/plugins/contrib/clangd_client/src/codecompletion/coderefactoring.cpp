@@ -25,7 +25,7 @@
 #endif
 
 #include <wx/progdlg.h>
-#include <wx/xrc/xmlres.h> //(ph 2023/12/07)
+#include <wx/xrc/xmlres.h>
 
 #include <cbstyledtextctrl.h>
 #include <encodingdetector.h>
@@ -72,7 +72,7 @@ class ScopeDialog : public wxDialog
 // ----------------------------------------------------------------------------
 {
 public:
-    ScopeDialog(wxWindow* parent, const wxString& title)  //(ph 2023/12/07)
+    ScopeDialog(wxWindow* parent, const wxString& title)
         // : wxDialog(parent, wxID_ANY, title)
         : wxDialog(parent, XRCID("ScopeDialog"), title)
     {
@@ -322,7 +322,7 @@ size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxSt
 //    }
 //
 //    // now that list is filled, we'll search
-//    //cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), wxID_ANY, wxDefaultPosition ,wxSize(0, 0)); dont eat up IDs //(ph 2023/12/07)
+//    //cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), wxID_ANY, wxDefaultPosition ,wxSize(0, 0)); dont eat up IDs
 //    cbStyledTextCtrl* control = new cbStyledTextCtrl(editor->GetParent(), XRCID("CodeRefactoring::VerifyResult"), wxDefaultPosition ,wxSize(0, 0));
 //    control->Show(false);
 //

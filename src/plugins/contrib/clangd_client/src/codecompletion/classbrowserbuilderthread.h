@@ -328,7 +328,7 @@ private:
 
     ExpandedItemVect m_ExpandedVect;
     bool             m_InitDone;
-    //-bool             m_Busy; moved to anonymous namespace //(ph 2023/12/02)
+    //-bool             m_Busy; moved to anonymous namespace
 
     /** if this variable is true, the Entry() function should return */
     bool             m_TerminationRequested;

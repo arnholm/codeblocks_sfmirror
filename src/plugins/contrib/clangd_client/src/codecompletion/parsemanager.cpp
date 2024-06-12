@@ -43,7 +43,7 @@
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/textfile.h>
-#include <wx/aui/aui.h>     //(ph 2024/01/19)
+#include <wx/aui/aui.h>
 
 #include <cbstyledtextctrl.h>
 #include <compilercommandgenerator.h>
@@ -257,9 +257,9 @@ ParseManager::ParseManager( LSPEventCallbackHandler* pLSPEventSinkHandler ) :
 
     m_pLSPEventSinkHandler = pLSPEventSinkHandler;
 
-    // allocate a global hidden editor used for temporary symbol management //(ph 2023/12/22)
+    // allocate a global hidden editor used for temporary symbol management
     // to avoid massive allocation of wxIDs
-    if (not m_pHiddenEditor.get()) //(ph 2023/12/22)
+    if (not m_pHiddenEditor.get())
     {
         m_pHiddenEditor.reset( new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("ParserHiddenEditor"), wxDefaultPosition, wxSize(0,0)));
         GetHiddenEditor()->Show(false);
@@ -892,8 +892,8 @@ bool ParseManager::DeleteParser(cbProject* project)
         {
             m_ActiveParser = nullptr;
             SetParser(m_NullParser); // Also updates class browser;
-            cbAssertNonFatal(m_ActiveParser && "SetParser() failed to set valid ptr"); //(ph 2023/10/18)
-            if (not m_ActiveParser) m_ActiveParser =  m_NullParser;                    //(ph 2023/10/18)
+            cbAssertNonFatal(m_ActiveParser && "SetParser() failed to set valid ptr");
+            if (not m_ActiveParser) m_ActiveParser =  m_NullParser;
         }
 
         return true;
@@ -916,8 +916,8 @@ ProcessLanguageClient* ParseManager::CreateNewLanguageServiceProcess(cbProject* 
     // Don't allow a second process to write to the current clangd symbol caches
     if (not DoLockClangd_CacheAccess(pcbProject) )
     {
-        // FIXME (ph#): Is this caused by a crashed debugging session? //(ph 2023/07/15)
-        if (pcbProject != GetProxyProject()) //ok if ~ProxyProject~ //(ph 2023/07/14)
+        // FIXME (ph#): Is this caused by a crashed debugging session?
+        if (pcbProject != GetProxyProject()) //ok if ~ProxyProject~
         {
             wxString msg = wxString::Format("%s failed to Lock access to Clangd cache for %s", __FUNCTION__, pcbProject->GetTitle());
             msg << "\n\tAllocation of Clangd_client will fail.";
@@ -1003,7 +1003,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)
 
     if (not pProject)
     {
-       pLogMgr->DebugLog(wxString(__FUNCTION__) + ": param pProject is missing"); //(ph 2023/07/08)
+       pLogMgr->DebugLog(wxString(__FUNCTION__) + ": param pProject is missing");
         return nullptr;
     }
     wxString projectTitle = pProject->GetTitle();
@@ -1014,7 +1014,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)
     if (not pClient)
     {
         #if defined(ccDEBUG)
-        pLogMgr->DebugLog(wxString(__FUNCTION__) + ": No associated pClient in m_LSP_Clients[pProject] " << projectTitle); //(ph 2023/07/08)
+        pLogMgr->DebugLog(wxString(__FUNCTION__) + ": No associated pClient in m_LSP_Clients[pProject] " << projectTitle);
         #endif
         return nullptr;
     }
@@ -1024,7 +1024,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)
 
     #if defined(ccDEBUG)
     wxString clientPtr = wxString::Format("%p", pClient);
-    pLogMgr->DebugLog(wxString(__FUNCTION__) + ": pClient is not yet initialized. " + clientPtr); //(ph 2023/07/08)
+    pLogMgr->DebugLog(wxString(__FUNCTION__) + ": pClient is not yet initialized. " + clientPtr);
     #endif
 
     return nullptr;
@@ -1327,9 +1327,9 @@ void ParseManager::RereadParserOptions()
         if (!m_ClassBrowser)
         {
             CreateClassBrowser();
-            //-UpdateClassBrowser(); //(ph 2023/11/30)
+            //-UpdateClassBrowser();
             s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
-            m_ClassBrowser->UpdateClassBrowserView(); //(ph 2023/11/30)
+            m_ClassBrowser->UpdateClassBrowserView();
 
         }
         // change class-browser docking settings
@@ -1338,9 +1338,9 @@ void ParseManager::RereadParserOptions()
             RemoveClassBrowser();
             CreateClassBrowser();
             // force re-update
-            //-UpdateClassBrowser(); //(ph 2023/11/30)
+            //-UpdateClassBrowser();
             s_ClassBrowserCaller = wxString::Format("%s:%d",__FUNCTION__, __LINE__);
-            m_ClassBrowser->UpdateClassBrowserView(); //(ph 2023/11/30)
+            m_ClassBrowser->UpdateClassBrowserView();
         }
     }
     else if (!useSymbolBrowser && m_ClassBrowser)
@@ -1697,7 +1697,7 @@ void ParseManager::CreateClassBrowser()
     // TODO (Morten): ? what's bug? I test it, it's works well now.
     m_ClassBrowser->SetParser(m_ActiveParser); // Also updates class browser
 
-    RefreshSymbolsTab(); //(ph 2023/11/30)
+    RefreshSymbolsTab();
 
     TRACE(_T("ParseManager::CreateClassBrowser: Leave"));
 }
@@ -1713,7 +1713,7 @@ void ParseManager::OnAUIProjectPageChanged(wxAuiNotebookEvent& event)
     n_IsSymbolsTabSelected = false;
     n_SkipNextSymbolsChangePageCall = false;
 
-    // Only update Symbol browser window if it has focus. //(ph 2024/01/20)
+    // Only update Symbol browser window if it has focus.
     // Check again, wxWidgets focus event can be really slow sometimes
     // Experience shows this routine is faster than wxEVT_SET/KILL_FOCUS event.
     //if (isSymbolsTabFocused)
@@ -1779,7 +1779,7 @@ void ParseManager::OnAUIProjectPageChanging(wxAuiNotebookEvent& event)
 void ParseManager::RefreshSymbolsTab()
 // ----------------------------------------------------------------------------
 {
-    //(ph 2023/11/30)
+
     // When the Symbols tab is disabled from the options dialog and then
     // re-enabled, it never displays its data in the Symbols tab again, even
     // though the data is acutally there. To display the data, the panel holding the
@@ -1844,7 +1844,7 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
 void ParseManager::UpdateClassBrowser(bool force)
 // ----------------------------------------------------------------------------
 {
-    //(ph 2023/11/29)
+
     //Note, This function must NOT be called when Re-enabling "Disable Symbol browser"
     // because m_ActiveParser->Done() returns false and the ClassBrowser UI Symbols tab
     // will not get updated and will cause crashes using stale pointeers.
@@ -1864,16 +1864,16 @@ void ParseManager::UpdateClassBrowser(bool force)
     if ( Manager::IsAppShuttingDown() )
         return;
     // Dont update symbols window when debugger is running
-    if (IsDebuggerRunning())    //(ph 2023/11/17)
+    if (IsDebuggerRunning())
         return;
     // If no ClassBrowser, bail
     if (not m_ClassBrowser)
           return;
 
     // If user is using the Symbols tab delay the update.
-    if (not force) //(ph 2024/01/19)
+    if (not force)
     {
-        if (not IsOkToUpdateClassBrowserView()) //(ph 2023/10/21)
+        if (not IsOkToUpdateClassBrowserView())
             return;
 
         if ( m_ActiveParser != m_NullParser
@@ -1893,7 +1893,7 @@ bool ParseManager::IsOkToUpdateClassBrowserView()
     static size_t startMillisTOD;
 
     // Dont update Sysmbols when debugger is running
-    if (IsDebuggerRunning()) //(ph 2023/11/17)
+    if (IsDebuggerRunning())
         return false;
 
     bool isSymbolsTabFocused = GetClassBrowser() ? GetSymbolsWindowHasFocus() : false;
@@ -1939,7 +1939,7 @@ bool ParseManager::IsOkToUpdateClassBrowserView()
 
             }
         }
-        return false; // say not ok to update //(ph 2023/11/15)
+        return false; // say not ok to update
     }
 
     if ((not isSymbolsTabFocused) or isBusyClassBrowserBuilderThread or isUpdatingClassBrowserBusy)
@@ -2207,7 +2207,7 @@ void ParseManager::SetParser(Parser* parser)
 
     // a new parser is active, so remove the old parser's local variable tokens.
     // if m_Parser == nullptr, this means the active parser is already deleted.
-    if (m_ActiveParser) //(ph 2023/10/18)
+    if (m_ActiveParser)
         RemoveLastFunctionChildren(m_ActiveParser->GetTokenTree(), m_LastFuncTokenIdx);
 
     // refresh code completion related variables
@@ -3530,7 +3530,7 @@ void ParseManager::InsertDiagnostics(wxString filename, std::vector<std::pair<in
 }
 
 // ----------------------------------------------------------------------------
-bool ParseManager::HasDiagnostics(wxString filename)  //(ph 2024/05/02)
+bool ParseManager::HasDiagnostics(wxString filename)
 // ----------------------------------------------------------------------------
 {
     std::lock_guard < std::mutex > lock(m_diagnosticsCacheMutex);

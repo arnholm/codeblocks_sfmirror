@@ -10,7 +10,7 @@
 				<Option object_output="../../../.objs32_64/plugins/contrib/clangd_client" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --verbose --no-splash-screen  /p debug" />
+				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --verbose --no-splash-screen  /p cbCldDebug" />
 				<Option host_application="$(CODEBLOCKS)/../devel32_64/codeblocks.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<ExtraCommands>
