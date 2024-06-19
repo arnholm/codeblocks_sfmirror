@@ -726,7 +726,7 @@ wxString BrowseTracker::GetPageFilename(EditorBase* eb)
 int BrowseTracker::GetEditor(EditorBase* eb)
 // ----------------------------------------------------------------------------
 {
-    // return the editor index from our array of user activated editos
+    // return the editor index from our array of user activated edits
     int numEntries = Helpers::GetMaxEntries();
     for (int i=0; i<numEntries; ++i )
     	if ( m_apEditors[i] == eb ) return i;
