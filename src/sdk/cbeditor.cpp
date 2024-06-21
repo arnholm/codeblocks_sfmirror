@@ -291,8 +291,7 @@ struct cbEditorInternalData
         }
     }
 
-    static int CalcWidth(cbStyledTextCtrl* control, int baseWidth, int minWidth,
-                         float defaultPointSize)
+    static int CalcWidth(cbStyledTextCtrl* control, int baseWidth, int minWidth, float defaultPointSize)
     {
         int width = baseWidth * (defaultPointSize + control->GetZoom()) / defaultPointSize;
         if (width < minWidth)
@@ -306,12 +305,12 @@ struct cbEditorInternalData
         const float pointSize = m_pOwner->m_pControl->StyleGetFont(wxSCI_STYLE_DEFAULT).GetPointSize();
         if (both)
         {
-            const int width = CalcWidth(m_pOwner->m_pControl, baseWidth, minWidth, pointSize);
-            m_pOwner->m_pControl->SetMarginWidth(marginId, width);
+            const int width_ctrl_1 = CalcWidth(m_pOwner->m_pControl, baseWidth, minWidth, pointSize);
+            m_pOwner->m_pControl->SetMarginWidth(marginId, width_ctrl_1);
             if (m_pOwner->m_pControl2)
             {
-                const int width = CalcWidth(m_pOwner->m_pControl2, baseWidth, minWidth, pointSize);
-                m_pOwner->m_pControl2->SetMarginWidth(marginId, width);
+                const int width_ctrl_2 = CalcWidth(m_pOwner->m_pControl2, baseWidth, minWidth, pointSize);
+                m_pOwner->m_pControl2->SetMarginWidth(marginId, width_ctrl_2);
             }
         }
         else
@@ -859,7 +858,7 @@ public:
         SetDataObject(dataobj);
     }
 
-    wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult defaultDragResult) override
+    wxDragResult OnData(wxCoord x, wxCoord y, cb_unused wxDragResult defaultDragResult) override
     {
         GetData();
         wxDataObjectComposite *dataobjComp = static_cast<wxDataObjectComposite *>(GetDataObject());
