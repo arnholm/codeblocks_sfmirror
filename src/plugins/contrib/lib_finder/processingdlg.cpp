@@ -27,7 +27,6 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
-#include <wx/filename.h>
 #include <prep.h>
 
 //(*InternalHeaders(ProcessingDlg)
