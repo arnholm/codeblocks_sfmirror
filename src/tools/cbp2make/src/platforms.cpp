@@ -558,9 +558,9 @@ void CPlatformSet::Read(const TiXmlElement *ConfigRoot)
 
         TiXmlElement* platform = _platform->ToElement();
 
-        if (strcmp(platform->Value(), "platform") !=0 )
-            break;
-        if (0!=platform) {
+        if (0 != platform) {
+            if (strcmp(platform->Value(), "platform") != 0)
+                break;
             CPlatform *p = new CPlatform();
             p->Read(platform);
             m_Platforms.push_back(p);
