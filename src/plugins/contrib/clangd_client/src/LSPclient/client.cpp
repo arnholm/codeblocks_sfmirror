@@ -3888,6 +3888,16 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         // There's likely no such database there; just wasting time.
         return;
     }
+    //(christo 2024/06/26)
+    if(m_compileCommandsPopulated)
+    {
+        if ( m_CompileCommandsFiles.end() != std::find(m_CompileCommandsFiles.begin(), m_CompileCommandsFiles.end(), filename))
+        {
+            return;
+        }
+        jdb = json::array();
+    }
+    //(christo 2024/06/26)end
 
     // create compilation database 'compile_commands.json' from project files.
     // If compile_commands.json already exists, use it to insert project file data.
@@ -3906,15 +3916,19 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
     // If the file does not belong to a project, add it to proxy project
     // compile_commands.json file so Clangd can find  and parse it.
 
-    std::fstream jsonFile;           //("out.json", std::ofstream::in | std::ofstream::out);
-    json jdb = json::array();        //create the main array
+    //(christo 2024/06/26)
+    //-std::fstream jsonFile;           //("out.json", std::ofstream::in | std::ofstream::out);
+    //-json jdb = json::array();        //create the main array
+    //(christo 2024/06/26)end
 
     wxString editorProjectDotCBP = pProject->GetFilename();
     wxString compileCommandsFullPath = wxPathOnly(editorProjectDotCBP) + "\\compile_commands.json";
     if (not platform::windows) compileCommandsFullPath.Replace("\\","/");
-    if (wxFileExists(compileCommandsFullPath)) switch(1)
+    //-if (wxFileExists(compileCommandsFullPath)) switch(1) //(christo 2024/06/26)
+    if ((jdb.size() == 0) && wxFileExists(compileCommandsFullPath)) switch(1)   //(christo 2024/06/26)
     {
         default:
+        std::fstream jsonFile;           //("out.json", std::ofstream::in | std::ofstream::out); //(christo 2024/06/26)
         jsonFile.open (compileCommandsFullPath.ToStdString(), std::ofstream::in);
         if (not jsonFile.is_open())
         {
@@ -3994,6 +4008,7 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
 
     if (fileCount)
     {
+        std::fstream jsonFile; //(christo 2024/06/26)
         jsonFile.open (compileCommandsFullPath.ToStdString(), std::ofstream::out | std::ofstream::trunc);
         if (not jsonFile.is_open())
         {
@@ -4006,16 +4021,23 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
             jsonFile << jdb; //write file json object
             jsonFile.close();
 
-            // This code un-needed after clangd version 12
-////        // updates before LSP is initialized should not set the LSP restart timer.
-////        // File opens after initialization have compile_commands already set
-////        // so filecount will be zero.
-////        // Ergo, the restart timer is set only when a new file is opened that
-////        // was not previously added to compile_commands.json
-////            if (GetLSP_Initialized())
-////                SetCompileCommandsChangedTime(true);
+            /// This code un-needed after clangd version 12
+            ////        // updates before LSP is initialized should not set the LSP restart timer.
+            ////        // File opens after initialization have compile_commands already set
+            ////        // so filecount will be zero.
+            ////        // Ergo, the restart timer is set only when a new file is opened that
+            ////        // was not previously added to compile_commands.json
+            ////            if (GetLSP_Initialized())
+            ////                SetCompileCommandsChangedTime(true);
         }
-    }
+        //(christo 2024/06/26)
+        if(m_compileCommandsPopulated)
+        {
+            jdb.clear();
+            m_CompileCommandsFiles.emplace_back(std::move(filename));
+        }
+        //(christo 2024/06/26)end
+    }//endif filecount
 
 }//end UpdateCompilationDatabase()
 // ----------------------------------------------------------------------------

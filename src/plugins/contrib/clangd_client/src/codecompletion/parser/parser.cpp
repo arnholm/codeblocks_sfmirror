@@ -1344,6 +1344,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
     }
     else
     {
+        pClient->SetCompileCommandsPopulated(); //(christo 2024/06/26)
         wxString msg = "Background file parsing queue now empty.";
         CCLogger::Get()->DebugLog(msg);
         msg = wxString::Format("LSP Server is processing %zu remaining files.", pClient->LSP_GetServerFilesParsingCount() );

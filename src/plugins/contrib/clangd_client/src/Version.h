@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.127 24/06/12")
+#define VERSION wxT("1.2.128 24/06/27")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.128   //(ph 2024/06/27) Apply Christo patch "compile_commands.json optimization"
+//          Avoid unneccesary parsing of the compile_commands.json file when editing and saving a file.
+//          https://forums.codeblocks.org/index.php/topic,24357.msg175756.html#msg175756
 //1.2.127   2024/06/12 Remove all debugging tags for //(ph <date>)
 //1.2.126   2024/05/13 Remove warning/error markers when debugging to avoid hiding
 //          debugger active line marker.
