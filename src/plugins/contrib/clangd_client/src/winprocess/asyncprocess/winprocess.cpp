@@ -160,7 +160,7 @@ bool WinProcess::Read(wxString& buff)
     char* chBuf = new char[65536 + 1]; // 64K should be sufficient buffer
     memset(chBuf, 0, 65536 + 1);
 
-    std::unique_ptr<char> sp(chBuf);
+    std::unique_ptr<char[]> sp(chBuf); //(Strunz ticket 1489 2024/07/03)
 
     // Make the pipe to non-blocking mode
     dwMode = PIPE_READMODE_BYTE | PIPE_NOWAIT;
