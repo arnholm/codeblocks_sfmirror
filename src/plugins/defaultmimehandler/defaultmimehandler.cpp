@@ -217,18 +217,13 @@ int DefaultMimeHandler::OpenFile(const wxString& filename)
                     mt->useAssoc = true;
                     m_MimeTypes.Add(mt);
                     return DoOpenFile(mt, filename);
-                    break;
                 case 2: // open in editor
-                {
                     mt = new cbMimeType;
                     mt->wildcard = wild;
                     mt->useEditor = true;
                     mt->useAssoc = false;
                     m_MimeTypes.Add(mt);
                     return DoOpenFile(mt, filename);
-                    break;
-                }
-                default: break;
             }
         }
         else if (answer == wxID_CANCEL)
