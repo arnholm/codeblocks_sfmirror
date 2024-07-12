@@ -405,7 +405,7 @@ void CompilerCommandGenerator::GenerateCommandLine(Result &result, const Params 
 
 #ifdef command_line_generation
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("GenerateCommandLine[1]: tmpIncludes='%s', tmpResIncludes='%s'."),
-                                                               tmpIncludes, tmpResIncludes));
+                                                               tmpIncludes, tmpResIncludes);
 #endif
 
     wxString   tmp;
