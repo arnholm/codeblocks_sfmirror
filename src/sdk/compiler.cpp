@@ -125,7 +125,7 @@ Compiler::Compiler(const Compiler& other) :
     MakeValidID();
 
     m_MasterPath      = other.m_MasterPath;
-    m_ExtraPaths      = other.m_ExtraPaths;
+    m_ExtraPaths      = MakeUniqueArray(other.m_ExtraPaths,     true);
     m_Programs        = other.m_Programs;
     m_Switches        = other.m_Switches;
     m_Options         = other.m_Options;
@@ -370,7 +370,7 @@ void Compiler::MirrorCurrentSettings()
 
     m_Mirror.Name             = m_Name;
     m_Mirror.MasterPath       = m_MasterPath;
-    m_Mirror.ExtraPaths       = m_ExtraPaths;
+    m_Mirror.ExtraPaths       = MakeUniqueArray(m_ExtraPaths, true);
     for (int i = 0; i < ctCount; ++i)
         m_Mirror.Commands[i]  = m_Commands[i];
     m_Mirror.Programs         = m_Programs;
@@ -387,8 +387,8 @@ void Compiler::MirrorCurrentSettings()
     m_Mirror.CmdsBefore       = m_CmdsBefore;
     m_Mirror.CmdsAfter        = m_CmdsAfter;
 
-    m_Mirror.SortOptions[0] = m_SortOptions[0];
-    m_Mirror.SortOptions[1] = m_SortOptions[1];
+    m_Mirror.SortOptions[0]   = m_SortOptions[0];
+    m_Mirror.SortOptions[1]   = m_SortOptions[1];
 
     m_Mirrored                = true;
 }
@@ -410,6 +410,25 @@ void Compiler::SaveSettings(const wxString& baseKey)
 
     cfg->Write(tmp + _T("/name"),   m_Name);
     cfg->Write(tmp + _T("/parent"), m_ParentID, true);
+
+    if (m_Mirror.MasterPath != m_MasterPath)
+        cfg->Write(tmp + _T("/master_path"),     m_MasterPath,         true);
+    if (m_Mirror.ExtraPaths != m_ExtraPaths)
+        cfg->Write(tmp + _T("/extra_paths"),     GetStringFromArray( MakeUniqueArray(m_ExtraPaths, true), _T(";") ), true);
+    if (m_Mirror.Programs.C != m_Programs.C)
+        cfg->Write(tmp + _T("/c_compiler"),      m_Programs.C,         true);
+    if (m_Mirror.Programs.CPP != m_Programs.CPP)
+        cfg->Write(tmp + _T("/cpp_compiler"),    m_Programs.CPP,       true);
+    if (m_Mirror.Programs.LD != m_Programs.LD)
+        cfg->Write(tmp + _T("/linker"),          m_Programs.LD,        true);
+    if (m_Mirror.Programs.LIB != m_Programs.LIB)
+        cfg->Write(tmp + _T("/lib_linker"),      m_Programs.LIB,       true);
+    if (m_Mirror.Programs.WINDRES != m_Programs.WINDRES)
+        cfg->Write(tmp + _T("/res_compiler"),    m_Programs.WINDRES,   true);
+    if (m_Mirror.Programs.MAKE != m_Programs.MAKE)
+        cfg->Write(tmp + _T("/make"),            m_Programs.MAKE,      true);
+    if (m_Mirror.Programs.DBGconfig != m_Programs.DBGconfig)
+        cfg->Write(tmp + _T("/debugger_config"), m_Programs.DBGconfig, true);
 
     if (m_Mirror.CompilerOptions_ != m_CompilerOptions)
     {
@@ -457,25 +476,6 @@ void Compiler::SaveSettings(const wxString& baseKey)
         cfg->Write(tmp + _T("/commands_after"),   key, true);
     }
 
-    if (m_Mirror.MasterPath != m_MasterPath)
-        cfg->Write(tmp + _T("/master_path"),     m_MasterPath,         true);
-    if (m_Mirror.ExtraPaths != m_ExtraPaths)
-        cfg->Write(tmp + _T("/extra_paths"),     GetStringFromArray( MakeUniqueArray(m_ExtraPaths, true), _T(";") ), true);
-    if (m_Mirror.Programs.C != m_Programs.C)
-        cfg->Write(tmp + _T("/c_compiler"),      m_Programs.C,         true);
-    if (m_Mirror.Programs.CPP != m_Programs.CPP)
-        cfg->Write(tmp + _T("/cpp_compiler"),    m_Programs.CPP,       true);
-    if (m_Mirror.Programs.LD != m_Programs.LD)
-        cfg->Write(tmp + _T("/linker"),          m_Programs.LD,        true);
-    if (m_Mirror.Programs.LIB != m_Programs.LIB)
-        cfg->Write(tmp + _T("/lib_linker"),      m_Programs.LIB,       true);
-    if (m_Mirror.Programs.WINDRES != m_Programs.WINDRES)
-        cfg->Write(tmp + _T("/res_compiler"),    m_Programs.WINDRES,   true);
-    if (m_Mirror.Programs.MAKE != m_Programs.MAKE)
-        cfg->Write(tmp + _T("/make"),            m_Programs.MAKE,      true);
-    if (m_Mirror.Programs.DBGconfig != m_Programs.DBGconfig)
-        cfg->Write(tmp + _T("/debugger_config"), m_Programs.DBGconfig, true);
-
     for (int i = 0; i < ctCount; ++i)
     {
         for (size_t n = 0; n < m_Commands[i].size(); ++n)
@@ -483,8 +483,8 @@ void Compiler::SaveSettings(const wxString& baseKey)
             if (n >= m_Mirror.Commands[i].size() || m_Mirror.Commands[i][n] != m_Commands[i][n])
             {
                 wxString key = wxString::Format("%s/macros/%s/tool%zu/", tmp, CommandTypeDescriptions[i], n);
-                cfg->Write(key + "command", m_Commands[i][n].command);
-                cfg->Write(key + "extensions", m_Commands[i][n].extensions);
+                cfg->Write(key + "command",        m_Commands[i][n].command);
+                cfg->Write(key + "extensions",     m_Commands[i][n].extensions);
                 cfg->Write(key + "generatedFiles", m_Commands[i][n].generatedFiles);
             }
         }
@@ -644,9 +644,9 @@ void Compiler::LoadSettings(const wxString& baseKey)
     SetCompilerOptions    (GetArrayFromString(cfg->Read(tmp + _T("/compiler_options"), wxString())));
     SetResourceCompilerOptions(GetArrayFromString(cfg->Read(tmp + _T("/resource_compiler_options"), wxString())));
     SetLinkerOptions      (GetArrayFromString(cfg->Read(tmp + _T("/linker_options"),   wxString())));
-    SetIncludeDirs        (GetArrayFromString(cfg->Read(tmp + _T("/include_dirs"),     wxString())));
-    SetResourceIncludeDirs(GetArrayFromString(cfg->Read(tmp + _T("/res_include_dirs"), wxString())));
-    SetLibDirs            (GetArrayFromString(cfg->Read(tmp + _T("/library_dirs"),     wxString())));
+    SetIncludeDirs        (MakeUniqueArray(GetArrayFromString(cfg->Read(tmp + _T("/include_dirs"),     wxString())), true));
+    SetResourceIncludeDirs(MakeUniqueArray(GetArrayFromString(cfg->Read(tmp + _T("/res_include_dirs"), wxString())), true));
+    SetLibDirs            (MakeUniqueArray(GetArrayFromString(cfg->Read(tmp + _T("/library_dirs"),     wxString())), true));
     SetLinkLibs           (GetArrayFromString(cfg->Read(tmp + _T("/libraries"),        wxString())));
     SetCommandsBeforeBuild(GetArrayFromString(cfg->Read(tmp + _T("/commands_before"),  wxString())));
     SetCommandsAfterBuild (GetArrayFromString(cfg->Read(tmp + _T("/commands_after"),   wxString())));
@@ -1342,16 +1342,16 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
             path << extraPaths[i] << wxPATH_SEP;
 
         wxString origPath;
-        wxGetEnv("PATH", &origPath);     // save path
-        wxSetEnv("PATH", path+origPath); // change path
-        cmd[0] = GetExecName(cmd[0]);
+        wxGetEnv("PATH", &origPath);     // Save the original path, then...
+        wxSetEnv("PATH", path+origPath); // ...update path temporarily for the call...
 
         long ret = -1;
         wxArrayString output;
+        cmd[0] = GetExecName(cmd[0]);
         if (!cmd[0].empty()) // should never be empty
             ret = Execute(GetStringFromArray(cmd, " ", false), output);
 
-        wxSetEnv("PATH", origPath); // restore path
+        wxSetEnv("PATH", origPath);      // ...and restore original path again.
 
         if (ret != 0) // execution failed
             return (node->GetAttribute("default", wxString()) == "true");
