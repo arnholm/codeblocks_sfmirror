@@ -740,8 +740,8 @@ wxString ParseManager::GetHeaderForSourceFile(cbProject* pProject, wxString& fil
     for (FilesList::const_iterator flist_it = pProject->GetFilesList().begin(); flist_it != pProject->GetFilesList().end(); ++flist_it)
     {
         ProjectFile* pf = *flist_it;
-        if ( (ParserCommon::FileType(pf->relativeFilename) == ParserCommon::ftSource) //look for hdrs only
-            or (FileTypeOf(pf->relativeFilename) == ftTemplateSource) )
+        if ( pf and ((ParserCommon::FileType(pf->relativeFilename) == ParserCommon::ftSource) //look for hdrs only  //(ticket #1496 check pf 2024/08/7)
+            or (FileTypeOf(pf->relativeFilename) == ftTemplateSource)) )
             continue;
         if ( pf and (pf->file.GetName() == fnFilename.GetName()) )
         {
