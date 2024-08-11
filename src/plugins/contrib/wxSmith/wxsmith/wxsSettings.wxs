@@ -34,7 +34,7 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxCheckBox" name="" variable="m_EmptyIDs" member="yes">
+								<object class="wxCheckBox" name="ID_CHECKBOX15" variable="m_EmptyIDs" member="yes">
 									<label>Allow empty IDs</label>
 								</object>
 								<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>

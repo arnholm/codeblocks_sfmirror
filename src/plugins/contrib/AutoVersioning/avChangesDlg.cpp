@@ -71,7 +71,6 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
     sizerConfirmation->Add(btnCancel, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(sizerConfirmation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
     SetSizer(BoxSizer1);
-    SetSizer(BoxSizer1);
     Layout();
 
     Connect(ID_ADD_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnAddClick);
