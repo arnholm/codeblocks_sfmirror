@@ -433,12 +433,12 @@ void wxsSettings::OnApply()
         cfg->Write("/noneI18N", 3);
     cfg->Write("/customI18N", m_CustomI18N->GetValue());
 
-    int Flags =  (m_BorderLeft->IsChecked()   ? wxsSizerFlagsProperty::BorderLeft   : 0) |
-                 (m_BorderRight->IsChecked()  ? wxsSizerFlagsProperty::BorderRight  : 0) |
-                 (m_BorderTop->IsChecked()    ? wxsSizerFlagsProperty::BorderTop    : 0) |
-                 (m_BorderBottom->IsChecked() ? wxsSizerFlagsProperty::BorderBottom : 0) |
-                 (m_SizeExpand->IsChecked()   ? wxsSizerFlagsProperty::Expand       : 0) |
-                 (m_SizeShaped->IsChecked()   ? wxsSizerFlagsProperty::Shaped       : 0);
+    int Flags = (m_BorderLeft->IsChecked()   ? wxsSizerFlagsProperty::BorderLeft   : 0) |
+                (m_BorderRight->IsChecked()  ? wxsSizerFlagsProperty::BorderRight  : 0) |
+                (m_BorderTop->IsChecked()    ? wxsSizerFlagsProperty::BorderTop    : 0) |
+                (m_BorderBottom->IsChecked() ? wxsSizerFlagsProperty::BorderBottom : 0) |
+                (m_SizeExpand->IsChecked()   ? wxsSizerFlagsProperty::Expand       : 0) |
+                (m_SizeShaped->IsChecked()   ? wxsSizerFlagsProperty::Shaped       : 0);
 
     switch ( m_Placement->GetSelection() )
     {

@@ -144,7 +144,6 @@ void wxsToolBarItem::OnBuildCreatingCode()
 
 void wxsToolBarItem::OnEnumToolProperties(cb_unused long Flags)
 {
-
     switch ( m_Type )
     {
         case Normal:

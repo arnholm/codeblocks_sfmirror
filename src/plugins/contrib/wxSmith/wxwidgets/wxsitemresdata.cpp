@@ -724,6 +724,7 @@ void wxsItemResData::RebuildSourceCode()
 /// Turn a string set into a sorted list and then generate a string from it in the form of prefix+item+suffix.
 /// The sorting is needed to prevent reshuffling of items when the hash function of the set changes, thus the generated
 /// code is always the same.
+wxString GenerateCodeFromSet(const wxsCoderContext::wxStringSet &,    const wxString &,       const wxString &      );
 wxString GenerateCodeFromSet(const wxsCoderContext::wxStringSet &set, const wxString &prefix, const wxString &suffix)
 {
     std::vector<wxString> array;

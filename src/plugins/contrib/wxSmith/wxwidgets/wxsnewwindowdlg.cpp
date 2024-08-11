@@ -811,11 +811,13 @@ void wxsNewWindowDlg::OnAdvOpsClick(cb_unused wxCommandEvent& event)
 bool wxsNewWindowDlg::PrepareResource(cb_unused wxsItemRes* Res,wxsItemResData* Data)
 {
     wxsBaseProperties* Props = Data->GetRootItem()->GetBaseProps();
-
-    Props->m_ParentFromArg   = m_CtorParent->GetValue();
-    Props->m_IdFromArg       = m_CtorId->GetValue();
-    Props->m_PositionFromArg = m_CtorPos->GetValue();
-    Props->m_SizeFromArg     = m_CtorSize->GetValue();
+    if ( Props )
+    {
+        Props->m_ParentFromArg   = m_CtorParent->GetValue();
+        Props->m_IdFromArg       = m_CtorId->GetValue();
+        Props->m_PositionFromArg = m_CtorPos->GetValue();
+        Props->m_SizeFromArg     = m_CtorSize->GetValue();
+    }
 
     return true;
 }

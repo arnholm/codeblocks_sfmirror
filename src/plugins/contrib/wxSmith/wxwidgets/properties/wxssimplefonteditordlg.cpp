@@ -150,10 +150,18 @@ void wxsSimpleFontEditorDlg::UpdateFontDescription()
             Description << _("Weight: ");
             switch ( m_WorkingCopy.Weight )
             {
-                case wxFONTWEIGHT_BOLD:  Description << _("Bold\n"); break;
-                case wxFONTWEIGHT_LIGHT: Description << _("Light\n"); break;
-                case wxFONTWEIGHT_NORMAL: // fall-through
-                default:                 Description << _("Normal\n");
+                case wxFONTWEIGHT_THIN:       Description << _("Thin\n");       break;
+                case wxFONTWEIGHT_EXTRALIGHT: Description << _("ExtraLight\n"); break;
+                case wxFONTWEIGHT_LIGHT:      Description << _("Light\n");      break;
+                case wxFONTWEIGHT_MEDIUM:     Description << _("Medium\n");     break;
+                case wxFONTWEIGHT_SEMIBOLD:   Description << _("SemiBold\n");   break;
+                case wxFONTWEIGHT_BOLD:       Description << _("Bold\n");       break;
+                case wxFONTWEIGHT_EXTRABOLD:  Description << _("ExtraBold\n");  break;
+                case wxFONTWEIGHT_HEAVY:      Description << _("Heavy\n");      break;
+                case wxFONTWEIGHT_EXTRAHEAVY: Description << _("ExtraHeavy\n"); break;
+                case wxFONTWEIGHT_INVALID:    // fall-through
+                case wxFONTWEIGHT_NORMAL:     // fall-through
+                default:                      Description << _("Normal\n");
             }
         }
 
@@ -164,6 +172,7 @@ void wxsSimpleFontEditorDlg::UpdateFontDescription()
             {
                 case wxFONTSTYLE_ITALIC: Description << _("Italic\n"); break;
                 case wxFONTSTYLE_SLANT:  Description << _("Slant\n"); break;
+                case wxFONTSTYLE_MAX:    // fall-through
                 case wxFONTSTYLE_NORMAL: // fall-through
                 default:                 Description << _("Normal\n");
             }

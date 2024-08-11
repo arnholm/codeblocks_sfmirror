@@ -86,26 +86,26 @@ wxFont wxsFontData::BuildFont()
 
         if ( !Base.Ok() )                                      Base = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
-        if ( HasSize ) Base.SetPointSize(Size);
+        if ( HasSize )              Base.SetPointSize(Size);
         else if ( HasRelativeSize ) Base.SetPointSize((int)(Base.GetPointSize() * RelativeSize));
-        if ( HasStyle ) Base.SetStyle(Style);
-        if ( HasWeight ) Base.SetWeight(Weight);
-        if ( HasUnderlined ) Base.SetUnderlined(Underlined);
-        if ( HasFamily ) Base.SetFamily(Family);
-        if ( !Faces.empty() ) Base.SetFaceName(Face);
-        if ( HasEncoding ) Base.SetEncoding(Enc);
+        if ( HasStyle )             Base.SetStyle(Style);
+        if ( HasWeight )            Base.SetWeight(Weight);
+        if ( HasUnderlined )        Base.SetUnderlined(Underlined);
+        if ( HasFamily )            Base.SetFamily(Family);
+        if ( !Faces.empty() )       Base.SetFaceName(Face);
+        if ( HasEncoding )          Base.SetEncoding(Enc);
+
         return Base;
     }
 
     return wxFont(
-        // TODO (mortenmacfly#1#): wxDEFAULT looks like a bug to me: wxDEFAULT is 70, Size should be e.g. 8..12
-        HasSize ? Size : wxDEFAULT,
-        HasFamily ? Family : wxFONTFAMILY_DEFAULT,
-        HasStyle ? Style : wxFONTSTYLE_NORMAL,
-        HasWeight ? Weight : wxFONTWEIGHT_NORMAL,
+        HasSize       ? Size       : wxDEFAULT,            // PointSize, not FontSize!
+        HasFamily     ? Family     : wxFONTFAMILY_DEFAULT,
+        HasStyle      ? Style      : wxFONTSTYLE_NORMAL,
+        HasWeight     ? Weight     : wxFONTWEIGHT_NORMAL,
         HasUnderlined ? Underlined : false,
         Face,
-        HasEncoding ? Enc : wxFONTENCODING_DEFAULT);
+        HasEncoding   ? Enc        : wxFONTENCODING_DEFAULT);
 }
 
 wxString wxsFontData::BuildFontCode(const wxString& FontName,wxsCoderContext* Context)

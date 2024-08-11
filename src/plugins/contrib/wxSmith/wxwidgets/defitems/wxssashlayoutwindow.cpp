@@ -156,7 +156,6 @@ void wxsSashLayoutWindow::OnEnumContainerProperties(cb_unused long Flags)
 
     WXS_ENUM(wxsSashLayoutWindow, mAlign,  _("Alignment"),   "alignment",   valign,  nalign,  wxLAYOUT_LEFT);
     WXS_ENUM(wxsSashLayoutWindow, mOrient, _("Orientation"), "orientation", vorient, norient, wxLAYOUT_HORIZONTAL);
-
 }
 
 //------------------------------------------------------------------------------

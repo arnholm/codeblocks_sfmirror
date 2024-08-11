@@ -86,16 +86,6 @@ bool wxsContainer::OnCanAddChild(wxsItem* Item,bool ShowMessage)
     return true;
 }
 
-void wxsContainer::OnEnumItemProperties(long Flags)
-{
-    OnEnumContainerProperties(Flags);
-}
-
-void wxsContainer::OnAddItemQPP(wxsAdvQPP* QPP)
-{
-    OnAddContainerQPP(QPP);
-}
-
 void wxsContainer::AddChildrenPreview(wxWindow* This,long Flags)
 {
     for ( int i=0; i<GetChildCount(); i++ )
@@ -160,7 +150,6 @@ void wxsContainer::AddChildrenPreview(wxWindow* This,long Flags)
                 {
                     IndirectSizer->Fit(This);
                 }
-
                 IndirectSizer->SetSizeHints(This);
             }
         }
@@ -203,22 +192,26 @@ void wxsContainer::AddChildrenCode()
                     }
                 }
 
-                wxsBaseProperties* Props = GetBaseProps();
-                if ((GetPropertiesFlags() & flTopLevel) &&  Props->m_UseLayout)
+                wxsBaseProperties* Props      = GetBaseProps();
+                bool               IsTopLevel = GetPropertiesFlags() & flTopLevel;
+                if (Props && Props->m_UseLayout && IsTopLevel)
                 {
-                    for ( int i=0; i<GetChildCount(); i++ ) //See if item contains a sizer
+                    for ( int i=0; i<GetChildCount(); i++ ) // See if item contains a sizer
                     {
                         wxsItem* Child = GetChild(i);
                         if ( Child->GetType() == wxsTSizer )
                         {
-                            if ( Props->m_Size.IsDefault && Props->m_MinSize.IsDefault && Props->m_MaxSize.IsDefault)
+                            if ( Props->m_Size.IsDefault )
                             {
-                                wxString ChildAccessPrefix = Child->GetAccessPrefix(GetLanguage());
-                                Codef(_T("%sSetSizeHints(%O);\n"),ChildAccessPrefix.wx_str());
-                            }
-                            else if ( Props->m_Size.IsDefault )
-                            {
-                                Codef(_T("Fit();\n"));
+                                if ( Props->m_MinSize.IsDefault && Props->m_MaxSize.IsDefault )
+                                {
+                                    wxString ChildAccessPrefix = Child->GetAccessPrefix(GetLanguage());
+                                    Codef(_T("%sSetSizeHints(%O);\n"),ChildAccessPrefix.wx_str());
+                                }
+                                else
+                                {
+                                    Codef(_T("Fit();\n"));
+                                }
                             }
                             else
                             {
@@ -240,3 +233,14 @@ void wxsContainer::AddChildrenCode()
         }
     }
 }
+
+void wxsContainer::OnEnumItemProperties(long Flags)
+{
+    OnEnumContainerProperties(Flags);
+}
+
+void wxsContainer::OnAddItemQPP(wxsAdvQPP* QPP)
+{
+    OnAddContainerQPP(QPP);
+}
+

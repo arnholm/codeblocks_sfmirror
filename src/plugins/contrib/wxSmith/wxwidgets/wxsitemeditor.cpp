@@ -421,7 +421,7 @@ void wxsItemEditor::InsertRequest(const wxString& Name)
 
     switch ( m_InsType )
     {
-        case itAfter:
+        case itAfter: // fall-through
             RefIndex++;
             // We don't break here - continuing on itBefore code
 

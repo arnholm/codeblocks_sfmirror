@@ -548,6 +548,8 @@ void wxsFontEditorDlg::OnButton1Click1(cb_unused wxCommandEvent& event)
         case wxFONTFAMILY_SWISS:      FamVal->SetSelection(FFAM_SWISS); break;
         case wxFONTFAMILY_MODERN:     FamVal->SetSelection(FFAM_MODERN); break;
         case wxFONTFAMILY_TELETYPE:   FamVal->SetSelection(FFAM_TELETYPE); break;
+        case wxFONTFAMILY_UNKNOWN:
+        case wxFONTFAMILY_DEFAULT:
         default:                      FamUse->SetValue(false);
     }
 

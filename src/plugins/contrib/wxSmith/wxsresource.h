@@ -120,7 +120,7 @@ class wxsResource: public wxObject
          *  \retval true If something has been renamed
          *  \retval false Nothing has changed
          */
-        virtual bool Rename(const wxString &oldName, const wxString &newName) { return false; }
+        virtual bool Rename(cb_unused const wxString &oldName, cb_unused const wxString &newName) { return false; }
 
     protected:
 
