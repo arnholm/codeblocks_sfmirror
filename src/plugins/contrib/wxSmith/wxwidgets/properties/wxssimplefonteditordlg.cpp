@@ -150,16 +150,18 @@ void wxsSimpleFontEditorDlg::UpdateFontDescription()
             Description << _("Weight: ");
             switch ( m_WorkingCopy.Weight )
             {
+                case wxFONTWEIGHT_LIGHT:      Description << _("Light\n");      break;
+                case wxFONTWEIGHT_BOLD:       Description << _("Bold\n");       break;
+#if wxCHECK_VERSION(3, 1, 2)
                 case wxFONTWEIGHT_THIN:       Description << _("Thin\n");       break;
                 case wxFONTWEIGHT_EXTRALIGHT: Description << _("ExtraLight\n"); break;
-                case wxFONTWEIGHT_LIGHT:      Description << _("Light\n");      break;
                 case wxFONTWEIGHT_MEDIUM:     Description << _("Medium\n");     break;
                 case wxFONTWEIGHT_SEMIBOLD:   Description << _("SemiBold\n");   break;
-                case wxFONTWEIGHT_BOLD:       Description << _("Bold\n");       break;
                 case wxFONTWEIGHT_EXTRABOLD:  Description << _("ExtraBold\n");  break;
                 case wxFONTWEIGHT_HEAVY:      Description << _("Heavy\n");      break;
                 case wxFONTWEIGHT_EXTRAHEAVY: Description << _("ExtraHeavy\n"); break;
                 case wxFONTWEIGHT_INVALID:    // fall-through
+#endif
                 case wxFONTWEIGHT_NORMAL:     // fall-through
                 default:                      Description << _("Normal\n");
             }
