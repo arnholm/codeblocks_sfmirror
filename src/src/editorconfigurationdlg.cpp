@@ -469,7 +469,7 @@ void EditorConfigurationDlg::FillColourComponents()
     for (int i = 0; i < count; ++i)
     {
         OptionColour* opt = m_Theme->GetOptionByIndex(m_Lang, i);
-        if (colours->FindString(opt->name) == -1)
+        if (colours->FindString(opt->name) == wxNOT_FOUND)
             colours->Append(opt->name);
     }
     if (colours->GetCount() > 0)
@@ -503,28 +503,28 @@ void EditorConfigurationDlg::UpdateColourControls(const OptionColour *opt)
 {
     if (opt)
     {
-        wxColour c = opt->fore;
-        if (c == wxNullColour)
+        XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->SetColour(opt->fore);
+        if (opt->fore == opt->originalfore)
         {
-            XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
             XRCCTRL(*this, "stForeground", wxStaticText)->SetLabel(_("Foreground (default):"));
+            XRCCTRL(*this, "btnForeSetDefault", wxButton)->Disable();
         }
         else
         {
-            XRCCTRL(*this, "cpColoursFore", wxColourPickerCtrl)->SetColour(c);
             XRCCTRL(*this, "stForeground", wxStaticText)->SetLabel(_("Foreground:"));
+            XRCCTRL(*this, "btnForeSetDefault", wxButton)->Enable();
         }
 
-        c = opt->back;
-        if (c == wxNullColour)
+        XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->SetColour(opt->back);
+        if (opt->back == opt->originalback)
         {
-            XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
             XRCCTRL(*this, "stBackground", wxStaticText)->SetLabel(_("Background (default):"));
+            XRCCTRL(*this, "btnBackSetDefault", wxButton)->Disable();
         }
         else
         {
-            XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->SetColour(c);
             XRCCTRL(*this, "stBackground", wxStaticText)->SetLabel(_("Background:"));
+            XRCCTRL(*this, "btnBackSetDefault", wxButton)->Enable();
         }
 
         XRCCTRL(*this, "chkColoursBold", wxCheckBox)->SetValue(opt->bold);
@@ -535,9 +535,6 @@ void EditorConfigurationDlg::UpdateColourControls(const OptionColour *opt)
         XRCCTRL(*this, "chkColoursBold", wxCheckBox)->Enable(opt->isStyle);
         XRCCTRL(*this, "chkColoursItalics", wxCheckBox)->Enable(opt->isStyle);
         XRCCTRL(*this, "chkColoursUnderlined", wxCheckBox)->Enable(opt->isStyle);
-        bool isDefault = (opt->name == _("Default"));
-        XRCCTRL(*this, "btnForeSetDefault", wxButton)->Enable(!isDefault);
-        XRCCTRL(*this, "btnBackSetDefault", wxButton)->Enable(!isDefault);
     }
 }
 
@@ -554,13 +551,13 @@ void EditorConfigurationDlg::WriteColours()
             if (c != wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
                 opt->fore = c;
             else
-                opt->fore = wxNullColour;
+                opt->fore = opt->originalfore;
 
             c = XRCCTRL(*this, "cpColoursBack", wxColourPickerCtrl)->GetColour();
             if (c != wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE))
                 opt->back = c;
             else
-                opt->back = wxNullColour;
+                opt->back = opt->originalback;
 
             opt->bold = XRCCTRL(*this, "chkColoursBold", wxCheckBox)->GetValue();
             opt->italics = XRCCTRL(*this, "chkColoursItalics", wxCheckBox)->GetValue();
@@ -826,7 +823,7 @@ void EditorConfigurationDlg::OnColoursReset(cb_unused wxCommandEvent& event)
     {
         wxString tmp;
         tmp.Printf(_("Are you sure you want to reset all settings to defaults for \"%s\"?"),
-                    m_Theme->GetLanguageName(m_Lang).c_str());
+                    m_Theme->GetLanguageName(m_Lang));
         if (cbMessageBox(tmp, _("Confirmation"), wxICON_QUESTION | wxYES_NO, this) == wxID_YES)
         {
             m_Theme->Reset(m_Lang);
