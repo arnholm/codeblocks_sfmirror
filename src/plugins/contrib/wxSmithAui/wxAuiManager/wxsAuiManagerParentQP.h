@@ -20,15 +20,15 @@
 #define WXSAUIMANAGERPARENTQP_H
 
 //(*Headers(wxsAuiManagerParentQP)
-#include <wx/spinctrl.h>
 #include <wx/checkbox.h>
-#include <wx/sizer.h>
+#include <wx/choice.h>
 #include <wx/panel.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/spinctrl.h>
 #include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/choice.h>
-#include <wx/radiobox.h>
 //*)
 
 #include "wxsAuiManager.h"
@@ -42,82 +42,82 @@ class wxsAuiManagerParentQP: public wxsAdvQPPChild
         virtual ~wxsAuiManagerParentQP();
 
         //(*Declarations(wxsAuiManagerParentQP)
-        wxFlexGridSizer* FlexGridSizer1;
         wxCheckBox* BottomDockable;
-        wxSpinCtrl* Row;
-        wxStaticLine* StaticLine2;
-        wxSpinCtrl* Layer;
-        wxCheckBox* DestroyOnClose;
-        wxCheckBox* MaximizeButton;
-        wxCheckBox* DockTop;
-        wxCheckBox* LeftDockable;
-        wxCheckBox* PaneBorder;
-        wxRadioBox* Gripper;
-        wxCheckBox* DockCenter;
-        wxStaticText* StaticText1;
         wxCheckBox* CaptionVisible;
-        wxCheckBox* TopDockable;
-        wxTextCtrl* Caption;
-        wxStaticText* StaticText3;
-        wxCheckBox* Movable;
-        wxStaticLine* StaticLine1;
         wxCheckBox* CloseButton;
-        wxCheckBox* Visible;
-        wxCheckBox* MinimizeButton;
-        wxSpinCtrl* Position;
-        wxCheckBox* RightDockable;
-        wxCheckBox* DockRight;
-        wxStaticText* StaticText4;
-        wxCheckBox* PinButton;
-        wxCheckBox* Floatable;
-        wxStaticText* StaticText2;
-        wxCheckBox* DockFixed;
-        wxTextCtrl* Name;
+        wxCheckBox* DestroyOnClose;
         wxCheckBox* DockBottom;
-        wxChoice* StandardPane;
-        wxCheckBox* Docked;
+        wxCheckBox* DockCenter;
+        wxCheckBox* DockFixed;
         wxCheckBox* DockLeft;
+        wxCheckBox* DockRight;
+        wxCheckBox* DockTop;
+        wxCheckBox* Docked;
+        wxCheckBox* Floatable;
+        wxCheckBox* LeftDockable;
+        wxCheckBox* MaximizeButton;
+        wxCheckBox* MinimizeButton;
+        wxCheckBox* Movable;
+        wxCheckBox* PaneBorder;
+        wxCheckBox* PinButton;
         wxCheckBox* Resizable;
+        wxCheckBox* RightDockable;
+        wxCheckBox* TopDockable;
+        wxCheckBox* Visible;
+        wxChoice* StandardPane;
+        wxFlexGridSizer* FlexGridSizer1;
+        wxRadioBox* Gripper;
+        wxSpinCtrl* Layer;
+        wxSpinCtrl* Position;
+        wxSpinCtrl* Row;
+        wxStaticLine* StaticLine1;
+        wxStaticLine* StaticLine2;
+        wxStaticText* StaticText1;
+        wxStaticText* StaticText2;
+        wxStaticText* StaticText3;
+        wxStaticText* StaticText4;
+        wxTextCtrl* Caption;
+        wxTextCtrl* Name;
         //*)
 
     protected:
 
         //(*Identifiers(wxsAuiManagerParentQP)
-        static const long ID_STATICTEXT4;
-        static const long ID_TEXTCTRL1;
-        static const long ID_CHECKBOX18;
-        static const long ID_CHECKBOX15;
-        static const long ID_CHECKBOX20;
-        static const long ID_CHECKBOX21;
-        static const long ID_CHECKBOX19;
-        static const long ID_CHECKBOX22;
-        static const long ID_CHOICE1;
-        static const long ID_TEXTCTRL2;
-        static const long ID_CHECKBOX7;
-        static const long ID_CHECKBOX9;
-        static const long ID_CHECKBOX11;
-        static const long ID_CHECKBOX10;
-        static const long ID_CHECKBOX12;
-        static const long ID_CHECKBOX6;
-        static const long ID_CHECKBOX8;
-        static const long ID_STATICTEXT1;
-        static const long ID_SPINCTRL1;
-        static const long ID_STATICLINE1;
-        static const long ID_STATICTEXT2;
-        static const long ID_SPINCTRL2;
-        static const long ID_STATICLINE2;
-        static const long ID_STATICTEXT3;
-        static const long ID_SPINCTRL3;
-        static const long ID_CHECKBOX1;
-        static const long ID_CHECKBOX2;
-        static const long ID_CHECKBOX5;
-        static const long ID_CHECKBOX3;
-        static const long ID_CHECKBOX4;
-        static const long ID_CHECKBOX13;
-        static const long ID_CHECKBOX14;
-        static const long ID_CHECKBOX16;
-        static const long ID_CHECKBOX17;
-        static const long ID_RADIOBOX1;
+        static const wxWindowID ID_STATICTEXT4;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_CHECKBOX18;
+        static const wxWindowID ID_CHECKBOX15;
+        static const wxWindowID ID_CHECKBOX20;
+        static const wxWindowID ID_CHECKBOX21;
+        static const wxWindowID ID_CHECKBOX19;
+        static const wxWindowID ID_CHECKBOX22;
+        static const wxWindowID ID_CHOICE1;
+        static const wxWindowID ID_TEXTCTRL2;
+        static const wxWindowID ID_CHECKBOX7;
+        static const wxWindowID ID_CHECKBOX9;
+        static const wxWindowID ID_CHECKBOX11;
+        static const wxWindowID ID_CHECKBOX10;
+        static const wxWindowID ID_CHECKBOX12;
+        static const wxWindowID ID_CHECKBOX6;
+        static const wxWindowID ID_CHECKBOX8;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_SPINCTRL1;
+        static const wxWindowID ID_STATICLINE1;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_SPINCTRL2;
+        static const wxWindowID ID_STATICLINE2;
+        static const wxWindowID ID_STATICTEXT3;
+        static const wxWindowID ID_SPINCTRL3;
+        static const wxWindowID ID_CHECKBOX1;
+        static const wxWindowID ID_CHECKBOX2;
+        static const wxWindowID ID_CHECKBOX5;
+        static const wxWindowID ID_CHECKBOX3;
+        static const wxWindowID ID_CHECKBOX4;
+        static const wxWindowID ID_CHECKBOX13;
+        static const wxWindowID ID_CHECKBOX14;
+        static const wxWindowID ID_CHECKBOX16;
+        static const wxWindowID ID_CHECKBOX17;
+        static const wxWindowID ID_RADIOBOX1;
         //*)
 
         virtual void Update();

@@ -21,46 +21,46 @@
 #include <prep.h>
 
 //(*InternalHeaders(wxsAuiManagerParentQP)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(wxsAuiManagerParentQP)
-const long wxsAuiManagerParentQP::ID_STATICTEXT4 = wxNewId();
-const long wxsAuiManagerParentQP::ID_TEXTCTRL1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX18 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX15 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX20 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX21 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX19 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX22 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHOICE1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_TEXTCTRL2 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX7 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX9 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX11 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX10 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX12 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX6 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX8 = wxNewId();
-const long wxsAuiManagerParentQP::ID_STATICTEXT1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_SPINCTRL1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_STATICLINE1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_STATICTEXT2 = wxNewId();
-const long wxsAuiManagerParentQP::ID_SPINCTRL2 = wxNewId();
-const long wxsAuiManagerParentQP::ID_STATICLINE2 = wxNewId();
-const long wxsAuiManagerParentQP::ID_STATICTEXT3 = wxNewId();
-const long wxsAuiManagerParentQP::ID_SPINCTRL3 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX1 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX2 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX5 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX3 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX4 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX13 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX14 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX16 = wxNewId();
-const long wxsAuiManagerParentQP::ID_CHECKBOX17 = wxNewId();
-const long wxsAuiManagerParentQP::ID_RADIOBOX1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICTEXT4 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX18 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX15 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX20 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX21 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX19 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX22 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHOICE1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX7 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX9 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX11 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX10 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX12 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX6 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX8 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_SPINCTRL1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICLINE1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICTEXT2 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_SPINCTRL2 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICLINE2 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_STATICTEXT3 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_SPINCTRL3 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX5 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX3 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX4 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX13 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX14 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX16 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_CHECKBOX17 = wxNewId();
+const wxWindowID wxsAuiManagerParentQP::ID_RADIOBOX1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsAuiManagerParentQP,wxsAdvQPPChild)
@@ -73,26 +73,26 @@ wxsAuiManagerParentQP::wxsAuiManagerParentQP(wxsAdvQPP* parent, wxsAuiPaneInfoEx
     m_Extra(Extra)
 {
     //(*Initialize(wxsAuiManagerParentQP)
-    wxStaticBoxSizer* StaticBoxSizer2;
-    wxGridSizer* GridSizer1;
-    wxFlexGridSizer* FlexGridSizer2;
-    wxBoxSizer* BoxSizer3;
-    wxStaticBoxSizer* StaticBoxSizer7;
-    wxStaticBoxSizer* StaticBoxSizer5;
-    wxGridSizer* GridSizer3;
-    wxFlexGridSizer* FlexGridSizer7;
-    wxBoxSizer* BoxSizer2;
-    wxFlexGridSizer* FlexGridSizer4;
-    wxStaticBoxSizer* StaticBoxSizer3;
-    wxFlexGridSizer* FlexGridSizer6;
-    wxFlexGridSizer* FlexGridSizer3;
-    wxBoxSizer* BoxSizer4;
-    wxStaticBoxSizer* StaticBoxSizer4;
-    wxStaticBoxSizer* StaticBoxSizer6;
     wxBoxSizer* BoxSizer1;
-    wxFlexGridSizer* FlexGridSizer5;
+    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer5;
+    wxFlexGridSizer* FlexGridSizer2;
+    wxFlexGridSizer* FlexGridSizer3;
+    wxFlexGridSizer* FlexGridSizer4;
+    wxFlexGridSizer* FlexGridSizer5;
+    wxFlexGridSizer* FlexGridSizer6;
+    wxFlexGridSizer* FlexGridSizer7;
+    wxGridSizer* GridSizer1;
+    wxGridSizer* GridSizer3;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxStaticBoxSizer* StaticBoxSizer2;
+    wxStaticBoxSizer* StaticBoxSizer3;
+    wxStaticBoxSizer* StaticBoxSizer4;
+    wxStaticBoxSizer* StaticBoxSizer5;
+    wxStaticBoxSizer* StaticBoxSizer6;
+    wxStaticBoxSizer* StaticBoxSizer7;
 
     Create(parent, wxID_ANY, wxPoint(-1,-1), wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
@@ -255,45 +255,44 @@ wxsAuiManagerParentQP::wxsAuiManagerParentQP(wxsAdvQPP* parent, wxsAuiPaneInfoEx
     FlexGridSizer1->Add(StaticBoxSizer1, 1, wxLEFT|wxRIGHT|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_1[3] =
     {
-    	_("None"),
-    	_("Default"),
-    	_("Top")
+      _("None"),
+      _("Default"),
+      _("Top")
     };
     Gripper = new wxRadioBox(this, ID_RADIOBOX1, _("Gripper"), wxDefaultPosition, wxDefaultSize, 3, __wxRadioBoxChoices_1, 1, 0, wxDefaultValidator, _T("ID_RADIOBOX1"));
     FlexGridSizer1->Add(Gripper, 1, wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(FlexGridSizer1);
-    FlexGridSizer1->Fit(this);
     FlexGridSizer1->SetSizeHints(this);
 
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnNameChange);
-    Connect(ID_CHECKBOX18,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHECKBOX15,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHECKBOX20,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHECKBOX21,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHECKBOX19,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHECKBOX22,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGeneralChange);
-    Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnStandardPaneChange);
-    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionChange);
-    Connect(ID_CHECKBOX7,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionVisibleClick);
-    Connect(ID_CHECKBOX9,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionButtonClick);
-    Connect(ID_CHECKBOX11,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionButtonClick);
-    Connect(ID_CHECKBOX10,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionButtonClick);
-    Connect(ID_CHECKBOX12,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnCaptionButtonClick);
-    Connect(ID_CHECKBOX6,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockChange);
-    Connect(ID_CHECKBOX8,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockChange);
-    Connect(ID_SPINCTRL1,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockSiteChange);
-    Connect(ID_SPINCTRL2,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockSiteChange);
-    Connect(ID_SPINCTRL3,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockSiteChange);
-    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockDirectionChange);
-    Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockDirectionChange);
-    Connect(ID_CHECKBOX5,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockDirectionChange);
-    Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockDirectionChange);
-    Connect(ID_CHECKBOX4,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockDirectionChange);
-    Connect(ID_CHECKBOX13,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockableChange);
-    Connect(ID_CHECKBOX14,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockableChange);
-    Connect(ID_CHECKBOX16,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockableChange);
-    Connect(ID_CHECKBOX17,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnDockableChange);
-    Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&wxsAuiManagerParentQP::OnGripperSelect);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(wxsAuiManagerParentQP::OnNameChange));
+    Connect(ID_CHECKBOX18,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHECKBOX15,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHECKBOX20,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHECKBOX21,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHECKBOX19,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHECKBOX22,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGeneralChange));
+    Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,wxCommandEventHandler(wxsAuiManagerParentQP::OnStandardPaneChange));
+    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionChange));
+    Connect(ID_CHECKBOX7,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionVisibleClick));
+    Connect(ID_CHECKBOX9,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionButtonClick));
+    Connect(ID_CHECKBOX11,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionButtonClick));
+    Connect(ID_CHECKBOX10,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionButtonClick));
+    Connect(ID_CHECKBOX12,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnCaptionButtonClick));
+    Connect(ID_CHECKBOX6,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockChange));
+    Connect(ID_CHECKBOX8,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockChange));
+    Connect(ID_SPINCTRL1,wxEVT_COMMAND_SPINCTRL_UPDATED,wxSpinEventHandler(wxsAuiManagerParentQP::OnDockSiteChange));
+    Connect(ID_SPINCTRL2,wxEVT_COMMAND_SPINCTRL_UPDATED,wxSpinEventHandler(wxsAuiManagerParentQP::OnDockSiteChange));
+    Connect(ID_SPINCTRL3,wxEVT_COMMAND_SPINCTRL_UPDATED,wxSpinEventHandler(wxsAuiManagerParentQP::OnDockSiteChange));
+    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockDirectionChange));
+    Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockDirectionChange));
+    Connect(ID_CHECKBOX5,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockDirectionChange));
+    Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockDirectionChange));
+    Connect(ID_CHECKBOX4,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockDirectionChange));
+    Connect(ID_CHECKBOX13,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockableChange));
+    Connect(ID_CHECKBOX14,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockableChange));
+    Connect(ID_CHECKBOX16,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockableChange));
+    Connect(ID_CHECKBOX17,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiManagerParentQP::OnDockableChange));
+    Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,wxCommandEventHandler(wxsAuiManagerParentQP::OnGripperSelect));
     //*)
 
     ReadData();

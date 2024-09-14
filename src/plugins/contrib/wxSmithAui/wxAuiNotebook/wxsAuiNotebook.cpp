@@ -32,14 +32,14 @@ using namespace wxsFlags;
 
 //(*Headers(wxsAuiNotebookParentQP)
 #include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/textctrl.h>
 //*)
 
 //(*InternalHeaders(wxsAuiNotebookParentQP)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 namespace
@@ -109,11 +109,10 @@ namespace
                 StaticBoxSizer2->Add(Selected, 1, wxBOTTOM|wxEXPAND, 5);
                 FlexGridSizer1->Add(StaticBoxSizer2, 1, wxLEFT|wxRIGHT|wxEXPAND, 5);
                 SetSizer(FlexGridSizer1);
-                FlexGridSizer1->Fit(this);
                 FlexGridSizer1->SetSizeHints(this);
 
-                Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&wxsAuiNotebookParentQP::OnLabelText);
-                Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&wxsAuiNotebookParentQP::OnSelectionChange);
+                Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(wxsAuiNotebookParentQP::OnLabelText));
+                Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsAuiNotebookParentQP::OnSelectionChange));
                 //*)
                 ReadData();
 
@@ -149,8 +148,8 @@ namespace
             }
 
             //(*Identifiers(wxsAuiNotebookParentQP)
-            static const long ID_TEXTCTRL1;
-            static const long ID_CHECKBOX1;
+            static const wxWindowID ID_TEXTCTRL1;
+            static const wxWindowID ID_CHECKBOX1;
             //*)
 
             //(*Handlers(wxsAuiNotebookParentQP)
@@ -160,11 +159,11 @@ namespace
             //*)
 
             //(*Declarations(wxsAuiNotebookParentQP)
+            wxCheckBox* Selected;
+            wxFlexGridSizer* FlexGridSizer1;
+            wxStaticBoxSizer* StaticBoxSizer1;
             wxStaticBoxSizer* StaticBoxSizer2;
             wxTextCtrl* Label;
-            wxFlexGridSizer* FlexGridSizer1;
-            wxCheckBox* Selected;
-            wxStaticBoxSizer* StaticBoxSizer1;
             //*)
 
             wxsAuiNotebookExtra* m_Extra;
@@ -173,8 +172,8 @@ namespace
     };
 
     //(*IdInit(wxsAuiNotebookParentQP)
-    const long wxsAuiNotebookParentQP::ID_TEXTCTRL1 = wxNewId();
-    const long wxsAuiNotebookParentQP::ID_CHECKBOX1 = wxNewId();
+    const wxWindowID wxsAuiNotebookParentQP::ID_TEXTCTRL1 = wxNewId();
+    const wxWindowID wxsAuiNotebookParentQP::ID_CHECKBOX1 = wxNewId();
     //*)
 
     BEGIN_EVENT_TABLE(wxsAuiNotebookParentQP,wxPanel)
