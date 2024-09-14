@@ -202,17 +202,17 @@ CCTestFrame::CCTestFrame(const wxString& main_file) :
     bsz_main->SetSizeHints(this);
     Center();
 
-    Connect(wxID_TEST_SINGLE, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&CCTestFrame::OnTestSingle);
-    Connect(wxID_PARSE, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&CCTestFrame::OnParse);
-    Connect(wxID_PRINT_TREE, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&CCTestFrame::OnPrintTree);
-    Connect(wxID_SAVE_TEST_RESULT, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&CCTestFrame::OnSaveTestResultClick);
-    Connect(wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuOpenSelected);
-    Connect(wxID_REFRESH, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuReparseSelected);
-    Connect(wxID_SAVE, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuSaveSelected);
-    Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuQuitSelected);
-    Connect(wxID_FIND, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuFindSelected);
-    Connect(wxID_TOKEN, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuTokenSelected);
-    Connect(wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&CCTestFrame::OnMenuAboutSelected);
+    Connect(wxID_TEST_SINGLE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnTestSingle));
+    Connect(wxID_PARSE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnParse));
+    Connect(wxID_PRINT_TREE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnPrintTree));
+    Connect(wxID_SAVE_TEST_RESULT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CCTestFrame::OnSaveTestResultClick));
+    Connect(wxID_OPEN,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuOpenSelected));
+    Connect(wxID_REFRESH,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuReparseSelected));
+    Connect(wxID_SAVE,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuSaveSelected));
+    Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuQuitSelected));
+    Connect(wxID_FIND,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuFindSelected));
+    Connect(wxID_TOKEN,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuTokenSelected));
+    Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(CCTestFrame::OnMenuAboutSelected));
     //*)
 
     Manager::Get()->GetPersonalityManager()->MarkAsReady();

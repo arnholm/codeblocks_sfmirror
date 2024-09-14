@@ -24,9 +24,9 @@
 //*)
 
 //(*IdInit(GotoFunctionDlg)
-const long GotoFunctionDlg::ID_CHECKBOX1 = wxNewId();
-const long GotoFunctionDlg::ID_TEXTCTRL1 = wxNewId();
-const long GotoFunctionDlg::ID_LISTCTRL1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_LISTCTRL1 = wxNewId();
 //*)
 
 GotoFunctionDlg::Iterator::Iterator() : m_columnLength{ 300, 100, 300 }, m_columnMode(false)
@@ -152,6 +152,7 @@ void GotoFunctionDlg::BuildContent(wxWindow* parent, Iterator* iterator)
     BoxSizer1->Add(m_list, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(BoxSizer1);
     BoxSizer1->SetSizeHints(this);
+    Center();
 
     Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(GotoFunctionDlg::OnModeClick));
     //*)
