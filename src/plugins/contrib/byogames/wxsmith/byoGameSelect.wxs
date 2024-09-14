@@ -38,9 +38,7 @@
 						<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="yes">
 							<label>Select game</label>
 							<object class="sizeritem">
-								<object class="wxListBox" name="ID_LISTBOX1" variable="m_GamesList" member="yes">
-									<size>320,177</size>
-								</object>
+								<object class="wxListBox" name="ID_LISTBOX1" variable="m_GamesList" member="yes" />
 								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 								<border>4</border>
 								<option>1</option>
@@ -74,7 +72,6 @@
 									<object class="spacer">
 										<flag>wxEXPAND</flag>
 										<border>4</border>
-										<size>71,18</size>
 									</object>
 								</object>
 								<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>

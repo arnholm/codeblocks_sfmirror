@@ -19,24 +19,24 @@
 //*)
 
 //(*IdInit(byoConf)
-const long byoConf::ID_CHECKBOX1 = wxNewId();
-const long byoConf::ID_SPINCTRL1 = wxNewId();
-const long byoConf::ID_CHECKBOX2 = wxNewId();
-const long byoConf::ID_SPINCTRL2 = wxNewId();
-const long byoConf::ID_CHECKBOX3 = wxNewId();
-const long byoConf::ID_SPINCTRL3 = wxNewId();
-const long byoConf::ID_STATICTEXT1 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL1 = wxNewId();
-const long byoConf::ID_STATICTEXT2 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL2 = wxNewId();
-const long byoConf::ID_STATICTEXT3 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL3 = wxNewId();
-const long byoConf::ID_STATICTEXT4 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL4 = wxNewId();
-const long byoConf::ID_STATICTEXT5 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL5 = wxNewId();
-const long byoConf::ID_STATICTEXT6 = wxNewId();
-const long byoConf::ID_COLOURPICKERCTRL6 = wxNewId();
+const wxWindowID byoConf::ID_CHECKBOX1 = wxNewId();
+const wxWindowID byoConf::ID_SPINCTRL1 = wxNewId();
+const wxWindowID byoConf::ID_CHECKBOX2 = wxNewId();
+const wxWindowID byoConf::ID_SPINCTRL2 = wxNewId();
+const wxWindowID byoConf::ID_CHECKBOX3 = wxNewId();
+const wxWindowID byoConf::ID_SPINCTRL3 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT1 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL1 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT2 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL2 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT3 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL3 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT4 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL4 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT5 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL5 = wxNewId();
+const wxWindowID byoConf::ID_STATICTEXT6 = wxNewId();
+const wxWindowID byoConf::ID_COLOURPICKERCTRL6 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(byoConf,wxPanel)
@@ -80,41 +80,42 @@ byoConf::byoConf(wxWindow* parent,wxWindowID id)
 	FlexGridSizer3->AddGrowableCol(7);
 	FlexGridSizer3->AddGrowableRow(0);
 	FlexGridSizer3->AddGrowableRow(1);
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("1"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _T("1"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer3->Add(StaticText1, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col1 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL1, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL1"));
 	FlexGridSizer3->Add(m_Col1, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
 	FlexGridSizer3->Add(-1,-1,1, wxALL|wxEXPAND, 4);
-	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _T("3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	FlexGridSizer3->Add(StaticText2, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col3 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL2, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL2"));
 	FlexGridSizer3->Add(m_Col3, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
 	FlexGridSizer3->Add(-1,-1,1, wxALL|wxEXPAND, 4);
-	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("5"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _T("5"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	FlexGridSizer3->Add(StaticText3, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col5 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL3, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL3"));
 	FlexGridSizer3->Add(m_Col5, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
-	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("2"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _T("2"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	FlexGridSizer3->Add(StaticText4, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col2 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL4, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL4"));
 	FlexGridSizer3->Add(m_Col2, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
-	FlexGridSizer3->Add(0,0,1, wxALL|wxEXPAND, 4);
-	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("4"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	FlexGridSizer3->Add(-1,-1,1, wxALL|wxEXPAND, 4);
+	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _T("4"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	FlexGridSizer3->Add(StaticText5, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col4 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL5, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL5"));
 	FlexGridSizer3->Add(m_Col4, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
 	FlexGridSizer3->Add(-1,-1,1, wxALL|wxEXPAND, 4);
-	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("6"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _T("6"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	FlexGridSizer3->Add(StaticText6, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 4);
 	m_Col6 = new wxColourPickerCtrl(this, ID_COLOURPICKERCTRL6, wxColour(0,0,0), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COLOURPICKERCTRL6"));
 	FlexGridSizer3->Add(m_Col6, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 4);
 	StaticBoxSizer2->Add(FlexGridSizer3, 1, wxEXPAND, 4);
 	FlexGridSizer1->Add(StaticBoxSizer2, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 4);
 	SetSizer(FlexGridSizer1);
+	FlexGridSizer1->SetSizeHints(this);
 
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&byoConf::BTWSRefresh);
-	Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&byoConf::BTWSRefresh);
-	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&byoConf::BTWSRefresh);
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(byoConf::BTWSRefresh));
+	Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(byoConf::BTWSRefresh));
+	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(byoConf::BTWSRefresh));
 	//*)
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager("byogames");
