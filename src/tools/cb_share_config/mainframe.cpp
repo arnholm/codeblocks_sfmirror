@@ -43,21 +43,21 @@
 //*)
 
 //(*IdInit(MainFrame)
-const long MainFrame::ID_LBL_STEPS = wxNewId();
-const long MainFrame::ID_LBL_FILE_SRC = wxNewId();
-const long MainFrame::ID_LBL_FILE_DST = wxNewId();
-const long MainFrame::ID_TXT_FILE_SRC = wxNewId();
-const long MainFrame::ID_BTN_FILE_SRC = wxNewId();
-const long MainFrame::ID_TXT_FILE_DST = wxNewId();
-const long MainFrame::ID_BTN_FILE_DST = wxNewId();
-const long MainFrame::ID_CFG_SRC = wxNewId();
-const long MainFrame::ID_LST_CFG = wxNewId();
-const long MainFrame::ID_BTN_TRANSFER = wxNewId();
-const long MainFrame::ID_BTN_UNCHECK = wxNewId();
-const long MainFrame::ID_BTN_EXPORT_ALL = wxNewId();
-const long MainFrame::ID_BTN_EXPORT = wxNewId();
-const long MainFrame::ID_BTN_SAVE = wxNewId();
-const long MainFrame::ID_BTN_CLOSE = wxNewId();
+const wxWindowID MainFrame::ID_LBL_STEPS = wxNewId();
+const wxWindowID MainFrame::ID_LBL_FILE_SRC = wxNewId();
+const wxWindowID MainFrame::ID_LBL_FILE_DST = wxNewId();
+const wxWindowID MainFrame::ID_TXT_FILE_SRC = wxNewId();
+const wxWindowID MainFrame::ID_BTN_FILE_SRC = wxNewId();
+const wxWindowID MainFrame::ID_TXT_FILE_DST = wxNewId();
+const wxWindowID MainFrame::ID_BTN_FILE_DST = wxNewId();
+const wxWindowID MainFrame::ID_CFG_SRC = wxNewId();
+const wxWindowID MainFrame::ID_LST_CFG = wxNewId();
+const wxWindowID MainFrame::ID_BTN_TRANSFER = wxNewId();
+const wxWindowID MainFrame::ID_BTN_UNCHECK = wxNewId();
+const wxWindowID MainFrame::ID_BTN_EXPORT_ALL = wxNewId();
+const wxWindowID MainFrame::ID_BTN_EXPORT = wxNewId();
+const wxWindowID MainFrame::ID_BTN_SAVE = wxNewId();
+const wxWindowID MainFrame::ID_BTN_CLOSE = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(MainFrame,wxFrame)
@@ -100,7 +100,7 @@ MainFrame::MainFrame(wxWindow* parent,wxWindowID id) :
 	flsFileSrc->AddGrowableCol(0);
 	txtFileSrc = new wxTextCtrl(this, ID_TXT_FILE_SRC, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY, wxDefaultValidator, _T("ID_TXT_FILE_SRC"));
 	flsFileSrc->Add(txtFileSrc, 0, wxEXPAND, 0);
-	btnFileSrc = new wxButton(this, ID_BTN_FILE_SRC, _("..."), wxDefaultPosition, wxSize(32,-1), 0, wxDefaultValidator, _T("ID_BTN_FILE_SRC"));
+	btnFileSrc = new wxButton(this, ID_BTN_FILE_SRC, _T("..."), wxDefaultPosition, wxSize(32,-1), 0, wxDefaultValidator, _T("ID_BTN_FILE_SRC"));
 	btnFileSrc->SetToolTip(_("Select the source C::B configuration file."));
 	flsFileSrc->Add(btnFileSrc, 0, wxLEFT|wxALIGN_RIGHT|wxALIGN_TOP, 5);
 	grsFile->Add(flsFileSrc, 0, wxRIGHT|wxEXPAND, 5);
@@ -108,7 +108,7 @@ MainFrame::MainFrame(wxWindow* parent,wxWindowID id) :
 	flsFileDst->AddGrowableCol(0);
 	txtFileDst = new wxTextCtrl(this, ID_TXT_FILE_DST, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY, wxDefaultValidator, _T("ID_TXT_FILE_DST"));
 	flsFileDst->Add(txtFileDst, 0, wxEXPAND, 0);
-	btnFileDst = new wxButton(this, ID_BTN_FILE_DST, _("..."), wxDefaultPosition, wxSize(32,-1), 0, wxDefaultValidator, _T("ID_BTN_FILE_DST"));
+	btnFileDst = new wxButton(this, ID_BTN_FILE_DST, _T("..."), wxDefaultPosition, wxSize(32,-1), 0, wxDefaultValidator, _T("ID_BTN_FILE_DST"));
 	btnFileDst->SetToolTip(_("Select the destination C::B configuration file."));
 	flsFileDst->Add(btnFileDst, 0, wxLEFT|wxALIGN_RIGHT|wxALIGN_TOP, 5);
 	grsFile->Add(flsFileDst, 0, wxLEFT|wxEXPAND, 5);
