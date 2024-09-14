@@ -3,8 +3,8 @@
 
 #ifndef CB_PRECOMP
 	//(*InternalHeadersPCH(DebuggerSettingsPanel)
-	#include <wx/string.h>
 	#include <wx/intl.h>
+	#include <wx/string.h>
 	//*)
 
 	#include <wx/textdlg.h>
@@ -18,10 +18,10 @@
 #include "debuggersettingsdlg.h"
 
 //(*IdInit(DebuggerSettingsPanel)
-const long DebuggerSettingsPanel::ID_BUTTON_CREATE = wxNewId();
-const long DebuggerSettingsPanel::ID_BUTTON_DELETE = wxNewId();
-const long DebuggerSettingsPanel::ID_BUTTON_RESET = wxNewId();
-const long DebuggerSettingsPanel::ID_TEXTCTRL_INFO = wxNewId();
+const wxWindowID DebuggerSettingsPanel::ID_BUTTON_CREATE = wxNewId();
+const wxWindowID DebuggerSettingsPanel::ID_BUTTON_DELETE = wxNewId();
+const wxWindowID DebuggerSettingsPanel::ID_BUTTON_RESET = wxNewId();
+const wxWindowID DebuggerSettingsPanel::ID_TEXTCTRL_INFO = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(DebuggerSettingsPanel,wxPanel)
@@ -35,12 +35,12 @@ DebuggerSettingsPanel::DebuggerSettingsPanel(wxWindow* parent, DebuggerSettingsD
 {
 	//(*Initialize(DebuggerSettingsPanel)
 	wxBoxSizer* buttonSizer;
-	wxTextCtrl* textInfo;
-	wxButton* butReset;
-	wxButton* butCreate;
 	wxBoxSizer* mainSizer;
-	wxStaticBoxSizer* infoSizer;
+	wxButton* butCreate;
 	wxButton* butDelete;
+	wxButton* butReset;
+	wxStaticBoxSizer* infoSizer;
+	wxTextCtrl* textInfo;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -53,17 +53,16 @@ DebuggerSettingsPanel::DebuggerSettingsPanel(wxWindow* parent, DebuggerSettingsD
 	buttonSizer->Add(butReset, 1, wxLEFT|wxALIGN_BOTTOM, 5);
 	mainSizer->Add(buttonSizer, 0, wxALL|wxEXPAND|wxSHAPED, 0);
 	infoSizer = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Info"));
-	textInfo = new wxTextCtrl(this, ID_TEXTCTRL_INFO, wxEmptyString, wxDefaultPosition, wxSize(186,243), 0, wxDefaultValidator, _T("ID_TEXTCTRL_INFO"));
+	textInfo = new wxTextCtrl(this, ID_TEXTCTRL_INFO, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL_INFO"));
 	textInfo->Disable();
 	infoSizer->Add(textInfo, 1, wxEXPAND, 5);
 	mainSizer->Add(infoSizer, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 0);
 	SetSizer(mainSizer);
-	mainSizer->Fit(this);
 	mainSizer->SetSizeHints(this);
 
-	Connect(ID_BUTTON_CREATE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DebuggerSettingsPanel::OnButtonCreate);
-	Connect(ID_BUTTON_DELETE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DebuggerSettingsPanel::OnButtonDelete);
-	Connect(ID_BUTTON_RESET,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DebuggerSettingsPanel::OnButtonReset);
+	Connect(ID_BUTTON_CREATE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(DebuggerSettingsPanel::OnButtonCreate));
+	Connect(ID_BUTTON_DELETE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(DebuggerSettingsPanel::OnButtonDelete));
+	Connect(ID_BUTTON_RESET,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(DebuggerSettingsPanel::OnButtonReset));
 	//*)
 
 	// If this debugger plugin is used to debug some program at the moment

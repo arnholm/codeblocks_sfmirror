@@ -3,8 +3,8 @@
 
 #ifndef CB_PRECOMP
     //(*InternalHeadersPCH(DebuggerSettingsCommonPanel)
-    #include <wx/string.h>
     #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 
     #include <wx/fontutil.h>
@@ -18,14 +18,14 @@
 //*)
 
 //(*IdInit(DebuggerSettingsCommonPanel)
-const long DebuggerSettingsCommonPanel::ID_AUTOBUILD = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_AUTOSWITCH = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_DEBUGGERS_LOG = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_JUMP_ON_DOUBLE_CLICK = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_REQUIRE_CTRL_FOR_TOOLTIPS = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_VALUE_TOOLTIP_LABEL = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_BUTTON_CHOOSE_FONT = wxNewId();
-const long DebuggerSettingsCommonPanel::ID_CHOICE_PERSPECTIVE = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_AUTOBUILD = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_AUTOSWITCH = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_DEBUGGERS_LOG = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_JUMP_ON_DOUBLE_CLICK = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_REQUIRE_CTRL_FOR_TOOLTIPS = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_VALUE_TOOLTIP_LABEL = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_BUTTON_CHOOSE_FONT = wxNewId();
+const wxWindowID DebuggerSettingsCommonPanel::ID_CHOICE_PERSPECTIVE = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(DebuggerSettingsCommonPanel,wxPanel)
@@ -80,10 +80,9 @@ DebuggerSettingsCommonPanel::DebuggerSettingsCommonPanel(wxWindow* parent)
 	flexSizer->Add(BoxSizer1, 1, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
 	mainSizer->Add(flexSizer, 1, wxALL|wxALIGN_LEFT, 0);
 	SetSizer(mainSizer);
-	mainSizer->Fit(this);
 	mainSizer->SetSizeHints(this);
 
-	Connect(ID_BUTTON_CHOOSE_FONT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DebuggerSettingsCommonPanel::OnChooseFontClick);
+	Connect(ID_BUTTON_CHOOSE_FONT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(DebuggerSettingsCommonPanel::OnChooseFontClick));
 	//*)
 
     m_autoBuild->SetValue(cbDebuggerCommonConfig::GetFlag(cbDebuggerCommonConfig::AutoBuild));

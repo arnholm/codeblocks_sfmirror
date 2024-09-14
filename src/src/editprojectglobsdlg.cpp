@@ -22,15 +22,15 @@
 //*)
 
 //(*IdInit(EditProjectGlobsDlg)
-const long EditProjectGlobsDlg::ID_TEXTPATH = wxNewId();
-const long EditProjectGlobsDlg::ID_BTN_BROWSE = wxNewId();
-const long EditProjectGlobsDlg::ID_BTN_OTHER = wxNewId();
-const long EditProjectGlobsDlg::ID_TXT_WILDCART = wxNewId();
-const long EditProjectGlobsDlg::ID_CHECK_RECURSIVE = wxNewId();
-const long EditProjectGlobsDlg::ID_STATICTEXT1 = wxNewId();
-const long EditProjectGlobsDlg::ID_CHK_ALL_NONE = wxNewId();
-const long EditProjectGlobsDlg::ID_LST_TARGETS = wxNewId();
-const long EditProjectGlobsDlg::ID_CHECK_ADD_TO_PROJECT = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_TEXTPATH = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_BTN_BROWSE = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_BTN_OTHER = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_TXT_WILDCART = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_CHECK_RECURSIVE = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_CHK_ALL_NONE = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_LST_TARGETS = wxNewId();
+const wxWindowID EditProjectGlobsDlg::ID_CHECK_ADD_TO_PROJECT = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(EditProjectGlobsDlg,wxDialog)
@@ -53,7 +53,6 @@ EditProjectGlobsDlg::EditProjectGlobsDlg(const cbProject* prj, const ProjectGlob
 	wxStaticText* StaticText2;
 
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
-	SetClientSize(wxSize(349,187));
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Path"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -81,7 +80,7 @@ EditProjectGlobsDlg::EditProjectGlobsDlg(const cbProject* prj, const ProjectGlob
 	BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT1, _("Targets:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	BoxSizer7->Add(StaticText3, 0, wxALIGN_LEFT, 5);
-	BoxSizer7->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer7->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	chkAllNone = new wxCheckBox(this, ID_CHK_ALL_NONE, _("All/None"), wxDefaultPosition, wxDefaultSize, wxCHK_3STATE, wxDefaultValidator, _T("ID_CHK_ALL_NONE"));
 	chkAllNone->SetValue(false);
 	BoxSizer7->Add(chkAllNone, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -101,13 +100,14 @@ EditProjectGlobsDlg::EditProjectGlobsDlg(const cbProject* prj, const ProjectGlob
 	StdDialogButtonSizer1->Realize();
 	BoxSizer3->Add(StdDialogButtonSizer1, 0, wxALL|wxEXPAND, 5);
 	SetSizer(BoxSizer3);
-	Layout();
+	BoxSizer3->SetSizeHints(this);
+	Center();
 
-	Connect(ID_TEXTPATH,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&EditProjectGlobsDlg::OntxtPathText);
-	Connect(ID_BTN_BROWSE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EditProjectGlobsDlg::OnBrowseClick);
-	Connect(ID_BTN_OTHER,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EditProjectGlobsDlg::OnOtherClick);
-	Connect(ID_CHK_ALL_NONE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&EditProjectGlobsDlg::OnAllNoneClick);
-	Connect(ID_LST_TARGETS,wxEVT_COMMAND_CHECKLISTBOX_TOGGLED,(wxObjectEventFunction)&EditProjectGlobsDlg::OnTargetsToggled);
+	Connect(ID_TEXTPATH,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(EditProjectGlobsDlg::OntxtPathText));
+	Connect(ID_BTN_BROWSE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(EditProjectGlobsDlg::OnBrowseClick));
+	Connect(ID_BTN_OTHER,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(EditProjectGlobsDlg::OnOtherClick));
+	Connect(ID_CHK_ALL_NONE,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(EditProjectGlobsDlg::OnAllNoneClick));
+	Connect(ID_LST_TARGETS,wxEVT_COMMAND_CHECKLISTBOX_TOGGLED,wxCommandEventHandler(EditProjectGlobsDlg::OnTargetsToggled));
 	//*)
 
     StdDialogButtonSizer1->GetAffirmativeButton()->Disable();

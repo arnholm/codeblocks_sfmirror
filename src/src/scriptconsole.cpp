@@ -32,13 +32,13 @@
 //*)
 
 //(*IdInit(ScriptConsole)
-const long ScriptConsole::ID_TEXTCTRL1 = wxNewId();
-const long ScriptConsole::ID_STATICTEXT1 = wxNewId();
-const long ScriptConsole::ID_COMBOBOX1 = wxNewId();
-const long ScriptConsole::ID_BITMAPBUTTON1 = wxNewId();
-const long ScriptConsole::ID_BITMAPBUTTON2 = wxNewId();
-const long ScriptConsole::ID_BITMAPBUTTON3 = wxNewId();
-const long ScriptConsole::ID_PANEL1 = wxNewId();
+const wxWindowID ScriptConsole::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID ScriptConsole::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ScriptConsole::ID_COMBOBOX1 = wxNewId();
+const wxWindowID ScriptConsole::ID_BITMAPBUTTON1 = wxNewId();
+const wxWindowID ScriptConsole::ID_BITMAPBUTTON2 = wxNewId();
+const wxWindowID ScriptConsole::ID_BITMAPBUTTON3 = wxNewId();
+const wxWindowID ScriptConsole::ID_PANEL1 = wxNewId();
 //*)
 
 static ScriptConsole* s_Console = nullptr;
@@ -103,17 +103,14 @@ ScriptConsole::ScriptConsole(wxWindow* parent,wxWindowID id)
     btnClear->SetToolTip(_("Clear output window"));
     BoxSizer2->Add(btnClear, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
     Panel1->SetSizer(BoxSizer2);
-    BoxSizer2->Fit(Panel1);
-    BoxSizer2->SetSizeHints(Panel1);
     BoxSizer1->Add(Panel1, 0, wxALL|wxEXPAND, 0);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&ScriptConsole::OnbtnExecuteClick);
-    Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ScriptConsole::OnbtnExecuteClick);
-    Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ScriptConsole::OnbtnLoadClick);
-    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ScriptConsole::OnbtnClearClick);
+    Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(ScriptConsole::OnbtnExecuteClick));
+    Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ScriptConsole::OnbtnExecuteClick));
+    Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ScriptConsole::OnbtnLoadClick));
+    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ScriptConsole::OnbtnClearClick));
     //*)
 
     {
