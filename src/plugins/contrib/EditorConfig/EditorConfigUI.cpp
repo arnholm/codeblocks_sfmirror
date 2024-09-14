@@ -19,12 +19,12 @@
 #include "EditorConfig.h"
 
 //(*IdInit(EditorConfigUI)
-const long EditorConfigUI::ID_CHK_ACTIVE = wxNewId();
-const long EditorConfigUI::ID_CHK_USE_TABS = wxNewId();
-const long EditorConfigUI::ID_CHK_TAB_INDENTS = wxNewId();
-const long EditorConfigUI::ID_SPN_TAB_WIDTH = wxNewId();
-const long EditorConfigUI::ID_SPN_INDENT = wxNewId();
-const long EditorConfigUI::ID_CHO_EOL_MODE = wxNewId();
+const wxWindowID EditorConfigUI::ID_CHK_ACTIVE = wxNewId();
+const wxWindowID EditorConfigUI::ID_CHK_USE_TABS = wxNewId();
+const wxWindowID EditorConfigUI::ID_CHK_TAB_INDENTS = wxNewId();
+const wxWindowID EditorConfigUI::ID_SPN_TAB_WIDTH = wxNewId();
+const wxWindowID EditorConfigUI::ID_SPN_INDENT = wxNewId();
+const wxWindowID EditorConfigUI::ID_CHO_EOL_MODE = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(EditorConfigUI, wxPanel)
@@ -86,10 +86,9 @@ EditorConfigUI::EditorConfigUI(wxWindow* parent, EditorConfig* plugin, cbProject
     choEOLMode->Disable();
     flsMain->Add(choEOLMode, 1, wxALL|wxEXPAND, 5);
     SetSizer(flsMain);
-    flsMain->Fit(this);
     flsMain->SetSizeHints(this);
 
-    Connect(ID_CHK_ACTIVE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&EditorConfigUI::OnActiveClick);
+    Connect(ID_CHK_ACTIVE,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(EditorConfigUI::OnActiveClick));
     //*)
 
     if (es.active)
