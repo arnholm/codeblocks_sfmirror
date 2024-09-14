@@ -14,18 +14,18 @@
 #include <wx/utils.h> // wxExecute
 
 //(*IdInit(Addr2LineUIDialog)
-const long Addr2LineUIDialog::ID_CRASH_LOG = wxNewId();
-const long Addr2LineUIDialog::ID_ADDR2LINE = wxNewId();
-const long Addr2LineUIDialog::ID_DIR_PREPEND = wxNewId();
-const long Addr2LineUIDialog::ID_CHK_REPLACE = wxNewId();
-const long Addr2LineUIDialog::ID_TXT_REPLACE_THIS = wxNewId();
-const long Addr2LineUIDialog::ID_LBL_REPLACE = wxNewId();
-const long Addr2LineUIDialog::ID_TXT_REPLACE_THAT = wxNewId();
-const long Addr2LineUIDialog::ID_CHK_SKIP_UNRESOLVABLE = wxNewId();
-const long Addr2LineUIDialog::ID_TXT_CRASH_LOG_CONTENT = wxNewId();
-const long Addr2LineUIDialog::ID_TXT_RESULT = wxNewId();
-const long Addr2LineUIDialog::ID_BTN_OPERATE = wxNewId();
-const long Addr2LineUIDialog::ID_BTN_QUIT = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_CRASH_LOG = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_ADDR2LINE = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_DIR_PREPEND = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_CHK_REPLACE = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_TXT_REPLACE_THIS = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_LBL_REPLACE = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_TXT_REPLACE_THAT = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_CHK_SKIP_UNRESOLVABLE = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_TXT_CRASH_LOG_CONTENT = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_TXT_RESULT = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_BTN_OPERATE = wxNewId();
+const wxWindowID Addr2LineUIDialog::ID_BTN_QUIT = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(Addr2LineUIDialog,wxDialog)
@@ -106,15 +106,15 @@ Addr2LineUIDialog::Addr2LineUIDialog(wxWindow* parent) :
   bszMainV->Add(btnQuit, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL, 5);
   bszMainH->Add(bszMainV, 1, wxEXPAND, 4);
   SetSizer(bszMainH);
-  bszMainH->Fit(this);
   bszMainH->SetSizeHints(this);
+  Center();
 
-  Connect(ID_CRASH_LOG,wxEVT_COMMAND_FILEPICKER_CHANGED,(wxObjectEventFunction)&Addr2LineUIDialog::OnCrashLogFile);
-  Connect(ID_ADDR2LINE,wxEVT_COMMAND_FILEPICKER_CHANGED,(wxObjectEventFunction)&Addr2LineUIDialog::OnAddr2LineFile);
-  Connect(ID_DIR_PREPEND,wxEVT_COMMAND_DIRPICKER_CHANGED,(wxObjectEventFunction)&Addr2LineUIDialog::OnDirPrependDir);
-  Connect(ID_CHK_REPLACE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&Addr2LineUIDialog::OnReplaceClick);
-  Connect(ID_BTN_OPERATE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Addr2LineUIDialog::OnOperateClick);
-  Connect(ID_BTN_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Addr2LineUIDialog::OnQuit);
+  Connect(ID_CRASH_LOG,wxEVT_COMMAND_FILEPICKER_CHANGED,wxFileDirPickerEventHandler(Addr2LineUIDialog::OnCrashLogFile));
+  Connect(ID_ADDR2LINE,wxEVT_COMMAND_FILEPICKER_CHANGED,wxFileDirPickerEventHandler(Addr2LineUIDialog::OnAddr2LineFile));
+  Connect(ID_DIR_PREPEND,wxEVT_COMMAND_DIRPICKER_CHANGED,wxFileDirPickerEventHandler(Addr2LineUIDialog::OnDirPrependDir));
+  Connect(ID_CHK_REPLACE,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(Addr2LineUIDialog::OnReplaceClick));
+  Connect(ID_BTN_OPERATE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Addr2LineUIDialog::OnOperateClick));
+  Connect(ID_BTN_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Addr2LineUIDialog::OnQuit));
   //*)
 
   mFileConfig.Read(wxT("CrashLog"),   &mCrashLog,   wxT("")); m_FPCrashLog->SetPath(mCrashLog);

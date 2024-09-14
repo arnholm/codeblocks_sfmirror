@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxDialog" name="Addr2LineUIDialog">
 		<title>Addr2LineUI</title>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX|wxMINIMIZE_BOX</style>
 		<object class="wxBoxSizer" variable="bszMainH" member="no">
@@ -15,7 +16,7 @@
 								<object class="wxStaticText" name="wxID_ANY" variable="lblCrashLog" member="no">
 									<label>Select crash log file:</label>
 								</object>
-								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxEXPAND</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -24,14 +25,14 @@
 									<wildcard>Report files (*.rpt)|*.rpt|Log files (*.log)|*.log|All files (*.*)|*.*</wildcard>
 									<handler function="OnCrashLogFile" entry="EVT_FILEPICKER_CHANGED" />
 								</object>
-								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxEXPAND</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
 								<object class="wxStaticText" name="wxID_ANY" variable="lblAddr2Line" member="no">
 									<label>Select Addr2Line tool:</label>
 								</object>
-								<flag>wxTOP|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxTOP|wxEXPAND</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -40,14 +41,14 @@
 									<wildcard>Executables (*.exe)|*.exe|All files (*.*)|*.*</wildcard>
 									<handler function="OnAddr2LineFile" entry="EVT_FILEPICKER_CHANGED" />
 								</object>
-								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxEXPAND</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
 								<object class="wxStaticText" name="wxID_ANY" variable="lblDirPrepend" member="no">
 									<label>(Optionally) Select directory to prepend:</label>
 								</object>
-								<flag>wxTOP|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxTOP|wxEXPAND</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -55,11 +56,11 @@
 									<message>Select directory to prepend</message>
 									<handler function="OnDirPrependDir" entry="EVT_DIRPICKER_CHANGED" />
 								</object>
-								<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxEXPAND</flag>
 								<border>5</border>
 							</object>
 						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -69,7 +70,7 @@
 									<label>Replace:</label>
 									<handler function="OnReplaceClick" entry="EVT_CHECKBOX" />
 								</object>
-								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -77,7 +78,7 @@
 									<value>this</value>
 									<enabled>0</enabled>
 								</object>
-								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -94,7 +95,7 @@
 									<value>that</value>
 									<enabled>0</enabled>
 								</object>
-								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -102,11 +103,11 @@
 								<object class="wxCheckBox" name="ID_CHK_SKIP_UNRESOLVABLE" variable="chkSkipUnresolvable" member="yes">
 									<label>Skip unresolvable</label>
 								</object>
-								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 							</object>
 						</object>
-						<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<flag>wxEXPAND</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -117,7 +118,7 @@
 							<minsize>450,200</minsize>
 							<style>wxTE_MULTILINE</style>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
@@ -129,7 +130,7 @@
 							<minsize>450,200</minsize>
 							<style>wxTE_MULTILINE</style>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
@@ -137,7 +138,7 @@
 						<object class="wxStaticLine" name="wxID_ANY" variable="stlLine" member="no">
 							<size>10,-1</size>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -146,7 +147,7 @@
 							<enabled>0</enabled>
 							<handler function="OnOperateClick" entry="EVT_BUTTON" />
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -154,11 +155,11 @@
 							<label>Quit</label>
 							<handler function="OnQuit" entry="EVT_BUTTON" />
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL</flag>
 						<border>5</border>
 					</object>
 				</object>
-				<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxEXPAND</flag>
 				<border>4</border>
 				<option>1</option>
 			</object>
