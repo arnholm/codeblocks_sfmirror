@@ -71,17 +71,17 @@ wxsSpacer::wxsSpacer(wxsItemResData* Data) : wxsItem(Data, &Reg.Info, flSize, 0,
 {
 }
 
-void wxsSpacer::OnEnumItemProperties(cb_unused long Flags)
+void wxsSpacer::OnEnumItemProperties(cb_unused long _Flags)
 {
 }
 
-wxObject* wxsSpacer::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSpacer::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxSize Sz = GetBaseProps()->m_Size.GetSize(Parent);
     // Set a minimum display size, otherwise you will get a lot of asserts about zero width bitmaps
     // if you hover over the spacer while inserting a widget (in a verticaL sizer)
     Sz.IncTo(wxSize(8, 8));
-    if (Flags & pfExact)
+    if (_Flags & pfExact)
         return new wxSizerItem(Sz.GetWidth(), Sz.GetHeight(), 0, 0, 0, 0);
 
     return new wxsSpacerPreview(Parent, Sz);

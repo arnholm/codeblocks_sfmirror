@@ -81,12 +81,12 @@ void wxsCalendarCtrl::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsCalendarCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsCalendarCtrl::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxCalendarCtrl* Preview = new wxCalendarCtrl(Parent,GetId(),wxDefaultDateTime,Pos(Parent),Size(Parent),Style());
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsCalendarCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsCalendarCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
 }

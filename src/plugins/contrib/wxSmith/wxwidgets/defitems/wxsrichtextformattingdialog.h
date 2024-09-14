@@ -33,7 +33,7 @@ class wxsRichTextFormattingDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         wxString     m_sTitle;                //!< The dialogue's caption.
         long            m_iFlags;                //!< Page flags.

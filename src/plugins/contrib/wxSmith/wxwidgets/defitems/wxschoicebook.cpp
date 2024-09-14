@@ -28,10 +28,10 @@
 #include <prep.h>
 
 //(*Headers(wxsChoicebookParentQP)
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/textctrl.h>
 //*)
 
 //(*InternalHeaders(wxsChoicebookParentQP)
@@ -58,7 +58,7 @@ namespace
 
         protected:
 
-            virtual void OnEnumProperties(cb_unused long Flags)
+            virtual void OnEnumProperties(cb_unused long _Flags)
             {
                 WXS_SHORT_STRING(wxsChoicebookExtra,m_Label,_("Page name"),_T("label"),_T(""),false);
                 WXS_BOOL(wxsChoicebookExtra,m_Selected,_("Page selected"),_T("selected"),false);
@@ -75,9 +75,9 @@ namespace
                 m_Extra(Extra)
             {
                 //(*Initialize(wxsChoicebookParentQP)
-                wxStaticBoxSizer* StaticBoxSizer2;
-                wxStaticBoxSizer* StaticBoxSizer1;
                 wxFlexGridSizer* FlexGridSizer1;
+                wxStaticBoxSizer* StaticBoxSizer1;
+                wxStaticBoxSizer* StaticBoxSizer2;
 
                 Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
                 FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
@@ -91,7 +91,6 @@ namespace
                 StaticBoxSizer2->Add(Selected, 1, wxEXPAND, 5);
                 FlexGridSizer1->Add(StaticBoxSizer2, 1, wxEXPAND, 5);
                 SetSizer(FlexGridSizer1);
-                FlexGridSizer1->Fit(this);
                 FlexGridSizer1->SetSizeHints(this);
 
                 Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(wxsChoicebookParentQP::OnLabelText));
@@ -131,8 +130,8 @@ namespace
             }
 
             //(*Identifiers(wxsChoicebookParentQP)
-            static const long ID_TEXTCTRL1;
-            static const long ID_CHECKBOX1;
+            static const wxWindowID ID_TEXTCTRL1;
+            static const wxWindowID ID_CHECKBOX1;
             //*)
 
             //(*Handlers(wxsChoicebookParentQP)
@@ -152,8 +151,8 @@ namespace
     };
 
     //(*IdInit(wxsChoicebookParentQP)
-    const long wxsChoicebookParentQP::ID_TEXTCTRL1 = wxNewId();
-    const long wxsChoicebookParentQP::ID_CHECKBOX1 = wxNewId();
+    const wxWindowID wxsChoicebookParentQP::ID_TEXTCTRL1 = wxNewId();
+    const wxWindowID wxsChoicebookParentQP::ID_CHECKBOX1 = wxNewId();
     //*)
 
     BEGIN_EVENT_TABLE(wxsChoicebookParentQP,wxPanel)
@@ -194,7 +193,7 @@ wxsChoicebook::wxsChoicebook(wxsItemResData* Data):
 {
 }
 
-void wxsChoicebook::OnEnumContainerProperties(cb_unused long Flags)
+void wxsChoicebook::OnEnumContainerProperties(cb_unused long _Flags)
 {
 }
 
@@ -231,12 +230,12 @@ void wxsChoicebook::OnAddChildQPP(wxsItem* Child,wxsAdvQPP* QPP)
     }
 }
 
-wxObject* wxsChoicebook::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
+wxObject* wxsChoicebook::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     UpdateCurrentSelection();
     wxChoicebook* Choicebook = new wxChoicebook(Parent,-1,Pos(Parent),Size(Parent),Style());
 
-    if ( !GetChildCount() && !(PreviewFlags&pfExact) )
+    if ( !GetChildCount() && !(_Flags & pfExact) )
     {
         // Adding additional empty notebook to prevent from having zero-sized notebook
         Choicebook->AddPage(
@@ -244,7 +243,7 @@ wxObject* wxsChoicebook::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
             _("No pages"));
     }
 
-    AddChildrenPreview(Choicebook,PreviewFlags);
+    AddChildrenPreview(Choicebook,_Flags);
 
     for ( int i=0; i<GetChildCount(); i++ )
     {
@@ -255,7 +254,7 @@ wxObject* wxsChoicebook::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
         if ( !ChildPreview ) continue;
 
         bool Selected = (Child == m_CurrentSelection);
-        if ( PreviewFlags & pfExact ) Selected = CBExtra->m_Selected;
+        if ( _Flags & pfExact ) Selected = CBExtra->m_Selected;
 
         Choicebook->AddPage(ChildPreview,CBExtra->m_Label,Selected);
     }

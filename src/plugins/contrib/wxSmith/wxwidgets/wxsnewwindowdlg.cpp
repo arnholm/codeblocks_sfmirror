@@ -71,34 +71,34 @@ namespace
 }
 
 //(*IdInit(wxsNewWindowDlg)
-const long wxsNewWindowDlg::ID_TEXTCTRL1 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL2 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL3 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX1 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL4 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX3 = wxNewId();
-const long wxsNewWindowDlg::ID_BUTTON1 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX2 = wxNewId();
-const long wxsNewWindowDlg::ID_COMBOBOX1 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL8 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX4 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL5 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL6 = wxNewId();
-const long wxsNewWindowDlg::ID_BUTTON2 = wxNewId();
-const long wxsNewWindowDlg::ID_BUTTON3 = wxNewId();
-const long wxsNewWindowDlg::ID_BUTTON4 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX5 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX9 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX6 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX10 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX7 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX11 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX8 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX12 = wxNewId();
-const long wxsNewWindowDlg::ID_TEXTCTRL7 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX14 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX15 = wxNewId();
-const long wxsNewWindowDlg::ID_CHECKBOX13 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL4 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX3 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL8 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX4 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL5 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL6 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX5 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX9 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX6 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX10 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX7 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX11 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX8 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX12 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_TEXTCTRL7 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX14 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX15 = wxNewId();
+const wxWindowID wxsNewWindowDlg::ID_CHECKBOX13 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsNewWindowDlg,wxScrollingDialog)
@@ -118,25 +118,25 @@ wxsNewWindowDlg::wxsNewWindowDlg(wxWindow* parent,const wxString& ResType,wxsPro
     m_Project(Project)
 {
     //(*Initialize(wxsNewWindowDlg)
-    wxStaticText* StaticText10;
-    wxStaticText* StaticText9;
-    wxFlexGridSizer* FlexGridSizer4;
-    wxStaticText* StaticText2;
-    wxFlexGridSizer* FlexGridSizer3;
-    wxStaticText* StaticText6;
-    wxStaticText* StaticText8;
-    wxStaticText* StaticText11;
-    wxFlexGridSizer* FlexGridSizer2;
-    wxStaticText* StaticText1;
-    wxStaticText* StaticText3;
-    wxStaticBoxSizer* StaticBoxSizer3;
-    wxStaticText* StaticText5;
-    wxStaticText* StaticText7;
     wxFlexGridSizer* FlexGridSizer1;
+    wxFlexGridSizer* FlexGridSizer2;
+    wxFlexGridSizer* FlexGridSizer3;
+    wxFlexGridSizer* FlexGridSizer4;
+    wxStaticBoxSizer* StaticBoxSizer3;
+    wxStaticText* StaticText10;
+    wxStaticText* StaticText11;
+    wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
+    wxStaticText* StaticText3;
     wxStaticText* StaticText4;
+    wxStaticText* StaticText5;
+    wxStaticText* StaticText6;
+    wxStaticText* StaticText7;
+    wxStaticText* StaticText8;
+    wxStaticText* StaticText9;
     wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
-    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+    Create(parent, wxID_ANY, _("Create new cwindow"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
     m_RootSizer = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Options"));
     FlexGridSizer1 = new wxFlexGridSizer(0, 2, 5, 5);
@@ -165,7 +165,7 @@ wxsNewWindowDlg::wxsNewWindowDlg(wxWindow* parent,const wxString& ResType,wxsPro
     FlexGridSizer1->Add(m_XRCAutoload, 1, wxEXPAND, 5);
     StaticBoxSizer3->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 0);
     m_RootSizer->Add(StaticBoxSizer3, 0, wxALL|wxEXPAND, 0);
-    m_AdvOps = new wxButton(this, ID_BUTTON1, _("+ Advanced options"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT|wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON1"));
+    m_AdvOps = new wxButton(this, ID_BUTTON1, _("+ Advanced options"), wxDefaultPosition, wxDefaultSize, wxBU_LEFT|wxBORDER_NONE, wxDefaultValidator, _T("ID_BUTTON1"));
     m_RootSizer->Add(m_AdvOps, 0, wxLEFT|wxRIGHT|wxEXPAND, 0);
     m_AdvancedOptionsSizer = new wxStaticBoxSizer(wxVERTICAL, this, wxEmptyString);
     FlexGridSizer2 = new wxFlexGridSizer(0, 2, 5, 5);
@@ -176,7 +176,7 @@ wxsNewWindowDlg::wxsNewWindowDlg(wxWindow* parent,const wxString& ResType,wxsPro
     m_Pch = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX1"));
     FlexGridSizer2->Add(m_Pch, 1, wxEXPAND, 5);
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-    BoxSizer1->Add(21,16,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+    BoxSizer1->Add(-1,-1,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
     StaticText11 = new wxStaticText(this, wxID_ANY, _("PCH guard define:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     BoxSizer1->Add(StaticText11, 1, wxALIGN_CENTER_VERTICAL, 0);
     FlexGridSizer2->Add(BoxSizer1, 0, wxALL|wxEXPAND, 0);
@@ -264,7 +264,6 @@ wxsNewWindowDlg::wxsNewWindowDlg(wxWindow* parent,const wxString& ResType,wxsPro
     StdDialogButtonSizer1->Realize();
     m_RootSizer->Add(StdDialogButtonSizer1, 0, wxTOP|wxALIGN_CENTER_HORIZONTAL, 5);
     SetSizer(m_RootSizer);
-    m_RootSizer->Fit(this);
     m_RootSizer->SetSizeHints(this);
     Center();
 

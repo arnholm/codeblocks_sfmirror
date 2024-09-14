@@ -125,11 +125,11 @@ void wxsMediaCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsMediaCtrl::OnBuildPreview(wxWindow* parent,long flags)
+wxObject* wxsMediaCtrl::OnBuildPreview(wxWindow* parent,long _Flags)
 {
     wxMediaCtrl* preview = new wxMediaCtrl(parent, GetId(), wxEmptyString, Pos(parent), Size(parent), Style());//, m_sBackend);
 
@@ -164,25 +164,25 @@ wxObject* wxsMediaCtrl::OnBuildPreview(wxWindow* parent,long flags)
     // Note: If the cast is omitted, the result is always rounded to 0 or 1, I presume by implicit casting to long.
     preview->SetVolume((double)m_iVolume / 10);
 
-    return SetupWindow(preview, flags);
+    return SetupWindow(preview, _Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
   * \todo (Gary#5#): Support backends...possibly.
  */
-void wxsMediaCtrl::OnEnumWidgetProperties(long flags)
+void wxsMediaCtrl::OnEnumWidgetProperties(long _Flags)
 {
-    static const long VolumeLevels[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};                                                            //!< Volume levels.
+    static const long VolumeLevels[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};   //!< Volume levels.
     /*!< Volume level names. */
     static const wxChar* VolumeNames[]  = {wxT("0.0"), wxT("0.1"), wxT("0.2"), wxT("0.3"), wxT("0.4"), wxT("0.5"), wxT("0.6"), wxT("0.7"), wxT("0.8"), wxT("0.9"), wxT("1.0"), NULL};
-    static const long ControlStates[] = {wxMEDIACTRLPLAYERCONTROLS_NONE,                                         //!< No controls.
-                                                         wxMEDIACTRLPLAYERCONTROLS_STEP,                                         //!< Step controls like fastfoward, step one frame etc.
-                                                         wxMEDIACTRLPLAYERCONTROLS_VOLUME,                                     //!< Volume controls like the speaker icon, volume slider, etc.
-                                                         wxMEDIACTRLPLAYERCONTROLS_DEFAULT};                                 //!< Default controls for the toolkit.
+    static const long ControlStates[] = {wxMEDIACTRLPLAYERCONTROLS_NONE,     //!< No controls.
+                                         wxMEDIACTRLPLAYERCONTROLS_STEP,     //!< Step controls like fastfoward, step one frame etc.
+                                         wxMEDIACTRLPLAYERCONTROLS_VOLUME,   //!< Volume controls like the speaker icon, volume slider, etc.
+                                         wxMEDIACTRLPLAYERCONTROLS_DEFAULT}; //!< Default controls for the toolkit.
     static const wxChar* ControlNames[]  = {wxT("None"), wxT("Step"), wxT("Volume"), wxT("Default"), NULL};    //!< Control state names.
 
     WXS_SHORT_STRING(wxsMediaCtrl, m_sMediaFile, _("Media File"), _T("media_file"), _T(""), false)

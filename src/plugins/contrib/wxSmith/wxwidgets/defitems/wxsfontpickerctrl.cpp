@@ -88,25 +88,25 @@ void wxsFontPickerCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                    The control flags.
+ * \param _Flags long                    The control flags.
  * \return wxObject*                     The constructed control.
  *
  */
-wxObject* wxsFontPickerCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsFontPickerCtrl::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxFontPickerCtrl* Preview;
     wxFont fnt = m_fdFont.BuildFont();
     Preview = new wxFontPickerCtrl(Parent, GetId(), fnt, Pos(Parent), Size(Parent), Style());
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsFontPickerCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsFontPickerCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_FONT(wxsFontPickerCtrl, m_fdFont, _("Selected font"), _T("value"))
 }

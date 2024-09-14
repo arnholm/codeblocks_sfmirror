@@ -67,7 +67,7 @@ class PLUGIN_EXPORT wxsContainer: public wxsParent
          * there will be Variable name and identifier and at the end, all
          * required base properties.
          */
-        virtual void OnEnumContainerProperties(long Flags) = 0;
+        virtual void OnEnumContainerProperties(long _Flags) = 0;
 
         /** \brief Function which adds new items to QPP
          *
@@ -97,7 +97,7 @@ class PLUGIN_EXPORT wxsContainer: public wxsParent
         virtual bool OnCanAddChild(wxsItem* Item,bool ShowMessage);
 
         /** \brief Function adding children items into preview window */
-        void AddChildrenPreview(wxWindow* This,long Flags);
+        void AddChildrenPreview(wxWindow* This,long _Flags);
 
         /** \brief Function adding code generating child items */
         void AddChildrenCode();
@@ -109,7 +109,7 @@ class PLUGIN_EXPORT wxsContainer: public wxsParent
          * Function enumerating item properties. The implementation
          * does call EnumContainerProperties() and adds all default properties.
          */
-        virtual void OnEnumItemProperties(long Flags);
+        virtual void OnEnumItemProperties(long _Flags);
 
         /** \brief Function Adding QPPChild panels for base properties of this
          *         container.

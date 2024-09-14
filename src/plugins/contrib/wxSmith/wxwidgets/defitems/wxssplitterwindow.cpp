@@ -58,15 +58,15 @@ wxsSplitterWindow::wxsSplitterWindow(wxsItemResData* Data):
 {
 }
 
-wxObject* wxsSplitterWindow::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSplitterWindow::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxSplitterWindow* Splitter = new wxSplitterWindow(Parent,GetId(),Pos(Parent),Size(Parent),Style());
-    SetupWindow(Splitter,Flags);
+    SetupWindow(Splitter,_Flags);
     if ( MinPaneSize != -1 )
     {
         Splitter->SetMinimumPaneSize(MinPaneSize);
     }
-    AddChildrenPreview(Splitter,Flags);
+    AddChildrenPreview(Splitter,_Flags);
     if ( GetChildCount() == 0 )
     {
     }
@@ -135,7 +135,7 @@ void wxsSplitterWindow::OnBuildCreatingCode()
     }
 }
 
-void wxsSplitterWindow::OnEnumContainerProperties(cb_unused long Flags)
+void wxsSplitterWindow::OnEnumContainerProperties(cb_unused long _Flags)
 {
     static const long    OrientValues[] = { wxHORIZONTAL, wxVERTICAL, 0 };
     static const wxChar* OrientNames[]  = { _T("horizontal"), _T("vertical"), 0 };

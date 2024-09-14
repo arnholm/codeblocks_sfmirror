@@ -80,16 +80,16 @@ void wxsSpinButton::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsSpinButton::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSpinButton::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxSpinButton* Preview = new wxSpinButton(Parent,GetId(),Pos(Parent),Size(Parent),Style());
     if ( Value ) Preview->SetValue(Value);
     if ( Max > Min ) Preview->SetRange(Min,Max);
 
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsSpinButton::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsSpinButton::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_LONG(wxsSpinButton,Value,_("Value"),_T("value"),0)
     WXS_LONG(wxsSpinButton,Min,_("Min Value"),_T("min"),0)

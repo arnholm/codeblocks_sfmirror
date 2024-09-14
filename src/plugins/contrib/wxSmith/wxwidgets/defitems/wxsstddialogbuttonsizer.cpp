@@ -123,15 +123,15 @@ long wxsStdDialogButtonSizer::OnGetPropertiesFlags()
     return wxsItem::OnGetPropertiesFlags();
 }
 
-void wxsStdDialogButtonSizer::OnEnumItemProperties(cb_unused long Flags)
+void wxsStdDialogButtonSizer::OnEnumItemProperties(cb_unused long _Flags)
 {
 }
 
-wxObject* wxsStdDialogButtonSizer::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
+wxObject* wxsStdDialogButtonSizer::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxWindow* NewParent = Parent;
 
-    if ( !(PreviewFlags & pfExact) )
+    if ( !(_Flags & pfExact) )
     {
         NewParent = new wxsSizerPreview(Parent);
     }
@@ -149,7 +149,7 @@ wxObject* wxsStdDialogButtonSizer::OnBuildPreview(wxWindow* Parent,long PreviewF
 
     Sizer->Realize();
 
-    if ( !(PreviewFlags & pfExact) )
+    if ( !(_Flags & pfExact) )
     {
         NewParent->SetSizer(Sizer);
         Sizer->Fit(NewParent);

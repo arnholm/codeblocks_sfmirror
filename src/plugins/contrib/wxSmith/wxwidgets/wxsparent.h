@@ -161,13 +161,13 @@ class PLUGIN_EXPORT wxsParent: public wxsItem
          * here some additional properties before and/or after properties of
          * child item.
          *
-         * Default implementation calls Child->EnumItemProperties(Flags)
+         * Default implementation calls Child->EnumItemProperties(_Flags)
          * and Extra->EnumProperties at the end.
          *
-         * \note This function MUST call Child->EnumItemProperties(Flags)
+         * \note This function MUST call Child->EnumItemProperties(_Flags)
          *       somewhere in the code.
          */
-        void OnEnumChildProperties(wxsItem* Child,long Flags);
+        void OnEnumChildProperties(wxsItem* Child,long _Flags);
 
         /** \brief Rewritten xml reading function - it will add support for children loading */
         virtual bool OnXmlRead(TiXmlElement* Element,bool IsXRC,bool IsExtra);

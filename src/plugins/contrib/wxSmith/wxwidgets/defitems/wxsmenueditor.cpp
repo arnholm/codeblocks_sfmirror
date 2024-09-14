@@ -38,32 +38,32 @@
 //*)
 
 //(*IdInit(wxsMenuEditor)
-const long wxsMenuEditor::ID_TREECTRL1 = wxNewId();
-const long wxsMenuEditor::ID_RADIOBUTTON1 = wxNewId();
-const long wxsMenuEditor::ID_RADIOBUTTON4 = wxNewId();
-const long wxsMenuEditor::ID_RADIOBUTTON2 = wxNewId();
-const long wxsMenuEditor::ID_RADIOBUTTON5 = wxNewId();
-const long wxsMenuEditor::ID_RADIOBUTTON3 = wxNewId();
-const long wxsMenuEditor::ID_STATICLINE1 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT6 = wxNewId();
-const long wxsMenuEditor::ID_TEXTCTRL4 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT1 = wxNewId();
-const long wxsMenuEditor::ID_TEXTCTRL1 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT2 = wxNewId();
-const long wxsMenuEditor::ID_TEXTCTRL2 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT3 = wxNewId();
-const long wxsMenuEditor::ID_TEXTCTRL3 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT4 = wxNewId();
-const long wxsMenuEditor::ID_CHECKBOX1 = wxNewId();
-const long wxsMenuEditor::ID_STATICTEXT5 = wxNewId();
-const long wxsMenuEditor::ID_CHECKBOX2 = wxNewId();
-const long wxsMenuEditor::ID_STATICLINE2 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON1 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON2 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON3 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON4 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON5 = wxNewId();
-const long wxsMenuEditor::ID_BUTTON6 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_TREECTRL1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_RADIOBUTTON1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_RADIOBUTTON4 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_RADIOBUTTON2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_RADIOBUTTON5 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_RADIOBUTTON3 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICLINE1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT6 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_TEXTCTRL4 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT3 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT4 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICTEXT5 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_STATICLINE2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON3 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON4 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON5 = wxNewId();
+const wxWindowID wxsMenuEditor::ID_BUTTON6 = wxNewId();
 //*)
 
 wxsMenuEditor::wxsMenuEditor(wxWindow* parent,wxsMenuBar* MenuBar):
@@ -186,20 +186,21 @@ void wxsMenuEditor::CreateContent(wxWindow* parent)
     StaticBoxSizer2->Add(-1,-1,1, wxEXPAND, 5);
     BoxSizer1->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 4);
     SetSizer(BoxSizer1);
+    BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,(wxObjectEventFunction)&wxsMenuEditor::OnContentSelectionChanged);
-    Connect(ID_RADIOBUTTON1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
-    Connect(ID_RADIOBUTTON4,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
-    Connect(ID_RADIOBUTTON2,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
-    Connect(ID_RADIOBUTTON5,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
-    Connect(ID_RADIOBUTTON3,wxEVT_COMMAND_RADIOBUTTON_SELECTED,(wxObjectEventFunction)&wxsMenuEditor::OnTypeChanged);
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&wxsMenuEditor::OnLabelChanged);
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonLeftClick);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonRightClick);
-    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonUpClick);
-    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonDownClick);
-    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonNewClick);
-    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsMenuEditor::OnButtonDelClick);
+    Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,wxTreeEventHandler(wxsMenuEditor::OnContentSelectionChanged));
+    Connect(ID_RADIOBUTTON1,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
+    Connect(ID_RADIOBUTTON4,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
+    Connect(ID_RADIOBUTTON2,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
+    Connect(ID_RADIOBUTTON5,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
+    Connect(ID_RADIOBUTTON3,wxEVT_COMMAND_RADIOBUTTON_SELECTED,wxCommandEventHandler(wxsMenuEditor::OnTypeChanged));
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(wxsMenuEditor::OnLabelChanged));
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonLeftClick));
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonRightClick));
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonUpClick));
+    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonDownClick));
+    Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonNewClick));
+    Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsMenuEditor::OnButtonDelClick));
     //*)
 }
 

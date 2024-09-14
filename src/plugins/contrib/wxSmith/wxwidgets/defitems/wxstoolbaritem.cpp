@@ -142,7 +142,7 @@ void wxsToolBarItem::OnBuildCreatingCode()
     }
 }
 
-void wxsToolBarItem::OnEnumToolProperties(cb_unused long Flags)
+void wxsToolBarItem::OnEnumToolProperties(cb_unused long _Flags)
 {
     switch ( m_Type )
     {

@@ -10,16 +10,13 @@
 					<label>Files with application class:</label>
 					<orient>wxVERTICAL</orient>
 					<object class="sizeritem">
-						<object class="wxListBox" name="ID_LISTBOX1" variable="FoundFiles" member="yes">
-							<size>198,166</size>
-						</object>
+						<object class="wxListBox" name="ID_LISTBOX1" variable="FoundFiles" member="yes" />
 						<flag>wxEXPAND</flag>
 						<border>4</border>
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxGauge" name="ID_GAUGE1" variable="Progress" member="yes">
-							<size>90,13</size>
 							<style>wxGA_SMOOTH</style>
 						</object>
 						<flag>wxTOP|wxEXPAND</flag>

@@ -88,7 +88,7 @@ void wxsStatusBar::OnBuildCreatingCode()
     }
 }
 
-void wxsStatusBar::OnEnumToolProperties(cb_unused long Flags)
+void wxsStatusBar::OnEnumToolProperties(cb_unused long _Flags)
 {
 }
 

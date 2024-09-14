@@ -829,7 +829,7 @@ void wxsColourProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridMana
     PGRegister(Object,Grid,Grid->AppendIn(Parent,new wxsMyColourPropertyClass(GetPGName(),wxPG_LABEL,VALUE)));
 }
 
-bool wxsColourProperty::PGRead(wxsPropertyContainer* Object,wxPropertyGridManager* Grid,wxPGId Id,cb_unused long Index)
+bool wxsColourProperty::PGRead(wxsPropertyContainer* Object,cb_unused wxPropertyGridManager* Grid,wxPGId Id,cb_unused long Index)
 {
     VALUE.m_type = wxsColourValues[Id->GetChoiceSelection()];
 

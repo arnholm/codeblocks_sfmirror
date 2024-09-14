@@ -73,7 +73,7 @@ namespace
 
         protected:
 
-            virtual void OnEnumProperties(cb_unused long Flags)
+            virtual void OnEnumProperties(cb_unused long _Flags)
             {
                 WXS_SHORT_STRING(wxsTreebookExtra, m_Label, _("Page name"), _T("label"), _T(""), false);
                 WXS_BOOL(wxsTreebookExtra, m_Selected, _("Page selected"), _T("selected"), false);
@@ -218,7 +218,7 @@ wxsTreebook::wxsTreebook(wxsItemResData *Data):
 {
 }
 
-void wxsTreebook::OnEnumContainerProperties(cb_unused long Flags)
+void wxsTreebook::OnEnumContainerProperties(cb_unused long _Flags)
 {
 }
 
@@ -255,18 +255,18 @@ void wxsTreebook::OnAddChildQPP(wxsItem *Child, wxsAdvQPP *QPP)
     }
 }
 
-wxObject *wxsTreebook::OnBuildPreview(wxWindow *Parent, long PreviewFlags)
+wxObject *wxsTreebook::OnBuildPreview(wxWindow *Parent, long _Flags)
 {
     UpdateCurrentSelection();
     wxTreebook *Treebook = new wxTreebook(Parent, -1, Pos(Parent), Size(Parent), Style());
 
-    if (!GetChildCount() && !(PreviewFlags & pfExact))
+    if (!GetChildCount() && !(_Flags & pfExact))
     {
         // Adding additional empty Treebook to prevent from having zero-sized Treebook
         Treebook->AddPage(new wxPanel(Treebook, -1, wxDefaultPosition, wxSize(50, 50)), _("No pages"));
     }
 
-    AddChildrenPreview(Treebook, PreviewFlags);
+    AddChildrenPreview(Treebook, _Flags);
 
     for ( int i=0; i<GetChildCount(); i++ )
     {
@@ -277,7 +277,7 @@ wxObject *wxsTreebook::OnBuildPreview(wxWindow *Parent, long PreviewFlags)
         if ( !ChildPreview ) continue;
 
         bool Selected = (Child == m_CurrentSelection);
-        if ( PreviewFlags & pfExact ) Selected = TBExtra->m_Selected;
+        if ( _Flags & pfExact ) Selected = TBExtra->m_Selected;
 
         Treebook->AddPage(ChildPreview,TBExtra->m_Label,Selected);
     }

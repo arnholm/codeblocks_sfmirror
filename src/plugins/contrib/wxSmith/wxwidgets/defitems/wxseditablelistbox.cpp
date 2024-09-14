@@ -102,14 +102,14 @@ void wxsEditableListBox::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsEditableListBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsEditableListBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxEditableListBox* Preview = new wxEditableListBox(Parent, GetId(), Label, Pos(Parent), Size(Parent), Style());
     Preview->SetStrings(ArrayChoices);
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsEditableListBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsEditableListBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
       WXS_SHORT_STRING(wxsEditableListBox, Label, _("Label"), "label", "", false)
       WXS_ARRAYSTRING(wxsEditableListBox, ArrayChoices, _("Choices"), "content", "item")

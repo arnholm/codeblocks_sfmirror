@@ -38,13 +38,13 @@ class wxsRichTextStyleListBox: public wxsWidget
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnEnumWidgetProperties(long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void OnEnumWidgetProperties(long _Flags);
 
-        wxString    m_sControl;                            //!< The associated wxRichTextCtrl.
-        wxString    m_sStyleSheet;                    //!< The associated style sheet.
-        int                m_iStyleType;                        //!< The style type to display.
-        bool            m_bApplyOnSelection;        //!< Whether to apply the style on selection.
+        wxString m_sControl;          //!< The associated wxRichTextCtrl.
+        wxString m_sStyleSheet;       //!< The associated style sheet.
+        int      m_iStyleType;        //!< The style type to display.
+        bool     m_bApplyOnSelection; //!< Whether to apply the style on selection.
 };
 
 #endif

@@ -144,7 +144,7 @@ void wxsFlexGridSizer::OnBuildSizerCreatingCode()
     }
 }
 
-void wxsFlexGridSizer::OnEnumSizerProperties(cb_unused long Flags)
+void wxsFlexGridSizer::OnEnumSizerProperties(cb_unused long _Flags)
 {
     FixupList(GrowableCols);
     FixupList(GrowableRows);

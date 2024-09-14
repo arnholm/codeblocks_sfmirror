@@ -86,11 +86,11 @@ void wxsPasswordEntryDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsPasswordEntryDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsPasswordEntryDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsPasswordEntryDialog, m_sCaption, _("Caption"), _T("caption"), wxGetPasswordFromUserPromptStr, false);
     WXS_SHORT_STRING(wxsPasswordEntryDialog, m_sMessage, _("Message"), _T("message"), wxEmptyString, false);

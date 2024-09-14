@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsImageListEditorDlg">
 		<title>wxImageList Editor</title>
+		<centered>1</centered>
 		<bg>wxSYS_COLOUR_BTNFACE</bg>
 		<font>
 			<size>8</size>
@@ -23,8 +24,6 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText14" member="yes">
 									<label>Name</label>
-									<pos>8,20</pos>
-									<size>38,18</size>
 								</object>
 								<flag>wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -32,9 +31,7 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText15" member="yes">
 									<label>Label</label>
-									<pos>40,20</pos>
-									<size>96,18</size>
-									<style>wxST_NO_AUTORESIZE|wxSUNKEN_BORDER</style>
+									<style>wxST_NO_AUTORESIZE|wxBORDER_SUNKEN</style>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -42,8 +39,6 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT16" variable="StaticText16" member="yes">
 									<label>Image Count</label>
-									<pos>144,20</pos>
-									<size>-1,18</size>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -51,9 +46,7 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT17" variable="StaticText17" member="yes">
 									<label>Label</label>
-									<pos>208,20</pos>
-									<size>32,18</size>
-									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxSUNKEN_BORDER</style>
+									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxBORDER_SUNKEN</style>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -61,8 +54,6 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT18" variable="StaticText18" member="yes">
 									<label>Image Size</label>
-									<pos>248,20</pos>
-									<size>-1,18</size>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -70,9 +61,7 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT26" variable="StaticText26" member="yes">
 									<label>16</label>
-									<pos>304,20</pos>
-									<size>32,18</size>
-									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxSUNKEN_BORDER</style>
+									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxBORDER_SUNKEN</style>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -80,8 +69,6 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT19" variable="StaticText19" member="yes">
 									<label>x</label>
-									<pos>344,20</pos>
-									<size>-1,18</size>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -89,9 +76,7 @@
 							<object class="sizeritem">
 								<object class="wxStaticText" name="ID_STATICTEXT27" variable="StaticText27" member="yes">
 									<label>16</label>
-									<pos>360,20</pos>
-									<size>32,18</size>
-									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxSUNKEN_BORDER</style>
+									<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE|wxBORDER_SUNKEN</style>
 								</object>
 								<flag>wxLEFT|wxALIGN_BOTTOM</flag>
 								<border>5</border>
@@ -122,10 +107,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
-											<pos>40,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel2LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -147,10 +130,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL3" variable="Panel3" member="yes">
-											<pos>72,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel3LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -172,10 +153,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL4" variable="Panel4" member="yes">
-											<pos>104,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel4LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -197,10 +176,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL5" variable="Panel5" member="yes">
-											<pos>136,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel5LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -222,10 +199,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL8" variable="Panel8" member="yes">
-											<pos>168,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel8LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -247,10 +222,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL6" variable="Panel6" member="yes">
-											<pos>200,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel6LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -272,10 +245,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL7" variable="Panel7" member="yes">
-											<pos>232,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel7LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -297,10 +268,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL9" variable="Panel9" member="yes">
-											<pos>264,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel9LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -322,10 +291,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL10" variable="Panel10" member="yes">
-											<pos>296,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel10LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -347,10 +314,8 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL11" variable="Panel11" member="yes">
-											<pos>328,48</pos>
-											<size>32,32</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="PaintPreviewPanel" entry="EVT_PAINT" />
 											<handler function="OnPanel11LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -403,8 +368,6 @@
 									<object class="sizeritem">
 										<object class="wxStaticText" name="ID_STATICTEXT11" variable="StaticText1" member="yes">
 											<label>Imported Image</label>
-											<pos>8,124</pos>
-											<size>92,16</size>
 											<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE</style>
 										</object>
 										<flag>wxALIGN_CENTER_HORIZONTAL</flag>
@@ -412,11 +375,9 @@
 									</object>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
-											<pos>8,144</pos>
-											<size>92,92</size>
 											<bg>wxSYS_COLOUR_HOTLIGHT</bg>
 											<tooltip>Click any spot on the image to select a transparent color</tooltip>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="OnPanel1Paint" entry="EVT_PAINT" />
 											<handler function="OnPanel1LeftUp" entry="EVT_LEFT_UP" />
 										</object>
@@ -427,8 +388,6 @@
 									<object class="sizeritem">
 										<object class="wxStaticText" name="ID_STATICTEXT23" variable="StaticText23" member="yes">
 											<label>Label</label>
-											<pos>8,240</pos>
-											<size>92,14</size>
 											<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE</style>
 										</object>
 										<flag>wxTOP|wxALIGN_CENTER_HORIZONTAL</flag>
@@ -549,8 +508,6 @@
 									<object class="sizeritem">
 										<object class="wxStaticText" name="ID_STATICTEXT22" variable="StaticText22" member="yes">
 											<label>Selected Image</label>
-											<pos>208,124</pos>
-											<size>92,16</size>
 											<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE</style>
 										</object>
 										<flag>wxALIGN_CENTER_HORIZONTAL</flag>
@@ -558,10 +515,8 @@
 									</object>
 									<object class="sizeritem">
 										<object class="wxPanel" name="ID_PANEL12" variable="Panel12" member="yes">
-											<pos>208,144</pos>
-											<size>92,92</size>
 											<bg>#FFFFFF</bg>
-											<style>wxDOUBLE_BORDER|wxTAB_TRAVERSAL</style>
+											<style>wxBORDER_DOUBLE|wxTAB_TRAVERSAL</style>
 											<handler function="OnPanel12Paint" entry="EVT_PAINT" />
 										</object>
 										<flag>wxTOP|wxALIGN_CENTER_HORIZONTAL</flag>
@@ -571,8 +526,6 @@
 									<object class="sizeritem">
 										<object class="wxStaticText" name="ID_STATICTEXT28" variable="StaticText28" member="yes">
 											<label>Label</label>
-											<pos>208,240</pos>
-											<size>88,14</size>
 											<style>wxST_NO_AUTORESIZE|wxALIGN_CENTRE</style>
 										</object>
 										<flag>wxTOP|wxALIGN_CENTER_HORIZONTAL</flag>

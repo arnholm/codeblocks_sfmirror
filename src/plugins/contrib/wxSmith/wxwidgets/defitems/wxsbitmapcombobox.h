@@ -39,18 +39,18 @@ class wxsBitmapComboBox: public wxsWidget
 
     private:
 
-        virtual void        OnBuildCreatingCode();
-        virtual wxObject   *OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void        OnEnumWidgetProperties(long Flags);
+        virtual void      OnBuildCreatingCode();
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void      OnEnumWidgetProperties(long _Flags);
 
-                void        FindAllImageLists(wxArrayString &aNames);
-                void        UpdateComboItemList(void);
-                void        ParseComboItem(wxString inSource, wxString &outItem, int &outIndex);
+                void      FindAllImageLists(wxArrayString &aNames);
+                void      UpdateComboItemList(void);
+                void      ParseComboItem(wxString inSource, wxString &outItem, int &outIndex);
 
 
 
-        wxString        mImageList;                 // list to use to select images
-        wxArrayString   mItems;                     // text of drop-down items
+        wxString        mImageList; //!< list to use to select images
+        wxArrayString   mItems;     //!< text of drop-down items
 };
 
 #endif

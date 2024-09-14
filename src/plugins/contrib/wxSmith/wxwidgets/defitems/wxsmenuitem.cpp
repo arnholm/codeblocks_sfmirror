@@ -176,7 +176,7 @@ void wxsMenuItem::OnBuildCreatingCode()
     }
 }
 
-void wxsMenuItem::OnEnumToolProperties(cb_unused long Flags)
+void wxsMenuItem::OnEnumToolProperties(cb_unused long _Flags)
 {
 
     switch ( m_Type )
@@ -393,8 +393,8 @@ void wxsMenuItem::OnBuildXRCFetchingCode()
 {
     // Menu items can not be found through FindWindow stuff, we need to
     // fetch them using wxMenuBar::FindItem.
-    long Flags = GetPropertiesFlags();
-    if ( (Flags&flVariable) && (Flags&flId) )
+    long PropsFlags = GetPropertiesFlags();
+    if ( (PropsFlags&flVariable) && (PropsFlags&flId) )
     {
         AddXRCFetchingCode(
             GetVarName() + _T(" = GetMenuBar() ? ")

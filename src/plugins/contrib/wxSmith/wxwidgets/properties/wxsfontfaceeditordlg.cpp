@@ -31,8 +31,8 @@
 //*)
 
 //(*IdInit(wxsFontFaceEditorDlg)
-const long wxsFontFaceEditorDlg::ID_TEXTCTRL1 = wxNewId();
-const long wxsFontFaceEditorDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsFontFaceEditorDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsFontFaceEditorDlg::ID_BUTTON1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsFontFaceEditorDlg,wxScrollingDialog)
@@ -44,8 +44,8 @@ wxsFontFaceEditorDlg::wxsFontFaceEditorDlg(wxWindow* parent,wxString& _Face,wxWi
     Face(_Face)
 {
     //(*Initialize(wxsFontFaceEditorDlg)
-    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer2;
     wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, _("Selecting font face"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
@@ -66,7 +66,6 @@ wxsFontFaceEditorDlg::wxsFontFaceEditorDlg(wxWindow* parent,wxString& _Face,wxWi
     BoxSizer2->Add(-1,-1,1, wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(BoxSizer2, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
     Center();
 

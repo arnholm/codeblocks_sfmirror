@@ -67,7 +67,7 @@ void wxsTimer::OnBuildCreatingCode()
     }
 }
 
-void wxsTimer::OnEnumToolProperties(cb_unused long Flags)
+void wxsTimer::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_LONG(wxsTimer,m_Interval,_("Interval"),_T("interval"),0);
     WXS_BOOL(wxsTimer,m_OneShot,_("One Shot"),_T("oneshot"),false);

@@ -34,12 +34,12 @@ class wxsListbook : public wxsContainer
 
     private:
 
-        virtual void OnEnumContainerProperties(long Flags);
+        virtual void OnEnumContainerProperties(long _Flags);
         virtual bool OnCanAddChild(wxsItem* Item,bool ShowMessage);
         virtual wxsPropertyContainer* OnBuildExtra();
         virtual wxString OnXmlGetExtraObjectClass();
         virtual void OnAddChildQPP(wxsItem* Child,wxsAdvQPP* QPP);
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long PreviewFlags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
         virtual void OnBuildCreatingCode();
         virtual bool OnMouseClick(wxWindow* Preview,int PosX,int PosY);
         virtual bool OnIsChildPreviewVisible(wxsItem* Child);

@@ -61,7 +61,7 @@ class PLUGIN_EXPORT wxsSizerExtra: public wxsPropertyContainer
 
     protected:
 
-        virtual void OnEnumProperties(long Flags);
+        virtual void OnEnumProperties(long _Flags);
 };
 
 
@@ -101,7 +101,7 @@ class PLUGIN_EXPORT wxsSizer: public wxsParent
          * which are not common for all sizers but are used in one
          * type of sizer only
          */
-        virtual void OnEnumSizerProperties(long Flags) = 0;
+        virtual void OnEnumSizerProperties(long _Flags) = 0;
 
         /** \brief Adding extra QPP panel for specified sizer only
          *
@@ -143,7 +143,7 @@ class PLUGIN_EXPORT wxsSizer: public wxsParent
          * When there's no exact mode, there's additional panel on which
          * guidelines are drawn.
          */
-         wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
+         wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
 
         /** \brief Function creating additional data
          *
@@ -165,7 +165,7 @@ class PLUGIN_EXPORT wxsSizer: public wxsParent
         virtual wxString OnXmlGetExtraObjectClass();
 
         /** \brief Function enumerating properties for sizers*/
-        virtual void OnEnumItemProperties(long Flags);
+        virtual void OnEnumItemProperties(long _Flags);
 
         /** \brief Adding generic sizer properties to QPP */
         virtual void OnAddItemQPP(wxsAdvQPP* QPP);

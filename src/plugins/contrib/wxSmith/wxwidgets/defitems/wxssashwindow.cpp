@@ -62,12 +62,12 @@ wxsSashWindow::wxsSashWindow(wxsItemResData* Data):
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsSashWindow::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSashWindow::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
 // make a thing to display
 
     wxSashWindow *swin = new wxSashWindow(Parent,GetId(),Pos(Parent),Size(Parent),Style());
-    SetupWindow(swin, Flags);
+    SetupWindow(swin, _Flags);
 
 // for now, a sash on all edges
 
@@ -78,7 +78,7 @@ wxObject* wxsSashWindow::OnBuildPreview(wxWindow* Parent,long Flags)
 
 // don't forget the kids
 
-    AddChildrenPreview(swin, Flags);
+    AddChildrenPreview(swin, _Flags);
 
 // done
 
@@ -113,7 +113,7 @@ void wxsSashWindow::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-void wxsSashWindow::OnEnumContainerProperties(cb_unused long Flags)
+void wxsSashWindow::OnEnumContainerProperties(cb_unused long _Flags)
 {
     WXS_BOOL(wxsSashWindow, mTop,    _("Drag Top"),    "dragtop",    true);
     WXS_BOOL(wxsSashWindow, mBottom, _("Drag Bottom"), "dragbottom", true);

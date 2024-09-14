@@ -256,7 +256,7 @@ void wxsGLCanvas::FillOldAttributes(const wxString& aname)
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsGLCanvas::OnBuildPreview(wxWindow* Parent, long Flags)
+wxObject* wxsGLCanvas::OnBuildPreview(wxWindow* Parent, long _Flags)
 {
 
 // there is a problem importing the OpenGL DLL into this designer DLL
@@ -272,18 +272,18 @@ wxGLCanvas  *gc;
         GetId(),
         Pos(Parent),
         Size(Parent));
-    SetupWindow(gc, Flags);
+    SetupWindow(gc, _Flags);
     return gc;
 */
 
     wxPanel* gc = new wxPanel(Parent, GetId(),Pos(Parent),Size(Parent),Style());
-    SetupWindow(gc, Flags);
+    SetupWindow(gc, _Flags);
     return gc;
 }
 
 //------------------------------------------------------------------------------
 
-void wxsGLCanvas::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsGLCanvas::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_BOOL(wxsGLCanvas,   mRGBA,          _("Use True Color"),               "mRGBA",           true)
     WXS_LONG(wxsGLCanvas,   mBufferSize,    _("Bits for color buffer"),        "mBufferSize",     0)

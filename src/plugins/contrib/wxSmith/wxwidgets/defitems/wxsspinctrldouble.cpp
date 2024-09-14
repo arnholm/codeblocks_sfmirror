@@ -85,14 +85,14 @@ void wxsSpinCtrlDouble::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsSpinCtrlDouble::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSpinCtrlDouble::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxSpinCtrlDouble* Preview = new wxSpinCtrlDouble(Parent, GetId(), Value, Pos(Parent), Size(Parent), Style(), Min, Max, Initial, Increment);
     if ( !Value.empty() ) Preview->SetValue(Value);
-    return SetupWindow(Preview, Flags);
+    return SetupWindow(Preview, _Flags);
 }
 
-void wxsSpinCtrlDouble::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsSpinCtrlDouble::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsSpinCtrlDouble, Value, _("Value"), _T("value"), _T(""), true)
     WXS_FLOAT(wxsSpinCtrlDouble, Min, _("Min"), _T("min"), 0)

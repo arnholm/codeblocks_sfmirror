@@ -86,10 +86,10 @@ void wxsPanel::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsPanel::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsPanel::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxWindow* NewItem = nullptr;
-    if ( Flags & pfExact )
+    if ( _Flags & pfExact )
     {
         NewItem = new wxPanel(Parent,GetId(),Pos(Parent),Size(Parent),Style());
     }
@@ -98,11 +98,11 @@ wxObject* wxsPanel::OnBuildPreview(wxWindow* Parent,long Flags)
         NewItem = new PanelPreview(Parent,GetId(),Pos(Parent),Size(Parent),Style(),IsRootItem());
     }
     NewItem->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-    SetupWindow(NewItem,Flags);
-    AddChildrenPreview(NewItem,Flags);
+    SetupWindow(NewItem,_Flags);
+    AddChildrenPreview(NewItem,_Flags);
     return NewItem;
 }
 
-void wxsPanel::OnEnumContainerProperties(cb_unused long Flags)
+void wxsPanel::OnEnumContainerProperties(cb_unused long _Flags)
 {
 }

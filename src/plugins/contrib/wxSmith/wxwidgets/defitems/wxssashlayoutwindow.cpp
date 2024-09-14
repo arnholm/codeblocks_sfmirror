@@ -68,12 +68,12 @@ wxsSashLayoutWindow::wxsSashLayoutWindow(wxsItemResData* Data):
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsSashLayoutWindow::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSashLayoutWindow::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
 // make a thing to display
 
     wxSashLayoutWindow* swin = new wxSashLayoutWindow(Parent,GetId(),Pos(Parent),Size(Parent),Style());
-    SetupWindow(swin, Flags);
+    SetupWindow(swin, _Flags);
 
 // for now, a sash on all edges
 
@@ -96,7 +96,7 @@ wxObject* wxsSashLayoutWindow::OnBuildPreview(wxWindow* Parent,long Flags)
 
 // don't forget the kids
 
-    AddChildrenPreview(swin, Flags);
+    AddChildrenPreview(swin, _Flags);
 
 // done
 
@@ -140,7 +140,7 @@ void wxsSashLayoutWindow::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-void wxsSashLayoutWindow::OnEnumContainerProperties(cb_unused long Flags)
+void wxsSashLayoutWindow::OnEnumContainerProperties(cb_unused long _Flags)
 {
     static const long    valign[] = {    wxLAYOUT_TOP,       wxLAYOUT_LEFT,       wxLAYOUT_RIGHT,       wxLAYOUT_BOTTOM,   0};
     static const wxChar *nalign[] = {_T("wxLAYOUT_TOP"), _T("wxLAYOUT_LEFT"), _T("wxLAYOUT_RIGHT"), _T("wxLAYOUT_BOTTOM"), 0};

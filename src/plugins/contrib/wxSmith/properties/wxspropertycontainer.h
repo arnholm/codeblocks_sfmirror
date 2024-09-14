@@ -135,10 +135,10 @@ class PLUGIN_EXPORT wxsPropertyContainer
          *
          * Example of registering function:
          *  \code
-         *  void SomeClass::OnEnumProperties(long Flags)
+         *  void SomeClass::OnEnumProperties(long _Flags)
          *  {
          *      static wxsLongProperty Prop1(_("Long value"),_T("value"),wxsOFFSET(SomeClass,VariableName));
-         *      if ( Flags & flXrc )
+         *      if ( _Flags & flXrc )
          *      {
          *          Property(Prop1);
          *      }
@@ -147,7 +147,7 @@ class PLUGIN_EXPORT wxsPropertyContainer
          *  }
          *  \endcode
          */
-        virtual void OnEnumProperties(long Flags) = 0;
+        virtual void OnEnumProperties(long _Flags) = 0;
 
         /** \brief Function registering property
          *

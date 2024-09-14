@@ -72,14 +72,14 @@ void wxsStaticText::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsStaticText::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsStaticText::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxStaticText* Preview = new wxStaticText(Parent,GetId(),Label,Pos(Parent),Size(Parent),Style());
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 
-void wxsStaticText::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsStaticText::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_STRING(wxsStaticText,Label,_("Label"),_T("label"),_T(""),true)
 }

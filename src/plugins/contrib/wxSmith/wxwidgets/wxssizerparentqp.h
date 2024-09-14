@@ -24,12 +24,12 @@
 #define WXSSIZERPARENTQP_H
 
 //(*Headers(wxsSizerParentQP)
-#include <wx/sizer.h>
 #include <wx/checkbox.h>
+#include <wx/panel.h>
+#include <wx/radiobut.h>
+#include <wx/sizer.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
-#include <wx/radiobut.h>
-#include <wx/panel.h>
 //*)
 
 #include "wxssizer.h"
@@ -43,26 +43,26 @@ class wxsSizerParentQP: public wxsAdvQPPChild
         virtual ~wxsSizerParentQP();
 
         //(*Identifiers(wxsSizerParentQP)
-        static const long ID_CHECKBOX1;
-        static const long ID_CHECKBOX2;
-        static const long ID_CHECKBOX8;
-        static const long ID_CHECKBOX3;
-        static const long ID_CHECKBOX4;
-        static const long ID_SPINCTRL1;
-        static const long ID_CHECKBOX7;
-        static const long ID_RADIOBUTTON4;
-        static const long ID_RADIOBUTTON5;
-        static const long ID_RADIOBUTTON6;
-        static const long ID_RADIOBUTTON7;
-        static const long ID_RADIOBUTTON8;
-        static const long ID_RADIOBUTTON9;
-        static const long ID_RADIOBUTTON10;
-        static const long ID_RADIOBUTTON11;
-        static const long ID_RADIOBUTTON12;
-        static const long ID_STATICLINE1;
-        static const long ID_CHECKBOX6;
-        static const long ID_CHECKBOX5;
-        static const long ID_SPINCTRL2;
+        static const wxWindowID ID_CHECKBOX1;
+        static const wxWindowID ID_CHECKBOX2;
+        static const wxWindowID ID_CHECKBOX8;
+        static const wxWindowID ID_CHECKBOX3;
+        static const wxWindowID ID_CHECKBOX4;
+        static const wxWindowID ID_SPINCTRL1;
+        static const wxWindowID ID_CHECKBOX7;
+        static const wxWindowID ID_RADIOBUTTON4;
+        static const wxWindowID ID_RADIOBUTTON5;
+        static const wxWindowID ID_RADIOBUTTON6;
+        static const wxWindowID ID_RADIOBUTTON7;
+        static const wxWindowID ID_RADIOBUTTON8;
+        static const wxWindowID ID_RADIOBUTTON9;
+        static const wxWindowID ID_RADIOBUTTON10;
+        static const wxWindowID ID_RADIOBUTTON11;
+        static const wxWindowID ID_RADIOBUTTON12;
+        static const wxWindowID ID_STATICLINE1;
+        static const wxWindowID ID_CHECKBOX6;
+        static const wxWindowID ID_CHECKBOX5;
+        static const wxWindowID ID_SPINCTRL2;
         //*)
 
     protected:
@@ -77,26 +77,26 @@ class wxsSizerParentQP: public wxsAdvQPPChild
         //*)
 
         //(*Declarations(wxsSizerParentQP)
-        wxRadioButton* PlaceCB;
         wxCheckBox* BrdAll;
-        wxCheckBox* PlaceShp;
-        wxCheckBox* BrdLeft;
-        wxSpinCtrl* BrdSize;
-        wxCheckBox* BrdTop;
-        wxCheckBox* BrdRight;
-        wxRadioButton* PlaceRT;
-        wxRadioButton* PlaceRC;
-        wxCheckBox* PlaceExp;
-        wxRadioButton* PlaceCT;
-        wxCheckBox* BrdDlg;
         wxCheckBox* BrdBottom;
-        wxRadioButton* PlaceLB;
-        wxRadioButton* PlaceRB;
+        wxCheckBox* BrdDlg;
+        wxCheckBox* BrdLeft;
+        wxCheckBox* BrdRight;
+        wxCheckBox* BrdTop;
+        wxCheckBox* PlaceExp;
+        wxCheckBox* PlaceShp;
+        wxRadioButton* PlaceCB;
         wxRadioButton* PlaceCC;
-        wxStaticLine* StaticLine1;
-        wxSpinCtrl* Proportion;
-        wxRadioButton* PlaceLT;
+        wxRadioButton* PlaceCT;
+        wxRadioButton* PlaceLB;
         wxRadioButton* PlaceLC;
+        wxRadioButton* PlaceLT;
+        wxRadioButton* PlaceRB;
+        wxRadioButton* PlaceRC;
+        wxRadioButton* PlaceRT;
+        wxSpinCtrl* BrdSize;
+        wxSpinCtrl* Proportion;
+        wxStaticLine* StaticLine1;
         //*)
 
         virtual void Update();

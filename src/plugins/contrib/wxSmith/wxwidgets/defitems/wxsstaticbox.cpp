@@ -65,13 +65,13 @@ void wxsStaticBox::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsStaticBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsStaticBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxStaticBox* Preview = new wxStaticBox(Parent,GetId(),Label,Pos(Parent),Size(Parent),Style());
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsStaticBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsStaticBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsStaticBox,Label,_("Label"),_T("label"),_T(""),false)
 }

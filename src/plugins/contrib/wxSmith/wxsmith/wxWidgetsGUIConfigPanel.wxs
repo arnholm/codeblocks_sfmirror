@@ -19,7 +19,6 @@
 							</object>
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="AutoLoad" member="yes">
-									<size>218,102</size>
 									<style>wxTE_MULTILINE</style>
 								</object>
 								<flag>wxTOP|wxEXPAND</flag>
@@ -67,7 +66,6 @@
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
 										<object class="wxComboBox" name="ID_COMBOBOX1" variable="MainRes" member="yes">
-											<size>201,21</size>
 											<style>wxCB_READONLY</style>
 										</object>
 										<flag>wxALIGN_CENTER_HORIZONTAL</flag>

@@ -44,36 +44,36 @@
 //*)
 
 //(*IdInit(wxsFontEditorDlg)
-const long wxsFontEditorDlg::ID_CHOICE1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX8 = wxNewId();
-const long wxsFontEditorDlg::ID_STATICTEXT1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHOICE2 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX2 = wxNewId();
-const long wxsFontEditorDlg::ID_COMBOBOX1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHOICE3 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX7 = wxNewId();
-const long wxsFontEditorDlg::ID_SPINCTRL1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX6 = wxNewId();
-const long wxsFontEditorDlg::ID_TEXTCTRL1 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX3 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON1 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON2 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON3 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX4 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON4 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON5 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON6 = wxNewId();
-const long wxsFontEditorDlg::ID_CHECKBOX5 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON7 = wxNewId();
-const long wxsFontEditorDlg::ID_RADIOBUTTON8 = wxNewId();
-const long wxsFontEditorDlg::ID_LISTBOX1 = wxNewId();
-const long wxsFontEditorDlg::ID_BUTTON4 = wxNewId();
-const long wxsFontEditorDlg::ID_BUTTON5 = wxNewId();
-const long wxsFontEditorDlg::ID_BUTTON6 = wxNewId();
-const long wxsFontEditorDlg::ID_BUTTON8 = wxNewId();
-const long wxsFontEditorDlg::ID_BUTTON7 = wxNewId();
-const long wxsFontEditorDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHOICE1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX8 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHOICE2 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHOICE3 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX7 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_SPINCTRL1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX6 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX3 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON2 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON3 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX4 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON4 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON5 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON6 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_CHECKBOX5 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON7 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_RADIOBUTTON8 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_BUTTON5 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_BUTTON6 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_BUTTON8 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_BUTTON7 = wxNewId();
+const wxWindowID wxsFontEditorDlg::ID_TEXTCTRL2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsFontEditorDlg,wxScrollingDialog)
@@ -87,11 +87,11 @@ wxsFontEditorDlg::wxsFontEditorDlg(wxWindow* parent,wxsFontData& _Data,wxWindowI
 {
     Initialized = false;
     //(*Initialize(wxsFontEditorDlg)
-    wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer6;
-    wxBoxSizer* BoxSizer5;
-    wxStaticBoxSizer* StaticBoxSizer7;
     wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer6;
+    wxStaticBoxSizer* StaticBoxSizer7;
     wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     Create(parent, id, _("Advanced font settings"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
@@ -151,7 +151,7 @@ wxsFontEditorDlg::wxsFontEditorDlg(wxWindow* parent,wxsFontData& _Data,wxWindowI
     RelSizeUse = new wxCheckBox(this, ID_CHECKBOX6, _("Relative size:"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX6"));
     RelSizeUse->SetValue(false);
     FlexGridSizer2->Add(RelSizeUse, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5);
-    RelSizeVal = new wxTextCtrl(this, ID_TEXTCTRL1, _("1.0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    RelSizeVal = new wxTextCtrl(this, ID_TEXTCTRL1, _T("1.0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     FlexGridSizer2->Add(RelSizeVal, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     StaticBoxSizer2->Add(FlexGridSizer2, 0, wxEXPAND, 5);
     BoxSizer5->Add(StaticBoxSizer2, 0, wxLEFT|wxRIGHT|wxEXPAND, 5);
@@ -209,7 +209,7 @@ wxsFontEditorDlg::wxsFontEditorDlg(wxWindow* parent,wxsFontData& _Data,wxWindowI
     BoxSizer4->Add(BoxSizer6, 1, wxEXPAND, 5);
     BoxSizer1->Add(BoxSizer4, 1, wxEXPAND, 5);
     StaticBoxSizer7 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Test area"));
-    TestArea = new wxTextCtrl(this, ID_TEXTCTRL2, _("This is sample text"), wxDefaultPosition, wxSize(316,53), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    TestArea = new wxTextCtrl(this, ID_TEXTCTRL2, _("This is sample text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
     StaticBoxSizer7->Add(TestArea, 1, wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(StaticBoxSizer7, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     StdDialogButtonSizer1 = new wxStdDialogButtonSizer();
@@ -218,8 +218,8 @@ wxsFontEditorDlg::wxsFontEditorDlg(wxWindow* parent,wxsFontData& _Data,wxWindowI
     StdDialogButtonSizer1->Realize();
     BoxSizer1->Add(StdDialogButtonSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
+    Center();
 
     Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,wxCommandEventHandler(wxsFontEditorDlg::OnUpdateContent));
     Connect(ID_CHECKBOX8,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsFontEditorDlg::OnBaseFontUseChange));

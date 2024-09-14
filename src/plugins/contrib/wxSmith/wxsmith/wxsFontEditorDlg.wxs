@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsFontEditorDlg">
 		<title>Advanced font settings</title>
+		<centered>1</centered>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
@@ -376,7 +377,6 @@
 					<object class="sizeritem">
 						<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TestArea" member="yes">
 							<value>This is sample text</value>
-							<size>316,53</size>
 						</object>
 						<flag>wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>

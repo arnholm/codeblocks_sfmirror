@@ -25,8 +25,8 @@
 //(*InternalHeaders(wxsImageComboEditorDlg)
 #include <wx/artprov.h>
 #include <wx/bitmap.h>
-#include <wx/intl.h>
 #include <wx/image.h>
+#include <wx/intl.h>
 #include <wx/string.h>
 //*)
 #include "../wxsitemresdata.h"
@@ -35,26 +35,26 @@
 #include "wxsimagecomboeditordlg.h"
 
 //(*IdInit(wxsImageComboEditorDlg)
-const long wxsImageComboEditorDlg::ID_STATICTEXT1 = wxNewId();
-const long wxsImageComboEditorDlg::ID_TREECTRL1 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT2 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON1 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT3 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON2 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT4 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON3 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT5 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON4 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT6 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON5 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT7 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BITMAPBUTTON6 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT8 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT9 = wxNewId();
-const long wxsImageComboEditorDlg::ID_COMBOBOX1 = wxNewId();
-const long wxsImageComboEditorDlg::ID_STATICTEXT10 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BUTTON1 = wxNewId();
-const long wxsImageComboEditorDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_TREECTRL1 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON1 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT3 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON2 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT4 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON3 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT5 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON4 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT6 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON5 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT7 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BITMAPBUTTON6 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT8 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT9 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_STATICTEXT10 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsImageComboEditorDlg::ID_BUTTON2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsImageComboEditorDlg,wxScrollingDialog)
@@ -65,20 +65,20 @@ END_EVENT_TABLE()
 wxsImageComboEditorDlg::wxsImageComboEditorDlg(wxWindow* parent)
 {
     //(*Initialize(wxsImageComboEditorDlg)
-    wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer6;
-    wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer10;
-    wxBoxSizer* BoxSizer7;
-    wxBoxSizer* BoxSizer8;
-    wxBoxSizer* BoxSizer13;
-    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer11;
     wxBoxSizer* BoxSizer12;
+    wxBoxSizer* BoxSizer13;
     wxBoxSizer* BoxSizer14;
     wxBoxSizer* BoxSizer1;
-    wxBoxSizer* BoxSizer9;
+    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer6;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer9;
 
     Create(parent, wxID_ANY, _("wxBitmapComboBox Editor"), wxDefaultPosition, wxDefaultSize, wxCAPTION|wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
     SetMinSize(wxSize(-1,-1));
@@ -88,7 +88,7 @@ wxsImageComboEditorDlg::wxsImageComboEditorDlg(wxWindow* parent)
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Combo-Box"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE|wxALIGN_CENTRE, _T("ID_STATICTEXT1"));
     BoxSizer2->Add(StaticText1, 0, wxALL|wxALIGN_LEFT, 5);
-    m_pTree = new wxTreeCtrl(this, ID_TREECTRL1, wxPoint(0,32), wxSize(240,272), wxTR_EDIT_LABELS|wxTR_NO_BUTTONS|wxTR_NO_LINES|wxTR_HIDE_ROOT|wxRAISED_BORDER, wxDefaultValidator, _T("ID_TREECTRL1"));
+    m_pTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_EDIT_LABELS|wxTR_NO_BUTTONS|wxTR_NO_LINES|wxTR_HIDE_ROOT|wxBORDER_RAISED, wxDefaultValidator, _T("ID_TREECTRL1"));
     BoxSizer2->Add(m_pTree, 0, wxALL|wxEXPAND, 0);
     BoxSizer13->Add(BoxSizer2, 0, wxALL|wxALIGN_TOP, 5);
     BoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -140,9 +140,9 @@ wxsImageComboEditorDlg::wxsImageComboEditorDlg(wxWindow* parent)
     BoxSizer11->Add(StaticText9, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer10->Add(BoxSizer11, 0, wxALL|wxALIGN_LEFT, 0);
     BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
-    m_pCmbImage = new wxBitmapComboBox(this, ID_COMBOBOX1, wxEmptyString, wxPoint(256,272), wxSize(100,22), 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+    m_pCmbImage = new wxBitmapComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
     BoxSizer12->Add(m_pCmbImage, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5);
-    StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("Item Image"), wxPoint(352,276), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+    StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("Item Image"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     BoxSizer12->Add(StaticText10, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer10->Add(BoxSizer12, 0, wxALL|wxALIGN_LEFT, 0);
     BoxSizer3->Add(BoxSizer10, 1, wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND, 5);
@@ -157,8 +157,8 @@ wxsImageComboEditorDlg::wxsImageComboEditorDlg(wxWindow* parent)
     BoxSizer14->Add(m_pBtnCancel, 0, wxALL|wxALIGN_BOTTOM, 5);
     BoxSizer1->Add(BoxSizer14, 0, wxALL|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
-    BoxSizer1->SetSizeHints(this);
+    Fit();
+    Center();
 
     Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,wxTreeEventHandler(wxsImageComboEditorDlg::OnTreeSelectionChanged));
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxsImageComboEditorDlg::OnBtnAddItemClick));

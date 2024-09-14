@@ -99,24 +99,24 @@ void wxsDataViewTreeCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long          The control flags.
+ * \param _Flags long          The control flags.
  * \return wxObject*          The constructed control.
  *
  */
-wxObject *wxsDataViewTreeCtrl::OnBuildPreview(wxWindow *Parent, long Flags)
+wxObject *wxsDataViewTreeCtrl::OnBuildPreview(wxWindow *Parent, long _Flags)
 {
     wxDataViewCtrl *preview = new wxDataViewCtrl(Parent, GetId(), Pos(Parent), Size(Parent), Style());
 
-    return SetupWindow(preview, Flags);
+    return SetupWindow(preview, _Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsDataViewTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsDataViewTreeCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
 
 }
@@ -127,7 +127,7 @@ void wxsDataViewTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
  * \return void
  *
  */
-void wxsDataViewTreeCtrl::FindAllImageLists(wxArrayString &aNames)
+void wxsDataViewTreeCtrl::FindAllImageLists(cb_unused wxArrayString &aNames)
 {
 
 }

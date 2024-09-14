@@ -88,15 +88,15 @@ void wxsScrollBar::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsScrollBar::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsScrollBar::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxScrollBar* Preview = new wxScrollBar(Parent,GetId(),Pos(Parent),Size(Parent),Style());
     Preview->SetScrollbar(Value,ThumbSize,Range,PageSize);
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 
-void wxsScrollBar::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsScrollBar::OnEnumWidgetProperties(cb_unused long _Flags)
 {
    WXS_LONG(wxsScrollBar,Value,_("Value"),_T("value"),0)
    WXS_LONG(wxsScrollBar,ThumbSize,_("ThumbSize"),_T("thumbsize"),0)

@@ -99,11 +99,11 @@ void wxsSearchCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                    The control flags.
+ * \param _Flags long                    The control flags.
  * \return wxObject*                     The constructed control.
  *
  */
-wxObject* wxsSearchCtrl::OnBuildPreview(wxWindow* parent,long flags)
+wxObject* wxsSearchCtrl::OnBuildPreview(wxWindow* parent,long _Flags)
 {
     wxSearchCtrl* preview = new wxSearchCtrl(parent, GetId(), m_sValue, Pos(parent), Size(parent), Style());
 
@@ -114,16 +114,16 @@ wxObject* wxsSearchCtrl::OnBuildPreview(wxWindow* parent,long flags)
         preview->ShowCancelButton(m_bShowCancelBtn);
     }
 
-    return SetupWindow(preview,flags);
+    return SetupWindow(preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsSearchCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsSearchCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsSearchCtrl, m_sValue, _("Value"), _T("value"), wxEmptyString, false)
     WXS_BOOL(wxsSearchCtrl, m_bShowSearchBtn, _("Search Button"), _T("search_button"), true)

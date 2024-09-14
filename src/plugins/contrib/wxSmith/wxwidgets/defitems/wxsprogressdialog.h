@@ -33,7 +33,7 @@ class wxsProgressDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         wxString     m_sTitle;                //!< The dialogue's title.
         wxString     m_sMessage;        //!< The dialogue message.

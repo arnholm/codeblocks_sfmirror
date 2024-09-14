@@ -26,12 +26,12 @@
 #include "wxsfontproperty.h"
 
 //(*Headers(wxsSimpleFontEditorDlg)
+#include "scrollingdialog.h"
+#include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/statline.h>
-#include <wx/button.h>
-#include "scrollingdialog.h"
 //*)
 
 
@@ -43,15 +43,15 @@ class wxsSimpleFontEditorDlg: public wxScrollingDialog
         virtual ~wxsSimpleFontEditorDlg();
 
         //(*Identifiers(wxsSimpleFontEditorDlg)
-        static const long ID_STATICTEXT1;
-        static const long ID_STATICLINE2;
-        static const long ID_BUTTON1;
-        static const long ID_BUTTON3;
-        static const long ID_STATICLINE1;
-        static const long ID_BUTTON2;
-        static const long ID_TEXTCTRL1;
-        static const long ID_STATICTEXT2;
-        static const long ID_STATICTEXT3;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_STATICLINE2;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_BUTTON3;
+        static const wxWindowID ID_STATICLINE1;
+        static const wxWindowID ID_BUTTON2;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_STATICTEXT3;
         //*)
 
     private:
@@ -64,18 +64,18 @@ class wxsSimpleFontEditorDlg: public wxScrollingDialog
         //*)
 
         //(*Declarations(wxsSimpleFontEditorDlg)
-        wxStaticText* StaticText2;
-        wxButton* Button1;
-        wxTextCtrl* TestArea;
-        wxFlexGridSizer* FlexGridSizer2;
         wxBoxSizer* BoxSizer2;
-        wxStaticText* StaticText3;
+        wxButton* Button1;
         wxButton* Button2;
+        wxButton* Button3;
+        wxFlexGridSizer* FlexGridSizer2;
+        wxStaticBoxSizer* StaticBoxSizer1;
+        wxStaticLine* StaticLine1;
         wxStaticLine* StaticLine2;
         wxStaticText* FontDescription;
-        wxButton* Button3;
-        wxStaticLine* StaticLine1;
-        wxStaticBoxSizer* StaticBoxSizer1;
+        wxStaticText* StaticText2;
+        wxStaticText* StaticText3;
+        wxTextCtrl* TestArea;
         //*)
 
         wxsFontData& m_Data;

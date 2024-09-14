@@ -228,7 +228,7 @@ void wxsMenu::OnBuildCreatingCode()
     }
 }
 
-void wxsMenu::OnEnumToolProperties(cb_unused long Flags)
+void wxsMenu::OnEnumToolProperties(cb_unused long _Flags)
 {
     if ( GetParent() )
     {

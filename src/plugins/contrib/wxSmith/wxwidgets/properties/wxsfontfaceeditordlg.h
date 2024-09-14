@@ -26,10 +26,10 @@
 #include <wx/wxprec.h>
 
 //(*Headers(wxsFontFaceEditorDlg)
+#include "scrollingdialog.h"
+#include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
-#include <wx/button.h>
-#include "scrollingdialog.h"
 //*)
 
 class wxsFontFaceEditorDlg: public wxScrollingDialog
@@ -40,8 +40,8 @@ class wxsFontFaceEditorDlg: public wxScrollingDialog
         virtual ~wxsFontFaceEditorDlg();
 
         //(*Identifiers(wxsFontFaceEditorDlg)
-        static const long ID_TEXTCTRL1;
-        static const long ID_BUTTON1;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_BUTTON1;
         //*)
 
     protected:
@@ -52,10 +52,10 @@ class wxsFontFaceEditorDlg: public wxScrollingDialog
         //*)
 
         //(*Declarations(wxsFontFaceEditorDlg)
-        wxTextCtrl* FaceName;
         wxButton* Button1;
         wxButton* Button2;
         wxButton* Button3;
+        wxTextCtrl* FaceName;
         //*)
 
     private:

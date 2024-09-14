@@ -93,17 +93,17 @@ class wxsBaseProperties: public wxsPropertyContainer
         /** \brief Function generating QPPChild Panel for most frequently used
          *         properties.
          */
-        void AddQPPChild(wxsAdvQPP* QPP,long Flags);
+        void AddQPPChild(wxsAdvQPP* QPP,long _Flags);
 
         /** \brief Adding some special xml read of data */
         void SpecialXmlRead(TiXmlElement* Elem,bool IsXRC,bool IsExtra);
 
         /** \brief Adding some special xml write of data */
-        void SpecialXmlWrite(TiXmlElement* Elem,bool IsXRC,bool IsExtra,long Flags,const wxString& ClassName);
+        void SpecialXmlWrite(TiXmlElement* Elem,bool IsXRC,bool IsExtra,long _Flags,const wxString& ClassName);
 
     protected:
 
-        virtual void OnEnumProperties(long Flags);
+        virtual void OnEnumProperties(long _Flags);
 };
 
 #endif

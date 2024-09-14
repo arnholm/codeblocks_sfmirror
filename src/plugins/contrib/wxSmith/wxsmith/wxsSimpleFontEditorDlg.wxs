@@ -88,7 +88,6 @@
 					<object class="sizeritem">
 						<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TestArea" member="yes">
 							<value>This is sample text</value>
-							<size>275,71</size>
 							<style>wxTE_MULTILINE</style>
 						</object>
 						<flag>wxEXPAND</flag>

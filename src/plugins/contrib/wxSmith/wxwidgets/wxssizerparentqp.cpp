@@ -28,26 +28,26 @@
 //*)
 
 //(*IdInit(wxsSizerParentQP)
-const long wxsSizerParentQP::ID_CHECKBOX1 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX2 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX8 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX3 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX4 = wxNewId();
-const long wxsSizerParentQP::ID_SPINCTRL1 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX7 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON4 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON5 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON6 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON7 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON8 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON9 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON10 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON11 = wxNewId();
-const long wxsSizerParentQP::ID_RADIOBUTTON12 = wxNewId();
-const long wxsSizerParentQP::ID_STATICLINE1 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX6 = wxNewId();
-const long wxsSizerParentQP::ID_CHECKBOX5 = wxNewId();
-const long wxsSizerParentQP::ID_SPINCTRL2 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX8 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX3 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX4 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_SPINCTRL1 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX7 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON4 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON5 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON6 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON7 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON8 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON9 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON10 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON11 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_RADIOBUTTON12 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_STATICLINE1 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX6 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_CHECKBOX5 = wxNewId();
+const wxWindowID wxsSizerParentQP::ID_SPINCTRL2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsSizerParentQP,wxPanel)
@@ -60,12 +60,12 @@ wxsSizerParentQP::wxsSizerParentQP(wxsAdvQPP* parent,wxsSizerExtra* Extra):
     m_Extra(Extra)
 {
     //(*Initialize(wxsSizerParentQP)
+    wxBoxSizer* BoxSizer1;
+    wxGridSizer* GridSizer1;
+    wxGridSizer* GridSizer2;
+    wxStaticBoxSizer* StaticBoxSizer1;
     wxStaticBoxSizer* StaticBoxSizer2;
     wxStaticBoxSizer* StaticBoxSizer3;
-    wxGridSizer* GridSizer1;
-    wxBoxSizer* BoxSizer1;
-    wxStaticBoxSizer* StaticBoxSizer1;
-    wxGridSizer* GridSizer2;
 
     Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -90,7 +90,7 @@ wxsSizerParentQP::wxsSizerParentQP(wxsAdvQPP* parent,wxsSizerExtra* Extra):
     BrdBottom->SetValue(false);
     GridSizer1->Add(BrdBottom, 0, wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer1->Add(GridSizer1, 0, wxEXPAND, 5);
-    BrdSize = new wxSpinCtrl(this, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(38,-1)), 0, 0, 100, 0, _T("ID_SPINCTRL1"));
+    BrdSize = new wxSpinCtrl(this, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL1"));
     BrdSize->SetValue(_T("0"));
     StaticBoxSizer1->Add(BrdSize, 0, wxTOP|wxEXPAND, 5);
     BrdDlg = new wxCheckBox(this, ID_CHECKBOX7, _("Dialog Units"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX7"));
@@ -128,12 +128,11 @@ wxsSizerParentQP::wxsSizerParentQP(wxsAdvQPP* parent,wxsSizerExtra* Extra):
     StaticBoxSizer2->Add(PlaceExp, 0, wxTOP|wxEXPAND, 5);
     BoxSizer1->Add(StaticBoxSizer2, 0, wxEXPAND, 5);
     StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, this, _("Proportion"));
-    Proportion = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxDLG_UNIT(this,wxSize(38,-1)), 0, 0, 100, 0, _T("ID_SPINCTRL2"));
+    Proportion = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL2"));
     Proportion->SetValue(_T("0"));
     StaticBoxSizer3->Add(Proportion, 0, wxEXPAND, 5);
     BoxSizer1->Add(StaticBoxSizer3, 0, wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
     Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(wxsSizerParentQP::OnBrdChange));

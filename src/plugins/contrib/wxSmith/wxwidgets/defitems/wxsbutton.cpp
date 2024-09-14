@@ -74,14 +74,14 @@ void wxsButton::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsButton::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsButton::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxButton* Preview = new wxButton(Parent,GetId(),Label,Pos(Parent),Size(Parent),Style());
     if ( IsDefault ) Preview->SetDefault();
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsButton::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsButton::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_STRING(wxsButton,Label,_("Label"),_T("label"),_T(""),false)
     WXS_BOOL(wxsButton,IsDefault,_("Is default"),_T("default"),false)

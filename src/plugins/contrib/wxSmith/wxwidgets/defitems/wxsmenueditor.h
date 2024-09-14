@@ -147,32 +147,32 @@ class wxsMenuEditor: public wxPanel
         bool        m_BlockRead;///< \brief Flag for blocking reading data from dialog to MenuItem
 
         //(*Identifiers(wxsMenuEditor)
-        static const long ID_TREECTRL1;
-        static const long ID_RADIOBUTTON1;
-        static const long ID_RADIOBUTTON4;
-        static const long ID_RADIOBUTTON2;
-        static const long ID_RADIOBUTTON5;
-        static const long ID_RADIOBUTTON3;
-        static const long ID_STATICLINE1;
-        static const long ID_STATICTEXT6;
-        static const long ID_TEXTCTRL4;
-        static const long ID_STATICTEXT1;
-        static const long ID_TEXTCTRL1;
-        static const long ID_STATICTEXT2;
-        static const long ID_TEXTCTRL2;
-        static const long ID_STATICTEXT3;
-        static const long ID_TEXTCTRL3;
-        static const long ID_STATICTEXT4;
-        static const long ID_CHECKBOX1;
-        static const long ID_STATICTEXT5;
-        static const long ID_CHECKBOX2;
-        static const long ID_STATICLINE2;
-        static const long ID_BUTTON1;
-        static const long ID_BUTTON2;
-        static const long ID_BUTTON3;
-        static const long ID_BUTTON4;
-        static const long ID_BUTTON5;
-        static const long ID_BUTTON6;
+        static const wxWindowID ID_TREECTRL1;
+        static const wxWindowID ID_RADIOBUTTON1;
+        static const wxWindowID ID_RADIOBUTTON4;
+        static const wxWindowID ID_RADIOBUTTON2;
+        static const wxWindowID ID_RADIOBUTTON5;
+        static const wxWindowID ID_RADIOBUTTON3;
+        static const wxWindowID ID_STATICLINE1;
+        static const wxWindowID ID_STATICTEXT6;
+        static const wxWindowID ID_TEXTCTRL4;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_TEXTCTRL2;
+        static const wxWindowID ID_STATICTEXT3;
+        static const wxWindowID ID_TEXTCTRL3;
+        static const wxWindowID ID_STATICTEXT4;
+        static const wxWindowID ID_CHECKBOX1;
+        static const wxWindowID ID_STATICTEXT5;
+        static const wxWindowID ID_CHECKBOX2;
+        static const wxWindowID ID_STATICLINE2;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_BUTTON2;
+        static const wxWindowID ID_BUTTON3;
+        static const wxWindowID ID_BUTTON4;
+        static const wxWindowID ID_BUTTON5;
+        static const wxWindowID ID_BUTTON6;
         //*)
 
         //(*Handlers(wxsMenuEditor)

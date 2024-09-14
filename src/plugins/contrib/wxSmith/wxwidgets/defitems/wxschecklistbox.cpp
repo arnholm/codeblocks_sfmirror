@@ -93,7 +93,7 @@ void wxsCheckListBox::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsCheckListBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsCheckListBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxCheckListBox* Preview = new wxCheckListBox(Parent,GetId(),Pos(Parent),Size(Parent),0,0,Style());
     for ( size_t i = 0; i < ArrayChoices.GetCount(); ++i )
@@ -104,10 +104,10 @@ wxObject* wxsCheckListBox::OnBuildPreview(wxWindow* Parent,long Flags)
             Preview->Check(Val);
         }
     }
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsCheckListBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsCheckListBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_ARRAYSTRINGCHECK(wxsCheckListBox,ArrayChoices,ArrayChecks, _("Choices"), "content", "item");
 }

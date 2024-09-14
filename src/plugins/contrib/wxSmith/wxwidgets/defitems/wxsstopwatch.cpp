@@ -67,6 +67,6 @@ void wxsStopWatch::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-void wxsStopWatch::OnEnumToolProperties(cb_unused long Flags)
+void wxsStopWatch::OnEnumToolProperties(cb_unused long _Flags)
 {
 }

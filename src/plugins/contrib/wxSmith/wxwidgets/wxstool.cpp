@@ -65,9 +65,9 @@ bool wxsTool::OnCanAddToResource(wxsItemResData* Data,bool ShowMessage)
     return false;
 }
 
-void wxsTool::OnEnumItemProperties(long Flags)
+void wxsTool::OnEnumItemProperties(long _Flags)
 {
-    OnEnumToolProperties(Flags);
+    OnEnumToolProperties(_Flags);
 }
 
 void wxsTool::OnAddItemQPP(wxsAdvQPP* QPP)

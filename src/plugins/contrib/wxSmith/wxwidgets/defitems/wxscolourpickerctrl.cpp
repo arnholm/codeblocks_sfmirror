@@ -83,11 +83,11 @@ void wxsColourPickerCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsColourPickerCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsColourPickerCtrl::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxColourPickerCtrl* Preview;
     wxColour clr = m_cdColour.GetColour();
@@ -97,16 +97,16 @@ wxObject* wxsColourPickerCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
     else{
         Preview = new wxColourPickerCtrl(Parent, GetId(), *wxBLACK, Pos(Parent), Size(Parent), Style());
     }
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsColourPickerCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsColourPickerCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_COLOUR(wxsColourPickerCtrl, m_cdColour, _("Colour"), _T("colour"));
 }

@@ -87,11 +87,11 @@ void wxsAnimationCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsAnimationCtrl::OnBuildPreview(wxWindow* parent,long flags)
+wxObject* wxsAnimationCtrl::OnBuildPreview(wxWindow* parent,long _Flags)
 {
     wxAnimation anim; anim.LoadFile(m_sAnimation);
     wxAnimationCtrl* preview = new wxAnimationCtrl(parent, GetId(), anim, Pos(parent), Size(parent), Style());
@@ -105,16 +105,16 @@ wxObject* wxsAnimationCtrl::OnBuildPreview(wxWindow* parent,long flags)
         preview->Play();
     }
 
-    return SetupWindow(preview,flags);
+    return SetupWindow(preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsAnimationCtrl::OnEnumWidgetProperties(cb_unused long flags)
+void wxsAnimationCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsAnimationCtrl, m_sAnimation, _("Animation"), _T("animation"), _T(""), false)
     WXS_BITMAP(wxsAnimationCtrl, m_bmpInactive, _("Inactive Bitmap"), _T("inactive_bitmap"), _T("wxART_OTHER"));

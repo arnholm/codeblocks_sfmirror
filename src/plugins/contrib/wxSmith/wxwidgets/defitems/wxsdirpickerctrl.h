@@ -33,11 +33,11 @@ class wxsDirPickerCtrl: public wxsWidget
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnEnumWidgetProperties(long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void OnEnumWidgetProperties(long _Flags);
 
-        wxString    m_sMessage;        //!< The dialogue message.
-        wxString    m_sPath;                //!< The directory path.
+        wxString m_sMessage; //!< The dialogue message.
+        wxString m_sPath;    //!< The directory path.
 };
 
 #endif

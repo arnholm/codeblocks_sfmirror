@@ -62,7 +62,7 @@ void wxsStaticBoxSizer::OnBuildSizerCreatingCode()
     }
 }
 
-void wxsStaticBoxSizer::OnEnumSizerProperties(cb_unused long Flags)
+void wxsStaticBoxSizer::OnEnumSizerProperties(cb_unused long _Flags)
 {
     static const long    OrientValues[] = { wxHORIZONTAL, wxVERTICAL, 0 };
     static const wxChar* OrientNames[]  = { _T("wxHORIZONTAL"), _T("wxVERTICAL"), 0 };

@@ -102,17 +102,17 @@ void wxsRadioBox::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsRadioBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsRadioBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxRadioBox* Preview = new wxRadioBox(Parent,GetId(),Label,Pos(Parent),Size(Parent),ArrayChoices, Dimension, Style());
     if ( DefaultSelection >= 0 && DefaultSelection < (int)ArrayChoices.GetCount() )
     {
         Preview->SetSelection(DefaultSelection);
     }
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsRadioBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsRadioBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsRadioBox,Label, _("Label"), "label", "",true)
     WXS_ARRAYSTRING(wxsRadioBox,ArrayChoices, _("Choices"), "content", "item")

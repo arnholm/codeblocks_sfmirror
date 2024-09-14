@@ -95,7 +95,7 @@ void wxsBitmapButton::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsBitmapButton::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsBitmapButton::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxBitmapButton* Preview = new wxBitmapButton(Parent,GetId(),BitmapLabel.GetPreview(wxDefaultSize),Pos(Parent),Size(Parent),Style());
 
@@ -118,11 +118,11 @@ wxObject* wxsBitmapButton::OnBuildPreview(wxWindow* Parent,long Flags)
     {
         Preview->SetDefault();
     }
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 
-void wxsBitmapButton::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsBitmapButton::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_BITMAP(wxsBitmapButton,BitmapLabel,_("Bitmap"),_T("bitmap"),_T("wxART_OTHER"))
     WXS_BITMAP(wxsBitmapButton,BitmapDisabled,_("Disabled bmp."),_T("disabled"),_T("wxART_OTHER"))

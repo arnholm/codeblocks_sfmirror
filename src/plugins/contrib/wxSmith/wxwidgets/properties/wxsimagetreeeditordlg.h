@@ -55,37 +55,37 @@ class wxsImageTreeEditorDlg: public wxScrollingDialog
 
 
         //(*Declarations(wxsImageTreeEditorDlg)
-        wxStaticText* StaticText10;
-        wxStaticBoxSizer* StaticBoxSizer2;
-        wxStaticText* StaticText9;
-        wxButton* bOK;
-        wxBitmapComboBox* cbSelected;
-        wxBitmapComboBox* cbExpanded;
+        wxBitmapButton        *bAddItem;
         wxBitmapButton        *bAddSubItem;
-        wxButton* bCancel;
-        wxStaticText* StaticText13;
-        wxStaticText* StaticText2;
-        wxStaticText* StaticText6;
-        wxTreeCtrl* Tree1;
-        wxStaticText* StaticText8;
-        wxStaticText* StaticText11;
-        wxImageList* ImageList1;
-        wxBitmapButton        *bEditItem;
-        wxColourDialog* ColourDialog1;
-        wxStaticText* StaticText1;
-        wxStaticText* StaticText3;
         wxBitmapButton        *bDelAllItems;
         wxBitmapButton        *bDelItem;
-        wxCheckBox* cxItemBold;
-        wxStaticText* StaticText5;
-        wxStaticText* StaticText7;
-        wxStaticText* StaticText12;
-        wxStaticBoxSizer* StaticBoxSizer1;
-        wxBitmapComboBox* cbSelExpanded;
-        wxStaticText* StaticText4;
-        wxButton* bItemColor;
-        wxBitmapButton        *bAddItem;
+        wxBitmapButton        *bEditItem;
+        wxBitmapComboBox* cbExpanded;
         wxBitmapComboBox* cbNormal;
+        wxBitmapComboBox* cbSelExpanded;
+        wxBitmapComboBox* cbSelected;
+        wxButton* bCancel;
+        wxButton* bItemColor;
+        wxButton* bOK;
+        wxCheckBox* cxItemBold;
+        wxColourDialog* ColourDialog1;
+        wxImageList* ImageList1;
+        wxStaticBoxSizer* StaticBoxSizer1;
+        wxStaticBoxSizer* StaticBoxSizer2;
+        wxStaticText* StaticText10;
+        wxStaticText* StaticText11;
+        wxStaticText* StaticText12;
+        wxStaticText* StaticText13;
+        wxStaticText* StaticText1;
+        wxStaticText* StaticText2;
+        wxStaticText* StaticText3;
+        wxStaticText* StaticText4;
+        wxStaticText* StaticText5;
+        wxStaticText* StaticText6;
+        wxStaticText* StaticText7;
+        wxStaticText* StaticText8;
+        wxStaticText* StaticText9;
+        wxTreeCtrl* Tree1;
         //*)
 
 
@@ -93,32 +93,32 @@ class wxsImageTreeEditorDlg: public wxScrollingDialog
     protected:
 
         //(*Identifiers(wxsImageTreeEditorDlg)
-        static const long ID_STATICTEXT1;
-        static const long ID_TREECTRL1;
-        static const long ID_IMAGEBUTTON1;
-        static const long ID_IMAGEBUTTON2;
-        static const long ID_STATICTEXT3;
-        static const long ID_IMAGEBUTTON3;
-        static const long ID_STATICTEXT4;
-        static const long ID_IMAGEBUTTON4;
-        static const long ID_STATICTEXT5;
-        static const long ID_BUTTON3;
-        static const long ID_STATICTEXT6;
-        static const long ID_CHECKBOX1;
-        static const long ID_IMAGEBUTTON5;
-        static const long ID_STATICTEXT11;
-        static const long ID_STATICTEXT12;
-        static const long ID_STATICTEXT13;
-        static const long ID_COMBOBOX1;
-        static const long ID_STATICTEXT7;
-        static const long ID_COMBOBOX2;
-        static const long ID_STATICTEXT8;
-        static const long ID_COMBOBOX3;
-        static const long ID_STATICTEXT9;
-        static const long ID_COMBOBOX4;
-        static const long ID_STATICTEXT10;
-        static const long ID_BUTTON1;
-        static const long ID_BUTTON2;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_TREECTRL1;
+        static const wxWindowID ID_IMAGEBUTTON1;
+        static const wxWindowID ID_IMAGEBUTTON2;
+        static const wxWindowID ID_STATICTEXT3;
+        static const wxWindowID ID_IMAGEBUTTON3;
+        static const wxWindowID ID_STATICTEXT4;
+        static const wxWindowID ID_IMAGEBUTTON4;
+        static const wxWindowID ID_STATICTEXT5;
+        static const wxWindowID ID_BUTTON3;
+        static const wxWindowID ID_STATICTEXT6;
+        static const wxWindowID ID_CHECKBOX1;
+        static const wxWindowID ID_IMAGEBUTTON5;
+        static const wxWindowID ID_STATICTEXT11;
+        static const wxWindowID ID_STATICTEXT12;
+        static const wxWindowID ID_STATICTEXT13;
+        static const wxWindowID ID_COMBOBOX1;
+        static const wxWindowID ID_STATICTEXT7;
+        static const wxWindowID ID_COMBOBOX2;
+        static const wxWindowID ID_STATICTEXT8;
+        static const wxWindowID ID_COMBOBOX3;
+        static const wxWindowID ID_STATICTEXT9;
+        static const wxWindowID ID_COMBOBOX4;
+        static const wxWindowID ID_STATICTEXT10;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_BUTTON2;
         //*)
 
     private:

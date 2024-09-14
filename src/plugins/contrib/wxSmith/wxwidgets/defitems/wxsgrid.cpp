@@ -155,7 +155,7 @@ void wxsGrid::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsGrid::OnBuildPreview( wxWindow* parent, long flags )
+wxObject* wxsGrid::OnBuildPreview( wxWindow* parent, long _Flags)
 {
     wxGrid* preview = new wxGrid( parent, GetId(), Pos(parent), Size(parent), Style() );
 
@@ -164,7 +164,7 @@ wxObject* wxsGrid::OnBuildPreview( wxWindow* parent, long flags )
         if ( m_ColsCount>=0 && m_RowsCount>=0 && (m_ColsCount>0 || m_RowsCount>0) )
         {
             preview->CreateGrid( m_RowsCount, m_ColsCount );
-            SetupWindow( preview, flags );
+            SetupWindow( preview, _Flags );
 
             preview->EnableEditing( !m_ReadOnly);
             preview->EnableGridLines( m_GridLines );
@@ -226,9 +226,9 @@ wxObject* wxsGrid::OnBuildPreview( wxWindow* parent, long flags )
 
 //------------------------------------------------------------------------------
 
-void wxsGrid::OnEnumWidgetProperties(long Flags)
+void wxsGrid::OnEnumWidgetProperties(long _Flags)
 {
-    if ( Flags & flSource )
+    if ( _Flags & flSource )
     {
         WXS_LONG       ( wxsGrid, m_ColsCount,       _("Number of columns"),    _T("cols"),            0);
         WXS_LONG       ( wxsGrid, m_RowsCount,       _("Number of rows"),       _T("rows"),            0);

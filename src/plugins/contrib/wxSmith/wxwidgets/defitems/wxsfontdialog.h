@@ -33,7 +33,7 @@ class wxsFontDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         bool                    m_bAllowSymbols;    //!< Allow symbol fonts to be selected..
         bool                    m_bEnableEffects;        //!< Enable effects.

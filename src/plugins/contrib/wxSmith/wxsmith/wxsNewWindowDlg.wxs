@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsNewWindowDlg">
+		<title>Create new cwindow</title>
 		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="m_RootSizer" member="yes">
@@ -100,7 +101,7 @@
 			<object class="sizeritem">
 				<object class="wxButton" name="ID_BUTTON1" variable="m_AdvOps" member="yes">
 					<label>+ Advanced options</label>
-					<style>wxBU_LEFT|wxNO_BORDER</style>
+					<style>wxBU_LEFT|wxBORDER_NONE</style>
 					<handler function="OnAdvOpsClick" entry="EVT_BUTTON" />
 				</object>
 				<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
@@ -133,7 +134,6 @@
 								<object class="wxBoxSizer" variable="BoxSizer1" member="yes">
 									<object class="spacer">
 										<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
-										<size>21,16</size>
 									</object>
 									<object class="sizeritem">
 										<object class="wxStaticText" name="wxID_ANY" variable="StaticText11" member="no">

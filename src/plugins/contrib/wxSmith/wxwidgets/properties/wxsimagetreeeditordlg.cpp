@@ -34,32 +34,32 @@
 
 
 //(*IdInit(wxsImageTreeEditorDlg)
-const long wxsImageTreeEditorDlg::ID_STATICTEXT1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_TREECTRL1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_IMAGEBUTTON1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_IMAGEBUTTON2 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT3 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_IMAGEBUTTON3 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT4 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_IMAGEBUTTON4 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT5 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_BUTTON3 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT6 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_CHECKBOX1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_IMAGEBUTTON5 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT11 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT12 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT13 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_COMBOBOX1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT7 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_COMBOBOX2 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT8 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_COMBOBOX3 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT9 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_COMBOBOX4 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_STATICTEXT10 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_BUTTON1 = wxNewId();
-const long wxsImageTreeEditorDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_TREECTRL1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_IMAGEBUTTON1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_IMAGEBUTTON2 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT3 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_IMAGEBUTTON3 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT4 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_IMAGEBUTTON4 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT5 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT6 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_IMAGEBUTTON5 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT11 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT12 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT13 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_COMBOBOX1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT7 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_COMBOBOX2 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT8 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_COMBOBOX3 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT9 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_COMBOBOX4 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_STATICTEXT10 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsImageTreeEditorDlg::ID_BUTTON2 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsImageTreeEditorDlg, wxDialog)
@@ -71,20 +71,20 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
     m_imageList(16, 16)
 {
     //(*Initialize(wxsImageTreeEditorDlg)
-    wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer6;
-    wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer10;
-    wxBoxSizer* BoxSizer7;
-    wxBoxSizer* BoxSizer8;
-    wxBoxSizer* BoxSizer13;
-    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer11;
     wxBoxSizer* BoxSizer12;
-    wxGridSizer* GridSizer1;
+    wxBoxSizer* BoxSizer13;
     wxBoxSizer* BoxSizer1;
-    wxBoxSizer* BoxSizer9;
+    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer6;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer9;
+    wxGridSizer* GridSizer1;
 
     Create(parent, wxID_ANY, _("Tree Item Editor"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
     wxFont thisFont(8,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,_T("Arial"),wxFONTENCODING_DEFAULT);
@@ -99,42 +99,42 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("tree-name"));
-    Tree1 = new wxTreeCtrl(this, ID_TREECTRL1, wxPoint(2,36), wxSize(246,359), wxTR_EDIT_LABELS|wxTR_DEFAULT_STYLE, wxDefaultValidator, _T("ID_TREECTRL1"));
+    Tree1 = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_EDIT_LABELS|wxTR_DEFAULT_STYLE, wxDefaultValidator, _T("ID_TREECTRL1"));
     StaticBoxSizer1->Add(Tree1, 0, wxALIGN_BOTTOM, 5);
     BoxSizer5->Add(StaticBoxSizer1, 0, wxALIGN_BOTTOM, 5);
     BoxSizer3->Add(BoxSizer5, 0, wxALL|wxEXPAND, 0);
     BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Attributes"));
     BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-    bAddItem = new wxBitmapButton(this, ID_IMAGEBUTTON1, wxNullBitmap, wxPoint(256,36), wxSize(24,23), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON1"));
+    bAddItem = new wxBitmapButton(this, ID_IMAGEBUTTON1, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON1"));
     bAddItem->SetToolTip(_("Add A New Item"));
     BoxSizer7->Add(bAddItem, 0, wxALIGN_BOTTOM, 5);
     StaticText2 = new wxStaticText(this, wxID_ANY, _("Add Item"), wxPoint(290,40), wxDefaultSize, 0, _T("wxID_ANY"));
     BoxSizer7->Add(StaticText2, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer2->Add(BoxSizer7, 0, wxEXPAND, 0);
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-    bAddSubItem = new wxBitmapButton(this, ID_IMAGEBUTTON2, wxNullBitmap, wxPoint(256,66), wxSize(24,23), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON2"));
+    bAddSubItem = new wxBitmapButton(this, ID_IMAGEBUTTON2, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON2"));
     bAddSubItem->SetToolTip(_("Add A New Child"));
     BoxSizer8->Add(bAddSubItem, 0, wxALIGN_BOTTOM, 5);
     StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Add Sub-Item"), wxPoint(290,70), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
     BoxSizer8->Add(StaticText3, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer2->Add(BoxSizer8, 0, wxTOP|wxEXPAND, 5);
     BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-    bDelItem = new wxBitmapButton(this, ID_IMAGEBUTTON3, wxNullBitmap, wxPoint(256,96), wxSize(24,23), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON3"));
+    bDelItem = new wxBitmapButton(this, ID_IMAGEBUTTON3, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON3"));
     bDelItem->SetToolTip(_("Delete Current Item"));
     BoxSizer9->Add(bDelItem, 0, wxALIGN_BOTTOM, 5);
     StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Delete Current Item"), wxPoint(290,100), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
     BoxSizer9->Add(StaticText4, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer2->Add(BoxSizer9, 0, wxTOP|wxEXPAND, 5);
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
-    bDelAllItems = new wxBitmapButton(this, ID_IMAGEBUTTON4, wxNullBitmap, wxPoint(256,126), wxSize(24,23), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON4"));
+    bDelAllItems = new wxBitmapButton(this, ID_IMAGEBUTTON4, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON4"));
     bDelAllItems->SetToolTip(_("Delete All Items"));
     BoxSizer10->Add(bDelAllItems, 0, wxALIGN_BOTTOM, 5);
     StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Delete All Items"), wxPoint(290,130), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
     BoxSizer10->Add(StaticText5, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer2->Add(BoxSizer10, 0, wxTOP|wxEXPAND, 5);
     BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
-    bItemColor = new wxButton(this, ID_BUTTON3, _("C"), wxPoint(256,156), wxSize(24,24), 0, wxDefaultValidator, _T("ID_BUTTON3"));
+    bItemColor = new wxButton(this, ID_BUTTON3, _("C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
     wxFont bItemColorFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Black"),wxFONTENCODING_DEFAULT);
     bItemColor->SetFont(bItemColorFont);
     bItemColor->SetToolTip(_("Set Item Text Color"));
@@ -149,7 +149,7 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
     BoxSizer12->Add(cxItemBold, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizer2->Add(BoxSizer12, 0, wxTOP|wxEXPAND, 5);
     BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
-    bEditItem = new wxBitmapButton(this, ID_IMAGEBUTTON5, wxNullBitmap, wxPoint(256,216), wxSize(24,23), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON5"));
+    bEditItem = new wxBitmapButton(this, ID_IMAGEBUTTON5, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_IMAGEBUTTON5"));
     bEditItem->SetToolTip(_("Start Editor On Current Item"));
     BoxSizer13->Add(bEditItem, 0, wxALIGN_BOTTOM, 5);
     StaticText11 = new wxStaticText(this, ID_STATICTEXT11, _("Edit Current Item"), wxPoint(290,220), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
@@ -158,22 +158,22 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
     GridSizer1 = new wxGridSizer(5, 2, 0, 0);
     StaticText12 = new wxStaticText(this, ID_STATICTEXT12, _("Image-List"), wxPoint(256,272), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
     GridSizer1->Add(StaticText12, 0, wxALIGN_CENTER_VERTICAL, 5);
-    StaticText13 = new wxStaticText(this, ID_STATICTEXT13, _("Label"), wxPoint(310,272), wxSize(82,14), wxST_NO_AUTORESIZE, _T("ID_STATICTEXT13"));
+    StaticText13 = new wxStaticText(this, ID_STATICTEXT13, _("Label"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE, _T("ID_STATICTEXT13"));
     StaticText13->SetForegroundColour(wxColour(0,0,255));
     GridSizer1->Add(StaticText13, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
-    cbNormal = new wxBitmapComboBox(this, ID_COMBOBOX1, wxEmptyString, wxPoint(256,296), wxSize(48,22), 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+    cbNormal = new wxBitmapComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
     GridSizer1->Add(cbNormal, 0, wxTOP|wxEXPAND, 3);
     StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Normal Image"), wxPoint(310,300), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
     GridSizer1->Add(StaticText7, 0, wxTOP|wxLEFT|wxALIGN_CENTER_VERTICAL, 3);
-    cbSelected = new wxBitmapComboBox(this, ID_COMBOBOX2, wxEmptyString, wxPoint(256,326), wxSize(48,22), 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX2"));
+    cbSelected = new wxBitmapComboBox(this, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX2"));
     GridSizer1->Add(cbSelected, 0, wxTOP|wxEXPAND, 3);
     StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Selected Image"), wxPoint(310,330), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
     GridSizer1->Add(StaticText8, 0, wxTOP|wxLEFT|wxALIGN_CENTER_VERTICAL, 3);
-    cbExpanded = new wxBitmapComboBox(this, ID_COMBOBOX3, wxEmptyString, wxPoint(256,356), wxSize(48,22), 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX3"));
+    cbExpanded = new wxBitmapComboBox(this, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX3"));
     GridSizer1->Add(cbExpanded, 0, wxTOP|wxEXPAND, 3);
     StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Expanded Image"), wxPoint(310,360), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
     GridSizer1->Add(StaticText9, 0, wxTOP|wxLEFT|wxALIGN_CENTER_VERTICAL, 3);
-    cbSelExpanded = new wxBitmapComboBox(this, ID_COMBOBOX4, wxEmptyString, wxPoint(256,386), wxSize(48,22), 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX4"));
+    cbSelExpanded = new wxBitmapComboBox(this, ID_COMBOBOX4, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX4"));
     GridSizer1->Add(cbSelExpanded, 0, wxTOP|wxEXPAND, 3);
     StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("Sel+Exp Image"), wxPoint(310,390), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     GridSizer1->Add(StaticText10, 0, wxTOP|wxLEFT|wxALIGN_CENTER_VERTICAL, 3);
@@ -326,8 +326,8 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
     ImageList1->Add(wxBitmap(ImageList1_3_XPM));
     ImageList1->Add(wxBitmap(ImageList1_4_XPM));
     ColourDialog1 = new wxColourDialog(this);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
+    Center();
 
     Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,wxTreeEventHandler(wxsImageTreeEditorDlg::OnTreeCtrl1SelectionChanged));
     // Set the bitmaps for bAddItem.
@@ -363,6 +363,7 @@ wxsImageTreeEditorDlg::wxsImageTreeEditorDlg(wxWindow *parent) :
 wxsImageTreeEditorDlg::~wxsImageTreeEditorDlg()
 {
     //(*Destroy(wxsImageTreeEditorDlg)
+    ColourDialog1->Destroy();
     //*)
 }
 

@@ -160,11 +160,11 @@ void wxsSizer::OnBuildDeclarationsCode()
     }
 }
 
-wxObject* wxsSizer::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsSizer::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxWindow* NewParent = Parent;
 
-    if ( !(Flags & pfExact) )
+    if ( !(_Flags & pfExact) )
     {
         NewParent = new wxsSizerPreview(Parent);
     }
@@ -178,11 +178,11 @@ wxObject* wxsSizer::OnBuildPreview(wxWindow* Parent,long Flags)
 
         // We pass either Parent passed to current BuildPreview function
         // or pointer to additional parent currently created
-        wxObject* ChildPreview = Child->BuildPreview(NewParent,Flags);
+        wxObject* ChildPreview = Child->BuildPreview(NewParent,_Flags);
         if (!ChildPreview)
             continue;
 
-        const long Flags = wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags);
+        const long SizerFlags = wxsSizerFlagsProperty::GetWxFlags(SizerExtra->Flags);
         const long Proportion = SizerExtra->Proportion;
         const long Pixels = SizerExtra->Border.GetPixels(Parent);
         wxSizer* ChildAsSizer = wxDynamicCast(ChildPreview, wxSizer);
@@ -190,22 +190,22 @@ wxObject* wxsSizer::OnBuildPreview(wxWindow* Parent,long Flags)
         wxSizerItem* ChildAsItem = wxDynamicCast(ChildPreview, wxSizerItem);
         if ( ChildAsSizer )
         {
-            Sizer->Add(ChildAsSizer, Proportion, Flags, Pixels);
+            Sizer->Add(ChildAsSizer, Proportion, SizerFlags, Pixels);
         }
         else if ( ChildAsWindow )
         {
-            Sizer->Add(ChildAsWindow, (Flags & wxSHAPED) ? 0 : Proportion, Flags, Pixels);
+            Sizer->Add(ChildAsWindow, (SizerFlags & wxSHAPED) ? 0 : Proportion, SizerFlags, Pixels);
         }
         else if ( ChildAsItem )
         {
             ChildAsItem->SetProportion(Proportion);
-            ChildAsItem->SetFlag(Flags);
+            ChildAsItem->SetFlag(SizerFlags);
             ChildAsItem->SetBorder(Pixels);
             Sizer->Add(ChildAsItem);
         }
     }
 
-    if ( !(Flags & pfExact) )
+    if ( !(_Flags & pfExact) )
     {
         NewParent->SetSizer(Sizer);
         if ( !GetChildCount() )
@@ -280,9 +280,9 @@ wxString wxsSizer::OnXmlGetExtraObjectClass()
     return _T("sizeritem");
 }
 
-void wxsSizer::OnEnumItemProperties(long Flags)
+void wxsSizer::OnEnumItemProperties(long _Flags)
 {
-    OnEnumSizerProperties(Flags);
+    OnEnumSizerProperties(_Flags);
 }
 
 void wxsSizer::OnAddItemQPP(wxsAdvQPP* QPP)

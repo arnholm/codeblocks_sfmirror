@@ -106,11 +106,11 @@ void wxsRichTextStyleListCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsRichTextStyleListCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsRichTextStyleListCtrl::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxRichTextStyleListCtrl *Preview = new wxRichTextStyleListCtrl(Parent, GetId(), Pos(Parent), Size(Parent), Style());
 
@@ -137,16 +137,16 @@ wxObject* wxsRichTextStyleListCtrl::OnBuildPreview(wxWindow* Parent,long Flags)
             break;
     }
 
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsRichTextStyleListCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsRichTextStyleListCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     static const long StyleStates[] = {wxRichTextStyleListBox::wxRICHTEXT_STYLE_ALL,
                                                                 wxRichTextStyleListBox::wxRICHTEXT_STYLE_CHARACTER,

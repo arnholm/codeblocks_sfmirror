@@ -84,7 +84,7 @@ void wxsSingleChoiceDialog::OnBuildCreatingCode()
     }
 }
 
-void wxsSingleChoiceDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsSingleChoiceDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsSingleChoiceDialog, m_Message, _("Message"), "message", "", false);
     WXS_SHORT_STRING(wxsSingleChoiceDialog, m_Caption, _("Caption"), "caption", "", false);

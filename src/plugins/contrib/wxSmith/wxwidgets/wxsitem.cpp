@@ -64,17 +64,17 @@ wxsItem::~wxsItem()
 {
 }
 
-void wxsItem::OnEnumProperties(long Flags)
+void wxsItem::OnEnumProperties(long _Flags)
 {
-    if ( (Flags & flPropGrid) && (m_Parent != 0) )
+    if ( (_Flags & flPropGrid) && (m_Parent != 0) )
     {
         // Parent item does take care of enumerating properties if we are
         // creating property grid
-        m_Parent->OnEnumChildProperties(this,Flags);
+        m_Parent->OnEnumChildProperties(this,_Flags);
     }
     else
     {
-        EnumItemProperties(Flags);
+        EnumItemProperties(_Flags);
     }
 }
 
@@ -109,12 +109,12 @@ long wxsItem::OnGetPropertiesFlags()
     return m_ResourceData->GetPropertiesFilter() | m_PropertiesFlags | ExtraFlags;
 }
 
-void wxsItem::EnumItemProperties(long Flags)
+void wxsItem::EnumItemProperties(long _Flags)
 {
-    OnEnumItemProperties(Flags);
+    OnEnumItemProperties(_Flags);
 
     // Now enumerating all properties from wxsBaseProperties
-    SubContainer(m_BaseProperties,Flags);
+    SubContainer(m_BaseProperties,_Flags);
 }
 
 void wxsItem::OnBuildDeclarationsCode()
@@ -202,8 +202,8 @@ void wxsItem::OnBuildIdCode()
 
 void wxsItem::OnBuildXRCFetchingCode()
 {
-    long Flags = GetPropertiesFlags();
-    if ( (Flags&flVariable) && (Flags&flId) )
+    long PropsFlags = GetPropertiesFlags();
+    if ( (PropsFlags&flVariable) && (PropsFlags&flId) )
     {
         AddXRCFetchingCode(
             GetVarName() + _T(" = ")
@@ -360,9 +360,9 @@ void wxsItem::BuildItemTree(wxsResourceTree* Tree,wxsResourceItemId Parent,int P
 //    }
 }
 
-wxObject* wxsItem::BuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsItem::BuildPreview(wxWindow* Parent,long _Flags)
 {
-    wxObject* Preview = OnBuildPreview(Parent,Flags);
+    wxObject* Preview = OnBuildPreview(Parent,_Flags);
     m_LastPreview = Preview;
     return Preview;
 }
@@ -517,7 +517,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
 
     wxsCodingLang Language = Context->m_Language;
     wxString WindowParent = Context->m_WindowParent;
-    long Flags = Context->m_Flags;
+    long PropsFlags = Context->m_Flags;
     const bool Translation = m_ResourceData->GetTranslation();
 
     while ( *Fmt )
@@ -644,7 +644,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
 
                         case _T('N'):
                         {
-                            if ( Flags & flId )
+                            if ( PropsFlags & flId )
                             {
                                 if (GetIdName().IsEmpty())
                                 {
@@ -671,7 +671,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
                                     default: wxsCodeMarks::Unknown(_T("wxString wxsItem::Codef"),Language);
                                 }
                             }
-                            else if ( Flags & flVariable )
+                            else if ( PropsFlags & flVariable )
                             {
                                 if ( IsPointer() )
                                 {
@@ -697,7 +697,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
 
                         case _T('P'):
                         {
-                            if ( Flags & flPosition )
+                            if ( PropsFlags & flPosition )
                             {
                                 Result << m_BaseProperties.m_Position.GetPositionCode(Context);
                             }
@@ -719,7 +719,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
                                     default: wxsCodeMarks::Unknown(_T("wxString wxsItem::Codef"),Language);
                                 }
                             }
-                            else if ( Flags & flVariable )
+                            else if ( PropsFlags & flVariable )
                             {
                                 if ( IsPointer() )
                                 {
@@ -745,7 +745,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
 
                         case _T('S'):
                         {
-                            if ( Flags & flSize )
+                            if ( PropsFlags & flSize )
                             {
                                 Result << m_BaseProperties.m_Size.GetSizeCode(Context);
                             }
@@ -771,7 +771,7 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
 
                         case _T('V'):
                         {
-                            if ( Flags & flValidator && !m_BaseProperties.m_Validator.IsEmpty() )
+                            if ( PropsFlags & flValidator && !m_BaseProperties.m_Validator.IsEmpty() )
                             {
                                 Result << m_BaseProperties.m_Validator;
                             }
@@ -1004,9 +1004,9 @@ void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,
     }
 }
 
-wxWindow* wxsItem::SetupWindow(wxWindow* Window,long Flags)
+wxWindow* wxsItem::SetupWindow(wxWindow* Window,long _Flags)
 {
-    bool IsExact = (Flags&pfExact) != 0;
+    bool IsExact = (_Flags&pfExact) != 0;
     long PropertiesFlags = GetPropertiesFlags();
 
     if ( PropertiesFlags&flMinMaxSize && IsExact )
@@ -1185,7 +1185,7 @@ void wxsItem::ShowPopup(wxMenu* Menu)
     }
 }
 
-void wxsItem::OnUpdateFlags(long& Flags)
+void wxsItem::OnUpdateFlags(long& _Flags)
 {
-    Flags = GetPropertiesFlags();
+    _Flags = GetPropertiesFlags();
 }

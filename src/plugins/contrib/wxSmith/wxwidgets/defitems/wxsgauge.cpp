@@ -73,15 +73,15 @@ void wxsGauge::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsGauge::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsGauge::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxGauge* Preview = new wxGauge(Parent,GetId(),Range,Pos(Parent),Size(Parent),Style());
     if ( Value )  Preview->SetValue(Value);
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 
-void wxsGauge::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsGauge::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_LONG(wxsGauge,Value,_("Value"),_T("value"),0)
     WXS_LONG(wxsGauge,Range,_("Range"),_T("range"),100)

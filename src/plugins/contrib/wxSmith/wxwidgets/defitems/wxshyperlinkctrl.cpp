@@ -93,11 +93,11 @@ void wxsHyperlinkCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsHyperlinkCtrl::OnBuildPreview(wxWindow* parent,long flags)
+wxObject* wxsHyperlinkCtrl::OnBuildPreview(wxWindow* parent,long _Flags)
 {
     wxHyperlinkCtrl* preview = new wxHyperlinkCtrl(parent,GetId(),m_Label,m_URL,Pos(parent),Size(parent),Style());
     wxColour cc = m_NormalColour.GetColour();
@@ -116,16 +116,16 @@ wxObject* wxsHyperlinkCtrl::OnBuildPreview(wxWindow* parent,long flags)
         preview->SetVisitedColour(cc);
     }
 
-    return SetupWindow(preview,flags);
+    return SetupWindow(preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsHyperlinkCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsHyperlinkCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_STRING(wxsHyperlinkCtrl,m_Label,_("Label"),_T("label"),_T(""),false)
     WXS_SHORT_STRING(wxsHyperlinkCtrl,m_URL,_("URL"),_T("url"),_T(""),false)

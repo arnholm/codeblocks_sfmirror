@@ -24,13 +24,13 @@
 #define WXWIDGETSGUIAPPADOPTINGDLG_H
 
 //(*Headers(wxWidgetsGUIAppAdoptingDlg)
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/listbox.h>
-#include <wx/statline.h>
-#include <wx/button.h>
 #include "scrollingdialog.h"
+#include <wx/button.h>
 #include <wx/gauge.h>
+#include <wx/listbox.h>
+#include <wx/sizer.h>
+#include <wx/statline.h>
+#include <wx/stattext.h>
 //*)
 
 #include <wx/timer.h>
@@ -53,17 +53,17 @@ class wxWidgetsGUIAppAdoptingDlg: public wxScrollingDialog
         virtual ~wxWidgetsGUIAppAdoptingDlg();
 
         //(*Identifiers(wxWidgetsGUIAppAdoptingDlg)
-        static const long ID_LISTBOX1;
-        static const long ID_GAUGE1;
-        static const long ID_STATICTEXT1;
-        static const long ID_STATICTEXT2;
-        static const long ID_BUTTON5;
-        static const long ID_BUTTON2;
-        static const long ID_BUTTON3;
-        static const long ID_STATICLINE2;
-        static const long ID_BUTTON4;
-        static const long ID_STATICLINE1;
-        static const long ID_BUTTON6;
+        static const wxWindowID ID_LISTBOX1;
+        static const wxWindowID ID_GAUGE1;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_BUTTON5;
+        static const wxWindowID ID_BUTTON2;
+        static const wxWindowID ID_BUTTON3;
+        static const wxWindowID ID_STATICLINE2;
+        static const wxWindowID ID_BUTTON4;
+        static const wxWindowID ID_STATICLINE1;
+        static const wxWindowID ID_BUTTON6;
         //*)
 
         wxString m_RelativeFileName;
@@ -81,18 +81,18 @@ class wxWidgetsGUIAppAdoptingDlg: public wxScrollingDialog
         //*)
 
         //(*Declarations(wxWidgetsGUIAppAdoptingDlg)
-        wxButton* Button4;
-        wxButton* CreateBtn;
         wxBoxSizer* BoxSizer2;
-        wxStaticLine* StaticLine2;
+        wxButton* Button4;
         wxButton* Button6;
+        wxButton* CreateBtn;
         wxButton* SelectBtn;
-        wxStaticLine* StaticLine1;
         wxButton* UseFileBtn;
         wxGauge* Progress;
+        wxListBox* FoundFiles;
+        wxStaticLine* StaticLine1;
+        wxStaticLine* StaticLine2;
         wxStaticText* ScanningFile;
         wxStaticText* ScanningTxt;
-        wxListBox* FoundFiles;
         //*)
 
     private:

@@ -95,11 +95,11 @@ void wxsFindReplaceDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsFindReplaceDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsFindReplaceDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsFindReplaceDialog, m_sCaption, _("Caption"), _T("caption"), wxEmptyString, false);
 }

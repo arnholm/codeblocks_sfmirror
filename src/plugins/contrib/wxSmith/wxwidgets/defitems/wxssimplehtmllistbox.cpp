@@ -100,11 +100,11 @@ void wxsSimpleHtmlListBox::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject *wxsSimpleHtmlListBox::OnBuildPreview(wxWindow *Parent, long Flags)
+wxObject *wxsSimpleHtmlListBox::OnBuildPreview(wxWindow *Parent, long _Flags)
 {
     wxSimpleHtmlListBox *Preview = new wxSimpleHtmlListBox(Parent, GetId(), Pos(Parent), Size(Parent), 0, 0, Style());
     for(size_t i = 0; i <  ArrayChoices.GetCount(); ++i)
@@ -116,16 +116,16 @@ wxObject *wxsSimpleHtmlListBox::OnBuildPreview(wxWindow *Parent, long Flags)
         }
     }
 
-    return SetupWindow(Preview, Flags);
+    return SetupWindow(Preview, _Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsSimpleHtmlListBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsSimpleHtmlListBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_ARRAYSTRING(wxsSimpleHtmlListBox, ArrayChoices, _("Choices"), "content", "item")
     WXS_LONG(wxsSimpleHtmlListBox, DefaultSelection, _("Default"), "default", 0)

@@ -36,7 +36,7 @@ class wxsBoxSizer: public wxsSizer
 
         virtual wxSizer* OnBuildSizerPreview(wxWindow* Parent);
         virtual void OnBuildSizerCreatingCode();
-        virtual void OnEnumSizerProperties(long Flags);
+        virtual void OnEnumSizerProperties(long _Flags);
         virtual bool OnIsPointer() { return true; }
 
         long Orient;

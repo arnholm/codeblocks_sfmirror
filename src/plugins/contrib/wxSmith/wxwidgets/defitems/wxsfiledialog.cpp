@@ -87,7 +87,7 @@ void wxsFileDialog::OnBuildCreatingCode()
     }
 }
 
-void wxsFileDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsFileDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsFileDialog,m_Message,_("Message"),_T("message"),_T(""),false);
     WXS_SHORT_STRING(wxsFileDialog,m_DefaultDir,_("Default directory"),_T("default_dir"),_T(""),false);

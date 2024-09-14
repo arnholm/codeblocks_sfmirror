@@ -102,7 +102,7 @@ void wxsListCtrl::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsListCtrl::OnBuildPreview(wxWindow* Parent, long Flags)
+wxObject* wxsListCtrl::OnBuildPreview(wxWindow* Parent, long _Flags)
 {
     long Mode = Style() & wxLC_MASK_TYPE;
     if (!Mode || (Mode & wxLC_LIST))
@@ -115,9 +115,9 @@ wxObject* wxsListCtrl::OnBuildPreview(wxWindow* Parent, long Flags)
         Mode = wxLC_SMALL_ICON;
 
     wxListCtrl* Preview = new wxListCtrl(Parent, GetId(), Pos(Parent), Size(Parent), (Style() & ~wxLC_MASK_TYPE) | Mode);
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsListCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsListCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
 }

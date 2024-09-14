@@ -109,11 +109,11 @@ void wxsRichTextStyleListBox::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                The control flags.
+ * \param _Flags long                The control flags.
  * \return wxObject*                 The constructed control.
  *
  */
-wxObject* wxsRichTextStyleListBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsRichTextStyleListBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxRichTextStyleListBox *Preview = new wxRichTextStyleListBox(Parent, GetId(), Pos(Parent), Size(Parent), Style());
 
@@ -143,16 +143,16 @@ wxObject* wxsRichTextStyleListBox::OnBuildPreview(wxWindow* Parent,long Flags)
         Preview->SetApplyOnSelection(m_bApplyOnSelection);
     }
 
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsRichTextStyleListBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsRichTextStyleListBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     static const long StyleStates[] = {wxRichTextStyleListBox::wxRICHTEXT_STYLE_ALL,
                                                                 wxRichTextStyleListBox::wxRICHTEXT_STYLE_CHARACTER,

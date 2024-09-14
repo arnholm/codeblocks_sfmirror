@@ -78,11 +78,11 @@ void wxsHtmlEasyPrinting::OnBuildCreatingCode()
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsHtmlEasyPrinting::OnEnumToolProperties(cb_unused long Flags)
+void wxsHtmlEasyPrinting::OnEnumToolProperties(cb_unused long _Flags)
 {
     static const long arrHeaderPages[] = {wxPAGE_ALL, wxPAGE_EVEN, wxPAGE_ODD};                                                                            //!< Header and footer page values.
     static const wxChar* arrHeaderPageNames[]  = {wxT("wxPAGE_ALL"), wxT("wxPAGE_EVEN"), wxT("wxPAGE_ODD"), NULL};        //!< Header and footer page value names.

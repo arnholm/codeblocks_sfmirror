@@ -37,24 +37,23 @@ class wxsGrid: public wxsWidget
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnEnumWidgetProperties(long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void OnEnumWidgetProperties(long _Flags);
 
-        long            m_ColsCount;                ///< \brief Number of columns
-        long            m_RowsCount;                ///< \brief number of rows
-        bool            m_ReadOnly;                 ///< \brief Can edit grid?
-        bool            m_GridLines;                ///< \brief Display grid lines?
-        long            m_LabelRowHeight;           ///< \brief Size of top row of labels
-        long            m_LabelColWidth;            ///< \brief Size of left column of labels
-        long            m_DefaultRowSize;           ///< \brief Default row height
-        long            m_DefaultColSize;           ///< \brief Default col width
-        wxsColourData   m_LabelTextColour;          ///< \brief Colour for all labels
-        wxsFontData     m_LabelFont;                ///< \brief Font for all labels
+        long          m_ColsCount;       ///< \brief Number of columns
+        long          m_RowsCount;       ///< \brief number of rows
+        bool          m_ReadOnly;        ///< \brief Can edit grid?
+        bool          m_GridLines;       ///< \brief Display grid lines?
+        long          m_LabelRowHeight;  ///< \brief Size of top row of labels
+        long          m_LabelColWidth;   ///< \brief Size of left column of labels
+        long          m_DefaultRowSize;  ///< \brief Default row height
+        long          m_DefaultColSize;  ///< \brief Default col width
+        wxsColourData m_LabelTextColour; ///< \brief Colour for all labels
+        wxsFontData   m_LabelFont;       ///< \brief Font for all labels
 
-        wxArrayString   m_ColLabels;                ///< \brief Text for column labels
-        wxArrayString   m_RowLabels;                ///< \brief Text for row labels
-        wxArrayString   m_CellText;                 ///< \brief Text for each cell
-
+        wxArrayString m_ColLabels;       ///< \brief Text for column labels
+        wxArrayString m_RowLabels;       ///< \brief Text for row labels
+        wxArrayString m_CellText;        ///< \brief Text for each cell
 };
 
 #endif

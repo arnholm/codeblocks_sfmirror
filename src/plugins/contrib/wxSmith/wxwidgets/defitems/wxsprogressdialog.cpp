@@ -96,11 +96,11 @@ void wxsProgressDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsProgressDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsProgressDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_BOOL(wxsProgressDialog, m_bRunAtStartup, _("Run At Startup"), _T("run_at_startup"), false)
     WXS_SHORT_STRING(wxsProgressDialog, m_sTitle, _("Title"), _T("title"), wxEmptyString, true);

@@ -72,14 +72,14 @@ void wxsRadioButton::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsRadioButton::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsRadioButton::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxRadioButton* Preview = new wxRadioButton(Parent,GetId(),Label,Pos(Parent),Size(Parent),Style());
     Preview->SetValue(IsSelected);
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsRadioButton::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsRadioButton::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsRadioButton,Label,_("Label"),_T("label"),_T(""),true)
     WXS_BOOL(wxsRadioButton,IsSelected,_("Is Selected"),_T("selected"),false)

@@ -80,6 +80,6 @@ void wxsSymbolPickerDialog::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-void wxsSymbolPickerDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsSymbolPickerDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
 }

@@ -31,7 +31,7 @@ class wxsStopWatch: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
         virtual bool OnIsPointer() { return false; }
 };
 

@@ -96,11 +96,11 @@ void wxsTextEntryDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsTextEntryDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsTextEntryDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsTextEntryDialog, m_sCaption, _("Caption"), _T("caption"), wxGetTextFromUserPromptStr, false);
     WXS_SHORT_STRING(wxsTextEntryDialog, m_sMessage, _("Message"), _T("message"), wxEmptyString, false);

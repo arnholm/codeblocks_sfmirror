@@ -24,13 +24,13 @@
 #define WXSNEWWINDOWDLG_H
 
 //(*Headers(wxsNewWindowDlg)
+#include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/combobox.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/button.h>
-#include "scrollingdialog.h"
-#include <wx/combobox.h>
 //*)
 
 #include "wxsitemres.h"
@@ -45,34 +45,34 @@ public:
     virtual ~wxsNewWindowDlg();
 
     //(*Identifiers(wxsNewWindowDlg)
-    static const long ID_TEXTCTRL1;
-    static const long ID_TEXTCTRL2;
-    static const long ID_TEXTCTRL3;
-    static const long ID_CHECKBOX1;
-    static const long ID_TEXTCTRL4;
-    static const long ID_CHECKBOX3;
-    static const long ID_BUTTON1;
-    static const long ID_CHECKBOX2;
-    static const long ID_COMBOBOX1;
-    static const long ID_TEXTCTRL8;
-    static const long ID_CHECKBOX4;
-    static const long ID_TEXTCTRL5;
-    static const long ID_TEXTCTRL6;
-    static const long ID_BUTTON2;
-    static const long ID_BUTTON3;
-    static const long ID_BUTTON4;
-    static const long ID_CHECKBOX5;
-    static const long ID_CHECKBOX9;
-    static const long ID_CHECKBOX6;
-    static const long ID_CHECKBOX10;
-    static const long ID_CHECKBOX7;
-    static const long ID_CHECKBOX11;
-    static const long ID_CHECKBOX8;
-    static const long ID_CHECKBOX12;
-    static const long ID_TEXTCTRL7;
-    static const long ID_CHECKBOX14;
-    static const long ID_CHECKBOX15;
-    static const long ID_CHECKBOX13;
+    static const wxWindowID ID_TEXTCTRL1;
+    static const wxWindowID ID_TEXTCTRL2;
+    static const wxWindowID ID_TEXTCTRL3;
+    static const wxWindowID ID_CHECKBOX1;
+    static const wxWindowID ID_TEXTCTRL4;
+    static const wxWindowID ID_CHECKBOX3;
+    static const wxWindowID ID_BUTTON1;
+    static const wxWindowID ID_CHECKBOX2;
+    static const wxWindowID ID_COMBOBOX1;
+    static const wxWindowID ID_TEXTCTRL8;
+    static const wxWindowID ID_CHECKBOX4;
+    static const wxWindowID ID_TEXTCTRL5;
+    static const wxWindowID ID_TEXTCTRL6;
+    static const wxWindowID ID_BUTTON2;
+    static const wxWindowID ID_BUTTON3;
+    static const wxWindowID ID_BUTTON4;
+    static const wxWindowID ID_CHECKBOX5;
+    static const wxWindowID ID_CHECKBOX9;
+    static const wxWindowID ID_CHECKBOX6;
+    static const wxWindowID ID_CHECKBOX10;
+    static const wxWindowID ID_CHECKBOX7;
+    static const wxWindowID ID_CHECKBOX11;
+    static const wxWindowID ID_CHECKBOX8;
+    static const wxWindowID ID_CHECKBOX12;
+    static const wxWindowID ID_TEXTCTRL7;
+    static const wxWindowID ID_CHECKBOX14;
+    static const wxWindowID ID_CHECKBOX15;
+    static const wxWindowID ID_CHECKBOX13;
     //*)
 
 protected:
@@ -101,37 +101,37 @@ protected:
     //*)
 
     //(*Declarations(wxsNewWindowDlg)
+    wxBoxSizer* BoxSizer1;
     wxBoxSizer* m_RootSizer;
-    wxTextCtrl* m_Header;
-    wxCheckBox* m_UseFwdDecl;
-    wxTextCtrl* m_CtorCustom;
+    wxButton* m_AdvOps;
     wxButton* m_ScopeHandlers;
-    wxTextCtrl* m_InitFunc;
-    wxTextCtrl* m_BaseClass;
-    wxCheckBox* m_CtorIdDef;
-    wxTextCtrl* m_Source;
-    wxCheckBox* m_CtorParent;
-    wxCheckBox* m_CtorId;
-    wxCheckBox* m_AddWxs;
-    wxTextCtrl* m_PchGuard;
-    wxTextCtrl* m_Class;
-    wxCheckBox* m_UsePCH;
-    wxStaticBoxSizer* m_AdvancedOptionsSizer;
-    wxCheckBox* m_CtorParentDef;
-    wxCheckBox* m_CtorSizeDef;
-    wxCheckBox* m_XRCAutoload;
-    wxTextCtrl* m_Xrc;
     wxButton* m_ScopeIds;
     wxButton* m_ScopeMembers;
-    wxBoxSizer* BoxSizer1;
-    wxCheckBox* m_UseXrc;
-    wxButton* m_AdvOps;
-    wxCheckBox* m_CtorPosDef;
+    wxCheckBox* m_AddWxs;
+    wxCheckBox* m_CtorId;
+    wxCheckBox* m_CtorIdDef;
+    wxCheckBox* m_CtorParent;
+    wxCheckBox* m_CtorParentDef;
     wxCheckBox* m_CtorPos;
-    wxCheckBox* m_UseI18n;
-    wxComboBox* m_Pch;
+    wxCheckBox* m_CtorPosDef;
     wxCheckBox* m_CtorSize;
+    wxCheckBox* m_CtorSizeDef;
+    wxCheckBox* m_UseFwdDecl;
+    wxCheckBox* m_UseI18n;
     wxCheckBox* m_UseInitFunc;
+    wxCheckBox* m_UsePCH;
+    wxCheckBox* m_UseXrc;
+    wxCheckBox* m_XRCAutoload;
+    wxComboBox* m_Pch;
+    wxStaticBoxSizer* m_AdvancedOptionsSizer;
+    wxTextCtrl* m_BaseClass;
+    wxTextCtrl* m_Class;
+    wxTextCtrl* m_CtorCustom;
+    wxTextCtrl* m_Header;
+    wxTextCtrl* m_InitFunc;
+    wxTextCtrl* m_PchGuard;
+    wxTextCtrl* m_Source;
+    wxTextCtrl* m_Xrc;
     //*)
 
     virtual bool PrepareResource(wxsItemRes* Res, wxsItemResData* Data);

@@ -33,7 +33,7 @@ class wxsPrintDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         bool        m_bEnableHelp;                //!< Enable the help button.
         bool        m_bEnablePageNumbers;    //!< Enable the page number block.

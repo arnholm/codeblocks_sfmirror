@@ -127,11 +127,11 @@ void wxsRichTextStyleOrganiserDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsRichTextStyleOrganiserDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsRichTextStyleOrganiserDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     // Default to wxRICHTEXT_ORGANISER_ORGANISE.
     WXS_FLAGS(wxsRichTextStyleOrganiserDialog, m_iFlags, _("Style Flags"), _T("style_flags"), arrStyleValues, arrStyleValueNames,

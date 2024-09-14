@@ -34,7 +34,7 @@ class wxsStatusBar: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
         virtual bool OnIsPointer() { return true; }
         virtual bool OnCanAddToResource(wxsItemResData* Data,bool ShowMessage);
         virtual bool OnCanAddToParent(wxsParent* Parent,bool ShowMessage);

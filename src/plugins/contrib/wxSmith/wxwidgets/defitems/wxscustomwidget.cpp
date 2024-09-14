@@ -86,7 +86,7 @@ void wxsCustomWidget::OnBuildCreatingCode()
     BuildSetupWindowCode();
 }
 
-wxObject* wxsCustomWidget::OnBuildPreview(wxWindow* Parent, cb_unused long Flags)
+wxObject* wxsCustomWidget::OnBuildPreview(wxWindow* Parent, cb_unused long _Flags)
 {
     wxPanel* Background = new wxPanel(Parent, wxID_ANY, Pos(Parent), wxDefaultSize);
     const wxString Label(GetUserClass().empty() ? wxString("???") : GetUserClass());
@@ -103,7 +103,7 @@ wxObject* wxsCustomWidget::OnBuildPreview(wxWindow* Parent, cb_unused long Flags
     return Background;
 }
 
-void wxsCustomWidget::OnEnumWidgetProperties(long Flags)
+void wxsCustomWidget::OnEnumWidgetProperties(long _Flags)
 {
     wxString XmlDataInit = m_XmlData;
     if ( GetPropertiesFlags() & flSource )
@@ -114,7 +114,7 @@ void wxsCustomWidget::OnEnumWidgetProperties(long Flags)
     }
     else
     {
-        if ( !(Flags&flXml) )
+        if ( !(_Flags&flXml) )
         {
             WXS_STRING(wxsCustomWidget, m_XmlData, _("Xml Data"), "", "", false);
         }
@@ -122,7 +122,7 @@ void wxsCustomWidget::OnEnumWidgetProperties(long Flags)
 
     WXS_SHORT_STRING(wxsCustomWidget, m_Style, _("Style"), "style", "0", false);
 
-    if ( Flags&flPropGrid )
+    if ( _Flags&flPropGrid )
     {
         if ( XmlDataInit != m_XmlData )
         {

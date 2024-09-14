@@ -40,8 +40,8 @@ class wxsCustomWidget: public wxsWidget
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnEnumWidgetProperties(long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void OnEnumWidgetProperties(long _Flags);
         virtual bool OnIsPointer() { return true; }
         virtual bool OnXmlRead(TiXmlElement* Element,bool IsXRC,bool IsExtra);
         virtual bool OnXmlWrite(TiXmlElement* Element,bool IsXRC,bool IsExtra);

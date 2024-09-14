@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsDeleteItemRes">
 		<title>Deleting resource</title>
+		<centered>1</centered>
 		<parent_arg>0</parent_arg>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">

@@ -46,7 +46,7 @@ class PLUGIN_EXPORT wxsImageList : public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         void StoreXpmData(void);
 

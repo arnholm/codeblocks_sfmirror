@@ -112,11 +112,11 @@ void wxsDialUpManager::OnBuildCreatingCode()
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsDialUpManager::OnEnumToolProperties(cb_unused long Flags)
+void wxsDialUpManager::OnEnumToolProperties(cb_unused long _Flags)
 {
     bool bAutoCheck;
     if ((wxPlatformInfo::Get().GetOperatingSystemId() & wxOS_WINDOWS) > 0)

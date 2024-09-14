@@ -116,11 +116,11 @@ void wxsPrintDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsPrintDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsPrintDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_BOOL(wxsPrintDialog, m_bEnableHelp, _("Enable Help"), _T("enable_help"), false)
     WXS_BOOL(wxsPrintDialog, m_bEnablePageNumbers, _("Enable Page Numbers"), _T("enable_page_numbers"), true)

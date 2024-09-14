@@ -58,36 +58,38 @@ protected:
 
 private:
     //(*Identifiers(wxsSettings)
-    static const long ID_CHECKBOX11;
-    static const long ID_CHOICE2;
-    static const long ID_COMBOBOX1;
-    static const long ID_COLOURPICKERCTRL1;
-    static const long ID_COLOURPICKERCTRL2;
-    static const long ID_CHECKBOX7;
-    static const long ID_SPINCTRL1;
-    static const long ID_CHECKBOX9;
-    static const long ID_RADIOBUTTON1;
-    static const long ID_RADIOBUTTON2;
-    static const long ID_RADIOBUTTON3;
-    static const long ID_RADIOBUTTON4;
-    static const long ID_SPINCTRL2;
-    static const long ID_CHECKBOX1;
-    static const long ID_CHECKBOX2;
-    static const long ID_CHECKBOX3;
-    static const long ID_CHECKBOX4;
-    static const long ID_CHECKBOX5;
-    static const long ID_CHECKBOX6;
-    static const long ID_CHOICE1;
-    static const long ID_SPINCTRL3;
-    static const long ID_CHECKBOX8;
-    static const long ID_CHECKBOX10;
-    static const long ID_CHECKBOX13;
-    static const long ID_CHECKBOX12;
-    static const long ID_RADIOBUTTON5;
-    static const long ID_RADIOBUTTON6;
-    static const long ID_RADIOBUTTON7;
-    static const long ID_RADIOBUTTON8;
-    static const long ID_TEXTCTRL1;
+    static const wxWindowID ID_CHECKBOX11;
+    static const wxWindowID ID_CHECKBOX15;
+    static const wxWindowID ID_CHOICE2;
+    static const wxWindowID ID_COMBOBOX1;
+    static const wxWindowID ID_COLOURPICKERCTRL1;
+    static const wxWindowID ID_COLOURPICKERCTRL2;
+    static const wxWindowID ID_CHECKBOX7;
+    static const wxWindowID ID_SPINCTRL1;
+    static const wxWindowID ID_CHECKBOX9;
+    static const wxWindowID ID_RADIOBUTTON1;
+    static const wxWindowID ID_RADIOBUTTON2;
+    static const wxWindowID ID_RADIOBUTTON3;
+    static const wxWindowID ID_RADIOBUTTON4;
+    static const wxWindowID ID_SPINCTRL2;
+    static const wxWindowID ID_CHECKBOX1;
+    static const wxWindowID ID_CHECKBOX2;
+    static const wxWindowID ID_CHECKBOX3;
+    static const wxWindowID ID_CHECKBOX4;
+    static const wxWindowID ID_CHECKBOX5;
+    static const wxWindowID ID_CHECKBOX6;
+    static const wxWindowID ID_CHOICE1;
+    static const wxWindowID ID_SPINCTRL3;
+    static const wxWindowID ID_CHECKBOX8;
+    static const wxWindowID ID_CHECKBOX10;
+    static const wxWindowID ID_CHECKBOX13;
+    static const wxWindowID ID_CHECKBOX14;
+    static const wxWindowID ID_CHECKBOX12;
+    static const wxWindowID ID_RADIOBUTTON5;
+    static const wxWindowID ID_RADIOBUTTON6;
+    static const wxWindowID ID_RADIOBUTTON7;
+    static const wxWindowID ID_RADIOBUTTON8;
+    static const wxWindowID ID_TEXTCTRL1;
     //*)
 
     //(*Declarations(wxsSettings)
@@ -106,6 +108,7 @@ private:
     wxCheckBox* m_UseBind;
     wxCheckBox* m_UseGrid;
     wxCheckBox* m_UseI18N;
+    wxCheckBox* m_UseObjectEventFunction;
     wxChoice* m_BrowserPlacements;
     wxChoice* m_Placement;
     wxColourPickerCtrl* m_DragParentCol;

@@ -32,15 +32,15 @@
 //*)
 
 //(*IdInit(wxsSimpleFontEditorDlg)
-const long wxsSimpleFontEditorDlg::ID_STATICTEXT1 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_STATICLINE2 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_BUTTON1 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_BUTTON3 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_STATICLINE1 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_BUTTON2 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_TEXTCTRL1 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_STATICTEXT2 = wxNewId();
-const long wxsSimpleFontEditorDlg::ID_STATICTEXT3 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_STATICLINE2 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_STATICLINE1 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID wxsSimpleFontEditorDlg::ID_STATICTEXT3 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsSimpleFontEditorDlg,wxScrollingDialog)
@@ -53,11 +53,11 @@ wxsSimpleFontEditorDlg::wxsSimpleFontEditorDlg(wxWindow* parent,wxsFontData& Dat
     m_Data(Data)
 {
     //(*Initialize(wxsSimpleFontEditorDlg)
-    wxBoxSizer* BoxSizer4;
-    wxStaticBoxSizer* StaticBoxSizer2;
     wxBoxSizer* BoxSizer1;
-    wxFlexGridSizer* FlexGridSizer1;
     wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
+    wxFlexGridSizer* FlexGridSizer1;
+    wxStaticBoxSizer* StaticBoxSizer2;
     wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     Create(parent, id, _("Font settings"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
@@ -85,7 +85,7 @@ wxsSimpleFontEditorDlg::wxsSimpleFontEditorDlg(wxWindow* parent,wxsFontData& Dat
     BoxSizer4->Add(StaticBoxSizer1, 1, wxEXPAND, 5);
     FlexGridSizer1->Add(BoxSizer4, 1, wxEXPAND, 4);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Test area"));
-    TestArea = new wxTextCtrl(this, ID_TEXTCTRL1, _("This is sample text"), wxDefaultPosition, wxSize(275,71), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    TestArea = new wxTextCtrl(this, ID_TEXTCTRL1, _("This is sample text"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     StaticBoxSizer2->Add(TestArea, 1, wxEXPAND, 4);
     FlexGridSizer1->Add(StaticBoxSizer2, 1, wxEXPAND, 5);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
@@ -102,7 +102,6 @@ wxsSimpleFontEditorDlg::wxsSimpleFontEditorDlg(wxWindow* parent,wxsFontData& Dat
     BoxSizer1->Add(StdDialogButtonSizer1, 0, wxEXPAND, 5);
     FlexGridSizer1->Add(BoxSizer1, 0, wxTOP|wxALIGN_CENTER_VERTICAL, 5);
     SetSizer(FlexGridSizer1);
-    FlexGridSizer1->Fit(this);
     FlexGridSizer1->SetSizeHints(this);
     Center();
 

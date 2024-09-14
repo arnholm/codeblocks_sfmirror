@@ -77,7 +77,7 @@ void wxsHtmlWindow::OnBuildCreatingCode()
     }
 }
 
-wxObject* wxsHtmlWindow::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsHtmlWindow::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxHtmlWindow* Preview = new wxHtmlWindow(Parent,GetId(),Pos(Parent),Size(Parent),Style());
     if ( Borders.Value )
@@ -86,7 +86,7 @@ wxObject* wxsHtmlWindow::OnBuildPreview(wxWindow* Parent,long Flags)
     }
     if ( !Url.empty() )
     {
-        if ( Flags & pfExact )
+        if ( _Flags & pfExact )
         {
             Preview->LoadPage(Url);
         }
@@ -103,10 +103,10 @@ wxObject* wxsHtmlWindow::OnBuildPreview(wxWindow* Parent,long Flags)
         Preview->SetPage(HtmlCode);
     }
 
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsHtmlWindow::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsHtmlWindow::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsHtmlWindow,Url,_("Url"),_T("url"),_T(""),false)
     WXS_STRING(wxsHtmlWindow,HtmlCode,_("Html Code"),_T("htmlcode"),_T(""),false)

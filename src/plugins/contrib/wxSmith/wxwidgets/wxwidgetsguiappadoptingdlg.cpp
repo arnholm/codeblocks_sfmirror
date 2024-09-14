@@ -33,17 +33,17 @@
 //*)
 
 //(*IdInit(wxWidgetsGUIAppAdoptingDlg)
-const long wxWidgetsGUIAppAdoptingDlg::ID_LISTBOX1 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_GAUGE1 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_STATICTEXT1 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_STATICTEXT2 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_BUTTON5 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_BUTTON2 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_BUTTON3 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_STATICLINE2 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_BUTTON4 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_STATICLINE1 = wxNewId();
-const long wxWidgetsGUIAppAdoptingDlg::ID_BUTTON6 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_GAUGE1 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_BUTTON5 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_STATICLINE2 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_STATICLINE1 = wxNewId();
+const wxWindowID wxWidgetsGUIAppAdoptingDlg::ID_BUTTON6 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxWidgetsGUIAppAdoptingDlg,wxScrollingDialog)
@@ -61,15 +61,15 @@ wxWidgetsGUIAppAdoptingDlg::wxWidgetsGUIAppAdoptingDlg(wxWindow* parent,wxWidget
 {
     //(*Initialize(wxWidgetsGUIAppAdoptingDlg)
     wxBoxSizer* BoxSizer1;
-    wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
+    wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, _("Integrating application class with wxSmith"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Files with application class:"));
-    FoundFiles = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxSize(198,166), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
+    FoundFiles = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
     StaticBoxSizer1->Add(FoundFiles, 1, wxEXPAND, 4);
-    Progress = new wxGauge(this, ID_GAUGE1, 100, wxDefaultPosition, wxSize(90,13), wxGA_SMOOTH, wxDefaultValidator, _T("ID_GAUGE1"));
+    Progress = new wxGauge(this, ID_GAUGE1, 100, wxDefaultPosition, wxDefaultSize, wxGA_SMOOTH, wxDefaultValidator, _T("ID_GAUGE1"));
     StaticBoxSizer1->Add(Progress, 0, wxTOP|wxEXPAND, 4);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     ScanningTxt = new wxStaticText(this, ID_STATICTEXT1, _("Scanning:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -97,7 +97,6 @@ wxWidgetsGUIAppAdoptingDlg::wxWidgetsGUIAppAdoptingDlg(wxWindow* parent,wxWidget
     BoxSizer3->Add(Button6, 0, wxTOP|wxEXPAND, 5);
     BoxSizer1->Add(BoxSizer3, 0, wxTOP|wxLEFT|wxALIGN_TOP, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
     Center();
 

@@ -91,7 +91,7 @@ void wxsListBox::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsListBox::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsListBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     wxListBox* Preview = new wxListBox(Parent,GetId(),Pos(Parent),Size(Parent),0,0, Style());
     for ( size_t i = 0; i <  ArrayChoices.GetCount(); ++i )
@@ -103,10 +103,10 @@ wxObject* wxsListBox::OnBuildPreview(wxWindow* Parent,long Flags)
         }
     }
 
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsListBox::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsListBox::OnEnumWidgetProperties(cb_unused long _Flags)
 {
       WXS_ARRAYSTRING(wxsListBox,ArrayChoices, _("Choices"), "content", "item")
       WXS_LONG(wxsListBox,DefaultSelection, _("Default"), "default", 0)

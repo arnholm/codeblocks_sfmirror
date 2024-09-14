@@ -95,7 +95,7 @@ void wxsMenuBar::OnBuildCreatingCode()
     }
 }
 
-void wxsMenuBar::OnEnumToolProperties(cb_unused long Flags)
+void wxsMenuBar::OnEnumToolProperties(cb_unused long _Flags)
 {
 }
 

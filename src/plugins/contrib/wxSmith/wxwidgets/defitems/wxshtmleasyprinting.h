@@ -32,7 +32,7 @@ class wxsHtmlEasyPrinting: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         wxString     m_sHeader;                    //!< The header text.
         wxString     m_sFooter;                    //!< The footer text.

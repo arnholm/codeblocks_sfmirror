@@ -30,9 +30,9 @@ class wxsSashLayoutWindow: public wxsContainer
 
     private:
 
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumContainerProperties(long Flags);
+        virtual void OnEnumContainerProperties(long _Flags);
         virtual bool OnCanAddChild(wxsItem* Item,bool ShowMessage);
 
         bool    mTop;

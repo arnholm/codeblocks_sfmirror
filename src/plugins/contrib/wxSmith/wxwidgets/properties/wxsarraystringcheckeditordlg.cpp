@@ -28,15 +28,15 @@
 //*)
 
 //(*IdInit(wxsArrayStringCheckEditorDlg)
-const long wxsArrayStringCheckEditorDlg::ID_TEXTCTRL1 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON1 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_CHECKLISTBOX1 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON2 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON4 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON3 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON5 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON6 = wxNewId();
-const long wxsArrayStringCheckEditorDlg::ID_BUTTON7 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_CHECKLISTBOX1 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON5 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON6 = wxNewId();
+const wxWindowID wxsArrayStringCheckEditorDlg::ID_BUTTON7 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxsArrayStringCheckEditorDlg,wxScrollingDialog)
@@ -50,12 +50,12 @@ wxsArrayStringCheckEditorDlg::wxsArrayStringCheckEditorDlg(wxWindow* parent,wxAr
     Bools(_Bools)
 {
     //(*Initialize(wxsArrayStringCheckEditorDlg)
-    wxBoxSizer* BoxSizer5;
-    wxBoxSizer* BoxSizer2;
-    wxStaticLine* StaticLine2;
-    wxStaticLine* StaticLine1;
     wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer5;
+    wxStaticLine* StaticLine1;
+    wxStaticLine* StaticLine2;
 
     Create(parent, id, _("Choices:"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -90,7 +90,6 @@ wxsArrayStringCheckEditorDlg::wxsArrayStringCheckEditorDlg(wxWindow* parent,wxAr
     BoxSizer5->Add(Button7, 1, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(BoxSizer5, 0, wxTOP|wxALIGN_RIGHT, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
     Center();
 

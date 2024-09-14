@@ -26,12 +26,12 @@
 #include "wxsarraystringcheckproperty.h"
 
 //(*Headers(wxsArrayStringCheckEditorDlg)
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
-#include <wx/checklst.h>
-#include <wx/statline.h>
-#include <wx/button.h>
 #include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/checklst.h>
+#include <wx/sizer.h>
+#include <wx/statline.h>
+#include <wx/textctrl.h>
 //*)
 
 
@@ -43,15 +43,15 @@ class wxsArrayStringCheckEditorDlg: public wxScrollingDialog
         virtual ~wxsArrayStringCheckEditorDlg();
 
         //(*Identifiers(wxsArrayStringCheckEditorDlg)
-        static const long ID_TEXTCTRL1;
-        static const long ID_BUTTON1;
-        static const long ID_CHECKLISTBOX1;
-        static const long ID_BUTTON2;
-        static const long ID_BUTTON4;
-        static const long ID_BUTTON3;
-        static const long ID_BUTTON5;
-        static const long ID_BUTTON6;
-        static const long ID_BUTTON7;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_CHECKLISTBOX1;
+        static const wxWindowID ID_BUTTON2;
+        static const wxWindowID ID_BUTTON4;
+        static const wxWindowID ID_BUTTON3;
+        static const wxWindowID ID_BUTTON5;
+        static const wxWindowID ID_BUTTON6;
+        static const wxWindowID ID_BUTTON7;
         //*)
 
     protected:
@@ -69,12 +69,12 @@ class wxsArrayStringCheckEditorDlg: public wxScrollingDialog
 
         //(*Declarations(wxsArrayStringCheckEditorDlg)
         wxBoxSizer* BoxSizer4;
-        wxButton* Button4;
         wxButton* Button1;
         wxButton* Button2;
-        wxButton* Button6;
-        wxButton* Button5;
         wxButton* Button3;
+        wxButton* Button4;
+        wxButton* Button5;
+        wxButton* Button6;
         wxButton* Button7;
         wxCheckListBox* StringList;
         wxTextCtrl* EditArea;

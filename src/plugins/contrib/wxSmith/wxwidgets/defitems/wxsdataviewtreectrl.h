@@ -36,8 +36,8 @@ class wxsDataViewTreeCtrl: public wxsWidget
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnEnumWidgetProperties(long Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
+        virtual void OnEnumWidgetProperties(long _Flags);
         void FindAllImageLists(wxArrayString &aNames);
         void UpdateTreeItemList(void);
 

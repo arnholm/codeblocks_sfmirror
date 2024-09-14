@@ -236,11 +236,11 @@ void wxsTreeCtrl::OnBuildCreatingCode()
 /*! \brief    Build the control preview.
  *
  * \param parent wxWindow*    The parent window.
- * \param flags long                    The control flags.
+ * \param _Flags long                    The control flags.
  * \return wxObject*                     The constructed control.
  *
  */
-wxObject *wxsTreeCtrl::OnBuildPreview(wxWindow *Parent, long Flags)
+wxObject *wxsTreeCtrl::OnBuildPreview(wxWindow *Parent, long _Flags)
 {
     int             i, n;
     wxsImageList   *ilist;
@@ -314,16 +314,16 @@ wxObject *wxsTreeCtrl::OnBuildPreview(wxWindow *Parent, long Flags)
     // save the hide-root flag
     top.Unset();
 
-    return SetupWindow(preview, Flags);
+    return SetupWindow(preview, _Flags);
 }
 
 /*! \brief Enumerate the control's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsTreeCtrl::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsTreeCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
 {
     static wxString      sImageNames[128];
     static const wxChar *pImageNames[128];

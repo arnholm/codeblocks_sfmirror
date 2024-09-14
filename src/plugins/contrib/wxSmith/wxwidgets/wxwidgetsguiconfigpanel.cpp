@@ -34,12 +34,12 @@
 #include <prep.h>
 
 //(*IdInit(wxWidgetsGUIConfigPanel)
-const long wxWidgetsGUIConfigPanel::ID_TEXTCTRL1 = wxNewId();
-const long wxWidgetsGUIConfigPanel::ID_BUTTON1 = wxNewId();
-const long wxWidgetsGUIConfigPanel::ID_BUTTON2 = wxNewId();
-const long wxWidgetsGUIConfigPanel::ID_COMBOBOX1 = wxNewId();
-const long wxWidgetsGUIConfigPanel::ID_CHECKBOX2 = wxNewId();
-const long wxWidgetsGUIConfigPanel::ID_CHECKBOX1 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_BUTTON1 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_BUTTON2 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_COMBOBOX1 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_CHECKBOX2 = wxNewId();
+const wxWindowID wxWidgetsGUIConfigPanel::ID_CHECKBOX1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(wxWidgetsGUIConfigPanel,cbConfigurationPanel)
@@ -51,17 +51,17 @@ wxWidgetsGUIConfigPanel::wxWidgetsGUIConfigPanel(wxWindow* parent,wxWidgetsGUI* 
 {
     static const wxWindowID id = -1;
     //(*Initialize(wxWidgetsGUIConfigPanel)
-    wxBoxSizer* BoxSizer4;
-    wxStaticBoxSizer* StaticBoxSizer2;
-    wxStaticText* StaticText2;
-    wxButton* Button1;
-    wxStaticText* StaticText1;
-    wxBoxSizer* BoxSizer2;
-    wxButton* Button2;
-    wxStaticBoxSizer* StaticBoxSizer3;
     wxBoxSizer* BoxSizer1;
-    wxStaticBoxSizer* StaticBoxSizer1;
+    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
+    wxButton* Button1;
+    wxButton* Button2;
+    wxStaticBoxSizer* StaticBoxSizer1;
+    wxStaticBoxSizer* StaticBoxSizer2;
+    wxStaticBoxSizer* StaticBoxSizer3;
+    wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
 
     Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -69,7 +69,7 @@ wxWidgetsGUIConfigPanel::wxWidgetsGUIConfigPanel(wxWindow* parent,wxWidgetsGUI* 
     StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Automatically loaded resources:"));
     StaticText1 = new wxStaticText(this, wxID_ANY, _("Each line will be passed as file name to\nwxXmlResource::Get()->Load."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("wxID_ANY"));
     StaticBoxSizer1->Add(StaticText1, 0, wxEXPAND, 5);
-    AutoLoad = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(218,102), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    AutoLoad = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     StaticBoxSizer1->Add(AutoLoad, 1, wxTOP|wxEXPAND, 5);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     Button1 = new wxButton(this, ID_BUTTON1, _("Add file"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -81,7 +81,7 @@ wxWidgetsGUIConfigPanel::wxWidgetsGUIConfigPanel(wxWindow* parent,wxWidgetsGUI* 
     BoxSizer2->Add(StaticBoxSizer1, 1, wxEXPAND, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Main resource"));
-    MainRes = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxSize(201,21), 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+    MainRes = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
     StaticBoxSizer2->Add(MainRes, 0, wxALIGN_CENTER_HORIZONTAL, 5);
     StaticText2 = new wxStaticText(this, wxID_ANY, _("Window selected here will be created and\nshown while initializing application.\nYou should use one of frames here.\nUsing dialog as main resource is also\nacceptable but may lead to problems\nwith terminating application\nafter closing main dialog."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("wxID_ANY"));
     StaticBoxSizer2->Add(StaticText2, 0, wxTOP|wxALIGN_CENTER_HORIZONTAL, 5);
@@ -98,7 +98,6 @@ wxWidgetsGUIConfigPanel::wxWidgetsGUIConfigPanel(wxWindow* parent,wxWidgetsGUI* 
     BoxSizer2->Add(BoxSizer4, 0, wxEXPAND, 5);
     BoxSizer1->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(wxWidgetsGUIConfigPanel::OnButton1Click));

@@ -35,9 +35,9 @@ wxsWidget::wxsWidget(
 
 }
 
-void wxsWidget::OnEnumItemProperties(long Flags)
+void wxsWidget::OnEnumItemProperties(long _Flags)
 {
-    OnEnumWidgetProperties(Flags);
+    OnEnumWidgetProperties(_Flags);
 }
 
 void wxsWidget::OnAddItemQPP(wxsAdvQPP* QPP)

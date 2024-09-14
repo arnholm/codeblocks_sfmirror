@@ -92,11 +92,11 @@ void wxsMessageDialog::OnBuildCreatingCode()
 
 /*! \brief Enumerate the dialogue's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsMessageDialog::OnEnumToolProperties(cb_unused long Flags)
+void wxsMessageDialog::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING(wxsMessageDialog, m_sCaption, _("Caption"), _T("caption"), _T(""), true);
     WXS_SHORT_STRING(wxsMessageDialog, m_sMessage, _("Message"), _T("message"), wxMessageBoxCaptionStr, true);

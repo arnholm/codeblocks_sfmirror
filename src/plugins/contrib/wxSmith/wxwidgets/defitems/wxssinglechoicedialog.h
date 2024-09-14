@@ -35,7 +35,7 @@ class wxsSingleChoiceDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         wxString m_Message;
         wxString m_Caption;

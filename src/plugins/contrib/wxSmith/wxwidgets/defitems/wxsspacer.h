@@ -33,8 +33,8 @@ class wxsSpacer: public wxsItem
 
     private:
 
-        virtual void OnEnumItemProperties(long Flags);
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
+        virtual void OnEnumItemProperties(long _Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
         virtual void OnBuildCreatingCode();
         virtual void OnBuildDeclarationsCode() {}
 };

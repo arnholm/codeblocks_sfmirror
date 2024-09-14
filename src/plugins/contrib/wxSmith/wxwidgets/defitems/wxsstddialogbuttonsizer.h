@@ -34,8 +34,8 @@ class wxsStdDialogButtonSizer: public wxsItem
     private:
 
         virtual long OnGetPropertiesFlags();
-        virtual void OnEnumItemProperties(long Flags);
-        virtual wxObject* OnBuildPreview(wxWindow* Parent,long PreviewFlags);
+        virtual void OnEnumItemProperties(long _Flags);
+        virtual wxObject* OnBuildPreview(wxWindow* Parent,long _Flags);
         virtual void OnBuildCreatingCode();
         virtual bool OnXmlRead(TiXmlElement* Element,bool IsXRC,bool IsExtra);
         virtual bool OnXmlWrite(TiXmlElement* Element,bool IsXRC,bool IsExtra);

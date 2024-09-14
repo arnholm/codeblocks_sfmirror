@@ -78,15 +78,15 @@ void wxsStaticBitmap::OnBuildCreatingCode()
 }
 
 
-wxObject* wxsStaticBitmap::OnBuildPreview(wxWindow* Parent,long Flags)
+wxObject* wxsStaticBitmap::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
     // Cryogen 24/3/10 Bug #15354. Since we're no longer using the Background class we don't need to differentiate between cases where
     // the user has assigned a bitmap and those where he hasn't and we're using the fake background. Just return the preview.
     wxStaticBitmap* Preview = new wxStaticBitmap(Parent,GetId(),Bitmap.GetPreview(Size(Parent)),Pos(Parent),Size(Parent),Style());
-    return SetupWindow(Preview,Flags);
+    return SetupWindow(Preview,_Flags);
 }
 
-void wxsStaticBitmap::OnEnumWidgetProperties(cb_unused long Flags)
+void wxsStaticBitmap::OnEnumWidgetProperties(cb_unused long _Flags)
 {
    WXS_BITMAP(wxsStaticBitmap,Bitmap,_("Bitmap"),_T("bitmap"),_T("wxART_OTHER"))
 }

@@ -24,13 +24,13 @@
 #define WXWIDGETSGUICONFIGPANEL_H
 
 //(*Headers(wxWidgetsGUIConfigPanel)
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/combobox.h>
+#include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/panel.h>
-#include <wx/button.h>
-#include <wx/combobox.h>
 //*)
 
 #include "wxwidgetsgui.h"
@@ -44,12 +44,12 @@ class wxWidgetsGUIConfigPanel: public cbConfigurationPanel
         virtual ~wxWidgetsGUIConfigPanel();
 
         //(*Identifiers(wxWidgetsGUIConfigPanel)
-        static const long ID_TEXTCTRL1;
-        static const long ID_BUTTON1;
-        static const long ID_BUTTON2;
-        static const long ID_COMBOBOX1;
-        static const long ID_CHECKBOX2;
-        static const long ID_CHECKBOX1;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_BUTTON2;
+        static const wxWindowID ID_COMBOBOX1;
+        static const wxWindowID ID_CHECKBOX2;
+        static const wxWindowID ID_CHECKBOX1;
         //*)
 
     private:
@@ -66,10 +66,10 @@ class wxWidgetsGUIConfigPanel: public cbConfigurationPanel
         //*)
 
         //(*Declarations(wxWidgetsGUIConfigPanel)
-        wxTextCtrl* AutoLoad;
-        wxComboBox* MainRes;
         wxCheckBox* InitAll;
         wxCheckBox* InitAllNecessary;
+        wxComboBox* MainRes;
+        wxTextCtrl* AutoLoad;
         //*)
 
         wxWidgetsGUI* m_GUI;

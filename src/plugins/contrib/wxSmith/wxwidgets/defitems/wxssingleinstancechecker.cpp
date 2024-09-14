@@ -80,7 +80,7 @@ void wxsSingleInstanceChecker::OnBuildCreatingCode()
 
 //------------------------------------------------------------------------------
 
-void wxsSingleInstanceChecker::OnEnumToolProperties(cb_unused long Flags)
+void wxsSingleInstanceChecker::OnEnumToolProperties(cb_unused long _Flags)
 {
     WXS_SHORT_STRING( wxsSingleInstanceChecker, AppName, _("Custom app name"), _T("appname"), wxEmptyString, false );
 }

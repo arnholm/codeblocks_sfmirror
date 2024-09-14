@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsImageTreeEditorDlg">
 		<title>Tree Item Editor</title>
+		<centered>1</centered>
 		<font>
 			<size>8</size>
 			<style>normal</style>
@@ -54,8 +55,6 @@
 												<item2>Tree1</item2>
 												<item2></item2>
 											</items_text>
-											<pos>2,36</pos>
-											<size>246,359</size>
 											<style>wxTR_EDIT_LABELS|wxTR_DEFAULT_STYLE</style>
 											<handler function="OnTreeCtrl1SelectionChanged" entry="EVT_TREE_SEL_CHANGED" />
 										</object>
@@ -84,8 +83,6 @@
 													<disabled_index></disabled_index>
 													<selected_index></selected_index>
 													<focus_index></focus_index>
-													<pos>256,36</pos>
-													<size>24,23</size>
 													<tooltip>Add A New Item</tooltip>
 													<handler function="OnbAddItemClick" entry="EVT_BUTTON" />
 												</object>
@@ -112,8 +109,6 @@
 													<disabled_index></disabled_index>
 													<selected_index></selected_index>
 													<focus_index></focus_index>
-													<pos>256,66</pos>
-													<size>24,23</size>
 													<tooltip>Add A New Child</tooltip>
 													<handler function="OnbAddSubItemClick" entry="EVT_BUTTON" />
 												</object>
@@ -141,8 +136,6 @@
 													<disabled_index></disabled_index>
 													<selected_index></selected_index>
 													<focus_index></focus_index>
-													<pos>256,96</pos>
-													<size>24,23</size>
 													<tooltip>Delete Current Item</tooltip>
 													<handler function="OnbDelItemClick" entry="EVT_BUTTON" />
 												</object>
@@ -170,8 +163,6 @@
 													<disabled_index></disabled_index>
 													<selected_index></selected_index>
 													<focus_index></focus_index>
-													<pos>256,126</pos>
-													<size>24,23</size>
 													<tooltip>Delete All Items</tooltip>
 													<handler function="OnbDelAllItemsClick" entry="EVT_BUTTON" />
 												</object>
@@ -195,8 +186,6 @@
 											<object class="sizeritem">
 												<object class="wxButton" name="ID_BUTTON3" variable="bItemColor" member="yes">
 													<label>C</label>
-													<pos>256,156</pos>
-													<size>24,24</size>
 													<font>
 														<size>10</size>
 														<style>normal</style>
@@ -248,8 +237,6 @@
 													<disabled_index></disabled_index>
 													<selected_index></selected_index>
 													<focus_index></focus_index>
-													<pos>256,216</pos>
-													<size>24,23</size>
 													<tooltip>Start Editor On Current Item</tooltip>
 													<handler function="OnbEditItemClick" entry="EVT_BUTTON" />
 												</object>
@@ -283,8 +270,6 @@
 											<object class="sizeritem">
 												<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticText13" member="yes">
 													<label>Label</label>
-													<pos>310,272</pos>
-													<size>82,14</size>
 													<fg>#0000FF</fg>
 													<style>wxST_NO_AUTORESIZE</style>
 												</object>
@@ -302,8 +287,6 @@
 														<item2>cbNormal</item2>
 														<item2></item2>
 													</mItemsText>
-													<pos>256,296</pos>
-													<size>48,22</size>
 													<style>wxCB_READONLY</style>
 													<handler function="OncbNormalSelect" entry="EVT_COMBOBOX" />
 												</object>
@@ -329,8 +312,6 @@
 														<item2>cbSelected</item2>
 														<item2></item2>
 													</mItemsText>
-													<pos>256,326</pos>
-													<size>48,22</size>
 													<style>wxCB_READONLY</style>
 													<handler function="OncbSelectedSelect" entry="EVT_COMBOBOX" />
 												</object>
@@ -356,8 +337,6 @@
 														<item2>cbExpanded</item2>
 														<item2></item2>
 													</mItemsText>
-													<pos>256,356</pos>
-													<size>48,22</size>
 													<style>wxCB_READONLY</style>
 													<handler function="OncbExpandedSelect" entry="EVT_COMBOBOX" />
 												</object>
@@ -383,8 +362,6 @@
 														<item2>cbSelExpanded</item2>
 														<item2></item2>
 													</mItemsText>
-													<pos>256,386</pos>
-													<size>48,22</size>
 													<style>wxCB_READONLY</style>
 													<handler function="OncbSelExpandedSelect" entry="EVT_COMBOBOX" />
 												</object>

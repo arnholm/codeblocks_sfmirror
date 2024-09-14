@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsImageComboEditorDlg">
 		<title>wxBitmapComboBox Editor</title>
+		<centered>1</centered>
 		<minsize>-1,-1</minsize>
 		<maxsize>-1,-1</maxsize>
 		<id_arg>0</id_arg>
@@ -32,9 +33,7 @@
 										<item2>m_pTree</item2>
 										<item2></item2>
 									</items_text>
-									<pos>0,32</pos>
-									<size>240,272</size>
-									<style>wxTR_EDIT_LABELS|wxTR_NO_BUTTONS|wxTR_NO_LINES|wxTR_HIDE_ROOT|wxRAISED_BORDER</style>
+									<style>wxTR_EDIT_LABELS|wxTR_NO_BUTTONS|wxTR_NO_LINES|wxTR_HIDE_ROOT|wxBORDER_RAISED</style>
 									<handler function="OnTreeSelectionChanged" entry="EVT_TREE_SEL_CHANGED" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
@@ -200,8 +199,6 @@
 										<object class="wxBoxSizer" variable="BoxSizer12" member="no">
 											<object class="sizeritem">
 												<object class="wxComboBox" name="ID_COMBOBOX1" subclass="wxBitmapComboBox" variable="m_pCmbImage" member="yes">
-													<pos>256,272</pos>
-													<size>100,22</size>
 													<style>wxCB_READONLY</style>
 													<handler function="OnCmbImageSelect" entry="EVT_COMBOBOX" />
 												</object>
@@ -211,7 +208,6 @@
 											<object class="sizeritem">
 												<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
 													<label>Item Image</label>
-													<pos>352,276</pos>
 												</object>
 												<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>

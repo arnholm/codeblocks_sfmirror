@@ -61,7 +61,7 @@ void wxsGridSizer::OnBuildSizerCreatingCode()
     }
 }
 
-void wxsGridSizer::OnEnumSizerProperties(cb_unused long Flags)
+void wxsGridSizer::OnEnumSizerProperties(cb_unused long _Flags)
 {
     WXS_LONG(wxsGridSizer,Cols,_("Cols"),_T("cols"),0);
     WXS_LONG(wxsGridSizer,Rows,_("Rows"),_T("rows"),0);

@@ -176,20 +176,20 @@ void wxsParent::RestoreExtraData(int Index,TiXmlElement* Element)
     Extra[Index]->XmlRead(Element);
 }
 
-void wxsParent::OnEnumChildProperties(wxsItem* Child,long Flags)
+void wxsParent::OnEnumChildProperties(wxsItem* Child,long _Flags)
 {
     // Enumerating properties of child item
-    Child->EnumItemProperties(Flags);
+    Child->EnumItemProperties(_Flags);
 
     // Adding properties from extra data container when there's extra data
     // associated. It will be disabled in xml operations since
     // it's done on parent's level
-    if ( !(Flags&flXml) )
+    if ( !(_Flags&flXml) )
     {
         int Index = GetChildIndex(Child);
         if ( (Index >= 0) && (Index < (int)Extra.Count()) && Extra[Index] )
         {
-            SubContainer(Extra[Index],Flags);
+            SubContainer(Extra[Index],_Flags);
         }
     }
 }

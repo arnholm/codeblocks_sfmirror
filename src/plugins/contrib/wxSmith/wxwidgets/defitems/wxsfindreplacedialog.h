@@ -35,7 +35,7 @@ class wxsFindReplaceDialog: public wxsTool
     private:
 
         virtual void OnBuildCreatingCode();
-        virtual void OnEnumToolProperties(long Flags);
+        virtual void OnEnumToolProperties(long _Flags);
 
         wxString m_sCaption;    //!< The dialogue caption.
 };

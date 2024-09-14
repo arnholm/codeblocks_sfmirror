@@ -26,12 +26,12 @@
 
 //(*InternalHeaders(wxsArrayStringEditorDlg)
 #include <wx/button.h>
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(wxsArrayStringEditorDlg)
-const long wxsArrayStringEditorDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID wxsArrayStringEditorDlg::ID_TEXTCTRL1 = wxNewId();
 //*)
 
 #include "prep.h"
@@ -46,8 +46,8 @@ wxsArrayStringEditorDlg::wxsArrayStringEditorDlg(wxWindow* parent,wxArrayString&
 {
     //(*Initialize(wxsArrayStringEditorDlg)
     wxBoxSizer* BoxSizer1;
-    wxStdDialogButtonSizer* StdDialogButtonSizer1;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     Create(parent, id, _("Edit items"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -61,8 +61,8 @@ wxsArrayStringEditorDlg::wxsArrayStringEditorDlg(wxWindow* parent,wxArrayString&
     StdDialogButtonSizer1->Realize();
     BoxSizer1->Add(StdDialogButtonSizer1, 0, wxALL|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
+    Center();
     //*)
 
     Connect(wxID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&wxsArrayStringEditorDlg::OnOK);

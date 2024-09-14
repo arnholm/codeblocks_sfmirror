@@ -116,11 +116,11 @@ void wxsImageList::OnBuildCreatingCode()
 
 /*! \brief Enumerate the tool's properties.
  *
- * \param flags long    The control flags.
+ * \param _Flags long    The control flags.
  * \return void
  *
  */
-void wxsImageList::OnEnumToolProperties(cb_unused long Flags)
+void wxsImageList::OnEnumToolProperties(cb_unused long _Flags)
 {
     // starting a new build cycle
     m_IsBuilt = false;

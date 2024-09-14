@@ -32,7 +32,6 @@
                                 <flag>wxLEFT|wxRIGHT|wxTOP|wxALIGN_CENTER|wxEXPAND</flag>
                                 <object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="AutoLoad" member="yes">
                                     <value></value>
-                                    <size>218,102</size>
                                     <style>wxTE_MULTILINE</style>
                                 </object>
                             </object>
@@ -92,7 +91,6 @@
                                                 <border>5</border>
                                                 <flag>wxALL|wxALIGN_CENTER</flag>
                                                 <object class="wxComboBox" name="ID_COMBOBOX1" variable="MainRes" member="yes">
-                                                    <size>201,21</size>
                                                     <style>wxCB_READONLY</style>
                                                 </object>
                                             </object>

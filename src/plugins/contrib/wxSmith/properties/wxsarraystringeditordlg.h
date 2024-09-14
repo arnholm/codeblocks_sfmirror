@@ -24,8 +24,8 @@
 #define WXSARRAYSTRINGEDITORDLG_H
 
 //(*Headers(wxsArrayStringEditorDlg)
-#include <wx/sizer.h>
 #include "scrollingdialog.h"
+#include <wx/sizer.h>
 #include <wx/textctrl.h>
 //*)
 
@@ -39,7 +39,7 @@ class PLUGIN_EXPORT wxsArrayStringEditorDlg: public wxScrollingDialog
         virtual ~wxsArrayStringEditorDlg();
 
         //(*Identifiers(wxsArrayStringEditorDlg)
-        static const long ID_TEXTCTRL1;
+        static const wxWindowID ID_TEXTCTRL1;
         //*)
 
     protected:
