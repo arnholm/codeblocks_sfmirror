@@ -8,9 +8,9 @@
 //*)
 
 //(*IdInit(CscopeConfigPanel)
-const long CscopeConfigPanel::ID_TXT_CPP_CHECK_APP = wxNewId();
-const long CscopeConfigPanel::ID_BTN_CPPCHECK_APP = wxNewId();
-const long CscopeConfigPanel::ID_HYC_CPP_CHECK_WWW = wxNewId();
+const wxWindowID CscopeConfigPanel::ID_TXT_CPP_CHECK_APP = wxNewId();
+const wxWindowID CscopeConfigPanel::ID_BTN_CPPCHECK_APP = wxNewId();
+const wxWindowID CscopeConfigPanel::ID_HYC_CPP_CHECK_WWW = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CscopeConfigPanel,wxPanel)
@@ -38,7 +38,7 @@ CscopeConfigPanel::CscopeConfigPanel(wxWindow* parent)
 	bszCppCheckApp = new wxBoxSizer(wxHORIZONTAL);
 	txtCscopeApp = new wxTextCtrl(this, ID_TXT_CPP_CHECK_APP, _("cscope"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_CPP_CHECK_APP"));
 	bszCppCheckApp->Add(txtCscopeApp, 1, wxEXPAND, 5);
-	btnCscopeApp = new wxButton(this, ID_BTN_CPPCHECK_APP, _("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_CPPCHECK_APP"));
+	btnCscopeApp = new wxButton(this, ID_BTN_CPPCHECK_APP, _T("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_CPPCHECK_APP"));
 	btnCscopeApp->SetMinSize(wxSize(30,-1));
 	bszCppCheckApp->Add(btnCscopeApp, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
 	flsMain->Add(bszCppCheckApp, 1, wxLEFT|wxEXPAND, 5);
@@ -48,10 +48,9 @@ CscopeConfigPanel::CscopeConfigPanel(wxWindow* parent)
 	flsMain->Add(hycCscopeWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
 	bszMain->Add(flsMain, 1, wxEXPAND, 5);
 	SetSizer(bszMain);
-	bszMain->Fit(this);
 	bszMain->SetSizeHints(this);
 
-	Connect(ID_BTN_CPPCHECK_APP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CscopeConfigPanel::OnbtnCscopeAppClick);
+	Connect(ID_BTN_CPPCHECK_APP,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(CscopeConfigPanel::OnbtnCscopeAppClick));
 	//*)
 
 
