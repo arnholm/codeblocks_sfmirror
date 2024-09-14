@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxDialog" name="ProjectOptionsManipulatorDlg">
 		<title>Project Options Plugin</title>
+		<centered>1</centered>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<object class="wxBoxSizer" variable="bszMainH" member="no">
 			<orient>wxVERTICAL</orient>

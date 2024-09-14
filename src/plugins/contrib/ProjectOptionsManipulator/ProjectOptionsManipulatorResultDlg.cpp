@@ -10,16 +10,16 @@
 #include "ProjectOptionsManipulatorResultDlg.h"
 
 //(*InternalHeaders(ProjectOptionsManipulatorResultDlg)
+#include <wx/button.h>
+#include <wx/intl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/intl.h>
-#include <wx/button.h>
 #include <wx/string.h>
+#include <wx/textctrl.h>
 //*)
 
 //(*IdInit(ProjectOptionsManipulatorResultDlg)
-const long ProjectOptionsManipulatorResultDlg::ID_TXT_RESULT = wxNewId();
+const wxWindowID ProjectOptionsManipulatorResultDlg::ID_TXT_RESULT = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ProjectOptionsManipulatorResultDlg,wxDialog)
@@ -30,9 +30,9 @@ END_EVENT_TABLE()
 ProjectOptionsManipulatorResultDlg::ProjectOptionsManipulatorResultDlg(wxWindow* parent,wxWindowID id)
 {
 	//(*Initialize(ProjectOptionsManipulatorResultDlg)
-	wxStaticText* lblResult;
-	wxBoxSizer* bszMainV;
 	wxBoxSizer* bszMainH;
+	wxBoxSizer* bszMainV;
+	wxStaticText* lblResult;
 	wxStdDialogButtonSizer* sbzOK;
 
 	Create(parent, id, _("Project Options Plugin - Results"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("id"));
@@ -49,8 +49,8 @@ ProjectOptionsManipulatorResultDlg::ProjectOptionsManipulatorResultDlg(wxWindow*
 	bszMainV->Add(sbzOK, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
 	bszMainH->Add(bszMainV, 1, wxEXPAND, 5);
 	SetSizer(bszMainH);
-	bszMainH->Fit(this);
 	bszMainH->SetSizeHints(this);
+	Center();
 	//*)
 }
 
