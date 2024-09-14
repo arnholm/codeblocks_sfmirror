@@ -10,8 +10,8 @@
 #include <sdk.h>
 #ifndef CB_PRECOMP
     //(*InternalHeadersPCH(BuildTargetPanel)
-    #include <wx/string.h>
     #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 #endif // CB_PRECOMP
 
@@ -19,16 +19,16 @@
 
 
 //(*IdInit(BuildTargetPanel)
-const long BuildTargetPanel::ID_STATICTEXT1 = wxNewId();
-const long BuildTargetPanel::ID_STATICTEXT3 = wxNewId();
-const long BuildTargetPanel::ID_TEXTCTRL1 = wxNewId();
-const long BuildTargetPanel::ID_STATICTEXT2 = wxNewId();
-const long BuildTargetPanel::ID_COMBOBOX1 = wxNewId();
-const long BuildTargetPanel::ID_STATICTEXT4 = wxNewId();
-const long BuildTargetPanel::ID_TEXTCTRL2 = wxNewId();
-const long BuildTargetPanel::ID_STATICTEXT5 = wxNewId();
-const long BuildTargetPanel::ID_TEXTCTRL3 = wxNewId();
-const long BuildTargetPanel::ID_CHECKBOX1 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_STATICTEXT1 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_STATICTEXT3 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_STATICTEXT2 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_COMBOBOX1 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_STATICTEXT4 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_STATICTEXT5 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID BuildTargetPanel::ID_CHECKBOX1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(BuildTargetPanel,wxPanel)
@@ -40,10 +40,10 @@ BuildTargetPanel::BuildTargetPanel(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(BuildTargetPanel)
     wxFlexGridSizer* FlexGridSizer1;
+    wxStaticBoxSizer* StaticBoxSizer1;
     wxStaticText* StaticText1;
     wxStaticText* StaticText4;
     wxStaticText* StaticText5;
-    wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -74,10 +74,9 @@ BuildTargetPanel::BuildTargetPanel(wxWindow* parent,wxWindowID id)
     StaticBoxSizer1->Add(chkEnableDebug, 0, wxALL|wxALIGN_LEFT, 8);
     BoxSizer1->Add(StaticBoxSizer1, 0, wxALL|wxEXPAND, 8);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&BuildTargetPanel::OntxtNameText);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(BuildTargetPanel::OntxtNameText));
     //*)
 }
 

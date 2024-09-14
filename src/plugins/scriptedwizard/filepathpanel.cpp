@@ -11,8 +11,8 @@
 #ifndef CB_PRECOMP
     #include <wx/filedlg.h>
     //(*InternalHeadersPCH(FilePathPanel)
-    #include <wx/string.h>
     #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
     #include <cbproject.h>
     #include <projectbuildtarget.h>
@@ -23,17 +23,17 @@
 #include "filepathpanel.h"
 
 //(*IdInit(FilePathPanel)
-const long FilePathPanel::ID_STATICTEXT1 = wxNewId();
-const long FilePathPanel::ID_STATICTEXT2 = wxNewId();
-const long FilePathPanel::ID_TEXTCTRL1 = wxNewId();
-const long FilePathPanel::ID_BUTTON1 = wxNewId();
-const long FilePathPanel::ID_STATICTEXT3 = wxNewId();
-const long FilePathPanel::ID_TEXTCTRL2 = wxNewId();
-const long FilePathPanel::ID_CHECKBOX1 = wxNewId();
-const long FilePathPanel::ID_STATICTEXT4 = wxNewId();
-const long FilePathPanel::ID_CHECKLISTBOX2 = wxNewId();
-const long FilePathPanel::ID_BUTTON2 = wxNewId();
-const long FilePathPanel::ID_BUTTON3 = wxNewId();
+const wxWindowID FilePathPanel::ID_STATICTEXT1 = wxNewId();
+const wxWindowID FilePathPanel::ID_STATICTEXT2 = wxNewId();
+const wxWindowID FilePathPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID FilePathPanel::ID_BUTTON1 = wxNewId();
+const wxWindowID FilePathPanel::ID_STATICTEXT3 = wxNewId();
+const wxWindowID FilePathPanel::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID FilePathPanel::ID_CHECKBOX1 = wxNewId();
+const wxWindowID FilePathPanel::ID_STATICTEXT4 = wxNewId();
+const wxWindowID FilePathPanel::ID_CHECKLISTBOX2 = wxNewId();
+const wxWindowID FilePathPanel::ID_BUTTON2 = wxNewId();
+const wxWindowID FilePathPanel::ID_BUTTON3 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(FilePathPanel,wxPanel)
@@ -44,64 +44,63 @@ END_EVENT_TABLE()
 FilePathPanel::FilePathPanel(wxWindow* parent,wxWindowID id) :
     m_Selection(-1)
 {
-	//(*Initialize(FilePathPanel)
-	wxStaticText* StaticText1;
-	wxStaticText* StaticText4;
-	wxBoxSizer* BoxSizer1;
-	wxStaticText* StaticText2;
+    //(*Initialize(FilePathPanel)
+    wxBoxSizer* BoxSizer1;
+    wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
+    wxStaticText* StaticText4;
 
-	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
-	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Please enter the file\'s location and name and\nwhether to add it to the active project."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-	BoxSizer1->Add(StaticText1, 0, wxALL|wxALIGN_LEFT, 8);
-	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Filename with full path:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
-	BoxSizer1->Add(StaticText2, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-	txtFilename = new wxTextCtrl(this, ID_TEXTCTRL1, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
-	BoxSizer2->Add(txtFilename, 1, wxALL|wxALIGN_TOP, 0);
-	btnBrowse = new wxButton(this, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(22,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
-	BoxSizer2->Add(btnBrowse, 0, wxALL|wxALIGN_TOP, 0);
-	BoxSizer1->Add(BoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	lblGuard = new wxStaticText(this, ID_STATICTEXT3, _("Header guard word:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	BoxSizer1->Add(lblGuard, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	txtGuard = new wxTextCtrl(this, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	BoxSizer1->Add(txtGuard, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	BoxSizer1->Add(-1,-1,0, wxALL|wxEXPAND, 0);
-	chkAddToProject = new wxCheckBox(this, ID_CHECKBOX1, _("Add file to active project"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
-	chkAddToProject->SetValue(false);
-	BoxSizer1->Add(chkAddToProject, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
-	FlexGridSizer1->AddGrowableCol(1);
-	FlexGridSizer1->AddGrowableRow(1);
-	FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
-	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("In build target(s):"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
-	FlexGridSizer1->Add(StaticText4, 0, wxALL|wxEXPAND, 0);
-	FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
-	clbTargets = new wxCheckListBox(this, ID_CHECKLISTBOX2, wxDefaultPosition, wxSize(222,111), 0, 0, wxLB_SINGLE|wxLB_HSCROLL, wxDefaultValidator, _T("ID_CHECKLISTBOX2"));
-	clbTargets->Disable();
-	FlexGridSizer1->Add(clbTargets, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 0);
-	FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
-	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
-	btnAll = new wxButton(this, ID_BUTTON2, _("All"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	btnAll->Disable();
-	BoxSizer6->Add(btnAll, 0, wxRIGHT|wxALIGN_CENTER_VERTICAL, 4);
-	btnNone = new wxButton(this, ID_BUTTON3, _("None"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
-	btnNone->Disable();
-	BoxSizer6->Add(btnNone, 0, wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer1->Add(BoxSizer6, 0, wxALL|wxALIGN_TOP, 0);
-	BoxSizer1->Add(FlexGridSizer1, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	BoxSizer1->Add(BoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
-	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
-	BoxSizer1->SetSizeHints(this);
+    Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
+    BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+    StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Please enter the file\'s location and name and\nwhether to add it to the active project."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    BoxSizer1->Add(StaticText1, 0, wxALL|wxALIGN_LEFT, 8);
+    StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Filename with full path:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+    BoxSizer1->Add(StaticText2, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+    txtFilename = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    BoxSizer2->Add(txtFilename, 1, wxALL|wxALIGN_TOP, 0);
+    btnBrowse = new wxButton(this, ID_BUTTON1, _T("..."), wxDefaultPosition, wxSize(22,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    BoxSizer2->Add(btnBrowse, 0, wxALL|wxALIGN_TOP, 0);
+    BoxSizer1->Add(BoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    lblGuard = new wxStaticText(this, ID_STATICTEXT3, _("Header guard word:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+    BoxSizer1->Add(lblGuard, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    txtGuard = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    BoxSizer1->Add(txtGuard, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    BoxSizer1->Add(-1,-1,0, wxALL|wxEXPAND, 0);
+    chkAddToProject = new wxCheckBox(this, ID_CHECKBOX1, _("Add file to active project"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+    chkAddToProject->SetValue(false);
+    BoxSizer1->Add(chkAddToProject, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
+    FlexGridSizer1->AddGrowableCol(1);
+    FlexGridSizer1->AddGrowableRow(1);
+    FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
+    StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("In build target(s):"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+    FlexGridSizer1->Add(StaticText4, 0, wxALL|wxEXPAND, 0);
+    FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
+    clbTargets = new wxCheckListBox(this, ID_CHECKLISTBOX2, wxDefaultPosition, wxDefaultSize, 0, 0, wxLB_SINGLE|wxLB_HSCROLL, wxDefaultValidator, _T("ID_CHECKLISTBOX2"));
+    clbTargets->Disable();
+    FlexGridSizer1->Add(clbTargets, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 0);
+    FlexGridSizer1->Add(16,16,0, wxALL|wxALIGN_TOP, 0);
+    BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
+    btnAll = new wxButton(this, ID_BUTTON2, _("All"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    btnAll->Disable();
+    BoxSizer6->Add(btnAll, 0, wxRIGHT|wxALIGN_CENTER_VERTICAL, 4);
+    btnNone = new wxButton(this, ID_BUTTON3, _("None"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+    btnNone->Disable();
+    BoxSizer6->Add(btnNone, 0, wxALIGN_CENTER_VERTICAL, 0);
+    FlexGridSizer1->Add(BoxSizer6, 0, wxALL|wxALIGN_TOP, 0);
+    BoxSizer1->Add(FlexGridSizer1, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    BoxSizer3 = new wxBoxSizer(wxVERTICAL);
+    BoxSizer1->Add(BoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
+    SetSizer(BoxSizer1);
+    BoxSizer1->SetSizeHints(this);
 
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&FilePathPanel::OntxtFilenameText);
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FilePathPanel::OnbtnBrowseClick);
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&FilePathPanel::OnchkAddToProjectChange);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FilePathPanel::OnbtnAllClick);
-	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&FilePathPanel::OnbtnNoneClick);
-	//*)
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(FilePathPanel::OntxtFilenameText));
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(FilePathPanel::OnbtnBrowseClick));
+    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(FilePathPanel::OnchkAddToProjectChange));
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(FilePathPanel::OnbtnAllClick));
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(FilePathPanel::OnbtnNoneClick));
+    //*)
 
     txtFilename->SetValue(wxEmptyString);
     txtGuard->SetValue(wxEmptyString);

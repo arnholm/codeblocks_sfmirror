@@ -11,29 +11,29 @@
 #ifndef CB_PRECOMP
 #include <wx/event.h>
 //(*InternalHeadersPCH(CompilerPanel)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 #include "globals.h"
 #endif
 #include "compilerpanel.h"
 
 //(*IdInit(CompilerPanel)
-const long CompilerPanel::ID_STATICTEXT1 = wxNewId();
-const long CompilerPanel::ID_STATICTEXT2 = wxNewId();
-const long CompilerPanel::ID_COMBOBOX1 = wxNewId();
-const long CompilerPanel::ID_CHECKBOX1 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL3 = wxNewId();
-const long CompilerPanel::ID_STATICTEXT3 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL1 = wxNewId();
-const long CompilerPanel::ID_STATICTEXT4 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL2 = wxNewId();
-const long CompilerPanel::ID_CHECKBOX3 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL4 = wxNewId();
-const long CompilerPanel::ID_STATICTEXT7 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL5 = wxNewId();
-const long CompilerPanel::ID_STATICTEXT8 = wxNewId();
-const long CompilerPanel::ID_TEXTCTRL6 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT1 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT2 = wxNewId();
+const wxWindowID CompilerPanel::ID_COMBOBOX1 = wxNewId();
+const wxWindowID CompilerPanel::ID_CHECKBOX1 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT3 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT4 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID CompilerPanel::ID_CHECKBOX3 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL4 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT7 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL5 = wxNewId();
+const wxWindowID CompilerPanel::ID_STATICTEXT8 = wxNewId();
+const wxWindowID CompilerPanel::ID_TEXTCTRL6 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CompilerPanel,wxPanel)
@@ -45,16 +45,16 @@ CompilerPanel::CompilerPanel(wxWindow* parent, wxWindow* parentDialog) :
     m_parentDialog(parentDialog)
 {
 	//(*Initialize(CompilerPanel)
+	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer2;
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer2;
-	wxStaticText* StaticText3;
-	wxStaticText* StaticText8;
-	wxStaticText* StaticText7;
-	wxStaticText* StaticText4;
-	wxBoxSizer* BoxSizer1;
 	wxStaticText* StaticText2;
+	wxStaticText* StaticText3;
+	wxStaticText* StaticText4;
+	wxStaticText* StaticText7;
+	wxStaticText* StaticText8;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -111,11 +111,10 @@ CompilerPanel::CompilerPanel(wxWindow* parent, wxWindow* parentDialog) :
 	BoxSizer3->Add(StaticBoxSizer2, 1, wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer1->Add(BoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
 	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&CompilerPanel::OnDebugChange);
-	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&CompilerPanel::OnReleaseChange);
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(CompilerPanel::OnDebugChange));
+	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(CompilerPanel::OnReleaseChange));
 	//*)
 }
 

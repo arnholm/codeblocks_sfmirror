@@ -11,8 +11,8 @@
 #ifndef CB_PRECOMP
     #include <wx/filename.h>
     //(*InternalHeadersPCH(ProjectPathPanel)
-    #include <wx/string.h>
     #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 #endif // CB_PRECOMP
 #include <filefilters.h>
@@ -21,16 +21,16 @@
 
 
 //(*IdInit(ProjectPathPanel)
-const long ProjectPathPanel::ID_STATICTEXT1 = wxNewId();
-const long ProjectPathPanel::ID_STATICTEXT4 = wxNewId();
-const long ProjectPathPanel::ID_TEXTCTRL3 = wxNewId();
-const long ProjectPathPanel::ID_STATICTEXT2 = wxNewId();
-const long ProjectPathPanel::ID_TEXTCTRL1 = wxNewId();
-const long ProjectPathPanel::ID_BUTTON1 = wxNewId();
-const long ProjectPathPanel::ID_STATICTEXT3 = wxNewId();
-const long ProjectPathPanel::ID_TEXTCTRL2 = wxNewId();
-const long ProjectPathPanel::ID_STATICTEXT5 = wxNewId();
-const long ProjectPathPanel::ID_TEXTCTRL4 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_STATICTEXT4 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_STATICTEXT2 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_BUTTON1 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_STATICTEXT3 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_STATICTEXT5 = wxNewId();
+const wxWindowID ProjectPathPanel::ID_TEXTCTRL4 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ProjectPathPanel,wxPanel)
@@ -43,10 +43,10 @@ ProjectPathPanel::ProjectPathPanel(wxWindow* parent,wxWindowID id) :
 {
     //(*Initialize(ProjectPathPanel)
     wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
     wxStaticText* StaticText3;
     wxStaticText* StaticText4;
     wxStaticText* StaticText5;
-    wxStaticText* StaticText2;
 
     Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -59,9 +59,9 @@ ProjectPathPanel::ProjectPathPanel(wxWindow* parent,wxWindowID id) :
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Folder to create project in:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     BoxSizer1->Add(StaticText2, 0, wxLEFT|wxRIGHT|wxEXPAND, 8);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-    txtPrjPath = new wxTextCtrl(this, ID_TEXTCTRL1, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    txtPrjPath = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     BoxSizer2->Add(txtPrjPath, 1, wxALIGN_CENTER_VERTICAL, 5);
-    btnPrjPathBrowse = new wxButton(this, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(22,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    btnPrjPathBrowse = new wxButton(this, ID_BUTTON1, _T("..."), wxDefaultPosition, wxSize(22,22), 0, wxDefaultValidator, _T("ID_BUTTON1"));
     BoxSizer2->Add(btnPrjPathBrowse, 0, wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(BoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
     StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Project filename:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
@@ -73,13 +73,12 @@ ProjectPathPanel::ProjectPathPanel(wxWindow* parent,wxWindowID id) :
     txtFinalDir = new wxTextCtrl(this, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
     BoxSizer1->Add(txtFinalDir, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 8);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectPathPanel::OntxtPrjTitleText);
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectPathPanel::OnFullPathChanged);
-    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectPathPanel::OnFullPathChanged);
-    Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectPathPanel::OntxtFinalDirText);
+    Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectPathPanel::OntxtPrjTitleText));
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectPathPanel::OnFullPathChanged));
+    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectPathPanel::OnFullPathChanged));
+    Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectPathPanel::OntxtFinalDirText));
     //*)
 }
 
