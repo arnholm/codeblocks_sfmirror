@@ -8,8 +8,14 @@
  */
 
 //(*InternalHeaders(Execution)
-#include <wx/string.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/checklst.h>
+#include <wx/gauge.h>
 #include <wx/intl.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/string.h>
 //*)
 
 #include <wx/filename.h>
@@ -32,21 +38,21 @@
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 //(*IdInit(Execution)
-const long Execution::ID_RB_SCOPE = wxNewId();
-const long Execution::ID_RB_OPTIONS = wxNewId();
-const long Execution::ID_CHK_IGNORE = wxNewId();
-const long Execution::ID_CHK_FWD_DECL = wxNewId();
-const long Execution::ID_CHK_OBSOLETE_LOG = wxNewId();
-const long Execution::ID_RDO_FILE_TYPE = wxNewId();
-const long Execution::ID_CHK_DEBUG_LOG = wxNewId();
-const long Execution::ID_CHK_SIMULATION = wxNewId();
-const long Execution::ID_LST_SETS = wxNewId();
-const long Execution::ID_BTN_SELECT_ALL = wxNewId();
-const long Execution::ID_BTN_SELECT_NONE = wxNewId();
-const long Execution::ID_BTN_INVERT = wxNewId();
-const long Execution::ID_GAU_PROGRESS = wxNewId();
-const long Execution::ID_BTN_RUN = wxNewId();
-const long Execution::ID_BTN_EXIT = wxNewId();
+const wxWindowID Execution::ID_RB_SCOPE = wxNewId();
+const wxWindowID Execution::ID_RB_OPTIONS = wxNewId();
+const wxWindowID Execution::ID_CHK_IGNORE = wxNewId();
+const wxWindowID Execution::ID_CHK_FWD_DECL = wxNewId();
+const wxWindowID Execution::ID_CHK_OBSOLETE_LOG = wxNewId();
+const wxWindowID Execution::ID_RDO_FILE_TYPE = wxNewId();
+const wxWindowID Execution::ID_CHK_DEBUG_LOG = wxNewId();
+const wxWindowID Execution::ID_CHK_SIMULATION = wxNewId();
+const wxWindowID Execution::ID_LST_SETS = wxNewId();
+const wxWindowID Execution::ID_BTN_SELECT_ALL = wxNewId();
+const wxWindowID Execution::ID_BTN_SELECT_NONE = wxNewId();
+const wxWindowID Execution::ID_BTN_INVERT = wxNewId();
+const wxWindowID Execution::ID_GAU_PROGRESS = wxNewId();
+const wxWindowID Execution::ID_BTN_RUN = wxNewId();
+const wxWindowID Execution::ID_BTN_EXIT = wxNewId();
 //*)
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -61,20 +67,20 @@ END_EVENT_TABLE()
 Execution::Execution(wxWindow* parent,wxWindowID id)
 {
   //(*Initialize(Execution)
-  wxBoxSizer* sizMain;
-  wxBoxSizer* sizLeft;
   wxBoxSizer* sizAllNoneInvert;
+  wxBoxSizer* sizLeft;
+  wxBoxSizer* sizMain;
   wxBoxSizer* sizRight;
-  wxStaticBoxSizer* sizHeaderSets;
   wxStaticBoxSizer* sizAdvancedOptions;
+  wxStaticBoxSizer* sizHeaderSets;
 
   Create(parent, id, _("Header Fixup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
   sizMain = new wxBoxSizer(wxHORIZONTAL);
   sizLeft = new wxBoxSizer(wxVERTICAL);
   wxString __wxRadioBoxChoices_1[2] =
   {
-  	_("Scan source files in project"),
-  	_("Scan source files in workspace")
+    _("Scan source files in project"),
+    _("Scan source files in workspace")
   };
   m_Scope = new wxRadioBox(this, ID_RB_SCOPE, _("Scope"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_SCOPE"));
   m_Scope->SetSelection(0);
@@ -82,8 +88,8 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizLeft->Add(m_Scope, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
   wxString __wxRadioBoxChoices_2[2] =
   {
-  	_("Use \"include.h\" (quotation marks)"),
-  	_("Use <include.h> (brackets)")
+    _("Use \"include.h\" (quotation marks)"),
+    _("Use <include.h> (brackets)")
   };
   m_Options = new wxRadioBox(this, ID_RB_OPTIONS, _("Options"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_OPTIONS"));
   m_Options->SetSelection(1);
@@ -92,7 +98,7 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizAdvancedOptions = new wxStaticBoxSizer(wxVERTICAL, this, _("Advanced options"));
   m_Ignore = new wxCheckBox(this, ID_CHK_IGNORE, _("Ignore any existing includes / forward decls"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_IGNORE"));
   m_Ignore->SetValue(false);
-  m_Ignore->SetToolTip(_("This will work as if there were no includes / forwards decls at all in the files (as \"from scratch\")."));
+  m_Ignore->SetToolTip(_("This will work as if there were no incluides / forwards decls at all int the files (as \"from scratch\")."));
   sizAdvancedOptions->Add(m_Ignore, 0, wxEXPAND, 5);
   m_FwdDecl = new wxCheckBox(this, ID_CHK_FWD_DECL, _("Try to use forward declarations in header files"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_FWD_DECL"));
   m_FwdDecl->SetValue(false);
@@ -104,9 +110,9 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizAdvancedOptions->Add(m_ObsoleteLog, 0, wxTOP|wxEXPAND, 5);
   wxString __wxRadioBoxChoices_3[3] =
   {
-  	_("Process header files only"),
-  	_("Process implementation files only"),
-  	_("Process both files (2-step-fix up)")
+    _("Process header files only"),
+    _("Process implementation files only"),
+    _("Process both files (2-step-fix up)")
   };
   m_FileType = new wxRadioBox(this, ID_RDO_FILE_TYPE, _("File types to process:"), wxDefaultPosition, wxDefaultSize, 3, __wxRadioBoxChoices_3, 3, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RDO_FILE_TYPE"));
   m_FileType->SetSelection(2);
@@ -152,17 +158,16 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizRight->Add(sizExecute, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
   sizMain->Add(sizRight, 1, wxEXPAND, 5);
   SetSizer(sizMain);
-  sizMain->Fit(this);
   sizMain->SetSizeHints(this);
   Center();
 
-  Connect(ID_CHK_SIMULATION,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&Execution::OnChkSimulationClick);
-  Connect(ID_BTN_SELECT_ALL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Execution::OnBtnSelectAllClick);
-  Connect(ID_BTN_SELECT_NONE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Execution::OnBtnSelectNoneClick);
-  Connect(ID_BTN_INVERT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Execution::OnBtnInvertClick);
-  Connect(ID_BTN_RUN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Execution::OnBtnRunClick);
-  Connect(ID_BTN_EXIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Execution::OnBtnExitClick);
-  Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&Execution::OnClose);
+  Connect(ID_CHK_SIMULATION,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(Execution::OnChkSimulationClick));
+  Connect(ID_BTN_SELECT_ALL,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Execution::OnBtnSelectAllClick));
+  Connect(ID_BTN_SELECT_NONE,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Execution::OnBtnSelectNoneClick));
+  Connect(ID_BTN_INVERT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Execution::OnBtnInvertClick));
+  Connect(ID_BTN_RUN,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Execution::OnBtnRunClick));
+  Connect(ID_BTN_EXIT,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Execution::OnBtnExitClick));
+  Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,wxCloseEventHandler(Execution::OnClose));
   //*)
 
   wxArrayString Groups = m_Bindings.GetGroups();

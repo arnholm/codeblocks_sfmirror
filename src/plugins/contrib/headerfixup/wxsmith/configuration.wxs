@@ -88,7 +88,6 @@
 									<object class="sizeritem">
 										<object class="wxListBox" name="ID_LST_IDENTIFIERS" variable="m_Identifiers" member="yes">
 											<default>-1</default>
-											<size>188,115</size>
 											<tooltip>This is a list of all identifiers (tokens) available within the selected group.</tooltip>
 											<handler function="OnIdentifiersSelect" entry="EVT_LISTBOX" />
 											<handler function="OnChangeIdentifier" entry="EVT_LISTBOX_DCLICK" />

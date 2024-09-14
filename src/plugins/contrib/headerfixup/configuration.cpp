@@ -8,8 +8,13 @@
  */
 
 //(*InternalHeaders(Configuration)
-#include <wx/string.h>
+#include <wx/button.h>
 #include <wx/intl.h>
+#include <wx/listbox.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/string.h>
+#include <wx/textctrl.h>
 //*)
 
 #include <wx/arrstr.h>
@@ -25,16 +30,16 @@
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 //(*IdInit(Configuration)
-const long Configuration::ID_LST_GROUPS = wxNewId();
-const long Configuration::ID_BTN_ADD_GROUP = wxNewId();
-const long Configuration::ID_BTN_DELETE_GROUP = wxNewId();
-const long Configuration::ID_BTN_RENAME_GROUP = wxNewId();
-const long Configuration::ID_BTN_DEFAULTS = wxNewId();
-const long Configuration::ID_LST_IDENTIFIERS = wxNewId();
-const long Configuration::ID_BTN_ADD_IDENTIFIER = wxNewId();
-const long Configuration::ID_BTN_DELETE_IDENTIFIERS = wxNewId();
-const long Configuration::ID_BTN_CHANGE_IDENTIFIER = wxNewId();
-const long Configuration::ID_TXT_HEADERS = wxNewId();
+const wxWindowID Configuration::ID_LST_GROUPS = wxNewId();
+const wxWindowID Configuration::ID_BTN_ADD_GROUP = wxNewId();
+const wxWindowID Configuration::ID_BTN_DELETE_GROUP = wxNewId();
+const wxWindowID Configuration::ID_BTN_RENAME_GROUP = wxNewId();
+const wxWindowID Configuration::ID_BTN_DEFAULTS = wxNewId();
+const wxWindowID Configuration::ID_LST_IDENTIFIERS = wxNewId();
+const wxWindowID Configuration::ID_BTN_ADD_IDENTIFIER = wxNewId();
+const wxWindowID Configuration::ID_BTN_DELETE_IDENTIFIERS = wxNewId();
+const wxWindowID Configuration::ID_BTN_CHANGE_IDENTIFIER = wxNewId();
+const wxWindowID Configuration::ID_TXT_HEADERS = wxNewId();
 //*)
 
 // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -49,16 +54,16 @@ END_EVENT_TABLE()
 Configuration::Configuration(wxWindow* parent)
 {
   //(*Initialize(Configuration)
-  wxBoxSizer* sizMain;
+  wxBoxSizer* sizAddDeleteChange;
+  wxBoxSizer* sizAddDeleteRename;
   wxBoxSizer* sizHeaders;
   wxBoxSizer* sizIdentifiers;
-  wxStaticText* lblIdentifiers;
-  wxStaticBoxSizer* sizGroups;
-  wxStaticBoxSizer* sizBindings;
   wxBoxSizer* sizIdentifiersMain;
-  wxBoxSizer* sizAddDeleteRename;
-  wxBoxSizer* sizAddDeleteChange;
+  wxBoxSizer* sizMain;
+  wxStaticBoxSizer* sizBindings;
+  wxStaticBoxSizer* sizGroups;
   wxStaticText* lblHeaders;
+  wxStaticText* lblIdentifiers;
 
   Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
   sizMain = new wxBoxSizer(wxHORIZONTAL);
@@ -85,7 +90,7 @@ Configuration::Configuration(wxWindow* parent)
   lblIdentifiers = new wxStaticText(this, wxID_ANY, _("Identifiers:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   sizIdentifiersMain->Add(lblIdentifiers, 0, wxEXPAND, 5);
   sizIdentifiers = new wxBoxSizer(wxHORIZONTAL);
-  m_Identifiers = new wxListBox(this, ID_LST_IDENTIFIERS, wxDefaultPosition, wxSize(188,115), 0, 0, 0, wxDefaultValidator, _T("ID_LST_IDENTIFIERS"));
+  m_Identifiers = new wxListBox(this, ID_LST_IDENTIFIERS, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LST_IDENTIFIERS"));
   m_Identifiers->SetToolTip(_("This is a list of all identifiers (tokens) available within the selected group."));
   sizIdentifiers->Add(m_Identifiers, 1, wxTOP|wxEXPAND, 5);
   sizAddDeleteChange = new wxBoxSizer(wxVERTICAL);
@@ -110,21 +115,20 @@ Configuration::Configuration(wxWindow* parent)
   sizBindings->Add(sizHeaders, 1, wxTOP|wxEXPAND, 5);
   sizMain->Add(sizBindings, 1, wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND, 5);
   SetSizer(sizMain);
-  sizMain->Fit(this);
   sizMain->SetSizeHints(this);
 
-  Connect(ID_LST_GROUPS,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&Configuration::OnGroupsSelect);
-  Connect(ID_LST_GROUPS,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&Configuration::OnRenameGroup);
-  Connect(ID_BTN_ADD_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnBtnAddGroupClick);
-  Connect(ID_BTN_DELETE_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnBtnDeleteGroupClick);
-  Connect(ID_BTN_RENAME_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnRenameGroup);
-  Connect(ID_BTN_DEFAULTS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnBtnDefaultsClick);
-  Connect(ID_LST_IDENTIFIERS,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&Configuration::OnIdentifiersSelect);
-  Connect(ID_LST_IDENTIFIERS,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&Configuration::OnChangeIdentifier);
-  Connect(ID_BTN_ADD_IDENTIFIER,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnBtnAddIdentifierClick);
-  Connect(ID_BTN_DELETE_IDENTIFIERS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnBtnDeleteIdentifierClick);
-  Connect(ID_BTN_CHANGE_IDENTIFIER,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&Configuration::OnChangeIdentifier);
-  Connect(ID_TXT_HEADERS,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&Configuration::OnHeadersText);
+  Connect(ID_LST_GROUPS,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(Configuration::OnGroupsSelect));
+  Connect(ID_LST_GROUPS,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,wxCommandEventHandler(Configuration::OnRenameGroup));
+  Connect(ID_BTN_ADD_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnBtnAddGroupClick));
+  Connect(ID_BTN_DELETE_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnBtnDeleteGroupClick));
+  Connect(ID_BTN_RENAME_GROUP,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnRenameGroup));
+  Connect(ID_BTN_DEFAULTS,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnBtnDefaultsClick));
+  Connect(ID_LST_IDENTIFIERS,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(Configuration::OnIdentifiersSelect));
+  Connect(ID_LST_IDENTIFIERS,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,wxCommandEventHandler(Configuration::OnChangeIdentifier));
+  Connect(ID_BTN_ADD_IDENTIFIER,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnBtnAddIdentifierClick));
+  Connect(ID_BTN_DELETE_IDENTIFIERS,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnBtnDeleteIdentifierClick));
+  Connect(ID_BTN_CHANGE_IDENTIFIER,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(Configuration::OnChangeIdentifier));
+  Connect(ID_TXT_HEADERS,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(Configuration::OnHeadersText));
   //*)
 
   m_BlockHeadersText = false;
