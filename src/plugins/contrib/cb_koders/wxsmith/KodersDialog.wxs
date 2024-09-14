@@ -11,11 +11,11 @@
 						<object class="wxStaticText" name="ID_LBL_INTRO" variable="lblIntro" member="yes">
 							<label>Specify search to query the BlackDuck webpage:</label>
 						</object>
-						<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxEXPAND</flag>
 						<border>5</border>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<flag>wxALL|wxEXPAND</flag>
 			</object>
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="bszSearch" member="yes">
@@ -23,7 +23,7 @@
 						<object class="wxTextCtrl" name="ID_TXT_SEARCH" variable="txtSearch" member="yes">
 							<tooltip>Enter keyword to search for (at BlackDuck)</tooltip>
 						</object>
-						<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
@@ -34,11 +34,11 @@
 							<tooltip>Click to search at the BlackDuck webpage...</tooltip>
 							<handler function="OnBtnSearchClick" entry="EVT_BUTTON" />
 						</object>
-						<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 					</object>
 				</object>
-				<flag>wxTOP|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxTOP|wxEXPAND</flag>
 				<border>5</border>
 			</object>
 			<object class="sizeritem">
@@ -47,7 +47,7 @@
 						<object class="wxStaticText" name="ID_LBL_FILTER" variable="lblFilter" member="yes">
 							<label>Filter:</label>
 						</object>
-						<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -87,12 +87,12 @@
 							</content>
 							<tooltip>Limit search to a specific programming language</tooltip>
 						</object>
-						<flag>wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxTOP|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxTOP|wxEXPAND</flag>
 				<border>5</border>
 			</object>
 		</object>

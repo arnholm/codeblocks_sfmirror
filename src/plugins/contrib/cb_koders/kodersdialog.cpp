@@ -16,11 +16,11 @@
 //*)
 
 //(*IdInit(KodersDialog)
-const long KodersDialog::ID_LBL_INTRO = wxNewId();
-const long KodersDialog::ID_TXT_SEARCH = wxNewId();
-const long KodersDialog::ID_BTN_SEARCH = wxNewId();
-const long KodersDialog::ID_LBL_FILTER = wxNewId();
-const long KodersDialog::ID_CHO_LANGUAGES = wxNewId();
+const wxWindowID KodersDialog::ID_LBL_INTRO = wxNewId();
+const wxWindowID KodersDialog::ID_TXT_SEARCH = wxNewId();
+const wxWindowID KodersDialog::ID_BTN_SEARCH = wxNewId();
+const wxWindowID KodersDialog::ID_LBL_FILTER = wxNewId();
+const wxWindowID KodersDialog::ID_CHO_LANGUAGES = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(KodersDialog,wxScrollingDialog)
@@ -35,20 +35,20 @@ KodersDialog::KodersDialog(wxWindow* parent,wxWindowID id)
 	bszMain = new wxBoxSizer(wxVERTICAL);
 	bszIntro = new wxBoxSizer(wxHORIZONTAL);
 	lblIntro = new wxStaticText(this, ID_LBL_INTRO, _("Specify search to query the BlackDuck webpage:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_LBL_INTRO"));
-	bszIntro->Add(lblIntro, 0, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	bszMain->Add(bszIntro, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	bszIntro->Add(lblIntro, 0, wxEXPAND, 5);
+	bszMain->Add(bszIntro, 0, wxALL|wxEXPAND, 0);
 	bszSearch = new wxBoxSizer(wxHORIZONTAL);
 	txtSearch = new wxTextCtrl(this, ID_TXT_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_SEARCH"));
 	txtSearch->SetToolTip(_("Enter keyword to search for (at BlackDuck)"));
-	bszSearch->Add(txtSearch, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	bszSearch->Add(txtSearch, 1, wxALIGN_CENTER_VERTICAL, 5);
 	btnSearch = new wxButton(this, ID_BTN_SEARCH, _("Search"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_SEARCH"));
 	btnSearch->SetDefault();
 	btnSearch->SetToolTip(_("Click to search at the BlackDuck webpage..."));
-	bszSearch->Add(btnSearch, 0, wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	bszMain->Add(bszSearch, 0, wxTOP|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	bszSearch->Add(btnSearch, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
+	bszMain->Add(bszSearch, 0, wxTOP|wxEXPAND, 5);
 	bszFilter = new wxBoxSizer(wxHORIZONTAL);
 	lblFilter = new wxStaticText(this, ID_LBL_FILTER, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_LBL_FILTER"));
-	bszFilter->Add(lblFilter, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	bszFilter->Add(lblFilter, 0, wxALIGN_CENTER_VERTICAL, 5);
 	choLanguages = new wxChoice(this, ID_CHO_LANGUAGES, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHO_LANGUAGES"));
 	choLanguages->Append(_("All Languages"));
 	choLanguages->Append(_("Ada"));
@@ -82,14 +82,13 @@ KodersDialog::KodersDialog(wxWindow* parent,wxWindowID id)
 	choLanguages->Append(_("VB"));
 	choLanguages->Append(_("VB.NET"));
 	choLanguages->SetToolTip(_("Limit search to a specific programming language"));
-	bszFilter->Add(choLanguages, 1, wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	bszMain->Add(bszFilter, 0, wxTOP|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	bszFilter->Add(choLanguages, 1, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
+	bszMain->Add(bszFilter, 0, wxTOP|wxEXPAND, 5);
 	SetSizer(bszMain);
-	bszMain->Fit(this);
 	bszMain->SetSizeHints(this);
 	Center();
 
-	Connect(ID_BTN_SEARCH,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&KodersDialog::OnBtnSearchClick);
+	Connect(ID_BTN_SEARCH,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(KodersDialog::OnBtnSearchClick));
 	//*)
 }
 
