@@ -6,29 +6,29 @@
 #include <configmanager.h>
 
 //(*InternalHeaders(ConfigPanel)
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/statline.h>
-#include <wx/hyperlink.h>
-#include <wx/choice.h>
-#include <wx/intl.h>
 #include <wx/button.h>
+#include <wx/choice.h>
+#include <wx/hyperlink.h>
+#include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/statline.h>
+#include <wx/stattext.h>
 #include <wx/string.h>
+#include <wx/textctrl.h>
 //*)
 
 //(*IdInit(ConfigPanel)
-const long ConfigPanel::ID_TXT_CPP_CHECK_APP = wxNewId();
-const long ConfigPanel::ID_BTN_CPPCHECK_APP = wxNewId();
-const long ConfigPanel::ID_TXT_CPP_CHECK_ARGS = wxNewId();
-const long ConfigPanel::ID_HYC_CPP_CHECK_WWW = wxNewId();
-const long ConfigPanel::ID_TXT_VERA_APP = wxNewId();
-const long ConfigPanel::ID_BTN_VERA = wxNewId();
-const long ConfigPanel::ID_TXT_VERA_ARGS = wxNewId();
-const long ConfigPanel::ID_HYC_VERA_WWW = wxNewId();
-const long ConfigPanel::ID_STATICLINE1 = wxNewId();
-const long ConfigPanel::ID_STATICLINE2 = wxNewId();
-const long ConfigPanel::ID_CHO_OPERATION = wxNewId();
+const wxWindowID ConfigPanel::ID_TXT_CPP_CHECK_APP = wxNewId();
+const wxWindowID ConfigPanel::ID_BTN_CPPCHECK_APP = wxNewId();
+const wxWindowID ConfigPanel::ID_TXT_CPP_CHECK_ARGS = wxNewId();
+const wxWindowID ConfigPanel::ID_HYC_CPP_CHECK_WWW = wxNewId();
+const wxWindowID ConfigPanel::ID_TXT_VERA_APP = wxNewId();
+const wxWindowID ConfigPanel::ID_BTN_VERA = wxNewId();
+const wxWindowID ConfigPanel::ID_TXT_VERA_ARGS = wxNewId();
+const wxWindowID ConfigPanel::ID_HYC_VERA_WWW = wxNewId();
+const wxWindowID ConfigPanel::ID_STATICLINE1 = wxNewId();
+const wxWindowID ConfigPanel::ID_STATICLINE2 = wxNewId();
+const wxWindowID ConfigPanel::ID_CHO_OPERATION = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ConfigPanel,wxPanel)
@@ -39,25 +39,25 @@ END_EVENT_TABLE()
 ConfigPanel::ConfigPanel(wxWindow* parent)
 {
     //(*Initialize(ConfigPanel)
-    wxBoxSizer* bszMain;
-    wxStaticText* lblOperation;
-    wxButton* btnVeraApp;
-    wxStaticText* lblCppCheckWWW;
-    wxHyperlinkCtrl* hycVeraWWW;
-    wxStaticText* lblCppCheckArgsComment;
-    wxHyperlinkCtrl* hycCppCheckWWW;
-    wxBoxSizer* bszVeraApp;
-    wxStaticLine* slSeparatorRight;
-    wxFlexGridSizer* flsMain;
-    wxStaticLine* slSeparatorLeft;
-    wxStaticText* lblVeraArgsComment;
-    wxButton* btnCppCheckApp;
     wxBoxSizer* bszCppCheckApp;
-    wxStaticText* lblVeraArgs;
+    wxBoxSizer* bszMain;
+    wxBoxSizer* bszVeraApp;
+    wxButton* btnCppCheckApp;
+    wxButton* btnVeraApp;
+    wxFlexGridSizer* flsMain;
+    wxHyperlinkCtrl* hycCppCheckWWW;
+    wxHyperlinkCtrl* hycVeraWWW;
+    wxStaticLine* slSeparatorLeft;
+    wxStaticLine* slSeparatorRight;
     wxStaticText* lblCppCheckApp;
-    wxStaticText* lblVeraWWW;
-    wxStaticText* lblVeraApp;
     wxStaticText* lblCppCheckArgs;
+    wxStaticText* lblCppCheckArgsComment;
+    wxStaticText* lblCppCheckWWW;
+    wxStaticText* lblOperation;
+    wxStaticText* lblVeraApp;
+    wxStaticText* lblVeraArgs;
+    wxStaticText* lblVeraArgsComment;
+    wxStaticText* lblVeraWWW;
 
     Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
     bszMain = new wxBoxSizer(wxHORIZONTAL);
@@ -68,7 +68,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     bszCppCheckApp = new wxBoxSizer(wxHORIZONTAL);
     txtCppCheckApp = new wxTextCtrl(this, ID_TXT_CPP_CHECK_APP, _("cppcheck"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_CPP_CHECK_APP"));
     bszCppCheckApp->Add(txtCppCheckApp, 1, wxEXPAND, 5);
-    btnCppCheckApp = new wxButton(this, ID_BTN_CPPCHECK_APP, _("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_CPPCHECK_APP"));
+    btnCppCheckApp = new wxButton(this, ID_BTN_CPPCHECK_APP, _T("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_CPPCHECK_APP"));
     btnCppCheckApp->SetMinSize(wxSize(30,-1));
     bszCppCheckApp->Add(btnCppCheckApp, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
     flsMain->Add(bszCppCheckApp, 1, wxLEFT|wxEXPAND, 5);
@@ -82,7 +82,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     flsMain->Add(-1,-1,1, wxLEFT|wxEXPAND, 5);
     lblCppCheckWWW = new wxStaticText(this, wxID_ANY, _("CppCheck homepage:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     flsMain->Add(lblCppCheckWWW, 0, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    hycCppCheckWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("http://cppcheck.sourceforge.net"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYC_CPP_CHECK_WWW"));
+    hycCppCheckWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("http://cppcheck.sourceforge.net"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_CPP_CHECK_WWW"));
     flsMain->Add(hycCppCheckWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
     slSeparatorLeft = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("wxID_ANY"));
     flsMain->Add(slSeparatorLeft, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 5);
@@ -93,7 +93,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     bszVeraApp = new wxBoxSizer(wxHORIZONTAL);
     txtVeraApp = new wxTextCtrl(this, ID_TXT_VERA_APP, _("vera++"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_VERA_APP"));
     bszVeraApp->Add(txtVeraApp, 1, wxEXPAND, 5);
-    btnVeraApp = new wxButton(this, ID_BTN_VERA, _("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_VERA"));
+    btnVeraApp = new wxButton(this, ID_BTN_VERA, _T("..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_VERA"));
     btnVeraApp->SetMinSize(wxSize(30,-1));
     bszVeraApp->Add(btnVeraApp, 0, wxLEFT|wxALIGN_TOP, 5);
     flsMain->Add(bszVeraApp, 1, wxLEFT|wxEXPAND, 5);
@@ -106,7 +106,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     flsMain->Add(-1,-1,1, wxLEFT|wxEXPAND, 5);
     lblVeraWWW = new wxStaticText(this, wxID_ANY, _("Vera++  homepage:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     flsMain->Add(lblVeraWWW, 0, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    hycVeraWWW = new wxHyperlinkCtrl(this, ID_HYC_VERA_WWW, _("https://bitbucket.org/verateam/vera"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYC_VERA_WWW"));
+    hycVeraWWW = new wxHyperlinkCtrl(this, ID_HYC_VERA_WWW, _("https://bitbucket.org/verateam/vera"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_VERA_WWW"));
     flsMain->Add(hycVeraWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
     StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
     flsMain->Add(StaticLine1, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 5);
@@ -121,7 +121,6 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     flsMain->Add(choOperation, 1, wxLEFT|wxEXPAND, 5);
     bszMain->Add(flsMain, 1, wxEXPAND, 5);
     SetSizer(bszMain);
-    bszMain->Fit(this);
     bszMain->SetSizeHints(this);
 
     Connect(ID_BTN_CPPCHECK_APP,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ConfigPanel::OnCppCheckApp));
