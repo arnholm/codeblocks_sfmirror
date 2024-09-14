@@ -42,12 +42,12 @@ class EditorConfigUI : public cbConfigurationPanel
     protected:
 
         //(*Identifiers(EditorConfigUI)
-        static const long ID_CHK_ACTIVE;
-        static const long ID_CHK_USE_TABS;
-        static const long ID_CHK_TAB_INDENTS;
-        static const long ID_SPN_TAB_WIDTH;
-        static const long ID_SPN_INDENT;
-        static const long ID_CHO_EOL_MODE;
+        static const wxWindowID ID_CHK_ACTIVE;
+        static const wxWindowID ID_CHK_USE_TABS;
+        static const wxWindowID ID_CHK_TAB_INDENTS;
+        static const wxWindowID ID_SPN_TAB_WIDTH;
+        static const wxWindowID ID_SPN_INDENT;
+        static const wxWindowID ID_CHO_EOL_MODE;
         //*)
 
         EditorConfig* m_Plugin;

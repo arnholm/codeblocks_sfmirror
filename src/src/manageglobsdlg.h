@@ -29,10 +29,10 @@ class ManageGlobsDlg: public wxDialog
 	protected:
 
 		//(*Identifiers(ManageGlobsDlg)
-		static const long ID_LISTCTRL;
-		static const long ID_BUTTON_ADD;
-		static const long ID_BUTTON_DELETE;
-		static const long ID_BUTTON_EDIT;
+		static const wxWindowID ID_LISTCTRL;
+		static const wxWindowID ID_BUTTON_ADD;
+		static const wxWindowID ID_BUTTON_DELETE;
+		static const wxWindowID ID_BUTTON_EDIT;
 		//*)
 
 	private:

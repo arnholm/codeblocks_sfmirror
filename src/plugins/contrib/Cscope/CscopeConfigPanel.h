@@ -36,9 +36,9 @@ class CscopeConfigPanel: public cbConfigurationPanel
 	protected:
 
 		//(*Identifiers(CscopeConfigPanel)
-		static const long ID_TXT_CPP_CHECK_APP;
-		static const long ID_BTN_CPPCHECK_APP;
-		static const long ID_HYC_CPP_CHECK_WWW;
+		static const wxWindowID ID_TXT_CPP_CHECK_APP;
+		static const wxWindowID ID_BTN_CPPCHECK_APP;
+		static const wxWindowID ID_HYC_CPP_CHECK_WWW;
 		//*)
 
 	private:

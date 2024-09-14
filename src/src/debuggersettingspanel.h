@@ -3,9 +3,9 @@
 
 #ifndef CB_PRECOMP
 	//(*HeadersPCH(DebuggerSettingsPanel)
-	#include <wx/sizer.h>
 	#include <wx/button.h>
 	#include <wx/panel.h>
+	#include <wx/sizer.h>
 	#include <wx/textctrl.h>
 	//*)
 #endif
@@ -28,10 +28,10 @@ class DebuggerSettingsPanel: public wxPanel
 		//*)
 
 		//(*Identifiers(DebuggerSettingsPanel)
-		static const long ID_BUTTON_CREATE;
-		static const long ID_BUTTON_DELETE;
-		static const long ID_BUTTON_RESET;
-		static const long ID_TEXTCTRL_INFO;
+		static const wxWindowID ID_BUTTON_CREATE;
+		static const wxWindowID ID_BUTTON_DELETE;
+		static const wxWindowID ID_BUTTON_RESET;
+		static const wxWindowID ID_TEXTCTRL_INFO;
 		//*)
     private:
 

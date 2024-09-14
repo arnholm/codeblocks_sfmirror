@@ -8,13 +8,13 @@
 
 #ifndef CB_PRECOMP
     //(*InternalHeadersPCH(GotoFunctionDlg)
-    #include <wx/checkbox.h>
-    #include <wx/sizer.h>
     #include <wx/listctrl.h>
-    #include <wx/string.h>
-    #include <wx/intl.h>
+    #include <wx/sizer.h>
     #include <wx/stattext.h>
     #include <wx/textctrl.h>
+    #include <wx/checkbox.h>
+    #include <wx/intl.h>
+    #include <wx/string.h>
     //*)
 
     #include "configmanager.h"
@@ -24,9 +24,9 @@
 //*)
 
 //(*IdInit(GotoFunctionDlg)
-const long GotoFunctionDlg::ID_CHECKBOX1 = wxNewId();
-const long GotoFunctionDlg::ID_TEXTCTRL1 = wxNewId();
-const long GotoFunctionDlg::ID_LISTCTRL1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID GotoFunctionDlg::ID_LISTCTRL1 = wxNewId();
 //*)
 
 GotoFunctionDlg::Iterator::Iterator() : m_columnLength{ 300, 100, 300 }, m_columnMode(false)
@@ -151,10 +151,9 @@ void GotoFunctionDlg::BuildContent(wxWindow* parent, Iterator* iterator)
     m_list->SetMinSize(wxSize(500,300));
     BoxSizer1->Add(m_list, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
 
-    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&GotoFunctionDlg::OnModeClick);
+    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(GotoFunctionDlg::OnModeClick));
     //*)
 
     if (Manager::Get()->GetConfigManager("clangd_client")->ReadBool(_T("goto_function_window/column_mode")))

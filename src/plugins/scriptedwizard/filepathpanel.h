@@ -8,11 +8,11 @@
 
 
 //(*HeadersPCH(FilePathPanel)
-#include <wx/checklst.h>
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/checklst.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -39,17 +39,17 @@ class FilePathPanel: public wxPanel
         }
 
 		//(*Identifiers(FilePathPanel)
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICTEXT2;
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
-		static const long ID_STATICTEXT3;
-		static const long ID_TEXTCTRL2;
-		static const long ID_CHECKBOX1;
-		static const long ID_STATICTEXT4;
-		static const long ID_CHECKLISTBOX2;
-		static const long ID_BUTTON2;
-		static const long ID_BUTTON3;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_TEXTCTRL1;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_STATICTEXT3;
+		static const wxWindowID ID_TEXTCTRL2;
+		static const wxWindowID ID_CHECKBOX1;
+		static const wxWindowID ID_STATICTEXT4;
+		static const wxWindowID ID_CHECKLISTBOX2;
+		static const wxWindowID ID_BUTTON2;
+		static const wxWindowID ID_BUTTON3;
 		//*)
 
 	private:
@@ -63,18 +63,18 @@ class FilePathPanel: public wxPanel
 		//*)
 
 		//(*Declarations(FilePathPanel)
-		wxButton* btnAll;
-		wxStaticText* lblGuard;
-		wxFlexGridSizer* FlexGridSizer1;
-		wxBoxSizer* BoxSizer3;
-		wxCheckListBox* clbTargets;
 		wxBoxSizer* BoxSizer2;
-		wxCheckBox* chkAddToProject;
-		wxTextCtrl* txtFilename;
-		wxButton* btnNone;
-		wxButton* btnBrowse;
-		wxTextCtrl* txtGuard;
+		wxBoxSizer* BoxSizer3;
 		wxBoxSizer* BoxSizer6;
+		wxButton* btnAll;
+		wxButton* btnBrowse;
+		wxButton* btnNone;
+		wxCheckBox* chkAddToProject;
+		wxCheckListBox* clbTargets;
+		wxFlexGridSizer* FlexGridSizer1;
+		wxStaticText* lblGuard;
+		wxTextCtrl* txtFilename;
+		wxTextCtrl* txtGuard;
 		//*)
 
 		wxString m_ExtFilter;

@@ -9,11 +9,12 @@
 #include <wx/wxprec.h>
 
 //(*Headers(Protocol)
-#include <wx/sizer.h>
-#include <wx/button.h>
 #include "scrollingdialog.h"
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
+class wxBoxSizer;
+class wxButton;
+class wxStaticBoxSizer;
+class wxStaticText;
+class wxTextCtrl;
 //*)
 
 
@@ -30,7 +31,7 @@ public:
   void SetProtocol(const wxArrayString& Protocol);
 
   //(*Identifiers(Protocol)
-  static const long ID_TXT_PROTOCOL;
+  static const wxWindowID ID_TXT_PROTOCOL;
   //*)
 
 protected:

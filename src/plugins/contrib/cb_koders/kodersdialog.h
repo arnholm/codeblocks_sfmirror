@@ -9,12 +9,12 @@
 #include <wx/wxprec.h>
 
 //(*Headers(KodersDialog)
+#include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/choice.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/choice.h>
-#include <wx/button.h>
-#include "scrollingdialog.h"
 //*)
 
 class KodersDialog: public wxScrollingDialog
@@ -29,11 +29,11 @@ class KodersDialog: public wxScrollingDialog
 		wxString GetLanguage() const;
 
 		//(*Identifiers(KodersDialog)
-		static const long ID_LBL_INTRO;
-		static const long ID_TXT_SEARCH;
-		static const long ID_BTN_SEARCH;
-		static const long ID_LBL_FILTER;
-		static const long ID_CHO_LANGUAGES;
+		static const wxWindowID ID_LBL_INTRO;
+		static const wxWindowID ID_TXT_SEARCH;
+		static const wxWindowID ID_BTN_SEARCH;
+		static const wxWindowID ID_LBL_FILTER;
+		static const wxWindowID ID_CHO_LANGUAGES;
 		//*)
 
 	protected:
@@ -44,14 +44,14 @@ class KodersDialog: public wxScrollingDialog
 
 		//(*Declarations(KodersDialog)
 		wxBoxSizer* bszFilter;
-		wxBoxSizer* bszMain;
-		wxChoice* choLanguages;
-		wxButton* btnSearch;
 		wxBoxSizer* bszIntro;
-		wxTextCtrl* txtSearch;
+		wxBoxSizer* bszMain;
 		wxBoxSizer* bszSearch;
+		wxButton* btnSearch;
+		wxChoice* choLanguages;
 		wxStaticText* lblFilter;
 		wxStaticText* lblIntro;
+		wxTextCtrl* txtSearch;
 		//*)
 
 	private:

@@ -41,14 +41,14 @@ class DebuggerSettingsCommonPanel: public wxPanel
     private:
 
 		//(*Identifiers(DebuggerSettingsCommonPanel)
-		static const long ID_AUTOBUILD;
-		static const long ID_AUTOSWITCH;
-		static const long ID_DEBUGGERS_LOG;
-		static const long ID_JUMP_ON_DOUBLE_CLICK;
-		static const long ID_REQUIRE_CTRL_FOR_TOOLTIPS;
-		static const long ID_VALUE_TOOLTIP_LABEL;
-		static const long ID_BUTTON_CHOOSE_FONT;
-		static const long ID_CHOICE_PERSPECTIVE;
+		static const wxWindowID ID_AUTOBUILD;
+		static const wxWindowID ID_AUTOSWITCH;
+		static const wxWindowID ID_DEBUGGERS_LOG;
+		static const wxWindowID ID_JUMP_ON_DOUBLE_CLICK;
+		static const wxWindowID ID_REQUIRE_CTRL_FOR_TOOLTIPS;
+		static const wxWindowID ID_VALUE_TOOLTIP_LABEL;
+		static const wxWindowID ID_BUTTON_CHOOSE_FONT;
+		static const wxWindowID ID_CHOICE_PERSPECTIVE;
 		//*)
 
 		//(*Handlers(DebuggerSettingsCommonPanel)

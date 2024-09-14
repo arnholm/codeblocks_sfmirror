@@ -27,10 +27,10 @@ class TidyCmtSettings : public wxPanel
 		TidyCmtConfig GetTidyCmtConfig();
 
 		//(*Identifiers(TidyCmtSettings)
-		static const long ID_CHK_ENABLE;
-		static const long ID_SPN_LENGTH;
-		static const long ID_TXT_SINGLE_LINE_CMT;
-		static const long ID_TXT_MULTI_LINE_CMT;
+		static const wxWindowID ID_CHK_ENABLE;
+		static const wxWindowID ID_SPN_LENGTH;
+		static const wxWindowID ID_TXT_SINGLE_LINE_CMT;
+		static const wxWindowID ID_TXT_MULTI_LINE_CMT;
 		//*)
 
 	protected:

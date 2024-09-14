@@ -33,21 +33,21 @@ class MainFrame: public wxFrame
 
 
 		//(*Identifiers(MainFrame)
-		static const long ID_LBL_STEPS;
-		static const long ID_LBL_FILE_SRC;
-		static const long ID_LBL_FILE_DST;
-		static const long ID_TXT_FILE_SRC;
-		static const long ID_BTN_FILE_SRC;
-		static const long ID_TXT_FILE_DST;
-		static const long ID_BTN_FILE_DST;
-		static const long ID_CFG_SRC;
-		static const long ID_LST_CFG;
-		static const long ID_BTN_TRANSFER;
-		static const long ID_BTN_UNCHECK;
-		static const long ID_BTN_EXPORT_ALL;
-		static const long ID_BTN_EXPORT;
-		static const long ID_BTN_SAVE;
-		static const long ID_BTN_CLOSE;
+		static const wxWindowID ID_LBL_STEPS;
+		static const wxWindowID ID_LBL_FILE_SRC;
+		static const wxWindowID ID_LBL_FILE_DST;
+		static const wxWindowID ID_TXT_FILE_SRC;
+		static const wxWindowID ID_BTN_FILE_SRC;
+		static const wxWindowID ID_TXT_FILE_DST;
+		static const wxWindowID ID_BTN_FILE_DST;
+		static const wxWindowID ID_CFG_SRC;
+		static const wxWindowID ID_LST_CFG;
+		static const wxWindowID ID_BTN_TRANSFER;
+		static const wxWindowID ID_BTN_UNCHECK;
+		static const wxWindowID ID_BTN_EXPORT_ALL;
+		static const wxWindowID ID_BTN_EXPORT;
+		static const wxWindowID ID_BTN_SAVE;
+		static const wxWindowID ID_BTN_CLOSE;
 		//*)
 
 //***********************************************************************

@@ -72,12 +72,12 @@ class LibSelectDlg: public wxScrollingDialog
 		//*)
 
 		//(*Identifiers(LibSelectDlg)
-		static const long ID_STATICTEXT1;
-		static const long ID_CHECKLISTBOX1;
-		static const long ID_RADIOBUTTON1;
-		static const long ID_RADIOBUTTON2;
-		static const long ID_RADIOBUTTON3;
-		static const long ID_CHECKBOX1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_CHECKLISTBOX1;
+		static const wxWindowID ID_RADIOBUTTON1;
+		static const wxWindowID ID_RADIOBUTTON2;
+		static const wxWindowID ID_RADIOBUTTON3;
+		static const wxWindowID ID_CHECKBOX1;
 		//*)
 
 		//(*Handlers(LibSelectDlg)

@@ -48,7 +48,7 @@ class Hunspell;
 class HunspellInterface : public wxSpellCheckEngineInterface
 {
 public:
-    HunspellInterface(wxSpellCheckUserInterface* pDlg = NULL);
+    HunspellInterface(wxSpellCheckUserInterface* pDlg = nullptr);
     ~HunspellInterface();
 
     // Spell Checker functions

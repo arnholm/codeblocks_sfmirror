@@ -83,9 +83,9 @@ class GotoFunctionDlg : public wxDialog
         //*)
 
         //(*Identifiers(GotoFunctionDlg)
-        static const long ID_CHECKBOX1;
-        static const long ID_TEXTCTRL1;
-        static const long ID_LISTCTRL1;
+        static const wxWindowID ID_CHECKBOX1;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_LISTCTRL1;
         //*)
 
         //(*Handlers(GotoFunctionDlg)

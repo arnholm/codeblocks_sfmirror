@@ -8,9 +8,9 @@
 
 
 //(*HeadersPCH(ProjectPathPanel)
-#include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -40,16 +40,16 @@ class ProjectPathPanel: public wxPanel
         wxString GetTitle() const { return txtPrjTitle->GetValue(); }
 
         //(*Identifiers(ProjectPathPanel)
-        static const long ID_STATICTEXT1;
-        static const long ID_STATICTEXT4;
-        static const long ID_TEXTCTRL3;
-        static const long ID_STATICTEXT2;
-        static const long ID_TEXTCTRL1;
-        static const long ID_BUTTON1;
-        static const long ID_STATICTEXT3;
-        static const long ID_TEXTCTRL2;
-        static const long ID_STATICTEXT5;
-        static const long ID_TEXTCTRL4;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_STATICTEXT4;
+        static const wxWindowID ID_TEXTCTRL3;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_BUTTON1;
+        static const wxWindowID ID_STATICTEXT3;
+        static const wxWindowID ID_TEXTCTRL2;
+        static const wxWindowID ID_STATICTEXT5;
+        static const wxWindowID ID_TEXTCTRL4;
         //*)
 
     private:
@@ -65,13 +65,13 @@ class ProjectPathPanel: public wxPanel
         //*)
 
         //(*Declarations(ProjectPathPanel)
-        wxTextCtrl* txtPrjTitle;
-        wxTextCtrl* txtPrjPath;
-        wxBoxSizer* BoxSizer2;
         wxBoxSizer* BoxSizer1;
-        wxTextCtrl* txtPrjName;
+        wxBoxSizer* BoxSizer2;
         wxButton* btnPrjPathBrowse;
         wxTextCtrl* txtFinalDir;
+        wxTextCtrl* txtPrjName;
+        wxTextCtrl* txtPrjPath;
+        wxTextCtrl* txtPrjTitle;
         //*)
 
         DECLARE_EVENT_TABLE()

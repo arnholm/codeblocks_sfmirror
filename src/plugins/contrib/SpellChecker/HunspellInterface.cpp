@@ -23,14 +23,14 @@
 #include <wx/textfile.h>
 #include <wx/config.h>
 
-HunspellInterface::HunspellInterface(wxSpellCheckUserInterface* pDlg /* = NULL */)
+HunspellInterface::HunspellInterface(wxSpellCheckUserInterface* pDlg /* = nullptr */)
 {
     m_pSpellUserInterface = pDlg;
 
-    if (m_pSpellUserInterface != NULL)
+    if (m_pSpellUserInterface != nullptr)
         m_pSpellUserInterface->SetSpellCheckEngine(this);
 
-    m_pHunhandle = NULL;
+    m_pHunhandle = nullptr;
     m_bPersonalDictionaryModified = false;
 }
 
@@ -43,10 +43,11 @@ HunspellInterface::~HunspellInterface()
     }
 
     UninitializeSpellCheckEngine();
-    Hunspell_destroy(m_pHunhandle);
-    m_pHunhandle = NULL;
+    if (m_pHunhandle)
+        Hunspell_destroy(m_pHunhandle);
+    m_pHunhandle = nullptr;
     delete m_pSpellUserInterface;
-    m_pSpellUserInterface = NULL;
+    m_pSpellUserInterface = nullptr;
 }
 
 int HunspellInterface::InitializeSpellCheckEngine()
@@ -67,13 +68,11 @@ int HunspellInterface::InitializeSpellCheckEngine()
         wxCharBuffer affixFileCharBuffer      = ConvertToUnicode(lpPrefix + strAffixFile);
         wxCharBuffer dictionaryFileCharBuffer = ConvertToUnicode(lpPrefix + strDictionaryFile);
         if (m_pHunhandle)
-        {
             Hunspell_destroy(m_pHunhandle);
-        }
         m_pHunhandle = Hunspell_create(affixFileCharBuffer, dictionaryFileCharBuffer);
     }
 
-    m_bEngineInitialized = (m_pHunhandle != NULL);
+    m_bEngineInitialized = (m_pHunhandle != nullptr);
 
     return m_bEngineInitialized;
 }
@@ -130,7 +129,7 @@ int HunspellInterface::SetOption(SpellCheckEngineOption& Option)
 
 wxString HunspellInterface::CheckSpelling(wxString strText)
 {
-    if (m_pHunhandle == NULL)
+    if (m_pHunhandle == nullptr)
         return wxEmptyString;
 
     int nDiff = 0;
@@ -194,10 +193,10 @@ wxArrayString HunspellInterface::GetSuggestions(const wxString& strMisspelledWor
 
     if (m_pHunhandle)
     {
-        char **wlst = NULL;
+        char **wlst = nullptr;
 
         wxCharBuffer misspelledWordCharBuffer = ConvertToUnicode(strMisspelledWord);
-        if ( misspelledWordCharBuffer.data() != NULL)
+        if ( misspelledWordCharBuffer.data() != nullptr)
         {
             int ns = Hunspell_suggest(m_pHunhandle, &wlst, misspelledWordCharBuffer);
             for (int i=0; i < ns; i++)
@@ -214,11 +213,11 @@ wxArrayString HunspellInterface::GetSuggestions(const wxString& strMisspelledWor
 
 bool HunspellInterface::IsWordInDictionary(const wxString& strWord)
 {
-    if (m_pHunhandle == NULL)
+    if (m_pHunhandle == nullptr)
         return false;
 
     wxCharBuffer wordCharBuffer = ConvertToUnicode(strWord);
-    if ( wordCharBuffer.data() == NULL )
+    if ( wordCharBuffer.data() == nullptr )
         return false;
 
     bool spelledOK = (Hunspell_spell(m_pHunhandle, wordCharBuffer) != 0);
@@ -252,7 +251,7 @@ wxArrayString HunspellInterface::GetWordListAsArray()
 
 void HunspellInterface::PopulateDictionaryMap(StringToStringMap* pLookupMap, const wxString& strDictionaryPath)
 {
-    if (pLookupMap == NULL)
+    if (pLookupMap == nullptr)
         pLookupMap = &m_DictionaryLookupMap;
 
     pLookupMap->clear();
@@ -432,14 +431,11 @@ wxString HunspellInterface::GetCharacterEncoding()
 {
     wxString character_encoding = wxEmptyString;
 
-    if (m_pHunhandle != NULL)
+    if (m_pHunhandle != nullptr)
     {
         char * pEncoding = Hunspell_get_dic_encoding(m_pHunhandle);
-
         if (pEncoding && (strlen(pEncoding) > 0))
-        {
             character_encoding = wxString::FromUTF8(pEncoding);
-        }
     }
 
     return character_encoding;

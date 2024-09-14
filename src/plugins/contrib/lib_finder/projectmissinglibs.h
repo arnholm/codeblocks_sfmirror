@@ -3,12 +3,12 @@
 
 //(*Headers(ProjectMissingLibs)
 #include "scrollingdialog.h"
-class wxStaticBoxSizer;
-class wxFlexGridSizer;
 class wxButton;
+class wxFlexGridSizer;
+class wxPanel;
+class wxStaticBoxSizer;
 class wxStaticLine;
 class wxStaticText;
-class wxPanel;
 //*)
 
 #include <wx/stattext.h>
@@ -28,28 +28,28 @@ class ProjectMissingLibs: public wxScrollingDialog, public WebResourcesManager::
 	private:
 
 		//(*Declarations(ProjectMissingLibs)
-		wxPanel* m_LibsBack;
-		wxStaticText* m_StatusText;
-		wxFlexGridSizer* m_LibsContainer;
 		wxButton* Button1;
 		wxButton* m_MissingDefsBtn;
+		wxFlexGridSizer* m_LibsContainer;
+		wxPanel* m_LibsBack;
+		wxStaticText* m_StatusText;
 		//*)
 
 		//(*Identifiers(ProjectMissingLibs)
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICLINE2;
-		static const long ID_STATICTEXT2;
-		static const long ID_STATICLINE3;
-		static const long ID_STATICTEXT3;
-		static const long ID_STATICLINE10;
-		static const long ID_STATICLINE11;
-		static const long ID_STATICLINE12;
-		static const long ID_STATICLINE13;
-		static const long ID_STATICLINE14;
-		static const long ID_PANEL1;
-		static const long ID_BUTTON1;
-		static const long ID_BUTTON2;
-		static const long ID_STATICTEXT4;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_STATICLINE2;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_STATICLINE3;
+		static const wxWindowID ID_STATICTEXT3;
+		static const wxWindowID ID_STATICLINE10;
+		static const wxWindowID ID_STATICLINE11;
+		static const wxWindowID ID_STATICLINE12;
+		static const wxWindowID ID_STATICLINE13;
+		static const wxWindowID ID_STATICLINE14;
+		static const wxWindowID ID_PANEL1;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_BUTTON2;
+		static const wxWindowID ID_STATICTEXT4;
 		//*)
 
 		//(*Handlers(ProjectMissingLibs)

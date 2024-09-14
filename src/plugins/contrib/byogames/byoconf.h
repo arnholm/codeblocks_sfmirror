@@ -28,24 +28,24 @@ class byoConf: public cbConfigurationPanel
 	protected:
 
 		//(*Identifiers(byoConf)
-		static const long ID_CHECKBOX1;
-		static const long ID_SPINCTRL1;
-		static const long ID_CHECKBOX2;
-		static const long ID_SPINCTRL2;
-		static const long ID_CHECKBOX3;
-		static const long ID_SPINCTRL3;
-		static const long ID_STATICTEXT1;
-		static const long ID_COLOURPICKERCTRL1;
-		static const long ID_STATICTEXT2;
-		static const long ID_COLOURPICKERCTRL2;
-		static const long ID_STATICTEXT3;
-		static const long ID_COLOURPICKERCTRL3;
-		static const long ID_STATICTEXT4;
-		static const long ID_COLOURPICKERCTRL4;
-		static const long ID_STATICTEXT5;
-		static const long ID_COLOURPICKERCTRL5;
-		static const long ID_STATICTEXT6;
-		static const long ID_COLOURPICKERCTRL6;
+		static const wxWindowID ID_CHECKBOX1;
+		static const wxWindowID ID_SPINCTRL1;
+		static const wxWindowID ID_CHECKBOX2;
+		static const wxWindowID ID_SPINCTRL2;
+		static const wxWindowID ID_CHECKBOX3;
+		static const wxWindowID ID_SPINCTRL3;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_COLOURPICKERCTRL1;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_COLOURPICKERCTRL2;
+		static const wxWindowID ID_STATICTEXT3;
+		static const wxWindowID ID_COLOURPICKERCTRL3;
+		static const wxWindowID ID_STATICTEXT4;
+		static const wxWindowID ID_COLOURPICKERCTRL4;
+		static const wxWindowID ID_STATICTEXT5;
+		static const wxWindowID ID_COLOURPICKERCTRL5;
+		static const wxWindowID ID_STATICTEXT6;
+		static const wxWindowID ID_COLOURPICKERCTRL6;
 		//*)
 		//(*Handlers(byoConf)
 		void BTWSRefresh(wxCommandEvent& event);

@@ -9,13 +9,14 @@
 #include <wx/wxprec.h>
 
 //(*Headers(Execution)
-#include <wx/gauge.h>
-#include <wx/checklst.h>
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
-#include <wx/button.h>
 #include "scrollingdialog.h"
-#include <wx/radiobox.h>
+class wxBoxSizer;
+class wxButton;
+class wxCheckBox;
+class wxCheckListBox;
+class wxGauge;
+class wxRadioBox;
+class wxStaticBoxSizer;
 //*)
 
 #include <wx/arrstr.h>
@@ -38,21 +39,21 @@ public:
   virtual ~Execution();
 
   //(*Identifiers(Execution)
-  static const long ID_RB_SCOPE;
-  static const long ID_RB_OPTIONS;
-  static const long ID_CHK_IGNORE;
-  static const long ID_CHK_FWD_DECL;
-  static const long ID_CHK_OBSOLETE_LOG;
-  static const long ID_RDO_FILE_TYPE;
-  static const long ID_CHK_DEBUG_LOG;
-  static const long ID_CHK_SIMULATION;
-  static const long ID_LST_SETS;
-  static const long ID_BTN_SELECT_ALL;
-  static const long ID_BTN_SELECT_NONE;
-  static const long ID_BTN_INVERT;
-  static const long ID_GAU_PROGRESS;
-  static const long ID_BTN_RUN;
-  static const long ID_BTN_EXIT;
+  static const wxWindowID ID_RB_SCOPE;
+  static const wxWindowID ID_RB_OPTIONS;
+  static const wxWindowID ID_CHK_IGNORE;
+  static const wxWindowID ID_CHK_FWD_DECL;
+  static const wxWindowID ID_CHK_OBSOLETE_LOG;
+  static const wxWindowID ID_RDO_FILE_TYPE;
+  static const wxWindowID ID_CHK_DEBUG_LOG;
+  static const wxWindowID ID_CHK_SIMULATION;
+  static const wxWindowID ID_LST_SETS;
+  static const wxWindowID ID_BTN_SELECT_ALL;
+  static const wxWindowID ID_BTN_SELECT_NONE;
+  static const wxWindowID ID_BTN_INVERT;
+  static const wxWindowID ID_GAU_PROGRESS;
+  static const wxWindowID ID_BTN_RUN;
+  static const wxWindowID ID_BTN_EXIT;
   //*)
 
 protected:
@@ -68,23 +69,23 @@ protected:
   //*)
 
   //(*Declarations(Execution)
-  wxButton* m_Exit;
-  wxGauge* m_Progress;
-  wxRadioBox* m_Scope;
-  wxButton* m_SelectNone;
-  wxCheckBox* m_Ignore;
-  wxCheckBox* m_FwdDecl;
-  wxCheckBox* m_Simulation;
-  wxButton* m_SelectAll;
   wxBoxSizer* sizRunExit;
-  wxCheckListBox* m_Sets;
-  wxCheckBox* m_Protocol;
-  wxRadioBox* m_FileType;
-  wxButton* m_Run;
-  wxCheckBox* m_ObsoleteLog;
+  wxButton* m_Exit;
   wxButton* m_Invert;
-  wxStaticBoxSizer* sizExecute;
+  wxButton* m_Run;
+  wxButton* m_SelectAll;
+  wxButton* m_SelectNone;
+  wxCheckBox* m_FwdDecl;
+  wxCheckBox* m_Ignore;
+  wxCheckBox* m_ObsoleteLog;
+  wxCheckBox* m_Protocol;
+  wxCheckBox* m_Simulation;
+  wxCheckListBox* m_Sets;
+  wxGauge* m_Progress;
+  wxRadioBox* m_FileType;
   wxRadioBox* m_Options;
+  wxRadioBox* m_Scope;
+  wxStaticBoxSizer* sizExecute;
   //*)
 
 private:

@@ -35,10 +35,10 @@
 
 //(*Headers(ProcessingDlg)
 #include "scrollingdialog.h"
-class wxStaticBoxSizer;
+class wxButton;
 class wxFlexGridSizer;
 class wxGauge;
-class wxButton;
+class wxStaticBoxSizer;
 class wxStaticText;
 //*)
 
@@ -58,9 +58,9 @@ class ProcessingDlg: public wxScrollingDialog
 		virtual ~ProcessingDlg();
 
 		//(*Identifiers(ProcessingDlg)
-		static const long ID_STATICTEXT1;
-		static const long ID_GAUGE1;
-		static const long ID_BUTTON1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_GAUGE1;
+		static const wxWindowID ID_BUTTON1;
 		//*)
 
 		bool ReadDirs(const wxArrayString& Dirs);
@@ -78,11 +78,11 @@ class ProcessingDlg: public wxScrollingDialog
 		//*)
 
 		//(*Declarations(ProcessingDlg)
-		wxFlexGridSizer* FlexGridSizer1;
-		wxStaticText* Status;
 		wxButton* StopBtn;
+		wxFlexGridSizer* FlexGridSizer1;
 		wxGauge* Gauge1;
 		wxStaticBoxSizer* StaticBoxSizer1;
+		wxStaticText* Status;
 		//*)
 
 	private:

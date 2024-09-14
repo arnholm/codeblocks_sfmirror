@@ -30,21 +30,21 @@ class EmbeddedHtmlPanel: public wxPanel
         void Open(const wxString& url);
 
         //(*Declarations(EmbeddedHtmlPanel)
-        wxPanel* Panel1;
-        wxBitmapButton* btnForward;
         wxBitmapButton* btnBack;
-        wxStaticText* lblStatus;
+        wxBitmapButton* btnForward;
         wxHtmlWindow* winHtml;
+        wxPanel* Panel1;
+        wxStaticText* lblStatus;
         //*)
 
     protected:
 
         //(*Identifiers(EmbeddedHtmlPanel)
-        static const long ID_BITMAPBUTTON2;
-        static const long ID_BITMAPBUTTON3;
-        static const long ID_STATICTEXT1;
-        static const long ID_PANEL1;
-        static const long ID_HTMLWINDOW1;
+        static const wxWindowID ID_BITMAPBUTTON2;
+        static const wxWindowID ID_BITMAPBUTTON3;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_PANEL1;
+        static const wxWindowID ID_HTMLWINDOW1;
         //*)
 
     private:

@@ -3,14 +3,14 @@
 
 //(*Headers(ConfigPanel)
 #include <wx/panel.h>
-class wxHyperlinkCtrl;
-class wxTextCtrl;
-class wxStaticLine;
-class wxStaticText;
-class wxFlexGridSizer;
 class wxBoxSizer;
 class wxButton;
 class wxChoice;
+class wxFlexGridSizer;
+class wxHyperlinkCtrl;
+class wxStaticLine;
+class wxStaticText;
+class wxTextCtrl;
 //*)
 
 #include <wx/string.h>
@@ -27,13 +27,13 @@ public:
     virtual ~ConfigPanel();
 
     //(*Declarations(ConfigPanel)
+    wxChoice* choOperation;
+    wxStaticLine* StaticLine1;
+    wxStaticLine* StaticLine2;
     wxTextCtrl* txtCppCheckApp;
     wxTextCtrl* txtCppCheckArgs;
-    wxChoice* choOperation;
-    wxStaticLine* StaticLine2;
-    wxStaticLine* StaticLine1;
-    wxTextCtrl* txtVeraArgs;
     wxTextCtrl* txtVeraApp;
+    wxTextCtrl* txtVeraArgs;
     //*)
 
     /// @return the panel's title.
@@ -50,17 +50,17 @@ public:
 protected:
 
     //(*Identifiers(ConfigPanel)
-    static const long ID_TXT_CPP_CHECK_APP;
-    static const long ID_BTN_CPPCHECK_APP;
-    static const long ID_TXT_CPP_CHECK_ARGS;
-    static const long ID_HYC_CPP_CHECK_WWW;
-    static const long ID_TXT_VERA_APP;
-    static const long ID_BTN_VERA;
-    static const long ID_TXT_VERA_ARGS;
-    static const long ID_HYC_VERA_WWW;
-    static const long ID_STATICLINE1;
-    static const long ID_STATICLINE2;
-    static const long ID_CHO_OPERATION;
+    static const wxWindowID ID_TXT_CPP_CHECK_APP;
+    static const wxWindowID ID_BTN_CPPCHECK_APP;
+    static const wxWindowID ID_TXT_CPP_CHECK_ARGS;
+    static const wxWindowID ID_HYC_CPP_CHECK_WWW;
+    static const wxWindowID ID_TXT_VERA_APP;
+    static const wxWindowID ID_BTN_VERA;
+    static const wxWindowID ID_TXT_VERA_ARGS;
+    static const wxWindowID ID_HYC_VERA_WWW;
+    static const wxWindowID ID_STATICLINE1;
+    static const wxWindowID ID_STATICLINE2;
+    static const wxWindowID ID_CHO_OPERATION;
     //*)
 
 private:

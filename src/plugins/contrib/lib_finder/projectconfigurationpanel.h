@@ -27,15 +27,15 @@
 //(*Headers(ProjectConfigurationPanel)
 #include <wx/panel.h>
 #include <wx/timer.h>
-class wxTextCtrl;
-class wxStaticBoxSizer;
-class wxListBox;
-class wxButton;
-class wxTreeEvent;
 class wxBoxSizer;
-class wxStaticText;
-class wxTreeCtrl;
+class wxButton;
 class wxCheckBox;
+class wxListBox;
+class wxStaticBoxSizer;
+class wxStaticText;
+class wxTextCtrl;
+class wxTreeCtrl;
+class wxTreeEvent;
 //*)
 
 #include <configurationpanel.h>
@@ -79,39 +79,39 @@ class ProjectConfigurationPanel: public cbConfigurationPanel
         bool m_IsPkgConfig;
 
 		//(*Declarations(ProjectConfigurationPanel)
-		wxStaticText* m_EventText;
 		wxButton* Button1;
 		wxButton* Button2;
-		wxStaticText* StaticText1;
+		wxButton* m_Add;
+		wxButton* m_AddScript;
+		wxButton* m_AddUnknown;
 		wxButton* m_Remove;
+		wxCheckBox* m_NoAuto;
+		wxCheckBox* m_Tree;
+		wxListBox* m_UsedLibraries;
+		wxStaticText* StaticText1;
+		wxStaticText* m_EventText;
+		wxTextCtrl* m_Filter;
+		wxTextCtrl* m_UnknownLibrary;
 		wxTimer Timer1;
 		wxTreeCtrl* m_KnownLibrariesTree;
-		wxButton* m_AddUnknown;
-		wxTextCtrl* m_Filter;
-		wxButton* m_AddScript;
-		wxButton* m_Add;
-		wxCheckBox* m_Tree;
-		wxTextCtrl* m_UnknownLibrary;
-		wxCheckBox* m_NoAuto;
-		wxListBox* m_UsedLibraries;
 		//*)
 
 		//(*Identifiers(ProjectConfigurationPanel)
-		static const long ID_LISTBOX1;
-		static const long ID_BUTTON6;
-		static const long ID_CHECKBOX2;
-		static const long ID_BUTTON4;
-		static const long ID_BUTTON1;
-		static const long ID_BUTTON2;
-		static const long ID_TREECTRL1;
-		static const long ID_STATICTEXT1;
-		static const long ID_TEXTCTRL2;
-		static const long ID_CHECKBOX1;
-		static const long ID_BUTTON5;
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON3;
-		static const long ID_STATICTEXT2;
-		static const long ID_TIMER1;
+		static const wxWindowID ID_LISTBOX1;
+		static const wxWindowID ID_BUTTON6;
+		static const wxWindowID ID_CHECKBOX2;
+		static const wxWindowID ID_BUTTON4;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_BUTTON2;
+		static const wxWindowID ID_TREECTRL1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_TEXTCTRL2;
+		static const wxWindowID ID_CHECKBOX1;
+		static const wxWindowID ID_BUTTON5;
+		static const wxWindowID ID_TEXTCTRL1;
+		static const wxWindowID ID_BUTTON3;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_TIMER1;
 		//*)
 
 		//(*Handlers(ProjectConfigurationPanel)

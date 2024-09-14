@@ -62,9 +62,9 @@ SpellCheckSettingsPanel::SpellCheckSettingsPanel(wxWindow* parent, SpellCheckerC
     Button3 = (wxButton*)FindWindow(XRCID("ID_BUTTON_BITMAPS"));
     HyperlinkCtrl1 = (wxHyperlinkCtrl*)FindWindow(XRCID("ID_HYPERLINKCTRL1"));
 
-    Connect(XRCID("ID_BUTTON_DICTIONARIES"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SpellCheckSettingsPanel::OnChooseDirectory);
-    Connect(XRCID("ID_BUTTON_THESAURI"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SpellCheckSettingsPanel::OnChooseDirectory);
-    Connect(XRCID("ID_BUTTON_BITMAPS"),wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SpellCheckSettingsPanel::OnChooseDirectory);
+    Connect(XRCID("ID_BUTTON_DICTIONARIES"),wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SpellCheckSettingsPanel::OnChooseDirectory));
+    Connect(XRCID("ID_BUTTON_THESAURI"),wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SpellCheckSettingsPanel::OnChooseDirectory));
+    Connect(XRCID("ID_BUTTON_BITMAPS"),wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SpellCheckSettingsPanel::OnChooseDirectory));
     //*)
 
     Connect(XRCID("ID_TEXTCTRL1"), wxEVT_COMMAND_TEXT_UPDATED, (wxObjectEventFunction)&SpellCheckSettingsPanel::OnChangeDictPathText);

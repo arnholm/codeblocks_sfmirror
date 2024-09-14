@@ -8,10 +8,10 @@
 
 
 //(*HeadersPCH(GenericSingleChoiceList)
-#include <wx/sizer.h>
-#include <wx/panel.h>
-#include <wx/stattext.h>
 #include <wx/listbox.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
 //*)
 
 class wxArrayString;
@@ -36,8 +36,8 @@ class GenericSingleChoiceList: public wxPanel
         }
 
 		//(*Identifiers(GenericSingleChoiceList)
-		static const long ID_STATICTEXT1;
-		static const long ID_LISTBOX1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_LISTBOX1;
 		//*)
 
 	protected:

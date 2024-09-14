@@ -8,10 +8,10 @@
 
 
 //(*HeadersPCH(BuildTargetPanel)
-#include <wx/combobox.h>
 #include <wx/checkbox.h>
-#include <wx/sizer.h>
+#include <wx/combobox.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -47,16 +47,16 @@ class BuildTargetPanel: public wxPanel
 
 
         //(*Identifiers(BuildTargetPanel)
-        static const long ID_STATICTEXT1;
-        static const long ID_STATICTEXT3;
-        static const long ID_TEXTCTRL1;
-        static const long ID_STATICTEXT2;
-        static const long ID_COMBOBOX1;
-        static const long ID_STATICTEXT4;
-        static const long ID_TEXTCTRL2;
-        static const long ID_STATICTEXT5;
-        static const long ID_TEXTCTRL3;
-        static const long ID_CHECKBOX1;
+        static const wxWindowID ID_STATICTEXT1;
+        static const wxWindowID ID_STATICTEXT3;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_STATICTEXT2;
+        static const wxWindowID ID_COMBOBOX1;
+        static const wxWindowID ID_STATICTEXT4;
+        static const wxWindowID ID_TEXTCTRL2;
+        static const wxWindowID ID_STATICTEXT5;
+        static const wxWindowID ID_TEXTCTRL3;
+        static const wxWindowID ID_CHECKBOX1;
         //*)
 
     private:
@@ -66,14 +66,14 @@ class BuildTargetPanel: public wxPanel
         //*)
 
         //(*Declarations(BuildTargetPanel)
-        wxComboBox* cmbCompiler;
-        wxTextCtrl* txtName;
-        wxStaticText* lblCompiler;
-        wxTextCtrl* txtOut;
-        wxStaticText* StaticText3;
-        wxCheckBox* chkEnableDebug;
         wxBoxSizer* BoxSizer1;
+        wxCheckBox* chkEnableDebug;
+        wxComboBox* cmbCompiler;
+        wxStaticText* StaticText3;
+        wxStaticText* lblCompiler;
+        wxTextCtrl* txtName;
         wxTextCtrl* txtObjOut;
+        wxTextCtrl* txtOut;
         //*)
 
         DECLARE_EVENT_TABLE()

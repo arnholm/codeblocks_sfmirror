@@ -24,12 +24,12 @@
 #define SEARCHDIALOG_H
 
 //(*Headers(SearchDialog)
-#include <wx/combobox.h>
-#include <wx/sizer.h>
-#include <wx/button.h>
-#include <wx/radiobut.h>
 #include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/combobox.h>
 #include <wx/radiobox.h>
+#include <wx/radiobut.h>
+#include <wx/sizer.h>
 //*)
 
 #include "FileContentBase.h"
@@ -47,23 +47,23 @@ class SearchDialog: public wxScrollingDialog
 		void BuildContent(wxWindow* parent);
 
 		//(*Identifiers(SearchDialog)
-		static const long ID_COMBOBOX1;
-		static const long ID_RADIOBUTTON1;
-		static const long ID_RADIOBUTTON2;
-		static const long ID_RADIOBUTTON3;
-		static const long ID_BUTTON1;
-		static const long ID_RADIOBOX2;
-		static const long ID_RADIOBOX1;
+		static const wxWindowID ID_COMBOBOX1;
+		static const wxWindowID ID_RADIOBUTTON1;
+		static const wxWindowID ID_RADIOBUTTON2;
+		static const wxWindowID ID_RADIOBUTTON3;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_RADIOBOX2;
+		static const wxWindowID ID_RADIOBOX1;
 		//*)
 
 		//(*Declarations(SearchDialog)
-		wxRadioButton* m_SearchTypeString;
-		wxComboBox* m_SearchValue;
-		wxRadioButton* m_SearchTypeExpression;
 		wxButton* Button1;
+		wxComboBox* m_SearchValue;
 		wxRadioBox* m_Direction;
 		wxRadioBox* m_StartFrom;
+		wxRadioButton* m_SearchTypeExpression;
 		wxRadioButton* m_SearchTypeHex;
+		wxRadioButton* m_SearchTypeString;
 		//*)
 
 		//(*Handlers(SearchDialog)

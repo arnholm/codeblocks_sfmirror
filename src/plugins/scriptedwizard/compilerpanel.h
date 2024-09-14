@@ -9,10 +9,10 @@
 #include <wx/string.h>
 
 //(*HeadersPCH(CompilerPanel)
-#include <wx/combobox.h>
 #include <wx/checkbox.h>
-#include <wx/sizer.h>
+#include <wx/combobox.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -46,21 +46,21 @@ class CompilerPanel: public wxPanel
         wxString GetReleaseObjectOutputDir() const { return txtRelObjOut->GetValue(); }
 
 		//(*Identifiers(CompilerPanel)
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICTEXT2;
-		static const long ID_COMBOBOX1;
-		static const long ID_CHECKBOX1;
-		static const long ID_TEXTCTRL3;
-		static const long ID_STATICTEXT3;
-		static const long ID_TEXTCTRL1;
-		static const long ID_STATICTEXT4;
-		static const long ID_TEXTCTRL2;
-		static const long ID_CHECKBOX3;
-		static const long ID_TEXTCTRL4;
-		static const long ID_STATICTEXT7;
-		static const long ID_TEXTCTRL5;
-		static const long ID_STATICTEXT8;
-		static const long ID_TEXTCTRL6;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_COMBOBOX1;
+		static const wxWindowID ID_CHECKBOX1;
+		static const wxWindowID ID_TEXTCTRL3;
+		static const wxWindowID ID_STATICTEXT3;
+		static const wxWindowID ID_TEXTCTRL1;
+		static const wxWindowID ID_STATICTEXT4;
+		static const wxWindowID ID_TEXTCTRL2;
+		static const wxWindowID ID_CHECKBOX3;
+		static const wxWindowID ID_TEXTCTRL4;
+		static const wxWindowID ID_STATICTEXT7;
+		static const wxWindowID ID_TEXTCTRL5;
+		static const wxWindowID ID_STATICTEXT8;
+		static const wxWindowID ID_TEXTCTRL6;
 		//*)
 
 	private:
@@ -71,20 +71,20 @@ class CompilerPanel: public wxPanel
 		//*)
 
 		//(*Declarations(CompilerPanel)
-		wxStaticBoxSizer* StaticBoxSizer2;
-		wxTextCtrl* txtDbgObjOut;
-		wxComboBox* cmbCompiler;
-		wxTextCtrl* txtRelName;
-		wxStaticText* StaticText1;
 		wxBoxSizer* BoxSizer4;
+		wxBoxSizer* BoxSizer5;
+		wxCheckBox* chkConfDebug;
 		wxCheckBox* chkConfRelease;
+		wxComboBox* cmbCompiler;
+		wxStaticBoxSizer* StaticBoxSizer1;
+		wxStaticBoxSizer* StaticBoxSizer2;
+		wxStaticText* StaticText1;
 		wxTextCtrl* txtDbgName;
+		wxTextCtrl* txtDbgObjOut;
+		wxTextCtrl* txtDbgOut;
+		wxTextCtrl* txtRelName;
 		wxTextCtrl* txtRelObjOut;
 		wxTextCtrl* txtRelOut;
-		wxTextCtrl* txtDbgOut;
-		wxBoxSizer* BoxSizer5;
-		wxStaticBoxSizer* StaticBoxSizer1;
-		wxCheckBox* chkConfDebug;
 		//*)
 
         wxWindow* m_parentDialog;

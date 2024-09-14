@@ -94,7 +94,7 @@ bool JumpTrackerView::HasFeature(Feature::Enum feature) const
 }
 
 // ----------------------------------------------------------------------------
-void JumpTrackerView::AppendAdditionalMenuItems(wxMenu &menu)
+void JumpTrackerView::AppendAdditionalMenuItems(cb_unused wxMenu &menu)
 // ----------------------------------------------------------------------------
 {
 }

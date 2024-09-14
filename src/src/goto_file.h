@@ -39,8 +39,8 @@ class GotoFile: public wxDialog
         //*)
 
         //(*Identifiers(GotoFile)
-        static const long ID_TEXTCTRL1;
-        static const long ID_RESULT_LIST;
+        static const wxWindowID ID_TEXTCTRL1;
+        static const wxWindowID ID_RESULT_LIST;
         //*)
 
         //(*Handlers(GotoFile)

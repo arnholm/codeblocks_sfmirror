@@ -3,15 +3,15 @@
 
 //(*Headers(DefsDownloadDlg)
 #include "scrollingdialog.h"
-class wxTextCtrl;
-class wxStaticBoxSizer;
-class wxListBox;
-class wxButton;
-class wxTreeEvent;
 class wxBoxSizer;
-class wxStaticText;
-class wxTreeCtrl;
+class wxButton;
 class wxCheckBox;
+class wxListBox;
+class wxStaticBoxSizer;
+class wxStaticText;
+class wxTextCtrl;
+class wxTreeCtrl;
+class wxTreeEvent;
 //*)
 
 
@@ -26,24 +26,24 @@ class DefsDownloadDlg: public wxScrollingDialog
 
 		//(*Declarations(DefsDownloadDlg)
 		wxButton* Button1;
-		wxStaticText* StaticText1;
-		wxButton* m_Remove;
-		wxTreeCtrl* m_KnownLibrariesTree;
-		wxTextCtrl* m_Filter;
 		wxButton* m_Add;
+		wxButton* m_Remove;
 		wxCheckBox* m_Tree;
 		wxListBox* m_UsedLibraries;
+		wxStaticText* StaticText1;
+		wxTextCtrl* m_Filter;
+		wxTreeCtrl* m_KnownLibrariesTree;
 		//*)
 
 		//(*Identifiers(DefsDownloadDlg)
-		static const long ID_LISTBOX1;
-		static const long ID_BUTTON1;
-		static const long ID_BUTTON2;
-		static const long ID_TREECTRL1;
-		static const long ID_STATICTEXT1;
-		static const long ID_TEXTCTRL2;
-		static const long ID_CHECKBOX1;
-		static const long ID_BUTTON3;
+		static const wxWindowID ID_LISTBOX1;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_BUTTON2;
+		static const wxWindowID ID_TREECTRL1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_TEXTCTRL2;
+		static const wxWindowID ID_CHECKBOX1;
+		static const wxWindowID ID_BUTTON3;
 		//*)
 
 		//(*Handlers(DefsDownloadDlg)

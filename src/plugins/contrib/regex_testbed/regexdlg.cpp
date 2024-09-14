@@ -58,12 +58,12 @@ RegExDlg::RegExDlg(wxWindow* parent,wxWindowID /*id*/)
     m_text = (wxTextCtrl*)FindWindow(XRCID("ID_TEXT"));
     m_output = (wxHtmlWindow*)FindWindow(XRCID("ID_OUT"));
 
-    Connect(XRCID("ID_REGEX"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnValueChanged);
-    Connect(XRCID("ID_QUOTED"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnQuoteChanged);
-    Connect(XRCID("ID_SYNTAX"),wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&RegExDlg::OnSyntaxSelect);
-    Connect(XRCID("ID_NOCASE"),wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
-    Connect(XRCID("ID_NEWLINES"),wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
-    Connect(XRCID("ID_TEXT"),wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&RegExDlg::OnOptionChanged);
+    Connect(XRCID("ID_REGEX"),wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(RegExDlg::OnValueChanged));
+    Connect(XRCID("ID_QUOTED"),wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(RegExDlg::OnQuoteChanged));
+    Connect(XRCID("ID_SYNTAX"),wxEVT_COMMAND_CHOICE_SELECTED,wxCommandEventHandler(RegExDlg::OnSyntaxSelect));
+    Connect(XRCID("ID_NOCASE"),wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(RegExDlg::OnOptionChanged));
+    Connect(XRCID("ID_NEWLINES"),wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(RegExDlg::OnOptionChanged));
+    Connect(XRCID("ID_TEXT"),wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(RegExDlg::OnOptionChanged));
     //*)
 
     assert(m_regex);

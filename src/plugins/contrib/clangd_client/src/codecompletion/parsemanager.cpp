@@ -1721,7 +1721,7 @@ void ParseManager::OnAUIProjectPageChanged(wxAuiNotebookEvent& event)
         ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
         wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
         int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-        wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+        pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
         if (pCurrentPage == GetClassBrowser())
         {
             if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
@@ -1995,7 +1995,7 @@ void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbPr
         // -------------------------------------------------------
         for (int ii=0; ii< pEdMgr->GetEditorsCount(); ++ii)
         {
-            cbEditor* pEditor = pEdMgr->GetBuiltinEditor(ii);
+            pEditor = pEdMgr->GetBuiltinEditor(ii);
             if (pEditor)
             {
                 // don't re-list an already listed editor file

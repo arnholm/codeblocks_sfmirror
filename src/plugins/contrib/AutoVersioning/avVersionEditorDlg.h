@@ -14,17 +14,17 @@
 #include <typeinfo>
 
 //(*Headers(avVersionEditorDlg)
-#include <wx/combobox.h>
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
-#include <wx/notebook.h>
-#include <wx/button.h>
-#include <wx/panel.h>
 #include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/combobox.h>
+#include <wx/notebook.h>
+#include <wx/panel.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
 #include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/radiobox.h>
 #include <wx/timer.h>
 //*)
 
@@ -73,71 +73,71 @@ public:
 		virtual ~avVersionEditorDlg();
 
 		//(*Identifiers(avVersionEditorDlg)
-		static const long ID_MAJOR_LABEL;
-		static const long ID_MAJOR_TEXT;
-		static const long ID_MINOR_LABEL;
-		static const long ID_MINOR_TEXT;
-		static const long ID_BUILD_LABEL;
-		static const long ID_BUILD_TEXT;
-		static const long ID_REVISION_LABEL;
-		static const long ID_REVISION_TEXT;
-		static const long ID_STATICLINE2;
-		static const long ID_COUNT_LABEL;
-		static const long ID_COUNT_TEXT;
-		static const long ID_VALUES_PANEL;
-		static const long ID_SATUS_LABEL;
-		static const long ID_STATUS_COMBOBOX;
-		static const long ID_STATICLINE4;
-		static const long ID_STATICTEXT1;
-		static const long ID_ABBREVIATION_COMBOBOX;
-		static const long ID_STATUS_PANEL;
-		static const long ID_MINORMAXIMUN_LABEL;
-		static const long ID_MINORMAXIMUM_TEXT;
-		static const long ID_BUILDNUMBERMAX_LABEL;
-		static const long ID_BUILDNUMBERMAX_TEXT;
-		static const long ID_REVISIONMAX_LABEL;
-		static const long ID_REVISIONMAX_TEXT;
-		static const long ID_REVISIONRANDOM_LABEL;
-		static const long ID_REVISIONRANDOM_TEXT;
-		static const long ID_BUILDTIMES_LABEL;
-		static const long ID_BUILDTIMES_TEXT;
-		static const long ID_SCHEME_PANEL;
-		static const long ID_HEADER_GUARD_LABEL;
-		static const long ID_HEADER_GUARD_TEXT;
-		static const long ID_NAMESPACE_LABEL;
-		static const long ID_NAMESPACE_TEXT;
-		static const long ID_PREFIX_LABEL;
-		static const long ID_PREFIX_TEXT;
-		static const long ID_CODE_PANEL;
-		static const long ID_AUTO_CHECK;
-		static const long ID_DATES_CHECK;
-		static const long ID_DEFINE_CHECK;
-		static const long ID_UPDATE_MANIFEST;
-		static const long ID_COMMIT_CHECK;
-		static const long ID_ASKCOMMIT_CHECK;
-		static const long ID_STATICLINE3;
-		static const long ID_HEADERPATH_LABEL;
-		static const long ID_HEADERPATH_TEXTCTRL;
-		static const long ID_HEADERPATH_BUTTON;
-		static const long ID_HEADERLANGUAGE_RADIOBOX;
-		static const long ID_STATICLINE1;
-		static const long ID_SVN_CHECK;
-		static const long ID_SVNDIR_TEXT;
-		static const long ID_SVNDIR_BUTTON;
-		static const long ID_SETTINGS_PANEL;
-		static const long ID_GENERATECHANGES_CHECKBOX;
-		static const long ID_CHANGESPATH_STATICTEXT;
-		static const long ID_CHANGESLOGPATH_TEXTCTRL;
-		static const long ID_CHANGESLOGPATH_BUTTON;
-		static const long ID_FORMAT_STATICTEXT;
-		static const long ID_CHANGESTITLE_TEXTCTRL;
-		static const long ID_FORMATS_STATICTEXT;
-		static const long ID_CHANGES_PANEL;
-		static const long ID_AV_NOTEBOOK;
-		static const long ID_STATICTEXT2;
-		static const long ID_ACCEPT;
-		static const long ID_CANCEL;
-		static const long ID_VALIDATE_TIMER;
+		static const wxWindowID ID_MAJOR_LABEL;
+		static const wxWindowID ID_MAJOR_TEXT;
+		static const wxWindowID ID_MINOR_LABEL;
+		static const wxWindowID ID_MINOR_TEXT;
+		static const wxWindowID ID_BUILD_LABEL;
+		static const wxWindowID ID_BUILD_TEXT;
+		static const wxWindowID ID_REVISION_LABEL;
+		static const wxWindowID ID_REVISION_TEXT;
+		static const wxWindowID ID_STATICLINE2;
+		static const wxWindowID ID_COUNT_LABEL;
+		static const wxWindowID ID_COUNT_TEXT;
+		static const wxWindowID ID_VALUES_PANEL;
+		static const wxWindowID ID_SATUS_LABEL;
+		static const wxWindowID ID_STATUS_COMBOBOX;
+		static const wxWindowID ID_STATICLINE4;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_ABBREVIATION_COMBOBOX;
+		static const wxWindowID ID_STATUS_PANEL;
+		static const wxWindowID ID_MINORMAXIMUN_LABEL;
+		static const wxWindowID ID_MINORMAXIMUM_TEXT;
+		static const wxWindowID ID_BUILDNUMBERMAX_LABEL;
+		static const wxWindowID ID_BUILDNUMBERMAX_TEXT;
+		static const wxWindowID ID_REVISIONMAX_LABEL;
+		static const wxWindowID ID_REVISIONMAX_TEXT;
+		static const wxWindowID ID_REVISIONRANDOM_LABEL;
+		static const wxWindowID ID_REVISIONRANDOM_TEXT;
+		static const wxWindowID ID_BUILDTIMES_LABEL;
+		static const wxWindowID ID_BUILDTIMES_TEXT;
+		static const wxWindowID ID_SCHEME_PANEL;
+		static const wxWindowID ID_HEADER_GUARD_LABEL;
+		static const wxWindowID ID_HEADER_GUARD_TEXT;
+		static const wxWindowID ID_NAMESPACE_LABEL;
+		static const wxWindowID ID_NAMESPACE_TEXT;
+		static const wxWindowID ID_PREFIX_LABEL;
+		static const wxWindowID ID_PREFIX_TEXT;
+		static const wxWindowID ID_CODE_PANEL;
+		static const wxWindowID ID_AUTO_CHECK;
+		static const wxWindowID ID_DATES_CHECK;
+		static const wxWindowID ID_DEFINE_CHECK;
+		static const wxWindowID ID_UPDATE_MANIFEST;
+		static const wxWindowID ID_COMMIT_CHECK;
+		static const wxWindowID ID_ASKCOMMIT_CHECK;
+		static const wxWindowID ID_STATICLINE3;
+		static const wxWindowID ID_HEADERPATH_LABEL;
+		static const wxWindowID ID_HEADERPATH_TEXTCTRL;
+		static const wxWindowID ID_HEADERPATH_BUTTON;
+		static const wxWindowID ID_HEADERLANGUAGE_RADIOBOX;
+		static const wxWindowID ID_STATICLINE1;
+		static const wxWindowID ID_SVN_CHECK;
+		static const wxWindowID ID_SVNDIR_TEXT;
+		static const wxWindowID ID_SVNDIR_BUTTON;
+		static const wxWindowID ID_SETTINGS_PANEL;
+		static const wxWindowID ID_GENERATECHANGES_CHECKBOX;
+		static const wxWindowID ID_CHANGESPATH_STATICTEXT;
+		static const wxWindowID ID_CHANGESLOGPATH_TEXTCTRL;
+		static const wxWindowID ID_CHANGESLOGPATH_BUTTON;
+		static const wxWindowID ID_FORMAT_STATICTEXT;
+		static const wxWindowID ID_CHANGESTITLE_TEXTCTRL;
+		static const wxWindowID ID_FORMATS_STATICTEXT;
+		static const wxWindowID ID_CHANGES_PANEL;
+		static const wxWindowID ID_AV_NOTEBOOK;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_ACCEPT;
+		static const wxWindowID ID_CANCEL;
+		static const wxWindowID ID_VALIDATE_TIMER;
 		//*)
 
 	protected:
@@ -163,92 +163,92 @@ public:
 		//*)
 
 		//(*Declarations(avVersionEditorDlg)
-		wxPanel* pnlCode;
-		wxButton* btnAccept;
-		wxBoxSizer* buttonsSizer;
-		wxCheckBox* chkAutoIncrement;
-		wxStaticText* lblBuildTimes;
-		wxRadioBox* rbHeaderLanguage;
-		wxNotebook* nbAutoVersioning;
-		wxStaticText* lblChangesFormats;
-		wxButton* btnChangesLogPath;
-		wxBoxSizer* BoxSizer3;
-		wxStaticLine* StaticLine2;
-		wxTextCtrl* txtChangesLogPath;
-		wxStaticText* lblRevisionMax;
-		wxBoxSizer* statusSizer;
-		wxPanel* pnlVersionValues;
-		wxTextCtrl* txtChangesTitle;
-		wxCheckBox* chkSvn;
-		wxBoxSizer* BoxSizer7;
-		wxStaticText* lblCount;
-		wxComboBox* cmbStatus;
-		wxCheckBox* chkChanges;
-		wxCheckBox* chkAskCommit;
-		wxPanel* pnlSettings;
-		wxBoxSizer* minorMaxSizer;
-		wxBoxSizer* BoxSizer2;
-		wxStaticText* lblMinorMaximum;
-		wxTextCtrl* txtNameSpace;
-		wxStaticText* StaticText1;
-		wxTimer tmrValidateInput;
-		wxStaticText* lblRevisionRandom;
-		wxBoxSizer* mainSizer;
-		wxCheckBox* chkCommit;
-		wxButton* btnHeaderPath;
-		wxBoxSizer* changesSizer;
-		wxBoxSizer* BoxSizer9;
-		wxPanel* pnlStatus;
-		wxBoxSizer* settingsSizer;
-		wxTextCtrl* txtPrefix;
-		wxBoxSizer* buildNumberMaxSizer;
-		wxStaticText* lblStatus;
-		wxStaticText* lblPrefix;
-		wxTextCtrl* txtRevisionRandom;
-		wxTextCtrl* txtBuildNumber;
-		wxPanel* pnlChanges;
-		wxStaticLine* StaticLine1;
-		wxBoxSizer* valuesSizer;
-		wxStaticText* lblChangesPath;
-		wxCheckBox* chkUpdateManifest;
-		wxStaticText* lblHeaderPath;
-		wxBoxSizer* BoxSizer19;
-		wxBoxSizer* BoxSizer4;
-		wxStaticLine* StaticLine3;
-		wxStaticText* lblNamespace;
-		wxTextCtrl* txtMajorVersion;
-		wxStaticText* lblBuildNumberMaximun;
-		wxBoxSizer* BoxSizer8;
-		wxButton* btnSvnDir;
-		wxPanel* pnlScheme;
-		wxTextCtrl* txtBuildCount;
-		wxTextCtrl* txtBuildNumberMaximun;
-		wxTextCtrl* txtMinorVersion;
-		wxCheckBox* chkDefine;
-		wxStaticText* lblHeaderGuard;
-		wxBoxSizer* BoxSizer1;
-		wxStaticText* lblBuild;
-		wxComboBox* cmbAbbreviation;
-		wxStaticText* lblMinor;
-		wxTextCtrl* txtRevisionMax;
-		wxButton* btnCancel;
-		wxTextCtrl* txtHeaderPath;
-		wxStaticLine* StaticLine4;
 		wxBoxSizer* BoxSizer12;
-		wxTextCtrl* txtHeaderGuard;
-		wxTextCtrl* txtBuildTimes;
-		wxTextCtrl* txtMinorMaximun;
-		wxStaticText* lblCurrentProject;
-		wxBoxSizer* BoxSizer6;
-		wxBoxSizer* svnSizer;
-		wxTextCtrl* txtRevisionNumber;
-		wxBoxSizer* schemeSizer;
-		wxStaticText* lblMajor;
-		wxTextCtrl* txtSvnDir;
+		wxBoxSizer* BoxSizer19;
+		wxBoxSizer* BoxSizer1;
+		wxBoxSizer* BoxSizer2;
+		wxBoxSizer* BoxSizer3;
+		wxBoxSizer* BoxSizer4;
 		wxBoxSizer* BoxSizer5;
-		wxStaticText* lblRevision;
+		wxBoxSizer* BoxSizer6;
+		wxBoxSizer* BoxSizer7;
+		wxBoxSizer* BoxSizer8;
+		wxBoxSizer* BoxSizer9;
+		wxBoxSizer* buildNumberMaxSizer;
+		wxBoxSizer* buttonsSizer;
+		wxBoxSizer* changesSizer;
+		wxBoxSizer* mainSizer;
+		wxBoxSizer* minorMaxSizer;
+		wxBoxSizer* schemeSizer;
+		wxBoxSizer* settingsSizer;
+		wxBoxSizer* statusSizer;
+		wxBoxSizer* svnSizer;
+		wxBoxSizer* valuesSizer;
+		wxButton* btnAccept;
+		wxButton* btnCancel;
+		wxButton* btnChangesLogPath;
+		wxButton* btnHeaderPath;
+		wxButton* btnSvnDir;
+		wxCheckBox* chkAskCommit;
+		wxCheckBox* chkAutoIncrement;
+		wxCheckBox* chkChanges;
+		wxCheckBox* chkCommit;
 		wxCheckBox* chkDates;
+		wxCheckBox* chkDefine;
+		wxCheckBox* chkSvn;
+		wxCheckBox* chkUpdateManifest;
+		wxComboBox* cmbAbbreviation;
+		wxComboBox* cmbStatus;
+		wxNotebook* nbAutoVersioning;
+		wxPanel* pnlChanges;
+		wxPanel* pnlCode;
+		wxPanel* pnlScheme;
+		wxPanel* pnlSettings;
+		wxPanel* pnlStatus;
+		wxPanel* pnlVersionValues;
+		wxRadioBox* rbHeaderLanguage;
+		wxStaticLine* StaticLine1;
+		wxStaticLine* StaticLine2;
+		wxStaticLine* StaticLine3;
+		wxStaticLine* StaticLine4;
+		wxStaticText* StaticText1;
+		wxStaticText* lblBuild;
+		wxStaticText* lblBuildNumberMaximun;
+		wxStaticText* lblBuildTimes;
+		wxStaticText* lblChangesFormats;
+		wxStaticText* lblChangesPath;
 		wxStaticText* lblChangesTitle;
+		wxStaticText* lblCount;
+		wxStaticText* lblCurrentProject;
+		wxStaticText* lblHeaderGuard;
+		wxStaticText* lblHeaderPath;
+		wxStaticText* lblMajor;
+		wxStaticText* lblMinor;
+		wxStaticText* lblMinorMaximum;
+		wxStaticText* lblNamespace;
+		wxStaticText* lblPrefix;
+		wxStaticText* lblRevision;
+		wxStaticText* lblRevisionMax;
+		wxStaticText* lblRevisionRandom;
+		wxStaticText* lblStatus;
+		wxTextCtrl* txtBuildCount;
+		wxTextCtrl* txtBuildNumber;
+		wxTextCtrl* txtBuildNumberMaximun;
+		wxTextCtrl* txtBuildTimes;
+		wxTextCtrl* txtChangesLogPath;
+		wxTextCtrl* txtChangesTitle;
+		wxTextCtrl* txtHeaderGuard;
+		wxTextCtrl* txtHeaderPath;
+		wxTextCtrl* txtMajorVersion;
+		wxTextCtrl* txtMinorMaximun;
+		wxTextCtrl* txtMinorVersion;
+		wxTextCtrl* txtNameSpace;
+		wxTextCtrl* txtPrefix;
+		wxTextCtrl* txtRevisionMax;
+		wxTextCtrl* txtRevisionNumber;
+		wxTextCtrl* txtRevisionRandom;
+		wxTextCtrl* txtSvnDir;
+		wxTimer tmrValidateInput;
 		//*)
 
 public:

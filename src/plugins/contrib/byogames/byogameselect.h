@@ -20,10 +20,10 @@ class byoGameSelect: public wxScrollingDialog
 		virtual ~byoGameSelect();
 
 		//(*Identifiers(byoGameSelect)
-		static const long ID_STATICTEXT1;
-		static const long ID_PANEL1;
-		static const long ID_LISTBOX1;
-		static const long ID_STATICLINE1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_PANEL1;
+		static const wxWindowID ID_LISTBOX1;
+		static const wxWindowID ID_STATICLINE1;
 		//*)
 
 	protected:
@@ -34,17 +34,17 @@ class byoGameSelect: public wxScrollingDialog
 		//*)
 
 		//(*Declarations(byoGameSelect)
-		wxPanel* Panel1;
+		wxBoxSizer* BoxSizer1;
+		wxBoxSizer* BoxSizer2;
 		wxBoxSizer* BoxSizer3;
+		wxBoxSizer* BoxSizer4;
 		wxButton* Button1;
 		wxButton* Button2;
-		wxBoxSizer* BoxSizer2;
-		wxStaticText* StaticText1;
-		wxStaticLine* StaticLine1;
 		wxListBox* m_GamesList;
-		wxBoxSizer* BoxSizer4;
-		wxBoxSizer* BoxSizer1;
+		wxPanel* Panel1;
 		wxStaticBoxSizer* StaticBoxSizer1;
+		wxStaticLine* StaticLine1;
+		wxStaticText* StaticText1;
 		//*)
 
 	private:

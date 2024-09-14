@@ -8,9 +8,9 @@
 
 
 //(*HeadersPCH(GenericSelectPath)
-#include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -34,22 +34,22 @@ class GenericSelectPath: public wxPanel
 		}
 
 		//(*Identifiers(GenericSelectPath)
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICTEXT2;
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_STATICTEXT2;
+		static const wxWindowID ID_TEXTCTRL1;
+		static const wxWindowID ID_BUTTON1;
 		//*)
 
 		//(*Handlers(GenericSelectPath)
 		//*)
 
 		//(*Declarations(GenericSelectPath)
+		wxBoxSizer* BoxSizer1;
 		wxBoxSizer* BoxSizer2;
 		wxButton* btnBrowse;
-		wxTextCtrl* txtFolder;
-		wxStaticText* lblLabel;
-		wxBoxSizer* BoxSizer1;
 		wxStaticText* lblDescr;
+		wxStaticText* lblLabel;
+		wxTextCtrl* txtFolder;
 		//*)
 
 	private:

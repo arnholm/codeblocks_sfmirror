@@ -9,16 +9,16 @@
 #include <wx/wxprec.h>
 
 //(*Headers(CCDebugInfo)
-#include <wx/combobox.h>
-#include <wx/sizer.h>
-#include <wx/notebook.h>
-#include <wx/button.h>
-#include <wx/panel.h>
 #include "scrollingdialog.h"
+#include <wx/button.h>
+#include <wx/combobox.h>
+#include <wx/listbox.h>
+#include <wx/notebook.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/listbox.h>
 //*)
 
 class ParserBase;
@@ -41,45 +41,45 @@ public:
     void FillDescendants();
 
     //(*Identifiers(CCDebugInfo)
-    static const long ID_TEXTCTRL1;
-    static const long ID_BUTTON1;
-    static const long ID_STATICTEXT18;
-    static const long ID_STATICTEXT2;
-    static const long ID_STATICTEXT10;
-    static const long ID_STATICTEXT12;
-    static const long ID_STATICTEXT4;
-    static const long ID_STATICTEXT6;
-    static const long ID_STATICTEXT8;
-    static const long ID_STATICTEXT37;
-    static const long ID_STATICTEXT41;
-    static const long ID_STATICTEXT14;
-    static const long ID_STATICTEXT16;
-    static const long ID_STATICTEXT33;
-    static const long ID_STATICTEXT39;
-    static const long ID_STATICTEXT1;
-    static const long ID_STATICTEXT20;
-    static const long ID_STATICTEXT24;
-    static const long ID_BUTTON4;
-    static const long ID_COMBOBOX3;
-    static const long ID_BUTTON5;
-    static const long ID_COMBOBOX2;
-    static const long ID_BUTTON3;
-    static const long ID_COMBOBOX1;
-    static const long ID_BUTTON2;
-    static const long ID_STATICTEXT26;
-    static const long ID_BUTTON7;
-    static const long ID_STATICTEXT28;
-    static const long ID_BUTTON8;
-    static const long ID_STATICTEXT35;
-    static const long ID_PANEL1;
-    static const long ID_LISTBOX1;
-    static const long ID_PANEL2;
-    static const long ID_LISTBOX2;
-    static const long ID_PANEL3;
-    static const long ID_LISTBOX3;
-    static const long ID_PANEL4;
-    static const long ID_NOTEBOOK1;
-    static const long ID_BUTTON6;
+    static const wxWindowID ID_TEXTCTRL1;
+    static const wxWindowID ID_BUTTON1;
+    static const wxWindowID ID_STATICTEXT18;
+    static const wxWindowID ID_STATICTEXT2;
+    static const wxWindowID ID_STATICTEXT10;
+    static const wxWindowID ID_STATICTEXT12;
+    static const wxWindowID ID_STATICTEXT4;
+    static const wxWindowID ID_STATICTEXT6;
+    static const wxWindowID ID_STATICTEXT8;
+    static const wxWindowID ID_STATICTEXT37;
+    static const wxWindowID ID_STATICTEXT41;
+    static const wxWindowID ID_STATICTEXT14;
+    static const wxWindowID ID_STATICTEXT16;
+    static const wxWindowID ID_STATICTEXT33;
+    static const wxWindowID ID_STATICTEXT39;
+    static const wxWindowID ID_STATICTEXT1;
+    static const wxWindowID ID_STATICTEXT20;
+    static const wxWindowID ID_STATICTEXT24;
+    static const wxWindowID ID_BUTTON4;
+    static const wxWindowID ID_COMBOBOX3;
+    static const wxWindowID ID_BUTTON5;
+    static const wxWindowID ID_COMBOBOX2;
+    static const wxWindowID ID_BUTTON3;
+    static const wxWindowID ID_COMBOBOX1;
+    static const wxWindowID ID_BUTTON2;
+    static const wxWindowID ID_STATICTEXT26;
+    static const wxWindowID ID_BUTTON7;
+    static const wxWindowID ID_STATICTEXT28;
+    static const wxWindowID ID_BUTTON8;
+    static const wxWindowID ID_STATICTEXT35;
+    static const wxWindowID ID_PANEL1;
+    static const wxWindowID ID_LISTBOX1;
+    static const wxWindowID ID_PANEL2;
+    static const wxWindowID ID_LISTBOX2;
+    static const wxWindowID ID_PANEL3;
+    static const wxWindowID ID_LISTBOX3;
+    static const wxWindowID ID_PANEL4;
+    static const wxWindowID ID_NOTEBOOK1;
+    static const wxWindowID ID_BUTTON6;
     //*)
 
 protected:
@@ -96,38 +96,38 @@ protected:
     //*)
 
     //(*Declarations(CCDebugInfo)
-    wxComboBox* cmbChildren;
-    wxStaticText* txtFullType;
-    wxComboBox* cmbAncestors;
-    wxTextCtrl* txtFilter;
-    wxStaticText* txtArgsStripped;
-    wxListBox* lstMacros;
-    wxStaticText* txtID;
-    wxStaticText* txtParent;
-    wxStaticText* txtArgs;
-    wxStaticText* txtNamespace;
-    wxStaticText* txtBaseType;
-    wxStaticText* txtIsOp;
     wxBoxSizer* BoxSizer11;
-    wxStaticText* txtScope;
-    wxPanel* Panel4;
-    wxStaticText* txtKind;
-    wxStaticText* txtDeclFile;
-    wxListBox* lstFiles;
-    wxListBox* lstDirs;
-    wxStaticText* txtTemplateArg;
-    wxStaticText* txtIsNoExcept;
-    wxStaticText* txtInfo;
-    wxStaticText* txtName;
-    wxStaticText* txtIsLocal;
-    wxStaticText* txtUserData;
-    wxStaticText* txtIsTemp;
     wxBoxSizer* BoxSizer12;
-    wxStaticText* txtImplFile;
-    wxComboBox* cmbDescendants;
-    wxButton* btnSave;
     wxBoxSizer* BoxSizer5;
+    wxButton* btnSave;
+    wxComboBox* cmbAncestors;
+    wxComboBox* cmbChildren;
+    wxComboBox* cmbDescendants;
+    wxListBox* lstDirs;
+    wxListBox* lstFiles;
+    wxListBox* lstMacros;
+    wxPanel* Panel4;
+    wxStaticText* txtArgs;
+    wxStaticText* txtArgsStripped;
+    wxStaticText* txtBaseType;
+    wxStaticText* txtDeclFile;
+    wxStaticText* txtFullType;
+    wxStaticText* txtID;
+    wxStaticText* txtImplFile;
+    wxStaticText* txtInfo;
     wxStaticText* txtIsConst;
+    wxStaticText* txtIsLocal;
+    wxStaticText* txtIsNoExcept;
+    wxStaticText* txtIsOp;
+    wxStaticText* txtIsTemp;
+    wxStaticText* txtKind;
+    wxStaticText* txtName;
+    wxStaticText* txtNamespace;
+    wxStaticText* txtParent;
+    wxStaticText* txtScope;
+    wxStaticText* txtTemplateArg;
+    wxStaticText* txtUserData;
+    wxTextCtrl* txtFilter;
     //*)
 
 private:

@@ -2,10 +2,10 @@
 #define AVCHANGESDLG_H
 
 //(*Headers(avChangesDlg)
+#include "scrollingdialog.h"
+#include <wx/button.h>
 #include <wx/grid.h>
 #include <wx/sizer.h>
-#include <wx/button.h>
-#include "scrollingdialog.h"
 //*)
 
 class avChangesDlg: public wxScrollingDialog
@@ -19,13 +19,13 @@ class avChangesDlg: public wxScrollingDialog
 		virtual ~avChangesDlg();
 
 		//(*Identifiers(avChangesDlg)
-		static const long ID_ADD_BUTTON;
-		static const long ID_EDIT_BUTTON;
-		static const long ID_DELETE_BUTTON;
-		static const long ID_CHANGES_GRID;
-		static const long ID_SAVE_BUTTON;
-		static const long ID_WRITE_BUTTON;
-		static const long ID_CANCEL_BUTTON;
+		static const wxWindowID ID_ADD_BUTTON;
+		static const wxWindowID ID_EDIT_BUTTON;
+		static const wxWindowID ID_DELETE_BUTTON;
+		static const wxWindowID ID_CHANGES_GRID;
+		static const wxWindowID ID_SAVE_BUTTON;
+		static const wxWindowID ID_WRITE_BUTTON;
+		static const wxWindowID ID_CANCEL_BUTTON;
 		//*)
 
 	protected:
@@ -41,13 +41,13 @@ class avChangesDlg: public wxScrollingDialog
 		//*)
 
 		//(*Declarations(avChangesDlg)
+		wxBoxSizer* BoxSizer1;
+		wxButton* btnAdd;
+		wxButton* btnCancel;
 		wxButton* btnDelete;
 		wxButton* btnEdit;
-		wxButton* btnWrite;
-		wxBoxSizer* BoxSizer1;
-		wxButton* btnCancel;
-		wxButton* btnAdd;
 		wxButton* btnSave;
+		wxButton* btnWrite;
 		wxGrid* grdChanges;
 		//*)
 

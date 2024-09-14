@@ -39,15 +39,15 @@ class EditProjectGlobsDlg: public wxDialog
 	protected:
 
 		//(*Identifiers(EditProjectGlobsDlg)
-		static const long ID_TEXTPATH;
-		static const long ID_BTN_BROWSE;
-		static const long ID_BTN_OTHER;
-		static const long ID_TXT_WILDCART;
-		static const long ID_CHECK_RECURSIVE;
-		static const long ID_STATICTEXT1;
-		static const long ID_CHK_ALL_NONE;
-		static const long ID_LST_TARGETS;
-		static const long ID_CHECK_ADD_TO_PROJECT;
+		static const wxWindowID ID_TEXTPATH;
+		static const wxWindowID ID_BTN_BROWSE;
+		static const wxWindowID ID_BTN_OTHER;
+		static const wxWindowID ID_TXT_WILDCART;
+		static const wxWindowID ID_CHECK_RECURSIVE;
+		static const wxWindowID ID_STATICTEXT1;
+		static const wxWindowID ID_CHK_ALL_NONE;
+		static const wxWindowID ID_LST_TARGETS;
+		static const wxWindowID ID_CHECK_ADD_TO_PROJECT;
 		//*)
 
 	private:

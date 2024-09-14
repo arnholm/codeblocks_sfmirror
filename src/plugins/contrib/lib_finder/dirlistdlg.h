@@ -31,11 +31,11 @@
 
 //(*Headers(DirListDlg)
 #include "scrollingdialog.h"
-class wxTextCtrl;
-class wxStaticBoxSizer;
-class wxFlexGridSizer;
-class wxButton;
 class wxBoxSizer;
+class wxButton;
+class wxFlexGridSizer;
+class wxStaticBoxSizer;
+class wxTextCtrl;
 //*)
 
 
@@ -53,12 +53,12 @@ class DirListDlg: public wxScrollingDialog
 	private:
 
         //(*Declarations(DirListDlg)
-        wxFlexGridSizer* FlexGridSizer1;
-        wxButton* Button4;
-        wxButton* Button3;
-        wxTextCtrl* DirList;
-        wxBoxSizer* BoxSizer2;
         wxBoxSizer* BoxSizer1;
+        wxBoxSizer* BoxSizer2;
+        wxButton* Button3;
+        wxButton* Button4;
+        wxFlexGridSizer* FlexGridSizer1;
+        wxTextCtrl* DirList;
         //*)
 
 		//(*Handlers(DirListDlg)
@@ -69,11 +69,11 @@ class DirListDlg: public wxScrollingDialog
 		//*)
 
 		//(*Identifiers(DirListDlg)
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
-		static const long ID_BUTTON2;
-		static const long ID_BUTTON3;
-		static const long ID_BUTTON4;
+		static const wxWindowID ID_TEXTCTRL1;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_BUTTON2;
+		static const wxWindowID ID_BUTTON3;
+		static const wxWindowID ID_BUTTON4;
 		//*)
 
 		DECLARE_EVENT_TABLE()

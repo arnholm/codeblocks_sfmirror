@@ -35,18 +35,18 @@ private:
   //*)
 
   //(*Identifiers(Addr2LineUIDialog)
-  static const long ID_CRASH_LOG;
-  static const long ID_ADDR2LINE;
-  static const long ID_DIR_PREPEND;
-  static const long ID_CHK_REPLACE;
-  static const long ID_TXT_REPLACE_THIS;
-  static const long ID_LBL_REPLACE;
-  static const long ID_TXT_REPLACE_THAT;
-  static const long ID_CHK_SKIP_UNRESOLVABLE;
-  static const long ID_TXT_CRASH_LOG_CONTENT;
-  static const long ID_TXT_RESULT;
-  static const long ID_BTN_OPERATE;
-  static const long ID_BTN_QUIT;
+  static const wxWindowID ID_CRASH_LOG;
+  static const wxWindowID ID_ADDR2LINE;
+  static const wxWindowID ID_DIR_PREPEND;
+  static const wxWindowID ID_CHK_REPLACE;
+  static const wxWindowID ID_TXT_REPLACE_THIS;
+  static const wxWindowID ID_LBL_REPLACE;
+  static const wxWindowID ID_TXT_REPLACE_THAT;
+  static const wxWindowID ID_CHK_SKIP_UNRESOLVABLE;
+  static const wxWindowID ID_TXT_CRASH_LOG_CONTENT;
+  static const wxWindowID ID_TXT_RESULT;
+  static const wxWindowID ID_BTN_OPERATE;
+  static const wxWindowID ID_BTN_QUIT;
   //*)
 
   //(*Declarations(Addr2LineUIDialog)

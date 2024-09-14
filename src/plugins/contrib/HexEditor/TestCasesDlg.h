@@ -24,11 +24,11 @@
 #define TESTCASESDLG_H
 
 //(*Headers(TestCasesDlg)
-#include <wx/sizer.h>
-#include <wx/button.h>
 #include "scrollingdialog.h"
-#include <wx/timer.h>
+#include <wx/button.h>
 #include <wx/listbox.h>
+#include <wx/sizer.h>
+#include <wx/timer.h>
 //*)
 #include <wx/thread.h>
 
@@ -49,15 +49,15 @@ class TestCasesDlg: public wxScrollingDialog, public TestCasesBase::Output
     private:
 
 		//(*Declarations(TestCasesDlg)
-		wxListBox* ListBox1;
 		wxButton* Button1;
+		wxListBox* ListBox1;
 		wxTimer Timer1;
 		//*)
 
 		//(*Identifiers(TestCasesDlg)
-		static const long ID_LISTBOX1;
-		static const long ID_BUTTON1;
-		static const long ID_TIMER1;
+		static const wxWindowID ID_LISTBOX1;
+		static const wxWindowID ID_BUTTON1;
+		static const wxWindowID ID_TIMER1;
 		//*)
 
 		//(*Handlers(TestCasesDlg)

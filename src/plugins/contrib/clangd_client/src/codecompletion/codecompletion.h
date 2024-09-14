@@ -521,7 +521,7 @@ private:
         };
 
         ImageId() : id(Last), size(-1) {}
-        ImageId(Id id, int size) : id(id), size(size) {}
+        ImageId(Id _id, int _size) : id(_id), size(_size) {}
 
         bool operator==(const ImageId &o) const
         {
@@ -731,7 +731,7 @@ private:
         bCCLibExists =  wxFileName(ccLibFolder + sep + oldCC_PluginLibName).Exists();
         if (not bCCLibExists) // Check if local plugins folder has codecompletion lib
         {
-            wxString ccLibFolder = ConfigManager::GetPluginsFolder(false); //Get local plugins folder
+            ccLibFolder = ConfigManager::GetPluginsFolder(false); //Get local plugins folder
             bCCLibExists = wxFileName(ccLibFolder + sep + oldCC_PluginLibName).Exists();
         }
         return (oldCC_enabled and bCCLibExists);
