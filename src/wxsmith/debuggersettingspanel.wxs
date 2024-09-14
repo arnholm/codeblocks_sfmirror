@@ -41,7 +41,6 @@
 					<label>Info</label>
 					<object class="sizeritem">
 						<object class="wxTextCtrl" name="ID_TEXTCTRL_INFO" variable="textInfo" member="no">
-							<size>186,243</size>
 							<enabled>0</enabled>
 						</object>
 						<flag>wxEXPAND</flag>

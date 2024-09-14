@@ -16,7 +16,6 @@
 					<orient>wxVERTICAL</orient>
 					<object class="sizeritem">
 						<object class="wxListBox" name="ID_LISTBOX1" variable="GenericChoiceList" member="yes">
-							<size>232,131</size>
 							<style>wxLB_SINGLE|wxLB_HSCROLL</style>
 						</object>
 						<flag>wxALL|wxEXPAND</flag>

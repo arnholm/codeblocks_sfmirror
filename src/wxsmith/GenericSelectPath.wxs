@@ -20,9 +20,7 @@
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="BoxSizer2" member="yes">
 					<object class="sizeritem">
-						<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="txtFolder" member="yes">
-							<value>Text</value>
-						</object>
+						<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="txtFolder" member="yes" />
 						<flag>wxALL|wxALIGN_TOP</flag>
 						<option>1</option>
 					</object>

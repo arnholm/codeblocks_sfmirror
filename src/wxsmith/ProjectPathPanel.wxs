@@ -35,7 +35,6 @@
 				<object class="wxBoxSizer" variable="BoxSizer2" member="yes">
 					<object class="sizeritem">
 						<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="txtPrjPath" member="yes">
-							<value>Text</value>
 							<handler function="OnFullPathChanged" entry="EVT_TEXT" />
 						</object>
 						<flag>wxALIGN_CENTER_VERTICAL</flag>

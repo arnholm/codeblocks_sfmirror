@@ -10,7 +10,7 @@
 			<object class="sizeritem">
 				<object class="wxPanel" name="wxID_ANY" variable="header" member="no">
 					<bg>#004080</bg>
-					<style>wxNO_BORDER|wxTRANSPARENT_WINDOW</style>
+					<style>wxBORDER_NONE|wxTRANSPARENT_WINDOW</style>
 					<object class="wxBoxSizer" variable="headerSizer" member="no">
 						<object class="sizeritem">
 							<object class="wxStaticText" name="ID_LABEL_ACTIVE_INFO" variable="m_activeInfo" member="yes">
@@ -21,7 +21,7 @@
 									<size>12</size>
 									<weight>bold</weight>
 								</font>
-								<style>wxNO_BORDER|wxTRANSPARENT_WINDOW</style>
+								<style>wxBORDER_NONE|wxTRANSPARENT_WINDOW</style>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>

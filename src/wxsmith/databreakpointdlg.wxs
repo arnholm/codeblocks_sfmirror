@@ -15,7 +15,6 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxTextCtrl" name="ID_TXT_DATA_EXPRESION" variable="m_dataExpression" member="yes">
-					<size>265,23</size>
 					<focused>1</focused>
 					<style>wxTE_PROCESS_ENTER</style>
 				</object>
