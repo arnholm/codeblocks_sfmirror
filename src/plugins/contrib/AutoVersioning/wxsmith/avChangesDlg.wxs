@@ -2,7 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="avChangesDlg">
 		<title>AutoVersioning :: Changes Log</title>
-		<size>700,300</size>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxCAPTION|wxRESIZE_BORDER</style>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="yes">

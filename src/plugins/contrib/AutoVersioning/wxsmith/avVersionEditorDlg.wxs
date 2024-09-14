@@ -3,7 +3,6 @@
 	<object class="wxScrollingDialog" name="avVersionEditorDlg">
 		<title>Auto Versioning Editor</title>
 		<centered>1</centered>
-		<size>469,364</size>
 		<font>
 			<size>10</size>
 		</font>
@@ -14,7 +13,6 @@
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_AV_NOTEBOOK" variable="nbAutoVersioning" member="yes">
-					<size>456,283</size>
 					<focused>1</focused>
 					<maxsize>-1,-1</maxsize>
 					<object class="notebookpage">
@@ -490,7 +488,6 @@
 														<object class="sizeritem">
 															<object class="wxButton" name="ID_HEADERPATH_BUTTON" variable="btnHeaderPath" member="yes">
 																<label>...</label>
-																<size>23,26</size>
 																<tooltip>Select header path and filename</tooltip>
 																<handler function="OnHeaderPathClick" entry="EVT_BUTTON" />
 															</object>
@@ -551,7 +548,6 @@
 									<object class="wxBoxSizer" variable="svnSizer" member="yes">
 										<object class="sizeritem">
 											<object class="wxTextCtrl" name="ID_SVNDIR_TEXT" variable="txtSvnDir" member="yes">
-												<size>236,26</size>
 												<enabled>0</enabled>
 												<tooltip>Current SVN directory.</tooltip>
 											</object>
@@ -562,7 +558,6 @@
 										<object class="sizeritem">
 											<object class="wxButton" name="ID_SVNDIR_BUTTON" variable="btnSvnDir" member="yes">
 												<label>...</label>
-												<size>23,26</size>
 												<enabled>0</enabled>
 												<tooltip>Choose current svn directory project&#x0A;if different from the project default.</tooltip>
 												<handler function="OnSvnDirectoryClick" entry="EVT_BUTTON" />
@@ -611,7 +606,6 @@
 										<object class="sizeritem">
 											<object class="wxButton" name="ID_CHANGESLOGPATH_BUTTON" variable="btnChangesLogPath" member="yes">
 												<label>...</label>
-												<size>23,26</size>
 												<tooltip>Select ChangesLog path and filename</tooltip>
 												<handler function="OnChangesLogPathClick" entry="EVT_BUTTON" />
 											</object>
@@ -645,7 +639,6 @@
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_FORMATS_STATICTEXT" variable="lblChangesFormats" member="yes">
 										<label>Major: %M, Minor: %m, Build: %b, Revision: %r, SVN Revision: %s, Date: %d, Month: %o, Year: %y, Ubuntu Style Version: %u, Status: %T, Status Short: %t, Project title: %p</label>
-										<size>413,80</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL</flag>
 									<border>5</border>

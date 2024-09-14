@@ -1,8 +1,8 @@
 #include "avChangesDlg.h"
 
 //(*InternalHeaders(avChangesDlg)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 #include <wx/arrstr.h>
@@ -22,13 +22,13 @@ const wxString strTypes[] =
 const wxArrayString g_TypesArray(sizeof(strTypes) / sizeof(wxString), strTypes);
 
 //(*IdInit(avChangesDlg)
-const long avChangesDlg::ID_ADD_BUTTON = wxNewId();
-const long avChangesDlg::ID_EDIT_BUTTON = wxNewId();
-const long avChangesDlg::ID_DELETE_BUTTON = wxNewId();
-const long avChangesDlg::ID_CHANGES_GRID = wxNewId();
-const long avChangesDlg::ID_SAVE_BUTTON = wxNewId();
-const long avChangesDlg::ID_WRITE_BUTTON = wxNewId();
-const long avChangesDlg::ID_CANCEL_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_ADD_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_EDIT_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_DELETE_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_CHANGES_GRID = wxNewId();
+const wxWindowID avChangesDlg::ID_SAVE_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_WRITE_BUTTON = wxNewId();
+const wxWindowID avChangesDlg::ID_CANCEL_BUTTON = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(avChangesDlg,wxScrollingDialog)
@@ -39,11 +39,10 @@ END_EVENT_TABLE()
 avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
 {
     //(*Initialize(avChangesDlg)
-    wxBoxSizer* sizerConfirmation;
     wxBoxSizer* sizerButtons;
+    wxBoxSizer* sizerConfirmation;
 
     Create(parent, wxID_ANY, _("AutoVersioning :: Changes Log"), wxDefaultPosition, wxDefaultSize, wxCAPTION|wxRESIZE_BORDER, _T("wxID_ANY"));
-    SetClientSize(wxSize(700,300));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     sizerButtons = new wxBoxSizer(wxHORIZONTAL);
     btnAdd = new wxButton(this, ID_ADD_BUTTON, _("Add"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_ADD_BUTTON"));
@@ -71,14 +70,15 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
     sizerConfirmation->Add(btnCancel, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(sizerConfirmation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
     SetSizer(BoxSizer1);
-    Layout();
+    BoxSizer1->SetSizeHints(this);
+    Center();
 
-    Connect(ID_ADD_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnAddClick);
-    Connect(ID_EDIT_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnEditClick);
-    Connect(ID_DELETE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnDeleteClick);
-    Connect(ID_SAVE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnSaveClick);
-    Connect(ID_WRITE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnWriteClick);
-    Connect(ID_CANCEL_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&avChangesDlg::OnBtnCancelClick);
+    Connect(ID_ADD_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnAddClick));
+    Connect(ID_EDIT_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnEditClick));
+    Connect(ID_DELETE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnDeleteClick));
+    Connect(ID_SAVE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnSaveClick));
+    Connect(ID_WRITE_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnWriteClick));
+    Connect(ID_CANCEL_BUTTON,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(avChangesDlg::OnBtnCancelClick));
     //*)
 
     grdChanges->CreateGrid(0, 2);
