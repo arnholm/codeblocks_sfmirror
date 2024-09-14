@@ -25,8 +25,8 @@
 #include "ExpressionExecutor.h"
 
 //(*InternalHeaders(SearchDialog)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 #include <globals.h>
@@ -68,13 +68,13 @@ namespace
 }
 
 //(*IdInit(SearchDialog)
-const long SearchDialog::ID_COMBOBOX1 = wxNewId();
-const long SearchDialog::ID_RADIOBUTTON1 = wxNewId();
-const long SearchDialog::ID_RADIOBUTTON2 = wxNewId();
-const long SearchDialog::ID_RADIOBUTTON3 = wxNewId();
-const long SearchDialog::ID_BUTTON1 = wxNewId();
-const long SearchDialog::ID_RADIOBOX2 = wxNewId();
-const long SearchDialog::ID_RADIOBOX1 = wxNewId();
+const wxWindowID SearchDialog::ID_COMBOBOX1 = wxNewId();
+const wxWindowID SearchDialog::ID_RADIOBUTTON1 = wxNewId();
+const wxWindowID SearchDialog::ID_RADIOBUTTON2 = wxNewId();
+const wxWindowID SearchDialog::ID_RADIOBUTTON3 = wxNewId();
+const wxWindowID SearchDialog::ID_BUTTON1 = wxNewId();
+const wxWindowID SearchDialog::ID_RADIOBOX2 = wxNewId();
+const wxWindowID SearchDialog::ID_RADIOBOX1 = wxNewId();
 //*)
 
 SearchDialog::SearchDialog( wxWindow* parent, FileContentBase* content, FileContentBase::OffsetT current ): m_Content( content ), m_Offset( current )
@@ -85,11 +85,11 @@ SearchDialog::SearchDialog( wxWindow* parent, FileContentBase* content, FileCont
 void SearchDialog::BuildContent(wxWindow* parent)
 {
 	//(*Initialize(SearchDialog)
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
-	wxStdDialogButtonSizer* StdDialogButtonSizer1;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
 	Create(parent, wxID_ANY, _("Search..."), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -105,23 +105,23 @@ void SearchDialog::BuildContent(wxWindow* parent)
 	m_SearchTypeExpression = new wxRadioButton(this, ID_RADIOBUTTON3, _("Expression"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_RADIOBUTTON3"));
 	BoxSizer2->Add(m_SearchTypeExpression, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(13,8,1, wxALIGN_CENTER_VERTICAL, 5);
-	Button1 = new wxButton(this, ID_BUTTON1, _("\?"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
+	Button1 = new wxButton(this, ID_BUTTON1, _T("\?"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer2->Add(Button1, 0, wxRIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1->Add(BoxSizer2, 0, wxEXPAND, 5);
 	BoxSizer1->Add(StaticBoxSizer1, 0, wxALL|wxEXPAND, 5);
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
 	wxString __wxRadioBoxChoices_1[2] =
 	{
-		_("Current position"),
-		_("Beginning")
+	  _("Current position"),
+	  _("Beginning")
 	};
 	m_StartFrom = new wxRadioBox(this, ID_RADIOBOX2, _("Start from"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOBOX2"));
 	m_StartFrom->SetSelection(0);
 	BoxSizer3->Add(m_StartFrom, 1, wxALL|wxEXPAND, 5);
 	wxString __wxRadioBoxChoices_2[2] =
 	{
-		_("Up"),
-		_("Down")
+	  _("Up"),
+	  _("Down")
 	};
 	m_Direction = new wxRadioBox(this, ID_RADIOBOX1, _("Direction"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOBOX1"));
 	m_Direction->SetSelection(1);
@@ -133,11 +133,11 @@ void SearchDialog::BuildContent(wxWindow* parent)
 	StdDialogButtonSizer1->Realize();
 	BoxSizer1->Add(StdDialogButtonSizer1, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
 	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
+	Center();
 
-	Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SearchDialog::OnOk);
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SearchDialog::OnButton1Click);
+	Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(SearchDialog::OnOk));
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SearchDialog::OnButton1Click));
 	//*)
 
 	ConfigManager* cfg = GetConfigManager();

@@ -23,14 +23,14 @@
 #include "TestCasesDlg.h"
 
 //(*InternalHeaders(TestCasesDlg)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(TestCasesDlg)
-const long TestCasesDlg::ID_LISTBOX1 = wxNewId();
-const long TestCasesDlg::ID_BUTTON1 = wxNewId();
-const long TestCasesDlg::ID_TIMER1 = wxNewId();
+const wxWindowID TestCasesDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID TestCasesDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID TestCasesDlg::ID_TIMER1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(TestCasesDlg,wxScrollingDialog)
@@ -53,7 +53,7 @@ void TestCasesDlg::BuildContent(wxWindow* parent)
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Test log:"));
-	ListBox1 = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxSize(410,268), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
+	ListBox1 = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
 	StaticBoxSizer1->Add(ListBox1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
 	Button1 = new wxButton(this, ID_BUTTON1, _("Stop"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	StaticBoxSizer1->Add(Button1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT, 5);
@@ -61,12 +61,12 @@ void TestCasesDlg::BuildContent(wxWindow* parent)
 	SetSizer(BoxSizer1);
 	Timer1.SetOwner(this, ID_TIMER1);
 	Timer1.Start(50, false);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
+	Center();
 
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TestCasesDlg::OnButton1Click);
-	Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&TestCasesDlg::OnTimer1Trigger);
-	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&TestCasesDlg::OnClose);
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(TestCasesDlg::OnButton1Click));
+	Connect(ID_TIMER1,wxEVT_TIMER,wxTimerEventHandler(TestCasesDlg::OnTimer1Trigger));
+	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,wxCloseEventHandler(TestCasesDlg::OnClose));
 	//*)
 
     m_Running     = true;

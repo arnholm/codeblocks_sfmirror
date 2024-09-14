@@ -32,23 +32,23 @@
 #include <globals.h>
 
 //(*InternalHeaders(ExpressionTester)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(ExpressionTester)
-const long ExpressionTester::ID_STATICTEXT1 = wxNewId();
-const long ExpressionTester::ID_TEXTCTRL1 = wxNewId();
-const long ExpressionTester::ID_BUTTON3 = wxNewId();
-const long ExpressionTester::ID_STATICTEXT2 = wxNewId();
-const long ExpressionTester::ID_STATICTEXT3 = wxNewId();
-const long ExpressionTester::ID_STATICTEXT4 = wxNewId();
-const long ExpressionTester::ID_STATICTEXT5 = wxNewId();
-const long ExpressionTester::ID_STATICTEXT6 = wxNewId();
-const long ExpressionTester::ID_TEXTCTRL2 = wxNewId();
-const long ExpressionTester::ID_BUTTON4 = wxNewId();
-const long ExpressionTester::ID_BUTTON2 = wxNewId();
-const long ExpressionTester::ID_BUTTON1 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ExpressionTester::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID ExpressionTester::ID_BUTTON3 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT2 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT3 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT4 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT5 = wxNewId();
+const wxWindowID ExpressionTester::ID_STATICTEXT6 = wxNewId();
+const wxWindowID ExpressionTester::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID ExpressionTester::ID_BUTTON4 = wxNewId();
+const wxWindowID ExpressionTester::ID_BUTTON2 = wxNewId();
+const wxWindowID ExpressionTester::ID_BUTTON1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ExpressionTester,wxScrollingDialog)
@@ -66,10 +66,10 @@ ExpressionTester::ExpressionTester( wxWindow* parent, FileContentBase* content, 
 void ExpressionTester::BuildContent(wxWindow* parent)
 {
 	//(*Initialize(ExpressionTester)
-	wxFlexGridSizer* FlexGridSizer1;
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
+	wxFlexGridSizer* FlexGridSizer1;
 	wxStaticBoxSizer* StaticBoxSizer1;
 
 	Create(parent, wxID_ANY, _("ExpressionTester"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
@@ -81,7 +81,7 @@ void ExpressionTester::BuildContent(wxWindow* parent)
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Expr:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer1->Add(StaticText1, 1, wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-	m_Expr = new wxTextCtrl(this, ID_TEXTCTRL1, _("1 + 2 * 3"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	m_Expr = new wxTextCtrl(this, ID_TEXTCTRL1, _T("1 + 2 * 3"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	BoxSizer3->Add(m_Expr, 1, wxALIGN_CENTER_VERTICAL, 5);
 	Button3 = new wxButton(this, ID_BUTTON3, _("v"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer3->Add(Button3, 0, wxLEFT|wxEXPAND, 5);
@@ -104,7 +104,7 @@ void ExpressionTester::BuildContent(wxWindow* parent)
 	Button4->SetToolTip(_("Perform automatic parser and executor test"));
 	BoxSizer2->Add(Button4, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(15,9,1, wxEXPAND, 5);
-	Button2 = new wxButton(this, ID_BUTTON2, _("\?"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
+	Button2 = new wxButton(this, ID_BUTTON2, _T("\?"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
 	BoxSizer2->Add(Button2, 0, wxRIGHT|wxEXPAND, 5);
 	Button1 = new wxButton(this, ID_BUTTON1, _("Parse"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer2->Add(Button1, 0, wxRIGHT|wxEXPAND, 5);
@@ -112,15 +112,14 @@ void ExpressionTester::BuildContent(wxWindow* parent)
 	BoxSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
 	BoxSizer1->Add(357,2,0, wxEXPAND, 5);
 	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 	Center();
 
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&ExpressionTester::OnButton1Click);
-	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExpressionTester::OnButton3Click);
-	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExpressionTester::OnButton4Click);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExpressionTester::OnButton2Click);
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExpressionTester::OnButton1Click);
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(ExpressionTester::OnButton1Click));
+	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ExpressionTester::OnButton3Click));
+	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ExpressionTester::OnButton4Click));
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ExpressionTester::OnButton2Click));
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ExpressionTester::OnButton1Click));
 	//*)
 }
 

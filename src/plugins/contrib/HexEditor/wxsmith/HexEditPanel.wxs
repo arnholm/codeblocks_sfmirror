@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxPanel" name="HexEditPanel">
-		<size>79,51</size>
 		<extra_code>&#x0A;--- End of comment which prevents calling Create() --&#x0A;*/&#x0A;&#x0A;</extra_code>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="yes">

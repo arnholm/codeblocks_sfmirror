@@ -24,19 +24,19 @@
 #include <configmanager.h>
 
 //(*InternalHeaders(SelectStoredExpressionDlg)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(SelectStoredExpressionDlg)
-const long SelectStoredExpressionDlg::ID_LISTBOX1 = wxNewId();
-const long SelectStoredExpressionDlg::ID_STATICTEXT1 = wxNewId();
-const long SelectStoredExpressionDlg::ID_TEXTCTRL1 = wxNewId();
-const long SelectStoredExpressionDlg::ID_BUTTON1 = wxNewId();
-const long SelectStoredExpressionDlg::ID_BUTTON2 = wxNewId();
-const long SelectStoredExpressionDlg::ID_BUTTON3 = wxNewId();
-const long SelectStoredExpressionDlg::ID_BUTTON4 = wxNewId();
-const long SelectStoredExpressionDlg::ID_TIMER1 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID SelectStoredExpressionDlg::ID_TIMER1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(SelectStoredExpressionDlg,wxScrollingDialog)
@@ -56,16 +56,16 @@ SelectStoredExpressionDlg::SelectStoredExpressionDlg(wxWindow* parent,const wxSt
 void SelectStoredExpressionDlg::BuildContent(wxWindow* parent)
 {
 	//(*Initialize(SelectStoredExpressionDlg)
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
-	wxStdDialogButtonSizer* StdDialogButtonSizer1;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
 	Create(parent, wxID_ANY, _("Stored Expressions"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Stored expressions"));
-	m_Expressions = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxSize(292,119), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
+	m_Expressions = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
 	StaticBoxSizer1->Add(m_Expressions, 1, wxALL|wxEXPAND, 5);
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -91,18 +91,18 @@ void SelectStoredExpressionDlg::BuildContent(wxWindow* parent)
 	BoxSizer1->Add(StdDialogButtonSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
 	SetSizer(BoxSizer1);
 	Timer1.SetOwner(this, ID_TIMER1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
+	Center();
 
-	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&SelectStoredExpressionDlg::Onm_ExpressionsSelect);
-	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::Onm_ExpressionsDClick);
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&SelectStoredExpressionDlg::Onm_FilterText);
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SelectStoredExpressionDlg::Onm_FilterTextEnter);
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnButton1Click);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnButton2Click);
-	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnButton3Click);
-	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnButton4Click);
-	Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnTimer1Trigger);
+	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(SelectStoredExpressionDlg::Onm_ExpressionsSelect));
+	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,wxCommandEventHandler(SelectStoredExpressionDlg::Onm_ExpressionsDClick));
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(SelectStoredExpressionDlg::Onm_FilterText));
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(SelectStoredExpressionDlg::Onm_FilterTextEnter));
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SelectStoredExpressionDlg::OnButton1Click));
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SelectStoredExpressionDlg::OnButton2Click));
+	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SelectStoredExpressionDlg::OnButton3Click));
+	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(SelectStoredExpressionDlg::OnButton4Click));
+	Connect(ID_TIMER1,wxEVT_TIMER,wxTimerEventHandler(SelectStoredExpressionDlg::OnTimer1Trigger));
 	//*)
 
 	Connect(wxID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SelectStoredExpressionDlg::OnOkClick);

@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="SelectStoredExpressionDlg">
 		<title>Stored Expressions</title>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
@@ -13,7 +14,6 @@
 					<object class="sizeritem">
 						<object class="wxListBox" name="ID_LISTBOX1" variable="m_Expressions" member="yes">
 							<default>-1</default>
-							<size>292,119</size>
 							<handler function="Onm_ExpressionsSelect" entry="EVT_LISTBOX" />
 							<handler function="Onm_ExpressionsDClick" entry="EVT_LISTBOX_DCLICK" />
 						</object>
