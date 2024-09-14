@@ -1,13 +1,13 @@
 #include "projectmissinglibs.h"
 
 //(*InternalHeaders(ProjectMissingLibs)
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
 #include <wx/statline.h>
 #include <wx/stattext.h>
+#include <wx/string.h>
 //*)
 #include <wx/stattext.h>
 #include <wx/checkbox.h>
@@ -18,20 +18,20 @@
 #include "processingdlg.h"
 
 //(*IdInit(ProjectMissingLibs)
-const long ProjectMissingLibs::ID_STATICTEXT1 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE2 = wxNewId();
-const long ProjectMissingLibs::ID_STATICTEXT2 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE3 = wxNewId();
-const long ProjectMissingLibs::ID_STATICTEXT3 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE10 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE11 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE12 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE13 = wxNewId();
-const long ProjectMissingLibs::ID_STATICLINE14 = wxNewId();
-const long ProjectMissingLibs::ID_PANEL1 = wxNewId();
-const long ProjectMissingLibs::ID_BUTTON1 = wxNewId();
-const long ProjectMissingLibs::ID_BUTTON2 = wxNewId();
-const long ProjectMissingLibs::ID_STATICTEXT4 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE2 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICTEXT2 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE3 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICTEXT3 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE10 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE11 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE12 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE13 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICLINE14 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_PANEL1 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_BUTTON1 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_BUTTON2 = wxNewId();
+const wxWindowID ProjectMissingLibs::ID_STATICTEXT4 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ProjectMissingLibs,wxScrollingDialog)
@@ -46,27 +46,27 @@ ProjectMissingLibs::ProjectMissingLibs(wxWindow* parent,wxArrayString& missingLi
     , m_DetectionManager( currentResults )
 {
 	//(*Initialize(ProjectMissingLibs)
-	wxStaticBoxSizer* StaticBoxSizer2;
-	wxStaticLine* StaticLine10;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer2;
-	wxStaticLine* StaticLine2;
+	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStaticBoxSizer* StaticBoxSizer2;
+	wxStaticLine* StaticLine10;
 	wxStaticLine* StaticLine11;
-	wxStaticLine* StaticLine14;
 	wxStaticLine* StaticLine12;
 	wxStaticLine* StaticLine13;
-	wxStaticText* StaticText1;
-	wxStaticText* StaticText3;
+	wxStaticLine* StaticLine14;
+	wxStaticLine* StaticLine2;
 	wxStaticLine* StaticLine3;
+	wxStaticText* StaticText1;
 	wxStaticText* StaticText2;
-	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStaticText* StaticText3;
 
 	Create(parent, wxID_ANY, _("Missing libraries definitions"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
 	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Unknown libraries"));
-	m_LibsBack = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(308,113), wxSUNKEN_BORDER|wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+	m_LibsBack = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(308,113), wxBORDER_SUNKEN|wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	m_LibsContainer = new wxFlexGridSizer(0, 5, 0, 0);
 	m_LibsContainer->AddGrowableCol(0);
 	m_LibsContainer->AddGrowableCol(2);
@@ -92,8 +92,6 @@ ProjectMissingLibs::ProjectMissingLibs(wxWindow* parent,wxArrayString& missingLi
 	StaticLine14 = new wxStaticLine(m_LibsBack, ID_STATICLINE14, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL, _T("ID_STATICLINE14"));
 	m_LibsContainer->Add(StaticLine14, 1, wxEXPAND, 5);
 	m_LibsBack->SetSizer(m_LibsContainer);
-	SetSizer(m_LibsContainer);
-	Layout();
 	StaticBoxSizer1->Add(m_LibsBack, 1, wxALL|wxEXPAND, 5);
 	FlexGridSizer2 = new wxFlexGridSizer(0, 2, 5, 5);
 	m_MissingDefsBtn = new wxButton(this, ID_BUTTON1, _("Download missing defs."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -107,11 +105,11 @@ ProjectMissingLibs::ProjectMissingLibs(wxWindow* parent,wxArrayString& missingLi
 	StaticBoxSizer2->Add(m_StatusText, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer1->Add(StaticBoxSizer2, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
 	SetSizer(FlexGridSizer1);
-	FlexGridSizer1->Fit(this);
 	FlexGridSizer1->SetSizeHints(this);
+	Center();
 
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectMissingLibs::OnButton1Click);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectMissingLibs::OnButton1Click1);
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectMissingLibs::OnButton1Click));
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectMissingLibs::OnButton1Click1));
 	//*)
 
     m_DetectionManager.LoadSearchFilters();

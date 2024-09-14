@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="DirListDlg">
 		<title>List of directories with libraries</title>
+		<centered>1</centered>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="yes">
 			<cols>1</cols>
 			<object class="sizeritem">

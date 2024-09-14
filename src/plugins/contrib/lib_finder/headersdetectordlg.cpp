@@ -1,23 +1,23 @@
 
 //(*InternalHeaders(HeadersDetectorDlg)
-#include <wx/gauge.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/string.h>
+#include <wx/gauge.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/string.h>
 //*)
 
 #include <encodingdetector.h>
 #include "headersdetectordlg.h"
 
 //(*IdInit(HeadersDetectorDlg)
-const long HeadersDetectorDlg::ID_STATICTEXT1 = wxNewId();
-const long HeadersDetectorDlg::ID_STATICTEXT3 = wxNewId();
-const long HeadersDetectorDlg::ID_STATICTEXT2 = wxNewId();
-const long HeadersDetectorDlg::ID_STATICTEXT4 = wxNewId();
-const long HeadersDetectorDlg::ID_GAUGE1 = wxNewId();
-const long HeadersDetectorDlg::ID_TIMER1 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_STATICTEXT3 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_STATICTEXT4 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_GAUGE1 = wxNewId();
+const wxWindowID HeadersDetectorDlg::ID_TIMER1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(HeadersDetectorDlg,wxScrollingDialog)
@@ -34,10 +34,10 @@ HeadersDetectorDlg::HeadersDetectorDlg(wxWindow* parent,cbProject* project,wxArr
     , m_Cancel(false)
 {
 	//(*Initialize(HeadersDetectorDlg)
-	wxFlexGridSizer* FlexGridSizer1;
 	wxBoxSizer* BoxSizer1;
-	wxStdDialogButtonSizer* StdDialogButtonSizer1;
+	wxFlexGridSizer* FlexGridSizer1;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
 	Create(parent, wxID_ANY, _("Detecting missing libraries..."), wxDefaultPosition, wxDefaultSize, wxCAPTION, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -63,11 +63,10 @@ HeadersDetectorDlg::HeadersDetectorDlg(wxWindow* parent,cbProject* project,wxArr
 	SetSizer(BoxSizer1);
 	Timer1.SetOwner(this, ID_TIMER1);
 	Timer1.Start(50, false);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 	Center();
 
-	Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&HeadersDetectorDlg::OnTimer1Trigger);
+	Connect(ID_TIMER1,wxEVT_TIMER,wxTimerEventHandler(HeadersDetectorDlg::OnTimer1Trigger));
 	//*)
 
     m_Thread.m_Dlg = this;

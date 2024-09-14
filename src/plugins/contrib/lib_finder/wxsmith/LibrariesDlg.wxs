@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="LibrariesDlg">
 		<title>Registered libraries</title>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
@@ -226,7 +227,7 @@
 											<object class="notebookpage">
 												<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
 													<pos>53,10</pos>
-													<style>wxSUNKEN_BORDER|wxTAB_TRAVERSAL</style>
+													<style>wxBORDER_SUNKEN|wxTAB_TRAVERSAL</style>
 													<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
 														<cols>2</cols>
 														<vgap>5</vgap>

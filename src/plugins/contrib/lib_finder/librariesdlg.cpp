@@ -1,17 +1,17 @@
 #include "librariesdlg.h"
 
 //(*InternalHeaders(LibrariesDlg)
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/string.h>
+#include <wx/checkbox.h>
 #include <wx/intl.h>
-#include <wx/wxFlatNotebook/renderer.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include <wx/listbox.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/string.h>
+#include <wx/textctrl.h>
+#include <wx/wxFlatNotebook/renderer.h>
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 //*)
 
 #include <algorithm>
@@ -28,59 +28,59 @@
 #include "defsdownloaddlg.h"
 
 //(*IdInit(LibrariesDlg)
-const long LibrariesDlg::ID_LISTBOX1 = wxNewId();
-const long LibrariesDlg::ID_CHECKBOX1 = wxNewId();
-const long LibrariesDlg::ID_CHECKBOX2 = wxNewId();
-const long LibrariesDlg::ID_BUTTON1 = wxNewId();
-const long LibrariesDlg::ID_BUTTON2 = wxNewId();
-const long LibrariesDlg::ID_BUTTON11 = wxNewId();
-const long LibrariesDlg::ID_BUTTON8 = wxNewId();
-const long LibrariesDlg::ID_LISTBOX2 = wxNewId();
-const long LibrariesDlg::ID_BUTTON9 = wxNewId();
-const long LibrariesDlg::ID_BUTTON10 = wxNewId();
-const long LibrariesDlg::ID_BUTTON3 = wxNewId();
-const long LibrariesDlg::ID_BUTTON4 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT10 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT1 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT9 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT2 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL1 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT5 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL4 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT4 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL3 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT3 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL2 = wxNewId();
-const long LibrariesDlg::ID_PANEL1 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL13 = wxNewId();
-const long LibrariesDlg::ID_PANEL8 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL5 = wxNewId();
-const long LibrariesDlg::ID_PANEL6 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL8 = wxNewId();
-const long LibrariesDlg::ID_PANEL3 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL12 = wxNewId();
-const long LibrariesDlg::ID_PANEL5 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT6 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL9 = wxNewId();
-const long LibrariesDlg::ID_BUTTON5 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT7 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL10 = wxNewId();
-const long LibrariesDlg::ID_BUTTON6 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT8 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL11 = wxNewId();
-const long LibrariesDlg::ID_BUTTON7 = wxNewId();
-const long LibrariesDlg::ID_PANEL4 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL6 = wxNewId();
-const long LibrariesDlg::ID_PANEL7 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL7 = wxNewId();
-const long LibrariesDlg::ID_PANEL2 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT11 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL14 = wxNewId();
-const long LibrariesDlg::ID_PANEL9 = wxNewId();
-const long LibrariesDlg::ID_STATICTEXT12 = wxNewId();
-const long LibrariesDlg::ID_TEXTCTRL15 = wxNewId();
-const long LibrariesDlg::ID_PANEL10 = wxNewId();
-const long LibrariesDlg::ID_FLATNOTEBOOK1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_CHECKBOX2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON11 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON8 = wxNewId();
+const wxWindowID LibrariesDlg::ID_LISTBOX2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON9 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON10 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON4 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT10 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT9 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT5 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL4 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT4 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL3 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT3 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL1 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL13 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL8 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL5 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL6 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL8 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL3 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL12 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL5 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT6 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL9 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON5 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT7 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL10 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON6 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT8 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL11 = wxNewId();
+const wxWindowID LibrariesDlg::ID_BUTTON7 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL4 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL6 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL7 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL7 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL2 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT11 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL14 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL9 = wxNewId();
+const wxWindowID LibrariesDlg::ID_STATICTEXT12 = wxNewId();
+const wxWindowID LibrariesDlg::ID_TEXTCTRL15 = wxNewId();
+const wxWindowID LibrariesDlg::ID_PANEL10 = wxNewId();
+const wxWindowID LibrariesDlg::ID_FLATNOTEBOOK1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(LibrariesDlg,wxScrollingDialog)
@@ -95,34 +95,34 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     , m_WhileUpdating(false)
 {
     //(*Initialize(LibrariesDlg)
+    wxBoxSizer* BoxSizer10;
+    wxBoxSizer* BoxSizer11;
+    wxBoxSizer* BoxSizer12;
+    wxBoxSizer* BoxSizer13;
+    wxBoxSizer* BoxSizer14;
     wxBoxSizer* BoxSizer15;
-    wxStaticBoxSizer* StaticBoxSizer2;
+    wxBoxSizer* BoxSizer16;
+    wxBoxSizer* BoxSizer17;
+    wxBoxSizer* BoxSizer18;
+    wxBoxSizer* BoxSizer19;
+    wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer20;
+    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer3;
+    wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer6;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer9;
     wxFlexGridSizer* FlexGridSizer1;
     wxFlexGridSizer* FlexGridSizer2;
-    wxBoxSizer* BoxSizer3;
-    wxBoxSizer* BoxSizer16;
-    wxBoxSizer* BoxSizer10;
-    wxBoxSizer* BoxSizer7;
-    wxBoxSizer* BoxSizer11;
-    wxBoxSizer* BoxSizer13;
-    wxBoxSizer* BoxSizer2;
-    wxStaticBoxSizer* StaticBoxSizer3;
-    wxBoxSizer* BoxSizer17;
-    wxBoxSizer* BoxSizer9;
-    wxBoxSizer* BoxSizer18;
     wxFlexGridSizer* FlexGridSizer3;
-    wxBoxSizer* BoxSizer19;
-    wxBoxSizer* BoxSizer4;
-    wxStaticBoxSizer* StaticBoxSizer4;
-    wxBoxSizer* BoxSizer8;
-    wxBoxSizer* BoxSizer20;
-    wxBoxSizer* BoxSizer1;
-    wxBoxSizer* BoxSizer12;
-    wxBoxSizer* BoxSizer14;
-    wxBoxSizer* BoxSizer6;
-    wxStdDialogButtonSizer* StdDialogButtonSizer1;
-    wxBoxSizer* BoxSizer5;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxStaticBoxSizer* StaticBoxSizer2;
+    wxStaticBoxSizer* StaticBoxSizer3;
+    wxStaticBoxSizer* StaticBoxSizer4;
+    wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
     Create(parent, wxID_ANY, _("Registered libraries"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -157,7 +157,7 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     m_Configurations = new wxListBox(this, ID_LISTBOX2, wxDefaultPosition, wxSize(201,44), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX2"));
     BoxSizer18->Add(m_Configurations, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 5);
     BoxSizer17 = new wxBoxSizer(wxVERTICAL);
-    m_ConfigUp = new wxButton(this, ID_BUTTON9, _("^"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON9"));
+    m_ConfigUp = new wxButton(this, ID_BUTTON9, _T("^"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON9"));
     BoxSizer17->Add(m_ConfigUp, 1, wxTOP|wxEXPAND, 5);
     m_ConfigDown = new wxButton(this, ID_BUTTON10, _("v"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON10"));
     BoxSizer17->Add(m_ConfigDown, 1, wxBOTTOM|wxEXPAND, 5);
@@ -181,7 +181,7 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     FlexGridSizer1->Add(m_Type, 1, wxEXPAND, 5);
     StaticBoxSizer3->Add(FlexGridSizer1, 0, wxALL|wxEXPAND, 5);
     FlatNotebook1 = new wxFlatNotebook(this, ID_FLATNOTEBOOK1, wxDefaultPosition, wxDefaultSize, wxFNB_DEFAULT_STYLE|wxFNB_NO_X_BUTTON|wxFNB_NODRAG|wxFNB_FF2|wxCLIP_CHILDREN);
-    Panel1 = new wxPanel(FlatNotebook1, ID_PANEL1, wxPoint(53,10), wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+    Panel1 = new wxPanel(FlatNotebook1, ID_PANEL1, wxPoint(53,10), wxDefaultSize, wxBORDER_SUNKEN|wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     FlexGridSizer2 = new wxFlexGridSizer(0, 2, 5, 0);
     FlexGridSizer2->AddGrowableCol(0);
     FlexGridSizer2->AddGrowableRow(0);
@@ -206,36 +206,26 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     FlexGridSizer3->Add(m_Description, 1, wxEXPAND, 5);
     FlexGridSizer2->Add(FlexGridSizer3, 1, wxALL|wxEXPAND, 5);
     Panel1->SetSizer(FlexGridSizer2);
-    FlexGridSizer2->Fit(Panel1);
-    FlexGridSizer2->SetSizeHints(Panel1);
     Panel8 = new wxPanel(FlatNotebook1, ID_PANEL8, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL8"));
     BoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
     m_Categories = new wxTextCtrl(Panel8, ID_TEXTCTRL13, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL13"));
     BoxSizer15->Add(m_Categories, 1, wxALL|wxEXPAND, 5);
     Panel8->SetSizer(BoxSizer15);
-    BoxSizer15->Fit(Panel8);
-    BoxSizer15->SetSizeHints(Panel8);
     Panel2 = new wxPanel(FlatNotebook1, ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL6"));
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
     m_Compilers = new wxTextCtrl(Panel2, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL5"));
     BoxSizer5->Add(m_Compilers, 1, wxALL|wxEXPAND, 5);
     Panel2->SetSizer(BoxSizer5);
-    BoxSizer5->Fit(Panel2);
-    BoxSizer5->SetSizeHints(Panel2);
     Panel4 = new wxPanel(FlatNotebook1, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     m_Defines = new wxTextCtrl(Panel4, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL8"));
     BoxSizer8->Add(m_Defines, 1, wxALL|wxEXPAND, 5);
     Panel4->SetSizer(BoxSizer8);
-    BoxSizer8->Fit(Panel4);
-    BoxSizer8->SetSizeHints(Panel4);
     Panel6 = new wxPanel(FlatNotebook1, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
     BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
     m_Libs = new wxTextCtrl(Panel6, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL12"));
     BoxSizer13->Add(m_Libs, 1, wxALL|wxEXPAND, 5);
     Panel6->SetSizer(BoxSizer13);
-    BoxSizer13->Fit(Panel6);
-    BoxSizer13->SetSizeHints(Panel6);
     Panel5 = new wxPanel(FlatNotebook1, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
     BoxSizer9 = new wxBoxSizer(wxVERTICAL);
     StaticText6 = new wxStaticText(Panel5, ID_STATICTEXT6, _("Compiler:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
@@ -243,7 +233,7 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     m_CompilerDirs = new wxTextCtrl(Panel5, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(25,12), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL9"));
     BoxSizer10->Add(m_CompilerDirs, 1, wxEXPAND, 5);
-    Button5 = new wxButton(Panel5, ID_BUTTON5, _("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON5"));
+    Button5 = new wxButton(Panel5, ID_BUTTON5, _T("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON5"));
     BoxSizer10->Add(Button5, 0, wxALIGN_TOP, 5);
     BoxSizer9->Add(BoxSizer10, 1, wxEXPAND, 5);
     StaticText7 = new wxStaticText(Panel5, ID_STATICTEXT7, _("Linker:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
@@ -251,7 +241,7 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
     m_LinkerDir = new wxTextCtrl(Panel5, ID_TEXTCTRL10, wxEmptyString, wxDefaultPosition, wxSize(48,8), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL10"));
     BoxSizer11->Add(m_LinkerDir, 1, wxEXPAND, 5);
-    Button6 = new wxButton(Panel5, ID_BUTTON6, _("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON6"));
+    Button6 = new wxButton(Panel5, ID_BUTTON6, _T("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON6"));
     BoxSizer11->Add(Button6, 0, wxALIGN_TOP, 5);
     BoxSizer9->Add(BoxSizer11, 1, wxEXPAND, 5);
     StaticText8 = new wxStaticText(Panel5, ID_STATICTEXT8, _("Extra objects (like resources):"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
@@ -259,26 +249,20 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
     m_ObjectsDir = new wxTextCtrl(Panel5, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxSize(78,12), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL11"));
     BoxSizer12->Add(m_ObjectsDir, 1, wxEXPAND, 5);
-    Button7 = new wxButton(Panel5, ID_BUTTON7, _("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON7"));
+    Button7 = new wxButton(Panel5, ID_BUTTON7, _T("+"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON7"));
     BoxSizer12->Add(Button7, 0, wxALIGN_TOP, 5);
     BoxSizer9->Add(BoxSizer12, 1, wxEXPAND, 5);
     Panel5->SetSizer(BoxSizer9);
-    BoxSizer9->Fit(Panel5);
-    BoxSizer9->SetSizeHints(Panel5);
     Panel7 = new wxPanel(FlatNotebook1, ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL7"));
     BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
     m_CFlags = new wxTextCtrl(Panel7, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL6"));
     BoxSizer6->Add(m_CFlags, 1, wxALL|wxEXPAND, 5);
     Panel7->SetSizer(BoxSizer6);
-    BoxSizer6->Fit(Panel7);
-    BoxSizer6->SetSizeHints(Panel7);
     Panel3 = new wxPanel(FlatNotebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
     BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
     m_LFlags = new wxTextCtrl(Panel3, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL7"));
     BoxSizer7->Add(m_LFlags, 1, wxALL|wxEXPAND, 5);
     Panel3->SetSizer(BoxSizer7);
-    BoxSizer7->Fit(Panel3);
-    BoxSizer7->SetSizeHints(Panel3);
     Panel9 = new wxPanel(FlatNotebook1, ID_PANEL9, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL9"));
     BoxSizer19 = new wxBoxSizer(wxVERTICAL);
     StaticText10 = new wxStaticText(Panel9, ID_STATICTEXT11, _("Header files used by this library:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT11"));
@@ -286,8 +270,6 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     m_Headers = new wxTextCtrl(Panel9, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL14"));
     BoxSizer19->Add(m_Headers, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     Panel9->SetSizer(BoxSizer19);
-    BoxSizer19->Fit(Panel9);
-    BoxSizer19->SetSizeHints(Panel9);
     Panel10 = new wxPanel(FlatNotebook1, ID_PANEL10, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL10"));
     BoxSizer20 = new wxBoxSizer(wxVERTICAL);
     StaticText11 = new wxStaticText(Panel10, ID_STATICTEXT12, _("List of required libraries:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
@@ -295,8 +277,6 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     m_Required = new wxTextCtrl(Panel10, ID_TEXTCTRL15, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL15"));
     BoxSizer20->Add(m_Required, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     Panel10->SetSizer(BoxSizer20);
-    BoxSizer20->Fit(Panel10);
-    BoxSizer20->SetSizeHints(Panel10);
     FlatNotebook1->AddPage(Panel1, _("Base options"), false);
     FlatNotebook1->AddPage(Panel8, _("Categories"), false);
     FlatNotebook1->AddPage(Panel2, _("Compilers"), false);
@@ -317,23 +297,23 @@ LibrariesDlg::LibrariesDlg(wxWindow* parent, TypedResults& knownLibraries)
     StdDialogButtonSizer1->Realize();
     BoxSizer1->Add(StdDialogButtonSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     SetSizer(BoxSizer1);
-    BoxSizer1->Fit(this);
     BoxSizer1->SetSizeHints(this);
+    Center();
 
-    Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&LibrariesDlg::Onm_LibrariesSelect);
-    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ShowPredefinedClick);
-    Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ShowPkgConfigClick);
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::OnButton1Click);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::OnButton2Click);
-    Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::OnButton3Click);
-    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::OnButton8Click);
-    Connect(ID_LISTBOX2,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&LibrariesDlg::Onm_ConfigurationsSelect);
-    Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ConfigPosChangeUp);
-    Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ConfigPosChangeDown);
-    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ConfDuplicateClick);
-    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&LibrariesDlg::Onm_ConfDeleteClick);
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&LibrariesDlg::Onm_NameText);
-    Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&LibrariesDlg::OnInit);
+    Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(LibrariesDlg::Onm_LibrariesSelect));
+    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ShowPredefinedClick));
+    Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ShowPkgConfigClick));
+    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::OnButton1Click));
+    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::OnButton2Click));
+    Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::OnButton3Click));
+    Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::OnButton8Click));
+    Connect(ID_LISTBOX2,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(LibrariesDlg::Onm_ConfigurationsSelect));
+    Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ConfigPosChangeUp));
+    Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ConfigPosChangeDown));
+    Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ConfDuplicateClick));
+    Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(LibrariesDlg::Onm_ConfDeleteClick));
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(LibrariesDlg::Onm_NameText));
+    Connect(wxID_ANY,wxEVT_INIT_DIALOG,wxInitDialogEventHandler(LibrariesDlg::OnInit));
     //*)
 
     RecreateLibrariesList(_T(""));

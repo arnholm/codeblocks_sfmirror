@@ -2,15 +2,15 @@
 #include "defsdownloaddlg.h"
 
 //(*InternalHeaders(DefsDownloadDlg)
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/string.h>
+#include <wx/checkbox.h>
 #include <wx/intl.h>
+#include <wx/listbox.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/treectrl.h>
-#include <wx/listbox.h>
 //*)
 #include <wx/mstream.h>
 #include <wx/url.h>
@@ -19,14 +19,14 @@
 #include <logmanager.h>
 
 //(*IdInit(DefsDownloadDlg)
-const long DefsDownloadDlg::ID_LISTBOX1 = wxNewId();
-const long DefsDownloadDlg::ID_BUTTON1 = wxNewId();
-const long DefsDownloadDlg::ID_BUTTON2 = wxNewId();
-const long DefsDownloadDlg::ID_TREECTRL1 = wxNewId();
-const long DefsDownloadDlg::ID_STATICTEXT1 = wxNewId();
-const long DefsDownloadDlg::ID_TEXTCTRL2 = wxNewId();
-const long DefsDownloadDlg::ID_CHECKBOX1 = wxNewId();
-const long DefsDownloadDlg::ID_BUTTON3 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_LISTBOX1 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_BUTTON2 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_TREECTRL1 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID DefsDownloadDlg::ID_BUTTON3 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(DefsDownloadDlg,wxScrollingDialog)
@@ -37,16 +37,16 @@ END_EVENT_TABLE()
 DefsDownloadDlg::DefsDownloadDlg(wxWindow* parent)
 {
 	//(*Initialize(DefsDownloadDlg)
-	wxStaticBoxSizer* StaticBoxSizer2;
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer2;
-	wxStaticBoxSizer* StaticBoxSizer3;
-	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer1;
-	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer7;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStaticBoxSizer* StaticBoxSizer2;
+	wxStaticBoxSizer* StaticBoxSizer3;
 
 	Create(parent, wxID_ANY, _("Download libraries definitions"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -58,18 +58,18 @@ DefsDownloadDlg::DefsDownloadDlg(wxWindow* parent)
 	BoxSizer5->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer5, 3, wxEXPAND, 5);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
-	m_Add = new wxButton(this, ID_BUTTON1, _("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
+	m_Add = new wxButton(this, ID_BUTTON1, _T("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
 	m_Add->Disable();
 	m_Add->SetToolTip(_("Add selected library to project"));
 	BoxSizer2->Add(m_Add, 1, wxEXPAND, 5);
-	m_Remove = new wxButton(this, ID_BUTTON2, _(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
+	m_Remove = new wxButton(this, ID_BUTTON2, _T(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
 	m_Remove->Disable();
 	m_Remove->SetToolTip(_("Remove selected library from project"));
 	BoxSizer2->Add(m_Remove, 1, wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer2, 0, wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Known libraries"));
-	m_KnownLibrariesTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxSUNKEN_BORDER, wxDefaultValidator, _T("ID_TREECTRL1"));
+	m_KnownLibrariesTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxBORDER_SUNKEN, wxDefaultValidator, _T("ID_TREECTRL1"));
 	StaticBoxSizer2->Add(m_KnownLibrariesTree, 1, wxALL|wxEXPAND, 5);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -90,7 +90,6 @@ DefsDownloadDlg::DefsDownloadDlg(wxWindow* parent)
 	BoxSizer6->Add(BoxSizer3, 4, wxALL|wxEXPAND, 5);
 	BoxSizer1->Add(BoxSizer6, 1, wxALIGN_CENTER_HORIZONTAL, 5);
 	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 	//*)
 

@@ -38,12 +38,12 @@
 #include <configmanager.h>
 
 //(*IdInit(LibSelectDlg)
-const long LibSelectDlg::ID_STATICTEXT1 = wxNewId();
-const long LibSelectDlg::ID_CHECKLISTBOX1 = wxNewId();
-const long LibSelectDlg::ID_RADIOBUTTON1 = wxNewId();
-const long LibSelectDlg::ID_RADIOBUTTON2 = wxNewId();
-const long LibSelectDlg::ID_RADIOBUTTON3 = wxNewId();
-const long LibSelectDlg::ID_CHECKBOX1 = wxNewId();
+const wxWindowID LibSelectDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID LibSelectDlg::ID_CHECKLISTBOX1 = wxNewId();
+const wxWindowID LibSelectDlg::ID_RADIOBUTTON1 = wxNewId();
+const wxWindowID LibSelectDlg::ID_RADIOBUTTON2 = wxNewId();
+const wxWindowID LibSelectDlg::ID_RADIOBUTTON3 = wxNewId();
+const wxWindowID LibSelectDlg::ID_CHECKBOX1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(LibSelectDlg,wxScrollingDialog)

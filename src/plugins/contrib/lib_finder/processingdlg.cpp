@@ -30,12 +30,12 @@
 #include <prep.h>
 
 //(*InternalHeaders(ProcessingDlg)
-#include <wx/gauge.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/string.h>
+#include <wx/gauge.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/string.h>
 //*)
 
 #include "librarydetectionmanager.h"
@@ -44,9 +44,9 @@
 #include "libselectdlg.h"
 
 //(*IdInit(ProcessingDlg)
-const long ProcessingDlg::ID_STATICTEXT1 = wxNewId();
-const long ProcessingDlg::ID_GAUGE1 = wxNewId();
-const long ProcessingDlg::ID_BUTTON1 = wxNewId();
+const wxWindowID ProcessingDlg::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ProcessingDlg::ID_GAUGE1 = wxNewId();
+const wxWindowID ProcessingDlg::ID_BUTTON1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ProcessingDlg,wxScrollingDialog)
@@ -71,10 +71,10 @@ ProcessingDlg::ProcessingDlg(wxWindow* parent,LibraryDetectionManager& Manager,T
 	StopBtn = new wxButton(this, ID_BUTTON1, _("Stop"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	FlexGridSizer1->Add(StopBtn, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(FlexGridSizer1);
-	FlexGridSizer1->Fit(this);
 	FlexGridSizer1->SetSizeHints(this);
+	Center();
 
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProcessingDlg::OnButton1Click);
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProcessingDlg::OnButton1Click));
 	//*)
 }
 

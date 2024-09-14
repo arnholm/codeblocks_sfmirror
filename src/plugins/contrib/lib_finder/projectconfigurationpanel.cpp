@@ -24,15 +24,15 @@
 #include "projectconfigurationpanel.h"
 
 //(*InternalHeaders(ProjectConfigurationPanel)
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/button.h>
-#include <wx/string.h>
+#include <wx/checkbox.h>
 #include <wx/intl.h>
+#include <wx/listbox.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/treectrl.h>
-#include <wx/listbox.h>
 //*)
 
 #include <wx/tokenzr.h>
@@ -42,21 +42,21 @@
 #include "headersdetectordlg.h"
 
 //(*IdInit(ProjectConfigurationPanel)
-const long ProjectConfigurationPanel::ID_LISTBOX1 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON6 = wxNewId();
-const long ProjectConfigurationPanel::ID_CHECKBOX2 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON4 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON1 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON2 = wxNewId();
-const long ProjectConfigurationPanel::ID_TREECTRL1 = wxNewId();
-const long ProjectConfigurationPanel::ID_STATICTEXT1 = wxNewId();
-const long ProjectConfigurationPanel::ID_TEXTCTRL2 = wxNewId();
-const long ProjectConfigurationPanel::ID_CHECKBOX1 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON5 = wxNewId();
-const long ProjectConfigurationPanel::ID_TEXTCTRL1 = wxNewId();
-const long ProjectConfigurationPanel::ID_BUTTON3 = wxNewId();
-const long ProjectConfigurationPanel::ID_STATICTEXT2 = wxNewId();
-const long ProjectConfigurationPanel::ID_TIMER1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_LISTBOX1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON6 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_CHECKBOX2 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON4 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON2 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_TREECTRL1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_STATICTEXT1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_TEXTCTRL2 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_CHECKBOX1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON5 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_TEXTCTRL1 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_BUTTON3 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_STATICTEXT2 = wxNewId();
+const wxWindowID ProjectConfigurationPanel::ID_TIMER1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ProjectConfigurationPanel,cbConfigurationPanel)
@@ -95,17 +95,17 @@ ProjectConfigurationPanel::ProjectConfigurationPanel(wxWindow* parent,ProjectCon
     m_KnownLibs(KnownLibs)
 {
 	//(*Initialize(ProjectConfigurationPanel)
-	wxStaticBoxSizer* StaticBoxSizer2;
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer2;
-	wxStaticBoxSizer* StaticBoxSizer3;
-	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer1;
-	wxStaticBoxSizer* m_DisableAuto;
-	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer7;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStaticBoxSizer* StaticBoxSizer2;
+	wxStaticBoxSizer* StaticBoxSizer3;
+	wxStaticBoxSizer* m_DisableAuto;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -128,18 +128,18 @@ ProjectConfigurationPanel::ProjectConfigurationPanel(wxWindow* parent,ProjectCon
 	BoxSizer5->Add(m_DisableAuto, 0, wxALL|wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer5, 3, wxEXPAND, 5);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
-	m_Add = new wxButton(this, ID_BUTTON1, _("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
+	m_Add = new wxButton(this, ID_BUTTON1, _T("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
 	m_Add->Disable();
 	m_Add->SetToolTip(_("Add selected library to project"));
 	BoxSizer2->Add(m_Add, 1, wxEXPAND, 5);
-	m_Remove = new wxButton(this, ID_BUTTON2, _(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
+	m_Remove = new wxButton(this, ID_BUTTON2, _T(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
 	m_Remove->Disable();
 	m_Remove->SetToolTip(_("Remove selected library from project"));
 	BoxSizer2->Add(m_Remove, 1, wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer2, 0, wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Known libraries"));
-	m_KnownLibrariesTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxSUNKEN_BORDER, wxDefaultValidator, _T("ID_TREECTRL1"));
+	m_KnownLibrariesTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxBORDER_SUNKEN, wxDefaultValidator, _T("ID_TREECTRL1"));
 	StaticBoxSizer2->Add(m_KnownLibrariesTree, 1, wxALL|wxEXPAND, 5);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -170,21 +170,20 @@ ProjectConfigurationPanel::ProjectConfigurationPanel(wxWindow* parent,ProjectCon
 	BoxSizer1->Add(m_EventText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
 	SetSizer(BoxSizer1);
 	Timer1.SetOwner(this, ID_TIMER1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 
-	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_UsedLibrariesSelect);
-	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::OnButton2Click);
-	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_AddScriptClick);
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_AddClick);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_RemoveClick);
-	Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_KnownLibrariesTreeSelectionChanged);
-	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_FilterText);
-	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_FilterTextEnter);
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_TreeClick);
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_UnknownLibraryText);
-	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ProjectConfigurationPanel::Onm_AddUnknownClick);
-	Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&ProjectConfigurationPanel::OnTimer1Trigger);
+	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_UsedLibrariesSelect));
+	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::OnButton2Click));
+	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_AddScriptClick));
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_AddClick));
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_RemoveClick));
+	Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,wxTreeEventHandler(ProjectConfigurationPanel::Onm_KnownLibrariesTreeSelectionChanged));
+	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_FilterText));
+	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,wxCommandEventHandler(ProjectConfigurationPanel::Onm_FilterTextEnter));
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_TreeClick));
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_UnknownLibraryText));
+	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(ProjectConfigurationPanel::Onm_AddUnknownClick));
+	Connect(ID_TIMER1,wxEVT_TIMER,wxTimerEventHandler(ProjectConfigurationPanel::OnTimer1Trigger));
 	//*)
 
 	m_EventText->Show(!lib_finder::IsExtraEvent());

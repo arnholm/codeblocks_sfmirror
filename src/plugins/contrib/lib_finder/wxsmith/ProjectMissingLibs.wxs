@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxScrollingDialog" name="ProjectMissingLibs">
 		<title>Missing libraries definitions</title>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
@@ -15,7 +16,7 @@
 					<object class="sizeritem">
 						<object class="wxPanel" name="ID_PANEL1" variable="m_LibsBack" member="yes">
 							<size>308,113</size>
-							<style>wxSUNKEN_BORDER|wxTAB_TRAVERSAL</style>
+							<style>wxBORDER_SUNKEN|wxTAB_TRAVERSAL</style>
 							<object class="wxFlexGridSizer" variable="m_LibsContainer" member="yes">
 								<cols>5</cols>
 								<growablecols>0,2,4</growablecols>

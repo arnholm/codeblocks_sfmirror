@@ -81,7 +81,7 @@
 												<item2>m_KnownLibrariesTree</item2>
 												<item2></item2>
 											</items_text>
-											<style>wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxSUNKEN_BORDER</style>
+											<style>wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxBORDER_SUNKEN</style>
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
