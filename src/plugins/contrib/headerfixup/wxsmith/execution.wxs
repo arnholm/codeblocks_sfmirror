@@ -44,7 +44,7 @@
 							<object class="sizeritem">
 								<object class="wxCheckBox" name="ID_CHK_IGNORE" variable="m_Ignore" member="yes">
 									<label>Ignore any existing includes / forward decls</label>
-									<tooltip>This will work as if there were no incluides / forwards decls at all int the files (as &quot;from scratch&quot;).</tooltip>
+									<tooltip>This will work as if there were no includes / forward decls at all in the files (as &quot;from scratch&quot;).</tooltip>
 								</object>
 								<flag>wxEXPAND</flag>
 								<border>5</border>

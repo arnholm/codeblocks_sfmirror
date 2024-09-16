@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxScrollingDialog" name="wxsNewWindowDlg">
-		<title>Create new cwindow</title>
+		<title>Create new window</title>
 		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="m_RootSizer" member="yes">
