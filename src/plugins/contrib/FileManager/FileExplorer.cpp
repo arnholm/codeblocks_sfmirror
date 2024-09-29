@@ -1241,7 +1241,8 @@ void FileExplorer::OnRightClick(wxTreeEvent &event)
                     Popup->Append(ID_FILENEWFOLDER,_("New directory..."));
                     Popup->Append(ID_FILERENAME,_("&Rename..."));
                 }
-            } else
+            }
+            else
             {
                 if (!IsBrowsingVCSTree())
                     Popup->Append(ID_FILERENAME,_("&Rename..."));
@@ -1258,8 +1259,12 @@ void FileExplorer::OnRightClick(wxTreeEvent &event)
         {
             Popup->Append(ID_FILEDUP,_("&Duplicate"));
             Popup->Append(ID_FILECOPY,_("&Copy to..."));
-            Popup->Append(ID_FILEMOVE,_("&Move to..."));
-            Popup->Append(ID_FILEDELETE,_("D&elete"));
+            // Add these menu items only if the selection does not include the root folder
+            if (!m_Tree->IsSelected(m_Tree->GetRootItem()))
+            {
+                Popup->Append(ID_FILEMOVE,_("&Move to..."));
+                Popup->Append(ID_FILEDELETE,_("D&elete"));
+            }
         }
         if ( IsBrowsingVCSTree() || IsBrowsingWorkingCopy() )
         {
