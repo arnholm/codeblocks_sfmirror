@@ -2862,7 +2862,7 @@ void CodeCompletion::OnFunction(cb_unused wxCommandEvent& event)
     }
 }
 
-/** Here is the expansion of how the two wxChoices are constructed.
+/** Here is the explanation of how the two wxChoices are constructed.
  * for a file have such contents below
  * @code{.cpp}
  *  Line  0     void g_func1(){

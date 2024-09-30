@@ -52,7 +52,7 @@ public:
     {
         FunctionScope() {}
 
-        /** a namespace token can be convert to a FunctionScope type */
+        /** a namespace token can be converted to a FunctionScope type */
         FunctionScope(const NameSpace& ns):
             StartLine(ns.StartLine), EndLine(ns.EndLine), Scope(ns.Name) {}
 

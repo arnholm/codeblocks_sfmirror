@@ -170,7 +170,7 @@ public:
     /** Skip from the current position to the end of line, use with care outside this class!*/
     bool SkipToEOL();
 
-    /** Skip to then end of the C++ style comment */
+    /** Skip to the end of the C++ style comment */
     bool SkipToInlineCommentEnd();
 
     /** Check whether the Tokenizer reaches the end of the buffer (file) */
