@@ -99,7 +99,7 @@ pkgdata_DATA = SmartIndentHDL.zip \
 
 CLEANFILES = $(pkgdata_DATA)
 
-.NOTPARALLEL: $(pkgdata_DATA)
+.NOTPARALLEL:
 
 SmartIndentHDL.zip: manifest_hdl.xml
 	PWD=`pwd` cd $(srcdir) && \
