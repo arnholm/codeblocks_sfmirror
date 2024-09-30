@@ -75,7 +75,7 @@ codeblocks_LDADD += resources.$(OBJEXT) -lexchndl -lcomctl32
 codeblocks_DEPENDENCIES = resources.$(OBJEXT)
 codeblocks_SOURCES += associations.cpp
 resources.$(OBJEXT): resources/resources.rc resources/amd64_dpi_aware_on.manifest
-	$(WINDRES) $(WX_CXXFLAGS) -DcbDPI_AWARE_ON --include-dir $(top_srcdir)/src $< $@
+	$(WINDRES) $(WX_CPPFLAGS) -DcbDPI_AWARE_ON --include-dir $(top_srcdir)/src $< $@
 endif
 
 noinst_HEADERS = app.h \
