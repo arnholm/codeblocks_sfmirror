@@ -4071,18 +4071,6 @@
 		<Unit filename="src/dlgaboutplugin.h">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="src/editprojectglobsdlg.cpp">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/editprojectglobsdlg.h">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/manageglobsdlg.cpp">
-			<Option target="src" />
-		</Unit>
-		<Unit filename="src/manageglobsdlg.h">
-			<Option target="src" />
-		</Unit>
 		<Unit filename="src/editkeywordsdlg.cpp">
 			<Option target="src" />
 		</Unit>
@@ -4093,6 +4081,12 @@
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/editorconfigurationdlg.h">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/editprojectglobsdlg.cpp">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/editprojectglobsdlg.h">
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/environmentsettingsdlg.cpp">
@@ -4129,6 +4123,12 @@
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/main.h">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/manageglobsdlg.cpp">
+			<Option target="src" />
+		</Unit>
+		<Unit filename="src/manageglobsdlg.h">
 			<Option target="src" />
 		</Unit>
 		<Unit filename="src/notebookstyles.cpp">
@@ -4357,10 +4357,10 @@
 		<Unit filename="wxsmith/editprojectglobsdlg.wxs">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="wxsmith/manageglobsdlg.wxs">
+		<Unit filename="wxsmith/goto_file.wxs">
 			<Option target="src" />
 		</Unit>
-		<Unit filename="wxsmith/goto_file.wxs">
+		<Unit filename="wxsmith/manageglobsdlg.wxs">
 			<Option target="src" />
 		</Unit>
 		<Extensions>
