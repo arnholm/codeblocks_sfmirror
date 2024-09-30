@@ -1497,7 +1497,7 @@ void ConfigManager::InitPaths()
     if (plugin_path_global.IsEmpty())
     {
         if (platform::windows)
-            ConfigManager::plugin_path_global = app_path + _T("/../lib/codeblocks/plugins");
+            ConfigManager::plugin_path_global = app_path + _T("\\..\\lib\\codeblocks\\plugins");
         else if (platform::macosx)
             ConfigManager::plugin_path_global = data_path_global + _T("/plugins");
         else
