@@ -37,7 +37,7 @@
  *  v-0.1.5 January 2011
  *  - Fixed: Application directory incorrectly detected if launcher called by selecting a
  *    source file with the mouse (\\AppData was created in wrong directory, etc...).
- *  - A new default icon contains higher resolution icons (requested by olydbg). The cost
+ *  - A new default icon contains higher resolution icons (requested by ollydbg). The cost
  *    is a significantly larger executable size.
  *  - The CBLauncher icon can now be distinguished from the Codeblocks icon.
  *  - Optionally: To reduce the executable size at the cost of a rougher icon, you can
