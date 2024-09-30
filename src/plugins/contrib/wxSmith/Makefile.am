@@ -5,9 +5,13 @@ AM_CPPFLAGS = $(WX_CXXFLAGS) \
 		-I$(top_srcdir)/src/include \
 		-I$(top_srcdir)/src/sdk/wxscintilla/include
 
+if CODEBLOCKS_NT
+AM_CPPFLAGS += -DEXPORT_LIB
+endif
+
 lib_LTLIBRARIES = libwxsmithlib.la
 
-libwxsmithlib_la_LDFLAGS = -version-info 0:1:0 -shared
+libwxsmithlib_la_LDFLAGS = -version-info 0:1:0 -shared -no-undefined
 
 libwxsmithlib_la_LIBADD = ../../../sdk/libcodeblocks.la \
 				properties/libwxsmith_properties.la \
