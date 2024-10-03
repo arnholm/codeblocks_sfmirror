@@ -187,7 +187,9 @@ void UnixProcess::StartWriterThread()
         [](UnixProcess* process, int fd) {
             while(!process->m_goingDown.load()) {
                 std::string buffer;
-                if(process->m_outgoingQueue.ReceiveTimeout(10, buffer) == wxMSGQUEUE_NO_ERROR) {
+                //-if(process->m_outgoingQueue.ReceiveTimeout(10, buffer) == wxMSGQUEUE_NO_ERROR) { //(christo patch 1503)
+                if(process->m_outgoingQueue.Receive( buffer) == wxMSGQUEUE_NO_ERROR) {              //(christo patch 1503)
+
                     UnixProcess::Write(fd, buffer, std::ref(process->m_goingDown));
                 }
             }
@@ -235,6 +237,7 @@ void UnixProcess::Detach()
 {
     m_goingDown.store(true);
     if(m_writerThread) {
+        m_outgoingQueue.Post(std::string());    //(christo patch 1503)
         m_writerThread->join();
         wxDELETE(m_writerThread);
     }
