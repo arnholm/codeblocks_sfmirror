@@ -1441,7 +1441,7 @@ static void SetEditorTechnology(cbStyledTextCtrl *control, ConfigManager *config
     if (!control)
         return;
 #if defined(__WXMSW__) && wxCHECK_VERSION(3, 1, 0)
-    const int technology = config->ReadInt(wxT("/technology"), 0);
+    const int technology = config->ReadInt(wxT("/technology"), 1);
     if (technology == 1)
         control->SetTechnology(wxSCI_TECHNOLOGY_DIRECTWRITE);
     else

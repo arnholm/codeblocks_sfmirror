@@ -163,7 +163,7 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     wxChoice *cmbFontQuality = XRCCTRL(*this, "cmbFontQuality", wxChoice);
 
 #if defined(__WXMSW__) && wxCHECK_VERSION(3, 1, 0)
-    cmbTechnology->SetSelection(cfg->ReadInt(wxT("/technology"), 0));
+    cmbTechnology->SetSelection(cfg->ReadInt(wxT("/technology"), 1);
     cmbFontQuality->SetSelection(cfg->ReadInt(wxT("/font_quality"), 0));
 #else
     cmbTechnology->SetSelection(0);
