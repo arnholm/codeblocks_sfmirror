@@ -44,11 +44,11 @@ make install
 "all,-help" compiles all contrib plugins except the help plugin
 By default, no contrib plugins are compiled
 Plugin names are:
-    AutoVersioning, BrowseTracker, byogames, Cccc, CppCheck, cbkoders, codesnippets, codestat,
-    copystrings, Cscope, DoxyBlocks, dragscroll, EditorConfig, EditorTweaks, envvars, FileManager,
-    headerfixup, help, hexeditor, incsearch, keybinder, libfinder, MouseSap, NassiShneiderman,
-    ProjectOptionsManipulator, profiler, regex, ReopenEditor, rndgen, exporter, symtab,
-    ThreadSearch, ToolsPlus, Valgrind, wxsmith, wxsmithcontrib,wxsmithaui
+    AutoVersioning, BrowseTracker, byogames, Cccc, CppCheck, cbkoders, clangd_client, codesnippets,
+    codestat, copystrings, Cscope, DoxyBlocks, dragscroll, EditorConfig, EditorTweaks, envvars,
+    FileManager, headerfixup, help, hexeditor, incsearch, keybinder, libfinder, MouseSap,
+    NassiShneiderman, ProjectOptionsManipulator, profiler, regex, ReopenEditor, rndgen, exporter,
+    symtab, ThreadSearch, ToolsPlus, Valgrind, wxsmith, wxsmithcontrib, wxsmithaui
 
 If the NassiShneiderman-plugin should be build, you might see this error, when you run configure:
 
