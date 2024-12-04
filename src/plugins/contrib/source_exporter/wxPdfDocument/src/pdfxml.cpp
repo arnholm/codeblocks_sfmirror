@@ -12,6 +12,10 @@
 // For compilers that support precompilation, includes <wx.h>.
 #include <wx/wxprec.h>
 
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
@@ -77,7 +81,7 @@ wxPdfDocument::ApplyViewport(const wxString& viewport, double width, double heig
   size_t n = vpCoord.GetCount();
   for (size_t j = 0; j < 4 && j < n; ++j)
   {
-    if (vpCoord[j].length() > 0 )
+    if (vpCoord[j].length() > 0 ) 
       vp[j] = wxPdfUtility::String2Double(vpCoord[j], "px", GetImageScale()) / (GetImageScale() * GetScaleFactor());
   }
 
@@ -545,19 +549,33 @@ wxPdfTable::WriteTable(bool writeHeader, const wxArrayInt& lastRowsOnPage, doubl
   wxArrayInt::const_iterator endIter = lastRowsOnPage.end();
   unsigned int firstRow = m_bodyRowFirst;
   unsigned int lastRow = lastRowsOnPage.front();
+  wxArrayInt::const_iterator iter = lastRowsOnPage.begin();
 
-  for(wxArrayInt::const_iterator iter = lastRowsOnPage.begin(); iter != endIter; ++iter)
+  // If the first row doesn't fit into the remaining space of a page
+  // start with a page break to avoid an isolated table header on the
+  // current page.
+  if (firstRow == lastRow)
   {
-    //check if we have to insert a new page first.
-    //basically it's always true beginning with the second iteration
-    //and when the header + first line doesn't fit on the first page
+    m_document->AddPage(m_document->GetPageOrientation(), false);
+    y = m_document->GetY();
+    ++iter;
+    if (iter != endIter)
+    {
+      firstRow = lastRow;
+      lastRow = *iter;
+    }
+  }
+
+  for(; iter != endIter; ++iter)
+  {
+    // Issue a page break before each new range of rows
     if (firstRow >= lastRow)
     {
       lastRow = *iter;
       m_document->AddPage(m_document->GetPageOrientation(), false);
       y = m_document->GetY();
     }
-    //write rows on page
+    // Write range of rows onto page
     y = WriteRowsOnPage(firstRow, lastRow, x, y, writeHeader);
     firstRow = lastRow;
   }
@@ -574,7 +592,7 @@ wxPdfTable::Write()
   // check if table is about more pages
   // if yes, the first body rows are in the returning array
   const wxArrayInt lastRowsOnPage = GetLastRowsOnPage();
-
+ 
   y = WriteTable(writeHeader, lastRowsOnPage, x, y);
   m_document->SetXY(x, y);
 }
@@ -704,40 +722,33 @@ wxPdfTable::GetLastRowsOnPage() const
     const double yMax = pageHeight - breakMargin;
     const double firstBodyRowHeight = iterBodyFirst->second;
     const bool writeHeader = m_headRowLast > m_headRowFirst;
-    double headerHeight = 0;
-    //in case we have a line break and the table has a header, we need to consider the space of the header at the new page
-    if (writeHeader)
-    {
-      for (unsigned int headRow = m_headRowFirst; headRow < m_headRowLast; headRow++)
-      {
-        headerHeight += m_rowHeights.find(headRow)->second;
-      }
-    }
+    const double topTotalMargin = m_document->GetTopMargin() + m_document->GetHeaderHeight() + m_headHeight;
+    const double availablePageHeight = yMax - topTotalMargin;
     double y = m_document->GetY();
 
-    //this means basically that we have a line break before drawing the table
-    y += m_headHeight + firstBodyRowHeight;
-    if (y > yMax)
+    // Check whether first table row fits into remaining space
+    // If not register a page break for first row
+    y += m_headHeight;
+    if (y + firstBodyRowHeight > yMax)
     {
       lastRows.Add(m_headRowLast);
-      //Maybe we have a header at the top of the next page
-      y = m_document->GetHeaderHeight();
+      y = topTotalMargin;
     }
 
-    for (unsigned int row = m_bodyRowFirst + 1; row < m_bodyRowLast; ++row)
+    for (unsigned int row = m_bodyRowFirst; row < m_bodyRowLast; ++row)
     {
       const double rowHeight = m_rowHeights.find(row)->second;
-      if (y + rowHeight > yMax)
+      const double maxHeight = m_maxHeights.find(row)->second;
+      if (rowHeight > availablePageHeight)
       {
-        //since m_bodyRowLast and m_headRowLast are alway one behind last, last row on page is always one behind too.
-        lastRows.Add(row);
-        //Maybe we have a header at the top of the next page
-        y = m_document->GetHeaderHeight();
+        wxLogError(wxString(wxS("wxPdfDocument::wxPdfTable: ")) +
+          wxString::Format(_("Height of table row %d greater than available page height. Output will be distorted."), row));
       }
-      if (writeHeader)
+      if (y + maxHeight > yMax)
       {
-        //consider the table header
-        y += headerHeight;
+        // Set page break before current row
+        lastRows.Add(row);
+        y = topTotalMargin;
       }
       y += rowHeight;
     }
@@ -1562,7 +1573,7 @@ wxPdfDocument::PrepareXmlCell(wxXmlNode* node, wxPdfCellContext& context)
             }
             else
             {
-              // Separator found, restart from last separator on next line
+              // Separator found, restart from last separator on next line 
               i = sep + 1;
               ns--;
               context.AddLastLineValues(ls, ns);

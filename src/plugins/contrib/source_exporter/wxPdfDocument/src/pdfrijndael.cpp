@@ -1,15 +1,16 @@
-///////////////////////////////////////////////////////////////////////////////
-// Name:        pdfrijndael.cpp
-// Purpose:
-// Author:      Ulrich Telle
-// Created:     2006-11-25
-// Copyright:   (c) Ulrich Telle (Copyright for original code see below)
-// Licence:     wxWindows licence
-//
-// Class renamed to wxPdfRijndael for use in wxPdfDocument (U. Telle)
-// Added wxWidgets specific includes (U. Telle)
-// Otherwise the code is unchanged
-///////////////////////////////////////////////////////////////////////////////
+/*
+** Name:        pdfrijndael.cpp
+** Purpose:     AES Encryption
+** Author:      Ulrich Telle
+** Created:     2006-11-25
+** Copyright:   (c) 2006-2024 Ulrich Telle (Copyright for original code see below)
+** Licence:     wxWindows licence
+** SPDX-License-Identifier: LGPL-3.0+ WITH WxWindows-exception-3.1
+**
+** Class renamed to wxPdfRijndael for use in wxPdfDocument (U. Telle)
+** Added wxWidgets specific includes (U. Telle)
+** Otherwise the code is unchanged
+*/
 
 /// \file pdfrijndael.cpp Implementation of the Rijndael cipher
 
@@ -48,6 +49,10 @@
 
 // For compilers that support precompilation, includes <wx/wx.h>.
 #include <wx/wxprec.h>
+
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
@@ -1068,7 +1073,7 @@ int wxPdfRijndael::blockEncrypt(const UINT8 *input,int inputLen,UINT8 *outBuffer
 
   if(input == 0 || inputLen <= 0)return 0;
 
-  numBlocks = inputLen/128;
+  numBlocks = inputLen/16;
 
   switch(m_mode){
     case ECB:
@@ -1140,7 +1145,7 @@ int wxPdfRijndael::blockEncrypt(const UINT8 *input,int inputLen,UINT8 *outBuffer
     break;
   }
 
-  return 128 * numBlocks;
+  return 16 * numBlocks;
 }
 
 int wxPdfRijndael::padEncrypt(const UINT8 *input, int inputOctets, UINT8 *outBuffer)
@@ -1211,7 +1216,7 @@ int wxPdfRijndael::blockDecrypt(const UINT8 *input, int inputLen, UINT8 *outBuff
 
   if (input == 0 || inputLen <= 0)return 0;
 
-  numBlocks = inputLen/128;
+  numBlocks = inputLen/16;
 
   switch(m_mode)
   {
@@ -1295,7 +1300,7 @@ int wxPdfRijndael::blockDecrypt(const UINT8 *input, int inputLen, UINT8 *outBuff
     break;
   }
 
-  return 128*numBlocks;
+  return 16*numBlocks;
 }
 
 int wxPdfRijndael::padDecrypt(const UINT8 *input, int inputOctets, UINT8 *outBuffer)
