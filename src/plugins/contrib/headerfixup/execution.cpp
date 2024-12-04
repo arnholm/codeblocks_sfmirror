@@ -79,8 +79,8 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizLeft = new wxBoxSizer(wxVERTICAL);
   wxString __wxRadioBoxChoices_1[2] =
   {
-      _("Scan source files in project"),
-      _("Scan source files in workspace")
+    _("Scan source files in project"),
+    _("Scan source files in workspace")
   };
   m_Scope = new wxRadioBox(this, ID_RB_SCOPE, _("Scope"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_SCOPE"));
   m_Scope->SetSelection(0);
@@ -88,8 +88,8 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizLeft->Add(m_Scope, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
   wxString __wxRadioBoxChoices_2[2] =
   {
-      _("Use \"include.h\" (quotation marks)"),
-      _("Use <include.h> (brackets)")
+    _("Use \"include.h\" (quotation marks)"),
+    _("Use <include.h> (brackets)")
   };
   m_Options = new wxRadioBox(this, ID_RB_OPTIONS, _("Options"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_OPTIONS"));
   m_Options->SetSelection(1);
@@ -110,9 +110,9 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   sizAdvancedOptions->Add(m_ObsoleteLog, 0, wxTOP|wxEXPAND, 5);
   wxString __wxRadioBoxChoices_3[3] =
   {
-      _("Process header files only"),
-      _("Process implementation files only"),
-      _("Process both files (2-step-fix up)")
+    _("Process header files only"),
+    _("Process implementation files only"),
+    _("Process both files (2-step-fix up)")
   };
   m_FileType = new wxRadioBox(this, ID_RDO_FILE_TYPE, _("File types to process:"), wxDefaultPosition, wxDefaultSize, 3, __wxRadioBoxChoices_3, 3, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RDO_FILE_TYPE"));
   m_FileType->SetSelection(2);
