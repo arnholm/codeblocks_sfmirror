@@ -270,7 +270,7 @@ function OnLeave_WxConf(fwd)
 
         if (WxVersion >= 3 && !IsUnicode)
         {
-            Message(_T("wxWidgets 3.3 and newer must use Unicode."), _T("wxWidgets Project Wizard"), wxICON_WARNING | wxOK)
+            Message(_("wxWidgets 3.3 and newer must use Unicode."), _("wxWidgets Project Wizard"), wxICON_WARNING | wxOK)
             return false
         }
 
