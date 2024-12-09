@@ -29,7 +29,12 @@
 #include <wx/generic/prntdlgg.h>
 #include <wx/progdlg.h>
 #include <wx/paper.h>
+
+#if wxCHECK_VERSION(3, 1, 2)
 #include <wx/display.h>
+#else
+#include <wx/dcscreen.h>
+#endif
 
 #include <wx/stattext.h>
 #include <wx/statbox.h>
@@ -570,7 +575,11 @@ wxPdfPrinter::Setup(wxWindow* WXUNUSED(parent))
 void
 wxPdfPrinter::GetPdfScreenPPI(int* x, int* y)
 {
+#if wxCHECK_VERSION(3, 1, 2)
   wxDisplay display;
+#else
+  wxScreenDC display;
+#endif
 
   if (x)
   {
@@ -852,7 +861,11 @@ wxPdfPrintPreviewImpl::Print(bool interactive)
 void
 wxPdfPrintPreviewImpl::GetPdfScreenPPI(int* x, int* y)
 {
+#if wxCHECK_VERSION(3, 1, 2)
   wxDisplay display;
+#else
+  wxScreenDC display;
+#endif
 
   if (x)
   {

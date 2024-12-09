@@ -275,6 +275,45 @@
 		<Unit filename="wxPdfDocument/include/wx/pdfxml.h">
 			<Option target="wxPdfDocument" />
 		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/random.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/random.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/saslprep.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/saslprep.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha256.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha256.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha384.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha384.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha512.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha512.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm_table.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
 		<Unit filename="wxPdfDocument/src/pdfannotation.cpp">
 			<Option target="wxPdfDocument" />
 		</Unit>
