@@ -24,11 +24,16 @@
 #include <wx/font.h>
 #include <wx/paper.h>
 #include <wx/tokenzr.h>
-#include <wx/display.h>
 
 #include "wx/pdfdc.h"
 #include "wx/pdffontmanager.h"
 #include "wx/pdfutility.h"
+
+#if wxCHECK_VERSION(3, 1, 2)
+#include <wx/display.h>
+#else
+#include <wx/dcscreen.h>
+#endif
 
 #include <math.h>
 
@@ -191,8 +196,14 @@ wxPdfDCImpl::Init()
   m_ppi = 72;
   m_pdfDocument = NULL;
 
+#if wxCHECK_VERSION(3, 1, 2)
   wxDisplay display;
   m_ppiPdfFont = display.GetPPI().GetHeight();
+#else
+  wxScreenDC screendc;
+  m_ppiPdfFont = screendc.GetPPI().GetHeight();
+#endif
+
   m_mappingModeStyle = wxPDF_MAPMODESTYLE_STANDARD;
 
   m_cachedRGB = 0;
@@ -599,7 +610,7 @@ wxAffineMatrix2D
 wxPdfDCImpl::GetTransformMatrix() const
 {
   wxCHECK_MSG(m_pdfDocument, wxAffineMatrix2D(), wxS("Invalid PDF DC"));
-  return m_matrix; 
+  return m_matrix;
 }
 
 void
@@ -1087,7 +1098,7 @@ wxPdfDCImpl::DoDrawRotatedText(const wxString& text, wxCoord x, wxCoord y, doubl
 
   m_pdfDocument->StartTransform();
   SetupTextAlpha();
-  
+
   // Draw all text line by line
   for (size_t lineNum = 0; lineNum < lines.size(); lineNum++)
   {
