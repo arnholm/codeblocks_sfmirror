@@ -112,7 +112,7 @@ void CBuildUnit::Show(void)
     }
     std::cout<<std::endl;
 #else
-    std::cout<<"Filename: "<<m_Filename.GetString()<<std::endl;
+    std::cout<<"Filename: "<<m_FileName.GetString()<<std::endl;
     std::cout<<"Weight: "<<m_Weight<<std::endl;
     std::cout<<"Compile: "<<BooleanToYesNoString(m_DoCompile).GetString()<<std::endl;
     std::cout<<"Link: "<<BooleanToYesNoString(m_DoLink).GetString()<<std::endl;
