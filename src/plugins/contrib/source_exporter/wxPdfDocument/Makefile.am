@@ -48,13 +48,7 @@ libwxPdfDocument_la_SOURCES = \
 				src/pdfrijndael.cpp \
 				src/pdftemplate.cpp \
 				src/pdfutility.cpp \
-				src/pdfxml.cpp \
-				src/crypto/random.cpp \
-				src/crypto/saslprep.cpp \
-				src/crypto/sha256.cpp \
-				src/crypto/sha384.cpp \
-				src/crypto/sha512.cpp \
-				src/crypto/unicode_norm.cpp
+				src/pdfxml.cpp
 
 noinst_HEADERS = \
 				include/wx/pdfannotation.h \
@@ -111,16 +105,7 @@ noinst_HEADERS = \
 				include/wx/pdfspotcolour.h \
 				include/wx/pdftemplate.h \
 				include/wx/pdfutility.h \
-				include/wx/pdfxml.h \
-				src/crypto/random.h \
-				src/crypto/saslprep.h \
-				src/crypto/sha256.h \
-				src/crypto/sha384.h \
-				src/crypto/sha512.h \
-				src/crypto/unicode_norm.h \
-				src/crypto/unicode_norm_table.h \
-				src/srgb2014icc.h \
-				src/wxmemdbg.h
+				include/wx/pdfxml.h
 
 EXTRA_DIST = \
 				src/pdfcjkfontdata.inc \

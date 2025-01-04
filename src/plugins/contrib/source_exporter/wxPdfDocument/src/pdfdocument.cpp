@@ -1,12 +1,11 @@
-/*
-** Name:        pdfdocument.cpp
-** Purpose:     Implementation of wxPdfDocument (public methods)
-** Author:      Ulrich Telle
-** Created:     2005-08-04
-** Copyright:   (c) 2005-2024 Ulrich Telle
-** Licence:     wxWindows licence
-** SPDX-License-Identifier: LGPL-3.0+ WITH WxWindows-exception-3.1
-*/
+///////////////////////////////////////////////////////////////////////////////
+// Name:        pdfdocument.cpp
+// Purpose:     Implementation of wxPdfDocument (public methods)
+// Author:      Ulrich Telle
+// Created:     2005-08-04
+// Copyright:   (c) Ulrich Telle
+// Licence:     wxWindows licence
+///////////////////////////////////////////////////////////////////////////////
 
 /// \file pdfdocument.cpp Implementation of the wxPdfDocument class
 
@@ -46,8 +45,6 @@
 #include "wx/pdftemplate.h"
 #include "wx/pdffontparser.h"
 #include "wx/pdfutility.h"
-
-//#include <vld.h>
 
 #if WXPDFDOC_INHERIT_WXOBJECT
 IMPLEMENT_DYNAMIC_CLASS(wxPdfDocument, wxObject)
@@ -513,14 +510,13 @@ wxPdfDocument::~wxPdfDocument()
 
 // --- Public methods
 
-bool
+void
 wxPdfDocument::SetProtection(int permissions,
                              const wxString& userPassword,
                              const wxString& ownerPassword,
                              wxPdfEncryptionMethod encryptionMethod,
                              int keyLength)
 {
-  bool ok = true;
   if (m_encryptor == NULL)
   {
     // Check first whether PDF/A-1b conformance is enabled for this document
@@ -528,26 +524,12 @@ wxPdfDocument::SetProtection(int permissions,
     {
       wxLogError(wxString(wxS("wxPdfDocument::SetProtection: ")) +
                  wxString(_("Protection can't be enabled for PDF documents conforming to PDF/A-1b.")));
-      return false;
+      return;
     }
 
     int revision = (keyLength > 0) ? 3 : 2;
     switch (encryptionMethod)
     {
-      case wxPDF_ENCRYPTION_AESV3R6:
-        revision = 6;
-        if (m_PDFVersion < wxS("2.0"))
-        {
-          m_PDFVersion = wxS("2.0");
-        }
-        break;
-      case wxPDF_ENCRYPTION_AESV3:
-        revision = 5;
-        if (m_PDFVersion < wxS("1.7"))
-        {
-          m_PDFVersion = wxS("1.7");
-        }
-        break;
       case wxPDF_ENCRYPTION_AESV2:
         revision = 4;
         if (m_PDFVersion < wxS("1.6"))
@@ -564,32 +546,18 @@ wxPdfDocument::SetProtection(int permissions,
         break;
     }
     m_encryptor = new wxPdfEncrypt(revision, keyLength);
-
-    // Restrictions for protection flags:
-    //   - Reserved bits 1-2 have to be 0
-    //   - Reserved bits 7-8 and 13-32 have to be 1
-    //   - Bit 10 is deprecated and will be set to 1
-    // Thus, the base value of the flags is 0xFFFFF2C0.
-    int protection = 0xFFFFF2C0 | (permissions & wxPDF_PERMISSION_ALL);
-
+    m_encrypted = true;
+    int allowedFlags = wxPDF_PERMISSION_PRINT | wxPDF_PERMISSION_MODIFY |
+                       wxPDF_PERMISSION_COPY  | wxPDF_PERMISSION_ANNOT;
+    int protection = 192;
+    protection += (permissions & allowedFlags);
     wxString ownerPswd = ownerPassword;
     if (ownerPswd.Length() == 0)
     {
       ownerPswd = wxPdfUtility::GetUniqueId(wxS("wxPdfDoc"));
     }
-    ok = m_encryptor->PasswordIsValid(userPassword) && m_encryptor->PasswordIsValid(ownerPswd);
-    if (ok)
-    {
-      m_encrypted = true;
-      m_encryptor->GenerateEncryptionKey(userPassword, ownerPswd, protection);
-    }
+    m_encryptor->GenerateEncryptionKey(userPassword, ownerPswd, protection);
   }
-  else
-  {
-    // If encryptor instance already exists, check whether it was successfully initialized
-    ok = m_encrypted;
-  }
-  return ok;
 }
 
 void

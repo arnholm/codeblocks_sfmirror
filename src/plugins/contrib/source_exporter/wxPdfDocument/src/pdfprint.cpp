@@ -30,12 +30,6 @@
 #include <wx/progdlg.h>
 #include <wx/paper.h>
 
-#if wxCHECK_VERSION(3, 1, 2)
-#include <wx/display.h>
-#else
-#include <wx/dcscreen.h>
-#endif
-
 #include <wx/stattext.h>
 #include <wx/statbox.h>
 #include <wx/button.h>
@@ -575,20 +569,16 @@ wxPdfPrinter::Setup(wxWindow* WXUNUSED(parent))
 void
 wxPdfPrinter::GetPdfScreenPPI(int* x, int* y)
 {
-#if wxCHECK_VERSION(3, 1, 2)
-  wxDisplay display;
-#else
-  wxScreenDC display;
-#endif
+  wxScreenDC dc;
 
   if (x)
   {
-    *x = display.GetPPI().GetWidth();
+    *x = dc.GetPPI().GetWidth();
   }
 
   if (y)
   {
-    *y = display.GetPPI().GetHeight();
+    *y = dc.GetPPI().GetHeight();
   }
 }
 
@@ -861,20 +851,16 @@ wxPdfPrintPreviewImpl::Print(bool interactive)
 void
 wxPdfPrintPreviewImpl::GetPdfScreenPPI(int* x, int* y)
 {
-#if wxCHECK_VERSION(3, 1, 2)
-  wxDisplay display;
-#else
-  wxScreenDC display;
-#endif
+  wxScreenDC dc;
 
   if (x)
   {
-    *x = display.GetPPI().GetWidth();
+    *x = dc.GetPPI().GetWidth();
   }
 
   if (y)
   {
-    *y = display.GetPPI().GetHeight();
+    *y = dc.GetPPI().GetHeight();
   }
 }
 

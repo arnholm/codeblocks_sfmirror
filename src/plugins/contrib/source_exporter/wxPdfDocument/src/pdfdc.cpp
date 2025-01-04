@@ -29,12 +29,6 @@
 #include "wx/pdffontmanager.h"
 #include "wx/pdfutility.h"
 
-#if wxCHECK_VERSION(3, 1, 2)
-#include <wx/display.h>
-#else
-#include <wx/dcscreen.h>
-#endif
-
 #include <math.h>
 
 //-------------------------------------------------------------------------------
@@ -196,14 +190,8 @@ wxPdfDCImpl::Init()
   m_ppi = 72;
   m_pdfDocument = NULL;
 
-#if wxCHECK_VERSION(3, 1, 2)
-  wxDisplay display;
-  m_ppiPdfFont = display.GetPPI().GetHeight();
-#else
   wxScreenDC screendc;
   m_ppiPdfFont = screendc.GetPPI().GetHeight();
-#endif
-
   m_mappingModeStyle = wxPDF_MAPMODESTYLE_STANDARD;
 
   m_cachedRGB = 0;
@@ -610,7 +598,7 @@ wxAffineMatrix2D
 wxPdfDCImpl::GetTransformMatrix() const
 {
   wxCHECK_MSG(m_pdfDocument, wxAffineMatrix2D(), wxS("Invalid PDF DC"));
-  return m_matrix;
+  return m_matrix; 
 }
 
 void
@@ -1023,7 +1011,23 @@ wxPdfDCImpl::DoDrawBitmap(const wxBitmap& bitmap, wxCoord x, wxCoord y, bool use
 void
 wxPdfDCImpl::DoDrawText(const wxString& text, wxCoord x, wxCoord y)
 {
-  DoDrawRotatedText(text, x, y, 0.0);
+  if (text.Find(wxS('\n')) == wxNOT_FOUND)
+  {
+    // text contains a single line: just draw it
+    DoDrawRotatedText(text, x, y, 0.0);
+  }
+  else
+  {
+    // this is a multiline text: split it and print the lines one by one
+    wxCoord charH = GetCharHeight();
+    wxCoord curY = y;
+    wxStringTokenizer tok( text, "\n" );
+    while( tok.HasMoreTokens() ) {
+      wxString s = tok.GetNextToken();
+      DoDrawRotatedText(s, x, curY, 0.0);
+      curY += charH;
+    }
+  }
 }
 
 void
@@ -1098,7 +1102,7 @@ wxPdfDCImpl::DoDrawRotatedText(const wxString& text, wxCoord x, wxCoord y, doubl
 
   m_pdfDocument->StartTransform();
   SetupTextAlpha();
-
+  
   // Draw all text line by line
   for (size_t lineNum = 0; lineNum < lines.size(); lineNum++)
   {

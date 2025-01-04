@@ -1,12 +1,11 @@
-/*
-** Name:        pdfdocument.h
-** Purpose:     Class for representation of a PDF document
-** Author:      Ulrich Telle
-** Created:     2005-08-04
-** Copyright:   (c) 2005-2024 Ulrich Telle
-** Licence:     wxWindows licence
-** SPDX-License-Identifier: LGPL-3.0+ WITH WxWindows-exception-3.1
-*/
+///////////////////////////////////////////////////////////////////////////////
+// Name:        pdfdocument.h
+// Purpose:
+// Author:      Ulrich Telle
+// Created:     2005-08-04
+// Copyright:   (c) Ulrich Telle
+// Licence:     wxWindows licence
+///////////////////////////////////////////////////////////////////////////////
 
 /// \file pdfdocument.h Interface of the wxPdfDocument class
 
@@ -182,19 +181,17 @@ public:
   *                      If an owner password is set, the document can be opened
   *                      in privilege mode with no restriction if that password is entered
   * \param encryptionMethod selects the encryption method. Possible values are:
-  *   \li wxPDF_ENCRYPTION_RC4V1   RC4 method, version 1, with 40 bit encryption key (default)
-  *   \li wxPDF_ENCRYPTION_RC4V2   RC4 method, version 2, with 40..128 bit encryption key
-  *   \li wxPDF_ENCRYPTION_AESV2   AES method, with 128 bit encryption key
-  *   \li wxPDF_ENCRYPTION_AESV3   AES method, with 256 bit encryption key
-  *   \li wxPDF_ENCRYPTION_AESV3R6 AES method, with 256 bit encryption key (PDF 2.0)
+  *   \li wxPDF_ENCRYPTION_RC4V1 RC4 method, version 1, with 40 bit encryption key (default)
+  *   \li wxPDF_ENCRYPTION_RC4V2 RC4 method, version 2, with 40..128 bit encryption key
+  *   \li wxPDF_ENCRYPTION_AESV2 AES method, with 128 bit encryption key
   * \param keyLength Length of the key used for encryption (Default: 0)
   *                  The default value selects the standard encryption method revision 2 with a key length of 40 bits.
   *                  Specifying a value > 0 selects the standard encryption method revision 3 with the given key length,
   *                  the key length has to be in the range 40..128 and has to be dividable by 8.
   *                  The key length is adjusted accordingly if these conditions are not met.
-  * \return true, if the provided passwords are valid, false otherwise.
+  * NOTE: Adobe Reader supports only 40- and 128-bit encryption keys.
   */
-  virtual bool SetProtection(int permissions,
+  virtual void SetProtection(int permissions,
                              const wxString& userPassword = wxEmptyString,
                              const wxString& ownerPassword = wxEmptyString,
                              wxPdfEncryptionMethod encryptionMethod = wxPDF_ENCRYPTION_RC4V1,
@@ -2881,15 +2878,6 @@ protected:
 
   /// Add \ before \, ( and )
   void OutEscape(const char* s, size_t len);
-
-  /// Add \ before \, ( and )
-  void OutEscape(const std::string& s);
-
-  /// Add a hex string to the document
-  void OutHex(const char* s, size_t len);
-
-  /// Add a hex string to the document
-  void OutHex(const std::string& s);
 
   /// Add ASCII string
   void OutAscii(const wxString& s, bool newline = true);

@@ -1,12 +1,11 @@
-/*
-** Name:        pdfparser.cpp
-** Purpose:
-** Author:      Ulrich Telle
-** Created:     2006-10-15
-** Copyright:   (c) 2006-2024 Ulrich Telle
-** Licence:     wxWindows licence
-** SPDX-License-Identifier: LGPL-3.0+ WITH WxWindows-exception-3.1
-*/
+///////////////////////////////////////////////////////////////////////////////
+// Name:        pdfparser.cpp
+// Purpose:
+// Author:      Ulrich Telle
+// Created:     2006-10-15
+// Copyright:   (c) Ulrich Telle
+// Licence:     wxWindows licence
+///////////////////////////////////////////////////////////////////////////////
 
 /// \file pdfparser.cpp Implementation of PDF parser
 
@@ -157,7 +156,7 @@ wxPdfParser::~wxPdfParser()
 }
 
 bool
-wxPdfParser::IsOk() const
+wxPdfParser::IsOk()
 {
   return (m_pdfFile != NULL && m_initialized);
 }
@@ -172,7 +171,7 @@ wxPdfParser::AppendObject(int originalObjectId, int actualObjectId, wxPdfObject*
 }
 
 unsigned int
-wxPdfParser::GetPageCount() const
+wxPdfParser::GetPageCount()
 {
   return (unsigned int) m_pages.GetCount();
 }
@@ -297,19 +296,13 @@ wxPdfParser::SetupDecryptor()
       delete documentIDs;
     }
   }
-  if (documentID.empty())
-  {
-    wxLogWarning(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                 wxString(_("Invalid /ID in trailer dictionary.")));
-  }
 
-  // Extract U value
   wxString uValue = wxEmptyString;
   obj = enc->Get(wxS("U"));
   if (obj->GetType() == OBJTYPE_STRING)
   {
     uValue = ((wxPdfString*) obj)->GetValue();
-    if (uValue.Length() != 32 && uValue.Length() != 48)
+    if (uValue.Length() != 32)
     {
       wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
                  wxString(_("Invalid length of U value.")));
@@ -317,13 +310,12 @@ wxPdfParser::SetupDecryptor()
     }
   }
 
-  // Extract O value
   wxString oValue = wxEmptyString;
   obj = enc->Get(wxS("O"));
   if (obj->GetType() == OBJTYPE_STRING)
   {
     oValue = ((wxPdfString*) obj)->GetValue();
-    if (oValue.Length() != 32 && oValue.Length() != 48)
+    if (oValue.Length() != 32)
     {
       wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
                  wxString(_("Invalid length of O value.")));
@@ -331,16 +323,15 @@ wxPdfParser::SetupDecryptor()
     }
   }
 
-  // Extract R value
   int rValue = 0;
   obj = enc->Get(wxS("R"));
   if (obj->GetType() == OBJTYPE_NUMBER)
   {
     rValue = ((wxPdfNumber*) obj)->GetInt();
-    if (rValue < 2 || rValue > 6)
+    if (rValue != 2 && rValue != 3)
     {
       wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                 wxString::Format(_("Unknown encryption type (R=%d)."), rValue));
+                 wxString::Format(_("Unknown encryption type (%d)."), rValue));
       ok = false;
     }
   }
@@ -351,18 +342,15 @@ wxPdfParser::SetupDecryptor()
     ok = false;
   }
 
-  // Extract V value
   int vValue = 0;
   obj = enc->Get(wxS("V"));
   if (obj != NULL && obj->GetType() == OBJTYPE_NUMBER)
   {
     vValue = ((wxPdfNumber*) obj)->GetInt();
-    if (!((rValue == 2 && vValue == 1) || (rValue == 3 && vValue == 2) ||
-          (rValue == 4 && vValue == 4) || (rValue == 5 && vValue == 5) ||
-          (rValue == 6 && vValue == 5)))
+    if (!((rValue == 2 && vValue == 1) || (rValue == 3 && vValue == 2)))
     {
       wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                 wxString::Format(_("Unsupported combination of V and R values (V=%d, R=%d)."), vValue, rValue));
+                 wxString(_("Unsupported V value.")));
       ok = false;
     }
   }
@@ -373,12 +361,18 @@ wxPdfParser::SetupDecryptor()
     ok = false;
   }
 
-  // Extract P value
   int pValue = 0;
   obj = enc->Get(wxS("P"));
   if (obj->GetType() == OBJTYPE_NUMBER)
   {
     pValue = ((wxPdfNumber*) obj)->GetInt();
+    // Check required permissions (Applications MUST respect the permission settings)
+    if ((pValue & REQUIRED_PERMISSIONS) != REQUIRED_PERMISSIONS)
+    {
+      wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
+                 wxString(_("Import of document not allowed due to missing permissions.")));
+      ok = false;
+    }
   }
   else
   {
@@ -387,100 +381,27 @@ wxPdfParser::SetupDecryptor()
     ok = false;
   }
 
-  // Extract UE, OE, and Perms values, if necessary
-  wxString ueValue;
-  wxString oeValue;
-  wxString permsValue;
-  if (vValue > 4)
-  {
-    // Extract UE value
-    obj = enc->Get(wxS("UE"));
-    if (obj->GetType() == OBJTYPE_STRING)
-    {
-      ueValue = ((wxPdfString*)obj)->GetValue();
-      if (ueValue.Length() != 32)
-      {
-        wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                   wxString(_("Invalid length of UE value.")));
-        ok = false;
-      }
-    }
-
-    // Extract OE value
-    obj = enc->Get(wxS("OE"));
-    if (obj->GetType() == OBJTYPE_STRING)
-    {
-      oeValue = ((wxPdfString*)obj)->GetValue();
-      if (oeValue.Length() != 32)
-      {
-        wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                   wxString(_("Invalid length of OE value.")));
-        ok = false;
-      }
-    }
-
-    // Extract Perms value
-    obj = enc->Get(wxS("Perms"));
-    if (obj->GetType() == OBJTYPE_STRING)
-    {
-      permsValue = ((wxPdfString*)obj)->GetValue();
-      if (permsValue.Length() != 16)
-      {
-        wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                   wxString(_("Invalid length of Perms value.")));
-        ok = false;
-      }
-    }
-  }
-
-  // Determine key length
-  int lengthValue = 0;
-  if (vValue <= 1) lengthValue = 40;
-  else if (vValue == 4) lengthValue = 128;
-  else if (vValue == 5) lengthValue = 256;
-  else
+  int lengthValue = 40; // Default for revisison 2
+  if (rValue == 3)
   {
     // Get the key length if revision is 3
     obj = enc->Get(wxS("Length"));
     if (obj->GetType() == OBJTYPE_NUMBER)
     {
-      lengthValue = ((wxPdfNumber*)obj)->GetInt();
+      lengthValue = ((wxPdfNumber*) obj)->GetInt();
       if (lengthValue > 128 || lengthValue < 40 || lengthValue % 8 != 0)
       {
-        wxLogWarning(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                     wxString(_("Illegal Length value.")));
-        lengthValue = 0;
+        wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
+                   wxString(_("Illegal Length value.")));
+        ok = false;
       }
     }
     else
     {
-      wxLogWarning(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
-                   wxString(_("Illegal Length value type.")));
+      wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
+                 wxString(_("Illegal Length value.")));
+      ok = false;
     }
-  }
-  // Assume a default key length
-  if (lengthValue == 0) lengthValue = 128;
-
-#if 0
-  // TODO:
-  // We should analyze the crypt filters here
-  // Each entry of CF describes a filter
-  // Key CFM contains the encryption method, i.e. V2, AESV2, or AESV3
-  if ((vValue == 4) || (vValue == 5))
-  {
-    obj = enc->Get(wxS("CF"));
-    if (obj->GetType() == OBJTYPE_DICTIONARY)
-    {
-      // Handle entry
-    }
-  }
-#endif
-
-  bool encryptMetaData = true;
-  obj = enc->Get(wxS("EncryptMetadata"));
-  if (obj && obj->GetType() == OBJTYPE_BOOLEAN)
-  {
-    encryptMetaData = ((wxPdfBoolean*)obj)->GetValue();
   }
 
   if (enc->IsCreatedIndirect())
@@ -491,8 +412,8 @@ wxPdfParser::SetupDecryptor()
   if (ok)
   {
     m_encrypted = true;
-    m_decryptor = new wxPdfEncrypt(rValue, lengthValue);
-    if (!m_decryptor->Authenticate(documentID, m_password, uValue, oValue, ueValue, oeValue, permsValue, pValue, lengthValue, rValue, vValue))
+    m_decryptor = new wxPdfEncrypt();
+    if (!m_decryptor->Authenticate(documentID, m_password, uValue, oValue, pValue, lengthValue, rValue))
     {
       wxLogError(wxString(wxS("wxPdfParser::SetupDecryptor: ")) +
                  wxString(_("Bad password.")));
@@ -1143,7 +1064,7 @@ wxPdfParser::ParseObject()
         // Decrypt if necessary
         if (m_encrypted)
         {
-          m_decryptor->Decrypt(m_objNum, m_objGen, token);
+          m_decryptor->Encrypt(m_objNum, m_objGen, token);
         }
 
         wxPdfString* strObj = new wxPdfString(token);
@@ -1526,9 +1447,8 @@ wxPdfParser::GetStreamBytesRaw(wxPdfStream* stream)
     inData.Read(buffer, size);
     if (inData.LastRead() == size)
     {
-      int realLen = m_decryptor->Decrypt(stream->GetNumber(), stream->GetGeneration(), buffer, (unsigned int) size);
-      size_t offset = m_decryptor->CalculateStreamOffset();
-      memoryBuffer->Write(&buffer[offset], realLen);
+      m_decryptor->Encrypt(stream->GetNumber(), stream->GetGeneration(), buffer, (unsigned int) size);
+      memoryBuffer->Write(buffer, size);
     }
     delete [] buffer;
     memoryBuffer->Close();
@@ -1653,7 +1573,7 @@ wxPdfTokenizer::CheckPdfHeader()
   wxString version = wxEmptyString;
   m_inputStream->SeekI(0);
   wxString str = ReadString(1024);
-  int idx = str.Find(wxS("%PDF-"));
+  int idx = str.Find(wxS("%PDF-1."));
   if (idx >= 0)
   {
     m_inputStream->SeekI(idx);
@@ -1990,19 +1910,19 @@ wxPdfTokenizer::NextValidToken()
 }
 
 int
-wxPdfTokenizer::GetTokenType() const
+wxPdfTokenizer::GetTokenType()
 {
   return m_type;
 }
 
 wxString
-wxPdfTokenizer::GetStringValue() const
+wxPdfTokenizer::GetStringValue()
 {
   return m_stringValue;
 }
 
 int
-wxPdfTokenizer::GetIntValue() const
+wxPdfTokenizer::GetIntValue()
 {
   long value;
   m_stringValue.ToLong(&value);
@@ -2010,13 +1930,13 @@ wxPdfTokenizer::GetIntValue() const
 }
 
 int
-wxPdfTokenizer::GetReference() const
+wxPdfTokenizer::GetReference()
 {
   return m_reference;
 }
 
 int
-wxPdfTokenizer::GetGeneration() const
+wxPdfTokenizer::GetGeneration()
 {
   return m_generation;
 }
