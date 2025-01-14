@@ -118,17 +118,14 @@ void HelpConfigDialog::ChooseFile()
 {
   wxString filename = wxFileSelector
   (
-    _T("Choose a help file"),
+    _("Choose a help file"),
     wxEmptyString,
     wxEmptyString,
     wxEmptyString,
 #ifdef __WXMSW__
-    _T(
-      "Windows help files (*.chm;*.hlp)|*.hlp;*.chm|"
-      "All files (*.*)|*.*"
-    )
+    _("Windows help files (*.chm;*.hlp)|*.hlp;*.chm|All files (*.*)|*.*")
 #else
-    _T("All files (*.*)|*.*")
+    _("All files (*.*)|*.*")
 #endif
   );
 
