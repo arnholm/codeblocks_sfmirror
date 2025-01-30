@@ -130,7 +130,7 @@ class JumpTracker : public cbPlugin
         void JumpDataAdd(const wxString& filename, const long posn, const long edlineNum);
 ////        bool JumpDataContains(const int indx, const wxString& filename, const long posn);
 ////        int  FindJumpDataContaining(const wxString& filename, const long posn);
-        void CreateJumpTrackerView(); //(ph 2023/01/17)
+        void CreateJumpTrackerView();
         void OnSwitchViewLayout(CodeBlocksLayoutEvent& event);
         void OnSwitchedViewLayout(CodeBlocksLayoutEvent& event);
         void OnDockWindowVisability(CodeBlocksDockEvent& event);
@@ -167,7 +167,7 @@ class JumpTracker : public cbPlugin
         int      GetPreviousIndex(const int idx);
         int      GetNextIndex(const int idx);
 
-        int maxJumpEntries = Helpers::GetMaxEntries();
+        int maxJumpEntries = Helpers::GetMaxAllocEntries();
 
         ArrayOfJumpData m_ArrayOfJumpData;
         std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;

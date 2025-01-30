@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.117 24/06/18")
+#define VERSION wxT("1.4.120 25/01/30")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -66,6 +66,9 @@ class AppVersion
 #endif // VERSION_H
 
 // ----------------------------------------------------------------------------
+// 1.4.120  2025/01/30 Rework OnEditorActivate to catch editors loaded via layout.
+// 1.4.119  2025/01/29 Rework the EditorHook for efficiency.
+// 1.4.118  2025/01/28 Fix assert "idx < m_size" failed in at() in AddEditor().
 // 1.4.117  2024/06/18 Fix GetMaxEntries() (Helpers.cpp) to query conf only once.
 // 1.4.116  2024/06/1 Allow user to set max entries for jump,browse marks etc.
 // 1.4.115  2023/10/23 Deprecate OnEditorActivated() to stop OnEditorActivated() from

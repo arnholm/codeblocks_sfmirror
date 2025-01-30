@@ -62,7 +62,7 @@ ProjectData::ProjectData(cbProject* pcbProject)
     m_pCBProject = pcbProject;
     m_ProjectFilename = pcbProject->GetFilename();
     m_CurrIndexEntry = 0;
-    m_LastIndexEntry = Helpers::GetMaxEntries()-1;
+    m_LastIndexEntry = Helpers::GetMaxAllocEntries()-1;
     m_pEdMgr = Manager::Get()->GetEditorManager();
     m_ActivationCount = 0;
     m_bLayoutLoaded = false;

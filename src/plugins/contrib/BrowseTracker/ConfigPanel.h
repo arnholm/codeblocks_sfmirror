@@ -42,7 +42,7 @@ class ConfigPanel : public wxPanel
 		virtual void OnShowToolbar( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnToggleBrowseMarkKey( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClearAllBrowseMarksKey( wxCommandEvent& event ) { event.Skip(); }
-        virtual void OnJumpTrackerSpinCtrl(wxSpinEvent& event) {event.Skip();} //(ph 2023/01/21)
+        virtual void OnJumpTrackerSpinCtrl(wxSpinEvent& event) {event.Skip();}
 
 	public:
 		wxCheckBox* Cfg_BrowseMarksEnabled;

@@ -102,9 +102,9 @@
 #include "ProjectData.h"
 #include "BrowseTrackerConfPanel.h"
 #include "JumpTracker.h"
-#include "btswitcherdlg.h"      //(2021/04/29)
-#include "cbauibook.h"          //(2021/06/19)
-#include "helpers.h"            //(ph 2024/06/01)
+#include "btswitcherdlg.h"
+#include "cbauibook.h"
+#include "helpers.h"
 
 //#define BROWSETRACKER_MARKER        9
 //#define BROWSETRACKER_MARKER_STYLE  wxSCI_MARK_DOTDOTDOT
@@ -145,10 +145,12 @@ namespace
     int idToolMarksClear = XRCID("idMarksClear");
 
     wxString sep = wxFileName::GetPathSeparator();
+    int m_nRemoveEditorSentry = 0;
+
 };
 
 // ----------------------------------------------------------------------------
-// Event hooks
+// Event events
 // ----------------------------------------------------------------------------
 BEGIN_EVENT_TABLE(BrowseTracker, cbPlugin)
 
@@ -194,7 +196,7 @@ BrowseTracker::BrowseTracker()
 {
     //ctor
     //-m_nCurrentEditorIndex = 0;
-    m_CurrEditorIndex = 0;
+    //-m_CurrEditorIndex = 0;
     m_LastEditorIndex = 0;
     m_apEditors.Clear();
 
@@ -250,20 +252,22 @@ void BrowseTracker::OnAttach()
     if (m_bAppShutdown)
         return;
 
+    m_pLogMgr = Manager::Get()->GetLogManager();
     m_pJumpTracker.reset( new JumpTracker());
     m_pJumpTracker->OnAttach();
     m_pJumpTracker->m_IsAttached = true;
 
 	m_InitDone = false;
-	m_CurrEditorIndex = 0;
-	m_LastEditorIndex = Helpers::GetMaxEntries()-1;
-    m_apEditors.SetCount(Helpers::GetMaxEntries(), 0);    //patch 2886
+	//-m_CurrEditorIndex = 0;
+	m_LastEditorIndex = Helpers::GetMaxAllocEntries()-1;
+    m_apEditors.SetCount(Helpers::GetMaxAllocEntries(), nullptr);    //patch 2886
 	m_nBrowsedEditorCount = 0;
 	m_UpdateUIFocusEditor = 0;
 	m_nRemoveEditorSentry = 0;
     m_nBrowseMarkPreviousSentry = 0;
     m_nBrowseMarkNextSentry = 0;
     m_OnEditorEventHookIgnoreMarkerChanges = true; //used to avoid editor hook overhead
+    m_EditorHookCurrentLine = -1;
 
     m_LoadingProjectFilename = wxT("");
     m_pEdMgr = Manager::Get()->GetEditorManager();
@@ -349,7 +353,7 @@ void BrowseTracker::OnAttach()
         }
     }//switch
 
-	// Hook to plugin events
+	// Sinks to plugin events
 
     // EVT_APP_START_SHUTDOWN
     Manager::Get()->RegisterEventSink(cbEVT_APP_START_SHUTDOWN, new cbEventFunctor<BrowseTracker, CodeBlocksEvent>(this, &BrowseTracker::OnStartShutdown));
@@ -572,7 +576,7 @@ void BrowseTracker::ReadUserOptions(wxString configFullPath)
     // to the CodeBlocks.conf file.
     // CodeBlocks .conf file.
 
-    if (configFullPath.empty()     //(ph 2023/01/20)
+    if (configFullPath.empty()
         or (not wxFileExists(configFullPath)))
     {
         LoadConfOptions();
@@ -622,7 +626,7 @@ void BrowseTracker::LoadConfOptions()
 	m_WrapJumpEntries   = pCfgMgr->ReadBool("WrapJumpEntries", 0);
 	m_ConfigShowToolbar = pCfgMgr->ReadBool("ShowToolbar", false);
 	m_CfgActivatePrevEd = pCfgMgr->ReadBool("ActivatePrevEd", 0);
-	m_CfgJumpViewRowCount = pCfgMgr->ReadInt("JumpViewRowCount", 20); //(ph 2023/01/21)
+	m_CfgJumpViewRowCount = pCfgMgr->ReadInt("JumpViewRowCount", 20);
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::SaveUserOptions(wxString configFullPath)
@@ -656,7 +660,7 @@ void BrowseTracker::SaveUserOptions(wxString configFullPath)
 	cfgFile.Write( wxT("WrapJumpEntries"),          m_WrapJumpEntries ) ;
 	cfgFile.Write( wxT("ShowToolbar"),              m_ConfigShowToolbar ) ;
 	cfgFile.Write( wxT("ActivatePrevEd"),           m_CfgActivatePrevEd ) ; //2020/06/18
-	cfgFile.Write( wxT("JumpViewRowCount"),         m_CfgJumpViewRowCount ) ; //(ph 2023/01/21)
+	cfgFile.Write( wxT("JumpViewRowCount"),         m_CfgJumpViewRowCount ) ;
 
     cfgFile.Flush();
     SaveConfOptions();
@@ -678,7 +682,7 @@ void BrowseTracker::SaveConfOptions()
 	pCfgMgr->Write( "WrapJumpEntries",          m_WrapJumpEntries ) ;
 	pCfgMgr->Write( "ShowToolbar",              m_ConfigShowToolbar ) ;
 	pCfgMgr->Write( "ActivatePrevEd",           m_CfgActivatePrevEd ) ;
-	pCfgMgr->Write( "JumpViewRowCount",         m_CfgJumpViewRowCount ) ; //(ph 2023/01/21)
+	pCfgMgr->Write( "JumpViewRowCount",         m_CfgJumpViewRowCount ) ;
 
 }//SaveUserOptions
 // ----------------------------------------------------------------------------
@@ -727,7 +731,7 @@ int BrowseTracker::GetEditor(EditorBase* eb)
 // ----------------------------------------------------------------------------
 {
     // return the editor index from our array of user activated edits
-    int numEntries = Helpers::GetMaxEntries();
+    int numEntries = Helpers::GetMaxAllocEntries();
     for (int i=0; i<numEntries; ++i )
     	if ( m_apEditors[i] == eb ) return i;
     return -1;
@@ -744,33 +748,42 @@ EditorBase* BrowseTracker::GetCurrentEditor()
 // ----------------------------------------------------------------------------
 {
     // return the EditorBase* of the currently activated editor
-    return GetEditor(m_CurrEditorIndex);
+    return Manager::Get()->GetEditorManager()->GetActiveEditor();
 }
 // ----------------------------------------------------------------------------
-int BrowseTracker::GetCurrentEditorIndex()
+int BrowseTracker::GetCurrentEditorIndex(EditorBase* pEb)
 // ----------------------------------------------------------------------------
 {
     // return the index of the currently activated editor
-    if ( GetEditorBrowsedCount() )
-        return m_CurrEditorIndex;
-    return -1;
+    EditorBase* pCurrEb = GetCurrentEditor();
+    if ( pCurrEb )
+    {
+        for (int ii=0; ii < Helpers::GetMaxAllocEntries(); ++ii)
+        {
+            if (m_apEditors[ii] == pCurrEb)
+                return ii;
+        }
+    }
+    return wxNOT_FOUND;
 }
 // ----------------------------------------------------------------------------
 EditorBase* BrowseTracker::GetPreviousEditor()
 // ----------------------------------------------------------------------------
 {
     // return the EditorBase* of the previoiusly user activated editor
-    EditorBase* p = 0;
-    int index = m_CurrEditorIndex;
-    int maxEntries = Helpers::GetMaxEntries();
+    EditorBase* pEb = GetCurrentEditor();
+    int index = GetCurrentEditorIndex(pEb);
+    if (index == wxNOT_FOUND) return nullptr;
+
+    int maxEntries = Helpers::GetMaxAllocEntries();
     for (int i = 0; i<maxEntries; ++i)
     {
         --index;
-        if (index < 0) index = Helpers::GetMaxEntries()-1;
-    	p = GetEditor(index);
-    	if ( p != 0 ) break;
+        if (index < 0) index = Helpers::GetMaxAllocEntries()-1;
+    	pEb = GetEditor(index);
+    	if ( pEb ) return pEb;
     }
-    return p;
+    return nullptr;
 }
 // ----------------------------------------------------------------------------
 int BrowseTracker::GetEditorBrowsedCount()
@@ -787,23 +800,19 @@ int BrowseTracker::GetPreviousEditorIndex()
 {
     // return the index of the previously user activated editor
 
-    EditorBase* eb = 0;
-    int index = m_CurrEditorIndex;
+    EditorBase* pCurrent_Eb = GetCurrentEditor();
+    int index = GetCurrentEditorIndex(pCurrent_Eb);
     // scan for previous editor, skipping nulls (null is a closed editors)
-    int maxEntries = Helpers::GetMaxEntries();
-    for (int i=0; i<maxEntries; ++i)
+    int maxEntries = Helpers::GetMaxAllocEntries();
+    for (int ii=0; ii<maxEntries; ++ii)
     {
         --index;
-        if ( index < 0 ) index = Helpers::GetMaxEntries()-1;
-        eb = GetEditor(index);
-        if ( eb ) break;
-    }//for
+        if ( index < 0 ) index = Helpers::GetMaxAllocEntries()-1;
+        EditorBase* pEb = GetEditor(index);
+        if ( pEb ) return ii;
+    }
 
-    #if defined(LOGGING)
-    // LOGIT( _T("BT GetPreviousEditorIndex[%d][%p][%s]"), index, eb, eb?eb->GetShortName().c_str():wxEmptyString );
-    #endif
-    if ( not eb) index = -1;
-    return index;
+    return wxNOT_FOUND;
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::SetSelection(int index)
@@ -811,7 +820,7 @@ void BrowseTracker::SetSelection(int index)
 {
     // user has selected an editor, make it active
 
-    if ((index < 0) || (index >= Helpers::GetMaxEntries() )) return;
+    if ((index < 0) || (index >= Helpers::GetMaxAllocEntries() )) return;
 
     EditorBase* eb = GetEditor(index);
     if (eb)
@@ -1119,7 +1128,7 @@ void BrowseTracker::SetBrowseMarksStyle( int userStyle)
     // BrowseMarks, BookMarks, or Hidden style
 
     BrowseMarks* pBrowse_Marks = 0;
-    int maxEntries = Helpers::GetMaxEntries();
+    int maxEntries = Helpers::GetMaxAllocEntries();
     for (int i=0; i<maxEntries; ++i )
     {
         EditorBase* eb = GetEditor(i);
@@ -1355,7 +1364,10 @@ void BrowseTracker::OnMouseKeyEvent(wxMouseEvent& event)
                 if ( m_IsMouseDoubleClick) break;
                 wxLongLong mouseDwellMillisecs = ::wxGetLocalTimeMillis() - m_MouseDownTime;
                 if (mouseDwellMillisecs >= m_LeftMouseDelay)
-                        RecordBrowseMark(eb);
+                {
+                    //m_pLogMgr->DebugLog("Recording Brouse Mark");
+                    RecordBrowseMark(eb);
+                }
                 break;
             }//if useOnlyLeftMouse
 
@@ -1543,11 +1555,10 @@ void BrowseTracker::TrackerClearAll()
 
     if (IsAttached() && m_InitDone)
     {
-        int maxEntries = Helpers::GetMaxEntries();
+        int maxEntries = Helpers::GetMaxAllocEntries();
         for (int i=0; i<maxEntries; ++i )
             RemoveEditor(GetEditor(i));
-        m_CurrEditorIndex = 0;
-        m_LastEditorIndex = Helpers::GetMaxEntries()-1;
+        m_LastEditorIndex = -1; //no more indexes
     }
 
     // Simulate activation of the current editor. If the list is empty
@@ -1601,13 +1612,15 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
             return;
         }
 
-        if ( m_bProjectIsLoading )
-        {
-            #if defined(LOGGING)
-            LOGIT( _T("BT OnEditorActivated ignored: Project Loading[%s]"), editorFullPath.c_str());
-            #endif
-             return;
-        }
+        //        Deprecated //(ph 2025-01-30 ) causes layout loaded editors to be skipped
+        //    if ( m_bProjectIsLoading )
+        //    {
+        //        #if defined(LOGGING)
+        //        LOGIT( _T("BT OnEditorActivated ignored: Project Loading[%s]"), editorFullPath.c_str());
+        //        #endif
+        //         return;
+        //    }
+
         if ( m_bProjectClosing )
         {
             #if defined(LOGGING)
@@ -1620,28 +1633,6 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
         cbProject* pcbProject = GetProject( eb );
         LOGIT( _T("BT Editor Activated[%p]proj[%p][%s]"), eb, pcbProject, eb->GetShortName().c_str() );
         #endif
-
-        // New editor, append to circular queue
-        // remove previous entries for this editor first
-        int maxEntries = Helpers::GetMaxEntries();
-        for (int i=0; i < maxEntries; ++i)
-            if (eb == GetEditor(i)) ClearEditor(i);
-        // compress the array
-        if ( GetEditorBrowsedCount() )
-            for (int i=0; i < maxEntries-1; ++i)
-            {
-                if (m_apEditors[i] == 0)
-                {   m_apEditors[i] = m_apEditors[i+1];
-                    m_apEditors[i+1] = 0;
-                    if ( m_CurrEditorIndex == (i+1) ) --m_CurrEditorIndex;
-                    if ( m_LastEditorIndex == (i+1) ) --m_LastEditorIndex;
-                }
-            }
-        AddEditor(eb);
-        #if defined(LOGGING)
-        LOGIT( _T("BT OnEditorActivated AddedEditor[%p]proj[%p][%s]"), eb, GetProject(eb),eb->GetShortName().c_str() );
-        #endif
-        m_CurrEditorIndex = m_LastEditorIndex;
 
         // ---------------------------------------------------------------------
         // For new cbEditors, add an entry to the editor cursor positions hash
@@ -1657,7 +1648,34 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                 // Careful here! On the initial editor activation, EditorManager will not give us the EditorBase by way of the filename.
                 // It means the Editor is not ready for prime time and not fully registered with the EditorManager.
                 wxString fullPath = eb->GetFilename();
-                if (not m_pEdMgr->GetEditor(fullPath)) return;  // 2021/11/27
+                if (not m_pEdMgr->GetEditor(fullPath))
+                    return;
+
+                // New editor, append it to circular queue
+                // remove previous entries for this editor first
+                int maxEntries = Helpers::GetMaxAllocEntries();
+                for (int i=0; i < maxEntries; ++i)
+                    if (eb == GetEditor(i))
+                        return; // cut down overhead
+
+                    // The following moved to RemoveEditor() //(ph 2025-01-30 )
+                    //    // compress the array
+                    //    if ( GetEditorBrowsedCount() )
+                    //        for (int i=0; i < maxEntries-1; ++i)
+                    //        {
+                    //            if (m_apEditors[i] == 0)
+                    //            {   m_apEditors[i] = m_apEditors[i+1];
+                    //                m_apEditors[i+1] = 0;
+                    //                if ( m_CurrEditorIndex == (i+1) ) --m_CurrEditorIndex;
+                    //                if ( m_LastEditorIndex == (i+1) ) --m_LastEditorIndex;
+                    //            }
+                    //        }
+
+                AddEditor(eb);
+                #if defined(LOGGING)
+                LOGIT( _T("BT OnEditorActivated AddedEditor[%p]proj[%p][%s]"), eb, GetProject(eb),eb->GetShortName().c_str() );
+                #endif
+
                 HashAddBrowse_Marks(eb); //create hashs and book/browse marks arrays
 
                 // Debugging statements
@@ -1733,6 +1751,7 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                             //LOGIT( _T("BT Dumping CURRENT data for[%s]"), eb->GetFilename().c_str());
                             //m_EbBrowse_MarksHash[eb]->Dump();
 
+                        // **Debugging**
                         //DumpHash(wxT("BrowseMarks"));
                         //DumpHash(wxT("BookMarks"));
                         //m_pActiveProjectData->DumpHash(wxT("BrowseMarks"));
@@ -1787,6 +1806,8 @@ void BrowseTracker::OnIdle(wxIdleEvent& event)
 // ----------------------------------------------------------------------------
 {
      event.Skip();
+    if (Manager::Get()->IsAppShuttingDown())
+        return;
 
     // Focus the new selected editor. This doesn't work if a long compile
     // is active since there's no idle time. User will have to click into
@@ -1797,26 +1818,53 @@ void BrowseTracker::OnIdle(wxIdleEvent& event)
     //-if (m_popupWin) //if selecting editor dialog is active, punt. 2020/06/21
     // -       return;
 
-    if ((not Manager::Get()->IsAppShuttingDown()) && m_UpdateUIFocusEditor)
+    if (m_UpdateUIFocusEditor) do
     {
-        if (m_UpdateUIFocusEditor)
-        {
-            EditorBase* eb = m_UpdateUIFocusEditor;
-            m_UpdateUIFocusEditor = 0;
-            if (not eb) return;
-            if (not IsEditorBaseOpen(eb)) return;
-            if( Manager::Get()->GetEditorManager()->GetActiveEditor() not_eq eb )
-            {   Manager::Get()->GetEditorManager()->SetActiveEditor(eb);
-                eb->SetFocus();
-                #if defined(LOGGING)
-                LOGIT( _T("BT OnIdle Focused Editor[%p] Title[%s]"), eb, eb->GetTitle().c_str() );
-                #endif
-            }
-            // re-sort the browse marks
-            wxCommandEvent ev;
-            OnMenuSortBrowse_Marks(ev);
+        EditorBase* eb = m_UpdateUIFocusEditor;
+        m_UpdateUIFocusEditor = 0;
+        if (not eb) break;
+        if (not IsEditorBaseOpen(eb)) break;
+        if( Manager::Get()->GetEditorManager()->GetActiveEditor() not_eq eb )
+        {   Manager::Get()->GetEditorManager()->SetActiveEditor(eb);
+            eb->SetFocus();
+            #if defined(LOGGING)
+            LOGIT( _T("BT OnIdle Focused Editor[%p] Title[%s]"), eb, eb->GetTitle().c_str() );
+            #endif
         }
+        // re-sort the browse marks
+        wxCommandEvent ev;
+        OnMenuSortBrowse_Marks(ev);
+    }while(0);
+
+    // check if any editor lines are waiting to be added to Browse_marks
+    cbEditor* pcbEditor = nullptr;
+    int lineNumber = wxNOT_FOUND;
+    if (m_EditorHookmapMutex.try_lock())
+    {
+        // Mutex was successfully locked
+        if (not m_EditorHookFileLineMap.empty())
+        {
+            auto it = m_EditorHookFileLineMap.begin(); // Get an iterator to the first element
+            pcbEditor = it->first;             // Extract the key
+            lineNumber = it->second;               // Extract the value
+            m_EditorHookFileLineMap.erase(it);         // Remove the element from the multimap
+            // no Browse_marks to record;
+        }
+        m_EditorHookmapMutex.unlock();
+    } else
+    {
+        // Mutex is already locked, handle accordingly
+        // try again next OnIdle() call
     }
+
+    if (pcbEditor and (lineNumber!=wxNOT_FOUND))
+    {
+        // The "lineNum" parm was originally bool linesAdded.
+        // But our version of scintilla never seems that info.
+        // So lineNumber will fake it for backward compatibility.
+        RebuildBrowse_Marks(pcbEditor, (lineNumber!=wxNOT_FOUND));
+    }
+
 }//OnIdle
 // ----------------------------------------------------------------------------
 void BrowseTracker::OnAppStartupDone(CodeBlocksEvent& event)
@@ -1826,6 +1874,7 @@ void BrowseTracker::OnAppStartupDone(CodeBlocksEvent& event)
     m_ToolbarIsShown = IsViewToolbarEnabled();
     if ( (not m_ToolbarIsShown) and m_ConfigShowToolbar )
         ShowBrowseTrackerToolBar(true);
+
     return;
 }
 // ----------------------------------------------------------------------------
@@ -1988,6 +2037,7 @@ void BrowseTracker::OnEditorOpened(CodeBlocksEvent& event)
 
         // Editors opened by Alt-G and Swap header/source do not have
         // cbEditors attached. So we have to re-call OnEditorActivated here.
+        // cbEditors already loaded by layout do not get activated, so we call it here.
         CodeBlocksEvent evt;
         evt.SetEditor(eb);
         OnEditorActivated(evt);
@@ -2039,7 +2089,7 @@ void BrowseTracker::OnEditorClosed(CodeBlocksEvent& event)
             pArchBrowse_Marks->CopyMarksFrom(*pCurrBrowse_Marks);
     }
     // Clean up the closed editor and its associated Book/BrowseMarks
-    int maxEntries = Helpers::GetMaxEntries();
+    int maxEntries = Helpers::GetMaxAllocEntries();
     for (int i=0; i<maxEntries; ++i )
         if ( event_eb == GetEditor(i)  )
         {
@@ -2086,9 +2136,21 @@ void BrowseTracker::AddEditor(EditorBase* eb)
     // Add this editor the array of activated editors
 
     if (not eb) return;
-    if ( ++m_LastEditorIndex >= Helpers::GetMaxEntries() ) m_LastEditorIndex = 0;
+    m_LastEditorIndex = m_nBrowsedEditorCount;
+    if ( m_LastEditorIndex >= Helpers::GetMaxAllocEntries() ) m_LastEditorIndex = 0;
     m_apEditors[m_LastEditorIndex] = eb;
-    ++m_nBrowsedEditorCount;
+    for (int ii=0; ii < Helpers::GetMaxAllocEntries(); ++ii)
+    {
+        if (m_apEditors[ii] != nullptr)
+        {
+            m_nBrowsedEditorCount = ii+1; //set count, not index
+            m_LastEditorIndex = ii;       //set index, not count
+        }
+        else break;
+    }
+    if (m_LastEditorIndex  >= Helpers::GetMaxAllocEntries() )
+        m_LastEditorIndex = Helpers::GetMaxAllocEntries() -1;
+
     #if defined(LOGGING)
     //LOGIT( _T("BT AddEditor[%p][%s]"), eb, eb->GetShortName().c_str() );
     #endif
@@ -2137,8 +2199,20 @@ void BrowseTracker::ClearEditor(int index)
     // a secondary project is closed.
 
     if (index < 0) return;
-    m_apEditors[index] = 0;
-    --m_nBrowsedEditorCount;
+    m_apEditors[index] = nullptr;
+    if (--m_nBrowsedEditorCount < 0)
+        m_nBrowsedEditorCount = 0;
+    // compress the EditorBase ptr array
+    int maxEntries = Helpers::GetMaxAllocEntries();
+    for (int ii=0; ii < maxEntries-1; ++ii)
+    {
+        if ( m_apEditors[ii] == nullptr )
+        {
+            m_apEditors[ii] = m_apEditors[ii+1]; //move the item upward
+            m_apEditors[ii+1] = nullptr;         // clear the old item
+        }
+        if (m_apEditors[ii]) m_nBrowsedEditorCount = ii+1; //set count, not index
+    }
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::RemoveEditor(EditorBase* eb)
@@ -2149,13 +2223,17 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
 
     // don't allow recursion from our called routines.
     if (m_nRemoveEditorSentry) return;
-    if (not eb) return;
+    struct guard_t
+    {
+         guard_t(){ m_nRemoveEditorSentry++;}
+        ~guard_t(){ m_nRemoveEditorSentry = 0;}
+    } sentry;
 
-    ++m_nRemoveEditorSentry;
+    if (not eb) return;
 
     if (eb == m_UpdateUIFocusEditor)
         m_UpdateUIFocusEditor = 0;
-    int maxEntries = Helpers::GetMaxEntries();
+    int maxEntries = Helpers::GetMaxAllocEntries();
     if (IsAttached() && m_InitDone) do
     {
         #if defined(LOGGING)
@@ -2174,6 +2252,12 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
             delete m_EbBrowse_MarksHash[eb]; //Browse Marks
             m_EbBrowse_MarksHash.erase(eb);
 
+            //// **Debugging**
+            //cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
+            //cbStyledTextCtrl* control = cbed->GetControl(); // == 0x0
+            //wxString shortName = eb->GetShortName();
+            //wxWindow* pWin = wxWindow::FindWindowByName(shortName); // == 0x0
+            /// The Disconnects never take place. No access to the window or the control
             // using a stale eb will cause a crash
             if (-1 != m_pEdMgr->FindPageFromEditor(eb) )
             {
@@ -2208,7 +2292,25 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
         }
     }while(0);
 
-    m_nRemoveEditorSentry = 0;
+    // compress the array
+    //-if ( GetEditorBrowsedCount() )
+    {
+        int maxEntries = Helpers::GetMaxAllocEntries();
+        for (int ii=0; ii < maxEntries-1; ++ii)
+        {
+            if ( m_apEditors[ii] == nullptr )
+            {
+                m_apEditors[ii] = m_apEditors[ii+1]; //move next item upward
+                m_apEditors[ii+1] = nullptr;         // clear the moved item;
+            }
+            if (m_apEditors[ii])
+            {
+                m_LastEditorIndex = ii;
+                m_nBrowsedEditorCount = ii+1;
+            }
+        }
+    }
+
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
@@ -2263,7 +2365,7 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
     // didn't manually activate them.
     if (not m_bProjectIsLoading)
     {
-        int maxEntries = Helpers::GetMaxEntries();
+        int maxEntries = Helpers::GetMaxAllocEntries();
         for (FilesList::iterator it = pCBProject->GetFilesList().begin(); it != pCBProject->GetFilesList().end(); ++it)
         {
             for (int j=0; j<maxEntries; ++j)
@@ -2318,7 +2420,7 @@ void BrowseTracker::OnWorkspaceChanged(CodeBlocksEvent& event)
 void BrowseTracker::OnProjectClosing(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    // This hook occurs before the editors are closed. That allows
+    // This event occurs before the editors are closed. That allows
     // us to reference CB project and editor related data before CB
     // deletes it all.
 
@@ -2435,33 +2537,21 @@ void BrowseTracker::OnProjectActivatedEvent(CodeBlocksEvent& event)
     }
 
     // Compress the editor pointer array to allow all "forward" available slots
-    int index = GetCurrentEditorIndex();
     if ( GetEditorBrowsedCount() )
     {
-        ArrayOfEditorBasePtrs tmpArray;
-        int maxEntries = Helpers::GetMaxEntries();
-        tmpArray.Alloc(maxEntries);
-        // copy current editors & clear for compression
-        for (int i = 0; i<maxEntries; ++i)
+        int maxEntries = Helpers::GetMaxAllocEntries();
+        for (int ii=0; ii < maxEntries-1; ++ii)
         {
-            tmpArray.Add(m_apEditors[i]);   //patch 2886
-            m_apEditors[i] = 0;
-        }//for
-        m_CurrEditorIndex = 0;
-        m_LastEditorIndex = maxEntries-1;
-        for (int i = 0; i<maxEntries; ++i)
-        {
-            if ( tmpArray[index] )
-            {   if (++m_LastEditorIndex >= maxEntries) m_LastEditorIndex = 0;
-                 m_apEditors[m_LastEditorIndex] = tmpArray[index];
+            if ( m_apEditors[ii] == nullptr )
+            {
+                m_apEditors[ii] = m_apEditors[ii+1]; //move the item upward
+                m_apEditors[ii+1] = nullptr;         // clear the old item
             }
-            if (++index >= maxEntries) index = 0;
-        }//for
+            if (m_apEditors[ii]) m_LastEditorIndex = ii;
+        }
     }//if
     else
-    {   m_CurrEditorIndex = 0;
-        m_LastEditorIndex = Helpers::GetMaxEntries()-1;
-    }
+        m_LastEditorIndex = 0;
 
     // Previous project was closing
     if (m_bProjectClosing) do
@@ -2493,9 +2583,9 @@ void BrowseTracker::OnProjectLoadingHook(cbProject* project, TiXmlElement* /*ele
     // CB does not issue Project_Opened or Project_activated events until
     // after the editors are loaded and activated. That causes us to record
     // the loading editors as if the user activated them manually.
-    // So we use this hook to tell the recorder NOT to record the loading editors.
+    // So we use this project hook to tell the recorder NOT to record the loading editors.
 
-    // *Logic Gotcha* When a work space loads, OnProjectActivated() is called for
+    // *Logic Gotcha*: When a work space loads, OnProjectActivated() is called for
     // the active project, then loading proceeds for other projects. This can cause
     // the m_bProjectIsLoading flag to be set forever.
 
@@ -2531,55 +2621,100 @@ void BrowseTracker::OnProjectLoadingHook(cbProject* project, TiXmlElement* /*ele
 void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& event)
 // ----------------------------------------------------------------------------
 {
-    // Rebuild the BrowseMarks array if user deletes/adds editor lines
+    // Catch changes to the source and queue editor and line to update browse locations
 
-//    wxString txt = _T("OnEditorModified(): ");
-//    int flags = event.GetModificationType();
-//    if (flags & wxSCI_MOD_CHANGEMARKER) txt << _T("wxSCI_MOD_CHANGEMARKER, ");
-//    if (flags & wxSCI_MOD_INSERTTEXT) txt << _T("wxSCI_MOD_INSERTTEXT, ");
-//    if (flags & wxSCI_MOD_DELETETEXT) txt << _T("wxSCI_MOD_DELETETEXT, ");
-//    if (flags & wxSCI_MOD_CHANGEFOLD) txt << _T("wxSCI_MOD_CHANGEFOLD, ");
-//    if (flags & wxSCI_PERFORMED_USER) txt << _T("wxSCI_PERFORMED_USER, ");
-//    if (flags & wxSCI_MOD_BEFOREINSERT) txt << _T("wxSCI_MOD_BEFOREINSERT, ");
-//    if (flags & wxSCI_MOD_BEFOREDELETE) txt << _T("wxSCI_MOD_BEFOREDELETE, ");
-//    txt << _T("pos=")
-//        << wxString::Format(_T("%d"), event.GetPosition())
-//        << _T(", line=")
-//        << wxString::Format(_T("%d"), event.GetLine())
-//        << _T(", linesAdded=")
-//        << wxString::Format(_T("%d"), event.GetLinesAdded());
-//    Manager::Get()->GetLogManager()->DebugLog(txt);
+    // **Debugging**
+    //    wxString txt = _T("OnEditorModified(): ");
+    //    int flags = event.GetModificationType();
+    //    if (flags & wxSCI_MOD_CHANGEMARKER) txt << _T("wxSCI_MOD_CHANGEMARKER, ");
+    //    if (flags & wxSCI_MOD_INSERTTEXT) txt   << _T("wxSCI_MOD_INSERTTEXT, ");
+    //    if (flags & wxSCI_MOD_DELETETEXT) txt   << _T("wxSCI_MOD_DELETETEXT, ");
+    //    if (flags & wxSCI_MOD_CHANGEFOLD) txt   << _T("wxSCI_MOD_CHANGEFOLD, ");
+    //    if (flags & wxSCI_PERFORMED_USER) txt   << _T("wxSCI_PERFORMED_USER, ");
+    //    if (flags & wxSCI_MOD_BEFOREINSERT) txt << _T("wxSCI_MOD_BEFOREINSERT, ");
+    //    if (flags & wxSCI_MOD_BEFOREDELETE) txt << _T("wxSCI_MOD_BEFOREDELETE, ");
+    //    if (flags == wxEVT_SCI_MODIFIED)    txt << _T("wxSCI_MODIFIED, ");
+    //    if (flags == wxEVT_SCI_UPDATEUI)    txt << _T("wxEVT_SCI_UPDATEUI, ");
+    //    txt << _T("EventFlags=")
+    //        << wxString::Format(_T("%d"), flags)
+    //        << _T(" pos=")
+    //        << wxString::Format(_T("%d"), event.GetPosition())
+    //        << _T(", line=")
+    //        << wxString::Format(_T("%d"), event.GetLine())
+    //        << _T(", linesAdded=")
+    //        << wxString::Format(_T("%d"), event.GetLinesAdded());
+    //    Manager::Get()->GetLogManager()->DebugLog(txt);
+    //
+    //    if      (event.GetEventType() == wxEVT_SCI_CHARADDED)
+    //    {   Manager::Get()->GetLogManager()->DebugLog(_T("-- > OnEditorHook: wxEVT_SCI_CHARADDED")); }
+    //    else if (event.GetEventType() == wxEVT_SCI_CHANGE)
+    //    {   Manager::Get()->GetLogManager()->DebugLog(_T("-- > OnEditorHook: wxEVT_SCI_CHANGE")); }
+    //    else if (event.GetEventType() == wxEVT_SCI_MODIFIED)
+    //    {   Manager::Get()->GetLogManager()->DebugLog(_T("-- > OnEditorHook: wxEVT_SCI_MODIFIED")); }
+    //    else if (event.GetEventType() == wxEVT_SCI_AUTOCOMP_SELECTION)
+    //    {   Manager::Get()->GetLogManager()->DebugLog(_T("-- > OnEditorHook: wxEVT_SCI_AUTOCOMP_SELECTION")); }
+    //    else if (event.GetEventType() == wxEVT_SCI_AUTOCOMP_CANCELLED)
+    //    {   Manager::Get()->GetLogManager()->DebugLog(_T("-- > OnEditorHook: wxEVT_SCI_AUTOCOMP_CANCELLED")); }
 
     event.Skip();
 
     if (not IsBrowseMarksEnabled())
         return;
 
+    cbStyledTextCtrl* control = pcbEditor->GetControl();
+    if( m_bProjectIsLoading) return;
+    // Record action in line only once
+    if (control->GetCurrentLine() == m_EditorHookCurrentLine)
+        return;
+
     //if ( event.GetEventType() != wxEVT_SCI_MODIFIED )
-    if ( event.GetEventType() == wxEVT_SCI_MODIFIED )
+   // if ( event.GetEventType() == wxEVT_SCI_MODIFIED )
+   if (event.GetEventType() == wxEVT_SCI_MODIFIED)
     {
         // Whenever event.GetLinesAdded() != 0, we must re-set BrowseMarks for lines greater
         // than LineFromPosition(event.GetPosition())
+        int flags = event.GetModificationType();
+        bool changed = false;
+        changed |= flags & wxSCI_MOD_INSERTTEXT;
+        changed |= flags & wxSCI_MOD_DELETETEXT;
+        changed |= flags & wxSCI_PERFORMED_USER;
+        changed |= (event.GetEventType() == wxEVT_SCI_CHARADDED);
 
         int linesAdded = event.GetLinesAdded();
-        bool isAdd = event.GetModificationType() & wxSCI_MOD_INSERTTEXT;
-        bool isDel = event.GetModificationType() & wxSCI_MOD_DELETETEXT;
-        if ((isAdd || isDel) && linesAdded != 0)
+        // **Debugging** lines addes never occurs.
+        if (linesAdded)
+            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("EditorHook Lines Added linesAdded:%d", linesAdded));
+
+        if (changed or linesAdded)
         {
             #if defined(LOGGING)
             //LOGIT( _T("BT EditorEventHook isAdd[%d]isDel[%d]lines[%d]"), isAdd, isDel, linesAdded );
             #endif
             // rebuild BrowseMarks from scintilla marks
-            RebuildBrowse_Marks( pcbEditor, isAdd );
-        }//if
-    }//wxEVT_SCI_MODIFIED
+            m_EditorHookCurrentLine = control->GetCurrentLine();
+            //RebuildBrowse_Marks( pcbEditor, isAdd );
+            // Function to add an item to the map
+            //std::lock_guard<std::mutex> lock(m_EditorHookmapMutex);  // Lock the mutex
+            if (m_EditorHookmapMutex.try_lock())
+            {
+                // Mutex was successfully locked
+                m_EditorHookFileLineMap.insert({pcbEditor, control->GetCurrentLine()});
+                m_EditorHookmapMutex.unlock();
+            } else {
+                // Mutex is already locked, handle accordingly
+                m_EditorHookCurrentLine = -1; //try again next later.
+            }
+
+        }//endif changed
+    }//endif wxEVT_SCI_MODIFIED
 
     // wxSCI_MOD_CHANGEMARKER is an extremely expensive call. It's called
     // for each line during a file load, and for every change to every
     // margin marker in the known cosmos. So here we allow a "one shot only"
     // to catch the marker changed by a margin context menu.
     // cf: CloneBookMarkFromEditor() and OnMarginContextMenu()
-    if ( event.GetEventType() == wxEVT_SCI_MODIFIED )
+    //if ( event.GetEventType() == wxEVT_SCI_MODIFIED )
+    if (event.GetEventType() == wxEVT_SCI_MODIFIED)
     do{
         if ( m_OnEditorEventHookIgnoreMarkerChanges )
             break;

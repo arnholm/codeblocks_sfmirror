@@ -4,7 +4,7 @@
 //svn5785 #include "wxscintilla/include/wx/wxscintilla.h"
 #include <wx/wxscintilla.h>
 
-    //-const int MaxEntries = 20;   //(ph 2024/06/01)
+    //-const int MaxEntries = 20;
 
     // from cbeditor.cpp
     #define BOOKMARK_MARKER        4

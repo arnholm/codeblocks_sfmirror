@@ -34,7 +34,7 @@ namespace
     int idMenuJumpNext = wxNewId();
     int idMenuJumpClear = wxNewId();
     int idMenuJumpDump = wxNewId();
-    int idMenuJumpView = wxNewId();  //(ph 2023/01/17)
+    int idMenuJumpView = wxNewId();
 
     int idToolJumpPrev = XRCID("idJumpPrev");
     int idToolJumpNext = XRCID("idJumpNext");
@@ -113,7 +113,7 @@ void JumpTracker::OnAttach()
     //    pInfo->version = plgnVersion.GetVersion();
 
     m_bJumpInProgress = false;
-    CreateJumpTrackerView();    //(ph 2023/01/17)
+    CreateJumpTrackerView();
 
     wxWindow* appWin = Manager::Get()->GetAppWindow();
     appWin->PushEventHandler(this);

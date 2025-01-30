@@ -67,7 +67,7 @@ JumpTrackerView::~JumpTrackerView()
 {
     //dtor
     if (FindEventHandler(this))
-        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);   //(ph 2021/04/17)
+        Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
 // ----------------------------------------------------------------------------
 wxWindow* JumpTrackerView::CreateControl(wxWindow* parent)

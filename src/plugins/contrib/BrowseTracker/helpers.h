@@ -6,7 +6,7 @@ namespace Helpers
 {
     extern int currentMaxEntries;
 
-    int GetMaxEntries();
+    int GetMaxAllocEntries();
 }
 
 #endif // HELPERS_H_INCLUDED
