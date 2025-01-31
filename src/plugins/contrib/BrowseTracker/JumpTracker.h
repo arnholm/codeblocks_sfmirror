@@ -167,7 +167,7 @@ class JumpTracker : public cbPlugin
         int      GetPreviousIndex(const int idx);
         int      GetNextIndex(const int idx);
 
-        int maxJumpEntries = Helpers::GetMaxAllocEntries();
+        int maxJumpEntries = Helpers::GetMaxAllocEntries() -1;
 
         ArrayOfJumpData m_ArrayOfJumpData;
         std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;

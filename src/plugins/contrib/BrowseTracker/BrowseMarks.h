@@ -75,7 +75,7 @@ class BrowseMarks
         wxString    m_fileShortName;
         int         m_currIndex;    //index of current cursor posn
         int         m_lastIndex;    //insertion index
-        wxArrayInt  m_EdPosnArray;
+        wxArrayInt  m_EdPosnArray;  // contains editor line numbers
 };
 
 #endif // BROWSEMARKS_H

@@ -820,6 +820,7 @@ void BrowseTracker::SetSelection(int index)
 {
     // user has selected an editor, make it active
 
+    // sanity check
     if ((index < 0) || (index >= Helpers::GetMaxAllocEntries() )) return;
 
     EditorBase* eb = GetEditor(index);
@@ -1658,19 +1659,6 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                     if (eb == GetEditor(i))
                         return; // cut down overhead
 
-                    // The following moved to RemoveEditor() //(ph 2025-01-30 )
-                    //    // compress the array
-                    //    if ( GetEditorBrowsedCount() )
-                    //        for (int i=0; i < maxEntries-1; ++i)
-                    //        {
-                    //            if (m_apEditors[i] == 0)
-                    //            {   m_apEditors[i] = m_apEditors[i+1];
-                    //                m_apEditors[i+1] = 0;
-                    //                if ( m_CurrEditorIndex == (i+1) ) --m_CurrEditorIndex;
-                    //                if ( m_LastEditorIndex == (i+1) ) --m_LastEditorIndex;
-                    //            }
-                    //        }
-
                 AddEditor(eb);
                 #if defined(LOGGING)
                 LOGIT( _T("BT OnEditorActivated AddedEditor[%p]proj[%p][%s]"), eb, GetProject(eb),eb->GetShortName().c_str() );
@@ -1738,11 +1726,11 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                     if (pBrowse_MarksArc) switch (1)
                     {
                         default:
-                        // Let's get paranoid here, since a crash was reported Nov. 2021
-                        // https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
-                        // Note: when eb does not exist in the hash in which case
-                        // wxWidgets will automatically enter it along with a default (0) BrowseMarks ptr.
-                        // HashAddBrowse_Marks() should have added it above and also allocated a BrowseMarks* map;
+                        //  Let's get paranoid here, since a crash was reported Nov. 2021
+                        //  https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
+                        //  Note: when eb does not exist in the hash in which case
+                        //  wxWidgets will automatically enter it along with a default (0) BrowseMarks ptr.
+                        //  HashAddBrowse_Marks() should have added it above and also allocated a BrowseMarks* map;
                         cbAssertNonFatal(m_EbBrowse_MarksHash.find(eb) != m_EbBrowse_MarksHash.end());
                         cbAssertNonFatal(m_EbBrowse_MarksHash[eb] != nullptr);
                         if (m_EbBrowse_MarksHash.find(eb) == m_EbBrowse_MarksHash.end()) break;
@@ -2191,28 +2179,39 @@ BrowseMarks* BrowseTracker::HashAddBrowse_Marks( const EditorBase* pEdBase)
     return pBrowse_Marks;
 }
 // ----------------------------------------------------------------------------
-void BrowseTracker::ClearEditor(int index)
+void BrowseTracker::ClearEditor(EditorBase* pEb)
 // ----------------------------------------------------------------------------
 {
-    // Used to remove duplicate editors without deleting array data
-    // Duplicates especially occur when a previous editor is re-activated after
-    // a secondary project is closed.
+    // Remove an editor from the array of editor pointers
+    // Compress the array afterward.
 
-    if (index < 0) return;
-    m_apEditors[index] = nullptr;
-    if (--m_nBrowsedEditorCount < 0)
-        m_nBrowsedEditorCount = 0;
-    // compress the EditorBase ptr array
+    if (not pEb) return;
     int maxEntries = Helpers::GetMaxAllocEntries();
-    for (int ii=0; ii < maxEntries-1; ++ii)
+    // Also clear any duplicates
+    for (int ii=0; ii<maxEntries; ++ii)
     {
-        if ( m_apEditors[ii] == nullptr )
-        {
-            m_apEditors[ii] = m_apEditors[ii+1]; //move the item upward
-            m_apEditors[ii+1] = nullptr;         // clear the old item
-        }
-        if (m_apEditors[ii]) m_nBrowsedEditorCount = ii+1; //set count, not index
+        if (m_apEditors[ii] == pEb)
+            m_apEditors[ii] = nullptr;
     }
+
+    // compress the EditorBase ptr array
+    int writeIndex = 0;
+
+    for (int readIndex= 0; readIndex < maxEntries; ++readIndex)
+    {
+        if (m_apEditors[readIndex] != nullptr)
+        {
+            if (readIndex != writeIndex)
+            {
+                m_apEditors[writeIndex] = m_apEditors[readIndex];
+                m_apEditors[readIndex] = nullptr;
+            }
+            ++writeIndex;
+        }
+    }
+
+    m_nBrowsedEditorCount = writeIndex;
+
 }
 // ----------------------------------------------------------------------------
 void BrowseTracker::RemoveEditor(EditorBase* eb)
@@ -2233,18 +2232,16 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
 
     if (eb == m_UpdateUIFocusEditor)
         m_UpdateUIFocusEditor = 0;
-    int maxEntries = Helpers::GetMaxAllocEntries();
+
     if (IsAttached() && m_InitDone) do
     {
         #if defined(LOGGING)
-        //Dont use eb to reference data. It may have already been destroyed.
-         //LOGIT( _T("BT Removing[%p][%s]"), eb, eb->GetShortName().c_str() );
-         //LOGIT( _T("BT RemoveEditor[%p]"), eb );
+            //Dont use eb to reference data. It may have already been destroyed.
+            //LOGIT( _T("BT Removing[%p][%s]"), eb, eb->GetShortName().c_str() );
+            //LOGIT( _T("BT RemoveEditor[%p]"), eb );
         #endif
 
-        for (int i=0; i<maxEntries; ++i )
-            if ( eb == GetEditor(i)  )
-                ClearEditor(i);
+        ClearEditor(eb); //Remove this editor from array of editor pointers
 
         // remove the hash entry for this editor
         if ( m_EbBrowse_MarksHash.find(eb) != m_EbBrowse_MarksHash.end())
@@ -2257,7 +2254,8 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
             //cbStyledTextCtrl* control = cbed->GetControl(); // == 0x0
             //wxString shortName = eb->GetShortName();
             //wxWindow* pWin = wxWindow::FindWindowByName(shortName); // == 0x0
-            /// The Disconnects never take place. No access to the window or the control
+
+            /// The Disconnects never take place. No access to the window or the editor control
             // using a stale eb will cause a crash
             if (-1 != m_pEdMgr->FindPageFromEditor(eb) )
             {
@@ -2287,31 +2285,11 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
                 }//if win
             }//if find page from editor
             #if defined(LOGGING)
-            //LOGIT( _T("BT RemoveEditor Erased hash entry[%p]"), eb );
+                /LOGIT( _T("BT RemoveEditor Erased hash entry[%p]"), eb );
             #endif
         }
     }while(0);
-
-    // compress the array
-    //-if ( GetEditorBrowsedCount() )
-    {
-        int maxEntries = Helpers::GetMaxAllocEntries();
-        for (int ii=0; ii < maxEntries-1; ++ii)
-        {
-            if ( m_apEditors[ii] == nullptr )
-            {
-                m_apEditors[ii] = m_apEditors[ii+1]; //move next item upward
-                m_apEditors[ii+1] = nullptr;         // clear the moved item;
-            }
-            if (m_apEditors[ii])
-            {
-                m_LastEditorIndex = ii;
-                m_nBrowsedEditorCount = ii+1;
-            }
-        }
-    }
-
-}
+}//endfunc RemoveEditor()
 // ----------------------------------------------------------------------------
 void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------

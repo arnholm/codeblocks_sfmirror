@@ -194,7 +194,7 @@ class BrowseTracker : public cbPlugin
         void        SetSelection(int nEditorIndex);
         void        AddEditor(EditorBase* eb);
         void        RemoveEditor(EditorBase* eb);
-        void        ClearEditor(int index);
+        void        ClearEditor(EditorBase* eb);
         void        RecordBrowseMark(EditorBase* eb);
         void        ClearLineBrowseMark(bool removeScreenMark);
         void        ClearLineBrowseMark(int line, bool removeScreenMark);
