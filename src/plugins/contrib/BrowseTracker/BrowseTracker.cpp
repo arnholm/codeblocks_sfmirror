@@ -1485,7 +1485,7 @@ void BrowseTracker::RecordBrowseMark(EditorBase* eb)
             #if defined(LOGGING)
             LOGIT( _T("BT RecordBrowseMarkByEb: pos[%d]line[%d]eb[%p][%s]"),
                 pos, m_CurrScrLine, eb, eb->GetShortName().c_str() );
-            if (not LineHasBrowseMarker(control, m_CurrScrLine)  ) {asm("int3"); /*trap*/}
+            //if (not LineHasBrowseMarker(control, m_CurrScrLine)  ) {asm("int3"); /*trap*/}
             #endif
         }//if
     }while(0);//if do

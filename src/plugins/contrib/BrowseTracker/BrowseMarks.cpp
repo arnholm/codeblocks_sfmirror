@@ -53,7 +53,7 @@ BrowseMarks::BrowseMarks(wxString fullPath )
 {
     //ctor
     #if defined(LOGGING)
-    if ( fullPath.IsEmpty() ) {asm("int3"); }
+        //if ( fullPath.IsEmpty() ) {asm("int3"); }
     #endif
     wxFileName fname(fullPath);
     if ( fullPath.IsEmpty() )
@@ -79,7 +79,7 @@ void BrowseMarks::SetBrowseMarksStyle( int userStyle )
     #endif
     EditorBase* eb = m_pEdMgr->GetEditor(m_filePath);
     #if defined(LOGGING)
-        if (not eb) asm("int3"); /*trap*/
+        //if (not eb) asm("int3"); /*trap*/
     #endif
     if (not eb) return;
     cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
@@ -289,7 +289,7 @@ void BrowseMarks::RecordMarksFrom(BrowseMarks& otherBrowse_Marks)
     // https://forums.codeblocks.org/index.php?topic=24716.msg168611#msg168611
     cbAssertNonFatal(eb != nullptr);
     #if defined(LOGGING)
-        if (not eb) asm("int3"); /*trap*/
+        //if (not eb) asm("int3"); /*trap*/
     #endif
     if (not eb) return;
 
