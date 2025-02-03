@@ -324,18 +324,23 @@ void cbAuiNotebook::RestoreFocus()
     // if selected tab has changed, we set the focus on the window it belongs too
     if ((m_LastSelected != wxNOT_FOUND) && (GetSelection() != m_LastSelected))
     {
-        wxWindow* win = GetPage(GetSelection());
-        if (win)
-            win->SetFocus();
+        const int Selection = GetSelection();
+        if (Selection != wxNOT_FOUND)
+        {
+            wxWindow* win = GetPage(Selection);
+            if (win)
+                win->SetFocus();
+        }
     }
-    // otherwise, we restore the former focus, if the window
-    // with the saved Id still exists
     else if (m_LastId != 0)
     {
+        // otherwise, we restore the former focus, if the window
+        // with the saved Id still exists
         wxWindow* win = FindWindowById(m_LastId);
         if (win)
             win->SetFocus();
     }
+
     m_LastSelected = wxNOT_FOUND;
     m_LastId = 0;
 }
