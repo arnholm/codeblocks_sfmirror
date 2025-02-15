@@ -9,8 +9,8 @@
 #include "parsemanager_base.h"
 #include "parser/parser.h"
 
-#include <queue>
-#include <map>
+//unused #include <queue>
+// unused #include <map>
 #include <memory>
 #include <unordered_map>
 
@@ -245,18 +245,29 @@ public:
     /** update the class browser tree */
     void UpdateClassBrowser();
 
-    //(ph 2024/01/25)
     bool GetParsingIsBusy(){ return m_ParsingIsBusy;}
     void SetParsingIsBusy(bool trueOrFalse){ m_ParsingIsBusy = trueOrFalse;}
-    //(ph 2024/01/25)
+
     bool GetUpdatingClassBrowserBusy(){ return m_UpdateClassBrowserViewBusy;}
     void SetUpdatingClassBrowserBusy(bool trueOrFalse){ m_UpdateClassBrowserViewBusy = trueOrFalse;}
-    //(ph 2024/01/25)
+
     bool GetClassBrowserViewIsStale() {return m_ClassBrowserViewIsStale;}
     void SetClassBrowserViewIsStale(bool trueOrFalse) {m_ClassBrowserViewIsStale = trueOrFalse;}
-    //(ph 2024/01/25)
+
     void SetSymbolsWindowHasFocus(bool trueOrFalse){ m_SymbolsWindowHasFocus = trueOrFalse;}
     bool GetSymbolsWindowHasFocus(){return m_SymbolsWindowHasFocus;}
+
+    // Set or return Project that changed "Global setting" in workspace
+    cbProject* GetOptsChangedByProject(){ return m_pOptsChangedProject;}
+    void SetOptsChangedByProject(cbProject* pProject){m_pOptsChangedProject = pProject;}
+    // Set or return Parser that changed "Global setting" in Single File workspace
+    ParserBase* GetOptsChangedByParser(){ return m_pOptsChangedParser;}
+    void SetOptsChangedByParser(ParserBase* pParserBase){m_pOptsChangedParser = pParserBase;}
+    ParserBase* GetTempParser(){return m_TempParser;}
+    ParserBase* GetClosingParser(){return m_pClosingParser;}                        //(ph 2025/02/12)
+    void        SetClosingParser(ParserBase* pParser){m_pClosingParser = pParser;}  //(ph 2025/02/12)
+    std::unordered_map<cbProject*,ParserBase*>* GetActiveParsers();                 //(ph 2025/02/14)
+
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:
@@ -474,11 +485,12 @@ private:
      */
     bool RemoveProjectFromParser(cbProject* project);
 
+
 private:
     typedef std::pair<cbProject*, ParserBase*> ProjectParserPair;
     typedef std::list<ProjectParserPair>       ParserList;
 
-    /** a list holing all the cbp->parser pairs, if in one parser per project mode, there are many
+    /** a list holding all the cbp->parser pairs, if in one parser per project mode, there are many
      * many pairs in this list. In one parser per workspace mode, there is only one pair, and the
      * m_ParserList.begin()->second is the common parser for all the projects in workspace.
      */
@@ -526,6 +538,16 @@ private:
     bool m_UpdateClassBrowserViewBusy = false;
     bool m_ClassBrowserViewIsStale = true;
     bool m_SymbolsWindowHasFocus = false;
+
+    //The latest project to change the .conf file   //(ph 2025/02/04)
+    cbProject* m_pOptsChangedProject = nullptr;
+    //The latest parser to change the .conf file    //(ph 2025/02/04)
+    ParserBase* m_pOptsChangedParser = nullptr;
+    // the currently closing parser                 //(ph 2025/02/15)
+    ParserBase* m_pClosingParser     = nullptr;
+
+    // copy of m_ParserList
+    std::unordered_map<cbProject*,ParserBase*> m_ActiveParserList; //(ph 2025/02/14)
 
 };
 

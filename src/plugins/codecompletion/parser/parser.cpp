@@ -32,9 +32,10 @@
 
 #include "parser.h"
 #include "parserthreadedtask.h"
-
+#include "../parsemanager.h"    //(ph 2025/02/04)
+#include "annoyingdialog.h"     //(ph 2025/02/14)
 #include "../classbrowser.h"
-#include "../classbrowserbuilderthread.h"
+//unused - #include "../classbrowserbuilderthread.h"
 
 
 #ifndef CB_PRECOMP
@@ -919,20 +920,79 @@ void Parser::ReadOptions()
     wxUnusedVar(ft_dummy);
 }
 
-void Parser::WriteOptions()
+// ----------------------------------------------------------------------------
+void Parser::WriteOptions(bool classBrowserOnly)
+// ----------------------------------------------------------------------------
 {
+     // Global settings bug fix (ph 2025/02/12)
+     //https://forums.codeblocks.org/index.php/topic,25955 Hiccups while typing
+
+    // Assemble status to determine if a Parser or Project changed a global setting.
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    ParseManager*   pParseMgr = (ParseManager*)m_Parent;
+    ParserBase*     pTempParser = pParseMgr->GetTempParser();
+    ParserBase*     pClosingParser = pParseMgr->GetClosingParser(); //see ParseManger::DeleteParser()
+    ParserBase*     pCurrentParser = &(pParseMgr->GetParser());     //aka: m_parser
+
+    bool isClosingParser  = pClosingParser != nullptr;
+    bool isClosingProject = pPrjMgr->IsClosingProject(); wxUnusedVar(isClosingProject);
+    bool isTempParser     = pTempParser == pCurrentParser;
+    bool globalOptionChanged = pParseMgr->GetOptsChangedByParser() or pParseMgr->GetOptsChangedByProject();
+
+    // **Debugging**
+    //bool useSmartSense    = m_Options.useSmartSense;
+    //bool parseWhileTyping =  m_Options.whileTyping;
+
+    // If this is a parser close, do not allow CB global settings writes.
+    bool allowGlobalUpdate = false;
+
+    // When not closing parser and CB globals were changed, write to .conf
+    if ( (not isClosingParser) and globalOptionChanged)
+        allowGlobalUpdate = true;
+
+    // Closing parsers are not allowed to write to CB globals.
+    //  CB Globals were already written when when user changed the setting.
+    if (isClosingParser) allowGlobalUpdate = false;
+
+    // If no changes to the CB globals, no need to write
+    if (not globalOptionChanged)
+        allowGlobalUpdate = false; // no global settings have changed
+
+    // Don't write CB globals if this is for ClassBrowser options only. //(ph 2025/02/13)
+    if (classBrowserOnly) allowGlobalUpdate = false;
+
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
 
-    // Page "Code Completion"
-    cfg->Write(_T("/use_SmartSense"),                m_Options.useSmartSense);
-    cfg->Write(_T("/while_typing"),                  m_Options.whileTyping);
+    // ----------------------------------------------------------------------------
+    // set any user changed CB global settings for CodeCompletion
+    // ----------------------------------------------------------------------------
+    if (allowGlobalUpdate)
+    {
+        // Page "Code Completion"
+        cfg->Write(_T("/use_SmartSense"),                m_Options.useSmartSense);
+        cfg->Write(_T("/while_typing"),                  m_Options.whileTyping);
 
-    // Page "C / C++ parser"
-    cfg->Write(_T("/parser_follow_local_includes"),  m_Options.followLocalIncludes);
-    cfg->Write(_T("/parser_follow_global_includes"), m_Options.followGlobalIncludes);
-    cfg->Write(_T("/want_preprocessor"),             m_Options.wantPreprocessor);
-    cfg->Write(_T("/parse_complex_macros"),          m_Options.parseComplexMacros);
-    cfg->Write(_T("/platform_check"),                m_Options.platformCheck);
+        // Page "C / C++ parser"
+        cfg->Write(_T("/parser_follow_local_includes"),  m_Options.followLocalIncludes);
+        cfg->Write(_T("/parser_follow_global_includes"), m_Options.followGlobalIncludes);
+        cfg->Write(_T("/want_preprocessor"),             m_Options.wantPreprocessor);
+        cfg->Write(_T("/parse_complex_macros"),          m_Options.parseComplexMacros);
+        cfg->Write(_T("/platform_check"),                m_Options.platformCheck);
+
+        ShowGlobalChangeAnnoyingMsg(); // warn user to re-parse projects
+
+    }
+    // clean out any parser flags used to guard CB global settings
+    pParseMgr->SetOptsChangedByParser(nullptr);  //(ph 2025/02/12)
+    pParseMgr->SetOptsChangedByProject(nullptr); //(ph 2025/02/12)
+    pParseMgr->SetClosingParser(nullptr);
+    // if currrent parser == TempParser, force it to update, else the next
+    // display of the setting dialog will show TempParser stale cached settings.
+    if (isTempParser) pTempParser->ReadOptions();
+
+    // ----------------------------------------------------------------------------
+    // set any user changed ClassBrowser settings
+    // ----------------------------------------------------------------------------
 
     // Page "Symbol browser"
     cfg->Write(_T("/browser_show_inheritance"),      m_BrowserOptions.showInheritance);
@@ -946,6 +1006,34 @@ void Parser::WriteOptions()
     // Page "Documentation":
     // m_Options.storeDocumentation will be written by DocumentationPopup
 }
+// ----------------------------------------------------------------------------
+void Parser::ShowGlobalChangeAnnoyingMsg()
+// ----------------------------------------------------------------------------
+{
+    // Tell the user that global changes are not applied until projects are reparsed.
+
+    ParseManager*   pParseMgr = (ParseManager*)m_Parent;
+
+    // Get number of active parsers (from m_ParserList)
+    std::unordered_map<cbProject*,ParserBase*>* pActiveParsers = pParseMgr->GetActiveParsers();
+
+    if (pActiveParsers->size() > 0)
+    {
+            wxString warningMsg;
+            warningMsg << "The global settings change does not take effect\n"
+                       << "until the projects are either reloaded or reparsed.\n\n"
+                       << "You can selectively reparse projects by right clicking\n"
+                       << "on the project title in the Workspace tree and selecting\n"
+                       << "'Reparse current project'.\n\n"
+                       // << "Projects needing reparse:\n"
+                       // << projectNames;
+                        ;
+
+            AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
+                               AnnoyingDialog::OK);
+            dlg.ShowModal();
+    }//endif size
+}//end ShowGlobalChangeAnnoyingMsg
 
 void Parser::AddParserThread(cbThreadedTask* task)
 {

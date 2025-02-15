@@ -46,7 +46,7 @@
 
 #include "parser/ccdebuginfo.h"
 
-#include <stack>
+//unused-#include <stack>
 #include <chrono>
 
 #define CC_CLASS_BROWSER_DEBUG_OUTPUT 0
@@ -242,7 +242,7 @@ void ClassBrowser::SetParser(ParserBase* parser)
             filter = bdfProject;
 
         m_Parser->ClassBrowserOptions().displayFilter = filter;
-        m_Parser->WriteOptions();
+        m_Parser->WriteOptions(/*classbrowserOnly=*/true);  //(ph 2025/02/13)
         UpdateClassBrowserView();
     }
     else

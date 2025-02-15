@@ -168,7 +168,7 @@ public:
     /** read Parser options from configure file */
     virtual void            ReadOptions() {}
     /** write Parse options to configure file */
-    virtual void            WriteOptions() {}
+    virtual void            WriteOptions(bool classbrowserOnly=false) {}  //(ph 2025/02/13)
 
     // make them virtual, so Parser class can overwrite then!
     virtual ParserOptions&  Options()             { return m_Options;        }

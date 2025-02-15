@@ -261,7 +261,8 @@ protected:
     /** read Parser options from configure file */
     void ReadOptions() override;
     /** write Parse options to configure file */
-    void WriteOptions() override;
+    void WriteOptions(bool classbrowserOnly=false) override;              //(ph 2025/02/13)
+    void ShowGlobalChangeAnnoyingMsg(); // Warn user to re-parse projects //(ph 2025/02/14)
 
 private:
     /** the only usage of this function is in the Parserthread class, when handling include directives

@@ -183,6 +183,12 @@ CCOptionsDlg::~CCOptionsDlg()
 
 void CCOptionsDlg::OnApply()
 {
+    cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+     // Remember the project that changed the .conf data //(ph 2025/02/04)
+    m_ParseManager->SetOptsChangedByProject(pProject);
+    // Renember the Parser that changed the .conf data //(ph 2025/02/04)
+    m_ParseManager->SetOptsChangedByParser(&(m_ParseManager->GetParser())); //(ph 2025/02/07)
+
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
 
     // -----------------------------------------------------------------------
