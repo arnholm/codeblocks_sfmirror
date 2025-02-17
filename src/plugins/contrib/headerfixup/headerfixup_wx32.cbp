@@ -81,7 +81,6 @@
 		<Unit filename="wxsmith/execution.wxs" />
 		<Unit filename="wxsmith/protocol.wxs" />
 		<Extensions>
-			<SVNInside Login="" Password="" ConnectStatus="1" NeedsPassword="0" />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
 				<resources>

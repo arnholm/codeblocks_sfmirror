@@ -93,7 +93,6 @@
 					<wxScrollingDialog wxs="wxsmith/protocol.wxs" src="protocol.cpp" hdr="protocol.h" fwddecl="1" i18n="1" name="Protocol" language="CPP" />
 				</resources>
 			</wxsmith>
-			<SVNInside Login="" Password="" ConnectStatus="1" NeedsPassword="0" />
 			<debugger />
 		</Extensions>
 	</Project>

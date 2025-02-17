@@ -71,7 +71,6 @@
 		<Unit filename="wxsmith/execution.wxs" />
 		<Unit filename="wxsmith/protocol.wxs" />
 		<Extensions>
-			<SVNInside Login="" Password="" ConnectStatus="1" NeedsPassword="0" />
 			<wxsmith version="1">
 				<resources>
 					<wxPanel wxs="wxsmith/configuration.wxs" src="configuration.cpp" hdr="configuration.h" fwddecl="0" i18n="1" name="Configuration" language="CPP" />
