@@ -1019,19 +1019,18 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
 
     if (pActiveParsers->size() > 0)
     {
-            wxString warningMsg;
-            warningMsg << "The global settings change does not take effect\n"
-                       << "until the projects are either reloaded or reparsed.\n\n"
-                       << "You can selectively reparse projects by right clicking\n"
-                       << "on the project title in the Workspace tree and selecting\n"
-                       << "'Reparse current project'.\n\n"
-                       // << "Projects needing reparse:\n"
-                       // << projectNames;
-                        ;
+        wxString warningMsg;
+        warningMsg = _("The global settings change does not take effect\n"
+                       "until the projects are either reloaded or reparsed.\n\n"
+                       "You can selectively reparse projects by right clicking\n"
+                       "on the project title in the Workspace tree and selecting\n"
+                       "'Reparse current project'.");
+                   // << "Projects needing reparse:\n"
+                   // << projectNames;
 
-            AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
-                               AnnoyingDialog::OK);
-            dlg.ShowModal();
+        AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
+                           AnnoyingDialog::OK);
+        dlg.ShowModal();
     }//endif size
 }//end ShowGlobalChangeAnnoyingMsg
 
