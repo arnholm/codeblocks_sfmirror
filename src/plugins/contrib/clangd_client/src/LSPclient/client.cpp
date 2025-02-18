@@ -3978,12 +3978,13 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
         }//endfor pfBuildTargets
     }
     if (not pTarget)
-    {   CCLogger::Get()->Log(_("Clangd_client found no usable project target."));
+    {
+        CCLogger::Get()->Log(_("Clangd_client found no usable project target."));
         CCLogger::Get()->DebugLog(_("Clangd_client found no usable project target."));
         return;
     }
     else
-        CCLogger::Get()->DebugLog(_("Clangd_client using project target: " + pTarget->GetTitle()));
+        CCLogger::Get()->DebugLog(wxString::Format(_("Clangd_client using project target: %s"), pTarget->GetTitle()));
 
     Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
     wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";

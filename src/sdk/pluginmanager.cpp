@@ -761,7 +761,7 @@ static wxString RemoveCRAndTranslate(const wxString& value)
 {
     wxString Result(value);
     Result.Replace("\r\n", "\n");
-    return _(Result);
+    return wxGetTranslation(Result);
 }
 
 bool PluginManager::ReadManifestFile(const wxString& pluginFilename,

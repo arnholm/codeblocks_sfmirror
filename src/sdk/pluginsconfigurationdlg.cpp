@@ -352,7 +352,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         files.Add(elem->fileName);
 
         // normalize version
-        wxString version = _(elem->info.version);
+        wxString version = wxGetTranslation(elem->info.version);
         version.Replace("/",  "_", true);
         version.Replace("\\", "_", true);
         version.Replace("?",  "_", true);

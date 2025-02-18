@@ -480,8 +480,13 @@ namespace
         wxASSERT( propgrid );
 
         // Must only occur when user triggers event
+#if wxCHECK_VERSION(3, 3, 0)
+        if ( !(propgrid->GetInternalFlags() & wxPropertyGrid::wxPG_FL_IN_HANDLECUSTOMEDITOREVENT) )
+            return res;
+#else
         if ( !(propgrid->GetInternalFlags() & wxPG_FL_IN_HANDLECUSTOMEDITOREVENT) )
             return res;
+#endif
 
         wxColourPropertyValue val = GetVal();
 
@@ -578,7 +583,7 @@ namespace
             int index = paintdata.m_choiceItem;
             value = wxsColourValues[index];
         }
-        else if ( !(m_flags & wxPG_PROP_UNSPECIFIED) )
+        else if ( !(m_flags & (wxPGPropertyFlags)wxPG_PROP_UNSPECIFIED) )
         {
             value = GetVal().m_type;
         }

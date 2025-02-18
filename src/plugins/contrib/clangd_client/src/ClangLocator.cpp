@@ -478,7 +478,7 @@ wxString ClangLocator::Locate_ClangdDir()
         version = version.BeforeFirst('.').AfterLast(' ');
         if (version.IsEmpty())
         {
-            wxString msg = _("clangd version could not be determined from string '" + versionNative + "'");
+            wxString msg = wxString::Format(_("clangd version could not be determined from string '%s'"), versionNative);
             cbMessageBox(msg, _("Error"));
             pLogMgr->LogError(msg);
             return wxString();

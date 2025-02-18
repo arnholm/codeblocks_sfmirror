@@ -1028,7 +1028,7 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
                    // << "Projects needing reparse:\n"
                    // << projectNames;
 
-        AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
+        AnnoyingDialog dlg(_("Global settings warning"), warningMsg, wxART_WARNING,
                            AnnoyingDialog::OK);
         dlg.ShowModal();
     }//endif size

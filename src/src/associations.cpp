@@ -169,7 +169,7 @@ void Associations::DoSetAssociation(const wxString& ext, const wxString& descr, 
 
     key.SetName(BaseKeyName + node);
     key.Create();
-    key = _(descr);
+    key = wxGetTranslation(descr);
 
     key.SetName(BaseKeyName + node + "\\DefaultIcon");
     key.Create();
@@ -301,7 +301,7 @@ ManageAssocsDialog::ManageAssocsDialog(wxWindow* parent)
     const unsigned int assocCount = Associations::CountAssocs();
     for (unsigned int i = 0; i < assocCount; ++i)
     {
-        list->Append('.' + knownTypes[i].ext + "  (" + _(knownTypes[i].descr) + ')');
+        list->Append('.' + knownTypes[i].ext + "  (" + wxGetTranslation(knownTypes[i].descr) + ')');
         list->Check(i, Associations::DoCheckAssociation(knownTypes[i].ext, knownTypes[i].descr, exe, knownTypes[i].index));
     }
 

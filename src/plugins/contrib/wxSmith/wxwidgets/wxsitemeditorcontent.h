@@ -25,6 +25,8 @@
 
 #include "wxsdrawingwindow.h"
 
+#include <wx/hashmap.h>
+
 class wxsItemEditorDragAssist;
 class wxsItemResData;
 class wxsItemEditor;

@@ -2467,7 +2467,7 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
         //{"jsonrpc":"2.0","id":"textDocument/declaration","error":{"code":-32600,"message":"not indexed"}}
         wxString errorMsg = wxString::Format("error:%s", pJson->at("error").dump() );
         CCLogger::Get()->DebugLog(errorMsg);
-        cbMessageBox(_("LSP returned \"" + errorMsg + "\""), _("Warning"), wxICON_WARNING);
+        cbMessageBox(wxString::Format(_("LSP returned \"%s\""), errorMsg), _("Warning"), wxICON_WARNING);
         return;
     }//end if declaration/definition error
 }//end OnLSP_DeclDefResponse

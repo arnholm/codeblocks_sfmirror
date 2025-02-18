@@ -447,10 +447,10 @@ void UserVariableManager::ParseCommandLine(wxCmdLineParser& parser)
     }
 
     wxString active;
-    if ( parser.Found("S", &active))
+    if (parser.Found("S", &active))
     {
         if (!SetActiveSetName(active))
-            Manager::Get()->GetLogManager()->LogError(_("Set " + active +" not found"));
+            Manager::Get()->GetLogManager()->LogError(wxString::Format(_("Set %s not found"), active));
     }
 }
 

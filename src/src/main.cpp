@@ -1873,7 +1873,7 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
         wxAuiPaneInfoArray &panes = m_LayoutManager.GetAllPanes();
         const size_t paneCount = panes.GetCount();
         for (size_t i = 0; i < paneCount; ++i)
-            panes[i].caption = _(panes[i].caption);
+            panes[i].caption = wxGetTranslation(panes[i].caption);
     }
     else
     {
