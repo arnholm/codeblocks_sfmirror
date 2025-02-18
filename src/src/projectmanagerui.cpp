@@ -470,7 +470,7 @@ void ProjectManagerUI::RebuildTree()
     // Saving the first puts it at the bottom of the window
     std::vector <wxString> path;
     wxTreeItemId item = m_pTree->GetFirstVisibleItem();
-    if (item.IsOk())
+    if (item.IsOk() && (item != m_pTree->GetRootItem()))
     {
         while (m_pTree->GetNextVisible(item).IsOk())
             item = m_pTree->GetNextVisible(item);
