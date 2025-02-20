@@ -64,7 +64,7 @@ private:
 
 protected:
     // sync operations
-    static bool ReadAll(int fd, std::string& content, int timeoutMilliseconds);
+    static bool ReadAll(int fdOut, int fdErr, std::string& content, int timeoutMilliseconds, bool& isReadFromFdOut);
     static bool Write(int fd, const std::string& message, std::atomic_bool& shutdown);
 
     void StartWriterThread();
