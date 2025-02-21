@@ -692,7 +692,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                             m_ic.interps[i].command.Find("$relpath")>=0 ||
                             m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
-                            wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
                             AddModuleMenuEntry(menu,i,added, type);
                             added++;
@@ -724,7 +723,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                                 m_ic.interps[i].command.Find("$relpath")>=0 ||
                                 m_ic.interps[i].command.Find("$mpaths")>=0)
                             {
-                                wxString menutext=m_ic.interps[i].name;
                                 m_contextvec.Add(i);
                                 AddModuleMenuEntry(menu,i,added, type);
                                 added++;
@@ -757,7 +755,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                         m_ic.interps[i].command.Find("$relpath")>=0 ||
                         m_ic.interps[i].command.Find("$mpaths")>=0)
                     {
-                        wxString menutext=m_ic.interps[i].name;
                         m_contextvec.Add(i);
                         AddModuleMenuEntry(menu,i,added, type);
                         added++;
@@ -789,7 +786,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                             m_ic.interps[i].command.Find("$relpath")>=0 ||
                             m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
-                            wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
                             AddModuleMenuEntry(menu,i,added, type);
                             added++;
@@ -813,7 +809,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                             m_ic.interps[i].command.Find("$relpath")>=0 ||
                             m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
-                            wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
                             AddModuleMenuEntry(menu,i,added, type);
                             added++;
@@ -833,7 +828,7 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                     {
                         while (match && pathlist!=_T(""))
                         {
-                            wxString name=wxFileName(ipath).GetFullName();
+                            // wxString name=wxFileName(ipath).GetFullName();
                             if (ipath!=_T("") && !WildCardListMatch(m_ic.interps[i].wildcards,ipath))
                                 match=false;
                             pathlist=pathlist.AfterFirst('*');
@@ -846,7 +841,6 @@ void ToolsPlus::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileT
                         //TODO: need a m_TargetParent to allow the FileExplorer to define the parent of a selection (usually the root of the fileexplorer view?)
                         if (m_ic.interps[i].command.Find("$mpaths")>=0)
                         {
-                            wxString menutext=m_ic.interps[i].name;
                             m_contextvec.Add(i);
                             AddModuleMenuEntry(menu,i,added, type);
                             added++;

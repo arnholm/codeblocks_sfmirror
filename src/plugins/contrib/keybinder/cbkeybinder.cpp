@@ -493,10 +493,11 @@ bool cbKeyBinder::CreateKeyBindDefaultFile(bool refresh)
     if ( (not fnNewcbKeyBinderConf.FileExists()) and (not refresh) )
     {
         wxString plgnVersionString = GetPluginVersion();
-        long plgnVersionNum; plgnVersionString.ToLong(&plgnVersionNum);
-        int oldPlgnVersionNum = plgnVersionNum - 10;
+        long plgnVersionNum;
+        plgnVersionString.ToLong(&plgnVersionNum);
 
-        // wxString oldVersionFile = wxString::Format(_T("cbKeyBinder%d.ini"), oldPlgnVersionNum);
+        // long oldPlgnVersionNum = plgnVersionNum - 10;
+        // wxString oldVersionFile = wxString::Format("cbKeyBinder%ld.ini", oldPlgnVersionNum);
         wxFileName fnOldVersionKeyBindings(ConfigManager::GetConfigFolder(), _T("cbKeyBinder10.ini"));
         fnOldVersionKeyBindings.SetName(GetUserPersonality() +_T(".") + fnOldVersionKeyBindings.GetName());
 

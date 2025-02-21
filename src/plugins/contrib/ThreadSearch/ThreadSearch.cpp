@@ -959,8 +959,7 @@ void ThreadSearch::OnMnuEditPaste(wxCommandEvent& event)
     wxWindow* pFocused = wxWindow::FindFocus();
     if (not pFocused) { event.Skip(); return; }
 
-    wxString focusedStr = pFocused->GetName();
-//    DBGLOG(wxT("OnMnuEditPaste:Focused[%p][%s]"), pFocused, focusedStr.c_str());
+//    DBGLOG(wxT("OnMnuEditPaste:Focused[%p][%s]"), pFocused, pFocused->GetName());
 
     // don't allow paste when the following windows have the focus
     if ( (pFocused == m_pThreadSearchView->m_pSearchPreview) ||

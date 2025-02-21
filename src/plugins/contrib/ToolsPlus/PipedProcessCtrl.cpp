@@ -267,17 +267,19 @@ void PipedProcessCtrl::OnUserInput(wxKeyEvent& ke)
     kc1[1]=0;
     if(kc1[0]=='\r')
         kc1[0]='\n';
+
     wxChar kc2=ke.GetUnicodeKey();
-    wxString buf(kc2);
     if (!ke.ControlDown() && !ke.AltDown())
+    {
         if (ke.GetKeyCode()<WXK_START ||
-           ke.GetKeyCode()>WXK_COMMAND)
+            ke.GetKeyCode()>WXK_COMMAND)
         {
             m_ostream->Write(&kc1,1);
             m_textctrl->AppendText(kc2);
             m_textctrl->GotoPos(m_textctrl->GetLength());
             return;
         }
+    }
 
     ke.Skip();
 }

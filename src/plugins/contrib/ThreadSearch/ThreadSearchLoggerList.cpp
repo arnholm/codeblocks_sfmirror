@@ -141,7 +141,6 @@ bool ThreadSearchLoggerList::GetFileLineFromListEvent(wxListEvent& /*event*/, wx
         if ( index == -1 ) break;
 
         // First, gets file dir
-        wxString filedir;
         listItem.SetId(index);
         listItem.SetColumn(ListColumns::FilePath);
         listItem.SetMask(wxLIST_MASK_TEXT);

@@ -478,7 +478,7 @@ bool wxsEventsEditor::GotoHandler(int Index)
     }
 
     cbStyledTextCtrl* Ctrl = Editor->GetControl();
-    wxString FullText = Ctrl->GetText();
+    // wxString FullText = Ctrl->GetText();
     int Begin = 0;
     int End = Ctrl->GetLength();
     while ( Begin < End )

@@ -71,7 +71,6 @@ bool TextFileSearcherRegEx::MatchLine(std::vector<int>* outMatchedPositions, con
             if (lineCopy.Contains("\"") || lineCopy.Contains("'"))
             {
                 // remove all "" or '' strings with space (preserve length)
-                wxString lineCopy2 = line;
                 bool bInString1 = false;
                 bool bInString2 = false;
                 wxChar cChar;

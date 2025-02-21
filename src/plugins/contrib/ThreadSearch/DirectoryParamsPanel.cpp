@@ -172,7 +172,6 @@ struct DirectorySelectDialog : wxDialog
         {
             // Fill the items in the list of the entry combo box.
             // Every item in the array might contain multiple items, so we need to split them
-            wxArrayString fullEntryPathList;
 
             // This loop is not actually really efficient, but I hope we can get away with it,
             // because there is a limit to the number of entries in the list.
@@ -181,7 +180,9 @@ struct DirectorySelectDialog : wxDialog
             {
                 const wxString &path = entryPathList[item];
                 if (path.find(';') == wxString::npos)
+                {
                     AddItemToCombo(m_entry, RemovePathSeparatorAtEnd(path));
+                }
                 else
                 {
                     const wxArrayString &splitted = GetArrayFromString(path, ";", true);
