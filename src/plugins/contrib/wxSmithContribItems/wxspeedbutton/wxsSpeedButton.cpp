@@ -91,12 +91,11 @@ wxsSpeedButton::wxsSpeedButton(wxsItemResData* Data):
 
 //------------------------------------------------------------------------------
 
-void wxsSpeedButton::OnBuildCreatingCode() {
-int         n;
-wxString    inc;
-wxString    vname;                  // name of this var
-wxString    bname;                  // name of wxBitmap for the button
-wxString    ss, tt;
+void wxsSpeedButton::OnBuildCreatingCode()
+{
+    int         n;
+    wxString    vname;                  // name of this var
+    wxString    bname;                  // name of wxBitmap for the button
 
 // valid language?
 

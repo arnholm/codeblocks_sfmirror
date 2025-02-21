@@ -221,7 +221,7 @@ void CommitBrowser::OnCommitsUpdateComplete(wxCommandEvent& /*event*/)
     m_updater_commits->Wait();
     if(m_updater_commits->m_what.StartsWith("COMMITS:"))
     {
-        wxString branch = m_updater_commits->m_what.AfterFirst(':');
+        // wxString branch = m_updater_commits->m_what.AfterFirst(':');
         m_autofetch_count += m_updater_commits->m_commits.size();
         for (unsigned int i = 0; i<m_updater_commits->m_commits.size(); ++i)
         {
@@ -284,7 +284,7 @@ void CommitBrowser::OnUpdateComplete(wxCommandEvent& /*event*/)
     }
     else if(m_updater->m_what.StartsWith("DETAIL:"))
     {
-        wxString commit = m_updater->m_what.AfterFirst(':');
+        // wxString commit = m_updater->m_what.AfterFirst(':');
         TextCtrl1->Clear();
         TextCtrl1->SetValue(m_updater->m_detailed_commit_log);
     }

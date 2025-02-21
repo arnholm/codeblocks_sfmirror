@@ -268,7 +268,7 @@ void DebuggerSettingsDlg::ResetConfig(wxWindow *panel, cbDebuggerPlugin *plugin)
         size_t index = p - 1;
         if (m_treebook->GetPageParent(index) == static_cast<int>(pageIndex))
         {
-            wxString title = m_treebook->GetPageText(index);
+            // wxString title = m_treebook->GetPageText(index);
             MapPanelToConfiguration::iterator it = m_mapPanelToConfig.find(m_treebook->GetPage(index));
             cbAssert(plugin == it->second.plugin);
             delete it->second.config;

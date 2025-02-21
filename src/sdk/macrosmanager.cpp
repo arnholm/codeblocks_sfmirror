@@ -741,7 +741,6 @@ wxString MacrosManager::EvalCondition(const wxString& in_cond, const wxString& t
     enum condition_codes {EQ = 1, LT = 2, GT = 4, NE = 8};
 
     wxString cond(in_cond);
-    wxString result;
 
     ReplaceMacros(cond, target, true);
 

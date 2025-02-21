@@ -117,9 +117,9 @@ bool clKeyboardBindingConfig::SortBindings( std::vector<MenuItemDataVec_t::itera
 
     for(MenuItemDataVec_t::iterator iter = m_bindings.begin(); iter != m_bindings.end(); ++iter)
     {
-        wxString description = iter->action;     //description
-        wxString accelerator = iter->accel;      //accelerator
-        wxString resourceID = iter->resourceID;  //menu resource ID
+        // wxString description = iter->action;     //description
+        // wxString accelerator = iter->accel;      //accelerator
+        // wxString resourceID = iter->resourceID;  //menu resource ID
         wxString parentMenu = iter->parentMenu;  //parent menu
 
         if (parentMenu.empty()) //global accelerator

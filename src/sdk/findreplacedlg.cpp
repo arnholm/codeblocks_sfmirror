@@ -400,8 +400,6 @@ wxString FindReplaceDlg::GetReplaceString() const
 {
     if ( IsMultiLine() )
     {
-        wxString tmpString;
-
         if ( IsFindInFiles() )
             return XRCCTRL(*this, "txtMultiLineReplace2", wxTextCtrl)->GetValue();
         return XRCCTRL(*this, "txtMultiLineReplace1", wxTextCtrl)->GetValue();

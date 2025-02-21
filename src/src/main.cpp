@@ -2805,7 +2805,6 @@ void MainFrame::OnFileNewWhat(wxCommandEvent& event)
     if (!ed || !project)
         return;
 
-    wxString oldname = ed->GetFilename();
     if (cbMessageBox(_("Do you want to add this new file in the active project (has to be saved first)?"),
                     _("Add file to project"),
                     wxYES_NO | wxICON_QUESTION) == wxID_YES &&
@@ -2919,7 +2918,6 @@ void MainFrame::DoOnFileOpen(bool bProject)
             if (FileFilters::GetFilterNameFromIndex(Filters, Index, Filter))
                 cfg->Write("/file_dialogs/file_new_open/filter", Filter);
 
-            wxString Test = dlg.GetDirectory();
             cfg->Write("/file_dialogs/file_new_open/directory", dlg.GetDirectory());
         }
 

@@ -107,7 +107,7 @@ class CodeSnippetsTreeCtrl : public wxTreeCtrl
             }
 
         long GetSnippetID( wxTreeItemId itemId )
-            {   wxString itemData = wxEmptyString;
+            {
                 if (not itemId.IsOk()) return 0;
                 SnippetTreeItemData* pItem = (SnippetTreeItemData*)(GetItemData(itemId));
                 return pItem->GetID();

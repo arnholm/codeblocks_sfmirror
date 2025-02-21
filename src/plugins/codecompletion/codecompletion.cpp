@@ -1022,7 +1022,7 @@ void CodeCompletion::DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEdit
     macros.push_back(wxT("line"));
     macros.push_back(wxT("pragma"));
     macros.push_back(wxT("undef"));
-    const wxString idxStr = wxString::Format("\n%d", PARSER_IMG_MACRO_DEF);
+    // const wxString idxStr = wxString::Format("\n%d", PARSER_IMG_MACRO_DEF);
     for (size_t i = 0; i < macros.size(); ++i)
     {
         if (text.IsEmpty() || macros[i][0] == text[0]) // ignore tokens that start with a different letter

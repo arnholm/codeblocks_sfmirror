@@ -2861,11 +2861,10 @@ bool ParserThread::CalcEnumExpression(Token* tokenParent, long& result, wxString
     m_Tokenizer.SetState(tsRawExpression);
 
     Expression exp;
-    wxString token, next;
 
     while (IS_ALIVE)
     {
-        token = m_Tokenizer.GetToken();
+        wxString token = m_Tokenizer.GetToken();
         if (token.IsEmpty())
             return false;
         if (token == _T("\\"))
@@ -3119,7 +3118,7 @@ void ParserThread::HandleTypedef()
         && (!m_LastParent->m_TemplateType.IsEmpty())
         && m_LastParent->m_TemplateType.Index(components.front()) != wxNOT_FOUND )
     {
-        wxArrayString templateType = m_LastParent->m_TemplateType;
+        // wxArrayString templateType = m_LastParent->m_TemplateType;
         alias = components.front();
         components.pop();
         ancestor = components.front();

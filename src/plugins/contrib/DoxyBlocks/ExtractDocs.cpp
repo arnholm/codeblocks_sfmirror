@@ -118,9 +118,7 @@ wxString BoolToString(bool val)
  */
 void DoxyBlocks::WriteConfigFiles(cbProject *prj, wxString sPrjName, wxString /*sPrjPath*/, wxString /*sDoxygenDir*/, wxFileName fnDoxyfile, wxFileName fnDoxygenLog)
 {
-    wxArrayString sOutput;
-    wxArrayString sErrors;
-    MacrosManager    *pMacMngr = Manager::Get()->GetMacrosManager();
+    MacrosManager *pMacMngr = Manager::Get()->GetMacrosManager();
 
      // If there is no config file, create one. If it exists, check prefs.
     bool bWrite = true;

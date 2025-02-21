@@ -356,13 +356,14 @@ void ClassBrowser::OnClassBrowserSetFocus(wxFocusEvent& event) //(ph 2024/01/25)
     // Check if the mouse is within the Symbols window.
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+    // int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
+    // wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
     if (pCurrentPage == m_ParseManager->GetClassBrowser())
     {
         if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
             m_ParseManager->SetSymbolsWindowHasFocus(true);
-        else m_ParseManager->SetSymbolsWindowHasFocus(false);
+        else
+            m_ParseManager->SetSymbolsWindowHasFocus(false);
     }
     // If the user is fiddling around in the Symbols windows, update if necessary
     // This seldom happens here since OnParserEnd() does it when parsing ends.

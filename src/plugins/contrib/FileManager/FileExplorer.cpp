@@ -421,7 +421,6 @@ void FileExplorer::FindFile(const wxString &findfilename, const wxTreeItemId &ti
         // explaining the exact reason for the failure
         return;
     }
-    wxString filename;
     int flags=wxDIR_FILES|wxDIR_DIRS;
     if(m_show_hidden)
         flags|=wxDIR_HIDDEN;

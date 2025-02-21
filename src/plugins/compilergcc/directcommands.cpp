@@ -594,7 +594,7 @@ wxArrayString DirectCommands::GetPreBuildCommands(ProjectBuildTarget* target) co
     wxArrayString buildcmds = target ? target->GetCommandsBeforeBuild() : m_pProject->GetCommandsBeforeBuild();
     if (!buildcmds.IsEmpty())
     {
-        wxString title = target ? target->GetTitle() : m_pProject->GetTitle();
+        // wxString title = target ? target->GetTitle() : m_pProject->GetTitle();
         wxArrayString tmp;
         for (size_t i = 0; i < buildcmds.GetCount(); ++i)
         {
@@ -635,7 +635,7 @@ wxArrayString DirectCommands::GetPostBuildCommands(ProjectBuildTarget* target) c
     wxArrayString buildcmds = target ? target->GetCommandsAfterBuild() : m_pProject->GetCommandsAfterBuild();
     if (!buildcmds.IsEmpty())
     {
-        wxString title = target ? target->GetTitle() : m_pProject->GetTitle();
+        // wxString title = target ? target->GetTitle() : m_pProject->GetTitle();
         wxArrayString tmp;
         for (size_t i = 0; i < buildcmds.GetCount(); ++i)
         {

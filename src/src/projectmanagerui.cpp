@@ -1191,7 +1191,6 @@ void ProjectManagerUI::RemoveFilesRecursively(wxTreeItemId& sel_id)
 {
     wxTreeItemIdValue cookie;
     wxTreeItemId child;
-    wxString filename;
     size_t i = 0;
     while (i < m_pTree->GetChildrenCount(sel_id))
     {
@@ -1226,7 +1225,6 @@ void ProjectManagerUI::OpenFilesRecursively(wxTreeItemId& sel_id)
 {
     wxTreeItemIdValue cookie;
     wxTreeItemId child;
-    wxString filename;
     size_t i = 0;
     while (i < m_pTree->GetChildrenCount(sel_id))
     {
@@ -3507,14 +3505,13 @@ static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wx
         for (size_t i = 0; i < oldArray.GetCount(); ++i)
         {
             wxString item = oldArray[i];
-            wxString toFolderStr;
             if (toFolderPath.StartsWith(fromFolderPath.BeforeFirst(sepChar)))
             {
                 // The virtual folder is dragged under same root
                 int posFrom = item.Find(fromFolderPath);
                 if (posFrom != wxNOT_FOUND)
                 {
-                    wxString fromFolderStr = item.Mid(posFrom);
+                    // wxString fromFolderStr = item.Mid(posFrom);
                     item = item.Left(posFrom);
                     if (!item.IsEmpty())
                         newFolders.Add(item);
@@ -3552,7 +3549,6 @@ static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wx
                     }
                     else
                     {
-                        wxString temp = item.Left(pos);
                         newFolders.Add(item.Left(pos));
                         if (!toFolderPath.IsEmpty())
                             newFolders.Add(toFolderPath + item.Mid(pos));

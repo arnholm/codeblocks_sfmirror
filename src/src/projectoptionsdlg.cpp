@@ -370,7 +370,6 @@ void ProjectOptionsDlg::DoBeforeTargetChange(bool force)
     {
         // selected another build target
         // save changes to the previously selected target
-        wxArrayString array;
         ProjectBuildTarget* target = m_Project->GetBuildTarget(m_Current_Sel);
         if (!target)
             return;
@@ -478,8 +477,8 @@ void ProjectOptionsDlg::OnProjectTypeChanged(cb_unused wxCommandEvent& event)
     wxString extI = fname.GetExt();
     wxString extD = fname.GetExt();
     wxString libext = compiler ? compiler->GetSwitches().libExtension : _T("");
-    wxString libextI = compiler ? compiler->GetSwitches().libExtension : _T(""); // TODO: add specialized compiler option for this
-    wxString libextD = "def";                                                    // TODO: add specialized compiler option for this
+    // wxString libextI = compiler ? compiler->GetSwitches().libExtension : _T(""); // TODO: add specialized compiler option for this
+    // wxString libextD = "def";                                                    // TODO: add specialized compiler option for this
     wxString libpre = compiler ? compiler->GetSwitches().libPrefix : _T("");
     wxString libpreI = compiler ? compiler->GetSwitches().libPrefix : _T("");    // TODO: add specialized compiler option for this
     wxString libpreD = compiler ? compiler->GetSwitches().libPrefix : _T("");    // TODO: add specialized compiler option for this
@@ -1300,8 +1299,6 @@ void ProjectOptionsDlg::OnCreateDefFileClick(cb_unused wxCommandEvent& event)
     wxButton*   browseI = XRCCTRL(*this, "btnBrowseImportLibraryFilename", wxButton);
     wxButton*   browseD = XRCCTRL(*this, "btnBrowseDefinitionFileFilename", wxButton);
 
-    wxString platforms = GetStringFromPlatforms(target->GetPlatforms());
-
     const TargetType targetType = (TargetType)projectTypes->GetSelection();
 
     txtI->Enable(chkSL->IsChecked() && targetType == ttDynamicLib);
@@ -1328,8 +1325,6 @@ void ProjectOptionsDlg::OnCreateImportFileClick(cb_unused wxCommandEvent& event)
     wxTextCtrl* txtD    = XRCCTRL(*this, "txtDefinitionFileFilename", wxTextCtrl);
     wxButton*   browseI = XRCCTRL(*this, "btnBrowseImportLibraryFilename", wxButton);
     wxButton*   browseD = XRCCTRL(*this, "btnBrowseDefinitionFileFilename", wxButton);
-
-    wxString platforms = GetStringFromPlatforms(target->GetPlatforms());
 
     const TargetType targetType = (TargetType)projectTypes->GetSelection();
 

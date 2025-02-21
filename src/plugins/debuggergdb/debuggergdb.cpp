@@ -804,7 +804,6 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
     // Continue
 
     // create gdb launch command
-    wxString cmd;
 
     // prepare the driver
     wxString cmdline;
@@ -947,7 +946,6 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
         return ret;
     }
 
-    wxString out;
     // start polling gdb's output
     m_TimerPollDebugger.Start(20);
 

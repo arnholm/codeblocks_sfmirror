@@ -958,7 +958,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             {
                 m_Cursor.file = re->GetMatch(lines[i], 3);
                 m_Cursor.function = re->GetMatch(lines[i], 2);
-                wxString lineStr = _T("");
+                // wxString lineStr = _T("");
                 m_Cursor.address = re->GetMatch(lines[i], 1);
                 m_Cursor.line = -1;
                 m_Cursor.changed = true;
@@ -969,7 +969,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             {
                 m_Cursor.file = reThreadSwitch2.GetMatch(lines[i], 3);
                 m_Cursor.function = reThreadSwitch2.GetMatch(lines[i], 2);
-                wxString lineStr = reThreadSwitch2.GetMatch(lines[i], 4);
+                // wxString lineStr = reThreadSwitch2.GetMatch(lines[i], 4);
                 m_Cursor.address = reThreadSwitch2.GetMatch(lines[i], 1);
                 m_Cursor.line = -1;
                 m_Cursor.changed = true;

@@ -33,7 +33,7 @@ wxsImageList::wxsImageList(wxsItemResData *Data):
     wxsTool(Data, &Reg.Info, 0, 0)
 {
     int         n;
-    wxString    ss, tt;
+    wxString    ss;
     wxFileName  fn;
 
     m_IsBuilt = false;
@@ -62,21 +62,14 @@ wxsImageList::wxsImageList(wxsItemResData *Data):
  */
 void wxsImageList::OnBuildCreatingCode()
 {
-    int         i;
-    wxString    inc;
     wxString    vname;  // this variable name
-    wxString    bname;  // name of the bitmap variable
-    wxString    fbase;  // base name of XPM file without dirs or extension
-    wxString    fabs;   // absolute name of XPM file
-    wxString    frel;   // relative
-    wxString    dname;  // name of XPM data array
     wxBitmap    bmp;    // preview bitmap saved as XPM
-    wxString    ss, tt; // general use
+    wxString    ss;     // general use
 
     // have we already been here?
-    if(m_IsBuilt){
+    if (m_IsBuilt)
         return;
-    }
+
     m_IsBuilt = true;
 
     switch(GetLanguage())
@@ -90,13 +83,14 @@ void wxsImageList::OnBuildCreatingCode()
 
                 vname = GetVarName();
                 // if there is no data, then just make empty image and bitmap
-                if(m_Count == 0){
+                if (m_Count == 0)
                     Codef(_T("%s = new wxImageList(%d, %d, 1);\n"), vname.wx_str(), m_Width, m_Height);
-                }
                 // else fill it with XPM data
-                else{
+                else
+                {
                     Codef(_T("%s = new wxImageList(%d, %d, %d);\n"),  vname.wx_str(), m_Width, m_Height, (m_Count + 1));
-                    for(i = 0; i < m_Count; i++) {
+                    for (int i = 0; i < m_Count; i++)
+                    {
                         ss.Printf(_("%s_%d_XPM"), vname.wx_str(), i);
                         Codef(_T("%s->Add(wxBitmap(%s));\n"), vname.wx_str(), ss.wx_str());
                     }
@@ -146,7 +140,6 @@ void wxsImageList::StoreXpmData(void)
     int         i, n;
     long        ll;
     wxString    vname;
-    wxString    xname;
     wxString    ss, tt, vv;
     wxFile      ff;
 
@@ -273,39 +266,39 @@ int  wxsImageList::GetCount(void)
 wxBitmap wxsImageList::GetPreview(int inIndex)
 {
     int             i, j, n;
-    wxString        ss, tt;
+    wxString        ss;
     wxArrayString   aa;
     wxBitmap        bmp;
 
     // no such image?
-    if((inIndex < 0) || (inIndex >= m_Count)){
+    if ((inIndex < 0) || (inIndex >= m_Count))
         return wxNullBitmap;
-    }
-    if(m_ImageData.GetCount() == 0){
+
+    if (m_ImageData.GetCount() == 0)
         return wxNullBitmap;
-    }
 
     // count down to the start of that image data
     n = -1;             // found index at start of data
     j = 0;              // counter of data blocks
     i = 0;              // index into m_ImageData
 
-    while((i < (int)m_ImageData.GetCount()) && (n < 0)){
+    while ((i < (int)m_ImageData.GetCount()) && (n < 0))
+    {
         ss = m_ImageData.Item(i);
         i += 1;
 
-        if(ss.Find(_T("xpm_data")) >= 0){
-            if(j == inIndex){
+        if (ss.Find(_T("xpm_data")) >= 0)
+        {
+            if (j == inIndex)
                 n = i;
-            }
+
             j += 1;
         }
     }
 
     // still no data block?
-    if(n < 0){
+    if (n < 0)
         return wxNullBitmap;\
-    }
 
     // save that first line
     aa.Clear();
@@ -314,16 +307,15 @@ wxBitmap wxsImageList::GetPreview(int inIndex)
     // copy out the data block (until the next "xpm_data")
     i = n;
     n = -1;
-    while((i < (int)m_ImageData.GetCount()) && (n < 0)){
+    while ((i < (int)m_ImageData.GetCount()) && (n < 0))
+    {
         ss = m_ImageData.Item(i);
         i += 1;
 
-        if(ss.Find(_T("xpm_data")) >= 0){
+        if (ss.Find(_T("xpm_data")) >= 0)
             n = i;
-        }
-        else{
+        else
             aa.Add(ss);
-        }
     }
 
     // turn that data block into a bitmap

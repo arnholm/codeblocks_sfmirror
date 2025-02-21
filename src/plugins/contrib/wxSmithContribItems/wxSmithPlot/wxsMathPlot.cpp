@@ -77,18 +77,14 @@ wxsMathPlot::wxsMathPlot(wxsItemResData* Data):
 
 void wxsMathPlot::OnBuildCreatingCode()
 {
-wxString    inc;
-wxString    vname;
-wxString    aname;
-wxString    cname;
-
 // we only know C++ language
 
-    if (GetLanguage() != wxsCPP) wxsCodeMarks::Unknown(_T("wxsMathPlot::OnBuildCreatingCode"),GetLanguage());
+    if (GetLanguage() != wxsCPP)
+        wxsCodeMarks::Unknown(_T("wxsMathPlot::OnBuildCreatingCode"),GetLanguage());
 
 // who we are
 
-    vname = GetVarName();
+    wxString vname = GetVarName();
 
 // include files
 

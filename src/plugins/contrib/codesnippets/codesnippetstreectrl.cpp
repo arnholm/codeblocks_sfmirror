@@ -404,9 +404,8 @@ wxTreeItemId CodeSnippetsTreeCtrl::FindTreeItemByTreeId(const wxTreeItemId& item
 
             if (!ignoreThisType)
             {
-                wxString label = GetItemText(item);
-
-                if( itemToFind == item)
+                // wxString label = GetItemText(item);
+                if (itemToFind == item)
                 {
                     return item;
                 }
@@ -473,9 +472,8 @@ wxTreeItemId CodeSnippetsTreeCtrl::FindTreeItemBySnippetId(const SnippetItemID& 
 
             if (!ignoreThisItem)
             {
-                wxString label = GetItemText(item);
-
-                if( IDToFind == itemData->GetID() )
+                // wxString label = GetItemText(item);
+                if (IDToFind == itemData->GetID())
                 {
                     return item;
                 }
@@ -1705,8 +1703,8 @@ void CodeSnippetsTreeCtrl::EditSnippetWithMimeOrCB()
     if (not itemId.IsOk()) return;
     if ( not IsSnippet()) return;
 
-    wxString snippetLabel = GetSnippetLabel();
-    wxString snippetData = GetSnippetString();
+    // wxString snippetLabel = GetSnippetLabel();
+    // wxString snippetData = GetSnippetString();
     wxString fileName = GetSnippetFileLink();
     LOGIT( _T("EditSnippetWithMime[%s]"), fileName.c_str() );
     if ( fileName.IsEmpty() ) return;
@@ -1984,12 +1982,12 @@ void CodeSnippetsTreeCtrl::OnEditorSave(CodeBlocksEvent& event)
     event.Skip();
 
     EditorBase* eb = event.GetEditor();
-    wxString filePath = event.GetString();
 
     // Is this a snippet editor?
     int idx = m_EditorPtrArray.Index((cbEditor*)eb);
     if (wxNOT_FOUND == idx)
         return;
+
     if (eb)
     {
         // Save local XML data (snippet text)
@@ -2007,8 +2005,6 @@ void CodeSnippetsTreeCtrl::OnEditorClose(CodeBlocksEvent& event)
     EditorBase* eb = event.GetEditor();
     if (not eb)
         return;
-
-    wxString filePath = event.GetString();
 
     // Is this a snippet editor?
     int idx = m_EditorPtrArray.Index((cbEditor*)eb);

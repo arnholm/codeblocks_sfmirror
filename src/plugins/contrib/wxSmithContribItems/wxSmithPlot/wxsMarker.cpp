@@ -79,26 +79,20 @@ wxsMarker::wxsMarker(wxsItemResData* Data):
 //
 // need to set line color and style
 
-void wxsMarker::OnBuildCreatingCode() {
-wxString    vname;
-wxString    pname;
-wxString    cname;
-wxString    fname;
-wxString    xname;
-wxString    yname;
-wxString    dtext;
-wxString    s;
+void wxsMarker::OnBuildCreatingCode()
+{
 
 // we only know C++ language
 
-    if (GetLanguage() != wxsCPP) wxsCodeMarks::Unknown(_T("wxsMarker::OnBuildCreatingCode"),GetLanguage());
+    if (GetLanguage() != wxsCPP)
+        wxsCodeMarks::Unknown(_T("wxsMarker::OnBuildCreatingCode"),GetLanguage());
 
 // usefull names
 
-    vname = GetVarName();
-    pname = GetParent()->GetVarName();
-    cname = vname + _("_PEN");
-    fname = vname + _("_FONT");
+    wxString vname = GetVarName();
+    wxString pname = GetParent()->GetVarName();
+    wxString cname = vname + _("_PEN");
+    wxString fname = vname + _("_FONT");
 
 // the header for mathplot
 
@@ -111,19 +105,21 @@ wxString    s;
 
 // assign a pen to the layer
 
-    dtext = mPenColour.BuildCode(GetCoderContext());
-    if (dtext.Len() > 0) {
+    wxString dtext = mPenColour.BuildCode(GetCoderContext());
+    if (dtext.Len() > 0)
+    {
         Codef(_T("wxPen   %s(%s);\n"), cname.wx_str(), dtext.wx_str());
         Codef(_T("%s->SetPen(%s);\n"), vname.wx_str(), cname.wx_str());
-    };
+    }
 
 // assign a font to the layer
 
     dtext = mPenFont.BuildFontCode(fname, GetCoderContext());
-    if (dtext.Len() > 0) {
+    if (dtext.Len() > 0)
+    {
         Codef(_T("%s"), dtext.wx_str());
         Codef(_T("%s->SetFont(%s);\n"), vname.wx_str(), fname.wx_str());
-    };
+    }
 
 // add to parent window -- should be a mpWindow
 
@@ -131,8 +127,6 @@ wxString    s;
         ; // do nothing
     else
         Codef(_T("%s->AddLayer(%s);\n"), pname.wx_str(), vname.wx_str());
-
-
 }
 
 //------------------------------------------------------------------------------

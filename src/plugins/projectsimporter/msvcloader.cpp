@@ -116,7 +116,6 @@ bool MSVCLoader::ReadConfigurations()
     if (!file.Ok())
         return false; // error opening file???
 
-    wxArrayString comps;
     wxTextInputStream input(file);
 
     int currentLine = 0;

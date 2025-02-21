@@ -622,8 +622,6 @@ void Compiler::LoadSettings(const wxString& baseKey)
             return;
     }
 
-    wxString sep = wxFileName::GetPathSeparator();
-
     m_Name = cfg->Read(tmp + _T("/name"), m_Name);
 
     m_MasterPath         = cfg->Read(tmp + _T("/master_path"),     m_MasterPath);
@@ -1139,7 +1137,7 @@ void Compiler::LoadRegExArray(const wxString& name, bool globalPrecedence, int r
     int depth = 0;
     while (node)
     {
-        const wxString value = node->GetAttribute(wxT("value"), wxString());
+        // const wxString value = node->GetAttribute(wxT("value"), wxString());
         if (node->GetName() == wxT("if") && node->GetChildren())
         {
             if (EvalXMLCondition(node))

@@ -34,7 +34,7 @@ wxsImage::wxsImage(wxsItemResData *Data) :
     wxsTool(Data, &Reg.Info, 0, 0)
 {
     int         n;
-    wxString    ss, tt;
+    wxString    ss;
     wxFileName  fn;
 
     // nothing selected yet
@@ -61,11 +61,9 @@ wxsImage::wxsImage(wxsItemResData *Data) :
  */
 void wxsImage::OnBuildCreatingCode()
 {
-    wxString    inc;
     wxString    vname;                  // this variable name
     wxString    bname;                  // name of the bitmap variable
     wxString    xname;                  // XPM data block name
-    wxString    ss, tt;                 // general use
 
     // have we already been here?
     if(m_IsBuilt) {

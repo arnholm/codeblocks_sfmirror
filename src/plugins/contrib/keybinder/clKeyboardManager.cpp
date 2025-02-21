@@ -680,7 +680,7 @@ MenuItemDataVec_t::iterator clKeyboardManager::ExistsALikeAccel(MenuItemDataVec_
     MenuItemDataVec_t& accels = srcMap;
     if (srcvecIter == accels.end()) return accels.end();
 
-    const wxString srcAccel = srcvecIter->accel;
+    // const wxString srcAccel = srcvecIter->accel;
     //-if(srcAccel.IsEmpty()) return accels.end(); //(ph 2023/03/07)
 
     MenuItemDataVec_t::iterator srcIter = srcvecIter;

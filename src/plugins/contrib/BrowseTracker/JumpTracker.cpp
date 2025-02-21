@@ -777,7 +777,6 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
 
     m_bJumpInProgress = true;
 
-    wxString activeEdFilename = wxEmptyString;
     if (pcbEd) switch(1)
     {
         default:

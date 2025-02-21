@@ -101,8 +101,6 @@ void BrowseTrackerConfPanel::GetUserOptions(wxString configFullPath)
 // ----------------------------------------------------------------------------
 {
     // Read user options from storage file
-    wxString m_ConfigFullPath = configFullPath;
-
     m_BrowseTrackerPlugin.ReadUserOptions( configFullPath );
 
     #if defined(__WXMSW__)

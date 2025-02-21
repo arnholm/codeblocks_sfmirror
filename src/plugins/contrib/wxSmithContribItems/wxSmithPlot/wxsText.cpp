@@ -79,15 +79,13 @@ wxsText::wxsText(wxsItemResData* Data):
 //
 // need to set line color and style
 
-void wxsText::OnBuildCreatingCode() {
-wxString    vname;
-wxString    pname;
-wxString    cname;
-wxString    fname;
-wxString    xname;
-wxString    yname;
-wxString    dtext;
-wxString    s;
+void wxsText::OnBuildCreatingCode()
+{
+    wxString    vname;
+    wxString    pname;
+    wxString    cname;
+    wxString    fname;
+    wxString    dtext;
 
 // we only know C++ language
 

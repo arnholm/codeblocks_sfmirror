@@ -496,7 +496,7 @@ bool cbKeyBinder::CreateKeyBindDefaultFile(bool refresh)
         long plgnVersionNum; plgnVersionString.ToLong(&plgnVersionNum);
         int oldPlgnVersionNum = plgnVersionNum - 10;
 
-        wxString oldVersionFile = wxString::Format(_T("cbKeyBinder%d.ini"), oldPlgnVersionNum);
+        // wxString oldVersionFile = wxString::Format(_T("cbKeyBinder%d.ini"), oldPlgnVersionNum);
         wxFileName fnOldVersionKeyBindings(ConfigManager::GetConfigFolder(), _T("cbKeyBinder10.ini"));
         fnOldVersionKeyBindings.SetName(GetUserPersonality() +_T(".") + fnOldVersionKeyBindings.GetName());
 
@@ -677,8 +677,8 @@ int cbKeyBinder::ConvertMenuScanToKeyMnuAcceratorsConf(wxString keybinderFile, w
 
     if (missingMenuItems)
     {
-        wxString msg = wxString::Format(_("Convert found %u unmatched menu items."), (unsigned)missingMenuItems);
         #if defined(LOGGING)
+            //wxString msg = wxString::Format(_("Convert found %u unmatched menu items."), (unsigned)missingMenuItems);
             //cbMessageBox(msg, _("Converter"), wxOK, Manager::Get()->GetAppWindow());
         #endif
     }
@@ -853,8 +853,8 @@ int cbKeyBinder::ConvertOldKeybinderIniToAcceratorsConf(wxString oldKeybinderFil
 
     if (missingMenuItems)
     {
-        wxString msg = wxString::Format(_T("KeyBinder Convert found %u unmatched menu items."), (unsigned)missingMenuItems);
         #if defined(LOGGING)
+            wxString msg = wxString::Format(_T("KeyBinder Convert found %u unmatched menu items."), (unsigned)missingMenuItems);
             LOGIT( _T("[%s]"), msg.wx_str());
         #endif
     }

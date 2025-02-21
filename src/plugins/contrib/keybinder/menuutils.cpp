@@ -114,7 +114,7 @@ int FindMenuDuplicateItems(wxMenu* pMenu, wxString& rStr, int& rCount)
         if (wxMenuCmd::IsNumericMenuItem(pMenuItem)) continue;
 
         // Find matching menu item in keybinder array of commands
-        wxString menuItemLabel = pMenuItem->GetItemLabelText().Trim();
+        // wxString menuItemLabel = pMenuItem->GetItemLabelText().Trim();
         if (rStr == pMenuItem->GetItemLabelText().Trim() )
         {    rCount++;
             #if defined(LOGGING)

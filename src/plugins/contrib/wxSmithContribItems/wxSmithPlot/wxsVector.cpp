@@ -89,16 +89,16 @@ wxsVector::wxsVector(wxsItemResData* Data):
 //
 // need to set line color and style
 
-void wxsVector::OnBuildCreatingCode() {
-int         i,n;
-wxString    vname;
-wxString    pname;
-wxString    cname;
-wxString    fname;
-wxString    xname;
-wxString    yname;
-wxString    dtext;
-wxString    s;
+void wxsVector::OnBuildCreatingCode()
+{
+    int         i, n;
+    wxString    vname;
+    wxString    pname;
+    wxString    cname;
+    wxString    fname;
+    wxString    xname;
+    wxString    yname;
+    wxString    dtext;
 
 // we only know C++ language
 

@@ -480,7 +480,6 @@ void Abbreviations::SaveAutoCompleteConfig()
     for (itlan = m_AutoCompLanguageMap.begin(); itlan != m_AutoCompLanguageMap.end(); ++itlan)
     {
         wxString langStr = itlan->first;
-        wxString langStrLw = langStr.Lower();
         AutoCompleteMap* pAutoCompleteMap = itlan->second;
         for (it = pAutoCompleteMap->begin(); it != pAutoCompleteMap->end(); ++it)
         {

@@ -85,7 +85,6 @@ bool wxsFlagsProperty::XmlRead(cb_unused wxsPropertyContainer* Object,
     }
     if ( UseNamesInXml )
     {
-        wxString TextS = cbC2U(Text);
         wxStringTokenizer Tokenizer(cbC2U(Text),_T("| \t\n"), wxTOKEN_STRTOK);
         VALUE = 0;
         while ( Tokenizer.HasMoreTokens() )

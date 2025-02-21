@@ -385,7 +385,6 @@ wxArrayString ParseManagerTest::GetCompilerIncludePaths()
     // const wxString& cpp_path, const wxArrayString& extra_path, const wxString& cpp_executable
 
     wxString cpp_path = "F:\\msys2\\mingw64";
-    wxArrayString extra_path; // empty
     wxString cpp_executable = "g++.exe";
 
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
@@ -439,7 +438,6 @@ wxString ParseManagerTest::AddCompilerPredefinedMacros()
     // const wxString& compilerId, cbProject* project, wxString& defs, ParserBase* parser
 
     wxString cpp_path = "F:\\msys2\\mingw64";
-    wxArrayString extra_path; // empty
     wxString cpp_executable = "g++.exe";
 
     wxString sep = (platform::windows ? _T("\\") : _T("/"));

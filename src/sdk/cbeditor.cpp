@@ -2113,7 +2113,7 @@ bool cbEditor::SaveAs()
         Filter.Empty();
         if (FileFilters::GetFilterNameFromIndex(Filters, Index, Filter))
             mgr->Write(_T("/file_dialogs/save_file_as/filter"), Filter);
-        wxString Test = dlg.GetDirectory();
+
         mgr->Write(_T("/file_dialogs/save_file_as/directory"), dlg.GetDirectory());
     }
     return Save();

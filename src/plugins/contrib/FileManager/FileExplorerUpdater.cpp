@@ -573,7 +573,6 @@ bool FileExplorerUpdater::ParseGITChanges(const wxString &path, VCSstatearray &s
     if (parent.IsEmpty())
         return false;
     wxArrayString output;
-    wxString rpath=parent;
     int name_pos;
     #ifdef __WXMSW__
     int hresult = Exec("cmd /c git status --short", output, parent);
@@ -779,7 +778,6 @@ bool FileExplorerUpdater::ParseBZRChanges(const wxString &path, VCSstatearray &s
         return false;
     wxArrayString output;
     int name_pos = 4;
-    wxString rpath=parent;
     #ifdef __WXMSW__
     int hresult=Exec("cmd /c bzr stat --short "+path, output, path);
     #else
@@ -1053,7 +1051,6 @@ bool FileExplorerUpdater::ParseHGChangesTree(const wxString &path, VCSstatearray
 bool FileExplorerUpdater::ParseCVSChanges(const wxString &path, VCSstatearray &sa)
 {
     wxArrayString output;
-    wxString wdir=wxGetCwd();
     Exec("cvs stat -q -l  .", output, path);
 //    if (hresult!=0)
 //        return false;
@@ -1155,7 +1152,7 @@ bool FileExplorerUpdater::GetGITCommitState(const wxString &path)
 bool FileExplorerUpdater::GetHgCommitState(const wxString &path)
 {
     //TODO: Should check TestDestroy here and return prematurely if necessary
-    wxArrayString output, dir_output;
+    wxArrayString output;
 
     wxFileName root_fn = wxFileName(path);
     root_fn.MakeRelativeTo(m_repo_path); //make the target path relative to the repo_path
@@ -1217,7 +1214,7 @@ bool FileExplorerUpdater::GetHgCommitState(const wxString &path)
 bool FileExplorerUpdater::GetVCSCommitState(const wxString &path, const wxString &cmd)
 {
     //TODO: Should check TestDestroy here and return prematurely if necessary
-    wxArrayString output, dir_output;
+    wxArrayString output;
 
     wxFileName root_fn = wxFileName(path);
     root_fn.MakeRelativeTo(m_repo_path); //make it relative to the repo_path

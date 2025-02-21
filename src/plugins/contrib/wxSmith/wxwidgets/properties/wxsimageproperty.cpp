@@ -43,26 +43,24 @@ wxsImageProperty::wxsImageProperty(const wxString &PGName, const wxString &_Data
  */
 bool wxsImageProperty::ShowEditor(wxsPropertyContainer *Object)
 {
-    int                                             n;
-    wxsBitmapIconData           data;
-    wxsBitmapIconEditorDlg    dlg(0, data, _T("wxART_OTHER"));
-    wxBitmap                                bmp;
-    wxString                                ss;
+    wxsBitmapIconData data;
+    wxsBitmapIconEditorDlg dlg(0, data, _T("wxART_OTHER"));
+    wxBitmap bmp;
 
     // show the dialog, exit immediately if cancelled
     PlaceWindow(&dlg);
-    n = dlg.ShowModal();
-    if(n != wxID_OK){
+    int n = dlg.ShowModal();
+    if (n != wxID_OK)
         return false;
-    }
 
     // no data?
-    if(data.IsEmpty()){
+    if (data.IsEmpty())
+    {
         VALUE.Clear();
     }
-
     // get a preview image and store it as an array of XPM data
-    else{
+    else
+    {
         bmp = data.GetPreview(wxDefaultSize);
         wxsImageListEditorDlg::BitmapToArray(bmp, VALUE);
     }

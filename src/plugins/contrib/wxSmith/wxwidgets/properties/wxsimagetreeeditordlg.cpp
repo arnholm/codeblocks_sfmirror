@@ -382,7 +382,7 @@ bool wxsImageTreeEditorDlg::Execute(wxArrayString &aItems)
     wxString        jt;
     wxTreeItemId    jp[32];
 
-    wxString        ss, tt;
+    wxString        ss;
     wxTreeItemId    root;
     wxTreeItemId    item;
     wxBitmap        bmp;
@@ -473,10 +473,10 @@ bool wxsImageTreeEditorDlg::Execute(wxArrayString &aItems)
  * \return void
  *
  */
-void    wxsImageTreeEditorDlg::SetImageList(wxImageList &inImageList)
+void wxsImageTreeEditorDlg::SetImageList(wxImageList &inImageList)
 {
     int         i, n;
-    wxString    ss, tt;
+    wxString    ss;
     wxBitmap    bmp;
 
     // save the image list in the tree control
@@ -602,9 +602,10 @@ void wxsImageTreeEditorDlg::OnbAddSubItemClick(cb_unused wxCommandEvent &event)
  * \return void
  *
  */
-void wxsImageTreeEditorDlg::AddItem(wxTreeItemId &inParent){
+void wxsImageTreeEditorDlg::AddItem(wxTreeItemId &inParent)
+{
     int             n;
-    wxString        ss, tt;
+    wxString        ss;
     wxTreeItemId    parent, current;
     wxColour        cc;
     bool            b;
@@ -676,7 +677,7 @@ void wxsImageTreeEditorDlg::AddItem(wxTreeItemId &inParent){
  */
 void wxsImageTreeEditorDlg::OnbDelItemClick(cb_unused wxCommandEvent &event)
 {
-    wxTreeItemId    current;
+    wxTreeItemId current;
 
     // current selection
     current = Tree1->GetSelection();
@@ -695,8 +696,7 @@ void wxsImageTreeEditorDlg::OnbDelItemClick(cb_unused wxCommandEvent &event)
  */
 void wxsImageTreeEditorDlg::OnbDelAllItemsClick(cb_unused wxCommandEvent &event)
 {
-    int         n;
-    wxString    ss;
+    int n;
 
     n = wxMessageBox(_("Delete ALL Items In Tree?"), _("Clear"), wxYES_NO);
     if(n == wxYES){

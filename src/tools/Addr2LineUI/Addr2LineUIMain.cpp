@@ -289,7 +289,6 @@ void Addr2LineUIDialog::OnOperateClick(wxCommandEvent& WXUNUSED(event))
 
     // Remove "XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX "
     line = line.Right(line.Length() - (is64Bit ? len64 : len32)).Trim(true).Trim(false) ; // 8 times address + 8 times space
-    wxString sep = wxT("!");
     int sep_pos = line.Find(wxT('!'), true);
     if (sep_pos!=wxNOT_FOUND)
       theFile = line.SubString(0,sep_pos-1);

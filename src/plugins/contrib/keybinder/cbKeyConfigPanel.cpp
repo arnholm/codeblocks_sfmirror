@@ -134,7 +134,7 @@ void UsrConfigPanel::GetKeyConfigPanelPhaseII(wxMenuBar* pMenuBar, UsrConfigPane
 
     for(MenuItemDataVec_t::const_iterator iter = accels.begin(); iter != accels.end(); ++iter)
     {
-        wxString resourceIDString = iter->resourceID;
+        // wxString resourceIDString = iter->resourceID;
         MenuItemData itemData = *iter;
         long resourceID; itemData.resourceID.ToLong(&resourceID);
         wxString accel      = itemData.accel;
@@ -275,8 +275,10 @@ void UsrConfigPanel::OnApply()
                     //After an erase, iter has pointer to the following item.
                     //The item following erase() will be missed if the 'for' statement is allowed to execute.
 
-        if (iter == accelMap.end() ) break;
-        wxString resourceIDString = iter->resourceID;
+        if (iter == accelMap.end())
+            break;
+
+        // wxString resourceIDString = iter->resourceID;
         MenuItemData itemData = *iter;
         long resourceID; itemData.resourceID.ToLong(&resourceID);
         wxString accel      = itemData.accel;
@@ -372,7 +374,7 @@ bool UsrConfigPanel::VerifyGlobalAccel(MenuItemData* pMenuItemData) //(2019/9/18
     wxString resourceID = pMenuItemData->resourceID;        // string menu id
     long intResourceID;   resourceID.ToLong(&intResourceID);// int menu id
     wxString accel      = pMenuItemData->accel;      //text representation of accelerator
-    wxString action     = pMenuItemData->action;     //Help description
+    // wxString action     = pMenuItemData->action;     //Help description
     wxString parentMenu = pMenuItemData->parentMenu; //globals have no parent
 
     wxMenuBar* pMnuBar = Manager::Get()->GetAppFrame()->GetMenuBar();

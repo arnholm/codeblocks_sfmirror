@@ -283,7 +283,6 @@ bool AStylePlugin::FormatEditor( cbEditor *ed )
     const int pos = control->GetCurrentPos();
     int start = control->GetSelectionStart();
     int end = control->GetSelectionEnd();
-    wxString fromWord;
     if (start != end)
     {
         onlySelected = true;

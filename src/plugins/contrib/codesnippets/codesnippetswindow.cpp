@@ -328,7 +328,7 @@ void CodeSnippetsWindow::InitDlg()
 // ----------------------------------------------------------------------------
 {
     // Color which we're going to use as mask
-    wxColor maskColor(255, 0, 255);
+    // wxColor maskColor(255, 0, 255);
 
     wxBoxSizer* parentSizer = new wxBoxSizer(wxVERTICAL);
 

@@ -448,9 +448,6 @@ wxsImageListEditorDlg::~wxsImageListEditorDlg()
  */
 bool wxsImageListEditorDlg::Execute(wxString &inName, wxArrayString &aImageData)
 {
-    int         n;
-    wxString    ss;
-
     // need default sizes?
     if(aImageData.GetCount() < 2)
     {
@@ -474,7 +471,7 @@ bool wxsImageListEditorDlg::Execute(wxString &inName, wxArrayString &aImageData)
     UpdateEnabled();
 
     // show it
-    n = ShowModal();
+    int n = ShowModal();
 
     // save new data?
     if(n == wxID_OK){
@@ -783,7 +780,7 @@ void wxsImageListEditorDlg::PaintPreviewPanel(wxPaintEvent &event)
     int         ip, ix;
     wxPanel     *pnl;
     wxBitmap    bmp;
-    wxString    ss, tt;
+    wxString    ss;
     wxPaintDC   dc((wxWindow *) event.GetEventObject());
 
     // which panel?
@@ -981,7 +978,7 @@ void wxsImageListEditorDlg::OnPanel12Paint(cb_unused wxPaintEvent &event)
 {
     wxPaintDC   dc(Panel12);
     wxBitmap    bmp;
-    wxString    ss, tt;
+    wxString    ss;
 
     // a copy of the selected bitmap
     if ((m_PreviewSelect >= 0) &&
@@ -1153,7 +1150,6 @@ void wxsImageListEditorDlg::PaintPanel(wxPaintDC &aDC, wxPanel *aPanel, wxBitmap
     double      sw, sh;
     int         x, y;
     wxBitmap    bmp;
-    wxString    ss, tt;
 
     // nothing to do?
     if(aPanel == NULL){
@@ -1335,7 +1331,7 @@ void wxsImageListEditorDlg::ImageListToArray(wxImageList &inList, wxArrayString 
     int             i, j, k, n;
     wxBitmap        bmp;
     wxArrayString   aa;
-    wxString        ss, tt;
+    wxString        ss;
 
     // clear old junk
     outArray.Clear();
@@ -1378,7 +1374,7 @@ void wxsImageListEditorDlg::ArrayToImageList(wxArrayString &inArray, wxImageList
     long            ll;
     wxBitmap        bmp;
     wxArrayString   aa;
-    wxString        ss, tt;
+    wxString        ss;
 
     // get the size of the image list
     w = 16;
@@ -1479,7 +1475,7 @@ wxsItem     *wxsImageListEditorDlg::FindTool(wxsItem *inItem, wxString inName)
     wxsItemResData  *res;
     wxsTool         *tool;
     wxsTool         *found;
-    wxString        ss, tt;
+    wxString        ss;
 
     static wxsItem  *last_item;
 
