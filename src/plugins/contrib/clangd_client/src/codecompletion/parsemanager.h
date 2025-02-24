@@ -6,8 +6,8 @@
 #ifndef ParseManager_H
 #define ParseManager_H
 
-//#include <queue>
-#include <map>
+//unused #include <queue>
+//unused #include <map>
 #include <memory>
 #include <mutex>  //(Christo 2024/03/30)
 #include <unordered_map>
@@ -413,6 +413,17 @@ public:
     void SetHoverRequestIsActive(bool trueOrFalse)
         { m_HoverRequestIsActive = trueOrFalse;}
 
+    // Functions to stop clobbering global settings on project close (svn 13612 bkport)
+    // Set or return Project that changed "Global setting" in workspace
+    cbProject* GetOptsChangedByProject(){ return m_pOptsChangedProject;}
+    void SetOptsChangedByProject(cbProject* pProject){m_pOptsChangedProject = pProject;}
+    // Set or return Parser that changed "Global setting" in Single File workspace
+    ParserBase* GetOptsChangedByParser(){ return m_pOptsChangedParser;}
+    void SetOptsChangedByParser(ParserBase* pParserBase){m_pOptsChangedParser = pParserBase;}
+    Parser*     GetTempParser(){return m_TempParser;}
+    ParserBase* GetClosingParser(){return m_pClosingParser;}                        //(ph 2025/02/12)
+    void        SetClosingParser(ParserBase* pParser){m_pClosingParser = pParser;}  //(ph 2025/02/12)
+    std::unordered_map<cbProject*,ParserBase*>* GetActiveParsers();                 //(ph 2025/02/14)
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:
@@ -641,7 +652,7 @@ private:
      */
     ParserList               m_ParserList;
     /** a temp Parser object pointer used when there's no available parser */
-    Parser*                  m_NullParser = nullptr;
+    Parser*                  m_TempParser = nullptr;
     /** active Parser object pointer */
     Parser*                  m_ActiveParser;
     /** Proxy Parser object pointer used to parse non-project owned files*/
@@ -724,6 +735,16 @@ private:
 
     std::mutex m_diagnosticsCacheMutex;
     bool m_HoverRequestIsActive = false;
+    // data to stop clobbering global settings on project close (svn 13612 bkport)
+    //The latest project to change the .conf file
+    cbProject* m_pOptsChangedProject = nullptr;
+    //The latest parser to change the .conf file
+    ParserBase* m_pOptsChangedParser = nullptr;
+    // the currently closing parser
+    ParserBase* m_pClosingParser     = nullptr;
+
+    // copy of m_ParserList used in WriteOptions() (svn 13612 bkport)
+    std::unordered_map<cbProject*,ParserBase*> m_ActiveParserList;
 
 };
 

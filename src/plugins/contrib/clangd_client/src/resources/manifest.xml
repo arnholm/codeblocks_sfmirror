@@ -3,7 +3,7 @@
     <SdkVersion major="2" minor="0" release="0" />
     <Plugin name="clangd_client">
         <Value title="Clangd_Client" />
-        <Value version="1.2.126 24/05/13" />
+        <Value version="1.2.127 25/02/22" />
         <Value description="This plugin provides a symbols browser for your projects and code-completion inside the editor.
 Note: Only C/C++ language is supported by this plugin (currently)...
 See wiki at https://wiki.codeblocks.org/index.php/CB_Clangd_Client" />

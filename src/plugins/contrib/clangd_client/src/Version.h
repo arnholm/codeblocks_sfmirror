@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.131 25/02/19")
+#define VERSION wxT("1.2.132 25/02/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.132   2025/02/22 Backport svn 13612 (global settings clobbered) to clangd_client
 //1.2.131   2025/02/19 Apply Christo patch 1515
 //1.2.130   2024/10/03 Apply Christo patch 1503
 //1.2.129   2024/7/03 Apply Strunz patch 1489

@@ -248,6 +248,13 @@ void CCOptionsDlg::OnApply()
         activePageTitle = lb ? lb->GetPageText(pageID) : wxString();
     }
 
+    // Patch to avoid clobbering .conf data at project close //(svn 13612 bkport)
+    cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+     // Remember the project that changed the .conf data
+    m_ParseManager->SetOptsChangedByProject(pProject);
+    // Renember the Parser that changed the .conf data
+    m_ParseManager->SetOptsChangedByParser(&(m_ParseManager->GetParser())); //(ph 2025/02/07)
+
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
 
     // -----------------------------------------------------------------------

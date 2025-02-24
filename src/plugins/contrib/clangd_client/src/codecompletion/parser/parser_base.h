@@ -12,10 +12,10 @@
 #include <wx/timer.h>
 #include <wx/treectrl.h>
 
-#include <set>
-#include <list>
+//unused #include <set>
+//unused #include <list>
 
-#include "configmanager.h"
+//unused #include "configmanager.h"
 
 #include "json.hpp" //nlohmann json lib
 #include "../IdleCallbackHandler.h"
@@ -330,8 +330,7 @@ public:
     /** read Parser options from configure file */
     virtual void            ReadOptions() {}
     /** write Parse options to configure file */
-    virtual void            WriteOptions() {}
-
+    virtual void            WriteOptions(bool classBrowserOnly=false) {} //(svn 13612 bkport)
     // make them virtual, so Parser class can overwrite them!
     virtual ParserOptions&  Options()             { return m_Options;        }
     virtual BrowserOptions& ClassBrowserOptions() { return m_BrowserOptions; }
