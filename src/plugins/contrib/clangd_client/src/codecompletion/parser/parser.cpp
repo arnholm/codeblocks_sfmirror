@@ -1567,7 +1567,7 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
                        "on the project title in the Workspace tree and selecting\n"
                        "'Reparse current project'.");
 
-        AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
+        AnnoyingDialog dlg(_("Global settings warning"), warningMsg, wxART_WARNING,
                            AnnoyingDialog::OK);
         dlg.ShowModal();
     }//endif size
