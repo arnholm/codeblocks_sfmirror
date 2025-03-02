@@ -3511,7 +3511,6 @@ static bool ProjectVirtualFolderDragged(cbProject* project, wxTreeCtrl* tree, wx
                 int posFrom = item.Find(fromFolderPath);
                 if (posFrom != wxNOT_FOUND)
                 {
-                    // wxString fromFolderStr = item.Mid(posFrom);
                     item = item.Left(posFrom);
                     if (!item.IsEmpty())
                         newFolders.Add(item);
