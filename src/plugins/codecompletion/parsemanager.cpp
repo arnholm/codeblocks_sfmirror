@@ -2784,10 +2784,10 @@ bool ParseManager::RemoveProjectFromParser(cbProject* project)
     return true;
 }
 // ----------------------------------------------------------------------------
-std::unordered_map<cbProject*,ParserBase*> * ParseManager::GetActiveParsers()  //(ph 2025/02/14)
+std::unordered_map<cbProject*,ParserBase*> * ParseManager::GetActiveParsers() //(ph 2025/02/14)
 // ----------------------------------------------------------------------------
 {
- // First, clear the contents of m_ActiveParserList
+    // First, clear the contents of m_ActiveParserList
     m_ActiveParserList.clear();
 
     // Then, copy the contents of m_ParserList to m_ActiveParserList

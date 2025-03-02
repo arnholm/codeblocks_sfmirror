@@ -928,15 +928,16 @@ void Parser::WriteOptions(bool classBrowserOnly)
      //https://forums.codeblocks.org/index.php/topic,25955 Hiccups while typing
 
     // Assemble status to determine if a Parser or Project changed a global setting.
-    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
-    ParseManager*   pParseMgr = (ParseManager*)m_Parent;
-    ParserBase*     pTempParser = pParseMgr->GetTempParser();
+    ProjectManager* pPrjMgr        = Manager::Get()->GetProjectManager();
+    ParseManager*   pParseMgr      = (ParseManager*)m_Parent;
+    ParserBase*     pTempParser    = pParseMgr->GetTempParser();
     ParserBase*     pClosingParser = pParseMgr->GetClosingParser(); //see ParseManger::DeleteParser()
     ParserBase*     pCurrentParser = &(pParseMgr->GetParser());     //aka: m_parser
 
     bool isClosingParser  = pClosingParser != nullptr;
     bool isClosingProject = pPrjMgr->IsClosingProject(); wxUnusedVar(isClosingProject);
     bool isTempParser     = pTempParser == pCurrentParser;
+
     bool globalOptionChanged = pParseMgr->GetOptsChangedByParser() or pParseMgr->GetOptsChangedByProject();
 
     // **Debugging**
@@ -952,14 +953,16 @@ void Parser::WriteOptions(bool classBrowserOnly)
 
     // Closing parsers are not allowed to write to CB globals.
     //  CB Globals were already written when when user changed the setting.
-    if (isClosingParser) allowGlobalUpdate = false;
+    if (isClosingParser)
+        allowGlobalUpdate = false;
 
     // If no changes to the CB globals, no need to write
     if (not globalOptionChanged)
         allowGlobalUpdate = false; // no global settings have changed
 
     // Don't write CB globals if this is for ClassBrowser options only. //(ph 2025/02/13)
-    if (classBrowserOnly) allowGlobalUpdate = false;
+    if (classBrowserOnly)
+        allowGlobalUpdate = false;
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
 
@@ -1011,8 +1014,7 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
 // ----------------------------------------------------------------------------
 {
     // Tell the user that global changes are not applied until projects are reparsed.
-
-    ParseManager*   pParseMgr = (ParseManager*)m_Parent;
+    ParseManager* pParseMgr = (ParseManager*)m_Parent;
 
     // Get number of active parsers (from m_ParserList)
     std::unordered_map<cbProject*,ParserBase*>* pActiveParsers = pParseMgr->GetActiveParsers();
