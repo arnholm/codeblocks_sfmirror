@@ -18,15 +18,14 @@
 */
 
 #include "wxsVector.h"
+#include "wxwidgets/wxsflags.h"
 #include <wxwidgets/wxsitemresdata.h>
 
 //------------------------------------------------------------------------------
 
 namespace
 {
-
 // Loading images from xpm files
-
     #include "images/vector16.xpm"
     #include "images/vector32.xpm"
 
@@ -46,7 +45,6 @@ namespace
         wxBitmap(vector16_xpm),         // 16x16 bitmap
         false);                         // We do not allow this item inside XRC files
 
-
     WXS_ST_BEGIN(wxsVectorStyles,_T(""))
         WXS_ST_CATEGORY("mpVector")
         WXS_ST(wxST_NO_AUTORESIZE)
@@ -58,7 +56,6 @@ namespace
 
     WXS_EV_BEGIN(wxsVectorEvents)
     WXS_EV_END()
-
 }
 
 //------------------------------------------------------------------------------
@@ -82,7 +79,6 @@ wxsVector::wxsVector(wxsItemResData* Data):
     mXYData.Add(_T("! Blank lines and lines starting with \"!\" will be ignored."));
     mXYData.Add(_T("! All white-space will be ignored."));
     mXYData.Add(_T(""));
-
 }
 
 //------------------------------------------------------------------------------
@@ -91,21 +87,20 @@ wxsVector::wxsVector(wxsItemResData* Data):
 
 void wxsVector::OnBuildCreatingCode()
 {
-    int         i, n;
-    wxString    vname;
-    wxString    pname;
-    wxString    cname;
-    wxString    fname;
-    wxString    xname;
-    wxString    yname;
-    wxString    dtext;
+    int      i, n;
+    wxString vname;
+    wxString pname;
+    wxString cname;
+    wxString fname;
+    wxString xname;
+    wxString yname;
+    wxString dtext;
+    wxString align;
 
 // we only know C++ language
-
     if (GetLanguage() != wxsCPP) wxsCodeMarks::Unknown(_T("wxsVector::OnBuildCreatingCode"),GetLanguage());
 
-// usefull names
-
+// useful names
     vname = GetVarName();
     pname = GetParent()->GetVarName();
     cname = vname + _("_PEN");
@@ -114,102 +109,98 @@ void wxsVector::OnBuildCreatingCode()
     yname = vname + _("_Y");
 
 // the header for mathplot
-
-    AddHeader(_T("<mathplot.h>"),GetInfo().ClassName,hfInPCH);
+    AddHeader(_T("<mathplot.h>"),GetInfo().ClassName, hfInPCH);
 
 // create the vector -- but not the setup code
-
-    Codef(_T("%s = new mpFXYVector(_(\"%s\"), %d);\n"), vname.wx_str(), mLabel.wx_str(), mAlign);
+    align = GetAlignString();
+    Codef(_T("%s = new mpFXYVector(_(\"%s\"), %s);\n"), vname.wx_str(), mLabel.wx_str(), align.wx_str());
 //  BuildSetupWindowCode();
 
 // assign a pen to the layer
-
     dtext = mPenColour.BuildCode(GetCoderContext());
-    if (dtext.Len() > 0) {
-        Codef(_T("wxPen   %s(%s);\n"), cname.wx_str(), dtext.wx_str());
+    if (dtext.Len() > 0)
+    {
+        Codef(_T("wxPen %s(%s);\n"), cname.wx_str(), dtext.wx_str());
         Codef(_T("%s->SetPen(%s);\n"), vname.wx_str(), cname.wx_str());
-    };
+    }
 
 // assign a font to the layer
-
     dtext = mPenFont.BuildFontCode(fname, GetCoderContext());
-    if (dtext.Len() > 0) {
+    if (dtext.Len() > 0)
+    {
         Codef(_T("%s"), dtext.wx_str());
         Codef(_T("%s->SetFont(%s);\n"), vname.wx_str(), fname.wx_str());
-    };
+    }
 
 // define the arrays
-
-    dtext = "std::vector<double>  " + xname + ";";
+    dtext = "std::vector<double> " + xname + ";";
     AddDeclaration(dtext);
-    dtext = "std::vector<double>  " + yname + ";";
+    dtext = "std::vector<double> " + yname + ";";
     AddDeclaration(dtext);
 
 // assign the data
-
     ParseXY();
     n = mXs.GetCount();
-    if (n > 0) {
-        for(i=0; i<n; i++) {
-            Codef(_T("%s.push_back(%s);   %s.push_back(%s);\n"), xname.wx_str(), mXs[i].wx_str(),
+    if (n > 0)
+    {
+        for (i=0; i<n; i++)
+        {
+            Codef(_T("%s.push_back(%s); %s.push_back(%s);\n"), xname.wx_str(), mXs[i].wx_str(),
                                                                  yname.wx_str(), mYs[i].wx_str());
-        };
-
+        }
         Codef(_T("%ASetData(%s, %s);\n"), xname.wx_str(), yname.wx_str());
-    };
+    }
 
 // draw as points or a continuous line
-
     Codef(_T("%ASetContinuity(%b);\n"), mContinuous);
 
 // add to parent window -- should be a mpWindow
-
-    if ((GetPropertiesFlags() & flHidden) && GetBaseProps()->m_Hidden) n = 0;        // do nothing
-    else Codef(_T("%s->AddLayer(%s);\n"), pname.wx_str(), vname.wx_str());
-
-
+    if ((GetPropertiesFlags() & flHidden) && GetBaseProps()->m_Hidden)
+        ; // do nothing
+    else
+        Codef(_T("%s->AddLayer(%s);\n"), pname.wx_str(), vname.wx_str());
 }
 
 //------------------------------------------------------------------------------
 // parse the mXYData into strings and doubles
 
-void    wxsVector::ParseXY(void) {
-int         i,n;
-int         j;
-double      d;
-wxString    s,t;
+void wxsVector::ParseXY(void)
+{
+    int      i,n;
+    int      j;
+    double   d;
+    wxString s,t;
 
 // clear old junk
-
     mXs.Clear();
     mYs.Clear();
     mXf.clear();
     mYf.clear();
 
 // get each string and do something with it
-
     n = mXYData.GetCount();
-    for(i=0; i<n; i++) {
+    for (i=0; i<n; i++)
+    {
         s = mXYData[i];
 
 // skip blank lines and "!" comments
-
         s.Trim(true);
         s.Trim(false);
         if (s.IsEmpty()) continue;
         if (s[0] == '!') continue;
 
 // get the first number
-
         j = s.Find(_T(","));
-        if (j != wxNOT_FOUND) {
+        if (j != wxNOT_FOUND)
+        {
             t = s.Left(j);
             s.Remove(0, j+1);
         }
-        else {
+        else
+        {
             t = s;
             s = _T("");
-        };
+        }
 
         t.Trim(true);
         t.Trim(false);
@@ -218,20 +209,19 @@ wxString    s,t;
         mXf.push_back(d);
 
 // the second number
-
         t = s;
         t.Trim(true);
         t.Trim(false);
         t.ToDouble(&d);
         mYs.Add(t);
         mYf.push_back(d);
-    };
+    }
 
 // there is a problem with mpFXYVector getting the count of items wrong,
 // so we need to dulicate the last item in each list again
-
     n = mXs.GetCount();
-    if (n > 0) {
+    if (n > 0)
+    {
         s = mXs[n-1];
         mXs.Add(s);
         s = mYs[n-1];
@@ -241,32 +231,30 @@ wxString    s,t;
         mXf.push_back(d);
         d = mYf[n-1];
         mYf.push_back(d);
-    };
+    }
 }
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsVector::OnBuildPreview(wxWindow* Parent, long Flags) {
-int             n;
-wxStaticText    *Preview;
-mpFXYVector     *vec;
-mpWindow        *mp;
-wxPen           pen(*wxBLACK_PEN);
-wxColour        cc;
-wxFont          ff;
-bool            hide;
+wxObject* wxsVector::OnBuildPreview(wxWindow* Parent, long Flags)
+{
+    int           n;
+    wxStaticText* Preview;
+    mpFXYVector*  vec;
+    mpWindow*     mp;
+    wxPen         pen(*wxBLACK_PEN);
+    wxColour      cc;
+    wxFont        ff;
+    bool          hide;
 
 // if parent is not an mpWindow, then exit out
-
-    if (! Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
+    if (!Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
     mp = (mpWindow *) Parent;
 
 // hide this vector
-
     hide = ((Flags & pfExact) && (GetPropertiesFlags() & flHidden) && GetBaseProps()->m_Hidden);
 
 // make the place-holder
-
     Preview = new wxStaticText(Parent, GetId(), mLabel, Pos(Parent), Size(Parent), (wxSUNKEN_BORDER|Style()));
     Preview->SetForegroundColour(wxColour(255,255,255));
     Preview->SetBackgroundColour(wxColour(0,0,128));
@@ -274,67 +262,53 @@ bool            hide;
     if (Flags & pfExact) Preview->Hide();
 
 // the actual vector
-
     vec = new mpFXYVector(mLabel, mAlign);
 
 // pen color
-
     cc = mPenColour.GetColour();
     if (cc.IsOk()) pen.SetColour(cc);
     vec->SetPen(pen);
 
 // text font
-
     ff = mPenFont.BuildFont();
     vec->SetFont(ff);
 
 // update the place-holder
-
     if (cc.IsOk()) Preview->SetBackgroundColour(cc);
     Preview->SetFont(ff);
 
 // fill in the data
-
     ParseXY();
     n = mXs.GetCount();
-    if (n > 0) {
-        vec->SetData(mXf, mYf);
-    };
+    if (n > 0) vec->SetData(mXf, mYf);
 
 // points or lines?
-
     vec->SetContinuity(mContinuous);
 
 // and add layer to parent
-
-    if (! hide) mp->AddLayer(vec);
+    if (!hide) mp->AddLayer(vec);
 
 // done
-
     return Preview;
 }
 
 //------------------------------------------------------------------------------
 // declare the var as a simple wxPanel
 
-void wxsVector::OnBuildDeclarationsCode() {
-
-    if (GetLanguage() == wxsCPP) {
-        AddDeclaration(_T("mpFXYVector   *") + GetVarName() + _T(";"));
-    }
-    else {
+void wxsVector::OnBuildDeclarationsCode()
+{
+    if (GetLanguage() == wxsCPP)
+        AddDeclaration(_T("mpFXYVector* ") + GetVarName() + _T(";"));
+    else
         wxsCodeMarks::Unknown(_T("wxsVector::OnBuildDeclarationsCode"),GetLanguage());
-    };
 }
-
-
-
 
 //------------------------------------------------------------------------------
 
-void wxsVector::OnEnumWidgetProperties(cb_unused long Flags) {
-static const long    AlignValues[] = {    mpALIGN_NE,       mpALIGN_NW,       mpALIGN_SW,       mpALIGN_SE,    0};
-static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mpALIGN_SW"), _T("mpALIGN_SE"),  0};
+void wxsVector::OnEnumWidgetProperties(cb_unused long Flags)
+{
+    static const long    AlignValues[] = {    mpALIGN_NE,       mpALIGN_NW,       mpALIGN_SW,       mpALIGN_SE,    0};
+    static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mpALIGN_SW"), _T("mpALIGN_SE"),  0};
 
     WXS_SHORT_STRING(wxsVector, mLabel,      _("Label Text"),      "mLabelText",  _("Label"), true);
     WXS_ENUM(        wxsVector, mAlign,      _("Label Alignment"), "mAlign",      AlignValues, AlignNames, mpALIGN_NE);
@@ -342,5 +316,20 @@ static const wxChar* AlignNames[]  = {_T("mpALIGN_NE"), _T("mpALIGN_NW"), _T("mp
     WXS_COLOUR(      wxsVector, mPenColour,  _("Pen Colour"),      "mPenColour");
     WXS_FONT(        wxsVector, mPenFont,    _("Pen Font"),        "mPenFont");
     WXS_ARRAYSTRING( wxsVector, mXYData,     _("X,Y Data"),        "mXYData",     "nums");
+}
 
+//------------------------------------------------------------------------------
+
+wxString wxsVector::GetAlignString()
+{
+    wxString AlignString = "mpALIGN_NE";
+    switch (mAlign)
+    {
+      case mpALIGN_NE:                             break;
+      case mpALIGN_NW: AlignString = "mpALIGN_NW"; break;
+      case mpALIGN_SW: AlignString = "mpALIGN_SW"; break;
+      case mpALIGN_SE: AlignString = "mpALIGN_SE"; break;
+      default:                                     break;
+    }
+    return AlignString;
 }

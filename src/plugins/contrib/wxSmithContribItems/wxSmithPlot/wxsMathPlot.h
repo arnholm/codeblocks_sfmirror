@@ -20,39 +20,36 @@
 #ifndef wxsMATHPLOT_H
 #define wxsMATHPLOT_H
 
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <time.h>
-#include    <cmath>
-#include    <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <cmath>
+#include <iostream>
 
-#include    <wx/settings.h>
-#include    <wx/utils.h>
-#include    <wx/string.h>
-#include    <wx/filename.h>
-
+#include <wx/settings.h>
+#include <wx/utils.h>
+#include <wx/string.h>
+#include <wx/filename.h>
 
 #include <wxwidgets/wxscontainer.h>
 #include <wxwidgets/wxsitemresdata.h>
 
-#include    <mathplot.h>
+#include <mathplot.h>
 
 class wxsMathPlot : public wxsContainer
 {
     public:
-
         wxsMathPlot(wxsItemResData* Data);
 
 
     protected:
-
         virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
-        virtual void OnBuildCreatingCode();
-        virtual void OnEnumContainerProperties(long Flags);
-        virtual bool OnCanAddChild(wxsItem* Item, bool ShowMessage);
+        virtual void      OnBuildCreatingCode();
+        virtual void      OnEnumContainerProperties(long Flags);
+        virtual bool      OnCanAddChild(wxsItem* Item, bool ShowMessage);
 
-        double      mXScale, mYScale;
-
+        double mXScale;
+        double mYScale;
 };
 
-#endif      // wxsMATHPLOT_H
+#endif // wxsMATHPLOT_H

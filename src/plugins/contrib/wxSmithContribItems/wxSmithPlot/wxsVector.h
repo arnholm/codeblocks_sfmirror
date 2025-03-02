@@ -20,42 +20,36 @@
 #ifndef WXSVECTOR_H
 #define WXSVECTOR_H
 
-#include    <iostream>
+#include <iostream>
 
-#include    <wx/stattext.h>
-#include    <wxwidgets/wxswidget.h>
-#include    <mathplot.h>
-
+#include <wx/stattext.h>
+#include <wxwidgets/wxswidget.h>
+#include <mathplot.h>
 
 class wxsVector: public wxsWidget
 {
     public:
-
         wxsVector(wxsItemResData* Data);
 
     private:
-
-        virtual void        OnBuildCreatingCode();
-        virtual wxObject*   OnBuildPreview(wxWindow* Parent, long Flags);
-        virtual void        OnBuildDeclarationsCode();
-        virtual void        OnEnumWidgetProperties(long Flags);
-
-                void        ParseXY(void);
-
-
+        virtual void      OnBuildCreatingCode();
+        virtual wxObject* OnBuildPreview(wxWindow* Parent, long Flags);
+        virtual void      OnBuildDeclarationsCode();
+        virtual void      OnEnumWidgetProperties(long Flags);
+                void      ParseXY(void);
+                wxString  GetAlignString();
 
         wxString            mLabel;
         int                 mAlign;
         bool                mContinuous;
-        wxsColourData       mPenColour;     // color to draw
-        wxsFontData         mPenFont;       // for drawing the text
+        wxsColourData       mPenColour;  // color to draw
+        wxsFontData         mPenFont;    // for drawing the text
         wxArrayString       mXYData;
 
-        wxArrayString       mXs;            // internal use; X data as a string
-        wxArrayString       mYs;            // Y data as a string
-        std::vector<double>  mXf;            // X data as a double value
-        std::vector<double>  mYf;            // Y data as a double
-
+        wxArrayString       mXs; // internal use; X data as a string
+        wxArrayString       mYs; // Y data as a string
+        std::vector<double> mXf; // X data as a double value
+        std::vector<double> mYf; // Y data as a double
 };
 
-#endif      // WXSVECTOR_H
+#endif // WXSVECTOR_H

@@ -20,30 +20,27 @@
 #ifndef WXSTEXT_H
 #define WXSTEXT_H
 
-#include    <iostream>
+#include <iostream>
 
-#include    <wx/stattext.h>
-#include    <wxwidgets/wxswidget.h>
-#include    <mathplot.h>
-
+#include <wx/stattext.h>
+#include <wxwidgets/wxswidget.h>
+#include <mathplot.h>
 
 class wxsText: public wxsWidget
 {
     public:
-
         wxsText(wxsItemResData* Data);
 
     private:
+        virtual void      OnBuildCreatingCode();
+        virtual wxObject* OnBuildPreview(wxWindow* Parent, long Flags);
+        virtual void      OnBuildDeclarationsCode();
+        virtual void      OnEnumWidgetProperties(long Flags);
 
-        virtual void        OnBuildCreatingCode();
-        virtual wxObject*   OnBuildPreview(wxWindow* Parent, long Flags);
-        virtual void        OnBuildDeclarationsCode();
-        virtual void        OnEnumWidgetProperties(long Flags);
-
-        wxString            mLabel;
-        wxString            mXpos, mYpos;
-        wxsColourData       mPenColour;     // color to draw
-        wxsFontData         mPenFont;       // for drawing the text
+        wxString      mLabel;
+        wxString      mXpos, mYpos;
+        wxsColourData mPenColour;   // color to draw
+        wxsFontData   mPenFont;     // for drawing the text
 };
 
-#endif      // WXSTEXT_H
+#endif // WXSTEXT_H

@@ -18,15 +18,14 @@
 */
 
 #include "wxsText.h"
+#include "wxwidgets/wxsflags.h"
 #include <wxwidgets/wxsitemresdata.h>
 
 //------------------------------------------------------------------------------
 
 namespace
 {
-
 // Loading images from xpm files
-
     #include "images/text16.xpm"
     #include "images/text32.xpm"
 
@@ -46,7 +45,6 @@ namespace
         wxBitmap(text16_xpm),         // 16x16 bitmap
         false);                         // We do not allow this item inside XRC files
 
-
     WXS_ST_BEGIN(wxsTextStyles,_T(""))
         WXS_ST_CATEGORY("mpText")
         WXS_ST(wxST_NO_AUTORESIZE)
@@ -58,7 +56,6 @@ namespace
 
     WXS_EV_BEGIN(wxsTextEvents)
     WXS_EV_END()
-
 }
 
 //------------------------------------------------------------------------------
@@ -81,81 +78,72 @@ wxsText::wxsText(wxsItemResData* Data):
 
 void wxsText::OnBuildCreatingCode()
 {
-    wxString    vname;
-    wxString    pname;
-    wxString    cname;
-    wxString    fname;
-    wxString    dtext;
+    wxString vname;
+    wxString pname;
+    wxString cname;
+    wxString fname;
+    wxString dtext;
 
 // we only know C++ language
-
     if (GetLanguage() != wxsCPP) wxsCodeMarks::Unknown(_T("wxsText::OnBuildCreatingCode"),GetLanguage());
 
-// usefull names
-
+// useful names
     vname = GetVarName();
     pname = GetParent()->GetVarName();
     cname = vname + _("_PEN");
     fname = vname + _("_FONT");
 
 // the header for mathplot
-
-    AddHeader(_T("<mathplot.h>"),GetInfo().ClassName,hfInPCH);
+    AddHeader(_T("<mathplot.h>"),GetInfo().ClassName, hfInPCH);
 
 // create the vector -- but not the setup code
-
     Codef(_T("%s = new mpText(%t, %s, %s);\n"), vname.wx_str(), mLabel.wx_str(), mXpos.wx_str(), mYpos.wx_str());
 //  BuildSetupWindowCode();
 
 // assign a pen to the layer
-
     dtext = mPenColour.BuildCode(GetCoderContext());
-    if (dtext.Len() > 0) {
-        Codef(_T("wxPen   %s(%s);\n"), cname.wx_str(), dtext.wx_str());
+    if (dtext.Len() > 0)
+    {
+        Codef(_T("wxPen %s(%s);\n"), cname.wx_str(), dtext.wx_str());
         Codef(_T("%s->SetPen(%s);\n"), vname.wx_str(), cname.wx_str());
-    };
+    }
 
 // assign a font to the layer
-
     dtext = mPenFont.BuildFontCode(fname, GetCoderContext());
-    if (dtext.Len() > 0) {
+    if (dtext.Len() > 0)
+    {
         Codef(_T("%s"), dtext.wx_str());
         Codef(_T("%s->SetFont(%s);\n"), vname.wx_str(), fname.wx_str());
-    };
+    }
 
 // add to parent window -- should be a mpWindow
-
     if ((GetPropertiesFlags() & flHidden) && GetBaseProps()->m_Hidden)
         ; // do nothing
     else
         Codef(_T("%s->AddLayer(%s);\n"), pname.wx_str(), vname.wx_str());
-
-
 }
 
 //------------------------------------------------------------------------------
 
-wxObject* wxsText::OnBuildPreview(wxWindow* Parent, long Flags) {
-wxStaticText    *Preview;
-mpText        *mk;
-mpWindow        *mp;
-wxPen           pen;
-wxColour        cc;
-wxFont          ff;
-bool            hide;
-double          xp, yp;
+wxObject* wxsText::OnBuildPreview(wxWindow* Parent, long Flags)
+{
+    wxStaticText* Preview;
+    mpText*       mk;
+    mpWindow*     mp;
+    wxPen         pen;
+    wxColour      cc;
+    wxFont        ff;
+    bool          hide;
+    double        xp, yp;
 
 // if parent is not an mpWindow, then exit out
-
-    if (! Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
+    if (!Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
     mp = (mpWindow *) Parent;
 
 // hide this marker
-
     hide = ((Flags & pfExact) && (GetPropertiesFlags() & flHidden) && GetBaseProps()->m_Hidden);
 
 // make the place-holder
-
     Preview = new wxStaticText(Parent, GetId(), mLabel, Pos(Parent), Size(Parent), (wxSUNKEN_BORDER|Style()));
     Preview->SetForegroundColour(wxColour(255,255,255));
     Preview->SetBackgroundColour(wxColour(0,128,0));
@@ -163,12 +151,10 @@ double          xp, yp;
     if (Flags & pfExact) Preview->Hide();
 
 // pen color
-
     cc = mPenColour.GetColour();
     if (cc.IsOk()) pen.SetColour(cc);
 
 // text font
-
     ff = mPenFont.BuildFont();
 
 // update the place-holder
@@ -177,51 +163,44 @@ double          xp, yp;
     Preview->SetFont(ff);
 
 // X & Y position
-
-    if (! mXpos.ToDouble(&xp)) {
-        xp = 0.0;
+    if (!mXpos.ToDouble(&xp))
+    {
+        xp    = 0.0;
         mXpos = "0.0";
-    };
-    if (! mYpos.ToDouble(&yp)) {
-        yp = 0.0;
+    }
+    if (!mYpos.ToDouble(&yp))
+    {
+        yp    = 0.0;
         mYpos = "0.0";
-    };
+    }
 
 // the actual marker
-
     mk = new mpText(mLabel, xp, yp);
     mk->SetPen(pen);
     mk->SetFont(ff);
 
 // and add layer to parent
-
-    if (! hide) mp->AddLayer(mk);
+    if (!hide) mp->AddLayer(mk);
 
 // done
-
     return Preview;
 }
 
 //------------------------------------------------------------------------------
 // declare the var as a simple wxPanel
 
-void wxsText::OnBuildDeclarationsCode() {
-
-    if (GetLanguage() == wxsCPP) {
-        AddDeclaration(_T("mpText   *") + GetVarName() + _T(";"));
-    }
-    else {
+void wxsText::OnBuildDeclarationsCode()
+{
+    if (GetLanguage() == wxsCPP)
+        AddDeclaration(_T("mpText* ") + GetVarName() + _T(";"));
+    else
         wxsCodeMarks::Unknown(_T("wxsText::OnBuildDeclarationsCode"),GetLanguage());
-    };
 }
-
-
-
 
 //------------------------------------------------------------------------------
 
-void wxsText::OnEnumWidgetProperties(cb_unused long Flags) {
-
+void wxsText::OnEnumWidgetProperties(cb_unused long Flags)
+{
     WXS_SHORT_STRING(wxsText, mLabel,     _("Marker Text"), "mLabelText",  "*",   true);
     WXS_SHORT_STRING(wxsText, mXpos,      _("X Position"),  "mXpos",       "0.0", true);
     WXS_SHORT_STRING(wxsText, mYpos,      _("Y Position"),  "mYpos",       "0.0", true);

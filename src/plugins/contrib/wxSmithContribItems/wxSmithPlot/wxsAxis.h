@@ -20,35 +20,33 @@
 * $HeadURL$
 */
 
-#ifndef WXSSTATICTEXT1_H
-#define WXSSTATICTEXT1_H
+#ifndef WXSAXIS_H
+#define WXSAXIS_H
 
-#include    <wxwidgets/wxswidget.h>
+#include <wxwidgets/wxswidget.h>
 
-#include    <wx/stattext.h>
-#include    <mathplot.h>
+#include <wx/stattext.h>
+#include <mathplot.h>
 
 /** \brief Class for wxsStaticText widget */
 class wxsAxis: public wxsWidget
 {
     public:
-
         wxsAxis(wxsItemResData* Data);
 
     private:
-
         virtual void      OnBuildCreatingCode();
         virtual wxObject* OnBuildPreview(wxWindow* Parent,long Flags);
         virtual void      OnBuildDeclarationsCode();
         virtual void      OnEnumWidgetProperties(long Flags);
+                wxString  GetAlignString();
 
-        long            mType;              // 0=X-axis, 1=Y-axis
-        wxString        mLabel;             // label the axis
-        long            mAlign;             // position the axis
-        bool            mTics;              // show tic marks
-        wxsColourData   mPenColour;         // color to draw
-        wxsFontData     mPenFont;           // for drawing the text
-
+        long          mType;      // 0=X-axis, 1=Y-axis
+        wxString      mLabel;     // label the axis
+        long          mAlign;     // position the axis
+        bool          mTics;      // show tic marks
+        wxsColourData mPenColour; // color to draw
+        wxsFontData   mPenFont;   // for drawing the text
 };
 
-#endif
+#endif // WXSAXIS_H
