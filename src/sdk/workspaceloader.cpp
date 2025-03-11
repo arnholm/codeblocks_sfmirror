@@ -112,13 +112,21 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
             wxFileName fname(projectFilename);
             wxFileName wfname(filename);
             fname.MakeAbsolute(wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
-            cbProject* pProject = GetpMan()->LoadProject(fname.GetFullPath(), false); // don't activate it
-            if (!pProject)
+            // => verify if file exists !!
+            if (::wxFileExists(fname.GetFullPath()))
             {
-                GetpMsg()->LogError(wxString::Format(_("Unable to open \"%s\" during opening workspace \"%s\" "),
-                                                       projectFilename.c_str(),
-                                                       filename.c_str()));
-                failedProjects++;
+                cbProject* pProject = GetpMan()->LoadProject(fname.GetFullPath(), false); // don't activate it
+                if (!pProject)
+                {
+                    GetpMsg()->LogError(wxString::Format(_("Unable to open \"%s\" during opening workspace \"%s\""),
+                                                           projectFilename, filename));
+                    failedProjects++;
+                }
+            }
+            else
+            {
+                GetpMsg()->LogError(wxString::Format(_("The file \"%s\" no longer exists during opening workspace \"%s\""),
+                                                       projectFilename, filename));
             }
         }
         proj = proj->NextSiblingElement("Project");
