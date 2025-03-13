@@ -28,7 +28,7 @@ TIP: you can add $(keyword) in any place of the path to the help file, URL or li
 The configuration dialog for this plugin can be found clicking on Settings -> Environment (Help files)." />
         <Value author="Bourricot | Ceniza (maintainer)" />
         <Value authorEmail="ceniza666@gmail.com" />
-        <Value authorWebsite="www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Codeblocks dev team!
 Bourricot for the initial version
 KDE dev team for the man2html code" />

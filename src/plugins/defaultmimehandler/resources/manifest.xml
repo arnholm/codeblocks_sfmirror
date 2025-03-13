@@ -9,7 +9,7 @@
 If you disable it, some file types will not be opened in Code::Blocks" />
         <Value author="Yiannis An. Mandravellos" />
         <Value authorEmail="info@codeblocks.org" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="" />
         <Value license="GPL" />
     </Plugin>

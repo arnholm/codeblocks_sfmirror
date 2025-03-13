@@ -7,7 +7,7 @@
         <Value description="Saves your work in regular intervals" />
         <Value author="Thomas Denk" />
         <Value authorEmail="" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="" />
         <Value license="GPL" />
     </Plugin>

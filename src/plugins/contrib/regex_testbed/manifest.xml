@@ -7,7 +7,7 @@
         <Value description="A testbed for regular expressions." />
         <Value author="Yiannis Mandravellos" />
         <Value authorEmail="mandrav@codeblocks.org" />
-        <Value authorWebsite="www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="" />
         <Value license="GPL" />
     </Plugin>

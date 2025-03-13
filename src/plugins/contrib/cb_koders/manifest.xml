@@ -7,7 +7,7 @@
         <Value description="This plugin queries the Koders webpage for keywords" />
         <Value author="MortenMacFly" />
         <Value authorEmail="mac-fly@gmx.net" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Yiannis Mandravellos, Thomas Denk and all the other C::B developers and contributers for a great piece of software." />
         <Value license="GPL" />
     </Plugin>

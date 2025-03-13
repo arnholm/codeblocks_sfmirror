@@ -7,7 +7,7 @@
         <Value description="Tool automatically searching for installed libraries and adding them to project" />
         <Value author="BYO" />
         <Value authorEmail="byo.spoon@gmail.com" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="" />
         <Value license="GPL" />
     </Plugin>

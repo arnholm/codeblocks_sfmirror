@@ -7,7 +7,7 @@
         <Value description="Plugin to export syntax highlighted source files to HTML, RTF, ODT or PDF." />
         <Value author="Ceniza" />
         <Value authorEmail="ceniza666@gmail.com" />
-        <Value authorWebsite="" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Code::Blocks Development Team
 wxPdfDocument Development Team" />
         <Value license="GPL" />

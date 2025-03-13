@@ -7,7 +7,7 @@
         <Value description="Installs selected DevPaks from the Internet" />
         <Value author="Yiannis Mandravellos" />
         <Value authorEmail="info@codeblocks.org" />
-        <Value authorWebsite="http://www.codeblocks.org/" />
+        <Value authorWebsite="https://www.codeblocks.org/" />
         <Value thanksTo="Dev-C++ community.
         Julian R Seward for libbzip2.
 

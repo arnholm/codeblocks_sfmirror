@@ -8,7 +8,7 @@
     <Value description="EditorConfig plugin for Code::Blocks" />
     <Value author="MortenMacFly" />
     <Value authorEmail="" />
-    <Value authorWebsite="http://www.codeblocks.org" />
+    <Value authorWebsite="https://www.codeblocks.org" />
     <Value thanksTo="Code::Blocks team" />
     <Value license="GPL" />
   </Plugin>

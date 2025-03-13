@@ -7,7 +7,7 @@
         <Value description="View open files list" />
         <Value author="Yiannis An. Mandravellos" />
         <Value authorEmail="info@codeblocks.org" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Rick" />
         <Value license="GPL" />
     </Plugin>

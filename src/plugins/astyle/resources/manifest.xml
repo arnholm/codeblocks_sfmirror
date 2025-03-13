@@ -10,9 +10,9 @@ based on a specific style.
 The configuration dialog for this plugin can be found clicking on Settings -> Editor (Source formatter)." />
         <Value author="Yiannis Mandravellos | Morten MacFly | Ceniza" />
         <Value authorEmail="info@codeblocks.org | mortenmacfly@codeblocks.org | ceniza666@gmail.com" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="AStyle team for the useful library.
-See http://astyle.sourceforge.net" />
+See https://astyle.sourceforge.net" />
         <Value license="GPL" />
     </Plugin>
 </CodeBlocks_plugin_manifest_file>

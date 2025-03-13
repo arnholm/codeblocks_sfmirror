@@ -7,7 +7,7 @@
         <Value description="A simple graphical interface to the GNU symbol table displayer (nm)." />
         <Value author="Martin Halle" />
         <Value authorEmail="codeblocks@martin-halle.de" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="The Code::Blocks Team for the greates IDE at all." />
         <Value license="GPL" />
     </Plugin>

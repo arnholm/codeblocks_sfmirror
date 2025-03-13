@@ -7,7 +7,7 @@
         <Value description="Mass manipulate project / target options in a workspace." />
         <Value author="Morten MacFly" />
         <Value authorEmail="mortenmacfly@codeblocks.org" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Code::Blocks Developers." />
         <Value license="GPL" />
     </Plugin>

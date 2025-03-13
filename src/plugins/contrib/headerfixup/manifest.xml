@@ -7,7 +7,7 @@
         <Value description="Automatically adds missing includes and/or forward declarations to C++ source files within a single project or all projects within a workspace." />
         <Value author="byo, MortenMacFly" />
         <Value authorEmail="byo.spoon@gmail.com, mac-fly@gmx.net" />
-        <Value authorWebsite="http://www.codeblocks.org" />
+        <Value authorWebsite="https://www.codeblocks.org" />
         <Value thanksTo="Code::Blocks team." />
         <Value license="GPL" />
     </Plugin>
