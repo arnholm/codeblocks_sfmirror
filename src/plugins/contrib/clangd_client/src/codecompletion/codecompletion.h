@@ -701,7 +701,7 @@ private:
     // This is set to false if ClgdCompletion ctor completes ok.
     // Forces CB restart when clangd_client first enabled
     bool m_CC_initDeferred = true;
-    // Set to true when the old CodeCompletion plugin is enabled
+    // Set to true when the legacy CodeCompletion plugin is enabled
     bool m_OldCC_enabled = true;
     // Initial condition of Clangd_Client at ctor (enabled/disabled);
     bool m_ctorClientStartupStatusEnabled = false;
@@ -720,7 +720,7 @@ private:
     bool IsOldCCEnabled()
     // ----------------------------------------------------------------------------
     {
-        // Determine if old CodeCompletion is enabled and its plugin lib exists.
+        // Determine if legacy CodeCompletion is enabled and its plugin lib exists.
         // Note: if the .conf has no info for the plugin CB reports it disabled but runs it anyway.
         wxString sep = wxFILE_SEP_PATH;
         bool bCCLibExists = false;

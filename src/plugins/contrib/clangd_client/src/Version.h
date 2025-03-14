@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.132 25/02/22")
+#define VERSION wxT("1.2.133 25/03/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.133   2025/03/14 Fix message boxes being hidden behind "Manage plugins" window
+//                     Change references of "old CodeCompletion" to "legacy CodeCompletion"
 //1.2.132   2025/02/22 Backport svn 13612 (global settings clobbered) to clangd_client
 //1.2.131   2025/02/19 Apply Christo patch 1515
 //1.2.130   2024/10/03 Apply Christo patch 1503
@@ -447,7 +449,7 @@ class AppVersion
 //          2022/07/20
 //          In OnPluginAttached(), if clangd_client has just been enabled and loaded,
 //              we need to invoke OnAppStartupDone() in order to initialize it.
-//          When the old CodeCompletion Dll is missing but Config says it's enabled
+//          When the legacy CodeCompletion Dll is missing but Config says it's enabled
 //              clangd_client should behave like CodeCompletion is disabled. Thanks AndrewCo.
 //          2022/07/19 Apply AndrewCo OnAppStartup() Ticket 53 to auto-detect clangd.
 //          2022/07/18 Commit rev 69 add missing file ClgdCCToken.h
@@ -542,7 +544,7 @@ class AppVersion
 //          Merge AndrewCo ccoptionsdlg.cpp wxFileDialog changes for the MAC
 //          2022/05/4 ph
 //          Change symbol "CodeCompletion" to "ClgdCompletion" to see if it solves the
-//              MacOS problem when both old CodeCompletion and Clangd_client are loaded.
+//              MacOS problem when both legacy CodeCompletion and Clangd_client are loaded.
 //              On Mac, it appears that the first occurance of "CodeCompletion" is being
 //              used for both plugins. Causes multiple load errors.
 //0.2.24
@@ -711,9 +713,9 @@ class AppVersion
 //              <Add after="cd src/resources && zip -rq9 ../../clangd_client.zip images && cd ../.." />
 //              Thanks Andrew.
 //          Remove usage/dependency on ccmanager's Settings/Editor/Code Completion checkbox.
-//          Beef up verification that old CodeCompletion plugin is loaded/missing/enabled/disabled
+//          Beef up verification that legacy CodeCompletion plugin is loaded/missing/enabled/disabled
 //              code in ctor and OnAttach() function. This solves the "enable clangd_client" crash
-//              when old CodeCompletion is already enabled or enabled after clangd_client is enabled.
+//              when legacy CodeCompletion is already enabled or enabled after clangd_client is enabled.
 //              Particles cannot possess the same space at the same time. And, it seems, that's also true
 //              of information.
 //0.2.10
@@ -735,7 +737,7 @@ class AppVersion
 //          Update project files to comment out the lines building clangd_client.cbplugin.
 //          Update repo clangd_client_wx31_64.cbp from work clangd_client_wx31_64.cbp changes.
 //          2022/01/15 ph
-//          Removed accidental use of older CodeCompletion image files.
+//          Removed accidental use of legacy CodeCompletion image files.
 //          Moved image files in clangd_client.zip to the first level.
 //          Reworked the repo upload files to accomodate the above two changes
 //          Remove .cbPlugin file. It borked my system three time. Your out!
@@ -758,10 +760,10 @@ class AppVersion
 //          Major doc update
 //0.2.04
 //          2022/01/10
-//          Removed old codecompletion xrc files.
+//          Removed legacy CodeCompletion xrc files.
 //          Fix compilation when -DCB_PRECOMP is specified (needd later when part of C::B truck)
 //          Sync version between this file and the plugin manifext.xml file.
-//          Remove old codecompletion XRC files as per ticket 13. Also renamed the project files.
+//          Remove legacy CodeCompletion XRC files as per ticket 13. Also renamed the project files.
 //          Sync version in manifest.xml and version.h (ticket 18)
 //          Change plugin name back to show as Clangd_Client (camel case) in the plugin manager (ticket 16)
 //          Add support for building "third" party plug to be installed via plugin manager (ticket 20)
