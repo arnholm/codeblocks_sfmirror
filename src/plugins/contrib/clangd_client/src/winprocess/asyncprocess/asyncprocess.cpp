@@ -1,17 +1,14 @@
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 //
 // copyright            : (C) 2014 Eran Ifrah
 // file name            : asyncprocess.cpp
 //
-// -------------------------------------------------------------------------
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation; either version 2 of the License, or
 //    (at your option) any later version.
 //
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 
 class wxEvtHandler;
 class IProcess;
@@ -39,7 +36,7 @@ class __AsyncCallback : public wxEvtHandler
 
 public:
     __AsyncCallback(std::function<void(const wxString&)> cb)
-        : m_cb(move(cb))
+        : m_cb(std::move(cb))
     {
         Bind(wxEVT_ASYNC_PROCESS_TERMINATED, &__AsyncCallback::OnProcessTerminated, this);
         Bind(wxEVT_ASYNC_PROCESS_OUTPUT, &__AsyncCallback::OnProcessOutput, this);
@@ -54,12 +51,6 @@ public:
     void OnProcessOutput(wxThreadEvent& event)
     // --------------------------------------------------------------
     {
-//        size_t new_len = m_output.length() + event.GetOutput().length();
-//        if(new_len > m_output.length()) {
-//            m_output.reserve(new_len);
-//            m_output << event.GetOutput();
-//        }
-        //asm("int3"); /*trap*/
         LogManager* pLogMgr = Manager::Get()->GetLogManager();
         wxString msg = wxString::Format("%s entered. Should be unused.", __FUNCTION__);
         pLogMgr->DebugLogError(msg);
@@ -69,14 +60,6 @@ public:
     void OnProcessTerminated(wxThreadEvent& event)
     // --------------------------------------------------------------
     {
-//        if(!event.GetOutput().empty()) {
-//            m_output << event.GetOutput();
-//        }
-//        // all the user callback
-//        m_cb(m_output);
-//        delete event.GetProcess();
-//        delete this; // we are no longer needed...
-        //asm("int3"); /*trap*/
         LogManager* pLogMgr = Manager::Get()->GetLogManager();
         wxString msg = wxString::Format("%s entered. Should be unused.", __FUNCTION__);
         pLogMgr->DebugLogError(msg);
@@ -125,95 +108,6 @@ static wxArrayString __WrapInShell(const wxArrayString& args, size_t flags)
     return command;
 }
 
-////static wxArrayString __AddSshCommand(const wxArrayString& args, const wxString& wd, const wxString& sshAccountName,
-////                                     clTempFile& tmpfile)
-////{
-////#ifndef __WXMSW__
-////    wxUnusedVar(tmpfile);
-////#endif
-////
-////    // we accept both SSHAccountInfo* & wxString* with the account name
-////    if(sshAccountName.empty()) {
-////        clERROR() << "CreateAsyncProcess: no ssh account name provided" << endl;
-////        return args;
-////    }
-////    wxArrayString a;
-////
-////    auto accountInfo = SSHAccountInfo::LoadAccount(sshAccountName);
-////    if(accountInfo.GetAccountName().empty()) {
-////        clERROR() << "CreateAsyncProcess: could not locate ssh account:" << sshAccountName << endl;
-////        return args;
-////    }
-////
-////    // determine the ssh client we have
-////    wxString ssh_client = "ssh";
-////#if 0
-////    // TODO: putty does not allow us to capture the output..., so disable it for now
-////    auto ssh_client = SSHAccountInfo::GetSSHClient();
-////    if(ssh_client.empty()) {
-////        ssh_client = "ssh";
-////    }
-////    bool is_putty = ssh_client.Contains("putty");
-////#endif
-////
-////    //----------------------------------------------------------
-////    // prepare the main command ("args") as a one liner string
-////    //----------------------------------------------------------
-////    wxArrayString* p_args = const_cast<wxArrayString*>(&args);
-////    wxArrayString tmpargs;
-////    if(!wd.empty()) {
-////        tmpargs.Add("cd");
-////        tmpargs.Add(wd);
-////        tmpargs.Add("&&");
-////        tmpargs.insert(tmpargs.end(), args.begin(), args.end());
-////        p_args = &tmpargs;
-////    }
-////    wxString oneLiner = wxJoin(*p_args, ' ', 0);
-////#ifdef __WXMSW__
-////    oneLiner.Prepend("\"").Append("\"");
-////#else
-////    oneLiner.Replace("\"", "\\\""); // escape any double quotes
-////#endif
-////
-////    //----------------------------------------------------------
-////    // build the executing command
-////    //----------------------------------------------------------
-////
-////    // the following are common to both ssh / putty clients
-////    a.Add(ssh_client);
-////    a.Add(accountInfo.GetUsername() + "@" + accountInfo.GetHost());
-////    a.Add("-t");                                // force tty
-////    a.Add("-p");                                // port
-////    a.Add(wxString() << accountInfo.GetPort()); // the port number
-////
-////    //----------------------------------------------------------
-////    // we support extra args in the environment variable
-////    // CL_SSH_OPTIONS
-////    //----------------------------------------------------------
-////    wxString sshEnv;
-////    if(::wxGetEnv("CL_SSH_OPTIONS", &sshEnv)) {
-////        wxArrayString sshOptionsArr = StringUtils::BuildArgv(sshEnv);
-////        a.insert(a.end(), sshOptionsArr.begin(), sshOptionsArr.end());
-////    }
-////
-////#if 0
-////    if(is_putty) {
-////        // putty supports password
-////        if(!accountInfo.GetPassword().empty()) {
-////            a.Add("-pw");
-////            a.Add(accountInfo.GetPassword());
-////        }
-////        // when using putty, we need to prepare a command file
-////        tmpfile.Write(oneLiner);
-////        a.Add("-m");
-////        a.Add(tmpfile.GetFullPath(true));
-////        a.Add("-t");
-////    }
-////#endif
-////    a.Add(oneLiner);
-////    return a;
-////}
-
 static void __FixArgs(wxArrayString& args)
 {
     for(wxString& arg : args) {
@@ -256,22 +150,16 @@ IProcess* CreateAsyncProcess(wxEvtHandler* parent, const wxArrayString& args, si
     clEnvironment e(env);
     wxArrayString c = args;
 
-////    clDEBUG1() << "1: CreateAsyncProcess called with:" << c << endl;
+    //    clDEBUG1() << "1: CreateAsyncProcess called with:" << c << endl;
 
     if(flags & IProcessWrapInShell) {
         // wrap the command in OS specific terminal
         c = __WrapInShell(c, flags);
     }
 
-////    clTempFile tmpfile; // needed for putty clients
-////    tmpfile.Persist();  // do not delete this file on destruct
-////    if(flags & IProcessCreateSSH) {
-////        c = __AddSshCommand(c, workingDir, sshAccountName, tmpfile);
-////    }
-
     // needed on linux where fork does not require the extra quoting
     __FixArgs(c);
-////    clDEBUG1() << "2: CreateAsyncProcess called with:" << c << endl;
+    //    clDEBUG1() << "2: CreateAsyncProcess called with:" << c << endl;
 
 #ifdef __WXMSW__
     return WinProcessImpl::Execute(parent, c, flags, workingDir);
@@ -295,7 +183,7 @@ void CreateAsyncProcessCB(const wxString& cmd, std::function<void(const wxString
 // --------------------------------------------------------------
 {
     clEnvironment e(env);
-    CreateAsyncProcess(new __AsyncCallback(move(cb)), cmd, flags, workingDir, env, wxEmptyString);
+    CreateAsyncProcess(new __AsyncCallback(std::move(cb)), cmd, flags, workingDir, env, wxEmptyString);
 }
 
 // --------------------------------------------------------------
@@ -355,9 +243,9 @@ void IProcess::SuspendAsyncReads()
 // --------------------------------------------------------------
 {
     if(m_thr) {
-////        clDEBUG1() << "Suspending process reader thread..." << endl;
+    //        clDEBUG1() << "Suspending process reader thread..." << endl;
         m_thr->Suspend();
-////        clDEBUG1() << "Suspending process reader thread...done" << endl;
+    //        clDEBUG1() << "Suspending process reader thread...done" << endl;
     }
 }
 
@@ -366,8 +254,8 @@ void IProcess::ResumeAsyncReads()
 // --------------------------------------------------------------
 {
     if(m_thr) {
-////        clDEBUG1() << "Resuming process reader thread..." << endl;
+    //        clDEBUG1() << "Resuming process reader thread..." << endl;
         m_thr->Resume();
-////        clDEBUG1() << "Resuming process reader thread..." << endl;
+    //        clDEBUG1() << "Resuming process reader thread..." << endl;
     }
 }

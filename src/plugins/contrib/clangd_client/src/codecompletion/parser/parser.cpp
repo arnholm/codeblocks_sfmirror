@@ -376,7 +376,7 @@ void Parser::AddBatchParse(const StringList& filenames)
     if (m_BatchTimer.IsRunning())
         m_BatchTimer.Stop();
 
-    //// CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
+    // CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
     // Nothing here that needs to be locked now
 
     if (m_BatchParseFiles.empty())
@@ -393,7 +393,7 @@ void Parser::AddBatchParse(const StringList& filenames)
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
     }
 
-    //// CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex) deprecated
+    // CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex) deprecated
 }
 // ----------------------------------------------------------------------------
 void Parser::ClearBatchParse()
@@ -402,7 +402,7 @@ void Parser::ClearBatchParse()
     if (m_BatchTimer.IsRunning())
         m_BatchTimer.Stop();
 
-    //// CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
+    // CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
     // Nothing here that needs to be locked now
 
     if (m_BatchParseFiles.empty())
@@ -412,7 +412,7 @@ void Parser::ClearBatchParse()
 
     m_ParserState = ParserCommon::ptUndefined;
 
-    //// CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex) deprecated
+    // CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex) deprecated
 }
 
 // ----------------------------------------------------------------------------
@@ -768,9 +768,9 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
     return;
 }
 // ** Debugging routine to print json contents **
-//// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //void Parser::LSP_WalkTextDocumentSymbolResponse(json& jref, wxString& filename, size_t level)
-//// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //{
 //    size_t indentLevel = level?level:1;
 //    LogManager* pLogMgr = Manager::Get()->GetLogManager();
@@ -1567,7 +1567,7 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
                        "on the project title in the Workspace tree and selecting\n"
                        "'Reparse current project'.");
 
-        AnnoyingDialog dlg(_("Global settings warning"), warningMsg, wxART_WARNING,
+        AnnoyingDialog dlg(_("Global settings warning"), _(warningMsg), wxART_WARNING,
                            AnnoyingDialog::OK);
         dlg.ShowModal();
     }//endif size
@@ -2487,11 +2487,6 @@ void Parser::OnLSP_DeclDefResponse(wxCommandEvent& event)
             int linenum  = resultObj["range"]["start"]["line"].get<int>();;
             int charPosn = resultObj["range"]["start"]["character"].get<int>();
 
-            // jump over 'file://' prefix
-////            if (platform::windows) filenameStr = filenameStr.Mid(8); else filenameStr = filenameStr.Mid(6);
-////            filenameStr.Replace("%3A", ":");
-////            if (platform::windows)
-////                filenameStr.Replace("/", "\\");
             filenameStr = fileUtils.FilePathFromURI(filenameStr);
             EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
 
@@ -3004,7 +2999,7 @@ void Parser::OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event)
         wxString contentsValue = GetwxUTF8Str(contents.at("value").get<std::string>());
 
         //#if wxCHECK_VERSION(3,1,5) //3.1.5 or higher
-        //// wx3.0 cannot produce the utf8 string
+        // wx3.0 cannot produce the utf8 string
         //wxString badBytes =  "\xE2\x86\x92" ; //Wierd chars in hover results
         //contentsValue.Replace(badBytes, "Type:"); // asserts on wx3.0
         //#endif
@@ -3082,7 +3077,7 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
         hoverString.Replace("\n\n", "\n"); //remove double newlines
         wxArrayString vHoverInfo = GetArrayFromString(hoverString, "\n");
 
-        //// **Debugging** show incoming data
+        // **Debugging** show incoming data
         //{
         //    #warning comment out this **Debugging**
         //     LogManager* pLogMgr = Manager::Get()->GetLogManager();
@@ -3150,7 +3145,7 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
             }
         }//endfor vHoverInfo
 
-        //// **Debugging** show what is going to be passed to ccManager
+        // **Debugging** show what is going to be passed to ccManager
         //#warning comment out this **Debugging**
         //if (v_HoverTokens.size())
         //{

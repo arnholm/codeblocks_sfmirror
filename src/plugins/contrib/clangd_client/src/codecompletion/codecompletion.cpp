@@ -653,7 +653,6 @@ void ClgdCompletion::OnAttach()
                 GetParseManager()->FindEventHandler(this)->SetEvtHandlerEnabled(false);
         }
         pInfo->version = appVersion.GetVersion().BeforeFirst(' ') + " Inactive";
-        ////m_IsAttached = false; Causes asserts when re-enabled
         return;
     }//endif Old CC is running
 
@@ -1126,21 +1125,6 @@ void ClgdCompletion::OnWindowActivated(wxActivateEvent& event) //on Window activ
 {
     event.Skip();
     if (m_CC_initDeferred) return;
-
-    // Only works for the main loop. Does not show activated dialogs
-
-    ////wxWindow* activatedWindow;
-    ////int       activatedID;
-    //////Reason    activatedReason; only for MSW
-    ////if (event.GetActive())
-    ////{
-    ////    wxWindow* activatedWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
-    ////    wxString winTitle = activatedWindow->GetLabel();
-    ////    int       activatedID = event.GetId();
-    ////    if (winTitle == "Manage plugins") asm("int3"); /*trap*/
-    ////    Manager::Get()->GetLogManager()->DebugLog(winTitle);
-    ////    //Reason    activatedReason = event.GetReason(); Ony works for MSW
-    ////}
  }
 // --------------------------------------------------------------
 void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
@@ -1296,8 +1280,6 @@ void ClgdCompletion::OnCompilerMenuSelected(wxCommandEvent& event)
 void ClgdCompletion::OnCompilerStarted(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
-    ////If this is a idCompileMenuRun only, do not set compiler is running
-    //// else we'll hang before nightly rev 12975 fix
     //#warning Developer should remove the line below when using CB rev 12975 and above.
     //if (ns_CompilerEventId == XRCID("idCompilerMenuRun")) return;
     // Above code remove. No longer necessary after Nightly 221022
@@ -1532,51 +1514,6 @@ static int CalcStcFontSize(cbStyledTextCtrl *stc)
     int fontSize;
     stc->GetTextExtent(wxT("A"), nullptr, &fontSize, nullptr, nullptr, &defaultFont);
     return fontSize;
-}
-// ----------------------------------------------------------------------------
-// UNUSED for clangd at present (2021/10/14) but may be useful in the future
-void ClgdCompletion::DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEditor* ed, std::vector<CCToken>& tokens)
-// ----------------------------------------------------------------------------
-{
-    cbStyledTextCtrl* stc = ed->GetControl();
-    if (stc->GetLexer() != wxSCI_LEX_CPP)
-    {
-        const FileType fTp = FileTypeOf(ed->GetShortName());
-        if (   fTp != ftSource
-            && fTp != ftHeader
-            && fTp != ftTemplateSource
-            && fTp != ftResource )
-        {
-            return; // not C/C++
-        }
-    }
-    const wxString text = stc->GetTextRange(tknStart, tknEnd);
-
-    wxStringVec macros;
-    macros.push_back(wxT("define"));
-    macros.push_back(wxT("elif"));
-    macros.push_back(wxT("elifdef"));
-    macros.push_back(wxT("elifndef"));
-    macros.push_back(wxT("else"));
-    macros.push_back(wxT("endif"));
-    macros.push_back(wxT("error"));
-    macros.push_back(wxT("if"));
-    macros.push_back(wxT("ifdef"));
-    macros.push_back(wxT("ifndef"));
-    macros.push_back(wxT("include"));
-    macros.push_back(wxT("line"));
-    macros.push_back(wxT("pragma"));
-    macros.push_back(wxT("undef"));
-    const wxString idxStr = F(wxT("\n%d"), PARSER_IMG_MACRO_DEF);
-    for (size_t i = 0; i < macros.size(); ++i)
-    {
-        if (text.IsEmpty() || macros[i][0] == text[0]) // ignore tokens that start with a different letter
-            tokens.push_back(CCToken(wxNOT_FOUND, macros[i], PARSER_IMG_MACRO_DEF));
-    }
-    stc->ClearRegisteredImages();
-    const int fontSize = CalcStcFontSize(stc);
-    stc->RegisterImage(PARSER_IMG_MACRO_DEF,
-                       GetParseManager()->GetImageList(fontSize)->GetBitmap(PARSER_IMG_MACRO_DEF));
 }
 // ----------------------------------------------------------------------------
 std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int style, cbEditor* ed, int& argsPos)
@@ -3014,7 +2951,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
             //      to cause a background parse.
             wxString filename = pf->file.GetFullPath();
 
-            //// **Debugging** show status of parse pausing map
+            // **Debugging** show status of parse pausing map
             //wxArrayString pauseParsingReasons;
             //Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
             //if (pParser) pParser->GetArrayOfPauseParsingReasons(pauseParsingReasons);
@@ -3082,7 +3019,7 @@ void ClgdCompletion::OnSpecifiedFileReparse(wxCommandEvent& event)
             //      to cause a background parse.
             wxString filename = pf->file.GetFullPath();
 
-            //// **Debugging** show status of parse pausing map
+            // **Debugging** show status of parse pausing map
             //wxArrayString pauseParsingReasons;
             //Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
             //if (pParser) pParser->GetArrayOfPauseParsingReasons(pauseParsingReasons);

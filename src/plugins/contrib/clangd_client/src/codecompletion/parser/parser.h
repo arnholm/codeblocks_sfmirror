@@ -16,7 +16,7 @@
 #include <wx/timer.h>
 #include <wx/treectrl.h>
 
-////#include <cbthreadpool.h>
+//-unused- #include <cbthreadpool.h>
 #include <sdk_events.h>
 #include <cbplugin.h>
 #include <cbstyledtextctrl.h>

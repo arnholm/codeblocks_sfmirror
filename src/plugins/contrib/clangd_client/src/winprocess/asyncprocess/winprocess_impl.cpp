@@ -1,5 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 //
 // copyright            : (C) 2008 by Eran Ifrah
 // file name            : winprocess.cpp
@@ -10,8 +9,7 @@
 //    the Free Software Foundation; either version 2 of the License, or
 //    (at your option) any later version.
 //
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 
 #ifdef __WXMSW__
 #include "winprocess_impl.h"
@@ -94,7 +92,7 @@ template <typename T> bool WriteStdin(const T& buffer, HANDLE hStdin, HANDLE hPr
         if(!WriteFile(hStdin, buffer.c_str() + offset, bytesLeft, &dwWritten, NULL))
         {
             int errorCode = GetLastError();
-////            clERROR() << ">> WriteStdin: (WriteFile) error:" << errorCode;
+    //            clERROR() << ">> WriteStdin: (WriteFile) error:" << errorCode;
             wxUnusedVar(errorCode); // FIXME (ph#): implement clERROR etc
             return false;
         }
@@ -110,8 +108,8 @@ template <typename T> bool WriteStdin(const T& buffer, HANDLE hStdin, HANDLE hPr
     }
 
     if(retryCount >= max_retry_count) {
-////        clERROR() << "Failed to write to process after" << max_retry_count << "retries. Written"
-////                  << (buffer.length() - bytesLeft) << "/" << buffer.length() << "bytes" << endl;
+    //        clERROR() << "Failed to write to process after" << max_retry_count << "retries. Written"
+    //                  << (buffer.length() - bytesLeft) << "/" << buffer.length() << "bytes" << endl;
         return false;
     }
     return true;
@@ -160,7 +158,7 @@ public:
                 }
             }
         }
-////        clDEBUG1() << "Write thread going down";
+    //        clDEBUG1() << "Write thread going down";
     }
 
     void Write(const std::string& buffer) { m_outgoingQueue.Post(buffer); }
@@ -172,10 +170,10 @@ static wxString __JoinArray(const wxArrayString& args, size_t flags)
     if(flags & IProcessWrapInShell) {
         // CMD /C [command] ...
         // Make sure that the first command is wrapped with "" if it contains spaces
-////        clDEBUG1() << "==> __JoinArray called for" << args << endl;
-////        clDEBUG1() << "args[2] is:" << args[2] << endl;
+    //        clDEBUG1() << "==> __JoinArray called for" << args << endl;
+    //        clDEBUG1() << "args[2] is:" << args[2] << endl;
         if((args.size() > 3) && (!args[2].StartsWith("\"")) && (args[2].Contains(" "))) {
-////            clDEBUG() << "==> Fixing" << args << endl;
+    //            clDEBUG() << "==> Fixing" << args << endl;
             wxArrayString tmparr = args;
             wxString& firstCommand = tmparr[2];
             firstCommand.Prepend("\"").Append("\"");
@@ -208,7 +206,7 @@ IProcess* WinProcessImpl::Execute(wxEvtHandler* parent, const wxArrayString& arg
                                   const wxString& workingDirectory, IProcessCallback* cb)
 {
     wxString cmd = __JoinArray(args, flags);
-////    clDEBUG1() << "Windows process starting:" << cmd << endl;
+    //    clDEBUG1() << "Windows process starting:" << cmd << endl;
     return Execute(parent, cmd, flags, workingDirectory, cb);
 }
 
@@ -358,7 +356,7 @@ IProcess* WinProcessImpl::Execute(wxEvtHandler* parent, const wxString& cmd, siz
         siStartInfo.wShowWindow = SW_HIDE;
         creationFlags = CREATE_NEW_CONSOLE | CREATE_NEW_PROCESS_GROUP;
     }
-////    clDEBUG1() << "Running process:" << cmd << endl;
+    //    clDEBUG1() << "Running process:" << cmd << endl;
 
     BOOL ret = CreateProcess(NULL,
                              cmd.wchar_str(),   // shell line execution command

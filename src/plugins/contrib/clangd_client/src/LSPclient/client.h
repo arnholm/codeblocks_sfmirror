@@ -380,9 +380,6 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         // probably because they were copied when the project moved.
         std::vector<wxString> m_vProjectNeedsCleanup; //project .cbp full path names
 
-        // FIXME (ph#): This is no longer needed since clangd version 12
-        ////-int             m_LSP_CompileCommandsChangedTime = 0; //contains eon time-of-day in milliseconds
-
         wxArrayString   m_LSP_aIgnoredDiagnostics;
 
         //-std::map<cbEditor*,int> m_ParseStartMillsTODmap; //key:cbEditor* value: millisecs TOD time-of-eon
@@ -807,16 +804,6 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
 
     bool ClientProjectOwnsFile(cbEditor* pcbEd, bool notify=true);
     cbProject* GetProjectFromEditor(cbEditor* pcbEd);
-
-// No longer needed since clangd version 12
-////    int   GetCompileCommandsChangedTime()
-////        {return m_LSP_CompileCommandsChangedTime;}
-////    void  SetCompileCommandsChangedTime(bool trueOrFalse)
-////        {
-////            if (trueOrFalse)
-////                m_LSP_CompileCommandsChangedTime = GetNowMilliSeconds();
-////            else m_LSP_CompileCommandsChangedTime = 0;
-////        }
 
     // array of user designated log messages to ignore
     // ----------------------------------------------------------------------------

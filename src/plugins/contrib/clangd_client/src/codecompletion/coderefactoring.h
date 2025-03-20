@@ -30,7 +30,6 @@ public:
     CodeRefactoring(ParseManager* pParseManager);
     virtual ~CodeRefactoring();
 
-////    void FindReferences();
     void RenameSymbols();
     wxString GetSymbolUnderCursor();
 

@@ -1,5 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 //
 // copyright            : (C) 2008 by Eran Ifrah
 // file name            : fileutils.cpp
@@ -10,8 +9,7 @@
 //    the Free Software Foundation; either version 2 of the License, or
 //    (at your option) any later version.
 //
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 #include "fileutils.h"
 #include "StringUtils.h"
 #include "asyncprocess.h"
@@ -24,9 +22,9 @@
 #include "procutils.h"
 
 #include "wx/string.h"
-#include "wxStringHash.h"
+#include "wxStringHash.h" //used even if cland says otherwise
 
-#include <algorithm>
+#include <algorithm>    //used even if cland says otherwise
 #include <fstream>
 #include <map>
 #include <wx/ffile.h>
@@ -95,15 +93,6 @@ void FileUtils::OpenFileExplorer(const wxString& path)
     }
 }
 
-////void FileUtils::OpenTerminal(const wxString& path, const wxString& user_command, bool pause_when_exit)
-////{
-////    clConsoleBase::Ptr_t console = clConsoleBase::GetTerminal();
-////    console->SetCommand(user_command, "");
-////    console->SetWorkingDirectory(path);
-////    console->SetWaitWhenDone(pause_when_exit);
-////    console->Start();
-////}
-
 // ----------------------------------------------------------------------------
 bool FileUtils::WriteFileContent(const wxFileName& fn, const wxString& content, const wxMBConv& conv)
 // ----------------------------------------------------------------------------
@@ -169,7 +158,7 @@ bool FileUtils::ReadFileContentRaw(const wxFileName& fn, std::string& data)
     long bytes_read = fread(buffer.get(), 1, fsize, fp);
     if(bytes_read != fsize) {
         // failed to read
-////        clERROR() << "Failed to read file content:" << fn << "." << strerror(errno);
+    //        clERROR() << "Failed to read file content:" << fn << "." << strerror(errno);
         fclose(fp);
         return false;
     }
@@ -217,10 +206,10 @@ void FileUtils::OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxS
     wxUnusedVar(rc);
 
     command << "open -a " << appname << " /tmp/codelite-lldb-helper.sh";
-////    clDEBUG() << "Executing: " << command;
+    //    clDEBUG() << "Executing: " << command;
     long res = ::wxExecute(command);
     if(res == 0) {
-////        clWARNING() << "Failed to execute command:" << command;
+    //        clWARNING() << "Failed to execute command:" << command;
         return;
     }
 
@@ -243,14 +232,14 @@ void FileUtils::OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxS
         wxString psCommand;
         psCommand << "ps -A -o ppid,command";
         wxString psOutput = ProcUtils::SafeExecuteCommand(psCommand);
-////        clDEBUG() << "ps command output:\n" << psOutput;
+    //        clDEBUG() << "ps command output:\n" << psOutput;
         wxArrayString lines = ::wxStringTokenize(psOutput, "\n", wxTOKEN_STRTOK);
         for(size_t u = 0; u < lines.GetCount(); ++u) {
             wxString l = lines.Item(u);
             l.Trim().Trim(false);
             if(l.Contains("sleep") && l.Contains("12345")) {
                 // we got a match
-////                clDEBUG() << "Got a match!";
+    //                clDEBUG() << "Got a match!";
                 wxString ppidString = l.BeforeFirst(' ');
                 ppidString.ToCLong(&pid);
                 break;
@@ -258,27 +247,9 @@ void FileUtils::OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxS
         }
         break;
     }
-////    clDEBUG() << "PID is:" << pid;
-////    clDEBUG() << "TTY is:" << tty;
+    //    clDEBUG() << "PID is:" << pid;
+    //    clDEBUG() << "TTY is:" << tty;
 }
-
-////void FileUtils::OpenSSHTerminal(const wxString& sshClient, const wxString& connectString, const wxString& password,
-////                                int port)
-////{
-////    clConsoleBase::Ptr_t console = clConsoleBase::GetTerminal();
-////    wxString args;
-////#ifdef __WXMSW__
-////    args << "-P " << port << " " << connectString;
-////    if(!password.IsEmpty()) {
-////        args << " -pw " << password;
-////    }
-////    console->SetExecExtraFlags(wxEXEC_HIDE_CONSOLE);
-////#else
-////    args << "-p " << port << " " << connectString;
-////#endif
-////    console->SetCommand(sshClient, args);
-////    console->Start();
-////}
 
 // ----------------------------------------------------------------------------
 static void SplitMask(const wxString& maskString, wxArrayString& includeMask, wxArrayString& excludeMask)
@@ -513,7 +484,7 @@ size_t FileUtils::GetFileSize(const wxFileName& filename)
     if(::stat(cfile, &b) == 0) {
         return b.st_size;
     } else {
-////        clERROR() << "Failed to open file:" << file_name << "." << strerror(errno);
+    //        clERROR() << "Failed to open file:" << file_name << "." << strerror(errno);
         return 0;
     }
 }
@@ -540,7 +511,7 @@ wxString FileUtils::GetOSXTerminalCommand(const wxString& command, const wxStrin
         cmd << "cd " << EscapeString(workingDirectory) << " && ";
     }
     cmd << EscapeString(command) << "\"";
-////    clDEBUG() << "GetOSXTerminalCommand returned:" << cmd << clEndl;
+    //    clDEBUG() << "GetOSXTerminalCommand returned:" << cmd << clEndl;
     return cmd;
 }
 
@@ -622,7 +593,7 @@ size_t FileUtils::SplitWords(const wxString& str, wxStringSet_t& outputSet, bool
 bool FileUtils::RemoveFile(const wxString& filename, const wxString& context)
 // ----------------------------------------------------------------------------
 {
-////    clDEBUG1() << "Deleting file:" << filename << "(" << context << ")";
+    //    clDEBUG1() << "Deleting file:" << filename << "(" << context << ")";
     wxLogNull NOLOG;
     return ::wxRemoveFile(filename);
 }
@@ -718,7 +689,7 @@ bool FileUtils::ReadBufferFromFile(const wxFileName& fn, wxString& data, size_t 
 {
     std::wifstream fin(fn.GetFullPath().ToStdString(), std::ios::binary);
     if(fin.bad()) {
-////        clERROR() << "Failed to open file:" << fn;
+    //        clERROR() << "Failed to open file:" << fn;
         return false;
     }
 
@@ -799,7 +770,7 @@ namespace
     {
         wxString path;
         if(!::wxGetEnv("PATH", &path)) {
-    ////        clWARNING() << "Could not read environment variable PATH" << clEndl;
+        //        clWARNING() << "Could not read environment variable PATH" << clEndl;
             return false;
         }
 
@@ -984,7 +955,7 @@ wxString FileUtils::FilePathFromURI(const wxString& uri)
     #endif
         rest = wxURI::Unescape(rest); //(ollydbg 2022/10/30) ticket #78
         rest = DecodeURI(rest);
-////        clDEBUG1() << "FilePathFromURI:" << uri << "->" << rest << endl;
+        //        clDEBUG1() << "FilePathFromURI:" << uri << "->" << rest << endl;
         return rest;
     } else {
         return uri;

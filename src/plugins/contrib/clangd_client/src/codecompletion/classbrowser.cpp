@@ -1034,15 +1034,15 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
     if (locker_result != wxMUTEX_NO_ERROR)
     {
         /// requeuing is deprecated for now.
-        // lock failed, do not block the UI thread, call back when idle
-        ////if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
-        ////    GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::ParseFunctionsAndFillToolbar);
+        //- lock failed, do not block the UI thread, call back when idle
+        //- if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
+        //-     GetIdleCallbackHandler()->QueueCallback(this, &ClgdCompletion::ParseFunctionsAndFillToolbar);
         return;
     }
     else /*lock succeeded*/
     {
-        ////s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
-        ////GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
+        //- s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
+        // -GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
     }
 
     TokenTree* tree = m_Parser->GetTokenTree();
@@ -1396,9 +1396,9 @@ CCTreeItem* ClassBrowser::GetItemPtr(wxTreeItemId ItemId)
     return static_cast <CCTreeItem*> (tcd->m_MirrorNode);
 }
 
-////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 // The methods below are called from the (classbrowserbuilderthread) worker thread using CallAfter()
-////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
 // ----------------------------------------------------------------------------

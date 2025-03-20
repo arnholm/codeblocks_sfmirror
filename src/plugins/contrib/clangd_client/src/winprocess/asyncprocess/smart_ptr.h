@@ -1,17 +1,14 @@
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 //
 // copyright            : (C) 2008 by Eran Ifrah
 // file name            : smart_ptr.h
 //
-// -------------------------------------------------------------------------
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation; either version 2 of the License, or
 //    (at your option) any later version.
 //
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 #ifndef CODELITE_SMART_PTR_H
 #define CODELITE_SMART_PTR_H
 #include <stdlib.h>

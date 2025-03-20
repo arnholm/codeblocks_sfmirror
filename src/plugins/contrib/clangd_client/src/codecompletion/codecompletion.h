@@ -276,15 +276,6 @@ private:
      */
     void OnCCDebugLogger(CodeBlocksThreadEvent& event);
 
-    /** fill the tokens with correct preprocessor directives, such as #i will prompt "if", "include"
-     * @param tknStart the start of the completed word
-     * @param tknEnd current caret location
-     * @param ed current active editor
-     * @param tokens results storing all the suggesting texts
-     */
-     // Currently unused, may be useful for the future 2023/04/21
-    void DoCodeCompletePreprocessor(int tknStart, int tknEnd, cbEditor* ed, std::vector<CCToken>& tokens);
-
     /** ContextMenu->Insert-> declaration/implementation */
     int DoClassMethodDeclImpl();
 

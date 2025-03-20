@@ -97,140 +97,6 @@ protected:
     /** Init cc search member variables */
     void Reset();
 
-//    /**@brief Artificial Intelligence Matching
-//    *
-//    * All functions that call this recursive function, should already have entered a critical section or
-//    * a mutex to protect the TokenTree.
-//    *
-//    * match (consume) the ParserComponent queue from left to right,
-//    * the output result becomes the search scope of the next match.
-//    * finally, give the results which match the last ParserComponent.
-//    * @param components input ParserComponent queue
-//    * @param parentTokenIdx, initial search scope of the left most component, this is the direct
-//    * parent of the current statement(expression)
-//    * @param fullMatch the result should be a full text match or prefix match
-//    * @return matching token number, it is the size of result
-//    */
-//    size_t FindAIMatches(TokenTree*                  tree,
-//                         std::queue<ParserComponent> components,
-//                         TokenIdxSet&                result,
-//                         int                         parentTokenIdx = -1,
-//                         bool                        isPrefix = false,
-//                         bool                        caseSensitive = false,
-//                         bool                        use_inheritance = true,
-//                         short int                   kindMask = 0xFFFF,
-//                         TokenIdxSet*                search_scope = 0);
-
-////    /** if the expression return the container tokens, which are the
-////     * parent of the expression.
-////     * @param[in] procResult input function index collection
-////     * @param[out] scopeResult filtered output function index collection
-////     * For example, if we have such code
-////     * @code
-////     * class A
-////     * {
-////     *      void f()
-////     *      {
-////     *         statement|<-----CC here
-////     *      };
-////     * }
-////     * @endcode
-////     * We try to locate the Tokens their scopes "Cover" the "statement"
-////     */
-////    void FindCurrentFunctionScope(TokenTree*         tree,
-////                                  const TokenIdxSet& procResult,
-////                                  TokenIdxSet&       scopeResult);
-
-////    /** remove all the container tokens in the token index set.
-////     * @param searchScope The Tokens we need to remove from the tree
-////     */
-////    void CleanupSearchScope(TokenTree*  tree,
-////                            TokenIdxSet* searchScope);
-////
-////    /** Returns the start and end of the call-tip highlight region.
-////     * For a function prototype "void MyNamespace::SomeClass::func(int a, float b)"
-////     * if we have a function call statement "obj->f(x,y)", when we hover on the "y", we should
-////     * high light the "float b" in the calltip
-////     * @param[in] calltip is the calltip string
-////     * @param[out] start the start index of the high light string
-////     * @param[out] end the end index of the high light string
-////     * @param[in] typedCommas e.g. "func(x, y)", in this case, we say we have typed one comma before
-////     * the hovered "y", so we know we need to high light the second parameter, which is "float b"
-////     */
-    void GetCallTipHighlight(const wxString& calltip,
-                             int*            start,
-                             int*            end,
-                             int             typedCommas);
-
-    /** Finds the position of the opening parenthesis marking the beginning of the params.
-     * See GetCallTipHighlight() for more details
-     */
-    int FindFunctionOpenParenthesis(const wxString& calltip);
-
-    /** helper function to split the statement
-     *
-     * @param line a statement string
-     * @param[out] tokenType the returned type of the string
-     * @param[out] tokenOperatorType if it is a function call token, specify which type of function call
-     * It contains a string on the following form:
-     * @code
-     *     char* mychar = SomeNamespace::m_SomeVar.SomeMeth
-     *                                                     ^----start from here
-     * @endcode
-     * Usually, the caret is located at the end of the line.
-     *
-     * first we locate the first non-space char starting from the *end*:
-     * @code
-     *     char* mychar = SomeNamespace::m_SomeVar.SomeMeth
-     *                    ^----stop here
-     * @endcode
-     * then we remove everything before it, so we get "SomeNamespace::m_SomeVar.SomeMeth"
-     *
-     * Now we cut the first component "SomeNamespace" and return it.
-     * The statement line becomes:
-     * @code
-     * m_SomeVar.SomeMeth
-     * @endcode
-     * so that if we call this function again with the (modified) line,
-     * we'll return "m_SomeVar" and modify line (again) to become:
-     * @code
-     *     SomeMeth
-     * @endcode
-     * and so on and so forth until we return an empty string...
-     * NOTE: if we find () args or [] arrays in our way, we skip them (done in GetNextCCToken)...
-     * todo: it looks like [] is not skipped, because we have to handle the operator[]
-     * also, if we see a aaa(), we always think it is a function call
-     */
-    wxString GetCCToken(wxString&        line,
-                        ParserTokenType& tokenType,
-                        OperatorType&    tokenOperatorType);
-
-    /** helper function to split the statement
-     *  @code
-     *   "    SomeNameSpace::SomeClass.SomeMethod|"
-     *        ^  should stop here  <------------ ^ start from here, go backward(right to left)
-     *   "    f(SomeNameSpace::SomeClass.SomeMethod|"
-     *          ^ should stop here
-     *  @endcode
-     *  so, brace level should be considered
-     */
-    unsigned int FindCCTokenStart(const wxString& line);
-
-    /** helper function to read the next CCToken, begin from the startAt, this point to a non-space
-     * character, and fetch the beginning identifier
-     * @param startAt this will be updated to the char after the identifier
-     * @param tokenOperatorType the type of the operator
-     * E.g.
-     * @code
-     *            SomeMethod()->
-     *            ^begin
-     * @endcode
-     * the returned wxString is "SomeMethod", the tokenOperatorType is pointer member access
-     */
-    wxString GetNextCCToken(const wxString& line,
-                            unsigned int&   startAt,
-                            OperatorType&   tokenOperatorType);
-
     /** Remove the last function's children, when doing codecompletion in a function body, the
      *  function body up to the caret position was parsed, and the local variables defined in
      *  the function were recorded as the function's children.
@@ -238,119 +104,6 @@ protected:
      *  function body, these temporary tokens should be removed.
      */
     void RemoveLastFunctionChildren(TokenTree* tree, int& lastFuncTokenIdx);
-
-    /** @brief break a statement to several ParserComponents, and store them in a queue.
-     * @param actual a statement string to be divided.
-     * @param components output variable containing the queue.
-     * @return number of ParserComponent
-     */
-    size_t BreakUpComponents(const wxString&              actual,
-                             std::queue<ParserComponent>& components);
-
-////    /** A statement(expression) is expressed by a ParserComponent queue
-////     *  We do a match from the left of the queue one by one.
-////     *
-////     *
-////     * Here is a simple description about the algorithm, suppose we have such code snippet
-////     * @code
-////     * namespace AAA
-////     * {
-////     *     class BBB
-////     *     {
-////     *     public:
-////     *         int m_aaa;
-////     *     }
-////     *     class CCC
-////     *     {
-////     *     public:
-////     *         BBB fun();
-////     *     }
-////     * }
-////     * AAA::CCC obj;
-////     * obj.fun().|-----we want to get code suggestion list here
-////     * @endcode
-////     * We first split the statement "obj.fun()." into 3 components:
-////     * component name
-////     * @code
-////     * 1, obj
-////     * 2, fun
-////     * 3, empty
-////     * @endcode
-////     * We do three loops here, each loop, we consume one component. Also each loop's result will
-////     * serve as the next loop's search scope.
-////     *
-////     * Loop 1
-////     * We first search the tree by the text "obj", we find a matched variable token, which has the
-////     * type string "AAA::CCC", then the text "AAA::CCC" is resolved to a class kind token "class CCC"
-////     * Loop 2
-////     * We search the tree by the text "fun". Here the search scope should be "CCC", it's the result
-////     * from the previous loop, so we find that there is a function kind token under "class CCC",
-////     * which is "function fun()" token. Then we need to see the return type of the fun() token,
-////     * which is the name "BBB". Then we do another text search for "BBB" in the tree, and find a
-////     * class kind token "class BBB"
-////     * Loop 3
-////     * Since the last search text is empty, we just return all the children of the "class BBB" token,
-////     * so finally, we give the child variable kind token "m_aaa", then the code suggestion should
-////     * prompt the string "m_aaa"
-////     *
-////     * @param tree the token tree pointer
-////     * @param components expression structure expressed in std::queue<ParserComponent>
-////     * @param searchScope search scope defined by TokenIdxSet
-////     * @param[out] the final result token index
-////     * @param caseSense case sensitive match
-////     * @param isPrefix match type( full match or prefix match)
-////     * @return result tokens count
-////     */
-////    size_t ResolveExpression(TokenTree*                  tree,
-////                             std::queue<ParserComponent> components,
-////                             const TokenIdxSet&          searchScope,
-////                             TokenIdxSet&                result,
-////                             bool                        caseSense = true,
-////                             bool                        isPrefix = false);
-
-////    /** used to solve the overloaded operator functions return type
-////     * @param tokenOperatorType overloaded operator type, could be [], (), ->
-////     * @param tokens input tokens set
-////     * @param tree Token tree pointer
-////     * @param searchScope search scope
-////     * @param result output result
-////     */
-////    void ResolveOperator(TokenTree*          tree,
-////                         const OperatorType& tokenOperatorType,
-////                         const TokenIdxSet&  tokens,
-////                         const TokenIdxSet&  searchScope,
-////                         TokenIdxSet&        result);
-
-////    /** Get the Type information of the searchText string
-////     * @param searchText input search text
-////     * @param searchScope search scope defined in TokenIdxSet format
-////     * @param result result token specify the Type of searchText
-////     */
-////    size_t ResolveActualType(TokenTree*         tree,
-////                             wxString           searchText,
-////                             const TokenIdxSet& searchScope,
-////                             TokenIdxSet&       result);
-
-////    /** resolve template map [formal parameter] to [actual parameter]
-////     * @param searchStr input Search String
-////     * @param actualtypeScope Token type(actual parameter)
-////     * @param initialScope search scope
-////     */
-////    void ResolveTemplateMap(TokenTree*         tree,
-////                            const wxString&    searchStr,
-////                            const TokenIdxSet& actualTypeScope,
-////                            TokenIdxSet&       initialScope);
-
-////    /** add template parameter, get the actual parameter from the formal parameter list
-////     * @param id template token id
-////     * @param actualTypeScope search scope
-////     * @param initialScope resolved result
-////     * @param tree Token tree pointer.
-////     */
-////    void AddTemplateAlias(TokenTree*         tree,
-////                          const int&         id,
-////                          const TokenIdxSet& actualTypeScope,
-////                          TokenIdxSet&       initialScope);
 
     /** Generate the matching results under the Parent Token index set
      *
@@ -371,30 +124,6 @@ protected:
                              bool            isPrefix = false,
                              short int       kindMask = 0xFFFF);
 
-    /** This function is just like the one above, except that it uses a single parent Token id,
-     *  not the parent id set in previous one.
-     *
-     * All functions that call this recursive function, should already have entered a critical section.
-     *
-     */
-    size_t GenerateResultSet(TokenTree*         tree,
-                             const wxString&    target,
-                             const TokenIdxSet& ptrParentID,
-                             TokenIdxSet&       result,
-                             bool               caseSens = true,
-                             bool               isPrefix = false,
-                             short int          kindMask = 0xFFFF);
-
-    /** Test if token with this id is allocator class.
-     *
-     * All functions that call this function, should already entered a critical section.
-     *
-     * @param tree TokenTree pointer
-     * @param id token idx
-     */
-    bool IsAllocator(TokenTree*   tree,
-                     const int&     id);
-
     /** Test if token with this id depends on allocator class.
      * Currently, this function only identifies STL containers dependent on allocator.
      *
@@ -405,15 +134,6 @@ protected:
      */
     bool DependsOnAllocator(TokenTree*    tree,
                             const int&    id);
-
-////    /** Collect search scopes, add the searchScopes's parent scope
-////     * @param searchScope input search scope
-////     * @param actualTypeScope returned search scope
-////     * @param tree TokenTree pointer
-////     */
-////    void CollectSearchScopes(const TokenIdxSet& searchScope,
-////                             TokenIdxSet&       actualTypeScope,
-////                             TokenTree*         tree);
 
     /** used to get the correct token index in current line, e.g.
      * @code
@@ -433,23 +153,6 @@ protected:
                                 const TokenIdxSet& tokens,
                                 size_t             curLine,
                                 const wxString&    file);
-
-////    /** call tips are tips when you are entering some functions, such as you have a class definition
-////     * @code
-////     *  class A {
-////     *  public:
-////     *      void A() {};
-////     *      void test() { };
-////     *  };
-////     *  when you are entering some text like
-////     *  A(|    or  objA.test(|
-////     * @endcode
-////     * then there will be a tip window show the function prototype of the function
-////     *
-////     */
-////    void ComputeCallTip(TokenTree*         tree,
-////                        const TokenIdxSet& tokens,
-////                        wxArrayString&     items);
 
     /** For ComputeCallTip()
      * No critical section needed in this recursive function!
@@ -722,10 +425,6 @@ private:
         }
         return false;
     }
-
-
-    /**  loop on the input Token index set (source), add all its public constructors to output Token index set (dest) */
-    void AddConstructors(TokenTree *tree, const TokenIdxSet& source, TokenIdxSet& dest);
 
     // for GenerateResultSet()
     bool MatchText(const wxString& text, const wxString& target, bool caseSens, bool isPrefix)

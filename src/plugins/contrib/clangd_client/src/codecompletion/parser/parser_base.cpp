@@ -182,43 +182,7 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool fo
     return ParserCommon::ftOther;
 }
 #endif //CC_PARSER_TEST
-////// ----------------------------------------------------------------------------
-////namespace Now defined in namespze LSP_DocumentSymbolKind
-////// ----------------------------------------------------------------------------
-////{
-////    // ----------------------------------------------------------------------------
-////    // Language Server symbol kind.
-////    // ----------------------------------------------------------------------------
-////    // defined in https://microsoft.github.io/language-server-protocol/specification
-////    enum LSP_DocumentSymbolKind {
-////        File = 1,
-////        Module = 2,
-////        Namespace = 3,
-////        Package = 4,
-////        Class = 5,
-////        Method = 6,
-////        Property = 7,
-////        Field = 8,
-////        Constructor = 9,
-////        Enum = 10,
-////        Interface = 11,
-////        Function = 12,
-////        Variable = 13,
-////        Constant = 14,
-////        String = 15,
-////        Number = 16,
-////        Boolean = 17,
-////        Array = 18,
-////        Object = 19,
-////        Key = 20,
-////        Null = 21,
-////        EnumMember = 22,
-////        Struct = 23,
-////        Event = 24,
-////        Operator = 25,
-////        TypeParameter = 26
-////    };
-////}
+
 // ----------------------------------------------------------------------------
 ParserBase::ParserBase()
 // ----------------------------------------------------------------------------
@@ -257,98 +221,6 @@ TokenTree* ParserBase::GetTokenTree() const
 {
     return m_TokenTree;
 }
-
-////bool ParserBase::ParseFile(const wxString& filename, bool isGlobal, bool /*locked*/)
-////{
-////    return Reparse(filename, !isGlobal);
-////}
-
-////// ----------------------------------------------------------------------------
-////bool ParserBase::Reparse(const wxString& file, cb_unused bool isLocal)
-////// ----------------------------------------------------------------------------
-////{
-////    cbThrow("LSP "+wxString(__FUNCTION__)+ " Shouldn't be here!");
-////    return true;
-////    #warning ParserBase::Reparse is castrated @ 211
-////
-////    FileLoader* loader = new FileLoader(file);
-////    (*loader)();
-////
-////    ParserThreadOptions opts;
-////
-////    opts.useBuffer             = false; // default
-////    opts.parentIdxOfBuffer     = -1;    // default
-////    opts.initLineOfBuffer      = -1;    // default
-////    opts.bufferSkipBlocks      = false; // default
-////    opts.bufferSkipOuterBlocks = false; // default
-////    opts.isTemp                = false; // default
-////
-////    opts.followLocalIncludes   = true;  // default
-////    opts.followGlobalIncludes  = true;  // default
-////    opts.wantPreprocessor      = true;  // default
-////    opts.parseComplexMacros    = true;  // default
-////    opts.platformCheck         = true;  // default
-////
-////    opts.handleFunctions       = true;  // default
-////    opts.handleVars            = true;  // default
-////    opts.handleClasses         = true;  // default
-////    opts.handleEnums           = true;  // default
-////    opts.handleTypedefs        = true;  // default
-////
-////    opts.storeDocumentation    = true;  // enable this option to enable cctest for doxygen doc reading
-////
-////    opts.loader                = loader;
-////
-////    // the file should first be put in the TokenTree, so the index is correct when initializing the
-////    // Tokenizer object inside the ParserThread::ParserThread()
-////
-////    m_TokenTree->ReserveFileForParsing(file, true);
-////
-////    ParserThread* pt = new ParserThread(this, file, true, opts, m_TokenTree);
-////    bool success = pt->Parse();
-////    delete pt;
-////
-////    return success;
-////}
-
-
-////bool ParserBase::ParseBuffer(const wxString& buffer,
-////                             bool isLocal,
-////                             bool bufferSkipBlocks,
-////                             bool isTemp,
-////                             const wxString& filename,
-////                             int parentIdx,
-////                             int initLine)
-////{
-////
-////    cbThrow( wxString(__FUNCTION__) + "Should not be here");
-////    //-ParserThreadOptions opts;
-////    LSP_SymbolsParserOptions opts;
-////
-////    opts.useBuffer            = true;
-////    opts.fileOfBuffer         = filename;
-////    opts.parentIdxOfBuffer    = parentIdx;
-////    opts.initLineOfBuffer     = initLine;
-////    opts.bufferSkipBlocks     = bufferSkipBlocks;
-////    opts.isTemp               = isTemp;
-////
-////    opts.followLocalIncludes  = true;
-////    opts.followGlobalIncludes = true;
-////    opts.wantPreprocessor     = m_Options.wantPreprocessor;
-////    opts.parseComplexMacros   = true;
-////    opts.platformCheck        = true;
-////
-////    opts.handleFunctions      = true;   // enabled to support function ptr in local block
-////
-////    opts.storeDocumentation   = m_Options.storeDocumentation;
-////
-////    ParserThread thread(this, buffer, isLocal, opts, m_TokenTree);
-////
-////    bool success = thread.Parse();
-////
-////    return success;
-////
-////}
 
 // ----------------------------------------------------------------------------
 void ParserBase::AddIncludeDir(const wxString& dir)
@@ -461,7 +333,7 @@ size_t ParserBase::FindTokensInFile(bool hasTokenTreeLock, const wxString& filen
     // Caller must obtain the TokenTree lock before calling this routine.
     cbAssert(hasTokenTreeLock and "Caller must own TokenTree lock");
 
-////    TRACE(_T("Parser::FindTokensInFile() : Searching for file '%s' in tokens tree..."), filename.wx_str());
+    //    TRACE(_T("Parser::FindTokensInFile() : Searching for file '%s' in tokens tree..."), filename.wx_str());
 
     TokenIdxSet tmpresult;
     if ( m_TokenTree->FindTokensInFile(filename, tmpresult, kindMask) )

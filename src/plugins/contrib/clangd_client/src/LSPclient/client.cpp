@@ -1931,8 +1931,6 @@ void ProcessLanguageClient::LSP_Initialize(cbProject* pProject)
 
             wxString filename = pcbEd->GetFilename();
             UpdateCompilationDatabase(pProject, filename);
-            // cancel the changed time so clangd doesnt get restarted;
-////            SetCompileCommandsChangedTime(false);
         }
     }//for
 
@@ -4021,15 +4019,6 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
             // update compile_commands.json file
             jsonFile << jdb; //write file json object
             jsonFile.close();
-
-            /// This code un-needed after clangd version 12
-            ////        // updates before LSP is initialized should not set the LSP restart timer.
-            ////        // File opens after initialization have compile_commands already set
-            ////        // so filecount will be zero.
-            ////        // Ergo, the restart timer is set only when a new file is opened that
-            ////        // was not previously added to compile_commands.json
-            ////            if (GetLSP_Initialized())
-            ////                SetCompileCommandsChangedTime(true);
         }
         //(christo 2024/06/26)
         if(m_compileCommandsPopulated)

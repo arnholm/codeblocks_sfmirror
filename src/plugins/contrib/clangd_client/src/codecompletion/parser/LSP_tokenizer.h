@@ -21,41 +21,6 @@ using json = nlohmann::json;
 //#include "cbeditor.h"
 #include <cbstyledtextctrl.h>
 
-// These comment out because they're define in and conflict with tokenizer.h
-///// Enum defines the skip state of the Tokenizer
-//enum TokenizerState
-//{
-//    /** read parentheses as a single token */
-//    tsNormal        = 0x0000,
-//    /** read parentheses as token lists, so it return several tokens like '(' ... ')' */
-//    tsRawExpression = 0x0001
-//};
-
-///// Enum categorizing C-preprocessor directives
-//enum PreprocessorType
-//{
-//    ptIf                = 0x0001,   //!< #if
-//    ptIfdef             = 0x0002,   //!< #ifdef
-//    ptIfndef            = 0x0003,   //!< #ifndef
-//    ptElif              = 0x0004,   //!< #elif
-//    ptElifdef           = 0x0005,   //!< #elifdef
-//    ptElifndef          = 0x0006,   //!< #elifndef
-//    ptElse              = 0x0007,   //!< #else
-//    ptEndif             = 0x0008,   //!< #endif
-//    ptDefine            = 0x0009,   //!< #define
-//    ptUndef             = 0x000A,   //!< #undef
-//    ptOthers            = 0x000B    //!< #include #warning and other #xxx
-//};
-
-///// Whether we need to handle C-preprocessor directives
-//struct TokenizerOptions
-//{
-//    /** do we expand the macros in #if like conditional preprocessor directives */
-//    bool wantPreprocessor;
-//    /** do we store the doxygen like document */
-//    bool storeDocumentation;
-//};
-
 /** @brief This is just a simple lexer class
  *
  * A Tokenizer does the lexical analysis on a buffer. The buffer is either a wxString loaded from a local source/header file

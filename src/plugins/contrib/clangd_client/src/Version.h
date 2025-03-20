@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.133 25/03/14")
+#define VERSION wxT("1.2.134 25/03/20")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,8 +50,10 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.134   2025/03/20 remove dead/unused code
 //1.2.133   2025/03/14 Fix message boxes being hidden behind "Manage plugins" window
 //                     Change references of "old CodeCompletion" to "legacy CodeCompletion"
+//                     Remove some legacy CodeCompletion dead code.
 //1.2.132   2025/02/22 Backport svn 13612 (global settings clobbered) to clangd_client
 //1.2.131   2025/02/19 Apply Christo patch 1515
 //1.2.130   2024/10/03 Apply Christo patch 1503

@@ -200,22 +200,6 @@ public:
       */
     bool Parse(json* pJson, cbProject* pProject);
 
-    /** Get the context "namespace XXX { ... }" directive. It is used to find the initial search scope
-      * before CC prompt a suggestion list.
-      * Need a critical section locker before call this function!
-      * @param buffer  wxString to be parsed.
-      * @param result  vector containing all the namespace names.
-      */
-    bool ParseBufferForNamespaces(const wxString& buffer, NameSpacesVec& result);
-
-    /** Get the context "using namespace XXX" directive. It is used to find the initial search scope
-      * before CC prompt a suggestion list.
-      * Need a critical section locker before call this function!
-      * @param buffer  wxString to be parsed.
-      * @param result the wxArrayString contains all the namespace names.
-      */
-    bool ParseBufferForUsingNamespace(const wxString& buffer, wxArrayString& result);
-
     wxString GetFilename() { return m_Buffer; } // used in TRACE for debug only
 
     wxString GetwxUTF8Str(const std::string stdString)
@@ -264,16 +248,6 @@ protected:
     /** skip the template argument*/
     void SkipAngleBraces();
 
-    /** handle include <XXXX> or include "XXXX" directive. This will internally add another
-      * parserThead object associate with the included file to LSP_SymbolsParser pool
-      */
-    void HandleIncludes();
-
-    /** handle the statement:
-      * namespace XXX {
-      */
-    void HandleNamespace();
-
     /** handle class declaration
       * @param ct specify class like type : struct or enum or class
       */
@@ -295,24 +269,11 @@ protected:
       */
     void HandleFunction(wxString& name, bool isOperator = false, bool isPointer = false);
 
-    /** parse for loop arguments:
-      * for(int X; ... ; ...)
-      */
-    void HandleForLoopArguments();
-
-    /** parse arguments like:
-      * if(int X = getNumber())
-      */
-    void HandleConditionalArguments();
-
     /** handle enum declaration */
     void HandleEnum();
 
     /** calculate the value assigned to enumerator */
     bool CalcEnumExpression(Token* tokenParent, long& result, wxString& peek);
-
-    /** handle typedef directive */
-    void HandleTypedef();
 
     /** eg: class ClassA{...} varA, varB, varC
       * This function will read the "varA, varB, varC"
@@ -332,9 +293,6 @@ protected:
      *  @return True, if token was handled, false, if an unexpected token was read.
      */
     bool ReadClsNames(wxString& ancestor);
-
-    /** read <> as a whole token */
-    wxString ReadAngleBrackets();
 
     /** add one token to the token tree
       * @param kind Token type, see @TokenKind Emun for more details
@@ -427,9 +385,6 @@ private:
       * @param templateArgs The removed template arguments
     */
     void RemoveTemplateArgs(const wxString& expr, wxString &expNoArgs, wxString &templateArgs);
-
-    /** Only for debug */
-    bool IsStillAlive(const wxString& funcInfo);
 
     /** change an anonymous(unnamed) token's name to a human readable name, the m_Str is expect to
      *  store the unnamed token name, for example, for parsing the code
@@ -558,14 +513,12 @@ private:
 //    std::vector<LSP_SemanticToken> semanticTokensVec;
     FileUtils fileUtils;
     private:
-    wxString DoHandleSemanticTokenFunction();
     wxString DoGetDocumentSymbolFunctionArgs(const wxString& detail);
     TokenKind ConvertDocSymbolKindToCCTokenKind(int docSymKind);
     // Find enclosure char such as () {} []
     // source string, src position of char to match(zero origin).
     // Returns zero origin index of paired char or -1.
     int FindOpeningEnclosureChar(const wxString source, int indexOfCharToMatch);
-    int FindClosingEnclosureChar(const wxString source, int indexOfCharToMatch);
     // Get the type from the clangd "detail" response entry containing type and arguments
     wxString GetFullTypeFromDetail(const wxString& detail);
 

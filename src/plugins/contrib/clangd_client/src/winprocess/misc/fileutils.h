@@ -1,5 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 //
 // copyright            : (C) 2008 by Eran Ifrah
 // file name            : fileutils.h
@@ -10,8 +9,7 @@
 //    the Free Software Foundation; either version 2 of the License, or
 //    (at your option) any later version.
 //
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
@@ -27,11 +25,11 @@
 #include <wx/log.h>
 #include <unordered_set>
 
-////// ----------------------------- usefull typedefs ------from macros.h------------
-////typedef std::unordered_map<wxString, bool> wxStringBoolMap_t;
-////typedef std::unordered_map<wxString, wxString> wxStringTable_t;
+// ----------------------------- usefull typedefs ------from macros.h------------
+//typedef std::unordered_map<wxString, bool> wxStringBoolMap_t;
+//typedef std::unordered_map<wxString, wxString> wxStringTable_t;
 typedef std::unordered_set<wxString> wxStringSet_t;
-////typedef wxStringTable_t wxStringMap_t; // aliases
+//typedef wxStringTable_t wxStringMap_t; // aliases
 
 #define clRemoveFile(filename) FileUtils::RemoveFile(filename, (wxString() << __FILE__ << ":" << __LINE__))
 
@@ -80,25 +78,10 @@ public:
      */
     static void OpenFileExplorerAndSelect(const wxFileName& filename);
 
-////    /**
-////     * @brief launch the OS default terminal at a given path
-////     */
-////    static void OpenTerminal(const wxString& path, const wxString& user_command = "", bool pause_when_exit = false);
-
     /**
      * @brief open the built-in terminal
      */
     static void OpenBuiltInTerminal(const wxString& wd, const wxString& user_command, bool pause_when_exit = false);
-
-////    /**
-////     * @brief open ssh terminal
-////     * @param sshClient ssh client to use (putty, ssh etc)
-////     * @param connectString e.g. eran@host
-////     * @param password the password
-////     * @param port ssh port
-////     */
-////    static void OpenSSHTerminal(const wxString& sshClient, const wxString& connectString, const wxString& password,
-////                                int port = 22);
 
     /**
      * @brief OSX only: open Terminal and return its TTY
