@@ -46,6 +46,7 @@
 #endif
 #include <functional>
 #include <memory>
+#include <cstdint>  // patch 1511 2025/03/23
 
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
