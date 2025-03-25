@@ -304,7 +304,7 @@ int EditorManager::GetEditorsCount()
 
 EditorBase* EditorManager::InternalGetEditorBase(int page)
 {
-    if (page >= 0 && page < (int)m_pNotebook->GetPageCount())
+    if ((page != wxNOT_FOUND) && (page < (int)m_pNotebook->GetPageCount()))
     {
         return static_cast<EditorBase*>(m_pNotebook->GetPage(page));
     }
@@ -472,7 +472,7 @@ void EditorManager::SetActiveEditor(EditorBase* ed)
     if (!ed)
         return;
     int page = FindPageFromEditor(ed);
-    if (page != -1)
+    if (page != wxNOT_FOUND)
     {
         // Previously the Activated event was only sent for built-in editors, which makes no sense
         int sel = m_pNotebook->GetSelection();
@@ -544,8 +544,8 @@ void EditorManager::RemoveCustomEditor(EditorBase* eb)
 
 void EditorManager::AddEditorBase(EditorBase* eb)
 {
-    int page = FindPageFromEditor(eb);
-    if (page == -1)
+    const int page = FindPageFromEditor(eb);
+    if (page == wxNOT_FOUND)
     {
         // use fullname as default, so tabs stay as small as possible
         wxFileName fn(eb->GetTitle());
@@ -555,8 +555,8 @@ void EditorManager::AddEditorBase(EditorBase* eb)
 
 void EditorManager::RemoveEditorBase(EditorBase* eb, cb_unused bool deleteObject)
 {
-    int page = FindPageFromEditor(eb);
-    if (page != -1 && !Manager::IsAppShuttingDown())
+    const int page = FindPageFromEditor(eb);
+    if ((page != wxNOT_FOUND) && !Manager::IsAppShuttingDown())
         m_pNotebook->RemovePage(page);
 
     //    if (deleteObject)
@@ -726,14 +726,14 @@ bool EditorManager::QueryClose(EditorBase *ed)
 int EditorManager::FindPageFromEditor(EditorBase* eb)
 {
     if (!m_pNotebook || !eb)
-        return -1;
+        return wxNOT_FOUND;
 
     for (size_t i = 0; i < m_pNotebook->GetPageCount(); ++i)
     {
         if (m_pNotebook->GetPage(i) == eb)
             return i;
     }
-    return -1;
+    return wxNOT_FOUND;
 }
 
 bool EditorManager::Close(const wxString& filename, bool dontsave)
@@ -745,8 +745,8 @@ bool EditorManager::Close(EditorBase* editor, bool dontsave)
 {
     if (editor)
     {
-        int idx = FindPageFromEditor(editor);
-        if (idx != -1)
+        const int idx = FindPageFromEditor(editor);
+        if (idx != wxNOT_FOUND)
         {
             if (!dontsave)
                 if (!QueryClose(editor))
@@ -1064,7 +1064,7 @@ void EditorManager::CheckForExternallyModifiedFiles()
 
 void EditorManager::MarkReadOnly(int page, bool readOnly)
 {
-    if (page > -1)
+    if (page != wxNOT_FOUND)
     {
         // The file is read-only and we don't have an image loaded - load it now.
         if (readOnly && !m_pData->m_ReadonlyIcon.IsOk())
@@ -1574,8 +1574,8 @@ void EditorManager::OnPageChanged(wxAuiNotebookEvent& event)
 
 void EditorManager::OnPageChanging(wxAuiNotebookEvent& event)
 {
-    int old_sel = event.GetOldSelection();
-    if (old_sel != -1 && static_cast<size_t>(old_sel) < m_pNotebook->GetPageCount())
+    const int old_sel = event.GetOldSelection();
+    if ((old_sel != wxNOT_FOUND) && static_cast<size_t>(old_sel) < m_pNotebook->GetPageCount())
     {
         EditorBase* eb = static_cast<EditorBase*>(m_pNotebook->GetPage(old_sel));
         CodeBlocksEvent evt(cbEVT_EDITOR_DEACTIVATED, -1, nullptr, eb);
@@ -1586,10 +1586,10 @@ void EditorManager::OnPageChanging(wxAuiNotebookEvent& event)
 
 void EditorManager::OnPageClose(wxAuiNotebookEvent& event)
 {
-    int sel = event.GetSelection();
+    const int sel = event.GetSelection();
     bool doClose = false;
     EditorBase* eb = nullptr;
-    if (sel != -1)
+    if (sel != wxNOT_FOUND)
     {
         // veto it in any case, so we can handle the page delete or remove ourselves
         event.Veto();
@@ -1632,7 +1632,7 @@ void EditorManager::OnPageClose(wxAuiNotebookEvent& event)
 
 void EditorManager::OnPageContextMenu(wxAuiNotebookEvent& event)
 {
-    if (event.GetSelection() == -1)
+    if (event.GetSelection() == wxNOT_FOUND)
         return;
 
     if (wxGetKeyState(WXK_CONTROL) && GetEditorsCount() > 1)
