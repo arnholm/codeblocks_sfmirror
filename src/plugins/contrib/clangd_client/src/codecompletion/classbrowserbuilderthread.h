@@ -12,7 +12,7 @@
 #include "cctreectrl.h"
 #include "parsemanager.h"
 #include "parser/token.h"
-#include "parser/parser.h"
+//-unused-#include "parser/parser.h"
 
 #define CRC32_CCITT       0x04C11DB7
 
@@ -73,7 +73,17 @@ class CCTreeItem
 public:
     CCTreeItem(CCTreeItem* parent, const wxString& text, int image = -1, int selImage = -1, CCTreeCtrlData* data = nullptr);
     virtual ~CCTreeItem();
-    void DeleteChildren() {while (m_firstChild) delete m_firstChild; m_hasChildren = false;}
+//- void DeleteChildren() {while (m_firstChild) delete m_firstChild; m_hasChildren = false;}
+    void DeleteChildren() //christo patch 1518
+    {
+        if (m_firstChild)
+        {
+            delete m_firstChild;
+            m_firstChild = nullptr;
+        }
+        m_hasChildren = false;
+    }
+
     static void Swap(CCTreeItem* a, CCTreeItem* b);
 
     CCTreeItem* m_parent;

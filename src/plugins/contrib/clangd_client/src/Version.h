@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.134 25/03/20")
+#define VERSION wxT("1.2.135 25/03/27")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.135   2025/03/27 Appy Christo patch 1518 some memory usage fixes
 //1.2.134   2025/03/20 remove dead/unused code
 //1.2.133   2025/03/14 Fix message boxes being hidden behind "Manage plugins" window
 //                     Change references of "old CodeCompletion" to "legacy CodeCompletion"

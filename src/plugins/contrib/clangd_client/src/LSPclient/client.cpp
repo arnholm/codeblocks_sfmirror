@@ -2032,11 +2032,13 @@ bool ProcessLanguageClient::LSP_DidOpen(cbEditor* pcbEd)
 
     wxString strText = pCntl->GetText();
     //-const char* pText = strText.mb_str();        //works //(2022/01/17)
-    const char* pText = strText.ToUTF8();           //ollydbg  220115 did not solve illegal utf8char
+    //const char* pText = strText.ToUTF8();         //ollydbg  220115 did not solve illegal utf8char
 
     writeClientLog(StdString_Format("<<< LSP_DidOpen:%s", docuri.c_str()) );
 
-    try { DidOpen(docuri, string_ref(pText, strText.Length()) ); }
+    //-try { DidOpen(docuri, string_ref(pText, strText.Length()) ); }
+    try { DidOpen(docuri, string_ref(strText.ToUTF8().data(), strText.Length()) ); } //christo 1518
+
     catch(std::exception &err)
     {
         //printf("read error -> %s\nread -> %s\n ", e.what(), read.c_str());
