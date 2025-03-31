@@ -1,7 +1,7 @@
 %global svnrev             @REVISION@
 
 Name:       codeblocks
-Version:	20.03.svn.%{svnrev}
+Version:	25.03
 Release:	1%{?dist}
 Summary:	An open source, cross platform, free C++ IDE
 License:    GPLv3+
@@ -341,8 +341,10 @@ fi
 %{plugindir}/libSmartIndent*.so
 %{_datadir}/metainfo/%{name}-contrib.metainfo.xml
 
-
 %changelog
+* Sun Mar 02 2025 Morten MacFly <mortenmacfly@codeblocks.org> - 25.03-1
+- New release.
+
 * Thu Feb 20 2020 Teodor Petrov <tpetrov@codeblocks.org> - 20.03-1
 - New release.
 

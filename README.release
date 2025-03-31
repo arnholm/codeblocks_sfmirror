@@ -52,4 +52,4 @@ Preparations for a release:
     alike. (But including logos etc. if not yet done.)
 
 9.) After release, rename the branch to the date C::B was actually released, e.g.:
-    branches/release-20.xx -> branches/release-20.03
+    branches/release-20.xx -> branches/release-24.12

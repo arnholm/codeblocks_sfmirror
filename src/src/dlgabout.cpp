@@ -13,7 +13,7 @@
     #ifdef __WXMAC__
         #include <wx/font.h>
     #endif //__WXMAC__
-    #include <wx/button.h>    // wxImage
+    #include <wx/button.h>   // wxImage
     #include <wx/image.h>    // wxImage
     #include <wx/intl.h>
     #include <wx/stattext.h>

@@ -967,4 +967,3 @@ DLLIMPORT wxString cbGetDynamicLinkerPathForTarget(cbProject *project, ProjectBu
 DLLIMPORT wxString cbMergeLibPaths(const wxString &oldPath, const wxString &newPath);
 
 #endif // CBPROJECT_H
-
