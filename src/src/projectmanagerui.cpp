@@ -1205,8 +1205,24 @@ void ProjectManagerUI::RemoveFilesRecursively(wxTreeItemId& sel_id)
                 cbProject* prj = ftd->GetProject();
                 if (prj && ftd->GetKind() == FileTreeData::ftdkFile)
                 {
-                    if ( ProjectFile* pf = ftd->GetProjectFile() )
-                        Manager::Get()->GetProjectManager()->RemoveFileFromProject(pf, prj);
+                    ProjectFile* pf = ftd->GetProjectFile();
+                    if (pf)
+                    {
+                        wxString dir = pf->file.GetPath();
+                        if(::wxDirExists(dir))
+                        {
+                            Manager::Get()->GetProjectManager()->RemoveFileFromProject(pf, prj);
+                        }
+                        else
+                        {
+                            wxString msg = wxString::Format(_("The directory '%s' no longer exists on disk") , dir);
+                            msg += "\n\n" + _("Instead, use 'Remove files...' and select all") + " ...";
+                            cbMessageBox(msg, _("Error"), wxICON_ERROR);
+                            Manager::Get()->GetLogManager()->LogError(msg);
+
+                            break;
+                        }
+                    }
                 }
                 else if (  ftd->GetKind() == FileTreeData::ftdkFolder
                         || ftd->GetKind() == FileTreeData::ftdkVirtualFolder)
