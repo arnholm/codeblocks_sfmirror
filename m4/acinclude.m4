@@ -213,7 +213,7 @@ else
 fi
 
 AC_MSG_CHECKING(whether to build the displayevents plugin)
-dsplayevents_default="yes"
+displayevents_default="yes"
 AC_ARG_ENABLE(displayevents, [AC_HELP_STRING([--enable-displayevents], [build the displayevents plugin (default YES)])],,
                        enable_displayevents=$displayevents_default)
 AM_CONDITIONAL([BUILD_DISPLAYEVENTS], [test "x$enable_displayevents" = "xyes"])
