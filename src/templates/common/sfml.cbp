@@ -20,7 +20,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<!--<Add option="`pkg-config sfml --cflags`"/>-->
 		</Compiler>
 		<Linker>
 			<Add library="sfml-audio"/>
@@ -28,7 +27,6 @@
 			<Add library="sfml-network"/>
 			<Add library="sfml-system"/>
 			<Add library="sfml-window"/>
-			<!--<Add option="`pkg-config sfml --libs`"/>-->
 		</Linker>
 	</Project>
 </CodeBlocks_project_file>
