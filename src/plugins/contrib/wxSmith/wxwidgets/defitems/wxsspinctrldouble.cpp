@@ -67,12 +67,7 @@ void wxsSpinCtrlDouble::OnBuildCreatingCode()
         {
             AddHeader(_T("<wx/spinctrl.h>"), GetInfo().ClassName, 0);
             AddHeader(_T("<wx/spinctrl.h>"), _T("wxSpinEvent"), 0);
-            long ValueLong = 0;
-            Value.ToLong(&ValueLong);
-            Codef(_T("%C(%W, %I, %n, %P, %S, %T, %f, %f, %f, %f, %N);\n"),Value.wx_str(), Min, Max, Initial, Increment);
-            if ( !Value.empty() )
-                Codef(_T("%ASetValue(%n);\n"), Value.wx_str());
-
+            Codef(_T("%C(%W, %I, %n, %P, %S, %T, %f, %f, %f, %f, %N);\n"), Value.wx_str(), Min, Max, Initial, Increment);
             BuildSetupWindowCode();
             return;
         }
