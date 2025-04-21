@@ -1549,10 +1549,17 @@ void Parser::ShowGlobalChangeAnnoyingMsg()
 // ----------------------------------------------------------------------------
 {
     //(svn 13612 bkport)
-    // Fix from svn 13612 to avoid overwritting global settings on project close
+    // Fix from svn 13612 to avoid overwriting global settings on project close
     // Tell the user that global changes are not applied until projects are reparsed.
 
     if (Manager::IsAppShuttingDown()) return;
+
+    // Issue warning message only for clangd_client global options change
+    wxString activePageTitle = GetParseManager()->GetConfigListSelection();
+    if (not ((activePageTitle == "clangd_client") or (activePageTitle == _("clangd_client"))) )
+        return;
+
+
     ParseManager* pParseMgr = m_pParseManager;
 
     // Get number of active parsers (from m_ParserList)

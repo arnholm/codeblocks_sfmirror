@@ -233,7 +233,7 @@ public:
     /** set the addtional C++ search paths in the C::B project's code_completion setting */
     void SetProjectSearchDirs(cbProject &project, const wxArrayString &dirs);
 
-    // The functions below is used to manage symbols browser
+    // The functions below are used to manage symbols browser
     /** return active class browser pointer */
     ClassBrowser* GetClassBrowser() const { return m_ClassBrowser; }
 
@@ -300,6 +300,7 @@ public:
     ProcessLanguageClient* CreateNewLanguageServiceProcess(cbProject* pcbProject, int LSPeventID);
     bool DoLockClangd_CacheAccess(cbProject* pcbProject);
 
+    // The event handler for queued callback events (used instead of blocking)
     LSPEventCallbackHandler* GetLSPEventSinkHandler(){return m_pLSPEventSinkHandler;}
 
     /** Set from CodeCompletion::OnCompiler{Started|Finished}() event */
@@ -382,6 +383,9 @@ public:
     ParserBase* GetClosingParser(){return m_pClosingParser;}                        //(ph 2025/02/12)
     void        SetClosingParser(ParserBase* pParser){m_pClosingParser = pParser;}  //(ph 2025/02/12)
     std::unordered_map<cbProject*,ParserBase*>* GetActiveParsers();                 //(ph 2025/02/14)
+
+    // Return title of the current config dialog list selection
+    wxString GetConfigListSelection();
 
 protected:
     /** When a Parser is created, we need a full parsing stage including:

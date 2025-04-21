@@ -44,6 +44,7 @@
 #include <wx/wfstream.h>
 #include <wx/textfile.h>
 #include <wx/aui/aui.h>
+#include <wx/listbook.h>
 
 #include <cbstyledtextctrl.h>
 #include <compilercommandgenerator.h>
@@ -55,7 +56,7 @@
 #include "procutils.h"
 #endif //_Win32
 
-
+#include "codecompletion.h"
 #include "parsemanager.h"
 #include "parsemanager_base.h"
 #include "parser/parser.h"
@@ -2869,4 +2870,23 @@ std::unordered_map<cbProject*,ParserBase*> * ParseManager::GetActiveParsers()  /
     }
 
     return &m_ActiveParserList;
+}
+// ----------------------------------------------------------------------------
+wxString ParseManager::GetConfigListSelection()
+// ----------------------------------------------------------------------------
+{
+    wxString activePageTitle;
+    // Get the title of the currently active/focused configuration page
+    wxWindow* pTopWindow = wxFindWindowByName(_("Configure editor"));
+    if (not pTopWindow)
+        pTopWindow = m_pClientEventHandler->GetTopWxWindow();
+    if (pTopWindow)
+    {
+        wxListbook* lb = XRCCTRL(*pTopWindow, "nbMain", wxListbook);
+        wxWindow* page = lb ? lb->GetCurrentPage() : nullptr;
+        int pageID = page ? lb->FindPage(page) : 0;
+        activePageTitle = lb ? lb->GetPageText(pageID) : wxString();
+    }
+    return activePageTitle;
+
 }
