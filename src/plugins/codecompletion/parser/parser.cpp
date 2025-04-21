@@ -1013,8 +1013,16 @@ void Parser::WriteOptions(bool classBrowserOnly)
 void Parser::ShowGlobalChangeAnnoyingMsg()
 // ----------------------------------------------------------------------------
 {
+    if (Manager::IsAppShuttingDown()) return;
+
     // Tell the user that global changes are not applied until projects are reparsed.
     ParseManager* pParseMgr = (ParseManager*)m_Parent;
+
+    // Issue warning message only for CodeCompletion global options change
+    wxString activePageTitle = pParseMgr->GetConfigListSelection();
+    if (not ((activePageTitle == "Code completion") or (activePageTitle == _("Code completion"))) )
+        return;
+
 
     // Get number of active parsers (from m_ParserList)
     std::unordered_map<cbProject*,ParserBase*>* pActiveParsers = pParseMgr->GetActiveParsers();

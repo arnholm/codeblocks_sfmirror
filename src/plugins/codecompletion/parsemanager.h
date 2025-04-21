@@ -267,6 +267,8 @@ public:
     ParserBase* GetClosingParser(){return m_pClosingParser;}                        //(ph 2025/02/12)
     void        SetClosingParser(ParserBase* pParser){m_pClosingParser = pParser;}  //(ph 2025/02/12)
     std::unordered_map<cbProject*,ParserBase*>* GetActiveParsers();                 //(ph 2025/02/14)
+    // Return title of the current config dialog list selection //2025/04/21
+    wxString GetConfigListSelection();
 
 
 protected:
@@ -548,6 +550,51 @@ private:
 
     // copy of m_ParserList
     std::unordered_map<cbProject*,ParserBase*> m_ActiveParserList; //(ph 2025/02/14)
+    // Find wxTopLevelWindow from the windows list
+    // ----------------------------------------------------------------------------
+    wxWindow* GetWxTopLevelWindow() //2025/04/21
+    // ----------------------------------------------------------------------------
+    {
+        // travers the list of windows to get the top level window
+        wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
+        while (node)
+        {
+            //wxWindow*pwin = node->GetData(); removed for ticket #63 //(ac 2022/08/22)
+            //if (node->GetNext() == nullptr)
+            //    return pwin;
+            if (not node->GetNext())               //ticket #63 support for msys2
+            {
+                wxWindow*pwin = node->GetData();
+                return pwin;
+            }
+            node = node->GetNext();
+        }
+        return nullptr;
+    }
+
+    // Find top parent of a window
+    // ----------------------------------------------------------------------------
+    wxWindow* GetTopParent(wxWindow* pWindow)   //2025/04/21
+    // ----------------------------------------------------------------------------
+    {
+        wxWindow* pWin = pWindow;
+        while(pWin->GetParent())
+                pWin = pWin->GetParent();
+        return pWin;
+    }
+
+    // get top window to use as cbMessage parent, else MessageBoxes hide behind dialogs
+    // ----------------------------------------------------------------------------
+    wxWindow* GetTopWxWindow()                  //2025/04/21
+    // ----------------------------------------------------------------------------
+    {
+        wxWindow* appWindow = Manager::Get()->GetAppWindow();
+        wxWindow* topWindow =GetWxTopLevelWindow();
+        if (not topWindow)
+            topWindow = appWindow;
+        return topWindow;
+    }
+
 
 };
 

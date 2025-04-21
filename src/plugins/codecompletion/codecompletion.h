@@ -15,6 +15,7 @@
 #include "parsemanager.h"
 #include "systemheadersthread.h"
 #include "doxygen_parser.h"
+#include "wx/wxscintilla.h"
 
 #include <wx/arrstr.h>
 #include <wx/listctrl.h>
@@ -24,7 +25,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
-#include <set>
+//#include <set> //clangd: header not used directly
 
 class cbEditor;
 class wxScintillaEvent;
@@ -555,7 +556,8 @@ private:
 
 #endif // CODECOMPLETION_H
 
-//Version
-//1.0.5 24/01/29 2024/01/29 Enable/Disable CC DebugLogging via chkbox in C/C++ Parser(adv) tab
+//Versions
+//1.0.7 25/04/21 Issue Global settings annoying dialog only when CodeCompletion selected
+//1.0.6 25/02/14 Fix clobbered CB global settings changes when closing loaded projects.
+//1.0.5 24/01/29 Enable/Disable CC DebugLogging via chkbox in C/C++ Parser(adv) tab
 //1.0.3 24/01/25 Fixed and stress tested crashes caused by invalid pointers in CodeBrowser.
-
