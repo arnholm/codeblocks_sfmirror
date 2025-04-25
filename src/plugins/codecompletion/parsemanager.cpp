@@ -16,6 +16,7 @@
     #include <wx/log.h> // for wxSafeShowMessage()
     #include <wx/regex.h>
     #include <wx/wfstream.h>
+    #include <wx/xrc/xmlres.h>
 
     #include <cbauibook.h>
     #include <cbeditor.h>
