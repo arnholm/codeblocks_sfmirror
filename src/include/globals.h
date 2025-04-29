@@ -6,6 +6,7 @@
 #ifndef SDK_GLOBALS_H
 #define SDK_GLOBALS_H
 
+#include <cstdint>
 #include <map>
 #include <memory>
 #include <vector>
