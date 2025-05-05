@@ -21,7 +21,11 @@ PipedTextCtrl::PipedTextCtrl(wxWindow *parent, PipedProcessCtrl *pp) : wxScintil
 {
     m_pp = pp;
 
-    wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#if wxCHECK_VERSION(3, 1, 0)
+    wxFont font(FromDIP(10), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#else
+    wxFont font(wxRound(10*cbGetContentScaleFactor(*this)), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+#endif
 
     ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("editor"));
     wxString fontstring = mgr->Read(_T("/font"), wxEmptyString);
