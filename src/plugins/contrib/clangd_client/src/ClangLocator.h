@@ -6,7 +6,7 @@
 #include <wx/filename.h>
 
 class wxArrayString;
-
+class cbProject;
 class ClangLocator
 {
     public:
@@ -24,15 +24,17 @@ class ClangLocator
         wxString GetClangdVersionID(const wxString& clangdBinary);
         wxString SearchAllLibDirsForResourceDir(wxFileName ClangExePath);
         void FindClangResourceDirs(const wxString& path, wxString& firstLevelVersionNum, wxArrayString& versionPaths);
+        wxString FindDirNameByPattern(const wxString basePath, wxString dirPattern); // (ph 25/04/30)
+        wxString GetCompilerExecByProject(cbProject* pProject);
 
         // PATH environment variable separator
         #ifdef __WXMSW__
-        #define ENV_PATH_SEPARATOR ";"
+            #define ENV_PATH_SEPARATOR ";"
         #else
-        #define ENV_PATH_SEPARATOR ":"
+            #define ENV_PATH_SEPARATOR ":"
         #endif
 
-    private:
+    //private:
 };
 
 #endif // CLANGLOCATOR_H

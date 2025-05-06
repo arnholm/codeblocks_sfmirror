@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.136 25/04/21")
+#define VERSION wxT("1.2.137 25/05/5")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.137   2025/05/5 Avoid use of clang compiler resources when using mingw compiler
+//                     in $(CODEBLOCKS)\MinGW
 //1.2.136   2025/04/21 Avoid issuing annoying message for non clangd_client global settings
 //                     See:   Parser::ShowGlobalChangeAnnoyingMsg()
 //1.2.135   2025/03/27 Appy Christo patch 1518 some memory usage fixes

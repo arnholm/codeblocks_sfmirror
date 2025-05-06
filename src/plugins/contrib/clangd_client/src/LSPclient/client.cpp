@@ -49,7 +49,7 @@
 #include "client.h"
 
 // ----------------------------------------------------------------------------
-namespace //annonymous
+namespace //anonymouse
 // ----------------------------------------------------------------------------
 {
     wxString fileSep = wxFILE_SEP_PATH;
@@ -65,6 +65,9 @@ namespace //annonymous
         wxString clangexe("clang");
         wxString clangdexe("clangd");
     #endif
+
+    // Reject codeblocks 25.03 MinGW clangd.exe path
+    wxRegEx rejectThisPath(wxT("(codeblocks|output|devel).*\\\\MinGW"));
 
     // ----------------------------------------------------------------------------
     void StdString_ReplaceAll(std::string& str, const std::string& from, const std::string& to)
@@ -376,7 +379,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         }
     }
 
-    // Locate folder for Clangd
+    // Try to locate folder for Clangd.exe because Settings/Editor/Clangd_client/CC++ parser was empty.
     ClangLocator clangLocator;
     wxString clangd_Dir;
 
@@ -388,6 +391,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         cfgClangdMasterPath.Empty();
     }
     // clang master path was obtained from settings clangd_client config
+    // else try auto-finding the clangd executable
     if (cfgClangdMasterPath.Length())
         clangd_Dir = fnClangdMasterPath.GetPath();
     else clangd_Dir = clangLocator.Locate_ClangdDir();
@@ -398,7 +402,14 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         fnClangdMasterPath.SetFullName(clangdexe);
     }
 
+    // Find the allociated resources for this clangd executable
     wxString clangdResourceDir = clangLocator.Locate_ResourceDir(fnClangdMasterPath);
+
+    // Disallow use of ".../codeblocks/MinGW/bin/clangd.exe" when NOT clang.
+    // Mingw cannot use clang resource libs and headers
+    if (clangdResourceDir.StartsWith("~INVALID~"))
+        clangdResourceDir = wxString();
+
     if (clangd_Dir.empty() or clangdResourceDir.empty())
     {
         wxString msg; msg << _("clangd_client plugin could not auto detect a clangd installation.\n"
@@ -417,7 +428,8 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         return;
     }
 
-    // Set the clangd --query-dirver parameter
+
+    // Set the clangd --query-driver parameter
     Compiler* pCompiler = CompilerFactory::GetCompiler(pProject->GetCompilerID());
     if (not pCompiler)
     {
@@ -426,12 +438,13 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
         return;
     }
     wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
-
+    Manager::Get()->GetMacrosManager()->ReplaceMacros(masterPath); // (ph 25/05/01)
     // get the first char of executable name from the compiler toolchain
     CompilerPrograms toolchain = pCompiler->GetPrograms();
     wxString toolchainCPP = toolchain.CPP.Length() ? wxString(toolchain.CPP[0]) : "";
     // " --query-driver=f:\\usr\\MinGW810_64seh\\**\\g*"
     wxString queryDriver = masterPath + fileSep + "**" + fileSep + toolchainCPP + "*";
+    //- testing - queryDriver = "F:/usr/Proj/Clangd_Client-work/trunk/src/output32_64/MinGW/bin/g*"; // (ph 25/05/01)
     if (not platform::windows) queryDriver.Replace("\\","/");
 
     wxString pgmExec = clangd_Dir + fileSep + clangdexe;

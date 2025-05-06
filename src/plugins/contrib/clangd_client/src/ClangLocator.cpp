@@ -1,6 +1,8 @@
 
-#include <string>
 #include "ClangLocator.h"
+
+#include <string>
+#include <cstdint>
 
 #include <wx/string.h>
 #include <wx/arrstr.h>
@@ -9,6 +11,8 @@
 #include <wx/regex.h>
 #include <wx/tokenzr.h>
 #include <wx/dir.h>
+#include <wx/regex.h>
+
 #if defined(__WXMSW__)
     #include <wx/msw/registry.h>
     #include "winprocess/asyncprocess/procutils.h"
@@ -24,8 +28,9 @@
 #include "compilerfactory.h"
 #include "configmanager.h"
 #include "projectmanager.h"
+#include "macrosmanager.h"
 #include "codecompletion/parser/cclogger.h"
-#include "infowindow.h"
+//#include "infowindow.h" clangd says not used directly
 
 #if defined(_WIN32)
 #include "winprocess/asyncprocess/procutils.h"
@@ -35,13 +40,13 @@
 
 
 // ----------------------------------------------------------------------------
-namespace   //anonymous
+ namespace   //anonymouse
 // ----------------------------------------------------------------------------
 {
     #if defined(_WIN32)
         wxString clangdexe("clangd.exe");
         wxString LLVM_Dirmaybe = "c:\\program files\\LLVM\\bin";
-    #else
+    #else //Linux
         wxString clangdexe("clangd");
         wxString LLVM_Dirmaybe = "/usr/bin";
         #ifdef __WXMAC__
@@ -52,6 +57,9 @@ namespace   //anonymous
     wxString fileSep   = wxFILE_SEP_PATH;
     wxChar fileSepChar = wxFILE_SEP_PATH;
     bool wxFound(int result){return result != wxNOT_FOUND;};
+    // Reject codeblocks 25.03 MinGW clangd.exe path
+    wxRegEx rejectThisPath(wxT("(codeblocks|output|devel).*\\\\MinGW"));
+
 }
 // ----------------------------------------------------------------------------
 ClangLocator::ClangLocator()
@@ -83,43 +91,47 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
     if (clangdExecutable.empty() or (not fnClangd.Exists()) )
         return wxString();
 
-    // Get the version of this clangd, we need to match it with the same resources dir
-    wxString clangdVersion;
-    wxString cmdLine = fnClangd.GetFullPath();
-    // Use clangd to get the clang version
-    cmdLine.Append (" --version");
-    wxArrayString clangdResponse;
-    // If on first run, wxExecute() stalls on Windows 11 for 3-6 seconds,
-    // change Windows Settings>Windows security>App and Browser control>Smart App Control Settings>off
-    wxExecute(cmdLine, clangdResponse);
-    if (not clangdResponse.Count())
-        return wxString(); //somethings wrong with clangd.exe
-
-    if (clangdResponse.Count()) //tease out the version number
+    wxString compilerExecCmd;
+    Compiler* pCompiler = CompilerFactory::GetDefaultCompiler();
+    wxString compilerMasterPath = pCompiler ? pCompiler->GetMasterPath() : "";
+    Manager::Get()->GetMacrosManager()->ReplaceMacros(compilerMasterPath); // (ph 25/05/01)
+    if (pCompiler)
     {
-        cmdLine = clangdResponse[0]; //usually "clangd version 13.0.1" followed by a space or -+whatever
-        CCLogger::Get()->DebugLog("Using Clangd version: " + clangdResponse[0]);
-        size_t sBgn = cmdLine.find("version ");
-        if (sBgn) sBgn += 8; //jump over "version"
-        size_t sEnd = sBgn;
-        for( ; sEnd < cmdLine.length(); ++sEnd)
-        {
-            if ( ((cmdLine[sEnd] >= '0') and (cmdLine[sEnd] <= '9')) or (cmdLine[sEnd] == '.') )
-                continue;
-            break;
-        }
-        if (sBgn and sEnd)
-            clangdVersion = cmdLine.SubString(sBgn, sEnd-1);
+        CompilerPrograms toolchain = pCompiler->GetPrograms();
+        compilerExecCmd = toolchain.CPP.Length() ? wxString(toolchain.CPP) : "";
+    }
+    // Use the project if active
+    cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    // get the compiler executable name from the compiler toolchain
+    pProject ? compilerExecCmd = GetCompilerExecByProject(pProject) : wxString();
+
+    // Reject use of clang compiler resources when should be using MinGW resurces
+    if ( rejectThisPath.Matches(clangdDir) and (not compilerExecCmd.StartsWith("clang")))
+    {
+        wxString msg; msg << _("The following executable for clangd.exe is invalid.");
+                      msg << "\n";
+                      msg << _("The compiler resouces and the clangd.exe resources do not match.");
+                      msg << "\n";
+                      msg << _("The invalid resource is from: ");
+                      msg << "\n" << clangdDir;
+        cbMessageBox( msg, "Clangd_client Error");
+        return wxString("~INVALID~" + clangdDir);
+
     }
 
-    if (clangdVersion.Length())
+    // Get the version of this clangd, we need to match it with the same resources dir
+    wxString clangdFullVersionLine;
+    wxString VersionNumerals;
+    VersionNumerals = GetClangdVersion(fnClangd.GetFullPath(), clangdFullVersionLine);   // (ph 25/04/30)
+    if (not VersionNumerals.Length())
+        return wxString(); //somethings wrong with clangd.exe
+    wxString versionMajorStr = VersionNumerals.BeforeFirst('.');
+    int versionMajorID = std::stoi(versionMajorStr.ToStdString());
+    if (versionMajorID < 13)
     {
-        int versionMajorID = std::stoi(clangdVersion.ToStdString());
-        if (versionMajorID < 13)
-        {
-            wxString msg = wxString::Format(_("Error: clangd version (%s) is older than the required version 13."), clangdVersion);
-            CCLogger::Get()->DebugLogError(msg);
-        }
+        wxString msg = wxString::Format(_("Error: clangd version (%s) is older than the required version 13."), VersionNumerals);
+        CCLogger::Get()->DebugLogError(msg);
+        return wxString();
     }
 
     wxFileName fnClangdExecutablePath(clangdDir, clangdExecutable);
@@ -128,9 +140,9 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         fnClangdExecutablePath.RemoveLastDir();
         fnClangdExecutablePath.AppendDir("lib");
         fnClangdExecutablePath.AppendDir("clang");
-        fnClangdExecutablePath.AppendDir(clangdVersion);
+        fnClangdExecutablePath.AppendDir(VersionNumerals);
     }
-    fnClangdExecutablePath.SetName(wxString("clang") << "-" << clangdVersion);
+    fnClangdExecutablePath.SetName(wxString("clang") << "-" << VersionNumerals); //Linux
     wxString resource = fnClangdExecutablePath.GetFullPath(); // **Debugging**
 
     if (fnClangdExecutablePath.DirExists())
@@ -157,7 +169,9 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
 
     // Failed to find the clangd resource directory
     // Search the clang path to find a matching resource lib
-    //wxString clangExePath = fnClangdExecutablePath.GetFullPath(); // **Debugging**
+    // wxString clangExePath = fnClangdExecutablePath.GetFullPath(); // **Debugging**
+
+    // Search all dirs named 'lib*' for the clangd resouce dir like .../lib<version>/clang/
     wxString resourceDir = SearchAllLibDirsForResourceDir(fnClangdExecutablePath);
     if (resourceDir.Length()) //empty or have "ver|libPath"
     {
@@ -168,7 +182,7 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
 
     // Failed to find the clangd resource directory
     // Say that we can't find the clangd resource directory
-    wxString msg = wxString::Format(_("Error: %s\n clangd version (%s) was unable to locate the necessary clangd resource directory."), __FUNCTION__, clangdVersion);
+    wxString msg = wxString::Format(_("Error: %s\n clangd version (%s) was unable to locate the necessary clangd resource directory."), __FUNCTION__, VersionNumerals);
     msg << "\n\t" << fnClangdExecutablePath.GetPath();
     CCLogger::Get()->LogError(msg);
     CCLogger::Get()->DebugLogError(msg);
@@ -196,7 +210,7 @@ wxString ClangLocator::SearchAllLibDirsForResourceDir(wxFileName ClangExePath)
         return wxString();
 
     // remember our current directory to be restored later
-    // and set the pwd to the clang dir which might contain the resources
+    // and set the cwd to the clang dir which might contain the resources
     wxString priorDir = wxGetCwd();
     wxSetWorkingDirectory(clangPath);
     wxString versionNum = ClangExePath.GetPath().Mid(pos);
@@ -243,6 +257,8 @@ wxString ClangLocator::SearchAllLibDirsForResourceDir(wxFileName ClangExePath)
 void ClangLocator::FindClangResourceDirs(const wxString& path, wxString& firstLevelVersionNum, wxArrayString& versionPaths)
 // ----------------------------------------------------------------------------
 {
+    // list any directory in path that contains "lib*/clangd/"
+
     wxString priorDir = wxGetCwd();
     wxSetWorkingDirectory(path);
    // ----------------------------------------------------------------------------
@@ -325,14 +341,17 @@ wxString ClangLocator::Locate_ClangdDir()
     LogManager* pLogMgr = Manager::Get()->GetLogManager();
 
     // Set filename to find
-    fnClangdPath.SetFullName(clangdexe);
+    fnClangdPath.SetFullName(clangdexe); // clangd.exe
 
-    // See if executable dir contains ...lsp/clangd.*
+    // See if CB executable dir contains ...lsp/clangd.*
     wxString execDir  = Manager::Get()->GetConfigManager("app")->GetExecutableFolder();
     fnClangdPath.SetPath(execDir + fileSep + "lsp");
     if (fnClangdPath.FileExists())
+        ;//CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), execDir + fileSep + "lsp"));
+
+    if (fnClangdPath.FileExists())
     {
-        CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), execDir + fileSep + "lsp"));
+        CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), fnClangdPath.GetPath()));
     }
 
     if (not fnClangdPath.FileExists())
@@ -349,7 +368,9 @@ wxString ClangLocator::Locate_ClangdDir()
                 if (prjCompiler)
                 {
                     wxString mPath = prjCompiler->GetMasterPath();
-                    if (!mPath.empty() && wxDirExists(mPath))
+                    // expand any macros // (ph 25/05/01)
+                    Manager::Get()->GetMacrosManager()->ReplaceMacros(mPath);
+                    if ((not mPath.empty()) && wxDirExists(mPath))
                     {
                         fnClangdPath.SetPath(mPath);
                         if (fnClangdPath.FileExists())
@@ -377,7 +398,11 @@ wxString ClangLocator::Locate_ClangdDir()
         if (defaultCompiler)
         {
             wxString mPath = defaultCompiler->GetMasterPath();
-            if (!mPath.empty() && wxDirExists(mPath))
+            // expand any macros
+            Manager::Get()->GetMacrosManager()->ReplaceMacros(mPath); // (ph 25/05/01)
+            //  Reject using any clangd.exe in ($CODEBLOCKS)\MinGW, it's not for mingw clangd.exe // (ph 25/05/04)
+            if (rejectThisPath.Matches(execDir + "\\MinGW")) mPath = wxString();
+            if (not mPath.empty() && wxDirExists(mPath))
             {
                 fnClangdPath.SetPath(mPath);
                 if (fnClangdPath.FileExists())
@@ -396,10 +421,25 @@ wxString ClangLocator::Locate_ClangdDir()
         }
     }
 
+    // Starting with windows CB version 25.03 a MinGW folder with clangd.exe exists in the CB executable folder // (ph 25/04/30)
+    // but the clangd.exe in the clang/lib belongs to clang compiler, not clangd.exe.
+    // The clang/lib resources are unusable for mingw clangd.exe
+
+    //    if (not fnClangdPath.FileExists())
+    //    {
+    //        // See if CB executable dir contains ...\MinGW\bin\clangd.exe (Windows CB version 25.03)
+    //        #if defined(__WXMSW__)
+    //        fnClangdPath.SetPath(execDir + fileSep + "MinGW\\bin");
+    //        if (fnClangdPath.FileExists())
+    //            CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), fnClangdPath.GetPath()));
+    //        #endif
+    //    }
+
 
     // Try to find clangd from the environment path
     if (not fnClangdPath.FileExists())
     {
+        CCLogger::Get()->DebugLog(_("Auto-Locate_ClangdDir: searching environment path for clangd folder."));
         wxArrayString clangLocations;
         wxLogNull nolog; // turn off 'not found' messages
         wxArrayString envPaths = GetEnvPaths();
@@ -411,13 +451,16 @@ wxString ClangLocator::Locate_ClangdDir()
             {
                 fnClangdPath.Assign(clangLocations[ii]);
                 if (fnClangdPath.FileExists())
-                {
-                    CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), fnClangdPath.GetPath()));
                     break;
-                }
             }
+            //  Reject using any clangd.exe in ($CODEBLOCKS)\MinGW, it's not usable for mingw clangd.exe // (ph 25/05/04)
+            if (rejectThisPath.Matches(fnClangdPath.GetPath()))
+                    fnClangdPath.SetFullName(wxString());
             if (fnClangdPath.FileExists())
+            {
+                CCLogger::Get()->DebugLog(wxString::Format(_("Auto-Located clangd from environment path at %s"), fnClangdPath.GetPath()));
                 break;
+            }
         }
     }
 
@@ -433,7 +476,7 @@ wxString ClangLocator::Locate_ClangdDir()
         {
             if(ReadMSWInstallLocation(regKeys.Item(i), llvmInstallPath, llvmVersion))
             {
-                if (!llvmInstallPath.empty() && wxDirExists(llvmInstallPath))
+                if ( (not llvmInstallPath.empty()) && wxDirExists(llvmInstallPath))
                 {
                     fnClangdPath.SetPath(llvmInstallPath);
                     if (fnClangdPath.FileExists())
@@ -475,10 +518,12 @@ wxString ClangLocator::Locate_ClangdDir()
         wxString versionNative;
         wxString version = GetClangdVersion(fnClangdPath.GetFullPath(), versionNative);
         // eg., clangd version 10.0,0
-        version = version.BeforeFirst('.').AfterLast(' ');
+        version = version.BeforeFirst('.');
         if (version.IsEmpty())
         {
             wxString msg = wxString::Format(_("clangd version could not be determined from string '%s'"), versionNative);
+            msg += "\n";
+            msg += wxString::Format(_("GetClangdVersion() returned: '%s'"), version);
             cbMessageBox(msg, _("Error"));
             pLogMgr->LogError(msg);
             return wxString();
@@ -504,9 +549,8 @@ wxArrayString ClangLocator::GetEnvPaths() const
 // ----------------------------------------------------------------------------
 {
     wxString path;
-    if(!::wxGetEnv("PATH", &path))
+    if(not ::wxGetEnv("PATH", &path))
     {
-        //-clWARNING() << "Could not read environment variable PATH";
         wxString msg; msg << "GetEnvPaths() Could not read environment variable PATH";
         CCLogger::Get()->DebugLog(msg);
         return {};
@@ -573,21 +617,32 @@ bool ClangLocator::ReadMSWInstallLocation(const wxString& regkey, wxString& inst
 wxString ClangLocator::GetClangdVersion(const wxString& clangBinary, wxString& versionNative)
 // ----------------------------------------------------------------------------
 {
+    // versionNative param is set to full version string eg. "clangd version 19.1.7"
+    // or "(built by Brecht Sanders, r3) clangd version 19.1.7"
+
+    // Returns version numerals of clangd, eg. "19.1.7"   // (ph 25/04/30)
+
     wxString command;
     wxArrayString stdoutArr;
     command << clangBinary << " --version";
     ProcUtils::SafeExecuteCommand(command, stdoutArr);
     if (not stdoutArr.IsEmpty())
     {
+        // Fill versionNative param with full version string
         versionNative = stdoutArr.Item(0);
-        wxString versionString(versionNative);
-        if (wxFound(versionString.Find("(")) )
+        wxString versionStrNumerals(versionNative);
+        // Tease out the numerals only
+        wxString prefix = "clangd version ";
+        int prefixLen = prefix.Length();
+        int prefixPosn = versionStrNumerals.Find(prefix);
+        if (wxFound(prefixPosn))
         {
-            //versionString = versionString.AfterLast('(');
-            //versionString = versionString.BeforeLast(')');
-            versionString = versionString.BeforeFirst('(');
+            versionStrNumerals = versionStrNumerals.Mid(prefixPosn+prefixLen);
+            if (versionStrNumerals.find(' '))
+                versionStrNumerals = versionStrNumerals.BeforeFirst(' ');
         }
-        return versionString;
+
+        return versionStrNumerals; // eg.: "19.1.7"
     }
     return wxString();
 }
@@ -622,6 +677,77 @@ wxString ClangLocator::GetClangdVersionID(const wxString& clangdBinary)
         }
         if (not clangdVersion.empty())
             return clangdVersion;
+    }
+
+    return wxString();
+}
+#include <wx/dir.h>
+#include <wx/filename.h>
+// ----------------------------------------------------------------------------
+wxString ClangLocator::FindDirNameByPattern(const wxString basePath, wxString dirPattern)
+// ----------------------------------------------------------------------------
+{
+    // eg. wxString dirPattern = "14*"; // or "19*"
+    wxString searchPath = wxString::Format("%s\\%s", basePath, dirPattern);
+    wxString dirName = wxFindFirstFile(searchPath, wxDIR);
+
+    while (not dirName.empty())
+    {
+        if (wxFileName::DirExists(dirName)) {
+            // 'drName' is a directory starting with "dirPattern"
+            //wxLogMessage("Found directory: %s", dirName);
+            return dirName;
+        }
+        dirName = wxFindNextFile();
+    }
+    return wxString();
+}
+// ----------------------------------------------------------------------------
+wxString ClangLocator::GetCompilerExecByProject(cbProject* pProject)    // (ph 25/05/05)
+// ----------------------------------------------------------------------------
+{
+	// Get compiler name
+    // Return the build targets Compiler executable name
+
+    ProjectBuildTarget* pTarget = nullptr;
+    //-Compiler* actualCompiler = 0;
+    wxString activeBuildTarget;
+
+    if ( pProject)
+    {
+        activeBuildTarget = pProject->GetActiveBuildTarget();
+        if (not pProject->BuildTargetValid(activeBuildTarget, false))
+        {
+            int tgtIdx = pProject->SelectTarget();
+            if (tgtIdx == -1)
+                return wxString();
+            pTarget = pProject->GetBuildTarget(tgtIdx);
+            activeBuildTarget = (pTarget ? pTarget->GetTitle() : wxString(wxEmptyString));
+        }
+        else
+            pTarget = pProject->GetBuildTarget(activeBuildTarget);
+
+        // make sure it's not a commands-only target
+        if (pTarget && pTarget->GetTargetType() == ttCommandsOnly)
+        {
+            //cbMessageBox(_("The selected target is only running pre/post build step commands\n"
+            //               "Can't debug such a target..."), _("Information"), wxICON_INFORMATION);
+            //Log(_("aborted"));
+            return wxString();
+        }
+        //-if (target) Log(target->GetTitle());
+
+        if (pTarget )
+        {
+            // get compiler being used by this target
+            Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
+            wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
+            wxString compilerID = pCompiler ? pCompiler->GetID() : "";
+            CompilerPrograms compilerPrograms;
+            compilerPrograms = pCompiler->GetPrograms() ;
+            wxString exeCmd = masterPath + "\\bin\\" + compilerPrograms.CPP;
+            return exeCmd;
+        }
     }
 
     return wxString();

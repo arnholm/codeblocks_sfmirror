@@ -124,7 +124,7 @@ static wxString g_GlobalScope(_T("<global>"));
 
 // this auto-registers the plugin
 // ----------------------------------------------------------------------------
-namespace
+namespace //anonymouse
 // ----------------------------------------------------------------------------
 {
     // this auto-registers the plugin
@@ -3088,11 +3088,13 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
     }
     else //no cfgClangMasterPath set
     {
+        // Try to auto-locate the clangd executable
         ClangLocator clangLocator;
         wxFileName fnClangdPath(clangLocator.Locate_ClangdDir(), clangdexe);
-
         wxString msg;
-        msg << _("The clangd path has not been set.\n");
+        if (not fnClangdPath.FileExists())
+            msg << _("A path containing clangd has not been found.\n");
+        else msg.Replace(_("not"), "");
 
         if (fnClangdPath.FileExists())
         {
@@ -3123,7 +3125,7 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
         return;
     }
 
-    if (!m_InitDone)
+    if (not m_InitDone)
     {
         // Set a timer callback to allow time for the splash screen to clear.
         // Allows CB to appear to start faster.

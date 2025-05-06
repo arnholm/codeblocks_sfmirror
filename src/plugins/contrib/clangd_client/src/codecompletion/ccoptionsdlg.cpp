@@ -94,7 +94,7 @@ BEGIN_EVENT_TABLE(CCOptionsDlg, wxPanel)
 END_EVENT_TABLE()
 
 // ----------------------------------------------------------------------------
-namespace
+namespace // anonymous
 // ----------------------------------------------------------------------------
 {
     #if defined(_WIN32)
@@ -592,10 +592,10 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)
     }
 
     // Verify clangd version is above 12
-    wxString versionNative;
+    wxString versionNative; // (ph 25/04/30) test this
     wxString clangdVersion = clangLocator.GetClangdVersion(fnClangdPath.GetFullPath(), versionNative);
     //eg., clangd version 13.0,0
-    clangdVersion = clangdVersion.BeforeFirst('.').AfterLast(' ');
+    clangdVersion = clangdVersion.BeforeFirst('.');
     if (clangdVersion.IsEmpty())
     {
         cbMessageBox("clangd version could not be determined from string '" + versionNative + "'");
