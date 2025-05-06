@@ -1633,8 +1633,7 @@ static void FitToolbars(wxAuiManager &layoutManager, wxWindow *mainFrame)
     if (sorted.empty())
         return;
 
-    int maxWidth = mainFrame->GetSize().x;
-    int gripperSize =  layoutManager.GetArtProvider()->GetMetric(wxAUI_DOCKART_GRIPPER_SIZE);
+    const int maxWidth = mainFrame->GetSize().x;
 
     // move all toolbars to the left as possible and add the non-fitting to a list
     std::vector<ToolbarRowInfo> rows;
@@ -1646,9 +1645,11 @@ static void FitToolbars(wxAuiManager &layoutManager, wxWindow *mainFrame)
         while (static_cast<int>(rows.size()) <= row)
             rows.push_back(ToolbarRowInfo(0, 0));
 
-        int maxX = rows[row].width + it->window->GetBestSize().x + gripperSize;
+        int maxX = rows[row].width + it->window->GetBestSize().x;
         if (maxX > maxWidth)
+        {
             nonFitingToolbars.push_back(it->window);
+        }
         else
         {
             rows[row].width = maxX;
@@ -1662,13 +1663,13 @@ static void FitToolbars(wxAuiManager &layoutManager, wxWindow *mainFrame)
     for (std::vector<wxWindow*>::iterator it = nonFitingToolbars.begin(); it != nonFitingToolbars.end(); ++it)
     {
         maxX += (*it)->GetBestSize().x;
-        maxX += gripperSize;
         if (maxX > maxWidth)
         {
             position = 0;
             lastRow++;
-            maxX = (*it)->GetBestSize().x + gripperSize;
+            maxX = (*it)->GetBestSize().x;
         }
+
         layoutManager.GetPane(*it).Position(position++).Row(lastRow);
     }
 }
@@ -1682,20 +1683,19 @@ static void OptimizeToolbars(wxAuiManager &layoutManager, wxWindow *mainFrame)
     if (sorted.empty())
         return;
 
-    int maxWidth = mainFrame->GetSize().x;
+    const int maxWidth = mainFrame->GetSize().x;
     int lastRow = 0, position = 0, maxX = 0;
-    int gripperSize =  layoutManager.GetArtProvider()->GetMetric(wxAUI_DOCKART_GRIPPER_SIZE);
 
     for (std::set<ToolbarFitInfo>::const_iterator it = sorted.begin(); it != sorted.end(); ++it)
     {
         maxX += it->window->GetBestSize().x;
-        maxX += gripperSize;
         if (maxX > maxWidth)
         {
             position = 0;
             lastRow++;
-            maxX = it->window->GetBestSize().x + gripperSize;
+            maxX = it->window->GetBestSize().x;
         }
+
         layoutManager.GetPane(it->window).Position(position++).Row(lastRow);
     }
 }
