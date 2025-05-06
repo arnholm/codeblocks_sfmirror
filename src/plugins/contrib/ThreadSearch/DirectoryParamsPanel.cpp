@@ -258,7 +258,7 @@ struct DirectorySelectDialog : wxDialog
             }
 
             wxButton *buttonUnCheckUnselected = new wxButton(panelList, controlIDs.Get(ControlIDs::idDirDialogCheckSelectedButton),
-                                                             "Check only selected");
+                                                             _("Check only selected"));
             wxStaticLine *separator0 = new wxStaticLine(panelList);
             wxButton *buttonAdd = new wxButton(panelList,
                                                controlIDs.Get(ControlIDs::idDirDialogAddButton),
