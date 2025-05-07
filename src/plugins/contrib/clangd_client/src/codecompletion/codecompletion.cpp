@@ -3094,7 +3094,8 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
         wxString msg;
         if (not fnClangdPath.FileExists())
             msg << _("A path containing clangd has not been found.\n");
-        else msg.Replace(_("not"), "");
+        else
+            msg << _("A path containing clangd has been found.\n");
 
         if (fnClangdPath.FileExists())
         {
