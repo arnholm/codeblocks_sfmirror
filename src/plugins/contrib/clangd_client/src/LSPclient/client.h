@@ -134,7 +134,7 @@ class LanguageClient : public JsonTransport
             SendNotify("workspace/didChangeConfiguration", std::move(params));
         }
 
-        RequestID RangeFomatting(DocumentUri uri, Range range) {
+        RequestID RangeFormatting(DocumentUri uri, Range range) {   // (christo 25/05/02)
             DocumentRangeFormattingParams params;
             params.textDocument.uri = std::move(uri);
             params.range = range;
@@ -785,6 +785,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
     void LSP_GoToDeclaration(cbEditor* pcbEd, int edCaretPosition, size_t rrid=0);
     void LSP_FindReferences(cbEditor* pEd, int caretPosn);
     void LSP_RequestRename(cbEditor* pEd, int argCaretPosition, wxString newName);        //(cb 2021/10/12)
+    void LSP_RequestRangeFormatting(cbEditor* pEd);     // (christo 25/05/02)
     void LSP_RequestSymbols(cbEditor* pEd, size_t rrid=0);
     void LSP_RequestSymbols(wxString filename, cbProject* pProject, size_t rrid=0);
     void LSP_RequestSemanticTokens(cbEditor* pEd, size_t rrid=0); //(cb 2021/03/16)

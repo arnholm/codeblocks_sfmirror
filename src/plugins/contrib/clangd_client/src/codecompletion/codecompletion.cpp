@@ -371,6 +371,7 @@ int LSPeventID                  = wxNewId();
 int idPauseParsing              = wxNewId();
 int idProjectPauseParsing       = wxNewId();
 int idStartupDelayTimer         = wxNewId();
+static int idCodeFormatterActiveFile = wxNewId();   // (christo 25/05/02)
 
 int idSpecifiedFileReparse      = XRCID("idSpecifiedFileReparse");
 
@@ -418,6 +419,7 @@ BEGIN_EVENT_TABLE(ClgdCompletion, cbCodeCompletionPlugin)
     EVT_MENU(idEditorFileReparse,                  ClgdCompletion::OnActiveEditorFileReparse   )
     EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing )
     EVT_MENU(idProjectPauseParsing,                ClgdCompletion::OnProjectPauseParsing )
+    EVT_MENU(idCodeFormatterActiveFile, ClgdCompletion::OnFormatActiveFile) // (christo 25/05/02)
 
     // CC's toolbar
     EVT_CHOICE(XRCID("chcCodeCompletionScope"),    ClgdCompletion::OnScope   )
@@ -1062,6 +1064,18 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
         }
         if (wxFound(insertId) and pEditor and (not GetLSP_Initialized(pEditor)) )
             menu->Enable(insertId, false);
+
+        // Try to append after "Format use AStyle" else append at end.
+        const wxString labelAStyle = _("Format use AStyle");
+        const wxString label = _("Format use Clangd"); // (christo 25/05/02)
+        int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, labelAStyle);
+        wxMenuItem* item = menu->FindItemByPosition(position);
+        if (item)  {
+            wxString itemLabel = item->GetItemLabelText();
+            if (itemLabel == labelAStyle)
+                position += 1;
+        }
+        menu->Insert(position, idCodeFormatterActiveFile, label, _("Format the selected source code (selected line) in the current file"));
 
     }
     else if (type == mtProjectManager)
@@ -3702,6 +3716,11 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
         pParser->OnLSP_RequestedSemanticTokensResponse(event);
     }
+    else if (evtString.StartsWith("textDocument/rangeFormatting")) // (christo 25/05/02)
+    {
+        Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+        pParser->OnLSP_RangeFormattingResponse(event);
+    }
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
@@ -5889,4 +5908,21 @@ bool ClgdCompletion::DoShowDiagnostics( cbEditor* ed, int line)  //(Christo 2024
 // ----------------------------------------------------------------------------
 {
 	return m_pParseManager->DoShowDiagnostics(ed->GetFilename(), line);
+}
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnFormatActiveFile(wxCommandEvent& event)  // (christo 25/05/02)
+// ----------------------------------------------------------------------------
+{
+    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (!pEditor)
+        return;
+    cbStyledTextCtrl* control = pEditor->GetControl();
+    if (control->GetReadOnly())
+    {
+        cbMessageBox(_("The file is read-only!"), _("Error"), wxICON_ERROR);
+        return;
+    }
+    GetLSPClient(pEditor)->LSP_RequestRangeFormatting(pEditor);
+
+    return;
 }

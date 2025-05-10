@@ -1685,6 +1685,11 @@ void ProcessLanguageClient::OnIDResult(wxCommandEvent& event)
         {
             lspevt.SetString(idValue + STX +"result");
         }
+        else if (idValue.StartsWith("textDocument/rangeFormatting"))    // (christo 25/05/02)
+        {
+            lspevt.SetString(idValue + STX + "result");
+        }
+
 
     }//endif "id"
 
@@ -2669,7 +2674,67 @@ void ProcessLanguageClient::LSP_RequestRename(cbEditor* pEd, int argCaretPositio
 
     return ;
 }//end LSP_RequestRename
+// ----------------------------------------------------------------------------
+void ProcessLanguageClient::LSP_RequestRangeFormatting(cbEditor* pEd)  // (christo 25/05/02)
+// ----------------------------------------------------------------------------
+{
+    cbAssertNonFatal(pEd && "LSP_RequestRangeFormatting called with nullptr");
+    if (not GetLSP_Initialized())
+    {
+        cbMessageBox(_("LSP: attempt to LSP_RequestRangeFormatting() before initialization."));
+        return;
+    }
 
+    if (!GetLSP_IsEditorParsed(pEd))
+    {
+        wxString msg = wxString::Format(_("%s\nnot yet parsed.\nProject:"),
+                                        wxFileName(pEd->GetFilename()).GetFullName());
+        wxString title = GetEditorsProjectTitle(pEd);
+        msg += title.IsEmpty() ? _("None") : title;
+        InfoWindow::Display(_("LSP: File not yet parsed"), msg);
+        return;
+    }
+
+    cbStyledTextCtrl* pCtrl = pEd->GetControl();
+    if (not pCtrl)
+        return;
+
+    wxString fileURI = fileUtils.FilePathToURI(pEd->GetFilename());
+    fileURI.Replace("\\", "/");
+
+    const int selectionStart = pCtrl->GetSelectionStart();
+    const int selectionEnd = pCtrl->GetSelectionEnd();
+
+    const int startLine = pCtrl->LineFromPosition(selectionStart);
+    const int endLine = pCtrl->LineFromPosition(selectionEnd);
+
+    Range range;
+    range.start.line = startLine;
+    range.start.character = selectionStart - pCtrl->PositionFromLine(startLine);
+    range.end.line = endLine;
+    range.end.character = selectionEnd - pCtrl->PositionFromLine(endLine);
+
+    std::string stdFileURI = GetstdUTF8Str(fileURI);
+    DocumentUri docuri = DocumentUri(stdFileURI.c_str());
+
+    writeClientLog(StdString_Format("<<< LSP_RequestRangeFormatting:\n%s,line[%d], char[%d]", docuri.c_str(), range.start.line, range.start.character));
+
+    // Report changes to server else reported line references will be wrong.
+    LSP_DidChange(pEd);
+
+    try
+    {
+        RangeFormatting(docuri, range);
+    }
+    catch (std::exception& err)
+    {
+        wxString errMsg(wxString::Format("\nLSP_RequestRangeFormatting() error: %s\n%s", err.what(), docuri.c_str()));
+        writeClientLog(errMsg.ToStdString());
+        cbMessageBox(errMsg);
+    }
+
+    SetLastLSP_Request(pEd->GetFilename(), "textDocument/rangeFormatting");
+}
 // ----------------------------------------------------------------------------
 void ProcessLanguageClient::LSP_RequestSymbols(cbEditor* pEd, size_t rrid)
 // ----------------------------------------------------------------------------

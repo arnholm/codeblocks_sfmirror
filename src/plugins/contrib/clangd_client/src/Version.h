@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.137 25/05/5")
+#define VERSION wxT("1.2.138 25/05/10")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -50,6 +50,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.138   2025/05/10 Apply Christo cland source formatting patch
 //1.2.137   2025/05/5 Avoid use of clang compiler resources when using mingw compiler
 //                     in $(CODEBLOCKS)\MinGW
 //1.2.136   2025/04/21 Avoid issuing annoying message for non clangd_client global settings
