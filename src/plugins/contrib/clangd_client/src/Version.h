@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.138 25/05/10")
+#define VERSION wxT("1.2.139 25/05/14")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -47,9 +47,12 @@ class AppVersion
 };
 
 #endif // VERSION_H
+//Versions
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.139   2025/05/14 Avoid asset when FindSortedMenuItemPosition() returns menu
+//                     insert position greater than menu items.
 //1.2.138   2025/05/10 Apply Christo cland source formatting patch
 //1.2.137   2025/05/5 Avoid use of clang compiler resources when using mingw compiler
 //                     in $(CODEBLOCKS)\MinGW

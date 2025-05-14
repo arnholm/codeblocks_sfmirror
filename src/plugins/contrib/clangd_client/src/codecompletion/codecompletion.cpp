@@ -1068,15 +1068,19 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
         // Try to append after "Format use AStyle" else append at end.
         const wxString labelAStyle = _("Format use AStyle");
         const wxString label = _("Format use Clangd"); // (christo 25/05/02)
-        int position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, labelAStyle);
-        wxMenuItem* item = menu->FindItemByPosition(position);
-        if (item)  {
-            wxString itemLabel = item->GetItemLabelText();
-            if (itemLabel == labelAStyle)
-                position += 1;
+        size_t position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*menu, labelAStyle);
+        //size_t menuKnt = menu->GetMenuItemCount(); // **Debugging**
+        if (position < menu->GetMenuItemCount())
+        {
+            wxMenuItem* item = menu->FindItemByPosition(position);
+            if (item)
+            {
+                wxString itemLabel = item->GetItemLabelText();
+                if (itemLabel == labelAStyle)
+                    position += 1;
+            }
         }
         menu->Insert(position, idCodeFormatterActiveFile, label, _("Format the selected source code (selected line) in the current file"));
-
     }
     else if (type == mtProjectManager)
     {
