@@ -101,8 +101,8 @@ public:
     int  GetSashPosition() const;
 
     /** Sets/gets the search history */
-    void          SetSearchHistory(const wxArrayString& searchPatterns, const wxArrayString& searchDirs,
-                                   const wxArrayString& searchMasks);
+    void SetSearchHistory(const wxArrayString& searchPatterns, const wxArrayString& searchDirs,
+                          const wxArrayString& searchMasks);
     wxArrayString GetSearchHistory() const;
     wxArrayString GetSearchDirsHistory() const;
     wxArrayString GetSearchMasksHistory() const;

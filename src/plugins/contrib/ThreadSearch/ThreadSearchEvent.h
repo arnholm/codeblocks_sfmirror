@@ -69,11 +69,11 @@ END_DECLARE_EVENT_TYPES()
 
 #define EVT_THREAD_SEARCH(id, fn) \
     DECLARE_EVENT_TABLE_ENTRY(wxEVT_THREAD_SEARCH, id, -1, \
-    (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction) (ThreadSearchEventFunction) & fn,(wxObject *) NULL ),
+    (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction) (ThreadSearchEventFunction) & fn,(wxObject *) nullptr ),
 
 #define EVT_THREAD_SEARCH_ERROR(id, fn) \
     DECLARE_EVENT_TABLE_ENTRY(wxEVT_THREAD_SEARCH_ERROR, id, -1, \
-    (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction) (ThreadSearchEventFunction) & fn,(wxObject *) NULL ),
+    (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction) (ThreadSearchEventFunction) & fn,(wxObject *) nullptr ),
 
 #endif // THREAD_SEARCH_EVENT_H
 

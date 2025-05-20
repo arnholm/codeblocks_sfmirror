@@ -29,7 +29,7 @@ TextFileSearcher* TextFileSearcher::BuildTextFileSearcher(const wxString& search
                                                           bool matchInComments,
                                                           bool regEx)
 {
-    TextFileSearcher* pFileSearcher = NULL;
+    TextFileSearcher* pFileSearcher = nullptr;
     if ( regEx == true )
     {
         pFileSearcher = new TextFileSearcherRegEx(searchText, matchCase, matchWordBegin, matchWord, matchInComments);

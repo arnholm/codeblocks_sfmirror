@@ -75,7 +75,7 @@ BEGIN_EVENT_TABLE(SearchInPanel, wxPanel)
     EVT_TOGGLEBUTTON(controlIDs.Get(ControlIDs::idBtnSearchWorkspaceFiles), SearchInPanel::OnBtnSearchWorkspaceFilesClick)
     EVT_TOGGLEBUTTON(controlIDs.Get(ControlIDs::idBtnSearchDirectoryFiles), SearchInPanel::OnBtnClickEvent)
     // end wxGlade
-END_EVENT_TABLE();
+END_EVENT_TABLE()
 
 void SearchInPanel::OnBtnClickEvent(wxCommandEvent &event)
 {

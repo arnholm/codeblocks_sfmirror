@@ -257,7 +257,8 @@ struct DirectorySelectDialog : wxDialog
                     m_list->Check(newIndex, true);
             }
 
-            wxButton *buttonUnCheckUnselected = new wxButton(panelList, controlIDs.Get(ControlIDs::idDirDialogCheckSelectedButton),
+            wxButton *buttonUnCheckUnselected = new wxButton(panelList,
+                                                             controlIDs.Get(ControlIDs::idDirDialogCheckSelectedButton),
                                                              _("Check only selected"));
             wxStaticLine *separator0 = new wxStaticLine(panelList);
             wxButton *buttonAdd = new wxButton(panelList,
@@ -514,7 +515,7 @@ BEGIN_EVENT_TABLE(DirectorySelectDialog, wxDialog)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idDirDialogDeleteButton), DirectorySelectDialog::OnUpdateUIHasSelected)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idDirDialogCheckSelectedButton), DirectorySelectDialog::OnUpdateUIHasSelected)
     EVT_UPDATE_UI(controlIDs.Get(ControlIDs::idDirDialogDeleteAllButton), DirectorySelectDialog::OnUpdateUIHasItems)
-END_EVENT_TABLE();
+END_EVENT_TABLE()
 
 DirectoryParamsPanel::DirectoryParamsPanel(ThreadSearchFindData *findData, wxWindow* parent, int id, const wxPoint& pos,
                                            const wxSize& size, long WXUNUSED(style)):
@@ -523,7 +524,7 @@ DirectoryParamsPanel::DirectoryParamsPanel(ThreadSearchFindData *findData, wxWin
 {
     // begin wxGlade: DirectoryParamsPanel::DirectoryParamsPanel
     m_pSearchDirPath = new wxComboBox(this, controlIDs.Get(ControlIDs::idSearchDirPath), wxEmptyString,
-                                      wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
+                                      wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
     SetWindowMinMaxSize(*m_pSearchDirPath, 80, 180);
     m_pSearchDirPath->AutoComplete(new DirTextCompleter);
 
@@ -531,7 +532,7 @@ DirectoryParamsPanel::DirectoryParamsPanel(ThreadSearchFindData *findData, wxWin
     m_pChkSearchDirRecursively = new wxCheckBox(this, controlIDs.Get(ControlIDs::idChkSearchDirRecurse), _("Recurse"));
     m_pChkSearchDirHiddenFiles = new wxCheckBox(this, controlIDs.Get(ControlIDs::idChkSearchDirHidden), _("Hidden"));
     m_pMask = new wxComboBox(this, controlIDs.Get(ControlIDs::idSearchMask), findData->GetSearchMask(),
-                             wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
+                             wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
     SetWindowMinMaxSize(*m_pMask, 30, 180);
 
     set_properties();
@@ -552,7 +553,7 @@ BEGIN_EVENT_TABLE(DirectoryParamsPanel, wxPanel)
     EVT_TEXT(controlIDs.Get(ControlIDs::idSearchMask), DirectoryParamsPanel::OnSearchMaskTextEvent)
     EVT_COMBOBOX(controlIDs.Get(ControlIDs::idSearchMask), DirectoryParamsPanel::OnSearchMaskTextEvent)
     // end wxGlade
-END_EVENT_TABLE();
+END_EVENT_TABLE()
 
 
 void DirectoryParamsPanel::OnSearchDirTextEvent(wxCommandEvent &event)

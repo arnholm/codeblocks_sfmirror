@@ -66,7 +66,7 @@ ThreadSearchThread::ThreadSearchThread(ThreadSearchView*           pThreadSearch
 ThreadSearchThread::~ThreadSearchThread()
 {
     //dtor
-    if ( m_pTextFileSearcher != NULL )
+    if ( m_pTextFileSearcher != nullptr )
     {
         delete m_pTextFileSearcher;
     }

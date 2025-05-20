@@ -85,14 +85,20 @@ ThreadSearchConfPanel::ThreadSearchConfPanel(ThreadSearch& threadSearchPlugin,
     SizerThreadSearchOptions_staticbox = new wxStaticBox(m_PageGeneral, -1, _("Thread search options"));
 
     m_pPnlSearchIn = new SearchInPanel(m_PageGeneral, wxID_ANY);
-    m_pPnlDirParams = new DirectoryParamsPanel(&threadSearchPlugin.GetFindData(), m_PageGeneral, wxID_ANY);
-    m_pChkWholeWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkWholeWord), _("Whole word"));
-    m_pChkStartWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkStartWord), _("Start word"));
-    m_pChkMatchCase = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchCase), _("Match case"));
-    m_pChkMatchInComments = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchInComments), _("Match in C++ style comments"));
-    m_pChkRegExp = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkRegularExpression), _("Regular expression"));
+    m_pPnlDirParams = new DirectoryParamsPanel(&threadSearchPlugin.GetFindData(),
+                                                m_PageGeneral, wxID_ANY);
+    m_pChkWholeWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkWholeWord),
+                                     _("Whole word"));
+    m_pChkStartWord = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkStartWord),
+                                     _("Start word"));
+    m_pChkMatchCase = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchCase),
+                                     _("Match case"));
+    m_pChkMatchInComments = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkMatchInComments),
+                                           _("Match in C++ style comments"));
+    m_pChkRegExp = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkRegularExpression),
+                                  _("Regular expression"));
     m_pChkThreadSearchEnable = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkThreadSearchEnable),
-                                                                   _("Enable 'Find occurrences' contextual menu item"));
+                                              _("Enable 'Find occurrences' contextual menu item"));
     m_pChkUseDefaultOptionsForThreadSearch = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkUseDefaultOptionsOnThreadSearch),
                                                             _("Use default options when running 'Find occurrences' "));
     m_pChkShowMissingFilesError = new wxCheckBox(m_PageGeneral, controlIDs.Get(ControlIDs::idChkShowMissingFilesError),
@@ -212,7 +218,7 @@ BEGIN_EVENT_TABLE(ThreadSearchConfPanel, wxPanel)
                  ThreadSearchConfPanel::OnChkShowThreadSearchWidgetsClick)
     EVT_CHECKBOX(controlIDs.Get(ControlIDs::idChkShowCodePreview), ThreadSearchConfPanel::OnChkCodePreview)
     // end wxGlade
-END_EVENT_TABLE();
+END_EVENT_TABLE()
 
 void ThreadSearchConfPanel::OnThreadSearchEnable(wxCommandEvent &event)
 {

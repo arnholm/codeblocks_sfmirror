@@ -28,7 +28,8 @@ public:
       * This method is inherited from TextFileSearcher and is used to implement
       * different search strategies. In TextFileSearcherRegEx, the searchText provided
       * in the constructor is a regular expression pattern.
-      * @param Line : the text line to match.
+      * @param outMatchedPositions : positions text matched
+      * @param line : the text line to match.
       * @return true if line matches search text.
       */
     bool MatchLine(std::vector<int> *outMatchedPositions, const wxString &line) override;

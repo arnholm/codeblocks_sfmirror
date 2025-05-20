@@ -62,6 +62,7 @@ public:
 
     /** Return plugin's configuration panel.
       * @param parent The parent window.
+      * @param coloursInterface The interface color
       * @return A pointer to the plugin's cbConfigurationPanel. It is deleted by the caller.
       */
     virtual cbConfigurationPanel* GetConfigurationPanelEx(wxWindow* parent,
@@ -215,8 +216,6 @@ protected:
 
     /** This method loads the plugin configuration from default.conf using
       * the standard ConfigManager
-      * @param showPanel    : reference that will be true after the call if
-      *                       the panel is managed by the MessageManager during last save.
       * @param sashPosition : position of the splitter window.
       * @param mgrType      : type of view manager (Messages notebook, layout)
       * @param searchPatterns : - undocumented -

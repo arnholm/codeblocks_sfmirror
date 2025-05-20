@@ -65,7 +65,7 @@ ThreadSearchView::ThreadSearchView(ThreadSearch& threadSearchPlugin) :
     m_pPnlPreview = new wxPanel(m_pSplitter, -1, wxDefaultPosition, wxSize(1,1));
     m_pSizerSearchDirItems_staticbox = new wxStaticBox(this, -1, _("Directory parameters"));
     m_pCboSearchExpr = new wxComboBox(this, controlIDs.Get(ControlIDs::idCboSearchExpr), wxEmptyString,
-                                      wxDefaultPosition, wxDefaultSize, 0, NULL,
+                                      wxDefaultPosition, wxDefaultSize, 0, nullptr,
                                       wxCB_DROPDOWN|wxTE_PROCESS_ENTER);
 
     m_pPnlSearchIn = new SearchInPanel(this, -1);
@@ -193,7 +193,7 @@ BEGIN_EVENT_TABLE(ThreadSearchView, wxPanel)
     EVT_TOGGLEBUTTON(controlIDs.Get(ControlIDs::idBtnSearchDirectoryFiles), ThreadSearchView::OnBtnSearchDirectoryFiles)
 
     EVT_TIMER(controlIDs.Get(ControlIDs::idTmrListCtrlUpdate),          ThreadSearchView::OnTmrListCtrlUpdate)
-END_EVENT_TABLE();
+END_EVENT_TABLE()
 
 void ThreadSearchView::OnThreadSearchErrorEvent(const ThreadSearchEvent& event)
 {

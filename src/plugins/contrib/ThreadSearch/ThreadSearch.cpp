@@ -74,23 +74,23 @@ int idMenuEditPaste = XRCID("idEditPaste");
 // events handling
 BEGIN_EVENT_TABLE(ThreadSearch, cbPlugin)
     // add any events you want to handle here
-    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuViewThreadSearch),   ThreadSearch::OnMnuViewThreadSearchUpdateUI)
-    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuViewThreadSearch),   ThreadSearch::OnMnuViewThreadSearch)
-    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuViewFocusThreadSearch),   ThreadSearch::OnUpdateUISearchRunning)
-    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuViewFocusThreadSearch),   ThreadSearch::OnMnuViewFocusThreadSearch)
-    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuSearchThreadSearch), ThreadSearch::OnUpdateUISearchRunning)
-    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuSearchThreadSearch), ThreadSearch::OnMnuSearchThreadSearch)
-    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuCtxThreadSearch),    ThreadSearch::OnCtxThreadSearch)
-    EVT_MENU      (idMenuEditCopy,           ThreadSearch::OnMnuEditCopy)
-    EVT_UPDATE_UI (idMenuEditCopy,           ThreadSearch::OnMnuEditCopyUpdateUI)
-    EVT_MENU      (idMenuEditPaste,          ThreadSearch::OnMnuEditPaste)
-    EVT_TOOL      (controlIDs.Get(ControlIDs::idBtnOptions),             ThreadSearch::OnBtnOptionsClick)
-    EVT_TOOL      (controlIDs.Get(ControlIDs::idBtnSearch),              ThreadSearch::OnBtnSearchClick)
-    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idBtnSearch),              ThreadSearch::OnUpdateUIBtnSearch)
-    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idCboSearchExpr),          ThreadSearch::OnCboSearchExprEnter)
-    EVT_TEXT      (controlIDs.Get(ControlIDs::idCboSearchExpr),          ThreadSearch::OnCboSearchExprEnter)
-    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idSearchDirPath),       ThreadSearch::OnCboSearchExprEnter)
-    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idSearchMask),          ThreadSearch::OnCboSearchExprEnter)
+    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuViewThreadSearch),      ThreadSearch::OnMnuViewThreadSearchUpdateUI)
+    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuViewThreadSearch),      ThreadSearch::OnMnuViewThreadSearch)
+    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuViewFocusThreadSearch), ThreadSearch::OnUpdateUISearchRunning)
+    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuViewFocusThreadSearch), ThreadSearch::OnMnuViewFocusThreadSearch)
+    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idMenuSearchThreadSearch),    ThreadSearch::OnUpdateUISearchRunning)
+    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuSearchThreadSearch),    ThreadSearch::OnMnuSearchThreadSearch)
+    EVT_MENU      (controlIDs.Get(ControlIDs::idMenuCtxThreadSearch),       ThreadSearch::OnCtxThreadSearch)
+    EVT_MENU      (idMenuEditCopy,                                          ThreadSearch::OnMnuEditCopy)
+    EVT_UPDATE_UI (idMenuEditCopy,                                          ThreadSearch::OnMnuEditCopyUpdateUI)
+    EVT_MENU      (idMenuEditPaste,                                         ThreadSearch::OnMnuEditPaste)
+    EVT_TOOL      (controlIDs.Get(ControlIDs::idBtnOptions),                ThreadSearch::OnBtnOptionsClick)
+    EVT_TOOL      (controlIDs.Get(ControlIDs::idBtnSearch),                 ThreadSearch::OnBtnSearchClick)
+    EVT_UPDATE_UI (controlIDs.Get(ControlIDs::idBtnSearch),                 ThreadSearch::OnUpdateUIBtnSearch)
+    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idCboSearchExpr),             ThreadSearch::OnCboSearchExprEnter)
+    EVT_TEXT      (controlIDs.Get(ControlIDs::idCboSearchExpr),             ThreadSearch::OnCboSearchExprEnter)
+    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idSearchDirPath),             ThreadSearch::OnCboSearchExprEnter)
+    EVT_TEXT_ENTER(controlIDs.Get(ControlIDs::idSearchMask),                ThreadSearch::OnCboSearchExprEnter)
 // ---------------------------------------------------------------------------
     // CodeBlocks main.cpp managers all the following UI entires in ONE routine.
     // So if only one changes, all may change.
@@ -200,11 +200,11 @@ void ThreadSearch::OnAttach()
 
     #if LOGGING
      wxLog::EnableLogging(true);
-     m_pLog = new wxLogWindow(Manager::Get()->GetAppWindow(), _T(" ThreadSearch Plugin"), true, false);
+     m_pLog = new wxLogWindow(Manager::Get()->GetAppWindow(), _("ThreadSearch Plugin", true, false);
      wxLog::SetActiveTarget( m_pLog);
      m_pLog->Flush();
      m_pLog->GetFrame()->SetSize(20,30,600,300);
-     LOGIT( _T("ThreadSearch Plugin Logging Started"));
+     LOGIT( _("ThreadSearch Plugin Logging Started"));
     #endif
 
     CreateView(ThreadSearchViewManagerBase::TypeMessagesNotebook, false);
@@ -448,7 +448,7 @@ void ThreadSearch::OnUpdateUISearchRunning(wxUpdateUIEvent& event)
 
 void ThreadSearch::BuildModuleMenu(const ModuleType type, wxMenu* pMenu, const FileTreeData* /*data*/)
 {
-    wxMenuItem* pMenuItem = NULL;
+    wxMenuItem* pMenuItem = nullptr;
     if (!pMenu || !IsAttached())
         return;
 
@@ -475,7 +475,7 @@ cbConfigurationPanel* ThreadSearch::GetConfigurationPanelEx(wxWindow* parent,
                                                             cbConfigurationPanelColoursInterface *coloursInterface)
 {
     if (!IsAttached())
-        return NULL;
+        return nullptr;
 
     ThreadSearchConfPanel *panel = new ThreadSearchConfPanel(*this, coloursInterface, parent);
 
@@ -695,7 +695,7 @@ void ThreadSearch::OnBtnSearchClick(wxCommandEvent &event)
         // to look for the toolbar combo text.
         const long id = controlIDs.Get(ControlIDs::idCboSearchExpr);
         wxComboBox* pCboBox = static_cast<wxComboBox*>(m_pToolbar->FindControl(id));
-        wxASSERT(pCboBox != NULL);
+        wxASSERT(pCboBox != nullptr);
 
         wxString searchValue = pCboBox->GetValue();
         if(searchValue.empty())
@@ -765,7 +765,7 @@ void ThreadSearch::OnCboSearchExprEnter(wxCommandEvent &event)
     // Runs a multi threaded search with combo text
     const long id = controlIDs.Get(ControlIDs::idCboSearchExpr);
     wxComboBox* pCboBox = static_cast<wxComboBox*>(m_pToolbar->FindControl(id));
-    wxASSERT(pCboBox != NULL);
+    wxASSERT(pCboBox != nullptr);
 
     const wxString &value = pCboBox->GetValue();
     if (!value.empty())
@@ -806,7 +806,7 @@ bool ThreadSearch::GetCursorWord(wxString& sWord)
 
     // Gets active editor
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    if ( ed != NULL )
+    if ( ed != nullptr )
     {
         cbStyledTextCtrl* control = ed->GetControl();
 
@@ -927,7 +927,7 @@ void ThreadSearch::OnMnuEditCopyUpdateUI(wxUpdateUIEvent& event)
     if ( hasSel )
     {
         mbar->Enable(idMenuEditCopy, hasSel);
-        wxToolBar* pMainToolBar = (wxToolBar*) ::wxFindWindowByName(wxT("toolbar"), NULL);
+        wxToolBar* pMainToolBar = (wxToolBar*) ::wxFindWindowByName(wxT("toolbar"), nullptr);
         if (pMainToolBar) pMainToolBar->EnableTool(idMenuEditCopy, hasSel);
         return;
     }

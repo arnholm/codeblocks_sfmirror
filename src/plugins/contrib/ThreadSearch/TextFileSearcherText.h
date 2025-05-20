@@ -19,8 +19,14 @@
 class TextFileSearcherText : public TextFileSearcher
 {
 public:
-    /** Constructor. */
-    // We don't use ThreadSearchFindData to limit coupling
+    /** Constructor TextFileSearcherText
+     * \brief We don't use ThreadSearchFindData to limit coupling
+      * @param searchText : text to search
+      * @param matchCase : with character case
+      * @param matchWordBegin : with begin word
+      * @param matchWord : all words
+      * @param matchInComments : in comments
+	*/
     TextFileSearcherText(const wxString& searchText, bool matchCase, bool matchWordBegin,
                          bool matchWord, bool matchInComments);
 
@@ -28,6 +34,7 @@ public:
       * This method is inherited from TextFileSearcher and is used to implement
       * different search strategies. In TextFileSearcherText, the basic text search
       * is implemented.
+      * @param outMatchedPositions : positions text matched
       * @param line : the text line to match.
       * @return true if line matches search text.
       */

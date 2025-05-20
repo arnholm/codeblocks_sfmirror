@@ -25,7 +25,7 @@ ThreadSearchLoggerTree::ThreadSearchLoggerTree(ThreadSearchView& threadSearchVie
                                                wxWindow* pParent,
                                                long id) :
     ThreadSearchLoggerBase(pParent, threadSearchView, threadSearchPlugin, fileSorting),
-    m_pTreeLog(NULL),
+    m_pTreeLog(nullptr),
     m_FirstItemProcessed(false)
 {
     m_pTreeLog = new wxTreeCtrl(this, id, wxDefaultPosition, wxSize(1,1), wxTR_HAS_BUTTONS|wxTR_LINES_AT_ROOT|wxTR_FULL_ROW_HIGHLIGHT|wxTR_HIDE_ROOT|wxTR_DEFAULT_STYLE|wxSUNKEN_BORDER);
@@ -42,13 +42,13 @@ ThreadSearchLoggerTree::ThreadSearchLoggerTree(ThreadSearchView& threadSearchVie
 ThreadSearchLoggerTree::~ThreadSearchLoggerTree()
 {
     wxWindow* pParent = m_pTreeLog->GetParent();
-    if ( pParent != NULL )
+    if ( pParent != nullptr )
     {
         // Events are managed dynamically to be able to stop/start management when required.
         DisconnectEvents(pParent);
     }
     m_pTreeLog->Destroy();
-    m_pTreeLog = NULL;
+    m_pTreeLog = nullptr;
 }
 
 
@@ -70,11 +70,11 @@ void ThreadSearchLoggerTree::ConnectEvents(wxEvtHandler* pEvtHandler)
     int id = m_pTreeLog->GetId();
     pEvtHandler->Connect(id, wxEVT_COMMAND_TREE_SEL_CHANGED,
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeClick, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeClick, nullptr, this);
 
     pEvtHandler->Connect(id, wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeDoubleClick, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeDoubleClick, nullptr, this);
 
 #if wxUSE_MENUS
     #if   defined ( __WXGTK__ )
@@ -83,13 +83,13 @@ void ThreadSearchLoggerTree::ConnectEvents(wxEvtHandler* pEvtHandler)
     pEvtHandler->Connect(id, wxEVT_COMMAND_TREE_ITEM_MENU,
     #endif
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeContextualMenu, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeContextualMenu, nullptr, this);
 
     pEvtHandler->Connect(controlIDs.Get(ControlIDs::idMenuCtxDeleteItem), wxEVT_COMMAND_MENU_SELECTED,
-            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteTreeItem), NULL, this);
+            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteTreeItem), nullptr, this);
 
     pEvtHandler->Connect(controlIDs.Get(ControlIDs::idMenuCtxDeleteAllItems), wxEVT_COMMAND_MENU_SELECTED,
-            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteAllTreeItems), NULL, this);
+            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteAllTreeItems), nullptr, this);
 #endif // wxUSE_MENUS
 }
 
@@ -100,11 +100,11 @@ void ThreadSearchLoggerTree::DisconnectEvents(wxEvtHandler* pEvtHandler)
     int id = m_pTreeLog->GetId();
     pEvtHandler->Disconnect(id, wxEVT_COMMAND_TREE_SEL_CHANGED,
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeClick, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeClick, nullptr, this);
 
     pEvtHandler->Disconnect(id, wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeDoubleClick, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeDoubleClick, nullptr, this);
 
 #if wxUSE_MENUS
     #if   defined ( __WXGTK__ )
@@ -113,13 +113,13 @@ void ThreadSearchLoggerTree::DisconnectEvents(wxEvtHandler* pEvtHandler)
     pEvtHandler->Disconnect(id, wxEVT_COMMAND_TREE_ITEM_MENU,
     #endif
             (wxObjectEventFunction)(wxEventFunction)(wxCommandEventFunction)
-            &ThreadSearchLoggerTree::OnLoggerTreeContextualMenu, NULL, this);
+            &ThreadSearchLoggerTree::OnLoggerTreeContextualMenu, nullptr, this);
 
     pEvtHandler->Disconnect(controlIDs.Get(ControlIDs::idMenuCtxDeleteItem), wxEVT_COMMAND_MENU_SELECTED,
-            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteTreeItem), NULL, this);
+            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteTreeItem), nullptr, this);
 
     pEvtHandler->Disconnect(controlIDs.Get(ControlIDs::idMenuCtxDeleteAllItems), wxEVT_COMMAND_MENU_SELECTED,
-            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteAllTreeItems), NULL, this);
+            wxCommandEventHandler(ThreadSearchLoggerTree::OnDeleteAllTreeItems), nullptr, this);
 #endif // wxUSE_MENUS
 }
 
@@ -313,7 +313,7 @@ void ThreadSearchLoggerTree::Clear()
     // during delete, we disable events management during tree cleaning
     // (DisconnectEvents then ConnectEvents).
     wxWindow* pParent = m_pTreeLog->GetParent();
-    if ( pParent == NULL ) return;
+    if ( pParent == nullptr ) return;
 
     DisconnectEvents(pParent);
 
@@ -364,7 +364,7 @@ void ThreadSearchLoggerTree::DeleteTreeItem(wxTreeItemId id)
     if ( id.IsOk() )
     {
         wxWindow* pParent = m_pTreeLog->GetParent();
-        if ( pParent == NULL ) return;
+        if ( pParent == nullptr ) return;
 
         // Disconnect events to avoid lots of seleced events
         DisconnectEvents(pParent);
