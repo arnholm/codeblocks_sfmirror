@@ -3479,12 +3479,12 @@ void Parser::OnLSP_RangeFormattingResponse(wxCommandEvent& event)  // (christo 2
                                   : msgObject.dump();
 
             CCLogger::Get()->DebugLog(msg);
-            cbMessageBox(wxString::FromUTF8(msg));
+            cbMessageBox(wxString::FromUTF8(msg.c_str()));  // std::string overload is available since 3.1.1
         }
         else
         {
             std::cerr << "textDocument/rangeFormatting json: " << pJson->dump() << std::endl;
-            cbMessageBox("Unexpected LSP response");
+            cbMessageBox(_("Unexpected LSP response"));
         }
         return;
     }
