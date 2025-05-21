@@ -532,7 +532,7 @@ void FileExplorer::RefreshExpanded(wxTreeItemId ti)
 
 }
 
-void FileExplorer::Refresh(wxTreeItemId ti)
+void FileExplorer::RefreshSimple(wxTreeItemId ti)
 {
     //    Expansion e;
     //    GetExpandedNodes(ti,&e);
@@ -971,7 +971,7 @@ void FileExplorer::OnSetLoc(wxCommandEvent &/*event*/)
 
 void FileExplorer::OnVCSChangesCheck(wxCommandEvent &/*event*/)
 {
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnVCSControl(wxCommandEvent &/*event*/)
@@ -1006,7 +1006,7 @@ void FileExplorer::OnVCSControl(wxCommandEvent &/*event*/)
     if (!commit.empty())
     {
         m_commit = commit;
-        Refresh(m_Tree->GetRootItem());
+        RefreshSimple(m_Tree->GetRootItem());
     } else
     {
         unsigned int i=0;
@@ -1337,7 +1337,7 @@ void FileExplorer::OnNewFile(wxCommandEvent &/*event*/)
         if(fileobj.Create(newfile))
         {
             fileobj.Close();
-            Refresh(m_Tree->GetFocusedItem());
+            RefreshSimple(m_Tree->GetFocusedItem());
         }
         else
             cbMessageBox(_("File Creation Failed"),_("Error"));
@@ -1377,7 +1377,7 @@ void FileExplorer::OnNewFolder(wxCommandEvent &/*event*/)
     {
         if (!dir.Mkdir(mkd))
             cbMessageBox(_("A directory could not be created with name ")+name);
-        Refresh(m_Tree->GetFocusedItem());
+        RefreshSimple(m_Tree->GetFocusedItem());
     }
     else
         cbMessageBox(_("A file or directory already exists with name ")+name);
@@ -1426,7 +1426,7 @@ void FileExplorer::OnDuplicate(wxCommandEvent &/*event*/)
                 MessageBox(m_Tree, wxString::Format(_("Command '%s' failed with error %i"), cmdline, hresult));
         }
     }
-    Refresh(m_Tree->GetRootItem()); //TODO: Can probably be more efficient than this
+    RefreshSimple(m_Tree->GetRootItem()); //TODO: Can probably be more efficient than this
     //TODO: Reselect item in new location?? (what it outside root scope?)
 }
 
@@ -1475,7 +1475,7 @@ void FileExplorer::OnCopy(wxCommandEvent &/*event*/)
     if(dd.ShowModal()==wxID_CANCEL)
         return;
     CopyFiles(dd.GetPath(),selectedfiles);
-//    Refresh(m_Tree->GetRootItem()); //TODO: Use this if monitoring not available
+//    RefreshSimple(m_Tree->GetRootItem()); //TODO: Use this if monitoring not available
     //TODO: Reselect item in new location?? (what if outside root scope?)
 }
 
@@ -1514,7 +1514,7 @@ void FileExplorer::OnMove(wxCommandEvent &/*event*/)
     if(dd.ShowModal()==wxID_CANCEL)
         return;
     MoveFiles(dd.GetPath(),selectedfiles);
-//    Refresh(m_Tree->GetRootItem()); //TODO: Can probably be more efficient than this
+//    RefreshSimple(m_Tree->GetRootItem()); //TODO: Can probably be more efficient than this
     //TODO: Reselect item in new location?? (what if outside root scope?)
 }
 
@@ -1565,7 +1565,7 @@ void FileExplorer::OnDelete(wxCommandEvent &/*event*/)
                 MessageBox(m_Tree, wxString::Format(_("Delete directory '%s' failed with error %i"), path, hresult));
         }
     }
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnRename(wxCommandEvent &/*event*/)
@@ -1605,7 +1605,7 @@ void FileExplorer::OnRename(wxCommandEvent &/*event*/)
         if(hresult)
             MessageBox(m_Tree, wxString::Format(_("Rename directory '%s' failed with error %i"), path, hresult));
     }
-    Refresh(m_Tree->GetItemParent(m_Tree->GetFocusedItem()));
+    RefreshSimple(m_Tree->GetItemParent(m_Tree->GetFocusedItem()));
 }
 
 void FileExplorer::OnExpandAll(wxCommandEvent &/*event*/)
@@ -1638,38 +1638,38 @@ void FileExplorer::OnSettings(wxCommandEvent &/*event*/)
 void FileExplorer::OnShowHidden(wxCommandEvent &/*event*/)
 {
     m_show_hidden = !m_show_hidden;
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseCVS(wxCommandEvent &/*event*/)
 {
     m_parse_cvs = !m_parse_cvs;
     //cfg->Clear();
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseSVN(wxCommandEvent &/*event*/)
 {
     m_parse_svn = !m_parse_svn;
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseGIT(wxCommandEvent &/*event*/)
 {
     m_parse_git = !m_parse_git;
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseHG(wxCommandEvent &/*event*/)
 {
     m_parse_hg = !m_parse_hg;
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnParseBZR(wxCommandEvent &/*event*/)
 {
     m_parse_bzr = !m_parse_bzr;
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnUpButton(wxCommandEvent &/*event*/)
@@ -1685,9 +1685,9 @@ void FileExplorer::OnUpButton(wxCommandEvent &/*event*/)
 void FileExplorer::OnRefresh(wxCommandEvent &/*event*/)
 {
     if(m_Tree->GetItemImage(m_Tree->GetFocusedItem())==fvsFolder)
-        Refresh(m_Tree->GetFocusedItem());
+        RefreshSimple(m_Tree->GetFocusedItem());
     else
-        Refresh(m_Tree->GetRootItem());
+        RefreshSimple(m_Tree->GetRootItem());
 }
 
 //TODO: Set copy cursor state if necessary
@@ -1764,7 +1764,7 @@ void FileExplorer::OnEndDragTreeItem(wxTreeEvent &event)
 //        if(!PromptSaveOpenFile(_("File is modified, press \"Yes\" to save before move/copy, \"No\" to move/copy unsaved file or \"Cancel\" to abort the operation"),path)) //TODO: specify move or copy depending on whether CTRL held down
 //            return;
     }
-    Refresh(m_Tree->GetRootItem());
+    RefreshSimple(m_Tree->GetRootItem());
 }
 
 void FileExplorer::OnAddToProject(wxCommandEvent &/*event*/)

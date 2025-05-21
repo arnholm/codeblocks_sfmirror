@@ -141,7 +141,7 @@ private:
     void GetExpandedPaths(wxTreeItemId ti, wxArrayString &paths);
     wxTreeItemId GetNextExpandedNode(wxTreeItemId ti);
     bool ValidateRoot();
-    void Refresh(wxTreeItemId ti);
+    void RefreshSimple(wxTreeItemId ti);
     void RefreshExpanded(wxTreeItemId ti);
     wxString m_root;
     wxString m_commit;
