@@ -26,7 +26,10 @@ typedef std::map< size_t, TokenIdxSet,       std::less<size_t> > TokenFileMap;
 typedef std::map< size_t, FileParsingStatus, std::less<size_t> > TokenFileStatusMap;
 typedef std::map< int, wxString >                                TokenIdxStringMap;
 
-extern wxMutex s_TokenTreeMutex;
+//extern wxMutex s_TokenTreeMutex;
+#include <mutex>
+extern std::timed_mutex s_TokenTreeMutex; //(ph 250526)
+
 
 /** a container class to hold all the Tokens getting from parsing stage
  *

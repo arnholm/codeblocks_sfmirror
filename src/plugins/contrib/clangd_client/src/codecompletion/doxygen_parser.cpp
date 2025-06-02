@@ -933,8 +933,8 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
         // -------------------------------------------------
         //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)           //LOCK TokenTree
         // -------------------------------------------------
-        auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-        if (lock_result != wxMUTEX_NO_ERROR)
+        auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+        if (lock_result != true)
         {
             // Don't block UI thread. Just return empty result
             html += "Token tree is busy, try again...<br>";
@@ -1033,8 +1033,8 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
     // -------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)           //LOCK TokenTree
     // -------------------------------------------------
-    auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-    if (lock_result != wxMUTEX_NO_ERROR)
+    auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+    if (lock_result != true)
     {
         // Don't block UI thread. Just return empty result
         html += "Token tree is busy, try again...<br>";
@@ -1218,8 +1218,8 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
     // --------------------------------------------
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)    //LOCK TokenTree
     // --------------------------------------------
-    auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-    if (lock_result != wxMUTEX_NO_ERROR)
+    auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+    if (lock_result != true)
     {
         // Don't block the UI, just return empty result
         html += "Token tree is busy, try again...<br>" ;

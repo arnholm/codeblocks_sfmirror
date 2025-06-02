@@ -757,9 +757,10 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    //auto locker_result = s_TokenTreeMutex.LockTimeout(250); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    //if (locker_result != wxMUTEX_NO_ERROR)
+    if (not CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex))
     {   /// Requeuing is deprecated for now
         // lock failed, do not block the UI thread, verify tries, call back when idle
         //-if (GetParseManager()->GetIdleCallbackHandler(pActiveProject)->IncrQCallbackOk(lockFuncLine))
@@ -1007,8 +1008,9 @@ bool ClassBrowser::GetTokenTreeLock(void (T::*method)(T1 x1), P1 event)
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    //auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+    if (locker_result != true)
     {
         // Do not reschedule a failed token tree lock here
         // Here. It makes no sense to return, then retry the lock for a caller
@@ -1029,9 +1031,9 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
     //- If the lock is busy, a callback is queued for idle time.
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         /// requeuing is deprecated for now.
         //- lock failed, do not block the UI thread, call back when idle
@@ -1041,7 +1043,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
     }
     else /*lock succeeded*/
     {
-        //- s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
+        s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
         // -GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
     }
 
@@ -1057,6 +1059,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
     {
         // unlock TokenTree, output msg, and return
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
+        s_TokenTreeMutex_Owner = wxString();
 
         cbMessageBox(_("No matches were found: ") + search,
                      _("Search failed"), wxICON_INFORMATION);
@@ -1086,6 +1089,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
             // unlock TokenTree, ask for input
             // --------------------------------------------
             CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex) //UNLOCK
+            s_TokenTreeMutex_Owner = wxString();
             // --------------------------------------------
 
             const int sel = cbGetSingleChoiceIndex(_("Please make a selection:"), _("Multiple matches"), selections,
@@ -1100,9 +1104,9 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
             // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
             // ----------------------------------------------------------------------------
             //- If the lock is busy, a callback is queued for idle time.
-            auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+            auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
             wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-            if (locker_result != wxMUTEX_NO_ERROR)
+            if (locker_result != true)
             {
                 /// Requeuing is deprecated for now
                 // lock failed, do not block the UI thread, call back when idle
@@ -1112,7 +1116,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
             }
             else /*lock succeeded*/
             {
-                //-s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
+                s_TokenTreeMutex_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/
                 //-GetIdleCallbackHandler()->ClearQCallbackPosn(lockFuncLine);
             }
 
@@ -1129,6 +1133,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
 
     // ----------------------------------------------------
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)   //UNLOCK
+    s_TokenTreeMutex_Owner = wxString();
     // ----------------------------------------------------
 
     // time to "walk" the tree

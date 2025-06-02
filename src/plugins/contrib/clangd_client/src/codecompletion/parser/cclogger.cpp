@@ -248,3 +248,26 @@ void CCLogger::DebugLogError(const wxString& msg)
 {
     DebugLog(msg, m_DebugLogErrorId);
 }
+// ----------------------------------------------------------------------------
+bool CCLogger::GetTimedMutexLock(std::timed_mutex& mutexref) //(ph 250526)
+// ----------------------------------------------------------------------------
+{
+    bool result = mutexref.try_lock_for(std::chrono::milliseconds(250));
+    return result;
+}
+// ----------------------------------------------------------------------------
+void CCLogger::GetMutexLock(std::timed_mutex& mutexref) //(ph 250526)
+// ----------------------------------------------------------------------------
+{
+    mutexref.lock();
+    return;
+}
+// ----------------------------------------------------------------------------
+void CCLogger::GetMutexUnlock(std::timed_mutex& mutexref) //(ph 250526)
+// ----------------------------------------------------------------------------
+{
+    mutexref.unlock();
+    return;
+}
+
+

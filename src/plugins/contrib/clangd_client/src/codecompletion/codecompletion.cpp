@@ -1802,9 +1802,9 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
                     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
                     // ----------------------------------------------------------------------------
                     /// Lock token tree. Unlock occurs in UnlockTokenTree struct dtor above
-                    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+                    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
                     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-                    if (locker_result != wxMUTEX_NO_ERROR)
+                    if (locker_result != true)
                     {
                         // lock failed, do not block the UI thread
                         m_CCHasTreeLock = false;
@@ -2155,9 +2155,9 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, call back when idle
         if (GetParseManager()->GetIdleCallbackHandler(pActiveProject)->IncrQCallbackOk(lockFuncLine))
@@ -2590,9 +2590,9 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
     // If lock is busy, queue a callback for idle time
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, call back when idle
         if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
@@ -2669,9 +2669,9 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
     // If lock is busy, queue a callback for idle time
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, call back when idle
         if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
@@ -4466,9 +4466,9 @@ int ClgdCompletion::DoClassMethodDeclImpl()
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
     // Do not block the main UI. If the lock is busy, this code re-queues a callback on idle time.
-    auto lock_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (lock_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, don't block UI thread, requeue a callback on the idle queue instead.
         if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
@@ -4545,9 +4545,9 @@ int ClgdCompletion::DoAllMethodsImpl()
     // ----------------------------------------------------
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
-    auto lock_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (lock_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, but don't block UI thread, requeue an idle time callback instead.
         if (not GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine) ) //verify tries < 8
@@ -4999,9 +4999,9 @@ void ClgdCompletion::ParseFunctionsAndFillToolbar()
         //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)             // LOCK TokenTree
         // -----------------------------------------------------
         // If the lock is busy, a callback is queued for idle time.
-        auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+        auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-        if (locker_result != wxMUTEX_NO_ERROR)
+        if (locker_result != true)
         {
             // lock failed, do not block the UI thread, call back when idle
             if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))
@@ -5361,9 +5361,9 @@ void ClgdCompletion::UpdateEditorSyntax(cbEditor* ed)
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
     // Avoid blocking main thread, If the lock is busy, queue a callback at idle time.
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, call back when idle
         if (GetIdleCallbackHandler()->IncrQCallbackOk(lockFuncLine))

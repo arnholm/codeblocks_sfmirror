@@ -11,7 +11,8 @@
 #include <wx/thread.h>
 
 #include <memory> // unique_ptr
-#include <chrono>
+//#include <chrono> //clangd say unused
+#include <mutex>    //(ph 250526)
 
 #include <cbexception.h> // cbAssert
 #include <logmanager.h>  // F()
@@ -58,6 +59,10 @@ public:
 
     bool GetExternalLogStatus(){return m_ExternLogActive;}
     void SetExternalLog(bool OnOrOff);
+
+    bool GetTimedMutexLock(std::timed_mutex& mutexref); //(ph 250526)
+    void GetMutexLock(std::timed_mutex& mutexref);      // (ph 25/05/28)
+    void GetMutexUnlock(std::timed_mutex& mutexref);    // (ph 25/05/28)
 
    #if defined(MEASURE_wxIDs)
     // ----------------------------------------------------
@@ -130,13 +135,15 @@ private:
 // For tracking, either uncomment:
 //#define CC_ENABLE_LOCKER_TRACK
 // ...or:
-// #define CC_ENABLE_LOCKER_ASSERT
+//#define CC_ENABLE_LOCKER_ASSERT
 // ..or none of the above.
 //-------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
 // MUTEX TRACKING
 // ----------------------------------------------------------------------------
+/// Notes: wxMutex was changed to std::timed_mutes becasue Manjaro wxMutex was always
+/// returning wxMUTEX_MISC_ERROR on timed locks which is undocumented. // (ph 25/05/28)
 #if defined(CC_ENABLE_LOCKER_TRACK)
     // [1] Implementations for tracking mutexes:
     #define THREAD_LOCKER_MTX_LOCK(NAME)                                         \
@@ -175,19 +182,19 @@ private:
     // ----------------------------------------------------------------------------
     #define CC_LOCKER_TRACK_TT_MTX_LOCK(M)    \
     {                                         \
-        auto locker_result = M.LockTimeout(250); \
-        if (locker_result==wxMUTEX_NO_ERROR) \
+        auto locker_result = CCLogger::Get()->GetTimedMutexLock(M); \
+        if (locker_result==true) \
           THREAD_LOCKER_MTX_LOCK_SUCCESS(M);  \
         else                                  \
           THREAD_LOCKER_MTX_FAIL(M);          \
     }
     // --CC_LOCKER_TRACK_TT_MTX_UNLOCK TRACK-----------
-    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M)    \
-    {                                           \
-        if (M.Unlock()==wxMUTEX_NO_ERROR)       \
-          THREAD_LOCKER_MTX_UNLOCK_SUCCESS(M);  \
-        else                                    \
-          THREAD_LOCKER_MTX_FAIL(M);            \
+    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M)        \
+    {                                               \
+        if (CCLogger::Get()->GetTimedMutexLock(M)==true) \
+          THREAD_LOCKER_MTX_UNLOCK_SUCCESS(M);      \
+        else                                        \
+          THREAD_LOCKER_MTX_FAIL(M);                \
     }
     #define CC_LOCKER_TRACK_CBBT_MTX_LOCK   CC_LOCKER_TRACK_TT_MTX_LOCK
     #define CC_LOCKER_TRACK_CBBT_MTX_UNLOCK CC_LOCKER_TRACK_TT_MTX_UNLOCK
@@ -257,15 +264,14 @@ private:
     // ----------------------------------------------------------------------------
     #define CC_LOCKER_TRACK_TT_MTX_LOCK(M)      \
         do {                                    \
-            auto locker_result = M.LockTimeout(250);   \
-            if (locker_result != wxMUTEX_NO_ERROR)  \
+            auto locker_result =  CCLogger::Get()->GetTimedMutexLock(M); \
+            if (locker_result != true)  \
             {   wxString err1st = wxString::Format("Owner: %s", M##_Owner); \
                 wxString err; \
                 err.Printf(_T("LockTimeout() failed in %s at %s:%d \n\t%s"), __FUNCTION__, __FILE__, __LINE__, err1st); \
                 CCLogger::Get()->DebugLogError(wxString("Lock error") + err);  \
                 /* wxSafeShowMessage(_T("Assertion error"), err); */  \
-                locker_result = M.Lock(); /* block anyway*/ \
-                cbAssert(locker_result==wxMUTEX_NO_ERROR); /*assert if blocking lock fails*/ \
+                cbAssert(locker_result==true); /*assert if blocking lock fails*/ \
                 M##_Owner = wxString::Format("%s %d",__FUNCTION__, __LINE__); /*record owner*/  \
             } \
             else /*lock succeeded, record new owner*/ \
@@ -273,11 +279,14 @@ private:
         } while (false);
 
     // ----------------------------------------------------------------------------
-    // assert on failed UNLOCK
+    /// assert on failed UNLOCK (void is always returned from std::timed_mutex)
     // ----------------------------------------------------------------------------
-    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M)    \
-        do {                                    \
-            auto locker_result = M.Unlock();       \
+    #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M)        \
+        do {                                        \
+            /*auto locker_result = M.unlock();*/    \
+            M.unlock();                             \
+            /*if (locker_result != wxMUTEX_NO_ERROR)*/  \
+            int locker_result = wxMUTEX_NO_ERROR;        \
             if (locker_result != wxMUTEX_NO_ERROR)  \
             {   wxString err1st = wxString::Format("Last Owner: %s", M##_Owner); \
                 wxString err; \
@@ -304,8 +313,9 @@ private:
     //#define CC_LOCKER_TRACK_TT_MTX_LOCK(M)   M.Lock();
     #define CC_LOCKER_TRACK_TT_MTX_LOCK(M)      \
         do {                                    \
-            auto locker_result = M.Lock();   \
-            if (locker_result != wxMUTEX_NO_ERROR)  \
+            /*auto locker_result = M.Lock();*/   \
+            auto locker_result = CCLogger::Get()->GetTimedMutexLock(M); \
+            if (locker_result != true)  \
             {   wxString err1st = wxString::Format("Owner: %s", M##_Owner); \
                 wxString err; \
                 err.Printf(_T("Lock() failed in %s at %s:%d \n\t%s"), __FUNCTION__, __FILE__, __LINE__, err1st); \
@@ -319,7 +329,7 @@ private:
     // cleared Owner
   #define CC_LOCKER_TRACK_TT_MTX_UNLOCK(M) \
         do {                        \
-            M.Unlock();             \
+            M.unlock();             \
             M##_Owner = wxString(); \
         } while(false);
 

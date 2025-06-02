@@ -93,7 +93,8 @@
     #define TRACE2(format, args...)
 #endif
 
-wxMutex s_ParserMutex;
+//wxMutex s_ParserMutex;
+std::timed_mutex s_ParserMutex; //(ph 250526)
 // ----------------------------------------------------------------------------
 namespace ParserCommon
 // ----------------------------------------------------------------------------
@@ -428,9 +429,9 @@ void Parser::AddParse(const wxString& filename)
     // ----------------------------------------------------------------------------
     // CC_LOCKER_TRACK_P_MTX_LOCK(s_ParserMutex)
     // ----------------------------------------------------------------------------
-    auto locker_result = s_ParserMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_ParserMutex);
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, restart the timer and return later
         if (not m_BatchTimer.IsRunning() )
@@ -609,9 +610,10 @@ void Parser::LSP_ParseDocumentSymbols(wxCommandEvent& event)
         /// CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
         // --------------------------------------------------
         // Avoid blocking the UI. If lock is busy, queue a callback for idle time.
-        auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+        auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
+        //auto locker_result = s_TokenTreeMutex.Lock();
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-        if (locker_result != wxMUTEX_NO_ERROR)
+        if (locker_result != true)
         {
             /// lock failed
             // **Debugging**
@@ -901,9 +903,9 @@ void Parser::LSP_ParseSemanticTokens(wxCommandEvent& event)
         /// CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
         // --------------------------------------------------
         // Avoid blocking the UI. If lock is busy, queue a callback for idle time.
-        auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+        auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-        if (locker_result != wxMUTEX_NO_ERROR)
+        if (locker_result != true)
         {
             // **Debugging**
             //wxString locker_result_reason;
@@ -1064,9 +1066,9 @@ void Parser::RemoveFile(const wxString& filename)
     // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // ----------------------------------------------------
     // If lock is busy, queue a callback for idle time
-    auto locker_result = s_TokenTreeMutex.LockTimeout(250);
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
     wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread, call back when idle
         // Parser* pParser = static_cast<Parser*>(m_Parser);
@@ -1266,9 +1268,9 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         // -------------------------------------------------------
         // CC_LOCKER_TRACK_P_MTX_LOCK(s_ParserMutex)
         // -------------------------------------------------------
-        auto locker_result = s_ParserMutex.LockTimeout(250);
+        auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_ParserMutex);  //(ph 250526)
         wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
-        if (locker_result != wxMUTEX_NO_ERROR)
+        if (locker_result != true)
         {
             // lock failed, do not block the UI thread, restart the timer and return later
             m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.139 25/05/14")
+#define VERSION wxT("1.2.141 25/05/27")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.141   2025/05/27 Update CC_ENABLE_LOCKER_TRACK and CC_ENABLE_LOCKER_ASSERT macros
+//                     for std::timed_mutex usage.
+//1.2.140   2025/05/26 Switch wxMutex to std::timed_mutex to avoid Manjaro bug
 //1.2.139   2025/05/14 Avoid asset when FindSortedMenuItemPosition() returns menu
 //                     insert position greater than menu items.
 //1.2.138   2025/05/10 Apply Christo cland source formatting patch

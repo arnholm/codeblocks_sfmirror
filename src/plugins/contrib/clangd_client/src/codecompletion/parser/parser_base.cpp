@@ -353,6 +353,7 @@ size_t ParserBase::FindTokensInFile(bool hasTokenTreeLock, const wxString& filen
 Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayName, bool callerHasLock)
 // ----------------------------------------------------------------------------
 {
+    /// unused
     // Get a specific token from a specified file.
     // This is called from OnLSPCompletionResponse to get the token index
     // If the lock fails, the token will be skipped.
@@ -364,8 +365,8 @@ Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayNa
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
-    auto locker_result = callerHasLock ? wxMUTEX_NO_ERROR : s_TokenTreeMutex.LockTimeout(250);
-    if (locker_result != wxMUTEX_NO_ERROR)
+    auto locker_result = callerHasLock ? true : CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+    if (locker_result != true)
     {
         // lock failed, do not block the UI thread
         // Note: This function called from a UI/clangd event, so it's extremely unlikely that

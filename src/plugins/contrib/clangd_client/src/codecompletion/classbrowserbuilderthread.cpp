@@ -7,6 +7,9 @@
  * $HeadURL$
  */
 
+#include <mutex> //(ph 250526)
+#include <chrono>
+
 #include <sdk.h>
 
 #ifndef CB_PRECOMP
@@ -68,7 +71,8 @@
     #define TRACE2(format, args...)
 #endif
 
-wxMutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member
+//wxMutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member
+std::timed_mutex ClassBrowserBuilderThread::m_ClassBrowserBuilderThreadMutex; // Made static member
 // ----------------------------------------------------------------------------
 namespace
 // ----------------------------------------------------------------------------
@@ -175,8 +179,9 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
     // CC_LOCKER_TRACK_CBBT_MTX_LOCK(m_ClassBrowserBuilderThreadMutex); //LOCK ClassBrowser
     // --------------------------------------------------------------
     { //Codeblock
-        auto lock_result = m_ClassBrowserBuilderThreadMutex.LockTimeout(250);
-        if (lock_result != wxMUTEX_NO_ERROR)
+        //auto lock_result = m_ClassBrowserBuilderThreadMutex.LockTimeout(250); //(ph 250526)
+        auto lock_result = CCLogger::Get()->GetTimedMutexLock(m_ClassBrowserBuilderThreadMutex); //(ph 250526)
+        if (lock_result != true)
         {
             return (success = false);
         }
@@ -239,8 +244,8 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         // ----------------------------------------------
         // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)   //LOCK TokenTree
         // ----------------------------------------------
-        auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-        if (lock_result != wxMUTEX_NO_ERROR)
+        auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
+        if (lock_result != true)
         {
             //Unlock m_ClassBrowserBuilderThreadMutex done by at beginning of function!!
             return (success = false);
@@ -266,8 +271,8 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         // ---------------------------------------------
         // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)    //LOCK TokenTree
         // ---------------------------------------------
-        auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-        if (lock_result != wxMUTEX_NO_ERROR)
+        auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+        if (lock_result != true)
         {
             return (success = false);
         }
@@ -300,8 +305,8 @@ bool ClassBrowserBuilderThread::Init(ParseManager*         pParseManager,
         // --------------------------------------------
         // CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)   //LOCK TokenTree
         // --------------------------------------------
-        auto lock_result = s_TokenTreeMutex.LockTimeout(250);
-        if (lock_result != wxMUTEX_NO_ERROR)
+        auto lock_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex);
+        if (lock_result != true)
         {
             return (success = false);
         }
@@ -901,7 +906,7 @@ bool ClassBrowserBuilderThread::AddChildrenOf(CCTree* tree,
     const TokenIdxSet* tokens = nullptr;
 
     // ------------------------------------------------
-    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex);
     // ------------------------------------------------
 
     if (parentTokenIdx == -1)
@@ -946,7 +951,7 @@ bool ClassBrowserBuilderThread::AddAncestorsOf(CCTree* tree, CCTreeItem* parent,
         return false;
 
     // ------------------------------------------------
-    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
+    CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex);
     // ------------------------------------------------
 
     Token* token = m_TokenTree->at(tokenIdx);

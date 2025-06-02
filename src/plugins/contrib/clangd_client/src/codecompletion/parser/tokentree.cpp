@@ -56,7 +56,13 @@
  * The wxString in wx3.0+ doesn't have such issue. So we should remove it after the migration
  * to wx3.0+
  */
-wxMutex s_TokenTreeMutex;
+
+//wxMutex s_TokenTreeMutex(wxMUTEX_DEFAULT);
+
+#include <mutex>
+#include <chrono>
+std::timed_mutex s_TokenTreeMutex; //(ph 250526)
+
 
 TokenTree::TokenTree() :
     m_TokenTicketCount(255) // Reserve some space for the class browser

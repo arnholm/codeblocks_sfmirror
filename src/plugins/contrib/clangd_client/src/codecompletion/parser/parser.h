@@ -6,6 +6,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <mutex>
+#include <chrono>
+
 #include <wx/arrstr.h>
 #include <wx/event.h>
 #include <wx/file.h>
@@ -85,7 +88,8 @@ class Parser;
 #define PARSER_IMG_MIN PARSER_IMG_CLASS_FOLDER
 #define PARSER_IMG_MAX PARSER_IMG_MACRO_USE_FOLDER
 
-extern wxMutex s_ParserMutex;
+//extern wxMutex s_ParserMutex;
+extern std::timed_mutex s_ParserMutex; //(ph 250526)
 
 /** Tree data associate with the symbol tree item */
 // ----------------------------------------------------------------------------

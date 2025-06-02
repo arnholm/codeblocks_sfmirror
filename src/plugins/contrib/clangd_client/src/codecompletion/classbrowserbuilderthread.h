@@ -6,6 +6,9 @@
 #ifndef CLASSBROWSERBUILDERTHREAD_H
 #define CLASSBROWSERBUILDERTHREAD_H
 
+#include <mutex> //(ph 250526)
+#include <chrono>
+
 #include <wx/thread.h>
 #include <wx/treectrl.h>
 
@@ -309,7 +312,9 @@ private:
      * that only one thread can access to those member variables.
      */
 
-    static wxMutex   m_ClassBrowserBuilderThreadMutex;
+    //static wxMutex   m_ClassBrowserBuilderThreadMutex;
+    static std::timed_mutex m_ClassBrowserBuilderThreadMutex; //(ph 250526)
+
     ParseManager*    m_ParseManager;
 
     /** pointers to the CCTree */
