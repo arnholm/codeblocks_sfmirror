@@ -9,6 +9,9 @@
  *
  * ALL WARRANTIES ARE HEREBY DISCLAIMED.
  */
+
+#include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "jam.h"
 #include "hash.h"
@@ -29,8 +32,8 @@ struct _hdr {
 	HDR *tail;
 };
 
-static struct hash *hdrhash = 0;
-static HDR *hdrlist = 0;
+static struct hash *hdrhash = NULL;
+static HDR *hdrlist = NULL;
 
 static const char *magic = "# depslib dependency file v%d.%d";
 #define DEPS_MAJOR 1
@@ -63,9 +66,9 @@ static HDR *hdr_enter(const char *file)
 
 	h->file = file;
 	h->time = 0;
-	h->includes = 0;
-	h->next = 0;
-	h->tail = 0;
+	h->includes = NULL;
+	h->next = NULL;
+	h->tail = NULL;
 
 	if (hashenter(hdrhash, (HASHDATA **)&h))
 	{
@@ -82,6 +85,7 @@ static HDR *hdr_enter(const char *file)
 #define CACHE_BAD 2 /* file is not a depslib cache file */
 
 int check_cache_file(const char *path, int *vmajor, int *vminor);
+
 int check_cache_file(const char *path, int *vmajor, int *vminor)
 {
 	FILE *f;
@@ -107,9 +111,9 @@ void cache_read(const char *path)
 	FILE *f;
 	char buf[1024];
 	int vmajor, vminor;
-	HDR *h = 0;
+	HDR *h = NULL;
 	int n;
-	time_t timeval;
+	int64_t timeval;  /* C::B patch: changed from time_t to int64_t due to inconsistency in implementations breaking sscanf() */
 
 	if (check_cache_file(path, &vmajor, &vminor) != CACHE_OK)
 		return;
@@ -133,16 +137,12 @@ void cache_read(const char *path)
 		if (buf[0] == '\t')
 		{
 			if (h)
-        h->includes = list_new(h->includes, buf + 1, 0);
+				h->includes = list_new(h->includes, buf + 1, 0);
 			continue;
 		}
 
 		/* C::B patch: Compatibility with 64 bit compiler / OS */
-		#if defined(_WIN64)
-		sscanf(buf, "%I64d %n", &timeval, &n);
-		#else
-		sscanf(buf, "%lld %n", &timeval, &n);
-		#endif
+		sscanf(buf, "%" SCNd64 "%n", &timeval, &n);
 		h = hdr_enter (buf + n);
 		h->time = timeval;
 	}
@@ -169,11 +169,7 @@ void cache_write(const char *path)
 	{
 		LIST *l;
 		/* C::B patch: Compatibility with 64 bit compiler / OS */
-		#if defined(_WIN64)
-		fprintf(f, "%I64d %s\n", h->time, h->file);
-		#else
-		fprintf(f, "%lld %s\n", h->time, h->file);
-		#endif
+ 		fprintf(f, "%" PRId64 "%s\n", (int64_t)(h->time), h->file);
 		for (l = h->includes; l; l = list_next (l))
 		{
 			fprintf(f, "\t%s\n", l->string);
@@ -191,7 +187,7 @@ int cache_check(const char *path, time_t time, LIST **includes)
 	h = hdr_enter(path);
 	if (h->time && (h->time == time))
 	{
-g_stats.cache_used++;
+		g_stats.cache_used++;
 		*includes = h->includes;
 		return 1;
 	}
@@ -205,13 +201,12 @@ void cache_enter(const char *path, time_t time, LIST *includes)
 	h = hdr_enter(path);
 	h->time = time;
 	h->includes = includes;
-g_stats.cache_updated++;
+	g_stats.cache_updated++;
 }
 
 void donecache(void)
 {
 	hashdone(hdrhash);
-	hdrhash = 0;
-	hdrlist = 0;
+	hdrhash = NULL;
+	hdrlist = NULL;
 }
-
