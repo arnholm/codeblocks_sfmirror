@@ -263,19 +263,13 @@ hashstat( struct hash *hp )
 		run = here;
 	}
 
-#ifdef __LP64__ /* avoid warning on 64-bit machines */
-	printf( "%s table: %d+%d+%d (%dK+%luK) items+table+hash, %f density\n",
-/* C::B patch: Compatibility with 64 bit compiler / OS*/
-#elif defined(_WIN64)
-	printf( "%s table: %d+%d+%d (%dK+%I64dK) items+table+hash, %f density\n",
-#else
+	/* C::B patch: cast size_t to int for compatibility */
 	printf( "%s table: %d+%d+%d (%dK+%dK) items+table+hash, %f density\n",
-#endif
 		hp->name,
 		count,
 		hp->items.nel,
 		hp->tab.nel,
 		hp->items.nel * hp->items.size / 1024,
-		hp->tab.nel * sizeof( ITEM ** ) / 1024,
+		hp->tab.nel * (int)sizeof( ITEM ** ) / 1024,
 		(float)count / (float)sets );
 }
