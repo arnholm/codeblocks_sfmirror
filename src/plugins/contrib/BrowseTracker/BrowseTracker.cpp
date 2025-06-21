@@ -66,7 +66,7 @@
 
 
 #if defined(CB_PRECOMP)
-#include "sdk.h"
+#include "sdk.h" //needed even tho clangd says not
 #else
 	#include "sdk_events.h"
 	#include "manager.h"
@@ -164,8 +164,8 @@ BEGIN_EVENT_TABLE(BrowseTracker, cbPlugin)
 	EVT_MENU(     idMenuTrackerBackward,    BrowseTracker::OnMenuTrackerSelect)
 	EVT_MENU(     idMenuTrackerforward,     BrowseTracker::OnMenuTrackerSelect)
 	EVT_MENU(     idMenuTrackerClear,       BrowseTracker::OnMenuTrackerClear)
-	EVT_MENU(     idMenuBrowseMarkPrevious, BrowseTracker::OnMenuBrowseMarkPrevious)
-	EVT_MENU(     idMenuBrowseMarkNext,     BrowseTracker::OnMenuBrowseMarkNext)
+	EVT_MENU(     idMenuBrowseMarkPrevious, BrowseTracker::OnMenuJumpBack)
+	EVT_MENU(     idMenuBrowseMarkNext,     BrowseTracker::OnMenuJumpNext)
 	EVT_MENU(     idMenuRecordBrowseMark,   BrowseTracker::OnMenuRecordBrowseMark)
 	EVT_MENU(     idMenuClearBrowseMark,    BrowseTracker::OnMenuClearBrowseMark)
 	EVT_MENU(     idMenuClearAllBrowse_Marks,BrowseTracker::OnMenuClearAllBrowse_Marks)
@@ -178,8 +178,8 @@ BEGIN_EVENT_TABLE(BrowseTracker, cbPlugin)
     EVT_MENU(idEditBookmarksToggle, BrowseTracker::OnBook_MarksToggle)
 
     EVT_TOOL(idToolMarkToggle,  BrowseTracker::OnMenuToggleBrowseMark)
-    EVT_TOOL(idToolMarkPrev,    BrowseTracker::OnMenuBrowseMarkPrevious)
-    EVT_TOOL(idToolMarkNext,    BrowseTracker::OnMenuBrowseMarkNext)
+    EVT_TOOL(idToolMarkPrev,    BrowseTracker::OnMenuBookMarkPrevious)
+    EVT_TOOL(idToolMarkNext,    BrowseTracker::OnMenuBookMarkNext)
     EVT_TOOL(idToolMarksClear,  BrowseTracker::OnMenuClearAllBrowse_Marks)
     // Activated editor stack maintenance
     EVT_AUINOTEBOOK_PAGE_CHANGED(ID_NBEditorManager, BrowseTracker::OnPageChanged)
@@ -431,20 +431,18 @@ void BrowseTracker::BuildMenu(wxMenuBar* menuBar)
         pforwardBackwardSubMenu->Append(idMenuTrackerBackward, _("Backward Ed\tAlt-Left"), _("Browse Backward"));
         pforwardBackwardSubMenu->Append(idMenuTrackerforward, _("Forward Ed\tAlt-Right"), _("Browse forward"));
 
-        //pforwardBackwardSubMenu->Append(idMenuBrowseMarkPrevious, _("Prev Mark\tAlt-Up"), _("Browse Up"));
-        pforwardBackwardSubMenu->Append(idMenuBrowseMarkPrevious, _("Prev Mark"), _("Browse Up"));
-
-        //pforwardBackwardSubMenu->Append(idMenuBrowseMarkNext, _("Next Mark\tAlt-Down"), _("Browse Down"));
-        pforwardBackwardSubMenu->Append(idMenuBrowseMarkNext, _("Next Mark"), _("Browse Down"));
+        pforwardBackwardSubMenu->Append(idMenuBrowseMarkPrevious, _("Jump Back"), _("Previous jump location"));
+        pforwardBackwardSubMenu->Append(idMenuBrowseMarkNext, _("Jump Frwd"), _("Next Jump location"));
 
         pforwardBackwardSubMenu->AppendSeparator();
-        pforwardBackwardSubMenu->Append(idMenuRecordBrowseMark, _("Set BrowseMark"), _("Record Browse Mark"));
-        pforwardBackwardSubMenu->Append(idMenuClearBrowseMark,  _("Clear BrowseMark"), _("Unset Browse Mark"));
-        pforwardBackwardSubMenu->Append(idMenuSortBrowse_Marks,  _("Sort BrowseMarks"), _("Sort Browse Marks"));
-        pforwardBackwardSubMenu->Append(idMenuClearAllBrowse_Marks,  _("Clear All BrowseMarks"), _("Unset All Browse Marks"));
+        pforwardBackwardSubMenu->Append(idMenuRecordBrowseMark, _("Set Bookmark"), _("Record Book Mark"));
+        pforwardBackwardSubMenu->Append(idMenuClearBrowseMark,  _("Clear Bookmark"), _("Unset Book Mark"));
+        pforwardBackwardSubMenu->Append(idMenuSortBrowse_Marks,  _("Sort Bookmarks"), _("Sort Bookmarks"));
+        pforwardBackwardSubMenu->Append(idMenuClearAllBrowse_Marks,  _("Clear All Bookmarks"), _("Unset All Bookmarks"));
         pforwardBackwardSubMenu->AppendSeparator();
         pforwardBackwardSubMenu->Append(idMenuTrackerClear,     _("Clear All"), _("Clear History"));
         pforwardBackwardSubMenu->Append(idMenuConfigBrowse_Marks,     _("Settings"), _("Configure"));
+
        #ifdef LOGGING
         pforwardBackwardSubMenu->Append(idMenuTrackerDump, _("Dump Arrays"), _("Dump Arrays"));
        #endif
@@ -514,10 +512,15 @@ void BrowseTracker::BuildModuleMenu(const ModuleType type, wxMenu* popup, const 
         wxMenuItem* pContextItem= new wxMenuItem(sub_menu, menuId, menuLabel); //patch 2886
         sub_menu->Append( pContextItem );
     }
-    popup->AppendSeparator();
+    //popup->AppendSeparator();
+    int position;
+    const wxString label = _("Browse Tracker");
+    position = Manager::Get()->GetPluginManager()->FindSortedMenuItemPosition(*popup, label);   // (ph 25/05/08)
+    position = popup->GetMenuItemCount();
     pbtMenuItem = new wxMenuItem(sub_menu, wxID_ANY, _("Browse Tracker"), _T(""), wxITEM_NORMAL);   //patch 2886
     pbtMenuItem->SetSubMenu(sub_menu);
-    popup->Append(pbtMenuItem);
+    //popup->Append(pbtMenuItem);
+    popup->Insert(position, pbtMenuItem);
 
 }//BuildModuleMenu
 // ----------------------------------------------------------------------------
@@ -918,7 +921,21 @@ void BrowseTracker::OnMenuTrackerSelect(wxCommandEvent& WXUNUSED(event))
     }
 }
 // ----------------------------------------------------------------------------
-void BrowseTracker::OnMenuBrowseMarkPrevious(wxCommandEvent& event)
+void BrowseTracker::OnMenuJumpBack(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    if (m_pJumpTracker)
+        m_pJumpTracker->OnMenuJumpBack(event);
+}
+// ----------------------------------------------------------------------------
+void BrowseTracker::OnMenuJumpNext(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    if (m_pJumpTracker)
+        m_pJumpTracker->OnMenuJumpNext(event);
+}
+// ----------------------------------------------------------------------------
+void BrowseTracker::OnMenuBookMarkPrevious(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // For cbEditors, position to previous memorized cursor position
@@ -972,7 +989,7 @@ void BrowseTracker::OnMenuBrowseMarkPrevious(wxCommandEvent& event)
                 // rebuild and retry, but guard against any possible loop
                 if ( m_nBrowseMarkPreviousSentry++ ) break;
                 EdBrowse_Marks.ImportBrowse_Marks(); // Browse marks out of sync
-                OnMenuBrowseMarkPrevious( event ); //retry
+                OnMenuBookMarkPrevious( event ); //retry
             }
         }//if
     }while(0);//if do
@@ -981,7 +998,7 @@ void BrowseTracker::OnMenuBrowseMarkPrevious(wxCommandEvent& event)
 
 }//OnMenuBrowseMarkPrevious
 // ----------------------------------------------------------------------------
-void BrowseTracker::OnMenuBrowseMarkNext(wxCommandEvent& event)
+void BrowseTracker::OnMenuBookMarkNext(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // For cbEditors, position to next memorized cursor position
@@ -1026,7 +1043,7 @@ void BrowseTracker::OnMenuBrowseMarkNext(wxCommandEvent& event)
                 // rebuild, but guard against any possible loop
                 if ( m_nBrowseMarkNextSentry++ ) break;
                 EdBrowse_Marks.ImportBrowse_Marks(); // Browse marks out of sync
-                OnMenuBrowseMarkNext( event ); // retry
+                OnMenuBookMarkNext( event ); // retry
             }
         }//if
     }while(0);//if do
@@ -1538,14 +1555,16 @@ void BrowseTracker::OnMenuTrackerDump(wxCommandEvent& WXUNUSED(event))
 }
 
 // ----------------------------------------------------------------------------
-void BrowseTracker::OnMenuTrackerClear(wxCommandEvent& WXUNUSED(event))
+void BrowseTracker::OnMenuTrackerClear(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Clear the editor array of pointers (History)
 
     if (IsAttached() && m_InitDone)
     {
-        TrackerClearAll();
+        TrackerClearAll();      //clear bookmarks
+        if (m_pJumpTracker)     //clear jump locations
+            m_pJumpTracker->OnMenuJumpClear(event);
     }
 }
 // ----------------------------------------------------------------------------
@@ -1589,16 +1608,21 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Record this activation event and place activation in history
+
     // Create structures to hold new editor info if we never saw this editor before.
     // Structures are: a hash to point to a class holding editor cursor positions used
     // as a history to place markers.
 
     event.Skip();
 
+    if (Manager::Get()->GetProjectManager()->IsLoadingProject())
+        return; // (ph 25/04/28)
+
     if (IsAttached() && m_InitDone) do
     {
         EditorBase* eb = event.GetEditor();
         if (not eb) return;
+        wxString editorFullPath = eb->GetFilename();
         cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
         if (not cbed)
         {
@@ -1607,7 +1631,6 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
             // call and get OnEditorOpened() to re-issue OnEditorActivated() when
             // it does have a cbEditor, but no cbProject associated;
             #if defined(LOGGING)
-            wxString editorFullPath = eb->GetFilename();
             LOGIT( _T("BT [OnEditorActivated ignored:no cbEditor[%s]"), editorFullPath.c_str());
             #endif
             return;
@@ -1617,19 +1640,17 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
         //    if ( m_bProjectIsLoading )
         //    {
         //        #if defined(LOGGING)
-        //        wxString editorFullPath = eb->GetFilename();
         //        LOGIT( _T("BT OnEditorActivated ignored: Project Loading[%s]"), editorFullPath.c_str());
         //        #endif
-        //        return;
+        //         return;
         //    }
 
         if ( m_bProjectClosing )
         {
             #if defined(LOGGING)
-            wxString editorFullPath = eb->GetFilename();
             LOGIT( _T("BT OnEditorActivated ignored: Project Closing[%s]"), editorFullPath.c_str());
             #endif
-            return;
+             return;
         }
 
         #if defined(LOGGING)
@@ -1850,7 +1871,7 @@ void BrowseTracker::OnIdle(wxIdleEvent& event)
     if (pcbEditor and (lineNumber!=wxNOT_FOUND))
     {
         // The "lineNum" parm was originally bool linesAdded.
-        // But our version of scintilla never seems that info.
+        // But our version of scintilla never seems to have that info.
         // So lineNumber will fake it for backward compatibility.
         RebuildBrowse_Marks(pcbEditor, (lineNumber!=wxNOT_FOUND));
     }
@@ -1987,6 +2008,8 @@ void BrowseTracker::OnEditorOpened(CodeBlocksEvent& event)
     // When editor belongs to a project, tell ProjectData about it.
 
     event.Skip();
+    if (Manager::Get()->GetProjectManager()->IsLoadingProject())
+        return; // (ph 25/04/28)
 
     if (IsAttached() && m_InitDone)
     {
@@ -2305,6 +2328,8 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
     // that saved previous BrowseMark and book mark history, and use that data
     // to build/set old saved Browse/Book marks.
 
+    event.Skip();
+
     if ( not IsBrowseMarksEnabled() )
         return;
     m_bProjectClosing = false;
@@ -2321,8 +2346,8 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
      LOGIT( _T("BT Project OPENED[%s]"), event.GetProject()->GetFilename().c_str() );
     #endif
 
-    // wxString projectFilename = event.GetProject()->GetFilename();
-
+    wxString projectFilename = event.GetProject()->GetFilename();
+    //- unused - ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
 
     // allocate a ProjectData to hold activated editors
     cbProject* pCBProject = event.GetProject();
@@ -2367,25 +2392,32 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
         }//for
     }//if
 
+    // Record the last CB activated editor as if the user activate it.
+    // else the bookmark won't show.
+    // We have to use a CallAfter() so that IsProjectLoading() will clear.
+    cbEditor* pActiveEd = m_pEdMgr->GetBuiltinActiveEditor();
+    if ( pActiveEd and m_bProjectIsLoading )
+    {
+        auto pEvt = std::make_shared<CodeBlocksEvent>(cbEVT_EDITOR_ACTIVATED);
+        pEvt->SetEditor(pActiveEd);
+        pEvt->SetPlugin(this);
+        pEvt->SetProject(pProject);
+        CallAfter([this, pEvt]() { OnEditorActivated(*pEvt); });
+        #if defined(LOGGING)
+        LOGIT( _T("BT OnProjectOpened Activated Editor[%p][%s]"), pActiveEd, pActiveEd->GetShortName().c_str() );
+        #endif
+    }
+
+    // Allow jumptracker to record the initial jump location for the activated editor
+    if (m_bProjectIsLoading)
+        m_pJumpTracker->OnProjectOpened(event);
+
     // Turn off "project loading" in order to record the last activated editor
     m_bProjectIsLoading = false;
 
-    // Record the last CB activated editor as if the user activate it.
-    EditorBase* eb = m_pEdMgr->GetBuiltinActiveEditor();
-    if ( eb && (eb != GetCurrentEditor()) )
-    {
-        CodeBlocksEvent evt;
-        evt.SetEditor(eb);
-        OnEditorActivated(evt);
-        #if defined(LOGGING)
-        LOGIT( _T("BT OnProjectOpened Activated Editor[%p][%s]"), eb, eb->GetShortName().c_str() );
-        #endif
-    }
     //*Testing*
     //for (EbBrowse_MarksHash::iterator it = m_EdBrowse_MarksArchive.begin(); it !=m_EdBrowse_MarksArchive.end(); ++it )
     //	it->second->Dump();
-
-    event.Skip();
 
 }//OnProjectOpened
 // ----------------------------------------------------------------------------
@@ -3088,7 +3120,7 @@ void BrowseTracker::ShowBrowseTrackerToolBar(const bool onOrOff)
                 int itemID = item->GetId();
                 wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, itemID);
                 evt.SetInt(onOrOff); //say the Debugger item is checked or unchecked
-                //?Manager::Get()->GetAppFrame()->AddPendingEvent(evt);
+                //-Manager::Get()->GetAppFrame()->AddPendingEvent(evt);
                 //In wx30, AddPendingEvent is deprecated for wxWindows
                 Manager::Get()->GetAppFrame()->GetEventHandler()->ProcessEvent(evt);
                 m_ToolbarIsShown = onOrOff;

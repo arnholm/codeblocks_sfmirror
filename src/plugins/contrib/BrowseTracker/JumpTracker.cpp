@@ -113,6 +113,9 @@ void JumpTracker::OnAttach()
     //    pInfo->version = plgnVersion.GetVersion();
 
     m_bJumpInProgress = false;
+    ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("BrowseTracker");
+	m_BrowseMarksEnabled =  pCfgMgr->ReadBool( "BrowseMarksEnabled", false ) ;
+
     CreateJumpTrackerView();
 
     wxWindow* appWin = Manager::Get()->GetAppWindow();
@@ -128,16 +131,18 @@ void JumpTracker::OnAttach()
     appWin->Connect(idToolJumpNext, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(JumpTracker::OnUpdateUI), 0, this);
 
 
-    // Codeblocks Events registration
+    // JumpTracker Codeblocks Events registration
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_UPDATE_UI   , new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorUpdateUIEvent));
-    //-Manager::Get()->RegisterEventSink(cbEVT_EDITOR_ACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorActivated)); deprecated //(ph 2023/10/23)
+    Manager::Get()->RegisterEventSink(cbEVT_EDITOR_ACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorActivated));
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_DEACTIVATED, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorDeactivated));
     Manager::Get()->RegisterEventSink(cbEVT_EDITOR_CLOSE, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnEditorClosed));
 
     Manager::Get()->RegisterEventSink(cbEVT_APP_START_SHUTDOWN, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnStartShutdown));
     // -- Project events
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_ACTIVATE, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnProjectActivatedEvent));
+    //-Manager::Get()->RegisterEventSink(cbEVT_PROJECT_OPEN, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnProjectOpened));
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_CLOSE, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnProjectClosing));
+    Manager::Get()->RegisterEventSink(cbEVT_APP_STARTUP_DONE, new cbEventFunctor<JumpTracker, CodeBlocksEvent>(this, &JumpTracker::OnAppStartupDone));
 
     // --------------------------------------------------------
 	// register event syncs for JumpTrackerView window docking
@@ -150,7 +155,6 @@ void JumpTracker::OnAttach()
     Manager::Get()->RegisterEventSink(cbEVT_DOCK_WINDOW_VISIBILITY, new cbEventFunctor<JumpTracker, CodeBlocksDockEvent>(this, &JumpTracker::OnDockWindowVisability));
     // Connect to MainMenu/View/JumpTracker checkbox item
     appWin->Connect(idMenuJumpView, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(JumpTracker::OnViewJumpTrackerWindow), 0, this);
-
 }
 // ----------------------------------------------------------------------------
 void JumpTracker::OnRelease(bool appShutDown)
@@ -185,7 +189,6 @@ void JumpTracker::OnRelease(bool appShutDown)
     appWin->Disconnect(idMenuJumpView, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(JumpTracker::OnViewJumpTrackerWindow), 0, this);
 
     Manager::Get()->    Manager::Get()->RemoveAllEventSinksFor(this); //2017/11/23
-
 }
 // ----------------------------------------------------------------------------
 void JumpTracker::BuildMenu(wxMenuBar* menuBar)
@@ -218,7 +221,6 @@ void JumpTracker::BuildMenu(wxMenuBar* menuBar)
     // ----------------------------------------------------------------------------
     bool m_appIsShutdown = Manager::Get()->IsAppShuttingDown();
     if (m_appIsShutdown) return;
-    //?if (GetConfig()->m_appIsDisabled) return;
 
     bool isSet = false;
 
@@ -286,20 +288,21 @@ void JumpTracker::CreateJumpTrackerView()
     m_pJumpTrackerView.reset( new JumpTrackerView(titles, widths));
 
     // Ask DragScroll plugin to apply its support for this log
-    wxWindow* pWindow = m_pJumpTrackerView->m_pControl;
-    cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
-    if (pWindow && pPlgn)
-    {
-        wxCommandEvent dsEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idDragScrollAddWindow"));
-        dsEvt.SetEventObject(pWindow);
-        pPlgn->ProcessEvent(dsEvt);
-    }
+    //wxWindow* pWindow = GetJumpTrackerView()->m_pControl;
+    //cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
+    //if (pWindow && pPlgn)
+    //{
+    //    /// *bug* Dragscroll plugin may not be initialized yet; code moved to OnStartupDone()
+    //    wxCommandEvent dsEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idDragScrollAddWindow"));
+    //    dsEvt.SetEventObject(pWindow);
+    //    pPlgn->ProcessEvent(dsEvt);
+    //}
 
     // Floating windows must be set by their parent
 	CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
 	evt.name = _T("JumpTrackerPane");
 	evt.title = _("JumpTracker View");
-	evt.pWindow = m_pJumpTrackerView->m_pListCtrl;
+	evt.pWindow = GetJumpTrackerView()->m_pListCtrl;
     evt.desiredSize.Set(300, 300);
     evt.floatingSize.Set(300, 400);
     evt.minimumSize.Set(30, 40);
@@ -406,14 +409,40 @@ void JumpTracker::OnDockWindowVisability(CodeBlocksDockEvent& event)
     event.Skip();
 }
 // ----------------------------------------------------------------------------
+void JumpTracker::OnEditorActivated(CodeBlocksEvent& event)
+// ----------------------------------------------------------------------------
+{
+    cbEditor* pEd =  Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if(not pEd)
+        return;
+    cbStyledTextCtrl* pControl = pEd->GetControl();
+    if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
+        return;
+
+    // Add any new editor to vector of editors bound to mouse events
+    bool edFound = std::find(m_MouseBoundEditors.begin(),
+                        m_MouseBoundEditors.end(),
+                            pEd) != m_MouseBoundEditors.end();
+    if (not edFound) {
+        m_MouseBoundEditors.push_back(pEd);
+        pControl->Bind(wxEVT_LEFT_DOWN, &JumpTracker::OnLeftDown, this);
+        pControl->Bind(wxEVT_MOTION, &JumpTracker::OnMouseMove, this);
+        pControl->Bind(wxEVT_LEFT_UP, &JumpTracker::OnLeftUp, this);
+    }
+}
+// ----------------------------------------------------------------------------
 void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Called when user clicks on an editor line or moves to another line
+    // Also called when only editor is activated
 
     if ( m_bShuttingDown )
         return;
     if (GetJumpInProgress())
+        return;
+
+    if ( (not m_leftDown) or m_isDragging)
         return;
 
     cbEditor* pEd =  Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -433,7 +462,7 @@ void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
     //LOGIT( _T("JT \ttopLine[%ld] botLine[%ld] OnScrn[%ld] "), topLine, botLine, edstc->LinesOnScreen());
     #endif
 
-    // New editor activated?
+    // Newly activated editor ?
     if (m_FilenameLast != edFilename)
     {
         m_PosnLast = edPosn;
@@ -450,60 +479,35 @@ void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
     // record new posn
     m_PosnLast = edPosn;
     m_FilenameLast = edFilename;
-    JumpDataAdd(edFilename, edPosn, edLine);
+    if (m_leftDown and (not m_isDragging)) // (ph 25/04/25)
+        JumpDataAdd(edFilename, edPosn, edLine);
 
     return;
 }//OnEditorUpdateEvent
-//// ----------------------------------------------------------------------------
-//void JumpTracker::OnEditorActivated(CodeBlocksEvent& event) deprecated //(ph 2023/10/23)
-//// ----------------------------------------------------------------------------
-//{
-//    // This is causing the new activated editor to enter it's current line location //(ph 2023/10/22)
-//    // before entering the clangd_client target of "Find declaration" causing the next
-//    // jump back to jump to an out of sequence location.
-//    return; This function deparecated //(ph 2023/10/23)
-//
-//    // Record this activation event and place activation in history
-//    // NB: Editor Activated is not called on project loading.
-//    //  So we miss the first activated editor
-//    event.Skip();
-//
-//    if (m_bShuttingDown) return;
-//    if (not IsAttached()) return;
-//
-//    // Don't record closing editor activations
-//    if (m_bProjectClosing)
-//        return;
-//
-//    EditorBase* eb = event.GetEditor();
-//    wxString edFilename = eb->GetFilename();
-//    cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
-//
-//    if (not cbed)
-//    {
-//        // Since wxAuiNotebook added, there's no cbEditor associated during
-//        // an initial cbEVT_EDITOR_ACTIVATED event. So we ignore the inital
-//        // call and get OnEditorOpened() to re-issue OnEditorActivated() when
-//        // it does have a cbEditor, but no cbProject associated;
-//        #if defined(LOGGING)
-//        LOGIT( _T("JT [OnEditorActivated ignored:no cbEditor[%s]"), edFilename.c_str());
-//        #endif
-//        return;
-//    }
-//
-//    #if defined(LOGGING)
-//    LOGIT( _T("JT Editor Activated[%s]"), eb->GetShortName().c_str() );
-//    #endif
-//
-//    cbStyledTextCtrl* pControl = cbed->GetControl();
-//    if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
-//        return;
-//
-//    long edPosn = pControl->GetCurrentPos();
-//    JumpDataAdd(edFilename, edPosn, pControl->GetCurrentLine());
-//    return;
-//
-//}//OnEditorActivated
+// ----------------------------------------------------------------------------
+void JumpTracker::OnLeftDown(wxMouseEvent& event) {
+// ----------------------------------------------------------------------------
+    m_leftDown = true;
+    event.Skip();  // Allow default processing (e.g., focus changes)
+}
+
+// ----------------------------------------------------------------------------
+void JumpTracker::OnMouseMove(wxMouseEvent& event) {
+    // ----------------------------------------------------------------------------
+    if (m_leftDown && event.Dragging()) {
+        m_isDragging = true;
+    }
+    event.Skip();
+}
+// ----------------------------------------------------------------------------
+void JumpTracker::OnLeftUp(wxMouseEvent& event) {
+    // ----------------------------------------------------------------------------
+    if (m_leftDown && (not m_isDragging)) {
+        // Pure click (no drag) occurred
+    }
+    m_leftDown = m_isDragging = false;
+    event.Skip();
+}
 // ----------------------------------------------------------------------------
 void JumpTracker::OnEditorDeactivated(CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
@@ -552,8 +556,8 @@ void JumpTracker::OnEditorClosed(CodeBlocksEvent& event)
 
     wxString filePath = event.GetString();
 
+    EditorBase* pEdBase = event.GetEditor();
     #if defined(LOGGING)
-        EditorBase* eb = event.GetEditor();
         LOGIT( _T("JT OnEditorClosed Eb[%p][%s]"), eb, eb->GetShortName().c_str() );
     #endif
 
@@ -569,14 +573,39 @@ void JumpTracker::OnEditorClosed(CodeBlocksEvent& event)
                 m_ArrayCursor = GetPreviousIndex(m_ArrayCursor);
         }
 
-    SetLastViewedIndex(m_ArrayCursor < 0 ? 0 : m_ArrayCursor);
+    SetJumpTrackerViewIndex(m_ArrayCursor < 0 ? 0 : m_ArrayCursor);
+
+    // Remove editor in vector of editors bound to mouse events
+    cbEditor* pCBEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(pEdBase);
+    if (pCBEd)
+    {
+        // Find the iterator position of pEd
+        //std::vector<cbEditor*>::iterator
+        auto it = std::find(m_MouseBoundEditors.begin(),
+                            m_MouseBoundEditors.end(),
+                            pCBEd);  // Ensure type safety
+        // The cbStyledTextCtrl always is nullptr
+        cbStyledTextCtrl* pControl = pCBEd->GetControl();
+        if ( it != m_MouseBoundEditors.end())
+        {
+            // Erase using the iterator
+            m_MouseBoundEditors.erase(it);
+            if (pControl)   // always nullptr
+            {
+                // Clean up event bindings
+                pControl->Unbind(wxEVT_LEFT_DOWN, &JumpTracker::OnLeftDown, this);
+                pControl->Unbind(wxEVT_MOTION,    &JumpTracker::OnMouseMove, this);
+                pControl->Unbind(wxEVT_LEFT_UP,   &JumpTracker::OnLeftUp, this);
+            }
+        }
+    }
 
     #if defined(LOGGING)
     wxCommandEvent evt;
     OnMenuJumpDump(evt);
     #endif
 
-    UpdateViewWindow();
+    UpdateJumpTrackerViewWindow();
 
 }//OnEditorClosed
 
@@ -600,7 +629,7 @@ void JumpTracker::OnProjectClosing(CodeBlocksEvent& event)
     if (not IsAttached()) return;
 
     m_bProjectClosing = true;
-    SetLastViewedIndex(0);
+    SetJumpTrackerViewIndex(0);
 
     return;
 }
@@ -623,6 +652,76 @@ void JumpTracker::OnProjectActivatedEvent(CodeBlocksEvent& event)
 
 }//OnProjectActivatedEvent
 // ----------------------------------------------------------------------------
+void JumpTracker::OnProjectOpened(CodeBlocksEvent& event)   // (ph 25/05/07)
+// ----------------------------------------------------------------------------
+{
+    // NB: EVT_PROJECT_ACTIVATE is occuring before EVT_PROJECT_OPEN
+    // NB: EVT_EDITOR_ACTIVATE events occur before EVT_PROJECT_ACTIVATE or EVT_PROJECT_OPEN
+    // Currently, this event is a hack to us since it occurs AFTER editors are activated
+    //  and AFTER the project is activated
+
+    // But since the editors are now already open, we can read the layout file
+    // that saved previous BrowseMark and book mark history, and use that data
+    // to build/set old saved Browse/Book marks.
+
+    if ( not m_BrowseMarksEnabled)
+        return;
+
+    cbProject* pProject = event.GetProject();
+
+    if ( not pProject )
+    {   //caused when project is imported
+        return;
+    }
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+
+    #if defined(LOGGING)
+     LOGIT( _T("JT -----------------------------------"));
+     LOGIT( _T("JT Project OPENED[%s]"), event.GetProject()->GetFilename().c_str() );
+    #endif
+
+    // Record an initial jump tracker entry for the active project
+    // after all files have been opened when loading a project.
+    if (pPrjMgr->IsLoadingProject()  )
+    {
+        cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+        cbStyledTextCtrl* pControl = pEd ? pEd->GetControl() : nullptr;
+        if (pControl)
+        {
+            //-EditorBase* pEdBase = event.GetEditor();
+            wxString edFilename = pEd->GetFilename();
+            //-cbEditor* pcbEd = Manager::Get()->GetEditorManager()->GetBuiltinEditor(pEdBase);
+            //-cbStyledTextCtrl* pControl = pcbEd->GetControl();
+            //-if (not pControl) return;
+            if(pControl->GetCurrentLine() == wxSCI_INVALID_POSITION)
+                return;
+            long edPosn = pControl->GetCurrentPos();
+            JumpDataAdd(edFilename, edPosn, pControl->GetCurrentLine());
+        }
+    }
+//    else
+//    {
+//        // the project is still loading
+//        // Record the last CB activated editor as if the user activate it.
+//        // else the initial jumpmark won't be recorded.
+//        // We have to use a CallAfter() so that IsProjectLoading() will clear.
+//
+//        cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+//        if (not pEd) return;
+//        auto pEvt = std::make_shared<CodeBlocksEvent>(cbEVT_PROJECT_OPEN);
+//        pEvt->SetEditor(pEd);
+//        pEvt->SetPlugin(this);
+//        pEvt->SetProject(pProject);
+//        CallAfter([this, pEvt]() { OnProjectOpened(*pEvt);});
+//        #if defined(LOGGING)
+//        LOGIT( _T("JT OnProjectOpened [%p][%s]"), pActiveEd, pActiveEd->GetShortName().c_str() );
+//        #endif
+//    }
+//
+
+}//OnProjectOpened
+
+// ----------------------------------------------------------------------------
 void JumpTracker::OnUpdateUI(wxUpdateUIEvent& event)
 // ----------------------------------------------------------------------------
 {
@@ -644,7 +743,7 @@ void JumpTracker::OnUpdateUI(wxUpdateUIEvent& event)
     bool enablePrev = count > 0;
     // If not wrapping && we're about to backup into -1 position, disable
     if (not m_bWrapJumpEntries)
-        if (m_ArrayCursor-1 <= 0)
+        if (m_ArrayCursor-1 < 0) // (ph 25/05/09)
             enablePrev = false;
 
     m_pToolBar->EnableTool( idToolJumpNext, enableNext);
@@ -656,21 +755,34 @@ void JumpTracker::OnUpdateUI(wxUpdateUIEvent& event)
 void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, const long inLineNum)
 // ----------------------------------------------------------------------------
 {
+    // note:
+    // the 'currentviewindex' has the indes of the JumpTrackerView window.
+    // The 'ArrayOfJumpData' index has the next available array entry slot.
+
     // Do not record old jump locations when a jump is in progress.
     // Caused by activating an editor inside the jump routines.
     if (GetJumpInProgress())
         return;
 
+    // when debugging the mouse status can get stuck, so clear it.
+    if (m_leftDown and (not m_isDragging)) // (ph 25/04/26)
+        m_leftDown = false;
     // Dont record position if line number is < 1 since a newly loaded
     // file always reports an event for line 0
      if (inLineNum < 1)       // user requested feature 2010/06/1
         return;
 
+    cbEditor* pEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (not pEd) return;
+    cbStyledTextCtrl* pControl = pEd->GetControl();
+    if (not pControl) return;
+    //jdLineNo = pEd->GetControl()->LineFromPosition(jdPosn);
+
     // if current entry is identical to the currently double-clicked line
-    // do not enter the line in the array
+    // in the JumTrackerView window, do not enter the line in the array
     if (m_ArrayOfJumpData.GetCount())
     {
-        int currentViewIndex = GetLastViewedIndex();
+        int currentViewIndex = GetJumpTrackerViewIndex();
         JumpData jumpData = m_ArrayOfJumpData[currentViewIndex];
         wxString jdFilename = jumpData.GetFilename();
         int jdPosn = jumpData.GetPosition();
@@ -699,53 +811,72 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
         }
     }
 
-    // if the new line is one line greater or less to the last line entered,
+    // if the new line is half page greater or less than the current viewed line,
     // replace it with the new line. Avoids many lines at the save location.
     int arrayIdx = m_ArrayOfJumpData.GetCount()-1;
     if (arrayIdx >= 0)
     {
-        JumpData jumpData = m_ArrayOfJumpData[arrayIdx];
-        int jdLineNo = jumpData.GetLineNo();
-        if (abs(jdLineNo - inLineNum) == 1)
+        // the current view index has the view the user sees
+        // The m_Array of JumpData has the next available entry slot.
+        int currentViewIndex = GetJumpTrackerViewIndex();
+        JumpData jumpDataOld = m_ArrayOfJumpData[currentViewIndex];
+        int jdOldLineNo = jumpDataOld.GetLineNo();
+        int halfPage = pControl ? pControl->LinesOnScreen()>>1 : 10;
+
+        if (abs(jdOldLineNo - inLineNum) <= halfPage)
         {
-            // Remove the old entry and add this one
-            m_ArrayOfJumpData.RemoveAt(arrayIdx);
-            m_ArrayOfJumpData.Add(new JumpData(inFilename, inPosn, inLineNum));
-            m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
-            SetLastViewedIndex(m_ArrayCursor);
-            UpdateViewWindow();
+            // set old entry with  new data
+            JumpData* pJumpData = &m_ArrayOfJumpData[currentViewIndex];
+            //-m_ArrayOfJumpData.RemoveAt(arrayCursor);
+            //-m_ArrayOfJumpData.Add(new JumpData(inFilename, inPosn, inLineNum));
+            //-m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
+            pJumpData->SetFilename(inFilename);
+            pJumpData->SetLineNo(inLineNum);
+            pJumpData->SetPosition(inPosn);
+            SetJumpTrackerViewIndex(m_ArrayCursor);
+            UpdateJumpTrackerViewWindow();
             return;
         }
     }
 
-    // record a new jump
+    // make room for a new jump
     int kount = m_ArrayOfJumpData.GetCount();
-    if (kount  > maxJumpEntries )
+    if (kount  >= maxJumpEntries )
     {
         // Remove the top entry;
         m_ArrayOfJumpData.RemoveAt(0);
-        m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
+        if (m_ArrayCursor) --m_ArrayCursor;
+        if (m_ArrayCursor < 0 )
+            m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
+        SetJumpTrackerViewIndex(m_ArrayCursor); // (ph 25/04/26)
     }
 
     #if defined(LOGGING)
     LOGIT( _T("JT JumpDataAdd[%s][%ld][%d]"), filename.c_str(), posn, m_insertNext);
     #endif
 
-    if ( kount == maxJumpEntries )
-    {   //remove oldest item in the array
-        m_ArrayOfJumpData.RemoveAt(0);
-    }
+////    if ( kount == maxJumpEntries ) // (ph 25/04/27)
+////    {   //remove oldest item in the array
+////        m_ArrayOfJumpData.RemoveAt(0);
+////        if (m_ArrayCursor) --m_ArrayCursor;
+////        if (m_ArrayCursor < 0 )
+////            m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
+////        SetJumpTrackerViewIndex(m_ArrayCursor); // (ph 25/04/26)
+////    }
 
-   //initialize new item
+   // initialize new item
     m_ArrayOfJumpData.Add(new JumpData(inFilename, inPosn,inLineNum));
     m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
-    SetLastViewedIndex(m_ArrayCursor);
-    #if defined(LOGGING)
-    wxCommandEvent evt;
-    OnMenuJumpDump(evt);
-    #endif
 
-    UpdateViewWindow();
+    //#if defined(LOGGING)
+    //    // debugging: Dump the array to log
+    //    wxCommandEvent evt;
+    //    OnMenuJumpDump(evt);
+    //#endif
+
+    UpdateJumpTrackerViewWindow();
+    SetJumpTrackerViewIndex(m_ArrayCursor);     //(ph 2025-05-11 )
+
     GetJumpTrackerView()->FocusEntry(m_ArrayCursor);
 
     return;
@@ -762,10 +893,11 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
     if (0 == knt)
         return;
 
-    int lastViewedIndex = GetLastViewedIndex();
+    int lastViewedIndex = GetJumpTrackerViewIndex();
     // If not wrapping && we're about to backup into the insert index, return
     if (not m_bWrapJumpEntries)
-        if (lastViewedIndex == 0)
+        //if (not (lastViewedIndex >= 0)) // (ph 25/05/07)
+        if (lastViewedIndex <= 0)// (ph 25/05/07)
             return;
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
@@ -777,6 +909,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
 
     m_bJumpInProgress = true;
 
+    wxString activeEdFilename = wxEmptyString;
     if (pcbEd) switch(1)
     {
         default:
@@ -802,7 +935,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
         if (not pEdBase) break;
 
         // avoid re-recording this jump location
-        SetLastViewedIndex(m_ArrayCursor);
+        SetJumpTrackerViewIndex(m_ArrayCursor);
         // if editors will be switched activate the new editor
         if ( pEdBase != pEdMgr->GetActiveEditor())
             pEdMgr->SetActiveEditor(pEdBase); // cause a cbEVT_EditorActivated event
@@ -813,7 +946,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
         pcbEd->GotoLine(pcbEd->GetControl()->LineFromPosition(edPosn)); //center on scrn
         pcbEd->GetControl()->GotoPos(edPosn);
 
-        GetJumpTrackerView()->FocusEntry(GetLastViewedIndex());
+        GetJumpTrackerView()->FocusEntry(GetJumpTrackerViewIndex());
     }
 
     #if defined(LOGGING)
@@ -837,9 +970,9 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
     if ((knt = m_ArrayOfJumpData.GetCount()) == 0)
         return;
 
-    // If not  wrapping and we're about to advance into the insert index, return
-    if (not m_bWrapJumpEntries and
-        GetLastViewedIndex() == knt-1)
+    // If not wrapping and we're about to advance into the insert index, return
+    if ( (not m_bWrapJumpEntries) and
+        (GetJumpTrackerViewIndex() == knt-1) )
             return;
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
@@ -854,7 +987,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
     {
         // find the next appropriate jump position
         default:
-        int idx = GetLastViewedIndex();
+        int idx = GetJumpTrackerViewIndex();
         idx = GetNextIndex(idx);
         if ( idx == wxNOT_FOUND)
             break;
@@ -872,7 +1005,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
         pEdBase = pEdMgr->GetEditor(edFilename);
         if (not pEdBase) break;
 
-        SetLastViewedIndex(m_ArrayCursor);
+        SetJumpTrackerViewIndex(m_ArrayCursor);
         // if editors needs to be switched activate the new editor
         if ( pEdBase != pEdMgr->GetActiveEditor())
             pEdMgr->SetActiveEditor(pEdBase); // cause a cbEVT_EditorActivated event
@@ -883,7 +1016,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
         pcbEd->GotoLine(pcbEd->GetControl()->LineFromPosition(edPosn)); //center on scrn
         pcbEd->GetControl()->GotoPos(edPosn);
 
-        GetJumpTrackerView()->FocusEntry(GetLastViewedIndex());
+        GetJumpTrackerView()->FocusEntry(GetJumpTrackerViewIndex());
 
     }
 
@@ -901,7 +1034,7 @@ void JumpTracker::OnMenuJumpClear(wxCommandEvent &/*event*/)
 // ----------------------------------------------------------------------------
 {
     m_ArrayOfJumpData.Clear();
-    m_pJumpTrackerView->Clear();
+    GetJumpTrackerView()->Clear();
     m_ArrayCursor = 0;
 }
 // ----------------------------------------------------------------------------
@@ -995,14 +1128,14 @@ void JumpTracker::SettingsSaveWinPosition()
     // LOGIT( _T("SavingWindowPosition[%s]"), winPos.c_str() );
 }
 // ----------------------------------------------------------------------------
-void JumpTracker::UpdateViewWindow()
+void JumpTracker::UpdateJumpTrackerViewWindow()
 // ----------------------------------------------------------------------------
 {
     //message parts to LSP diagnostics: filename, lineNumber, text
     wxArrayString JumpViewItems;
 
     //int logFocusLine = GetLSPClient()->LSP_GetLog()->GetItemsCount();
-    m_pJumpTrackerView->Clear();
+    GetJumpTrackerView()->Clear();
 
     for (size_t count=0; count < m_ArrayOfJumpData.GetCount(); ++count)
     {
@@ -1026,7 +1159,8 @@ void JumpTracker::UpdateViewWindow()
                 JumpViewItems.Add(edLineStr);
                 JumpViewItems.Add(pEdControl->GetLine(edLine).Trim(false).Trim(true) );
                 //write msg to log
-                m_pJumpTrackerView->Append(JumpViewItems);
+                //-m_pJumpTrackerView->Append(JumpViewItems);
+                GetJumpTrackerView()->Append(JumpViewItems);
                 JumpViewItems.Clear();
             }
         }//end if ed
@@ -1038,62 +1172,174 @@ void JumpTracker::UpdateViewWindow()
         //LOGIT( msg );
     }
 }//UpdateViewWindow
-////// ----------------------------------------------------------------------------
-////int JumpTracker::FindJumpDataContaining(const wxString& filename, const long posn)
-////// ----------------------------------------------------------------------------
-////{
-////    // **Deprecated** //(ph 2023/01/19)
-////
-////    size_t kount = m_ArrayOfJumpData.GetCount();
-////    if (not kount) return wxNOT_FOUND;
-////
-////    cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
-////    if (not ed) return wxNOT_FOUND;
-////
-////    cbStyledTextCtrl* pControl = ed->GetControl();
-////    if (not pControl) return wxNOT_FOUND;
-////
-////    // search from array insertion point so we check last entered entry first
-////    size_t ij = 0;
-////    kount = m_ArrayOfJumpData.GetCount();
-////    for (size_t i=0; i<kount; ++i, ++ij)
-////    {
-////        ij = GetPreviousIndex(ij);
-////        JumpData& jumpData = m_ArrayOfJumpData.Item(ij);
-////        if ( jumpData.GetFilename() not_eq filename )
-////            continue;
-////        long jumpLine = pControl->LineFromPosition(jumpData.GetPosition());
-////        long currLine = pControl->LineFromPosition(posn);
-////        if ( jumpLine == currLine)
-////           return ij;
-////    }
-////
-////    return wxNOT_FOUND;
-////}
-////// ----------------------------------------------------------------------------
-////bool JumpTracker::JumpDataContains(const int indx, const wxString& filename, const long posn)
-////// ----------------------------------------------------------------------------
-////{
-////    // **Deprecated** //(ph 2023/01/19)
-////    size_t kount = m_ArrayOfJumpData.GetCount();
-////    if (not kount) return false;
-////
-////    cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
-////    if (not ed) return false;
-////
-////    cbStyledTextCtrl* pstc = ed->GetControl();
-////    if (not pstc) return false;
-////
-////    int halfPageSize = pstc->LinesOnScreen()>>1;
-////
-////    JumpData& jumpData = m_ArrayOfJumpData.Item(indx);
-////    if ( jumpData.GetFilename() not_eq filename )
-////        return false;
-////    long jumpLine = pstc->LineFromPosition(jumpData.GetPosition());
-////    long currLine = pstc->LineFromPosition(posn);
-////    if ( halfPageSize > abs(jumpLine - currLine))
-////       return true;
-////
-////
-////    return false;
-////}
+// ----------------------------------------------------------------------------
+int JumpTracker::FindJumpDataContaining(const wxString& filename, const long posn)
+// ----------------------------------------------------------------------------
+{
+    // **Deprecated** //(ph 2023/01/19)
+
+    size_t kount = m_ArrayOfJumpData.GetCount();
+    if (not kount) return wxNOT_FOUND;
+
+    cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    if (not ed) return wxNOT_FOUND;
+
+    cbStyledTextCtrl* pControl = ed->GetControl();
+    if (not pControl) return wxNOT_FOUND;
+
+    // search from array insertion point so we check last entered entry first
+    size_t ij = 0;
+    kount = m_ArrayOfJumpData.GetCount();
+    for (size_t i=0; i<kount; ++i, ++ij)
+    {
+        ij = GetPreviousIndex(ij);
+        JumpData& jumpData = m_ArrayOfJumpData.Item(ij);
+        if ( jumpData.GetFilename() not_eq filename )
+            continue;
+        long jumpLine = pControl->LineFromPosition(jumpData.GetPosition());
+        long currLine = pControl->LineFromPosition(posn);
+        if ( jumpLine == currLine)
+           return ij;
+    }
+
+    return wxNOT_FOUND;
+}
+// ----------------------------------------------------------------------------
+bool JumpTracker::JumpDataContains(const int indx, const wxString& filename, const long posn)
+// ----------------------------------------------------------------------------
+{
+    // **Deprecated** //(ph 2023/01/19)
+    size_t kount = m_ArrayOfJumpData.GetCount();
+    if (not kount) return false;
+
+    cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(filename);
+    if (not ed) return false;
+
+    cbStyledTextCtrl* pstc = ed->GetControl();
+    if (not pstc) return false;
+
+    int halfPageSize = pstc->LinesOnScreen()>>1;
+
+    JumpData& jumpData = m_ArrayOfJumpData.Item(indx);
+    if ( jumpData.GetFilename() not_eq filename )
+        return false;
+    long jumpLine = pstc->LineFromPosition(jumpData.GetPosition());
+    long currLine = pstc->LineFromPosition(posn);
+    if ( halfPageSize > abs(jumpLine - currLine))
+       return true;
+
+
+    return false;
+}
+// ----------------------------------------------------------------------------
+void JumpTracker::OnSearchLogDoubleClick(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // User double clicked a seach log item. Record it as a jump point
+
+    event.Skip();
+
+    if (not m_pSearchLogControl) return;
+
+    if (m_pSearchLogControl->GetSelectedItemCount() == 0)
+        return;
+
+    cbEditor* pcbEd = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (not pcbEd) return;
+    wxFileName fnFile(pcbEd->GetFilename());
+    if (not fnFile.Exists()) return;
+    if (not fnFile.IsAbsolute())
+        //?fnFile.MakeAbsolute(m_Base);
+        fnFile.MakeAbsolute();
+
+    wxArrayString columns;
+    long selected = m_pSearchLogControl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    if (selected != -1) {
+        int colCount = m_pSearchLogControl->GetColumnCount();
+        for (int col = 0; col < colCount; ++col) {
+            columns.Add(m_pSearchLogControl->GetItemText(selected, col));
+    }
+    }
+    wxString filenameCol = columns[0]; // not an asbsolute flename
+    wxString lineCol = columns[1];
+    wxString textCol = columns[2];
+
+    long line;
+    if (not lineCol.ToLong(&line))
+        return;
+    line -= 1; // wxScintilla lines are zero origin
+
+    cbStyledTextCtrl* pControl = pcbEd->GetControl();
+    if (pControl)
+    {
+        int posn = pControl->PositionFromLine(line);
+        JumpDataAdd(fnFile.GetFullPath(), posn, line);
+    }
+}
+// ----------------------------------------------------------------------------
+void JumpTracker::OnAppStartupDone(CodeBlocksEvent& event)
+// ----------------------------------------------------------------------------
+{
+    GetSearchLog();
+    if (m_pSearchLogControl)
+    {
+        // hook into double clicks of the log so we can record a jump line
+        m_pSearchLogControl->Bind(
+            wxEVT_LIST_ITEM_ACTIVATED,
+            &JumpTracker::OnSearchLogDoubleClick,
+                this);
+    }
+    // Ask DragScroll plugin to apply its support for this log
+    wxWindow* pWindow = GetJumpTrackerView()->m_pControl;
+    cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
+    if (pWindow && pPlgn)
+    {
+        wxCommandEvent dsEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idDragScrollAddWindow"));
+        dsEvt.SetEventObject(pWindow);
+        pPlgn->ProcessEvent(dsEvt);
+    }
+
+}
+// ----------------------------------------------------------------------------
+void JumpTracker::GetSearchLog()
+// ----------------------------------------------------------------------------
+{
+    // If there is a "Search results" log already, remember it.
+    m_pSearchLogControl = nullptr;
+    int logIndex = GetSearchLogIndex("Search results");
+    if (not (logIndex == wxNOT_FOUND))
+    {
+        LogManager* pLogMgr = Manager::Get()->GetLogManager();
+        LogSlot& logslot = pLogMgr->Slot(logIndex);
+        ListCtrlLogger* pLogger = (ListCtrlLogger*)logslot.GetLogger();
+        if (pLogger)
+            m_pSearchLogControl = (wxListCtrl*)pLogger->::ListCtrlLogger::CreateControl(0);
+            // the (0) gets a read only wxListCtrl*
+        return;
+    }
+}
+// ----------------------------------------------------------------------------
+int JumpTracker::GetSearchLogIndex (const wxString& logRequest)
+// ----------------------------------------------------------------------------
+{
+
+    int nNumLogs = 16; //just a guess
+    int searchResultsLogIndex = 0;
+
+    LogManager* pLogMgr = Manager::Get()->GetLogManager();
+
+    for (int ii = 0; ii < nNumLogs; ++ii)
+    {
+        LogSlot& logSlot = pLogMgr->Slot (ii);
+        if (pLogMgr->FindIndex (logSlot.log) == pLogMgr->invalid_log) continue;
+        {
+            if ( logSlot.title.IsSameAs (wxT ("Search results") ) )
+            {
+                searchResultsLogIndex = ii;
+                return searchResultsLogIndex;
+            }
+        }
+    }//for
+
+    return wxNOT_FOUND;
+}

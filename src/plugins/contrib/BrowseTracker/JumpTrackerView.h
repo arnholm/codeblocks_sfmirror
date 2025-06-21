@@ -8,6 +8,7 @@
 
 #include <wx/string.h>
 #include <wx/panel.h>
+#include <wx/listctrl.h>
 
 #include "loggers.h"
 
@@ -29,8 +30,34 @@ class JumpTrackerView : public ListCtrlLogger, public wxEvtHandler
         int m_ID_List = wxNewId();
         wxListCtrl* m_pListCtrl = nullptr;
         wxListCtrl* m_pControl = nullptr;
-        int         m_lastDoubleClickIndex = 0;
+        //-int         m_lastJTViewIndex = 0;
         bool        m_bJumpInProgress = false;
+
+        int GetJumpTrackerViewIndex()
+        {
+            long selected = m_pListCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            if (selected == -1)
+            {
+                if (m_pListCtrl->GetItemCount() > 0)
+                    selected = 0; // No selection, fallback to first item
+                else
+                    selected = -1; // List is empty, nothing to select
+            }
+            // Now 'selected' holds the desired item index, or -1 if the list is empty
+            if (selected == -1)
+                return 0;
+
+            return selected;
+        }
+
+        void SetJumpTrackerViewIndex(int itemIndex)
+        {
+            int knt = m_pListCtrl->GetItemCount();
+            if ( (not knt)  //(ph 2025-05-11 )
+                or (itemIndex > knt) )
+                return; //setting index before adding the item
+            m_pListCtrl->SetItemState(itemIndex, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+        }
 
 	protected:
         void OnDoubleClick(wxCommandEvent& event);

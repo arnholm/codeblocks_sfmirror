@@ -14,8 +14,10 @@ class JumpData
         wxString& GetFilename() {return m_Filename;}
         long GetPosition() {return m_Posn;}
         long GetLineNo()   {return m_LineNo;}
+
         void SetFilename(const wxString& filename) {m_Filename = filename;}
         void SetPosition(const long posn) { m_Posn = posn;}
+        void SetLineNo(const long lineNo) {m_LineNo = lineNo;}
     protected:
     private:
         JumpData();

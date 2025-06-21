@@ -105,14 +105,18 @@ class JumpTracker : public cbPlugin
 
         // CodeBlocks events
         void OnEditorUpdateUIEvent(CodeBlocksEvent& event);
-        //-void OnEditorActivated(CodeBlocksEvent& event); deprecated //(ph 2023/10/23)
+        void OnEditorActivated(CodeBlocksEvent& event); //(ph 2023/10/23)
         void OnEditorDeactivated(CodeBlocksEvent& event);
         void OnEditorClosed(CodeBlocksEvent& event);
 
         void OnStartShutdown(CodeBlocksEvent& event);
         void OnProjectClosing(CodeBlocksEvent& event);
         void OnProjectActivatedEvent(CodeBlocksEvent& event);
+        void OnProjectOpened(CodeBlocksEvent& event);
+
         void OnUpdateUI(wxUpdateUIEvent& event);
+        void OnAppStartupDone(CodeBlocksEvent& event);
+
 
         // Menu events
         void OnMenuJumpBack(wxCommandEvent &event);
@@ -128,18 +132,22 @@ class JumpTracker : public cbPlugin
 
     private:
         void JumpDataAdd(const wxString& filename, const long posn, const long edlineNum);
-////        bool JumpDataContains(const int indx, const wxString& filename, const long posn);
-////        int  FindJumpDataContaining(const wxString& filename, const long posn);
+        bool JumpDataContains(const int indx, const wxString& filename, const long posn);
+        int  FindJumpDataContaining(const wxString& filename, const long posn);
         void CreateJumpTrackerView();
         void OnSwitchViewLayout(CodeBlocksLayoutEvent& event);
         void OnSwitchedViewLayout(CodeBlocksLayoutEvent& event);
         void OnDockWindowVisability(CodeBlocksDockEvent& event);
+        void OnSearchLogDoubleClick(wxCommandEvent& event);
+        void GetSearchLog();
+        int  GetSearchLogIndex(const wxString& logRequest);
 
-        void UpdateViewWindow();
+
+        void UpdateJumpTrackerViewWindow();
         JumpTrackerView* GetJumpTrackerView(){return m_pJumpTrackerView.get();}
         wxWindow* GetJumpTrackerViewControl()
         {
-            return dynamic_cast<wxWindow*>(m_pJumpTrackerView->m_pControl);
+            return dynamic_cast<wxWindow*>(GetJumpTrackerView()->m_pControl);
         }
 		void OnViewJumpTrackerWindow(wxCommandEvent& event);
 		bool GetConfigBool(const wxString& parm)
@@ -164,6 +172,8 @@ class JumpTracker : public cbPlugin
         bool     m_bProjectClosing;      // project close in progress
         bool     m_bJumpInProgress;
         bool     m_bWrapJumpEntries;
+        bool     m_BrowseMarksEnabled = false;
+
         int      GetPreviousIndex(const int idx);
         int      GetNextIndex(const int idx);
 
@@ -172,20 +182,43 @@ class JumpTracker : public cbPlugin
         ArrayOfJumpData m_ArrayOfJumpData;
         std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;
 
-        void SetLastViewedIndex(int arrayIdx)
+        // ------------------------------------------
+        void SetJumpTrackerViewIndex(int arrayIdx)
+        // ------------------------------------------
         {
-            m_pJumpTrackerView->m_lastDoubleClickIndex = arrayIdx;
+            if (arrayIdx < 0)
+                cbAssertNonFatal(arrayIdx < 0);
+            GetJumpTrackerView()->SetJumpTrackerViewIndex(arrayIdx);
         }
-        int GetLastViewedIndex()
+        // ------------------------------------------
+        int GetJumpTrackerViewIndex()
+        // ------------------------------------------
         {
-            return m_pJumpTrackerView->m_lastDoubleClickIndex;
+            int index =  GetJumpTrackerView()->GetJumpTrackerViewIndex();
+            if (index < 0)
+            {
+                cbAssertNonFatal(index < 0);
+                return 0;
+            }
+            return index;
         }
+
         bool GetJumpInProgress()
         {
             if (m_bJumpInProgress) return true;
-            if (m_pJumpTrackerView->m_bJumpInProgress) return true;
+            if (GetJumpTrackerView()->m_bJumpInProgress) return true;
             return false;
         }
+
+        // Mouse Events
+        void OnLeftDown(wxMouseEvent& event);
+        void OnLeftUp(wxMouseEvent& event);
+        void OnMouseMove(wxMouseEvent& event);
+        bool m_leftDown = false;
+        bool m_isDragging = false;
+        std::vector<cbEditor*> m_MouseBoundEditors;
+
+        wxListCtrl* m_pSearchLogControl = nullptr;
 
     private:
         DECLARE_EVENT_TABLE();

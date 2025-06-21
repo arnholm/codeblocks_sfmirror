@@ -7,7 +7,7 @@
         <Value description="Browse to previous source positions" />
         <Value author="Pecan Heber" />
         <Value authorEmail="" />
-        <Value authorWebsite="https://www.codeblocks.org" />
+        <Value authorWebsite="CodeBlocks.org" />
         <Value thanksTo="CodeBlocks team" />
         <Value license="GPL" />
     </Plugin>

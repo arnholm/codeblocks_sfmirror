@@ -266,8 +266,8 @@ class BrowseTracker : public cbPlugin
         //-void OnPageChanged(wxAuiNotebookEvent& event);
         void AppShuttingDown(CodeBlocksEvent& event); //2017/12/7
 
-        void OnMenuBrowseMarkPrevious(wxCommandEvent& event);
-        void OnMenuBrowseMarkNext(wxCommandEvent& event);
+        void OnMenuBookMarkPrevious(wxCommandEvent& event);
+        void OnMenuBookMarkNext(wxCommandEvent& event);
         void OnMenuRecordBrowseMark(wxCommandEvent& event);
         void OnMenuClearBrowseMark(wxCommandEvent& event);
         void OnMenuToggleBrowseMark(wxCommandEvent& event);
@@ -279,6 +279,10 @@ class BrowseTracker : public cbPlugin
 		void TrackEditorBackward();
 		void TrackEditorForward();
         void OnMouseKeyEvent(wxMouseEvent& event);
+
+        //-- Jump marks
+        void OnMenuJumpBack(wxCommandEvent& event);
+        void OnMenuJumpNext(wxCommandEvent& event);
 
         //-- BOOK marks
         void AddBook_Mark(EditorBase* eb, int line = -1);
