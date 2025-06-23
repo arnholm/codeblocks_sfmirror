@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.127 25/06/19")
+#define VERSION wxT("1.4.128 25/06/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -66,6 +66,8 @@ class AppVersion
 #endif // VERSION_H
 //versions
 // ----------------------------------------------------------------------------
+// 1.4.128  2025/06/23 Apply some cppcheck suggestions. Thanks Blauzahn
+//                     https://forums.codeblocks.org/index.php?topic=26066.0;topicseen
 // 1.4.127  2025/06/19 Move CreateJumpTrackerView() request for DragScroll service to OnStartupDone()
 // 1.4.126  2025/05/14 Guard against nullptr in OnSearchLogDoubleClick()
 // 1.4.125  2025/05/11 Guard against Get/SetJumpTrackerViewIndex() when jump list is empty.

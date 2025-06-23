@@ -55,11 +55,11 @@ namespace
 // ----------------------------------------------------------------------------
 BrowseSelector::BrowseSelector(wxWindow* parent, BrowseTracker* pBrowseTracker, int menuID)
 // ----------------------------------------------------------------------------
-: m_listBox(NULL)
-, m_selectedItem(-1)
-, m_panel(NULL)
-, m_pBrowseTracker(pBrowseTracker)
-, m_menuID(menuID)
+    :   m_listBox(NULL),
+        m_selectedItem(-1),
+        m_panel(NULL),
+        m_pBrowseTracker(pBrowseTracker),
+        m_menuID(menuID), m_KeyDownCode(0), m_KeyDownMods(0) // (blauzahn 25/06/22)
 {
 
     Create(parent, pBrowseTracker, m_menuID);

@@ -503,7 +503,9 @@ void JumpTracker::OnMouseMove(wxMouseEvent& event) {
 void JumpTracker::OnLeftUp(wxMouseEvent& event) {
     // ----------------------------------------------------------------------------
     if (m_leftDown && (not m_isDragging)) {
-        // Pure click (no drag) occurred
+        // Pure click (no drag) occurred, nothing to do
+        // clear left-Down and m_isDragging anyway. // (blauzahn 25/06/22)
+        ;
     }
     m_leftDown = m_isDragging = false;
     event.Skip();

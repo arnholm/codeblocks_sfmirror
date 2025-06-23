@@ -170,7 +170,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
             ///LOGIT( _T("Open Layout processing for[%s]"),fname.c_str() );
             #endif
 
-            TiXmlElement* browsemarks = cursor->NextSiblingElement("BrowseMarks");
+            TiXmlElement* browsemarks = cursor ? cursor->NextSiblingElement("BrowseMarks") : nullptr; // (blauzahn 25/06/22)
             //if (not browsemarks)
             //    LOGIT( _T("OPEN LAYOUT failed for BrowseMarks") );
             if (browsemarks)
