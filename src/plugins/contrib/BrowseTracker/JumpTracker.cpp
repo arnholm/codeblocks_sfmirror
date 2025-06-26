@@ -4,6 +4,7 @@
 #include <sdk.h> // Code::Blocks SDK
 #include <configurationpanel.h>
 #include <cbstyledtextctrl.h>
+#include <logmanager.h> // (ph 25/06/24)
 #include <projectmanager.h>
 #include <editormanager.h>
 #include <cbeditor.h>

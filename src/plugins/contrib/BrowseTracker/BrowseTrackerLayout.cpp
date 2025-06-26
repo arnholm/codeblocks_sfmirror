@@ -44,7 +44,7 @@
     #include "cbeditor.h"
     #include "cbproject.h"
 #endif
-
+#include "logmanager.h" // (ph 25/06/24)
 #include <wx/tokenzr.h>
 #include <tinyxml.h>
 #include <tinywxuni.h>
