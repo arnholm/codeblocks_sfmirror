@@ -10,9 +10,9 @@
 
 #include <wx/string.h>
 
-#include <cbeditor.h>
+#include "cbeditor.h"
 
-#include <astyle.h>
+#include "astyle.h"
 
 class ASStreamIterator : public astyle::ASSourceIterator
 {

@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <wx/button.h>
@@ -25,21 +25,21 @@
     #include <wx/tipwin.h>
     #include <wx/xrc/xmlres.h>
 
-    #include <cbauibook.h>
-    #include <cbeditor.h>
-    #include <cbproject.h>
-    #include <configmanager.h>
-    #include <editormanager.h>
-    #include <globals.h>
-    #include <logmanager.h>
-    #include <manager.h>
-    #include <pluginmanager.h>
-    #include <projectmanager.h>
+    #include "cbauibook.h"
+    #include "cbeditor.h"
+    #include "cbproject.h"
+    #include "configmanager.h"
+    #include "editormanager.h"
+    #include "globals.h"
+    #include "logmanager.h"
+    #include "manager.h"
+    #include "pluginmanager.h"
+    #include "projectmanager.h"
 #endif
 
 #include <wx/tokenzr.h>
 
-#include <cbstyledtextctrl.h>
+#include "cbstyledtextctrl.h"
 
 #include "classbrowser.h" // class's header file
 #include "parsemanager.h"

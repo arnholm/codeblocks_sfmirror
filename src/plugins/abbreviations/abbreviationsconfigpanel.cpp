@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 #include "abbreviationsconfigpanel.h"
 
 #ifndef CB_PRECOMP
@@ -15,10 +15,10 @@
     #include <wx/fontutil.h>
     #include <wx/choicdlg.h>
 
-    #include <configmanager.h>
-    #include <editorcolourset.h>
-    #include <editormanager.h>
-    #include <logmanager.h>
+    #include "configmanager.h"
+    #include "editorcolourset.h"
+    #include "editormanager.h"
+    #include "logmanager.h"
 #endif
 
 #include "cbcolourmanager.h"

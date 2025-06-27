@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 #include "astyleconfigdlg.h"
 #include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
@@ -18,7 +18,7 @@
 #include <wx/combobox.h>
 #include <wx/spinctrl.h>
 #include <string>
-#include <configmanager.h>
+#include "configmanager.h"
 
 #include "dlgformattersettings.h"
 #include "asstreamiterator.h"

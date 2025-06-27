@@ -9,7 +9,8 @@
 #include <wx/arrstr.h>
 #include <wx/dynarray.h>
 #include <wx/string.h>
-#include <settings.h>
+
+#include "settings.h"
 
 struct FileGroups
 {

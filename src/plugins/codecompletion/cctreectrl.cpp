@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #ifdef CC_BUILDTREE_MEASURING

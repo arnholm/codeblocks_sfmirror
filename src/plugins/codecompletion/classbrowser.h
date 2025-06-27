@@ -8,9 +8,9 @@
 
 #include <wx/panel.h>
 
-#include <settings.h> // SDK
-#include <cbplugin.h>
-#include <manager.h>
+#include "settings.h" // SDK
+#include "cbplugin.h"
+#include "manager.h"
 
 #include "cctreectrl.h"
 #include "classbrowserbuilderthread.h"

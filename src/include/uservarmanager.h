@@ -15,7 +15,7 @@
 #include <wx/regex.h>
 #include <algorithm>
 
-#include <wxstringhash.h>       // For wx < 3.1 we need this.
+#include "wxstringhash.h"   // For wx < 3.1 we need this.
 
 #ifndef CB_PRECOMP
 #include "globals.h"

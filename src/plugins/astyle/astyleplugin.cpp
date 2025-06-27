@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <algorithm>
@@ -20,17 +20,17 @@
     #include <wx/fs_zip.h>
     #include <wx/strconv.h>
 
-    #include <cbeditor.h>
-    #include <cbexception.h>
-    #include <cbproject.h>
-    #include <configmanager.h>
-    #include <editormanager.h>
-    #include <manager.h>
-    #include <projectmanager.h>
+    #include "cbeditor.h"
+    #include "cbexception.h"
+    #include "cbproject.h"
+    #include "configmanager.h"
+    #include "editormanager.h"
+    #include "manager.h"
+    #include "projectmanager.h"
 #endif
 
 #include <wx/progdlg.h>
-#include <cbstyledtextctrl.h>
+#include "cbstyledtextctrl.h"
 
 #include "astyleplugin.h"
 #include "astyleconfigdlg.h"

@@ -8,7 +8,7 @@
 
 #include <wx/intl.h>
 #include "configurationpanel.h"
-#include <settings.h>
+#include "settings.h"
 #include "parsemanager.h"
 #include "parser/parser.h"
 

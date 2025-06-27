@@ -7,9 +7,9 @@
 #define ABBREVIATIONSCONFIGPANEL_H
 
 #include "abbreviations.h"
-#include <cbstyledtextctrl.h>
+#include "cbstyledtextctrl.h"
 
-#include <configurationpanel.h>
+#include "configurationpanel.h"
 
 #include <wx/stattext.h>
 #include <wx/listbox.h>

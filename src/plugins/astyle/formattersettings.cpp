@@ -7,10 +7,10 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 #include "formattersettings.h"
 #include "astylepredefinedstyles.h"
-#include <configmanager.h>
+#include "configmanager.h"
 
 FormatterSettings::FormatterSettings()
 {

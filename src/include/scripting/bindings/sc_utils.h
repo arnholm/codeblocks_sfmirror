@@ -7,8 +7,8 @@
 #define CB_SC_UTILS_H
 
 #include "cbexception.h"
+#include "squirrel.h"
 
-#include <squirrel.h>
 #include <string>
 #include <sstream>
 #include <stdarg.h>

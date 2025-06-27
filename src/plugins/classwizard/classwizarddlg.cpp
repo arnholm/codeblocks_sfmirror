@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #ifndef CB_PRECOMP
   #include <wx/button.h>
   #include <wx/checkbox.h>

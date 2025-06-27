@@ -12,7 +12,7 @@
 #include "settings.h"
 #include "globals.h"
 
-#include <tinyxml.h>
+#include "tinyxml.h"
 #include "manager.h"
 #include "base64.h"
 

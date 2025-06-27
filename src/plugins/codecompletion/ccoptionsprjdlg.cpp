@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <wx/button.h>
@@ -15,14 +15,14 @@
     #include <wx/listbox.h>
     #include <wx/xrc/xmlres.h>
 
-    #include <cbproject.h>
-    #include <cbstyledtextctrl.h>
-    #include <globals.h>
-    #include <logmanager.h>
-    #include <manager.h>
+    #include "cbproject.h"
+    #include "cbstyledtextctrl.h"
+    #include "globals.h"
+    #include "logmanager.h"
+    #include "manager.h"
 #endif
 
-#include <editpathdlg.h>
+#include "editpathdlg.h"
 
 #include "ccoptionsprjdlg.h"
 
