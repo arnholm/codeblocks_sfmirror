@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "editwatchdlg.h"
 
 #ifndef CB_PRECOMP

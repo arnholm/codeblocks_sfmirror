@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #ifndef CB_PRECOMP
     #include <wx/checkbox.h>
     #include <wx/intl.h>
@@ -17,7 +18,7 @@
     #include <wx/textctrl.h>
     #include <wx/xrc/xmlres.h>
 
-    #include <debuggermanager.h>
+    #include "debuggermanager.h"
 #endif
 
 #include "editbreakpointdlg.h"

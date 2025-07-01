@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "compilerMSVC.h"
 #include <wx/wx.h>
 #include <wx/intl.h>

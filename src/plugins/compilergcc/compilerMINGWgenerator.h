@@ -6,7 +6,7 @@
 #ifndef COMPILERMINGWGENERATOR_H
 #define COMPILERMINGWGENERATOR_H
 
-#include <compilercommandgenerator.h>
+#include "compilercommandgenerator.h"
 
 // Overriden to support PCH for GCC
 class CompilerMINGWGenerator : public CompilerCommandGenerator

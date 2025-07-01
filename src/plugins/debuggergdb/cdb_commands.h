@@ -9,9 +9,9 @@
 #include <wx/string.h>
 #include <wx/regex.h>
 #include <wx/tipwin.h>
-#include <globals.h>
-#include <manager.h>
-#include <cbdebugger_interfaces.h>
+#include "globals.h"
+#include "manager.h"
+#include "cbdebugger_interfaces.h"
 #include "debugger_defs.h"
 #include "debuggergdb.h"
 #include "debuggermanager.h"

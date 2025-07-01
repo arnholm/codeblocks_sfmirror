@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include <algorithm> // std::remove_if
 
 #ifndef CB_PRECOMP
@@ -43,7 +44,7 @@
 #include "cbstyledtextctrl.h"
 #include "compilercommandgenerator.h"
 
-#include <cbdebugger_interfaces.h>
+#include "cbdebugger_interfaces.h"
 #include "editbreakpointdlg.h"
 
 #include "databreakpointdlg.h"

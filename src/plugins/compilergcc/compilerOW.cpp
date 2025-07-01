@@ -7,9 +7,10 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
-#include <logmanager.h>
-#include <manager.h>
+#include "sdk.h"
+
+#include "logmanager.h"
+#include "manager.h"
 
 #include "compilerOW.h"
 #include "compilerOWgenerator.h"

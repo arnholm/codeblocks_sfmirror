@@ -11,9 +11,9 @@
 
 #include <memory> // unique_ptr
 
-#include <cbexception.h> // cbAssert
-#include <logmanager.h>  // F()
-#include <prep.h>        // nullptr
+#include "cbexception.h" // cbAssert
+#include "logmanager.h"  // F()
+#include "prep.h"        // nullptr
 
 class wxEvtHandler;
 

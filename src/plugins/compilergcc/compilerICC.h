@@ -9,8 +9,8 @@
 #include <wx/dir.h>
 #include <wx/arrstr.h>
 
-#include <globals.h>
-#include <compiler.h>
+#include "globals.h"
+#include "compiler.h"
 
 class CompilerICC : public Compiler
 {

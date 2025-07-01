@@ -8,11 +8,11 @@
 
 #include <map>
 
-#include <settings.h> // much of the SDK is here
-#include <sdk_events.h>
-#include <cbplugin.h>
-#include <loggers.h>
-#include <pipedprocess.h>
+#include "settings.h" // much of the SDK is here
+#include "sdk_events.h"
+#include "cbplugin.h"
+#include "loggers.h"
+#include "pipedprocess.h"
 #include <wx/regex.h>
 
 #include "remotedebugging.h"

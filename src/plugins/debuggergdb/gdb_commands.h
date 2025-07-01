@@ -18,15 +18,15 @@
 #include <wx/tipwin.h>
 #include <wx/tokenzr.h>
 
-#include <cbeditor.h>
-#include <cbdebugger_interfaces.h>
-#include <configmanager.h>
-#include <globals.h>
-#include <manager.h>
-#include <editormanager.h>
-#include <infowindow.h>
-#include <logmanager.h>
-#include <macrosmanager.h>
+#include "cbeditor.h"
+#include "cbdebugger_interfaces.h"
+#include "configmanager.h"
+#include "globals.h"
+#include "manager.h"
+#include "editormanager.h"
+#include "infowindow.h"
+#include "logmanager.h"
+#include "macrosmanager.h"
 
 #include <cinttypes>
 

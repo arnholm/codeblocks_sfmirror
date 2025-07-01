@@ -13,8 +13,8 @@
 #include <wx/textfile.h>
 #include <wx/utils.h> // wxNewId
 
-#include <logmanager.h> // F()
-#include <globals.h>    // cbC2U for cbAssert macro
+#include "logmanager.h" // F()
+#include "globals.h"    // cbC2U for cbAssert macro
 
 std::unique_ptr<CCLogger> CCLogger::s_Inst;
 

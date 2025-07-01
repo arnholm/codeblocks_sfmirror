@@ -6,7 +6,7 @@
 #ifndef COMPILEROW_H
 #define COMPILEROW_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerOW : public Compiler
 {

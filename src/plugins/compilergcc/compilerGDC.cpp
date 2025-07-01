@@ -7,8 +7,9 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
-#include <prep.h>
+#include "sdk.h"
+
+#include "prep.h"
 #include "compilerGDC.h"
 #include <wx/intl.h>
 #include <wx/regex.h>
@@ -18,7 +19,7 @@
 #include "manager.h"
 #include "logmanager.h"
 
-#include <configmanager.h>
+#include "configmanager.h"
 
 #ifdef __WXMSW__
     #include <wx/msw/registry.h>

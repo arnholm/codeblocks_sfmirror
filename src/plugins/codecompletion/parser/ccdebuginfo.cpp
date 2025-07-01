@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <wx/object.h>
@@ -21,9 +21,9 @@
     #include <wx/string.h>
     //*)
 
-    #include <cbeditor.h>
-    #include <editormanager.h>
-    #include <logmanager.h>
+    #include "cbeditor.h"
+    #include "editormanager.h"
+    #include "logmanager.h"
 #endif
 
 #include <wx/busyinfo.h>

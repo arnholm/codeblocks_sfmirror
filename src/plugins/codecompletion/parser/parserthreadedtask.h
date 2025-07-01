@@ -8,7 +8,7 @@
 
 #include <wx/thread.h>
 
-#include <cbthreadpool.h>
+#include "cbthreadpool.h"
 
 class Parser;
 class cbProject;

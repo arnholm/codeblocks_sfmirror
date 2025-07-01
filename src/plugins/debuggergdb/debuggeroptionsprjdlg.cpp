@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "debuggeroptionsprjdlg.h"
 #include <wx/intl.h>
 #include <wx/xrc/xmlres.h>
@@ -15,10 +16,10 @@
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/checkbox.h>
-#include <cbproject.h>
-#include <editpathdlg.h>
-#include <manager.h>
-#include <globals.h>
+#include "cbproject.h"
+#include "editpathdlg.h"
+#include "manager.h"
+#include "globals.h"
 
 #include "debuggergdb.h"
 

@@ -7,7 +7,7 @@
 #define COMPILER_MINGW_H
 
 #include <wx/intl.h>
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerMINGW : public Compiler
 {

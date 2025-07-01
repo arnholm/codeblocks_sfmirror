@@ -6,7 +6,7 @@
 #ifndef COMPILERMSVC10_H_
 #define COMPILERMSVC10_H_
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerMSVC10 : public Compiler
 {

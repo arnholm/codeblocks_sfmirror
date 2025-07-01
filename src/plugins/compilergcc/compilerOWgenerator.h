@@ -6,7 +6,7 @@
 #ifndef COMPILEROWGENERATOR_H
 #define COMPILEROWGENERATOR_H
 
-#include <compilercommandgenerator.h>
+#include "compilercommandgenerator.h"
 
 //Overridden to fix OpenWatcom Linking Problem (@Biplab)
 

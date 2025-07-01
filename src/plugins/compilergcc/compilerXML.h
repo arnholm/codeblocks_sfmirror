@@ -1,7 +1,7 @@
 #ifndef COMPILER_XML_H
 #define COMPILER_XML_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 #include <wx/string.h>
 

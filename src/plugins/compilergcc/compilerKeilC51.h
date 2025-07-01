@@ -6,7 +6,7 @@
 #ifndef COMPILER_KEILC51_H
 #define COMPILER_KEILC51_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerKeilC51 : public Compiler
 {

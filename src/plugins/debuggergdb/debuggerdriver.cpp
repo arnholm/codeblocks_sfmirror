@@ -7,12 +7,13 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "debuggerdriver.h"
 #include "debuggergdb.h"
 #include "macrosmanager.h"
 
-#include <cbdebugger_interfaces.h>
+#include "cbdebugger_interfaces.h"
 
 DebuggerDriver::DebuggerDriver(DebuggerGDB* plugin)
     : m_pDBG(plugin),

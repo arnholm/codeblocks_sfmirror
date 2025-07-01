@@ -13,13 +13,13 @@
 
 #include <queue>
 
-#include <cbplugin.h>
-#include <cbproject.h>
-#include <compileoptionsbase.h>
-#include <compilerfactory.h>
-#include <logger.h>
-#include <sdk_events.h>
-#include <settings.h> // SDK
+#include "cbplugin.h"
+#include "cbproject.h"
+#include "compileoptionsbase.h"
+#include "compilerfactory.h"
+#include "logger.h"
+#include "sdk_events.h"
+#include "settings.h" // SDK
 
 #include "compilermessages.h"
 #include "compilererrors.h"

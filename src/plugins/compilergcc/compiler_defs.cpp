@@ -7,12 +7,14 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "compiler_defs.h"
-#include <cbproject.h>
-#include <projectbuildtarget.h>
+#include "cbproject.h"
+#include "projectbuildtarget.h"
 
 #include <wx/listimpl.cpp>
+
 WX_DEFINE_LIST(CompilerCommands);
 
 CompilerQueue::CompilerQueue()

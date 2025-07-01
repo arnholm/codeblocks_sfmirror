@@ -6,10 +6,10 @@
 #ifndef CODECOMPLETION_H
 #define CODECOMPLETION_H
 
-#include <settings.h> // SDK
-#include <cbplugin.h>
-#include <cbproject.h>
-#include <sdk_events.h>
+#include "settings.h" // SDK
+#include "cbplugin.h"
+#include "cbproject.h"
+#include "sdk_events.h"
 
 #include "coderefactoring.h"
 #include "parsemanager.h"

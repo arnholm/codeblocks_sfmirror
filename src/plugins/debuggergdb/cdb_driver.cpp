@@ -7,25 +7,25 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
-    #include <cbproject.h>
-    #include <cbexception.h>
-    #include <configmanager.h>
-    #include <debuggermanager.h>
-    #include <globals.h>
-    #include <infowindow.h>
-    #include <logmanager.h>
-    #include <manager.h>
-    #include <projectbuildtarget.h>
+    #include "cbproject.h"
+    #include "cbexception.h"
+    #include "configmanager.h"
+    #include "debuggermanager.h"
+    #include "globals.h"
+    #include "infowindow.h"
+    #include "logmanager.h"
+    #include "manager.h"
+    #include "projectbuildtarget.h"
 #endif
 
 #include "cdb_driver.h"
 #include "cdb_commands.h"
 #include "debuggeroptionsdlg.h"
 
-#include <cbdebugger_interfaces.h>
+#include "cbdebugger_interfaces.h"
 
 // Parse CDB prompts. Support both 32 and 64 bit inferiors
 // The strings looks something like this:

@@ -7,8 +7,9 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
-#include <prep.h>
+#include "sdk.h"
+
+#include "prep.h"
 #ifndef CB_PRECOMP
     #include <wx/intl.h>
     #include <wx/regex.h>

@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <cctype>
@@ -16,10 +16,10 @@
     #include <wx/app.h>
     #include <wx/msgdlg.h>
 
-    #include <cbexception.h>
-    #include <globals.h>
-    #include <logmanager.h>
-    #include <manager.h>
+    #include "cbexception.h"
+    #include "globals.h"
+    #include "logmanager.h"
+    #include "manager.h"
 #endif
 
 #include <wx/tokenzr.h>

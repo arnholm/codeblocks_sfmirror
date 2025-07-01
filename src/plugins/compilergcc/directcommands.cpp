@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include <wx/intl.h>
 #include <wx/filename.h>
 #include <wx/msgdlg.h>
@@ -17,20 +18,20 @@
 #include <wx/regex.h> // used in QUICK hack at line 574
 #include <wx/file.h>
 
-#include <compiler.h>
-#include <cbproject.h>
-#include <projectbuildtarget.h>
-#include <globals.h>
-#include <manager.h>
-#include <logmanager.h>
-#include <configmanager.h>
-#include <macrosmanager.h>
+#include "compiler.h"
+#include "cbproject.h"
+#include "projectbuildtarget.h"
+#include "globals.h"
+#include "manager.h"
+#include "logmanager.h"
+#include "configmanager.h"
+#include "macrosmanager.h"
 #include "directcommands.h"
 #include "compilercommandgenerator.h"
 #include "compilergcc.h"
 #include "cbexception.h"
 #include "filefilters.h"
-#include <depslib.h>
+#include "depslib.h"
 
 const wxString COMPILER_SIMPLE_LOG(_T("SLOG:"));
 const wxString COMPILER_NOTE_LOG(_T("SLOG:NLOG:"));

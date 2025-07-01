@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "debuggeroptionsdlg.h"
 #ifndef CB_PRECOMP
     #include <wx/checkbox.h>
@@ -19,8 +20,8 @@
     #include <wx/textctrl.h>
     #include <wx/xrc/xmlres.h>
 
-    #include <configmanager.h>
-    #include <macrosmanager.h>
+    #include "configmanager.h"
+    #include "macrosmanager.h"
 #endif
 
 #include "debuggergdb.h"

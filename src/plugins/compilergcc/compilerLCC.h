@@ -1,7 +1,7 @@
 #ifndef COMPILER_LCC_H
 #define COMPILER_LCC_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerLCC : public Compiler
 {

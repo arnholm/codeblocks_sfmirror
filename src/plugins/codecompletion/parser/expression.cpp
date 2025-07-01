@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #include <stack>
 
@@ -15,8 +15,8 @@
     #include <wx/wx.h>
 #endif
 
-#include <logmanager.h>
-#include <manager.h>
+#include "logmanager.h"
+#include "manager.h"
 
 #include "cclogger.h"
 #include "expression.h"

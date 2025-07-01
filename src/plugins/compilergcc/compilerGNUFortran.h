@@ -6,7 +6,7 @@
 #ifndef COMPILER_GFORTRAN_H
 #define COMPILER_GFORTRAN_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerGNUFortran : public Compiler
 {

@@ -14,7 +14,7 @@
 
 #include "debugger_defs.h"
 #include <wx/regex.h>
-#include <globals.h>
+#include "globals.h"
 
 #define NOT_IMPLEMENTED()   \
     do {                    \

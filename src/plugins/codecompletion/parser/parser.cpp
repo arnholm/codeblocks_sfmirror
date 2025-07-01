@@ -18,17 +18,17 @@
     #include <wx/intl.h>
     #include <wx/progdlg.h>
 
-    #include <cbproject.h>
-    #include <configmanager.h>
-    #include <editormanager.h>
-    #include <globals.h>
-    #include <infowindow.h>
-    #include <logmanager.h>
-    #include <manager.h>
+    #include "cbproject.h"
+    #include "configmanager.h"
+    #include "editormanager.h"
+    #include "globals.h"
+    #include "infowindow.h"
+    #include "logmanager.h"
+    #include "manager.h"
 #endif
 
 #include <wx/tokenzr.h>
-#include <cbstyledtextctrl.h>
+#include "cbstyledtextctrl.h"
 
 #include "parser.h"
 #include "parserthreadedtask.h"

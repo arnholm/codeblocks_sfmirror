@@ -6,7 +6,7 @@
 #ifndef COMPILERMSVC8_H
 #define COMPILERMSVC8_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerMSVC8 : public Compiler
 {

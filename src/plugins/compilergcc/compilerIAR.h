@@ -6,7 +6,7 @@
 #ifndef COMPILER_IAR_H
 #define COMPILER_IAR_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerIAR : public Compiler
 {

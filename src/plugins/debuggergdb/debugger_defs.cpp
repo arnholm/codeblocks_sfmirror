@@ -16,7 +16,8 @@
 #include <wx/frame.h>
 #include "manager.h"
 #endif
-#include <cbdebugger_interfaces.h>
+
+#include "cbdebugger_interfaces.h"
 #include "debugger_defs.h"
 #include "debuggerdriver.h"
 #include "debuggergdb.h"

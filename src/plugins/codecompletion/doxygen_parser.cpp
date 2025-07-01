@@ -7,20 +7,20 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
   #include <wx/string.h>
 
-  #include <cbeditor.h>
-  #include <editormanager.h>
-  #include <sdk_events.h>
+  #include "cbeditor.h"
+  #include "editormanager.h"
+  #include "sdk_events.h"
 #endif
 
 #include <wx/tokenzr.h>
 #include <wx/html/htmlwin.h>
 
-#include <cbstyledtextctrl.h>
+#include "cbstyledtextctrl.h"
 
 #include "doxygen_parser.h"
 

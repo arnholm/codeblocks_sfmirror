@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <cctype>
@@ -18,28 +18,28 @@
     #include <wx/wfstream.h>
     #include <wx/xrc/xmlres.h>
 
-    #include <cbauibook.h>
-    #include <cbeditor.h>
-    #include <cbexception.h>
-    #include <cbproject.h>
-    #include <compilerfactory.h>
-    #include <configmanager.h>
-    #include <editormanager.h>
-    #include <logmanager.h>
-    #include <macrosmanager.h>
-    #include <manager.h>
-    #include <pluginmanager.h>
-    #include <prep.h> // nullptr
-    #include <projectmanager.h>
+    #include "cbauibook.h"
+    #include "cbeditor.h"
+    #include "cbexception.h"
+    #include "cbproject.h"
+    #include "compilerfactory.h"
+    #include "configmanager.h"
+    #include "editormanager.h"
+    #include "logmanager.h"
+    #include "macrosmanager.h"
+    #include "manager.h"
+    #include "pluginmanager.h"
+    #include "prep.h" // nullptr
+    #include "projectmanager.h"
 
-    #include <tinyxml/tinyxml.h>
+    #include "tinyxml/tinyxml.h"
 #endif
 
 #include <wx/tokenzr.h>
 #include <wx/listbook.h> //2025/04/21
 
-#include <cbstyledtextctrl.h>
-#include <compilercommandgenerator.h>
+#include "cbstyledtextctrl.h"
+#include "compilercommandgenerator.h"
 
 #include "codecompletion.h" //2025/04/21
 #include "parsemanager.h"

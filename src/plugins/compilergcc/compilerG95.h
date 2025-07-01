@@ -7,7 +7,7 @@
 #define COMPILER_G95_H
 
 #include <wx/intl.h>
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerG95 : public Compiler
 {

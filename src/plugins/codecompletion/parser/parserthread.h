@@ -14,9 +14,9 @@
 #include <queue>
 #include <vector>
 
-#include <cbthreadpool.h>
-#include <filemanager.h>
-#include <logmanager.h> // F()
+#include "cbthreadpool.h"
+#include "filemanager.h"
+#include "logmanager.h" // F()
 
 #include "cclogger.h"
 #include "tokenizer.h"

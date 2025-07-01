@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "logmanager.h"
 #include "manager.h"
 #include "compilerLCC.h"

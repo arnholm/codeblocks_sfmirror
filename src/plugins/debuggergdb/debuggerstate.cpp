@@ -7,10 +7,11 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
-#include <cbexception.h>
+#include "sdk.h"
+
+#include "cbexception.h"
 #include "debuggerstate.h"
-#include <compilerfactory.h>
+#include "compilerfactory.h"
 #include "debuggergdb.h"
 #include "debuggeroptionsdlg.h"
 #include "projectbuildtarget.h"

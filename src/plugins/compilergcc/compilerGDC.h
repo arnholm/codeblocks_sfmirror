@@ -6,7 +6,7 @@
 #ifndef COMPILER_GDC_H
 #define COMPILER_GDC_H
 
-#include <compiler.h>
+#include "compiler.h"
 
 class CompilerGDC : public Compiler
 {

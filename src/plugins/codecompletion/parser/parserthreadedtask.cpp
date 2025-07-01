@@ -7,13 +7,13 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <wx/string.h>
 
-    #include <cbproject.h>
-    #include <projectfile.h>
+    #include "cbproject.h"
+    #include "projectfile.h"
 #endif
 
 #include "parserthreadedtask.h"

@@ -7,7 +7,7 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
 
 #include "compilerCYGWIN.h"
 #include "cygwin.h"

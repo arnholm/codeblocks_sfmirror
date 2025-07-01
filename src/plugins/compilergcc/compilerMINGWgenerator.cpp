@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "compilerMINGWgenerator.h"
 #include <wx/intl.h>
 #include "cbexception.h"

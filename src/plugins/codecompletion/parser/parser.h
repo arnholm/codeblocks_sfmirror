@@ -16,8 +16,8 @@
 #include <wx/timer.h>
 #include <wx/treectrl.h>
 
-#include <cbthreadpool.h>
-#include <sdk_events.h>
+#include "cbthreadpool.h"
+#include "sdk_events.h"
 
 #include "parserthread.h"
 #include "parser_base.h"

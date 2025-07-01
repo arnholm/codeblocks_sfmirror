@@ -7,8 +7,8 @@
 #define TOKENIZER_H
 
 #include <wx/string.h>
-#include <configmanager.h>
-#include <filemanager.h>
+#include "configmanager.h"
+#include "filemanager.h"
 #include "token.h"
 
 #include <stack>

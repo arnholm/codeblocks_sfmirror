@@ -1,4 +1,4 @@
-#include <sdk.h>
+#include "sdk.h"
 
 #ifndef CB_PRECOMP
     #include <wx/arrstr.h>
@@ -14,8 +14,8 @@
 
 #include "compilerXML.h"
 
-#include <manager.h>
-#include <macrosmanager.h>
+#include "manager.h"
+#include "macrosmanager.h"
 
 CompilerXML::CompilerXML(const wxString& name, const wxString& ID, const wxString& file)
     : Compiler(wxGetTranslation(name), ID), m_fileName(file)

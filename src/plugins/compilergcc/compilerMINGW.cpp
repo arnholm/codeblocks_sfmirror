@@ -7,7 +7,8 @@
  * $HeadURL$
  */
 
-#include <sdk.h>
+#include "sdk.h"
+
 #include "compilerMINGW.h"
 #include <wx/intl.h>
 #include <wx/regex.h>
@@ -21,7 +22,7 @@
 #include "logmanager.h"
 #include "compilerMINGWgenerator.h"
 
-#include <configmanager.h>
+#include "configmanager.h"
 
 #ifdef __WXMSW__
     #include <wx/dir.h>
