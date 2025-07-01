@@ -21,7 +21,7 @@
     #include "cbproject.h"
     #include "cbstyledtextctrl.h"
     #include "globals.h"
-    #include "logmanager.h""
+    #include "logmanager.h"
     #include "manager.h"
     #include "projectmanager.h"
 #endif
