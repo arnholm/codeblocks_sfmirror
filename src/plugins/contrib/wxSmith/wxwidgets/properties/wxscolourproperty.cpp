@@ -205,7 +205,11 @@ namespace
         else
             cpv.Init( type, *wxWHITE );
 
+#if wxCHECK_VERSION(3, 3, 1)
+        m_flags |= static_cast <wxPGFlags> (wxPG_PROP_STATIC_CHOICES); // Colour selection cannot be changed.
+#else
         m_flags |= wxPG_PROP_STATIC_CHOICES; // Colour selection cannot be changed.
+#endif
         m_value << cpv;
         OnSetValue();
     }
@@ -583,7 +587,11 @@ namespace
             int index = paintdata.m_choiceItem;
             value = wxsColourValues[index];
         }
+#if wxCHECK_VERSION(3, 3, 1)
+        else if ( !(m_flags & static_cast <wxPGFlags> (wxPG_PROP_UNSPECIFIED)) )
+#else
         else if ( !(m_flags & (wxPGPropertyFlags)wxPG_PROP_UNSPECIFIED) )
+#endif
         {
             value = GetVal().m_type;
         }
