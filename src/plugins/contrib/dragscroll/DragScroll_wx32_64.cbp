@@ -66,11 +66,11 @@
 		<Unit filename="dragscrollcfg.h" />
 		<Unit filename="dragscrollevent.cpp" />
 		<Unit filename="dragscrollevent.h" />
+		<Unit filename="linux_functions.cpp" />
+		<Unit filename="linux_functions.h" />
+		<Unit filename="linux_functions.cpp" />
+		<Unit filename="linux_functions.h" />
 		<Unit filename="manifest.xml" />
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

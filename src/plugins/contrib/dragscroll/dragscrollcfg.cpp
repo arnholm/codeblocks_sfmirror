@@ -72,10 +72,11 @@ cbDragScrollCfg::cbDragScrollCfg(wxWindow* parent, cbDragScroll* pOwner, wxWindo
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxHORIZONTAL );
 
-	StaticText2 = new wxStaticText( this, wxID_ANY, _("Mouse Key To Use:"), wxDefaultPosition, wxDefaultSize, 0 );
+	StaticText2 = new wxStaticText( this, wxID_ANY, _("Mouse Button To Use:"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer4->Add( StaticText2, 0, wxALL, 5 );
 
-	wxString MouseKeyChoiceChoices[] = { _("Right"), _("Middle") };
+	wxString MouseKeyChoiceChoices[] = { _("Right Mouse"), _("Alt+Right Mouse"), _("Shift+Right Mouse"), _("Middle Mouse"), _("Alt+Middle Mouse"), _("Shift+MIddle Mouse")};
+
 	int MouseKeyChoiceNChoices = sizeof( MouseKeyChoiceChoices ) / sizeof( wxString );
 	MouseKeyChoice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, MouseKeyChoiceNChoices, MouseKeyChoiceChoices, 0 );
 	bSizer4->Add( MouseKeyChoice, 0, wxALL, 5 );
@@ -86,7 +87,8 @@ cbDragScrollCfg::cbDragScrollCfg(wxWindow* parent, cbDragScroll* pOwner, wxWindo
 	bSizer7 = new wxBoxSizer( wxVERTICAL );
 
 	bSizer7->SetMinSize(wxSize( 300,-1 ));
-	bSizer7->Add( 0, 0, 1, wxEXPAND, 0 );
+	//bSizer7->Add( 0, 0, 1, wxEXPAND, 0 );
+	bSizer7->Add( 0, 0, 0, wxEXPAND, 0 );
 
 	StaticText3 = new wxStaticText( this, wxID_ANY, _("-- Adaptive Mouse Speed Sensitivity --"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer7->Add( StaticText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
@@ -100,39 +102,7 @@ cbDragScrollCfg::cbDragScrollCfg(wxWindow* parent, cbDragScroll* pOwner, wxWindo
 	if ( 1 ) Sensitivity->SetSelection(1,10);
 	bSizer7->Add( Sensitivity, 0, wxALL|wxEXPAND, 5 );
 
-	bSizer7->Add( 0, 0, 1, wxEXPAND, 0 );
-
-	StaticText4 = new wxStaticText( this, wxID_ANY, _("-- Mouse Movement to Text Scroll Ratio --"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer7->Add( StaticText4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-	MouseToLineRatio = new wxSlider( this, wxID_ANY, 30, 10, 100, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_HORIZONTAL|wxSL_LABELS|wxSL_TOP );
-	if ( 1 ) MouseToLineRatio->SetTickFreq(10);
-	if ( 1 ) MouseToLineRatio->SetPageSize(10);
-	if ( 0 ) MouseToLineRatio->SetLineSize(0);
-	if ( 0 ) MouseToLineRatio->SetThumbLength(0);
-	if ( 1 ) MouseToLineRatio->SetTick(10);
-	if ( 1 ) MouseToLineRatio->SetSelection(10,100);
-	bSizer7->Add( MouseToLineRatio, 0, wxALL|wxEXPAND, 5 );
-
-	bSizer7->Add( 0, 0, 1, wxEXPAND, 0 );
-
-	StaticText5 = new wxStaticText( this, wxID_ANY, _("-- Unix Context Menu Watch for Drag (millisecs) --"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer7->Add( StaticText5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-	MouseContextDelay = new wxSlider( this, wxID_ANY, 50, 10, 500, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_HORIZONTAL|wxSL_LABELS|wxSL_TOP );
-	// Above values are: default mil delay, min, max
-	if ( 1 ) MouseContextDelay->SetTickFreq(10);
-	if ( 1 ) MouseContextDelay->SetPageSize(10);
-	if ( 1 ) MouseContextDelay->SetLineSize(10);
-	if ( 1 ) MouseContextDelay->SetThumbLength(10);
-	if ( 1 ) MouseContextDelay->SetTick(100);
-	if ( 1 ) MouseContextDelay->SetSelection(10,500);
-	bSizer7->Add( MouseContextDelay, 0, wxALL|wxEXPAND, 5 );
-
-	bSizer7->Add( 0, 0, 1, wxEXPAND, 0 );
-
 	bSizer1->Add( bSizer7, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
 	this->SetSizer( bSizer1 );
 	this->Layout();
 
@@ -159,6 +129,7 @@ void cbDragScrollCfg::OnDoneButtonClick(wxCommandEvent& /*event*/)
 }
 // ----------------------------------------------------------------------------
 wxString cbDragScrollCfg::GetBitmapBaseName() const
+// ----------------------------------------------------------------------------
 {
     //probing
     //LOGIT( _T("Config:%s"),ConfigManager::GetConfigFolder().GetData()  );

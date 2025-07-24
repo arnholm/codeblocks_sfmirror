@@ -49,7 +49,6 @@ class cbDragScrollCfg: public cbConfigurationPanel
 		    ID_KEYCHOICE,
 		    ID_RADIOBOX1,
 		    ID_SENSITIVITY,
-		    ID_MOUSETOLINERATIO,
 		    ID_STATICTEXT1,
 		    ID_STATICTEXT2,
 		    ID_STATICTEXT3,
@@ -63,10 +62,8 @@ class cbDragScrollCfg: public cbConfigurationPanel
         bool GetMouseEditorFocusEnabled(){ return EditorFocusEnabled->GetValue(); }
         bool GetMouseFocusEnabled()      { return MouseFocusEnabled->GetValue(); }
         int  GetMouseDragDirection()     { return ScrollDirection->GetSelection(); }
-        int  GetMouseDragKey()           { return MouseKeyChoice->GetSelection(); }
+        int  GetchosenDragKey()          { return MouseKeyChoice->GetSelection(); }
         int  GetMouseDragSensitivity()   { return Sensitivity->GetValue(); }
-        int  GetMouseToLineRatio()       { return MouseToLineRatio->GetValue(); }
-        int  GetMouseContextDelay()      { return MouseContextDelay->GetValue(); }
         bool GetMouseWheelZoom()         { return MouseWheelZoom->GetValue(); }
         bool IsLogZoomSizePropagated()   { return PropagateLogZoomSize->GetValue(); }
         bool GetMouseWheelZoomReverse()  { return MouseWheelZoomReverse->GetValue(); } //2019/03/30
@@ -83,10 +80,6 @@ class cbDragScrollCfg: public cbConfigurationPanel
                 { MouseKeyChoice->SetSelection(selection); }
         void SetMouseDragSensitivity(int value)
                 { Sensitivity->SetValue(value); }
-        void SetMouseToLineRatio(int value)
-                { MouseToLineRatio->SetValue(value); }
-        void SetMouseContextDelay(int value)
-                { MouseContextDelay->SetValue(value); }
         void SetMouseWheelZoom(bool value)
                 { MouseWheelZoom->SetValue(value); }
         void SetPropagateLogZoomSize(bool value)
@@ -115,11 +108,9 @@ class cbDragScrollCfg: public cbConfigurationPanel
 		wxStaticText* StaticText3;
 		wxSlider* Sensitivity;
         wxStaticText* StaticText4;
-		wxSlider* MouseToLineRatio;
 		wxButton* DoneButton;
 		wxStaticText* StaticTextMRKC;
 		wxStaticText* StaticText5;
-		wxSlider* MouseContextDelay;
 
 
 	private:

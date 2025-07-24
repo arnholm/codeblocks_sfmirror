@@ -3,8 +3,8 @@
     <SdkVersion major="1" minor="10" release="0" />
     <Plugin name="cbDragScroll">
         <Value title="DragScroll" />
-        <Value version="1.3.31 2022/11/12" />
-        <Value description="Mouse Drag and Scroll using Right or Middle Mouse Key" />
+        <Value version="1.4.13 2025/05/16" />
+        <Value description="Mouse Drag and Scroll with User Key Choices" />
         <Value author="Pecan" />
         <Value authorEmail=" " />
         <Value authorWebsite=" " />
