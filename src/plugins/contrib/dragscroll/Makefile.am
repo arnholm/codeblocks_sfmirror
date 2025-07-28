@@ -13,11 +13,13 @@ libdragscroll_la_LIBADD = ../../../sdk/libcodeblocks.la $(WX_LIBS)
 
 libdragscroll_la_SOURCES = dragscroll.cpp \
 			dragscrollcfg.cpp \
-			dragscrollevent.cpp
+			dragscrollevent.cpp \
+			linux_functions.cpp
 
 noinst_HEADERS = dragscroll.h \
 			dragscrollcfg.h \
 			dragscrollevent.h
+			linux_functions.h
 
 EXTRA_DIST = $(srcdir)/*.cbp \
 		manifest.xml
