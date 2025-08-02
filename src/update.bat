@@ -6,7 +6,7 @@ setlocal
 SETLOCAL ENABLEEXTENSIONS
 
 if "%1" == "" (
-    echo Missing target, use p.e. 31 for wxWidgets 3.1 in 32 bits mode or 32_64 for wxWidgets 3.2 in 64 bits mode
+    echo Missing target, use p.e. 33 for wxWidgets 3.3 in 32 bits mode or 33_64 for wxWidgets 3.3 in 64 bits mode
     GOTO:EOF
 )
 

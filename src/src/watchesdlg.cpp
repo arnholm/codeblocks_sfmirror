@@ -283,7 +283,11 @@ class WatchRawDialog : public wxScrollingDialog
             switch (m_type)
             {
                 case TypeNormal:
+#if wxCHECK_VERSION(3, 3, 0)
+                    m_text->SetValue(watch->GetValueAsString(wxPGPropValFormatFlags::FullValue));
+#else
                     m_text->SetValue(watch->GetValueAsString(wxPG_FULL_VALUE));
+#endif
                     break;
 
                 case TypeDebug:

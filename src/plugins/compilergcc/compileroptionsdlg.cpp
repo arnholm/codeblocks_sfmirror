@@ -737,7 +737,11 @@ void CompilerOptionsDlg::DoFillOptions()
 
         wxPGProperty *prop = new wxBoolProperty(option->name, wxPG_LABEL, option->enabled);
         m_FlagsPG->AppendIn(categoryProp, prop);
+#if wxCHECK_VERSION(3, 3, 0)
+        m_FlagsPG->SetPropertyAttribute(prop, wxPG_BOOL_USE_CHECKBOX, true, wxPGPropertyValuesFlags::Recurse);
+#else
         m_FlagsPG->SetPropertyAttribute(prop, wxPG_BOOL_USE_CHECKBOX, true, wxPG_RECURSE);
+#endif
     }
 
     wxPGProperty *root = m_FlagsPG->GetRoot();
@@ -745,7 +749,11 @@ void CompilerOptionsDlg::DoFillOptions()
     {
         const unsigned count = root->GetChildCount();
         for (unsigned ii = 0; ii < count; ++ii)
+#if wxCHECK_VERSION(3, 3, 0)
+            m_FlagsPG->SortChildren(root->Item(ii), wxPGPropertyValuesFlags::Recurse);
+#else
             m_FlagsPG->SortChildren(root->Item(ii), wxPG_RECURSE);
+#endif
     }
     m_FlagsPG->Thaw();
 } // DoFillOptions

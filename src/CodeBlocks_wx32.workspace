@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
-	<Workspace title="CodeBlocks Workspace wx3.2.x">
-		<Project filename="CodeBlocks_wx32.cbp" active="1" />
+	<Workspace title="CodeBlocks Workspace wx3.2.x (32 bit)">
+		<Project filename="CodeBlocks_wx32.cbp" />
 		<Project filename="tools/Addr2LineUI/Addr2LineUI_wx32.cbp" />
 		<Project filename="tools/cb_share_config/cb_share_config_wx32.cbp" />
 		<Project filename="tools/CBLauncher/CbLauncher_wx32.cbp" />
