@@ -589,7 +589,7 @@ private:
     // ----------------------------------------------------------------------------
     {
         wxWindow* appWindow = Manager::Get()->GetAppWindow();
-        wxWindow* topWindow =GetWxTopLevelWindow();
+        wxWindow* topWindow = GetWxTopLevelWindow();
         if (not topWindow)
             topWindow = appWindow;
         return topWindow;

@@ -310,7 +310,7 @@ private:
       * @param parent parent token pointer, we only search under the parent token scope
       * @param kindMask filter for the result token, only the specified type of tokens were matched
       */
-    Token* TokenExists(const wxString& name, const Token* parent = 0, short int kindMask = 0xFFFF);
+    Token* TokenExists(const wxString& name, const Token* parent = nullptr, short int kindMask = 0xFFFF);
 
     /** Support function overloading */
     Token* TokenExists(const wxString& name, const wxString& baseArgs, const Token* parent, TokenKind kind);
@@ -318,9 +318,9 @@ private:
     /** TODO comment here?
       */
     Token* FindTokenFromQueue(std::queue<wxString>& q,
-                              Token*                parent = 0,
+                              Token*                parent = nullptr,
                               bool                  createIfNotExist = false,
-                              Token*                parentIfCreated = 0);
+                              Token*                parentIfCreated = nullptr);
 
     /** Converts a full argument list (including variable names) to argument types only and strips spaces.
       * eg: if the argument list is like "(const TheClass* the_class = 0x1234, int my_int = 567)"

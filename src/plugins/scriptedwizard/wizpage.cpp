@@ -91,7 +91,7 @@ BEGIN_EVENT_TABLE(WizPageBase, wxWizardPageSimple)
 END_EVENT_TABLE()
 
 WizPageBase::WizPageBase(const wxString& pageName, wxWizard* parent, const wxBitmap& bitmap)
-    : wxWizardPageSimple(parent, 0, 0, bitmap),
+    : wxWizardPageSimple(parent, nullptr, nullptr, bitmap),
     m_PageName(pageName)
 {
     // duplicate pageIDs are not allowed
@@ -109,7 +109,7 @@ WizPageBase::WizPageBase(const wxString& pageName, wxWizard* parent, const wxBit
 WizPageBase::~WizPageBase()
 {
     // unregister this from the static pages map
-    s_PagesByName[m_PageName] = 0;
+    s_PagesByName[m_PageName] = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -369,7 +369,7 @@ wxString WizProjectPathPanel::GetTitle() const
 void WizProjectPathPanel::OnButton(cb_unused wxCommandEvent& event)
 {
     wxString dir = m_pProjectPathPanel->GetPath();
-    dir = ChooseDirectory(0, _("Please select the folder to create your project in"), dir, wxEmptyString, false, true);
+    dir = ChooseDirectory(nullptr, _("Please select the folder to create your project in"), dir, wxEmptyString, false, true);
     if (!dir.IsEmpty() && wxDirExists(dir))
         m_pProjectPathPanel->SetPath(dir);
 }

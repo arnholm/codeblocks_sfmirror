@@ -76,7 +76,7 @@ public:
      *  from the loader's buffer to its own buffer, so after that, we can safely delete the loader
      *  after this function call
      */
-    bool Init(const wxString& filename = wxEmptyString, LoaderBase* loader = 0);
+    bool Init(const wxString& filename = wxEmptyString, LoaderBase* loader = nullptr);
 
     /** Initialize the buffer by directly using a wxString's content.
      *  @param initLineNumber the start line of the buffer, usually the parser try to parse a function
@@ -221,7 +221,7 @@ public:
      * NNNNNNNNNNNNNNNNNNNNNNyyyyyyyyy
      * ^---m_TokenIndex
      */
-    bool ReplaceBufferText(const wxString& target, const Token* macro = 0);
+    bool ReplaceBufferText(const wxString& target, const Token* macro = nullptr);
 
     /** Get expanded text for the current macro usage, then replace buffer for re-parsing
      * @param tk the macro definition token
@@ -587,7 +587,7 @@ private:
      */
     struct ExpandedMacro
     {
-        ExpandedMacro():m_Macro(0)
+        ExpandedMacro():m_Macro(nullptr)
         {
         };
         /** the token index we begin to parse after replacement */

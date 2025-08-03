@@ -196,7 +196,7 @@ public:
     const TokenIdxSet*   GetTokensBelongToFile(size_t fileIdx) const
     {
       TokenFileMap::const_iterator it = m_FileMap.find(fileIdx);
-      return (it == m_FileMap.end() ? 0 : &(it->second));
+      return (it == m_FileMap.end() ? nullptr : &(it->second));
     }
 
     const TokenFileSet* GetFilesToBeReparsed() const
@@ -275,7 +275,7 @@ public:
      * @param local true if the tokens belong to project files
      * @param userData a pointer to the c::b project
      */
-    void MarkFileTokensAsLocal(const wxString& filename, bool local = true, void* userData = 0);
+    void MarkFileTokensAsLocal(const wxString& filename, bool local = true, void* userData = nullptr);
 
     /** @brief mark the tokens so that they are associated with a C::B project
      *
@@ -283,7 +283,7 @@ public:
      * @param local true if the tokens belong to project files
      * @param userData a pointer to the c::b project
      */
-    void MarkFileTokensAsLocal(size_t fileIdx, bool local = true, void* userData = 0);
+    void MarkFileTokensAsLocal(size_t fileIdx, bool local = true, void* userData = nullptr);
 
     // Documentation related functions
 

@@ -50,7 +50,7 @@ class Wiz : public cbWizardPlugin
 		wxString GetCategory(int index) const override;
 		const wxBitmap& GetBitmap(int index) const override;
         wxString GetScriptFilename(int index) const override;
-		CompileTargetBase* Launch(int index, wxString* pFilename = 0) override;
+		CompileTargetBase* Launch(int index, wxString* pFilename = nullptr) override;
 
 		CompileTargetBase* RunProjectWizard(wxString* pFilename); // called by Launch() for otProject wizards
 		CompileTargetBase* RunTargetWizard(wxString* pFilename); // called by Launch() for otTarget wizards (always returns NULL)

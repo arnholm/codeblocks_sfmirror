@@ -35,7 +35,7 @@ class DLLIMPORT cbConfigurationPanelColoursInterface
 class DLLIMPORT cbConfigurationPanel : public wxPanel
 {
     public:
-        cbConfigurationPanel() : m_parentDialog(0) { ; }
+        cbConfigurationPanel() : m_parentDialog(nullptr) { ; }
         ~cbConfigurationPanel() override{}
 
         /// @return the panel's title.

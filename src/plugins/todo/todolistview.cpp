@@ -670,7 +670,7 @@ void CheckListDialog::OnAllClick(wxCommandEvent& event)
     }
 }
 
-void CheckListDialog::OnListCheck(wxCommandEvent& event)
+void CheckListDialog::OnListCheck(cb_unused wxCommandEvent& event)
 {
     size_t checkedItems = GetChecked().size();
     if (checkedItems == 0)
