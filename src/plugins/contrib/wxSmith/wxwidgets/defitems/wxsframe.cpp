@@ -130,7 +130,7 @@ wxObject* wxsFrame::OnBuildPreview(wxWindow* Parent,long _Flags)
         Frm = wxDynamicCast(Parent,wxFrame);
         if ( Frm )
         {
-            Frm->Create(0,GetId(),Title,wxDefaultPosition,wxDefaultSize,Style());
+            Frm->Create(nullptr,GetId(),Title,wxDefaultPosition,wxDefaultSize,Style());
             Frm->SetClientSize(Size(wxTheApp->GetTopWindow()));
             Frm->Move(Pos(wxTheApp->GetTopWindow()));
         }

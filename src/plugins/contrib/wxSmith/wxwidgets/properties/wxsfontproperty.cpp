@@ -294,7 +294,7 @@ wxsFontProperty::wxsFontProperty(const wxString& PGName,const wxString& DataName
 
 bool wxsFontProperty::ShowEditor(wxsPropertyContainer* Object)
 {
-    wxsSimpleFontEditorDlg Dlg(0,VALUE);
+    wxsSimpleFontEditorDlg Dlg(nullptr,VALUE);
     PlaceWindow(&Dlg);
     return Dlg.ShowModal() == wxID_OK;
 }

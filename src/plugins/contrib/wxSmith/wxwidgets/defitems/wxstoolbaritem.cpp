@@ -66,9 +66,9 @@ wxsToolBarItem::wxsToolBarItem(wxsItemResData* Data, ToolType Tool):
     wxsTool(
         Data,
         &Info,
-        (Tool == Separator || Tool == Stretchable) ? 0 : wxsToolBarItemEvents,
+        (Tool == Separator || Tool == Stretchable) ? nullptr : wxsToolBarItemEvents,
         0,
-        (Tool == Separator || Tool == Stretchable) ? 0 : (flVariable|flId)
+        (Tool == Separator || Tool == Stretchable) ? nullptr : (flVariable|flId)
     ),
     m_Type(Tool)
 {
@@ -82,6 +82,7 @@ void wxsToolBarItem::OnBuildCreatingCode()
 
             switch ( m_Type )
             {
+                case Control:
                 case Normal:
                 case Radio:
                 case Check:
@@ -89,7 +90,8 @@ void wxsToolBarItem::OnBuildCreatingCode()
                     const wxChar* ItemType;
                     switch ( m_Type )
                     {
-                        case Normal:
+                        case Control:
+                        case Normal: // fall-through
                             ItemType = _T("wxITEM_NORMAL");
                             break;
                         case Radio:

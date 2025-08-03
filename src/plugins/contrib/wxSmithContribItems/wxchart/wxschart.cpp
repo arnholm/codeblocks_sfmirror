@@ -346,7 +346,11 @@ void wxsChart::AppendPropertyForSet(wxsPropertyGridManager* Grid,int Position)
     wxString SetName = wxString::Format(_("Set %d"),Position+1);
 
     Desc->Id = Grid->Append(new wxParentProperty(SetName,wxPG_LABEL));
+#if wxCHECK_VERSION(3, 3, 0)
+    Desc->Id->ChangeFlag(wxPGFlags::ReadOnly, true);
+#else
     Desc->Id->ChangeFlag(wxPG_PROP_READONLY, true);
+#endif
 
     static const wxChar* Types[] =
     {
@@ -454,7 +458,11 @@ void wxsChart::AppendPropertyForPoint(wxsPropertyGridManager* Grid,ChartPointsDe
     wxString Name = wxString::Format(_("Point %d"),Position+1);
 
     Desc->Id = Grid->AppendIn(SetDesc->Id, new wxParentProperty(Name,wxPG_LABEL));
+#if wxCHECK_VERSION(3, 3, 0)
+    Desc->Id->ChangeFlag(wxPGFlags::ReadOnly, true);
+#else
     Desc->Id->ChangeFlag(wxPG_PROP_READONLY, true);
+#endif
     Desc->NameId = Grid->AppendIn(Desc->Id, new wxStringProperty(_("Name"), wxPG_LABEL,Desc->Name));
     Desc->XId = Grid->AppendIn(Desc->Id, new wxStringProperty(_("X"), wxPG_LABEL,wxString::Format(_T("%lf"),Desc->X)));
     Desc->YId = Grid->AppendIn(Desc->Id, new wxStringProperty(_("Y"), wxPG_LABEL,wxString::Format(_T("%lf"),Desc->Y)));

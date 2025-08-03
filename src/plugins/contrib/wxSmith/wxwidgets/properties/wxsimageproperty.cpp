@@ -44,7 +44,7 @@ wxsImageProperty::wxsImageProperty(const wxString &PGName, const wxString &_Data
 bool wxsImageProperty::ShowEditor(wxsPropertyContainer *Object)
 {
     wxsBitmapIconData data;
-    wxsBitmapIconEditorDlg dlg(0, data, _T("wxART_OTHER"));
+    wxsBitmapIconEditorDlg dlg(nullptr, data, _T("wxART_OTHER"));
     wxBitmap bmp;
 
     // show the dialog, exit immediately if cancelled

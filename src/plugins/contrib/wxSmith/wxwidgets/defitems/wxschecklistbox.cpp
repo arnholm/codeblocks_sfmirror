@@ -95,7 +95,7 @@ void wxsCheckListBox::OnBuildCreatingCode()
 
 wxObject* wxsCheckListBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 {
-    wxCheckListBox* Preview = new wxCheckListBox(Parent,GetId(),Pos(Parent),Size(Parent),0,0,Style());
+    wxCheckListBox* Preview = new wxCheckListBox(Parent,GetId(),Pos(Parent),Size(Parent),0,nullptr,Style());
     for ( size_t i = 0; i < ArrayChoices.GetCount(); ++i )
     {
         int Val = Preview->Append(ArrayChoices[i]);

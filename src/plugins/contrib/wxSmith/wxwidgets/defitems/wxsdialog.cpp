@@ -110,7 +110,7 @@ wxObject* wxsDialog::OnBuildPreview(wxWindow* Parent,long _Flags)
         Dlg = wxDynamicCast(Parent,wxDialog);
         if ( Dlg )
         {
-            Dlg->Create(0,GetId(),Title,wxDefaultPosition,wxDefaultSize,Style());
+            Dlg->Create(nullptr,GetId(),Title,wxDefaultPosition,wxDefaultSize,Style());
             Dlg->SetClientSize(Size(wxTheApp->GetTopWindow()));
             Dlg->Move(Pos(wxTheApp->GetTopWindow()));
         }

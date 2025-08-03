@@ -143,10 +143,10 @@ void wxsSashLayoutWindow::OnBuildCreatingCode()
 void wxsSashLayoutWindow::OnEnumContainerProperties(cb_unused long _Flags)
 {
     static const long    valign[] = {    wxLAYOUT_TOP,       wxLAYOUT_LEFT,       wxLAYOUT_RIGHT,       wxLAYOUT_BOTTOM,   0};
-    static const wxChar *nalign[] = {_T("wxLAYOUT_TOP"), _T("wxLAYOUT_LEFT"), _T("wxLAYOUT_RIGHT"), _T("wxLAYOUT_BOTTOM"), 0};
+    static const wxChar *nalign[] = {_T("wxLAYOUT_TOP"), _T("wxLAYOUT_LEFT"), _T("wxLAYOUT_RIGHT"), _T("wxLAYOUT_BOTTOM"), nullptr};
 
     static const long    vorient[] = {    wxLAYOUT_HORIZONTAL,       wxLAYOUT_VERTICAL,   0};
-    static const wxChar *norient[] = {_T("wxLAYOUT_HORIZONTAL"), _T("wxLAYOUT_VERTICAL"), 0};
+    static const wxChar *norient[] = {_T("wxLAYOUT_HORIZONTAL"), _T("wxLAYOUT_VERTICAL"), nullptr};
 
 
     WXS_BOOL(wxsSashLayoutWindow, mTop,    _("Drag Top"),    "dragtop",    true);

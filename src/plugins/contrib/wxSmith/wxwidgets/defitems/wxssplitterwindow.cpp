@@ -138,7 +138,7 @@ void wxsSplitterWindow::OnBuildCreatingCode()
 void wxsSplitterWindow::OnEnumContainerProperties(cb_unused long _Flags)
 {
     static const long    OrientValues[] = { wxHORIZONTAL, wxVERTICAL, 0 };
-    static const wxChar* OrientNames[]  = { _T("horizontal"), _T("vertical"), 0 };
+    static const wxChar* OrientNames[]  = { _T("horizontal"), _T("vertical"), nullptr };
 
     WXS_LONG(wxsSplitterWindow,SashPos,_("Sash position"),_T("sashpos"),0);
     WXS_FLOAT(wxsSplitterWindow,SashGravity,_("Sash gravity"), _T("sashgravity"), 0.5);
