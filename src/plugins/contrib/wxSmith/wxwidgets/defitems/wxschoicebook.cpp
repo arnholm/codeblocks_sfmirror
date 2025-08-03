@@ -98,7 +98,7 @@ namespace
                 //*)
                 ReadData();
 
-                Label->Connect(-1,wxEVT_KILL_FOCUS,(wxObjectEventFunction)&wxsChoicebookParentQP::OnLabelKillFocus,0,this);
+                Label->Connect(-1,wxEVT_KILL_FOCUS,(wxObjectEventFunction)&wxsChoicebookParentQP::OnLabelKillFocus,nullptr,this);
             }
 
             virtual ~wxsChoicebookParentQP()

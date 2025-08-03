@@ -92,7 +92,7 @@ void wxsEventsEditor::BuildEvents(wxsItem* Item,wxsPropertyGridManager* Grid)
         // TODO: Create new group
         if ( Event->ET == wxsEventDesc::Category )
         {
-            m_Ids.Add(0);
+            m_Ids.Add(nullptr);
             continue;
         }
 

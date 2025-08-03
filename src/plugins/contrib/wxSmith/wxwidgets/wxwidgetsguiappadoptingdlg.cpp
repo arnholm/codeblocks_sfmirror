@@ -238,7 +238,7 @@ void wxWidgetsGUIAppAdoptingDlg::OnCreateBtnClick(cb_unused wxCommandEvent& even
 
     if ( FileName.empty() ) return;
 
-    if ( m_Project->GetFileByFilename(FileName,false) == 0 )
+    if ( m_Project->GetFileByFilename(FileName,false) == nullptr )
     {
         // Adding new file to project
         wxArrayInt targets;

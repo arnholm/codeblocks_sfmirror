@@ -43,8 +43,8 @@ wxsStopWatch::wxsStopWatch(wxsItemResData* Data):
     wxsTool(
         Data,
         &Reg.Info,
-        0,
-        0)
+        nullptr,
+        nullptr)
 {
 }
 

@@ -196,7 +196,7 @@ bool wxWidgetsGUI::OnCheckIfApplicationManaged()
 
 bool wxWidgetsGUI::OnCreateApplicationBinding()
 {
-    wxWidgetsGUIAppAdoptingDlg Dlg(0,this);
+    wxWidgetsGUIAppAdoptingDlg Dlg(nullptr,this);
     PlaceWindow(&Dlg);
     Dlg.ShowModal();
     return OnCheckIfApplicationManaged();
@@ -528,7 +528,7 @@ void wxWidgetsGUI::EnumerateMainResources(wxArrayString& Names)
     for ( int i=0; i<Count; i++ )
     {
         wxWidgetsRes* Res = wxDynamicCast(GetProject()->GetResource(i),wxWidgetsRes);
-        if ( Res == 0 ) continue;
+        if ( Res == nullptr ) continue;
         if ( Res->GetGUI() != GetName() ) continue;
         if ( !Res->OnGetCanBeMain() ) continue;
         if ( Res->GetLanguage() != m_AppLanguage ) continue;

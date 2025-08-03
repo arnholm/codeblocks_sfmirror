@@ -182,7 +182,8 @@ wxsToolBarEditor::wxsToolBarEditor(wxWindow* parent,wxsToolBar* ToolBar):
                 case wxsToolBarItem::Check:
                     New->m_Type = Item->m_Type;
                     break;
-                case wxsToolBarItem::Normal: // fall-though
+                case wxsToolBarItem::Control: // fall-though
+                case wxsToolBarItem::Normal:  // fall-though
                 default:
                     New->m_Type = wxsToolBarItem::Normal;
             }

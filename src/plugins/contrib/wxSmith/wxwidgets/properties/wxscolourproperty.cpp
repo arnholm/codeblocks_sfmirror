@@ -205,8 +205,8 @@ namespace
         else
             cpv.Init( type, *wxWHITE );
 
-#if wxCHECK_VERSION(3, 3, 1)
-        m_flags |= static_cast <wxPGFlags> (wxPG_PROP_STATIC_CHOICES); // Colour selection cannot be changed.
+#if wxCHECK_VERSION(3, 3, 0)
+        m_flags |= wxPGFlags::Reserved_1; // Colour selection cannot be changed.
 #else
         m_flags |= wxPG_PROP_STATIC_CHOICES; // Colour selection cannot be changed.
 #endif
@@ -415,18 +415,27 @@ namespace
     {
         if ( index == wxNOT_FOUND )
         {
-            if ( (argFlags & wxPG_FULL_VALUE) ||
-                 GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0) )
+#if wxCHECK_VERSION(3, 3, 0)
+            wxPGPropValFormatFlags pgFlags          = static_cast<wxPGPropValFormatFlags>(argFlags);
+            wxPGPropValFormatFlags pgFlagsFullValue = pgFlags & wxPGPropValFormatFlags::FullValue;
+            if ( (wxPGPropValFormatFlags::FullValue == pgFlagsFullValue) || (0!=GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0)) )
+#else
+            if ( (argFlags & wxPG_FULL_VALUE) || GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0) )
+#endif
+            {
                 return wxString::Format(wxS("(%i,%i,%i,%i)"),
                                         (int)col.Red(),
                                         (int)col.Green(),
                                         (int)col.Blue(),
                                         (int)col.Alpha());
+            }
             else
+            {
                 return wxString::Format(wxT("(%i,%i,%i)"),
                                         (int)col.Red(),
                                         (int)col.Green(),
                                         (int)col.Blue());
+            }
         }
         else
             return m_choices.GetLabel(index);
@@ -439,7 +448,13 @@ namespace
 
         int index;
 
+#if wxCHECK_VERSION(3, 3, 0)
+        wxPGPropValFormatFlags pgFlags               = static_cast<wxPGPropValFormatFlags>(argFlags);
+        wxPGPropValFormatFlags pgFlagsValueIsCurrent = pgFlags & wxPGPropValFormatFlags::ValueIsCurrent;
+        if ( wxPGPropValFormatFlags::ValueIsCurrent == pgFlagsValueIsCurrent )
+#else
         if ( argFlags & wxPG_VALUE_IS_CURRENT )
+#endif
         {
             // GetIndex() only works reliably if wxPG_VALUE_IS_CURRENT flag is set,
             // but we should use it whenever possible.
@@ -658,7 +673,12 @@ namespace
         if ( colourRGB.length() == 0 && m_choices.GetCount() &&
              colourName == m_choices.GetLabel(GetCustomColourIndex()) )
         {
-            if ( !(argFlags & wxPG_EDITABLE_VALUE ) )
+#if wxCHECK_VERSION(3, 3, 0)
+            wxPGPropValFormatFlags pgFlags = static_cast<wxPGPropValFormatFlags>(argFlags);
+            if ( !( pgFlags & wxPGPropValFormatFlags::EditableValue ) )
+#else
+            if ( !( argFlags & wxPG_EDITABLE_VALUE ) )
+#endif
             {
                 // This really should not occur...
                 // wxASSERT(false);
@@ -676,7 +696,12 @@ namespace
             if ( colourName.length() )
             {
                 // Try predefined colour first
+#if wxCHECK_VERSION(3, 3, 0)
+                wxPGPropValFormatFlags pgFlags = static_cast<wxPGPropValFormatFlags>(argFlags);
+                bool res = wxEnumProperty::StringToValue(value, colourName, pgFlags);
+#else
                 bool res = wxEnumProperty::StringToValue(value, colourName, argFlags);
+#endif
                 if ( res && GetIndex() >= 0 )
                 {
                     val.m_type = GetIndex();

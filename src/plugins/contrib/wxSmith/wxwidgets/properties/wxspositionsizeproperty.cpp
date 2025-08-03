@@ -112,8 +112,13 @@ void wxsPositionSizeProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGr
     wxPGId YId = Grid->AppendIn(Parent,new wxIntProperty(PGYName,wxPG_LABEL,YVALUE));
     wxPGId DUId = Grid->AppendIn(Parent,new wxBoolProperty(PGDUName,wxPG_LABEL,DUVALUE));
 
+#if wxCHECK_VERSION(3, 3, 0)
+    Grid->SetPropertyAttribute(DefId,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+    Grid->SetPropertyAttribute(DUId,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
     Grid->SetPropertyAttribute(DefId,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
     Grid->SetPropertyAttribute(DUId,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
 
     PGRegister(Object,Grid,DefId,DEFIND);
     PGRegister(Object,Grid,XId,XIND);

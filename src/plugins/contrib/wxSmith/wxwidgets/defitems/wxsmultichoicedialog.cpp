@@ -42,7 +42,7 @@ namespace
 }
 
 wxsMultiChoiceDialog::wxsMultiChoiceDialog(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsMultiChoiceDialogStyles)
+    wxsTool(Data,&Reg.Info,nullptr,wxsMultiChoiceDialogStyles)
 {
     m_Message = _("Select items");
 }

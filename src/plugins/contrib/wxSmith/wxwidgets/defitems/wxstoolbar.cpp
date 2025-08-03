@@ -38,7 +38,7 @@ namespace
             wxsToolBarEditor* Editor;
 
             ToolBarEditorDialog(wxsToolBar* ToolBar):
-                wxScrollingDialog(0,-1,_("ToolBar editor"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+                wxScrollingDialog(nullptr,-1,_("ToolBar editor"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
             {
                 wxBoxSizer* Sizer = new wxBoxSizer(wxVERTICAL);
                 Editor = new wxsToolBarEditor(this,ToolBar);
@@ -87,7 +87,7 @@ wxsToolBar::wxsToolBar(wxsItemResData* Data):
     wxsTool(
         Data,
         &Reg.Info,
-        0,
+        nullptr,
         wxsToolBarStyles,
         flVariable|flId|flSubclass|flExtraCode),
     m_Packing(-1),

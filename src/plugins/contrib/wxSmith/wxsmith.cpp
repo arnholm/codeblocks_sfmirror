@@ -178,7 +178,7 @@ void wxSmith::BuildBrowserParents()
         default:
         {
             cbAuiNotebook* Notebook = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
-            wxASSERT(Notebook!=0);
+            wxASSERT(Notebook!=nullptr);
 
             // Creating main splitting object
             m_Splitter = new wxsStoringSplitterWindow(Notebook);

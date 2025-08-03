@@ -31,7 +31,7 @@ namespace
 }
 
 wxsImage::wxsImage(wxsItemResData *Data) :
-    wxsTool(Data, &Reg.Info, 0, 0)
+    wxsTool(Data, &Reg.Info, nullptr, nullptr)
 {
     int         n;
     wxString    ss;

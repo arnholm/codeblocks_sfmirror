@@ -45,7 +45,7 @@ END_EVENT_TABLE()
 
 wxsToolSpace::wxsToolSpace(wxWindow* Parent,wxsItemResData* Data):
     wxScrolledWindow(Parent),
-    m_First(0),
+    m_First(nullptr),
     m_Count(0),
     m_Data(Data),
     m_Unstable(false)
@@ -189,7 +189,7 @@ void wxsToolSpace::OnMouseClick(wxMouseEvent& event)
             m_Data->SelectItem(Tool->m_Tool,false);
         }
 
-        Tool->m_Tool->MouseClick(0,PosX,PosY);
+        Tool->m_Tool->MouseClick(nullptr,PosX,PosY);
     }
 }
 
@@ -205,7 +205,7 @@ void wxsToolSpace::OnMouseDClick(wxMouseEvent& event)
 
     if ( Tool )
     {
-        Tool->m_Tool->MouseDClick(0,PosX,PosY);
+        Tool->m_Tool->MouseDClick(nullptr,PosX,PosY);
     }
 }
 
@@ -223,7 +223,7 @@ void wxsToolSpace::OnMouseRight(wxMouseEvent& event)
 
     if ( Tool )
     {
-        Tool->m_Tool->MouseRightClick(0,PosX,PosY);
+        Tool->m_Tool->MouseRightClick(nullptr,PosX,PosY);
     }
 }
 

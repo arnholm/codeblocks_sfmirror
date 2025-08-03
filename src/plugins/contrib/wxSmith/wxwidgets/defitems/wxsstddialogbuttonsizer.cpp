@@ -99,7 +99,7 @@ namespace
 }
 
 wxsStdDialogButtonSizer::wxsStdDialogButtonSizer(wxsItemResData* Data):
-    wxsItem(Data,&Reg.Info,flVariable|flSubclass,0,0)
+    wxsItem(Data,&Reg.Info,flVariable|flSubclass,nullptr,nullptr)
 {
     GetBaseProps()->m_IsMember = false;
 
@@ -267,7 +267,11 @@ void wxsStdDialogButtonSizer::OnAddExtraProperties(wxsPropertyGridManager* Grid 
     for ( int i=0; i<NumButtons; i++ )
     {
         m_UseId[i] = Grid->Append(new wxBoolProperty(IdNames[i],wxPG_LABEL,m_Use[i]));
+#if wxCHECK_VERSION(3, 3, 0)
+        Grid->SetPropertyAttribute(m_UseId[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
         Grid->SetPropertyAttribute(m_UseId[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
         m_LabelId[i] = Grid->Append(new wxStringProperty(IdLabels[i],wxPG_LABEL,m_Label[i]));
     }
     wxsItem::OnAddExtraProperties(Grid);

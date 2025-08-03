@@ -69,7 +69,11 @@ void wxsStyleProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridManag
         if ( StyleConsts.GetCount() )
         {
             wxPGId ID = Grid->AppendIn(Parent,new wxFlagsProperty(GetPGName(),wxPG_LABEL,StyleConsts,STYLEBITS));
+#if wxCHECK_VERSION(3, 3, 0)
+            Grid->SetPropertyAttribute(ID,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
             Grid->SetPropertyAttribute(ID,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
             PGRegister(Object,Grid,ID);
         }
     }

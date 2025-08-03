@@ -52,9 +52,9 @@ class PLUGIN_EXPORT wxsContainer: public wxsParent
         wxsContainer(
             wxsItemResData* Data,
             const wxsItemInfo* Info,
-            const wxsEventDesc* EventArray = 0,
-            const wxsStyleSet* StyleSet=0,
-            long PropertiesFlags=flContainer);
+            const wxsEventDesc* EventArray = nullptr,
+            const wxsStyleSet* StyleSet = nullptr,
+            long PropertiesFlags = flContainer);
 
     protected:
 

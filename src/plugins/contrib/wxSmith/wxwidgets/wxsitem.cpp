@@ -66,7 +66,7 @@ wxsItem::~wxsItem()
 
 void wxsItem::OnEnumProperties(long _Flags)
 {
-    if ( (_Flags & flPropGrid) && (m_Parent != 0) )
+    if ( (_Flags & flPropGrid) && (m_Parent != nullptr) )
     {
         // Parent item does take care of enumerating properties if we are
         // creating property grid
@@ -82,7 +82,7 @@ wxsQuickPropsPanel* wxsItem::OnCreateQuickProperties(wxWindow* ParentWnd)
 {
     wxsAdvQPP* Panel = new wxsAdvQPP(ParentWnd,this);
 
-    if ( m_Parent != 0 )
+    if ( m_Parent != nullptr )
     {
         // Parent item does take care of inserting QPP Children
         m_Parent->OnAddChildQPP(this,Panel);

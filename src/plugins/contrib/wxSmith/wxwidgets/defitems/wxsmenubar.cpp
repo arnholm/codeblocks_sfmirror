@@ -40,7 +40,7 @@ namespace
             wxsMenuEditor* Editor;
 
             MenuEditorDialog(wxsMenuBar* MenuBar):
-                wxScrollingDialog(0,-1,_("MenuBar editor"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+                wxScrollingDialog(nullptr,-1,_("MenuBar editor"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
             {
                 wxBoxSizer* Sizer = new wxBoxSizer(wxVERTICAL);
                 Sizer->Add(Editor = new wxsMenuEditor(this,MenuBar),1,wxEXPAND,0);
@@ -68,8 +68,8 @@ wxsMenuBar::wxsMenuBar(wxsItemResData* Data):
     wxsTool(
         Data,
         &Reg.Info,
-        0,
-        0,
+        nullptr,
+        nullptr,
         flVariable|flSubclass|flExtraCode)
 {
 }

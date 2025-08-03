@@ -60,7 +60,7 @@ bool wxsParent::AddChild(wxsItem* Child,int Position)
     if ( Child->GetType() == wxsTTool && GetType() != wxsTTool ) return false;
     if ( !CanAddChild(Child,true) ) return false;
     if ( !Child->CanAddToParent(this,true) ) return false;
-    if ( Child->GetParent() != 0 )
+    if ( Child->GetParent() != nullptr )
     {
         Child->GetParent()->UnbindChild(Child);
     }
@@ -135,7 +135,7 @@ bool wxsParent::IsGrandChild(wxsItem* Child,bool Safe)
 {
     if ( !Safe )
     {
-        while ( Child != 0 )
+        while ( Child != nullptr )
         {
             if ( Child == this ) return true;
             Child = Child->GetParent();

@@ -39,8 +39,8 @@ wxsSingleInstanceChecker::wxsSingleInstanceChecker(wxsItemResData* Data):
     wxsTool(
         Data,
         &Reg.Info,
-        0,
-        0)
+        nullptr,
+        nullptr)
 {
 }
 

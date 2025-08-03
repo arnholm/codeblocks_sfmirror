@@ -397,7 +397,7 @@ wxsImageListEditorDlg::wxsImageListEditorDlg(wxWindow *parent)
     wxInitAllImageHandlers();
 
     // nothing yet
-    m_ImageDialog   = new wxsBitmapIconEditorDlg(0, m_ImageData, _("wxART_OTHER"));
+    m_ImageDialog   = new wxsBitmapIconEditorDlg(nullptr, m_ImageData, _("wxART_OTHER"));
     m_ImportMask    = *wxWHITE;
     m_FirstImage    = 0;
     m_PreviewSelect = -1;

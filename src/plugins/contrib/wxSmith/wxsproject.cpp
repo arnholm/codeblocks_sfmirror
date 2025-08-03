@@ -238,7 +238,7 @@ void wxsProject::WriteConfiguration(TiXmlElement* element)
 
 bool wxsProject::AddResource(wxsResource* NewResource)
 {
-    if ( NewResource == 0 )
+    if ( NewResource == nullptr )
     {
         return false;
     }
@@ -246,7 +246,7 @@ bool wxsProject::AddResource(wxsResource* NewResource)
     const wxString& Type = NewResource->GetResourceType();
     const wxString& Name = NewResource->GetResourceName();
 
-    if ( FindResource(Name) != 0 )
+    if ( FindResource(Name) != nullptr )
     {
         return false;
     }
@@ -302,7 +302,7 @@ void wxsProject::Configure()
                                 "Should I create proper bindings?"),_("wxSmith"),wxYES_NO) == wxNO ) return;
             if ( !m_GUI->CreateApplicationBinding() ) return;
         }
-        cbConfigurationDialog Dlg(0,-1,_("Configuring wxSmith"));
+        cbConfigurationDialog Dlg(nullptr,-1,_("Configuring wxSmith"));
         Dlg.AttachConfigurationPanel(m_GUI->BuildConfigurationPanel(&Dlg));
         PlaceWindow(&Dlg);
         Dlg.ShowModal();

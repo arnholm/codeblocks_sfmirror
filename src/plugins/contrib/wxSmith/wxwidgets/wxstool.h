@@ -40,8 +40,8 @@ class wxsTool: public wxsParent
         wxsTool(
             wxsItemResData* Data,
             const wxsItemInfo* Info,
-            const wxsEventDesc* EventArray = 0,
-            const wxsStyleSet* StyleSet=0,
+            const wxsEventDesc* EventArray = nullptr,
+            const wxsStyleSet* StyleSet = nullptr,
             long PropertiesFlags = flTool);
 
         /** \brief Function checking if this tool can be added to this resource

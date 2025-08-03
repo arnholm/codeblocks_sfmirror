@@ -80,7 +80,11 @@ void wxsDimensionProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridM
     wxPGId DUId;
     PGRegister(Object,Grid,Grid->AppendIn(Parent,new wxIntProperty(GetPGName(),wxPG_LABEL,VALUE)),DIM_VALUE);
     PGRegister(Object,Grid,DUId = Grid->AppendIn(Parent,new wxBoolProperty(PGDUName,wxPG_LABEL,UNITS)),DIM_UNITS);
+#if wxCHECK_VERSION(3, 3, 0)
+    Grid->SetPropertyAttribute(DUId,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
     Grid->SetPropertyAttribute(DUId,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
 }
 
 bool wxsDimensionProperty::PGRead(wxsPropertyContainer* Object,wxPropertyGridManager* Grid,wxPGId Id,long Index)

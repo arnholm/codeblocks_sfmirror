@@ -55,7 +55,7 @@ namespace
 //------------------------------------------------------------------------------
 
 wxsSymbolPickerDialog::wxsSymbolPickerDialog(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsSymbolPickerDialogStyles, (flVariable|flId|flSubclass|flExtraCode))
+    wxsTool(Data,&Reg.Info,nullptr,wxsSymbolPickerDialogStyles, (flVariable|flId|flSubclass|flExtraCode))
 {
 }
 

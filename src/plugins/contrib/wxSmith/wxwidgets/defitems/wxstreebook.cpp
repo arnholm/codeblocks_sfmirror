@@ -109,7 +109,7 @@ namespace
                 //*)
                 ReadData();
 
-                Label->Connect(-1, wxEVT_KILL_FOCUS, (wxObjectEventFunction)&wxsTreebookParentQP::OnLabelKillFocus, 0, this);
+                Label->Connect(-1, wxEVT_KILL_FOCUS, (wxObjectEventFunction)&wxsTreebookParentQP::OnLabelKillFocus, nullptr, this);
             }
 
             virtual ~wxsTreebookParentQP()
@@ -387,7 +387,7 @@ bool wxsTreebook::OnPopup(long Id)
 {
     if (Id == popupNewPageId)
     {
-        wxTextEntryDialog Dlg(0, _("Enter name of new page"), _("Adding page"), _("New page"));
+        wxTextEntryDialog Dlg(nullptr, _("Enter name of new page"), _("Adding page"), _("New page"));
         PlaceWindow(&Dlg);
         if (Dlg.ShowModal() == wxID_OK)
         {

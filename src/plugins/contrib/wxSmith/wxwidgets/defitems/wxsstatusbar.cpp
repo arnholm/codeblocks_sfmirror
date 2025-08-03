@@ -34,12 +34,12 @@ namespace
         WXS_ST_DEFAULTS()
     WXS_ST_END()
 
-    const wxChar* FieldStyles[] = { _T("wxSB_NORMAL"), _T("wxSB_FLAT"), _T("wxSB_RAISED"), 0 };
+    const wxChar* FieldStyles[] = { _T("wxSB_NORMAL"), _T("wxSB_FLAT"), _T("wxSB_RAISED"), nullptr };
     const long FieldStylesVal[] = { wxSB_NORMAL, wxSB_FLAT, wxSB_RAISED };
 }
 
 wxsStatusBar::wxsStatusBar(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsStatusBarStyles,flVariable|flId|flSubclass|flExtraCode),
+    wxsTool(Data,&Reg.Info,nullptr,wxsStatusBarStyles,flVariable|flId|flSubclass|flExtraCode),
     m_Fields(1)
 {
     UpdateArraysSize(m_Fields);
@@ -148,10 +148,18 @@ void wxsStatusBar::OnAddExtraProperties(wxsPropertyGridManager* Grid)
     for ( int i=0; i<m_Fields; i++ )
     {
         wxPGId ParentProp = Grid->Append(new wxParentProperty(wxString::Format(_("Field %d"),i+1),wxPG_LABEL));
+#if wxCHECK_VERSION(3, 3, 0)
+        ParentProp->ChangeFlag(wxPGFlags::ReadOnly, true);
+#else
         ParentProp->ChangeFlag(wxPG_PROP_READONLY, true);
+#endif
         m_WidthsIds[i] = Grid->AppendIn(ParentProp,new wxIntProperty(_("Width"),wxPG_LABEL,m_Widths[i]));
         m_VarWidthIds[i] = Grid->AppendIn(ParentProp,new wxBoolProperty(_T("Variable width"),wxPG_LABEL,m_VarWidth[i]));
+#if wxCHECK_VERSION(3, 3, 0)
+        Grid->SetPropertyAttribute(m_VarWidthIds[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
         Grid->SetPropertyAttribute(m_VarWidthIds[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
         m_StylesIds[i] = Grid->AppendIn(ParentProp,new wxEnumProperty(_("Style"),wxPG_LABEL,FieldStyles,FieldStylesVal,m_Styles[i]));
         m_ParentIds[i] = ParentProp;
     }
@@ -187,10 +195,18 @@ void wxsStatusBar::OnExtraPropertyChanged(wxsPropertyGridManager* Grid,wxPGId Id
             for ( int i = m_Fields; i<NewFields; i++ )
             {
                 wxPGId ParentProp = Grid->Append(new wxParentProperty(wxString::Format(_("Field %d"),i+1),wxPG_LABEL));
+#if wxCHECK_VERSION(3, 3, 0)
+                ParentProp->ChangeFlag(wxPGFlags::ReadOnly, true);
+#else
                 ParentProp->ChangeFlag(wxPG_PROP_READONLY, true);
+#endif
                 m_WidthsIds[i] = Grid->AppendIn(ParentProp,new wxIntProperty(_("Width"),wxPG_LABEL,m_Widths[i]));
                 m_VarWidthIds[i] = Grid->AppendIn(ParentProp,new wxBoolProperty(_T("Variable width"),wxPG_LABEL,m_VarWidth[i]));
+#if wxCHECK_VERSION(3, 3, 0)
+                Grid->SetPropertyAttribute(m_VarWidthIds[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
                 Grid->SetPropertyAttribute(m_VarWidthIds[i],wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
                 m_StylesIds[i] = Grid->AppendIn(ParentProp,new wxEnumProperty(_("Style"),wxPG_LABEL,FieldStyles,FieldStylesVal,m_Styles[i]));
                 m_ParentIds[i] = ParentProp;
             }

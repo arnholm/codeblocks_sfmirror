@@ -104,7 +104,7 @@ namespace
                 //*)
                 ReadData();
 
-                Label->Connect(-1,wxEVT_KILL_FOCUS,(wxObjectEventFunction)&wxsNotebookParentQP::OnLabelKillFocus,0,this);
+                Label->Connect(-1,wxEVT_KILL_FOCUS,(wxObjectEventFunction)&wxsNotebookParentQP::OnLabelKillFocus,nullptr,this);
             }
 
             virtual ~wxsNotebookParentQP()
@@ -202,7 +202,7 @@ wxsNotebook::wxsNotebook(wxsItemResData* Data):
         &Reg.Info,
         wxsNotebookEvents,
         wxsNotebookStyles),
-    m_CurrentSelection(0)
+    m_CurrentSelection(nullptr)
 {
 }
 
@@ -374,7 +374,7 @@ bool wxsNotebook::OnPopup(long Id)
 {
     if ( Id == popupNewPageId )
     {
-        wxTextEntryDialog Dlg(0,_("Enter name of new page"),_("Adding page"),_("New page"));
+        wxTextEntryDialog Dlg(nullptr,_("Enter name of new page"),_("Adding page"),_("New page"));
         PlaceWindow(&Dlg);
         if ( Dlg.ShowModal() == wxID_OK )
         {

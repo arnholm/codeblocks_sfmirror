@@ -504,7 +504,7 @@ void wxsNewWindowDlg::OnCreate(cb_unused wxCommandEvent& event)
         return;
     }
 
-    wxsItemResData* Data = NewResource->BuildResData(0);
+    wxsItemResData* Data = NewResource->BuildResData(nullptr);
     Data->BeginChange();
 
     // Updating content of resource

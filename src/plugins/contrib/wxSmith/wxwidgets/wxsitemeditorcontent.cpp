@@ -754,7 +754,7 @@ void wxsItemEditorContent::OnMouseDraggingItem(wxMouseEvent& event)
                     {
                         if ( NewParent->GetType() == wxsTSizer )
                         {
-                            Props->m_Position.SetPosition(wxDefaultPosition,0);
+                            Props->m_Position.SetPosition(wxDefaultPosition,nullptr);
                         }
                         else
                         {
@@ -869,7 +869,7 @@ void wxsItemEditorContent::OnMouseTargetSearch(wxMouseEvent& event)
     // highlight selection
     m_TargetX = event.GetX();
     m_TargetY = event.GetY();
-    if ( !FindDraggingItemTarget(event.GetX(),event.GetY(),0,m_AssistParent,m_AssistTarget,m_AssistAddAfter) )
+    if ( !FindDraggingItemTarget(event.GetX(),event.GetY(),nullptr,m_AssistParent,m_AssistTarget,m_AssistAddAfter) )
     {
         m_AssistTarget = nullptr;
         m_AssistParent = nullptr;
@@ -885,7 +885,7 @@ bool wxsItemEditorContent::FindDraggingItemTarget(int PosX,int PosY,wxsItem* Dra
     if ( !Cursor ) Cursor = m_Data->GetRootItem();
 
     // Avoiding shifting into dragged item
-    wxsParent* DraggedAsParent = Dragging ? Dragging->ConvertToParent() : 0;
+    wxsParent* DraggedAsParent = Dragging ? Dragging->ConvertToParent() : nullptr;
     if ( DraggedAsParent && DraggedAsParent->IsGrandChild(Cursor) )
     {
         // Can not drag into own child
@@ -1039,7 +1039,7 @@ void wxsItemEditorContent::AddItemAtTarget(wxsParent* AssistParent,int Position,
 
                 if ( AssistParent->GetType() == wxsTSizer )
                 {
-                    Props->m_Position.SetPosition(wxDefaultPosition,0);
+                    Props->m_Position.SetPosition(wxDefaultPosition,nullptr);
                 }
                 else
                 {

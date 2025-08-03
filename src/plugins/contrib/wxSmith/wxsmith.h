@@ -72,7 +72,7 @@ class PLUGIN_EXPORT wxSmith : public cbPlugin
         /** \brief This function will add entries into menu */
         void BuildMenu(wxMenuBar* menuBar);
 
-        void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = 0);
+        void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = nullptr);
         bool BuildToolBar(wxToolBar* toolBar);
         void OnAttach();
         void OnRelease(bool appShutDown);

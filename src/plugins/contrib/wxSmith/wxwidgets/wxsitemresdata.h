@@ -260,14 +260,14 @@ class PLUGIN_EXPORT wxsItemResData
         inline int GetToolsCount() { return (int)m_Tools.Count(); }
 
         /** \brief Getting tool at given index */
-        inline wxsTool* GetTool(int Index) { return ((Index>=0)&&(Index<GetToolsCount())) ? m_Tools[Index] : 0; }
+        inline wxsTool* GetTool(int Index) { return ((Index>=0)&&(Index<GetToolsCount())) ? m_Tools[Index] : nullptr; }
 
         /* ******************* */
         /*  Preview functions  */
         /* ******************* */
 
         /** \brief Checking if there's preview already */
-        inline bool IsPreview() { return m_Preview!=0; }
+        inline bool IsPreview() { return m_Preview!=nullptr; }
 
         /** \brief Showing preview of current resource content */
         bool ShowPreview();
@@ -276,7 +276,7 @@ class PLUGIN_EXPORT wxsItemResData
         bool HidePreview();
 
         /** \brief Function notifying that preview has been closed externally */
-        inline void NotifyPreviewClosed() { m_Preview = 0; }
+        inline void NotifyPreviewClosed() { m_Preview = nullptr; }
 
         /* *********************** */
         /*  Notification handlers  */

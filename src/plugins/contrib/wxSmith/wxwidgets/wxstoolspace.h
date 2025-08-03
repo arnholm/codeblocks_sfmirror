@@ -49,7 +49,7 @@ class wxsToolSpace: public wxScrolledWindow
         void RefreshSelection();
 
         /** \brief Checking whether there are any tools inside this resource */
-        inline bool AreAnyTools() { return m_First!=0; }
+        inline bool AreAnyTools() { return m_First!=nullptr; }
 
     private:
 

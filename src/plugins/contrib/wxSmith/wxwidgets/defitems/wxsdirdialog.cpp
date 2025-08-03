@@ -39,7 +39,7 @@ namespace
 }
 
 wxsDirDialog::wxsDirDialog(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsDirDialogStyles)
+    wxsTool(Data,&Reg.Info,nullptr,wxsDirDialogStyles)
 {
     m_Message = _("Select directory");
 }

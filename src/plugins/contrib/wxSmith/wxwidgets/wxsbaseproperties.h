@@ -87,7 +87,7 @@ class wxsBaseProperties: public wxsPropertyContainer
             m_UseLayout(true),
             m_StyleBits(0),
             m_ExStyleBits(0),
-            m_StyleSet(0)
+            m_StyleSet(nullptr)
         {}
 
         /** \brief Function generating QPPChild Panel for most frequently used

@@ -47,7 +47,7 @@ namespace
 }
 
 wxsFileDialog::wxsFileDialog(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsFileDialogStyles)
+    wxsTool(Data,&Reg.Info,nullptr,wxsFileDialogStyles)
 {
     m_Message = _("Select file");
 }

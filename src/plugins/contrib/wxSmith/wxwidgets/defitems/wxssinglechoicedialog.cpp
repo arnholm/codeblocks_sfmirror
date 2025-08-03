@@ -40,7 +40,7 @@ namespace
 }
 
 wxsSingleChoiceDialog::wxsSingleChoiceDialog(wxsItemResData* Data):
-    wxsTool(Data,&Reg.Info,0,wxsSingleChoiceDialogStyles)
+    wxsTool(Data,&Reg.Info,nullptr,wxsSingleChoiceDialogStyles)
 {
     m_Message = _("Select items");
 }

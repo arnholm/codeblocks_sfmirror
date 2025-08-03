@@ -1481,7 +1481,7 @@ bool wxsItemResData::ShowPreview()
     }
 
     m_Preview = BuildExactPreview(m_Editor);
-    return m_Preview!=0;
+    return m_Preview!=nullptr;
 }
 
 bool wxsItemResData::HidePreview()

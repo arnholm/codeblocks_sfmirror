@@ -148,14 +148,14 @@ class PLUGIN_EXPORT wxsPropertyGridManager: public wxPropertyGridManager
          * \param Data place where selection should be stored, if NULL,
          *        selection will be stored in internal variable
          */
-        void StoreSelected(SelectionData* Data=0);
+        void StoreSelected(SelectionData* Data = nullptr);
 
         /** \brief Restoring selected property
          *
          * \param Data structure containing selection data, if NULL,
          *        selection will be restored from internal variable
          */
-        void RestoreSelected(const SelectionData* Data=0);
+        void RestoreSelected(const SelectionData* Data = nullptr);
 
         /** \brief Singleton object */
         static wxsPropertyGridManager* Singleton;

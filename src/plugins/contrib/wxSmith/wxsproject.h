@@ -77,7 +77,7 @@ class wxsProject
         inline int GetResourcesCount() { return (int)m_Resources.Count(); }
 
         /** \brief Getting resource from index */
-        inline wxsResource* GetResource(int Index) { return ((Index>=0)&(Index<GetResourcesCount()))?m_Resources[Index]:0; }
+        inline wxsResource* GetResource(int Index) { return ((Index>=0)&(Index<GetResourcesCount()))?m_Resources[Index]:nullptr; }
 
         /** \brief Removing resource from project */
         bool DelResource(wxsResource* Resource);

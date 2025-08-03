@@ -244,10 +244,10 @@ void wxsCorrector::RebuildSets()
 //    if ( !m_NeedRebuild ) return;
     m_Vars.clear();
     m_Ids.clear();
-    RebuildSetsReq(m_Data->GetRootItem(),0);
+    RebuildSetsReq(m_Data->GetRootItem(),nullptr);
     for ( int i=0; i<m_Data->GetToolsCount(); i++ )
     {
-        RebuildSetsReq(m_Data->GetTool(i),0);
+        RebuildSetsReq(m_Data->GetTool(i),nullptr);
     }
     m_NeedRebuild = false;
 }

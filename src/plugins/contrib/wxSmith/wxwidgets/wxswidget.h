@@ -61,8 +61,8 @@ class PLUGIN_EXPORT wxsWidget: public wxsItem
         wxsWidget(
             wxsItemResData*     Data,
             const wxsItemInfo*  Info,
-            const wxsEventDesc* EventArray = 0,
-            const wxsStyleSet*  StyleSet = 0,
+            const wxsEventDesc* EventArray = nullptr,
+            const wxsStyleSet*  StyleSet = nullptr,
             long                PropertiesFlags = flWidget);
 
     protected:
@@ -76,7 +76,7 @@ class PLUGIN_EXPORT wxsWidget: public wxsItem
          * there will be Variable name and identifier and at the end, all
          * required base properties.
          */
-        virtual void OnEnumWidgetProperties(long Flags) = 0;
+        virtual void OnEnumWidgetProperties(long _Flags) = 0;
 
         /** \brief Function which adds new items to QPP
          *
@@ -95,7 +95,7 @@ class PLUGIN_EXPORT wxsWidget: public wxsItem
          * Function enumerating item properties. The implementation
          * does call EnumContainerProperties() and adds all default properties.
          */
-        virtual void OnEnumItemProperties(long Flags);
+        virtual void OnEnumItemProperties(long _Flags);
 
         /** \brief Function Adding QPPChild panels for base properties of this
          *         container.
@@ -104,7 +104,6 @@ class PLUGIN_EXPORT wxsWidget: public wxsItem
          * QPPChild panels.
          */
         virtual void OnAddItemQPP(wxsAdvQPP* QPP);
-
 };
 
 #endif
