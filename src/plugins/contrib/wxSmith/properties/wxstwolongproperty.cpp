@@ -85,7 +85,11 @@ void wxsTwoLongProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridMan
     wxPGId V1Id = Grid->AppendIn(Parent, new wxIntProperty(Value1Name,wxPG_LABEL,VALUE1));
     wxPGId V2Id = Grid->AppendIn(Parent, new wxIntProperty(Value2Name,wxPG_LABEL,VALUE2));
 
+#if wxCHECK_VERSION(3, 3, 0)
+    Grid->SetPropertyAttribute(DefId,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
     Grid->SetPropertyAttribute(DefId,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
 
     PGRegister(Object,Grid,DefId,DIM_DEF);
     PGRegister(Object,Grid,V1Id,DIM_VALUE1);

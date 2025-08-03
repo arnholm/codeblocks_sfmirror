@@ -45,7 +45,11 @@ void wxsFlagsProperty::PGCreate(wxsPropertyContainer* Object,wxPropertyGridManag
 {
     wxPGChoices PGC(Names,Values);
     wxPGId Id = Grid->AppendIn(Parent,new wxFlagsProperty(GetPGName(),wxPG_LABEL,PGC,VALUE));
+#if wxCHECK_VERSION(3, 3, 0)
+    Grid->SetPropertyAttribute(Id,wxPG_BOOL_USE_CHECKBOX,1L,wxPGPropertyValuesFlags::Recurse);
+#else
     Grid->SetPropertyAttribute(Id,wxPG_BOOL_USE_CHECKBOX,1L,wxPG_RECURSE);
+#endif
     PGRegister(Object,Grid,Id);
 }
 
