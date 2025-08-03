@@ -68,8 +68,8 @@ END_EVENT_TABLE()
 //***********************************************************************
 
 MainFrame::MainFrame(wxWindow* parent,wxWindowID id) :
-  mFileSrc(wxT("")), mCfgSrc(0), mCfgSrcValid(false), mNodesSrc(),
-  mFileDst(wxT("")), mCfgDst(0), mCfgDstValid(false), mNodesDst()
+  mFileSrc(wxT("")), mCfgSrc(nullptr), mCfgSrcValid(false), mNodesSrc(),
+  mFileDst(wxT("")), mCfgDst(nullptr), mCfgDstValid(false), mNodesDst()
 {
 	//(*Initialize(MainFrame)
 	wxButton* btnClose;
