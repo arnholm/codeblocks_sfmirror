@@ -67,8 +67,8 @@ wxsMenuItem::wxsMenuItem(wxsItemResData* Data,bool BreakOrSeparator):
         Data,
         &Info,
         BreakOrSeparator?nullptr:wxsMenuItemEvents,
-        0,
-        BreakOrSeparator?nullptr:flVariable|flId|flExtraCode),
+        nullptr,
+        BreakOrSeparator?0:flVariable|flId|flExtraCode),
     m_Type(Normal),
     m_Enabled(true),
     m_Checked(false)

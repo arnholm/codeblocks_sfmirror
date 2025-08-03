@@ -67,8 +67,8 @@ wxsToolBarItem::wxsToolBarItem(wxsItemResData* Data, ToolType Tool):
         Data,
         &Info,
         (Tool == Separator || Tool == Stretchable) ? nullptr : wxsToolBarItemEvents,
-        0,
-        (Tool == Separator || Tool == Stretchable) ? nullptr : (flVariable|flId)
+        nullptr,
+        (Tool == Separator || Tool == Stretchable) ? 0 : (flVariable|flId)
     ),
     m_Type(Tool)
 {
