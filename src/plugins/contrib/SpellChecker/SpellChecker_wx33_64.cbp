@@ -95,7 +95,7 @@
 					<Add directory="$(#wx33_64.lib)/gcc_dll$(WX_CFG)" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="update32_64.bat" />
+					<Add after="update33_64.bat" />
 					<Mode after="always" />
 				</ExtraCommands>
 				<Environment>

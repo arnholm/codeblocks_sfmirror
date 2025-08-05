@@ -107,7 +107,7 @@
 		<Unit filename="ThreadSearchViewManagerMessagesNotebook.h" />
 		<Unit filename="logging.h" />
 		<Unit filename="manifest.xml" />
-		<Unit filename="update32" />
+		<Unit filename="update33" />
 		<Unit filename="update33.bat" />
 		<Extensions />
 	</Project>

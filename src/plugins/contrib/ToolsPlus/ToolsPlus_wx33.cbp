@@ -77,7 +77,7 @@
 		<Unit filename="se_globals.h" />
 		<Unit filename="shellproperties.cpp" />
 		<Unit filename="shellproperties.h" />
-		<Unit filename="update32" />
+		<Unit filename="update33" />
 		<Unit filename="update33.bat" />
 		<Extensions />
 	</Project>

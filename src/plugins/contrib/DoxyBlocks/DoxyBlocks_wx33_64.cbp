@@ -56,7 +56,7 @@
 					<Add after="zip -Rq9 ..\..\..\devel33_64\share\codeblocks\DoxyBlocks.zip images\28x28\*.png images\32x32\*.png images\40x40\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel33_64\share\codeblocks\DoxyBlocks.zip images\48x48\*.png images\56x56\*.png images\64x64\*.png" />
 					<Add after="zip -Rq9 ..\..\..\devel33_64\share\codeblocks\DoxyBlocks.zip images\svg\*.svg" />
-					<Add after="update32_64.bat" />
+					<Add after="update33_64.bat" />
 					<Mode after="always" />
 				</ExtraCommands>
 				<Environment>
@@ -90,8 +90,8 @@
 		<Unit filename="Expressions.h" />
 		<Unit filename="ExtractDocs.cpp" />
 		<Unit filename="manifest.xml" />
-		<Unit filename="update32" />
-		<Unit filename="update32_64.bat" />
+		<Unit filename="update33" />
+		<Unit filename="update33_64.bat" />
 		<Unit filename="version.h" />
 		<Unit filename="wxsmith/ConfigPanel.wxs" />
 		<Extensions>

@@ -89,7 +89,7 @@
 		<Unit filename="Expressions.h" />
 		<Unit filename="ExtractDocs.cpp" />
 		<Unit filename="manifest.xml" />
-		<Unit filename="update32" />
+		<Unit filename="update33" />
 		<Unit filename="update33.bat" />
 		<Unit filename="version.h" />
 		<Unit filename="wxsmith/ConfigPanel.wxs" />
