@@ -16,8 +16,6 @@
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-mthreads" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
-					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 				<Linker>
 					<Add option="-mthreads" />
@@ -32,8 +30,6 @@
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-mthreads" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
-					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 				<Linker>
 					<Add option="-mthreads" />
@@ -61,7 +57,6 @@
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DcbDEBUG" />
 					<Add option="-DwxUSE_UNICODE" />
-					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="bzip2" />
 					<Add directory="zlib" />
 				</Compiler>
@@ -94,7 +89,6 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="$(#CB_RELEASE_TYPE)" />
-			<Add option="$(#CB_CPP_STD)" />
 			<Add directory="$(#wx33.include)" />
 			<Add directory="$(#wx33.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 			<Add directory="../../../include" />

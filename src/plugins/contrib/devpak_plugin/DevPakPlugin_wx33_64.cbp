@@ -15,8 +15,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-mthreads" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
-					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 				<Linker>
 					<Add option="-mthreads" />
@@ -33,7 +31,6 @@
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-Wall" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="-mthreads" />
 					<Add option="-fexceptions" />
 					<Add option="-DBUILDING_PLUGIN" />
@@ -72,7 +69,6 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="$(#CB_RELEASE_TYPE)" />
-			<Add option="$(#CB_CPP_STD)" />
 			<Add directory="bzip2" />
 			<Add directory="$(#wx33_64.include)" />
 			<Add directory="$(#wx33_64.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />

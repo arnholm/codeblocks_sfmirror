@@ -14,7 +14,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-DEXPORT_LIB" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include/tinyxml" />
 				</Compiler>
@@ -27,7 +26,6 @@
 				<Option parameters="-v +wx +int +t .. include/autorevision.h" />
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -45,7 +43,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-Os" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 			</Target>
@@ -57,7 +54,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-DEXPORT_LIB" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include/scripting/include" />
 				</Compiler>
@@ -74,7 +70,6 @@
 					<Add option="-DLINK_LEXERS" />
 					<Add option="-DSCI_LEXER" />
 					<Add option="-DWXMAKINGDLL_SCI" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="sdk/wxscintilla/src/scintilla/include" />
 					<Add directory="sdk/wxscintilla/src/scintilla/src" />
@@ -105,7 +100,6 @@
 					<Add option="-DEXPORT_LIB" />
 					<Add option="-DEXPORT_EVENTS" />
 					<Add option="-DWXMAKINGDLL_SCI" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="include/tinyxml" />
@@ -148,7 +142,6 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="include/scripting/include" />
@@ -203,7 +196,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="include/scripting/include" />
@@ -237,7 +229,6 @@
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-DASTYLE_LIB" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="plugins/astyle/astyle" />
@@ -270,7 +261,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -297,8 +287,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-DDEPSLIB_WINDOWS" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
-					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 				<Linker>
 					<Add option="-r" />
@@ -318,7 +306,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="plugins/compilergcc/depslib/src" />
@@ -356,7 +343,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -389,7 +375,6 @@
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-DCC_GLOBAL_DEBUG_OUTPUT=2" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -421,7 +406,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -453,7 +437,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -485,7 +468,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -517,7 +499,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -549,7 +530,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -581,7 +561,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 					<Add directory="include/scripting/include" />
@@ -614,7 +593,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -646,7 +624,6 @@
 				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-DBUILDING_PLUGIN" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="include" />
 				</Compiler>
@@ -691,7 +668,6 @@
 			<Add option="-DNOPCH" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-D_WIN64" />
-			<Add option="$(#CB_CPP_STD)" />
 			<Add directory="$(#wx33_64.include)" />
 			<Add directory="$(#wx33_64.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 			<Add directory="sdk/wxscintilla/include" />

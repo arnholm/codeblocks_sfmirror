@@ -15,8 +15,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-mthreads" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
-					<Add option="$(#CB_CPP_STD)" />
 				</Compiler>
 				<Linker>
 					<Add option="-mthreads" />
@@ -33,9 +31,9 @@
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-Wall" />
-					<Add option="$(#CB_RELEASE_TYPE)" />
 					<Add option="-mthreads" />
 					<Add option="-fexceptions" />
+					<Add option="$(#CB_CPP_STD)" />
 					<Add option="-DBUILDING_PLUGIN" />
 					<Add option="-DNOPCH" />
 					<Add option="-DHAVE_W32API_H" />
@@ -43,7 +41,6 @@
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DcbDEBUG" />
 					<Add option="-DwxUSE_UNICODE" />
-					<Add option="$(#CB_CPP_STD)" />
 					<Add directory="../../../include" />
 					<Add directory="../../../include/tinyxml" />
 				</Compiler>
@@ -71,7 +68,6 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="$(#CB_RELEASE_TYPE)" />
-			<Add option="$(#CB_CPP_STD)" />
 			<Add directory="bzip2" />
 			<Add directory="$(#wx33.include)" />
 			<Add directory="$(#wx33.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
