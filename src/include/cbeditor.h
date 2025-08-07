@@ -115,7 +115,7 @@ class DLLIMPORT cbEditor : public EditorBase
           * which belong to a project file, should have this set. All others should return NULL.
           * Optionally you can preserve the "modified" flag of the file.
           */
-        void SetProjectFile(ProjectFile* project_file,bool preserve_modified = false);
+        void SetProjectFile(ProjectFile* project_file, bool preserve_modified = false);
 
         /** Read the ProjectFile pointer associated with this editor. All editors
           * which belong to a project file, have this set. All others return NULL.
@@ -393,6 +393,7 @@ class DLLIMPORT cbEditor : public EditorBase
         cbStyledTextCtrl* m_foldBackup;
         SplitType m_SplitType;
         bool m_Modified;
+        bool m_IsSaveAs;
         int m_Index;
         wxTimer m_timerWait;
         ProjectFile* m_pProjectFile;

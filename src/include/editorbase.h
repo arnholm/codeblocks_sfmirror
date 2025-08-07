@@ -8,17 +8,18 @@
 
 #include "prep.h"
 
-#include <wx/hashmap.h>
+#include <wx/defs.h>
 #include <wx/frame.h>
+#include <wx/hashmap.h>
 #include <wx/panel.h>
+
 #include "globals.h"
 #include "settings.h"
-#include "cbexception.h"
 
 class wxMenu;
+class cbDebuggerPlugin;
 class EditorBase;
 struct EditorBaseInternalData;
-class cbDebuggerPlugin;
 
 WX_DECLARE_HASH_MAP(int, EditorBase*, wxIntegerHash, wxIntegerEqual, SwitchToMap);
 
@@ -77,7 +78,7 @@ class DLLIMPORT EditorBase : public wxPanel
           *
           * @param modified If true, mark as modified. If false, mark as clean (unmodified).
           */
-        virtual void SetModified(bool /*modified*/ = true) {}
+        virtual void SetModified(bool modified = true) { wxUnusedVar(modified); }
 
         /** @brief The editor's title.
           *
@@ -166,34 +167,34 @@ class DLLIMPORT EditorBase : public wxPanel
           *                       of the editor's area (if possible). If false,
           *                       it will be just made visible.
           */
-        virtual void GotoLine(int /*line*/, bool /*centerOnScreen*/ = true){}
+        virtual void GotoLine(int line, bool centerOnScreen = true) { wxUnusedVar(line); wxUnusedVar(centerOnScreen); }
 
         /** Undo changes. */
-        virtual void Undo(){}
+        virtual void Undo() {}
 
         /** Redo changes. */
-        virtual void Redo(){}
+        virtual void Redo() {}
 
         /** Clear Undo- (and Changebar-) history */
-        virtual void ClearHistory(){}
+        virtual void ClearHistory() {}
 
         /** Goto next changed line */
-        virtual void GotoNextChanged(){}
+        virtual void GotoNextChanged() {}
 
         /** Goto previous changed line */
-        virtual void GotoPreviousChanged(){}
+        virtual void GotoPreviousChanged() {}
 
         /** Enable or disable changebar */
-        virtual void SetChangeCollection(cb_optional bool collectChange){}
+        virtual void SetChangeCollection(cb_optional bool collectChange) {}
 
         /** Cut selected text/object to clipboard. */
-        virtual void Cut(){}
+        virtual void Cut() {}
 
         /** Copy selected text/object to clipboard. */
-        virtual void Copy(){}
+        virtual void Copy() {}
 
         /** Paste selected text/object from clipboard. */
-        virtual void Paste(){}
+        virtual void Paste() {}
 
         /** Is there something to undo?
           *
@@ -229,7 +230,7 @@ class DLLIMPORT EditorBase : public wxPanel
           *
           * @param readonly If true, mark as readonly. If false, mark as read-write.
           */
-        virtual void SetReadOnly(bool /*readonly*/ = true) {}
+        virtual void SetReadOnly(bool readonly = true) { wxUnusedVar(readonly); }
 
         /** Can the editor select everything?
           *
@@ -282,7 +283,7 @@ class DLLIMPORT EditorBase : public wxPanel
           * Default implementation does nothing.
           * @param type specifies the "ModuleType" context popup menu.
           */
-        virtual void OnAfterBuildContextMenu(cb_optional ModuleType type){}
+        virtual void OnAfterBuildContextMenu(cb_optional ModuleType type) {}
 
         bool m_IsBuiltinEditor; // do not mess with it!
         wxString m_Shortname;

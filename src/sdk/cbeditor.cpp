@@ -793,6 +793,7 @@ cbEditor::cbEditor(wxWindow* parent, const wxString& filename, EditorColourSet* 
     m_foldBackup(nullptr),
     m_SplitType(stNoSplit),
     m_Modified(false),
+    m_IsSaveAs(false),
     m_Index(-1),
     m_pProjectFile(nullptr),
     m_pTheme(theme),
@@ -811,6 +812,7 @@ cbEditor::cbEditor(wxWindow* parent, LoaderBase* fileLdr, const wxString& filena
     m_foldBackup(nullptr),
     m_SplitType(stNoSplit),
     m_Modified(false),
+    m_IsSaveAs(false),
     m_Index(-1),
     m_pProjectFile(nullptr),
     m_pTheme(theme),
@@ -915,7 +917,6 @@ public:
     }
 };
 
-
 void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
 {
     // first thing to do!
@@ -943,7 +944,6 @@ void cbEditor::DoInitializations(const wxString& filename, LoaderBase* fileLdr)
 
         InitFilename(f);
     }
-//    Manager::Get()->GetLogManager()->DebugLog(_T("ctor: Filename=%s\nShort=%s"), m_Filename.c_str(), m_Shortname.c_str());
 
     // initialize left control (unsplit state)
     m_pSizer = new wxBoxSizer(wxVERTICAL);
@@ -1111,7 +1111,6 @@ void cbEditor::SetProjectFile(ProjectFile* project_file, bool preserve_modified)
         else if (!wxFile::Access(m_Filename.c_str(), wxFile::write)) // readonly
             m_pProjectFile->SetFileState(fvsReadOnly);
     }
-
 #if 0
     wxString dbg;
     dbg << _T("[ed] Filename: ") << GetFilename() << _T('\n');
@@ -1958,7 +1957,6 @@ bool cbEditor::Open(bool detectEncoding)
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("cbEditor::Open() => Encoding detection and conversion took : %ld ms", sw.Time()));
     sw.Start();
 #endif
-
     m_pControl->InsertText(0, enc.GetWxStr());
     m_pControl->EmptyUndoBuffer(mgr->ReadBool(_T("/margin/use_changebar"), true));
     m_pControl->SetModEventMask(wxSCI_MODEVENTMASKALL);
@@ -1987,8 +1985,9 @@ bool cbEditor::Open(bool detectEncoding)
 
 bool cbEditor::Save()
 {
-    if ( !GetModified() )
+    if ( !m_IsSaveAs && !GetModified() )
         return true;
+    m_IsSaveAs = false;
 
     // remember current column (caret and anchor)
     int columnC = m_pControl->GetColumn(m_pControl->GetCurrentPos());
@@ -2116,6 +2115,7 @@ bool cbEditor::SaveAs()
 
         mgr->Write(_T("/file_dialogs/save_file_as/directory"), dlg.GetDirectory());
     }
+    m_IsSaveAs = true;
     return Save();
 } // end of SaveAs
 
@@ -3396,7 +3396,6 @@ void cbEditor::OnContextMenuEntry(wxCommandEvent& event)
     }
     else
         event.Skip();
-    //Manager::Get()->GetLogManager()->DebugLog(_T("Leaving OnContextMenuEntry"));
 }
 
 void cbEditor::OnMarginClick(wxScintillaEvent& event)
@@ -3558,23 +3557,21 @@ void cbEditor::OnEditorDwellEnd(wxScintillaEvent& event)
 
 void cbEditor::OnEditorModified(wxScintillaEvent& event)
 {
-//    wxString txt = _T("OnEditorModified(): ");
-//    int flags = event.GetModificationType();
-//    if (flags & wxSCI_MOD_CHANGEMARKER) txt << _T("wxSCI_MOD_CHANGEMARKER, ");
-//    if (flags & wxSCI_MOD_INSERTTEXT) txt << _T("wxSCI_MOD_INSERTTEXT, ");
-//    if (flags & wxSCI_MOD_DELETETEXT) txt << _T("wxSCI_MOD_DELETETEXT, ");
-//    if (flags & wxSCI_MOD_CHANGEFOLD) txt << _T("wxSCI_MOD_CHANGEFOLD, ");
-//    if (flags & wxSCI_PERFORMED_USER) txt << _T("wxSCI_PERFORMED_USER, ");
-//    if (flags & wxSCI_MOD_BEFOREINSERT) txt << _T("wxSCI_MOD_BEFOREINSERT, ");
-//    if (flags & wxSCI_MOD_BEFOREDELETE) txt << _T("wxSCI_MOD_BEFOREDELETE, ");
-//    txt << _T("pos=")
-//        << wxString::Format(_T("%d"), event.GetPosition())
-//        << _T(", line=")
-//        << wxString::Format(_T("%d"), event.GetLine())
-//        << _T(", linesAdded=")
-//        << wxString::Format(_T("%d"), event.GetLinesAdded());
-//    Manager::Get()->GetLogManager()->DebugLog(txt);
-
+#if 0
+    wxString txt = _T("OnEditorModified(): ");
+    int flags = event.GetModificationType();
+    if (flags & wxSCI_MOD_CHANGEMARKER) txt << _T("wxSCI_MOD_CHANGEMARKER, ");
+    if (flags & wxSCI_MOD_INSERTTEXT)   txt << _T("wxSCI_MOD_INSERTTEXT, ");
+    if (flags & wxSCI_MOD_DELETETEXT)   txt << _T("wxSCI_MOD_DELETETEXT, ");
+    if (flags & wxSCI_MOD_CHANGEFOLD)   txt << _T("wxSCI_MOD_CHANGEFOLD, ");
+    if (flags & wxSCI_PERFORMED_USER)   txt << _T("wxSCI_PERFORMED_USER, ");
+    if (flags & wxSCI_MOD_BEFOREINSERT) txt << _T("wxSCI_MOD_BEFOREINSERT, ");
+    if (flags & wxSCI_MOD_BEFOREDELETE) txt << _T("wxSCI_MOD_BEFOREDELETE, ");
+    txt << _T("pos=")          << wxString::Format(_T("%d"), event.GetPosition())
+        << _T(", line=")       << wxString::Format(_T("%d"), event.GetLine())
+        << _T(", linesAdded=") << wxString::Format(_T("%d"), event.GetLinesAdded());
+    Manager::Get()->GetLogManager()->DebugLog(txt);
+#endif
     // whenever event.GetLinesAdded() != 0, we must re-set breakpoints for lines greater
     // than LineFromPosition(event.GetPosition())
     const int linesAdded = event.GetLinesAdded();
@@ -3699,38 +3696,39 @@ void cbEditor::SetZoom(int zoom, bool both)
 // generic scintilla event handler
 void cbEditor::OnScintillaEvent(wxScintillaEvent& event)
 {
-//  wxString txt;
-//    wxEventType type = event.GetEventType();
-//  if (type == wxEVT_SCI_CHANGE) txt << _T("wxEVT_SCI_CHANGE");
-//  else if (type == wxEVT_SCI_STYLENEEDED) txt << _T("wxEVT_SCI_STYLENEEDED");
-//  else if (type == wxEVT_SCI_CHARADDED) txt << _T("wxEVT_SCI_CHARADDED");
-//  else if (type == wxEVT_SCI_SAVEPOINTREACHED) txt << _T("wxEVT_SCI_SAVEPOINTREACHED");
-//  else if (type == wxEVT_SCI_SAVEPOINTLEFT) txt << _T("wxEVT_SCI_SAVEPOINTLEFT");
-//  else if (type == wxEVT_SCI_ROMODIFYATTEMPT) txt << _T("wxEVT_SCI_ROMODIFYATTEMPT");
-//  else if (type == wxEVT_SCI_KEY) txt << _T("wxEVT_SCI_KEY");
-//  else if (type == wxEVT_SCI_DOUBLECLICK) txt << _T("wxEVT_SCI_DOUBLECLICK");
-//  else if (type == wxEVT_SCI_UPDATEUI) txt << _T("wxEVT_SCI_UPDATEUI");
-//  else if (type == wxEVT_SCI_MODIFIED) txt << _T("wxEVT_SCI_MODIFIED");
-//  else if (type == wxEVT_SCI_MACRORECORD) txt << _T("wxEVT_SCI_MACRORECORD");
-//  else if (type == wxEVT_SCI_MARGINCLICK) txt << _T("wxEVT_SCI_MARGINCLICK");
-//  else if (type == wxEVT_SCI_NEEDSHOWN) txt << _T("wxEVT_SCI_NEEDSHOWN");
-//  else if (type == wxEVT_SCI_PAINTED) txt << _T("wxEVT_SCI_PAINTED");
-//  else if (type == wxEVT_SCI_USERLISTSELECTION) txt << _T("wxEVT_SCI_USERLISTSELECTION");
-//  else if (type == wxEVT_SCI_URIDROPPED) txt << _T("wxEVT_SCI_URIDROPPED");
-//  else if (type == wxEVT_SCI_DWELLSTART) txt << _T("wxEVT_SCI_DWELLSTART");
-//  else if (type == wxEVT_SCI_DWELLEND) txt << _T("wxEVT_SCI_DWELLEND");
-//  else if (type == wxEVT_SCI_START_DRAG) txt << _T("wxEVT_SCI_START_DRAG");
-//  else if (type == wxEVT_SCI_DRAG_OVER) txt << _T("wxEVT_SCI_DRAG_OVER");
-//  else if (type == wxEVT_SCI_DO_DROP) txt << _T("wxEVT_SCI_DO_DROP");
-//  else if (type == wxEVT_SCI_ZOOM) txt << _T("wxEVT_SCI_ZOOM");
-//  else if (type == wxEVT_SCI_HOTSPOT_CLICK) txt << _T("wxEVT_SCI_HOTSPOT_CLICK");
-//  else if (type == wxEVT_SCI_HOTSPOT_DCLICK) txt << _T("wxEVT_SCI_HOTSPOT_DCLICK");
-//  else if (type == wxEVT_SCI_CALLTIP_CLICK) txt << _T("wxEVT_SCI_CALLTIP_CLICK");
-//  else if (type == wxEVT_SCI_AUTOCOMP_SELECTION) txt << _T("wxEVT_SCI_AUTOCOMP_SELECTION");
-//  else if (type == wxEVT_SCI_INDICATOR_CLICK) txt << _T("wxEVT_SCI_INDICATOR_CLICK");
-//  else if (type == wxEVT_SCI_INDICATOR_RELEASE) txt << _T("wxEVT_SCI_INDICATOR_RELEASE");
-//    Manager::Get()->GetLogManager()->DebugLog(txt);
-
+#if 0
+    wxString txt;
+    wxEventType type = event.GetEventType();
+    if      (type == wxEVT_SCI_CHANGE)             txt << _T("wxEVT_SCI_CHANGE");
+    else if (type == wxEVT_SCI_STYLENEEDED)        txt << _T("wxEVT_SCI_STYLENEEDED");
+    else if (type == wxEVT_SCI_CHARADDED)          txt << _T("wxEVT_SCI_CHARADDED");
+    else if (type == wxEVT_SCI_SAVEPOINTREACHED)   txt << _T("wxEVT_SCI_SAVEPOINTREACHED");
+    else if (type == wxEVT_SCI_SAVEPOINTLEFT)      txt << _T("wxEVT_SCI_SAVEPOINTLEFT");
+    else if (type == wxEVT_SCI_ROMODIFYATTEMPT)    txt << _T("wxEVT_SCI_ROMODIFYATTEMPT");
+    else if (type == wxEVT_SCI_KEY)                txt << _T("wxEVT_SCI_KEY");
+    else if (type == wxEVT_SCI_DOUBLECLICK)        txt << _T("wxEVT_SCI_DOUBLECLICK");
+    else if (type == wxEVT_SCI_UPDATEUI)           txt << _T("wxEVT_SCI_UPDATEUI");
+    else if (type == wxEVT_SCI_MODIFIED)           txt << _T("wxEVT_SCI_MODIFIED");
+    else if (type == wxEVT_SCI_MACRORECORD)        txt << _T("wxEVT_SCI_MACRORECORD");
+    else if (type == wxEVT_SCI_MARGINCLICK)        txt << _T("wxEVT_SCI_MARGINCLICK");
+    else if (type == wxEVT_SCI_NEEDSHOWN)          txt << _T("wxEVT_SCI_NEEDSHOWN");
+    else if (type == wxEVT_SCI_PAINTED)            txt << _T("wxEVT_SCI_PAINTED");
+    else if (type == wxEVT_SCI_USERLISTSELECTION)  txt << _T("wxEVT_SCI_USERLISTSELECTION");
+    else if (type == wxEVT_SCI_URIDROPPED)         txt << _T("wxEVT_SCI_URIDROPPED");
+    else if (type == wxEVT_SCI_DWELLSTART)         txt << _T("wxEVT_SCI_DWELLSTART");
+    else if (type == wxEVT_SCI_DWELLEND)           txt << _T("wxEVT_SCI_DWELLEND");
+    else if (type == wxEVT_SCI_START_DRAG)         txt << _T("wxEVT_SCI_START_DRAG");
+    else if (type == wxEVT_SCI_DRAG_OVER)          txt << _T("wxEVT_SCI_DRAG_OVER");
+    else if (type == wxEVT_SCI_DO_DROP)            txt << _T("wxEVT_SCI_DO_DROP");
+    else if (type == wxEVT_SCI_ZOOM)               txt << _T("wxEVT_SCI_ZOOM");
+    else if (type == wxEVT_SCI_HOTSPOT_CLICK)      txt << _T("wxEVT_SCI_HOTSPOT_CLICK");
+    else if (type == wxEVT_SCI_HOTSPOT_DCLICK)     txt << _T("wxEVT_SCI_HOTSPOT_DCLICK");
+    else if (type == wxEVT_SCI_CALLTIP_CLICK)      txt << _T("wxEVT_SCI_CALLTIP_CLICK");
+    else if (type == wxEVT_SCI_AUTOCOMP_SELECTION) txt << _T("wxEVT_SCI_AUTOCOMP_SELECTION");
+    else if (type == wxEVT_SCI_INDICATOR_CLICK)    txt << _T("wxEVT_SCI_INDICATOR_CLICK");
+    else if (type == wxEVT_SCI_INDICATOR_RELEASE)  txt << _T("wxEVT_SCI_INDICATOR_RELEASE");
+        Manager::Get()->GetLogManager()->DebugLog(txt);
+#endif
     // call any hooked functors
     if (!ProjectManager::IsBusy() && EditorHooks::HasRegisteredHooks())
     {
