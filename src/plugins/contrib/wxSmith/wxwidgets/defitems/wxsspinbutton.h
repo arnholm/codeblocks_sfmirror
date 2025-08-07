@@ -20,7 +20,7 @@
 * $HeadURL$
 */
 
-#ifndef WXSSPINBUTTONL_H
+#ifndef WXSSPINBUTTON_H
 #define WXSSPINBUTTON_H
 
 #include "../wxswidget.h"

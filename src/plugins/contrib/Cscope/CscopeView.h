@@ -1,5 +1,5 @@
 #ifndef CSCOPEVIEW_H
-#define CSCOPETVIEW_H
+#define CSCOPEVIEW_H
 
 #include <wx/string.h>
 #include "loggers.h"
