@@ -101,7 +101,7 @@ namespace ScriptBindings
         BIND_INT_CONSTANT(wxPATH_NORM_ABSOLUTE);
         BIND_INT_CONSTANT(wxPATH_NORM_LONG);
         BIND_INT_CONSTANT(wxPATH_NORM_SHORTCUT);
-        BIND_INT_CONSTANT(wxPATH_NORM_ALL);
+        // BIND_INT_CONSTANT(wxPATH_NORM_ALL);
 
         // OptionsRelationType
         BIND_INT_CONSTANT(ortCompilerOptions);
