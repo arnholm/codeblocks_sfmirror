@@ -57,7 +57,7 @@ class DirectCommands
         bool m_doYield;
     protected:
         bool         AreExternalDepsOutdated(ProjectBuildTarget* target, const wxString& buildOutput, wxArrayString* filesMissing) const;
-        bool         IsObjectOutdated(ProjectBuildTarget* target, const pfDetails& pfd, wxString* errorStr = 0) const;
+        bool         IsObjectOutdated(ProjectBuildTarget* target, const pfDetails& pfd, wxString* errorStr = nullptr) const;
         void         DepsSearchStart(ProjectBuildTarget* target) const;
         MyFilesArray GetProjectFilesSortedByWeight(ProjectBuildTarget* target, bool compile, bool link) const;
         void         AddCommandsToArray(const wxString& cmds, wxArrayString& array, bool isWaitCmd = false, bool isLinkCmd = false) const;

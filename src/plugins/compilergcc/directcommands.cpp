@@ -57,7 +57,7 @@ DirectCommands::DirectCommands(CompilerGCC* compilerPlugin,
     m_pCompilerPlugin(compilerPlugin),
     m_pCompiler(compiler),
     m_pProject(project),
-    m_pGenerator(0)
+    m_pGenerator(nullptr)
 {
     // even if there is no project, the command generator need to be
     // initialised for single file compilation to work.
@@ -603,13 +603,13 @@ wxArrayString DirectCommands::GetPreBuildCommands(ProjectBuildTarget* target) co
             {
                 if (target)
                 {
-                    m_pGenerator->GenerateCommandLine(buildcmds[i], target, 0, wxEmptyString,
+                    m_pGenerator->GenerateCommandLine(buildcmds[i], target, nullptr, wxEmptyString,
                                                       wxEmptyString, wxEmptyString, wxEmptyString);
                 }
                 else
                 {
                     m_pGenerator->GenerateCommandLine(buildcmds[i],
-                                                      m_pProject->GetCurrentlyCompilingTarget(), 0,
+                                                      m_pProject->GetCurrentlyCompilingTarget(), nullptr,
                                                       wxEmptyString, wxEmptyString, wxEmptyString,
                                                       wxEmptyString);
                 }

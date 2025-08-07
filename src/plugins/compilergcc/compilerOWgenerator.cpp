@@ -36,7 +36,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
     wxArrayString LibDirs = compiler->GetLibDirs();
     if (LibDirs.IsEmpty())
         return wxEmptyString;
-    wxString Result = compiler->GetSwitches().libDirs + _T(" ");
+    wxString ResultStr = compiler->GetSwitches().libDirs + _T(" ");
     if (target)
     {
         wxString tmp, targetStr, projectStr;
@@ -57,7 +57,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
             projectStr << tmp << _T(";");
         }
         // Decide order and arrange it
-        Result << GetOrderedOptions(target, ortLibDirs, projectStr, targetStr);
+        ResultStr << GetOrderedOptions(target, ortLibDirs, projectStr, targetStr);
     }
     // Finally add the compiler options
     const wxArrayString compilerArr = compiler->GetLibDirs();
@@ -69,17 +69,17 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
         compilerStr << tmp << _T(";");
     }
     // Now append it
-    Result << compilerStr;
+    ResultStr << compilerStr;
     // Remove last ';' char
-    Result = Result.Trim(true);
-    if (Result.Right(1).IsSameAs(_T(';')))
-        Result = Result.RemoveLast();
-    return Result;
+    ResultStr = ResultStr.Trim(true);
+    if (ResultStr.Right(1).IsSameAs(_T(';')))
+        ResultStr = ResultStr.RemoveLast();
+    return ResultStr;
 }
 
 wxString CompilerOWGenerator::SetupLinkerOptions(Compiler* compiler, ProjectBuildTarget* target)
 {
-    wxString Temp, LinkerOptions, Result;
+    wxString Temp, LinkerOptions, ResultStr;
     wxArrayString ComLinkerOptions, OtherLinkerOptions, LinkerOptionsArr;
     int i, j, Count;
 
@@ -172,16 +172,16 @@ wxString CompilerOWGenerator::SetupLinkerOptions(Compiler* compiler, ProjectBuil
     }
     // Arrange them in specified order
     if (target)
-        Result = GetOrderedOptions(target, ortLinkerOptions, LinkerOptionsArr[1], LinkerOptionsArr[0]);
+        ResultStr = GetOrderedOptions(target, ortLinkerOptions, LinkerOptionsArr[1], LinkerOptionsArr[0]);
     // Now append compiler level options
-    Result << LinkerOptionsArr[2];
+    ResultStr << LinkerOptionsArr[2];
 
-    return Result;
+    return ResultStr;
 }
 
 wxString CompilerOWGenerator::SetupLinkLibraries(Compiler* compiler, ProjectBuildTarget* target)
 {
-    wxString Result;
+    wxString ResultStr;
     wxString targetStr, projectStr, compilerStr;
     wxArrayString Libs;
 
@@ -197,22 +197,22 @@ wxString CompilerOWGenerator::SetupLinkLibraries(Compiler* compiler, ProjectBuil
             projectStr << Libs[i] + _T(",");
         // Set them in proper order
         if (!targetStr.IsEmpty() || !projectStr.IsEmpty())
-            Result << GetOrderedOptions(target, ortLinkerOptions, projectStr, targetStr);
+            ResultStr << GetOrderedOptions(target, ortLinkerOptions, projectStr, targetStr);
     }
     // Now prepare compiler libraries, if any
     Libs = compiler->GetLinkLibs();
     for (size_t i = 0; i < Libs.GetCount(); ++i)
         compilerStr << Libs[i] << _T(",");
     // Append it to result
-    Result << compilerStr;
+    ResultStr << compilerStr;
     // Now trim trailing spaces, if any, and the ',' at the end
-    Result = Result.Trim(true);
-    if (Result.Right(1).IsSameAs(_T(',')))
-        Result = Result.RemoveLast();
+    ResultStr = ResultStr.Trim(true);
+    if (ResultStr.Right(1).IsSameAs(_T(',')))
+        ResultStr = ResultStr.RemoveLast();
 
-    if (!Result.IsEmpty())
-        Result.Prepend(_T("library "));
-    return Result;
+    if (!ResultStr.IsEmpty())
+        ResultStr.Prepend(_T("library "));
+    return ResultStr;
 }
 
 wxString CompilerOWGenerator::MapTargetType(const wxString& Opt, int target_type)

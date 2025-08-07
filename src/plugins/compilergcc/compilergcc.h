@@ -94,7 +94,7 @@ class CompilerGCC : public cbCompilerPlugin
         void OnAttach() override;
         void OnRelease(bool appShutDown) override;
         void BuildMenu(wxMenuBar* menuBar) override; // offer for menu space by host
-        void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = 0) override; // offer for menu space by a module
+        void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = nullptr) override; // offer for menu space by a module
         bool BuildToolBar(wxToolBar* toolBar) override;
         int GetToolBarPriority() override { return 1; }
 
@@ -206,15 +206,15 @@ class CompilerGCC : public cbCompilerPlugin
         void LogMessage(const wxString& message, CompilerLineType lt = cltNormal, LogTarget log = ltAll, bool forceErrorColour = false, bool isTitle = false, bool updateProgress = false);
         void SaveBuildLog();
         void InitBuildLog(bool workspaceBuild);
-        void PrintBanner(BuildAction action, cbProject* prj = 0, ProjectBuildTarget* target = 0);
-        bool UseMake(cbProject* project = 0);
+        void PrintBanner(BuildAction action, cbProject* prj = nullptr, ProjectBuildTarget* target = nullptr);
+        bool UseMake(cbProject* project = nullptr);
 
         struct CompilerValidResult
         {
             Compiler *compiler = nullptr;
             bool isValid = false;
         };
-        CompilerValidResult CompilerValid(ProjectBuildTarget* target = 0);
+        CompilerValidResult CompilerValid(ProjectBuildTarget* target = nullptr);
         void PrintInvalidCompiler(ProjectBuildTarget *target, Compiler *compiler, const wxString &finalMessage);
         ProjectBuildTarget* GetBuildTargetForFile(ProjectFile* pf);
         wxString GetMakeCommandFor(MakeCommand cmd, cbProject* project, ProjectBuildTarget* target);
@@ -253,7 +253,7 @@ class CompilerGCC : public cbCompilerPlugin
         // are to be built in order
         struct BuildJobTarget
         {
-            BuildJobTarget(cbProject* p = 0, const wxString& n = wxEmptyString) : project(p), targetName(n) {}
+            BuildJobTarget(cbProject* p = nullptr, const wxString& n = wxEmptyString) : project(p), targetName(n) {}
             cbProject* project;
             wxString targetName;
         };

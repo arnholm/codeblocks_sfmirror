@@ -549,7 +549,7 @@ int CompilerGCC::Configure(cbProject* project, ProjectBuildTarget* target, wxWin
 
 cbConfigurationPanel* CompilerGCC::GetConfigurationPanel(wxWindow* parent)
 {
-    CompilerOptionsDlg* dlg = new CompilerOptionsDlg(parent, this, 0, 0);
+    CompilerOptionsDlg* dlg = new CompilerOptionsDlg(parent, this, nullptr, nullptr);
     return dlg;
 }
 
@@ -1247,7 +1247,7 @@ bool CompilerGCC::IsProcessRunning(int idx) const
 
     // specific process
     if (idx >= 0)
-        return (m_CompilerProcessList.at(static_cast<size_t>(idx)).pProcess != 0);
+        return (m_CompilerProcessList.at(static_cast<size_t>(idx)).pProcess != nullptr);
 
     // any process (idx = -1)
     for (const CompilerProcess &p : m_CompilerProcessList)
@@ -1421,14 +1421,14 @@ int CompilerGCC::DoRunQueue()
         wxString err = wxString::Format(_("Execution of '%s' in '%s' failed."),
                                         cmd->command, wxGetCwd());
         LogMessage(err, cltError);
-        LogWarningOrError(cltError, 0, wxEmptyString, wxEmptyString, err);
+        LogWarningOrError(cltError, nullptr, wxEmptyString, wxEmptyString, err);
         if (!m_CommandQueue.LastCommandWasRun())
         {
             if ( !IsProcessRunning() )
             {
                 wxString msg = wxString::Format("%s (%s)", GetErrWarnStr(), GetMinSecStr());
                 LogMessage(msg, cltError, ltAll, true);
-                LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,
+                LogWarningOrError(cltNormal, nullptr, wxEmptyString, wxEmptyString,
                                   wxString::Format(_("=== Build failed: %s ==="), msg));
                 if (!Manager::IsBatchBuild())
                     m_pListLog->AutoFitColumns(2);
@@ -1661,7 +1661,7 @@ void CompilerGCC::DoPrepareQueue(bool clearLog)
 {
     if (m_CommandQueue.GetCount() == 0)
     {
-        CodeBlocksEvent evt(cbEVT_COMPILER_STARTED, 0, m_pProject, 0, this);
+        CodeBlocksEvent evt(cbEVT_COMPILER_STARTED, 0, m_pProject, nullptr, this);
         Manager::Get()->ProcessEvent(evt);
         //Make sure we force sending the compiler finish event, else plugins will hang
         m_StartedEventSent = true;
@@ -1681,7 +1681,7 @@ void CompilerGCC::NotifyCleanProject(const wxString& target)
 {
     if (m_CommandQueue.GetCount() == 0)
     {
-        CodeBlocksEvent evt(cbEVT_CLEAN_PROJECT_STARTED, 0, m_pProject, 0, this);
+        CodeBlocksEvent evt(cbEVT_CLEAN_PROJECT_STARTED, 0, m_pProject, nullptr, this);
         evt.SetBuildTargetName(target);
         Manager::Get()->ProcessEvent(evt);
     }
@@ -1692,7 +1692,7 @@ void CompilerGCC::NotifyCleanWorkspace()
 {
     if (m_CommandQueue.GetCount() == 0)
     {
-        CodeBlocksEvent evt(cbEVT_CLEAN_WORKSPACE_STARTED, 0, 0, 0, this);
+        CodeBlocksEvent evt(cbEVT_CLEAN_WORKSPACE_STARTED, 0, nullptr, nullptr, this);
         Manager::Get()->ProcessEvent(evt);
     }
     Manager::Yield();
@@ -1823,7 +1823,7 @@ void CompilerGCC::PrintBanner(BuildAction action, cbProject* prj, ProjectBuildTa
     wxString banner;
     banner.Printf(_("%s: %s in %s (compiler: %s)"), Action, targetName, projectName, compilerName);
     Manager::Get()->GetMacrosManager()->ReplaceMacros(banner);
-    LogWarningOrError(cltNormal, 0, wxString(), wxString(), "=== " + banner + " ===");
+    LogWarningOrError(cltNormal, nullptr, wxString(), wxString(), "=== " + banner + " ===");
     LogMessage("-------------- " + banner + "---------------", cltNormal, ltAll, false, true);
     if (!Manager::IsBatchBuild())
         m_pListLog->AutoFitColumns(2);
@@ -1909,7 +1909,7 @@ int CompilerGCC::RunSingleFile(const wxString& filename)
 
     Manager::Get()->GetMacrosManager()->ReplaceEnvVars(m_CdRun);
     Manager::Get()->GetLogManager()->Log(wxString::Format(_("Executing: '%s' (in '%s')"), command, m_CdRun), m_PageIndex);
-    m_CommandQueue.Add(new CompilerCommand(command, wxEmptyString, 0, 0, true));
+    m_CommandQueue.Add(new CompilerCommand(command, wxEmptyString, nullptr, nullptr, true));
     return 0;
 }
 
@@ -2095,7 +2095,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         if (target->GetHostApplication().IsEmpty())
         {
             cbMessageBox(_("You must select a host application to \"run\" a library..."));
-            m_pProject->SetCurrentlyCompilingTarget(0);
+            m_pProject->SetCurrentlyCompilingTarget(nullptr);
             return -1;
         }
 
@@ -2118,7 +2118,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         if (target->GetHostApplication().IsEmpty())
         {
             cbMessageBox(_("You must select a host application to \"run\" a commands-only target..."));
-            m_pProject->SetCurrentlyCompilingTarget(0);
+            m_pProject->SetCurrentlyCompilingTarget(nullptr);
             return -1;
         }
         command << hostapStr << strSPACE;
@@ -2153,7 +2153,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
         {
             case wxID_YES:
             {
-                m_pProject->SetCurrentlyCompilingTarget(0);
+                m_pProject->SetCurrentlyCompilingTarget(nullptr);
                 m_RunAfterCompile = true;
                 Build(target);
                 return -1;
@@ -2161,7 +2161,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
             case wxID_NO:
                 break;
             default:
-                m_pProject->SetCurrentlyCompilingTarget(0);
+                m_pProject->SetCurrentlyCompilingTarget(nullptr);
                 return -1;
         }
     }
@@ -2169,7 +2169,7 @@ int CompilerGCC::Run(ProjectBuildTarget* target)
     const wxString& message = wxString::Format(_("Executing: %s (in %s)"), cmd, m_CdRun);
     m_CommandQueue.Add(new CompilerCommand(cmd, message, m_pProject, target, true));
 
-    m_pProject->SetCurrentlyCompilingTarget(0);
+    m_pProject->SetCurrentlyCompilingTarget(nullptr);
 
     Manager::Get()->GetProjectManager()->SetIsRunning(this);
     return 0;
@@ -2320,9 +2320,9 @@ void CompilerGCC::InitBuildState(BuildJob job, const wxString& target)
 void CompilerGCC::ResetBuildState()
 {
     if (m_pBuildingProject)
-        m_pBuildingProject->SetCurrentlyCompilingTarget(0);
+        m_pBuildingProject->SetCurrentlyCompilingTarget(nullptr);
     else if (m_pProject)
-        m_pProject->SetCurrentlyCompilingTarget(0);
+        m_pProject->SetCurrentlyCompilingTarget(nullptr);
 
     // reset state
     m_BuildJob = bjIdle;
@@ -2343,7 +2343,7 @@ void CompilerGCC::ResetBuildState()
     ProjectsArray* arr = Manager::Get()->GetProjectManager()->GetProjects();
     for (size_t i = 0; i < arr->GetCount(); ++i)
     {
-        arr->Item(i)->SetCurrentlyCompilingTarget(0);
+        arr->Item(i)->SetCurrentlyCompilingTarget(nullptr);
     }
 }
 
@@ -2429,7 +2429,7 @@ BuildState CompilerGCC::GetNextStateBasedOnJob()
 
                 return bsProjectDone;
             }
-            m_pBuildingProject->SetCurrentlyCompilingTarget(0);
+            m_pBuildingProject->SetCurrentlyCompilingTarget(nullptr);
             break; // all done
         }
 
@@ -2440,7 +2440,7 @@ BuildState CompilerGCC::GetNextStateBasedOnJob()
         {
             // switch to next project in workspace
             if (m_pBuildingProject)
-                m_pBuildingProject->SetCurrentlyCompilingTarget(0);
+                m_pBuildingProject->SetCurrentlyCompilingTarget(nullptr);
             m_NextBuildState = bsProjectPreBuild;
             // DoBuild runs ProjectPreBuild, next step has to be TargetClean or TargetPreBuild
             if (DoBuild(clean, build) >= 0)
@@ -2508,7 +2508,7 @@ void CompilerGCC::BuildStateManagement()
         {
             // don't run project pre-build steps if we only clean it
             if (m_Build)
-                cmds = dc.GetPreBuildCommands(0);
+                cmds = dc.GetPreBuildCommands(nullptr);
             break;
         }
 
@@ -2648,7 +2648,7 @@ void CompilerGCC::BuildStateManagement()
         {
             // run project post-build steps
             if (m_RunProjectPostBuild || m_pBuildingProject->GetAlwaysRunPostBuildSteps())
-                cmds = dc.GetPostBuildCommands(0);
+                cmds = dc.GetPostBuildCommands(nullptr);
             // reset
             m_pLastBuildingTarget = nullptr;
             m_RunProjectPostBuild = false;
@@ -2988,7 +2988,7 @@ int CompilerGCC::DoWorkspaceBuild(const wxString& target, bool clean, bool build
     }
 
     // create list of jobs to run (project->realTarget pairs)
-    PreprocessJob(0, realTarget);
+    PreprocessJob(nullptr, realTarget);
     if (m_BuildJobTargetsList.empty())
         return -1;
 
@@ -3183,7 +3183,7 @@ int CompilerGCC::CompileFileWithoutProject(const wxString& file)
     Compiler* compiler = CompilerFactory::GetDefaultCompiler();
 
     // get compile commands for file (always linked as console-executable)
-    DirectCommands dc(this, compiler, 0, m_PageIndex);
+    DirectCommands dc(this, compiler, nullptr, m_PageIndex);
     wxArrayString compile = dc.GetCompileSingleFileCommand(file);
     AddToCommandQueue(compile);
 
@@ -3698,8 +3698,8 @@ void CompilerGCC::AddOutputLine(const wxString& output, bool forceErrorColour)
             m_NotifiedMaxErrors = true;
 
             // if we reached the max errors count, notify about it
-            LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString, _("More errors follow but not being shown."));
-            LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString, _("Edit the max errors limit in compiler options..."));
+            LogWarningOrError(cltNormal, nullptr, wxEmptyString, wxEmptyString, _("More errors follow but not being shown."));
+            LogWarningOrError(cltNormal, nullptr, wxEmptyString, wxEmptyString, _("Edit the max errors limit in compiler options..."));
         }
         return;
     }
@@ -4042,7 +4042,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
                 msg = wxString::Format("%s (%s)", GetErrWarnStr(), GetMinSecStr());
                 success = (m_LastExitCode >= 0) && (m_LastExitCode <= compiler->GetSwitches().statusSuccess);
                 LogMessage(msg, success ? cltWarning : cltError, ltAll, !success);
-                LogWarningOrError(cltNormal, 0, wxEmptyString, wxEmptyString,
+                LogWarningOrError(cltNormal, nullptr, wxEmptyString, wxEmptyString,
                                   wxString::Format(_("=== Build %s: %s ==="),
                                                    wxString(m_LastExitCode == 0 ? _("finished") : _("failed")).wx_str(), msg.wx_str()));
                 if (!Manager::IsBatchBuild())
@@ -4146,7 +4146,7 @@ void CompilerGCC::NotifyJobDone(bool showNothingToBeDone)
         // If we sent the started event, make sure we send the finish event, else plugins hang.
         if (m_StartedEventSent)
         {
-            CodeBlocksEvent evt(cbEVT_COMPILER_FINISHED, 0, m_pProject, 0, this);
+            CodeBlocksEvent evt(cbEVT_COMPILER_FINISHED, 0, m_pProject, nullptr, this);
             evt.SetInt(m_LastExitCode);
             Manager::Get()->ProcessEvent(evt);
             m_StartedEventSent = false;
