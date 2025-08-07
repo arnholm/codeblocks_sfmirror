@@ -62,13 +62,12 @@ typedef HANDLE WINAPI (*CreateToolhelp32SnapshotApiCall)(DWORD  dwFlags,   DWORD
 typedef BOOL WINAPI   (*Process32FirstApiCall)          (HANDLE hSnapshot, LPPROCESSENTRY32W lppe);
 typedef BOOL WINAPI   (*Process32NextApiCall)           (HANDLE hSnapshot, LPPROCESSENTRY32W lppe);
 
-DebugBreakProcessApiCall        DebugBreakProcessFunc = 0;
-CreateToolhelp32SnapshotApiCall CreateToolhelp32SnapshotFunc = 0;
-Process32FirstApiCall           Process32FirstFunc = 0;
-Process32NextApiCall            Process32NextFunc = 0;
+DebugBreakProcessApiCall        DebugBreakProcessFunc        = nullptr;
+CreateToolhelp32SnapshotApiCall CreateToolhelp32SnapshotFunc = nullptr;
+Process32FirstApiCall           Process32FirstFunc           = nullptr;
+Process32NextApiCall            Process32NextFunc            = nullptr;
 
-HINSTANCE kernelLib = 0;
-
+HINSTANCE kernelLib = nullptr;
 #endif
 
 #ifdef __WXMSW__

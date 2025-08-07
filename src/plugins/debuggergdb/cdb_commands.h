@@ -9,9 +9,9 @@
 #include <wx/string.h>
 #include <wx/regex.h>
 #include <wx/tipwin.h>
-#include "globals.h"
-#include "manager.h"
-#include "cbdebugger_interfaces.h"
+#include <globals.h>
+#include <manager.h>
+#include <cbdebugger_interfaces.h>
 #include "debugger_defs.h"
 #include "debuggergdb.h"
 #include "debuggermanager.h"
@@ -380,7 +380,7 @@ class CdbCmd_TooltipEvaluation : public DebuggerCmd
         */
         CdbCmd_TooltipEvaluation(DebuggerDriver* driver, const wxString& what, const wxRect& tiprect)
             : DebuggerCmd(driver),
-            m_pWin(0),
+            m_pWin(nullptr),
             m_WinRect(tiprect),
             m_What(what)
         {

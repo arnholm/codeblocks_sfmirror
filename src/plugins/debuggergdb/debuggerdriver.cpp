@@ -122,7 +122,7 @@ void DebuggerDriver::QueueCommand(DebuggerCmd* dcmd, QueuePriority prio)
 
 DebuggerCmd* DebuggerDriver::CurrentCommand()
 {
-    return m_DCmds.GetCount() ? m_DCmds[0] : 0;
+    return m_DCmds.GetCount() ? m_DCmds[0] : nullptr;
 }
 
 void DebuggerDriver::RunQueue()

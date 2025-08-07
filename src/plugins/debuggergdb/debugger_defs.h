@@ -156,7 +156,7 @@ struct DebuggerBreakpoint : cbBreakpoint
         alreadySet(false),
         breakOnRead(false),
         breakOnWrite(true),
-        userData(0)
+        userData(nullptr)
     {}
 
     // from cbBreakpoint

@@ -12,7 +12,7 @@
 class EditBreakpointDlg : public wxScrollingDialog
 {
     public:
-        EditBreakpointDlg(const DebuggerBreakpoint &breakpoint, wxWindow* parent = 0);
+        EditBreakpointDlg(const DebuggerBreakpoint &breakpoint, wxWindow* parent = nullptr);
         ~EditBreakpointDlg() override;
 
         const DebuggerBreakpoint& GetBreakpoint() const { return m_breakpoint; }
