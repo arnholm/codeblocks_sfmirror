@@ -63,19 +63,22 @@ DisassemblyDlg::DisassemblyDlg(wxWindow* parent) :
     m_pCode->MarkerSetBackground(DEBUG_MARKER, wxColour(0xFF, 0xFF, 0x00));
     wxXmlResource::Get()->AttachUnknownControl(_T("lcCode"), m_pCode);
 
-    // use the same font as editor's
+    // set a default font
 #if wxCHECK_VERSION(3, 1, 0)
     wxFont font(FromDIP(8), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #else
     wxFont font(wxRound(8*cbGetContentScaleFactor(*this)), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
-    wxString fontstring = Manager::Get()->GetConfigManager(_T("editor"))->Read(_T("/font"), wxEmptyString);
-    if (!fontstring.IsEmpty())
+    // use the same font as editor's if available
+    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
+    if (!fontstring.empty())
     {
         wxNativeFontInfo nfi;
         nfi.FromString(fontstring);
         font.SetNativeFontInfo(nfi);
+        font.Scale(cbGetContentScaleFactor(*this));
     }
+
     m_pCode->StyleSetFont(wxSCI_STYLE_DEFAULT, font);
 
     EditorColourSet* colour_set = Manager::Get()->GetEditorManager()->GetColourSet();
