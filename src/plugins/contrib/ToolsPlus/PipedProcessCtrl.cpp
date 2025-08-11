@@ -27,13 +27,13 @@ PipedTextCtrl::PipedTextCtrl(wxWindow *parent, PipedProcessCtrl *pp) : wxScintil
     wxFont font(wxRound(10*cbGetContentScaleFactor(*this)), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
-    ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("editor"));
-    wxString fontstring = mgr->Read(_T("/font"), wxEmptyString);
-    if (!fontstring.IsEmpty())
+    wxString fontstring = Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString);
+    if (!fontstring.empty())
     {
         wxNativeFontInfo nfi;
         nfi.FromString(fontstring);
         font.SetNativeFontInfo(nfi);
+        font.Scale(cbGetContentScaleFactor(*this));
     }
 
     StyleSetFont(wxSCI_STYLE_DEFAULT, font);
