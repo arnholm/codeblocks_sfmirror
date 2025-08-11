@@ -129,30 +129,42 @@ int InfoPane::CompareIndexes(Page **p1, Page **p2)
 
 void InfoPane::ReorderTabs(CompareFunction cmp_f)
 {
-    if (m_Pages.GetCount() == 0)
+    if (m_Pages.IsEmpty())
         return;
+
     m_Pages.Sort(cmp_f);
 
     cbAuiNotebook::Hide();
-    int index = 0;
+
+    size_t index = 0;
     for (size_t i = 0 ; i < m_Pages.GetCount(); ++i)
     {
-        int pageIndex = GetPageIndex(m_Pages.Item(i)->window);
-        if (m_Pages.Item(i)->indexInNB < 0)
+        const Page* page = m_Pages.Item(i);
+        int pageIndex = GetPageIndex(page->window);
+#if wxCHECK_VERSION(3, 3, 0)
+        if (pageIndex != wxNOT_FOUND)
+            pageIndex = GetPagePosition(static_cast <size_t> (pageIndex)).tabIdx;
+#endif
+
+        if (page->indexInNB < 0)
         {
-            if (pageIndex >= 0)
+            if (pageIndex != wxNOT_FOUND)
                 RemovePage(pageIndex);
-            if (m_Pages.Item(i)->window)
-                m_Pages.Item(i)->window->Hide();
+
+            if (page->window)
+                page->window->Hide();
         }
         else
         {
-            if (pageIndex < 0)
-                AddPagePrivate(m_Pages.Item(i)->window, m_Pages.Item(i)->title, m_Pages.Item(i)->icon);
-            if (index++ != pageIndex)
-                MovePage(m_Pages.Item(i)->window, index );
+            if (pageIndex == wxNOT_FOUND)
+                pageIndex = AddPagePrivate(page->window, page->title, page->icon);
+
+            if (index++ != static_cast <size_t> (pageIndex))
+                if (index < GetPageCount())  // FIXME (wh11204#1#): sometimes index >= GetPageCount() and crashes wx3.3.1, check calculation and remove this line
+                    MovePage(page->window, index);
         }
     }
+
     cbAuiNotebook::Show();
 }
 
