@@ -21,7 +21,7 @@
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx32_64.cbp">
-			<Depends filename="CodeBlocks_wx32.cbp" />
+			<Depends filename="CodeBlocks_wx32_64.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/headerguard/headerguard_wx32_64.cbp">
