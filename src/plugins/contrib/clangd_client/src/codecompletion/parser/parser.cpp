@@ -1659,7 +1659,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             {
                 pClient->SetLSP_EditorIsParsed(pEditor, true);
                 pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-                size_t remainingToParse = pParser ? pParser->GetFilesRemainingToParse() : nullptr;
+                size_t remainingToParse = pParser ? pParser->GetFilesRemainingToParse() : 0;
                 if (not remainingToParse)
                 {
                     remainingToParse = pClient->LSP_GetServerFilesParsingCount();
