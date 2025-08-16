@@ -147,6 +147,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
         "Jonas Zinn          : Misc. wxSmith AddOns and plugins\n"
         "Mirai Computing     : cbp2make tool\n"
         "Anders F Bjoerklund : wxMac compatibility\n"
+        "Christo             : clangd-client improvements and bug-fixes\n"
         "\n"));
 
     const wxString contributors(_(
