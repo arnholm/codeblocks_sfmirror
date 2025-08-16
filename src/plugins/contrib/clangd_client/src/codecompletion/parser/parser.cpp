@@ -1659,7 +1659,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
             {
                 pClient->SetLSP_EditorIsParsed(pEditor, true);
                 pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-                size_t remainingToParse = pParser->GetFilesRemainingToParse();
+                size_t remainingToParse = pParser ? pParser->GetFilesRemainingToParse() : nullptr;
                 if (not remainingToParse)
                 {
                     remainingToParse = pClient->LSP_GetServerFilesParsingCount();
@@ -2384,6 +2384,14 @@ wxString Parser::GetLineTextFromFile(const wxString& filename, const int lineNum
     cbStyledTextCtrl* pControl = GetStaticHiddenEditor(filename);
 
    wxString resultText;
+   if (!pControl)
+   {
+       wxString msg = wxString::Format("Could not get hiddon editor for file %s", filename);
+       CCLogger::Get()->DebugLog(msg);
+       cbMessageBox(msg);
+       return resultText;
+   }
+
    switch(1) //once only
     {
         default:

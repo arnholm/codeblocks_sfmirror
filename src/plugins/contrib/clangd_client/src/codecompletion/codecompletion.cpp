@@ -591,6 +591,8 @@ ClgdCompletion::~ClgdCompletion()
     Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnLSP_Event, this, LSPeventID);
     Unbind(wxEVT_COMMAND_MENU_SELECTED, &ClgdCompletion::OnReActivateProject, this,XRCID("OnReActivateProject"));
 
+    delete m_pDocHelper;
+    delete m_pCodeRefactoring;
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::OnAttach()

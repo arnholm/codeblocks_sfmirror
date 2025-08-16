@@ -5,6 +5,7 @@
 #ifndef LSP_TRANSPORT_H
 #define LSP_TRANSPORT_H
 
+#include <atomic>     //(cb 2025/08/16)
 #include <wx/event.h> //(cb 2020/10/1)
 #include <wx/frame.h> //(cb 2020/10/1)
 
@@ -34,7 +35,7 @@ public:
     //void* GetLSP_ClientID() {return clientID;}
     //-void  SetLSP_ClientID(void* ID) {clientID = ID;}
     // Termination control from ProcessLanguageClient //(cb 2021/07/8)
-    int m_LSP_TerminateFlag = 0;
+    std::atomic_int m_LSP_TerminateFlag{0}; //(cb 2025/08/16)
     int GetLSP_TerminateFlag(){ return m_LSP_TerminateFlag;}
     void SetLSP_TerminateFlag(int terminateFlag){m_LSP_TerminateFlag = terminateFlag;}
 };
