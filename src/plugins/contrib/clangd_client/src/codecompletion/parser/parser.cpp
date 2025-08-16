@@ -2835,7 +2835,11 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
             if (labelValue.Contains(badBytes2) )    // remove 3dot ellipsis
                 labelValue.Replace(badBytes2,"");
 
-            wxString filterText = GetwxUTF8Str(valueItems[itemNdx].at("filterText").get<std::string>());
+            wxString filterText;
+            if (valueItems[itemNdx].contains("filterText"))
+                filterText = GetwxUTF8Str(valueItems[itemNdx].at("filterText").get<std::string>());
+            else
+                filterText = labelValue;
             int labelKind = valueItems[itemNdx].at("kind").get<int>();
             ClgdCCToken ccctoken(-1, labelValue, labelValue);    //id and name
             ccctoken.id = -1;                                            //needed Documentation popups, set below.
