@@ -468,7 +468,7 @@ wxArrayString ParseManager::GetAllPathsByFilename(const wxString& filename)
     if (path.empty())
         return wxArrayString();
 
-    wxDir dir(fn.GetPath());
+    wxDir dir(path);
     if (!dir.IsOpened())
         return wxArrayString();
 
