@@ -463,17 +463,19 @@ wxArrayString ParseManager::GetAllPathsByFilename(const wxString& filename)
 {
     TRACE(_T("ParseManager::GetAllPathsByFilename: Enter"));
 
-    wxArrayString dirs;
     const wxFileName fn(filename);
+    const wxString path(fn.GetPath());
+    if (path.empty())
+        return wxArrayString();
 
     wxDir dir(fn.GetPath());
     if (!dir.IsOpened())
         return wxArrayString();
 
-    wxArrayString files;
+    wxArrayString dirs, files;
     ParseManagerHelper::ParserDirTraverser traverser(wxEmptyString, files);
     const wxString filespec = fn.HasExt() ? fn.GetName() + _T(".*") : fn.GetName();
-    CCLogger::Get()->DebugLog(_T("ParseManager::GetAllPathsByFilename: Traversing '") + fn.GetPath() + _T("' for: ") + filespec);
+    CCLogger::Get()->DebugLog(_T("ParseManager::GetAllPathsByFilename: Traversing '") + path + _T("' for: ") + filespec);
 
     // search in the same directory of the input file
     dir.Traverse(traverser, filespec, wxDIR_FILES);
