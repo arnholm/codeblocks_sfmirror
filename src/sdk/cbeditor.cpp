@@ -1046,7 +1046,14 @@ void cbEditor::SetModified(bool modified)
         NotifyPlugins(cbEVT_EDITOR_MODIFIED);
         // visual state
         if (m_pProjectFile)
-            m_pProjectFile->SetFileState(m_pControl->GetReadOnly() ? fvsReadOnly : (m_Modified ? fvsModified : fvsNormal));
+        {
+            FileVisualState currentVisualState = m_pProjectFile->GetFileState();
+            bool isManagedByVcs = (currentVisualState >= fvsVcAdded) && (currentVisualState <= fvsVcNonControlled);
+            if (!isManagedByVcs)
+            {
+                m_pProjectFile->SetFileState(m_pControl->GetReadOnly() ? fvsReadOnly : (m_Modified ? fvsModified : fvsNormal));
+            }
+        }
     }
 }
 
