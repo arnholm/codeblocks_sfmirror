@@ -42,13 +42,13 @@ class FileContentDisk: public FileContentBase
         FileContentDisk();
 
         /** \brief Dctor */
-        virtual ~FileContentDisk();
+        virtual ~FileContentDisk() override;
 
         /** \brief Reading the data from the file */
-        virtual bool ReadFile( const wxString& fileName );
+        virtual bool ReadFile( const wxString& fileName ) override;
 
         /** \brief Writing the data to the file */
-        virtual bool WriteFile( const wxString& fileName );
+        virtual bool WriteFile( const wxString& fileName ) override;
 
         /** \brief Getting size of the content */
         virtual OffsetT GetSize();

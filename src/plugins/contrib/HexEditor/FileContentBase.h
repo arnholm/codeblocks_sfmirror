@@ -106,7 +106,7 @@ class FileContentBase
          *  \param data buffer with data to use for new location, if NULL, new block will be zero-filled
          *  \return number of bytes added
          */
-        OffsetT Add( const ExtraUndoData& extraUndoData, OffsetT position, OffsetT length, void* data = 0 );
+        OffsetT Add( const ExtraUndoData& extraUndoData, OffsetT position, OffsetT length, const void* data = nullptr );
 
         /** \brief Check if we can undo */
         bool CanUndo();
@@ -196,9 +196,9 @@ class FileContentBase
         /** \brief Dummy class to simulate invalid bur also harmless entry in undo buffer */
         class InvalidModificationData: public ModificationData
         {
-            void    Apply () { }
-            void    Revert() { }
-            OffsetT Length() { return 0; }
+            void    Apply () override { }
+            void    Revert() override { }
+            OffsetT Length() override { return 0; }
         };
 
         static InvalidModificationData m_UndoInvalid;

@@ -31,12 +31,12 @@ class CharacterView: public HexEditViewBase
     public:
 
         /** \brief Ctor */
-        CharacterView( HexEditPanel* panel );
+        explicit CharacterView( HexEditPanel* panel );
 
     protected:
 
         /** \brief Called when switching the active state */
-        virtual void OnActivate( bool becomesActive );
+        virtual void OnActivate( bool becomesActive ) override;
 
         /** \brief Called when changing current cursor offset */
         virtual void OnOffsetChange(
@@ -46,28 +46,28 @@ class CharacterView: public HexEditViewBase
             OffsetT blockEnd );
 
         /** \brief Called when character is sent to this view */
-        virtual void OnProcessChar( wxChar ch );
+        virtual void OnProcessChar( wxChar ch ) override;
 
         /** \brief Called when moving left */
-        virtual void OnMoveLeft();
+        virtual void OnMoveLeft() override;
 
         /** \brief Called when moving right */
-        virtual void OnMoveRight();
+        virtual void OnMoveRight() override;
 
         /** \brief Called when moving up */
-        virtual void OnMoveUp();
+        virtual void OnMoveUp() override;
 
         /** \brief Called when moving down */
-        virtual void OnMoveDown();
+        virtual void OnMoveDown() override;
 
         /** \brief Called when there's need to fill line buffer for this content */
         virtual void OnPutLine( OffsetT startOffset, HexEditLineBuffer& buff, char* content, int bytes );
 
         /** \brief Get block sizes */
-        virtual void OnGetBlockSizes( int& blockLength, int& blockBytes, int& spacing );
+        virtual void OnGetBlockSizes( int& blockLength, int& blockBytes, int& spacing ) override;
 
         /** \brief Calculate offset from the beginning of the line at given position */
-        virtual int OnGetOffsetFromColumn( int column, int& positionFlags );
+        virtual int OnGetOffsetFromColumn( int column, int& positionFlags ) override;
 
         /** \brief Convert character for the one that will be displayable for sure */
         inline char Strip( char ch );

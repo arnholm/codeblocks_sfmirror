@@ -65,7 +65,7 @@ namespace Expression
         };
     } }
 
-    Executor::Executor()
+    Executor::Executor() : m_Code(nullptr), m_OperationPos(0), m_Content(nullptr), m_Current(0), m_Status(executedSuccessfully)
     {
     }
 

@@ -149,7 +149,7 @@ FileContentBase::OffsetT FileContentBase::Remove( const ExtraUndoData& extraUndo
     return mod->Length();
 }
 
-FileContentBase::OffsetT FileContentBase::Add( const ExtraUndoData& extraUndoData, OffsetT position, OffsetT length, void* data)
+FileContentBase::OffsetT FileContentBase::Add( const ExtraUndoData& extraUndoData, OffsetT position, OffsetT length, const void* data)
 {
     if ( !length ) return 0;
 

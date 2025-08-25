@@ -41,7 +41,7 @@ namespace Expression
 
         inline void Ensure( bool condition, const wxString& msg )
         {
-            ((TestCasesHelper< ExpressionTests >*)this)->Ensure( condition, msg );
+            static_cast < TestCasesHelper< ExpressionTests >* > (this)->Ensure( condition, msg );
         }
     };
 

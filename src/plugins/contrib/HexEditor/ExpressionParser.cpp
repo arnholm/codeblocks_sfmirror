@@ -39,7 +39,7 @@ namespace Expression
     const Parser::resType Parser::resFloat;
 
 
-    Parser::Parser()
+    Parser::Parser() : m_ErrorPos(0), m_Output(nullptr), m_StartPos(nullptr), m_CurrentPos(nullptr)
     {
     }
 
@@ -607,5 +607,4 @@ namespace Expression
             m_Output->PushOperation( op );
         }
     }
-
 }

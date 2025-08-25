@@ -30,10 +30,11 @@ class FileContentBuffered::IntModificationData: public FileContentBuffered::Modi
 {
     public:
 
-        IntModificationData( std::vector< char >& buffer ): m_Buffer( buffer ) {}
+        explicit IntModificationData( std::vector< char >& buffer ): m_Buffer( buffer ), m_Type( nothing ) {}
 
         enum typeEnum
         {
+            nothing,        ///< \brief No changes were made
             change,         ///< \brief Some content was changed
             added,          ///< \brief Some data was inserted
             removed,        ///< \brief Some data was removed
@@ -46,7 +47,7 @@ class FileContentBuffered::IntModificationData: public FileContentBuffered::Modi
         std::vector< char >  m_OldData;
         std::vector< char >  m_NewData;
 
-        void Apply()
+        void Apply() override
         {
             switch ( m_Type )
             {
@@ -79,7 +80,7 @@ class FileContentBuffered::IntModificationData: public FileContentBuffered::Modi
             }
         }
 
-        void Revert()
+        void Revert() override
         {
             switch ( m_Type )
             {
@@ -112,7 +113,7 @@ class FileContentBuffered::IntModificationData: public FileContentBuffered::Modi
             }
         }
 
-        OffsetT Length()
+        OffsetT Length() override
         {
             return m_OldData.empty() ? m_NewData.size() : m_OldData.size();
         }
@@ -135,7 +136,7 @@ FileContentBuffered::ModificationData* FileContentBuffered::BuildAddModification
     mod->m_NewData.resize( length );
     if ( data )
     {
-        std::copy( (char*)data, (char*)data + length, mod->m_NewData.begin() );
+        std::copy( static_cast <const char*> (data), static_cast <const char*> (data) + length, mod->m_NewData.begin() );
     }
 
     return mod;
@@ -179,7 +180,7 @@ FileContentBuffered::ModificationData* FileContentBuffered::BuildChangeModificat
     std::copy( m_Buffer.begin() + position, m_Buffer.begin() + position + length, mod->m_OldData.begin() );
     if ( data )
     {
-        std::copy( (char*)data, (char*)data + length, mod->m_NewData.begin() );
+        std::copy( static_cast <const char*> (data), static_cast <const char*> (data) + length, mod->m_NewData.begin() );
     }
 
     return mod;

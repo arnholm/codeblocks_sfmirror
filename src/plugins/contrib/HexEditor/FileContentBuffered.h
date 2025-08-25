@@ -36,16 +36,16 @@ class FileContentBuffered: public FileContentBase
         FileContentBuffered();
 
         /** \brief Dctor */
-        ~FileContentBuffered();
+        ~FileContentBuffered() override;
 
         /** \brief Reading the data */
-        bool ReadFile( const wxString& fileName );
+        bool ReadFile( const wxString& fileName ) override;
 
         /** \brief Writing the data */
-        bool WriteFile( const wxString& fileName );
+        bool WriteFile( const wxString& fileName ) override;
 
         /** \brief Getting size of the content */
-        OffsetT GetSize();
+        OffsetT GetSize() override;
 
         /** \brief Reading some part of data */
         OffsetT Read( void* buff, OffsetT position, OffsetT length );

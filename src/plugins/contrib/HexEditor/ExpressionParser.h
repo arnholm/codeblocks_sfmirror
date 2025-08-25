@@ -45,6 +45,12 @@ namespace Expression
             /** \brief Dctor */
             ~Parser();
 
+            /** \brief Disable copy contructor */
+            Parser(const Parser&) = delete;
+
+            /** \brief Disable assignment operator */
+            Parser& operator =(Parser&) = delete;
+
             /** \brief Parsing the expression */
             bool Parse( const wxString& expression, Preprocessed& output );
 

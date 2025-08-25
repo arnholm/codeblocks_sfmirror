@@ -56,7 +56,7 @@ class TestCasesHelper: public T, public TestCasesBase
     public:
 
         /** \brief Run the tests */
-        virtual bool PerformTests()
+        virtual bool PerformTests() override
         {
             return RunTests();
         }
