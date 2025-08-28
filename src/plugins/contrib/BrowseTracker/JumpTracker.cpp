@@ -422,14 +422,20 @@ void JumpTracker::OnEditorActivated(CodeBlocksEvent& event)
 
     // Add any new editor to vector of editors bound to mouse events
     bool edFound = std::find(m_MouseBoundEditors.begin(),
-                        m_MouseBoundEditors.end(),
-                            pEd) != m_MouseBoundEditors.end();
+                             m_MouseBoundEditors.end(),
+                             pEd) != m_MouseBoundEditors.end();
     if (not edFound) {
         m_MouseBoundEditors.push_back(pEd);
         pControl->Bind(wxEVT_LEFT_DOWN, &JumpTracker::OnLeftDown, this);
         pControl->Bind(wxEVT_MOTION, &JumpTracker::OnMouseMove, this);
         pControl->Bind(wxEVT_LEFT_UP, &JumpTracker::OnLeftUp, this);
     }
+
+    // Add a jump entry for newly activated editor
+    long edPosn = pControl->GetCurrentPos(); // (ph 25/08/16)
+    wxString edFilename = pEd->GetFilename();
+    JumpDataAdd(edFilename, edPosn, pControl->GetCurrentLine());
+
 }
 // ----------------------------------------------------------------------------
 void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
@@ -771,7 +777,7 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
     if (m_leftDown and (not m_isDragging)) // (ph 25/04/26)
         m_leftDown = false;
     // Dont record position if line number is < 1 since a newly loaded
-    // file always reports an event for line 0
+    //  file always reports an event for line 0
      if (inLineNum < 1)       // user requested feature 2010/06/1
         return;
 
@@ -899,9 +905,8 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
     int lastViewedIndex = GetJumpTrackerViewIndex();
     // If not wrapping && we're about to backup into the insert index, return
     if (not m_bWrapJumpEntries)
-        //if (not (lastViewedIndex >= 0)) // (ph 25/05/07)
-        if (lastViewedIndex <= 0)// (ph 25/05/07)
-            return;
+        if (knt and (lastViewedIndex == 0))
+            lastViewedIndex = 1; //just cause a jump to index 0 again // (ph 25/08/16)
 
     EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
     EditorBase* pEdBase = pEdMgr->GetActiveEditor();
