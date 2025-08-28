@@ -3769,7 +3769,11 @@ void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
             // Tell LSP server to quit
             pClient->LSP_Shutdown();
             GetParseManager()->m_LSP_Clients.erase(pProject); // erase first or crash
-            delete pClient;
+            // On reparsing, avoid crash due to deleted eventhandler being used to delete itself. //Christo patch 1552
+            // Note: do not set debug breakpoint in next 4 lines or you'll get "Unusual termination of LSP" message.
+            pClient->SetEvtHandlerEnabled(false); //christo patch 1552
+            wxTheApp->CallAfter([pClient]()
+                                { delete pClient; });
             pClient = nullptr;
 
             // The clangd process is probably already terminated by LSP_Shutdown above.

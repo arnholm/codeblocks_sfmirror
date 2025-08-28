@@ -741,8 +741,14 @@ wxString ClangLocator::GetCompilerExecByProject(cbProject* pProject)    // (ph 2
         {
             // get compiler being used by this target
             Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
-            wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
-            wxString compilerID = pCompiler ? pCompiler->GetID() : "";
+            // When compiler mentioned in cbp file is not available, print an error message and avoid nullptr dereferencing.
+            if (!pCompiler)    //Christo patch 1551
+            {
+                CCLogger::Get()->LogError(wxString::Format(_("Could not get compiler for '%s', select compiler in project's build options"), pTarget->GetCompilerID()));
+                return wxString();
+            }
+            wxString masterPath = pCompiler->GetMasterPath();
+            wxString compilerID = pCompiler->GetID();
             CompilerPrograms compilerPrograms;
             compilerPrograms = pCompiler->GetPrograms() ;
             wxString exeCmd = masterPath + "\\bin\\" + compilerPrograms.CPP;
