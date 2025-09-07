@@ -5694,5 +5694,3 @@ void MainFrame::SafeAuiUpdate()
 #endif
     m_LayoutManager.Update();                // safe in every other case
 }
-
-

@@ -22,7 +22,7 @@ BEGIN_EVENT_TABLE(GenericMultiLineNotesDlg, wxScrollingDialog)
 END_EVENT_TABLE()
 
 GenericMultiLineNotesDlg::GenericMultiLineNotesDlg(wxWindow* parent, const wxString& caption, const wxString& notes, bool readOnly)
-    : wxScrollingDialog(),  
+    : wxScrollingDialog(),
       m_Notes(notes),
       m_ReadOnly(readOnly)
 {

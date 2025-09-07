@@ -302,7 +302,7 @@ CCManager::CCManager() :
     {
         const int idx = menuBar->FindMenu(_("&Edit"));
         wxMenu* edMenu = (idx != wxNOT_FOUND) ? menuBar->GetMenu(idx) : nullptr;
-        if (edMenu) 
+        if (edMenu)
         {
             const wxMenuItemList& itemsList = edMenu->GetMenuItems();
             size_t insertPos = itemsList.GetCount();   //// ERROR HERE
@@ -317,9 +317,8 @@ CCManager::CCManager() :
             // insert after Edit->Complete code
             edMenu->Insert(insertPos,     idShowTooltip,     _("Show tooltip\tShift-Alt-Space"));
             edMenu->Insert(insertPos + 1, idCallTipNext,     _("Next call tip"));
-            edMenu->Insert(insertPos + 2, idCallTipPrevious, _("Previous call tip"));                        
+            edMenu->Insert(insertPos + 2, idCallTipPrevious, _("Previous call tip"));
         }
-        
     }
 
     mainFrame->Connect(idShowTooltip,     wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CCManager::OnMenuSelect), nullptr, this);

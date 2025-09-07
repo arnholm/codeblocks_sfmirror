@@ -58,23 +58,24 @@ public:
     ~ParseManager();
 
     /** return a reference to the current active Parser object */
-    ParserBase& GetParser() { 
+    ParserBase& GetParser()
+    {
         static ParserBase s_dummy; // cheap, stack-allocated stub
-        return m_Parser ? *m_Parser : s_dummy;        
+        return m_Parser ? *m_Parser : s_dummy;
     }
     inline ParserBase* GetParserPtr() const { return m_Parser; }
-    
-    /** Convenience test that replaces the fragile pattern  
+
+    /** Convenience test that replaces the fragile pattern
      *  `if (pm.GetParserPtr() && pm.GetParserPtr()->Done()) {  }`
      *
      *  @return  **true**  when a parser exists **and** its worker thread has
-     *                     completed (`ParserBase::Done() == true`);  
+     *                     completed (`ParserBase::Done() == true`);
      *           **false** otherwise.
      */
     inline bool ParserIsDone() const { return m_Parser && m_Parser->Done(); }
 
     inline bool HasParser() const { return m_Parser ? true : false; }
-        
+
     /** return the Parser pointer corresponding to the input C::B project
      * @param project input C::B project pointer
      * @return a pointer to Parser object
