@@ -15,11 +15,12 @@ elif [ ! -f ./revision.m4 ]; then
 	echo "m4_define([SVN_DATE], )" >> ./revision.m4;
 fi
 
-# create m4 directory or we break older systems like RedHat/CentOS 5
+# Create m4 directory or we break older systems like RedHat/CentOS 5
 mkdir -p m4
 
 # Deal with some gentoo-specific issues
-WANT_AUTOMAKE='1.11 1.9 1.8 1.7' #latest of these is chosen or default if none hits
+# see also here: https://sourceforge.net/p/codeblocks/tickets/1550/
+WANT_AUTOMAKE='1.13 1.11 1.9 1.8 1.7' # latest of these is chosen or default if none hits
 export WANT_AUTOMAKE
 WANT_AUTOCONF='2.5'
 export WANT_AUTOCONF
@@ -38,8 +39,8 @@ test -z "$LIBTOOLIZE" && for LIBTOOLIZE in glibtoolize libtoolize; do
   ($LIBTOOLIZE --version) < /dev/null > /dev/null 2>&1 && break
 done
 
-## Using prereq in autoconf rather than here, mostly for the debian systems at
-## this point
+# Using prereq in autoconf rather than here,
+# mostly for the debian systems at this point
 if test -n "`$AUTOCONF --version 2>&1|head -n 1|egrep '1\.[0-9]+|2\.[0-4]+'`"; then
 	echo "Autoconf 2.50 or above is required. Aborting build...";
 	exit 1;
@@ -59,11 +60,11 @@ if test -n "`$LIBTOOL --version 2>&1|head -n 1|cut -f 4 -d ' '|egrep '1\.[0-3](\
 	exit 1;
 fi
 
-# clean up files which cause confusion when switch versions of auto*
+# Clean up files which cause confusion when switch versions of auto*
 rm -rf autom4te.cache
 
-# Make the build more robust if a Makefile.am is removed from the file system, but it is not removed
-# from the configure.ac file.
+# Make the build more robust if a Makefile.am is removed from the file system,
+# but it is not removed from the configure.ac file.
 find . | grep -v wxSmithSTC/stc| grep Makefile.in$ | xargs rm -vf
 
 rm -vf debian/control
