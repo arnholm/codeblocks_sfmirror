@@ -310,6 +310,7 @@ class MainFrame : public wxFrame
         void RegisterEvents();
         void SetupGUILogging(int uiSize16);
         void SetupDebuggerUI();
+        void SafeAuiUpdate();
 
         void RegisterScriptFunctions();
         void RunStartupScripts();

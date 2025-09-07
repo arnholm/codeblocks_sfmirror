@@ -1894,7 +1894,7 @@ void MainFrame::LoadViewLayout(const wxString& name, bool isTemp)
         }
     }
 
-    m_LayoutManager.Update();
+    SafeAuiUpdate();
 
     // If we load a layout we have to check if the window is on a valid display
     // and has valid size. This can happen if a user moves a layout file from a
@@ -2094,7 +2094,7 @@ void MainFrame::DoFixToolbarsLayout()
 
     // This is needed in order to auto shrink the toolbars to fit the icons
     // with as little space as possible.
-    m_LayoutManager.Update();
+    SafeAuiUpdate();
 
     for (size_t i=0; i<panes.GetCount(); ++i)
     {
@@ -2108,7 +2108,7 @@ void MainFrame::DoFixToolbarsLayout()
 
     // If we don't do this toolbars would be empty during initial startup or after
     // View -> Perspective -> Save current.
-    m_LayoutManager.Update();
+    SafeAuiUpdate();
 }
 
 void MainFrame::DoSelectLayout(const wxString& name)
@@ -5672,3 +5672,27 @@ bool MainFrame::IsLogPaneVisible()
 {
     return m_LayoutManager.GetPane(m_pInfoPane).IsShown();
 }
+
+/** Call wxAuiManager::Update() only when safe on Cocoa.
+ *
+ *  On macOS, Update() aborts if *any* pane is floating because
+ *  wxAuiFloatingFrame::SetPaneWindow() tries to wxWindow::Reparent()
+ *  a top-level window.  We therefore skip the call in that case.
+ *
+ *  On all other platforms we call Update() unconditionally.
+ */
+void MainFrame::SafeAuiUpdate()
+{
+#ifdef __WXOSX__
+    const wxAuiPaneInfoArray& panes = m_LayoutManager.GetAllPanes();
+    for (size_t i = 0, cnt = panes.GetCount(); i < cnt; ++i)
+    {
+        const wxAuiPaneInfo& p = panes.Item(i);
+        if (p.IsFloating() && p.IsToolbar()) // only floating *toolbars* crash
+            return;                          // skip update
+    }
+#endif
+    m_LayoutManager.Update();                // safe in every other case
+}
+
+
