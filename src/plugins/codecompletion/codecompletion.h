@@ -130,7 +130,7 @@ public:
      * the performance, if it is true, we try to update the cache by calculating the dirs and
      * storing the value in the static wxArrayString variable.
      */
-    wxArrayString& GetSystemIncludeDirs(cbProject* project, bool force);
+    wxArrayString GetSystemIncludeDirs(cbProject* project, bool force);
 
     /** search target file names (mostly relative names) under basePath, then return the absolute dirs
      * the result is "added" to parameter dirs (not replacement of any existing dirs)

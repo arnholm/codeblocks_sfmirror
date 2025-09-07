@@ -301,21 +301,25 @@ CCManager::CCManager() :
     if (menuBar)
     {
         const int idx = menuBar->FindMenu(_("&Edit"));
-        wxMenu* edMenu = menuBar->GetMenu((idx == wxNOT_FOUND) ? 0 : idx);
-        const wxMenuItemList& itemsList = edMenu->GetMenuItems();
-        size_t insertPos = itemsList.GetCount();
-        for (size_t i = 0; i < insertPos; ++i)
+        wxMenu* edMenu = (idx != wxNOT_FOUND) ? menuBar->GetMenu(idx) : nullptr;
+        if (edMenu) 
         {
-            if (itemsList[i]->GetItemLabel() == _("Complete code"))
+            const wxMenuItemList& itemsList = edMenu->GetMenuItems();
+            size_t insertPos = itemsList.GetCount();   //// ERROR HERE
+            for (size_t i = 0; i < insertPos; ++i)
             {
-                insertPos = i + 1;
-                break;
+                if (itemsList[i]->GetItemLabel() == _("Complete code"))
+                {
+                    insertPos = i + 1;
+                    break;
+                }
             }
+            // insert after Edit->Complete code
+            edMenu->Insert(insertPos,     idShowTooltip,     _("Show tooltip\tShift-Alt-Space"));
+            edMenu->Insert(insertPos + 1, idCallTipNext,     _("Next call tip"));
+            edMenu->Insert(insertPos + 2, idCallTipPrevious, _("Previous call tip"));                        
         }
-        // insert after Edit->Complete code
-        edMenu->Insert(insertPos,     idShowTooltip,     _("Show tooltip\tShift-Alt-Space"));
-        edMenu->Insert(insertPos + 1, idCallTipNext,     _("Next call tip"));
-        edMenu->Insert(insertPos + 2, idCallTipPrevious, _("Previous call tip"));
+        
     }
 
     mainFrame->Connect(idShowTooltip,     wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CCManager::OnMenuSelect), nullptr, this);
