@@ -126,6 +126,18 @@
            line="2">
         <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([0-9]+):[0-9]+:[[:blank:]](.*)]]>
     </RegEx>
+    <RegEx name="Compiler error (3 - gfortran no column)"
+           type="error"
+           msg="3"
+           file="1"
+           line="2">
+        <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):([[:digit:]]+):[[:blank:]]*(.*[Ee]rror.*)]]>
+    </RegEx>    
+    <RegEx name="Compiler error (4)"
+           type="error"
+           msg="1">
+        <![CDATA[[[:blank:]]*(error:[[:blank:]].*unrecognized.*)]]>
+    </RegEx>    
     <RegEx name="Compiler error"
            type="error"
            msg="3"
@@ -214,4 +226,12 @@
            file="1">
         <![CDATA[([][{}()[:blank:]#%$~[:alnum:]!&_:+/\\\.-]+):[[:blank:]]+(duplicate section.*has different size)]]>
     </RegEx>
+    
+    <!-- Generic error: leave it *last* so it doesn't mask more specific rules -->
+    <RegEx name="Generic Error"
+           type="error"
+           msg="1">
+        <![CDATA[[[:blank:]]*(Error:.*)]]>
+    </RegEx>    
+    
 </CodeBlocks_compiler_options>

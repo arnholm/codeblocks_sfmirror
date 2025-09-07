@@ -34,6 +34,7 @@ CompilerMINGW::CompilerMINGW(const wxString& name, const wxString& ID)
 {
     m_Weight = 4;
     Reset();
+    m_MultiLineMessages = true; // keep header for following lines
 }
 
 CompilerMINGW::~CompilerMINGW()
