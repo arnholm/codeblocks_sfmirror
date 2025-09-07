@@ -15,6 +15,8 @@
     #include <wx/xrc/xmlres.h>
 #endif
 
+#include <wx/log.h>
+
 #include "genericmultilinenotesdlg.h"
 
 BEGIN_EVENT_TABLE(GenericMultiLineNotesDlg, wxScrollingDialog)
