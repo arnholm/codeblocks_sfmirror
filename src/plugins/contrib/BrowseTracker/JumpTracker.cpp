@@ -848,17 +848,21 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
         }
     }
 
-    // make room for a new jump
-    int kount = m_ArrayOfJumpData.GetCount();
-    if (kount  >= maxJumpEntries )
+    // Make room for a new jump
+    while (m_ArrayOfJumpData.GetCount() >= maxJumpEntries)
     {
-        // Remove the top entry;
+        // Remove the oldest entry (index 0 is guaranteed to exist here)
         m_ArrayOfJumpData.RemoveAt(0);
-        if (m_ArrayCursor) --m_ArrayCursor;
-        if (m_ArrayCursor < 0 )
-            m_ArrayCursor = m_ArrayOfJumpData.GetCount()-1;
-        SetJumpTrackerViewIndex(m_ArrayCursor); // (ph 25/04/26)
+
+        if (m_ArrayCursor > 0)
+            --m_ArrayCursor;
     }
+
+    // Normalise the cursor and sync the view
+    if (m_ArrayCursor < 0)
+        m_ArrayCursor = m_ArrayOfJumpData.GetCount() - 1;
+
+    SetJumpTrackerViewIndex(m_ArrayCursor); // (ph 25/04/26)
 
     #if defined(LOGGING)
     LOGIT( _T("JT JumpDataAdd[%s][%ld][%d]"), filename.c_str(), posn, m_insertNext);
