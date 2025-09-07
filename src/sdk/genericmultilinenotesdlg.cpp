@@ -22,14 +22,22 @@ BEGIN_EVENT_TABLE(GenericMultiLineNotesDlg, wxScrollingDialog)
 END_EVENT_TABLE()
 
 GenericMultiLineNotesDlg::GenericMultiLineNotesDlg(wxWindow* parent, const wxString& caption, const wxString& notes, bool readOnly)
-    : m_Notes(notes),
-    m_ReadOnly(readOnly)
+    : wxScrollingDialog(),  
+      m_Notes(notes),
+      m_ReadOnly(readOnly)
 {
-    //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgGenericMultiLineNotes"),_T("wxScrollingDialog"));
+    // Create and populate from XRC
+    if (!wxXmlResource::Get()->LoadDialog(this, parent, _T("dlgGenericMultiLineNotes")))
+    {
+        wxLogError("Missing XRC resource: dlgGenericMultiLineNotes");
+        return; // fail gracefully
+    }
+
     SetTitle(caption);
 
-    wxTextCtrl *notesCtrl = XRCCTRL(*this, "txtNotes", wxTextCtrl);
+    // Children now exist - lookup succeeds on all platforms
+    wxTextCtrl* notesCtrl = XRCCTRL(*this, "txtNotes", wxTextCtrl);
+    wxCHECK_RET(notesCtrl, "XRC: txtNotes not found");
 
     notesCtrl->SetValue(m_Notes);
     if (m_ReadOnly)
