@@ -1375,20 +1375,28 @@ int CompilerGCC::DoRunQueue()
 
     wxString oldLibPath; // keep old PATH/LD_LIBRARY_PATH contents
     wxGetEnv(CB_LIBRARY_ENVVAR, &oldLibPath);
+    wxString oldPath;    // keep old PATH environment
+    wxGetEnv("PATH", &oldPath);
 
     bool pipe = true;
     int flags = wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER;
     if (cmd->isRun)
     {
-        pipe = false; // no need to pipe output channels...
+        pipe   = false; // no need to pipe output channels...
         flags |= wxEXEC_SHOW_CONSOLE;
-        dir = m_CdRun;
+        dir    = m_CdRun;
 
         // setup dynamic linker path
         wxString newLibPath = cbGetDynamicLinkerPathForTarget(m_pProject, cmd->target);
         newLibPath = cbMergeLibPaths(oldLibPath, newLibPath);
         wxSetEnv(CB_LIBRARY_ENVVAR, newLibPath);
         LogMessage(wxString(_("Set variable: ")) + CB_LIBRARY_ENVVAR wxT("=") + newLibPath, cltInfo);
+
+        // setup PATH environment
+        wxString newPath = cbGetCompilerPathForTarget(m_pProject, cmd->target);
+        newPath = cbMergeLibPaths(oldPath, newPath);
+        wxSetEnv("PATH", newPath);
+        LogMessage(wxString(_("Set variable: PATH=") + newPath, cltInfo);
     }
 
     // log message here, so the logging for run executable commands is done after the log message
@@ -1445,8 +1453,10 @@ int CompilerGCC::DoRunQueue()
     else
         m_timerIdleWakeUp.Start(100);
 
-    // restore dynamic linker path
+    // restore old dynamic linker path
     wxSetEnv(CB_LIBRARY_ENVVAR, oldLibPath);
+    // restore old PATH environment
+    wxSetEnv("PATH", oldPath);
 
     delete cmd;
     return DoRunQueue();

@@ -2021,7 +2021,7 @@ ProjectGlob cbProject::SearchGlob(const wxString& id) const
     return ProjectGlob();   // invalid glob
 }
 
-wxString cbGetDynamicLinkerPathForTarget(cbProject *project, ProjectBuildTarget* target)
+wxString cbGetDynamicLinkerPathForTarget(cbProject* project, ProjectBuildTarget* target)
 {
     if (!target)
         return wxEmptyString;
@@ -2030,6 +2030,9 @@ wxString cbGetDynamicLinkerPathForTarget(cbProject *project, ProjectBuildTarget*
     if (compiler)
     {
         CompilerCommandGenerator* generator = compiler->GetCommandGenerator(project);
+        if (!generator)
+              return wxEmptyString;
+
         wxString libPath;
         const wxString libPathSep = platform::windows ? _T(";") : _T(":");
         libPath << _T(".") << libPathSep;
@@ -2039,6 +2042,35 @@ wxString cbGetDynamicLinkerPathForTarget(cbProject *project, ProjectBuildTarget*
 
         delete generator;
         return libPath;
+    }
+    return wxEmptyString;
+}
+
+wxString cbGetCompilerBinPathForTarget(cbProject* project, ProjectBuildTarget* target)
+{
+    if (!target)
+        return wxEmptyString;
+
+    Compiler* compiler = CompilerFactory::GetCompiler(target->GetCompilerID());
+    if (compiler)
+    {
+        CompilerCommandGenerator* generator = compiler->GetCommandGenerator(project);
+        if (!generator)
+              return wxEmptyString;
+
+        wxString masterPath = compiler->GetMasterPath();
+        Manager::Get()->GetMacrosManager()->ReplaceMacros(masterPath);
+
+        const wxString pathSep     = wxFileName::GetPathSeparator(); // "\" or "/"
+        const wxString compilerApp = compiler->GetPrograms().C;
+        wxString       compilerPath(wxEmptyString);
+        if ( wxFileExists(masterPath + pathSep + wxT("bin") + pathSep + compilerApp) )
+            compilerPath = masterPath + pathSep + wxT("bin");
+        else if ( wxFileExists(masterPath + pathSep + compilerApp) )
+            compilerPath = masterPath;
+
+        delete generator;
+        return compilerPath;
     }
     return wxEmptyString;
 }

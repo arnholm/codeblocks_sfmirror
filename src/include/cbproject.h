@@ -962,7 +962,9 @@ class DLLIMPORT cbProject : public CompileTargetBase
 };
 
 /// Returns a string valid to be used as LD_LIBRARY_PATH (or equivalent).
-DLLIMPORT wxString cbGetDynamicLinkerPathForTarget(cbProject *project, ProjectBuildTarget* target);
+DLLIMPORT wxString cbGetDynamicLinkerPathForTarget(cbProject* project, ProjectBuildTarget* target);
+/// Returns a string valid to be used for the PATH environment.
+DLLIMPORT wxString cbGetCompilerBinPathForTarget(cbProject* project, ProjectBuildTarget* target);
 /// Merges to LD_LIBRARY_PATH/PATH strings together to form a new valid string.
 DLLIMPORT wxString cbMergeLibPaths(const wxString &oldPath, const wxString &newPath);
 
