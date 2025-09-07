@@ -1393,10 +1393,10 @@ int CompilerGCC::DoRunQueue()
         LogMessage(wxString(_("Set variable: ")) + CB_LIBRARY_ENVVAR wxT("=") + newLibPath, cltInfo);
 
         // setup PATH environment
-        wxString newPath = cbGetCompilerPathForTarget(m_pProject, cmd->target);
+        wxString newPath = cbGetCompilerBinPathForTarget(m_pProject, cmd->target);
         newPath = cbMergeLibPaths(oldPath, newPath);
         wxSetEnv("PATH", newPath);
-        LogMessage(wxString(_("Set variable: PATH=") + newPath, cltInfo);
+        LogMessage(wxString(_("Set variable: PATH=")) + newPath, cltInfo);
     }
 
     // log message here, so the logging for run executable commands is done after the log message
