@@ -849,7 +849,7 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
     }
 
     // Make room for a new jump
-    while (m_ArrayOfJumpData.GetCount() >= maxJumpEntries)
+    while (m_ArrayOfJumpData.GetCount() >= (size_t)maxJumpEntries)
     {
         // Remove the oldest entry (index 0 is guaranteed to exist here)
         m_ArrayOfJumpData.RemoveAt(0);
