@@ -116,11 +116,13 @@ class JumpTracker : public cbPlugin
 
         void OnUpdateUI(wxUpdateUIEvent& event);
         void OnAppStartupDone(CodeBlocksEvent& event);
+        void OnEditorModifiedEvent(CodeBlocksEvent& event);
 
 
         // Menu events
         void OnMenuJumpBack(wxCommandEvent &event);
         void OnMenuJumpNext(wxCommandEvent &event);
+        void OnMenuJumpLastModified(wxCommandEvent &event);
         void OnMenuJumpClear(wxCommandEvent &event);
         void OnMenuJumpDump(wxCommandEvent &event);
 
@@ -181,6 +183,7 @@ class JumpTracker : public cbPlugin
 
         ArrayOfJumpData m_ArrayOfJumpData;
         std::unique_ptr<JumpTrackerView> m_pJumpTrackerView = nullptr;
+        std::unique_ptr<JumpData> m_pLastModified;
 
         // ------------------------------------------
         void SetJumpTrackerViewIndex(int arrayIdx)

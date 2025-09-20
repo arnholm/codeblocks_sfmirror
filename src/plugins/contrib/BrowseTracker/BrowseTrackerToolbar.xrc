@@ -11,6 +11,11 @@
       <longhelp>Jump forward</longhelp>
       <bitmap>images/22x22/next.png</bitmap>
     </object>
+    <object class="tool" name="idJumpLastModified">
+      <tooltip>Last modified</tooltip>
+      <longhelp>Last modified</longhelp>
+      <bitmap>images/22x22/last_modified.png</bitmap>
+    </object>
     <object class="separator"/>
     <object class="tool" name="idMarkToggle">
       <tooltip>Toggle bookmark</tooltip>

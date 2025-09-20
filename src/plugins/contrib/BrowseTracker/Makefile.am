@@ -48,6 +48,7 @@ resources_forZIP = \
 	images/16x16/next.png \
 	images/16x16/prev.png \
 	images/16x16/signpost.png \
+	images/16x16/last_modified.png \
 	images/20x20/mark_clear.png \
 	images/20x20/mark_next.png \
 	images/20x20/mark.png \
@@ -55,6 +56,7 @@ resources_forZIP = \
 	images/20x20/next.png \
 	images/20x20/prev.png \
 	images/20x20/signpost.png \
+	images/20x20/last_modified.png \
 	images/24x24/mark_clear.png \
 	images/24x24/mark_next.png \
 	images/24x24/mark.png \
@@ -62,6 +64,7 @@ resources_forZIP = \
 	images/24x24/next.png \
 	images/24x24/prev.png \
 	images/24x24/signpost.png \
+	images/24x24/last_modified.png\
 	images/28x28/mark_clear.png \
 	images/28x28/mark_next.png \
 	images/28x28/mark.png \
@@ -69,6 +72,7 @@ resources_forZIP = \
 	images/28x28/next.png \
 	images/28x28/prev.png \
 	images/28x28/signpost.png \
+	images/28x28/last_modified.png \
 	images/32x32/mark_clear.png \
 	images/32x32/mark_next.png \
 	images/32x32/mark.png \
@@ -76,6 +80,7 @@ resources_forZIP = \
 	images/32x32/next.png \
 	images/32x32/prev.png \
 	images/32x32/signpost.png \
+	images/32x32/last_modified.png \
 	images/40x40/mark_clear.png \
 	images/40x40/mark_next.png \
 	images/40x40/mark.png \
@@ -83,6 +88,7 @@ resources_forZIP = \
 	images/40x40/next.png \
 	images/40x40/prev.png \
 	images/40x40/signpost.png \
+	images/40x40/last_modified.png \
 	images/48x48/mark_clear.png \
 	images/48x48/mark_next.png \
 	images/48x48/mark.png \
@@ -90,6 +96,7 @@ resources_forZIP = \
 	images/48x48/next.png \
 	images/48x48/prev.png \
 	images/48x48/signpost.png \
+	images/48x48/last_modified.png \
 	images/56x56/mark_clear.png \
 	images/56x56/mark_next.png \
 	images/56x56/mark.png \
@@ -97,6 +104,7 @@ resources_forZIP = \
 	images/56x56/next.png \
 	images/56x56/prev.png \
 	images/56x56/signpost.png \
+	images/56x56/last_modified.png \
 	images/64x64/mark_clear.png \
 	images/64x64/mark_next.png \
 	images/64x64/mark.png \
@@ -104,13 +112,15 @@ resources_forZIP = \
 	images/64x64/next.png \
 	images/64x64/prev.png \
 	images/64x64/signpost.png \
+	images/64x64/last_modified.png \
 	images/svg/mark_clear.svg \
 	images/svg/mark_next.svg \
 	images/svg/mark.svg \
 	images/svg/mark_prev.svg \
 	images/svg/next.svg \
 	images/svg/prev.svg \
-	images/svg/signpost.svg
+	images/svg/signpost.svg \
+	images/svg/last_modified.svg
 
 EXTRA_DIST = \
 	$(srcdir)/*.cbp \

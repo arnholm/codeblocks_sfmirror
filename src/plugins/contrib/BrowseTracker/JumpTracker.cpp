@@ -39,6 +39,7 @@ namespace
 
     int idToolJumpPrev = XRCID("idJumpPrev");
     int idToolJumpNext = XRCID("idJumpNext");
+    int idToolJumpLastModified = XRCID("idJumpLastModified");
 }
 
 // ----------------------------------------------------------------------------
@@ -128,6 +129,7 @@ void JumpTracker::OnAttach()
 
     appWin->Connect(idToolJumpPrev, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpBack), 0, this);
     appWin->Connect(idToolJumpNext, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpNext), 0, this);
+    appWin->Connect(idToolJumpLastModified, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpLastModified), 0, this);
     appWin->Connect(idToolJumpPrev, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(JumpTracker::OnUpdateUI), 0, this);
     appWin->Connect(idToolJumpNext, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(JumpTracker::OnUpdateUI), 0, this);
 
@@ -184,6 +186,7 @@ void JumpTracker::OnRelease(bool appShutDown)
 
     appWin->Disconnect(idToolJumpPrev, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpBack), 0, this);
     appWin->Disconnect(idToolJumpNext, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpNext), 0, this);
+    appWin->Disconnect(idToolJumpLastModified, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(JumpTracker::OnMenuJumpLastModified), 0, this);
     appWin->Disconnect(idToolJumpPrev, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(JumpTracker::OnUpdateUI), 0, this);
     appWin->Disconnect(idToolJumpNext, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(JumpTracker::OnUpdateUI), 0, this);
     // Disconnect from MainMenu/View/JumpTracker checkbox item
@@ -757,6 +760,7 @@ void JumpTracker::OnUpdateUI(wxUpdateUIEvent& event)
 
     m_pToolBar->EnableTool( idToolJumpNext, enableNext);
     m_pToolBar->EnableTool( idToolJumpPrev, enablePrev);
+    m_pToolBar->EnableTool( idToolJumpLastModified, m_pLastModified? true : false);
 
     event.Skip();
 }
@@ -894,6 +898,65 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
 
     return;
 }
+
+// ----------------------------------------------------------------------------
+void JumpTracker::OnEditorModifiedEvent(CodeBlocksEvent& event)
+// ----------------------------------------------------------------------------
+{
+    // This function is called from OnEditorEventHook() in BrowseTracker.cpp
+    // modified for "last modified location" by christo:
+    // https://forums.codeblocks.org/index.php/topic,26125.msg177746.html#msg177746
+
+    EditorBase* pEdBase = event.GetEditor();
+    if (pEdBase)
+    {
+        EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
+        cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(pEdBase);
+        if (pcbEd)
+        {
+            long edLine = pcbEd->GetControl()->GetCurrentLine();
+            long edPosn = pcbEd->GetControl()->GetCurrentPos();
+            wxString edFilename = pcbEd->GetFilename();
+            //m_pLastModified = std::make_unique<JumpData>(pcbEd->GetFilename(), edPosn, edLine);
+            m_pLastModified = std::unique_ptr<JumpData>(new JumpData(pcbEd->GetFilename(), edPosn, edLine));
+        }
+    }
+    event.Skip();
+}
+
+// ----------------------------------------------------------------------------
+void JumpTracker::OnMenuJumpLastModified(wxCommandEvent& /*event*/)
+// ----------------------------------------------------------------------------
+{
+    if (m_pLastModified)
+    {
+        JumpData& jumpData = *m_pLastModified.get();
+        wxString edFilename = jumpData.GetFilename();
+
+        EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
+        EditorBase* pEdBase = pEdMgr->GetEditor(edFilename);
+        if (not pEdBase)
+        {
+            fprintf(stderr, "%s: JumpTracker::%d : pEdBase null\n", __FUNCTION__, __LINE__);
+            return;
+        }
+
+        if (pEdBase != pEdMgr->GetActiveEditor())
+            pEdMgr->SetActiveEditor(pEdBase);
+
+        cbEditor* pcbEd = pEdMgr->GetBuiltinEditor(pEdBase);
+        if (not pcbEd)
+        {
+            fprintf(stderr, "%s: JumpTracker::%d : pcbEd null\n", __FUNCTION__, __LINE__);
+            return;
+        }
+        long edPosn = jumpData.GetPosition();
+        long edLine = jumpData.GetLineNo();
+        pcbEd->GotoLine(edLine);
+        pcbEd->GetControl()->GotoPos(edPosn);
+    }
+}
+
 // ----------------------------------------------------------------------------
 void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
 // ----------------------------------------------------------------------------

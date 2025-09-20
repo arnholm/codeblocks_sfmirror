@@ -2675,6 +2675,10 @@ void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& eve
 
     cbStyledTextCtrl* control = pcbEditor->GetControl();
     if( m_bProjectIsLoading) return;
+
+    if (event.GetEventType() != wxEVT_SCI_MODIFIED)
+        return;
+
     // Record action in line only once
     if (control->GetCurrentLine() == m_EditorHookCurrentLine)
         return;
@@ -2693,9 +2697,9 @@ void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& eve
         changed |= (event.GetEventType() == wxEVT_SCI_CHARADDED);
 
         int linesAdded = event.GetLinesAdded();
-        // **Debugging** lines addes never occurs.
-        if (linesAdded)
-            Manager::Get()->GetLogManager()->DebugLog(wxString::Format("EditorHook Lines Added linesAdded:%d", linesAdded));
+        // **Debugging**
+        //    if (linesAdded)
+        //        Manager::Get()->GetLogManager()->DebugLog(wxString::Format("EditorHook Lines Added linesAdded:%d", linesAdded));
 
         if (changed or linesAdded)
         {
@@ -2715,6 +2719,14 @@ void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& eve
             } else {
                 // Mutex is already locked, handle accordingly
                 m_EditorHookCurrentLine = -1; //try again next later.
+            }
+
+            // Tell JumpTracker that this editor has been modified // (ph 25/09/17)
+            if (m_pJumpTracker.get())
+            {
+                CodeBlocksEvent evt(cbEVT_EDITOR_MODIFIED);
+                evt.SetEditor(pcbEditor);
+                m_pJumpTracker->OnEditorModifiedEvent(evt);
             }
 
         }//endif changed
