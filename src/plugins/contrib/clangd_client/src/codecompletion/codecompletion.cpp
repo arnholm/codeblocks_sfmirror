@@ -3654,7 +3654,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     if ( isImpl or isDecl)
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        return pParser->OnLSP_DeclDefResponse(event); //default processing
+        if (pParser)
+            return pParser->OnLSP_DeclDefResponse(event); //default processing
     }
 
     // ----------------------------------------------------
@@ -3663,7 +3664,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     if (evtString.StartsWith("textDocument/references") )
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_ReferencesResponse(event);
+        if (pParser)
+            pParser->OnLSP_ReferencesResponse(event);
         return;
     }
     // ----------------------------------------------------------------------------
@@ -3672,7 +3674,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if (evtString.StartsWith("textDocument/documentSymbol") )
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_RequestedSymbolsResponse(event);
+        if (pParser)
+            pParser->OnLSP_RequestedSymbolsResponse(event);
 
     }//end textDocument/documentSymbol
     // ----------------------------------------------------------------------------
@@ -3682,7 +3685,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     {
         // There might be two for each file: an empty one for DidClose() and a good one for DidOpen()
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_DiagnosticsResponse(event);
+        if (pParser)
+            pParser->OnLSP_DiagnosticsResponse(event);
 
     }//endiftextDocument/publishDiagnostics
     // ----------------------------------------------------------------------------
@@ -3691,7 +3695,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/completion"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_CompletionResponse(event, m_CompletionTokens);
+        if (pParser)            // Christo patch 1554
+            pParser->OnLSP_CompletionResponse(event, m_CompletionTokens);
     }
     // ----------------------------------------------------------------------------
     // Hover event
@@ -3699,7 +3704,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/hover"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_HoverResponse(event, m_HoverTokens, m_HoverLastPosition);
+        if (pParser)
+            pParser->OnLSP_HoverResponse(event, m_HoverTokens, m_HoverLastPosition);
     }
     // ----------------------------------------------------------------------------
     // SignatureHelp event
@@ -3707,7 +3713,8 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/signatureHelp"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_SignatureHelpResponse(event, m_SignatureTokens, m_HoverLastPosition);
+        if (pParser)
+            pParser->OnLSP_SignatureHelpResponse(event, m_SignatureTokens, m_HoverLastPosition);
     }
     // ----------------------------------------------------------------------------
     // "textDocument/rename" event
@@ -3715,17 +3722,20 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/rename"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_RenameResponse(event);
+        if (pParser)
+            pParser->OnLSP_RenameResponse(event);
     }
     else if (evtString.StartsWith("textDocument/semanticTokens") )
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_RequestedSemanticTokensResponse(event);
+        if (pParser)
+            pParser->OnLSP_RequestedSemanticTokensResponse(event);
     }
     else if (evtString.StartsWith("textDocument/rangeFormatting")) // (christo 25/05/02)
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        pParser->OnLSP_RangeFormattingResponse(event);
+        if (pParser)
+            pParser->OnLSP_RangeFormattingResponse(event);
     }
 }
 // ----------------------------------------------------------------------------
