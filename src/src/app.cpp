@@ -324,11 +324,42 @@ class Splash
 class cbMessageOutputNull : public wxMessageOutput
 {
 public:
-
-    virtual void Output(const wxString &str) override;
+    virtual void Output(cb_unused const wxString &str) override {}
 };
 
-void cbMessageOutputNull::Output(cb_unused const wxString &str){}
+class cbMessageOutputDialog : public wxMessageOutput
+{
+public:
+    cbMessageOutputDialog(const wxString &title, const wxSize &minsize = wxDefaultSize) : m_title(title), m_minsize(minsize) {}
+    virtual void Output(const wxString& str) override
+    {
+        wxDialog *dlg = new wxDialog(nullptr, wxID_ANY, m_title);
+        wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+        wxTextCtrl* textctrl = new wxTextCtrl(dlg, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
+        if (m_minsize != wxDefaultSize)
+            textctrl->SetMinSize(m_minsize);
+
+        textctrl->SetFont(wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Courier", wxFONTENCODING_DEFAULT));
+        textctrl->SetValue(str);
+        sizer->Add(textctrl, 1, wxALL|wxEXPAND, 5);
+        wxStdDialogButtonSizer* butsizer = new wxStdDialogButtonSizer();
+        wxButton* button = new wxButton(dlg, wxID_OK, wxEmptyString);
+        butsizer->AddButton(button);
+        butsizer->Realize();
+        button->SetDefault();
+        button->SetFocus();
+        sizer->Add(butsizer, 0, wxALL|wxEXPAND, 5);
+        dlg->SetSizerAndFit(sizer);
+        dlg->Center();
+        dlg->ShowModal();
+        dlg->Destroy();
+    }
+
+protected:
+    wxString m_title;
+    wxSize m_minsize;
+};
+
 } // namespace
 
 IMPLEMENT_APP(CodeBlocksApp) // TODO: This gives a "redundant declaration" warning, though I think it's false. Dig through macro and check.
@@ -651,7 +682,7 @@ bool CodeBlocksApp::OnInit()
         delete wxMessageOutput::Set(new cbMessageOutputNull); // No output. (suppress warnings about unknown options from plugins)
         if (ParseCmdLine(nullptr) == -1) // only abort if '--help' was passed in the command line
         {
-            delete wxMessageOutput::Set(new wxMessageOutputMessageBox);
+            delete wxMessageOutput::Set(new cbMessageOutputDialog(_("Command line parameters"), wxSize(1000, 360)));
             parser.Usage();
             return false;
         }
