@@ -1182,7 +1182,7 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
 
 #if wxUSE_CMDLINE_PARSER
     wxCmdLineParser& parser = *Manager::GetCmdLineParser();
-    if ( CmdLineString.IsEmpty() )
+    if (CmdLineString.empty())
         parser.SetCmdLine(argc, argv);
     else
         parser.SetCmdLine(CmdLineString);
@@ -1190,125 +1190,121 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
 
     // don't display errors as plugins will have the chance to parse the command-line
     // too, so we don't know here what exactly are the supported options
-    int res = parser.Parse(false);
-    if (res == -1)
-    {
+    if (parser.Parse(false) == -1)
         return -1;
+
+    if (handlerFrame)
+    {
+        m_HasProject = false;
+        m_HasWorkSpace = false;
+
+        Manager::Get()->GetUserVariableManager()->ParseCommandLine(parser);
+
+        const size_t count = parser.GetParamCount();
+
+        parser.Found(_T("file"), &m_AutoFile);
+
+        if (!m_AutoFile.empty() && !CWD.empty())
+        {
+            wxFileName file(m_AutoFile);
+            if (file.IsRelative())
+            {
+                // Use the CurrentWorkingDirectory of the client instance to restore the
+                // absolute path to the file.
+                file.MakeAbsolute(CWD);
+                m_AutoFile = file.GetFullPath();
+            }
+        }
+
+        filesInCmdLine = (count != 0) || (!m_AutoFile.empty());
+
+        for (size_t param = 0; param < count; ++param)
+        {
+            const wxString &strParam = parser.GetParam(param);
+            wxFileName fn(strParam);
+            // Really important so that two same files with different names are not loaded
+            // twice. Use the CurrentWorkingDirectory of the client instance to restore the
+            // absolute path to the file.
+            fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, CWD);
+            const wxString &paramFullPath = fn.GetFullPath();
+
+            // Is it a project/workspace?
+            const FileType ft = FileTypeOf(strParam);
+            if (ft == ftCodeBlocksProject)
+            {
+                m_HasProject = true;
+                m_DelayedFilesToOpen.Add(paramFullPath);
+            }
+            else if (ft == ftCodeBlocksWorkspace)
+            {
+                // only one workspace can be opened
+                m_HasWorkSpace = true;
+                m_DelayedFilesToOpen.Clear(); // remove all other files
+                m_DelayedFilesToOpen.Add(paramFullPath); // and add only the workspace
+                break; // and stop processing any more files
+            }
+            //else if (ft == ftSource || ft == ftHeader || ft == ftResource)
+            else if (wxFile::Exists(paramFullPath)) //also try to open non source, header and resource files
+            {
+                m_DelayedFilesToOpen.Add(paramFullPath);
+            }
+        }
+
+        // batch jobs
+        m_Batch = m_HasProject || m_HasWorkSpace;
+        m_Batch = m_Batch && (m_Build || m_ReBuild || m_Clean);
     }
     else
     {
-        if (handlerFrame)
-        {
-            m_HasProject = false;
-            m_HasWorkSpace = false;
-
-            Manager::Get()->GetUserVariableManager()->ParseCommandLine(parser);
-
-            int count = parser.GetParamCount();
-
-            parser.Found(_T("file"), &m_AutoFile);
-
-            if (!m_AutoFile.empty() && !CWD.empty())
-            {
-                wxFileName file(m_AutoFile);
-                if (file.IsRelative())
-                {
-                    // Use the CurrentWorkingDirectory of the client instance to restore the
-                    // absolute path to the file.
-                    file.MakeAbsolute(CWD);
-                    m_AutoFile = file.GetFullPath();
-                }
-            }
-
-            filesInCmdLine = (count != 0) || (!m_AutoFile.empty());
-
-            for (int param = 0; param < count; ++param)
-            {
-                const wxString &strParam = parser.GetParam(param);
-                wxFileName fn(strParam);
-                // Really important so that two same files with different names are not loaded
-                // twice. Use the CurrentWorkingDirectory of the client instance to restore the
-                // absolute path to the file.
-                fn.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT, CWD);
-                const wxString &paramFullPath = fn.GetFullPath();
-
-                // Is it a project/workspace?
-                const FileType ft = FileTypeOf(strParam);
-                if (ft == ftCodeBlocksProject)
-                {
-                    m_HasProject = true;
-                    m_DelayedFilesToOpen.Add(paramFullPath);
-                }
-                else if (ft == ftCodeBlocksWorkspace)
-                {
-                    // only one workspace can be opened
-                    m_HasWorkSpace = true;
-                    m_DelayedFilesToOpen.Clear(); // remove all other files
-                    m_DelayedFilesToOpen.Add(paramFullPath); // and add only the workspace
-                    break; // and stop processing any more files
-                }
-                //else if (ft == ftSource || ft == ftHeader || ft == ftResource)
-                else if (wxFile::Exists(paramFullPath)) //also try to open non source, header and resource files
-                {
-                    m_DelayedFilesToOpen.Add(paramFullPath);
-                }
-            }
-
-            // batch jobs
-            m_Batch = m_HasProject || m_HasWorkSpace;
-            m_Batch = m_Batch && (m_Build || m_ReBuild || m_Clean);
-        }
-        else
-        {
-            wxString val;
-            parser.Found(_T("prefix"), &m_Prefix);
-            parser.Found(_T("user-data-dir"), &m_UserDataDir);
+        wxString val;
+        parser.Found(_T("prefix"), &m_Prefix);
+        parser.Found(_T("user-data-dir"), &m_UserDataDir);
 #ifdef __WXMSW__
-            m_DDE = !parser.Found(_T("no-dde"));
-            m_Assocs = !parser.Found(_T("no-check-associations"));
+        m_DDE = !parser.Found(_T("no-dde"));
+        m_Assocs = !parser.Found(_T("no-check-associations"));
 #else
-            m_DDE = !parser.Found(_T("no-ipc"));
+        m_DDE = !parser.Found(_T("no-ipc"));
 #endif
-            m_SafeMode = parser.Found(_T("safe-mode"));
-            m_Splash = !parser.Found(_T("no-splash-screen"));
-            m_HasDebugLog = parser.Found(_T("debug-log"));
-            m_CrashHandler = !parser.Found(_T("no-crash-handler"));
+        m_SafeMode = parser.Found(_T("safe-mode"));
+        m_Splash = !parser.Found(_T("no-splash-screen"));
+        m_HasDebugLog = parser.Found(_T("debug-log"));
+        m_CrashHandler = !parser.Found(_T("no-crash-handler"));
 
-            wxLog::EnableLogging(parser.Found(_T("verbose")));
+        wxLog::EnableLogging(parser.Found(_T("verbose")));
 
-            if (   parser.Found(_T("personality"), &val)
-                || parser.Found(_T("profile"),     &val) )
-            {
-                SetupPersonality(val);
-            }
-
-            // batch jobs
-            m_BatchNotify          = parser.Found(_T("batch-build-notify"));
-            m_BatchWindowAutoClose = !parser.Found(_T("no-batch-window-close"));
-            m_Build                = parser.Found(_T("build"));
-            m_ReBuild              = parser.Found(_T("rebuild"));
-            m_Clean                = parser.Found(_T("clean"));
-            parser.Found(_T("target"), &m_BatchTarget);
-            parser.Found(_T("script"), &m_Script);
-            // initial setting for batch flag (will be reset when ParseCmdLine() is called again).
-            m_Batch = m_Build || m_ReBuild || m_Clean;
-
-
-            if (parser.Found(_T("no-log")) == false)
-                Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::app_log);
-            if (parser.Found(_T("log-to-file")))
-                Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks.log")), LogManager::app_log);
-            if (m_HasDebugLog)
-                Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::debug_log);
-            if (parser.Found(_T("debug-log-to-file")))
-                Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks-debug.log")), LogManager::debug_log);
+        if (   parser.Found(_T("personality"), &val)
+            || parser.Found(_T("profile"),     &val) )
+        {
+            SetupPersonality(val);
         }
 
-        // Always parse the debugger attach parameters.
-        parser.Found(_T("dbg-attach"), &m_DebuggerAttach);
-        parser.Found(_T("dbg-config"), &m_DebuggerConfig);
+        // batch jobs
+        m_BatchNotify          = parser.Found(_T("batch-build-notify"));
+        m_BatchWindowAutoClose = !parser.Found(_T("no-batch-window-close"));
+        m_Build                = parser.Found(_T("build"));
+        m_ReBuild              = parser.Found(_T("rebuild"));
+        m_Clean                = parser.Found(_T("clean"));
+        parser.Found(_T("target"), &m_BatchTarget);
+        parser.Found(_T("script"), &m_Script);
+        // initial setting for batch flag (will be reset when ParseCmdLine() is called again).
+        m_Batch = m_Build || m_ReBuild || m_Clean;
+
+
+        if (parser.Found(_T("no-log")) == false)
+            Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::app_log);
+        if (parser.Found(_T("log-to-file")))
+            Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks.log")), LogManager::app_log);
+        if (m_HasDebugLog)
+            Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::debug_log);
+        if (parser.Found(_T("debug-log-to-file")))
+            Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks-debug.log")), LogManager::debug_log);
     }
+
+    // Always parse the debugger attach parameters.
+    parser.Found(_T("dbg-attach"), &m_DebuggerAttach);
+    parser.Found(_T("dbg-config"), &m_DebuggerConfig);
 #endif // wxUSE_CMDLINE_PARSER
+
     return filesInCmdLine ? 1 : 0;
 }
 
