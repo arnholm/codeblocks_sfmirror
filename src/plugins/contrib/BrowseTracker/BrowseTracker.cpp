@@ -2670,16 +2670,30 @@ void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& eve
 
     event.Skip();
 
+    if (event.GetEventType() != wxEVT_SCI_MODIFIED) // (christo 25/10/01)
+        return;
+
+    if( m_bProjectIsLoading) return;
+
+    // Tell JumpTracker that this editor has been modified // (christo 25/10/01)
+    if (m_pJumpTracker.get())
+    {
+        int flags = event.GetModificationType();
+        constexpr unsigned int mask = wxSCI_MOD_INSERTTEXT | wxSCI_MOD_DELETETEXT | wxSCI_PERFORMED_UNDO | wxSCI_PERFORMED_REDO;
+        if ( flags & mask)
+        {
+            CodeBlocksEvent evt(cbEVT_EDITOR_MODIFIED);
+            evt.SetEditor(pcbEditor);
+            m_pJumpTracker->OnEditorModifiedEvent(evt);
+        }
+    }
+
     if (not IsBrowseMarksEnabled())
         return;
 
-    cbStyledTextCtrl* control = pcbEditor->GetControl();
-    if( m_bProjectIsLoading) return;
-
-    if (event.GetEventType() != wxEVT_SCI_MODIFIED)
-        return;
-
     // Record action in line only once
+    cbStyledTextCtrl* control = pcbEditor->GetControl();
+    // There is a control because this is a scintilla (control) event hook
     if (control->GetCurrentLine() == m_EditorHookCurrentLine)
         return;
 
@@ -2720,15 +2734,6 @@ void BrowseTracker::OnEditorEventHook(cbEditor* pcbEditor, wxScintillaEvent& eve
                 // Mutex is already locked, handle accordingly
                 m_EditorHookCurrentLine = -1; //try again next later.
             }
-
-            // Tell JumpTracker that this editor has been modified // (ph 25/09/17)
-            if (m_pJumpTracker.get())
-            {
-                CodeBlocksEvent evt(cbEVT_EDITOR_MODIFIED);
-                evt.SetEditor(pcbEditor);
-                m_pJumpTracker->OnEditorModifiedEvent(evt);
-            }
-
         }//endif changed
     }//endif wxEVT_SCI_MODIFIED
 

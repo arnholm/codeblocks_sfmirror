@@ -59,7 +59,7 @@ class AppVersion
 #include <wx/string.h>
 //versions
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.131 25/09/17")
+#define VERSION wxT("1.4.132 25/10/01")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -67,6 +67,9 @@ class AppVersion
 #endif // VERSION_H
 //versions
 // ----------------------------------------------------------------------------
+// 1.4.132  2025/10/01 Apply Christo Patch
+//          "jump to previous position does not work if bookmark tracking is disabled"
+//          https://forums.codeblocks.org/index.php/topic,26125.msg177805.html#msg177805
 // 1.4.131  2025/09/17 Apply Christo "Jump to last modified" patch
 // 1.4.130  2025/08/16 Add missing editor activations to jump tracker array
 // 1.4.129  2025/06/24 Include logmanager.h for non CB_PRECOMP compiles
