@@ -1375,8 +1375,6 @@ int CompilerGCC::DoRunQueue()
 
     wxString oldLibPath; // keep old PATH/LD_LIBRARY_PATH contents
     wxGetEnv(CB_LIBRARY_ENVVAR, &oldLibPath);
-    wxString oldPath;    // keep old PATH environment
-    wxGetEnv("PATH", &oldPath);
 
     bool pipe = true;
     int flags = wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER;
@@ -1389,14 +1387,18 @@ int CompilerGCC::DoRunQueue()
         // setup dynamic linker path
         wxString newLibPath = cbGetDynamicLinkerPathForTarget(m_pProject, cmd->target);
         newLibPath = cbMergeLibPaths(oldLibPath, newLibPath);
+
+        // Under Windows OS, the CB_LIBRARY_ENVVAR is defined as "PATH", see the prep.h.
+        // So, the newLibPath already contains the "library search path" + "old PATH".
+        // We have to "prepend" the below compiler bin path "newCompilerBinPath" to the system "PATH",
+        // otherwise, the previous PATH setting is lost!
+# if defined(__WXMSW__)
+        wxString newCompilerBinPath = cbGetCompilerBinPathForTarget(m_pProject, cmd->target);
+        newLibPath = cbMergeLibPaths(newLibPath, newCompilerBinPath);
+#endif
+
         wxSetEnv(CB_LIBRARY_ENVVAR, newLibPath);
         LogMessage(wxString(_("Set variable: ")) + CB_LIBRARY_ENVVAR wxT("=") + newLibPath, cltInfo);
-
-        // setup PATH environment
-        wxString newPath = cbGetCompilerBinPathForTarget(m_pProject, cmd->target);
-        newPath = cbMergeLibPaths(oldPath, newPath);
-        wxSetEnv("PATH", newPath);
-        LogMessage(wxString(_("Set variable: PATH=")) + newPath, cltInfo);
     }
 
     // log message here, so the logging for run executable commands is done after the log message
@@ -1455,8 +1457,6 @@ int CompilerGCC::DoRunQueue()
 
     // restore old dynamic linker path
     wxSetEnv(CB_LIBRARY_ENVVAR, oldLibPath);
-    // restore old PATH environment
-    wxSetEnv("PATH", oldPath);
 
     delete cmd;
     return DoRunQueue();
