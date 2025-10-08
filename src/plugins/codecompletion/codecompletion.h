@@ -335,6 +335,32 @@ private:
     /** delayed running of editor activated event, only the last activated editor should be considered */
     void OnEditorActivatedTimer(wxTimerEvent& event);
 
+#ifdef __WXMAC__
+    // Safe timer wrapper for macOS to prevent crashes from stale timer events
+    // On macOS, CFRunLoop can fire timer callbacks after Stop() has been called,
+    // leading to crashes when the event handler has been disconnected.
+    // This class adds a validity check before calling the base wxTimer::Notify()
+    class wxSafeTimer : public wxTimer
+    {
+        CodeCompletion* m_Parent;
+    public:
+        wxSafeTimer(CodeCompletion* parent, int id) : wxTimer(parent, id), m_Parent(parent) {}
+        void Notify() override
+        {
+            // Only proceed if parent is still valid and initialized
+            if (m_Parent && m_Parent->IsAttached() && m_Parent->m_InitDone)
+            {
+                // Call the original wxTimer behavior (dispatches event to owner)
+                wxTimer::Notify();
+            }
+        }
+    };
+
+    typedef wxSafeTimer CCTimer;
+#else
+    typedef wxTimer CCTimer;
+#endif
+
     /** Indicates CC's initialization is done */
     bool                    m_InitDone;
 
@@ -353,13 +379,13 @@ private:
     int                     m_EditorHookId;
 
     /** timer triggered by editor hook function to delay the real-time parse */
-    wxTimer                 m_TimerRealtimeParsing;
+    ccTimer                 m_TimerRealtimeParsing;
 
     /** timer for toolbar
      *  we only show an updated item in CC's toolbar's item list when caret position is stable for
      *  a period of time.
      */
-    wxTimer                 m_TimerToolbar;
+    ccTimer                 m_TimerToolbar;
 
     /* FIXME (ollydbg#1#03/20/15): This timer is added by rev 6510, but I don't know what is the
      * exact reason to delay the reparsing by a timer
@@ -370,17 +396,17 @@ private:
      */
 
     /** delay after project saved event */
-    wxTimer                 m_TimerProjectSaved;
+    ccTimer                 m_TimerProjectSaved;
 
     /** delay after receive a project save/modified event */
-    wxTimer                 m_TimerReparsing;
+    ccTimer                 m_TimerReparsing;
 
     /** delay after receive editor activated event
      *  the reason we need a timer is that we want to get a stable editor activate information
      *  thus we will only handle the last editor activated editor
      *  The timer will be restart when an editor activated event happens.
      */
-    wxTimer                 m_TimerEditorActivated;
+    ccTimer                 m_TimerEditorActivated;
 
     /** the last valid editor
      *  it is saved in editor activated event handler, and will be verified in editor activated timer
