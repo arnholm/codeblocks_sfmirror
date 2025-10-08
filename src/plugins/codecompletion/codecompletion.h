@@ -379,13 +379,13 @@ private:
     int                     m_EditorHookId;
 
     /** timer triggered by editor hook function to delay the real-time parse */
-    ccTimer                 m_TimerRealtimeParsing;
+    CCTimer                 m_TimerRealtimeParsing;
 
     /** timer for toolbar
      *  we only show an updated item in CC's toolbar's item list when caret position is stable for
      *  a period of time.
      */
-    ccTimer                 m_TimerToolbar;
+    CCTimer                 m_TimerToolbar;
 
     /* FIXME (ollydbg#1#03/20/15): This timer is added by rev 6510, but I don't know what is the
      * exact reason to delay the reparsing by a timer
@@ -396,17 +396,17 @@ private:
      */
 
     /** delay after project saved event */
-    ccTimer                 m_TimerProjectSaved;
+    CCTimer                 m_TimerProjectSaved;
 
     /** delay after receive a project save/modified event */
-    ccTimer                 m_TimerReparsing;
+    CCTimer                 m_TimerReparsing;
 
     /** delay after receive editor activated event
      *  the reason we need a timer is that we want to get a stable editor activate information
      *  thus we will only handle the last editor activated editor
      *  The timer will be restart when an editor activated event happens.
      */
-    ccTimer                 m_TimerEditorActivated;
+    CCTimer                 m_TimerEditorActivated;
 
     /** the last valid editor
      *  it is saved in editor activated event handler, and will be verified in editor activated timer
