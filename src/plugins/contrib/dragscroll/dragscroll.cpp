@@ -1647,6 +1647,8 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
 //       wxMenu* popupMenu = pThisWindow->GetPopupMenu();
 
 
+    m_didScroll = false;    // (ph 25/10/09)
+
     LOGIT("\n%s entered %p", __FUNCTION__, event.GetEventObject());
     if (m_ignoreThisEvent)
         { m_ignoreThisEvent--; return; }
@@ -1709,8 +1711,6 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
         // not a scintilla editor
         //LOGIT("OnMouseRightDown: window is NOT wxStyledTextCtrl");
     }
-////    if (platform::windows) // Windows needs the skip(), Linux does not. //(ph 2024/07/22)
-////        event.Skip();
     return;
 
 }//end OnMouseRightDown
@@ -1877,6 +1877,8 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
 // ----------------------------------------------------------------------------
 {
     //LOGIT("%s entered", __FUNCTION__);
+
+    m_didScroll = false;    // (ph 25/10/09)
 
     if (not m_isScrollKeyValid)
     {
