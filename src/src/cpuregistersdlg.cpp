@@ -27,8 +27,12 @@ CPURegistersDlg::CPURegistersDlg(wxWindow* parent) :
     SetSizer(sizer);
     Layout();
 
-    wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    m_pList->SetFont(font);
+    // Use the same font as editor's
+    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
+    wxNativeFontInfo fontInfo;
+    fontInfo.FromString(fontstring);
+    wxFont font(fontInfo);
+    m_pList->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
 
     Clear();
 }

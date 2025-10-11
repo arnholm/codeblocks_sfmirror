@@ -38,8 +38,12 @@ ExamineMemoryDlg::ExamineMemoryDlg(wxWindow* parent) :
         return;
     m_pText = XRCCTRL(*this, "txtDump", wxTextCtrl);
 
-    wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    m_pText->SetFont(font);
+    // Use the same font as editor's
+    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
+    wxNativeFontInfo fontInfo;
+    fontInfo.FromString(fontstring);
+    wxFont font(fontInfo);
+    m_pText->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
 
     ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
     int bytes = c->ReadInt(wxT("/common/examine_memory/size_to_show"), 32);

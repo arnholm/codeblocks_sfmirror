@@ -403,6 +403,13 @@ WatchesDlg::WatchesDlg() :
     SetAutoLayout(TRUE);
     SetSizer(bs);
 
+    // Use the same font as editor's
+    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
+    wxNativeFontInfo fontInfo;
+    fontInfo.FromString(fontstring);
+    wxFont font(fontInfo);
+    m_grid->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
+
     if (!watchesPropertyEditor)
         watchesPropertyEditor = wxPropertyGrid::RegisterEditorClass(new cbTextCtrlAndButtonTooltipEditor, true);
 
@@ -1337,10 +1344,12 @@ ValueTooltip::ValueTooltip(const cb::shared_ptr<cbWatch> &watch, wxWindow *paren
     m_grid->SetExtraStyle(extraStyles);
     m_grid->SetDropTarget(new WatchesDropTarget);
 
+    // Use the same font as editor's
+    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
     wxNativeFontInfo fontInfo;
-    fontInfo.FromString(cbDebuggerCommonConfig::GetValueTooltipFont());
+    fontInfo.FromString(fontstring);
     wxFont font(fontInfo);
-    m_grid->SetFont(font);
+    m_grid->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
 
     m_grid->SetColumnCount(3);
 
