@@ -62,11 +62,7 @@ BacktraceDlg::BacktraceDlg(wxWindow* parent) :
     SetAutoLayout(true);
     SetSizer(bs);
 
-    // Use the same font as editor's
-    const wxString fontstring(Manager::Get()->GetConfigManager("editor")->Read("/font", wxEmptyString));
-    wxNativeFontInfo fontInfo;
-    fontInfo.FromString(fontstring);
-    wxFont font(fontInfo);
+    wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     m_list->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
 
     m_list->InsertColumn(0, _("Nr"), wxLIST_FORMAT_RIGHT);
