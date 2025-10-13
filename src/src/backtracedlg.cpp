@@ -62,8 +62,7 @@ BacktraceDlg::BacktraceDlg(wxWindow* parent) :
     SetAutoLayout(true);
     SetSizer(bs);
 
-    wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    m_list->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
+    m_list->SetFont(m_list->GetFont().Scaled(cbGetContentScaleFactor(*this)));
 
     m_list->InsertColumn(0, _("Nr"), wxLIST_FORMAT_RIGHT);
     m_list->InsertColumn(1, _("Address"), wxLIST_FORMAT_LEFT);
