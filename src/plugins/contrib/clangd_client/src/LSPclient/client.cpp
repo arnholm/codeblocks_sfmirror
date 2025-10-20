@@ -752,7 +752,8 @@ ProcessLanguageClient::~ProcessLanguageClient()
                 wxString dirName = fnProjectFilename.GetPath();
                 if (wxDirExists(dirName + fileSep + ".cache"))
                     wxDir::Remove(dirName + fileSep + ".cache", wxPATH_RMDIR_RECURSIVE);
-                if (wxFileExists(dirName + fileSep + "compile_commands.json"))
+                const bool isMakefileCustom = (m_pCBProject && m_pCBProject->IsMakefileCustom()); // christo patch 1559
+                if ((not isMakefileCustom) and (wxFileExists(dirName + fileSep + "compile_commands.json")))
                     wxRemoveFile(dirName + fileSep + "compile_commands.json");
             }
         }//endfor
@@ -3860,7 +3861,6 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
 
     // Remove the older entry if any
     size_t found = 0, changed = 0;
-    const bool isMakefileCustom = pProject->IsMakefileCustom(); //Christo patch 1430
 
     for (int ii=0; ii<ccjEntryknt; ++ii)
     {
@@ -3890,26 +3890,23 @@ bool ProcessLanguageClient::AddFileToCompileDBJson(cbProject* pProject, ProjectB
             if (not found)
             {
                 found++; // update first entry only
-                if (not isMakefileCustom) // Christo patch 1430
+                const std::string& ccjCommand = ccjEntry["command"]; // Christo patch 1430
+                try
                 {
-                    const std::string& ccjCommand = ccjEntry["command"]; // Christo patch 1430
-                    try
+                    std::string newCompileCmd = newEntry["command"];   // christo patch 1559 (2 lines)
+                    if (ccjCommand != newCompileCmd)
                     {
-                         std::string newCompileCmd =  newEntry["command"];
-                         if (ccjCommand != newCompileCmd)
-                         {
-                             // stow new or changed compile command
-                             pJson->at(ii) = newEntry;
-                             changed++;
-                         }
+                        // stow new or changed compile command         // christo patch 1559 (3 lines)
+                        pJson->at(ii) = newEntry;
+                        changed++;
                     }
-                    catch (std::exception &err)
-                    {
-                        wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: '%s' for file: '%s'\n", err.what(), newFullFilePath) );
-                        errMsg += wxString::Format("ccjCommand: '%s'\n", ccjCommand);
-                        writeClientLog(GetstdUTF8Str(errMsg));
-                        cbMessageBox(errMsg);
-                    }
+                }
+                catch (std::exception& err)
+                {
+                    wxString errMsg(wxString::Format("\nAddFileToCompileDBJson() error: '%s' for file: '%s'\n", err.what(), newFullFilePath));
+                    errMsg += wxString::Format("ccjCommand: '%s'\n", ccjCommand);
+                    writeClientLog(GetstdUTF8Str(errMsg));
+                    cbMessageBox(errMsg);
                 }//end try
                 continue;
             }
@@ -4020,6 +4017,44 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
 
     ProjectFile* pProjectFile = pProject->GetFileByFilename(filename, false);
     if (not pProjectFile) return;
+
+    if (pProject->IsMakefileCustom())  // christo patch 1559 (whole block)
+    {
+        if (ParserCommon::FileType(pProjectFile->relativeFilename) == ParserCommon::ftHeader)
+        {
+            return;
+        }
+        for (unsigned int ii = 0; ii < jdb.size(); ++ii)
+        {
+            json ccjEntry;
+            try
+            {
+                ccjEntry = jdb.at(ii);
+            }
+            catch (std::exception& err)
+            {
+                wxString errMsg(wxString::Format("UpdateCompilationDatabase() error: '%s' for file '%s'\n", err.what(), filename));
+                writeClientLog(GetstdUTF8Str(errMsg));
+                cbMessageBox(errMsg);
+            }
+
+            const std::string& ccjFile = ccjEntry["file"];
+            if (ccjFile == GetstdUTF8Str(pProjectFile->file.GetFullPath()))
+            {
+                return;
+            }
+            else
+            {
+                wxFileName file = pProjectFile->file;
+                file.MakeRelativeTo(wxFileName::GetCwd());
+                if (ccjFile == GetstdUTF8Str(file.GetFullPath()))
+                {
+                    m_CompileCommandsFiles.emplace_back(std::move(filename));
+                    return;
+                }
+            }
+        }
+    }
 
     // create array of compiler built-in include files needed for for clang '-fsyntax-only'
     // The files arn't found by clang for some unknown reason to me.

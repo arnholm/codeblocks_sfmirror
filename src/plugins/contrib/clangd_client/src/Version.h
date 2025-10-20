@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.142 25/09/20")
+#define VERSION wxT("1.2.143 25/10/20")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.143   2025/10/20 Apply Christo patch #1559
 //1.2.142   2025/09/20 Apply Christo 1554 patch and guard like use of pParser. (Thanks Christo)
 //1.2.141   2025/05/27 Update CC_ENABLE_LOCKER_TRACK and CC_ENABLE_LOCKER_ASSERT macros
 //                     for std::timed_mutex usage.
