@@ -10,7 +10,7 @@ pluginlib_LTLIBRARIES = libNassiShneiderman.la
 
 libNassiShneiderman_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefined -avoid-version
 
-libNassiShneiderman_la_LIBADD = ../../../sdk/libcodeblocks.la $(WX_LIBS) $(BOOST_LDFLAGS) $(BOOST_SYSTEM_LIB)
+libNassiShneiderman_la_LIBADD = ../../../sdk/libcodeblocks.la $(WX_LIBS)
 
 libNassiShneiderman_la_SOURCES = bricks.cpp \
 		cbEditorPanel.cpp \
