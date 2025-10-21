@@ -58,9 +58,6 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 		</Compiler>
-		<Linker>
-			<Add library="boost_system" />
-		</Linker>
 		<Unit filename="CParser.cpp" />
 		<Unit filename="DataObject.cpp" />
 		<Unit filename="DataObject.h" />
