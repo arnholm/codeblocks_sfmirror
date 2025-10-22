@@ -1647,7 +1647,7 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
 //       wxMenu* popupMenu = pThisWindow->GetPopupMenu();
 
 
-    m_didScroll = false;    // (ph 25/10/09)
+    m_didScroll = false;    //initialize // (ph 25/10/09)
 
     LOGIT("\n%s entered %p", __FUNCTION__, event.GetEventObject());
     if (m_ignoreThisEvent)
@@ -1658,6 +1658,16 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
         { event.Skip(); return; }
 
     wxWindow* pWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
+
+    // initialize vars used in MouseUp event // (ph 25/10/20)
+    // use wxGetMousePosition() for consistency throught out the code.
+    // Mixing wxGetMousePosition and event.GetX/Y causes grief.
+    // Remember the original (current) mouse position for other events to use. // (ph 25/10/20)
+    wxPoint mousePos = pWindow->ScreenToClient(wxGetMousePosition());
+    m_firstMouseY = mousePos.y;
+    m_firstMouseX = mousePos.x;
+    m_lastMouseY  = m_firstMouseY;
+    m_lastMouseX  = m_firstMouseX;
 
     int chosenDragKey = pDSplugin->GetchosenDragKey();
     m_isScrollKeyValid = false;
@@ -1687,15 +1697,7 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
     // mark the current scroll key valid
     m_isScrollKeyValid = true;
 
-    m_didScroll =   false;
-    // use wxGetMousePosition() for consistency throught out the code.
-    // Mixing wxGetMousePosition and event.GetX/Y causes grief.
-    wxPoint mousePos = pWindow->ScreenToClient(wxGetMousePosition());
-    m_firstMouseY = mousePos.y;
-    m_firstMouseX = mousePos.x;
-    m_lastMouseY  = m_firstMouseY;
-    m_lastMouseX  = m_firstMouseX;
-
+    m_didScroll =   false; //initialize
     wxObject* pEvtObject = event.GetEventObject();
 
     // if StyledTextCtrl, remember for later scrolling

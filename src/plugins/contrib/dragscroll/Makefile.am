@@ -18,7 +18,7 @@ libdragscroll_la_SOURCES = dragscroll.cpp \
 
 noinst_HEADERS = dragscroll.h \
 			dragscrollcfg.h \
-			dragscrollevent.h
+			dragscrollevent.h \
 			linux_functions.h
 
 EXTRA_DIST = $(srcdir)/*.cbp \

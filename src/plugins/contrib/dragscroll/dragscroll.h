@@ -293,12 +293,13 @@ private:
     DECLARE_EVENT_TABLE()
 };
 //----------------------------------------
-#define VERSION "1.4.14 25/10/09"
+#define VERSION "1.4.15 25/10/20"
 //----------------------------------------
 //versions
 // ----------------------------------------------------------------------------
 //  Modification History
 // ----------------------------------------------------------------------------
+// 1/4/15   2025/10/20 Remember the original (current) mouse position for other events to use.
 // 1/4/14   2025/10/09 Fix using any middle mouse key combo disables context menu.
 // 1/4/13   2025/01/16 Remove tree ctrl scrolling from linux causing stalls.
 // 1/4/12   2024/09/6 Optimization of OnRightMouseUp() events.

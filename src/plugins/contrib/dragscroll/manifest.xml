@@ -3,7 +3,7 @@
     <SdkVersion major="1" minor="10" release="0" />
     <Plugin name="cbDragScroll">
         <Value title="DragScroll" />
-        <Value version="1.4.13 2025/05/16" />
+        <Value version="1.4.15 2025/10/20" />
         <Value description="Mouse Drag and Scroll with User Key Choices" />
         <Value author="Pecan" />
         <Value authorEmail=" " />
