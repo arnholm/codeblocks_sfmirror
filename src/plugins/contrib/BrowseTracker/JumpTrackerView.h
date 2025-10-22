@@ -53,9 +53,11 @@ class JumpTrackerView : public ListCtrlLogger, public wxEvtHandler
         void SetJumpTrackerViewIndex(int itemIndex)
         {
             int knt = m_pListCtrl->GetItemCount();
-            if ( (not knt)  //(ph 2025-05-11 )
-                or (itemIndex > knt) )
-                return; //setting index before adding the item
+            if ( (itemIndex < 0) or (knt < 0)) return;  // (Letartare 25/10/22)
+            if ( (not knt)
+                or (itemIndex >= knt) )                 // (christo 25/10/22)
+                return; //avoid assert bec. setting index before adding the item
+                        // https://forums.codeblocks.org/index.php?topic=26149.msg177897#msg177897
             m_pListCtrl->SetItemState(itemIndex, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
         }
 

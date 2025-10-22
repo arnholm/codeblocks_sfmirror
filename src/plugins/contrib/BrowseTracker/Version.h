@@ -59,7 +59,7 @@ class AppVersion
 #include <wx/string.h>
 //versions
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.132 25/10/01")
+#define VERSION wxT("1.4.133 25/10/22")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -67,6 +67,8 @@ class AppVersion
 #endif // VERSION_H
 //versions
 // ----------------------------------------------------------------------------
+// 1.4.133  2025/10/22 Apply Christo & Letartare fixes for assert in JumpTrackerView.h
+//                     https://forums.codeblocks.org/index.php?topic=26149.msg177897#msg177897
 // 1.4.132  2025/10/01 Apply Christo Patch
 //          "jump to previous position does not work if bookmark tracking is disabled"
 //          https://forums.codeblocks.org/index.php/topic,26125.msg177805.html#msg177805
