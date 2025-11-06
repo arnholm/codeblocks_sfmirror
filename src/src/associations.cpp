@@ -149,7 +149,8 @@ bool Associations::Check()
     const unsigned int assocCount = CountAssocs();
     for (unsigned int i = 0; i < assocCount; ++i)
         if (knownTypes[i].core)
-            result &= ::DoCheckAssociation(name, i);
+            if (!::DoCheckAssociation(name, i))
+                result = false;
 
     return result;
 }
