@@ -1180,7 +1180,7 @@ bool wxKeyBinder::Load(wxConfigBase *p, const wxString &key)
         }//if(str.
 
         // proceed with next entry (if it does exist)
-        cont &= p->GetNextEntry(str, idx);
+        cont = p->GetNextEntry(str, idx);
     }//while
 
     return (b && total > 0);
@@ -1249,7 +1249,7 @@ bool wxKeyBinder::LoadFromString(const wxString& cfgCmdString)
         }//if(str.
 
         // proceed with next entry (if it does exist)
-        //cont &= p->GetNextEntry(str, idx);
+        //cont = p->GetNextEntry(str, idx);
     }//for only once
 
     return (b && total > 0);
@@ -1323,12 +1323,12 @@ bool wxKeyProfileArray::Save(wxConfigBase *cfg, const wxString &key, bool bClean
 // ----------------------------------------------------------------------------
 {
     wxString basekey = (key.IsEmpty()) ? wxString(wxT("")) : wxString(key + wxT("/"));
-    bool b = TRUE;
+    bool b = true;
 
     cfg->SetPath(key);
 
     if (!cfg->Write(basekey + wxT("nSelProfile"), m_nSelected))
-        return FALSE;
+        return false;
 
     for (int i=0; i<GetCount(); i++)
     {
@@ -1336,8 +1336,8 @@ bool wxKeyProfileArray::Save(wxConfigBase *cfg, const wxString &key, bool bClean
         wxLogMessage(_("wxKeyProfileArray::Save profile[%d]"),i);
         #endif
         // save all our elements into a subkey of the given key
-        b &= Item(i)->Save(cfg, basekey + wxKEYPROFILE_CONFIG_PREFIX +
-                                    wxString::Format(wxT("%d"), i), bCleanOld);
+        if (!Item(i)->Save(cfg, basekey + wxKEYPROFILE_CONFIG_PREFIX + wxString::Format(wxT("%d"), i), bCleanOld))
+            b = false;
     }//for
 
     // if required, remove any previously stored key profile...
@@ -1372,7 +1372,7 @@ bool wxKeyProfileArray::Save(wxConfigBase *cfg, const wxString &key, bool bClean
             }
 
             // proceed with next one...
-            cont &= cfg->GetNextGroup(str, idx);
+            cont = cfg->GetNextGroup(str, idx);
         }
     }
 
@@ -1411,7 +1411,7 @@ bool wxKeyProfileArray::Load(wxConfigBase *p, const wxString &key)
         p->SetPath(key);
 
         // proceed with next entry (if it does exist)
-        cont &= p->GetNextGroup(str, idx);
+        cont = p->GetNextGroup(str, idx);
     }
 
     return TRUE;
@@ -2514,16 +2514,17 @@ void wxKeyConfigPanel::OnAddProfile(wxCommandEvent &)
     dlg.SetValue(sel->GetName());
     PlaceWindow(&dlg);
 
-    bool valid = FALSE;
+    bool valid = false;
     while (!valid) {
 
         if (dlg.ShowModal() == wxID_CANCEL)
             return;
 
         // if the name is the same of one of the existing profiles, we have to abort...
-        valid = TRUE;
+        valid = true;
         for (size_t j=0; j < m_pKeyProfiles->GetCount(); j++)
-            valid &= (GetProfile(j)->GetName() != dlg.GetValue());
+            if (GetProfile(j)->GetName() == dlg.GetValue())
+                valid = false;
 
         if (!valid) {
 
