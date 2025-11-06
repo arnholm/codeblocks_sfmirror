@@ -2825,8 +2825,6 @@ void MainFrame::OnFileNewWhat(wxCommandEvent& event)
 
 bool MainFrame::OnDropFiles(wxCoord /*x*/, wxCoord /*y*/, const wxArrayString& files)
 {
-    bool success = true; // Safe case initialisation
-
     // first check to see if a workspace is passed. If so, only this will be loaded
     wxString foundWorkspace;
     for (unsigned int i = 0; i < files.GetCount(); ++i)
@@ -2839,14 +2837,17 @@ bool MainFrame::OnDropFiles(wxCoord /*x*/, wxCoord /*y*/, const wxArrayString& f
         }
     }
 
+    bool success = true; // Safe case initialisation
     if (!foundWorkspace.empty())
-      success &= OpenGeneric(foundWorkspace);
+        success = OpenGeneric(foundWorkspace);
     else
     {
         wxBusyCursor useless;
         for (unsigned int i = 0; i < files.GetCount(); ++i)
-          success &= OpenGeneric(files[i]);
+            if (!OpenGeneric(files[i]))
+                success = false;
     }
+
     return success;
 }
 
