@@ -144,12 +144,13 @@ int ProjectOptionsManipulator::Execute()
 
 bool ProjectOptionsManipulator::OperateWorkspace(wxArrayString& result)
 {
-  ProjectsArray* pa = Manager::Get()->GetProjectManager()->GetProjects();
   bool success = true;
+  ProjectsArray* pa = Manager::Get()->GetProjectManager()->GetProjects();
   if (pa)
   {
-    for (size_t i=0; i<pa->GetCount(); ++i)
-      success &= OperateProject( pa->Item(i), result );
+      for (size_t i = 0; i < pa->GetCount(); ++i)
+          if (!OperateProject(pa->Item(i), result))
+            success = false;
   }
 
   return success;
@@ -159,10 +160,10 @@ bool ProjectOptionsManipulator::OperateWorkspace(wxArrayString& result)
 
 bool ProjectOptionsManipulator::OperateProject(size_t prj_idx, wxArrayString& result)
 {
-  ProjectsArray* pa = Manager::Get()->GetProjectManager()->GetProjects();
   bool success = true;
+  ProjectsArray* pa = Manager::Get()->GetProjectManager()->GetProjects();
   if (pa)
-    success &= OperateProject( pa->Item(prj_idx), result );
+      success = OperateProject(pa->Item(prj_idx), result);
 
   return success;
 }
