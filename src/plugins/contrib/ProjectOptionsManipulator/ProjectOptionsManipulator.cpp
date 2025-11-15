@@ -149,8 +149,10 @@ bool ProjectOptionsManipulator::OperateWorkspace(wxArrayString& result)
   if (pa)
   {
       for (size_t i = 0; i < pa->GetCount(); ++i)
+      {
           if (!OperateProject(pa->Item(i), result))
-            success = false;
+              success = false;
+      }
   }
 
   return success;

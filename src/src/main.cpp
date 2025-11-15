@@ -2844,8 +2844,10 @@ bool MainFrame::OnDropFiles(wxCoord /*x*/, wxCoord /*y*/, const wxArrayString& f
     {
         wxBusyCursor useless;
         for (unsigned int i = 0; i < files.GetCount(); ++i)
+        {
             if (!OpenGeneric(files[i]))
                 success = false;
+        }
     }
 
     return success;
