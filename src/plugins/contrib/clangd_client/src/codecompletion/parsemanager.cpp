@@ -656,7 +656,13 @@ wxArrayString ParseManager::GetAllPathsByFilename(const wxString& filename)
         cbProject* project = IsParserPerWorkspace() ? GetActiveEditorProject()
                                                     : GetProjectByParser(m_ActiveParser);
         // search in the project
-        if (project)
+
+        //-- if (project) // (christo 25/12/16) ticket 1576
+        // clangd_client_symbol_browser_hang_on_proxy_project_svn_13761.patch
+        // Symbol browser causes hang on taking symbol browser when active file out of project.
+        // It is due to project is proxy project which causes traverse in the home directory.
+        // Patch checks if the project is proxy project, if so do not do directory traverse.
+        if (project && (project != m_pProxyProject))
         {
             const wxString prjPath = project->GetCommonTopLevelPath();
             wxString priorityPath;

@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.143 25/10/20")
+#define VERSION wxT("1.2.144 25/12/16")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,11 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.144   2025/12/16 Apply Christo patch #1576
+//          clangd_client_symbol_browser_hang_on_proxy_project_svn_13761.patch
+//          Symbol browser causes hang on taking symbol browser when active file out of project.
+//          It is due to project is proxy project which causes traverse in the home directory.
+//          Patch checks if the project is proxy project, if so do not do directory traverse.
 //1.2.143   2025/10/20 Apply Christo patch #1559
 //1.2.142   2025/09/20 Apply Christo 1554 patch and guard like use of pParser. (Thanks Christo)
 //1.2.141   2025/05/27 Update CC_ENABLE_LOCKER_TRACK and CC_ENABLE_LOCKER_ASSERT macros
