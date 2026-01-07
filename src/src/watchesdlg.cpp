@@ -1297,24 +1297,30 @@ static void GridSetMinSize(wxPropertyGrid *grid, const wxPoint &position,
         {
             virtualWidth = size.x;
             size = sizeClipped;
+            // account for new height when adding scrollbar
+            //https://forums.codeblocks.org/index.php/topic,26150.msg178214.html#msg178214
+            size.y += wxSystemSettings::GetMetric(wxSYS_HSCROLL_Y, grid); // (Gemini-CLI 25/12/29)
+
         }
     }
 
     grid->SetMinSize(size);
 
     int proportions[3];
-    proportions[0] = wxRound((width[0]*100.0)/fullSize.x);
-    proportions[1] = wxRound((width[1]*100.0)/fullSize.x);
-    proportions[2]= std::max(100 - proportions[0] - proportions[1], 0);
+    //avoid wx assert when any ColumnProportion would become less than 1%
+    // Note that all widths have been set to a minimum of 10 (above)
+    proportions[0] = wxRound((width[0]*99.0)/fullSize.x);
+    proportions[1] = wxRound((width[1]*99.0)/fullSize.x);
+    proportions[2]= std::max(1, 100 - proportions[0] - proportions[1]);
     grid->SetColumnProportion(0, proportions[0]);
     grid->SetColumnProportion(1, proportions[1]);
     grid->SetColumnProportion(2, proportions[2]);
+
     grid->ResetColumnSizes(true);
 
     // This enables the horizontal scroll. Unfortunately the last column is still placed on the left
     // so manual resizing of the value column is required if the sum of the max-widths of the
-    // columns makes the window to be too big and so it doesn't fit on the screen, so we've shrunk
-    // it.
+    // columns makes the window so big that it doesn't fit on the screen, so we've shrunk it.
     grid->SetVirtualWidth(virtualWidth);
 }
 
