@@ -484,14 +484,10 @@ void IncrementalSearch::DoFocusToolbar()
         Manager::Get()->ProcessEvent(evt);
     }
 
-#ifdef __WXMAC__
-    // on macOS only set focus if we really lost it, to avoid native select all,
+    // only set focus if we really lost it, to avoid native select all,
     // or it will reset the text selection
     if (!m_pTextCtrl->HasFocus())
         m_pTextCtrl->SetFocus();
-#else
-    m_pTextCtrl->SetFocus();
-#endif
 }
 
 void IncrementalSearch::OnToggleHighlight(wxCommandEvent& /*event*/)
