@@ -1333,6 +1333,14 @@
 													<border>8</border>
 												</object>
 												<object class="sizeritem">
+													<object class="wxCheckBox" name="chkSilenceCompilerLog">
+														<label>Silence compiler messages</label>
+														<tooltip>Do not show any compiler messags while compiling (shold be used temporarily only!)</tooltip>
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+													<border>8</border>
+												</object>
+												<object class="sizeritem">
 													<object class="wxStaticLine" name="ID_STATICLINE8" />
 													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 													<border>8</border>
@@ -1378,6 +1386,7 @@
 																		</object>
 																	</object>
 																	<flag>wxEXPAND</flag>
+																	<border>8</border>
 																</object>
 															</object>
 															<flag>wxALL|wxEXPAND</flag>

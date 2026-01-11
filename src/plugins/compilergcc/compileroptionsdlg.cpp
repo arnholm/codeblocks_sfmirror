@@ -164,6 +164,7 @@ BEGIN_EVENT_TABLE(CompilerOptionsDlg, wxPanel)
     EVT_CHOICE(                XRCID("chLinkerExe"),                    CompilerOptionsDlg::OnDirty)
     EVT_CHECKBOX(              XRCID("chkAlwaysRunPost"),               CompilerOptionsDlg::OnDirty)
     EVT_CHECKBOX(              XRCID("chkNonPlatComp"),                 CompilerOptionsDlg::OnDirty)
+    EVT_CHECKBOX(              XRCID("chkSilenceCompilerLog"),            CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtCompilerOptions"),             CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtResourceCompilerOptions"),     CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtCompilerDefines"),             CompilerOptionsDlg::OnDirty)
@@ -648,15 +649,15 @@ void CompilerOptionsDlg::DoFillOthers()
 
     wxListBox* lst = XRCCTRL(*this, "lstIgnore", wxListBox);
     if (lst)
-    {
-        wxArrayString IgnoreOutput;
-        IgnoreOutput = cfg->ReadArrayString("/ignore_output");
-        ArrayString2ListBox(IgnoreOutput, lst);
-    }
+        ArrayString2ListBox(cfg->ReadArrayString("/ignore_output"), lst);
 
     chk = XRCCTRL(*this, "chkNonPlatComp", wxCheckBox);
     if (chk)
         chk->SetValue(cfg->ReadBool("/non_plat_comp", false));
+
+    chk = XRCCTRL(*this, "chkSilenceCompilerLog", wxCheckBox);
+    if (chk)
+        chk->SetValue(cfg->ReadBool("/silence_compiler_log", false));
 } // DoFillOthers
 
 void CompilerOptionsDlg::DoFillTree()
@@ -2590,28 +2591,28 @@ void CompilerOptionsDlg::OnClearExtraPathClick(cb_unused wxCommandEvent& event)
 
 void CompilerOptionsDlg::OnIgnoreAddClick(cb_unused wxCommandEvent& event)
 {
-    wxListBox*  list = XRCCTRL(*this, "lstIgnore", wxListBox);
-    wxTextCtrl* text = XRCCTRL(*this, "txtIgnore", wxTextCtrl);
+    wxListBox*  lst = XRCCTRL(*this, "lstIgnore", wxListBox);
+    wxTextCtrl* txt = XRCCTRL(*this, "txtIgnore", wxTextCtrl);
 
-    wxString ignore_str = text->GetValue().Trim();
+    wxString ignore_str = txt->GetValue().Trim();
     if (   (ignore_str.Len()>0)
-        && (list->FindString(ignore_str)==wxNOT_FOUND) )
+        && (lst->FindString(ignore_str)==wxNOT_FOUND) )
     {
-        list->Append(ignore_str);
+        lst->Append(ignore_str);
         m_bDirty = true;
     }
 } // OnIgnoreAddClick
 
 void CompilerOptionsDlg::OnIgnoreRemoveClick(cb_unused wxCommandEvent& event)
 {
-    wxListBox* list = XRCCTRL(*this, "lstIgnore", wxListBox);
-    if (!list || list->IsEmpty())
+    wxListBox* lst = XRCCTRL(*this, "lstIgnore", wxListBox);
+    if (!lst || lst->IsEmpty())
         return;
 
-    int selection = list->GetSelection();
+    int selection = lst->GetSelection();
     if (selection!=wxNOT_FOUND)
     {
-        list->Delete(selection);
+        lst->Delete(selection);
         m_bDirty = true;
     }
 } // OnIgnoreRemoveClick
@@ -3011,6 +3012,10 @@ void CompilerOptionsDlg::OnApply()
                 m_Compiler->LoadOptions();
             }
         }
+
+        chk = XRCCTRL(*this, "chkSilenceCompilerLog", wxCheckBox);
+        if (chk)
+            cfg->Write("/silence_compiler_log", (bool)chk->IsChecked());
     }
 
     m_Compiler->SaveOptions();

@@ -301,6 +301,7 @@ class CompilerGCC : public cbCompilerPlugin
         CompilerErrors      m_Errors;
         wxString            m_LastTargetName;
         bool                m_NotifiedMaxErrors;
+        bool                m_NotifiedSilenceCompilerLog;
         wxLongLong          m_StartTime;
         bool                m_StartedEventSent;
 

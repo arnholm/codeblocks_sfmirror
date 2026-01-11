@@ -301,6 +301,7 @@ CompilerGCC::CompilerGCC() :
     m_RunAfterCompile(false),
     m_LastExitCode(0),
     m_NotifiedMaxErrors(false),
+    m_NotifiedSilenceCompilerLog(false),
     m_pBuildingProject(nullptr),
     m_BuildJob(bjIdle),
     m_NextBuildState(bsNone),
@@ -344,6 +345,7 @@ void CompilerGCC::OnAttach()
     m_RunAfterCompile = false;
     m_LastExitCode = 0;
     m_NotifiedMaxErrors = false;
+    m_NotifiedSilenceCompilerLog = false;
     m_pBuildingProject = nullptr;
     m_BuildJob = bjIdle;
     m_NextBuildState = bsNone;
@@ -3678,22 +3680,30 @@ void CompilerGCC::OnGCCTerminated(CodeBlocksEvent& event)
 
 void CompilerGCC::AddOutputLine(const wxString& output, bool forceErrorColour)
 {
-    wxArrayString ignore_output = Manager::Get()->GetConfigManager("compiler")->ReadArrayString("/ignore_output");
-    if (!ignore_output.IsEmpty())
+    if ( Manager::Get()->GetConfigManager("compiler")->ReadBool("/silence_compiler_log", false) )
     {
-        for (size_t i = 0; i<ignore_output.GetCount(); ++i)
+        if (!m_NotifiedSilenceCompilerLog)
         {
-            if (output.Find(ignore_output.Item(i)) != wxNOT_FOUND)
-            {
-                Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Ignoring compiler output: %s", output));
+            m_NotifiedSilenceCompilerLog = true;
+            LogWarningOrError(cltNormal, nullptr, wxEmptyString, wxEmptyString, _("All compiler messages are silenced due to the currently active compiler options."));
+        }
+        return;
+    }
+
+    wxArrayString ign_out = Manager::Get()->GetConfigManager("compiler")->ReadArrayString("/ignore_output");
+    if (!ign_out.IsEmpty())
+    {
+        for (size_t i = 0; i<ign_out.GetCount(); ++i)
+        {
+            if (output.Find(ign_out.Item(i)) != wxNOT_FOUND)
                 return;
-            }
         }
     }
 
     Compiler* compiler = CompilerFactory::GetCompiler(m_CompilerId);
     if (!compiler)
         return;
+
     CompilerLineType clt = compiler->CheckForWarningsAndErrors(output);
 
     // if max_errors reached, display a one-time message and do not log any more
