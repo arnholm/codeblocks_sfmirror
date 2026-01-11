@@ -10,10 +10,11 @@
 #include "sdk_precomp.h"
 
 #ifndef CB_PRECOMP
-    #include <wx/app.h>         // wxWakeUpIdle
+    #include <wx/app.h>       // wxWakeUpIdle
+
+    #include "globals.h"
     #include "pipedprocess.h" // class' header file
     #include "sdk_events.h"
-    #include "globals.h"
 #endif
 
 // The following class is created to override wxTextStream::ReadLine()
@@ -132,9 +133,10 @@ PipedProcess::PipedProcess(PipedProcess** pvThis, wxEvtHandler* parent, int id, 
     m_Stopped(false),
     m_pvThis(pvThis)
 {
-    const wxString &unixDir = UnixFilename(dir);
+    const wxString& unixDir = UnixFilename(dir);
     if (!unixDir.empty())
         wxSetWorkingDirectory(unixDir);
+
     if (pipe)
         Redirect();
 
@@ -148,7 +150,7 @@ PipedProcess::~PipedProcess()
         m_timerPollProcess.Stop();
 }
 
-int PipedProcess::Launch(const wxString& cmd, int flags)
+int PipedProcess::Launch(const wxString& cmd, int flags, int timer /*= 1000*/)
 {
     m_Stopped = false;
 
@@ -164,7 +166,7 @@ int PipedProcess::Launch(const wxString& cmd, int flags)
 #endif
 
     if (m_Pid)
-        m_timerPollProcess.Start(1000);
+        m_timerPollProcess.Start(timer);
 
     return m_Pid;
 }

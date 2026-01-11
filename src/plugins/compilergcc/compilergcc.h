@@ -184,7 +184,7 @@ class CompilerGCC : public cbCompilerPlugin
         void DoPrepareQueue(bool clearLog);
         void NotifyCleanProject(const wxString& target);
         void NotifyCleanWorkspace();
-        int DoRunQueue();
+        int DoRunQueue(int timer = 100);
         void DoClearTargetMenu();
         void DoRecreateTargetMenu();
         void DoUpdateTargetMenu(int targetIndex);

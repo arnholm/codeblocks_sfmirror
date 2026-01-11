@@ -1282,7 +1282,7 @@ int CompilerGCC::GetActiveProcessCount() const
     return count;
 }
 
-int CompilerGCC::DoRunQueue()
+int CompilerGCC::DoRunQueue(int timer /*= 100*/)
 {
     // leave if already running
     int procIndex = GetNextAvailableProcessIndex();
@@ -1316,7 +1316,7 @@ int CompilerGCC::DoRunQueue()
                 {
                     m_RunAfterCompile = false;
                     if (Run() == 0)
-                        DoRunQueue();
+                        DoRunQueue(timer); // Recursion
                 }
                 return 0;
             }
@@ -1345,7 +1345,7 @@ int CompilerGCC::DoRunQueue()
         if (!cmd->message.IsEmpty())
             LogMessage(cmd->message, cltNormal, ltMessages, false, false, true);
 
-        int ret = DoRunQueue();
+        int ret = DoRunQueue(timer); // recursion
         delete cmd;
         return ret;
     }
@@ -1370,7 +1370,7 @@ int CompilerGCC::DoRunQueue()
 
             Manager::Get()->GetScriptingManager()->LoadScript(script);
         }
-        int ret = DoRunQueue();
+        int ret = DoRunQueue(timer); // Recursion
         delete cmd;
         return ret;
     }
@@ -1427,7 +1427,8 @@ int CompilerGCC::DoRunQueue()
     process.OutputFile = (cmd->isLink && cmd->target) ? cmd->target->GetOutputFilename() : wxString(wxEmptyString);
     process.pProcess = new PipedProcess(&(process.pProcess), this, idGCCProcess, pipe, dir, procIndex);
 
-    process.PID = process.pProcess->Launch(cmd->command, flags);
+    int poll_process_timer = Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/poll_process_timer"), 1000);
+    process.PID = process.pProcess->Launch(cmd->command, flags, poll_process_timer);
     if (!process.PID)
     {
         wxString err = wxString::Format(_("Execution of '%s' in '%s' failed."),
@@ -1455,13 +1456,14 @@ int CompilerGCC::DoRunQueue()
         ResetBuildState();
     }
     else
-        m_timerIdleWakeUp.Start(100);
+        m_timerIdleWakeUp.Start(timer);
 
     // restore old dynamic linker path
     wxSetEnv(CB_LIBRARY_ENVVAR, oldLibPath);
 
     delete cmd;
-    return DoRunQueue();
+
+    return DoRunQueue(timer); // Recursion
 }
 
 void CompilerGCC::DoClearTargetMenu()
@@ -2307,7 +2309,7 @@ int CompilerGCC::DistClean(ProjectBuildTarget* target)
     {
         wxString cmd = GetMakeCommandFor(mcDistClean, m_pProject, target);
         m_CommandQueue.Add(new CompilerCommand(cmd, wxEmptyString, m_pProject, target));
-        return DoRunQueue();
+        return DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
     }
     else
     {
@@ -2937,7 +2939,7 @@ int CompilerGCC::DoBuild(const wxString& target, bool clean, bool build, bool cl
     if (DoBuild(clean, build))
         return -2;
 
-    return DoRunQueue();
+    return DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
 }
 
 int CompilerGCC::Build(const wxString& target)
@@ -3009,7 +3011,7 @@ int CompilerGCC::DoWorkspaceBuild(const wxString& target, bool clean, bool build
     DoBuild(clean,build);
     m_IsWorkspaceOperation = false;
 
-    return DoRunQueue();
+    return DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
 }
 
 int CompilerGCC::BuildWorkspace(const wxString& target)
@@ -3199,7 +3201,7 @@ int CompilerGCC::CompileFileWithoutProject(const wxString& file)
     wxArrayString compile = dc.GetCompileSingleFileCommand(file);
     AddToCommandQueue(compile);
 
-    return DoRunQueue();
+    return DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
 }
 
 int CompilerGCC::CompileFileDefault(cbProject* project, ProjectFile* pf, ProjectBuildTarget* bt)
@@ -3218,7 +3220,7 @@ int CompilerGCC::CompileFileDefault(cbProject* project, ProjectFile* pf, Project
     wxArrayString compile = dc.CompileFile(bt, pf);
     AddToCommandQueue(compile);
 
-    return DoRunQueue();
+    return DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
 }
 
 // events
@@ -3248,7 +3250,7 @@ void CompilerGCC::OnTimer(cb_unused wxTimerEvent& event)
 void CompilerGCC::OnRun(cb_unused wxCommandEvent& event)
 {
     if (Run() == 0)
-        DoRunQueue();
+        DoRunQueue( Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100) );
 }
 
 void CompilerGCC::OnCompileAndRun(cb_unused wxCommandEvent& event)
@@ -3976,6 +3978,9 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
 {
 //    Manager::Get()->GetMessageManager()->Log(m_PageIndex, _T("JobDone: index=%u, exitCode=%d"), procIndex, exitCode));
     m_timerIdleWakeUp.Stop();
+
+    int idle_wake_up_timer = Manager::Get()->GetConfigManager(_T("compiler"))->ReadInt(_T("/idle_wake_up_timer"), 100);
+
     CompilerProcess &process = m_CompilerProcessList.at(procIndex);
     process.PID = 0;
     process.pProcess = nullptr;
@@ -4023,14 +4028,14 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
     if (success)
         m_LastExitCode = 0;
     if (m_CommandQueue.GetCount() != 0 && success)
-        DoRunQueue(); // continue running commands while last exit code was 0.
+        DoRunQueue(idle_wake_up_timer); // continue running commands while last exit code was 0.
     else
     {
         if (success)
         {
             if (IsProcessRunning())
             {
-                DoRunQueue();
+                DoRunQueue(idle_wake_up_timer);
                 return;
             }
 
@@ -4039,7 +4044,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
                 BuildStateManagement();
                 if (m_CommandQueue.GetCount())
                 {
-                    DoRunQueue();
+                    DoRunQueue(idle_wake_up_timer);
                     return;
                 }
                 if (m_BuildState == bsNone && m_NextBuildState == bsNone)
@@ -4103,7 +4108,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
             {
                 m_RunAfterCompile = false;
                 if (Run() == 0)
-                    DoRunQueue();
+                    DoRunQueue(idle_wake_up_timer);
             }
             else if (!Manager::IsBatchBuild())
             {
@@ -4135,7 +4140,7 @@ void CompilerGCC::OnJobEnd(size_t procIndex, int exitCode)
 
         // no matter what happened with the build, return the focus to the active editor
         cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(Manager::Get()->GetEditorManager()->GetActiveEditor());
-        if (ed)
+        if (ed && ed->GetControl())
             ed->GetControl()->SetFocus();
     }
 }

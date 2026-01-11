@@ -203,7 +203,7 @@
 													<border>4</border>
 												</object>
 												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT9">
+													<object class="wxStaticText" name="wxID_ANY">
 														<label>Order matters!&#x0A;The first matching parsing expression is selected.</label>
 														<fg>#800000</fg>
 													</object>
@@ -283,66 +283,66 @@
 																	<object class="wxStaticText" name="ID_STATICTEXT13">
 																		<label>Message:</label>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxSpinCtrl" name="spnRegexMsg1">
 																		<value>0</value>
 																		<max>16</max>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT14">
+																	<object class="wxStaticText" name="wxID_ANY">
 																		<label>Additional message 2:</label>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxSpinCtrl" name="spnRegexMsg2">
 																		<value>0</value>
 																		<max>16</max>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT15">
+																	<object class="wxStaticText" name="wxID_ANY">
 																		<label>Additional message 3:</label>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxSpinCtrl" name="spnRegexMsg3">
 																		<value>0</value>
 																		<max>16</max>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT16">
+																	<object class="wxStaticText" name="wxID_ANY">
 																		<label>Filename:</label>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxSpinCtrl" name="spnRegexFilename">
 																		<value>0</value>
 																		<max>16</max>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT17">
+																	<object class="wxStaticText" name="wxID_ANY">
 																		<label>Line:</label>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxSpinCtrl" name="spnRegexLine">
 																		<value>0</value>
 																		<max>16</max>
 																	</object>
-																	<flag>wxALIGN_TOP</flag>
+																	<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 																</object>
 															</object>
 															<flag>wxALL|wxEXPAND</flag>
@@ -353,7 +353,7 @@
 													<border>4</border>
 												</object>
 												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT18">
+													<object class="wxStaticText" name="wxID_ANY">
 														<label>A sub-expression index of 0 (zero), means it&apos;s not provided by&#x0A;the regular expression.</label>
 														<fg>#800000</fg>
 													</object>
@@ -373,11 +373,11 @@
 										<label>Test parsing expressions</label>
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
-											<object class="wxStaticText" name="ID_STATICTEXT19">
+											<object class="wxStaticText" name="wxID_ANY">
 												<label>Test string (e.g. compiler output line):</label>
 											</object>
 											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
-											<border>8</border>
+											<border>4</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxBoxSizer">
@@ -394,7 +394,7 @@
 												</object>
 											</object>
 											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
-											<border>8</border>
+											<border>4</border>
 										</object>
 									</object>
 									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>

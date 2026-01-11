@@ -48,7 +48,7 @@
 													<border>4</border>
 												</object>
 												<object class="spacer">
-													<flag>wxALIGN_TOP</flag>
+													<flag>wxEXPAND</flag>
 													<size>24,-1</size>
 												</object>
 												<object class="sizeritem">
@@ -73,7 +73,7 @@
 													<border>4</border>
 												</object>
 												<object class="spacer">
-													<flag>wxALIGN_TOP</flag>
+													<flag>wxEXPAND</flag>
 													<border>5</border>
 													<size>24,-1</size>
 												</object>
@@ -1161,9 +1161,9 @@
 														<hgap>8</hgap>
 														<growablecols>1</growablecols>
 														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT25">
-																<label>Number of processes for parallel builds:</label>
-																<fg>#800000</fg>
+															<object class="wxStaticText" name="wxID_ANY">
+																<label>Number of processes for parallel builds (0=detect automatically):</label>
+																<fg>#000000</fg>
 															</object>
 															<flag>wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 															<border>4</border>
@@ -1177,8 +1177,8 @@
 															<flag>wxEXPAND</flag>
 														</object>
 														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT26">
-																<label>Max nr. of errors to log (0=unlimited):</label>
+															<object class="wxStaticText" name="wxID_ANY">
+																<label>Max number of errors to log (0=unlimited):</label>
 															</object>
 															<flag>wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 															<border>4</border>
@@ -1341,6 +1341,56 @@
 													<border>8</border>
 												</object>
 												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT2">
+														<label>Fine-tune timing for compiler command polling process:</label>
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
+													<border>8</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxFlexGridSizer">
+														<cols>2</cols>
+														<rows>2</rows>
+														<vgap>8</vgap>
+														<hgap>8</hgap>
+														<object class="sizeritem">
+															<object class="wxStaticText" name="wxID_ANY">
+																<label>Wake up polling timer (ms), use 100ms for default:</label>
+															</object>
+															<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+															<border>5</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxSpinCtrl" name="spnIdleWakeUpTimer">
+																<value>100</value>
+																<min>10</min>
+																<max>1000</max>
+															</object>
+															<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+															<border>5</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxStaticText" name="wxID_ANY">
+																<label>Process polling timer (ms), use 1000ms for default:</label>
+															</object>
+															<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+															<border>5</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxSpinCtrl" name="spnPollProcessTimer">
+																<value>1000</value>
+																<min>100</min>
+																<max>5000</max>
+															</object>
+															<flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+															<border>5</border>
+														</object>
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+													<border>8</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
 													<object class="wxStaticLine" name="ID_STATICLINE8" />
 													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 													<border>8</border>
@@ -1411,7 +1461,7 @@
 													<object class="wxButton" name="btnAdvanced">
 														<label>Advanced options...</label>
 													</object>
-													<flag>wxALL|wxALIGN_RIGHT</flag>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT</flag>
 													<border>8</border>
 												</object>
 											</object>

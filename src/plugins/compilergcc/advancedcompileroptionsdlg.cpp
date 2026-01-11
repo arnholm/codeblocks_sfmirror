@@ -262,16 +262,16 @@ void AdvancedCompilerOptionsDlg::SaveCommands(int cmd, int ext)
 
 void AdvancedCompilerOptionsDlg::FillRegexes()
 {
-    wxListBox* list = XRCCTRL(*this, "lstRegex", wxListBox);
-    list->Clear();
+    wxListBox* lst = XRCCTRL(*this, "lstRegex", wxListBox);
+    lst->Clear();
 
     for (size_t i = 0; i < m_Regexes.size(); ++i)
     {
         RegExStruct& rs = m_Regexes[i];
-        list->Append(rs.desc);
+        lst->Append(rs.desc);
     }
 
-    list->SetSelection(m_SelectedRegex);
+    lst->SetSelection(m_SelectedRegex);
     FillRegexDetails(m_SelectedRegex);
 }
 

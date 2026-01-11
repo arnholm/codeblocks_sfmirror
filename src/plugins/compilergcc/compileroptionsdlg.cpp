@@ -164,7 +164,9 @@ BEGIN_EVENT_TABLE(CompilerOptionsDlg, wxPanel)
     EVT_CHOICE(                XRCID("chLinkerExe"),                    CompilerOptionsDlg::OnDirty)
     EVT_CHECKBOX(              XRCID("chkAlwaysRunPost"),               CompilerOptionsDlg::OnDirty)
     EVT_CHECKBOX(              XRCID("chkNonPlatComp"),                 CompilerOptionsDlg::OnDirty)
-    EVT_CHECKBOX(              XRCID("chkSilenceCompilerLog"),            CompilerOptionsDlg::OnDirty)
+    EVT_CHECKBOX(              XRCID("chkSilenceCompilerLog"),          CompilerOptionsDlg::OnDirty)
+//    EVT_SPINCTRL(              XRCID("spnIdleWakeUpTimer"),             CompilerOptionsDlg::OnDirty)
+//    EVT_SPINCTRL(              XRCID("spnPollProcessTimer"),            CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtCompilerOptions"),             CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtResourceCompilerOptions"),     CompilerOptionsDlg::OnDirty)
     EVT_TEXT(                  XRCID("txtCompilerDefines"),             CompilerOptionsDlg::OnDirty)
@@ -658,6 +660,14 @@ void CompilerOptionsDlg::DoFillOthers()
     chk = XRCCTRL(*this, "chkSilenceCompilerLog", wxCheckBox);
     if (chk)
         chk->SetValue(cfg->ReadBool("/silence_compiler_log", false));
+
+    spn = XRCCTRL(*this, "spnIdleWakeUpTimer", wxSpinCtrl);
+    if (spn)
+        spn->SetValue(cfg->ReadInt("/idle_wake_up_timer", 100));
+
+    spn = XRCCTRL(*this, "spnPollProcessTimer", wxSpinCtrl);
+    if (spn)
+        spn->SetValue(cfg->ReadInt("/poll_process_timer", 1000));
 } // DoFillOthers
 
 void CompilerOptionsDlg::DoFillTree()
@@ -3016,6 +3026,14 @@ void CompilerOptionsDlg::OnApply()
         chk = XRCCTRL(*this, "chkSilenceCompilerLog", wxCheckBox);
         if (chk)
             cfg->Write("/silence_compiler_log", (bool)chk->IsChecked());
+
+        spn = XRCCTRL(*this, "spnIdleWakeUpTimer", wxSpinCtrl);
+        if (spn)
+            cfg->Write("/idle_wake_up_timer", (int)spn->GetValue());
+
+        spn = XRCCTRL(*this, "spnPollProcessTimer", wxSpinCtrl);
+        if (spn)
+            cfg->Write("/poll_process_timer", (int)spn->GetValue());
     }
 
     m_Compiler->SaveOptions();

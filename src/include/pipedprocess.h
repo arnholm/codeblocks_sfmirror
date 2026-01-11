@@ -23,7 +23,7 @@ class DLLIMPORT PipedProcess : public wxProcess
                      bool pipe = true, const wxString& dir = wxEmptyString, int index = -1);
         // class destructor
         ~PipedProcess() override;
-        virtual int Launch(const wxString& cmd, int flags);
+        virtual int Launch(const wxString& cmd, int flags, int timer = 1000);
         virtual void SendString(const wxString& text);
         virtual bool HasInput();
         virtual int GetPid(){ return m_Pid; }
@@ -41,7 +41,7 @@ class DLLIMPORT PipedProcess : public wxProcess
         /// When there are multiple processes started you could use this to distinguish between
         /// different processes. You could also use the id, but then you must preallocate too many
         /// ids and with the growing number of threads available in contemporary machines, this
-        /// becomes unfeasible.
+        /// becomes infeasible.
         /// It is sent back in the X variable of the CodeBlocksEvent.
         int m_Index;
 
