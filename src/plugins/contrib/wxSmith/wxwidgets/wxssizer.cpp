@@ -111,8 +111,20 @@ void wxsSizer::OnBuildCreatingCode()
         wxsItem* Child = GetChild(i);
         wxsSizerExtra* SizerExtra = (wxsSizerExtra*)GetChildExtra(i);
 
-        // Using same parent as we got, sizer is not a parent window
-        Child->BuildCode(GetCoderContext());
+        if (GetInfo().ClassName == "wxStaticBoxSizer")
+        {
+            // Use the static box as parent, as required by wxWidgets since 2.9.1
+            wxsCoderContext* context = GetCoderContext();
+            const wxString saveParent(context->m_WindowParent);
+            context->m_WindowParent = GetVarName()+"->GetStaticBox()";
+            Child->BuildCode(context);
+            context->m_WindowParent = saveParent;
+        }
+        else
+        {
+            // Using same parent as we got, sizer is not a parent window
+            Child->BuildCode(GetCoderContext());
+        }
 
         switch ( Child->GetType() )
         {

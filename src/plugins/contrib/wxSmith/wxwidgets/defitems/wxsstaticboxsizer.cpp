@@ -48,8 +48,9 @@ void wxsStaticBoxSizer::OnBuildSizerCreatingCode()
         case wxsCPP:
         {
             AddHeader(_T("<wx/sizer.h>"),GetInfo().ClassName,hfInPCH);
+            AddHeader(_T("<wx/statbox.h>"),GetInfo().ClassName,hfInPCH);
             Codef(_T("%C(%s, %W, %t);\n"),
-                    (Orient!=wxHORIZONTAL)?_T("wxVERTICAL"):_T("wxHORIZONTAL"),
+                    (Orient == wxHORIZONTAL) ? _T("wxHORIZONTAL") : _T("wxVERTICAL"),
                     Label.wx_str());
             return;
         }
