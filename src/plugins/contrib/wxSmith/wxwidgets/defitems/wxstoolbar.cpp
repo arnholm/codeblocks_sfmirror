@@ -143,7 +143,11 @@ void wxsToolBar::OnBuildCreatingCode()
                 for ( int i=0; i<GetChildCount(); i++ )
                 {
                     wxsItem* Child = GetChild(i);
-                    Child->BuildCode(GetCoderContext());
+                    wxsCoderContext* context = GetCoderContext();
+                    const wxString saveParent(context->m_WindowParent);
+                    context->m_WindowParent = GetVarName();
+                    Child->BuildCode(context);
+                    context->m_WindowParent = saveParent;
                     if ( Child->GetClassName() != _T("wxToolBarToolBase") )
                     {
                         Codef(_T("%AAddControl(%o);\n"),i);
