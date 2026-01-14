@@ -859,7 +859,7 @@ int cbDebuggerPlugin::RunNixConsole(wxString &consoleTty)
     // prevent us accessing deleted objects.
     cb::shared_ptr<ConsoleProcessTerminationInfo> processInfo(new ConsoleProcessTerminationInfo);
     ConsoleProcess *process = new ConsoleProcess(processInfo);
-    consolePid = wxExecute(cmd, wxEXEC_ASYNC, process);
+    consolePid = wxExecute(cmd, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, process); //ticket 1571
     if (consolePid <= 0)
         return -1;
 

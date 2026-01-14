@@ -1973,7 +1973,7 @@ void DebuggerGDB::KillConsole()
     // kill any linux console
     if ( m_bIsConsole && (m_nConsolePid > 0) )
     {
-        ::wxKill(m_nConsolePid);
+       ::wxKill(m_nConsolePid, wxSIGTERM, nullptr, wxKILL_CHILDREN); //ticket 1571
         m_nConsolePid = 0;
         m_bIsConsole = false;
     }
