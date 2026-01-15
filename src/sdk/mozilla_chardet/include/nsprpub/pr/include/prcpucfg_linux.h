@@ -960,6 +960,81 @@
 #define PR_BYTES_PER_WORD_LOG2   2
 #define PR_BYTES_PER_DWORD_LOG2  3
 
+#elif defined(__e2k__)
+
+#define IS_LITTLE_ENDIAN 1
+#undef  IS_BIG_ENDIAN
+
+#ifdef __ptr64__
+#define IS_64
+#elif defined(__ptr32__)
+#undef IS_64
+#define IS_32
+#endif
+
+#define PR_BYTES_PER_BYTE   1
+#define PR_BYTES_PER_SHORT  2
+#define PR_BYTES_PER_INT    4
+#define PR_BYTES_PER_INT64  4
+#define PR_BYTES_PER_LONG   8
+#define PR_BYTES_PER_FLOAT  4
+#define PR_BYTES_PER_DOUBLE 8
+
+#ifdef __ptr64__
+#define PR_BYTES_PER_WORD   8
+#elif defined(__ptr32__)
+#define PR_BYTES_PER_WORD   4
+#endif
+
+#define PR_BYTES_PER_DWORD  8
+
+#define PR_BITS_PER_BYTE    8
+#define PR_BITS_PER_SHORT   16
+#define PR_BITS_PER_INT     32
+#define PR_BITS_PER_INT64   32
+#define PR_BITS_PER_LONG    64
+#define PR_BITS_PER_FLOAT   32
+#define PR_BITS_PER_DOUBLE  64
+
+#ifdef __ptr64__
+#define PR_BITS_PER_WORD    64
+#elif defined(__ptr32__)
+#define PR_BITS_PER_WORD    32
+#endif
+
+#define PR_BITS_PER_BYTE_LOG2   3
+#define PR_BITS_PER_SHORT_LOG2  4
+#define PR_BITS_PER_INT_LOG2    5
+#define PR_BITS_PER_INT64_LOG2  5
+#define PR_BITS_PER_LONG_LOG2   6
+#define PR_BITS_PER_FLOAT_LOG2  5
+#define PR_BITS_PER_DOUBLE_LOG2 6
+
+#ifdef __ptr64__
+#define PR_BITS_PER_WORD_LOG2   6
+#elif defined(__ptr32__)
+#define PR_BITS_PER_WORD_LOG2   5
+#endif
+
+#define PR_ALIGN_OF_SHORT   2
+#define PR_ALIGN_OF_INT     4
+#define PR_ALIGN_OF_LONG    8
+#define PR_ALIGN_OF_INT64   4
+#define PR_ALIGN_OF_FLOAT   4
+#define PR_ALIGN_OF_DOUBLE  8
+
+#ifdef __ptr64__
+#define PR_ALIGN_OF_POINTER 8
+#define PR_ALIGN_OF_WORD    8
+#elif defined(__ptr32__)
+#define PR_ALIGN_OF_POINTER 4
+#define PR_ALIGN_OF_WORD    4
+#endif
+
+#define PR_BYTES_PER_WORD_LOG2  3
+#define PR_BYTES_PER_DWORD_LOG2 3
+#define PR_WORDS_PER_DWORD_LOG2 1
+
 #else
 
 #error "Unknown CPU architecture"
