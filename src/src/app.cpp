@@ -898,8 +898,11 @@ bool CodeBlocksApp::OnInit()
 
 int CodeBlocksApp::OnExit()
 {
-    // Keep clipboard data after closing. Only works on MSW because primary selections are not kept on GTK
+#ifdef __WXMSW__
+    // Keep clipboard data after closing. Only works on MSW because primary selections are not kept on GTK,
+    // and other platforms do not support Flush() at all (see ticket #1313)
     wxTheClipboard->Flush();
+#endif
 
     if (g_DDEServer) delete g_DDEServer;
 
