@@ -39,7 +39,7 @@ class wxsTool: public wxsParent
         /** \brief Ctor */
         wxsTool(
             wxsItemResData* Data,
-            const wxsItemInfo* Info,
+            wxsItemInfo* Info,
             const wxsEventDesc* EventArray = nullptr,
             const wxsStyleSet* StyleSet = nullptr,
             long PropertiesFlags = flTool);

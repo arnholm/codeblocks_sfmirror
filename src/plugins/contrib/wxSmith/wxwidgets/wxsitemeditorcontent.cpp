@@ -84,7 +84,7 @@ void wxsItemEditorContent::PaintExtra(wxDC* DC)
 
     if ( m_MouseState==msTargetSearch && m_TargetInfo )
     {
-        DC->DrawBitmap(m_TargetInfo->Icon16,m_TargetX+16,m_TargetY,true);
+        DC->DrawBitmap(m_TargetInfo->GetIcon(16), m_TargetX+16, m_TargetY, true);
     }
 }
 
@@ -1019,7 +1019,7 @@ void wxsItemEditorContent::RecalculateMapsReq(wxsItem* Item)
     }
 }
 
-void wxsItemEditorContent::InsertByPointing(const wxsItemInfo* Info)
+void wxsItemEditorContent::InsertByPointing(wxsItemInfo* Info)
 {
     m_MouseState = msTargetSearch;
     m_TargetInfo = Info;

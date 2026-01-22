@@ -41,7 +41,7 @@ namespace
     long IdToBottom = wxNewId();
 }
 
-wxsItem::wxsItem(wxsItemResData* ResourceData,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet):
+wxsItem::wxsItem(wxsItemResData* ResourceData, wxsItemInfo* Info, long PropertiesFlags, const wxsEventDesc* Events, const wxsStyleSet* StyleSet) :
     m_Info(Info),
     m_Events(Events,this),
     m_Parent(nullptr),

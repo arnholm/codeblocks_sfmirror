@@ -28,8 +28,8 @@
 
 using namespace wxsFlags;
 
-wxsParent::wxsParent(wxsItemResData* Data,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet):
-    wxsItem(Data,Info,PropertiesFlags,Events,StyleSet)
+wxsParent::wxsParent(wxsItemResData* Data, wxsItemInfo* Info, long PropertiesFlags, const wxsEventDesc* Events, const wxsStyleSet* StyleSet):
+    wxsItem(Data, Info, PropertiesFlags, Events, StyleSet)
 {
 }
 

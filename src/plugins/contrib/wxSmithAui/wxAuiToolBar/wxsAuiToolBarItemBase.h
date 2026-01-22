@@ -32,7 +32,7 @@ class wxsAuiToolBarItemBase: public wxsItem
         long m_HasGripper;
         int  m_GripperSize;
 
-        wxsAuiToolBarItemBase(wxsItemResData* Data,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet)
+        wxsAuiToolBarItemBase(wxsItemResData* Data, wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet)
             : wxsItem(Data,Info,PropertiesFlags,Events,StyleSet)
         {}
 

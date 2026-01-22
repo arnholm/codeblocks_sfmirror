@@ -178,7 +178,7 @@ class wxsItemEditor : public wxsEditor
         wxsItem* GetReferenceItem(int& InsertionType);
 
         /** \brief Starting sequence of adding new item when inserting by pointing with mouse */
-        void StartInsertPointSequence(const wxsItemInfo* Info);
+        void StartInsertPointSequence(wxsItemInfo* Info);
 
         /** \brief Reloading images in all editors */
         static void ReloadImages();

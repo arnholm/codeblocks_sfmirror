@@ -76,7 +76,7 @@ class PLUGIN_EXPORT wxsSizer: public wxsParent
     public:
 
         /** \brief Ctor */
-        wxsSizer(wxsItemResData* Data,const wxsItemInfo* Info);
+        wxsSizer(wxsItemResData* Data, wxsItemInfo* Info);
 
     protected:
 

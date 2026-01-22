@@ -46,9 +46,9 @@ namespace
 
                 // TODO: This code should be more generic since it may quickly
                 //       become invalid
-                wxString DataPath = ConfigManager::GetDataFolder() + _T("/images/wxsmith/");
-                Icon32.LoadFile(DataPath+_T("wxToolBarItem32.png"),wxBITMAP_TYPE_PNG);
-                Icon16.LoadFile(DataPath+_T("wxToolBarItem16.png"),wxBITMAP_TYPE_PNG);
+                const wxString DataPath(ConfigManager::GetDataFolder()+"/images/wxsmith/");
+                SetIcon(32, DataPath+"wxToolBarItem32.png");
+                SetIcon(16, DataPath+"wxToolBarItem16.png");
                 TreeIconId = m_TreeImage.GetIndex();
             };
 

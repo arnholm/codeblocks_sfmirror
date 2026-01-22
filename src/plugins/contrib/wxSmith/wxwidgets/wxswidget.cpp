@@ -26,7 +26,7 @@
 
 wxsWidget::wxsWidget(
     wxsItemResData* Data,
-    const wxsItemInfo* Info,
+    wxsItemInfo* Info,
     const wxsEventDesc* EventArray,
     const wxsStyleSet* StyleSet,
     long PropertiesFlags):

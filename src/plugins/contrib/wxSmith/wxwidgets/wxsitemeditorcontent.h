@@ -55,7 +55,7 @@ class wxsItemEditorContent: public wxsDrawingWindow
         void RefreshSelection();
 
         /** \brief Starting sequence of adding new item by pointing with mouse */
-        void InsertByPointing(const wxsItemInfo* Info);
+        void InsertByPointing(wxsItemInfo* Info);
 
     protected:
 
@@ -136,10 +136,9 @@ class wxsItemEditorContent: public wxsDrawingWindow
         wxsParent* m_AssistParent;
         bool       m_AssistAddAfter;
 
-        const wxsItemInfo* m_TargetInfo;                    ///< \brief Info of item added by pointing with mouse
+        wxsItemInfo* m_TargetInfo;                          ///< \brief Info of item added by pointing with mouse
         int m_TargetX;
         int m_TargetY;
-
 
         /** \brief Processing mouse events */
         void OnMouse(wxMouseEvent& event);

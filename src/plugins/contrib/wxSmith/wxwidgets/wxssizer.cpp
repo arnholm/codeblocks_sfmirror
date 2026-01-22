@@ -84,7 +84,7 @@ wxString wxsSizerExtra::AllParamsCode(wxsCoderContext* Ctx)
     return wxEmptyString;
 }
 
-wxsSizer::wxsSizer(wxsItemResData* Data,const wxsItemInfo* Info):
+wxsSizer::wxsSizer(wxsItemResData* Data, wxsItemInfo* Info):
     wxsParent(Data,Info,flVariable|flSubclass,nullptr,nullptr)
 {
     GetBaseProps()->m_IsMember = false;

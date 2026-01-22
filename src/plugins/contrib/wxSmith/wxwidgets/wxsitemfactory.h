@@ -64,13 +64,13 @@ class PLUGIN_EXPORT wxsItemFactory
          *  \param ClassName name of item's class
          *  \return Pointer to info or 0 if there's no such item
          */
-        static const wxsItemInfo* GetInfo(const wxString& ClassName);
+        static wxsItemInfo* GetInfo(const wxString& ClassName);
 
         /** \brief Getting info of first item */
-        static const wxsItemInfo* GetFirstInfo();
+        static wxsItemInfo* GetFirstInfo();
 
         /** \brief Continuing getting item infos */
-        static const wxsItemInfo* GetNextInfo();
+        static wxsItemInfo* GetNextInfo();
 
         /** \brief Getting global image list with entries for items
          *
@@ -82,13 +82,13 @@ class PLUGIN_EXPORT wxsItemFactory
         static int LoadImage(const wxString& Name);
 
         /** \brief Ctor */
-        wxsItemFactory(const wxsItemInfo* Info);
+        wxsItemFactory(wxsItemInfo* Info);
 
         /** \brief Extra ctor for templates - uses class name from param.
          *         It may be used when Info is going to be created
          *         inside constructor.
          */
-        wxsItemFactory(const wxsItemInfo* Info,wxString ClassName);
+        wxsItemFactory(wxsItemInfo* Info,wxString ClassName);
 
         /** \brief Dctor */
         virtual ~wxsItemFactory();
@@ -105,7 +105,7 @@ class PLUGIN_EXPORT wxsItemFactory
         /** \brief Function for getting global item's map */
         static ItemMapT& ItemMap();
 
-        const wxsItemInfo* m_Info;          ///< \brief Info of item handled by this instance
+        wxsItemInfo* m_Info;                ///< \brief Info of item handled by this instance
         wxString m_Name;                    ///< \brief Item's name
         static ItemMapT::iterator m_Iter;   ///< \brief Iterator used for GetFirstInfo / GetNextInfo
 };
@@ -150,8 +150,8 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
             Info.Languages = Languages;
             Info.VerHi = VerHi;
             Info.VerLo = VerLo;
-            Info.Icon32 = Bmp32.GetSubBitmap(wxRect(0,0,Bmp32.GetWidth(),Bmp32.GetHeight()));
-            Info.Icon16 = Bmp16.GetSubBitmap(wxRect(0,0,Bmp16.GetWidth(),Bmp16.GetHeight()));
+            Info.SetIcon(32, Bmp32.GetSubBitmap(wxRect(0, 0, Bmp32.GetWidth(), Bmp32.GetHeight())));
+            Info.SetIcon(16, Bmp16.GetSubBitmap(wxRect(0, 0, Bmp16.GetWidth(), Bmp16.GetHeight())));
             Info.AllowInXRC = AllowInXRC;
             Info.TreeIconId = m_TreeImage.GetIndex();
         }
@@ -173,7 +173,7 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
             wxString Bmp32FileName,
             wxString Bmp16FileName,
             bool AllowInXRC = true
-            ): wxsItemFactory(&Info,ClassName),
+            ): wxsItemFactory(&Info, ClassName),
                m_TreeImage(Bmp16FileName)
         {
             Info.ClassName = ClassName;
@@ -190,9 +190,9 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
             Info.VerLo = VerLo;
             Info.AllowInXRC = AllowInXRC;
 
-            wxString DataPath = ConfigManager::GetDataFolder()+_T("/");
-            Info.Icon32.LoadFile(DataPath+Bmp32FileName,wxBITMAP_TYPE_ANY);
-            Info.Icon16.LoadFile(DataPath+Bmp16FileName,wxBITMAP_TYPE_ANY);
+            const wxString DataPath(ConfigManager::GetDataFolder()+"/");
+            Info.SetIcon(32, DataPath+Bmp32FileName);
+            Info.SetIcon(16, DataPath+Bmp16FileName);
             Info.TreeIconId = m_TreeImage.GetIndex();
         }
 
@@ -202,16 +202,16 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
             wxsItemType Type,
             wxString Category,
             long Priority,
-            bool AllowInXRC=true):
-                wxsItemFactory(&Info,_T("wx") + ClassNameWithoutWx),
-                m_TreeImage(_T("images/wxsmith/wx")+ClassNameWithoutWx+_T("16.png"),true)
+            bool AllowInXRC = true):
+                wxsItemFactory(&Info, "wx"+ClassNameWithoutWx),
+                m_TreeImage("images/wxsmith/wx"+ClassNameWithoutWx+"16.png", true)
         {
-            Info.ClassName = _T("wx") + ClassNameWithoutWx;
+            Info.ClassName = "wx"+ClassNameWithoutWx;
             Info.Type = Type;
             Info.License = _("wxWidgets license");
             Info.Author = _("wxWidgets team");
-            Info.Email = _T("");
-            Info.Site = _T("www.wxwidgets.org");
+            Info.Email = "";
+            Info.Site = "www.wxwidgets.org";
             Info.Category = Category;
             Info.Priority = Priority;
             Info.DefaultVarName = ClassNameWithoutWx;
@@ -220,10 +220,9 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
             Info.VerLo = 6;
             Info.AllowInXRC = AllowInXRC;
 
-            wxString DataPath = ConfigManager::GetDataFolder() + _T("/images/wxsmith/");
-            Info.Icon32.LoadFile(DataPath+Info.ClassName+_T("32.png"),wxBITMAP_TYPE_PNG);
-            Info.Icon16.LoadFile(DataPath+Info.ClassName+_T("16.png"),wxBITMAP_TYPE_PNG);
-
+            const wxString DataPath(ConfigManager::GetDataFolder()+"/images/wxsmith/");
+            Info.SetIcon(32, DataPath+Info.ClassName+"32.png");
+            Info.SetIcon(16, DataPath+Info.ClassName+"16.png");
             Info.TreeIconId = m_TreeImage.GetIndex();
         }
 

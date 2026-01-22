@@ -141,8 +141,8 @@ void wxsToolSpace::OnPaint(cb_unused wxPaintEvent& event)
         int EndX = BeginX + IconSize;
         int EndY = BeginY + IconSize;
         DC.SetBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-        DC.DrawRectangle(BeginX-1,BeginY-1,EndX-BeginX+2,EndY-BeginY+2);
-        DC.DrawBitmap(Item->GetInfo().Icon32,BeginX,BeginY,true);
+        DC.DrawRectangle(BeginX-1, BeginY-1, EndX-BeginX+2, EndY-BeginY+2);
+        DC.DrawBitmap(Item->GetInfo().GetIcon(32), BeginX, BeginY, true);
 
         if ( Item->GetIsSelected() )
         {

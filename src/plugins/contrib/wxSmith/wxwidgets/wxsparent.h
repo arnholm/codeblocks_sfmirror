@@ -42,7 +42,7 @@ class PLUGIN_EXPORT wxsParent: public wxsItem
     public:
 
         /** \brief Ctor */
-        wxsParent(wxsItemResData* Data,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet);
+        wxsParent(wxsItemResData* Data, wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet);
 
         /** \brief Dctor */
         virtual ~wxsParent();

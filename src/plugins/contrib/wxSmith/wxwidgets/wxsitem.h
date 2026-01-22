@@ -78,7 +78,7 @@ class PLUGIN_EXPORT wxsItem: public wxsPropertyContainer, public wxsCodeGenerato
          * \param Resource resource containing this widget, must not be 0
          * \param Events array of events used by this object (may be 0 if item doesn't use events)
          */
-        wxsItem(wxsItemResData* Data,const wxsItemInfo* Info,long PropertiesFlags,const wxsEventDesc* Events,const wxsStyleSet* StyleSet);
+        wxsItem(wxsItemResData* Data, wxsItemInfo* Info, long PropertiesFlags, const wxsEventDesc* Events, const wxsStyleSet* StyleSet);
 
         /** \brief Dctor */
         virtual ~wxsItem();
@@ -87,7 +87,7 @@ class PLUGIN_EXPORT wxsItem: public wxsPropertyContainer, public wxsCodeGenerato
          *
          * \warning This function should return reference to static variable.
          */
-        inline const wxsItemInfo& GetInfo() { return *m_Info; }
+        inline wxsItemInfo& GetInfo() { return *m_Info; }
 
         /** \brief Getting event management object used by this item
          *  \note This function is wrapper to OnGetInfo() protected function
@@ -578,7 +578,7 @@ class PLUGIN_EXPORT wxsItem: public wxsPropertyContainer, public wxsCodeGenerato
         /** \brief Updating code generation flags before building code */
         virtual void OnUpdateFlags(long& _Flags);
 
-        const wxsItemInfo* m_Info;            ///< \brief Pointer to item's info structure
+        wxsItemInfo*       m_Info;            ///< \brief Pointer to item's info structure
         wxsEvents          m_Events;          ///< \brief Object managing events
         wxsParent*         m_Parent;          ///< \brief Parent class of this one
         wxsItemResData*    m_ResourceData;    ///< \brief Data management object containing this item

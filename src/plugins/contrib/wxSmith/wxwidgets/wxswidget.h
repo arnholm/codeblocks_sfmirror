@@ -60,7 +60,7 @@ class PLUGIN_EXPORT wxsWidget: public wxsItem
          */
         wxsWidget(
             wxsItemResData*     Data,
-            const wxsItemInfo*  Info,
+            wxsItemInfo*        Info,
             const wxsEventDesc* EventArray = nullptr,
             const wxsStyleSet*  StyleSet = nullptr,
             long                PropertiesFlags = flWidget);

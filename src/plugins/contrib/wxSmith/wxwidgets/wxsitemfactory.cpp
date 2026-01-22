@@ -65,20 +65,20 @@ wxsItem* wxsItemFactory::Build(const wxString& Name,wxsItemResData* Data)
     return Item;
 }
 
-const wxsItemInfo* wxsItemFactory::GetInfo(const wxString& Name)
+wxsItemInfo* wxsItemFactory::GetInfo(const wxString& Name)
 {
     ItemMapT::iterator it = ItemMap().find(Name);
     if ( it == ItemMap().end() ) return nullptr;
     return it->second->m_Info;
 }
 
-const wxsItemInfo* wxsItemFactory::GetFirstInfo()
+wxsItemInfo* wxsItemFactory::GetFirstInfo()
 {
     m_Iter = ItemMap().begin();
     return (m_Iter==ItemMap().end()) ? nullptr : m_Iter->second->m_Info;
 }
 
-const wxsItemInfo* wxsItemFactory::GetNextInfo()
+wxsItemInfo* wxsItemFactory::GetNextInfo()
 {
     if ( m_Iter==ItemMap().end() ) return nullptr;
     ++m_Iter;
@@ -95,7 +95,7 @@ int wxsItemFactory::LoadImage(const wxString& FileName)
     return wxsResourceTree::LoadImage(FileName);
 }
 
-wxsItemFactory::wxsItemFactory(const wxsItemInfo* Info):
+wxsItemFactory::wxsItemFactory(wxsItemInfo* Info) :
     m_Info(Info)
 {
     m_Name = Info->ClassName;
@@ -103,7 +103,7 @@ wxsItemFactory::wxsItemFactory(const wxsItemInfo* Info):
     ItemMap()[m_Name] = this;
 }
 
-wxsItemFactory::wxsItemFactory(const wxsItemInfo* Info,wxString ClassName):
+wxsItemFactory::wxsItemFactory(wxsItemInfo* Info, wxString ClassName) :
     m_Info(Info)
 {
     m_Name = ClassName;

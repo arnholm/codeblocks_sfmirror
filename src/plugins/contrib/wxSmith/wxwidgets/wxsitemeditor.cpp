@@ -391,7 +391,7 @@ void wxsItemEditor::Paste()
 
 void wxsItemEditor::InsertRequest(const wxString& Name)
 {
-    const wxsItemInfo* Info = wxsItemFactory::GetInfo(Name);
+    wxsItemInfo* Info = wxsItemFactory::GetInfo(Name);
     if ( !Info ) return;
     bool IsTool = Info->Type == wxsTTool;
 
@@ -681,19 +681,19 @@ void wxsItemEditor::RebuildIcons()
 
 namespace
 {
-    int PrioritySort(const wxsItemInfo** it1,const wxsItemInfo** it2)
+    int PrioritySort(wxsItemInfo** it1, wxsItemInfo** it2)
     {
         return (*it1)->Priority - (*it2)->Priority;
     }
 
-    WX_DEFINE_ARRAY(const wxsItemInfo*,ItemsT);
+    WX_DEFINE_ARRAY(wxsItemInfo*, ItemsT);
 
     int CategorySort(ItemsT* it1, ItemsT* it2)
     {
-        if (it1->Item(0)->Category.IsSameAs(_T("Standard")))
+        if (it1->Item(0)->Category.IsSameAs("Standard"))
             return -1;
 
-        if (it2->Item(0)->Category.IsSameAs(_T("Standard")))
+        if (it2->Item(0)->Category.IsSameAs("Standard"))
             return 1;
 
         return wxStrcmp(it1->Item(0)->Category, it2->Item(0)->Category);
@@ -714,7 +714,7 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
     MapT Map;
     ArrayOfItemsT aoi(CategorySort);
 
-    for ( const wxsItemInfo* Info = wxsItemFactory::GetFirstInfo(); Info; Info = wxsItemFactory::GetNextInfo() )
+    for (wxsItemInfo* Info = wxsItemFactory::GetFirstInfo(); Info; Info = wxsItemFactory::GetNextInfo())
     {
         if ( !Info->Category.empty() )
         {
@@ -735,10 +735,10 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
         Palette->AddPage(CurrentPanel,Items->Item(0)->Category);
         wxSizer* RowSizer = new wxBoxSizer(wxHORIZONTAL);
 
-        for ( size_t j=Items->Count(); j-->0; )
+        for (size_t j = Items->Count(); j-- > 0;)
         {
-            const wxsItemInfo* Info = Items->Item(j);
-            const wxBitmap& Icon = ( PalIconSize() == 16L ) ? Info->Icon16 : Info->Icon32;
+            wxsItemInfo* Info = Items->Item(j);
+            const wxBitmap& Icon = Info->GetIcon(PalIconSize());
 
             if ( AllowNonXRCItems || Info->AllowInXRC )
             {
@@ -889,7 +889,7 @@ void wxsItemEditor::OnKeyDown(wxKeyEvent& event)
     }
 }
 
-void wxsItemEditor::StartInsertPointSequence(const wxsItemInfo* Info)
+void wxsItemEditor::StartInsertPointSequence(wxsItemInfo* Info)
 {
     if ( m_Content )
     {
