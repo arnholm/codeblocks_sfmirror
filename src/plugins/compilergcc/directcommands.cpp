@@ -204,7 +204,8 @@ void DirectCommands::CheckForToLongCommandLine(wxString& executableCmd, wxArrayS
 #ifndef CB_COMMAND_LINE_MAX_LENGTH
 #ifdef __WXMSW__
 // the actual limit is 32767 (source: https://devblogs.microsoft.com/oldnewthing/20031210-00/?p=41553 )
-#define CB_COMMAND_LINE_MAX_LENGTH 32767
+// however it may be even less for spawned processes (https://www.reddit.com/r/PowerShell/comments/8ylspm/fun_fact_windows_has_a_command_line_character/)
+#define CB_COMMAND_LINE_MAX_LENGTH 8191
 #else
 // On Linux the limit should be inf
 // List of collected length limits: https://www.in-ulm.de/~mascheck/various/argmax/
