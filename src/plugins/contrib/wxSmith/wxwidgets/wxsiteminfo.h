@@ -47,14 +47,17 @@ class wxsItemInfo
             if (Size == 16)
             {
                 if (!Icon16.IsOk())
-                    Icon16.LoadFile(Icon16File, wxBITMAP_TYPE_PNG);
+                    if (!Icon16.LoadFile(Icon16File, wxBITMAP_TYPE_PNG))
+                        Icon16 = wxImage(16, 16, true);
 
                 return Icon16;
             }
-            else if (Size == 32)
+
+            if (Size == 32)
             {
                 if (!Icon32.IsOk())
-                    Icon32.LoadFile(Icon32File, wxBITMAP_TYPE_PNG);
+                    if (!Icon32.LoadFile(Icon32File, wxBITMAP_TYPE_PNG))
+                        Icon32 = wxImage(32, 32, true);
 
                 return Icon32;
             }
