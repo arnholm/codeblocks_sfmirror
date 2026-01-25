@@ -715,7 +715,7 @@
 													<border>10</border>
 												</object>
 												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT25">
+													<object class="wxStaticText" name="wxID_ANY">
 														<label>Default:</label>
 													</object>
 													<flag>wxEXPAND</flag>
@@ -755,9 +755,36 @@
 											<border>4</border>
 										</object>
 									</object>
-									<flag>wxEXPAND</flag>
+									<flag>wxBOTTOM|wxEXPAND</flag>
 									<border>4</border>
 									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxBoxSizer">
+										<object class="sizeritem">
+											<object class="wxStaticText" name="wxID_ANY">
+												<label>Select application appearance (if supported by platform):</label>
+											</object>
+											<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>4</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxChoice" name="chAppearance">
+												<content>
+													<item>System default</item>
+													<item>Dark</item>
+													<item>Light</item>
+												</content>
+												<selection>0</selection>
+												<enabled>0</enabled>
+											</object>
+											<flag>wxALIGN_CENTER_VERTICAL</flag>
+											<border>4</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxEXPAND</flag>
+									<border>4</border>
 								</object>
 							</object>
 						</object>

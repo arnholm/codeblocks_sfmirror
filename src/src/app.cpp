@@ -773,20 +773,43 @@ bool CodeBlocksApp::OnInit()
         if (!m_Batch)
             Manager::Get()->GetUserVariableManager()->SetUI(std::unique_ptr<UserVarManagerUI>(new UserVarManagerGUI()));
 
+#if wxCHECK_VERSION(3,3,0)
+        // Dark/Light mode switching works reliable starting with wxWidgets 3.3.x
+        int appearance = appCfg->ReadInt(_T("/environment/appearance"), 0);
+        switch (appearance)
+        {
+            case 1: // Dark mode
+            {
+                SetAppearance(Appearance::Dark);
+                break;
+            }
+            case 2: // Light mode
+            {
+                SetAppearance(Appearance::Light);
+                break;
+            }
+            case 0: // System Default (fall-through)
+            default:
+            {
+                SetAppearance(Appearance::System); // Should be set like this by default
+            }
+        }
+#endif
+
         // Splash screen moved to this place, otherwise it would be short visible, even if we only pass filenames via DDE/IPC
         // we also don't need it, if only a single instance is allowed
         Splash splash(!m_Batch && m_Script.IsEmpty() && m_Splash &&
                       appCfg->ReadBool("/environment/show_splash", true));
+
         InitDebugConsole();
 
         Manager::SetBatchBuild(m_Batch || !m_Script.IsEmpty());
         Manager::Get()->GetScriptingManager();
-        MainFrame* frame = nullptr;
-        frame = InitFrame();
-        m_Frame = frame;
 
+        MainFrame* frame = InitFrame();
+        m_Frame = frame;
         {
-            const double scalingFactor = cbGetContentScaleFactor(*frame);
+            const double scalingFactor       = cbGetContentScaleFactor(*frame);
             const double actualScalingFactor = cbGetActualContentScaleFactor(*frame);
             log->Log(wxString::Format(_("Initial scaling factor is %.3f (actual: %.3f)"),
                                       scalingFactor, actualScalingFactor));
@@ -931,7 +954,7 @@ int CodeBlocksApp::OnExit()
         {
             ULONG  HeapFragValue = 2;
 
-            int n = GetProcessHeaps_func(0, 0);
+            int n = GetProcessHeaps_func(0, nullptr);
             HANDLE *h = new HANDLE[n];
             GetProcessHeaps_func(n, h);
 
@@ -1154,7 +1177,7 @@ wxString CodeBlocksApp::GetAppPath() const
     wxString base;
 #ifdef __WXMSW__
     wxChar name[MAX_PATH] = {0};
-    GetModuleFileName(0L, name, MAX_PATH);
+    GetModuleFileName(nullptr, name, MAX_PATH);
     wxFileName fname(name);
     base = fname.GetPath(wxPATH_GET_VOLUME);
 #else

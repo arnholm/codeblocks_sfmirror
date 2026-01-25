@@ -334,6 +334,11 @@ EnvironmentSettingsDlg::EnvironmentSettingsDlg(wxWindow* parent, wxAuiDockArt* a
     // tab "Network"
     XRCCTRL(*this, "txtProxy", wxTextCtrl)->SetValue(cfg->Read(_T("/network_proxy")));
 
+    XRCCTRL(*this, "chAppearance", wxChoice)->SetSelection(cfg->ReadInt(_T("/environment/appearance"), 0));
+#if wxCHECK_VERSION(3,3,0)
+    XRCCTRL(*this, "chAppearance", wxChoice)->Enable(); // Dark/Light mode switching works reliable starting with wxWidgets 3.3.x
+#endif
+
     FillApplicationColours();
 
     // disable some windows-only settings, in other platforms
@@ -657,7 +662,7 @@ void EnvironmentSettingsDlg::EndModal(int retCode)
             else
                 Manager::Get()->GetEditorManager()->DeleteNotebookStack();
         }
-        cfg->Write(_T("/environment/tabs_stacked_based_switching"),          tab_switcher_mode);
+        cfg->Write(_T("/environment/tabs_stacked_based_switching"), tab_switcher_mode);
 
         bool enableMousewheel = (bool) XRCCTRL(*this, "chkNBUseMousewheel",wxCheckBox)->GetValue();
         cfg->Write(_T("/environment/tabs_use_mousewheel"),           enableMousewheel);
@@ -712,6 +717,8 @@ void EnvironmentSettingsDlg::EndModal(int retCode)
 
         // tab "Network"
         cfg->Write(_T("/network_proxy"),    XRCCTRL(*this, "txtProxy", wxTextCtrl)->GetValue());
+
+        cfg->Write(_T("/environment/appearance"), (int)XRCCTRL(*this, "chAppearance", wxChoice)->GetSelection());
 
         WriteApplicationColours();
 
