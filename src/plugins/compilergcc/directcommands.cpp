@@ -213,8 +213,8 @@ void DirectCommands::CheckForToLongCommandLine(wxString& executableCmd, wxArrayS
 #define CB_COMMAND_LINE_MAX_LENGTH 131072
 #endif // __WXMSW__
 #endif // CB_COMMAND_LINE_MAX_LENGTH
-    const int maxLength = CB_COMMAND_LINE_MAX_LENGTH;
-    if (executableCmd.length() > maxLength)
+    const int maxLength = CB_COMMAND_LINE_MAX_LENGTH, lenCmd = executableCmd.length() ;
+    if (lenCmd > maxLength)
     {
         wxFileName responseFileName(path);
         responseFileName.SetName(basename);
@@ -230,7 +230,7 @@ void DirectCommands::CheckForToLongCommandLine(wxString& executableCmd, wxArrayS
             return;
         }
 
-        outputCommandArray.Add(COMPILER_ONLY_NOTE_LOG + wxString::Format(_("Command line is too long: Using responseFile: %s"), responseFilePath));
+        outputCommandArray.Add(COMPILER_ONLY_NOTE_LOG + wxString::Format(_("Command line is too long %d : Using responseFile: %s"), lenCmd, responseFilePath));
         outputCommandArray.Add(COMPILER_ONLY_NOTE_LOG + wxString::Format(_("Complete command line: %s"), executableCmd));
 
         // Begin from the back of the command line and search for a position to split it. A suitable position is a white space
@@ -924,7 +924,10 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
         if (target && ret.GetCount() != 0)
             ret.Add(COMPILER_TARGET_CHANGE + target->GetTitle());
 
-        CheckForToLongCommandLine(compilerCmd, ret, target->GetTitle() + "_link" , target->GetObjectOutput());
+        wxString  pathout = target->GetObjectOutput();
+        // replace locales variables '$xxx\PPPP\$yyy\...'
+        Manager::Get()->GetMacrosManager()->ReplaceMacros(pathout) ;
+        CheckForToLongCommandLine(compilerCmd, ret, target->GetTitle() + "_link" , pathout);
 
         // the 'true' will make sure all commands will be prepended by
         // COMPILER_WAIT signal
