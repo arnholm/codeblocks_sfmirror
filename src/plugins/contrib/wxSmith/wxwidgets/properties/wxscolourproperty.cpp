@@ -137,34 +137,34 @@ namespace
                                 const wxColourPropertyValue& value = wxColourPropertyValue(wxsCOLOUR_DEFAULT,*wxWHITE) );
         ~wxsMyColourPropertyClass();
 
-        virtual void OnSetValue();
-        virtual bool IntToValue( wxVariant& variant, int number, int argFlags = 0 ) const;
+        virtual void OnSetValue() override;
+        virtual bool DoSetAttribute( const wxString& name, wxVariant& value ) override;
 
-        /** Override in derived class to customize how colours are printed as strings.
-        */
+#if wxCHECK_VERSION(3, 3, 1)
+        virtual bool StringToValue( wxVariant& variant, const wxString& text, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        virtual bool IntToValue( wxVariant& variant, int number, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        virtual wxString ValueToString( wxVariant& value, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        /** Override in derived class to customize how colours are printed as strings */
+        virtual wxString ColourToString( const wxColour& col, int index, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const;
+#else
+        virtual bool StringToValue( wxVariant& variant, const wxString& text, int argFlags = 0 ) const override;
+        virtual bool IntToValue( wxVariant& variant, int number, int argFlags = 0 ) const override;
+        virtual wxString ValueToString( wxVariant& value, int argFlags = 0 ) const override;
+        /** Override in derived class to customize how colours are printed as strings */
         virtual wxString ColourToString( const wxColour& col, int index, int argFlags = 0 ) const;
+#endif
 
-        /** Returns index of entry that triggers colour picker dialog
-            (default is last).
-        */
+        /** Returns index of entry that triggers colour picker dialog (default is last) */
         virtual int GetCustomColourIndex() const;
 
-        virtual wxString ValueToString( wxVariant& value, int argFlags = 0 ) const;
-        virtual bool StringToValue( wxVariant& variant,
-                                    const wxString& text,
-                                    int argFlags = 0 ) const;
-        virtual bool OnEvent( wxPropertyGrid* propgrid,
-                              wxWindow* primary, wxEvent& event );
-        virtual bool DoSetAttribute( const wxString& name, wxVariant& value );
+        virtual bool OnEvent( wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event );
         virtual wxSize OnMeasureImage( int item ) const;
-        virtual void OnCustomPaint( wxDC& dc,
-                                    const wxRect& rect, wxPGPaintData& paintdata );
+        virtual void OnCustomPaint( wxDC& dc, const wxRect& rect, wxPGPaintData& paintdata );
+
         // Helper function to show the colour dialog
         bool QueryColourFromUser( wxVariant& variant ) const;
 
-        /** Default is to use wxSystemSettings::GetColour(index). Override to use
-            custom colour tables etc.
-        */
+        /** Default is to use wxSystemSettings::GetColour(index). Override to use custom colour tables etc */
         virtual wxColour GetColour( int index ) const;
 
         wxColourPropertyValue GetVal( const wxVariant* pVariant = NULL ) const;
@@ -179,6 +179,7 @@ namespace
         {
             return DoTranslateVal( v );
         }
+
         wxVariant TranslateVal( int type, const wxColour& colour ) const
         {
             wxColourPropertyValue v(type, colour);
@@ -205,7 +206,7 @@ namespace
         else
             cpv.Init( type, *wxWHITE );
 
-#if wxCHECK_VERSION(3, 3, 0)
+#if wxCHECK_VERSION(3, 3, 1)
         m_flags |= wxPGFlags::Reserved_1; // Colour selection cannot be changed.
 #else
         m_flags |= wxPG_PROP_STATIC_CHOICES; // Colour selection cannot be changed.
@@ -236,73 +237,73 @@ namespace
         if ( pVariant->IsNull() )
             return wxColourPropertyValue(wxPG_COLOUR_UNSPECIFIED, wxColour());
 
-    if ( pVariant->GetType() == wxS("wxColourPropertyValue") )
-    {
-        wxColourPropertyValue v;
-        v << *pVariant;
-        return v;
-    }
-
-    wxColour col;
-
-    bool variantProcessed = true;
-
-    if ( pVariant->GetType() == wxS("wxColour*") )
-    {
-        wxColour* pCol = wxStaticCast(pVariant->GetWxObjectPtr(), wxColour);
-        col = *pCol;
-    }
-    else if ( pVariant->GetType() == wxS("wxColour") )
-    {
-        col << *pVariant;
-    }
-    else if ( pVariant->GetType() == wxArrayInt_VariantType )
-    {
-        // This code is mostly needed for wxPython bindings, which
-        // may offer tuple of integers as colour value.
-        wxArrayInt arr;
-        arr << *pVariant;
-
-        if ( arr.size() >= 3 )
+        if ( pVariant->GetType() == wxS("wxColourPropertyValue") )
         {
-            int r, g, b;
-            int a = 255;
+            wxColourPropertyValue v;
+            v << *pVariant;
+            return v;
+        }
 
-            r = arr[0];
-            g = arr[1];
-            b = arr[2];
-            if ( arr.size() >= 4 )
-                a = arr[3];
+        wxColour col;
 
-            col = wxColour(r, g, b, a);
+        bool variantProcessed = true;
+
+        if ( pVariant->GetType() == wxS("wxColour*") )
+        {
+            wxColour* pCol = wxStaticCast(pVariant->GetWxObjectPtr(), wxColour);
+            col = *pCol;
+        }
+        else if ( pVariant->GetType() == wxS("wxColour") )
+        {
+            col << *pVariant;
+        }
+        else if ( pVariant->GetType() == wxArrayInt_VariantType )
+        {
+            // This code is mostly needed for wxPython bindings, which
+            // may offer tuple of integers as colour value.
+            wxArrayInt arr;
+            arr << *pVariant;
+
+            if ( arr.size() >= 3 )
+            {
+                int r, g, b;
+                int a = 255;
+
+                r = arr[0];
+                g = arr[1];
+                b = arr[2];
+                if ( arr.size() >= 4 )
+                    a = arr[3];
+
+                col = wxColour(r, g, b, a);
+            }
+            else
+            {
+                variantProcessed = false;
+            }
         }
         else
         {
             variantProcessed = false;
         }
-    }
-    else
-    {
-        variantProcessed = false;
-    }
 
-    if ( !variantProcessed )
-        return wxColourPropertyValue(wxPG_COLOUR_UNSPECIFIED, wxColour());
+        if ( !variantProcessed )
+            return wxColourPropertyValue(wxPG_COLOUR_UNSPECIFIED, wxColour());
 
-    wxColourPropertyValue v2( wxPG_COLOUR_CUSTOM, col );
+        wxColourPropertyValue v2( wxPG_COLOUR_CUSTOM, col );
 
-    int colInd = ColToInd(col);
-    if ( colInd != wxNOT_FOUND )
-        v2.m_type = colInd;
+        int colInd = ColToInd(col);
+        if ( colInd != wxNOT_FOUND )
+            v2.m_type = colInd;
 
-    return v2;
+        return v2;
     }
 
     wxVariant wxsMyColourPropertyClass::DoTranslateVal( wxColourPropertyValue& v ) const
     {
-    wxVariant variant;
-    variant << v;
-    return variant;
+        wxVariant variant;
+        variant << v;
+        return variant;
     }
 
     int wxsMyColourPropertyClass::ColToInd( const wxColour& colour ) const
@@ -409,70 +410,6 @@ namespace
         return wxSystemSettings::GetColour( (wxSystemColour)index );
     }
 
-    wxString wxsMyColourPropertyClass::ColourToString( const wxColour& col,
-                                                       int index,
-                                                       int argFlags ) const
-    {
-        if ( index == wxNOT_FOUND )
-        {
-#if wxCHECK_VERSION(3, 3, 0)
-            wxPGPropValFormatFlags pgFlags          = static_cast<wxPGPropValFormatFlags>(argFlags);
-            wxPGPropValFormatFlags pgFlagsFullValue = pgFlags & wxPGPropValFormatFlags::FullValue;
-            if ( (wxPGPropValFormatFlags::FullValue == pgFlagsFullValue) || (0!=GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0)) )
-#else
-            if ( (argFlags & wxPG_FULL_VALUE) || GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0) )
-#endif
-            {
-                return wxString::Format(wxS("(%i,%i,%i,%i)"),
-                                        (int)col.Red(),
-                                        (int)col.Green(),
-                                        (int)col.Blue(),
-                                        (int)col.Alpha());
-            }
-            else
-            {
-                return wxString::Format(wxT("(%i,%i,%i)"),
-                                        (int)col.Red(),
-                                        (int)col.Green(),
-                                        (int)col.Blue());
-            }
-        }
-        else
-            return m_choices.GetLabel(index);
-    }
-
-    wxString wxsMyColourPropertyClass::ValueToString( wxVariant& value,
-                                                    int argFlags ) const
-    {
-        wxColourPropertyValue val = GetVal(&value);
-
-        int index;
-
-#if wxCHECK_VERSION(3, 3, 0)
-        wxPGPropValFormatFlags pgFlags               = static_cast<wxPGPropValFormatFlags>(argFlags);
-        wxPGPropValFormatFlags pgFlagsValueIsCurrent = pgFlags & wxPGPropValFormatFlags::ValueIsCurrent;
-        if ( wxPGPropValFormatFlags::ValueIsCurrent == pgFlagsValueIsCurrent )
-#else
-        if ( argFlags & wxPG_VALUE_IS_CURRENT )
-#endif
-        {
-            // GetIndex() only works reliably if wxPG_VALUE_IS_CURRENT flag is set,
-            // but we should use it whenever possible.
-            index = GetIndex();
-
-            // If custom colour was selected, use invalid index, so that
-            // ColourToString() will return properly formatted colour text.
-            if ( index == GetCustomColourIndex() )
-                index = wxNOT_FOUND;
-        }
-        else
-        {
-            index = m_choices.Index(val.m_type);
-        }
-
-        return ColourToString(val.m_colour, index, argFlags);
-    }
-
     wxSize wxsMyColourPropertyClass::OnMeasureImage( int ) const
     {
         return wxPG_DEFAULT_IMAGE_SIZE;
@@ -499,7 +436,7 @@ namespace
         wxASSERT( propgrid );
 
         // Must only occur when user triggers event
-#if wxCHECK_VERSION(3, 3, 0)
+#if wxCHECK_VERSION(3, 3, 1)
         if ( !(propgrid->GetInternalFlags() & wxPropertyGrid::wxPG_FL_IN_HANDLECUSTOMEDITOREVENT) )
             return res;
 #else
@@ -538,22 +475,6 @@ namespace
         return res;
     }
 
-
-    bool wxsMyColourPropertyClass::IntToValue( wxVariant& variant, int number, int WXUNUSED(argFlags) ) const
-    {
-        int index = number;
-        int type = m_choices.GetValue(index);
-        if ( type == wxPG_COLOUR_CUSTOM )
-        {
-            QueryColourFromUser(variant);
-        }
-        else
-        {
-            variant = TranslateVal( type, GetColour(type) );
-        }
-
-        return true;
-    }
 
     // Need to do some extra event handling.
     bool wxsMyColourPropertyClass::OnEvent( wxPropertyGrid* propgrid,
@@ -635,12 +556,15 @@ namespace
             dc.SetBrush(wxSystemSettings::GetColour((wxSystemColour)value));
         }
         dc.DrawRectangle(rect);
-
-
     }
 
+    bool wxsMyColourPropertyClass::DoSetAttribute(cb_unused const wxString& name, cb_unused wxVariant& value)
+    {
+        return false;
+    }
 
-    bool wxsMyColourPropertyClass::StringToValue( wxVariant& value, const wxString& text, int argFlags ) const
+#if wxCHECK_VERSION(3, 3, 1)
+    bool wxsMyColourPropertyClass::StringToValue( wxVariant& value, const wxString& text, wxPGPropValFormatFlags argFlags ) const
     {
         //
         // Accept colour format "[Name] [(R,G,B)]"
@@ -673,12 +597,7 @@ namespace
         if ( colourRGB.length() == 0 && m_choices.GetCount() &&
              colourName == m_choices.GetLabel(GetCustomColourIndex()) )
         {
-#if wxCHECK_VERSION(3, 3, 0)
-            wxPGPropValFormatFlags pgFlags = static_cast<wxPGPropValFormatFlags>(argFlags);
-            if ( !( pgFlags & wxPGPropValFormatFlags::EditableValue ) )
-#else
-            if ( !( argFlags & wxPG_EDITABLE_VALUE ) )
-#endif
+            if ( !( argFlags & wxPGPropValFormatFlags::EditableValue ) )
             {
                 // This really should not occur...
                 // wxASSERT(false);
@@ -696,12 +615,7 @@ namespace
             if ( colourName.length() )
             {
                 // Try predefined colour first
-#if wxCHECK_VERSION(3, 3, 0)
-                wxPGPropValFormatFlags pgFlags = static_cast<wxPGPropValFormatFlags>(argFlags);
-                bool res = wxEnumProperty::StringToValue(value, colourName, pgFlags);
-#else
                 bool res = wxEnumProperty::StringToValue(value, colourName, argFlags);
-#endif
                 if ( res && GetIndex() >= 0 )
                 {
                     val.m_type = GetIndex();
@@ -745,11 +659,233 @@ namespace
         return true;
     }
 
-    bool wxsMyColourPropertyClass::DoSetAttribute(cb_unused const wxString& name, cb_unused wxVariant& value)
+    bool wxsMyColourPropertyClass::IntToValue( wxVariant& variant, int number, wxPGPropValFormatFlags WXUNUSED(argFlags) ) const
     {
-        return false;
+        int index = number;
+        int type = m_choices.GetValue(index);
+        if ( type == wxPG_COLOUR_CUSTOM )
+        {
+            QueryColourFromUser(variant);
+        }
+        else
+        {
+            variant = TranslateVal( type, GetColour(type) );
+        }
 
+        return true;
     }
+
+    wxString wxsMyColourPropertyClass::ValueToString( wxVariant& value, wxPGPropValFormatFlags argFlags ) const
+    {
+        wxColourPropertyValue val = GetVal(&value);
+
+        int index;
+
+        wxPGPropValFormatFlags pgFlagsValueIsCurrent = argFlags & wxPGPropValFormatFlags::ValueIsCurrent;
+        if ( wxPGPropValFormatFlags::ValueIsCurrent == pgFlagsValueIsCurrent )
+        {
+            // GetIndex() only works reliably if wxPG_VALUE_IS_CURRENT flag is set,
+            // but we should use it whenever possible.
+            index = GetIndex();
+
+            // If custom colour was selected, use invalid index, so that
+            // ColourToString() will return properly formatted colour text.
+            if ( index == GetCustomColourIndex() )
+                index = wxNOT_FOUND;
+        }
+        else
+        {
+            index = m_choices.Index(val.m_type);
+        }
+
+        return ColourToString(val.m_colour, index, argFlags);
+    }
+
+    wxString wxsMyColourPropertyClass::ColourToString( const wxColour& col, int index, wxPGPropValFormatFlags argFlags ) const
+    {
+        if ( index == wxNOT_FOUND )
+        {
+            wxPGPropValFormatFlags pgFlagsFullValue = argFlags & wxPGPropValFormatFlags::FullValue;
+            if ( (wxPGPropValFormatFlags::FullValue == pgFlagsFullValue) || (0!=GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0)) )
+            {
+                return wxString::Format(wxS("(%i,%i,%i,%i)"),
+                                        (int)col.Red(),
+                                        (int)col.Green(),
+                                        (int)col.Blue(),
+                                        (int)col.Alpha());
+            }
+            else
+            {
+                return wxString::Format(wxT("(%i,%i,%i)"),
+                                        (int)col.Red(),
+                                        (int)col.Green(),
+                                        (int)col.Blue());
+            }
+        }
+        else
+            return m_choices.GetLabel(index);
+    }
+#else
+    bool wxsMyColourPropertyClass::StringToValue( wxVariant& value, const wxString& text, int argFlags ) const
+    {
+        //
+        // Accept colour format "[Name] [(R,G,B)]"
+        // Name takes precedence.
+        //
+        wxString colourName;
+        wxString colourRGB;
+
+        int ppos = text.Find(wxT("("));
+
+        if ( ppos == wxNOT_FOUND )
+        {
+            colourName = text;
+        }
+        else
+        {
+            colourName = text.substr(0, ppos);
+            colourRGB = text.substr(ppos, text.length()-ppos);
+        }
+
+        // Strip spaces from extremities
+        colourName.Trim(true);
+        colourName.Trim(false);
+        colourRGB.Trim(true);
+
+        // Validate colourRGB string - (1,1,1) is shortest allowed
+        if ( colourRGB.length() < 7 )
+            colourRGB.clear();
+
+        if ( colourRGB.length() == 0 && m_choices.GetCount() &&
+             colourName == m_choices.GetLabel(GetCustomColourIndex()) )
+        {
+            if ( !( argFlags & wxPG_EDITABLE_VALUE ) )
+            {
+                // This really should not occur...
+                // wxASSERT(false);
+                return false;
+            }
+
+            QueryColourFromUser(value);
+        }
+        else
+        {
+            wxColourPropertyValue val;
+
+            bool done = false;
+
+            if ( colourName.length() )
+            {
+                // Try predefined colour first
+                bool res = wxEnumProperty::StringToValue(value, colourName, argFlags);
+                if ( res && GetIndex() >= 0 )
+                {
+                    val.m_type = GetIndex();
+                    if ( val.m_type < m_choices.GetCount() )
+                        val.m_type = m_choices[val.m_type].GetValue();
+
+                    // Get proper colour for type.
+                    val.m_colour = GetColour(val.m_type);
+
+                    done = true;
+                }
+            }
+            if ( colourRGB.length() && !done )
+            {
+                // Then check custom colour.
+                val.m_type = wxPG_COLOUR_CUSTOM;
+
+                int r = -1, g = -1, b = -1;
+                wxSscanf(colourRGB.c_str(),wxT("(%i,%i,%i)"),&r,&g,&b);
+
+                if ( r >= 0 && r <= 255 &&
+                     g >= 0 && g <= 255 &&
+                     b >= 0 && b <= 255 )
+                {
+                    val.m_colour.Set(r,g,b);
+
+                    done = true;
+                }
+            }
+
+            if ( !done )
+            {
+                // This really should not occur...
+                // wxASSERT(false);
+                return false;
+            }
+
+            value = DoTranslateVal(val);
+        }
+
+        return true;
+    }
+
+    bool wxsMyColourPropertyClass::IntToValue( wxVariant& variant, int number, int WXUNUSED(argFlags) ) const
+    {
+        int index = number;
+        int type = m_choices.GetValue(index);
+        if ( type == wxPG_COLOUR_CUSTOM )
+        {
+            QueryColourFromUser(variant);
+        }
+        else
+        {
+            variant = TranslateVal( type, GetColour(type) );
+        }
+
+        return true;
+    }
+
+    wxString wxsMyColourPropertyClass::ValueToString( wxVariant& value, int argFlags ) const
+    {
+        wxColourPropertyValue val = GetVal(&value);
+
+        int index;
+
+        if ( argFlags & wxPG_VALUE_IS_CURRENT )
+        {
+            // GetIndex() only works reliably if wxPG_VALUE_IS_CURRENT flag is set,
+            // but we should use it whenever possible.
+            index = GetIndex();
+
+            // If custom colour was selected, use invalid index, so that
+            // ColourToString() will return properly formatted colour text.
+            if ( index == GetCustomColourIndex() )
+                index = wxNOT_FOUND;
+        }
+        else
+        {
+            index = m_choices.Index(val.m_type);
+        }
+
+        return ColourToString(val.m_colour, index, argFlags);
+    }
+
+    wxString wxsMyColourPropertyClass::ColourToString( const wxColour& col, int index, int argFlags ) const
+    {
+        if ( index == wxNOT_FOUND )
+        {
+            if ( (argFlags & wxPG_FULL_VALUE) || GetAttributeAsLong(wxPG_COLOUR_HAS_ALPHA, 0) )
+            {
+                return wxString::Format(wxS("(%i,%i,%i,%i)"),
+                                        (int)col.Red(),
+                                        (int)col.Green(),
+                                        (int)col.Blue(),
+                                        (int)col.Alpha());
+            }
+            else
+            {
+                return wxString::Format(wxT("(%i,%i,%i)"),
+                                        (int)col.Red(),
+                                        (int)col.Green(),
+                                        (int)col.Blue());
+            }
+        }
+        else
+            return m_choices.GetLabel(index);
+    }
+#endif
 }
 
 wxColour wxsColourData::GetColour()
