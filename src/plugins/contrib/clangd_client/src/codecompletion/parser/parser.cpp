@@ -3071,6 +3071,16 @@ void Parser::OnLSP_HoverResponse(wxCommandEvent& event, std::vector<ClgdCCToken>
     /// GetClientData() contains ptr to json object, dont free it, OnLSP_Event will free it as a unique_ptr
     json* pJson = (json*)event.GetClientData();
 
+    /// ** Debugging ** Result: There's no filename in the response
+    // LSP is not providing a URI in the Hover response as of 2026/02/05
+    //// Dump to pretty-printed std::string (indent=2 spaces)
+    //std::string jsonStr = pJson->dump(2);
+    //// Convert to wxString
+    //wxString wxJsonStr(jsonStr.c_str(), wxConvUTF8);  // UTF-8 safe
+    //// Or simply: wxString wxJsonStr(jsonStr); if wxWidgets handles UTF-8
+    //// Now use wxJsonStr (e.g., in MessageBox, log, etc.)
+    //CCLogger::Get()->DebugLog(wxJsonStr);
+
     if (evtString.EndsWith(wxString(STX) +"result") ) try
     {
         //Info:

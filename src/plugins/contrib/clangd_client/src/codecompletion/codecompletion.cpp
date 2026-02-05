@@ -1630,19 +1630,23 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
     // ----------------------------------------------------
     // On second call from ccmanager, we should have some tokens to return
     // else the second call is never initiated by OnLSP_HoverResponse().
-    if (m_HoverTokens.size() )
+    if (m_HoverTokens.size() && (ed == m_pEditorLastHoverRequest)) // ticket 1585
     {
         tokens.clear();
         //wxString hoverMsg = wxString::Format("GetTokenAt() sees %d tokens.\n", int(m_HoverTokens.size()));
         //CCLogger::Get()->DebugLog(hoverMsg);
         for(size_t ii=0; ii<m_HoverTokens.size(); ++ii)
         {
-            CCToken look = m_HoverTokens[ii]; //debugging
+            //CCToken look = m_HoverTokens[ii]; //debugging
             tokens.push_back(m_HoverTokens[ii]);
         }
         m_HoverTokens.clear();
         GetParseManager()->SetHoverRequestIsActive(false);
         return tokens;
+    }
+    else if (m_HoverTokens.size() && !(ed == m_pEditorLastHoverRequest))  // ticket 1585
+    {
+        m_HoverTokens.clear();
     }
     // On the first call from ccmanager, issue LSP_Hover() to clangd and return empty tokens
     // while waiting for clangd to respond. Once we get response data, OnLSP_HoverResponse()
@@ -1651,6 +1655,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetTokenAt(int pos, cbEdito
     {
         GetParseManager()->SetHoverRequestIsActive(true);
         m_HoverLastPosition = pos;
+        m_pEditorLastHoverRequest = ed; // ticket 1585
         GetLSPClient(ed)->LSP_Hover(ed, pos);
     }
     tokens.clear();
@@ -3713,7 +3718,9 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/signatureHelp"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        if (pParser)
+
+        cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor(); // ticket 1585
+        if (pParser && (m_pEditorLastHoverRequest == pEditor))
             pParser->OnLSP_SignatureHelpResponse(event, m_SignatureTokens, m_HoverLastPosition);
     }
     // ----------------------------------------------------------------------------
