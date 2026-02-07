@@ -3709,11 +3709,10 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
     else if ( evtString.StartsWith("textDocument/hover"))
     {
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-
         cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor(); // ticket 1585
         // assure that this data belongs to the current active editor   // ticket 1585
         if (pParser && (m_pEditorLastHoverRequest == pEditor))
-            pParser->OnLSP_SignatureHelpResponse(event, m_SignatureTokens, m_HoverLastPosition);
+            pParser->OnLSP_HoverResponse(event, m_HoverTokens, m_HoverLastPosition);
     }
     // ----------------------------------------------------------------------------
     // SignatureHelp event
