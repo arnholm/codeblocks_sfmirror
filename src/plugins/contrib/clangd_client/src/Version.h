@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.144 25/12/16")
+#define VERSION wxT("1.2.146 26/02/07")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,8 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.146   2026/02/07 Fix ClassBrowser Fix asserts caused by invalid wxTreeItemId(s)
+//1.2.145   2026/02/07 Apply Christo patch #1585 check hover data against active editor
 //1.2.144   2025/12/16 Apply Christo patch #1576
 //          clangd_client_symbol_browser_hang_on_proxy_project_svn_13761.patch
 //          Symbol browser causes hang on taking symbol browser when active file out of project.

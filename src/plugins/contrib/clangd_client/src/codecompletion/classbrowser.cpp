@@ -609,33 +609,38 @@ wxTreeItemId ClassBrowser::FindNext(const wxString& search, wxTreeCtrl* tree, co
 
 wxTreeItemId ClassBrowser::FindChild(const wxString& search, wxTreeCtrl* tree, const wxTreeItemId& start, bool recurse, bool partialMatch)
 {
-    if (!tree)
+    if (!tree || !start.IsOk())
         return wxTreeItemId();
 
-    wxTreeItemIdValue cookie;
-    wxTreeItemId res = tree->GetFirstChild(start, cookie);
-    while (res.IsOk())
+    try
     {
-        wxString text = tree->GetItemText(res);
-        if (   (!partialMatch && text == search)
-            || ( partialMatch && text.StartsWith(search)) )
+        wxTreeItemIdValue cookie;
+        wxTreeItemId res = tree->GetFirstChild(start, cookie);
+        while (res.IsOk())
         {
-            return res;
-        }
-
-        if (recurse && tree->ItemHasChildren(res))
-        {
-            res = FindChild(search, tree, res, true, partialMatch);
-            if (res.IsOk())
+            wxString text = tree->GetItemText(res);
+            if (   (!partialMatch && text == search)
+                || ( partialMatch && text.StartsWith(search)) )
+            {
                 return res;
-        }
+            }
 
-        //-res = m_CCTreeCtrl->GetNextChild(start, cookie);  //patch 1409
-        res = tree->GetNextChild(start, cookie);             //patch 1409
+            if (recurse && tree->ItemHasChildren(res))
+            {
+                wxTreeItemId childRes = FindChild(search, tree, res, true, partialMatch);
+                if (childRes.IsOk())
+                    return childRes;
+            }
+
+            //-res = m_CCTreeCtrl->GetNextChild(start, cookie);  //patch 1409
+            res = tree->GetNextChild(start, cookie);             //patch 1409
+        }
+    }
+    catch (...)
+    {
     }
 
-    res.Unset();
-    return res;
+    return wxTreeItemId();
 }
 
 bool ClassBrowser::RecursiveSearch(const wxString& search, wxTreeCtrl* tree, const wxTreeItemId& parent, wxTreeItemId& result)
@@ -1005,6 +1010,9 @@ template <typename T, typename T1, typename P1>
 bool ClassBrowser::GetTokenTreeLock(void (T::*method)(T1 x1), P1 event)
 // ----------------------------------------------------------------------------
 {
+    wxUnusedVar(method);
+    wxUnusedVar(event);
+
     // -----------------------------------------------------
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
@@ -1217,9 +1225,10 @@ void ClassBrowser::SearchBottomTree(bool firstTry)   //patch 1409
         if (firstTry)
         {
             m_TimerSymbolSearchWaitForBottomTree.Start(100, wxTIMER_ONE_SHOT);
-            return;
         }
+        return;  // <-- don't fall through with an invalid bottomRoot id
     }
+
     wxTreeItemId res = FindChild(m_LastSearchedSymbol, m_CCTreeCtrlBottom, bottomRoot, true, true);
     if (res.IsOk()) {
         m_CCTreeCtrlBottom->SelectItem(res);
