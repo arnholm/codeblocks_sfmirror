@@ -66,10 +66,17 @@ namespace
                 return wxCustomPropertyClass::OnEvent(propgrid,wnd_primary,event);
             }
 
-            virtual wxString ValueToString(cb_unused wxVariant& value, cb_unused int argFlags = 0) const
+#if wxCHECK_VERSION(3, 3, 1)
+            virtual wxString ValueToString(cb_unused wxVariant& value, cb_unused wxPGPropValFormatFlags argFlags = wxPGPropValFormatFlags::Null) const override
             {
                 return Property->GetStr(Object);
             }
+#else
+            virtual wxString ValueToString(cb_unused wxVariant& value, cb_unused int argFlags = 0) const override
+            {
+                return Property->GetStr(Object);
+            }
+#endif
 
             /** \brief Pointer to wxsProperty which created this
              *
