@@ -162,12 +162,19 @@ public:
     void SetValue(const wxString member, const wxString& value)
     {
         UserVarMemberMap::iterator itr = m_Values.find(member);
+        // for example, we have a global compiler variable named
+        // WXWIDGETS, and it has a field named WX_CFG, which is defined as empty
+        // Sometimes, we need to write the usage as:
+        // $(#WXWIDGETS)/lib/gcc_dll$(#WXWIDGETS.WX_CFG)
+        // We would like to see $(#WXWIDGETS.WX_CFG) is replaced as empty
+        // So, the empty field should be saved, thus the below code is commented out
+        // Remove this check that deletes empty values:
+        // if (value.IsEmpty() && itr != m_Values.end())
+        // {
+        //     m_Values.erase(itr);
+        //     return;
+        // }
 
-        if (value.IsEmpty() && itr != m_Values.end())
-        {
-            m_Values.erase(itr);
-            return;
-        }
         if (itr == m_Values.end())
             m_Values.emplace(member, UserVariableMember(member, value));
         else

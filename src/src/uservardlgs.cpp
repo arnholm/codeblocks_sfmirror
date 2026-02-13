@@ -646,6 +646,8 @@ void UsrGlblMgrEditDialog::Save()
     for (const wxString& buildInVar : knownMembers)
     {
         const wxString value = ((wxTextCtrl*) FindWindow(buildInVar))->GetValue();
+        // for predefined members (buildin members), such as: $(#WXWIDGETS.cflags)
+        // just remove the empty valued keys, we don't need to save them in the conf file
         if (value.empty())
             var.RemoveMember(buildInVar);
         else
@@ -658,6 +660,9 @@ void UsrGlblMgrEditDialog::Save()
         const wxString name  = m_Name[i]->GetValue();
         if (name.IsEmpty())
             continue;
+        // for user defined member field, for example
+        // $(#WXWIDGETS.WX_CFG), the value of WX_CFG is defined as empty
+        // we always save them in the conf file
         const wxString value = m_Value[i]->GetValue();
         var.SetValue(name, value);
     }
