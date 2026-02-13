@@ -403,8 +403,6 @@ WatchesDlg::WatchesDlg() :
     SetAutoLayout(TRUE);
     SetSizer(bs);
 
-    m_grid->SetFont(m_grid->GetFont().Scaled(cbGetContentScaleFactor(*this)));
-
     if (!watchesPropertyEditor)
         watchesPropertyEditor = wxPropertyGrid::RegisterEditorClass(new cbTextCtrlAndButtonTooltipEditor, true);
 
@@ -1344,8 +1342,6 @@ ValueTooltip::ValueTooltip(const cb::shared_ptr<cbWatch> &watch, wxWindow *paren
 #endif
     m_grid->SetExtraStyle(extraStyles);
     m_grid->SetDropTarget(new WatchesDropTarget);
-
-    m_grid->SetFont(m_grid->GetFont().Scaled(cbGetContentScaleFactor(*this)));
 
     m_grid->SetColumnCount(3);
 

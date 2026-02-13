@@ -23,8 +23,8 @@ CPURegistersDlg::CPURegistersDlg(wxWindow* parent) :
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     m_pList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
-    wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    m_pList->SetFont(font.Scaled(cbGetContentScaleFactor(*this)));
+    wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    m_pList->SetFont(font);
     sizer->Add(m_pList, 1, wxGROW);
     SetSizer(sizer);
     Layout();
