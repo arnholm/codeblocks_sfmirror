@@ -168,14 +168,23 @@ void FilePathPanel::OntxtFilenameText(cb_unused wxCommandEvent& event)
     if (!txtFilename || txtFilename->GetValue().IsEmpty())
         return;
     wxString name = wxFileNameFromPath(txtFilename->GetValue());
-    while (name.Replace(_T(" "), _T("_")))
-        ;
-    while (name.Replace(_T("\t"), _T("_")))
-        ;
-    while (name.Replace(_T("."), _T("_")))
-        ;
-    name.MakeUpper();
+    for (size_t i = 0; i < name.length(); ++i)
+    {
+        wxUniChar c = name[i];
+        if (wxIsalnum(c))
+        {
+            name[i] = wxToupper(c);
+        }
+        else
+        {
+            name[i] = '_';
+        }
+    }
     name << _T("_INCLUDED");
+    if (wxIsdigit(name[0]))
+    {
+        name.Prepend('_');
+    }
     txtGuard->SetValue(name);
 }
 
