@@ -958,21 +958,25 @@ SQRESULT sq_setdelegate(HSQUIRRELVM v,SQInteger idx)
     switch(type) {
     case OT_TABLE:
         if(sq_type(mt) == OT_TABLE) {
-            if(!_table(self)->SetDelegate(_table(mt))) return sq_throwerror(v, _SC("delagate cycle")); v->Pop();}
+            if(!_table(self)->SetDelegate(_table(mt)))
+                return sq_throwerror(v, _SC("delagate cycle"));
+            v->Pop(); }
         else if(sq_type(mt)==OT_NULL) {
-            _table(self)->SetDelegate(NULL); v->Pop(); }
+            _table(self)->SetDelegate(NULL);
+            v->Pop(); }
         else return sq_aux_invalidtype(v,type);
         break;
     case OT_USERDATA:
         if(sq_type(mt)==OT_TABLE) {
-            _userdata(self)->SetDelegate(_table(mt)); v->Pop(); }
+            _userdata(self)->SetDelegate(_table(mt));
+            v->Pop(); }
         else if(sq_type(mt)==OT_NULL) {
-            _userdata(self)->SetDelegate(NULL); v->Pop(); }
+            _userdata(self)->SetDelegate(NULL);
+            v->Pop(); }
         else return sq_aux_invalidtype(v, type);
         break;
     default:
-            return sq_aux_invalidtype(v, type);
-        break;
+        return sq_aux_invalidtype(v, type);
     }
     return SQ_OK;
 }
