@@ -122,7 +122,9 @@ size_t LogManager::SetLog(Logger* l, int i)
             }
         }
 
-        delete l;
+        if (l != &g_null_log)
+            delete l;
+
         return invalid_log;
     }
 
