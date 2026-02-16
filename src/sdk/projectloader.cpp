@@ -936,9 +936,16 @@ wxString MakePathAbsoluteIfNeeded(const wxString& path, const wxString& basePath
 
 bool IsRelative(const wxString& path)
 {
-    return !(path.GetChar(1) == ':' || path.GetChar(0) == '/');
-}
+    // Linux
+    if (path.StartsWith("/"))
+        return false;
 
+    // Windows
+    if (path.length() < 2)
+        return true;
+
+    return (path.GetChar(1) != ':');
+}
 
 void SplitPath(wxString path, std::vector<std::string>& out)
 {
