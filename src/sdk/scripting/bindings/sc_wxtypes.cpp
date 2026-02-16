@@ -17,6 +17,7 @@
 #include "scripting/bindings/sc_utils.h"
 #include "scripting/bindings/sc_typeinfo_all.h"
 
+#include <wx/colour.h>
 #include <wx/filename.h>
 
 using namespace cb;

@@ -934,7 +934,7 @@ wxString MakePathAbsoluteIfNeeded(const wxString& path, const wxString& basePath
     return absolute;
 }
 
-bool IsRelative(wxString path)
+bool IsRelative(const wxString& path)
 {
     return !(path.GetChar(1) == ':' || path.GetChar(0) == '/');
 }
