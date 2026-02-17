@@ -65,7 +65,7 @@ class CompilerOptionsDlg : public cbConfigurationPanel
         void DoSaveVars();
         void DoSaveCompilerDefinition();
         void CompilerChanged();
-        void UpdateCompilerForTargets(int compilerIdx);
+        void UpdateCompilerForTargets(Compiler* compiler);
         void AutoDetectCompiler();
         wxListBox* GetDirsListBox();
         CompileOptionsBase* GetVarsOwner();
@@ -127,7 +127,7 @@ class CompilerOptionsDlg : public cbConfigurationPanel
         wxArrayString                m_LinkLibs;
         wxArrayString                m_CompilerOptions;
         wxArrayString                m_ResourceCompilerOptions;
-        int                          m_CurrentCompilerIdx;
+        Compiler*                    m_CurrentCompiler;
         cbProject*                   m_pProject;
         ProjectBuildTarget*          m_pTarget;
         bool                         m_bDirty;                       //!< true if a setting has changed since last save
