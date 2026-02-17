@@ -1333,8 +1333,19 @@ ValueTooltip::ValueTooltip(const cb::shared_ptr<cbWatch> &watch, wxWindow *paren
     m_outsideCount(0),
     m_watch(watch)
 {
-    m_grid = new wxPropertyGrid(this, idTooltipGrid, wxDefaultPosition, wxSize(200, 200),
+#if wxCHECK_VERSION(3, 1, 0)
+    m_grid = new wxPropertyGrid(this, idTooltipGrid, wxDefaultPosition, FromDIP(wxSize(200, 200)),
                                 wxPG_SPLITTER_AUTO_CENTER);
+#else
+    const double scale = cbGetContentScaleFactor(*parent);
+    m_grid = new wxPropertyGrid(this, idTooltipGrid, wxDefaultPosition, wxSize(wxRound(200*scale), wxRound(200*scale)),
+                                wxPG_SPLITTER_AUTO_CENTER);
+#endif
+
+    const wxString fontStr = cbDebuggerCommonConfig::GetValueTooltipFont();  // Gemini 2026/02/16 4 lines
+    wxFont font;
+    if (font.SetNativeFontInfo(fontStr))
+        m_grid->SetFont(font);
 
     long extraStyles = 0;
 #if wxCHECK_VERSION(3, 0, 3)
