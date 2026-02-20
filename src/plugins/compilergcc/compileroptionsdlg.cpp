@@ -1801,7 +1801,7 @@ void CompilerOptionsDlg::AutoDetectCompiler()
         {
             wxString msg;
             msg.Printf(_("Could not auto-detect installation path of \"%s\"...\n"
-                        "Do you want to use this m_CurrentCompiler's default installation directory?"),
+                        "Do you want to use the compiler's default installation directory?"),
                         m_CurrentCompiler->GetName().wx_str());
             if (cbMessageBox(msg, _("Confirmation"), wxICON_QUESTION | wxYES_NO) == wxID_NO)
             {
