@@ -605,6 +605,46 @@ SQInteger wxColour_ToString(HSQUIRRELVM v)
     return 1;
 }
 
+SQInteger wxColour_Blue(HSQUIRRELVM v)
+{
+    ExtractParams1<const wxColour*> extractor(v);
+    if (!extractor.Process("wxColour_Blue"))
+        return extractor.ErrorMessage();
+
+    sq_pushinteger(v, extractor.p0->Blue());
+    return 1;
+}
+
+SQInteger wxColour_Green(HSQUIRRELVM v)
+{
+    ExtractParams1<const wxColour*> extractor(v);
+    if (!extractor.Process("wxColour_Green"))
+        return extractor.ErrorMessage();
+
+    sq_pushinteger(v, extractor.p0->Green());
+    return 1;
+}
+
+SQInteger wxColour_Red(HSQUIRRELVM v)
+{
+    ExtractParams1<const wxColour*> extractor(v);
+    if (!extractor.Process("wxColour_Red"))
+        return extractor.ErrorMessage();
+
+    sq_pushinteger(v, extractor.p0->Red());
+    return 1;
+}
+
+SQInteger wxColour_Alpha(HSQUIRRELVM v)
+{
+    ExtractParams1<const wxColour*> extractor(v);
+    if (!extractor.Process("wxColour_Alpha"))
+        return extractor.ErrorMessage();
+
+    sq_pushinteger(v, extractor.p0->Alpha());
+    return 1;
+}
+
 SQInteger wxPoint_get(HSQUIRRELVM v)
 {
     ExtractParams2<const wxPoint*, const SQChar*> extractor(v);
@@ -1076,12 +1116,12 @@ void Register_wxTypes(HSQUIRRELVM v)
         BindDefaultClone<wxColour>(v);
 
         BindMethod(v, _SC("_tostring"), wxColour_ToString, _SC("wxColour::_tostring"));
-        BindMethod(v, _SC("Blue"), NoParamGetterInt<wxColour::ChannelType, wxColour, &wxColour::Blue>, _SC("wxColour::Blue"));
-        BindMethod(v, _SC("Green"), NoParamGetterInt<wxColour::ChannelType, wxColour, &wxColour::Green>, _SC("wxColour::Green"));
-        BindMethod(v, _SC("Red"), NoParamGetterInt<wxColour::ChannelType, wxColour, &wxColour::Red>, _SC("wxColour::Red"));
-        BindMethod(v, _SC("Alpha"), NoParamGetterInt<wxColour::ChannelType, wxColour, &wxColour::Alpha>, _SC("wxColour::Alpha"));
-        BindMethod(v, _SC("IsOk"), wxColour_IsOk, _SC("wxColour::IsOk"));
-        BindMethod(v, _SC("Set"), wxColour_Set, _SC("wxColour::Set"));
+        BindMethod(v, _SC("Blue"),      wxColour_Blue,     _SC("wxColour::Blue"));
+        BindMethod(v, _SC("Green"),     wxColour_Green,    _SC("wxColour::Green"));
+        BindMethod(v, _SC("Red"),       wxColour_Red,      _SC("wxColour::Red"));
+        BindMethod(v, _SC("Alpha"),     wxColour_Alpha,    _SC("wxColour::Alpha"));
+        BindMethod(v, _SC("IsOk"),      wxColour_IsOk,     _SC("wxColour::IsOk"));
+        BindMethod(v, _SC("Set"),       wxColour_Set,      _SC("wxColour::Set"));
 
         sq_newslot(v, classDecl, SQFalse); // Put the class in the root table. This must be last!
     }
