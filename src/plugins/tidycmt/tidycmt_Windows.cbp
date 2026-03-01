@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="tidycmt Windows" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="../../devel$(WX_VER)/share/CodeBlocks/plugins/tidycmt" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../devel$(WX_VER)" />
+				<Option object_output="../../.objs$(WX_VER)/plugins/tidycmt" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option parameters="--debug-log --multiple-instance -na -ns -nd" />
+				<Option host_application="../../devel$(WX_VER)/codeblocks.exe" />
+				<Option run_host_application_in_terminal="0" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="$(#CB_BUILD.CFLAGS)" />
+					<Add option="-pipe" />
+					<Add option="-fmessage-length=0" />
+					<Add option="-fexceptions" />
+					<Add option="-mthreads" />
+					<Add option="-DcbDEBUG" />
+					<Add option="-DHAVE_W32API_H" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-D_WIN$(#CB_BUILD.OSBITS)" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-DBUILDING_PLUGIN" />
+					<Add option="-DNOPCH" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-std=$(#CB_BUILD.CPP_STD)" />
+					<Add directory="../../include" />
+					<Add directory="../../include/tinyxml" />
+					<Add directory="../../sdk/wxscintilla/include" />
+					<Add directory="$(#WXWIDGETS.include)" />
+					<Add directory="$(#WXWIDGETS.lib)\gcc_dll$(#WXWIDGETS.WX_CFG)\msw$(#WXWIDGETS.WX_SUFFIX)" />
+				</Compiler>
+				<Linker>
+					<Add option="-mthreads" />
+					<Add library="codeblocks" />
+					<Add library="wxmsw$(#WXWIDGETS.WX_VERSION)$(#WXWIDGETS.WX_SUFFIX)" />
+					<Add directory="../../devel$(WX_VER)" />
+					<Add directory="$(#WXWIDGETS.lib)\gcc_dll$(#WXWIDGETS.WX_CFG)" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="zip -j9 ..\..\devel$(WX_VER)\share\CodeBlocks\tidycmt.zip manifest.xml" />
+					<Mode after="always" />
+				</ExtraCommands>
+			    <Environment>
+				    <Variable name="WX_VER" value="$(#WXWIDGETS.WX_VERSION)_$(#CB_BUILD.OSBITS)" />
+			    </Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="default;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="$(#CB_BUILD.CFLAGS)" />
+			<Add option="-std=$(#CB_BUILD.CPP_STD)" />
+		</Compiler>
+		<Unit filename="manifest.xml" />
+		<Unit filename="tidycmt.cpp" />
+		<Unit filename="tidycmt.h" />
+		<Unit filename="tidycmtconfig.h" />
+		<Unit filename="tidycmtsettings.cpp" />
+		<Unit filename="tidycmtsettings.h" />
+		<Unit filename="tidycmtsettingswrapper.cpp" />
+		<Unit filename="tidycmtsettingswrapper.h" />
+		<Unit filename="wxsmith/TidyCmtSettings.wxs" />
+		<Extensions>
+			<wxsmith version="1">
+				<resources>
+					<wxPanel wxs="wxsmith/TidyCmtSettings.wxs" src="tidycmtsettings.cpp" hdr="tidycmtsettings.h" fwddecl="0" i18n="1" name="TidyCmtSettings" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
