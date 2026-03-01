@@ -11,7 +11,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --verbose --no-splash-screen  /p cbCldDebug" />
-				<Option host_application="$(CODEBLOCKS)/../devel32_64/codeblocks.exe" />
+				<Option host_application="../../../devel32_64/codeblocks.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<ExtraCommands>
 					<Add before="cmd /c @echo TARGET_OUTPUT_DIR: $(TARGET_OUTPUT_DIR)" />
