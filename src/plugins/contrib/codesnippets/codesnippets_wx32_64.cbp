@@ -70,7 +70,7 @@
 			<Add after='cmd /c if not exist ..\..\..\devel32_64\share\codeblocks\plugins mkdir ..\..\..\devel32_64\share\codeblocks\plugins&quot;' />
 			<Add after='cmd /c if exist .\codesnippets.zip del .\codesnippets.zip&quot;' />
 			<Add after="zip -jq9 .\codesnippets.zip  manifest.xml" />
-			<Add after='cmd /c copy /Y .\codesnippets.zip ..\..\..\devel32_64\share\CodeBlocks\clangd_client.zip&quot;' />
+			<Add after='cmd /c copy /Y .\codesnippets.zip ..\..\..\devel32_64\share\CodeBlocks\codesnippets.zip&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />
