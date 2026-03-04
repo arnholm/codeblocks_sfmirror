@@ -259,6 +259,8 @@ void ClangLocator::FindClangResourceDirs(const wxString& path, wxString& firstLe
 {
     // list any directory in path that contains "lib*/clangd/"
 
+    wxUnusedVar(firstLevelVersionNum);
+
     wxString priorDir = wxGetCwd();
     wxSetWorkingDirectory(path);
    // ----------------------------------------------------------------------------
@@ -347,7 +349,7 @@ wxString ClangLocator::Locate_ClangdDir()
     wxString execDir  = Manager::Get()->GetConfigManager("app")->GetExecutableFolder();
     fnClangdPath.SetPath(execDir + fileSep + "lsp");
     if (fnClangdPath.FileExists())
-        ;//CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), execDir + fileSep + "lsp"));
+        {;}//CCLogger::Get()->DebugLog(wxString::Format(_("Locate_ClangdDir detected clangd in : %s"), execDir + fileSep + "lsp"));
 
     if (fnClangdPath.FileExists())
     {

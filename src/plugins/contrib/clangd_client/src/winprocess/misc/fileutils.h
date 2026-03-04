@@ -88,8 +88,10 @@ public:
      * @param path working directory
      * @param [output] tty the TTY of the launched terminal
      */
+    #if defined(__WXMAC__)
     static void OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxString& appname, wxString& tty,
                                                  long& pid);
+    #endif
 
     /**
      * @brief return the command needed to open OSX terminal at a given directory and launch a command

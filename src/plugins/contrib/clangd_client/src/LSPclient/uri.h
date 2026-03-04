@@ -226,7 +226,9 @@ public:
     sview port() { return m_port; }
     sview query() { return m_query; }
     sview fragment() { return m_fragment; }
-    sview query(sview key) {
+    sview query(sview key)
+    {
+         wxUnusedVar(key);
 /*
         static const std::regex query_token_pattern {"[^?=&]+"};
         auto query = query_.to_string();
@@ -241,7 +243,6 @@ public:
             }
         }
 */
-
         std::regex regex("([a-zA-Z_]+)=");
         std::cmatch part;
         if (std::regex_match(m_uri.c_str(), part, regex)) {

@@ -350,7 +350,7 @@ class LSPEventCallbackHandler: public wxEvtHandler
     // Call back with one parameter
     // ----------------------------------------------------------------------------
     template <typename ID, typename TP, typename T, typename T1, typename P1>
-    size_t LSP_RegisterEventSink(ID id, TP* thisptr, void (T::*method)(T1 x1), P1 x1)
+    size_t LSP_RegisterEventSink(cb_unused ID id, TP* thisptr, void (T::*method)(T1 x1), P1 x1)
     {
         //        QueueEvent(
         //            new LSPMethodCallbackEvent1<T, T1>(

@@ -20,6 +20,7 @@
 //-#include "file_logger.h"
 //-#include "macros.h"
 #include "procutils.h"
+#include "prep.h"  //cb_unused
 
 #include "wx/string.h"
 #include "wxStringHash.h" //used even if cland says otherwise
@@ -188,6 +189,7 @@ void FileUtils::OpenFileExplorerAndSelect(const wxFileName& filename)
 #endif
 }
 
+#if defined(__WXMAC__)
 // ----------------------------------------------------------------------------
 void FileUtils::OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxString& appname, wxString& tty,
                                                  long& pid)
@@ -251,7 +253,7 @@ void FileUtils::OSXOpenDebuggerTerminalAndGetTTY(const wxString& path, const wxS
     //    clDEBUG() << "PID is:" << pid;
     //    clDEBUG() << "TTY is:" << tty;
 }
-
+#endif
 // ----------------------------------------------------------------------------
 static void SplitMask(const wxString& maskString, wxArrayString& includeMask, wxArrayString& excludeMask)
 // ----------------------------------------------------------------------------
@@ -591,7 +593,7 @@ size_t FileUtils::SplitWords(const wxString& str, wxStringSet_t& outputSet, bool
 }
 
 // ----------------------------------------------------------------------------
-bool FileUtils::RemoveFile(const wxString& filename, const wxString& context)
+bool FileUtils::RemoveFile(const wxString& filename, cb_unused const wxString& context)
 // ----------------------------------------------------------------------------
 {
     //    clDEBUG1() << "Deleting file:" << filename << "(" << context << ")";

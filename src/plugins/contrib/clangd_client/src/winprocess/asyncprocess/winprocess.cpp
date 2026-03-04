@@ -12,6 +12,8 @@
 /*static*/
 WinProcess* WinProcess::Execute(const wxString& cmd, wxString& errMsg, const wxString& workingDir)
 {
+    wxUnusedVar(errMsg);
+
     SECURITY_ATTRIBUTES saAttr;
     BOOL fSuccess;
 

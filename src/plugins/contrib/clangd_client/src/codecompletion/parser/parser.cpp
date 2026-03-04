@@ -213,7 +213,7 @@ void Parser::DisconnectEvents()
         Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
 }
 // ----------------------------------------------------------------------------
-void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
+void Parser::OnDebuggerStarting(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     if ( not m_BatchParseFiles.empty() )
@@ -243,7 +243,7 @@ void Parser::OnDebuggerStarting(CodeBlocksEvent& event)
     }//endFor
 }
 // ----------------------------------------------------------------------------
-void Parser::OnDebuggerFinished(CodeBlocksEvent& event)
+void Parser::OnDebuggerFinished(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     if ( not m_BatchParseFiles.empty() )

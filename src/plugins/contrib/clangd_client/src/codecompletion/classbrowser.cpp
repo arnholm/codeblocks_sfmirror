@@ -1235,7 +1235,7 @@ void ClassBrowser::SearchBottomTree(bool firstTry)   //patch 1409
     }
 }
 // ----------------------------------------------------------------------------
-void ClassBrowser::DoSearchBottomTree(wxTimerEvent& event)  //patch 1409
+void ClassBrowser::DoSearchBottomTree(cb_unused wxTimerEvent& event)  //patch 1409
 // ----------------------------------------------------------------------------
 {
     SearchBottomTree(false);

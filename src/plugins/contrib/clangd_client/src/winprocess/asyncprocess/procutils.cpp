@@ -11,12 +11,12 @@
 //
 // ----------------------------------------------------------------------------
 #ifdef __FreeBSD__
-#include <sys/param.h>
-#include <sys/sysctl.h>
-#include <sys/user.h>
-#include <fcntl.h>
-#include <kvm.h>
-#include <paths.h>
+    #include <sys/param.h>
+    #include <sys/sysctl.h>
+    #include <sys/user.h>
+    #include <fcntl.h>
+    #include <kvm.h>
+    #include <paths.h>
 #endif
 
 #include "asyncprocess.h"
@@ -24,20 +24,22 @@
 #include "procutils.h"
 #include "winprocess.h"
 #include "wx/tokenzr.h"
+#include "prep.h"
 
 #include <stdio.h>
+
 #ifdef __WXMSW__
-#include "wx/msw/private.h"
-#include "wx/textbuf.h"
-#ifndef pclose
-#define pclose _pclose
-#endif
+    #include "wx/msw/private.h"
+    #include "wx/textbuf.h"
+    #ifndef pclose
+        #define pclose _pclose
+    #endif
 
-#ifndef popen
-#define popen _popen
-#endif
+    #ifndef popen
+        #define popen _popen
+    #endif
 
-#endif
+#endif //__WXMSW__
 
 // ----------------------------------------------------------------------------
 static wxString WrapWithShell(const wxString& cmd)
@@ -481,7 +483,7 @@ void ProcUtils::GetChildren(long pid, std::vector<long>& proclist)
 #endif
 }
 // ----------------------------------------------------------------------------
-bool ProcUtils::Shell(const wxString& programConsoleCommand)
+bool ProcUtils::Shell(cb_unused const wxString& programConsoleCommand)
 // ----------------------------------------------------------------------------
 {
     wxString cmd;

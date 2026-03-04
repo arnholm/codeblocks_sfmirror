@@ -874,6 +874,7 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
                     }//endif method
                 }//endcase kind function, method, constructor, property
                 // fall into default:
+                [[fallthrough]];
                 default:
                 {
                     //Info:
@@ -1847,7 +1848,7 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             else  token = "";
 
             if ( token == '}' )
-                ;//token = m_Tokenizer.GetToken(); //eat the '}'
+                {;}//token = m_Tokenizer.GetToken(); //eat the '}'
 
             //newToken->m_ImplLineEnd = m_Tokenizer.GetLineNumber();
             newToken->m_ImplLineEnd = lastLineNumber+1;
@@ -3043,6 +3044,7 @@ bool LSP_SymbolsParser::GetBaseArgs(const wxString& args, wxString& baseArgs)
                 ptr++; // next char
             }
             // ...and fall through:
+            [[fallthrough]];
         case ParserConsts::ref_chr: // handle references
             word = _T(""); // reset
             skip = true;

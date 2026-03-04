@@ -920,7 +920,10 @@ bool SearchTreeNode::UnSerializeString(const wxString& s,wxString& result)
                     entity.Clear();
                 }
                 else
+                {
                     result << ch;
+                }
+                [[fallthrough]];
             case 1: // escaped
                 if (ch==_T('&'))
                 {

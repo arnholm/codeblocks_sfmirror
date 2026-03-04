@@ -194,7 +194,7 @@ public:
     /** read Parser options from configure file */
     virtual void            ReadOptions() {}
     /** write Parse options to configure file */
-    virtual void            WriteOptions(bool classBrowserOnly=false) {} //(svn 13612 bkport)
+    virtual void            WriteOptions(cb_unused bool classBrowserOnly=false) {} //(svn 13612 bkport)
     // make them virtual, so Parser class can overwrite them!
     virtual ParserOptions&  Options()             { return m_Options;        }
     virtual BrowserOptions& ClassBrowserOptions() { return m_BrowserOptions; }

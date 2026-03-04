@@ -270,11 +270,11 @@ private:
     /** CC's own logger, to handle log events sent from other worker threads or itself(the main GUI
      * thread), the log messages will be printed in the "Code::Blocks" log panel.
      */
-    void OnCCLogger(CodeBlocksThreadEvent& event);
+    void OnCCLogger(wxCommandEvent& event);
     /** CC's own debug logger, to handle log event sent from other worker threads or itself(the main
      * GUI thread), the log messages will be printed in the "Code::Blocks Debug" log panel.
      */
-    void OnCCDebugLogger(CodeBlocksThreadEvent& event);
+    void OnCCDebugLogger(wxCommandEvent& event);
 
     /** ContextMenu->Insert-> declaration/implementation */
     int DoClassMethodDeclImpl();

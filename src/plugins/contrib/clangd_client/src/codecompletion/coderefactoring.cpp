@@ -104,9 +104,9 @@ public:
         sizer->SetSizeHints(this);
         Center();
 
-        Connect(ID_OPEN_FILES, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&ScopeDialog::OnOpenFilesClick);
-        Connect(ID_PROJECT_FILES, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction)&ScopeDialog::OnProjectFilesClick);
-        Connect(wxID_ANY, wxEVT_CLOSE_WINDOW, (wxObjectEventFunction)&ScopeDialog::OnClose);
+        Connect(ID_OPEN_FILES, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ScopeDialog::OnOpenFilesClick));
+        Connect(ID_PROJECT_FILES, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ScopeDialog::OnProjectFilesClick));
+        Connect(wxID_ANY, wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ScopeDialog::OnClose));
     }
 
 public:
@@ -181,61 +181,61 @@ void CodeRefactoring::RenameSymbols()
 
 }
 
-// ----------------------------------------------------------------------------
-size_t CodeRefactoring::SearchInFiles(const wxArrayString& files, const wxString& targetText)
-// ----------------------------------------------------------------------------
-{
-    EditorManager* edMan = Manager::Get()->GetEditorManager();
-    m_SearchDataMap.clear();
+////// ----------------------------------------------------------------------------
+////size_t CodeRefactoring::SearchInFiles(const wxArrayString& files, const wxString& targetText)
+////// ----------------------------------------------------------------------------
+////{
+////    EditorManager* edMan = Manager::Get()->GetEditorManager();
+////    m_SearchDataMap.clear();
+////
+////    // now that list is filled, we'll search
+////    wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
+////    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); Dont eat up IDs
+////    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("SearchInFilesEditor"), wxDefaultPosition, wxSize(0, 0));
+////    control->Show(false);
+////
+////    // let's create a progress dialog because it might take some time depending on the files count
+////    wxProgressDialog* progress = new wxProgressDialog(_("Code Refactoring"),
+////                                                      _("Please wait while searching inside the project..."),
+////                                                      files.GetCount(),
+////                                                      Manager::Get()->GetAppWindow(),
+////                                                      wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_CAN_ABORT);
+////    PlaceWindow(progress);
+////
+////    for (size_t i = 0; i < files.GetCount(); ++i)
+////    {
+////        // update the progress bar
+////        if (!progress->Update(i))
+////            break; // user pressed "Cancel"
+////
+////        // check if the file is already opened in built-in editor and do search in it
+////        cbEditor* ed = edMan->IsBuiltinOpen(files[i]);
+////        if (ed)
+////            control->SetText(ed->GetControl()->GetText());
+////        else // else load the file in the control
+////        {
+////            EncodingDetector detector(files[i]);
+////            if (!detector.IsOK())
+////                continue; // failed
+////            control->SetText(detector.GetWxStr());
+////        }
+////
+////        Find(control, files[i], targetText);
+////    }
+////
+////    delete control; // done with it
+////    delete progress; // done here too
+////
+////    return m_SearchDataMap.size();
+////}
 
-    // now that list is filled, we'll search
-    wxWindow* parent = edMan->GetBuiltinActiveEditor()->GetParent();
-    //cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(0, 0)); Dont eat up IDs
-    cbStyledTextCtrl* control = new cbStyledTextCtrl(parent, XRCID("SearchInFilesEditor"), wxDefaultPosition, wxSize(0, 0));
-    control->Show(false);
-
-    // let's create a progress dialog because it might take some time depending on the files count
-    wxProgressDialog* progress = new wxProgressDialog(_("Code Refactoring"),
-                                                      _("Please wait while searching inside the project..."),
-                                                      files.GetCount(),
-                                                      Manager::Get()->GetAppWindow(),
-                                                      wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_CAN_ABORT);
-    PlaceWindow(progress);
-
-    for (size_t i = 0; i < files.GetCount(); ++i)
-    {
-        // update the progress bar
-        if (!progress->Update(i))
-            break; // user pressed "Cancel"
-
-        // check if the file is already opened in built-in editor and do search in it
-        cbEditor* ed = edMan->IsBuiltinOpen(files[i]);
-        if (ed)
-            control->SetText(ed->GetControl()->GetText());
-        else // else load the file in the control
-        {
-            EncodingDetector detector(files[i]);
-            if (!detector.IsOK())
-                continue; // failed
-            control->SetText(detector.GetWxStr());
-        }
-
-        Find(control, files[i], targetText);
-    }
-
-    delete control; // done with it
-    delete progress; // done here too
-
-    return m_SearchDataMap.size();
-}
-
-size_t CodeRefactoring::VerifyResult(const TokenIdxSet& targetResult, const wxString& targetText,
-                                     bool isLocalVariable)
-{
-    cbThrow("CodeRefactoring::VerifyResult() calling  m_pParseManager->MarkItemsByAI()");
-    return 0;
-
-}
+////size_t CodeRefactoring::VerifyResult(cb_unused const TokenIdxSet& targetResult, cb_unused const wxString& targetText,
+////                                     cb_unused bool isLocalVariable)
+////{
+////    cbThrow("CodeRefactoring::VerifyResult() calling  m_pParseManager->MarkItemsByAI()");
+////    return 0;
+////
+////}
 
 void CodeRefactoring::Find(cbStyledTextCtrl* control, const wxString& file, const wxString& target)
 {

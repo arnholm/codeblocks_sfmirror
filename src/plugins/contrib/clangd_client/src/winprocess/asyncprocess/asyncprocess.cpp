@@ -48,7 +48,7 @@ public:
     }
 
     // --------------------------------------------------------------
-    void OnProcessOutput(wxThreadEvent& event)
+    void OnProcessOutput(cb_unused wxThreadEvent& event)
     // --------------------------------------------------------------
     {
         LogManager* pLogMgr = Manager::Get()->GetLogManager();
@@ -57,7 +57,7 @@ public:
     }
 
     // --------------------------------------------------------------
-    void OnProcessTerminated(wxThreadEvent& event)
+    void OnProcessTerminated(cb_unused wxThreadEvent& event)
     // --------------------------------------------------------------
     {
         LogManager* pLogMgr = Manager::Get()->GetLogManager();
@@ -147,6 +147,7 @@ IProcess* CreateAsyncProcess(wxEvtHandler* parent, const wxArrayString& args, si
                              const clEnvList_t* env, const wxString& sshAccountName)
 // --------------------------------------------------------------
 {
+    wxUnusedVar(sshAccountName);
     clEnvironment e(env);
     wxArrayString c = args;
 

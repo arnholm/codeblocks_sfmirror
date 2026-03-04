@@ -362,6 +362,9 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     : m_MutexInputBufGuard(), m_CondInputBuf(m_MutexInputBufGuard) //(Christo ticket 1423 2023/10/16)
 // ----------------------------------------------------------------------------
 {
+    wxUnusedVar(arguments);
+    wxUnusedVar(program);
+
     LogManager* pLogMgr = Manager::Get()->GetLogManager();
     m_LSP_responseStatus = false;
 
@@ -1005,6 +1008,8 @@ void ProcessLanguageClient::OnLSP_PipedProcessTerminated(wxThreadEvent& event_pi
     // For Linux, it's called when the server output pipe is closed and when unixProcess is Deleted.
     // For Windows, it's only called on an unexpected termination of winProcessImpl piped process.
 
+    wxUnusedVar(event_pipedprocess_terminated);
+
     int processExitCode = 0; //no good, return code is always 0
     if (GetLSP_Initialized()) processExitCode = -1; //terminated while initialized and running.
     if (m_pServerProcess){
@@ -1589,9 +1594,13 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
     return;
 }//end OnLSP_Response()
 // ----------------------------------------------------------------------------
-void ProcessLanguageClient::OnIDMethod(wxCommandEvent& event)
+void ProcessLanguageClient::OnIDMethod(wxCommandEvent& )
 // ----------------------------------------------------------------------------
 {
+    // Unimplemented
+    wxString msg = wxString::Format("%s: Function not implemented.", __FUNCTION__);
+    CCLogger::Get()->DebugLog(msg);
+
     //- unused- json* pJson = (json*)event.GetClientData();
     #if defined(MEASURE_wxIDs) //Get a count of all wxIDs used until a return
     //CCLogger::ShowLocalUsedwxIDs_t showLocalUsedwxIDs(__FUNCTION__, __LINE__) ;
@@ -3177,6 +3186,8 @@ void ProcessLanguageClient::LSP_CompletionRequest(cbEditor* pEd, int rrid)
 // ----------------------------------------------------------------------------
 {
     // Code completion
+
+    wxUnusedVar(rrid);
 
     #if defined(cbDEBUG)
     cbAssertNonFatal(pEd && "LSP_Completion called with nullptr");

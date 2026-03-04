@@ -21,11 +21,21 @@
 #define MAP_TO(KEY, TO) {KEY, value.TO}
 #define MAP_KV(K, ...) {K, {__VA_ARGS__}}
 #define FROM_KEY(KEY) if (j.contains(#KEY)) j.at(#KEY).get_to(value.KEY);
+/*
+//#define JSON_SERIALIZE(Type, TO, FROM) \
+//    namespace nlohmann { \
+//        template <> struct adl_serializer<Type> { \
+//            static void to_json(json& j, const Type& value) TO \
+//            static void from_json(const json& j, Type& value) FROM \
+//        }; \
+//    }
+// add cb_unused to avoid -Wextra warnings // (ph 26/03/02)
+*/
 #define JSON_SERIALIZE(Type, TO, FROM) \
     namespace nlohmann { \
         template <> struct adl_serializer<Type> { \
-            static void to_json(json& j, const Type& value) TO \
-            static void from_json(const json& j, Type& value) FROM \
+            static void to_json(cb_unused json& j, cb_unused const Type& value) TO \
+            static void from_json(cb_unused const json& j, cb_unused Type& value) FROM \
         }; \
     }
 using TextType = string_ref;

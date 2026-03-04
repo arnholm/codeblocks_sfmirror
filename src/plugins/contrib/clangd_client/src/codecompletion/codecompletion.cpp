@@ -543,10 +543,10 @@ ClgdCompletion::ClgdCompletion() :
         NotifyMissingFile(_T("clangd_client.zip"));
 
     // handling events send from CCLogger
-    Connect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCLogger)     );
-    Connect(g_idCCErrorLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCLogger)     );
-    Connect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCDebugLogger));
-    Connect(g_idCCDebugErrorLogger,      wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCDebugLogger));
+    Connect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCLogger)     );
+    Connect(g_idCCErrorLogger,           wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCLogger)     );
+    Connect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCDebugLogger));
+    Connect(g_idCCDebugErrorLogger,      wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCDebugLogger));
 
     Connect(idToolbarTimer,         wxEVT_TIMER, wxTimerEventHandler(ClgdCompletion::OnToolbarTimer) );
     Connect(XRCID("idToolbarTimer"),wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::InvokeToolbarTimer));
@@ -575,10 +575,10 @@ ClgdCompletion::~ClgdCompletion()
 {
     if (m_CC_initDeferred) return;
 
-    Disconnect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCLogger));
-    Disconnect(g_idCCErrorLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCLogger));
-    Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCDebugLogger));
-    Disconnect(g_idCCDebugErrorLogger,      wxEVT_COMMAND_MENU_SELECTED, CodeBlocksThreadEventHandler(ClgdCompletion::OnCCDebugLogger));
+    Disconnect(g_idCCLogger,                wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCLogger));
+    Disconnect(g_idCCErrorLogger,           wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCLogger));
+    Disconnect(g_idCCDebugLogger,           wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCDebugLogger));
+    Disconnect(g_idCCDebugErrorLogger,      wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::OnCCDebugLogger));
 
     Disconnect(idToolbarTimer,         wxEVT_TIMER, wxTimerEventHandler(ClgdCompletion::OnToolbarTimer)        );
     Disconnect(idToolbarTimer,         wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(ClgdCompletion::InvokeToolbarTimer));
@@ -1297,7 +1297,7 @@ void ClgdCompletion::OnCompilerMenuSelected(wxCommandEvent& event)
     //ns_CompilerEventId = event.GetId();
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnCompilerStarted(CodeBlocksEvent& event)
+void ClgdCompletion::OnCompilerStarted(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     //#warning Developer should remove the line below when using CB rev 12975 and above.
@@ -1307,7 +1307,7 @@ void ClgdCompletion::OnCompilerStarted(CodeBlocksEvent& event)
     GetParseManager()->SetCompilerIsRunning(true);
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnCompilerFinished(CodeBlocksEvent& event)
+void ClgdCompletion::OnCompilerFinished(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     GetParseManager()->SetCompilerIsRunning(false);
@@ -1536,7 +1536,7 @@ static int CalcStcFontSize(cbStyledTextCtrl *stc)
     return fontSize;
 }
 // ----------------------------------------------------------------------------
-std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int style, cbEditor* ed, int& argsPos)
+std::vector<ClgdCompletion::CCCallTip> ClgdCompletion::GetCallTips(int pos, int style, cbEditor* ed, cb_unused int& argsPos)
 // ----------------------------------------------------------------------------
 {
     std::vector<CCCallTip> tips;
@@ -2769,7 +2769,7 @@ void ClgdCompletion::OnReparseSelectedProject(wxCommandEvent& event)
     return;
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnSelectedPauseParsing(wxCommandEvent& event)
+void ClgdCompletion::OnSelectedPauseParsing(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     //    // if Alt-Shift keys are down, toggle ccLogger external logging on/off
@@ -2948,7 +2948,7 @@ void ClgdCompletion::OnActiveEditorFileReparse(wxCommandEvent& event)
     return OnLSP_EditorFileReparse(event);
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnLSP_EditorFileReparse(wxCommandEvent& event)
+void ClgdCompletion::OnLSP_EditorFileReparse(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
@@ -3087,7 +3087,7 @@ void ClgdCompletion::OnPluginEnabled()
     OnAppStartupDone(evt);
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
+void ClgdCompletion::OnAppStartupDone(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     // ----------------------------------------------------------------------------
@@ -3160,7 +3160,7 @@ void ClgdCompletion::OnAppStartupDone(CodeBlocksEvent& event)
     }
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnWorkspaceClosingBegin(CodeBlocksEvent& event)
+void ClgdCompletion::OnWorkspaceClosingBegin(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     GetParseManager()->ClearAllIdleCallbacks();
@@ -3169,7 +3169,7 @@ void ClgdCompletion::OnWorkspaceClosingBegin(CodeBlocksEvent& event)
     m_WorkspaceClosing = true;
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnWorkspaceClosingEnd(CodeBlocksEvent& event)
+void ClgdCompletion::OnWorkspaceClosingEnd(cb_unused CodeBlocksEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (m_WorkspaceClosing
@@ -3202,7 +3202,7 @@ void ClgdCompletion::OnWorkspaceChanged(CodeBlocksEvent& event)
         // Hide the ~ProxyProject~ because workspace/project tree was redrawn
         cbProject* pProxyProject = GetParseManager()->GetProxyProject();
         if (pProxyProject)
-            ;// testing Manager::Get()->GetProjectManager()->GetUI().RemoveProject(pProxyProject);
+            {;}// testing Manager::Get()->GetProjectManager()->GetUI().RemoveProject(pProxyProject);
 
         cbProject* pActiveProject = Manager::Get()->GetProjectManager()->GetActiveProject();
         // if we receive a workspace changed event, but the project is NULL, this means two conditions
@@ -3300,7 +3300,7 @@ void ClgdCompletion::OnProjectOpened(CodeBlocksEvent& event)
 }
 
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnReActivateProject(wxCommandEvent& event)
+void ClgdCompletion::OnReActivateProject(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // event issued locally to re-activate the project after m_InitDone is set.
@@ -4438,7 +4438,7 @@ void ClgdCompletion::OnEditorClosed(CodeBlocksEvent& event)
 }
 
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
+void ClgdCompletion::OnCCLogger(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (Manager::IsAppShuttingDown()) return;
@@ -4448,7 +4448,7 @@ void ClgdCompletion::OnCCLogger(CodeBlocksThreadEvent& event)
         Manager::Get()->GetLogManager()->Log(event.GetString());
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnCCDebugLogger(CodeBlocksThreadEvent& event)
+void ClgdCompletion::OnCCDebugLogger(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     if (Manager::IsAppShuttingDown()) return;
@@ -5292,7 +5292,7 @@ void ClgdCompletion::EnableToolbarTools(bool enable)
 }
 
 // ----------------------------------------------------------------------------
-void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(wxTimerEvent& event)
+void ClgdCompletion::DoParseOpenedProjectAndActiveEditor(cb_unused wxTimerEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Here from the StartupDelay timer pop to let the app startup before parsing.
@@ -5476,7 +5476,7 @@ void ClgdCompletion::UpdateEditorSyntax(cbEditor* ed)
     ed->GetControl()->Colourise(0, -1);
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::InvokeToolbarTimer(wxCommandEvent& event)
+void ClgdCompletion::InvokeToolbarTimer(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // Allow others to call OnToolbarTimer() via event.
@@ -5512,7 +5512,7 @@ void ClgdCompletion::OnToolbarTimer(cb_unused wxTimerEvent& event)
     TRACE(_T("CodeCompletion::OnToolbarTimer(): Leave"));
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::NotifyParserEditorActivated(wxCommandEvent& event)
+void ClgdCompletion::NotifyParserEditorActivated(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // This is the old OnEditorActivatedTimer() which has been deprecated
@@ -5937,7 +5937,7 @@ bool ClgdCompletion::DoShowDiagnostics( cbEditor* ed, int line)  //(Christo 2024
 	return m_pParseManager->DoShowDiagnostics(ed->GetFilename(), line);
 }
 // ----------------------------------------------------------------------------
-void ClgdCompletion::OnFormatActiveFile(wxCommandEvent& event)  // (christo 25/05/02)
+void ClgdCompletion::OnFormatActiveFile(cb_unused wxCommandEvent& event)  // (christo 25/05/02)
 // ----------------------------------------------------------------------------
 {
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();

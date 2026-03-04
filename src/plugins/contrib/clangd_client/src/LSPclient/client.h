@@ -542,11 +542,11 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         int        GetLSP_EventID(){return m_idLSP_Process;}
 
         // true when the client for this project has received the initialize response
-        bool       GetLSP_Initialized(cbProject* pProject)
+        bool       GetLSP_Initialized(cb_unused cbProject* Project)
                     { return GetLSP_Initialized(); }
 
         // true when the editor/project has received the first LSP response
-        bool       GetLSP_Initialized(cbEditor* pEditor)
+        bool       GetLSP_Initialized(cb_unused cbEditor* pEditor)
                     { return GetLSP_Initialized(); }
 
         // ptr to the server error/diagnostics log for this client

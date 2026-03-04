@@ -24,10 +24,14 @@ class MessageHandler
 {
 public:
     MessageHandler() = default;
-    virtual void onNotify(string_ref method, value &params) {}
-    virtual void onResponse(value &ID, value &result) {}
-    virtual void onError(value &ID, value &error) {}
-    virtual void onRequest(string_ref method, value &params, value &ID) {}
+    virtual void onNotify(string_ref method, value &params)
+        { wxUnusedVar(method); wxUnusedVar(params);}
+    virtual void onResponse(value &ID, value &result)
+        { wxUnusedVar(ID); wxUnusedVar(result);}
+    virtual void onError(value &ID, value &error)
+        { wxUnusedVar(ID); wxUnusedVar(error);}
+    virtual void onRequest(string_ref method, value &params, value &ID)
+        {wxUnusedVar(ID); wxUnusedVar(params); wxUnusedVar(method);}
     int id = -1;
     void* clientID = nullptr;
     int   GetLSP_EventID() {return id;}
@@ -119,6 +123,8 @@ class MapMessageHandler : public MessageHandler
         void onError(value &ID, value &error) override
         // ----------------------------------------------------------------------------
         {
+            wxUnusedVar(ID);
+            wxUnusedVar(error);
 
         }
         // ----------------------------------------------------------------------------

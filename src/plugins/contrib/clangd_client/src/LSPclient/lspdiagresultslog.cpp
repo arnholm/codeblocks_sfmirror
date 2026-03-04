@@ -59,12 +59,12 @@ LSPDiagnosticsResultsLog::LSPDiagnosticsResultsLog(const wxArrayString& titles_i
 
 {
     Connect(idMenuIgnoredMsgs, -1, wxEVT_COMMAND_MENU_SELECTED,
-            (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
-            &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
+            wxCommandEventHandler(LSPDiagnosticsResultsLog::OnSetIgnoredMsgs));
 
-    Bind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable);
-
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable,
+         this, idMenuApplyFixIfAvailable);
 }
+
 // ----------------------------------------------------------------------------
 wxEvtHandler* LSPDiagnosticsResultsLog::FindEventHandler(wxEvtHandler* pEvtHdlr)
 // ----------------------------------------------------------------------------
@@ -85,8 +85,8 @@ LSPDiagnosticsResultsLog::~LSPDiagnosticsResultsLog()
 {
     //dtor
     Disconnect(idMenuIgnoredMsgs, -1, wxEVT_COMMAND_MENU_SELECTED,
-            (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
-            &LSPDiagnosticsResultsLog::OnSetIgnoredMsgs);
+            wxCommandEventHandler(LSPDiagnosticsResultsLog::OnSetIgnoredMsgs));
+
     Unbind(wxEVT_COMMAND_MENU_SELECTED, &LSPDiagnosticsResultsLog::OnApplyFixIfAvailable, this, idMenuApplyFixIfAvailable);
     if (FindEventHandler(this))
         Manager::Get()->GetAppWindow()->RemoveEventHandler(this);
@@ -100,8 +100,8 @@ wxWindow* LSPDiagnosticsResultsLog::CreateControl(wxWindow* parent)
     //Connect(ID_List, -1, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
     //                ^^^ a range of IDs is not necessary
     Connect(ID_List, wxEVT_COMMAND_LIST_ITEM_ACTIVATED,
-            (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
-            &LSPDiagnosticsResultsLog::OnDoubleClick);
+            wxCommandEventHandler(LSPDiagnosticsResultsLog::OnDoubleClick));
+
     Manager::Get()->GetAppWindow()->PushEventHandler(this);
     m_pControl = control;
     return control;
@@ -185,7 +185,7 @@ void LSPDiagnosticsResultsLog::OnDoubleClick(cb_unused wxCommandEvent& event)
 } // end of OnDoubleClick
 
 // ----------------------------------------------------------------------------
-void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(wxCommandEvent& event)
+void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // create dialog showing LSP ignored textDocument/publishDiagnostic messages
@@ -238,7 +238,7 @@ void LSPDiagnosticsResultsLog::OnSetIgnoredMsgs(wxCommandEvent& event)
     return;
 }
 // ----------------------------------------------------------------------------
-void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(wxCommandEvent& event)
+void LSPDiagnosticsResultsLog::OnApplyFixIfAvailable(cb_unused wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
     // When user right-clicks a log entry that contains "(fix available)"
