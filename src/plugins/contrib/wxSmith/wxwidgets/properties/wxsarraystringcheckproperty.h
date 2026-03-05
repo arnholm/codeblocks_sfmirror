@@ -25,7 +25,7 @@
 
 #include "../../properties/wxsproperties.h"
 
-WX_DEFINE_ARRAY_INT(bool,wxArrayBool);
+WX_DEFINE_ARRAY_INT(unsigned char, wxArrayBool);
 
 /** \brief Property for editing arrays of strings with checked option
  *
