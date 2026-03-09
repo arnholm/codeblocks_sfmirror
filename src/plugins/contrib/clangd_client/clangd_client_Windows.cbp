@@ -32,6 +32,7 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-m$(#CB_BUILD.OSBITS)" />
 			<Add option="$(#CB_BUILD.CFLAGS)" />
