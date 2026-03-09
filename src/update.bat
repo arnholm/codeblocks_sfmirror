@@ -238,9 +238,14 @@ echo Transferring DLL plugin files from devel to output folder
 xcopy /D /y "%CB_DEVEL_RESDIR%\plugins\*.dll" "%CB_OUTPUT_RESDIR%\plugins" > nul
 
 echo Stripping debug info from output tree
-strip "%CB_OUTPUT_DIR%\*.exe"
-strip "%CB_OUTPUT_DIR%\*.dll"
-strip "%CB_OUTPUT_RESDIR%\plugins\*.dll"
+rem Recent unix-like utilities in Msys2 no more support wilcards (see https://www.msys2.org/news/#2024-11-03-disabling-mingw-w64-wildcard-support-by-default)
+rem Replacing those 3 lines by a for...do syntax
+rem strip "%CB_OUTPUT_DIR%\*.exe"
+rem strip "%CB_OUTPUT_DIR%\*.dll"
+rem strip "%CB_OUTPUT_RESDIR%\plugins\*.dll"
+for %%F in ("%CB_OUTPUT_DIR%\*.exe") do (strip "%%F")
+for %%F in ("%CB_OUTPUT_DIR%\*.dll") do (strip "%%F")
+for %%F in ("%CB_OUTPUT_RESDIR%\plugins\*.dll") do (strip "%%F")
 
 echo Copying help files
 if not exist "%CB_OUTPUT_RESDIR%\docs" md "%CB_OUTPUT_RESDIR%\docs" > nul
