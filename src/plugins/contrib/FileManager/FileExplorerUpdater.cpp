@@ -1528,8 +1528,8 @@ void *CommitUpdater::Entry()
             wxString n;
             if (m_opts.commits_per_retrieve > 0)
             {
-                n = wxString::Format(" -n %i ", m_opts.commits_per_retrieve);
-                n+= wxString::Format("--skip %i ", m_continue_count*m_opts.commits_per_retrieve);
+                n = wxString::Format(" -n %lu ", m_opts.commits_per_retrieve);
+                n+= wxString::Format("--skip %lu ", m_continue_count*m_opts.commits_per_retrieve);
             }
             wxString file;
             if (m_opts.file != wxEmptyString)
@@ -1563,7 +1563,7 @@ void *CommitUpdater::Entry()
             if (m_opts.commits_per_retrieve > 0)
             {
                 if (m_last_commit_retrieved.empty())
-                    commit_range = wxString::Format(" -l%i ", m_opts.commits_per_retrieve);
+                    commit_range = wxString::Format(" -l%lu ", m_opts.commits_per_retrieve);
                 else
                 {
                     long hi_commit;
@@ -1580,8 +1580,8 @@ void *CommitUpdater::Entry()
                             m_parent->AddPendingEvent(ne);
                             return 0;
                         }
-                        m_last_commit_retrieved = wxString::Format("%i", low_commit); //THIS IS SPECIAL LOGIC FOR HG BRANCHES (SEE BELOW)
-                        commit_range = wxString::Format(" -r%i:%i ", hi_commit,low_commit);
+                        m_last_commit_retrieved = wxString::Format("%li", low_commit); //THIS IS SPECIAL LOGIC FOR HG BRANCHES (SEE BELOW)
+                        commit_range = wxString::Format(" -r%li:%li ", hi_commit, low_commit);
                     }
                 }
             }
@@ -1654,7 +1654,7 @@ void *CommitUpdater::Entry()
                 else if (m_opts.date_after != wxEmptyString && m_opts.date_before != wxEmptyString)
                     commit_range = "-r date:\"" + m_opts.date_after + "\"..date:\"" + m_opts.date_before + "\" ";
                 if (m_opts.commits_per_retrieve > 0)
-                    commit_range += wxString::Format(" -l%i ",m_opts.commits_per_retrieve);
+                    commit_range += wxString::Format(" -l%lu ",m_opts.commits_per_retrieve);
             }
             else
             {
@@ -1673,9 +1673,9 @@ void *CommitUpdater::Entry()
                         return 0;
                     }
                     if (m_opts.date_after != wxEmptyString)
-                        commit_range = wxString::Format(" -rdate:\"%s\"..%i -l%i ", m_opts.date_after, hi_commit, m_opts.commits_per_retrieve);
+                        commit_range = wxString::Format(" -rdate:\"%s\"..%li -l%lu ", m_opts.date_after, hi_commit, m_opts.commits_per_retrieve);
                     else
-                        commit_range = wxString::Format(" -r%i..%i ", low_commit, hi_commit);
+                        commit_range = wxString::Format(" -r%li..%li ", low_commit, hi_commit);
                 }
             }
             wxString file;
@@ -1726,7 +1726,7 @@ void *CommitUpdater::Entry()
                 else if (m_opts.date_after != wxEmptyString && m_opts.date_before != wxEmptyString)
                     commit_range = "-r {" + m_opts.date_before + "}:{" + m_opts.date_after + "} ";
                 if (m_opts.commits_per_retrieve > 0)
-                    commit_range += wxString::Format(" -l%i ", m_opts.commits_per_retrieve);
+                    commit_range += wxString::Format(" -l%lu ", m_opts.commits_per_retrieve);
             }
             else
             {
@@ -1745,9 +1745,9 @@ void *CommitUpdater::Entry()
                         return 0;
                     }
                     if (!m_opts.date_after.empty())
-                        commit_range = wxString::Format(" -r%i:{%s} -l%i ", hi_commit, m_opts.date_after, m_opts.commits_per_retrieve);
+                        commit_range = wxString::Format(" -r%li:{%s} -l%lu ", hi_commit, m_opts.date_after, m_opts.commits_per_retrieve);
                     else
-                        commit_range = wxString::Format(" -r%i:%i ", hi_commit, low_commit);
+                        commit_range = wxString::Format(" -r%li:%li ", hi_commit, low_commit);
                 }
             }
             wxString file;
