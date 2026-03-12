@@ -455,8 +455,7 @@ inline bool ParseGDBWatchValue(cb::shared_ptr<GDBWatch> watch, wxString const &v
                                     foundBrace = true;
                                     break;
                                 }
-                                else if (value[ii] != wxT(' ') && value[ii] != wxT('\t')
-                                         && value[ii] != wxT('\n') && value[ii] != wxT(' '))
+                                else if (value[ii] != wxT(' ') && value[ii] != wxT('\t') && value[ii] != wxT('\n'))
                                 {
                                     break;
                                 }

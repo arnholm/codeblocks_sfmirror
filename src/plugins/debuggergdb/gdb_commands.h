@@ -389,7 +389,7 @@ class GdbCmd_AddBreakpointCondition : public DebuggerCmd
             : DebuggerCmd(driver),
             m_BP(bp)
         {
-            m_Cmd << _T("condition ") << wxString::Format(_T("%ld"), (int) m_BP->index);
+            m_Cmd << _T("condition ") << wxString::Format(_T("%d"), (int) m_BP->index);
             if (m_BP->useCondition)
                 m_Cmd << _T(" ") << m_BP->condition;
         }
