@@ -114,7 +114,7 @@ class CodeBlocksApp : public wxApp
         bool OnCmdLineParsed(wxCmdLineParser& parser) override;
         void OnFatalException() override;
         void LoadDelayedFiles(MainFrame* frame); // command line or DDE (if available) files
-        void SetAutoFile(wxString& file); // method to set m_AutoFile
+        void SetAutoFile(const wxString& file); // method to set m_AutoFile
         void AttachDebugger();
 #ifdef __WXMAC__
         // in response of an open-document apple event

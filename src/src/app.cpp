@@ -304,10 +304,15 @@ class Splash
                 Manager::Yield();
             }
         }
+
+        Splash(const Splash&) = delete;
+        Splash& operator = (const Splash&) = delete;
+
         ~Splash()
         {
             Hide();
         }
+
         void Hide()
         {
             if (m_pSplash)
@@ -1192,7 +1197,7 @@ wxString CodeBlocksApp::GetAppPath() const
     return base;
 }
 
-void CodeBlocksApp::SetAutoFile(wxString& file)
+void CodeBlocksApp::SetAutoFile(const wxString& file)
 {
     m_AutoFile = file;
 }

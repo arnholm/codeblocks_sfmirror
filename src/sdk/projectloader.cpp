@@ -1083,7 +1083,6 @@ void LogTime(const wxString& message, long time)
 std::vector<wxString> FilesInDir(const wxString& directory, const wxString& wildCard, bool recursive, const wxString& basePath)
 {
     const wxString directoryPath = MakePathAbsoluteIfNeeded(directory, basePath);
-    std::vector<wxString> files;
 
     int flags = wxDIR_FILES;
     if (recursive)

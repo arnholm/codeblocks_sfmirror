@@ -220,8 +220,7 @@ static wxString GetCygwinPath(const wxString& path, bool windowsPath)
                     }
                     else
                     {
-                        const wxString msg = wxString::Format("cygwinConvertCMD error: %d",
-                                                              resExecute);
+                        const wxString msg = wxString::Format("cygwinConvertCMD error: %ld", resExecute);
                         Manager::Get()->GetLogManager()->DebugLog(msg);
                     }
                 }

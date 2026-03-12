@@ -192,12 +192,12 @@ UsrGlblMgrEditDialog::UsrGlblMgrEditDialog(const wxString& var) :
     wxString n;
     m_Name.resize(7);
     m_Value.resize(7);
-    for (unsigned int i = 0; i < 7; ++i)
+    for (int i = 0; i < 7; ++i)
     {
-        n.Printf(_T("n%d"), i);
+        n.Printf("n%d", i);
         m_Name[i]  = (wxTextCtrl*) FindWindow(n);
 
-        n.Printf(_T("v%d"), i);
+        n.Printf("v%d", i);
         m_Value[i] = (wxTextCtrl*) FindWindow(n);
     }
 

@@ -1151,12 +1151,7 @@ int  ScintillaWX::DoKeyDown(const wxKeyEvent& evt, bool* consumed)
 {
     int key = evt.GetKeyCode();
 /* C::B begin */
-#if wxCHECK_VERSION(3, 0, 0)
     const bool ctrl = evt.RawControlDown();
-#else
-    const bool ctrl = evt.ControlDown();
-    const int WXK_NONE = 0;
-#endif // wxCHECK_VERSION
 /* C::B end */
     if (ctrl && key >= 1 && key <= 26 && key != WXK_BACK)
         key += 'A' - 1;

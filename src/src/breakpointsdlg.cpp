@@ -147,7 +147,7 @@ void BreakpointsDlg::Reload()
         for (int ii = 0; ii < count; ++ii)
         {
             cb::shared_ptr<cbBreakpoint> bp = dbg->first->GetBreakpoint(ii);
-            if (showTemp || (!showTemp && !bp->IsTemporary()))
+            if (showTemp || !bp->IsTemporary())
                 m_breakpoints.push_back(Item(bp, dbg->first, dbg->first->GetGUIName()));
         }
     }
