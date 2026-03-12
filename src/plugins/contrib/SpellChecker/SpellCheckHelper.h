@@ -42,8 +42,8 @@ public:
     SpellCheckHelper();
     virtual ~SpellCheckHelper();
 
-    bool HasStyleToBeChecked(wxString langname, int style)const;
-    static bool IsEscapeSequenceStart(wxChar ch, wxString langname, int style);
+    bool HasStyleToBeChecked(const wxString& langname, int style) const;
+    static bool IsEscapeSequenceStart(wxChar ch, const wxString& langname, int style);
     void LoadConfiguration();
 
 protected:

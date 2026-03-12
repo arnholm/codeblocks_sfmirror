@@ -27,17 +27,17 @@ wxThes::~wxThes()
     delete m_pMT;
     m_pMT = NULL;
 }
-wxThes::wxThes(const wxString idxpath, const wxString datpath):
+wxThes::wxThes(const wxString& idxpath, const wxString& datpath):
     m_pMT(NULL)
 {
-    m_pMT = new MyThes( idxpath.char_str(), datpath.char_str() );
+    m_pMT = new MyThes( idxpath.c_str(), datpath.c_str() );
 }
 
 synonyms wxThes::Lookup(const wxString &Text)
 {
     synonyms syn;
     mentry * pmean;
-    int count = m_pMT->Lookup(Text.char_str(), Text.length(),&pmean);
+    int count = m_pMT->Lookup(Text.c_str(), Text.length(),&pmean);
     // don't change value of pmean
     // or count since needed for CleanUpAfterLookup routine
     mentry* pm = pmean;

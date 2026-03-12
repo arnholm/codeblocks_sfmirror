@@ -34,14 +34,14 @@ class wxThes;
 class Thesaurus
 {
 public:
-    Thesaurus(wxWindow *dialogsparent,const wxString idxpath, const wxString datpath);
+    Thesaurus(wxWindow *dialogsparent, const wxString& idxpath, const wxString& datpath);
     Thesaurus(wxWindow *dialogsparent);
     virtual ~Thesaurus();
 
-    bool GetSynonym(const wxString Word, wxString &Syn);
+    bool GetSynonym(const wxString& Word, wxString& Syn);
     synonyms GetSynonyms(const wxString& Word);
-    void SetFiles(wxString idxpath, const wxString datpath);
-    bool IsOk();
+    void SetFiles(const wxString& idxpath, const wxString& datpath);
+    bool IsOk() const;
 
 protected:
 private:

@@ -40,7 +40,7 @@ typedef std::map< wxString, std::vector< wxString > > synonyms;
 class wxThes
 {
 public:
-    wxThes(const wxString idxpath, const wxString datpath);
+    wxThes(const wxString& idxpath, const wxString& datpath);
     virtual ~wxThes();
 
     synonyms Lookup(const wxString &Text);

@@ -85,7 +85,7 @@ const wxString SpellCheckerConfig::GetDictionaryName()const
     return m_strDictionaryName;
 }
 
-void SpellCheckerConfig::SetDictionaryName(wxString val)
+void SpellCheckerConfig::SetDictionaryName(const wxString& val)
 {
     m_strDictionaryName = val;
 }

@@ -38,7 +38,7 @@ public:
     bool GetEnableThesaurusTooltips();
     void SetEnableThesaurusTooltips(bool val);
     const wxString GetDictionaryName()const;
-    void SetDictionaryName(wxString val);
+    void SetDictionaryName(const wxString& val);
     void Load();
     void Save();
     wxString GetLanguageName(const wxString& language_id);

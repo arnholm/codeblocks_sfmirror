@@ -32,7 +32,7 @@ Thesaurus::Thesaurus(wxWindow *dialogsparent):
     //ctor
 }
 
-Thesaurus::Thesaurus(wxWindow *dialogsparent,const wxString idxpath, const wxString datpath):
+Thesaurus::Thesaurus(wxWindow *dialogsparent, const wxString& idxpath, const wxString& datpath):
     m_pT(NULL),
     m_pDialogsParent(dialogsparent)
 {
@@ -47,7 +47,7 @@ Thesaurus::~Thesaurus()
     m_pT = NULL;
 }
 
-void Thesaurus::SetFiles(wxString idxpath, const wxString datpath)
+void Thesaurus::SetFiles(const wxString& idxpath, const wxString& datpath)
 {
     delete m_pT;
     m_pT = NULL;
@@ -103,7 +103,7 @@ void Thesaurus::SetFiles(wxString idxpath, const wxString datpath)
     }
 }
 
-bool Thesaurus::GetSynonym(const wxString Word, wxString &Syn)
+bool Thesaurus::GetSynonym(const wxString& Word, wxString& Syn)
 {
     if ( m_pT )
     {
@@ -132,7 +132,7 @@ synonyms Thesaurus::GetSynonyms(const wxString& Word)
     return syn;
 }
 
-bool Thesaurus::IsOk()
+bool Thesaurus::IsOk() const
 {
     return (m_pT != NULL);
 }
