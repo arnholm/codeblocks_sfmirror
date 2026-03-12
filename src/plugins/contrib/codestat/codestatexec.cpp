@@ -360,7 +360,7 @@ void AnalyseLine(bool &comment, bool &code, bool &multi_line_comment, const Lang
         }
     }
     // We are not in a multiple line comment
-    else if (!multi_line_comment)
+    else
     {
         // First comment sign found is a single line comment sign
         if ( (first_single_line_comment > -1)
