@@ -115,9 +115,12 @@ wxString CompilerOWGenerator::SetupLinkerOptions(Compiler* compiler, ProjectBuil
                 //Let's not scan all the options unnecessarily
                 if (Temp.Matches(_T("-b*")))
                 {
-                    Temp = MapTargetType(Temp, target->GetTargetType());
-                    if (!Temp.IsEmpty() && LinkerOptions.Find(_T("system")) == wxNOT_FOUND)
-                        LinkerOptions += Temp;
+                    if (target)
+                    {
+                        Temp = MapTargetType(Temp, target->GetTargetType());
+                        if (!Temp.IsEmpty() && LinkerOptions.Find(_T("system")) == wxNOT_FOUND)
+                            LinkerOptions += Temp;
+                    }
                 }
                 // TODO: Map and Set All Debug Flags
                 else if (Temp.Matches(_T("-d*")) && Temp.Length() <= 4)
