@@ -777,7 +777,7 @@ CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line)
 
 CompilerLineType Compiler::CheckForWarningsAndErrors(const wxString& line, long& regex_id, wxString& regex_desc)
 {
-    if (!m_MultiLineMessages || (m_MultiLineMessages && !m_Error.IsEmpty()))
+    if (!m_MultiLineMessages || !m_Error.IsEmpty())
     {
         m_ErrorFilename.Clear();
         m_ErrorLine.Clear();

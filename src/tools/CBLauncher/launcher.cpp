@@ -356,23 +356,23 @@ int removeFonts()
     wchar_t fontsPath[MAX_PATH];
     int numRemoved = 0;
     if(isCodeblocksRunning()) // give up if another instance of CB is still running
-        return  numRemoved;
+        return numRemoved;
 
     wcscpy(fontsPath, appDir);
     wcscat(fontsPath, fontsDir);
 
-    // Give up if no fonts directory exists
+    // Check if fonts directory exists
     hFind = FindFirstFile(fontsPath, &findData);
-    if (hFind == INVALID_HANDLE_VALUE)
+    if (hFind != INVALID_HANDLE_VALUE)
     {
         FindClose(hFind);
-        return 0; // No font removed in this case
+
+        // Remove CB fonts (ttf or otf) previously loaded from the fonts directory or
+        // subdirectories. Broadcast the font change.
+        if((numRemoved = removeFontsFrom(fontsPath)) > 0)
+            SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
     }
 
-    // Remove CB fonts (ttf or otf) previously loaded from the fonts directory or
-    // subdirectories. Broadcast the font change.
-    if((numRemoved = removeFontsFrom(fontsPath)) > 0)
-        SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
     return numRemoved;
 }
 

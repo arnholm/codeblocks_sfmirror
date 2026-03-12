@@ -81,7 +81,7 @@ inline void AnalyseLine(const CommentToken &language, wxString line, bool &comme
         }
     }
     // We are not in a multiple line comment
-    else if (!multi_line_comment)
+    else
     {
         // First comment sign found is a single line comment sign
         if ( (first_single_line_comment>-1)
@@ -151,14 +151,17 @@ ProjectFileOptionsDlg::ProjectFileOptionsDlg(wxWindow* parent, ProjectFile* pf) 
 
     if (pf)
     {
-        cbProject* prj = pf->GetParentProject();
         wxCheckListBox *list = XRCCTRL(*this, "lstTargets", wxCheckListBox);
-        for (int i = 0; i < prj->GetBuildTargetsCount(); ++i)
+        cbProject* prj = pf->GetParentProject();
+        if (prj)
         {
-            wxString targetName = prj->GetBuildTarget(i)->GetTitle();
-            list->Append(targetName);
-            if (pf->buildTargets.Index(targetName) != -1)
-                list->Check(i, true);
+            for (int i = 0; i < prj->GetBuildTargetsCount(); ++i)
+            {
+                wxString targetName = prj->GetBuildTarget(i)->GetTitle();
+                list->Append(targetName);
+                if (pf->buildTargets.Index(targetName) != -1)
+                    list->Check(i, true);
+            }
         }
 
         m_FileNameStr = pf->file.GetFullPath();
