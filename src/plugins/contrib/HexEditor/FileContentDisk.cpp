@@ -61,19 +61,19 @@ class FileContentDisk::DiskModificationData: public FileContentBase::Modificatio
         {}
 
         /** \brief Apply the modification */
-        virtual void Apply()
+        virtual void Apply() override
         {
             m_Fcd->SetBlock( &m_DataAfter[0], m_Start, m_DataBefore.size(), m_DataAfter.size() );
         }
 
         /** \brief Revert the modification */
-        virtual void Revert()
+        virtual void Revert() override
         {
             m_Fcd->SetBlock( &m_DataBefore[0], m_Start, m_DataAfter.size(), m_DataBefore.size() );
         }
 
         /** \brief Get the length of modification */
-        virtual OffsetT Length()
+        virtual OffsetT Length() override
         {
             return wxMax( m_DataBefore.size(), m_DataAfter.size() );
         }
