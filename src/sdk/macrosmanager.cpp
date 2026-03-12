@@ -782,7 +782,7 @@ wxString MacrosManager::EvalCondition(const wxString& in_cond, const wxString& t
     if (cmpToken.IsSameAs(_T("!=")))
         condCode = NE;
 
-    return condCode & compare ? true_clause : false_clause;
+    return (condCode & compare) ? true_clause : false_clause;
 }
 
 int MacrosManager::MatchBrace(const wxString& buffer, int index)
