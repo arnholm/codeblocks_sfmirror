@@ -751,9 +751,12 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
             ret.Add(COMPILER_SIMPLE_LOG + _("Linking stage skipped (build target has no object files to link)"));
         return ret;
     }
+
     if (IsOpenWatcom && target->GetTargetType() != ttStaticLib)
         linkfiles << _T("file ");
-    bool subseq(false);
+
+    bool subseqLink(false);
+    bool subseqRes(false);
     bool hasCppFilesToLink = false;
     for (unsigned int i = 0; i < files.GetCount(); ++i)
     {
@@ -780,8 +783,11 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
 
         if (FileTypeOf(pf->relativeFilename) == ftResource)
         {
-            if (subseq)
-                resfiles << _T(" ");
+            if (subseqRes)
+                resfiles << ' ';
+            else
+                subseqRes = true;
+
             // -----------------------------------------
             // Following lines have been modified for OpenWatcom
             if (IsOpenWatcom)
@@ -792,31 +798,26 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
         }
         else
         {
-            // -----------------------------------------
             // Following lines have been modified for OpenWatcom
-            if (IsOpenWatcom && target->GetTargetType() == ttStaticLib)
+            // -----------------------------------------
+            if (subseqLink)
             {
-                if (subseq)
-                {
-                    linkfiles << _T(" ");
-                    FlatLinkFiles << _T(" ");
-                }
-                linkfiles << prependHack << Object; // see QUICK HACK above (prependHack)
-                FlatLinkFiles << prependHack << pfd.object_file_flat; // see QUICK HACK above (prependHack)
+                wxChar separator = compiler->GetSwitches().objectSeparator;
+                if (IsOpenWatcom && target->GetTargetType() == ttStaticLib)
+                    separator = ' ';
+
+                linkfiles << separator;
+                FlatLinkFiles << separator;
             }
             else
             {
-                if (subseq)
-                {
-                    linkfiles << compiler->GetSwitches().objectSeparator;
-                    FlatLinkFiles << compiler->GetSwitches().objectSeparator;
-                }
-                linkfiles << prependHack << Object; // see QUICK HACK above (prependHack)
-                FlatLinkFiles << prependHack << pfd.object_file_flat; // see QUICK HACK above (prependHack)
+                subseqLink = true;
             }
+
+            linkfiles << prependHack << Object; // see QUICK HACK above (prependHack)
+            FlatLinkFiles << prependHack << pfd.object_file_flat; // see QUICK HACK above (prependHack)
             // -----------------------------------------
         }
-        subseq = true;
 
         // timestamp check
         if (!force)
