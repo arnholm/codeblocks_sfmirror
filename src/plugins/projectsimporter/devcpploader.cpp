@@ -153,7 +153,7 @@ bool DevCppLoader::Open(const wxString& filename)
     target->SetTargetType(TargetType(typ));
 
     // decide on the output filename
-    if (dev->Read(_T("OverrideOutput"), (long)0) == 1)
+    if (dev->ReadLong(_T("OverrideOutput"), 0) == 1)
         dev->Read(_T("OverrideOutputName"), &output, _T(""));
     if (output.IsEmpty())
         output = target->SuggestOutputFilename();
