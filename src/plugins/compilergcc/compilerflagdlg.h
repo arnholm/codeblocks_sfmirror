@@ -13,7 +13,7 @@ class CompilerFlagDlg: public wxDialog
     public:
 
         CompilerFlagDlg(wxWindow* parent, CompOption* opt, wxArrayString& categ, const wxString &selectedCategory);
-        virtual ~CompilerFlagDlg() override;
+        ~CompilerFlagDlg() override;
 
         void EndModal(int retCode) override;
 

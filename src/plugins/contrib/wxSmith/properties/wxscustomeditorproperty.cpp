@@ -67,12 +67,12 @@ namespace
             }
 
 #if wxCHECK_VERSION(3, 3, 1)
-            virtual wxString ValueToString(cb_unused wxVariant& value, cb_unused wxPGPropValFormatFlags argFlags = wxPGPropValFormatFlags::Null) const override
+            wxString ValueToString(cb_unused wxVariant& value, cb_unused wxPGPropValFormatFlags argFlags = wxPGPropValFormatFlags::Null) const override
             {
                 return Property->GetStr(Object);
             }
 #else
-            virtual wxString ValueToString(cb_unused wxVariant& value, cb_unused int argFlags = 0) const override
+            wxString ValueToString(cb_unused wxVariant& value, cb_unused int argFlags = 0) const override
             {
                 return Property->GetStr(Object);
             }

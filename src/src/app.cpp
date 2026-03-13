@@ -329,14 +329,14 @@ class Splash
 class cbMessageOutputNull : public wxMessageOutput
 {
 public:
-    virtual void Output(cb_unused const wxString &str) override {}
+    void Output(cb_unused const wxString &str) override {}
 };
 
 class cbMessageOutputDialog : public wxMessageOutput
 {
 public:
     cbMessageOutputDialog(const wxString &title, const wxSize &minsize = wxDefaultSize) : m_title(title), m_minsize(minsize) {}
-    virtual void Output(const wxString& str) override
+    void Output(const wxString& str) override
     {
         wxDialog *dlg = new wxDialog(nullptr, wxID_ANY, m_title);
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);

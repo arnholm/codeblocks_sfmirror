@@ -137,19 +137,19 @@ namespace
                                 const wxColourPropertyValue& value = wxColourPropertyValue(wxsCOLOUR_DEFAULT,*wxWHITE) );
         ~wxsMyColourPropertyClass();
 
-        virtual void OnSetValue() override;
-        virtual bool DoSetAttribute( const wxString& name, wxVariant& value ) override;
+        void OnSetValue() override;
+        bool DoSetAttribute( const wxString& name, wxVariant& value ) override;
 
 #if wxCHECK_VERSION(3, 3, 1)
-        virtual bool StringToValue( wxVariant& variant, const wxString& text, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
-        virtual bool IntToValue( wxVariant& variant, int number, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
-        virtual wxString ValueToString( wxVariant& value, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        bool StringToValue( wxVariant& variant, const wxString& text, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        bool IntToValue( wxVariant& variant, int number, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
+        wxString ValueToString( wxVariant& value, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const override;
         /** Override in derived class to customize how colours are printed as strings */
         virtual wxString ColourToString( const wxColour& col, int index, wxPGPropValFormatFlags argflags = wxPGPropValFormatFlags::Null ) const;
 #else
-        virtual bool StringToValue( wxVariant& variant, const wxString& text, int argFlags = 0 ) const override;
-        virtual bool IntToValue( wxVariant& variant, int number, int argFlags = 0 ) const override;
-        virtual wxString ValueToString( wxVariant& value, int argFlags = 0 ) const override;
+        bool StringToValue( wxVariant& variant, const wxString& text, int argFlags = 0 ) const override;
+        bool IntToValue( wxVariant& variant, int number, int argFlags = 0 ) const override;
+        wxString ValueToString( wxVariant& value, int argFlags = 0 ) const override;
         /** Override in derived class to customize how colours are printed as strings */
         virtual wxString ColourToString( const wxColour& col, int index, int argFlags = 0 ) const;
 #endif

@@ -20,13 +20,13 @@ class CscopeConfigPanel: public cbConfigurationPanel
 		virtual ~CscopeConfigPanel();
 
         /// @return the panel's title.
-        virtual wxString GetTitle() const override { return _("Cscope"); }
+        wxString GetTitle() const override { return _("Cscope"); }
         /// @return the panel's bitmap base name. You must supply two bitmaps: \<basename\>.png and \<basename\>-off.png...
-        virtual wxString GetBitmapBaseName() const override { return wxT("Cscope"); }
+        wxString GetBitmapBaseName() const override { return wxT("Cscope"); }
         /// Called when the user chooses to apply the configuration.
-        virtual void OnApply() override;
+        void OnApply() override;
         /// Called when the user chooses to cancel the configuration.
-        virtual void OnCancel() override { ; }
+        void OnCancel() override {}
 
 
 		//(*Declarations(CscopeConfigPanel)
