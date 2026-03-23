@@ -85,8 +85,8 @@ MainFrame::MainFrame(wxWindow* parent,wxWindowID id) :
 	bszMain = new wxBoxSizer(wxVERTICAL);
 	bszSteps = new wxBoxSizer(wxHORIZONTAL);
 	sbsSteps = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Steps to do:"));
-	lblSteps = new wxStaticText(this, ID_LBL_STEPS, _("- make sure C::B is *not* running\n- select the C::B source configuration file on the left\n- select the C::B destination configuration file on the right\n- select the sections you would like to transfer\n- verify again and do the transfer\n- save the modified (right) configuration"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_LBL_STEPS"));
-	sbsSteps->Add(lblSteps, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	lblSteps = new wxStaticText(sbsSteps->GetStaticBox(), ID_LBL_STEPS, _("- make sure C::B is *not* running\n- select the C::B source configuration file on the left\n- select the C::B destination configuration file on the right\n- select the sections you would like to transfer\n- verify again and do the transfer\n- save the modified (right) configuration"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_LBL_STEPS"));
+	sbsSteps->Add(lblSteps, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
 	bszSteps->Add(sbsSteps, 1, wxALL|wxEXPAND, 5);
 	bszMain->Add(bszSteps, 0, wxEXPAND, 5);
 	grsFileLabel = new wxGridSizer(1, 2, 0, 0);

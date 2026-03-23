@@ -57,11 +57,11 @@ Addr2LineUIDialog::Addr2LineUIDialog(wxWindow* parent) :
   bszAddr2Line = new wxBoxSizer(wxVERTICAL);
   lblCrashLog = new wxStaticText(this, wxID_ANY, _("Select crash log file:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   bszAddr2Line->Add(lblCrashLog, 0, wxEXPAND, 5);
-  m_FPCrashLog = new wxFilePickerCtrl(this, ID_CRASH_LOG, wxEmptyString, _("Select crash log"), _T("Report files (*.rpt)|*.rpt|Log files (*.log)|*.log|All files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_OPEN|wxFLP_USE_TEXTCTRL, wxDefaultValidator, _T("ID_CRASH_LOG"));
+  m_FPCrashLog = new wxFilePickerCtrl(this, ID_CRASH_LOG, wxEmptyString, _("Select crash log"), _("Report files (*.rpt)|*.rpt|Log files (*.log)|*.log|All files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_OPEN|wxFLP_USE_TEXTCTRL, wxDefaultValidator, _T("ID_CRASH_LOG"));
   bszAddr2Line->Add(m_FPCrashLog, 0, wxEXPAND, 5);
   lblAddr2Line = new wxStaticText(this, wxID_ANY, _("Select Addr2Line tool:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   bszAddr2Line->Add(lblAddr2Line, 0, wxTOP|wxEXPAND, 5);
-  m_FPAddr2Line = new wxFilePickerCtrl(this, ID_ADDR2LINE, wxEmptyString, _("Select addr2line tool"), _T("Executables (*.exe)|*.exe|All files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_OPEN|wxFLP_USE_TEXTCTRL, wxDefaultValidator, _T("ID_ADDR2LINE"));
+  m_FPAddr2Line = new wxFilePickerCtrl(this, ID_ADDR2LINE, wxEmptyString, _("Select addr2line tool"), _("Executables (*.exe)|*.exe|All files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_FILE_MUST_EXIST|wxFLP_OPEN|wxFLP_USE_TEXTCTRL, wxDefaultValidator, _T("ID_ADDR2LINE"));
   bszAddr2Line->Add(m_FPAddr2Line, 0, wxEXPAND, 5);
   lblDirPrepend = new wxStaticText(this, wxID_ANY, _("(Optionally) Select directory to prepend:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   bszAddr2Line->Add(lblDirPrepend, 0, wxTOP|wxEXPAND, 5);
@@ -77,7 +77,7 @@ Addr2LineUIDialog::Addr2LineUIDialog(wxWindow* parent) :
   bszReplace->Add(txtReplaceThis, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
   lblReplace = new wxStaticText(this, ID_LBL_REPLACE, _("...with:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_LBL_REPLACE"));
   lblReplace->Disable();
-  bszReplace->Add(lblReplace, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+  bszReplace->Add(lblReplace, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5);
   txtReplaceThat = new wxTextCtrl(this, ID_TXT_REPLACE_THAT, _("that"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TXT_REPLACE_THAT"));
   txtReplaceThat->Disable();
   bszReplace->Add(txtReplaceThat, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);

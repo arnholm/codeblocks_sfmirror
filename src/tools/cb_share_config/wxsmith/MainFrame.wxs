@@ -17,7 +17,7 @@
 								<object class="wxStaticText" name="ID_LBL_STEPS" variable="lblSteps" member="yes">
 									<label>- make sure C::B is *not* running&#x0A;- select the C::B source configuration file on the left&#x0A;- select the C::B destination configuration file on the right&#x0A;- select the sections you would like to transfer&#x0A;- verify again and do the transfer&#x0A;- save the modified (right) configuration</label>
 								</object>
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>

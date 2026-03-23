@@ -216,7 +216,7 @@
 									<bitmap stock_id="wxART_GO_BACK" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonLeftClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
@@ -225,7 +225,7 @@
 									<bitmap stock_id="wxART_GO_FORWARD" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonRightClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
@@ -234,7 +234,7 @@
 									<bitmap stock_id="wxART_GO_UP" stock_client="wxART_MENU" />
 									<handler function="OnButtonUpClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>
@@ -243,7 +243,7 @@
 									<bitmap stock_id="wxART_GO_DOWN" stock_client="wxART_BUTTON" />
 									<handler function="OnButtonDownClick" entry="EVT_BUTTON" />
 								</object>
-								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>2</border>
 								<option>1</option>
 							</object>

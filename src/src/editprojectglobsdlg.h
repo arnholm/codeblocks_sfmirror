@@ -7,6 +7,7 @@
 #include <wx/checklst.h>
 #include <wx/dialog.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
