@@ -765,7 +765,7 @@
 											<object class="wxStaticText" name="wxID_ANY">
 												<label>Select application appearance (if supported by platform):</label>
 											</object>
-											<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>4</border>
 										</object>
 										<object class="sizeritem">
