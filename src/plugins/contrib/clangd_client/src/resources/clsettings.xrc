@@ -290,6 +290,14 @@
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
+											<object class="wxCheckBox" name="chkParseOpenedOnly">
+												<label>Parse only opened project files. (Affects find declaration/references)</label>
+												<checked>0</checked>
+											</object>
+											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
 											<object class="wxStaticLine" name="ID_STATICLINE1">
 												<size>10,-1</size>
 											</object>

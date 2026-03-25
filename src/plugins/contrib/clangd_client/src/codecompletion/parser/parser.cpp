@@ -1320,7 +1320,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         //send LSP_server didOpen notifier for open editor files not yet parsed
         if (pClient and pEditor)
             ok = pClient->LSP_DidOpen(pEditor);
-        else //send LSP server didOpen notifier for background (unopened) file
+        else if (pClient and not m_Options.parseOpenedFilesOnly) // send LSP server didOpen notifier for background (unopened) file
             ok = pClient->LSP_DidOpen(filename, pProject);
 
         if (ok)
@@ -1416,6 +1416,7 @@ void Parser::ReadOptions()
     m_Options.wantPreprocessor     = cfg->ReadBool(_T("/want_preprocessor"),             true);
     m_Options.parseComplexMacros   = cfg->ReadBool(_T("/parse_complex_macros"),          true);
     m_Options.platformCheck        = cfg->ReadBool(_T("/platform_check"),                true);
+    m_Options.parseOpenedFilesOnly = cfg->ReadBool(_T("/parse_opened_files_only"),       false);
     m_Options.LLVM_MasterPath      = cfg->Read    (_T("/LLVM_MasterPath"),                 "");
     m_Options.logClangdClientCheck = cfg->ReadBool(_T("/logClangdClient_check"),        false);
     m_Options.logClangdServerCheck = cfg->ReadBool(_T("/logClangdServer_check"),        false);
@@ -1508,6 +1509,7 @@ void Parser::WriteOptions(bool classBrowserOnly)
         cfg->Write(_T("/want_preprocessor"),             m_Options.wantPreprocessor);
         cfg->Write(_T("/parse_complex_macros"),          m_Options.parseComplexMacros);
         cfg->Write(_T("/platform_check"),                m_Options.platformCheck);
+        cfg->Write(_T("/parse_opened_files_only"),       m_Options.parseOpenedFilesOnly);
         cfg->Write(_T("/LLVM_MasterPath"),               m_Options.LLVM_MasterPath);
         cfg->Write(_T("/logClangdClient_check"),         m_Options.logClangdClientCheck);
         cfg->Write(_T("/logClangdServer_check"),         m_Options.logClangdServerCheck);

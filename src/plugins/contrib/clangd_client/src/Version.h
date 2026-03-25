@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.148 26/3/02")
+#define VERSION wxT("1.2.149 26/03/23")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.149   2026/03/23 Apply Christo patch 1592 option to parse only opened files
 //1.2.148   2026/3/02 Clean up code using -Wextra
 //1.2.147   2026/02/22 Gemini wxRecusionGuard crash fix to asyncprocess.cpp
 //1.2.146   2026/02/07 Fix ClassBrowser Fix asserts caused by invalid wxTreeItemId(s)

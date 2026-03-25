@@ -67,7 +67,8 @@ struct ParserOptions
         lspMsgsClearOnSaveCheck(false),
         LLVM_MasterPath(""),
         storeDocumentation(true),
-        useCompletionIconsCheck(false)
+        useCompletionIconsCheck(false),
+        parseOpenedFilesOnly(false)
     {}
 
     bool followLocalIncludes;  /// parse XXX.h in directive #include "XXX.h"
@@ -87,6 +88,7 @@ struct ParserOptions
     wxString LLVM_MasterPath;  /// Path to LLVM install directory
     bool storeDocumentation;   /// should tokenizer detect and store doxygen documentation?
     bool useCompletionIconsCheck; /// this will check for user enabled using completion icons
+    bool parseOpenedFilesOnly;    /// this allows to configure to parse only opened files
 };
 // ----------------------------------------------------------------------------
 /** Options for the symbol browser, this specify how the symbol browser will shown */

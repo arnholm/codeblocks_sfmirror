@@ -1925,7 +1925,7 @@ bool ParseManager::DoFullParsing(cbProject* project, Parser* parser)
         // add the sorted sources list to the  already collected editor sources list
         // This creates a list sorted by active files then modified files, then lesser used files
         // Feeding this list to the parser allows the user to do code completion soonest.
-        if (sortedSources.size())
+        if (!parser->Options().parseOpenedFilesOnly && sortedSources.size())
         {
             for (std::multimap<wxDateTime,wxString>::reverse_iterator it=sortedSources.rbegin(); it!=sortedSources.rend(); ++it)
             {

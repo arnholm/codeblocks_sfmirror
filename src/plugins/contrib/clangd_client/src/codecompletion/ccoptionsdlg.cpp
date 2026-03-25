@@ -182,6 +182,7 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* np, ClgdCompletion* c
     XRCCTRL(*this, "chkPreprocessor",       wxCheckBox)->SetValue(m_Parser.Options().wantPreprocessor);
     XRCCTRL(*this, "chkComplexMacros",      wxCheckBox)->SetValue(m_Parser.Options().parseComplexMacros);
     XRCCTRL(*this, "chkPlatformCheck",      wxCheckBox)->SetValue(m_Parser.Options().platformCheck);
+    XRCCTRL(*this, "chkParseOpenedOnly",    wxCheckBox)->SetValue(m_Parser.Options().parseOpenedFilesOnly);
     XRCCTRL(*this, "chkLogClangdClient",    wxCheckBox)->SetValue(m_Parser.Options().logClangdClientCheck);
     XRCCTRL(*this, "chkLogClangdServer",    wxCheckBox)->SetValue(m_Parser.Options().logClangdServerCheck);
     XRCCTRL(*this, "chkLogPluginInfo",      wxCheckBox)->SetValue(m_Parser.Options().logPluginInfoCheck);
@@ -288,6 +289,7 @@ void CCOptionsDlg::OnApply()
     cfg->Write(_T("/want_preprocessor"),             (bool) XRCCTRL(*this, "chkPreprocessor",          wxCheckBox)->GetValue());
     cfg->Write(_T("/parse_complex_macros"),          (bool) XRCCTRL(*this, "chkComplexMacros",         wxCheckBox)->GetValue());
     cfg->Write(_T("/platform_check"),                (bool) XRCCTRL(*this, "chkPlatformCheck",         wxCheckBox)->GetValue());
+    cfg->Write(_T("/parse_opened_files_only"),       (bool) XRCCTRL(*this, "chkParseOpenedOnly",       wxCheckBox)->GetValue());
     cfg->Write(_T("/logClangdClient_check"),         (bool) XRCCTRL(*this, "chkLogClangdClient",       wxCheckBox)->GetValue());
     cfg->Write(_T("/logClangdServer_check"),         (bool) XRCCTRL(*this, "chkLogClangdServer",       wxCheckBox)->GetValue());
     cfg->Write(_T("/logPluginInfo_check"),           (bool) XRCCTRL(*this, "chkLogPluginInfo",         wxCheckBox)->GetValue());
@@ -466,6 +468,7 @@ void CCOptionsDlg::OnUpdateUI(cb_unused wxUpdateUIEvent& event)
     XRCCTRL(*this, "chkPreprocessor",               wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkComplexMacros",              wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkPlatformCheck",              wxCheckBox)->Enable(en);
+    XRCCTRL(*this, "chkParseOpenedOnly",            wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkLogClangdClient",            wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkLogClangdServer",            wxCheckBox)->Enable(en);
     XRCCTRL(*this, "chkLogPluginInfo",              wxCheckBox)->Enable(en);
