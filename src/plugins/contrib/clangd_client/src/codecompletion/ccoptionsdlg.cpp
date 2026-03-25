@@ -100,8 +100,10 @@ namespace // anonymous
     #if defined(_WIN32)
         wxString clangdexe = "clangd.exe";
         wxString LLVM_Dirmaybe = "c:\\program files\\llvm\\bin";
+        wxString clangdexe_versioned = "clangd-*.exe"; // (Christo ticket 1593 26/03/25)
     #else
         wxString clangdexe = "clangd";
+        wxString clangdexe_versioned = "clangd-*";     // (Christo ticket 1593 26/03/25)
         wxString LLVM_Dirmaybe = "/usr/bin";
     #endif
 }
@@ -585,8 +587,18 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)
         fnClangdPath.Assign(LLVM_Dirmaybe, clangdexe);
         if (not fnClangdPath.Exists())
             fnClangdPath.Clear();
-        // tha..tha..that's all folks!
     }
+
+    // Try to find a version clangd executable like:        // (Christo ticket 1593 26/03/25)
+    // /usr/bin/clangd-19
+    // /usr/bin/clangd-20
+    // C:\Program Files\LLVM\bin\clangd-20.exe
+    if (fnClangdPath.GetPath().empty())
+    {
+        wxString spec = LLVM_Dirmaybe + wxFILE_SEP_PATH + clangdexe_versioned;
+        fnClangdPath = wxFindFirstFile(spec);
+    }
+
     if (fnClangdPath.GetPath().empty())
     {
         wxString msg; msg << __FUNCTION__ << "() " << _("Could not find clangd installation.");
