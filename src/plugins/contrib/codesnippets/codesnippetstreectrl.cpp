@@ -1658,6 +1658,9 @@ void CodeSnippetsTreeCtrl::EditSnippet(SnippetTreeItemData* pSnippetTreeItemData
         // open file link, open file in cbEditor
         if (not m_EditFileName.IsEmpty() )
         {
+            // Don't open duplicates // (ph 26/03/25)
+            EditorBase* pEb = Manager::Get()->GetEditorManager()->GetEditor(m_EditFileName);
+            if (pEb) return;
             //-m_pcbEditor = GetEditorManager()->Open(m_EditFileName);
             cbEditor* m_pcbEditor = Manager::Get()->GetEditorManager()->Open(m_EditFileName);
             m_EditorPtrArray.Add(m_pcbEditor);
@@ -1668,6 +1671,10 @@ void CodeSnippetsTreeCtrl::EditSnippet(SnippetTreeItemData* pSnippetTreeItemData
             // Need temp file for snippet text
             wxString m_TmpFileName = wxFileName::GetTempDir();
             m_TmpFileName << wxFILE_SEP_PATH << m_EditSnippetLabel << _T(".txt");
+            // Don't open duplicates // (ph 26/03/25)
+            EditorBase* pEb = Manager::Get()->GetEditorManager()->GetEditor(m_TmpFileName);
+            if (pEb) return;
+
             cbEditor* m_pcbEditor = Manager::Get()->GetEditorManager()->New( m_TmpFileName );
             if (not m_pcbEditor)
             {
@@ -1935,13 +1942,14 @@ void CodeSnippetsTreeCtrl::SaveEditorsXmlData(cbEditor* pcbEditor)
 void CodeSnippetsTreeCtrl::SaveAllOpenEditors()
 // ----------------------------------------------------------------------------
 {
-    // 2014/12/20
     size_t knt = m_EditorPtrArray.GetCount();
     if (not knt) return;
 
-    for (size_t ii=0; ii<knt; ++ii)
+    // Editor closes can change the editor array count
+    // This 'for loop' reads it on each iteration
+    for (int ii=knt; ii and m_EditorPtrArray.GetCount(); --ii)   // (ph 26/03/25)
     {
-        EditorBase* eb = m_EditorPtrArray[ii];
+        EditorBase* eb = m_EditorPtrArray[ii-1];
 
         // Is this a snippet editor?
         int idx = m_EditorPtrArray.Index((cbEditor*)eb);

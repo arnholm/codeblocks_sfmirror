@@ -138,7 +138,7 @@ class CodeSnippetsWindow : public wxPanel
         void OnMnuCopy(wxCommandEvent& event);
         void OnMnuPaste(wxCommandEvent& event);
         void OnMnuFileBackup(wxCommandEvent& event);
-        void OnClose(wxCloseEvent& event); //never occurs
+        void OnAppClose(wxCloseEvent& event); //never occurs
         void OnIdle(wxIdleEvent& event);
         void OnMnuSearchExtended(wxCommandEvent& event);
         void OnLeaveWindow (wxMouseEvent &event);

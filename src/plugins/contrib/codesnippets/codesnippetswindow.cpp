@@ -160,7 +160,7 @@ BEGIN_EVENT_TABLE(CodeSnippetsWindow, wxPanel)
     EVT_TREE_ITEM_GETTOOLTIP(idSnippetsTreeCtrl, CodeSnippetsWindow::OnItemGetToolTip)
     // ---
     // EVT_CLOSE Doesn't work on wxAUI windows, this is called from a Connect()
-    EVT_CLOSE( CodeSnippetsWindow::OnClose) //never occurs with wxAUI
+    EVT_CLOSE( CodeSnippetsWindow::OnAppClose) //never occurs with wxAUI
     // EVT_IDLE(   CodeSnippetsWindow::OnIdle) //works ok
     EVT_LEAVE_WINDOW ( CodeSnippetsWindow::OnLeaveWindow)
     EVT_ENTER_WINDOW ( CodeSnippetsWindow::OnEnterWindow)
@@ -280,7 +280,7 @@ void CodeSnippetsWindow::OnLeaveWindow (wxMouseEvent &event)
     event.Skip();
 }
 // ----------------------------------------------------------------------------
-void CodeSnippetsWindow::OnClose(wxCloseEvent& event)
+void CodeSnippetsWindow::OnAppClose(wxCloseEvent& event)
 // ----------------------------------------------------------------------------
 {
     // EVT_CLOSE is not generated from wxAUI windows

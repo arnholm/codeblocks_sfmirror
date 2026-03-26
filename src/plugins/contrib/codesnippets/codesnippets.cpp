@@ -415,7 +415,7 @@ void CodeSnippets::OnAppStartShutdown(CodeBlocksEvent& event)
 
     wxCloseEvent closeevt;
     closeevt.SetEventObject(GetConfig()->GetSnippetsWindow());
-    GetConfig()->GetSnippetsWindow()->OnClose(closeevt);
+    GetConfig()->GetSnippetsWindow()->OnAppClose(closeevt);
 //--
     GetConfig()->SettingsSave();
     // Call OnRelease() before CodeBlocks actually closes down or we'll crash
