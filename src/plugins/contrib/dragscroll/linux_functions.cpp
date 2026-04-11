@@ -41,6 +41,7 @@ void MouseEventsHandler::OnTimerEvent(wxTimerEvent& event)
         wxTreeCtrl* pTreeCtrl = dynamic_cast<wxTreeCtrl*>(m_pEventObject);
 
         // If the mouse window is a cb wxTreeCtrl, it needs a RightButton-Down click
+        // because we did not event.Skip() in OnMouseRightDown()
         // For example the Open files list window needs this special treatment.
         if (pTreeCtrl)
         {
@@ -105,7 +106,7 @@ void MouseEventsHandler::OnTimerEvent(wxTimerEvent& event)
 void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Linux
 // ---------------------------------------------------------------------------
 {
-     LOGIT("\n%s entered %p", __FUNCTION__, event.GetEventObject());
+    LOGIT("\n%s entered %p", __FUNCTION__, event.GetEventObject());
 
     if ( (not event.GetEventObject()->IsKindOf(CLASSINFO(wxWindow)))
         or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
@@ -155,6 +156,7 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Linux
     m_firstMouseX = event.GetX();
     m_lastMouseY = event.GetY();
     m_lastMouseX = event.GetX();
+    m_startPoint = wxPoint(m_firstMouseX, m_firstMouseY);   // (ph 26/04/01)
 
     wxObject* pEvtObject = event.GetEventObject();
 
@@ -186,15 +188,14 @@ void MouseEventsHandler::OnMouseRightUp(wxMouseEvent& event) /// Linux
 {
     LOGIT("%s entered", __FUNCTION__);
 
+    event.Skip(); //(ph 2026-04-10 ) solves missing context menu on tree ctrl
+
     // cleanup any status for a previous mouse RightDown
 
     wxObject* pEvtObject = event.GetEventObject();
     if ( (not pEvtObject->IsKindOf(CLASSINFO(wxWindow)))
         or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
         { event.Skip(); return; }
-
-    //-unused- wxWindow* pWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
-    //-unused- wxTreeCtrl* m_pEventTreeCtrl = dynamic_cast<wxTreeCtrl*>(event.GetEventObject());
 
     m_isScrollKeyValid = false;
     m_dragging = false;

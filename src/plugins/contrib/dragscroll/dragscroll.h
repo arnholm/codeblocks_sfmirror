@@ -19,8 +19,9 @@
 #include <wx/gdicmn.h> //wxPoint
 #include <wx/log.h>
 #include <wx/timer.h>
+#include <wx/treectrl.h>    // (ph 26/04/01)
 
-#include <cbplugin.h> // the base class we 're inheriting
+#include "cbplugin.h" // the base class we 're inheriting
 
 #include "dragscrollevent.h"
 #include "cbstyledtextctrl.h"
@@ -34,7 +35,8 @@
 #if defined(LOGGING)
 #define LOGIT wxLogMessage
 #else
-#define LOGIT(...) // Define LOGIT as an empty macro
+// This evaluates the arguments but does nothing with them // (ph 26/04/01)
+#define LOGIT(...) ((void)0)
 #endif
 
 // anchor to one and only DragScroll object
@@ -248,21 +250,23 @@ public:
 private:
     wxWindow* m_Window;
     //?bool m_rightIsDown = false;  // Linux
-    bool m_middleIsDown = false; //  Linux
-    bool m_dragging;
-    bool m_didScroll;
-    int  m_skipEventsCount = 0;
-    int  m_firstMouseX;
-    int  m_firstMouseY;
-    int  m_lastMouseX;
-    int  m_lastMouseY;
-    int  m_scrollOffsetX;
-    int  m_scrollOffsetY;
-    int  m_skipOrAddCount;
-    bool m_popupActive = false;
+    bool m_middleIsDown = false;    //  Linux
+    bool m_dragging     = false;    // (ph 26/04/01) init all vars
+    bool m_didScroll    = false;
+    int  m_skipEventsCount  = 0;
 
-    int m_draggingX; //(ph 2024/09/03)
-    int m_draggingY;
+    wxPoint m_startPoint    = wxPoint(0,0); // mouse button down point // (ph 26/04/01)
+    int  m_firstMouseX      = 0;
+    int  m_firstMouseY      = 0;
+    int  m_lastMouseX       = 0;
+    int  m_lastMouseY       = 0;
+    int  m_scrollOffsetX    = 0;
+    int  m_scrollOffsetY    = 0;
+    int  m_skipOrAddCount   = 0;
+    bool m_popupActive  = false;
+
+    int m_draggingX     = 0; //(ph 2024/09/03)
+    int m_draggingY     = 0;
 
     wxWindow* m_pLastEnteredWindow = nullptr;
     wxWindow* m_pLastExitedWindow  = nullptr;
@@ -275,7 +279,7 @@ private:
     cbDragScroll* pDSplugin = cbDragScroll::pDragScroll;
 
     // Scroll Direction move -1(mouse direction) +1(reverse mouse direction)
-    int         m_Direction;
+    int         m_Direction = -1;
     unsigned    m_gtkContextDelay;
     wxTimer     m_WaitTimer;                //used in Linus functon
     wxObject*   m_pEventObject   = nullptr; //used in Linux function
@@ -293,28 +297,33 @@ private:
     DECLARE_EVENT_TABLE()
 };
 //----------------------------------------
-#define VERSION "1.4.15 25/10/20"
+#define VERSION "1.4.17 26/4/10"
 //----------------------------------------
 //versions
 // ----------------------------------------------------------------------------
 //  Modification History
 // ----------------------------------------------------------------------------
-// 1/4/15   2025/10/20 Remember the original (current) mouse position for other events to use.
-// 1/4/14   2025/10/09 Fix using any middle mouse key combo disables context menu.
-// 1/4/13   2025/01/16 Remove tree ctrl scrolling from linux causing stalls.
-// 1/4/12   2024/09/6 Optimization of OnRightMouseUp() events.
-// 1/4/11   2024/09/5 Allow 3 pixel slop before deciding this is a scroll.
-// 1/4/10   2024/09/4 Allow 3 pixel slop before deciding this is a scroll.
+// 1.4.17   2026/04/10 Add event.Skip() to OnMouseRightUp() solves missing context menus
+// 1.4.16   2026/04/01 Hunting cause of the missing first right mouse-down/up response
+//              Found unitialized m_dragging boolean set to random int.
+//              Refactored the mouse movement/drag threshold for high DPI.
+// 1.4.15   2025/10/20 Remember the original (current) mouse position for other events to use.
+// 1.4.15   2025/10/20 Remember the original (current) mouse position for other events to use.
+// 1.4.14   2025/10/09 Fix using any middle mouse key combo disables context menu.
+// 1.4.13   2025/01/16 Remove tree ctrl scrolling from linux causing stalls.
+// 1.4.12   2024/09/6 Optimization of OnRightMouseUp() events.
+// 1.4.11   2024/09/5 Allow 3 pixel slop before deciding this is a scroll.
+// 1.4.10   2024/09/4 Allow 3 pixel slop before deciding this is a scroll.
 //          This makes it easier to place the mouse to request context menu.
 //          Add ability to scroll html window horizontally.
-// 1/4/09   2024/08/26 For wxTreeCtrl, select the item under the cursor.
-// 1/4/08   2024/08/22 Issue wxEVT_CONTEXT_MENU for wxListCtrl with style wxLC_REPORT
-// 1/4/07   2024/08/17 Changes to support Linux re: selected item index
-// 1/4/06   2024/08/14 OnMouseRightUp(): For wxListCtrl verify an istem is selected
-// 1/4/05   2024/08/2  Rework the mouse sensitivity
-// 1/4/04   2024/07/29 On Linux issue wxContextMenuEvent for non-wxTree RightMouse simulation
-// 1/4/03   2024/07/24 Separated Linux funcs from windows, use wxTimer to determine movement
-// 1/4/02   2024/07/20 Fix Linux and add cursors to show scroll direction
+// 1.4.09   2024/08/26 For wxTreeCtrl, select the item under the cursor.
+// 1.4.08   2024/08/22 Issue wxEVT_CONTEXT_MENU for wxListCtrl with style wxLC_REPORT
+// 1.4.07   2024/08/17 Changes to support Linux re: selected item index
+// 1.4.06   2024/08/14 OnMouseRightUp(): For wxListCtrl verify an istem is selected
+// 1.4.05   2024/08/2  Rework the mouse sensitivity
+// 1.4.04   2024/07/29 On Linux issue wxContextMenuEvent for non-wxTree RightMouse simulation
+// 1.4.03   2024/07/24 Separated Linux funcs from windows, use wxTimer to determine movement
+// 1.4.02   2024/07/20 Fix Linux and add cursors to show scroll direction
 // 1.4.01   2024/06/27
 //          Simplify mouse handler and resolve Linux inability to scroll with right mouse button
 //          Add keys Alt-RightMouset, Shift-RightMouse for Linux and Windows.

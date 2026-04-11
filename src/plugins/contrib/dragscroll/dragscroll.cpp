@@ -1558,6 +1558,7 @@ void MouseEventsHandler::OnMouseMiddleDown(wxMouseEvent& event)
     m_firstMouseX = event.GetX();
     m_lastMouseY = event.GetY();
     m_lastMouseX = event.GetX();
+    m_startPoint = wxPoint(m_firstMouseX, m_firstMouseY);   // (ph 26/04/01)
 
     wxObject* pEvtObject = event.GetEventObject();
 
@@ -1668,6 +1669,7 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
     m_firstMouseX = mousePos.x;
     m_lastMouseY  = m_firstMouseY;
     m_lastMouseX  = m_firstMouseX;
+    m_startPoint  = wxPoint(m_firstMouseX, m_firstMouseY);  // (ph 26/04/01)
 
     int chosenDragKey = pDSplugin->GetchosenDragKey();
     m_isScrollKeyValid = false;
@@ -1748,6 +1750,7 @@ void MouseEventsHandler::OnMouseRightUp(wxMouseEvent& event) /// Windows only
 
     LOGIT("%s entered", __FUNCTION__);
     assert(m_ignoreThisEvent >= 0);
+    // If this code issued the last mouse right-up, let it execute.
     if (m_ignoreThisEvent)
     {
         LOGIT( _T("[%s %s]"), __FUNCTION__, "ignored event");
@@ -1794,7 +1797,8 @@ void MouseEventsHandler::OnMouseRightUp(wxMouseEvent& event) /// Windows only
                 pTreeCtrl->UnselectAll();
 
             bool ok = SelectItemUnderCursor(pTreeCtrl);
-            if (not ok) {event.Skip(); return;}
+            if (not ok)
+                {event.Skip(); return;}
 
             // Re-issue the tree right mouse down click that
             // was captured when waiting for possible scrolling to occur.
@@ -1878,210 +1882,169 @@ bool MouseEventsHandler::SelectItemUnderCursor(wxTreeCtrl* pTreeCtrl)
 void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
 // ----------------------------------------------------------------------------
 {
-    //LOGIT("%s entered", __FUNCTION__);
+    m_didScroll = false;
 
-    m_didScroll = false;    // (ph 25/10/09)
-
+    // 1. Basic Guard: If the scroll key (like Right Mouse) isn't down, we do nothing.
     if (not m_isScrollKeyValid)
     {
         m_draggingX = m_draggingY = 0;
-         event.Skip(); return;
+        event.Skip();
+        return;
     }
 
-    // Clear m_popupActive since being here means the popup has closed.
-    // Popups capture mouse events. so if we get events, popup is gone.
+    // 2. Popup Check: If a popup was active, we ignore this motion event.
     if (m_popupActive)
-    { m_popupActive = false; event.Skip(); return;} //(ph 2024/09/04)
-
-    //if event window pointer not associated with DragScroll, exit
-    wxObject* pEvtObject = event.GetEventObject();
-    if ( (not pEvtObject->IsKindOf(CLASSINFO(wxWindow)))
-        or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
     {
-        //-m_draggingX = m_draggingY = 0; //(ph 2024/09/04)
-        event.Skip(); return;
+        m_popupActive = false;
+        event.Skip();
+        return;
     }
 
+    // 3. Object Validation: Ensure we are attached to the window receiving the event.
     wxWindow* pWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
+    if (!pWindow || !pDSplugin->IsAttachedTo(pWindow))
+    {
+        event.Skip();
+        return;
+    }
 
-    // **Debugging**  Ignore motion in the DragScroll Log window
-    #if defined (LOGGING)
+    // 4. Debugging: Skip logging windows to avoid infinite loops/clutter.
+#if defined (LOGGING)
     wxWindow* p = pWindow;
-    if (p) do
+    while(p)
     {
         wxString windowTitle, windowLabel;
         if (p->IsKindOf(CLASSINFO(wxFrame)))
             windowTitle = ((wxFrame*)p)->GetTitle();
         if (p->IsKindOf(CLASSINFO(wxWindow)))
             windowLabel = p->GetLabel();
-        if (not p) break;
-        //if (windowTitle.Length() or windowLabel.Length() )
-        {
-            if ((windowTitle == "Dragscroll Log")
-                or (windowLabel == "DragScroll Log") )
-                return;
 
-            p = p->GetParent();
-            if (not p) break;
-        }
+        if (windowTitle == "Dragscroll Log" || windowLabel == "DragScroll Log")
+            return;
 
-    }while(p);
-    #endif // defined LOGGING
+        p = p->GetParent();
+    }
+#endif
 
-    // If not a user scrolling key is down, exit
-    if ( not m_isScrollKeyValid  )
+    // 5. THE SENSITIVITY FIX
+    //    High-DPI Scaling: If we ever test this on a very high-resolution screen
+    //   (like a 4K laptop), we might find that 8 pixels feels even smaller.
+    //   If it starts "eating" clicks again there, we can consider making that
+    //   DRAG_THRESHOLD_SQ a variable based on wxSystemSettings::GetMetric(wxSYS_DRAG_X).
+
+    // Get the current mouse position in client coordinates.
+    wxPoint mousePos = pWindow->ScreenToClient(wxGetMousePosition());
+
+    // Calculate how far the mouse has moved from the INITIAL CLICK point.
+    // Note: set m_startPoint = mousePos in the OnMouse<button>Down handler.
+    int totalMoveX = mousePos.x - m_startPoint.x;
+    int totalMoveY = mousePos.y - m_startPoint.y;
+
+    // Use a "Dead Zone" threshold. 8 pixels is the sweet spot for High-DPI.
+    // We use squared distance (x*x + y*y) to create a circular radius check.
+    const int DRAG_THRESHOLD_SQ = 64; // 8 pixels * 8 pixels
+    int currentDistanceSq = (totalMoveX * totalMoveX) + (totalMoveY * totalMoveY);
+
+    if (currentDistanceSq < DRAG_THRESHOLD_SQ)
     {
-        m_dragging = false;
-        m_didScroll = false;
-        m_draggingX = m_draggingY = 0;
-        event.Skip(); return;
+        // The movement is too small (could be jitter).
+        // We do NOT set m_dragging to true yet.
+        LOGIT("Movement inside deadzone (%d px sq), skipping.", currentDistanceSq);
+        event.Skip();
+        return;
     }
 
-    // if dragging in a non wxWindow, exit
+    // 6. DRAG INITIALIZED
+    // If we are here, the user has moved the mouse > 8 pixels.
     if (event.Dragging())
     {
-        LOGIT("%s Dragging", __FUNCTION__);
         m_dragging = true;
-        m_didScroll = false;
-        if (not pWindow)
-        {
-            m_dragging = false;
-            m_didScroll = false;
-            m_draggingX = m_draggingY = 0;
-            LOGIT("OnMouseMotion NOT a window");
-            event.Skip(); return;
-        }
 
-        LOGIT("EntryMouseXY %d : %d", m_lastMouseX, m_lastMouseY);
-        // use ScreenToClient(wxGetMousePosition()) for consistency across event types
-        // mixing mouseEvent().GetX/GetY and wxGetMousePositin causes errors.
-        wxPoint mousePos = pWindow->ScreenToClient(wxGetMousePosition());
-        int currentMouseX = mousePos.x;
-        int currentMouseY = mousePos.y;
-        int deltaX = currentMouseX - m_lastMouseX;
-        int deltaY = currentMouseY - m_lastMouseY;
+        // Calculate deltas for this specific frame to determine scroll speed
+        int deltaX = mousePos.x - m_lastMouseX;
+        int deltaY = mousePos.y - m_lastMouseY;
 
-        m_lastMouseX = currentMouseX;
-        m_lastMouseY = currentMouseY;
+        // Update tracking variables
+        m_lastMouseX = mousePos.x;
+        m_lastMouseY = mousePos.y;
 
-        // count the pixels if dragged across
-        if (m_dragging)
-        {
-            m_draggingX += abs(deltaX);
-            m_draggingY += abs(deltaY);
-            LOGIT("Collective pixel dragging %d", m_draggingX + m_draggingY);
-        }
+        // m_draggingX/Y can still be used for logging if you wish
+        m_draggingX = abs(totalMoveX);
+        m_draggingY = abs(totalMoveY);
 
-        if ( (m_draggingX + m_draggingY) < 3) //(ph 2024/09/03)
-        {
-            LOGIT("Collective pixels less than 3, exiting.");
-            event.Skip(); return;
-        }
-        //-m_draggingX = m_draggingY = 0; //(ph 2024/09/04)
+        LOGIT("Dragging confirmed. DeltaXY: %d, %d", deltaX, deltaY);
 
-        LOGIT("currentMouseXY %d : %d", currentMouseX, currentMouseY);
-        LOGIT("New LastMouseXY %d : %d", m_lastMouseX, m_lastMouseY);
-        LOGIT("deltaXY %d : %d", deltaX, deltaY);
-
-        /// ------- Speed and direction adjustment code begin ------------------
-        // Mouse sensitivity is adjusted via config 1  2  3  4  5 6  7  8  9  10
-        //                   interpreted as scale  -5 -4 -3 -2 -1 0 +1 +2 +3  +4
-        // where a minus is motion events to skip and positive is lines to add
-        // The skip events make the mouse work harder to make a scroll
-        // while the additional lines make the mouse increase scrolling
+        // ------- Speed and direction adjustment code begin ------------------
         int nMouseSensitivity = pDSplugin->GetMouseDragSensitivity();
-        int scrollingSpeed = GetScrollingSpeed(abs(deltaX + deltaY), nMouseSensitivity);
+
+        // Calculate speed based on the movement since the last frame
+        int scrollingSpeed = GetScrollingSpeed(abs(deltaX) + abs(deltaY), nMouseSensitivity);
         int scrollAddLines = scrollingSpeed;
-        LOGIT("Speed Adjustment %d", scrollAddLines);
 
-        // Skipping Events allows us to vary the scrolling speed relative to mouse speed.
-        // The nummber of events to skip comes from GetMouseDragSensitivity();
-        // adjust skip event to honor the '1' value, else it gets ignored
-        //  because of the decrement before the test (--m_skipEventscount)
-        if ((not m_skipEventsCount) and (scrollAddLines < 0) )
-            m_skipEventsCount = abs(scrollAddLines) +1;
-        if ((not m_skipEventsCount) and (scrollAddLines >= 0) )
-            m_skipEventsCount += 1; // keep skip count from going negative
-        if (m_skipEventsCount > 1) LOGIT("Event Skipped");
-        // decrement the skip events count
-        if (--m_skipEventsCount)
-            // if skipping events, say we scrolled in order to own the event.
-            { m_didScroll = true; return; }
+        // Manage event skipping for sensitivity scaling
+        if ((not m_skipEventsCount) and (scrollAddLines < 0))
+            m_skipEventsCount = abs(scrollAddLines) + 1;
 
-        //// skip count is exhausted. 0 or more lines need to be scrolled
-        if ((abs(deltaX)>0 ) or (abs(deltaY) > 0 ) )
+        if (not m_skipEventsCount)
+            m_skipEventsCount = 1;
+
+        if (--m_skipEventsCount > 0)
         {
-            if (scrollAddLines > 0)
-            {
-                deltaX += (deltaX < 0) ? -scrollAddLines : scrollAddLines;
-                deltaY += (deltaY < 0) ? -scrollAddLines : scrollAddLines;
-            }
-            // Don't allow skewed movement, ie., both x and y scrolling at same time.
-            // Scroll the larger of X or Y
-            if (deltaX and deltaY)
-            {
-                if (abs(deltaY) >= abs(deltaX)) deltaX = 0;
-                if (abs(deltaX) >= abs(deltaY)) deltaY = 0;
-            }
-
-            m_didScroll = true; //say we scrolled (in order to own the event)
+            m_didScroll = true; // Own the event but don't move yet
+            return;
         }
-        /// ------- Speed and direction adjustment code end --------------------
 
-        if ((deltaX) or (deltaY) )
+        // Apply speed boosts if configured
+        if (scrollAddLines > 0)
         {
-            LOGIT("Scrolling:Cols/Lines %d : %d", deltaX,deltaY);
+            deltaX += (deltaX < 0) ? -scrollAddLines : scrollAddLines;
+            deltaY += (deltaY < 0) ? -scrollAddLines : scrollAddLines;
+        }
+
+        // Constrain to one axis (prevent diagonal "wobble")
+        if (deltaX && deltaY)
+        {
+            if (abs(deltaY) >= abs(deltaX)) deltaX = 0;
+            else deltaY = 0;
+        }
+
+        // ------- Perform the actual Scrolling --------------------
+        if (deltaX || deltaY)
+        {
             int mouseDirection = pDSplugin->GetMouseDragDirection();
-            // Translate the mouseDirection to user specification
-            if (not mouseDirection) mouseDirection = -1;
+            if (not mouseDirection) mouseDirection = -1; // Default to natural scroll
+
             deltaX *= mouseDirection;
             deltaY *= mouseDirection;
 
-            // If editor window, use scintilla scroll
-            if (m_pStyledTextCtrl and (not m_skipEventsCount) )
+            if (m_pStyledTextCtrl)
             {
-                m_pStyledTextCtrl->LineScroll (deltaX,deltaY);
-                m_didScroll = true;
+                m_pStyledTextCtrl->LineScroll(deltaX, deltaY);
             }
-            else if (pWindow) //use wxControl scrolling
+            else if (pWindow)
             {
-                //use wxTextCtrl scroll for y scrolling
-                if ( deltaY)
+                if (deltaY)
                     pWindow->ScrollLines(deltaY);
-                // use listCtrl for x scrolling
                 else if (pWindow->IsKindOf(wxCLASSINFO(wxListCtrl)))
-                        ((wxListCtrl*)pWindow)->ScrollList(deltaX<<2,deltaY);
-                // Use Scroll for html windows
+                    ((wxListCtrl*)pWindow)->ScrollList(deltaX << 2, deltaY);
                 else if (pWindow->IsKindOf(wxCLASSINFO(wxHtmlWindow)))
                 {
-                    // This is a horizontal scroll only. //(ph 2024/09/04)
-                    // This code violates the documentation (which is hopeless).
-                    // The code is adding pixels to "scroll units"; but converting
-                    // pixels to scroll units always results in zero.
                     wxHtmlWindow* htmlWindow = dynamic_cast<wxHtmlWindow*>(pWindow);
                     int xStart, yStart;
-                    htmlWindow->GetViewStart(&xStart,&yStart);
-                    htmlWindow->Scroll(xStart+deltaX, yStart);
+                    htmlWindow->GetViewStart(&xStart, &yStart);
+                    htmlWindow->Scroll(xStart + deltaX, yStart);
                 }
             }
-
             m_didScroll = true;
-
-        }//endIf deltaX or deltaY
-        else
-        {   LOGIT("NO Scrolling:Cols/Lines %d : %d", deltaX,deltaY) ;
-            m_didScroll = false;
         }
-        LOGIT("-------------------------------------");
     }
 
+    // Final check: if we didn't use the event, let it pass to the system.
     if (not m_didScroll)
-        // pass the event onward
         event.Skip();
 
     return;
-}//OnMouseMotion
-
+}
 // ----------------------------------------------------------------------------
 void MouseEventsHandler::OnMouseEnterWindow(wxMouseEvent& event)
 // ----------------------------------------------------------------------------
