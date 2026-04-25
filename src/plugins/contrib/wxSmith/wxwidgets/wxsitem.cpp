@@ -435,7 +435,14 @@ wxString wxsItem::GetCreatePrefix(wxsCodingLang Language)
     switch ( Language )
     {
         case wxsCPP:
-            if ( IsRootItem() ) return _T("Create");
+            if ( IsRootItem() )
+            {
+              wxsBaseProperties* Props = GetBaseProps();
+              if (Props)
+                if (!Props->m_Create)
+                  return _T("// Create");
+              return _T("Create");
+            }
             if ( IsPointer()  ) return GetVarName() + _T(" = new ") + GetUserClass();
             return GetVarName() + _T(".Create");
 
