@@ -117,6 +117,7 @@ const int idMenuViewCategorizePopup      = wxNewId();
 const int idMenuViewUseFoldersPopup      = wxNewId();
 const int idMenuViewHideFolderNamePopup  = wxNewId();
 const int idMenuViewSortAlphabetically   = wxNewId();
+const int idMenuTreeCollapseAll          = wxNewId();
 const int idMenuTreeRenameWorkspace      = wxNewId();
 const int idMenuTreeSaveWorkspace        = wxNewId();
 const int idMenuTreeSaveAsWorkspace      = wxNewId();
@@ -370,6 +371,7 @@ BEGIN_EVENT_TABLE(ProjectManagerUI, wxEvtHandler)
     EVT_MENU(idMenuViewUseFoldersPopup,      ProjectManagerUI::OnViewUseFolders)
     EVT_MENU(idMenuViewHideFolderNamePopup,  ProjectManagerUI::OnViewHideFolderName)
     EVT_MENU(idMenuViewSortAlphabetically,   ProjectManagerUI::OnViewSortAlphabetically)
+    EVT_MENU(idMenuTreeCollapseAll,          ProjectManagerUI::OnTreeCollapseAll)
     EVT_MENU(idMenuViewFileMasks,            ProjectManagerUI::OnViewFileMasks)
     EVT_MENU(idMenuFindFile,                 ProjectManagerUI::OnFindFile)
     EVT_IDLE(                                ProjectManagerUI::OnIdle)
@@ -458,7 +460,7 @@ void ProjectManagerUI::RebuildTree()
 
     FreezeTree();
     ProjectManager* pm = Manager::Get()->GetProjectManager();
-    ProjectsArray* pa = pm->GetProjects();
+    ProjectsArray*  pa = pm->GetProjects();
     const int count = pa->GetCount();
     for (int i = 0; i < count; ++i)
     {
@@ -885,6 +887,7 @@ void ProjectManagerUI::CreateMenuTreeProps(wxMenu* menu, bool popup)
     treeprops->AppendCheckItem((popup ? idMenuViewHideFolderNamePopup : idMenuViewHideFolderName),
                               _("Hide folder name"));
     treeprops->AppendCheckItem(idMenuViewSortAlphabetically,  _("Sort projects alphabetically"));
+    treeprops->Append(idMenuTreeCollapseAll,  _("Collapse all projects"));
 
     ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("project_manager"));
     bool do_categorise       = cfg->ReadBool(_T("/categorize_tree"),  true);
@@ -900,7 +903,7 @@ void ProjectManagerUI::CreateMenuTreeProps(wxMenu* menu, bool popup)
     treeprops->Enable((popup ? idMenuViewUseFoldersPopup     : idMenuViewUseFolders),     !do_hide_folder_name);
     treeprops->Enable((popup ? idMenuViewHideFolderNamePopup : idMenuViewHideFolderName), !do_use_folders);
 
-    treeprops->Check(idMenuViewSortAlphabetically,  do_sort_alpha);
+    treeprops->Check(idMenuViewSortAlphabetically, do_sort_alpha);
     treeprops->Enable(idMenuProjectUp,   !do_sort_alpha);
     treeprops->Enable(idMenuProjectDown, !do_sort_alpha);
 
@@ -1496,6 +1499,7 @@ void ProjectManagerUI::OnRightClick(cb_unused wxCommandEvent& event)
     menu.AppendCheckItem(idMenuViewUseFoldersPopup,     _("Display folders as on disk"));
     menu.AppendCheckItem(idMenuViewHideFolderNamePopup, _("Hide folder name"));
     menu.AppendCheckItem(idMenuViewSortAlphabetically,  _("Sort projects alphabetically"));
+    menu.Append(idMenuTreeCollapseAll, _("Collapse all projects"));
 
     bool do_categorise       = (m_TreeVisualState&ptvsCategorize);
     bool do_use_folders      = (m_TreeVisualState&ptvsUseFolders);
@@ -2515,6 +2519,18 @@ void ProjectManagerUI::OnViewSortAlphabetically(wxCommandEvent& event)
     else
         m_TreeVisualState &= ~ptvsSortAlpha;
     RebuildTree();
+}
+
+void ProjectManagerUI::OnTreeCollapseAll(cb_unused wxCommandEvent& event)
+{
+    if (Manager::IsAppShuttingDown())
+        return;
+
+    if (m_TreeRoot.IsOk())
+    {
+        m_pTree->CollapseAllChildren(m_TreeRoot); // Collapse all, incl. first level
+        m_pTree->Expand(m_TreeRoot); // Expand first level (to see all projects)
+    }
 }
 
 void ProjectManagerUI::OnViewHideFolderName(wxCommandEvent& event)
