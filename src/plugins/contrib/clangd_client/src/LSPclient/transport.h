@@ -247,7 +247,7 @@ class JsonTransport : public Transport
             catch (std::exception &e)
             {
                 //printf("error -> %s\n", e.what());
-                wxString msg = wxString::Format("JsonTransport:loop() error -> %s\n", e.what()); //(cb 2020/08/21)
+                // wxString msg = wxString::Format("JsonTransport:loop() error -> %s\n", e.what()); //(cb 2020/08/21) unused // (ph 26/04/29)
                 // This code is in a thread. How to write the message to CB?
             }
         }//while true

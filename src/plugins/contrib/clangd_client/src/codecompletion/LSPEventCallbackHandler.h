@@ -16,11 +16,11 @@
 #include "manager.h"
 #include "logmanager.h"
 
-#ifdef HAVE_OVERRIDE
-    #define wxOVERRIDE override
-#else /*  !HAVE_OVERRIDE */
-    #define wxOVERRIDE
-#endif /*  HAVE_OVERRIDE */
+//#ifdef HAVE_OVERRIDE // (ph 26/04/29)
+//    #define wxOVERRIDE override
+//#else /*  !HAVE_OVERRIDE */
+//    #define wxOVERRIDE
+//#endif /*  HAVE_OVERRIDE */
 
 // This is a base class used to process all method calls.
 // ----------------------------------------------------------------------------

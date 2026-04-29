@@ -698,8 +698,8 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     if (tokenIdx == -1)
         return wxEmptyString;
 
-    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    cbStyledTextCtrl* pControl = pEditor ? pEditor->GetControl() : nullptr;
+    //cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor(); unused // (ph 26/04/29)
+    //cbStyledTextCtrl* pControl = pEditor ? pEditor->GetControl() : nullptr; unused // (ph 26/04/29)
     LogManager* pLogMgr = Manager::Get()->GetLogManager(); wxUnusedVar(pLogMgr);
 
     ColourManager *colours = Manager::Get()->GetColourManager();
@@ -716,14 +716,14 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     int semLength = pParser->GetSemanticTokenLengthAt(tokenIdx);
     int semType   = pParser->GetSemanticTokenTypeAt(tokenIdx);
     int semCol    = pParser->GetSemanticTokenColumnNumAt(tokenIdx);
-    int semLine   = pParser->GetSemanticTokenLineNumAt(tokenIdx);
+    //int semLine   = pParser->GetSemanticTokenLineNumAt(tokenIdx);  unused // (ph 26/04/29)s
     int semMods   = pParser->GetSemanticTokenModifierAt(tokenIdx);
     if (semLength or semType or semCol or semMods) {;}//don't show as unused
 
     if (semName.empty())
         return wxString();
 
-    wxString semLineText = pControl->GetLine(semLine);
+    //wxString semLineText = pControl->GetLine(semLine); unused // (ph 26/04/29)
 
     // get string array of hover info separated at /n chars.
     hoverString.Replace("\n\n", "\n"); //remove double newline chars
@@ -733,7 +733,7 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, wxString& hoverString, 
     //    for (size_t ii=0; ii<vHoverInfo.size(); ++ii)
     //        pLogMgr->DebugLog(wxString::Format("vHoverInfo[%d]:%s", int(ii), vHoverInfo[ii]));
 
-    wxString doxyDoc = wxString();
+    //  unused // (ph 26/04/29)wxString doxyDoc = wxString();
     m_CurrentTokenIdx = tokenIdx;
 
     html += pre1;

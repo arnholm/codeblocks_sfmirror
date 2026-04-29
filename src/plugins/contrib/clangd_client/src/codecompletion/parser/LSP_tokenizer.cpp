@@ -2193,8 +2193,8 @@ void LSP_Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, w
     //cbStyledTextCtrl* control = new cbStyledTextCtrl(Manager::Get()->GetAppWindow(), XRCID("LSP_Tokenizer::CreateEditor"), wxDefaultPosition, size);
 
     m_pControl->UsePopUp(false);
-    ConfigManager *config = Manager::Get()->GetConfigManager(_T("editor"));
-    wxString encodingName = config->Read(_T("/default_encoding"), wxLocale::GetSystemEncodingName());
+    //ConfigManager *config = Manager::Get()->GetConfigManager(_T("editor"));  unused // (ph 26/04/29)
+    //wxString encodingName = config->Read(_T("/default_encoding"), wxLocale::GetSystemEncodingName()); unused // (ph 26/04/29)
 //    m_pData->m_encoding = wxFontMapper::GetEncodingFromName(encodingName);
 //    if (m_pData->m_encoding == wxFONTENCODING_MAX && encodingName == wxT("default"))
 //        m_pData->m_encoding = wxFont::GetDefaultEncoding();

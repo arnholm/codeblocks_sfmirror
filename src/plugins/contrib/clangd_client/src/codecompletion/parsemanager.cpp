@@ -951,7 +951,7 @@ ProcessLanguageClient* ParseManager::CreateNewLanguageServiceProcess(cbProject* 
         pLSPclient->SetLSP_UserEventID(LSPeventID);
 
         wxFileName cbpName(pcbProject->GetFilename());
-        wxString rootURI = cbpName.GetPath();
+        //wxString rootURI = cbpName.GetPath(); unused // (ph 26/04/29)
 
         Parser* pParser = GetParserByProject(pcbProject);
         if (not pParser)
@@ -1004,7 +1004,7 @@ ProcessLanguageClient* ParseManager::GetLSPclient(cbProject* pProject)
        pLogMgr->DebugLog(wxString(__FUNCTION__) + ": param pProject is missing");
         return nullptr;
     }
-    wxString projectTitle = pProject->GetTitle();
+    //wxString projectTitle = pProject->GetTitle(); unused // (ph 26/04/29)
 
     if (m_LSP_Clients.count(pProject))
         pClient =  m_LSP_Clients[pProject];
@@ -1727,8 +1727,8 @@ bool ParseManager::IsOkToUpdateClassBrowserView()
         // See if the mouse is inside the Symbols tree window
         ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
         wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-        int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-        wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+        //int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage); unused // (ph 26/04/29)
+        //wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex); unused // (ph 26/04/29)
         if (pCurrentPage == GetClassBrowser())
         {
             if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
@@ -1816,7 +1816,7 @@ void ParseManager::GetPriorityFilesForParsing(StringList& localSourcesList, cbPr
                 std::list<wxString>::iterator findIter = std::find(localSourcesList.begin(), localSourcesList.end(), filename);
                 if (findIter != localSourcesList.end())
                 {
-                    wxString foundItem = *findIter; // **debugging**
+                    //wxString foundItem = *findIter; // **debugging** unused // (ph 26/04/29)
                     continue;
                 }
                 // Find the ProjectFile and project containing this editors file.
@@ -2852,7 +2852,7 @@ void ParseManager::ClearDiagnostics(wxString filename)  //(Christo 2024/03/30)
 // ----------------------------------------------------------------------------
 {
     std::lock_guard < std::mutex > lock(m_diagnosticsCacheMutex);
-    wxString ret;
+    // unused // (ph 26/04/29)wxString ret;
     const auto &itr = m_diagnosticsCache.find(filename);
     if (itr != m_diagnosticsCache.end())
     {

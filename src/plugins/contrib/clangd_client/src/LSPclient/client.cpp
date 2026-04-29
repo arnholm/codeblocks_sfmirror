@@ -368,7 +368,7 @@ ProcessLanguageClient::ProcessLanguageClient(const cbProject* pProject, const ch
     LogManager* pLogMgr = Manager::Get()->GetLogManager();
     m_LSP_responseStatus = false;
 
-    wxString tempDir = wxFileName::GetTempDir();
+    //wxString tempDir = wxFileName::GetTempDir(); unused // (ph 26/04/29)
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     wxString cfgClangdMasterPath = cfg->Read("/LLVM_MasterPath", wxString());
@@ -902,7 +902,7 @@ cbStyledTextCtrl* ProcessLanguageClient::GetStaticHiddenEditor(const wxString& f
 {
     // Create new hidden editor and load its data
 
-    wxString resultText;
+    //wxString resultText; unused // (ph 26/04/29)
 
     cbStyledTextCtrl* pControl = nullptr;
 
@@ -1540,7 +1540,7 @@ void ProcessLanguageClient::OnLSP_Response(wxThreadEvent& threadEvent)
     wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED);
     event.SetString(threadEvent.GetString()); //id of json  eg. id:result or id:method etc.
     event.SetClientData(pJson);
-    wxString rspHeader = event.GetString(); //id of json eg. d:result or id:method etc
+    //wxString rspHeader = event.GetString(); //id of json eg. d:result or id:method etc unused // (ph 26/04/29)
 
     try
     {
@@ -3416,7 +3416,8 @@ size_t ProcessLanguageClient::GetCompilerDriverIncludesByFile(wxArrayString& res
 
     // create array of compiler built-in include files needed for for clang '-fsyntax-only'
     // The files arn't found by clang for some unknown reason to me.
-    wxArrayString gccResults, gccErrors;
+    //wxArrayString gccResults; unused // (ph 26/04/29)
+    wxArrayString gccErrors;
 
     ProjectBuildTarget* pTarget = nullptr;
     if (not pTarget)  // No target when target is virtual (eg. 'ALL');
@@ -4072,7 +4073,7 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
 
     // create array of compiler built-in include files needed for for clang '-fsyntax-only'
     // The files arn't found by clang for some unknown reason to me.
-    wxArrayString gccResults, gccErrors;
+    //wxArrayString gccResults, gccErrors; unused // (ph 26/04/29)
 
     ProjectBuildTarget* pTarget = nullptr;
     if (not pTarget)
@@ -4113,9 +4114,9 @@ void ProcessLanguageClient::UpdateCompilationDatabase(cbProject* pProject, wxStr
     else
         CCLogger::Get()->DebugLog(wxString::Format(_("Clangd_client using project target: %s"), pTarget->GetTitle()));
 
-    Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
-    wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : "";
-    wxString compilerID = pCompiler ? pCompiler->GetID() : "";
+    //Compiler* pCompiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID()); unused // (ph 26/04/29)
+    //wxString masterPath = pCompiler ? pCompiler->GetMasterPath() : ""; unused // (ph 26/04/29)
+    //wxString compilerID = pCompiler ? pCompiler->GetID() : ""; unused // (ph 26/04/29)
     CompilerPrograms compilerPrograms;
 
     wxArrayString aCompilerDriverIncludeFiles;
@@ -4189,7 +4190,7 @@ int ProcessLanguageClient::GetCompilationDatabaseEntry(wxArrayString& resultArra
     if (not knt) return 0;
 
     wxString jCommand;
-    wxString jDirectory;
+    wxString jDirectory; wxUnusedVar(jDirectory);
     wxString jFile;
     bool found = false;
     try {
@@ -4346,7 +4347,7 @@ wxString ProcessLanguageClient::CreateLSPClientLogName(int pid, const cbProject*
 // ----------------------------------------------------------------------------
 {
     // Create or find an appropriate client/server log filename for this project
-    wxString resultName = wxEmptyString;
+    //wxString resultName = wxEmptyString; unused // (ph 26/04/29)
     wxString tempDir = wxFileName::GetTempDir();
     wxString fileSep = wxFILE_SEP_PATH;
     wxString clientLogIndexesFilename = tempDir + fileSep + "CBclangd_LogsIndex.txt";

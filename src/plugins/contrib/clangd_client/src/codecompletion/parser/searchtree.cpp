@@ -444,6 +444,7 @@ wxString SearchTreeNode::I2S(int i)
 wxString SearchTreeNode::Serialize(BasicSearchTree* tree,nSearchTreeNode node_id,bool withchildren)
 {
     wxString result,children,sparent,sdepth,slabelno,slabelstart,slabellen;
+    wxUnusedVar(children); // (ph 26/04/29)
     SearchTreeLinkMap::const_iterator link;
     SearchTreeItemsMap::const_iterator item;
     sparent = U2S(m_Parent);
@@ -563,7 +564,7 @@ const wxString BasicSearchTree::GetString(size_t n) const
 wxString BasicSearchTree::GetString(const SearchTreePoint& nn, nSearchTreeNode top) const
 {
     wxString result(_T(""));
-    wxString tmplabel;
+    //wxString tmplabel; unused // (ph 26/04/29)
     if (!nn.n || nn.n==top)
         return result;
     const SearchTreeNode *curnode;

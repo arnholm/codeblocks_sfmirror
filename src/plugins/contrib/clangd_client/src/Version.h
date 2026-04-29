@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.150 26/03/25")
+#define VERSION wxT("1.2.151 26/04/29")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.151   2026/04/29 Minor changes and cleanup for wx3.3.2
 //1.2.150   2026/03/25 Apply Christo patch 1593 Auto detect versioned clangd executable
 //1.2.149   2026/03/23 Apply Christo patch 1592 option to parse only opened files
 //1.2.148   2026/3/02 Clean up code using -Wextra

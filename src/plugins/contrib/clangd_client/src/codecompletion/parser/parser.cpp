@@ -1145,7 +1145,7 @@ cbStyledTextCtrl* Parser::GetStaticHiddenEditor(const wxString& filename)
     // whenever necessary to obtain cbStyledEditor resources.
     // Only one is allocated to be used by all functions of this parser.
 
-    wxString resultText;
+    //wxString resultText; unused // (ph 26/04/29)
     cbStyledTextCtrl* pControl = nullptr;
 
     if (wxFileExists(filename))
@@ -1269,7 +1269,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
         // CC_LOCKER_TRACK_P_MTX_LOCK(s_ParserMutex)
         // -------------------------------------------------------
         auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_ParserMutex);  //(ph 250526)
-        wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+        //wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);  unused // (ph 26/04/29)
         if (locker_result != true)
         {
             // lock failed, do not block the UI thread, restart the timer and return later
@@ -1812,7 +1812,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         for (int ii=0; ii<diagnosticsKnt; ++ii)
         {
             int diagLine      = diagnostics[ii]["range"]["start"]["line"].get<int>();
-            int diagColstrt   = diagnostics[ii]["range"]["start"]["character"].get<int>();
+            // int diagColstrt   = diagnostics[ii]["range"]["start"]["character"].get<int>();  unused // (ph 26/04/29)
             //  int diagColend    = diagnostics[ii]["range"]["end"]["character"].get<int>();
             int diagSeverity  = diagnostics[ii]["severity"].get<int>();
             //-int diagCode      = diagnostics[ii]["code"].get<int>(); //CCLS
@@ -1919,7 +1919,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
                 }//endif CodeActionNewText length
             }//endFor jj
 
-            wxString logMsg(wxString::Format("LSP:diagnostic:%s %d:%d  %s: %s", cbFilename, diagLine+1, diagColstrt+1, severity, diagMsg));
+            //wxString logMsg(wxString::Format("LSP:diagnostic:%s %d:%d  %s: %s", cbFilename, diagLine+1, diagColstrt+1, severity, diagMsg)); unused // (ph 26/04/29)
            // CCLogger::Get()->Log(logMsg); // **Debugging**
 
             wxString lspDiagTxt = severity + ":" + diagMsg;
@@ -2296,7 +2296,7 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
             const wxString focusFile = editor->GetFilename();
             //- unused int focusLine = editor->GetControl()->GetCurrentLine() + 1;
             wxFileName fn(focusFile);
-            const wxString editorBasePath(fn.GetPath());
+            //const wxString editorBasePath(fn.GetPath()); unused // (ph 26/04/29)
 
             cbSearchResultsLog* searchLog = Manager::Get()->GetSearchResultLogger();
             if (!searchLog)
@@ -2331,10 +2331,10 @@ void Parser::OnLSP_ReferencesResponse(wxCommandEvent& event)
                 for (unsigned refindx=0; refindx<m_pReferenceValues->GetCount(); refindx += 3)
                 {
                     #if defined(cbDEBUG) //debugging
-                    wxString reffilenm = m_pReferenceValues->Item(refindx);
-                    wxString refline   = m_pReferenceValues->Item(refindx+1);
-                    wxString reftext   = m_pReferenceValues->Item(refindx+2);
-                    wxString newfilenm = curFn.GetFullName();
+                    //wxString reffilenm = m_pReferenceValues->Item(refindx); unused // (ph 26/04/29)
+                    //wxString refline   = m_pReferenceValues->Item(refindx+1); unused // (ph 26/04/29)
+                    //wxString reftext   = m_pReferenceValues->Item(refindx+2); unused // (ph 26/04/29)
+                    //wxString newfilenm = curFn.GetFullName(); unused // (ph 26/04/29)
                     #endif
 
                     if ( (m_pReferenceValues->Item(refindx) == curFn.GetFullPath())
@@ -2812,7 +2812,7 @@ void Parser::OnLSP_CompletionResponse(wxCommandEvent& event, std::vector<ClgdCCT
 
         json valueItems = pJson->at("result").at("items");
         // -unused- Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        wxString filename = pEditor->GetFilename();
+        //wxString filename = pEditor->GetFilename(); unused // (ph 26/04/29)
 
         ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
         size_t ccMaxMatches = cfg->ReadInt(_T("/max_matches"), 256);
@@ -3363,7 +3363,7 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
         wxFileName fn(editorFile);
         const wxString editorBasePath(fn.GetPath());
 
-        wxString prevNewText;
+        wxString prevNewText;   wxUnusedVar(prevNewText);
         int prevRangeStartLine = 0;
         int prevRangeEndLine   = 0; wxUnusedVar(prevRangeEndLine);
         int prevRangeStartCol  = 0; wxUnusedVar(prevRangeStartCol);
@@ -3492,7 +3492,7 @@ void Parser::OnLSP_RangeFormattingResponse(wxCommandEvent& event)  // (christo 2
 
     const wxString editorFile = pEditor->GetFilename();
     wxFileName fn(editorFile);
-    const wxString editorBasePath(fn.GetPath());
+    //const wxString editorBasePath(fn.GetPath()); unused // (ph 26/04/29)
 
     json* pJson = static_cast<json*>(event.GetClientData());
     if (!pJson->contains("result"))
@@ -3949,7 +3949,7 @@ void Parser::OnRequestCodeActionApply(wxCommandEvent& event)
     wxString logLine = wxString::Format("%d", int(lineNumInt-1)); //clangd needs zero origin lines
     //wxString searchResult; // **Debugging**
     wxString codeActionReplaceStr; // starts with "{"newText":
-    wxString codeActionErrLineStr;  // <int string>
+    wxString codeActionErrLineStr; wxUnusedVar(codeActionErrLineStr); // (ph 26/04/29)
 
     std::vector<wxString>FixesFound;
 

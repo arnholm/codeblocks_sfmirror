@@ -1241,7 +1241,7 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
     if (plug and clgdEnabled)
     {
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plug);
-        wxString msg = info ? info->title : wxString(_("<Unknown plugin>"));
+        // wxString msg = info ? info->title : wxString(_("<Unknown plugin>")); unused // (ph 26/04/29)
         if (info->name == "CodeCompletion")
         {
             wxString msg = _("The CodeCompletion plugin should not be enabled when 'Clangd_client' is running.\n"
@@ -1793,7 +1793,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
         if ( (clgdCCTokenIdx >= 0)
             and (cccToken.semanticTokenType != LSP_SemanticTokenType::Unknown) )
         {
-            wxString tknName = cccToken.displayName.BeforeFirst('(', &tokenArgs);
+            // wxString tknName = cccToken.displayName.BeforeFirst('(', &tokenArgs); unused // (ph 26/04/29)
             bool addParentheses = not tokenArgs.empty();
 
             // add back the beginning paren
@@ -1810,7 +1810,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
                     // ----------------------------------------------------------------------------
                     /// Lock token tree. Unlock occurs in UnlockTokenTree struct dtor above
                     auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
-                    wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+                    // wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__); unused // (ph 26/04/29)
                     if (locker_result != true)
                     {
                         // lock failed, do not block the UI thread
@@ -2377,7 +2377,7 @@ void ClgdCompletion::OnFindReferences(cb_unused wxCommandEvent& event)
 
     // LSP: differentiate missing project vs clangd_client
     ProcessLanguageClient* pClient = GetLSPClient(pEditor);
-    wxString filename = pEditor->GetFilename();
+    // wxString filename = pEditor->GetFilename(); unused // (ph 26/04/29)
 
     if ( (not pEdProject) or (not pClient) )
     {
@@ -2974,7 +2974,7 @@ void ClgdCompletion::OnLSP_EditorFileReparse(cb_unused wxCommandEvent& event)
             // if file is open in editor, send a didSave() causing a clangd reparse
             // if file is not open in editor do a didOpen()/didClose() sequence
             //      to cause a background parse.
-            wxString filename = pf->file.GetFullPath();
+            // wxString filename = pf->file.GetFullPath(); unused // (ph 26/04/29)
 
             // **Debugging** show status of parse pausing map
             //wxArrayString pauseParsingReasons;
@@ -5862,7 +5862,7 @@ void ClgdCompletion::OnRequestCodeActionApply(wxCommandEvent& event)
     wxArrayString params = GetArrayFromString(event.GetString(),"|",true);
     wxString filename = params[0];
     wxString lineNumStr = params[1];
-    wxString logText = params[2];
+    // wxString logText = params[2]; unused // (ph 26/04/29)
     int lineNumInt = -1; //an impossible line number
     try { lineNumInt = std::stoi(lineNumStr.ToStdString()); }
     catch(std::exception &e) { lineNumInt = -1;}

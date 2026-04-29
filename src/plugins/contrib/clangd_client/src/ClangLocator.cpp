@@ -143,7 +143,7 @@ wxString ClangLocator::Locate_ResourceDir(wxFileName fnClangd)
         fnClangdExecutablePath.AppendDir(VersionNumerals);
     }
     fnClangdExecutablePath.SetName(wxString("clang") << "-" << VersionNumerals); //Linux
-    wxString resource = fnClangdExecutablePath.GetFullPath(); // **Debugging**
+    // wxString resource = fnClangdExecutablePath.GetFullPath(); // **Debugging**
 
     if (fnClangdExecutablePath.DirExists())
         return fnClangdExecutablePath.GetPath();
@@ -558,7 +558,7 @@ wxArrayString ClangLocator::GetEnvPaths() const
         return {};
     }
 
-    wxArrayString mergedPaths;
+    //wxArrayString mergedPaths; inised // (ph 26/04/29)
     wxArrayString paths = ::wxStringTokenize(path, ENV_PATH_SEPARATOR, wxTOKEN_STRTOK);
     return paths;
 }
@@ -750,7 +750,7 @@ wxString ClangLocator::GetCompilerExecByProject(cbProject* pProject)    // (ph 2
                 return wxString();
             }
             wxString masterPath = pCompiler->GetMasterPath();
-            wxString compilerID = pCompiler->GetID();
+            // wxString compilerID = pCompiler->GetID(); unused // (ph 26/04/29)
             CompilerPrograms compilerPrograms;
             compilerPrograms = pCompiler->GetPrograms() ;
             wxString exeCmd = masterPath + "\\bin\\" + compilerPrograms.CPP;

@@ -16,11 +16,14 @@
 #include "logmanager.h"
 #include "parser/cclogger.h"
 
-#ifdef HAVE_OVERRIDE
-    #define wxOVERRIDE override
-#else /*  !HAVE_OVERRIDE */
-    #define wxOVERRIDE
-#endif /*  HAVE_OVERRIDE */
+// Only define this if we are on a version OLDER than 3.3.0 // (ph 26/04/29)
+#if !wxCHECK_VERSION(3, 3, 0)
+    #ifdef HAVE_OVERRIDE
+        #define wxOVERRIDE override
+    #else
+        #define wxOVERRIDE
+    #endif
+#endif
 
 // This is a base class used to process all method calls.
 // ----------------------------------------------------------------------------

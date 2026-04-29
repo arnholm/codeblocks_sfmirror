@@ -256,8 +256,8 @@ void ClassBrowser::OnClassBrowserKillFocus(wxFocusEvent& event)
     // Check if the mouse is withing the Symbols window.
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+    //int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);  unused // (ph 26/04/29)
+    // wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex); unusewd // (ph 26/04/29)
     if (pCurrentPage == GetParseManager()->GetClassBrowser())
     {
         if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
@@ -297,8 +297,8 @@ void ClassBrowser::OnClassBrowserSetFocus(wxFocusEvent& event)
     // Check if the mouse is within the Symbols window.
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     wxWindow* pCurrentPage = pPrjMgr->GetUI().GetNotebook()->GetCurrentPage();
-    int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage);
-    wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex);
+    // int pageIndex = pPrjMgr->GetUI().GetNotebook()->GetPageIndex(pCurrentPage); unused // (ph 26/04/29)
+    // wxString pageTitle = pPrjMgr->GetUI().GetNotebook()->GetPageText(pageIndex); unused // (ph 26/04/29)
     if (pCurrentPage == GetParseManager()->GetClassBrowser())
     {
         if ( pCurrentPage->GetScreenRect().Contains( wxGetMousePosition()) )
@@ -763,7 +763,7 @@ void ClassBrowser::OnTreeItemDoubleClick(wxTreeEvent& event)
     //CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
     // -----------------------------------------------------
     //auto locker_result = s_TokenTreeMutex.LockTimeout(250); //(ph 250526)
-    wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+    // wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__); // (ph 26/04/29)
     //if (locker_result != wxMUTEX_NO_ERROR)
     if (not CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex))
     {   /// Requeuing is deprecated for now
@@ -1040,7 +1040,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
     // ----------------------------------------------------
     //- If the lock is busy, a callback is queued for idle time.
     auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
-    wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+    // wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__); unused // (ph 26/04/29)
     if (locker_result != true)
     {
         /// requeuing is deprecated for now.
@@ -1113,7 +1113,7 @@ void ClassBrowser::OnSearch(cb_unused wxCommandEvent& event)
             // ----------------------------------------------------------------------------
             //- If the lock is busy, a callback is queued for idle time.
             auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_TokenTreeMutex); //(ph 250526)
-            wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__);
+            // wxString lockFuncLine = wxString::Format("%s_%d", __FUNCTION__, __LINE__); unused // (ph 26/04/29)
             if (locker_result != true)
             {
                 /// Requeuing is deprecated for now
@@ -1422,7 +1422,7 @@ void ClassBrowser::BuildTreeStartOrStop(bool start, EThreadJob threadJob)
     ///   m_ClassBrowserCallAfterSemaphore.Post(); //say we did it;
 
     static size_t startMillis;
-    wxString jobType = wxString();
+    wxString jobType = wxString(); wxUnusedVar(jobType);
 
     switch (threadJob)
     {

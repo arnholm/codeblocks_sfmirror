@@ -10,7 +10,7 @@
 #include <sdk.h>
 
 #ifndef CB_PRECOMP
-    #include <cctype>
+    //#include <cctype>
     #include <queue>
 
     #include <wx/app.h>
@@ -1833,10 +1833,10 @@ Token* LSP_SymbolsParser::DoHandleClass(EClassType ct, int lineNumber, int lastL
             // lastLineNumber from LSP must contain ending '}'
             m_Tokenizer.SetLineNumber(lastLineNumber);
             unsigned endOfClassTokenIndex = pTextCtrl->PositionFromLine(lastLineNumber);
-            wxString endOfClassText = pTextCtrl->GetLine(lastLineNumber);
+            //wxString endOfClassText = pTextCtrl->GetLine(lastLineNumber); unused // (ph 26/04/29)
             m_Tokenizer.SetTokenIndex(endOfClassTokenIndex);
             wxString token = m_Tokenizer.GetToken();
-            wxString peektoken = m_Tokenizer.PeekToken();
+            //wxString peektoken = m_Tokenizer.PeekToken(); unused // (ph 26/04/29)
             // unterminated class with '}'causes loop
             //while ( (token != '}' ) and (m_Tokenizer.GetLineNumber() <= (size_t)lastLineNumber) )
             //{
@@ -2530,7 +2530,7 @@ void LSP_SymbolsParser::HandleFunction(wxString& name, bool isOperator, bool isP
             else if (peek == ParserConsts::kw_throw)
             {
                 // Handle something like: std::string MyClass::MyMethod() throw(std::exception)
-                wxString arg = m_Tokenizer.GetToken(); // eat args ()
+                //wxString arg = m_Tokenizer.GetToken(); // eat args () unused // (ph 26/04/29)
             }
             else if (peek == ParserConsts::kw_try)
             {
@@ -2796,7 +2796,7 @@ bool LSP_SymbolsParser::CalcEnumExpression(Token* tokenParent, long& result, wxS
     m_Tokenizer.SetState(tsRawExpression);
 
     Expression exp;
-    wxString token, next;
+    wxString token, next; wxUnusedVar(next); // (ph 26/04/29)
 
     while (IS_ALIVE)
     {

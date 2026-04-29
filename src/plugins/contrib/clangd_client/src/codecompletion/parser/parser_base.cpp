@@ -404,7 +404,7 @@ Token* ParserBase::GetTokenInFile(wxString filename, wxString requestedDisplayNa
             Token* pToken = tree->at(i);
             if (not pToken) continue;
             //-bool isImpl = ParserCommon::FileType(edFilename) == ParserCommon::ftSource;
-            wxString tokenFilename = pToken->GetFilename();
+            //wxString tokenFilename = pToken->GetFilename(); unused // (ph 26/04/29)
             if ( pToken && (not pToken->GetFilename().StartsWith(edFilename)) ) continue;
             if ( pToken && (pToken->m_TokenKind & tkUndefined) )
             {
