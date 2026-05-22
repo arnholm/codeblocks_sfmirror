@@ -500,6 +500,7 @@ void wxsAuiManager::OnBuildAuiManagerCreatingCode()
             AddHeader(_T("<wx/aui/aui.h>"),GetInfo().ClassName,0);
             AddHeader(_T("<wx/aui/aui.h>"),_T("wxAuiManagerEvent"),0);
             Codef(_T("%C(%W, %T);\n"));
+            GetCoderContext()->AddDestroyingCode(wxString::Format(_T("%s->UnInit();\n"), GetVarName().wx_str()));
             return;
         }
 
