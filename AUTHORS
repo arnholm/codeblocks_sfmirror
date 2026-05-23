@@ -29,6 +29,7 @@ Mario Cupelli       : Compiler support for embedded systems
 Jonas Zinn          : Misc. wxSmith AddOns and plugins
 Mirai Computing     : cbp2make tool
 Anders F Bjoerklund : wxMac compatibility
+Christo             : clangd-client improvements and bug-fixes
 
 Contributors (in no special order):
 -----------------------------------
