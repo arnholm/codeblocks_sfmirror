@@ -262,7 +262,7 @@ void ClassBrowser::UpdateSash()
 void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap)
 // ----------------------------------------------------------------------------
 {
-    TRACE("ClassBrowser::UpdateClassBrowserView(), m_ActiveFilename = %s", m_ActiveFilename);
+    TRACE("ClassBrowser::UpdateClassBrowserView(), m_ActiveFilename = %s", m_ActiveFilename.wx_str());
 
     const wxString oldActiveFilename(m_ActiveFilename);
     m_ActiveFilename.Clear();
@@ -281,7 +281,7 @@ void ClassBrowser::UpdateClassBrowserView(bool checkHeaderSwap)
     if (editor)
         m_ActiveFilename = editor->GetFilename();
 
-    TRACE("ClassBrowser::UpdateClassBrowserView(), new m_ActiveFilename = %s", m_ActiveFilename);
+    TRACE("ClassBrowser::UpdateClassBrowserView(), new m_ActiveFilename = %s", m_ActiveFilename.wx_str());
 
     if (checkHeaderSwap)
     {

@@ -370,7 +370,7 @@ protected:
 // Fix Aui docking via XWayland, remove when docking on Wayland is fixed in wxWidgets
 #ifdef __WXGTK__
 wxIMPLEMENT_APP_NO_MAIN(CodeBlocksApp);
- 
+
 int main(int argc, char **argv)
 {
     setenv("GDK_BACKEND", "x11", 1);

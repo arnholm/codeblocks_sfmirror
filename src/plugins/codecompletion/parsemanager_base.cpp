@@ -1716,8 +1716,8 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
         if (found) break; // exit for-loop
 
         TRACE(wxString::Format("GetTokenFromCurrentLine() Function out of bounds: tN='%s', tF='%s', tStart=%u, "
-                               "tEnd=%u, line=%zu (size_t)line=%zu"), token->DisplayName(),
-                               token->GetFilename(), token->m_ImplLineStart, token->m_ImplLineEnd,
+                               "tEnd=%u, line=%zu (size_t)line=%zu"), token->DisplayName().wx_str(),
+                               token->GetFilename().wx_str(), token->m_ImplLineStart, token->m_ImplLineEnd,
                                curLine, curLine);
     }
 
