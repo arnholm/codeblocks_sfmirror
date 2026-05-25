@@ -116,6 +116,7 @@ class wxsItemEditor : public wxsEditor
         void OnQuickProps(wxCommandEvent& event);
         void OnKeyDown(wxKeyEvent& event);
         void OnPopup(wxCommandEvent& event);
+        void OnPageChanged(wxBookCtrlEvent& event);
 
         void InitializeVisualStuff();
         void InitializeResourceData();

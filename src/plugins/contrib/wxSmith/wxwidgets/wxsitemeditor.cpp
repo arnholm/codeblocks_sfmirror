@@ -51,6 +51,8 @@ namespace
 
     inline int ToolIconSize() { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/tooliconsize"),32L); }
     inline int PalIconSize()  { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/paletteiconsize"),16L); }
+
+    std::map <wxString, long> Priorities;
 }
 
 wxsItemEditor::wxsItemEditor(wxWindow* parent,wxsItemRes* Resource):
@@ -76,6 +78,17 @@ wxsItemEditor::wxsItemEditor(wxWindow* parent,wxsItemRes* Resource):
     m_QuickPropsOpen(false),
     m_PopupCaller(nullptr)
 {
+    // Load tab usage
+    const wxArrayString TabUsage(Manager::Get()->GetConfigManager("wxsmith")->ReadArrayString("/tabusage"));
+    for (const wxString& tab : TabUsage)
+    {
+        long Value;
+        wxString TabValue;
+        const wxString TabName = tab.BeforeFirst(',', &TabValue);
+        if (TabValue.ToLong(&Value))
+            Priorities[TabName] = Value;
+    }
+
     InitializeResourceData();
     InitializeVisualStuff();
     m_AllEditors.insert(this);
@@ -83,6 +96,13 @@ wxsItemEditor::wxsItemEditor(wxWindow* parent,wxsItemRes* Resource):
 
 wxsItemEditor::~wxsItemEditor()
 {
+    // Save tab usage
+    wxArrayString TabUsage;
+    for (std::map <wxString, long>::const_iterator it = Priorities.cbegin(); it != Priorities.cend(); ++it)
+        TabUsage.Add(it->first+','+std::to_string(it->second));
+
+    Manager::Get()->GetConfigManager("wxsmith")->Write("/tabusage", TabUsage);
+
     delete m_Data;
     m_AllEditors.erase(this);
 }
@@ -159,6 +179,8 @@ void wxsItemEditor::InitializeVisualStuff()
 
     RebuildPreview();
     UpdateSelection();
+
+    Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &wxsItemEditor::OnPageChanged, this);
 }
 
 void wxsItemEditor::ConfigChanged()
@@ -696,6 +718,14 @@ namespace
         if (it2->Item(0)->Category.IsSameAs("Standard"))
             return 1;
 
+        const int Priority1 = Priorities[it1->Item(0)->Category];
+        const int Priority2 = Priorities[it2->Item(0)->Category];
+        if (Priority1 > Priority2)
+            return -1;
+
+        if (Priority1 < Priority2)
+            return 1;
+
         return wxStrcmp(it1->Item(0)->Category, it2->Item(0)->Category);
     }
 
@@ -920,6 +950,15 @@ void wxsItemEditor::OnPopup(wxCommandEvent& event)
             event.Skip();
         }
     }
+}
+
+void wxsItemEditor::OnPageChanged(wxBookCtrlEvent& event)
+{
+    const int NewPage = event.GetSelection();
+    if (NewPage != wxNOT_FOUND)
+        Priorities[m_WidgetsSet->GetPageText(NewPage)]++;
+
+    event.Skip();
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
