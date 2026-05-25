@@ -367,7 +367,19 @@ protected:
 
 } // namespace
 
-IMPLEMENT_APP(CodeBlocksApp) // TODO: This gives a "redundant declaration" warning, though I think it's false. Dig through macro and check.
+// Fix Aui docking via XWayland, remove when docking on Wayland is fixed in wxWidgets
+#ifdef __WXGTK__
+wxIMPLEMENT_APP_NO_MAIN(CodeBlocksApp);
+ 
+int main(int argc, char **argv)
+{
+    setenv("GDK_BACKEND", "x11", 1);
+    wxDISABLE_DEBUG_SUPPORT();
+    return wxEntry(argc, argv);
+}
+#else
+wxIMPLEMENT_APP(CodeBlocksApp);
+#endif
 
 BEGIN_EVENT_TABLE(CodeBlocksApp, wxApp)
     EVT_ACTIVATE_APP(CodeBlocksApp::OnAppActivate)
