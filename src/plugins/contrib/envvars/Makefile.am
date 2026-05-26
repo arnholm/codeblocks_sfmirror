@@ -13,6 +13,10 @@ libenvvars_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefine
 libenvvars_la_LIBADD = ../../../sdk/libcodeblocks.la \
 			$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libenvvars_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libenvvars_la_SOURCES = envvars.cpp \
                         envvars_cfgdlg.cpp \
                         envvars_common.cpp \

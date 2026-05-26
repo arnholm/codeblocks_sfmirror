@@ -18,6 +18,10 @@ libcodesnippets_la_LIBADD = ../../../sdk/libcodeblocks.la \
 		$(WX_GTK_LIBS) \
 		$(WX_X11_LIBS)
 
+if ! CODEBLOCKS_NT
+libcodesnippets_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libcodesnippets_la_SOURCES = codesnippets.cpp \
 		codesnippetstreectrl.cpp \
 		codesnippetswindow.cpp \

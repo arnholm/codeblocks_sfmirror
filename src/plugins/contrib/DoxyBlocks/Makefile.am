@@ -11,6 +11,10 @@ libDoxyBlocks_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undef
 libDoxyBlocks_la_LIBADD = ../../../sdk/libcodeblocks.la \
 			$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libDoxyBlocks_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libDoxyBlocks_la_SOURCES = AutoDoc.cpp \
 				Config.cpp \
 				ConfigPanel.cpp \

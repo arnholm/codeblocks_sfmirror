@@ -18,6 +18,10 @@ libexporter_la_LIBADD = ../../../sdk/libcodeblocks.la \
 				wxPdfDocument/libwxPdfDocument.la \
 				$(WX_LIBS) $(CB_FONTCONFIG_LIBS)
 
+if ! CODEBLOCKS_NT
+libexporter_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libexporter_la_SOURCES = BaseExporter.cpp \
 				exporter.cpp \
 				HTMLExporter.cpp \

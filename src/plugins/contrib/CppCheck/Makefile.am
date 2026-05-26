@@ -13,6 +13,10 @@ libCppCheck_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefin
 libCppCheck_la_LIBADD = ../../../sdk/libcodeblocks.la \
 		$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libCppCheck_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libCppCheck_la_SOURCES = CppCheck.cpp \
             CppCheckListLog.cpp \
             ConfigPanel.cpp

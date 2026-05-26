@@ -16,6 +16,10 @@ libwxSmithAui_la_LIBADD = ../../../sdk/libcodeblocks.la \
 		       ../wxSmith/libwxsmithlib.la \
 		       $(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libwxSmithAui_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 EXTRA_DIST = $(srcdir)/images/*.xpm \
 		$(srcdir)/images/*.xcf \
 		$(srcdir)/wxsmith/*.wxs \

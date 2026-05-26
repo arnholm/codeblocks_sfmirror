@@ -11,6 +11,10 @@ libAutoVersioning_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-u
 libAutoVersioning_la_LIBADD = ../../../sdk/libcodeblocks.la \
 			$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libAutoVersioning_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libAutoVersioning_la_SOURCES = AutoVersioning.cpp \
             avChangesDlg.cpp \
             avHeader.cpp \

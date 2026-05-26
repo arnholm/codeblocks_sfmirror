@@ -17,6 +17,10 @@ liblib_finder_la_LIBADD = ../../../sdk/libcodeblocks.la \
 		../wxContribItems/wxFlatNotebook/libwxflatnotebook.la \
 		$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+liblib_finder_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 liblib_finder_la_SOURCES = \
 		librariesdlg.cpp \
 		dirlistdlg.cpp \

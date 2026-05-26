@@ -40,6 +40,10 @@ libwxsmithcontribitems_la_LIBADD = ../../../sdk/libcodeblocks.la \
 			../wxContribItems/wxmathplot/libwxmathplot.la \
 			$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libwxsmithcontribitems_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 EXTRA_DIST = $(srcdir)/wxchart/*.xpm \
 		$(srcdir)/wxchart/*.png \
 		$(srcdir)/wximagebutton/*.xpm \

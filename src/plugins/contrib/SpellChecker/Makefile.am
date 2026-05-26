@@ -17,6 +17,10 @@ libSpellChecker_la_LIBADD = ../../../sdk/libcodeblocks.la \
 							$(WX_LIBS) \
 							$(CB_HUNSPELL_LIBS)
 
+if ! CODEBLOCKS_NT
+libSpellChecker_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libSpellChecker_la_SOURCES = DictionariesNeededDialog.cpp \
                             MySpellingDialog.cpp \
                             OnlineSpellChecker.cpp \

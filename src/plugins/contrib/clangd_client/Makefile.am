@@ -36,6 +36,10 @@ libclangd_client_la_LIBADD = \
 			$(WX_LIBS)
 
 if ! CODEBLOCKS_NT
+libclangd_client_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
+if ! CODEBLOCKS_NT
 libclangd_client_la_LIBADD += -lutil
 endif
 

@@ -13,6 +13,10 @@ libValgrind_la_LDFLAGS = @MODULE_SHARED_LDFLAGS@ -version-info 0:1:0 -no-undefin
 libValgrind_la_LIBADD = ../../../sdk/libcodeblocks.la \
 			$(WX_LIBS)
 
+if ! CODEBLOCKS_NT
+libValgrind_la_LIBADD += $(CB_TINYXML_LIBS)
+endif
+
 libValgrind_la_SOURCES = Valgrind.cpp \
 			ValgrindListLog.cpp \
 			valgrind_config.cpp
