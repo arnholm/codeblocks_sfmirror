@@ -47,6 +47,22 @@ noinst_HEADERS = DictionariesNeededDialog.h \
                 mythes.hxx \
                 wxThes.h
 
+
+if ! HAVE_HUNSPELL
+AM_CPPFLAGS += -I$(srcdir)/hunspell/src/hunspell/
+libSpellChecker_la_SOURCES += \
+    hunspell/src/hunspell/affentry.cxx \
+    hunspell/src/hunspell/affixmgr.cxx \
+    hunspell/src/hunspell/csutil.cxx \
+    hunspell/src/hunspell/filemgr.cxx \
+    hunspell/src/hunspell/hashmgr.cxx \
+    hunspell/src/hunspell/hunspell.cxx \
+    hunspell/src/hunspell/hunzip.cxx \
+    hunspell/src/hunspell/phonet.cxx \
+    hunspell/src/hunspell/replist.cxx \
+    hunspell/src/hunspell/suggestmgr.cxx
+endif
+
 EXTRA_DIST = \
 		$(srcdir)/*.cbp \
 		$(srcdir)/*.xrc \

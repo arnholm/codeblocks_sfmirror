@@ -199,7 +199,8 @@ case $WX_BASENAME in
 
 			if test "x$BUILD_SPELLCHECKER_TRUE" = "x" ; then
 				if test "x$HAVE_PKG_CONFIG" = "xyes"; then
-					PKG_CHECK_MODULES([HUNSPELL], [hunspell])
+					PKG_CHECK_MODULES([HUNSPELL], [hunspell], [HAVE_HUNSPELL=yes], [HAVE_HUNSPELL=no])
+					AM_CONDITIONAL([HAVE_HUNSPELL], [test "$HAVE_HUNSPELL" = yes])
 				fi
 			fi
 
