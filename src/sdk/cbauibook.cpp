@@ -777,8 +777,8 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
         wxString tempLayout;
         while (!currentLayout.empty())
         {
-            if ( currentLayout.BeforeFirst('|').StartsWith(_("layout2")) ||
-                 currentLayout.BeforeFirst('|').StartsWith(_("name=dummy")) )
+            if ( currentLayout.BeforeFirst('|').StartsWith("layout") ||  // wx3.3 introduced the layout3 format
+                 currentLayout.BeforeFirst('|').StartsWith("name=dummy") )
             {
                 currentLayout = currentLayout.AfterFirst(('|'));
                 currentLayout.Trim();
@@ -787,6 +787,9 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
             else
             {
                 wxString pane_part = currentLayout.BeforeFirst('|');
+                if (pane_part.StartsWith("dock_size"))  // skip layout3 dock info
+                    break;
+
                 pane_part.Trim();
                 pane_part.Trim(true);
                 if (!pane_part.empty())
