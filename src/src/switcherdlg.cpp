@@ -26,15 +26,15 @@
 
 #include <wx/arrimpl.cpp>
 
-WX_DEFINE_OBJARRAY(wxSwitcherItemArray);
+WX_DEFINE_OBJARRAY(cbSwitcherItemArray);
 
 /*!
  * An object containing information about one item
  */
 
-IMPLEMENT_CLASS(wxSwitcherItem, wxObject)
+IMPLEMENT_CLASS(cbSwitcherItem, wxObject)
 
-void wxSwitcherItem::Init()
+void cbSwitcherItem::Init()
 {
     m_id = 0;
     m_isGroup = false;
@@ -44,7 +44,7 @@ void wxSwitcherItem::Init()
     m_window = nullptr;
 }
 
-void wxSwitcherItem::Copy(const wxSwitcherItem& item)
+void cbSwitcherItem::Copy(const cbSwitcherItem& item)
 {
     m_id = item.m_id;
     m_name = item.m_name;
@@ -61,7 +61,7 @@ void wxSwitcherItem::Copy(const wxSwitcherItem& item)
     m_window = item.m_window;
 }
 
-bool wxSwitcherItem::operator== (const wxSwitcherItem& item) const
+bool cbSwitcherItem::operator== (const cbSwitcherItem& item) const
 {
     return (
     m_id == item.m_id &&
@@ -80,13 +80,13 @@ bool wxSwitcherItem::operator== (const wxSwitcherItem& item) const
 }
 
 /*!
- * wxSwitcherItems
+ * cbSwitcherItems
  * An object containing switcher items
  */
 
-IMPLEMENT_CLASS(wxSwitcherItems, wxObject)
+IMPLEMENT_CLASS(cbSwitcherItems, wxObject)
 
-bool wxSwitcherItems::operator== (const wxSwitcherItems& items) const
+bool cbSwitcherItems::operator== (const cbSwitcherItems& items) const
 {
     if (m_items.GetCount() != items.m_items.GetCount())
         return false;
@@ -109,7 +109,7 @@ bool wxSwitcherItems::operator== (const wxSwitcherItems& items) const
     return true;
 }
 
-void wxSwitcherItems::Init()
+void cbSwitcherItems::Init()
 {
     m_selection = -1;
     m_rowCount = 10;
@@ -127,7 +127,7 @@ void wxSwitcherItems::Init()
 #endif
 }
 
-void wxSwitcherItems::Copy(const wxSwitcherItems& items)
+void cbSwitcherItems::Copy(const cbSwitcherItems& items)
 {
     Clear();
 
@@ -149,9 +149,9 @@ void wxSwitcherItems::Copy(const wxSwitcherItems& items)
     m_itemFont = items.m_itemFont;
 }
 
-wxSwitcherItem& wxSwitcherItems::AddItem(const wxString& title, const wxString& name, int id, const wxBitmap& bitmap)
+cbSwitcherItem& cbSwitcherItems::AddItem(const wxString& title, const wxString& name, int id, const wxBitmap& bitmap)
 {
-    wxSwitcherItem item;
+    cbSwitcherItem item;
     item.SetTitle(title);
     item.SetName(name);
     item.SetId(id);
@@ -160,9 +160,9 @@ wxSwitcherItem& wxSwitcherItems::AddItem(const wxString& title, const wxString& 
     return AddItem(item);
 }
 
-wxSwitcherItem& wxSwitcherItems::AddItem(const wxString& title, const wxString& name, const wxString& descr, int id, const wxBitmap& bitmap)
+cbSwitcherItem& cbSwitcherItems::AddItem(const wxString& title, const wxString& name, const wxString& descr, int id, const wxBitmap& bitmap)
 {
-    wxSwitcherItem item;
+    cbSwitcherItem item;
     item.SetTitle(title);
     item.SetName(name);
     item.SetDescription(descr);
@@ -172,26 +172,26 @@ wxSwitcherItem& wxSwitcherItems::AddItem(const wxString& title, const wxString& 
     return AddItem(item);
 }
 
-wxSwitcherItem& wxSwitcherItems::AddItem(const wxSwitcherItem& item)
+cbSwitcherItem& cbSwitcherItems::AddItem(const cbSwitcherItem& item)
 {
     m_items.Add(item);
     return m_items[GetItemCount() - 1];
 }
 
-wxSwitcherItem& wxSwitcherItems::AddGroup(const wxString& title, const wxString& name, int id, const wxBitmap& bitmap)
+cbSwitcherItem& cbSwitcherItems::AddGroup(const wxString& title, const wxString& name, int id, const wxBitmap& bitmap)
 {
-    wxSwitcherItem& item = AddItem(title, name, id, bitmap);
+    cbSwitcherItem& item = AddItem(title, name, id, bitmap);
     item.SetIsGroup(true);
 
     return item;
 }
 
-void wxSwitcherItems::Clear()
+void cbSwitcherItems::Clear()
 {
     m_items.Clear();
 }
 
-int wxSwitcherItems::FindItemByName(const wxString& name) const
+int cbSwitcherItems::FindItemByName(const wxString& name) const
 {
     size_t i;
     for (i = 0; i < m_items.GetCount(); i++)
@@ -203,7 +203,7 @@ int wxSwitcherItems::FindItemByName(const wxString& name) const
     return -1;
 }
 
-int wxSwitcherItems::FindItemById(int id) const
+int cbSwitcherItems::FindItemById(int id) const
 {
     size_t i;
     for (i = 0; i < m_items.GetCount(); i++)
@@ -215,29 +215,29 @@ int wxSwitcherItems::FindItemById(int id) const
     return -1;
 }
 
-void wxSwitcherItems::SetSelection(int sel)
+void cbSwitcherItems::SetSelection(int sel)
 {
     m_selection = sel;
 }
 
-void wxSwitcherItems::SetSelection(const wxString& name)
+void cbSwitcherItems::SetSelection(const wxString& name)
 {
     int idx = FindItemByName(name);
     if (idx != -1)
         SetSelection(idx);
 }
 
-const wxSwitcherItem& wxSwitcherItems::GetItem(int i) const
+const cbSwitcherItem& cbSwitcherItems::GetItem(int i) const
 {
     return m_items[i];
 }
 
-wxSwitcherItem& wxSwitcherItems::GetItem(int i)
+cbSwitcherItem& cbSwitcherItems::GetItem(int i)
 {
     return m_items[i];
 }
 
-void wxSwitcherItems::PaintItems(wxDC& dc, wxWindow* win)
+void cbSwitcherItems::PaintItems(wxDC& dc, wxWindow* win)
 {
     wxColour backgroundColour = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
     wxColour standardTextColour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
@@ -281,7 +281,7 @@ void wxSwitcherItems::PaintItems(wxDC& dc, wxWindow* win)
     size_t i;
     for (i = 0; i < m_items.GetCount(); i++)
     {
-        wxSwitcherItem& item = m_items[i];
+        cbSwitcherItem& item = m_items[i];
         bool selected = ((int) i == m_selection);
 
         if (selected)
@@ -339,7 +339,7 @@ void wxSwitcherItems::PaintItems(wxDC& dc, wxWindow* win)
     }
 }
 
-wxSize wxSwitcherItems::CalculateItemSize(wxDC& dc)
+wxSize cbSwitcherItems::CalculateItemSize(wxDC& dc)
 {
     // Start off allowing for an icon
     wxSize sz(150, 16);
@@ -358,7 +358,7 @@ wxSize wxSwitcherItems::CalculateItemSize(wxDC& dc)
     size_t i;
     for (i = 0; i < m_items.GetCount(); i++)
     {
-        wxSwitcherItem& item = m_items[i];
+        cbSwitcherItem& item = m_items[i];
 
         if (item.GetFont().Ok())
             dc.SetFont(item.GetFont());
@@ -393,11 +393,11 @@ wxSize wxSwitcherItems::CalculateItemSize(wxDC& dc)
 }
 
 // Find the index for the item associated with the current focus
-int wxSwitcherItems::GetIndexForFocus() const
+int cbSwitcherItems::GetIndexForFocus() const
 {
     for (size_t i = 0; i < m_items.GetCount(); i++)
     {
-        wxSwitcherItem& item = m_items[i];
+        cbSwitcherItem& item = m_items[i];
         if (item.GetWindow())
         {
             if (wxFindFocusDescendant(item.GetWindow()))
@@ -409,11 +409,11 @@ int wxSwitcherItems::GetIndexForFocus() const
 }
 
 // Hit test, returning an index or -1
-int wxSwitcherItems::HitTest(const wxPoint& pt) const
+int cbSwitcherItems::HitTest(const wxPoint& pt) const
 {
     for (size_t i = 0; i < m_items.GetCount(); i++)
     {
-        wxSwitcherItem& item = m_items[i];
+        cbSwitcherItem& item = m_items[i];
         if ( !item.GetIsGroup() && item.GetRect().Contains(pt))
             return (int) i;
     }
@@ -425,25 +425,25 @@ int wxSwitcherItems::HitTest(const wxPoint& pt) const
  * A control for displaying several columns (not scrollable)
  */
 
-BEGIN_EVENT_TABLE(wxMultiColumnListCtrl, wxControl)
-    EVT_PAINT(wxMultiColumnListCtrl::OnPaint)
-    EVT_ERASE_BACKGROUND(wxMultiColumnListCtrl::OnEraseBackground)
-    EVT_MOUSE_EVENTS(wxMultiColumnListCtrl::OnMouseEvent)
-    EVT_CHAR(wxMultiColumnListCtrl::OnChar)
-    EVT_KEY_DOWN(wxMultiColumnListCtrl::OnKey)
-    EVT_KEY_UP(wxMultiColumnListCtrl::OnKey)
+BEGIN_EVENT_TABLE(cbMultiColumnListCtrl, wxControl)
+    EVT_PAINT(cbMultiColumnListCtrl::OnPaint)
+    EVT_ERASE_BACKGROUND(cbMultiColumnListCtrl::OnEraseBackground)
+    EVT_MOUSE_EVENTS(cbMultiColumnListCtrl::OnMouseEvent)
+    EVT_CHAR(cbMultiColumnListCtrl::OnChar)
+    EVT_KEY_DOWN(cbMultiColumnListCtrl::OnKey)
+    EVT_KEY_UP(cbMultiColumnListCtrl::OnKey)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(wxMultiColumnListCtrl, wxControl)
+IMPLEMENT_CLASS(cbMultiColumnListCtrl, wxControl)
 
-wxMultiColumnListCtrl::wxMultiColumnListCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+cbMultiColumnListCtrl::cbMultiColumnListCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
     Init();
 
     Create(parent, id, pos, size, style);
 }
 
-bool wxMultiColumnListCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+bool cbMultiColumnListCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
     wxControl::Create(parent, id, pos, size, style);
 
@@ -453,12 +453,12 @@ bool wxMultiColumnListCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoin
 }
 
 // Overrides
-wxSize wxMultiColumnListCtrl::DoGetBestSize() const
+wxSize cbMultiColumnListCtrl::DoGetBestSize() const
 {
     return m_overallSize;
 }
 
-void wxMultiColumnListCtrl::SendCloseEvent()
+void cbMultiColumnListCtrl::SendCloseEvent()
 {
     wxWindow* topLevel = GetParent();
     while (topLevel && !topLevel->IsTopLevel())
@@ -475,12 +475,12 @@ void wxMultiColumnListCtrl::SendCloseEvent()
     }
 }
 
-void wxMultiColumnListCtrl::OnEraseBackground(wxEraseEvent& WXUNUSED(event))
+void cbMultiColumnListCtrl::OnEraseBackground(wxEraseEvent& WXUNUSED(event))
 {
     // Do nothing
 }
 
-void wxMultiColumnListCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
+void cbMultiColumnListCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 #if wxSWITCHER_USE_BUFFERED_PAINTING
     wxBufferedPaintDC dc(this);
@@ -497,7 +497,7 @@ void wxMultiColumnListCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
     m_items.PaintItems(dc, this);
 }
 
-void wxMultiColumnListCtrl::OnMouseEvent(wxMouseEvent& event)
+void cbMultiColumnListCtrl::OnMouseEvent(wxMouseEvent& event)
 {
     if (event.GetEventType() == wxEVT_MOUSEWHEEL)
     {
@@ -561,11 +561,11 @@ void wxMultiColumnListCtrl::OnMouseEvent(wxMouseEvent& event)
     }
 }
 
-void wxMultiColumnListCtrl::OnChar(wxKeyEvent& WXUNUSED(event))
+void cbMultiColumnListCtrl::OnChar(wxKeyEvent& WXUNUSED(event))
 {
 }
 
-void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
+void cbMultiColumnListCtrl::OnKey(wxKeyEvent& event)
 {
     if (event.GetEventType() == wxEVT_KEY_UP)
     {
@@ -658,7 +658,7 @@ void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
     }
     else if (event.GetKeyCode() == WXK_LEFT || event.GetKeyCode() == WXK_NUMPAD_LEFT)
     {
-        wxSwitcherItem& item = m_items.GetItem(m_items.GetSelection());
+        cbSwitcherItem& item = m_items.GetItem(m_items.GetSelection());
 
         int row = item.GetRowPos();
         int newCol = item.GetColPos() - 1;
@@ -669,7 +669,7 @@ void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
         int i;
         for (i = m_items.GetItemCount()-1; i >= 0; i--)
         {
-            wxSwitcherItem& item2 = m_items.GetItem(i);
+            cbSwitcherItem& item2 = m_items.GetItem(i);
             if (item2.GetColPos() == newCol && item2.GetRowPos() <= row)
             {
                 m_items.SetSelection(i);
@@ -685,7 +685,7 @@ void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
     }
     else if (event.GetKeyCode() == WXK_RIGHT || event.GetKeyCode() == WXK_NUMPAD_RIGHT)
     {
-        wxSwitcherItem& item = m_items.GetItem(m_items.GetSelection());
+        cbSwitcherItem& item = m_items.GetItem(m_items.GetSelection());
 
         int row = item.GetRowPos();
         int newCol = item.GetColPos() + 1;
@@ -696,7 +696,7 @@ void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
         int i;
         for (i = m_items.GetItemCount()-1; i >= 0; i--)
         {
-            wxSwitcherItem& item2 = m_items.GetItem(i);
+            cbSwitcherItem& item2 = m_items.GetItem(i);
             if (item2.GetColPos() == newCol && item2.GetRowPos() <= row)
             {
                 m_items.SetSelection(i);
@@ -715,7 +715,7 @@ void wxMultiColumnListCtrl::OnKey(wxKeyEvent& event)
 }
 
 // Advance to the next selectable item
-void wxMultiColumnListCtrl::AdvanceToNextSelectableItem(int direction)
+void cbMultiColumnListCtrl::AdvanceToNextSelectableItem(int direction)
 {
     if (m_items.GetItemCount() < 2)
         return;
@@ -744,7 +744,7 @@ void wxMultiColumnListCtrl::AdvanceToNextSelectableItem(int direction)
 }
 
 
-void wxMultiColumnListCtrl::GenerateSelectionEvent()
+void cbMultiColumnListCtrl::GenerateSelectionEvent()
 {
     wxCommandEvent event(wxEVT_COMMAND_LISTBOX_SELECTED, GetId());
     event.SetEventObject(this);
@@ -753,13 +753,13 @@ void wxMultiColumnListCtrl::GenerateSelectionEvent()
     GetEventHandler()->ProcessEvent(event);
 }
 
-void wxMultiColumnListCtrl::CalculateLayout()
+void cbMultiColumnListCtrl::CalculateLayout()
 {
     wxClientDC dc(this);
     CalculateLayout(dc);
 }
 
-void wxMultiColumnListCtrl::CalculateLayout(wxDC& dc)
+void cbMultiColumnListCtrl::CalculateLayout(wxDC& dc)
 {
     if (m_items.GetSelection() == -1)
         m_items.SetSelection(0);
@@ -832,7 +832,7 @@ void wxMultiColumnListCtrl::CalculateLayout(wxDC& dc)
     InvalidateBestSize();
 }
 
-void wxMultiColumnListCtrl::Init()
+void cbMultiColumnListCtrl::Init()
 {
     m_overallSize = wxSize(200, 100);
     m_modifierKey = WXK_CONTROL;
@@ -841,18 +841,18 @@ void wxMultiColumnListCtrl::Init()
 }
 
 /*!
- * wxSwitcherDialog shows a wxMultiColumnListCtrl with a list of panes
+ * cbSwitcherDialog shows a cbMultiColumnListCtrl with a list of panes
  * and tabs for the user to choose. Ctrl+Tab cycles through them.
  */
 
-BEGIN_EVENT_TABLE(wxSwitcherDialog, wxScrollingDialog)
-    EVT_CLOSE(wxSwitcherDialog::OnCloseWindow)
-    EVT_ACTIVATE(wxSwitcherDialog::OnActivate)
-    EVT_LISTBOX(wxID_ANY, wxSwitcherDialog::OnSelectItem)
-    EVT_PAINT(wxSwitcherDialog::OnPaint)
+BEGIN_EVENT_TABLE(cbSwitcherDialog, wxScrollingDialog)
+    EVT_CLOSE(cbSwitcherDialog::OnCloseWindow)
+    EVT_ACTIVATE(cbSwitcherDialog::OnActivate)
+    EVT_LISTBOX(wxID_ANY, cbSwitcherDialog::OnSelectItem)
+    EVT_PAINT(cbSwitcherDialog::OnPaint)
 END_EVENT_TABLE()
 
-wxSwitcherDialog::wxSwitcherDialog( const wxSwitcherItems& items, wxWindow *parent, wxWindowID id,
+cbSwitcherDialog::cbSwitcherDialog( const cbSwitcherItems& items, wxWindow *parent, wxWindowID id,
         const wxString& title, const wxPoint &position, const wxSize& size, long style )
 {
     Init();
@@ -860,7 +860,7 @@ wxSwitcherDialog::wxSwitcherDialog( const wxSwitcherItems& items, wxWindow *pare
     Create(items, parent, id, title, position, size, style);
 }
 
-bool wxSwitcherDialog::Create( const wxSwitcherItems& items, wxWindow *parent, wxWindowID id,
+bool cbSwitcherDialog::Create( const cbSwitcherItems& items, wxWindow *parent, wxWindowID id,
         const wxString& title, const wxPoint &position, const wxSize& size, long style )
 {
     m_switcherBorderStyle = (style & wxBORDER_MASK);
@@ -872,7 +872,7 @@ bool wxSwitcherDialog::Create( const wxSwitcherItems& items, wxWindow *parent, w
 
     wxScrollingDialog::Create( parent, id, title, position, size, style );
 
-    m_listCtrl = new wxMultiColumnListCtrl();
+    m_listCtrl = new cbMultiColumnListCtrl();
     m_listCtrl->SetItems(items);
     m_listCtrl->Create(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS|wxNO_BORDER);
     m_listCtrl->CalculateLayout();
@@ -916,7 +916,7 @@ bool wxSwitcherDialog::Create( const wxSwitcherItems& items, wxWindow *parent, w
     return true;
 }
 
-void wxSwitcherDialog::Init()
+void cbSwitcherDialog::Init()
 {
     m_listCtrl = nullptr;
     m_descriptionCtrl = nullptr;
@@ -934,7 +934,7 @@ void wxSwitcherDialog::Init()
     m_borderColour = *wxBLACK;
 }
 
-void wxSwitcherDialog::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
+void cbSwitcherDialog::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 {
     if (m_closing)
         return;
@@ -951,12 +951,12 @@ void wxSwitcherDialog::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 }
 
 // Get the selected item
-int wxSwitcherDialog::GetSelection() const
+int cbSwitcherDialog::GetSelection() const
 {
     return m_listCtrl->GetItems().GetSelection();
 }
 
-void wxSwitcherDialog::OnActivate(wxActivateEvent& event)
+void cbSwitcherDialog::OnActivate(wxActivateEvent& event)
 {
     if (!event.GetActive())
     {
@@ -968,7 +968,7 @@ void wxSwitcherDialog::OnActivate(wxActivateEvent& event)
     }
 }
 
-void wxSwitcherDialog::OnPaint(wxPaintEvent& WXUNUSED(event))
+void cbSwitcherDialog::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     wxPaintDC dc(this);
 
@@ -987,7 +987,7 @@ void wxSwitcherDialog::OnPaint(wxPaintEvent& WXUNUSED(event))
     }
 }
 
-void wxSwitcherDialog::OnSelectItem(wxCommandEvent& event)
+void cbSwitcherDialog::OnSelectItem(wxCommandEvent& event)
 {
     ShowDescription(event.GetSelection());
 }
@@ -1005,9 +1005,9 @@ static wxString ColourToHexString(const wxColour& col)
 }
 
 
-void wxSwitcherDialog::ShowDescription(int i)
+void cbSwitcherDialog::ShowDescription(int i)
 {
-    wxSwitcherItem& item = m_listCtrl->GetItems().GetItem(i);
+    cbSwitcherItem& item = m_listCtrl->GetItems().GetItem(i);
 
     wxColour colour = m_listCtrl->GetItems().GetBackgroundColour();
     if (!colour.Ok())
@@ -1028,14 +1028,14 @@ void wxSwitcherDialog::ShowDescription(int i)
     m_descriptionCtrl->SetPage(html);
 }
 
-void wxSwitcherDialog::SetExtraNavigationKey(int keyCode)
+void cbSwitcherDialog::SetExtraNavigationKey(int keyCode)
 {
     m_extraNavigationKey = keyCode;
     if (m_listCtrl)
         m_listCtrl->SetExtraNavigationKey(keyCode);
 }
 
-void wxSwitcherDialog::SetModifierKey(int modifierKey)
+void cbSwitcherDialog::SetModifierKey(int modifierKey)
 {
     m_modifierKey = modifierKey;
     if (m_listCtrl)

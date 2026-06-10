@@ -18,66 +18,66 @@
 #include "scrollingdialog.h"
 
 /*!
- * wxSwitcherItem
+ * btSwitcherItem
  * An object containing information about one item
  */
 
-class wxSwitcherItem: public wxObject
+class btSwitcherItem: public wxObject
 {
-    //-DECLARE_CLASS(wxSwitcherItem)
+    //-DECLARE_CLASS(btSwitcherItem)
 public:
-    wxSwitcherItem() { Init(); }
-    wxSwitcherItem(const wxSwitcherItem& item) : wxObject(item)
+    btSwitcherItem() { Init(); }
+    btSwitcherItem(const btSwitcherItem& item) : wxObject(item)
     {
     	Init();
     	Copy(item);
 	}
 
-    bool operator== (const wxSwitcherItem& item) const;
+    bool operator== (const btSwitcherItem& item) const;
 
-    void operator= (const wxSwitcherItem& item) { Copy(item); }
+    void operator= (const btSwitcherItem& item) { Copy(item); }
 
     void Init();
 
-    void Copy(const wxSwitcherItem& item);
+    void Copy(const btSwitcherItem& item);
 
-    wxSwitcherItem& SetTitle(const wxString& title) { m_title = title; return (*this); }
+    btSwitcherItem& SetTitle(const wxString& title) { m_title = title; return (*this); }
     const wxString& GetTitle() const { return m_title; }
 
-    wxSwitcherItem& SetName(const wxString& name) { m_name = name; return (*this); }
+    btSwitcherItem& SetName(const wxString& name) { m_name = name; return (*this); }
     const wxString& GetName() const { return m_name; }
 
-    wxSwitcherItem& SetDescription(const wxString& descr) { m_description = descr; return (*this); }
+    btSwitcherItem& SetDescription(const wxString& descr) { m_description = descr; return (*this); }
     const wxString& GetDescription() const { return m_description; }
 
-    wxSwitcherItem& SetId(int id) { m_id = id; return (*this); }
+    btSwitcherItem& SetId(int id) { m_id = id; return (*this); }
     int GetId() const { return m_id; }
 
-    wxSwitcherItem& SetIsGroup(bool isGroup) { m_isGroup = isGroup; return (*this); }
+    btSwitcherItem& SetIsGroup(bool isGroup) { m_isGroup = isGroup; return (*this); }
     bool GetIsGroup() const { return m_isGroup; }
 
-    wxSwitcherItem& BreakColumn(bool breakCol = true) { m_breakColumn = breakCol; return (*this); }
+    btSwitcherItem& BreakColumn(bool breakCol = true) { m_breakColumn = breakCol; return (*this); }
     bool GetBreakColumn() const { return m_breakColumn; }
 
-    wxSwitcherItem& SetRect(const wxRect& rect) { m_rect = rect; return (*this); }
+    btSwitcherItem& SetRect(const wxRect& rect) { m_rect = rect; return (*this); }
     const wxRect& GetRect() const { return m_rect; }
 
-    wxSwitcherItem& SetTextColour(const wxColour& colour) { m_textColour = colour; return (*this); }
+    btSwitcherItem& SetTextColour(const wxColour& colour) { m_textColour = colour; return (*this); }
     const wxColour& GetTextColour() const { return m_textColour; }
 
-    wxSwitcherItem& SetFont(const wxFont& font) { m_font = font; return (*this); }
+    btSwitcherItem& SetFont(const wxFont& font) { m_font = font; return (*this); }
     const wxFont& GetFont() const { return m_font; }
 
-    wxSwitcherItem& SetBitmap(const wxBitmap& bitmap) { m_bitmap = bitmap; return (*this); }
+    btSwitcherItem& SetBitmap(const wxBitmap& bitmap) { m_bitmap = bitmap; return (*this); }
     const wxBitmap& GetBitmap() const { return m_bitmap; }
 
-    wxSwitcherItem& SetRowPos(int pos) { m_rowPos = pos; return (*this); }
+    btSwitcherItem& SetRowPos(int pos) { m_rowPos = pos; return (*this); }
     int GetRowPos() const { return m_rowPos; }
 
-    wxSwitcherItem& SetColPos(int pos) { m_colPos = pos; return (*this); }
+    btSwitcherItem& SetColPos(int pos) { m_colPos = pos; return (*this); }
     int GetColPos() const { return m_colPos; }
 
-    wxSwitcherItem& SetWindow(wxWindow* win) { m_window = win; return (*this); }
+    btSwitcherItem& SetWindow(wxWindow* win) { m_window = win; return (*this); }
     wxWindow* GetWindow() const { return m_window; }
 
 protected:
@@ -97,38 +97,38 @@ protected:
     wxWindow*   m_window;
 };
 
-WX_DECLARE_OBJARRAY(wxSwitcherItem, wxSwitcherItemArray);
+WX_DECLARE_OBJARRAY(btSwitcherItem, btSwitcherItemArray);
 
 /*!
- * wxSwitcherItems
+ * btSwitcherItems
  * An object containing switcher items
  */
 
-class wxSwitcherItems: public wxObject
+class btSwitcherItems: public wxObject
 {
-    //-DECLARE_CLASS(wxSwitcherItems)
+    //-DECLARE_CLASS(btSwitcherItems)
 public:
-    wxSwitcherItems() { Init(); }
-    wxSwitcherItems(const wxSwitcherItems& items) : wxObject(items)
+    btSwitcherItems() { Init(); }
+    btSwitcherItems(const btSwitcherItems& items) : wxObject(items)
     {
     	Init();
     	Copy(items);
 	}
 
-    bool operator== (const wxSwitcherItems& items) const;
+    bool operator== (const btSwitcherItems& items) const;
 
-    void operator= (const wxSwitcherItems& items) { Copy(items); }
+    void operator= (const btSwitcherItems& items) { Copy(items); }
 
     void Init();
 
-    void Copy(const wxSwitcherItems& items);
+    void Copy(const btSwitcherItems& items);
 
     // Public API
 
-    wxSwitcherItem& AddItem(const wxString& title, const wxString& name, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
-    wxSwitcherItem& AddItem(const wxString& title, const wxString& name, const wxString& descr, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
-    wxSwitcherItem& AddItem(const wxSwitcherItem& item);
-    wxSwitcherItem& AddGroup(const wxString& title, const wxString& name, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
+    btSwitcherItem& AddItem(const wxString& title, const wxString& name, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
+    btSwitcherItem& AddItem(const wxString& title, const wxString& name, const wxString& descr, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
+    btSwitcherItem& AddItem(const btSwitcherItem& item);
+    btSwitcherItem& AddGroup(const wxString& title, const wxString& name, int id = 0, const wxBitmap& bitmap = wxNullBitmap);
 
     void Clear();
 
@@ -145,8 +145,8 @@ public:
     // Hit test, returning an index or -1
     int HitTest(const wxPoint& pt) const;
 
-    const wxSwitcherItem& GetItem(int i) const;
-    wxSwitcherItem& GetItem(int i);
+    const btSwitcherItem& GetItem(int i) const;
+    btSwitcherItem& GetItem(int i);
 
     int GetItemCount() const { return m_items.GetCount(); }
 
@@ -181,7 +181,7 @@ public:
 
 protected:
 
-    wxSwitcherItemArray m_items;
+    btSwitcherItemArray m_items;
     int                 m_selection;
     int                 m_rowCount;
     int                 m_columnCount;
@@ -197,24 +197,24 @@ protected:
 
 
 /*!
- * wxMultiColumnListCtrl
+ * btMultiColumnListCtrl
  * A control for displaying several columns (not scrollable)
  */
 
-class wxMultiColumnListCtrl: public wxControl
+class btMultiColumnListCtrl: public wxControl
 {
-    //-DECLARE_CLASS(wxMultiColumnListCtrl)
+    //-DECLARE_CLASS(btMultiColumnListCtrl)
 public:
-    wxMultiColumnListCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-    wxMultiColumnListCtrl() { Init(); }
+    btMultiColumnListCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+    btMultiColumnListCtrl() { Init(); }
 
     bool Create(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
 
     // Public API
 
-    void SetItems(const wxSwitcherItems& items) { m_items = items; }
-    const wxSwitcherItems& GetItems() const { return m_items; }
-    wxSwitcherItems& GetItems() { return m_items; }
+    void SetItems(const btSwitcherItems& items) { m_items = items; }
+    const btSwitcherItems& GetItems() const { return m_items; }
+    btSwitcherItems& GetItems() { return m_items; }
 
     // Set an extra key that can be used to cycle through items,
     // in case not using the Ctrl+Tab combination
@@ -258,7 +258,7 @@ protected:
      * select the item only if the user move the mouse.
     */
     wxPoint             m_ptMouse;
-    wxSwitcherItems     m_items;
+    btSwitcherItems     m_items;
     wxSize              m_overallSize;
     int                 m_extraNavigationKey;
     int                 m_modifierKey;
@@ -271,23 +271,23 @@ DECLARE_EVENT_TABLE()
 
 
 /*!
- * wxSwitcherDialog shows a wxMultiColumnListCtrl with a list of panes
+ * btSwitcherDialog shows a btMultiColumnListCtrl with a list of panes
  * and tabs for the user to choose. Ctrl+Tab cycles through them.
  */
 // ----------------------------------------------------------------------------
-class wxSwitcherDialog: public wxScrollingDialog
+class btSwitcherDialog: public wxScrollingDialog
 // ----------------------------------------------------------------------------
 {
 public:
     // constructors and destructors
-    wxSwitcherDialog() { Init(); }
-    wxSwitcherDialog( const wxSwitcherItems& items, wxWindow *parent,
+    btSwitcherDialog() { Init(); }
+    btSwitcherDialog( const btSwitcherItems& items, wxWindow *parent,
         wxWindowID id = -1, const wxString& title = _("Pane Switcher"),
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = wxSTAY_ON_TOP|wxDIALOG_NO_PARENT|wxBORDER_SIMPLE );
 
-    bool Create(const wxSwitcherItems& items, wxWindow *parent,
+    bool Create(const btSwitcherItems& items, wxWindow *parent,
         wxWindowID id = -1, const wxString& title = _("Pane Switcher"),
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
@@ -319,7 +319,7 @@ public:
 
 private:
 
-    wxMultiColumnListCtrl*  m_listCtrl;
+    btMultiColumnListCtrl*  m_listCtrl;
     wxHtmlWindow*           m_descriptionCtrl;
     bool                    m_closing;
     long                    m_switcherBorderStyle;
