@@ -1646,6 +1646,7 @@ void cbEditor::InternalSetEditorStyleBeforeFileOpen(cbStyledTextCtrl* control)
     }
     control->SetViewEOL(mgr->ReadBool(_T("/show_eol"), false));
     control->SetViewWhiteSpace(mgr->ReadInt(_T("/view_whitespace"), 0));
+    control->SetExtraAscent(mgr->ReadInt(_T("/space_extra_ascent"), 0));
 
     const int caretBuffer = mgr->ReadInt(wxT("/caret_buffer"), 2);
     if (caretBuffer == 0)

@@ -153,6 +153,7 @@ EditorConfigurationDlg::EditorConfigurationDlg(wxWindow* parent)
     XRCCTRL(*this, "chkEnableMiddleMousePaste",   wxCheckBox)->SetValue(cfg->ReadBool(_T("/enable_middle_mouse_paste"),  false));
     XRCCTRL(*this, "spnTabSize",                  wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/tab_size"),                    4));
     XRCCTRL(*this, "cmbViewWS",                   wxChoice)->SetSelection(cfg->ReadInt(_T("/view_whitespace"),           0));
+    XRCCTRL(*this, "spnSpaceExtraAscent",         wxSpinCtrl)->SetValue(cfg->ReadInt(_T("/space_extra_ascent"),          0));
     XRCCTRL(*this, "cmbCaretBuffer",              wxChoice)->SetSelection(cfg->ReadInt(wxT("/caret_buffer"),             2));
 
     // chkSpacesAroundBraces must be enabled only when chkSmartIndent is checked
@@ -987,7 +988,7 @@ void EditorConfigurationDlg::OnChangeDefCodeFileType(cb_unused wxCommandEvent& e
     }
 }
 
-void EditorConfigurationDlg::OnChooseColour(wxColourPickerEvent& event)
+void EditorConfigurationDlg::OnChooseColour(cb_unused wxColourPickerEvent& event)
 {
     WriteColours();
 }
@@ -1077,18 +1078,19 @@ void EditorConfigurationDlg::EndModal(int retCode)
         cfg->Write(_T("/reset_zoom"),                          resetZoom);
         cfg->Write(_T("/zoom_all"),                            zoomAll);
         cfg->Write(_T("/sync_editor_with_project_manager"),    XRCCTRL(*this, "chkSyncEditorWithProjectManager", wxCheckBox)->GetValue());
-        cfg->Write(_T("/enable_middle_mouse_paste"),           XRCCTRL(*this, "chkEnableMiddleMousePaste", wxCheckBox)->GetValue());
+        cfg->Write(_T("/enable_middle_mouse_paste"),           XRCCTRL(*this, "chkEnableMiddleMousePaste",       wxCheckBox)->GetValue());
 
-        cfg->Write(_T("/tab_size"),                            XRCCTRL(*this, "spnTabSize",                           wxSpinCtrl)->GetValue());
-        cfg->Write(_T("/view_whitespace"),                     XRCCTRL(*this, "cmbViewWS",                            wxChoice)->GetSelection());
+        cfg->Write(_T("/tab_size"),                            XRCCTRL(*this, "spnTabSize",                      wxSpinCtrl)->GetValue());
+        cfg->Write(_T("/view_whitespace"),                     XRCCTRL(*this, "cmbViewWS",                       wxChoice)->GetSelection());
+        cfg->Write(_T("/space_extra_ascent"),                  XRCCTRL(*this, "spnSpaceExtraAscent",             wxSpinCtrl)->GetValue());
         cfg->Write(_T("/caret_buffer"), XRCCTRL(*this, "cmbCaretBuffer", wxChoice)->GetSelection());
 
 #if defined(__WXMSW__) && wxCHECK_VERSION(3, 1, 0)
-    cfg->Write(_T("/technology"), XRCCTRL(*this, "cmbTechnology", wxChoice)->GetSelection());
-    cfg->Write(_T("/font_quality"), XRCCTRL(*this, "cmbFontQuality", wxChoice)->GetSelection());
+        cfg->Write(_T("/technology"),                          XRCCTRL(*this, "cmbTechnology",                   wxChoice)->GetSelection());
+        cfg->Write(_T("/font_quality"),                        XRCCTRL(*this, "cmbFontQuality",                  wxChoice)->GetSelection());
 #endif // defined(__WXMSW__) && wxCHECK_VERSION(3, 1, 0)
 
-        cfg->Write(_T("/tab_text_relative"),                   XRCCTRL(*this, "rbTabText",                            wxRadioBox)->GetSelection() ? true : false);
+        cfg->Write(_T("/tab_text_relative"),                   XRCCTRL(*this, "rbTabText",                       wxRadioBox)->GetSelection() ? true : false);
         // find & replace, regex searches
 
         //caret

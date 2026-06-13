@@ -522,7 +522,7 @@
 																	<object class="sizeritem">
 																		<object class="wxFlexGridSizer">
 																			<cols>2</cols>
-																			<rows>5</rows>
+																			<rows>6</rows>
 																			<object class="sizeritem">
 																				<object class="wxStaticText" name="wxID_ANY">
 																					<label>Show spaces in editor:</label>
@@ -538,6 +538,23 @@
 																						<item>Only after indent</item>
 																						<item>Only indent</item>
 																					</content>
+																				</object>
+																				<flag>wxBOTTOM|wxEXPAND</flag>
+																				<border>5</border>
+																				<option>1</option>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxStaticText" name="wxID_ANY">
+																					<label>Space extra ascent:</label>
+																				</object>
+																				<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+																				<border>5</border>
+																				<option>1</option>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxSpinCtrl" name="spnSpaceExtraAscent">
+																					<value>0</value>
+																					<max>32</max>
 																				</object>
 																				<flag>wxBOTTOM|wxEXPAND</flag>
 																				<border>5</border>
