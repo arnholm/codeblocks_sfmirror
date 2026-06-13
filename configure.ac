@@ -169,6 +169,16 @@ CODEBLOCKS_GET_PLATFORM
 CODEBLOCKS_ENABLE_SETTINGS
 
 AM_OPTIONS_WXCONFIG
+
+dnl Option to link the main executable against static wxWidgets.
+dnl Shared libraries and plugins will NOT link to wxWidgets; they
+dnl resolve wx symbols from the executable at runtime.
+AC_ARG_ENABLE([static-wx],
+    [AS_HELP_STRING([--enable-static-wx],
+    [link the codeblocks executable against static wxWidgets (plugins/shared libs will not link wxWidgets)])],
+    [ENABLE_STATIC_WX=$enableval],
+    [ENABLE_STATIC_WX=no])
+
 AM_PATH_WXCONFIG(3.0.0, wxWin=1)
     if test "$wxWin" != 1; then
         AC_MSG_ERROR([
@@ -342,7 +352,21 @@ CB_GCC_VERSION
 
 AC_MSG_RESULT(yes (version $WX_VERSION))
 AC_MSG_NOTICE([(Re)setting libs for wxWidgets $WX_VERSION])
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs std,aui,propgrid,richtext`
+if test "x$ENABLE_STATIC_WX" = "xyes"; then
+    AC_MSG_NOTICE([Using static wxWidgets for the main executable])
+    WX_LIBS_FOR_EXE=`$WX_CONFIG_WITH_ARGS --static --libs std,aui,propgrid,richtext`
+    WX_LIBS_FOR_EXE="$WX_LIBS_FOR_EXE -rdynamic -Wl,-u,_ZTV10wxBusyInfo,-u,_ZTV18wxGenericValidator,-u,_Z13wxDirSelectorRK8wxStringS1_lRK7wxPointP8wxWindow,-u,_ZTI21wxPropertyGridManager,-u,_ZTI9wxCommand,-u,_ZTV18wxSashLayoutWindow,-u,_ZTV7wxCaret,-u,wxBitmapComboBoxNameStr,-u,_ZTV11wxSVGFileDC,-u,_ZTV24wxRichTextStyleComboCtrl"
+    WX_LIBS="-Wl,-z,undefs"
+else
+    WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs std,aui,propgrid,richtext`
+    WX_LIBS_FOR_EXE=$WX_LIBS
+fi
+AC_SUBST(WX_LIBS_FOR_EXE)
+AC_CONFIG_COMMANDS([allow-undefined], [
+	test "x$ENABLE_STATIC_WX" = "xyes" && \
+		find . -name Makefile -exec sed -i 's/\-\-no-undefined//g' {} \;
+])
+
 SCINTILLA_GTK_CFLAGS="$WX_GDK_CFLAGS"
 SCINTILLA_GTK_LIBS="$WX_GDK_LIBS"
 

@@ -25,7 +25,7 @@ install-exec-hook:
 # codeblocks_LDFLAGS = $(WX_GTK_LIBS)
 
 codeblocks_LDADD =  ../sdk/libcodeblocks.la \
-			$(WX_LIBS) \
+			$(WX_LIBS_FOR_EXE) \
 			$(WX_GTK_LIBS) \
 			$(CB_SQUIRREL_LIBS)
 
