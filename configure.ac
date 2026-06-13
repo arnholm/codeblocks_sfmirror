@@ -72,21 +72,48 @@ AC_CHECK_LIB(pthread, pthread_create)
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF,,snprintf))
 AC_CHECK_FUNC(vsnprintf, AC_DEFINE(HAVE_VSNPRINTF,,vsnprintf))
 
-PKG_CHECK_MODULES([zlib], [zlib], [HAVE_ZLIB=yes], [HAVE_ZLIB=no])
+AC_MSG_CHECKING(whether to disable system libraries and use bundled libraries)
+enable_sys_libs_default="yes"
+AC_ARG_ENABLE(sys-libs,
+    [AC_HELP_STRING([--disable-sys-libs], [disable system libraries and use bundled libraries when possible (default NO)])],
+    enable_sys_libs=$enableval,
+    enable_sys_libs=$enable_sys_libs_default)
+if test "x$enable_sys_libs" = "xno"; then
+	DISABLE_SYS_LIBS="yes"
+	AC_MSG_RESULT(yes)
+else
+	DISABLE_SYS_LIBS="no"
+	AC_MSG_RESULT(no)
+fi
+
+if test "x$DISABLE_SYS_LIBS" != "xyes"; then
+	PKG_CHECK_MODULES([zlib], [zlib], [HAVE_ZLIB=yes], [HAVE_ZLIB=no])
+else
+	HAVE_ZLIB=no
+fi
+
 save_LIBS=$LIBS
-AC_SEARCH_LIBS(BZ2_bzopen, bz2, [HAVE_BZIP2=yes], [HAVE_BZIP2=no])
+if test "x$DISABLE_SYS_LIBS" != "xyes"; then
+	AC_SEARCH_LIBS(BZ2_bzopen, bz2, [HAVE_BZIP2=yes], [HAVE_BZIP2=no])
+else
+	HAVE_BZIP2=no
+fi
 LIBS=$save_LIBS
 
 save_CC=$CC
 save_CPP=$CPP
 CC=$CXX
 CPP=$CXXCPP
-AC_CHECK_HEADER(astyle.h, [HAVE_ASTYLE=yes], [HAVE_ASTYLE=no])
+if test "x$DISABLE_SYS_LIBS" != "xyes"; then
+	AC_CHECK_HEADER(astyle.h, [HAVE_ASTYLE=yes], [HAVE_ASTYLE=no])
 
-dnl check if system astyle is at least 3.0, otherwise use bundled astyle-library
-dnl ASPeekStream is declared since 3.0
-if test "$HAVE_ASTYLE" = "yes" ; then
-	AC_CHECK_TYPE([astyle::ASPeekStream], , [HAVE_ASTYLE=no], [#include "astyle.h"])
+	dnl check if system astyle is at least 3.0, otherwise use bundled astyle-library
+	dnl ASPeekStream is declared since 3.0
+	if test "$HAVE_ASTYLE" = "yes" ; then
+		AC_CHECK_TYPE([astyle::ASPeekStream], , [HAVE_ASTYLE=no], [#include "astyle.h"])
+	else
+		HAVE_ASTYLE=no
+	fi
 else
 	HAVE_ASTYLE=no
 fi
@@ -110,7 +137,11 @@ ifdef([PKG_CHECK_MODULES],[],[
 
 PKG_PROG_PKG_CONFIG
 
-PKG_CHECK_MODULES([TINYXML], [tinyxml], [HAVE_TINYXML=yes], [HAVE_TINYXML=no])
+if test "x$DISABLE_SYS_LIBS" != "xyes"; then
+    PKG_CHECK_MODULES([TINYXML], [tinyxml], [HAVE_TINYXML=yes], [HAVE_TINYXML=no])
+else
+    HAVE_TINYXML=no
+fi
 AM_CONDITIONAL([HAVE_TINYXML], [test "$HAVE_TINYXML" = yes])
 
 dnl Darwin -> .dylib  Linux -> .so
@@ -198,10 +229,16 @@ case $WX_BASENAME in
 			fi
 
 			if test "x$BUILD_SPELLCHECKER_TRUE" = "x" ; then
-				if test "x$HAVE_PKG_CONFIG" = "xyes"; then
-					PKG_CHECK_MODULES([HUNSPELL], [hunspell], [HAVE_HUNSPELL=yes], [HAVE_HUNSPELL=no])
-					AM_CONDITIONAL([HAVE_HUNSPELL], [test "$HAVE_HUNSPELL" = yes])
+				if test "x$DISABLE_SYS_LIBS" != "xyes"; then
+					if test "x$HAVE_PKG_CONFIG" = "xyes"; then
+						PKG_CHECK_MODULES([HUNSPELL], [hunspell], [HAVE_HUNSPELL=yes], [HAVE_HUNSPELL=no])
+					else
+						HAVE_HUNSPELL=no
+					fi
+				else
+					HAVE_HUNSPELL=no
 				fi
+				AM_CONDITIONAL([HAVE_HUNSPELL], [test "$HAVE_HUNSPELL" = yes])
 			fi
 
 			if test "x$BUILD_MOUSESAP_TRUE" = "x"  -o \
