@@ -48,7 +48,7 @@ noinst_HEADERS = DictionariesNeededDialog.h \
                 wxThes.h
 
 
-if ! HAVE_HUNSPELL
+if USE_BUNDLED_HUNSPELL
 AM_CPPFLAGS += -I$(srcdir)/hunspell/src/hunspell/
 libSpellChecker_la_SOURCES += \
     hunspell/src/hunspell/affentry.cxx \

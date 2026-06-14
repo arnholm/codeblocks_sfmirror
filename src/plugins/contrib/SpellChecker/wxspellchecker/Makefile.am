@@ -10,7 +10,7 @@ noinst_LTLIBRARIES = libwxSpellChecker.la
 libwxSpellChecker_la_LIBADD = $(WX_LIBS) \
                             $(CB_HUNSPELL_LIBS)
 
-if ! HAVE_HUNSPELL
+if USE_BUNDLED_HUNSPELL
 AM_CPPFLAGS += -I$(srcdir)/../hunspell/src/hunspell/
 endif
 

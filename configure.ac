@@ -213,6 +213,8 @@ dnl default value is to (silently) do nothing in the makefile
 POSTLINK_COMMAND="@true"
 MACSETFILE="@true"
 
+USE_BUNDLED_HUNSPELL=no
+
 AC_MSG_CHECKING(for wxWidgets platform)
 WX_BASENAME=`$WX_CONFIG_WITH_ARGS --basename`
 case $WX_BASENAME in
@@ -241,14 +243,13 @@ case $WX_BASENAME in
 			if test "x$BUILD_SPELLCHECKER_TRUE" = "x" ; then
 				if test "x$DISABLE_SYS_LIBS" != "xyes"; then
 					if test "x$HAVE_PKG_CONFIG" = "xyes"; then
-						PKG_CHECK_MODULES([HUNSPELL], [hunspell], [HAVE_HUNSPELL=yes], [HAVE_HUNSPELL=no])
+						PKG_CHECK_MODULES([HUNSPELL], [hunspell], [USE_BUNDLED_HUNSPELL=no], [USE_BUNDLED_HUNSPELL=yes])
 					else
-						HAVE_HUNSPELL=no
+						USE_BUNDLED_HUNSPELL=yes
 					fi
 				else
-					HAVE_HUNSPELL=no
+					USE_BUNDLED_HUNSPELL=yes
 				fi
-				AM_CONDITIONAL([HAVE_HUNSPELL], [test "$HAVE_HUNSPELL" = yes])
 			fi
 
 			if test "x$BUILD_MOUSESAP_TRUE" = "x"  -o \
@@ -347,6 +348,7 @@ case $WX_BASENAME in
         AC_MSG_RESULT(other)
     ;;
 esac
+AM_CONDITIONAL([USE_BUNDLED_HUNSPELL], [test "$USE_BUNDLED_HUNSPELL" = yes])
 
 CB_GCC_VERSION
 
