@@ -286,6 +286,7 @@ CompilerOptionsDlg::CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, 
     m_pProject(project),
     m_pTarget(target),
     m_bDirty(false),
+    m_bFlagsDirty(false),
     m_BuildingTree(false)
 {
     wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgCompilerOptions"));
@@ -1631,7 +1632,7 @@ void CompilerOptionsDlg::OnTreeSelectionChange(wxTreeEvent& event)
                     "Please choose the compiler you want to use instead and click \"OK\".\n"
                     "If you click \"Cancel\", the project/target will remain configured for that compiler and consequently can not be configured and will not be built."),
                     CompilerId.wx_str());
-        if (m_pTarget && m_pTarget->SupportsCurrentPlatform())
+        if (!m_pTarget || m_pTarget->SupportsCurrentPlatform())
             compiler = CompilerFactory::SelectCompilerUI(msg);
 
         if (compiler)
