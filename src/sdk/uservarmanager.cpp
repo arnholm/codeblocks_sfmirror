@@ -187,8 +187,8 @@ wxString UserVariableManager::Replace(const wxString& variable, std::vector<wxSt
 
             wxString msg;
             msg.Printf(_("In the currently active set, Code::Blocks does not know\n"
-                         "the global compiler variable \"%s\".\n\n"
-                         "Please define it."), varName.wx_str());
+                         "the global compiler variable \"%s.%s\".\n\n"
+                         "Please define it."), varName.wx_str(), memberName.wx_str());
             if (errorMessages != nullptr)
                 errorMessages->push_back(msg);
             m_ui->DisplayInfoWindow(_("Global Compiler Variables"), msg);
