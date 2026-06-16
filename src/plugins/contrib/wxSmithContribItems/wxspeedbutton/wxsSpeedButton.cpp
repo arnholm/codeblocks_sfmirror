@@ -141,8 +141,9 @@ void wxsSpeedButton::OnBuildCreatingCode()
 //   then #include the file and make a bitmap from the data
 // else it must be a file was selected, so make a bitmap from the file
 
-void  wxsSpeedButton::BuildBitmap(void) {
-wxString    s,v;
+void  wxsSpeedButton::BuildBitmap(void)
+{
+    wxString    s,v;
 
 // make a name for the bitmap
 
@@ -150,19 +151,22 @@ wxString    s,v;
 
 // no image
 
-    if ((mGlyph.Id.IsEmpty()) && (mGlyph.FileName.IsEmpty())) {
+    if ((mGlyph.Id.IsEmpty()) && (mGlyph.FileName.IsEmpty()))
+    {
         Codef(_T("wxBitmap %s = wxNullBitmap;\n"), v.wx_str());
     }
 
 // art-provider image
 
-    else if (! mGlyph.Id.IsEmpty()) {
+    else if (! mGlyph.Id.IsEmpty())
+    {
         Codef(_T("wxBitmap %s(%i);\n"), v.wx_str(), &mGlyph);
     }
 
 // is it an XPM and do we want to #include it?
 
-    else if ((IsImageXPM(mGlyph)) && (mUseInclude)) {
+    else if ((IsImageXPM(mGlyph)) && (mUseInclude))
+    {
         s = mGlyph.FileName;
         s.Replace("\\", "/", true);
         s = "\"" + s + "\"";
@@ -174,7 +178,8 @@ wxString    s,v;
 
 // else a normal image file
 
-    else if (! mGlyph.FileName.IsEmpty()) {
+    else if (! mGlyph.FileName.IsEmpty())
+    {
         s = mGlyph.FileName;
         s.Replace("\\", "/", true);
 
@@ -183,40 +188,47 @@ wxString    s,v;
 
 // an unknown and unexpected set of conditions
 
-    else {
+    else
+    {
         Codef(_T("wxBitmap %s = wxNullBitmap;\n"), v.wx_str());
-    };
+    }
 }
 
 //------------------------------------------------------------------------------
 // did the user specify a XPM image file?
 
-bool    wxsSpeedButton::IsImageXPM(wxsBitmapData &inData) {
-wxString    s;
+bool    wxsSpeedButton::IsImageXPM(wxsBitmapData &inData)
+{
+    wxString    s;
 
 // a special case of no image at all
 
-    if (inData.IsEmpty()) return false;
+    if (inData.IsEmpty())
+        return false;
 
 // or built-in wxWidgets art
 
     inData.Id.Trim();
-    if (! inData.Id.IsEmpty()) return false;
+    if (! inData.Id.IsEmpty())
+        return false;
 
 // no filename given?
 
     inData.FileName.Trim();
-    if (inData.FileName.IsEmpty()) return false;
+    if (inData.FileName.IsEmpty())
+        return false;
 
 // file must actually exist
 
-    if (! wxFileName::FileExists(inData.FileName)) return false;
+    if (! wxFileName::FileExists(inData.FileName))
+        return false;
 
 // last 4 chars of filename should be ".XPM"
 
     s = inData.FileName.Right(4);
     s.MakeUpper();
-    if (s == _T(".XPM")) return true;
+    if (s == _T(".XPM"))
+        return true;
 
 // must be something else
 
@@ -227,10 +239,10 @@ wxString    s;
 // if an image data buffer specifies an XPM file, then return the name
 // of the static char array defined by the file
 
-wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData) {
+wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData)
+{
     wxFileInputStream input( inData.FileName );
     wxTextInputStream txt( input );
-
 
 // this will be our return value
 
@@ -238,7 +250,8 @@ wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData) {
 
 // read until EOF, keeping the last data name we find
 
-    while (! input.Eof()) {
+    while (! input.Eof())
+    {
 
 // next line
 
@@ -270,7 +283,7 @@ wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData) {
         if (n == wxNOT_FOUND) n = s.Len();
 
         v = s.Left(n);
-    };
+    }
 
 // done with file
 
@@ -281,15 +294,13 @@ wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData) {
     return v;
 }
 
-
-
-
 //------------------------------------------------------------------------------
 
-wxObject* wxsSpeedButton::OnBuildPreview(wxWindow* Parent, long Flags) {
-int             n;
-wxSpeedButton   *sb;
-wxBitmap        bmp;
+wxObject* wxsSpeedButton::OnBuildPreview(wxWindow* Parent, long Flags)
+{
+    int             n;
+    wxSpeedButton   *sb;
+    wxBitmap        bmp;
 
 // make bitmap
 
@@ -306,12 +317,15 @@ wxBitmap        bmp;
 // make a button
 
     sb = new wxSpeedButton(Parent, GetId(), mLabel, bmp, mGlyphCount,
-        mMargin, n, mAllowAllUp, Pos(Parent), Size(Parent), Style(),
-        wxDefaultValidator, _T("SpeedButton"));
-    if (sb == NULL) return NULL;
+                           mMargin, n, mAllowAllUp, Pos(Parent), Size(Parent), Style(),
+                           wxDefaultValidator, _T("SpeedButton"));
+    if (sb == nullptr)
+        return nullptr;
+
     SetupWindow(sb, Flags);
 
-    if (mButtonDown) sb->SetDown(mButtonDown);
+    if (mButtonDown)
+        sb->SetDown(mButtonDown);
 
 // done
 
@@ -320,9 +334,10 @@ wxBitmap        bmp;
 
 //------------------------------------------------------------------------------
 
-void wxsSpeedButton::OnEnumWidgetProperties(cb_unused long Flags) {
-static const long    TypeValues[] = {    0,                   1,                   2,                     3,                 0};
-static const wxChar* TypeNames[]  = {_T("Simple Button"), _T("Toggle Button"), _T("Group By Parent"), _T("Group By Index"),  0};
+void wxsSpeedButton::OnEnumWidgetProperties(cb_unused long Flags)
+{
+    static const long    TypeValues[] = {    0,                   1,                   2,                     3,                 0};
+    static const wxChar* TypeNames[]  = {_T("Simple Button"), _T("Toggle Button"), _T("Group By Parent"), _T("Group By Index"),  0};
 
     WXS_STRING(wxsSpeedButton, mLabel,      _("Label"),               _T("label"),      _T(""), false);
     WXS_BITMAP(wxsSpeedButton, mGlyph,      _("Glyph"),               _T("glyph"),      _T("wxART_OTHER"));
@@ -334,8 +349,4 @@ static const wxChar* TypeNames[]  = {_T("Simple Button"), _T("Toggle Button"), _
     WXS_LONG(  wxsSpeedButton, mGroupIndex, _("Group Index"),         _T("groupindex"), 0)
     WXS_BOOL(  wxsSpeedButton, mAllowAllUp, _("Allow All Up"),        _T("allowallup"), true);
     WXS_LONG(  wxsSpeedButton, mUserData,   _("User Data"),           _T("userdata"),   0)
-
 };
-
-
-

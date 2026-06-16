@@ -96,7 +96,7 @@ void wxsImagePanel::OnBuildCreatingCode()
 
     image = (wxsImage *) wxsImageListEditorDlg::FindTool(this, mImage);
 
-    if (image == NULL)
+    if (image == nullptr)
     {
         iname = wxEmptyString;
     }
@@ -162,7 +162,8 @@ wxObject* wxsImagePanel::OnBuildPreview(wxWindow* Parent, long Flags)
 // make a panel
 
     ap = new wxImagePanel(Parent, GetId(), Pos(Parent), Size(Parent), Style());
-    if (ap == NULL) return NULL;
+    if (ap == nullptr)
+        return nullptr;
 
 // get the wxsImage pointer
 
@@ -170,7 +171,7 @@ wxObject* wxsImagePanel::OnBuildPreview(wxWindow* Parent, long Flags)
 
 // and make the preview image
 
-    if (image != NULL)
+    if (image != nullptr)
     {
         bmp = ((wxsImage *) image)->GetPreview();
         ap->SetBitmap(bmp);

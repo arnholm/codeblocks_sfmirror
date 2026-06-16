@@ -248,7 +248,9 @@ wxObject* wxsVector::OnBuildPreview(wxWindow* Parent, long Flags)
     bool          hide;
 
 // if parent is not an mpWindow, then exit out
-    if (!Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
+    if (!Parent->IsKindOf(CLASSINFO(mpWindow)))
+        return nullptr;
+
     mp = (mpWindow *) Parent;
 
 // hide this vector
@@ -259,14 +261,17 @@ wxObject* wxsVector::OnBuildPreview(wxWindow* Parent, long Flags)
     Preview->SetForegroundColour(wxColour(255,255,255));
     Preview->SetBackgroundColour(wxColour(0,0,128));
     SetupWindow(Preview,Flags);
-    if (Flags & pfExact) Preview->Hide();
+    if (Flags & pfExact)
+        Preview->Hide();
 
 // the actual vector
     vec = new mpFXYVector(mLabel, mAlign);
 
 // pen color
     cc = mPenColour.GetColour();
-    if (cc.IsOk()) pen.SetColour(cc);
+    if (cc.IsOk())
+        pen.SetColour(cc);
+
     vec->SetPen(pen);
 
 // text font
@@ -274,19 +279,23 @@ wxObject* wxsVector::OnBuildPreview(wxWindow* Parent, long Flags)
     vec->SetFont(ff);
 
 // update the place-holder
-    if (cc.IsOk()) Preview->SetBackgroundColour(cc);
+    if (cc.IsOk())
+        Preview->SetBackgroundColour(cc);
+
     Preview->SetFont(ff);
 
 // fill in the data
     ParseXY();
     n = mXs.GetCount();
-    if (n > 0) vec->SetData(mXf, mYf);
+    if (n > 0)
+        vec->SetData(mXf, mYf);
 
 // points or lines?
     vec->SetContinuity(mContinuous);
 
 // and add layer to parent
-    if (!hide) mp->AddLayer(vec);
+    if (!hide)
+        mp->AddLayer(vec);
 
 // done
     return Preview;

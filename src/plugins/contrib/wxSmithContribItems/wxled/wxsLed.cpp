@@ -28,8 +28,8 @@ wxsLed::wxsLed(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         flVariable | flId|flEnabled),
         m_State(true)
 {
@@ -129,22 +129,22 @@ bool wxsLed::OnXmlRead(TiXmlElement* Element, bool IsXRC, bool IsExtra)
 {
 
     TiXmlElement* ColourElem = Element->FirstChildElement("disable_colour");
-    if(ColourElem != NULL)
+    if(ColourElem != nullptr)
     {
         m_Disable.GetColour().Set(cbC2U(Element->Value()));
     }
     ColourElem = Element->FirstChildElement("on_colour");
-    if(ColourElem != NULL)
+    if(ColourElem != nullptr)
     {
         m_EnableOn.GetColour().Set(cbC2U(Element->Value()));
     }
     ColourElem = Element->FirstChildElement("off_colour");
-    if(ColourElem != NULL)
+    if(ColourElem != nullptr)
     {
         m_EnableOff.GetColour().Set(cbC2U(Element->Value()));
     }
     ColourElem = Element->FirstChildElement("on_or_off");
-    if(ColourElem != NULL)
+    if(ColourElem != nullptr)
     {
         m_State = static_cast<bool>(wxAtoi(cbC2U(Element->Value())));
     }

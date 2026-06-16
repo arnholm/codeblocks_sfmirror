@@ -210,9 +210,14 @@ wxObject* wxsAuiToolBar::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
                 Item->m_ItemKind,
                 Item->m_ShortHelp,
                 Item->m_LongHelp,
-                NULL);
-            if ( !ATBExtra->m_Enabled ) AuiToolBar->EnableTool(Item->m_ItemId, false);
-            if ( Item->m_DropDown && (Item->m_ItemKind == wxITEM_NORMAL) ) AuiToolBar->SetToolDropDown(Item->m_ItemId, true);
+                nullptr);
+
+            if ( !ATBExtra->m_Enabled )
+                AuiToolBar->EnableTool(Item->m_ItemId, false);
+
+            if ( Item->m_DropDown && (Item->m_ItemKind == wxITEM_NORMAL) )
+                AuiToolBar->SetToolDropDown(Item->m_ItemId, true);
+
             AuiToolBar->Realize();
             Item->BuildPreview(AuiToolBar,PreviewFlags);
         }
@@ -222,8 +227,10 @@ wxObject* wxsAuiToolBar::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
             Separator->m_ItemId = wxNewId();
             Separator->m_HasGripper = PaneInfo->m_Gripper;
             Separator->m_GripperSize = m_GripperSize;
-            AuiToolBar->AddTool(Separator->m_ItemId,wxEmptyString,wxNullBitmap,wxNullBitmap,wxITEM_SEPARATOR,wxEmptyString,wxEmptyString,NULL);
-            if ( !ATBExtra->m_Enabled ) AuiToolBar->EnableTool(Separator->m_ItemId, false);
+            AuiToolBar->AddTool(Separator->m_ItemId, wxEmptyString, wxNullBitmap, wxNullBitmap, wxITEM_SEPARATOR, wxEmptyString, wxEmptyString, nullptr);
+            if ( !ATBExtra->m_Enabled )
+                AuiToolBar->EnableTool(Separator->m_ItemId, false);
+
             AuiToolBar->Realize();
             Separator->BuildPreview(AuiToolBar,PreviewFlags);
         }
@@ -234,7 +241,9 @@ wxObject* wxsAuiToolBar::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
             Label->m_HasGripper = PaneInfo->m_Gripper;
             Label->m_GripperSize = m_GripperSize;
             AuiToolBar->AddLabel(Label->m_ItemId,ATBExtra->m_Label,Label->m_IsDefault ? -1 : Label->m_Width);
-            if ( !ATBExtra->m_Enabled ) AuiToolBar->EnableTool(Label->m_ItemId, false);
+            if ( !ATBExtra->m_Enabled )
+                AuiToolBar->EnableTool(Label->m_ItemId, false);
+
             AuiToolBar->Realize();
             Label->BuildPreview(AuiToolBar,PreviewFlags);
         }
@@ -244,9 +253,14 @@ wxObject* wxsAuiToolBar::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
             Spacer->m_ItemId = wxNewId();
             Spacer->m_HasGripper = PaneInfo->m_Gripper;
             Spacer->m_GripperSize = m_GripperSize;
-            if ( Spacer->m_Stretch ) AuiToolBar->AddStretchSpacer(Spacer->m_Proportion,Spacer->m_ItemId);
-            else                     AuiToolBar->AddSpacer(Spacer->m_Pixels,Spacer->m_ItemId);
-            if ( !ATBExtra->m_Enabled ) AuiToolBar->EnableTool(Spacer->m_ItemId, false);
+            if ( Spacer->m_Stretch )
+                AuiToolBar->AddStretchSpacer(Spacer->m_Proportion,Spacer->m_ItemId);
+            else
+                AuiToolBar->AddSpacer(Spacer->m_Pixels,Spacer->m_ItemId);
+
+            if ( !ATBExtra->m_Enabled )
+                AuiToolBar->EnableTool(Spacer->m_ItemId, false);
+
             AuiToolBar->Realize();
             Spacer->BuildPreview(AuiToolBar,PreviewFlags);
         }
@@ -254,7 +268,8 @@ wxObject* wxsAuiToolBar::OnBuildPreview(wxWindow* Parent,long PreviewFlags)
         {
             wxControl* ChildAsControl = wxDynamicCast(Child->BuildPreview(AuiToolBar,PreviewFlags),wxControl);
             AuiToolBar->AddControl(ChildAsControl,ATBExtra->m_Label);
-            if ( !ATBExtra->m_Enabled ) ChildAsControl->Enable(false);
+            if ( !ATBExtra->m_Enabled )
+                ChildAsControl->Enable(false);
         }
     }
 
@@ -326,7 +341,7 @@ void wxsAuiToolBar::OnBuildCreatingCode()
                         }
                     }
 
-                    Codef(_T("%AAddTool(%s, %t, %i, %i, %s, %t, %t, NULL);\n"),
+                    Codef(_T("%AAddTool(%s, %t, %i, %i, %s, %t, %t, nullptr);\n"),
                         Child->GetIdName().wx_str(),
                         ATBExtra->m_Label.wx_str(),
                         &Bitmap,_T("wxART_TOOLBAR"),

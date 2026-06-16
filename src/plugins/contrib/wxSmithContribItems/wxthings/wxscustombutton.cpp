@@ -54,10 +54,10 @@ namespace
 
 
     const long TypeValues[] = { wxCUSTBUT_NOTOGGLE, wxCUSTBUT_BUTTON, wxCUSTBUT_TOGGLE, wxCUSTBUT_BUT_DCLICK_TOG, wxCUSTBUT_TOG_DCLICK_BUT };
-    const wxChar* TypeNames[] = { _T("wxCUSTBUT_NOTOGGLE"), _T("wxCUSTBUT_BUTTON"), _T("wxCUSTBUT_TOGGLE"), _T("wxCUSTBUT_BUT_DCLICK_TOG"), _T("wxCUSTBUT_TOG_DCLICK_BUT"), NULL };
+    const wxChar* TypeNames[] = { _T("wxCUSTBUT_NOTOGGLE"), _T("wxCUSTBUT_BUTTON"), _T("wxCUSTBUT_TOGGLE"), _T("wxCUSTBUT_BUT_DCLICK_TOG"), _T("wxCUSTBUT_TOG_DCLICK_BUT"), nullptr };
 
     const long LabelPositionValues[] = { wxCUSTBUT_LEFT, wxCUSTBUT_RIGHT, wxCUSTBUT_TOP, wxCUSTBUT_BOTTOM };
-    const wxChar* LabelPositionNames[] = { _T("wxCUSTBUT_LEFT"), _T("wxCUSTBUT_RIGHT"), _T("wxCUSTBUT_TOP"), _T("wxCUSTBUT_BOTTOM"), NULL };
+    const wxChar* LabelPositionNames[] = { _T("wxCUSTBUT_LEFT"), _T("wxCUSTBUT_RIGHT"), _T("wxCUSTBUT_TOP"), _T("wxCUSTBUT_BOTTOM"), nullptr };
 }
 
 wxsCustomButton::wxsCustomButton(wxsItemResData* Data):
@@ -65,7 +65,7 @@ wxsCustomButton::wxsCustomButton(wxsItemResData* Data):
         Data,
         &Reg.Info,
         wxsCustomButtonEvents,
-        NULL)
+        nullptr)
 {
     m_Type = wxCUSTBUT_BUTTON;
     m_Flat = false;

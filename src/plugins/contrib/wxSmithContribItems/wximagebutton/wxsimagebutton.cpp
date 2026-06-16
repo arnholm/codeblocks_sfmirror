@@ -113,7 +113,8 @@ void wxsImageButton::OnBuildCreatingCode() {
 // have been coded
 
     wxsImageList* ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(this, mImageList);
-    if (ilist != NULL) {
+    if (ilist != nullptr)
+    {
         const wxString ss = ilist->GetVarName();
 		// Locator comment.
         wxString tt;
@@ -121,32 +122,35 @@ void wxsImageButton::OnBuildCreatingCode() {
         AddEventCode(tt);
 
         long ll = 0;
-        if (mLabelIndex.ToLong(&ll)) {
+        if (mLabelIndex.ToLong(&ll))
+        {
             tt.Printf(_T("%s->SetBitmapLabel(%s->GetBitmap(%ld));\n"), vv.wx_str(), ss.wx_str(), ll);
             AddEventCode(tt);
-        };
+        }
 
-        if (mDisabledIndex.ToLong(&ll)) {
+        if (mDisabledIndex.ToLong(&ll))
+        {
             tt.Printf(_T("%s->SetBitmapDisabled(%s->GetBitmap(%ld));\n"), vv.wx_str(), ss.wx_str(), ll);
             AddEventCode(tt);
-        };
+        }
 
-        if (mSelectedIndex.ToLong(&ll)) {
+        if (mSelectedIndex.ToLong(&ll))
+        {
             tt.Printf(_T("%s->SetBitmapSelected(%s->GetBitmap(%ld));\n"), vv.wx_str(), ss.wx_str(), ll);
             AddEventCode(tt);
-        };
+        }
 
-        if (mFocusIndex.ToLong(&ll)) {
+        if (mFocusIndex.ToLong(&ll))
+        {
             tt.Printf(_T("%s->SetBitmapFocus(%s->GetBitmap(%ld));\n"), vv.wx_str(), ss.wx_str(), ll);
             AddEventCode(tt);
-        };
-    };
+        }
+    }
 
 
 // finish setup
 
     BuildSetupWindowCode();
-
 }
 
 //------------------------------------------------------------------------------
@@ -162,15 +166,17 @@ wxObject* wxsImageButton::OnBuildPreview(wxWindow* Parent,long Flags) {
 
 // make the preview bitmaps
 
-    if (ilist != NULL) {
+    if (ilist != nullptr)
+    {
         long ll = 0;
         if (mLabelIndex.ToLong(&ll))    button->SetBitmapLabel(ilist->GetPreview(ll));
         if (mDisabledIndex.ToLong(&ll)) button->SetBitmapDisabled(ilist->GetPreview(ll));
         if (mSelectedIndex.ToLong(&ll)) button->SetBitmapSelected(ilist->GetPreview(ll));
         if (mFocusIndex.ToLong(&ll))    button->SetBitmapFocus(ilist->GetPreview(ll));
-    };
+    }
 
-    if (mIsDefault) button->SetDefault();
+    if (mIsDefault)
+        button->SetDefault();
 
 // done
 

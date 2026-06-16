@@ -65,7 +65,7 @@ wxsBmpCheckbox::wxsBmpCheckbox(wxsItemResData *Data) :
         Data,
         &Reg.Info,
         wxsBmpCheckboxEvents,
-        NULL,
+        nullptr,
         flVariable | flId | flPosition | flSize | flEnabled | flFocused | flHidden | flToolTip | flHelpText | flSubclass | flMinMaxSize),
         m_bBorder(true),
         m_iBorderStyle(wxPENSTYLE_DOT),
@@ -155,12 +155,11 @@ wxObject *wxsBmpCheckbox::OnBuildPreview(wxWindow *parent, long flags)
     kwxBmpCheckBox *preview = new kwxBmpCheckBox(parent, GetId(), *pbmpOn, *pbmpOff, *pbmpOnSel, *pbmpOffSel, Pos(parent), Size(parent), wxBORDER_NONE);
 
     // The defaults are border on and wxDOT.
-    if(!m_bBorder || m_iBorderStyle != wxPENSTYLE_DOT){
+    if (!m_bBorder || m_iBorderStyle != wxPENSTYLE_DOT)
         preview->SetBorder(m_bBorder, m_iBorderStyle);
-    }
-    if(m_bChecked){
+
+    if (m_bChecked)
         preview->SetState(true);
-    }
 
     return SetupWindow(preview, flags);
 }
@@ -174,11 +173,7 @@ wxObject *wxsBmpCheckbox::OnBuildPreview(wxWindow *parent, long flags)
 void wxsBmpCheckbox::OnEnumWidgetProperties(cb_unused long Flags)
 {
     static const long    arrBorderStyles[] = {wxSOLID, wxDOT, wxLONG_DASH, wxSHORT_DASH, wxDOT_DASH};  //!< Border styles array.
-#pragma push_macro("_")
-#undef _
-#define _(x)   L##x
-    static const wxChar* arrStyleNames[] = { _("wxSOLID"), _("wxDOT"), _("wxLONG_DASH"), _("wxSHORT_DASH"), _("wxDOT_DASH"), NULL };  //!< Border style names array.
-#pragma pop_macro("_")
+    static const wxChar* arrStyleNames[] = { _T("wxSOLID"), _T("wxDOT"), _T("wxLONG_DASH"), _T("wxSHORT_DASH"), _T("wxDOT_DASH"), nullptr };  //!< Border style names array.
 
     WXS_BOOL(wxsBmpCheckbox, m_bBorder, _("Show Border"), _T("show_border"), true)
     WXS_ENUM(wxsBmpCheckbox, m_iBorderStyle, _("Border Style"), _T("border_style"), arrBorderStyles, arrStyleNames, wxDOT);

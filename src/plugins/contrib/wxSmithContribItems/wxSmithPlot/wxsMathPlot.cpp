@@ -103,7 +103,9 @@ wxObject* wxsMathPlot::OnBuildPreview(wxWindow* Parent, long Flags)
 
 // make a panel
     mp = new mpWindow(Parent, GetId(), Pos(Parent), Size(Parent), Style());
-    if (mp == NULL) return NULL;
+    if (mp == nullptr)
+        return nullptr;
+
     SetupWindow(mp, Flags);
 
 // add kids

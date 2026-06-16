@@ -60,15 +60,14 @@ namespace
 
     static const long DEFAULT_STYLE_FIX = 0x1000;
     static const long Values[] = { USE_AXIS_X, USE_AXIS_Y, USE_LEGEND, USE_ZOOM_BUT, USE_DEPTH_BUT, USE_GRID, DEFAULT_STYLE_FIX };
-    static const wxChar* Names[] = { _T("USE_AXIS_X"), _T("USE_AXIS_Y"), _T("USE_LEGEND"), _T("USE_ZOOM_BUT"), _T("USE_DEPTH_BUT"), _T("USE_GRID"), _T("DEFAULT_STYLE"), NULL };
-
+    static const wxChar* Names[] = { _T("USE_AXIS_X"), _T("USE_AXIS_Y"), _T("USE_LEGEND"), _T("USE_ZOOM_BUT"), _T("USE_DEPTH_BUT"), _T("USE_GRID"), _T("DEFAULT_STYLE"), nullptr };
 }
 
 wxsChart::wxsChart(wxsItemResData* Data):
     wxsWidget(
         Data,               // Data passed to constructor
         &Reg.Info,          // Info taken from Registering object previously created
-        NULL,               // Structure describing events, we have no events for wxChart
+        nullptr,               // Structure describing events, we have no events for wxChart
         wxsChartStyles)     // Structure describing styles
 {
     m_Flags = DEFAULT_STYLE_FIX;
@@ -159,7 +158,7 @@ wxObject* wxsChart::OnBuildPreview(wxWindow* Parent,cb_unused long Flags)
     for ( size_t i=0; i<m_ChartPointsDesc.Count(); i++ )
     {
         ChartPointsDesc* Desc = m_ChartPointsDesc[i];
-        wxChartPoints* _Points = NULL;
+        wxChartPoints* _Points = nullptr;
 
         switch ( Desc->Type )
         {
@@ -355,9 +354,9 @@ void wxsChart::AppendPropertyForSet(wxsPropertyGridManager* Grid,int Position)
     static const wxChar* Types[] =
     {
         _T("Bar"),    _T("Bar3D"),    _T("Pie"),  _T("Pie3D"),
-        NULL, // wxChartCtrl doesn't support all types yet
+        nullptr, // wxChartCtrl doesn't support all types yet
         _T("Points"), _T("Points3D"), _T("Line"), _T("Line3D"),
-        _T("Area"),   _T("Area3D"),   NULL
+        _T("Area"),   _T("Area3D"),   nullptr
     };
 
     static const long Values[] =

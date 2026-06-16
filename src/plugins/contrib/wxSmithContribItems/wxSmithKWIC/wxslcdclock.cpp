@@ -59,8 +59,8 @@ wxsLCDClock::wxsLCDClock(wxsItemResData* Data) :
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         flVariable|flId|flPosition|flSize|flEnabled|flFocused|flHidden|flColours|flToolTip|flHelpText|flSubclass|flMinMaxSize),
         m_iNumDigits(6)
 {

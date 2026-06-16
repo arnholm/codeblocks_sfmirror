@@ -59,8 +59,8 @@ wxsBmpSwitcher::wxsBmpSwitcher(wxsItemResData *Data) :
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         flVariable | flId | flPosition | flSize | flEnabled | flFocused | flHidden | flToolTip | flHelpText | flSubclass | flMinMaxSize)
 {
 }

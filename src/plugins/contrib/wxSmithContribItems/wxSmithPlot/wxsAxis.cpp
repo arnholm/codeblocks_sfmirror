@@ -147,7 +147,9 @@ wxObject* wxsAxis::OnBuildPreview(wxWindow* Parent,long Flags)
     bool          hide;
 
 // if parznt is not an mpWindow, then exit out
-    if (!Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
+    if (!Parent->IsKindOf(CLASSINFO(mpWindow)))
+        return nullptr;
+
     mp = (mpWindow *) Parent;
 
 // hide this axis?

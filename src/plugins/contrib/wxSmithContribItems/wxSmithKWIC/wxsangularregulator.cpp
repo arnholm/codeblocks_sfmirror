@@ -64,7 +64,7 @@ wxsAngularRegulator::wxsAngularRegulator(wxsItemResData *Data) :
         Data,
         &Reg.Info,
         wxsAngularRegulatorEvents,
-        NULL,
+        nullptr,
         flVariable | flId | flPosition | flSize | flEnabled | flFocused | flHidden | flToolTip | flHelpText | flSubclass | flMinMaxSize),
     m_iValue(0),
     m_iRangeMin(0),

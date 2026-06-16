@@ -10,7 +10,7 @@
 class wxSmithAuiManager : public wxAuiManager
 {
     public:
-        wxSmithAuiManager(wxWindow* managed_wnd = NULL, unsigned int flags = wxAUI_MGR_DEFAULT)
+        wxSmithAuiManager(wxWindow* managed_wnd = nullptr, unsigned int flags = wxAUI_MGR_DEFAULT)
             : wxAuiManager(managed_wnd, flags)
         {
             Connect(wxEVT_DESTROY,(wxObjectEventFunction)&wxSmithAuiManager::OnDestroy);

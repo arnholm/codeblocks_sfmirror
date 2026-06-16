@@ -43,7 +43,8 @@ namespace
 wxObject* wxsAuiToolBarItemBase::OnBuildPreview(wxWindow* Parent,long Flags)
 {
     wxSmithAuiToolBar* ParentToolBar = wxDynamicCast(Parent,wxSmithAuiToolBar);
-    if ( !ParentToolBar ) return NULL;
+    if ( !ParentToolBar )
+        return nullptr;
 
     wxRect  ItemRect     = ParentToolBar->GetToolRect(m_ItemId);
     wxPoint ItemPosition = ItemRect.GetPosition();
@@ -55,8 +56,12 @@ wxObject* wxsAuiToolBarItemBase::OnBuildPreview(wxWindow* Parent,long Flags)
         int Margin = Parent->ClientToScreen(ItemPosition).y - Parent->GetParent()->ClientToScreen(ParentToolBar->GetPosition()).y;
         ItemSize.y = ParentToolBar->GetClientSize().y - 2*Margin;
     }
-    if ( m_HasGripper == wxLEFT ) ItemPosition.x += m_GripperSize;
-    if ( m_HasGripper == wxTOP  ) ItemPosition.y += m_GripperSize;
+
+    if ( m_HasGripper == wxLEFT )
+        ItemPosition.x += m_GripperSize;
+
+    if ( m_HasGripper == wxTOP  )
+        ItemPosition.y += m_GripperSize;
 
     return new wxSmithWindow(Parent,ItemPosition,ItemSize);
 }

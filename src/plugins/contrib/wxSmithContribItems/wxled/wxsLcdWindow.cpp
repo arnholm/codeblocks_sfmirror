@@ -25,7 +25,7 @@ namespace
         false);
 }
 
-wxsLcdWindow::wxsLcdWindow(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, NULL, NULL, flVariable | flId | flPosition | flSize | flMinMaxSize | flExtraCode)
+wxsLcdWindow::wxsLcdWindow(wxsItemResData* Data) : wxsWidget( Data, &Reg.Info, nullptr, nullptr, flVariable | flId | flPosition | flSize | flMinMaxSize | flExtraCode)
 {
     //ctor
 

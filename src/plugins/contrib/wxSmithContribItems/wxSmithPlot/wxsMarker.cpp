@@ -132,7 +132,9 @@ wxObject* wxsMarker::OnBuildPreview(wxWindow* Parent, long Flags)
     double        xp, yp;
 
 // if parent is not an mpWindow, then exit out
-    if (!Parent->IsKindOf(CLASSINFO(mpWindow))) return NULL;
+    if (!Parent->IsKindOf(CLASSINFO(mpWindow)))
+        return nullptr;
+
     mp = (mpWindow *) Parent;
 
 // hide this marker

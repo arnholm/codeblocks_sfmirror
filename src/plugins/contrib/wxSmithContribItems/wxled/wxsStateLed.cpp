@@ -29,8 +29,8 @@ wxsStateLed::wxsStateLed(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         flVariable | flId|flEnabled)
 {
     //ctor
@@ -269,14 +269,14 @@ bool wxsStateLed::OnXmlRead(TiXmlElement* Element, bool IsXRC, bool IsExtra)
 {
 
     TiXmlElement* ColourElem = Element->FirstChildElement("colour");
-    if(ColourElem != NULL)
+    if(ColourElem != nullptr)
     {
         TiXmlAttribute* att = ColourElem->FirstAttribute();
         m_numberOfState = wxAtoi(cbC2U(att->Value()));
         att = att->Next();
         m_State = wxAtoi(cbC2U(att->Value()));
         int i = 0;
-        for( TiXmlElement* data = ColourElem->FirstChildElement(); data != NULL; data = data->NextSiblingElement())
+        for( TiXmlElement* data = ColourElem->FirstChildElement(); data != nullptr; data = data->NextSiblingElement())
         {
             m_StateColor[i++].colour.Set(cbC2U(data->GetText()));
         }
