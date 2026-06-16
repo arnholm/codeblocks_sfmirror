@@ -43,7 +43,7 @@ wxsAnimationCtrl::wxsAnimationCtrl(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
+        nullptr,
         wxsAnimationCtrlStyles),
         m_bPlay(false)
 {}

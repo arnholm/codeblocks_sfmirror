@@ -167,7 +167,7 @@ namespace
         /** Default is to use wxSystemSettings::GetColour(index). Override to use custom colour tables etc */
         virtual wxColour GetColour( int index ) const;
 
-        wxColourPropertyValue GetVal( const wxVariant* pVariant = NULL ) const;
+        wxColourPropertyValue GetVal( const wxVariant* pVariant = nullptr ) const;
 
     protected:
 

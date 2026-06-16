@@ -399,7 +399,7 @@ void wxsMenuItem::OnBuildXRCFetchingCode()
         AddXRCFetchingCode(
             GetVarName() + _T(" = GetMenuBar() ? ")
             _T("(") + GetUserClass() + _T("*)")
-            _T("GetMenuBar()->FindItem(XRCID(\"") + GetIdName() + _T("\")) : NULL;\n"));
+            _T("GetMenuBar()->FindItem(XRCID(\"") + GetIdName() + _T("\")) : nullptr;\n"));
     }
 }
 

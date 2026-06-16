@@ -435,8 +435,8 @@ wxsImageListEditorDlg::~wxsImageListEditorDlg()
     FileDialog1->Destroy();
     //*)
 
-    if(m_ImageDialog != NULL) delete m_ImageDialog;
-
+    if (m_ImageDialog != nullptr)
+        delete m_ImageDialog;
 }
 
 /*! \brief Run the dialogue.
@@ -1152,17 +1152,11 @@ void wxsImageListEditorDlg::PaintPanel(wxPaintDC &aDC, wxPanel *aPanel, wxBitmap
     wxBitmap    bmp;
 
     // nothing to do?
-    if(aPanel == NULL){
+    if (aPanel == nullptr)
         return;
-    }
 
     // default background
-    if(aHot){
-        aDC.SetBackground(*wxBLUE_BRUSH);
-    }
-    else{
-        aDC.SetBackground(*wxWHITE_BRUSH);
-    }
+    aDC.SetBackground(aHot ? *wxBLUE_BRUSH : *wxWHITE_BRUSH);
 
     aDC.Clear();
 
@@ -1171,26 +1165,25 @@ void wxsImageListEditorDlg::PaintPanel(wxPaintDC &aDC, wxPanel *aPanel, wxBitmap
     // image and panel sizes
     iw = aBitmap.GetWidth();
     ih = aBitmap.GetHeight();
-    if((iw < 0) || (ih < 0)){
+    if((iw < 0) || (ih < 0))
         return;
-    }
 
     aPanel->GetClientSize(&pw, &ph);
 
     // set scale to fit in panel
     sw = 1.0;
     sh = 1.0;
-    while(((((int)(sw * iw)) > pw) || (((int)(sh * ih)) > ph)) && (sw > 0.01) && (sh > 0.01)){
+    while(((((int)(sw * iw)) > pw) || (((int)(sh * ih)) > ph)) && (sw > 0.01) && (sh > 0.01))
+    {
         sw -= 0.01;
         sh -= 0.01;
-    };
+    }
 
-    while(((int)(sw * iw)) < 8){
+    while(((int)(sw * iw)) < 8)
         sw += 0.01;
-    }
-    while(((int)(sh * ih)) < 8){
+
+    while(((int)(sh * ih)) < 8)
         sh += 0.01;
-    }
 
     aDC.SetUserScale(sw, sh);
 
@@ -1480,29 +1473,27 @@ wxsItem     *wxsImageListEditorDlg::FindTool(wxsItem *inItem, wxString inName)
     static wxsItem  *last_item;
 
     // keep track of last item used, for those cases where we cannot pass in an item
-    if(inItem != NULL){
+    if (inItem != nullptr)
         last_item = inItem;
-    }
 
     // still nothing?
-    if(last_item == NULL){
-        return NULL;
-    }
+    if (last_item == nullptr)
+        return nullptr;
 
     // nothing yet
-    found = NULL;
+    found = nullptr;
 
     // pointer to resource data
     res = last_item->GetResourceData();
 
     // scan all the tools and check the names
     n = res->GetToolsCount();
-    for(i = 0; i < n; i++){
+    for (i = 0; i < n; i++)
+    {
         tool = res->GetTool(i);
         ss = tool->GetVarName();
-        if(ss == inName){
+        if (ss == inName)
             found = tool;
-        }
     }
 
     // done
@@ -1560,17 +1551,15 @@ bool wxsImageListEditorDlg::SaveXPM(wxImage *image, wxOutputStream &stream)
     wxString sName;
     if(image->HasOption(wxIMAGE_OPTION_FILENAME))
     {
-        wxFileName::SplitPath(image->GetOption(wxIMAGE_OPTION_FILENAME),
-                              NULL, &sName, NULL);
+        wxFileName::SplitPath(image->GetOption(wxIMAGE_OPTION_FILENAME), nullptr, &sName, nullptr);
         sName << wxT("_xpm");
     }
 
-    if(!sName.empty()){
+    if(!sName.empty())
         sName = wxString(wxT("/* XPM */\nstatic const char *")) + sName;
-    }
-    else{
+    else
         sName = wxT("/* XPM */\nstatic const char *xpm_data");
-    }
+
     stream.Write((const char *) sName.ToAscii(), sName.Len());
 
     char tmpbuf[200];

@@ -45,7 +45,7 @@ wxsContextHelpButton::wxsContextHelpButton(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
+        nullptr,
         wxsContextHelpButtonStyles)
 {}
 

@@ -63,7 +63,7 @@ namespace
 wxsTextEntryDialog::wxsTextEntryDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
+            nullptr,
             wxsTextEntryDialogStyles,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sCaption(wxGetTextFromUserPromptStr),

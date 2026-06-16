@@ -41,7 +41,7 @@ wxsRichTextStyleComboCtrl::wxsRichTextStyleComboCtrl(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
+        nullptr,
         wxsRichTextStyleComboCtrlStyles),
     m_sControl(wxEmptyString),
     m_sStyleSheet(wxEmptyString)

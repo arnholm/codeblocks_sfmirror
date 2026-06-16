@@ -33,7 +33,7 @@ namespace
         false);                                             // We do not allow this item inside XRC files
 
 
-    WXS_ST_BEGIN(wxsFindReplaceDialogStyles, NULL);
+    WXS_ST_BEGIN(wxsFindReplaceDialogStyles, nullptr);
         WXS_ST_CATEGORY("wxFindReplaceDialog")
         WXS_ST(wxFR_REPLACEDIALOG)
         WXS_ST(wxFR_NOUPDOWN)

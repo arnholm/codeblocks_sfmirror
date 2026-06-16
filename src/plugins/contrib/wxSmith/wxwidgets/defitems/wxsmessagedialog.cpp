@@ -60,7 +60,7 @@ namespace
 wxsMessageDialog::wxsMessageDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
+            nullptr,
             wxsMessageDialogStyles,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sCaption(wxMessageBoxCaptionStr),

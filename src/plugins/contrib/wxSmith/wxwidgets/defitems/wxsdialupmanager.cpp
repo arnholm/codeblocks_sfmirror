@@ -41,7 +41,7 @@ namespace
         Data,
         &Reg.Info,
         wxsDialUpManagerEvents,
-        NULL,
+        nullptr,
         flVariable|flId|flSubclass|flExtraCode),
         m_iAutoCheckInterval(60)
 #ifndef __WXMSW__

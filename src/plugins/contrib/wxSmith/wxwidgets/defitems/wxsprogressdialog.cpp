@@ -55,7 +55,7 @@ namespace
 wxsProgressDialog::wxsProgressDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
+            nullptr,
             wxsProgressDialogStyles,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sTitle(wxEmptyString),

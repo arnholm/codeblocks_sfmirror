@@ -58,7 +58,7 @@ namespace
         _T("wxRICHTEXT_ORGANISER_SHOW_CHARACTER"),
         _T("wxRICHTEXT_ORGANISER_SHOW_LIST"),
         _T("wxRICHTEXT_ORGANISER_SHOW_PARAGRAPH"),
-        NULL
+        nullptr
     };
 }
 
@@ -70,8 +70,8 @@ namespace
 wxsRichTextStyleOrganiserDialog::wxsRichTextStyleOrganiserDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
-            NULL,
+            nullptr,
+            nullptr,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sCaption(SYMBOL_WXRICHTEXTSTYLEORGANISERDIALOG_TITLE),
             m_iFlags(wxRICHTEXT_ORGANISER_SHOW_ALL|wxRICHTEXT_ORGANISER_DELETE_STYLES|wxRICHTEXT_ORGANISER_CREATE_STYLES|
@@ -109,7 +109,7 @@ void wxsRichTextStyleOrganiserDialog::OnBuildCreatingCode()
             AddDeclaration(wxString::Format(wxT("wxRichTextStyleSheet  *%s;"), sStyleSheetName.wx_str()));
             Codef(_T("\t%s = new wxRichTextStyleSheet;\n"), sStyleSheetName.wx_str());
 
-            Codef(_T("%C(%s, %s, NULL, %W, %I, %t, ")
+            Codef(_T("%C(%s, %s, nullptr, %W, %I, %t, ")
                   wxT("SYMBOL_WXRICHTEXTSTYLEORGANISERDIALOG_POSITION, ")
                   wxT("SYMBOL_WXRICHTEXTSTYLEORGANISERDIALOG_SIZE, ")
                   wxT("SYMBOL_WXRICHTEXTSTYLEORGANISERDIALOG_STYLE);\n"),

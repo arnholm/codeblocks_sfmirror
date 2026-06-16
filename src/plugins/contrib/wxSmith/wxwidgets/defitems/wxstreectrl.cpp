@@ -122,7 +122,7 @@ void wxsTreeCtrl::OnBuildCreatingCode()
                 // assign the image-list -- AFTER the image list has been built
                 sVarName = GetVarName();
                 ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(this, m_sImageList);
-                if(ilist != NULL)
+                if (ilist != nullptr)
                 {
                     // Locator comment.
                     AddEventCode(wxString::Format(_("// Set the images for %s.\n"), sVarName.wx_str()));
@@ -186,7 +186,7 @@ void wxsTreeCtrl::OnBuildCreatingCode()
                     }
 
                     // and the image-list indices
-                    if(ilist != NULL)
+                    if (ilist != nullptr)
                     {
                         if(iImg1 >= 0)
                         {
@@ -259,7 +259,7 @@ wxObject *wxsTreeCtrl::OnBuildPreview(wxWindow *Parent, long _Flags)
     // make an image list
     m_imageList.RemoveAll();
     ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(this, m_sImageList);
-    if(ilist != NULL)
+    if (ilist != nullptr)
     {
         ilist->GetImageList(m_imageList);
     }

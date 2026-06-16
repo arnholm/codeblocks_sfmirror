@@ -148,9 +148,9 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
                                     else
                                     {
                                         if (UseObjectEventFunction)
-                                            Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", NULL, this);\n";
+                                            Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", nullptr, this);\n";
                                         else
-                                            Context->m_EventsConnectingCode << VarNameString << "->Connect(" << m_EventArray[i].Type << "," << m_EventArray[i].ArgType << "Handler(" << ClassName << "::" << m_Functions[i] << "), NULL, this);\n";
+                                            Context->m_EventsConnectingCode << VarNameString << "->Connect(" << m_EventArray[i].Type << "," << m_EventArray[i].ArgType << "Handler(" << ClassName << "::" << m_Functions[i] << "), nullptr, this);\n";
                                     }
                                 }
                             }
@@ -188,9 +188,9 @@ void wxsEvents::GenerateBindingCode(wxsCoderContext* Context,const wxString& IdS
                                 else
                                 {
                                     if (UseObjectEventFunction)
-                                        Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", NULL, this);\n";
+                                        Context->m_EventsConnectingCode << VarNameString << "->Connect(" << Type << ", (wxObjectEventFunction)" << Method << ", nullptr, this);\n";
                                     else
-                                        Context->m_EventsConnectingCode << VarNameString << "->Connect(" << m_EventArray[i].Type << "," << m_EventArray[i].ArgType << "Handler(" << ClassName << "::" << m_Functions[i] << "), NULL, this);\n";
+                                        Context->m_EventsConnectingCode << VarNameString << "->Connect(" << m_EventArray[i].Type << "," << m_EventArray[i].ArgType << "Handler(" << ClassName << "::" << m_Functions[i] << "), nullptr, this);\n";
                                 }
                             }
                             break;

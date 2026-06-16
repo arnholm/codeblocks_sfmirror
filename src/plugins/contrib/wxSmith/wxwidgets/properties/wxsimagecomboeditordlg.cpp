@@ -225,8 +225,8 @@ bool wxsImageComboEditorDlg::Execute(wxArrayString &aItems)
 
     // a valid image-list given?
     m_ImageList.RemoveAll();
-    ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(NULL, m_ImageName);
-    if(ilist == NULL)
+    ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(nullptr, m_ImageName);
+    if (ilist == nullptr)
     {
         m_pCmbImage->Enable(false);
     }

@@ -50,7 +50,7 @@ namespace
         _T("wxRICHTEXT_FORMAT_LIST_STYLE"),
         _T("wxRICHTEXT_FORMAT_STYLE_EDITOR"),
         _T("wxRICHTEXT_FORMAT_TABS"),
-        NULL
+        nullptr
     };
 }
 
@@ -62,8 +62,8 @@ namespace
 wxsRichTextFormattingDialog::wxsRichTextFormattingDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
-            NULL,
+            nullptr,
+            nullptr,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sTitle(_T("Formatting")),
             m_iFlags(wxRICHTEXT_FORMAT_FONT|wxRICHTEXT_FORMAT_TABS|wxRICHTEXT_FORMAT_BULLETS|wxRICHTEXT_FORMAT_INDENTS_SPACING)

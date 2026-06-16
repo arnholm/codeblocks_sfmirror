@@ -53,7 +53,7 @@ namespace
 wxsPasswordEntryDialog::wxsPasswordEntryDialog(wxsItemResData *Data):
     wxsTool(Data,
             &Reg.Info,
-            NULL,
+            nullptr,
             wxsPasswordEntryDialogStyles,
             (flVariable | flId | flSubclass | flExtraCode)),
             m_sCaption(wxGetPasswordFromUserPromptStr),

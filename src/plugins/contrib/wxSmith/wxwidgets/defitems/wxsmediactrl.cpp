@@ -52,7 +52,7 @@ wxsMediaCtrl::wxsMediaCtrl(wxsItemResData* Data):
         Data,
         &Reg.Info,
         wxsMediaCtrlEvents,
-        NULL),
+        nullptr),
         m_sMediaFile(wxEmptyString),
         m_sProxy(wxEmptyString),
         m_iControls(wxMEDIACTRLPLAYERCONTROLS_DEFAULT),
@@ -178,12 +178,12 @@ void wxsMediaCtrl::OnEnumWidgetProperties(long _Flags)
 {
     static const long VolumeLevels[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};   //!< Volume levels.
     /*!< Volume level names. */
-    static const wxChar* VolumeNames[]  = {wxT("0.0"), wxT("0.1"), wxT("0.2"), wxT("0.3"), wxT("0.4"), wxT("0.5"), wxT("0.6"), wxT("0.7"), wxT("0.8"), wxT("0.9"), wxT("1.0"), NULL};
+    static const wxChar* VolumeNames[]  = {wxT("0.0"), wxT("0.1"), wxT("0.2"), wxT("0.3"), wxT("0.4"), wxT("0.5"), wxT("0.6"), wxT("0.7"), wxT("0.8"), wxT("0.9"), wxT("1.0"), nullptr};
     static const long ControlStates[] = {wxMEDIACTRLPLAYERCONTROLS_NONE,     //!< No controls.
                                          wxMEDIACTRLPLAYERCONTROLS_STEP,     //!< Step controls like fastfoward, step one frame etc.
                                          wxMEDIACTRLPLAYERCONTROLS_VOLUME,   //!< Volume controls like the speaker icon, volume slider, etc.
                                          wxMEDIACTRLPLAYERCONTROLS_DEFAULT}; //!< Default controls for the toolkit.
-    static const wxChar* ControlNames[]  = {wxT("None"), wxT("Step"), wxT("Volume"), wxT("Default"), NULL};    //!< Control state names.
+    static const wxChar* ControlNames[]  = {wxT("None"), wxT("Step"), wxT("Volume"), wxT("Default"), nullptr};    //!< Control state names.
 
     WXS_SHORT_STRING(wxsMediaCtrl, m_sMediaFile, _("Media File"), _T("media_file"), _T(""), false)
     WXS_SHORT_STRING(wxsMediaCtrl, m_sProxy, _("Proxy"), _T("proxy"), _T(""), false)

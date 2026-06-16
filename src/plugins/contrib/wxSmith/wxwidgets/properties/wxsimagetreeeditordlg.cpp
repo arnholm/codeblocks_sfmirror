@@ -412,29 +412,29 @@ bool wxsImageTreeEditorDlg::Execute(wxArrayString &aItems)
 
     // a valid image-list given?
     m_imageList.RemoveAll();
-    ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(NULL, m_sImageName);
-    if(ilist != NULL){
+    ilist = (wxsImageList *) wxsImageListEditorDlg::FindTool(nullptr, m_sImageName);
+    if (ilist != nullptr)
         ilist->GetImageList(m_imageList);
-    }
+
     SetImageList(m_imageList);
 
     // add all the new items
     n = aItems.GetCount();
-    for(i = 2; i < n; i++){
+    for (i = 2; i < n; i++)
+    {
         ss = aItems.Item(i);
         ParseTreeItem(ss, jv, jc, jb, j1, j2, j3, j4, jt);
 
-        if(jv == 0){
+        if (jv == 0)
             item = Tree1->AddRoot(jt);
-        }
-        else{
+        else
             item = Tree1->AppendItem(jp[jv-1], jt);
-        }
+
         jp[jv] = item;
 
-        if(jc.IsOk()){
+        if (jc.IsOk())
             Tree1->SetItemTextColour(item, jc);
-        }
+
         Tree1->SetItemBold(item, jb);
         Tree1->SetItemImage(item, j1, wxTreeItemIcon_Normal);
         Tree1->SetItemImage(item, j2, wxTreeItemIcon_Selected);
@@ -448,7 +448,8 @@ bool wxsImageTreeEditorDlg::Execute(wxArrayString &aItems)
     n = ShowModal();
 
     // save all new stuff?
-    if(n == wxOK){
+    if (n == wxOK)
+    {
         // must save combo-box name and image-list name
         aItems.Clear();
         aItems.Add(m_sTreeName);

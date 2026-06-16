@@ -42,7 +42,7 @@ wxsRichTextStyleListCtrl::wxsRichTextStyleListCtrl(wxsItemResData* Data):
     wxsWidget(
         Data,
         &Reg.Info,
-        NULL,
+        nullptr,
         wxsRichTextStyleListCtrlStyles),
     m_sControl(wxEmptyString),
     m_sStyleSheet(wxEmptyString),
@@ -152,7 +152,7 @@ void wxsRichTextStyleListCtrl::OnEnumWidgetProperties(cb_unused long _Flags)
                                                                 wxRichTextStyleListBox::wxRICHTEXT_STYLE_CHARACTER,
                                                                 wxRichTextStyleListBox::wxRICHTEXT_STYLE_LIST,
                                                                 wxRichTextStyleListBox::wxRICHTEXT_STYLE_PARAGRAPH};
-    static const wxChar* StyleNames[]  = {wxT("wxRICHTEXT_STYLE_ALL"), wxT("wxRICHTEXT_STYLE_CHARACTER"), wxT("wxRICHTEXT_STYLE_LIST"), wxT("wxRICHTEXT_STYLE_PARAGRAPH"), NULL};
+    static const wxChar* StyleNames[]  = {wxT("wxRICHTEXT_STYLE_ALL"), wxT("wxRICHTEXT_STYLE_CHARACTER"), wxT("wxRICHTEXT_STYLE_LIST"), wxT("wxRICHTEXT_STYLE_PARAGRAPH"), nullptr};
 
     WXS_SHORT_STRING(wxsRichTextStyleListCtrl, m_sControl, _("Control"), _T("control"), wxEmptyString, true)
     WXS_SHORT_STRING(wxsRichTextStyleListCtrl, m_sStyleSheet, _("Style Sheet"), _T("style_sheet"), wxEmptyString, true)

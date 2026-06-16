@@ -34,8 +34,8 @@ wxsHtmlEasyPrinting::wxsHtmlEasyPrinting(wxsItemResData* Data):
     wxsTool(
         Data,
         &Reg.Info,
-        NULL,
-        NULL),
+        nullptr,
+        nullptr),
         m_sHeader(wxEmptyString),
         m_sFooter(wxEmptyString),
         m_iHeaderPages(wxPAGE_ALL),
@@ -85,7 +85,7 @@ void wxsHtmlEasyPrinting::OnBuildCreatingCode()
 void wxsHtmlEasyPrinting::OnEnumToolProperties(cb_unused long _Flags)
 {
     static const long arrHeaderPages[] = {wxPAGE_ALL, wxPAGE_EVEN, wxPAGE_ODD};                                                                            //!< Header and footer page values.
-    static const wxChar* arrHeaderPageNames[]  = {wxT("wxPAGE_ALL"), wxT("wxPAGE_EVEN"), wxT("wxPAGE_ODD"), NULL};        //!< Header and footer page value names.
+    static const wxChar* arrHeaderPageNames[]  = {wxT("wxPAGE_ALL"), wxT("wxPAGE_EVEN"), wxT("wxPAGE_ODD"), nullptr};        //!< Header and footer page value names.
 
     WXS_SHORT_STRING(wxsHtmlEasyPrinting, m_sHeader, _("Header"), _T("header"), wxEmptyString, false)
     WXS_SHORT_STRING(wxsHtmlEasyPrinting, m_sFooter, _("Footer"), _T("footer"), wxEmptyString, false)

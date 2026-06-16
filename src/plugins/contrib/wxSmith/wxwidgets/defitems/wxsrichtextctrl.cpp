@@ -38,7 +38,7 @@ namespace
         wxT("wxTEXT_ALIGNMENT_LEFT"),
         wxT("wxTEXT_ALIGNMENT_CENTRE"),
         wxT("wxTEXT_ALIGNMENT_RIGHT"),
-        NULL
+        nullptr
     };
 
     static const long arrAttributeStates[] = {
@@ -98,7 +98,7 @@ namespace
         wxT("wxTEXT_ATTR_PAGE_BREAK"),
         wxT("wxTEXT_ATTR_EFFECTS"),
         wxT("wxTEXT_ATTR_OUTLINE_LEVEL"),
-        NULL
+        nullptr
     };
 
     static const long arrBulletStates[] = {
@@ -134,7 +134,7 @@ namespace
         wxT("wxTEXT_ATTR_BULLET_STYLE_ALIGN_LEFT"),
         wxT("wxTEXT_ATTR_BULLET_STYLE_ALIGN_RIGHT"),
         wxT("wxTEXT_ATTR_BULLET_STYLE_ALIGN_CENTRE"),
-        NULL
+        nullptr
     };
 
     static const long arrSpacingStates[] = {
@@ -146,7 +146,7 @@ namespace
         wxT("wxTEXT_ATTR_LINE_SPACING_NORMAL"),
         wxT("wxTEXT_ATTR_LINE_SPACING_HALF"),
         wxT("wxTEXT_ATTR_LINE_SPACING_TWICE"),
-        NULL
+        nullptr
     };
 
     static const long arrEffectStates[] = {
@@ -172,7 +172,7 @@ namespace
 //        wxT("wxTEXT_ATTR_EFFECT_ENGRAVE"),
 //        wxT("wxTEXT_ATTR_EFFECT_SUPERSCRIPT"),
 //        wxT("wxTEXT_ATTR_EFFECT_SUBSCRIPT"),
-        NULL
+        nullptr
     };
 
     WXS_ST_BEGIN(wxsRichTextCtrlStyles, _T("wxRE_MULTILINE"))

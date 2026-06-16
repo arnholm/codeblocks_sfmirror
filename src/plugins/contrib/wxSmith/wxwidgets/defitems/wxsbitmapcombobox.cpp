@@ -103,11 +103,11 @@ void wxsBitmapComboBox::OnBuildCreatingCode()
 // the basic constructor
 
   vv = GetVarName();
-  Codef(_T("%C(%W, %I, wxEmptyString, %P, %S, 0, NULL, %T, %V, %N);\n"));
+  Codef(_T("%C(%W, %I, wxEmptyString, %P, %S, 0, nullptr, %T, %V, %N);\n"));
 
 // was a valid image-list specified?
 
-  ilist = (wxsImageListEditorDlg::FindTool(this, mImageList) != NULL);
+  ilist = (wxsImageListEditorDlg::FindTool(this, mImageList) != nullptr);
 
 // add all text items, and the bitmaps at the bottom of the code
 // bitmaps have to added after the wxsImages' and wxsImageList's were added
@@ -150,7 +150,7 @@ wxObject* wxsBitmapComboBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 
 // the basic button
 
-  combo = new wxBitmapComboBox(Parent, GetId(), _T(""), Pos(Parent),Size(Parent),0, NULL, Style());
+  combo = new wxBitmapComboBox(Parent, GetId(), wxEmptyString, Pos(Parent), Size(Parent), 0, nullptr, Style());
 
 // a valid image-list specified?
 
@@ -170,7 +170,7 @@ wxObject* wxsBitmapComboBox::OnBuildPreview(wxWindow* Parent,long _Flags)
 
     combo->Append(tt);
 
-    if ((ilist != NULL) && (n >= 0))
+    if ((ilist != nullptr) && (n >= 0))
       combo->SetItemBitmap(i-2, ilist->GetPreview(n));
   }
 
