@@ -633,7 +633,7 @@ void CCOptionsDlg::OnClangd_AutoDetect(cb_unused wxCommandEvent& event)
 void CCOptionsDlg::OnFindDirClangd_Dlg(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
-    wxTextCtrl* obj = 0L;
+    wxTextCtrl* obj = nullptr;
     if (event.GetId() == XRCID("btnMasterPath"))
         obj = XRCCTRL(*this, "txtMasterPath", wxTextCtrl);
 

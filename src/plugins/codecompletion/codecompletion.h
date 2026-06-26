@@ -97,7 +97,7 @@ public:
     /** build menus in the main frame */
     void BuildMenu(wxMenuBar* menuBar) override;
     /** build context popup menu */
-    void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = 0) override;
+    void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = nullptr) override;
     /** build CC Toolbar */
     bool BuildToolBar(wxToolBar* toolBar) override;
     /** toolbar priority value */

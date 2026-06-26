@@ -678,7 +678,7 @@ void TokenTree::RecalcInheritanceChain(Token* token)
         // ancestors might contain namespaces, e.g. NS::Ancestor
         if (ancestor.Find(_T("::")) != wxNOT_FOUND)
         {
-            Token* ancestorToken = 0;
+            Token* ancestorToken = nullptr;
             wxStringTokenizer anctkz(ancestor, _T("::"));
             while (anctkz.HasMoreTokens())
             {

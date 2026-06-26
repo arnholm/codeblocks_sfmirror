@@ -434,9 +434,9 @@ private:
      */
     int FindCurrentFunctionStart(bool callerHasTokenLock,
                                  ccSearchData* searchData,
-                                 wxString*     nameSpace = 0L,
-                                 wxString*     procName = 0L,
-                                 int*          functionIndex = 0L,
+                                 wxString*     nameSpace = nullptr,
+                                 wxString*     procName = nullptr,
+                                 int*          functionIndex = nullptr,
                                  int           caretPos = -1);
 
 

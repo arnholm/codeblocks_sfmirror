@@ -298,7 +298,7 @@ public:
     {
         wxString key(name);
         TiXmlHandle ph(AssertPath(key));
-        TiXmlElement* e = 0;
+        TiXmlElement* e = nullptr;
         if(TiXmlNode *n = ph.FirstChild(key.mb_str(wxConvUTF8)).FirstChild("objmap").Node())
             while(n->IterateChildren(e) && (e = n->IterateChildren(e)->ToElement()))
             {

@@ -37,7 +37,7 @@ enum SpecialFolder
 class CCTreeCtrlData : public wxTreeItemData
 {
 public:
-    CCTreeCtrlData(SpecialFolder sf = sfToken, Token* token = 0,
+    CCTreeCtrlData(SpecialFolder sf = sfToken, Token* token = nullptr,
                    short int kindMask = 0xffff, int parentIdx = -1);
 
     /** a pointer to the associated Token instance in the TokenTree */

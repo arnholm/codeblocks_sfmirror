@@ -2645,7 +2645,7 @@ void LSP_SymbolsParser::HandleEnum()
     }
 
     // the token is now the expected enum name
-    Token* newEnum = 0L;
+    Token* newEnum = nullptr;
     unsigned int level = 0;
     if (   wxIsalpha(token.GetChar(0))
         || (token.GetChar(0) == ParserConsts::underscore_chr) )

@@ -113,7 +113,7 @@ protected:
                          bool                        caseSensitive = false,
                          bool                        use_inheritance = true,
                          short int                   kindMask = 0xFFFF,
-                         TokenIdxSet*                search_scope = 0);
+                         TokenIdxSet*                search_scope = nullptr);
 
     /** if the expression return the container tokens, which are the
      * parent of the expression.

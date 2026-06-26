@@ -1495,10 +1495,10 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
     if (name.IsEmpty())
     {
         TRACE(_T("DoAddToken() : Token name is empty!"));
-        return 0; // oops!
+        return nullptr; // oops!
     }
 
-    Token* newToken = 0;
+    Token* newToken = nullptr;
     wxString newname(name);
     m_Str.Trim(true).Trim(false);
     if (kind == tkDestructor)
@@ -1515,7 +1515,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
             kind = tkVariable;
     }
 
-    Token* localParent = 0;
+    Token* localParent = nullptr;
 
     // preserve m_EncounteredTypeNamespaces; needed further down this function
     std::queue<wxString> q = m_EncounteredTypeNamespaces;
@@ -2333,7 +2333,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
         int lineEnd = 0;
         bool isCtor = m_Str.IsEmpty();
         bool isDtor = m_Str.StartsWith(ParserConsts::tilde);
-        Token* localParent = 0;
+        Token* localParent = nullptr;
 
         if ((isCtor || isDtor) && !m_EncounteredTypeNamespaces.empty())
         {

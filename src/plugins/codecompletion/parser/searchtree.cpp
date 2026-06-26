@@ -753,7 +753,7 @@ size_t BasicSearchTree::FindMatches(const wxString& s, std::set<size_t>& result,
     // than an exhaustive search.
     result.clear();
     wxString s2,curcmp,s3;
-    SearchTreeNode* curnode = 0;
+    SearchTreeNode* curnode = nullptr;
     BasicSearchTreeIterator it(this);
     SearchTreeItemsMap::const_iterator it2;
 

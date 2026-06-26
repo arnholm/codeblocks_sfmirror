@@ -9,7 +9,7 @@
  * This file is part of jam.
  *
  * License is hereby granted to use this software and distribute it
- * freely, as long as this copyright notice is retained and modifications 
+ * freely, as long as this copyright notice is retained and modifications
  * are clearly marked.
  *
  * ALL WARRANTIES ARE HEREBY DISCLAIMED.
@@ -26,12 +26,12 @@
  *
  * This implementation essentially uses a singly linked list, but
  * guarantees that the head element of every list has a valid pointer
- * to the tail of the list, so the new elements can efficiently and 
+ * to the tail of the list, so the new elements can efficiently and
  * properly be appended to the end of a list.
  *
  * To avoid massive allocation, list_free() just tacks the whole freed
  * chain onto freelist and list_new() looks on freelist first for an
- * available list struct.  list_free() does not free the strings in the 
+ * available list struct.  list_free() does not free the strings in the
  * chain: it lazily lets list_new() do so.
  *
  * 08/23/94 (seiwald) - new list_append()
@@ -57,7 +57,7 @@ static LIST *freelist = 0;	/* junkpile for list_free() */
  */
 
 LIST *
-list_append( 
+list_append(
 	LIST	*l,
 	LIST	*nl )
 {
@@ -84,7 +84,7 @@ list_append(
  */
 
 LIST *
-list_new( 
+list_new(
 	LIST	*head,
 	const char *string,
 	int	copy )
@@ -138,7 +138,7 @@ list_new(
  */
 
 LIST *
-list_copy( 
+list_copy(
 	LIST	*l,
 	LIST 	*nl )
 {
@@ -153,12 +153,12 @@ list_copy(
  */
 
 LIST *
-list_sublist( 
+list_sublist(
 	LIST	*l,
 	int	start,
 	int	count )
 {
-	LIST	*nl = 0;
+	LIST	*nl = NULL;
 
 	for( ; l && start--; l = list_next( l ) )
 	    ;
@@ -264,7 +264,7 @@ lol_init( LOL *lol )
  */
 
 void
-lol_add( 
+lol_add(
 	LOL	*lol,
 	LIST	*l )
 {
@@ -292,7 +292,7 @@ lol_free( LOL *lol )
  */
 
 LIST *
-lol_get( 
+lol_get(
 	LOL	*lol,
 	int	i )
 {

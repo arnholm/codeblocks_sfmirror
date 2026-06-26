@@ -50,17 +50,16 @@ class BlockAllocator
         for(unsigned int i = 0; i < pool_size - 1; ++i)
             ptr[i].next = &ptr[i+1];
 
-        ptr[pool_size - 1].next = 0;
+        ptr[pool_size - 1].next = nullptr;
 
         first = ptr;
-    };
-
+    }
 
     void PushFront(LinkedBlock<T> *p)
     {
         p->next = first;
         first = p;
-    };
+    }
 
 public:
 
@@ -69,7 +68,7 @@ public:
     #if defined(__GNUC__)
         assert(__builtin_constant_p(debug));
     #endif
-    };
+    }
 
     ~BlockAllocator()
     {
@@ -80,7 +79,7 @@ public:
 
         for(unsigned int i = 0; i < allocBlocks.size(); ++i)
             delete[] allocBlocks[i];
-    };
+    }
 
     inline void* New()
     {
@@ -91,13 +90,13 @@ public:
             max_refs = ref_count > max_refs ? ref_count : max_refs;
         }
 
-        if(first == 0)
+        if(first == nullptr)
             AllocBlockPushBack();
 
         void *p = first;
         first = first->next;
         return p;
-    };
+    }
 
     inline void Delete(void *ptr)
     {
@@ -105,9 +104,8 @@ public:
             --ref_count;
 
         PushFront((LinkedBlock<T> *) ptr);
-    };
+    }
 };
-
 
 template <class T, unsigned int pool_size, const bool debug = 0>
 class BlockAllocated
@@ -119,15 +117,17 @@ public:
     inline void* operator new(cb_unused size_t size)
     {
         return allocator.New();
-    };
+    }
 
     inline void operator delete(void *ptr)
     {
-        if (ptr == 0) // C++ standard requires this
+        if (ptr == nullptr) // C++ standard requires this
             return;
+
         allocator.Delete(ptr);
-    };
+    }
 };
+
 template<class T, unsigned int pool_size, const bool debug>
 BlockAllocator<T, pool_size, debug> BlockAllocated<T, pool_size, debug>::allocator;
 
