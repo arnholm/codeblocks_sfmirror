@@ -29,6 +29,7 @@ libwxsmith_wxwidgets_defitems_la_SOURCES = \
 ./wxsstaticboxsizer.cpp \
 ./wxsbitmapbutton.cpp \
 ./wxsbitmaptogglebutton.cpp \
+./wxscommandlinkbutton.cpp \
 ./wxstextctrl.cpp \
 ./wxstogglebutton.cpp \
 ./wxsspacer.cpp \
@@ -147,6 +148,7 @@ noinst_HEADERS = \
 ./wxsradiobox.h \
 ./wxsbitmapbutton.h \
 ./wxsbitmaptogglebutton.h \
+./wxscommandlinkbutton.h \
 ./wxsstaticboxsizer.h \
 ./wxsboxsizer.h \
 ./wxsflexgridsizer.h \
