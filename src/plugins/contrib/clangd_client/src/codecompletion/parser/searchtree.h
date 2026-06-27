@@ -314,10 +314,9 @@ public:
     wxString dump();
 
 protected:
-    /** Creates a new node. Function is virtual so the nodes can be extended
-     *  and customized, or to improve the memory management.
+    /** Creates a new node.
      */
-    virtual SearchTreeNode* CreateNode(unsigned int depth,
+    SearchTreeNode* CreateNode(unsigned int depth,
                                        nSearchTreeNode parent,
                                        nSearchTreeLabel label,
                                        unsigned int labelstart,
@@ -411,10 +410,10 @@ protected:
     std::vector<T> m_Items;   /// The actual stored items
 
     /// Releases the stored items (vector) from memory. Called by Clear();
-    virtual void ClearItems();
+    void ClearItems();
 
     /// Adds a null item to position 0.
-    virtual bool AddFirstNullItem();
+    bool AddFirstNullItem();
 };
 
 template <class T> SearchTree<T>::SearchTree() : BasicSearchTree()

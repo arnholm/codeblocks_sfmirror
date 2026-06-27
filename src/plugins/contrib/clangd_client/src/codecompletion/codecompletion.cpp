@@ -1242,7 +1242,7 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
     {
         const PluginInfo* info = Manager::Get()->GetPluginManager()->GetPluginInfo(plug);
         // wxString msg = info ? info->title : wxString(_("<Unknown plugin>")); unused // (ph 26/04/29)
-        if (info->name == "CodeCompletion")
+        if (info && (info->name == "CodeCompletion"))
         {
             wxString msg = _("The CodeCompletion plugin should not be enabled when 'Clangd_client' is running.\n"
                              "The plugins are not compatible with one another.\n\n"
@@ -1437,7 +1437,7 @@ std::vector<ClgdCompletion::CCToken> ClgdCompletion::GetAutocompList(bool isAuto
                     Token token(wxString(),0,0,0);
                     token.m_TokenKind = (TokenKind)semanticTokenType;
                     if (semanticTokenType == LSP_SemanticTokenType::Unknown)
-                        cldToken.category = (TokenKind)-1;
+                        cldToken.category = -1;
                     token.m_TokenKind =  GetParseManager()->GetParser().ConvertLSPSemanticTypeToCCTokenKind(semanticTokenType);
                     int iidx = GetParseManager()->GetTokenImageFromSemanticTokenType(&token);
                     if (iidx < 0) iidx = -1; // -1 tells ccManager to ignore this item
@@ -1833,7 +1833,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
                         itemText += tokenArgs;
                         insideFunction = false;
                     }
-                    else // Found something, but result may be false positive.
+                    else if (tree) // Found something, but result may be false positive.
                     {
                         const Token* parent = tree->at(funcToken);
                         // Make sure that parent is not container (class, etc)

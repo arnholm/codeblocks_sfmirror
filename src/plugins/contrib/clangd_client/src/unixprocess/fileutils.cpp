@@ -967,9 +967,12 @@ bool cksum(const std::string& file, size_t* checksum)
             crc = (crc << 8) ^ crctab[((crc >> 24) ^ *cp++) & 0xFF];
         if(feof(fp))
             break;
+        if (ferror(fp))
+            break;
     }
 
     if(ferror(fp)) {
+        fclose(fp);
         return false;
     }
 

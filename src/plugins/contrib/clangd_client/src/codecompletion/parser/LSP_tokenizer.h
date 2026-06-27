@@ -606,9 +606,9 @@ private:
         {
         };
         /** the token index we begin to parse after replacement */
-        unsigned int m_Begin;
+        unsigned int m_Begin{0};
         /** the end token index, if beyond this index, we need to pop the buffer */
-        unsigned int m_End;
+        unsigned int m_End{0};
         /** the referenced used macro */
         const Token* m_Macro;
     };

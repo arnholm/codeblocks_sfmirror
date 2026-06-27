@@ -780,7 +780,9 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
         return wxEmptyString;
 
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    cbStyledTextCtrl* pControl = pEditor ? pEditor->GetControl() : nullptr;
+    if (!pEditor)
+        return wxEmptyString;
+    cbStyledTextCtrl* pControl = pEditor->GetControl();
     LogManager* pLogMgr = Manager::Get()->GetLogManager(); wxUnusedVar(pLogMgr);
     cbProject* pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
 

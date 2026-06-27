@@ -195,6 +195,10 @@ void ProcUtils::ExecuteCommand(const wxString &command, wxArrayString &output, l
 	char line[512];
 	memset(line, 0, sizeof(line));
 	fp = popen(command.mb_str(wxConvUTF8), "r");
+	if (!fp) {
+		fprintf(stderr, "failed to popen %s", command.ToUTF8().data());
+		return;
+	}
 	while ( fgets( line, sizeof line, fp)) {
 		output.Add(wxString(line, wxConvUTF8));
 		memset(line, 0, sizeof(line));

@@ -262,7 +262,7 @@ protected:
     void OnLSP_BatchTimer(wxTimerEvent& event);
 
     /** read Parser options from configure file */
-    void ReadOptions() override;
+    void ReadOptions() override final;
 
     /** write Parse options to configure file */
     void WriteOptions(bool classbrowserOnly=false) override;              //(svn 13612 bkport)
