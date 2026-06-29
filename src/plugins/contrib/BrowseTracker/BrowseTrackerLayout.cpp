@@ -189,7 +189,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
     return true;
 }//Open
 // ----------------------------------------------------------------------------
-bool BrowseTrackerLayout::ParseBrowse_MarksString(const wxString& filename, wxString BrowseMarksString, FileBrowse_MarksHash& m_EdMarksArchive)
+bool BrowseTrackerLayout::ParseBrowse_MarksString(const wxString& filename, const wxString& BrowseMarksString, FileBrowse_MarksHash& m_EdMarksArchive)
 // ----------------------------------------------------------------------------
 {
     if (filename.IsEmpty()) return false;
@@ -277,9 +277,9 @@ bool BrowseTrackerLayout::Save(const wxString& filename, FileBrowse_MarksHash& m
 }
 // ----------------------------------------------------------------------------
 #if defined(LOGGING)
-void BrowseTrackerLayout::DumpBrowse_Marks( const wxString hashType, FileBrowse_MarksHash& m_FileBrowse_MarksArchive )
+void BrowseTrackerLayout::DumpBrowse_Marks( const wxString& hashType, FileBrowse_MarksHash& m_FileBrowse_MarksArchive )
 #else
-void BrowseTrackerLayout::DumpBrowse_Marks( const wxString /*hashType*/, FileBrowse_MarksHash& /*m_FileBrowse_MarksArchive*/ )
+void BrowseTrackerLayout::DumpBrowse_Marks( const wxString& /*hashType*/, FileBrowse_MarksHash& /*m_FileBrowse_MarksArchive*/ )
 #endif
 // ----------------------------------------------------------------------------
 {

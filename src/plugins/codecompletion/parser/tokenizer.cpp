@@ -212,7 +212,7 @@ void Tokenizer::BaseInit()
 bool Tokenizer::ReadFile()
 {
     bool success = false;
-    wxString fileName = wxEmptyString;
+    wxString fileName;
     if (m_Loader)
     {
         fileName    = m_Loader->FileName();
@@ -2072,7 +2072,7 @@ void Tokenizer::HandleUndefs()
     SkipToEOL();
 }
 
-void Tokenizer::AddMacroDefinition(wxString name, int line, wxString para, wxString substitues)
+void Tokenizer::AddMacroDefinition(const wxString& name, int line, const wxString& para, const wxString& substitues)
 {
     int index = m_TokenTree->TokenExists(name, -1, tkMacroDef);
     Token* token;

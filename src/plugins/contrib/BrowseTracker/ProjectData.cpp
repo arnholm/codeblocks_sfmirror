@@ -102,7 +102,7 @@ wxString ProjectData::GetProjectFilename()
     return m_ProjectFilename;
 }
 // ----------------------------------------------------------------------------
-void ProjectData::AddEditor( wxString /*filePath */)
+void ProjectData::AddEditor( const wxString& /*filePath */)
 // ----------------------------------------------------------------------------
 {
 ////    // Don't stow duplicates
@@ -118,7 +118,7 @@ void ProjectData::AddEditor( wxString /*filePath */)
 
 }
 // ----------------------------------------------------------------------------
-bool ProjectData::FindFilename( const wxString filePath)
+bool ProjectData::FindFilename( const wxString& filePath)
 // ----------------------------------------------------------------------------
 {
     //Return true if we own a BrowseMarks array by this filepath;
@@ -132,7 +132,7 @@ bool ProjectData::FindFilename( const wxString filePath)
     return true;
 }
 // ----------------------------------------------------------------------------
-BrowseMarks* ProjectData::GetBrowse_MarksFromHash( wxString filePath)
+BrowseMarks* ProjectData::GetBrowse_MarksFromHash(const wxString& filePath)
 // ----------------------------------------------------------------------------
 {
     // Return a pointer to a BrowseMarks array with this filePath
@@ -141,7 +141,7 @@ BrowseMarks* ProjectData::GetBrowse_MarksFromHash( wxString filePath)
     return GetPointerToBrowse_MarksArray(hash, filePath);
 }
 // ----------------------------------------------------------------------------
-BrowseMarks* ProjectData::GetPointerToBrowse_MarksArray(FileBrowse_MarksHash& hash, wxString filePath)
+BrowseMarks* ProjectData::GetPointerToBrowse_MarksArray(FileBrowse_MarksHash& hash, const wxString& filePath)
 // ----------------------------------------------------------------------------
 {
     // Return a pointer to a BrowseMarks array with this filePath
@@ -155,7 +155,7 @@ BrowseMarks* ProjectData::GetPointerToBrowse_MarksArray(FileBrowse_MarksHash& ha
     return 0;
 }
 // ----------------------------------------------------------------------------
-BrowseMarks* ProjectData::HashAddBrowse_Marks( const wxString fullPath )
+BrowseMarks* ProjectData::HashAddBrowse_Marks( const wxString& fullPath )
 // ----------------------------------------------------------------------------
 {
     // EditorManager calls fail during the OnEditorClose event
@@ -232,7 +232,7 @@ void ProjectData::SaveLayout()
 
 }
 // ----------------------------------------------------------------------------
-void ProjectData::DumpHash( const wxString
+void ProjectData::DumpHash( const wxString&
 #if defined(LOGGING)
 	hashType
 #endif
@@ -257,7 +257,7 @@ void ProjectData::DumpHash( const wxString
 }
 
 // ----------------------------------------------------------------------------
-void ProjectData::DumpBrowse_Marks( const wxString
+void ProjectData::DumpBrowse_Marks( const wxString&
 #if defined(LOGGING)
 	hashType
 #endif

@@ -396,7 +396,7 @@ public:
     T& GetItemAtPos(size_t i);
 
     /// Replaces the item found at position(index) i
-    void SetItemAtPos(size_t i,T item);
+    void SetItemAtPos(size_t i, const T& item);
 
     /** Gets the item found at position s. Inserts new empty one if not found. */
     T& operator[](const wxString& s);
@@ -492,7 +492,7 @@ template <class T> T& SearchTree<T>::GetItemAtPos(size_t i)
     return m_Items[i];
 }
 
-template <class T> void SearchTree<T>::SetItemAtPos(size_t i,T item)
+template <class T> void SearchTree<T>::SetItemAtPos(size_t i, const T& item)
 {
     m_Items[i]=item;
 }

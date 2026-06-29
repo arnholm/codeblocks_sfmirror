@@ -90,7 +90,7 @@ ExpressionNode::ExpressionNode()
     Initialize(wxEmptyString);
 }
 
-void ExpressionNode::Initialize(wxString token)
+void ExpressionNode::Initialize(const wxString& token)
 {
     m_UnaryOperator = false;
     m_Token = token;
@@ -194,7 +194,7 @@ bool ExpressionNode::IsUnaryNode(ExpressionNodeType type)
 }
 
 
-bool ExpressionNode::IsBinaryOperator(wxString first, wxString second)
+bool ExpressionNode::IsBinaryOperator(const wxString& first, const wxString& second)
 {
     switch ((wxChar)first.GetChar(0))
     {
@@ -205,18 +205,18 @@ bool ExpressionNode::IsBinaryOperator(wxString first, wxString second)
         case _T('>'):
         case _T('<'):
         {
-            wxString newOperator(first + second);
+            const wxString newOperator(first + second);
             if (newOperator == ExpressionConsts::And ||
-            newOperator == ExpressionConsts::Or ||
-            newOperator == ExpressionConsts::Equal ||
-            newOperator == ExpressionConsts::Unequal ||
-            newOperator == ExpressionConsts::GTOrEqual ||
-            newOperator == ExpressionConsts::LTOrEqual ||
-            newOperator == ExpressionConsts::LShift ||
-            newOperator == ExpressionConsts::RShift)
+                newOperator == ExpressionConsts::Or ||
+                newOperator == ExpressionConsts::Equal ||
+                newOperator == ExpressionConsts::Unequal ||
+                newOperator == ExpressionConsts::GTOrEqual ||
+                newOperator == ExpressionConsts::LTOrEqual ||
+                newOperator == ExpressionConsts::LShift ||
+                newOperator == ExpressionConsts::RShift)
                 return true;
-            else
-                return false;
+
+            return false;
         }
         default:
             return false;

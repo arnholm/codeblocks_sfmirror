@@ -427,7 +427,7 @@ private:
      *  @param para the formal parameters, which is "(x,y)"
      *  @param substitues the definition which is "x+y"
      */
-    void AddMacroDefinition(wxString name, int line, wxString para, wxString substitues);
+    void AddMacroDefinition(const wxString& name, int line, const wxString& para, const wxString& substitues);
 
     /** Skip to the next conditional preprocessor directive branch.
      *  for example:

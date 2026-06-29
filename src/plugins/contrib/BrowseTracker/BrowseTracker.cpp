@@ -2980,7 +2980,7 @@ BrowseMarks* BrowseTracker::GetBrowse_MarksFromHash( EditorBase* eb)
     return it->second;
 }
 // ----------------------------------------------------------------------------
-BrowseMarks* BrowseTracker::GetBrowse_MarksFromHash( wxString filePath)
+BrowseMarks* BrowseTracker::GetBrowse_MarksFromHash( const wxString& filePath)
 // ----------------------------------------------------------------------------
 {
     // Return the BrowseMarks array associated with this file path

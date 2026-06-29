@@ -40,7 +40,7 @@ public:
     };
 
     ExpressionNode();
-    void Initialize(wxString token);
+    void Initialize(const wxString& token);
 
     ExpressionNodeType GetType() const { return m_Type; }
 
@@ -62,7 +62,7 @@ public:
     // check to see the two char token can be merged to create a single operator
     // e.g.  if the first is '&' and the second is '&', then the function will return true since
     // "&&" is a valid operator.
-    static bool IsBinaryOperator(wxString first, wxString second);
+    static bool IsBinaryOperator(const wxString& first, const wxString& second);
 
 private:
     wxString           m_Token;

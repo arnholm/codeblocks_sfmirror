@@ -34,22 +34,22 @@ class ProjectData
 
         wxString        GetProjectFilename();
 
-        void            AddEditor( wxString filePath );
-        BrowseMarks*    GetBrowse_MarksFromHash( wxString filePath);
-        BrowseMarks*    GetPointerToBrowse_MarksArray(FileBrowse_MarksHash& hash ,wxString filePath);
-        bool            FindFilename( const wxString filePath);
+        void            AddEditor(const wxString& filePath);
+        BrowseMarks*    GetBrowse_MarksFromHash(const wxString& filePath);
+        BrowseMarks*    GetPointerToBrowse_MarksArray(FileBrowse_MarksHash& hash, const wxString& filePath);
+        bool            FindFilename( const wxString& filePath);
         void            IncrementActivationCount();
         int             GetActivationCount();
 
-        BrowseMarks*    HashAddBrowse_Marks( const wxString filePath );
+        BrowseMarks*    HashAddBrowse_Marks( const wxString& filePath );
 
 
         void            SaveLayout();
         void            LoadLayout();
         bool            IsLayoutLoaded(){return m_bLayoutLoaded;}
 
-        void            DumpHash( const wxString hashType);
-        void            DumpBrowse_Marks( const wxString hashType );
+        void            DumpHash( const wxString& hashType);
+        void            DumpBrowse_Marks( const wxString& hashType );
     protected:
     private:
         ProjectData();
@@ -68,7 +68,5 @@ class ProjectData
         bool    m_bLayoutLoaded;
 
 };
-
-
 
 #endif // PROJECTDATA_H

@@ -11,7 +11,7 @@
 class CompilerIAR : public Compiler
 {
     public:
-        CompilerIAR(wxString arch);
+        CompilerIAR(const wxString& arch);
         ~CompilerIAR() override;
         AutoDetectResult AutoDetectInstallationDir() override;
     protected:

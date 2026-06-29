@@ -22,7 +22,7 @@
     #include <wx/msw/registry.h>
 #endif
 
-CompilerIAR::CompilerIAR(wxString arch)
+CompilerIAR::CompilerIAR(const wxString& arch)
     : Compiler(wxString::Format(_("IAR %s Compiler"), arch), "iar" + arch)
 {
     m_Weight = 75;

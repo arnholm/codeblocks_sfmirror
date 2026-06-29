@@ -321,7 +321,7 @@ protected:
      * @param result result token specify the Type of searchText
      */
     size_t ResolveActualType(TokenTree*         tree,
-                             wxString           searchText,
+                             const wxString&    searchText,
                              const TokenIdxSet& searchScope,
                              TokenIdxSet&       result);
 

@@ -3212,9 +3212,9 @@ bool ParserThread::ReadVarNames()
         }
         else // unexpected
         {
-            TRACE(F(_T("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %d."),
+            TRACE(F(_T("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %u."),
                     token.wx_str(), m_Str.wx_str(), m_Tokenizer.GetFilename().wx_str(), m_Tokenizer.GetLineNumber()));
-            CCLogger::Get()->DebugLog(wxString::Format("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %d.",
+            CCLogger::Get()->DebugLog(wxString::Format("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                                                        token, m_Str, m_Tokenizer.GetFilename(), m_Tokenizer.GetLineNumber()));
             success = false;
             break;
@@ -3278,9 +3278,9 @@ bool ParserThread::ReadClsNames(wxString& ancestor)
         }
         else // unexpected
         {
-            TRACE(F(_T("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %d."),
+            TRACE(F(_T("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %u."),
                     token.wx_str(), m_Str.wx_str(), m_Tokenizer.GetFilename().wx_str(), m_Tokenizer.GetLineNumber()));
-            CCLogger::Get()->DebugLog(wxString::Format("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %d.",
+            CCLogger::Get()->DebugLog(wxString::Format("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                                                        token, m_Str, m_Tokenizer.GetFilename(), m_Tokenizer.GetLineNumber()));
             // The following code snippet freezes CC here:
             // typedef std::enable_if<N > 1, get_type_N<N-1, Tail...>> type;
@@ -3813,7 +3813,7 @@ bool ParserThread::IsStillAlive(cb_unused const wxString& funcInfo)
     return alive;
 }
 
-void ParserThread::RefineAnonymousTypeToken(short int typeMask, wxString alias)
+void ParserThread::RefineAnonymousTypeToken(short int typeMask, const wxString& alias)
 {
     // we expect the m_Str are storing the unnamed type token, like UnnamedClassAA_BBB
     // AA is the file index, BBB is the unnamed token index

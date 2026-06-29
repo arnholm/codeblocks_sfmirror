@@ -1078,7 +1078,7 @@ void ParseManagerBase::ResolveOperator(TokenTree*          tree,
 }
 
 size_t ParseManagerBase::ResolveActualType(TokenTree*         tree,
-                                           wxString           searchText,
+                                           const wxString&    searchText,
                                            const TokenIdxSet& searchScope,
                                            TokenIdxSet&       result)
 {

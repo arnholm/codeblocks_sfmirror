@@ -384,7 +384,7 @@ private:
      *  call, the anonymous token name will becomes struct1_abc, and m_Str will changed from
      *  _UnnamedStruct1_2 to struct1_abc.
      */
-    void  RefineAnonymousTypeToken(short int typeMask, wxString alise);
+    void  RefineAnonymousTypeToken(short int typeMask, const wxString& alias);
 
     /** if we regard the parserThread class as a syntax analyzer, then the Tokenizer class is
       * regard as the lexer, which always feeds a wxString by calling m_Tokenizer.GetToken()

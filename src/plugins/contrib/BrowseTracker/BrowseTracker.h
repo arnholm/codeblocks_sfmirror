@@ -301,7 +301,7 @@ class BrowseTracker : public cbPlugin
         void SetBrowseMarksStyle( int userStyle);
 
         BrowseMarks* GetBrowse_MarksFromHash( EditorBase* eb);
-        BrowseMarks* GetBrowse_MarksFromHash( wxString filePath);
+        BrowseMarks* GetBrowse_MarksFromHash( const wxString& filePath);
         ProjectData* GetProjectDataFromHash(cbProject* pProject);
         ProjectData* GetProjectDataByProjectName( wxString filePath);
         ProjectData* GetProjectDataByEditorName( wxString filePath);

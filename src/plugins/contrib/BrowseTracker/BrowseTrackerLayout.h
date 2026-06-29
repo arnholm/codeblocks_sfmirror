@@ -21,8 +21,8 @@ class BrowseTrackerLayout
         bool Save(const wxString& filename, FileBrowse_MarksHash& m_EdBrowse_MarksArchive);
 
         ProjectFile* GetTopProjectFile(){ return m_TopProjectFile; }
-        bool ParseBrowse_MarksString(const wxString& filename, wxString BrowseMarksString, FileBrowse_MarksHash& m_EdBrowse_MarksArchive);
-        void DumpBrowse_Marks( const wxString hashType, FileBrowse_MarksHash& m_FileBrowse_MarksArchive );
+        bool ParseBrowse_MarksString(const wxString& filename, const wxString& BrowseMarksString, FileBrowse_MarksHash& m_EdBrowse_MarksArchive);
+        void DumpBrowse_Marks( const wxString& hashType, FileBrowse_MarksHash& m_FileBrowse_MarksArchive );
 
 	protected:
 	private:

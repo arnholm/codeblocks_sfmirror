@@ -21,7 +21,7 @@ class JumpTrackerView : public ListCtrlLogger, public wxEvtHandler
 		JumpTrackerView(const wxArrayString& titles, wxArrayInt& widths);
 		~JumpTrackerView() override;
 		void FocusEntry(size_t index);
-		void SetBasePath(const wxString base){ m_Base = base; }
+		void SetBasePath(const wxString& base){ m_Base = base; }
 
 		wxWindow* CreateControl(wxWindow* parent) override;
         bool      HasFeature(Feature::Enum feature) const override;
