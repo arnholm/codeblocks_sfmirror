@@ -382,7 +382,7 @@ wxTreeItemId ProjectConfigurationPanel::CategoryId(const wxString& Category)
         return m_CategoryMap[Category.Lower()];
 
     wxStringTokenizer Tokens(Category,_T("."),wxTOKEN_STRTOK);
-    wxString PathSoFar = _T("");
+    wxString PathSoFar;
     wxTreeItemId IdSoFar = m_KnownLibrariesTree->GetRootItem();
     bool FirstElem = true;
     while ( Tokens.HasMoreTokens() )

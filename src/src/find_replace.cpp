@@ -699,7 +699,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
         }
         cbProject* prj = (*Manager::Get()->GetProjectManager()->GetProjects())[data->searchProject];
         wxString target;
-        wxString fullpath = _T("");
+        wxString fullpath;
         if (data->searchTarget >= 0)
             target = prj->GetBuildTarget(data->searchTarget)->GetTitle();
         for (FilesList::iterator it = prj->GetFilesList().begin(); it != prj->GetFilesList().end(); ++it)
@@ -729,7 +729,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
                 cbProject* pProject = pProjects->Item(idxProject);
                 if (pProject)
                 {
-                    wxString fullpath = _T("");
+                    wxString fullpath;
 
                     for (FilesList::iterator it = pProject->GetFilesList().begin(); it != pProject->GetFilesList().end(); ++it)
                     {
@@ -1339,7 +1339,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
         }
         cbProject* prj = (*Manager::Get()->GetProjectManager()->GetProjects())[data->searchProject];
         wxString target;
-        wxString fullpath = _T("");
+        wxString fullpath;
         if(data->searchTarget >= 0)
             target = prj->GetBuildTarget(data->searchTarget)->GetTitle();
         for (FilesList::iterator it = prj->GetFilesList().begin(); it != prj->GetFilesList().end(); ++it)
@@ -1374,7 +1374,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
             cbProject* pProject = pProjects->Item(idxProject);
             if (pProject)
             {
-                wxString fullpath = _T("");
+                wxString fullpath;
                 for (FilesList::iterator it = pProject->GetFilesList().begin(); it != pProject->GetFilesList().end(); ++it)
                 {
                     ProjectFile* pf = *it;

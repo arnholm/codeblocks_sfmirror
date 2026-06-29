@@ -885,7 +885,7 @@ void AutoVersioning::GenerateChanges()
             file.Close();
         }
 
-        wxString changesOutput = _T("");
+        wxString changesOutput;
 
         changesOutput << actualDate.Format(_T("%d %B %Y\n"));
         changesOutput << _T("   ") << changesTitle << _T("\n");

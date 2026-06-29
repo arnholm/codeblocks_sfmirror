@@ -144,7 +144,7 @@ void CodeStatConfigDlg::PrintLanguageInfo(int id)
 {
     m_selected_language = id;
     wxTextCtrl* txt_FileTypes = XRCCTRL(*this, "txt_FileTypes", wxTextCtrl);
-    wxString ext_string = _T("");
+    wxString ext_string;
     for (unsigned int i=0; i<m_languages[id].ext.GetCount(); ++i)
     {
        ext_string = ext_string + _T(" ") + m_languages[id].ext[i];

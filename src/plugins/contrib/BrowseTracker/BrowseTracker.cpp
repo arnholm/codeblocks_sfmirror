@@ -2897,7 +2897,7 @@ void BrowseTracker::RebuildBrowse_Marks(cbEditor* /*pcbEditor*/, bool addedLines
 ProjectData* BrowseTracker::GetProjectDataByEditorName( wxString filePath)
 // ----------------------------------------------------------------------------
 {
-    wxString reason = wxT("");
+    wxString reason;
 
     do {
         EditorBase* eb = m_pEdMgr->GetEditor( filePath );

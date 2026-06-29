@@ -17,7 +17,7 @@ bool QuerySvn(const wxString& workingDir, wxString& revision, wxString& date)
     if (wxExecute(svncmd, xmlOutput) != -1)
     {
 
-        wxString buf = _T("");
+        wxString buf;
 
         for(unsigned int i=0; i<xmlOutput.GetCount(); ++i){
             buf << xmlOutput[i];

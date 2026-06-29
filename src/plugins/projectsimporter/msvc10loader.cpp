@@ -884,7 +884,7 @@ bool MSVC10Loader::DoCreateConfigurations()
 wxString MSVC10Loader::GetText(const TiXmlElement* e)
 {
     // convenience function for getting XML text
-    wxString sResult = _T("");
+    wxString sResult;
     if (e)
     {
         const TiXmlNode* child = e->FirstChild();

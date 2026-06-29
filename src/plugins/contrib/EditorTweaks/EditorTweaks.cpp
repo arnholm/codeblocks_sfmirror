@@ -1254,7 +1254,7 @@ void EditorTweaks::AlignToString(const wxString& AlignmentString)
 
 wxString EditorTweaks::GetPadding(const wxString& Padding, const int Count)
 {
-	wxString padding = _T("");
+	wxString padding;
 	for (int i=0;i<Count;i++)
 		padding += Padding;
 	return padding;

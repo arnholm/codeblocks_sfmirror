@@ -246,7 +246,7 @@ wxString    wxsSpeedButton::GetXPMName(wxsBitmapData &inData)
 
 // this will be our return value
 
-    wxString v = _T("");
+    wxString v;
 
 // read until EOF, keeping the last data name we find
 

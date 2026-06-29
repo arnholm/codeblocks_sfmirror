@@ -721,7 +721,7 @@ void avVersionEditorDlg::OnCmbStatusSelect(wxCommandEvent&)
 
 void avVersionEditorDlg::ValidateInput()
 {
-    wxString type = _T("");
+    wxString type;
 
     if(this->FindFocus())
     {

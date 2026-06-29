@@ -1098,8 +1098,8 @@ void cbDragScroll::OnStartShutdown(CodeBlocksEvent& /*event*/)
 
     // Make sure the array is clear of destroyed window pointers
     CleanUpWindowPointerArray();
-    wxString zoomWindowIds = _T("");
-    wxString zoomFontSizes = _T("");
+    wxString zoomWindowIds;
+    wxString zoomFontSizes;
     if ( GetMouseWheelZoom() )
     {
         for (size_t i=0; i<m_WindowPtrs.GetCount(); ++i )

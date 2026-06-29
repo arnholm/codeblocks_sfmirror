@@ -342,7 +342,7 @@ bool wxsItemRes::CreateNewResource(NewResourceParams& Params)
                 Header.Replace(_T("$(InitFuncDecl)"),InitFuncDecl);
                 Header.Replace(_T("$(HeadersPch)"),HeadersPch);
 
-                wxString Scope = _T("");
+                wxString Scope;
                 switch ( Params.ScopeMembers )
                 {
                     case NewResourceParams::Private:   Scope = _T("\tprivate:\n\n"); break;

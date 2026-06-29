@@ -432,7 +432,7 @@ wxString BrowseMarks::GetStringOfBrowse_Marks() const
 {
     // return a comma delimited string of browse marks
 
-    wxString browseMarks = wxT("");
+    wxString browseMarks;
     int maxEntries = Helpers::GetMaxAllocEntries();
     for (int i = 0; i< maxEntries; ++i)
     {

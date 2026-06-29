@@ -720,7 +720,7 @@ wxString cbAuiNotebook::UniqueIdFromTooltip(const wxString& text)
 {
     ProjectFile* pf = nullptr;
     cbProject* prj = nullptr;
-    wxString id =  wxT("");
+    wxString id;
     wxString fn = text.BeforeFirst(wxT('\n'));
     prj = Manager::Get()->GetProjectManager()->FindProjectForFile(fn, &pf, false, true);
     if (prj && pf)
