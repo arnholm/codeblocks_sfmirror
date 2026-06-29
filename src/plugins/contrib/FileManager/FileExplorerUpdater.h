@@ -94,7 +94,7 @@ public:
     void Update(const wxTreeItemId &ti); //call on main thread to do the background magic
 private:
     //FileExplorerUpdater specific code
-    virtual ExitCode Entry(); //Entry point of the thread
+    ExitCode Entry() override; //Entry point of the thread
     FileExplorer *m_fe;
     FileDataVec m_treestate;
     FileDataVec m_currentstate;
@@ -146,7 +146,7 @@ public:
     wxString m_source_path;
     wxString m_destination_path;
 private:
-    virtual ExitCode Entry(); //Entry point of the thread
+    ExitCode Entry() override; //Entry point of the thread
     wxString m_vcs_type;
     wxString m_vcs_commit_string;
     wxString m_vcs_comp_commit;
@@ -194,7 +194,7 @@ public:
     //call on main thread to do the background magic
     //what can be "BRANCHES", "COMMITS:<BRANCHNAME>", "DETAIL:<COMMITID>"
     bool Update(const wxString &what, const wxString &repo_branch = wxEmptyString,
-                CommitUpdaterOptions opts = CommitUpdaterOptions());
+                const CommitUpdaterOptions &opts = CommitUpdaterOptions());
     bool UpdateContinueCommitRetrieve();
 
     //Inputs
@@ -215,7 +215,7 @@ private:
     wxString m_last_commit_retrieved; // the ID of the last commit retrieved (only filled if what == "COMMIT:")
     long m_continue_count;
 
-    virtual ExitCode Entry(); //Entry point of the thread
+    ExitCode Entry() override; //Entry point of the thread
 };
 
 #endif //FILEEXPLORERUPDATER_H_INCLUDED

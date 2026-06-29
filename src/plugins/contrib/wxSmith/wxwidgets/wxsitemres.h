@@ -142,20 +142,20 @@ class wxsItemRes: public wxWidgetsRes, public wxsItemResFunctions
 
     protected:
 
-        virtual wxsEditor* OnCreateEditor(wxWindow* Parent);
-        virtual bool OnReadConfig(const TiXmlElement* Node);
-        virtual bool OnWriteConfig(TiXmlElement* Node);
-        virtual bool OnCanHandleFile(const wxString& FileName);
-        virtual wxString OnGetDeclarationFile();
-        virtual bool OnGetUsingXRC();
-        virtual bool OnGetCanBeMain();
-        virtual void OnFillPopupMenu(wxMenu* Menu);
-        virtual bool OnPopupMenu(long Id);
-        virtual bool OnDeleteCleanup(bool ShowDialog);
+        wxsEditor* OnCreateEditor(wxWindow* Parent) override;
+        bool OnReadConfig(const TiXmlElement* Node) override;
+        bool OnWriteConfig(TiXmlElement* Node) override;
+        bool OnCanHandleFile(const wxString& FileName) override;
+        wxString OnGetDeclarationFile() override;
+        bool OnGetUsingXRC() override;
+        bool OnGetCanBeMain() override;
+        void OnFillPopupMenu(wxMenu* Menu) override;
+        bool OnPopupMenu(long Id) override;
+        bool OnDeleteCleanup(bool ShowDialog) override;
 
     private:
 
-        virtual int OnGetTreeIcon();
+        int OnGetTreeIcon() override;
 
         wxString m_WxsFileName;
         wxString m_SrcFileName;

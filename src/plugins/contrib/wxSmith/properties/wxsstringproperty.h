@@ -44,7 +44,7 @@ class PLUGIN_EXPORT wxsStringProperty: public wxsProperty
         wxsStringProperty(const wxString& PGName,const wxString& DataName,long Offset,bool IsLongString=true,bool XmlStoreEmpty=false,const wxString& Default=wxEmptyString,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxString"); }
+        const wxString GetTypeName() override { return _T("wxString"); }
 
     protected:
 

@@ -41,7 +41,7 @@ class PLUGIN_EXPORT wxsBoolProperty: public wxsProperty
         wxsBoolProperty(const wxString& PGName,const wxString& DataName,long Offset,bool Default=0,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("bool"); }
+        const wxString GetTypeName() override { return _T("bool"); }
 
     protected:
 

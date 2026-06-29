@@ -60,7 +60,7 @@ class PLUGIN_EXPORT wxsAdvQPP : public wxsQuickPropsPanel
     private:
 
         /** \brief Function updating content of all child panels */
-        void Update();
+        void Update() override;
 
         /** \brief Overriding NotifyChange function to give access from
          *         wxsAdvQPPChild

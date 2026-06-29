@@ -32,8 +32,8 @@ class wxsPanelRes: public wxsItemRes
         wxsPanelRes(wxsProject* Owner): wxsItemRes(Owner,ResType,false) {}
         wxsPanelRes(const wxString& FileName,TiXmlElement* Object): wxsItemRes(FileName,Object,ResType) {}
     private:
-        virtual wxString OnGetAppBuildingCode() { return wxEmptyString; }
-        virtual wxWindow* OnBuildExactPreview(wxWindow* Parent,wxsItemResData* Data);
+        wxString OnGetAppBuildingCode() override { return wxEmptyString; }
+        wxWindow* OnBuildExactPreview(wxWindow* Parent,wxsItemResData* Data) override;
         static const wxString ResType;
 };
 

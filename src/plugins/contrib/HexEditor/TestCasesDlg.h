@@ -43,8 +43,8 @@ class TestCasesDlg: public wxScrollingDialog, public TestCasesBase::Output
 
 	protected:
 
-		virtual void AddLog( const wxString& logLine );
-		virtual bool StopTest();
+		void AddLog( const wxString& logLine ) override;
+		bool StopTest() override;
 
     private:
 

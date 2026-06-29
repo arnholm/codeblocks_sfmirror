@@ -1412,9 +1412,8 @@ void HexEditPanel::ProcessGoto()
     if ( !m_Content ) return;
     if ( !m_Content->GetSize() ) return;
 
-
     OffsetT offset;
-    wxString str = wxString::Format( _T("%lld"), m_Current );
+    wxString str = wxString::Format( _T("%llu"), m_Current );
     for ( ;; )
     {
         str = cbGetTextFromUser(

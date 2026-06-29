@@ -42,7 +42,7 @@ class PLUGIN_EXPORT wxsLongProperty: public wxsProperty
         wxsLongProperty(const wxString& PGName,const wxString& DataName,long Offset,long Default=0,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("long"); }
+        const wxString GetTypeName() override { return _T("long"); }
 
     protected:
 

@@ -116,7 +116,7 @@ wxString BoolToString(bool val)
  * \param    fnDoxygenLog    wxFileName        Doxygen log filename object.
  *
  */
-void DoxyBlocks::WriteConfigFiles(cbProject *prj, wxString sPrjName, wxString /*sPrjPath*/, wxString /*sDoxygenDir*/, wxFileName fnDoxyfile, wxFileName fnDoxygenLog)
+void DoxyBlocks::WriteConfigFiles(cbProject *prj, const wxString& sPrjName, const wxString& /*sPrjPath*/, const wxString& /*sDoxygenDir*/, wxFileName fnDoxyfile, wxFileName fnDoxygenLog)
 {
     MacrosManager *pMacMngr = Manager::Get()->GetMacrosManager();
 

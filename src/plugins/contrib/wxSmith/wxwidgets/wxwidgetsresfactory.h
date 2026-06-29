@@ -31,11 +31,11 @@ class wxWidgetsResFactory : public wxsResourceFactory
     public:
         wxWidgetsResFactory();
     private:
-        virtual void OnAttach();
-        virtual void OnRelease();
-        virtual int OnGetCount();
-        virtual void OnGetInfo(int Number,wxString& Name,wxString& GUI);
-        virtual wxsResource* OnCreate(int Number,wxsProject* Project);
+        void OnAttach() override;
+        void OnRelease() override;
+        int OnGetCount() override;
+        void OnGetInfo(int Number,wxString& Name,wxString& GUI) override;
+        wxsResource* OnCreate(int Number,wxsProject* Project) override;
         virtual bool OnCanHandleExternal(const wxString& FileName);
         virtual wxsResource* OnBuildExternal(const wxString& FileName);
         virtual bool OnNewWizard(int Number,wxsProject* Project);

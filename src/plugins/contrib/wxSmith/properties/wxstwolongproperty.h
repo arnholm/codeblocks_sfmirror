@@ -91,7 +91,7 @@ class PLUGIN_EXPORT wxsTwoLongProperty: public wxsProperty
             int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxsTwoLongProperty"); }
+        const wxString GetTypeName() override { return _T("wxsTwoLongProperty"); }
 
     protected:
 

@@ -1443,7 +1443,7 @@ CommitUpdater::CommitUpdater(const CommitUpdater& updater) : Updater()
 }
 
 
-bool CommitUpdater::Update(const wxString &what, const wxString &repo_branch, CommitUpdaterOptions opts)
+bool CommitUpdater::Update(const wxString &what, const wxString &repo_branch, const CommitUpdaterOptions &opts)
 {
     if (IsRunning())
         return false;

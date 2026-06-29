@@ -170,21 +170,21 @@ class DoxyBlocks : public cbPlugin
         // Extract docs.
         void DoExtractProject();
 
-        void WriteConfigFiles(cbProject *prj, wxString sPrjName, wxString sPrjPath, wxString sDoxygenDir, wxFileName fnDoxyfile, wxFileName fnDoxygenLog);
+        void WriteConfigFiles(cbProject *prj, const wxString& sPrjName, const wxString& sPrjPath, const wxString& sDoxygenDir, wxFileName fnDoxyfile, wxFileName fnDoxygenLog);
         int GenerateDocuments(cbProject *prj);
         void AppendToLog(const wxString& sText, eLogLevel flag = LOG_NORMAL, bool bReturnFocus = true) const;
         bool IsProjectOpen() const;
         wxString GetInputList(cbProject *prj, wxFileName fnDoxyfile);
         void DoRunHTML();
         void DoRunCHM();
-        void RunCompiledHelp(wxString sDocPath, wxString sPrjName);
+        void RunCompiledHelp(const wxString& sDocPath, const wxString& sPrjName);
         wxString GetDocPath() const;
         wxString GetProjectName();
         // Autodoc.
         void GetBlockCommentStrings(int iBlockComment, wxString &sStartComment, wxString &sMidComment, wxString &sEndComment);
-        void StartComment(cbStyledTextCtrl *control, int &iPos, int iBlockComment, wxString sStartComment, wxString sMidComment, wxString sTagBrief, wxString sIndent);
-        void CommentFunction(cbStyledTextCtrl *control, int &iPos, wxString sMidComment, wxString sTagParam, wxString sTagReturn, wxString sIndent, wxString sParams, wxString sReturn,  wxString sFunction);
-        void CommentFortran(cbStyledTextCtrl *control, int iLine, int &iPos, wxString sMidComment, wxString sTagParam, wxString sTagReturn, wxString sIndent);
+        void StartComment(cbStyledTextCtrl* control, int& iPos, int iBlockComment, const wxString& sStartComment, const wxString& sMidComment, const wxString& sTagBrief, const wxString& sIndent);
+        void CommentFunction(cbStyledTextCtrl* control, int &iPos, const wxString& sMidComment, const wxString& sTagParam, const wxString& sTagReturn, const wxString& sIndent, wxString sParams, wxString sReturn, const wxString& sFunction);
+        void CommentFortran(cbStyledTextCtrl* control, int iLine, int& iPos, const wxString& sMidComment, const wxString& sTagParam, const wxString& sTagReturn, const wxString& sIndent);
         bool IsLanguageFortran(cbEditor *cbEd);
         void AddCommentLine(cbStyledTextCtrl *control, int &iPos, wxString sText);
         wxString ProcessReturnString(wxString sReturn, wxString sFunction);

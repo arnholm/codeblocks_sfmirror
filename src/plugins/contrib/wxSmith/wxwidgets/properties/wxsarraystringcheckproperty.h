@@ -47,10 +47,10 @@ class wxsArrayStringCheckProperty: public wxsCustomEditorProperty
         wxsArrayStringCheckProperty(const wxString& PGName,const wxString& DataName,const wxString& DataSubName,long Offset,long CheckOffset,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxArrayStringCheck"); }
+        const wxString GetTypeName() override { return _T("wxArrayStringCheck"); }
 
         /** \brief Showing editor for this property */
-        virtual bool ShowEditor(wxsPropertyContainer* Object);
+        bool ShowEditor(wxsPropertyContainer* Object) override;
 
     protected:
 

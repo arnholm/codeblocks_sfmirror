@@ -45,7 +45,7 @@ class wxsImageProperty: public wxsCustomEditorProperty
         wxsImageProperty(const wxString& PGName,const wxString& DataName,const wxString& DataSubName,long Offset,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxArrayString"); }
+        const wxString GetTypeName() override { return _T("wxArrayString"); }
 
         /** \brief Showing editor for this property
          *
@@ -53,7 +53,7 @@ class wxsImageProperty: public wxsCustomEditorProperty
          * \return bool    True on succes, otherwise false.
          *
          */
-        virtual bool ShowEditor(wxsPropertyContainer* Object);
+        bool ShowEditor(wxsPropertyContainer* Object) override;
 
     protected:
 

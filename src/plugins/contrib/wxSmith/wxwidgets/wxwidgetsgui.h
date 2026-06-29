@@ -71,12 +71,12 @@ class wxWidgetsGUI : public wxsGUI
 
     private:
 
-        virtual cbConfigurationPanel* OnBuildConfigurationPanel(wxWindow* Parent);
-        virtual void OnRebuildApplicationCode();
-        virtual bool OnCheckIfApplicationManaged();
-        virtual bool OnCreateApplicationBinding();
-        virtual void OnReadConfig(TiXmlElement* element);
-        virtual void OnWriteConfig(TiXmlElement* element);
+        cbConfigurationPanel* OnBuildConfigurationPanel(wxWindow* Parent) override;
+        void OnRebuildApplicationCode() override;
+        bool OnCheckIfApplicationManaged() override;
+        bool OnCreateApplicationBinding() override;
+        void OnReadConfig(TiXmlElement* element) override;
+        void OnWriteConfig(TiXmlElement* element) override;
 
         /** \brief Checking if file with given name has source code prepared to be managed by wxSmith */
         bool IsAppSourceManaged(const wxString& FileName,wxsCodingLang Lang);

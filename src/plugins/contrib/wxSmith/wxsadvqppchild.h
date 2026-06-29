@@ -34,7 +34,7 @@ class PLUGIN_EXPORT wxsAdvQPPChild : public wxPanel
     public:
 
         /** \brief Ctor */
-        wxsAdvQPPChild(wxsAdvQPP* Parent,const wxString Title);
+        wxsAdvQPPChild(wxsAdvQPP* Parent,const wxString& Title);
 
         /** \brief Dctor */
         virtual ~wxsAdvQPPChild();

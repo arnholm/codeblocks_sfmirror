@@ -62,7 +62,7 @@ class PLUGIN_EXPORT wxsEditEnumProperty: public wxsProperty
 
     protected:
 
-        virtual const wxString GetTypeName() { return _T(""); }
+        const wxString GetTypeName() override { return _T(""); }
         virtual void PGCreate(wxsPropertyContainer* Object,wxPropertyGridManager* Grid,wxPGId Parent);
         virtual bool PGRead(wxsPropertyContainer* Object,wxPropertyGridManager* Grid, wxPGId Id, long Index);
         virtual bool PGWrite(wxsPropertyContainer* Object,wxPropertyGridManager* Grid, wxPGId Id, long Index);

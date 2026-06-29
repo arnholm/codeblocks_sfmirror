@@ -274,7 +274,7 @@ void DoxyBlocks::GetBlockCommentStrings(int iBlockComment, wxString &sStartComme
  * \return     void
  *
  */
-void DoxyBlocks::StartComment(cbStyledTextCtrl *control, int &iPos, int iBlockComment, wxString sStartComment, wxString sMidComment, wxString sTagBrief, wxString sIndent)
+void DoxyBlocks::StartComment(cbStyledTextCtrl* control, int& iPos, int iBlockComment, const wxString& sStartComment, const wxString& sMidComment, const wxString& sTagBrief, const wxString& sIndent)
 {
     wxString sSpace(wxT(" "));
 
@@ -307,7 +307,7 @@ void DoxyBlocks::StartComment(cbStyledTextCtrl *control, int &iPos, int iBlockCo
  * \return     void
  *
  */
-void DoxyBlocks::CommentFunction(cbStyledTextCtrl * control, int &iPos, wxString sMidComment, wxString sTagParam, wxString sTagReturn, wxString sIndent, wxString sParams, wxString sReturn, wxString sFunction)
+void DoxyBlocks::CommentFunction(cbStyledTextCtrl* control, int& iPos, const wxString& sMidComment, const wxString& sTagParam, const wxString& sTagReturn, const wxString& sIndent, wxString sParams, wxString sReturn, const wxString& sFunction)
 {
     wxString sSpace(wxT(" "));
     // Write an empty comment line to terminate "\brief" if we have params or a return value.
@@ -498,7 +498,7 @@ wxString DoxyBlocks::ProcessReturnString(wxString sReturn, wxString sFunction)
  * \return    void
  *
  */
-void DoxyBlocks::CommentFortran(cbStyledTextCtrl *control, int iLine, int &iPos, wxString sMidComment, wxString sTagParam, wxString sTagReturn, wxString sIndent)
+void DoxyBlocks::CommentFortran(cbStyledTextCtrl* control, int iLine, int& iPos, const wxString& sMidComment, const wxString& sTagParam, const wxString& sTagReturn, const wxString& sIndent)
 {
     wxString sSpace(wxT(" "));
     wxString sLine = control->GetLine(iLine);
@@ -537,7 +537,7 @@ void DoxyBlocks::CommentFortran(cbStyledTextCtrl *control, int iLine, int &iPos,
     if (idxParStart == wxNOT_FOUND || idxParEnd == wxNOT_FOUND)
         return;
 
-    wxString sParams = sLineShort.Mid(idxParStart+1, idxParEnd-idxParStart-1);
+    const wxString sParams = sLineShort.Mid(idxParStart+1, idxParEnd-idxParStart-1);
 
     AddCommentLine(control, iPos, sIndent + sMidComment);
 

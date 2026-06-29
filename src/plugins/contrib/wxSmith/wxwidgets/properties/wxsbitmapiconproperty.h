@@ -83,10 +83,10 @@ class PLUGIN_EXPORT wxsBitmapIconProperty: public wxsCustomEditorProperty
             int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxBitmapIcon"); }
+        const wxString GetTypeName() override { return _T("wxBitmapIcon"); }
 
         /** \brief Showing editor for this property */
-        virtual bool ShowEditor(wxsPropertyContainer* Object);
+        bool ShowEditor(wxsPropertyContainer* Object) override;
 
     protected:
 

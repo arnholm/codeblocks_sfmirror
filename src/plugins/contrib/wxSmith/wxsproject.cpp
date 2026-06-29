@@ -137,10 +137,7 @@ void wxsProject::ReadConfiguration(TiXmlElement* element)
             {
                 delete m_GUI;
                 m_GUI = NewGUI;
-                if ( NewGUI )
-                {
-                    NewGUI->ReadConfig(Node);
-                }
+                m_GUI->ReadConfig(Node);
             }
         }
         else if ( NodeValue == _T("resources") )

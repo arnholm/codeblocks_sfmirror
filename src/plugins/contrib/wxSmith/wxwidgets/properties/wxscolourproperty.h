@@ -77,7 +77,7 @@ class PLUGIN_EXPORT wxsColourProperty: public wxsProperty
             int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxsColour"); }
+        const wxString GetTypeName() override { return _T("wxsColour"); }
 
         /** \brief Getting wxColour object from wxColourPropertyValue
          *  \return wxColour class, if wxColour.Ok() will return false, default colour was used

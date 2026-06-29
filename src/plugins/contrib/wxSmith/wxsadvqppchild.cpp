@@ -24,7 +24,7 @@
 
 #include <prep.h>
 
-wxsAdvQPPChild::wxsAdvQPPChild(wxsAdvQPP* _Parent,cb_unused const wxString Title):
+wxsAdvQPPChild::wxsAdvQPPChild(wxsAdvQPP* _Parent, cb_unused const wxString& Title):
     Parent(_Parent)
 {
 }

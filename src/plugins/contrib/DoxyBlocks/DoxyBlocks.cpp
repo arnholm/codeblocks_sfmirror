@@ -916,7 +916,7 @@ void DoxyBlocks::DoRunCHM()
  * \param    sPrjName wxString    The path to the project.
  *
  */
-void DoxyBlocks::RunCompiledHelp(wxString sDocPath, wxString sPrjName)
+void DoxyBlocks::RunCompiledHelp(const wxString& sDocPath, const wxString& sPrjName)
 {
     // Path to doc.
     wxString sPathCHM = sDocPath + sPrjName + wxT(".chm");

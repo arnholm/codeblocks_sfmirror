@@ -64,7 +64,7 @@ class PLUGIN_EXPORT wxsSizerFlagsProperty: public wxsProperty
         wxsSizerFlagsProperty(long Offset,int Priority);
 
         /** \brief Returning type of this property */
-        virtual const wxString GetTypeName() { return _T("SizerFlags"); }
+        const wxString GetTypeName() override { return _T("SizerFlags"); }
 
         /** \brief Getting string representation of flags */
         static wxString GetString(long Flags);

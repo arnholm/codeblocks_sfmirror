@@ -32,8 +32,8 @@ class wxsFrameRes: public wxsItemRes
         wxsFrameRes(wxsProject* Owner): wxsItemRes(Owner,ResType,true) {}
         wxsFrameRes(const wxString& FileName,TiXmlElement* Object): wxsItemRes(FileName,Object,ResType) {}
     private:
-        virtual wxString OnGetAppBuildingCode();
-        virtual wxWindow* OnBuildExactPreview(wxWindow* Parent,wxsItemResData* Data);
+        wxString OnGetAppBuildingCode() override;
+        wxWindow* OnBuildExactPreview(wxWindow* Parent,wxsItemResData* Data) override;
         static const wxString ResType;
 };
 

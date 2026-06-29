@@ -143,7 +143,7 @@ class EditorTweaks : public cbPlugin
 		void OnSuppressInsert(wxCommandEvent& event);
 		void OnLaptopFriendly(wxCommandEvent& event);
 		void OnConvertBraces(wxCommandEvent& event);
-		void AlignToString(const wxString AlignmentString);
+		void AlignToString(const wxString& AlignmentString);
 		wxString GetPadding(const wxString& Padding, const int Count);
 		bool GetSelectionLines(int& LineStart, int& LineEnd);
 

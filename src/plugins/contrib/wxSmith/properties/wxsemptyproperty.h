@@ -44,7 +44,7 @@ class PLUGIN_EXPORT wxsEmptyProperty: public wxsProperty
 
     private:
         wxsEmptyProperty();
-        virtual const wxString GetTypeName() { return _T(""); }
+        const wxString GetTypeName() override { return _T(""); }
         static wxsEmptyProperty Singleton;
 };
 

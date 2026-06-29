@@ -209,7 +209,7 @@ void EditorTweaks::OnRelease(bool /*appShutDown*/)
         }
     }
 
-    AlignerMenuEntry e;
+    // AlignerMenuEntry e;
 
     ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("EditorTweaks"));
     std::sort (AlignerMenuEntries.begin(), AlignerMenuEntries.end(),CompareAlignerMenuEntryObject);
@@ -1171,7 +1171,7 @@ void EditorTweaks::DoAlignAuto()
     AlignerLastUsed = true;
 }
 
-void EditorTweaks::AlignToString(const wxString AlignmentString)
+void EditorTweaks::AlignToString(const wxString& AlignmentString)
 {
     cbStyledTextCtrl* control = GetSafeControl();
     if (!control)
@@ -1203,9 +1203,9 @@ void EditorTweaks::AlignToString(const wxString AlignmentString)
         if (matches > 1)
         {
             // loop through lines
-            wxString replacement_text = _T("");
-            wxString current_line     = _T("");
-            int spacing_diff          = 0;
+            wxString replacement_text;
+            wxString current_line;
+            int spacing_diff = 0;
             for (int i=line_start; i<=line_end; i++)
             {
                 // get line

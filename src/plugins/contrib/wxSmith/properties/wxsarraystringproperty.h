@@ -45,10 +45,10 @@ class PLUGIN_EXPORT wxsArrayStringProperty: public wxsCustomEditorProperty
         wxsArrayStringProperty(const wxString& PGName,const wxString& DataName,const wxString& DataSubName,long Offset,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxArrayString"); }
+        const wxString GetTypeName() override { return _T("wxArrayString"); }
 
         /** \brief Showing editor for this property */
-        virtual bool ShowEditor(wxsPropertyContainer* Object);
+        bool ShowEditor(wxsPropertyContainer* Object) override;
 
     protected:
 

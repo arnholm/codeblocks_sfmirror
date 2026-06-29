@@ -79,7 +79,7 @@ template <class T> class wxsRegisterGUI: public wxsGUIFactory
     public:
         wxsRegisterGUI(const wxString& Name): wxsGUIFactory(Name) {}
     protected:
-        virtual wxsGUI* OnCreate(wxsProject* Project) { return new T(Project); }
+        wxsGUI* OnCreate(wxsProject* Project) override { return new T(Project); }
 };
 
 #endif

@@ -228,7 +228,7 @@ template<class T> class wxsRegisterItem: public wxsItemFactory
 
     protected:
 
-        virtual wxsItem* OnBuild(wxsItemResData* Data)
+        wxsItem* OnBuild(wxsItemResData* Data) override
         {
             return new T(Data);
         }

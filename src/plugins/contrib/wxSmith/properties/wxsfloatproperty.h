@@ -42,7 +42,7 @@ class PLUGIN_EXPORT wxsFloatProperty: public wxsProperty
         wxsFloatProperty(const wxString& PGName,const wxString& DataName,long Offset,double Default=0.0f,int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("float"); }
+        const wxString GetTypeName() override { return _T("float"); }
 
     protected:
 
