@@ -98,10 +98,10 @@ class PLUGIN_EXPORT wxsFontProperty: public wxsCustomEditorProperty
             int Priority=100);
 
         /** \brief Returning type name */
-        virtual const wxString GetTypeName() { return _T("wxFont"); }
+        const wxString GetTypeName() override { return "wxFont"; }
 
         /** \brief Showing editor for this property */
-        virtual bool ShowEditor(wxsPropertyContainer* Object);
+        bool ShowEditor(wxsPropertyContainer* Object) override;
 
     protected:
 
