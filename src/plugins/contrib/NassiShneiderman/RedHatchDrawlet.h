@@ -10,8 +10,8 @@ class RedHatchDrawlet : public HooverDrawlet
         RedHatchDrawlet(wxRect rect);
         virtual ~RedHatchDrawlet();
 
-        bool Draw(wxDC &dc);
-        void UnDraw(wxDC &dc);
+        bool Draw(wxDC &dc) override;
+        void UnDraw(wxDC &dc) override;
     protected:
     private:
         wxRect m_rect;

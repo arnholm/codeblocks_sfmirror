@@ -16,17 +16,17 @@ class NassiEditorPanel: public cbEditorPanel , public FileContentObserver
         NassiEditorPanel(const NassiEditorPanel &p);
         NassiEditorPanel &operator=(const NassiEditorPanel &rhs);
     public:
-        virtual void Cut();
-        virtual void Copy();
-        virtual void Paste();
-        virtual void DeleteSelection();
-        //virtual bool CanCut() const;
-        //virtual bool CanCopy() const;
-        virtual bool CanPaste() const;
-        virtual bool IsReadOnly() const;
-        virtual bool CanSelectAll() const;
-        virtual void SelectAll();
-        virtual bool HasSelection() const;
+        void Cut() override;
+        void Copy() override;
+        void Paste() override;
+        void DeleteSelection() override;
+        //bool CanCut() const override;
+        //bool CanCopy() const override;
+        bool CanPaste() const override;
+        bool IsReadOnly() const override;
+        bool CanSelectAll() const override;
+        void SelectAll() override;
+        bool HasSelection() const override;
 
     private:
         typedef std::set< EditorBase* > EditorsSet;
@@ -64,7 +64,7 @@ class NassiEditorPanel: public cbEditorPanel , public FileContentObserver
         void ToolSelect();
 
     public:
-        void Update(wxObject* hint);
+        void Update(wxObject* hint) override;
 
 
     public:

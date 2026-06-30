@@ -8,7 +8,7 @@
 
 #include "rc/dnd_move_cur.xpm"
 
-PasteTask::PasteTask(NassiView *view, NassiFileContent *nfc, NassiBrick *brick, wxString strc, wxString strs):
+PasteTask::PasteTask(NassiView *view, NassiFileContent *nfc, NassiBrick *brick, const wxString &strc, const wxString &strs):
     Task(),
     m_view(view),
     m_nfc(nfc),

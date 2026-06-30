@@ -10,8 +10,8 @@ class RedLineDrawlet : public HooverDrawlet
         RedLineDrawlet(wxPoint pos, wxCoord length, bool vertical = true);
         virtual ~RedLineDrawlet();
 
-        bool Draw(wxDC &dc);
-        void UnDraw(wxDC &dc);
+        bool Draw(wxDC &dc) override;
+        void UnDraw(wxDC &dc) override;
     protected:
     private:
         wxPoint m_pos;

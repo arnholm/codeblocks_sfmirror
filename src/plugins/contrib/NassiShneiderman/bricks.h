@@ -23,7 +23,7 @@ private:
     NassiBrick &operator=(const NassiBrick &rhs);
 public:
     virtual ~NassiBrick();
-    virtual NassiBrick *Clone() const = 0;// {return ( new NassiBrick(*this) ); }
+    virtual NassiBrick *Clone() const = 0;// {return new NassiBrick(*this); }
 
     NassiBrick *GetPrevious() const { return previous; }
     NassiBrick *GetNext() const { return mNext; }
@@ -80,22 +80,22 @@ private:
     NassiInstructionBrick &operator=(const NassiInstructionBrick &rhs);
 public:
     virtual ~NassiInstructionBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
         return new NassiInstructionBrick(*this);
     }
 
-    wxUint32 GetChildCount() const {return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const {return 0;}
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0) const;
-    void accept(NassiBrickVisitor *visitor);
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    wxUint32 GetChildCount() const override {return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n=0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiBreakBrick : public NassiBrick
 {
@@ -106,22 +106,22 @@ private:
     NassiBreakBrick &operator=(const NassiBreakBrick &rhs);
 public:
     virtual ~NassiBreakBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiBreakBrick(*this) );
+        return new NassiBreakBrick(*this);
     }
 
-    wxUint32 GetChildCount() const {return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const {return 0;}
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    wxUint32 GetChildCount() const  override{return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiContinueBrick : public NassiBrick
 {
@@ -132,29 +132,29 @@ private:
     NassiContinueBrick &operator=(const NassiContinueBrick &rhs);
 public:
     virtual ~NassiContinueBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiContinueBrick(*this) );
+        return new NassiContinueBrick(*this);
     }
 
-    wxUint32 GetChildCount() const
+    wxUint32 GetChildCount() const override
     {
         return 0;
     }
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override
     {
         return 0;
     }
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n=0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiReturnBrick : public NassiBrick
 {
@@ -165,19 +165,19 @@ private:
     NassiReturnBrick &operator=(const NassiReturnBrick &rhs);
 public:
     virtual ~NassiReturnBrick();
-    virtual NassiBrick *Clone()const{return ( new NassiReturnBrick(*this) );}
-    wxUint32 GetChildCount() const{return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const {return 0;}
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    NassiBrick *Clone() const override {return new NassiReturnBrick(*this);}
+    wxUint32 GetChildCount() const override {return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiIfBrick : public NassiBrick
 {
@@ -188,31 +188,31 @@ private:
     NassiIfBrick &operator=(const NassiIfBrick &rhs);
 public:
     virtual ~NassiIfBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiIfBrick(*this) );
+        return new NassiIfBrick(*this);
     }
 
-    wxUint32 GetChildCount() const
+    wxUint32 GetChildCount() const override
     {
         return(2);
     }
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 private:
     NassiBrick *TrueChild;
     NassiBrick *FalseChild;
     wxString TrueSourceText, TrueCommentText;
     wxString FalseSourceText, FalseCommentText;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiForBrick : public NassiBrick
 {
@@ -223,27 +223,27 @@ private:
     NassiForBrick &operator=(const NassiForBrick &rhs);
 public:
     virtual ~NassiForBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiForBrick(*this) );
+        return new NassiForBrick(*this);
     }
 
-    wxUint32 GetChildCount() const {return 1;}
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    wxUint32 GetChildCount() const override {return 1;}
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 private:
     NassiBrick *Child;
     wxString InitSourceText, InitCommentText;
     wxString InstSourceText, InstCommentText;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiWhileBrick : public NassiBrick
 {
@@ -254,28 +254,28 @@ private:
     NassiWhileBrick &operator=(const NassiWhileBrick &rhs);
 public:
     virtual ~NassiWhileBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiWhileBrick(*this) );
+        return new NassiWhileBrick(*this);
     }
 
-    wxUint32 GetChildCount() const
+    wxUint32 GetChildCount() const override
     {
-        return(1);
+        return 1;
     }
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 private:
     NassiBrick *Child;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiBlockBrick : public NassiBrick
 {
@@ -286,28 +286,28 @@ private:
     NassiBlockBrick &operator=(const NassiBlockBrick &rhs);
 public:
     ~NassiBlockBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiBlockBrick(*this) );
+        return new NassiBlockBrick(*this);
     }
-    wxUint32 GetChildCount() const
+    wxUint32 GetChildCount() const override
     {
-        return(1);
+        return 1;
     }
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
-    virtual bool IsBlock(){return true;}
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
+    bool IsBlock() override {return true;}
 private:
     NassiBrick *Child;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 class NassiDoWhileBrick : public NassiBrick
 {
@@ -318,28 +318,28 @@ private:
     NassiDoWhileBrick &operator=(const NassiDoWhileBrick &rhs);
 public:
     virtual ~NassiDoWhileBrick();
-    virtual NassiBrick *Clone()const
+    NassiBrick *Clone() const override
     {
-        return ( new NassiDoWhileBrick(*this) );
+        return new NassiDoWhileBrick(*this);
     }
 
-    wxUint32 GetChildCount() const
+    wxUint32 GetChildCount() const override
     {
-        return(1);
+        return 1;
     }
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 private:
     NassiBrick *Child;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 
 typedef std::vector<NassiBrick*> ArrayOfNassiBrickPtrs;
@@ -352,19 +352,19 @@ private:
     NassiSwitchBrick &operator=(const NassiSwitchBrick &rhs);
 public:
     virtual ~NassiSwitchBrick();
-    virtual NassiBrick *Clone()const { return new NassiSwitchBrick(*this); }
+    NassiBrick *Clone() const override { return new NassiSwitchBrick(*this); }
 
-    wxUint32 GetChildCount() const;
-    NassiBrick *GetChild(wxUint32 n = 0) const ;
-    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
-    void SetTextByNumber(const  wxString &str, wxUint32 n = 0);
-    const wxString *GetTextByNumber(wxUint32 n=0)const;
-    void accept(NassiBrickVisitor *visitor);
-    void RemoveChild(wxUint32 pos);
-    void AddChild(wxUint32 pos);
+    wxUint32 GetChildCount() const override;
+    NassiBrick *GetChild(wxUint32 n = 0) const override;
+    NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
+    void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
+    const wxString *GetTextByNumber(wxUint32 n = 0) const override;
+    void accept(NassiBrickVisitor *visitor) override;
+    void RemoveChild(wxUint32 pos) override;
+    void AddChild(wxUint32 pos) override;
 
-    virtual void GetStrukTeX(wxString &str, wxUint32 n);
-    virtual void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0);
+    void GetStrukTeX(wxString &str, wxUint32 n) override;
+    void SaveSource(wxTextOutputStream &text_stream, wxUint32 n = 0) override;
 private:
     wxUint32 nChilds;
     std::vector<wxString *> Comments;
@@ -373,8 +373,8 @@ private:
     void Destructor();
     static wxString EmptyString;
 public:
-    virtual wxOutputStream &Serialize(wxOutputStream &stream);
-    virtual wxInputStream &Deserialize(wxInputStream &stream);
+    wxOutputStream &Serialize(wxOutputStream &stream) override;
+    wxInputStream &Deserialize(wxInputStream &stream) override;
 };
 
 class NassiBricksCompositeIterator
@@ -383,7 +383,7 @@ public:
     NassiBricksCompositeIterator(NassiBrick *frst);
     void First();
     bool IsDone() { return done; }
-    NassiBrick *CurrentItem(){ return current; }
+    NassiBrick *CurrentItem() { return current; }
     void Next();
 private:
     NassiBrick *first;

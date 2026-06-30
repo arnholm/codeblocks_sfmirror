@@ -22,32 +22,32 @@ class TextCtrlTask : public Task
         TextCtrlTask(NassiView *view, NassiFileContent *nfc, TextCtrl *textctrl, TextGraph *textgraph, const wxPoint &pos);
         virtual ~TextCtrlTask();
 
-        virtual wxCursor Start();
+        wxCursor Start() override;
 
         // events from window:
-		virtual void OnMouseLeftDown(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnMouseRightDown(wxMouseEvent &event, const wxPoint &position);
+		void OnMouseLeftDown(wxMouseEvent &event, const wxPoint &position) override;
+        void OnMouseRightDown(wxMouseEvent &event, const wxPoint &position) override;
 
-        virtual void OnMouseRightUp(wxMouseEvent& event, const wxPoint &position);
-        virtual void OnMouseLeftUp(wxMouseEvent &event, const wxPoint &position);
-        virtual HooverDrawlet *OnMouseMove(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnKeyDown(wxKeyEvent &event);
-        virtual void OnChar(wxKeyEvent &event);
+        void OnMouseRightUp(wxMouseEvent& event, const wxPoint &position) override;
+        void OnMouseLeftUp(wxMouseEvent &event, const wxPoint &position) override;
+        HooverDrawlet *OnMouseMove(wxMouseEvent &event, const wxPoint &position) override;
+        void OnKeyDown(wxKeyEvent &event) override;
+        void OnChar(wxKeyEvent &event) override;
 
-        virtual bool Done()const{return m_done;}
+        bool Done() const override {return m_done;}
 
         // events from frame(s)
-        virtual bool CanEdit()const{ return true; }
-        //virtual bool CanCopy()const;
-        //virtual bool CanCut()const;
-        virtual bool CanPaste()const;
-        virtual bool HasSelection()const;
-        virtual void DeleteSelection();
-        virtual void Copy();
-        virtual void Cut();
-        virtual void Paste();
+        bool CanEdit() const override { return true; }
+        //bool CanCopy() const override;
+        //bool CanCut() const override;
+        bool CanPaste() const override;
+        bool HasSelection() const override;
+        void DeleteSelection() override;
+        void Copy() override;
+        void Cut() override;
+        void Paste() override;
 
-        virtual void UpdateSize();
+        void UpdateSize() override;
     protected:
         bool m_done;
         TextCtrl *m_textctrl;

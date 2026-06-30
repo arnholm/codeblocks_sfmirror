@@ -288,7 +288,7 @@ bool NassiInsertFirstBrick::Undo()
 
 
 ///this command will add a child a new case of a switch command
-NassiAddChildIndicatorCommand::NassiAddChildIndicatorCommand( NassiFileContent *nfc, NassiBrick *brick, NassiBrick *InsrBrick, wxUint32 ChildAddNumber, wxString _strc, wxString _strs ):
+NassiAddChildIndicatorCommand::NassiAddChildIndicatorCommand( NassiFileContent *nfc, NassiBrick *brick, NassiBrick *InsrBrick, wxUint32 ChildAddNumber, const wxString &_strc, const wxString &_strs ):
     wxCommand(true, _("Insert Brick") ),
     m_nfc(nfc),
     m_brick(brick),

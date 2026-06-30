@@ -1180,7 +1180,7 @@ NassiBrick *NassiSwitchBrick::SetChild(NassiBrick *brick, wxUint32 n)
 
 void NassiSwitchBrick::SetTextByNumber(const  wxString &str, wxUint32 n)
 {
-    if ( n <= 0 )
+    if ( n == 0 )
     {
         Comment = str;//SetCommentText(str);
         return;
@@ -1212,7 +1212,7 @@ wxString NassiSwitchBrick::EmptyString = wxEmptyString;
 
 const wxString *NassiSwitchBrick::GetTextByNumber(wxUint32 n) const
 {
-    if ( n <= 0 )
+    if ( n == 0 )
         return &Comment;
     if ( n == 1 )
         return &Source;

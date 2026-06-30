@@ -30,7 +30,7 @@ private:
 class NassiAddChildIndicatorCommand: public wxCommand
 {
 public:
-    NassiAddChildIndicatorCommand( NassiFileContent *nfc, NassiBrick *brick, NassiBrick *InsrBrick, wxUint32 ChildAddNumber, wxString _strc = _T(""), wxString _strs = _T("") );
+    NassiAddChildIndicatorCommand( NassiFileContent *nfc, NassiBrick *brick, NassiBrick *InsrBrick, wxUint32 ChildAddNumber, const wxString &_strc = _T(""), const wxString &_strs = _T("") );
     virtual ~NassiAddChildIndicatorCommand();
     bool Do();
     bool Undo();

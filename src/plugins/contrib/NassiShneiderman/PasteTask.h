@@ -33,33 +33,32 @@ class HooverDrawlet;
 class PasteTask : public Task
 {
   public:
-		PasteTask(NassiView *view, NassiFileContent *nfc, NassiBrick *brick, wxString strc, wxString strs);
+		PasteTask(NassiView *view, NassiFileContent *nfc, NassiBrick *brick, const wxString &strc, const wxString &strs);
 		virtual ~PasteTask();
 
-		virtual wxCursor Start();
+		wxCursor Start() override;
 
         // events from window:
-		virtual void OnMouseLeftUp(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnMouseLeftDown(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnMouseRightDown(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnMouseRightUp(wxMouseEvent& event, const wxPoint &position);
-        virtual HooverDrawlet *OnMouseMove(wxMouseEvent &event, const wxPoint &position);
-        virtual void OnKeyDown(wxKeyEvent &event);
-        virtual void OnChar(wxKeyEvent &event);
+		void OnMouseLeftUp(wxMouseEvent &event, const wxPoint &position) override;
+        void OnMouseLeftDown(wxMouseEvent &event, const wxPoint &position) override;
+        void OnMouseRightDown(wxMouseEvent &event, const wxPoint &position) override;
+        void OnMouseRightUp(wxMouseEvent& event, const wxPoint &position) override;
+        HooverDrawlet *OnMouseMove(wxMouseEvent &event, const wxPoint &position) override;
+        void OnKeyDown(wxKeyEvent &event) override;
+        void OnChar(wxKeyEvent &event) override;
 
         // events from frame(s)
-        virtual bool CanEdit()const;
-        //virtual bool CanCopy()const;
-        //virtual bool CanCut()const;
-        virtual bool CanPaste()const;
-        virtual bool HasSelection()const;
-        virtual void DeleteSelection();
-        virtual void Copy();
-        virtual void Cut();
-        virtual void Paste();
+        bool CanEdit() const override;
+        //bool CanCopy() const override;
+        //bool CanCut() const override;
+        bool CanPaste() const override;
+        bool HasSelection() const override;
+        void DeleteSelection() override;
+        void Copy() override;
+        void Cut() override;
+        void Paste() override;
 
-
-        virtual bool Done()const;
+        bool Done() const override;
     private:
         PasteTask(const PasteTask &p);
         PasteTask &operator=(const PasteTask &rhs);

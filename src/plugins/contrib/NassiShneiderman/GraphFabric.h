@@ -16,17 +16,17 @@ private:
     GraphFabric &operator=(const GraphFabric &rhs);
 public:
     virtual ~GraphFabric();
-    //virtual void Visit(NassiBrick *brick);
-    virtual void Visit(NassiInstructionBrick *brick);
-    virtual void Visit(NassiIfBrick *brick);
-    virtual void Visit(NassiWhileBrick *brick);
-    virtual void Visit(NassiDoWhileBrick *brick);
-    virtual void Visit(NassiSwitchBrick *brick);
-    virtual void Visit(NassiBreakBrick *brick);
-    virtual void Visit(NassiContinueBrick *brick);
-    virtual void Visit(NassiReturnBrick *brick);
-    virtual void Visit(NassiForBrick *brick);
-    virtual void Visit(NassiBlockBrick *brick);
+    //void Visit(NassiBrick *brick) override;
+    void Visit(NassiInstructionBrick *brick) override;
+    void Visit(NassiIfBrick *brick) override;
+    void Visit(NassiWhileBrick *brick) override;
+    void Visit(NassiDoWhileBrick *brick) override;
+    void Visit(NassiSwitchBrick *brick) override;
+    void Visit(NassiBreakBrick *brick) override;
+    void Visit(NassiContinueBrick *brick) override;
+    void Visit(NassiReturnBrick *brick) override;
+    void Visit(NassiForBrick *brick) override;
+    void Visit(NassiBlockBrick *brick) override;
 public:
     GraphNassiBrick *CreateGraphBrick(NassiBrick *brick);
 

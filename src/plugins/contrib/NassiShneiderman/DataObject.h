@@ -14,7 +14,7 @@ class NassiBrick;
 class NassiDataObject : public wxDataObject
 {
 public:
-    NassiDataObject(NassiBrick *brick, NassiView *view, wxString strc = _T("X"), wxString strs = _T("case :") );
+    NassiDataObject(NassiBrick *brick, NassiView *view, const wxString &strc = _T("X"), const wxString &strs = _T("case :") );
     virtual ~NassiDataObject();
     NassiBrick *GetBrick();
     wxString GetText(wxInt32 n = 0);

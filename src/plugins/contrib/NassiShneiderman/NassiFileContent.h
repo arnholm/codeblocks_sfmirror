@@ -15,10 +15,10 @@ class NassiFileContent : public FileContent
         NassiFileContent();
         virtual ~NassiFileContent();
     public:
-        virtual wxOutputStream& SaveObject(wxOutputStream& stream);
-        virtual wxInputStream& LoadObject(wxInputStream& stream);
+        wxOutputStream& SaveObject(wxOutputStream& stream) override;
+        wxInputStream& LoadObject(wxInputStream& stream) override;
 
-        virtual wxString GetWildcard();
+        wxString GetWildcard() override;
 
     public:
         NassiBrick *GetFirstBrick();
