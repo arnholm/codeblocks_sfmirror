@@ -563,11 +563,11 @@ void wxsAuiManagerParentQP::OnGripperSelect(cb_unused wxCommandEvent& event)
 
         case 2:
             m_Extra->m_Gripper = wxTOP;
+            break;
 
-        case 0: // fall-though
+        case 0: // fall-through
         default:
             m_Extra->m_Gripper = 0;
-            break;
     }
 
     NotifyChange();
