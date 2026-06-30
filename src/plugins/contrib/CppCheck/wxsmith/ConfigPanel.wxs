@@ -75,7 +75,7 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxHyperlinkCtrl" name="ID_HYC_CPP_CHECK_WWW" variable="hycCppCheckWWW" member="no">
-							<label>http://cppcheck.sourceforge.net</label>
+							<label>https://cppcheck.sourceforge.io</label>
 						</object>
 						<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 						<border>5</border>
@@ -160,7 +160,7 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxHyperlinkCtrl" name="ID_HYC_VERA_WWW" variable="hycVeraWWW" member="no">
-							<label>https://bitbucket.org/verateam/vera</label>
+							<label>https://github.com/verateam/vera</label>
 						</object>
 						<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 						<border>5</border>

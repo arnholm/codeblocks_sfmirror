@@ -82,7 +82,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     flsMain->Add(-1,-1,1, wxLEFT|wxEXPAND, 5);
     lblCppCheckWWW = new wxStaticText(this, wxID_ANY, _("CppCheck homepage:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     flsMain->Add(lblCppCheckWWW, 0, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    hycCppCheckWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("http://cppcheck.sourceforge.net"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_CPP_CHECK_WWW"));
+    hycCppCheckWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("https://cppcheck.sourceforge.io"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_CPP_CHECK_WWW"));
     flsMain->Add(hycCppCheckWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
     slSeparatorLeft = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("wxID_ANY"));
     flsMain->Add(slSeparatorLeft, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 5);
@@ -106,7 +106,7 @@ ConfigPanel::ConfigPanel(wxWindow* parent)
     flsMain->Add(-1,-1,1, wxLEFT|wxEXPAND, 5);
     lblVeraWWW = new wxStaticText(this, wxID_ANY, _("Vera++  homepage:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     flsMain->Add(lblVeraWWW, 0, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    hycVeraWWW = new wxHyperlinkCtrl(this, ID_HYC_VERA_WWW, _("https://bitbucket.org/verateam/vera"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_VERA_WWW"));
+    hycVeraWWW = new wxHyperlinkCtrl(this, ID_HYC_VERA_WWW, _("https://github.com/verateam/vera"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_VERA_WWW"));
     flsMain->Add(hycVeraWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
     StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
     flsMain->Add(StaticLine1, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 5);
