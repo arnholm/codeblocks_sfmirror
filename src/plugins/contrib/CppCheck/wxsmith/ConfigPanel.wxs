@@ -76,6 +76,8 @@
 					<object class="sizeritem">
 						<object class="wxHyperlinkCtrl" name="ID_HYC_CPP_CHECK_WWW" variable="hycCppCheckWWW" member="no">
 							<label>https://cppcheck.sourceforge.io</label>
+							<url>https://cppcheck.sourceforge.io</url>
+							<style>wxHL_CONTEXTMENU|wxHL_ALIGN_LEFT</style>
 						</object>
 						<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 						<border>5</border>
@@ -161,6 +163,8 @@
 					<object class="sizeritem">
 						<object class="wxHyperlinkCtrl" name="ID_HYC_VERA_WWW" variable="hycVeraWWW" member="no">
 							<label>https://github.com/verateam/vera</label>
+							<url>https://github.com/verateam/vera</url>
+							<style>wxHL_CONTEXTMENU|wxHL_ALIGN_LEFT</style>
 						</object>
 						<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 						<border>5</border>
