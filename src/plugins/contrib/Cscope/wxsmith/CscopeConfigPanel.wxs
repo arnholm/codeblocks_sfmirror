@@ -40,14 +40,16 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxStaticText" name="wxID_ANY" variable="lblCscopeWWW" member="no">
-							<label>CScope Install instruction</label>
+							<label>Cscope Install instructions:</label>
 						</object>
 						<flag>wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxHyperlinkCtrl" name="ID_HYC_CPP_CHECK_WWW" variable="hycCscopeWWW" member="no">
-							<label>http://wiki.codeblocks.org/index.php/Cscope__plugin</label>
+							<label>https://wiki.codeblocks.org/index.php/Cscope__plugin</label>
+							<url>https://wiki.codeblocks.org/index.php/Cscope__plugin</url>
+							<style>wxHL_CONTEXTMENU|wxHL_ALIGN_LEFT</style>
 						</object>
 						<flag>wxTOP|wxLEFT|wxEXPAND</flag>
 						<border>5</border>

@@ -42,9 +42,9 @@ CscopeConfigPanel::CscopeConfigPanel(wxWindow* parent)
 	btnCscopeApp->SetMinSize(wxSize(30,-1));
 	bszCppCheckApp->Add(btnCscopeApp, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
 	flsMain->Add(bszCppCheckApp, 1, wxLEFT|wxEXPAND, 5);
-	lblCscopeWWW = new wxStaticText(this, wxID_ANY, _("CScope Install instruction"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+	lblCscopeWWW = new wxStaticText(this, wxID_ANY, _("Cscope Install instructions:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
 	flsMain->Add(lblCscopeWWW, 0, wxTOP|wxLEFT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	hycCscopeWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("http://wiki.codeblocks.org/index.php/Cscope_plugin"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_CENTRE, _T("ID_HYC_CPP_CHECK_WWW"));
+	hycCscopeWWW = new wxHyperlinkCtrl(this, ID_HYC_CPP_CHECK_WWW, _("https://wiki.codeblocks.org/index.php/Cscope_plugin"), _("https://wiki.codeblocks.org/index.php/Cscope_plugin"), wxDefaultPosition, wxDefaultSize, wxHL_CONTEXTMENU|wxHL_ALIGN_LEFT, _T("ID_HYC_CPP_CHECK_WWW"));
 	flsMain->Add(hycCscopeWWW, 1, wxTOP|wxLEFT|wxEXPAND, 5);
 	bszMain->Add(flsMain, 1, wxEXPAND, 5);
 	SetSizer(bszMain);
