@@ -295,7 +295,7 @@ void SymTabExecDlg::OnColumnClick(wxListEvent& event)
 /* ----- ----- ----- ----- -----PRIVATE----- ----- ----- ----- ----- ----- */
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-int SymTabExecDlg::ExecuteMulti(struct_config &config, wxString cmd)
+int SymTabExecDlg::ExecuteMulti(struct_config &config, const wxString& cmd)
 {
   wxString the_symbol = config.txtSymbol.Trim();
   wxDir dir(config.txtLibraryPath);
@@ -372,12 +372,11 @@ int SymTabExecDlg::ExecuteMulti(struct_config &config, wxString cmd)
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-int SymTabExecDlg::ExecuteSingle(struct_config &config, wxString cmd)
+int SymTabExecDlg::ExecuteSingle(struct_config &config, const wxString& cmd)
 {
-  wxString the_library = config.txtLibrary.Trim();
-  wxString the_symbol  = config.txtSymbol.Trim();
-  cmd << _T(" \"") << the_library << _T("\"");
-  if (!ExecuteNM(the_library, cmd))
+  const wxString the_library = config.txtLibrary.Trim();
+  const wxString the_symbol  = config.txtSymbol.Trim();
+  if (!ExecuteNM(the_library, cmd+" \""+the_library+"\""))
     return -1;
 
   int retval = ParseOutput(the_library, the_symbol);
@@ -400,7 +399,7 @@ int SymTabExecDlg::ExecuteSingle(struct_config &config, wxString cmd)
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-bool SymTabExecDlg::ExecuteNM(wxString lib, wxString cmd)
+bool SymTabExecDlg::ExecuteNM(const wxString& lib, const wxString& cmd)
 {
 #ifdef TRACE_SYMTAB_EXE
   Manager::Get()->GetLogManager()->(_T("SymTabExecDlg::ExecuteNM"));
@@ -435,7 +434,7 @@ bool SymTabExecDlg::ExecuteNM(wxString lib, wxString cmd)
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-int SymTabExecDlg::ParseOutput(wxString lib, wxString filter)
+int SymTabExecDlg::ParseOutput(const wxString& lib, const wxString& filter)
 {
 #ifdef TRACE_SYMTAB_EXE
 	Manager::Get()->GetLogManager()->(_T("SymTabExecDlg::ParseOutput"));
@@ -487,7 +486,7 @@ void SymTabExecDlg::ParseOutputError()
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
-int SymTabExecDlg::ParseOutputSuccess(wxString lib, wxString filter)
+int SymTabExecDlg::ParseOutputSuccess(const wxString& lib, const wxString& filter)
 {
 #ifdef TRACE_SYMTAB_EXE
 	Manager::Get()->GetLogManager()->DebugLog(_T("SymTabExecDlg::ParseOutputSuccess"));

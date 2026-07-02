@@ -100,10 +100,10 @@ class ShellCtrlBase : public wxPanel //TODO: make wxPanel a member, not a base??
         // Every shell control widget must override the following
         virtual long LaunchProcess(const wxString &processcmd, const wxArrayString &options)=0;
 //        virtual void KillWindow()=0; // manager may destroy the window, but will call this before doing so
-        virtual void KillProcess()=0; //use this to respond to ShellManager request to kill the process
-        virtual void SyncOutput(int maxchars=1000)=0; //use this to respond to ShellManager request to gather output from the running process for display in the panel
+        virtual void KillProcess() = 0; //use this to respond to ShellManager request to kill the process
+        virtual void SyncOutput(int maxchars = 1000) = 0; //use this to respond to ShellManager request to gather output from the running process for display in the panel
 
-        virtual bool IsDead()=0;
+        virtual bool IsDead() const = 0;
     protected:
         ShellManager *m_shellmgr;
         int m_id;

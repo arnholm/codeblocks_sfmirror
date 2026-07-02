@@ -33,8 +33,8 @@ class CBProfilerExecDlg : public wxScrollingDialog
         CBProfilerExecDlg(wxWindow* parent) : parent(parent){}
         virtual ~CBProfilerExecDlg();
 
-        int         Execute(wxString exename, wxString dataname, struct_config config);
-        void        ShowOutput(const wxArrayString&  msg, bool error);
+        int         Execute(const wxString& exename, const wxString& dataname, struct_config config);
+        void        ShowOutput(const wxArrayString& msg, bool error);
         wxListCtrl* GetoutputFlatProfileArea() { return outputFlatProfileArea; };
         int         GetsortColumn()            { return sortColumn;            };
         int         GetsortAscending()         { return sortAscending;         };

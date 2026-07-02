@@ -64,10 +64,10 @@ class ProjectMissingLibs: public wxScrollingDialog, public WebResourcesManager::
 		void RecreateLibsList();
 
         // Implementation of download progress handler
-        virtual int  StartDownloading( const wxString& Url );
-        virtual void SetProgress( float progress, int id );
-        virtual void JobFinished( int id );
-        virtual void Error( const wxString& info, int id );
+        int  StartDownloading( const wxString& Url ) override;
+        void SetProgress( float progress, int id ) override;
+        void JobFinished( int id ) override;
+        void Error( const wxString& info, int id ) override;
         wxString m_CurrentUrl;
         int      m_CurrentUrlId;
 

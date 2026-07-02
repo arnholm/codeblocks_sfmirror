@@ -18,7 +18,7 @@ enum TypeCorrection
 class AskTypeDlg : public wxScrollingDialog
 {
     public:
-        AskTypeDlg(wxWindow* parent, const wxString StreamStart = _T(""), const wxString StreamEnd = _T("") );
+        AskTypeDlg(wxWindow* parent, const wxString& StreamStart = wxEmptyString, const wxString& StreamEnd = wxEmptyString );
         virtual ~AskTypeDlg();
 
         TypeCorrection GetTypeCorrection() const;

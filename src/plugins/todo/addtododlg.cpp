@@ -30,7 +30,7 @@ BEGIN_EVENT_TABLE(AddTodoDlg, wxScrollingDialog)
     EVT_BUTTON(XRCID("btDelType"), AddTodoDlg::OnDelType)
 END_EVENT_TABLE()
 
-AddTodoDlg::AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArrayString& types, std::bitset<(int)tdctError+1> supportedTdcts) :
+AddTodoDlg::AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArrayString& types, const std::bitset<(int)tdctError+1> & supportedTdcts) :
     m_supportedTdcts(supportedTdcts)
 {
     wxXmlResource::Get()->LoadObject(this, parent, "dlgAddToDo", "wxScrollingDialog");

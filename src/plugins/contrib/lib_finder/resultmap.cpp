@@ -103,7 +103,7 @@ void ResultMap::WriteDetectedResults()
     {
         LibraryResult* Result = Results[i];
         Result->DebugDump();
-        wxString Path = wxString::Format(_T("/stored_results/res%06d/"),i);
+        const wxString Path = wxString::Format("/stored_results/res%06zu/", i);
 
         cfg->Write(Path+_T("name"),Result->LibraryName);
         cfg->Write(Path+_T("short_code"),Result->ShortCode);

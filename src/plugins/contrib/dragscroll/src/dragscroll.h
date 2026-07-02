@@ -178,12 +178,12 @@ private:
 
     MouseEventsHandler* GetMouseEventsHandler();
     void      CleanUpWindowPointerArray();
-    void      SetZoomWindowsStrings(wxString zoomWindowIds, wxString zoomFontSizes)
+    void      SetZoomWindowsStrings(const wxString& zoomWindowIds, const wxString& zoomFontSizes)
     {
         m_ZoomWindowIds = zoomWindowIds;
         m_ZoomFontSizes = zoomFontSizes;
     }
-    int       GetZoomWindowsArraysFrom(wxString zoomWindowIds, wxString zoomFontSizes);
+    int       GetZoomWindowsArraysFrom(const wxString& zoomWindowIds, const wxString& zoomFontSizes);
     void      UpdateConfigFile();
 
     wxString        m_ConfigFolder;

@@ -40,7 +40,7 @@ class SnippetTreeItemData : public wxTreeItemData
         #define SnippetItemID long
 
 		SnippetTreeItemData(SnippetItemType type, long ID = 0);
-		SnippetTreeItemData(SnippetItemType type, wxString snippet, long ID = 0);
+		SnippetTreeItemData(SnippetItemType type, const wxString& snippet, long ID = 0);
 		~SnippetTreeItemData();
 
 		SnippetItemType GetType() const { return m_Type; }
@@ -49,7 +49,7 @@ class SnippetTreeItemData : public wxTreeItemData
 		wxString        GetSnippetIDStr() const { return wxString::Format(_T("%ld"),m_ID); }
 		void            SetID(SnippetItemID ID){ m_ID = ID;}
 		wxString        GetSnippetString() const { return m_Snippet; }
-		void            SetSnippetString(wxString snippet){ m_Snippet = snippet;}
+		void            SetSnippetString(const wxString& snippet) { m_Snippet = snippet;}
 
         bool IsCategory(){ return (GetType() == SnippetTreeItemData::TYPE_CATEGORY); }
         bool IsSnippet(){ return (GetType() == SnippetTreeItemData::TYPE_SNIPPET); }
@@ -81,8 +81,9 @@ class SnippetTreeItemData : public wxTreeItemData
         long        GetNewID(){return ++m_HighestSnippetID;}
         static void SetHighestSnippetID( long value){ m_HighestSnippetID = value;}
         long        UpdateHighestSnippetID(long ID)
-                    { m_HighestSnippetID = (m_HighestSnippetID<ID) ? ID : m_HighestSnippetID;
-                      return m_HighestSnippetID;
+                    {
+                        m_HighestSnippetID = (m_HighestSnippetID<ID) ? ID : m_HighestSnippetID;
+                        return m_HighestSnippetID;
                     }
         static unsigned GetSnippetsItemsChangedCount(){return m_itemsChangedCount;}
         static void     SetSnippetsItemsChangedCount(unsigned count){m_itemsChangedCount = count;}

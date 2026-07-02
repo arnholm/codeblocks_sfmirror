@@ -70,7 +70,7 @@ class SnippetPropertyForm : public wxScrollingDialog
 		wxStdDialogButtonSizer* m_sdbSizer1;
 
 	public:
-		SnippetPropertyForm( wxWindow* parent, int id = -1, wxString title = wxT("Properties"), wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 527,212 ), int style = wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER );
+		SnippetPropertyForm( wxWindow* parent, int id = -1, const wxString& title = _("Properties"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 527,212 ), int style = wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER );
 
 };
 

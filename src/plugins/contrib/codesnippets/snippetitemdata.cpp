@@ -42,7 +42,7 @@ SnippetTreeItemData::SnippetTreeItemData(SnippetItemType type, SnippetItemID old
     InitializeItem(oldID);
 }
 // ----------------------------------------------------------------------------
-SnippetTreeItemData::SnippetTreeItemData(SnippetItemType type, wxString snippet, SnippetItemID oldID)
+SnippetTreeItemData::SnippetTreeItemData(SnippetItemType type, const wxString& snippet, SnippetItemID oldID)
 // ---------------------------------------------------------------------------
     : m_Type(type), m_Snippet(snippet), m_ID(oldID)
 {

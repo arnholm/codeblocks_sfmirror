@@ -1531,7 +1531,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*          tree,
                             }
                         }
                     }
-                    else if (-1 == parentIdx)
+                    else
                     {
                         //if the search scope is global,and the token's parent token kind is tkEnum ,we add them too.
                         const Token* parentToken = tree->at(token->m_ParentIndex);

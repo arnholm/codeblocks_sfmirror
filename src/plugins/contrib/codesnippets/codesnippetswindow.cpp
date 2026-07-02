@@ -1429,7 +1429,7 @@ void CodeSnippetsWindow::OnMnuTest(wxCommandEvent& event)
     }
 }
 // ----------------------------------------------------------------------------
-void CodeSnippetsWindow::ShowSnippetsAbout(wxString buildInfo)
+void CodeSnippetsWindow::ShowSnippetsAbout(const wxString& buildInfo)
 // ----------------------------------------------------------------------------
 {
 

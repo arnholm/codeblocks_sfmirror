@@ -70,12 +70,12 @@ private:
   // int wxCALLBACK SortFunction(long item1, long item2, long dlg);
   void OnColumnClick(wxListEvent& event);
 
-  int  ExecuteMulti      (struct_config &config, wxString cmd);
-  int  ExecuteSingle     (struct_config &config, wxString cmd);
-  bool ExecuteNM         (wxString lib, wxString cmd);
-  int  ParseOutput       (wxString lib, wxString filter);
+  int  ExecuteMulti      (struct_config &config, const wxString& cmd);
+  int  ExecuteSingle     (struct_config &config, const wxString& cmd);
+  bool ExecuteNM         (const wxString& lib, const wxString& cmd);
+  int  ParseOutput       (const wxString& lib, const wxString& filter);
   void ParseOutputError  ();
-  int  ParseOutputSuccess(wxString lib, wxString filter);
+  int  ParseOutputSuccess(const wxString& lib, const wxString& filter);
 
   void CleanUp      ();
   void ClearUserData();

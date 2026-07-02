@@ -36,7 +36,7 @@ enum ToDoCommentType
 class AddTodoDlg : public wxScrollingDialog
 {
     public:
-        AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArrayString& types, std::bitset<(int)tdctError+1> supportedTdcts);
+        AddTodoDlg(wxWindow* parent, const wxArrayString& users, const wxArrayString& types, const std::bitset<(int)tdctError+1> & supportedTdcts);
 
         wxString GetText() const;
         wxString GetUser() const;

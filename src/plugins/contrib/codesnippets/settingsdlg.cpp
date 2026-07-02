@@ -143,7 +143,7 @@ void SettingsDlg::GetFileName(wxString& newFileName)
 
     // Ask user for filename
     wxFileDialog dlg(this,                           //parent  window
-                 _T("Select file "),                 //message
+                 _("Select file"),                   //message
                  wxEmptyString,                      //default directory
                  wxEmptyString,                      //default file
                  wxT("*.*"),                         //wildcards
@@ -166,10 +166,10 @@ wxString SettingsDlg::AskForPathName()       //(pecan 2006/10/06)
 // ----------------------------------------------------------------------------
 {
     // Ask user for filename
-    wxDirDialog dlg(::wxGetTopLevelParent(0),   //parent  window
-                 _T("Select path "),             //message
-                 ::wxGetCwd(),                  //default directory
-                 wxDD_DEFAULT_STYLE );          //style
+    wxDirDialog dlg(::wxGetTopLevelParent(nullptr), //parent  window
+                 _("Select path"),                  //message
+                 ::wxGetCwd(),                      //default directory
+                 wxDD_DEFAULT_STYLE );              //style
 
    // move dialog into the parents frame space
     wxPoint mousePosn = ::wxGetMousePosition();

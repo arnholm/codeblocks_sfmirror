@@ -39,7 +39,7 @@ END_EVENT_TABLE()
 bool CBProfilerExecDlg::sortAscending = false;
 int  CBProfilerExecDlg::sortColumn    = -1;
 
-int CBProfilerExecDlg::Execute(wxString exename, wxString dataname, struct_config config)
+int CBProfilerExecDlg::Execute(const wxString& exename, const wxString& dataname, struct_config config)
 {
     // gprof optional parameters
     wxString param = config.txtExtra;

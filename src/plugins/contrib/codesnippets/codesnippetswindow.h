@@ -83,7 +83,7 @@ class CodeSnippetsWindow : public wxPanel
 		bool AddTextToClipBoard(const wxString& text);
         void SetSnippetImage(wxTreeItemId itemId);
         void CheckForExternallyModifiedFiles();
-        void ShowSnippetsAbout(wxString buildInfo);
+        void ShowSnippetsAbout(const wxString& buildInfo);
 		wxTreeItemId SearchSnippet(const wxString& searchTerms, const wxTreeItemId& node);
 		bool IsTreeBusy(){
 		    if (not GetSnippetsTreeCtrl()) return true; //debugging

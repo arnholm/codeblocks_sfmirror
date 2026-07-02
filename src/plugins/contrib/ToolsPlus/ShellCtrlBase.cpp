@@ -20,7 +20,6 @@ long ID_REMOVE_TERMINATED = wxNewId();
 bool ShellRegistry::Register(const wxString &name, fnCreate create, fnFree free) //register/deregister are called by the plugin registrant instance
 {
     Manager::Get()->GetLogManager()->Log(wxString::Format(_("Tools Plus Plugin: Registering shell type %s"),name.c_str()));
-    std::map<wxString, ShellRegInfo>::iterator it;
     if(m_reginfo.find(name)!=m_reginfo.end())
         return false;
     ShellRegInfo sri;
@@ -33,8 +32,7 @@ bool ShellRegistry::Register(const wxString &name, fnCreate create, fnFree free)
 
 bool ShellRegistry::Deregister(const wxString &name)
 {
-    std::map<wxString, ShellRegInfo>::iterator it
-        =m_reginfo.find(name);
+    std::map<wxString, ShellRegInfo>::iterator it=m_reginfo.find(name);
     if(it==m_reginfo.end())
         return false;
     m_reginfo.erase(it);
@@ -44,8 +42,7 @@ bool ShellRegistry::Deregister(const wxString &name)
 
 ShellCtrlBase *ShellRegistry::CreateControl(const wxString &type,wxWindow* parent, int id, const wxString &windowname, ShellManager *shellmgr)
 {
-    std::map<wxString, ShellRegInfo>::iterator it
-        =m_reginfo.find(type);
+    std::map<wxString, ShellRegInfo>::iterator it=m_reginfo.find(type);
     if(it==m_reginfo.end())
         return NULL;
     return it->second.create(parent, id, windowname, shellmgr);

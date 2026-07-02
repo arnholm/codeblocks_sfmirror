@@ -473,7 +473,7 @@ void cbDragScroll::UpdateConfigFile()
 
 }//UpdateConfigFile
 // ----------------------------------------------------------------------------
-int cbDragScroll::GetZoomWindowsArraysFrom( wxString zoomWindowIds, wxString zoomFontSizes )
+int cbDragScroll::GetZoomWindowsArraysFrom( const wxString& zoomWindowIds, const wxString& zoomFontSizes )
 // ----------------------------------------------------------------------------
 {
     // Fill ZoomWindowIds and ZoomFontSizes arrays from config strings
@@ -483,7 +483,8 @@ int cbDragScroll::GetZoomWindowsArraysFrom( wxString zoomWindowIds, wxString zoo
     wxStringTokenizer sizes(zoomFontSizes, wxT(","));
     while ( ids.HasMoreTokens()  && sizes.HasMoreTokens() )
     {
-        long winId ; long size;
+        long winId;
+        long size;
         ids.GetNextToken().ToLong(&winId);
         sizes.GetNextToken().ToLong(&size);
         m_ZoomWindowIdsArray.Add( winId );

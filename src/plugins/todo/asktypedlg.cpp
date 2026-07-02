@@ -17,7 +17,7 @@
 #include "asktypedlg.h"
 
 
-AskTypeDlg::AskTypeDlg(wxWindow* parent, const wxString StreamStart, const wxString StreamEnd)
+AskTypeDlg::AskTypeDlg(wxWindow* parent, const wxString& StreamStart, const wxString& StreamEnd)
 {
     wxXmlResource::Get()->LoadObject(this, parent, "dlgAskType", "wxScrollingDialog");
 

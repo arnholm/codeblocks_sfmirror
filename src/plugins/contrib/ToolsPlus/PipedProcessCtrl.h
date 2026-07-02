@@ -41,12 +41,12 @@ class PipedProcessCtrl : public ShellCtrlBase
         PipedProcessCtrl(wxWindow* parent, int id, const wxString &name, ShellManager *shellmgr=NULL);
         virtual ~PipedProcessCtrl() {if (m_proc) {if (!m_dead) {m_proc->Detach();} }  }
         void ParseLinks(int lineno, int lastline);
-        long LaunchProcess(const wxString &processcmd, const wxArrayString &options); //bool ParseLinks=true, bool LinkClicks=true, const wxString &LinkRegex=LinkRegexDefault
-        void KillProcess();
+        long LaunchProcess(const wxString &processcmd, const wxArrayString &options) override; //bool ParseLinks=true, bool LinkClicks=true, const wxString &LinkRegex=LinkRegexDefault
+        void KillProcess() override;
         void KillWindow();
-        bool IsDead() {return m_dead;}
+        bool IsDead() const override {return m_dead;}
         long GetPid() {if(m_proc) return m_procid; else return -1;}
-        void SyncOutput(int maxchars=1000);
+        void SyncOutput(int maxchars = 1000) override;
         void OnUserInput(wxKeyEvent& ke);
         void OnDClick(wxMouseEvent &e);
         void OnSize(wxSizeEvent& event);
