@@ -30,14 +30,14 @@ class wxCommandEvent;
 class CBProfilerExecDlg : public wxScrollingDialog
 {
     public:
-        CBProfilerExecDlg(wxWindow* parent) : parent(parent){}
+        CBProfilerExecDlg(wxWindow* _parent) : parent(_parent) {}
         virtual ~CBProfilerExecDlg();
 
-        int         Execute(const wxString& exename, const wxString& dataname, struct_config config);
+        int         Execute(const wxString& exename, const wxString& dataname, const struct_config& config);
         void        ShowOutput(const wxArrayString& msg, bool error);
-        wxListCtrl* GetoutputFlatProfileArea() { return outputFlatProfileArea; };
-        int         GetsortColumn()            { return sortColumn;            };
-        int         GetsortAscending()         { return sortAscending;         };
+        wxListCtrl* GetoutputFlatProfileArea() const { return outputFlatProfileArea; };
+        int         GetsortColumn()            const { return sortColumn;            };
+        int         GetsortAscending()         const { return sortAscending;         };
     private:
         void EndModal(int retCode);
         void OnColumnClick(wxListEvent& event);

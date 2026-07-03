@@ -39,7 +39,7 @@ END_EVENT_TABLE()
 bool CBProfilerExecDlg::sortAscending = false;
 int  CBProfilerExecDlg::sortColumn    = -1;
 
-int CBProfilerExecDlg::Execute(const wxString& exename, const wxString& dataname, struct_config config)
+int CBProfilerExecDlg::Execute(const wxString& exename, const wxString& dataname, const struct_config& config)
 {
     // gprof optional parameters
     wxString param = config.txtExtra;
@@ -63,7 +63,7 @@ int CBProfilerExecDlg::Execute(const wxString& exename, const wxString& dataname
         exitCode = wxExecute(cmd, gprof_output, gprof_errors);
     } // end lifetime of wxBusyInfo
 
-    if (exitCode == -1)  // not found
+    if (exitCode == -1)  // process did not start
     {
         wxString msg = _("Unable to execute gprof.\nBe sure the gprof executable is in the OS global path.\nC::B Profiler could not complete the operation.");
         cbMessageBox(msg, _("Error"), wxICON_ERROR | wxOK, (wxWindow*)Manager::Get()->GetAppWindow());
@@ -98,7 +98,7 @@ void CBProfilerExecDlg::ShowOutput(const wxArrayString& msg, bool error)
 
     if (!error)
     {
-        wxProgressDialog progress(_("C::B Profiler plugin"),_("Parsing profile information. Please wait..."), maxcount, NULL, wxPD_AUTO_HIDE|wxPD_APP_MODAL|wxPD_SMOOTH);
+        wxProgressDialog progress(_("C::B Profiler plugin"), _("Parsing profile information. Please wait..."), maxcount, NULL, wxPD_AUTO_HIDE|wxPD_APP_MODAL|wxPD_SMOOTH);
 
         // Parsing Flat Profile
         size_t count(0);
@@ -211,7 +211,7 @@ void CBProfilerExecDlg::ParseMisc(const wxArrayString& msg, wxProgressDialog &pr
     for ( ; count < maxcount; ++count )
     {
         if ((count%10) == 0) progress.Update(count);
-        output << msg[count] << _T("\n");
+        output << msg[count] << '\n';
     }
     outputMiscArea->SetValue(output);
 }
@@ -219,16 +219,16 @@ void CBProfilerExecDlg::ParseMisc(const wxArrayString& msg, wxProgressDialog &pr
 void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialog &progress, const size_t maxcount, size_t& count)
 {
     // Setting colums names
-    outputCallGraphArea->InsertColumn(0, _T("index"),    wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(1, _T("% time"),   wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(2, _T("self"),     wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(3, _T("children"), wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(4, _T("called"),   wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(5, _T("name"));
+    outputCallGraphArea->InsertColumn(0, _("index"),    wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(1, _("% time"),   wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(2, _("self"),     wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(3, _("children"), wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(4, _("called"),   wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(5, _("name"));
 
     // Jump header lines
     progress.Update(count,_("Parsing call graph information. Please wait..."));
-    while ( (count < maxcount) && (msg[count].Find(_T("index % time")) == -1) )
+    while ( (count < maxcount) && (msg[count].Find(_T("index % time")) == wxNOT_FOUND) )
     {
         if ((count%10) == 0) progress.Update(count);
         ++count;
@@ -248,10 +248,10 @@ void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialo
         if ((count%10) == 0) progress.Update(count);
 
         TOKEN = msg[count];
-        if ( (TOKEN.IsEmpty()) || (TOKEN.Find(wxChar(0x0C)) != -1) )
+        if ( (TOKEN.IsEmpty()) || (TOKEN.Find(wxChar(0x0C)) != wxNOT_FOUND) )
             break;
 
-        outputCallGraphArea->InsertItem(count,_T(""));
+        outputCallGraphArea->InsertItem(count, _T(""));
         char first_char = TOKEN.GetChar(0);
         // treating the empty separator lines
         if (first_char == '-')
@@ -293,10 +293,10 @@ void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialo
         if ((count%10) == 0) progress.Update(count);
 
         TOKEN = msg[count];
-        if (TOKEN.Find(wxChar(0x0C)) != -1)
+        if (TOKEN.Find(wxChar(0x0C)) != wxNOT_FOUND)
             break;
 
-        output_help << TOKEN << _T("\n");
+        output_help << TOKEN << '\n';
     }
     outputHelpCallGraphArea->SetValue(output_help);
 
@@ -306,17 +306,17 @@ void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialo
 void CBProfilerExecDlg::ParseFlatProfile(const wxArrayString& msg, wxProgressDialog &progress, const size_t maxcount, size_t &count)
 {
     // Setting colums names
-    outputFlatProfileArea->InsertColumn(0, _T("% time"),        wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(1, _T("cum. sec."),     wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(2, _T("self sec."),     wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(3, _T("calls"),         wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(4, _T("self ms/call"),  wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(5, _T("total ms/call"), wxLIST_FORMAT_CENTRE);
-    outputFlatProfileArea->InsertColumn(6, _T("name"));
+    outputFlatProfileArea->InsertColumn(0, _("% time"),        wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(1, _("cum. sec."),     wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(2, _("self sec."),     wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(3, _("calls"),         wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(4, _("self ms/call"),  wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(5, _("total ms/call"), wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(6, _("name"));
 
     // Jump header lines
-    progress.Update(count,_("Parsing flat profile information. Please wait..."));
-    while ((count < maxcount)&&(msg[count].Find(_T("time   seconds")) == -1))
+    progress.Update(count, _("Parsing flat profile information. Please wait..."));
+    while ((count < maxcount)&&(msg[count].Find(_T("time   seconds")) == wxNOT_FOUND))
     {
         ++count;
     }
@@ -331,7 +331,7 @@ void CBProfilerExecDlg::ParseFlatProfile(const wxArrayString& msg, wxProgressDia
         if ((count%10) == 0) progress.Update(count);
 
         TOKEN = msg[count];
-        if ( (TOKEN.IsEmpty()) || (TOKEN.Find(wxChar(0x0C)) != -1) )
+        if ( (TOKEN.IsEmpty()) || (TOKEN.Find(wxChar(0x0C)) != wxNOT_FOUND) )
             break;
 
         long item = outputFlatProfileArea->InsertItem(next,_T(""));
@@ -398,10 +398,10 @@ void CBProfilerExecDlg::ParseFlatProfile(const wxArrayString& msg, wxProgressDia
         if ((count%10) == 0) progress.Update(count);
 
         TOKEN = msg[count];
-        if (TOKEN.Find(wxChar(0x0C)) != -1)
+        if (TOKEN.Find(wxChar(0x0C)) != wxNOT_FOUND)
             break;
 
-        output_help << msg[count] << _T("\n");
+        output_help << msg[count] << '\n';
     }
     outputHelpFlatProfileArea->SetValue(output_help);
 
@@ -459,7 +459,7 @@ void CBProfilerExecDlg::FindInCallGraph(wxListEvent& event)
             item.SetColumn(5);
             item.SetMask(wxLIST_MASK_TEXT);
             outputCallGraphArea->GetItem(item);
-            if (item.GetText().Find(function_name) != -1)
+            if (item.GetText().Find(function_name) != wxNOT_FOUND)
                 break;
         }
     }
