@@ -588,35 +588,20 @@ void CodeBlocksApp::CheckVersion()
 
 void CodeBlocksApp::InitLocale()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("app"));
-
-    wxString path(ConfigManager::GetDataFolder() + _T("/locale"));
-
-    if (cfg->ReadBool(_T("/locale/enable"), false) == false)
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("app");
+    if (!cfg->ReadBool("/locale/enable", false))
         return;
 
-    wxString lang(cfg->Read(_T("/locale/language")));
+    const wxString lang(cfg->Read("/locale/language"));
+    const wxLanguageInfo* info = lang.empty() ? wxLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT) : wxLocale::FindLanguageInfo(lang);
+    if (!info) // should never happen, but who knows...
+        return;
 
+    wxString path(ConfigManager::GetDataFolder() + "/locale");
     wxLocale::AddCatalogLookupPathPrefix(path);
-
-
-    const wxLanguageInfo *info;
-
-    if (!lang.IsEmpty()) // Note: You can also write this line of code as !(!lang) from wx-2.9 onwards
-        info = wxLocale::FindLanguageInfo(lang);
-    else
-        info = wxLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
-
-    if (info == nullptr) // should never happen, but who knows...
-        return;
-
     m_locale.Init(info->Language);
-
-    path.Alloc(path.length() + 10);
-    path.Append(_T('/'));
-    path.Append(info->CanonicalName);
-
-    if ( !wxDirExists(path) )
+    path << '/' << info->CanonicalName;
+    if (!wxDirExists(path))
         return;
 
     wxDir dir(path);
@@ -624,8 +609,7 @@ void CodeBlocksApp::InitLocale()
         return;
 
     wxString moName;
-
-    if (dir.GetFirst(&moName, _T("*.mo"), wxDIR_FILES))
+    if (dir.GetFirst(&moName, "*.mo", wxDIR_FILES))
     {
         do
         {
