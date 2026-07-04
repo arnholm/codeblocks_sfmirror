@@ -589,6 +589,11 @@ void Tokenizer::ReadParentheses(wxString& str)
             break;
     }//while (NotEOF())
 
+    if (level != 0)
+    {
+        TRACE("%s:%d level %d, length %zu, reset as matching closing parentheses not found", __FUNCTION__, __LINE__, level, str.length());
+        str.clear();
+    }
 }
 
 bool Tokenizer::SkipToEOL()
