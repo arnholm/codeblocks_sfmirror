@@ -844,8 +844,10 @@ void wxChartCtrl::OnScroll(
 {
     //    if (event.GetEventType() != wxEVT_SCROLLWIN_THUMBTRACK)
     {
-        wxScrolledWindow::HandleOnScroll( event );
-        RedrawXAxis();
+        // Calling the event handler directly is forbidden in wxWidgets, and the method was declared private in wx3.3.3
+        // wxScrolledWindow::HandleOnScroll( event );
+        CallAfter(&wxChartCtrl::RedrawXAxis);
+        event.Skip();
     }
 
 }
