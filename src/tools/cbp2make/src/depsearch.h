@@ -130,7 +130,7 @@ protected:
 public:
     virtual void Clear(void);
     virtual void Show(void);
-    virtual void Assign(const CIncludeSearchFilter& Filter);
+    void Assign(const CIncludeSearchFilter& Filter);
     virtual bool Execute(const CString& FileName, CStringList& Includes);
     virtual bool Execute(const CString& FileName, CDependencyInfo& Dependencies);
     void AddIncludeDirectory(const CString& Path);
@@ -147,7 +147,7 @@ public:
 class CCppIncludeSearchFilter: public CIncludeSearchFilter
 {
 public:
-    virtual void Assign(const CCppIncludeSearchFilter& Filter);
+    void Assign(const CCppIncludeSearchFilter& Filter);
     bool Execute(const CString& FileName, CStringList& Includes) override;
     bool Execute(const CString& FileName, CDependencyInfo& Dependencies) override;
 public:
