@@ -166,8 +166,8 @@ public:
     bool SetButtonStyle( long style );
 
     // Get/Set the text label, wxEmptyString for none
-    wxString GetLabel() const { return m_labelString; }
-    void SetLabel( const wxString &label );
+    wxString GetLabel() const override { return m_labelString; }
+    void SetLabel( const wxString &label ) override;
 
     // set the bitmaps, ONLY this Label bitmap is used for calculating control size
     //   all bitmaps will be centered accordingly in any case
