@@ -147,9 +147,9 @@ public:
 class CCppIncludeSearchFilter: public CIncludeSearchFilter
 {
 public:
-    virtual void Assign(const CCppIncludeSearchFilter& Filter);
-    virtual bool Execute(const CString& FileName, CStringList& Includes);
-    virtual bool Execute(const CString& FileName, CDependencyInfo& Dependencies);
+    void Assign(const CCppIncludeSearchFilter& Filter) override;
+    bool Execute(const CString& FileName, CStringList& Includes) override;
+    bool Execute(const CString& FileName, CDependencyInfo& Dependencies) override;
 public:
     CCppIncludeSearchFilter(void);
     CCppIncludeSearchFilter(const CCppIncludeSearchFilter& Filter);
