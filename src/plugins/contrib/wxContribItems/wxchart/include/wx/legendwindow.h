@@ -51,7 +51,7 @@ public:
 	void Clear();
 	int GetCount() const;
 	ChartColor GetColor(int n) const;
-	wxString GetLabel(int n) const;
+	wxString GetLegendLabel(int n) const;
 
 	// Draw legend window
 	//-------------------

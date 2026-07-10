@@ -103,12 +103,12 @@ ChartColor wxLegendWindow::GetColor(
 }
 
 //+++-S-cf-------------------------------------------------------------------
-//	NAME:		GetLabel()
+//	NAME:		GetLegendLabel()
 //	DESC:		List descriptos utilities
 //	PARAMETERS:	int n
 //	RETURN:		None
 //----------------------------------------------------------------------E-+++
-wxString wxLegendWindow::GetLabel(
+wxString wxLegendWindow::GetLegendLabel(
 	int n
 ) const
 {
