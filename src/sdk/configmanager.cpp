@@ -585,15 +585,14 @@ inline wxString ConfigManager::GetUserDataFolder()
 
 bool ConfigManager::SetUserDataFolder(const wxString &user_data_path)
 {
-    wxString udp = wxFileName::DirName(user_data_path).GetFullPath();
-    if (!CreateDirRecursively(udp))
+    if (!CreateDirRecursively(user_data_path))
     {
         cbMessageBox(wxString::Format(_("The --user-data-dir directory %s does not exist and could not be created. Please check the path and try again"),
                                             user_data_path.c_str()), _("Command Line Error"));
         return false;
     }
     has_alternate_user_data_path = true;
-    ConfigManager::alternate_user_data_path = udp;
+    ConfigManager::alternate_user_data_path = user_data_path;
     return true;
 }
 
