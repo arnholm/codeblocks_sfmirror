@@ -9,15 +9,11 @@
 		<Project filename="plugins/codecompletion/cctest_wx33.cbp">
 			<Depends filename="CodeBlocks_wx33.cbp" />
 		</Project>
-		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx33.cbp">
-			<Depends filename="CodeBlocks_wx33.cbp" />
-		</Project>
 		<Project filename="plugins/contrib/wxSmith/wxSmith_wx33.cbp">
 			<Depends filename="CodeBlocks_wx33.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx33.cbp">
 			<Depends filename="CodeBlocks_wx33.cbp" />
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx33.cbp">
@@ -107,7 +103,6 @@
 		</Project>
 		<Project filename="plugins/contrib/lib_finder/lib_finder_wx33.cbp">
 			<Depends filename="CodeBlocks_wx33.cbp" />
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/MouseSap/MouseSap_wx33.cbp">
 			<Depends filename="CodeBlocks_wx33.cbp" />

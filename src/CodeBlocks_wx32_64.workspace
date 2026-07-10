@@ -9,15 +9,11 @@
 		<Project filename="plugins/codecompletion/cctest_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
 		</Project>
-		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx32_64.cbp">
-			<Depends filename="CodeBlocks_wx32_64.cbp" />
-		</Project>
 		<Project filename="plugins/contrib/wxSmith/wxSmith_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32_64.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx32_64.cbp">
@@ -107,7 +103,6 @@
 		</Project>
 		<Project filename="plugins/contrib/lib_finder/lib_finder_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/MouseSap/MouseSap_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
@@ -147,7 +142,6 @@
 		</Project>
 		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx32_64.cbp">
 			<Depends filename="CodeBlocks_wx32_64.cbp" />

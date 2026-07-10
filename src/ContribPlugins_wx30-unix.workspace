@@ -3,10 +3,8 @@
 	<Workspace title="All contrib plugins wx3.0.x (Unix)">
 		<Project filename="tools/cb_share_config/cb_share_config_wx30-unix.cbp" />
 		<Project filename="tools/cbp2make/cbp2make_wx30-unix.cbp" />
-		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/wxSmith/wxSmith_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx30-unix.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx30-unix.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx30-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx30-unix.cbp">
@@ -34,9 +32,7 @@
 		<Project filename="plugins/contrib/HexEditor/HexEditor_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/IncrementalSearch/IncrementalSearch_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/keybinder/keybinder_wx30-unix.cbp" />
-		<Project filename="plugins/contrib/lib_finder/lib_finder_wx30-unix.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx30-unix.cbp" />
-		</Project>
+		<Project filename="plugins/contrib/lib_finder/lib_finder_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/MouseSap/MouseSap_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/NassiShneiderman/NassiShneiderman_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/profiler/cbprofiler_wx30-unix.cbp" />
@@ -49,9 +45,7 @@
 		<Project filename="plugins/contrib/source_exporter/Exporter_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/SpellChecker/SpellChecker_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/symtab/symtab_wx30-unix.cbp" />
-		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx30-unix.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx30-unix.cbp" />
-		</Project>
+		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/Valgrind/Valgrind_wx30-unix.cbp" />
 	</Workspace>

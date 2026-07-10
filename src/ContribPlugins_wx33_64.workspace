@@ -5,10 +5,8 @@
 		<Project filename="tools/cb_share_config/cb_share_config_wx33_64.cbp" />
 		<Project filename="tools/CBLauncher/CbLauncher_wx33_64.cbp" />
 		<Project filename="tools/cbp2make/cbp2make_wx33_64.cbp" />
-		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
 		<Project filename="plugins/contrib/wxSmith/wxSmith_wx33_64.cbp" />
 		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx33_64.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx33_64.cbp">
@@ -37,9 +35,7 @@
 		<Project filename="plugins/contrib/HexEditor/HexEditor_wx33_64.cbp" />
 		<Project filename="plugins/contrib/IncrementalSearch/IncrementalSearch_wx33_64.cbp" />
 		<Project filename="plugins/contrib/keybinder/keybinder_wx33_64.cbp" />
-		<Project filename="plugins/contrib/lib_finder/lib_finder_wx33_64.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
-		</Project>
+		<Project filename="plugins/contrib/lib_finder/lib_finder_wx33_64.cbp" />
 		<Project filename="plugins/contrib/MouseSap/MouseSap_wx33_64.cbp" />
 		<Project filename="plugins/contrib/NassiShneiderman/NassiShneiderman_wx33_64.cbp" />
 		<Project filename="plugins/contrib/profiler/cbprofiler_wx33_64.cbp" />
@@ -52,9 +48,7 @@
 		<Project filename="plugins/contrib/source_exporter/Exporter_wx33_64.cbp" />
 		<Project filename="plugins/contrib/SpellChecker/SpellChecker_wx33_64.cbp" />
 		<Project filename="plugins/contrib/symtab/symtab_wx33_64.cbp" />
-		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx33_64.cbp">
-			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
-		</Project>
+		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx33_64.cbp" />
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx33_64.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
