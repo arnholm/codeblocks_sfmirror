@@ -4,15 +4,15 @@
 		<Project filename="CodeBlocks_wx32-unix.cbp" />
 		<Project filename="tools/cb_share_config/cb_share_config_wx32-unix.cbp" />
 		<Project filename="plugins/codecompletion/cctest_wx32-unix.cbp" />
+		<Project filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
 		<Project filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp">
 			<Depends filename="CodeBlocks_wx32-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithContribItems/wxSmithContribItems_wx32-unix.cbp">
-			<Depends filename="CodeBlocks_wx32-unix.cbp" />
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/wxSmithAui/wxSmithAui_wx32-unix.cbp">
-			<Depends filename="CodeBlocks_wx32-unix.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx32-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/AutoVersioning/AutoVersioning_wx32-unix.cbp">
@@ -81,6 +81,7 @@
 		</Project>
 		<Project filename="plugins/contrib/lib_finder/lib_finder_wx32-unix.cbp">
 			<Depends filename="CodeBlocks_wx32-unix.cbp" />
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/MouseSap/MouseSap_wx32-unix.cbp">
 			<Depends filename="CodeBlocks_wx32-unix.cbp" />
@@ -117,6 +118,7 @@
 		</Project>
 		<Project filename="plugins/contrib/ThreadSearch/ThreadSearch_wx32-unix.cbp">
 			<Depends filename="CodeBlocks_wx32-unix.cbp" />
+			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx32-unix.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx32-unix.cbp">
 			<Depends filename="CodeBlocks_wx32-unix.cbp" />
