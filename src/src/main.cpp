@@ -2425,7 +2425,9 @@ void MainFrame::DoUpdateStatusBar()
         return;
     sb->UpdateFields();
 }
-
+// ----------------------------------------------------------------------------
+#if !wxCHECK_VERSION(3, 3, 0) // not wx 3.3.0 and beyond (note the !)
+// ----------------------------------------------------------------------------
 void MainFrame::DoUpdateEditorStyle(cbAuiNotebook* target, const wxString& prefix, long defaultStyle)
 {
     if (!target)
@@ -2464,6 +2466,37 @@ void MainFrame::DoUpdateEditorStyle(cbAuiNotebook* target, const wxString& prefi
 
     target->SetWindowStyleFlag(nbstyle);
 }
+#endif //not wx 3.2.0
+// ----------------------------------------------------------------------------
+#if wxCHECK_VERSION(3, 3, 0) //wx 3.3.0 and beyond
+// ----------------------------------------------------------------------------
+// AI version to avoid wx3.3.2 assert of target->SetTabCtrlHeight(-1);
+void MainFrame::DoUpdateEditorStyle(cbAuiNotebook* target, const wxString& prefix, long defaultStyle)
+{
+    if (!target)
+        return;
+
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("app");
+
+    long nbstyle = defaultStyle;
+    if (cfg->ReadBool("/environment/" + prefix + "_tabs_bottom"))
+        nbstyle |= wxAUI_NB_BOTTOM;
+
+    if (cfg->ReadBool("/environment/tabs_list"))
+        nbstyle |= wxAUI_NB_WINDOWLIST_BUTTON;
+
+    switch (cfg->ReadInt("/environment/tabs_style", 0))
+    {
+        case 1: target->SetArtProvider(new wxAuiSimpleTabArt()); break;
+        case 2: target->SetArtProvider(new NbStyleVC71()); break;
+        case 3: target->SetArtProvider(new NbStyleFF2()); break;
+        default: target->SetArtProvider(new wxAuiDefaultTabArt()); break;
+    }
+
+    target->SetWindowStyleFlag(nbstyle);
+    target->SetTabCtrlHeight(-1);
+}
+#endif // wx 3.3.0
 
 void MainFrame::DoUpdateEditorStyle()
 {

@@ -186,7 +186,48 @@ bool InfoPane::InsertPagePrivate(wxWindow* p, const wxString& title, wxBitmap* i
 {
     return InsertPage(index, p, title, false, icon ? *icon : m_DefaultBitmap);
 }
+// ----------------------------------------------------------------------------
+#if wxCHECK_VERSION(3, 3, 0) //wx 3.3.0 and beyond
+// ----------------------------------------------------------------------------
+void InfoPane::UpdateEffectiveTabOrder() // (ai 26/07/06)
+{
+    // If the application is shutting down, the underlying notebook
+    // engine might already be completely gone.
+    for (size_t i = 0; i < m_Pages.GetCount(); ++i)
+    {
+        auto pageItem = m_Pages.Item(i);
+        if (!pageItem)
+            continue;
 
+        // Only update for tabs tracking an active layout index
+        if (pageItem->indexInNB >= 0)
+        {
+            // Safeguard: If the underlying window is already null or destroyed
+            // by the shutdown sequence, immediately mark it detached.
+            if (!pageItem->window)
+            {
+                pageItem->indexInNB = wxNOT_FOUND;
+                continue;
+            }
+
+            int currentIdx = GetPageIndex(pageItem->window);
+
+            // Explicitly prevent passing wxNOT_FOUND (-1) to GetTabPositionFromIndex
+            if (currentIdx != wxNOT_FOUND && currentIdx >= 0)
+            {
+                pageItem->indexInNB = GetTabPositionFromIndex(currentIdx);
+            }
+            else
+            {
+                // The application is shutting down; safely mark the tab detached
+                pageItem->indexInNB = wxNOT_FOUND;
+            }
+        }
+    }
+}
+// ----------------------------------------------------------------------------
+#else // not wx 3.3.0 or beyond
+// ----------------------------------------------------------------------------
 void InfoPane::UpdateEffectiveTabOrder()
 {
     for (size_t i = 0; i < m_Pages.GetCount(); ++i)
@@ -197,6 +238,9 @@ void InfoPane::UpdateEffectiveTabOrder()
 
     }
 }
+// ----------------------------------------------------------------------------
+#endif //wx 3.3.0 or 3.2.0
+// ----------------------------------------------------------------------------
 
 void InfoPane::Toggle(size_t i)
 {
@@ -232,6 +276,8 @@ int InfoPane::GetPageIndexByWindow(wxWindow* win)
 int InfoPane::GetCurrentPage(bool &is_logger)
 {
     int i = GetPageIndexByWindow( GetPage(GetSelection()) );
+    if (i < 0) return -1;
+
     is_logger = m_Pages.Item(i)->islogger;
     return (is_logger ? i : -1);
 }
@@ -321,6 +367,8 @@ void InfoPane::ShowNonLogger(wxWindow* p)
 void InfoPane::OnCopy(wxCommandEvent& event)
 {
     int i = GetPageIndexByWindow( GetPage(GetSelection()) );
+    if (i < 0) return;
+
     if (m_Pages.Item(i)->islogger)
     {
         if      (event.GetId() == idCopyAllToClipboard)
@@ -333,6 +381,8 @@ void InfoPane::OnCopy(wxCommandEvent& event)
 void InfoPane::OnWrapMode(cb_unused wxCommandEvent& event)
 {
     int i = GetPageIndexByWindow( GetPage(GetSelection()) );
+    if (i < 0) return;
+
     if (m_Pages.Item(i)->islogger && m_Pages.Item(i)->logger->HasFeature(Logger::Feature::IsWrappable))
     {
         TextCtrlLogger* tcl = static_cast<TextCtrlLogger*>(m_Pages.Item(i)->logger);
@@ -343,6 +393,8 @@ void InfoPane::OnWrapMode(cb_unused wxCommandEvent& event)
 void InfoPane::OnClear(cb_unused wxCommandEvent& event)
 {
     int i = GetPageIndexByWindow( GetPage(GetSelection()) );
+    if (i < 0) return;
+
     if (m_Pages.Item(i)->islogger)
         m_Pages.Item(i)->logger->Clear();
 }
@@ -385,6 +437,7 @@ void InfoPane::OnCloseClicked(wxAuiNotebookEvent& event)
     // this avoids an assert-message in debug-build (and wx2.9)
     event.Veto();
     // toggle the notebook, that sends the event
+    if (GetPageIndexByWindow( GetPage(event.GetSelection())) < 0) return;
     Toggle(GetPageIndexByWindow( GetPage(event.GetSelection())) );
 }
 
@@ -398,6 +451,7 @@ void InfoPane::DoShowContextMenu()
     int selection = GetSelection();
     if (   (selection >= 0)
         && (selection < static_cast<int>(GetPageCount()))
+        && (GetPageIndexByWindow( GetPage(GetSelection())) >= 0)
         && (m_Pages.Item(GetPageIndexByWindow( GetPage(GetSelection()) ))->islogger) )
     {
         Logger* l = m_Pages.Item(GetPageIndexByWindow( GetPage(GetSelection()) ))->logger;

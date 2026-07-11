@@ -337,6 +337,14 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
          * \param invert If true move direction is inverted
          */
         static void InvertMoveDirection(bool invert = false);
+        /** \brief Normalize perspective layout to match active wxWidgets version
+         *
+         * \param layout layout perspective string to normalize
+         * \return normalized layout perspective string
+         */
+        static wxString NormalizePerspective(const wxString& layout);
+
+
     protected:
         /** \brief Enable or disable tab tooltips
          */

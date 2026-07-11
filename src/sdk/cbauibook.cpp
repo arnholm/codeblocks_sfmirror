@@ -740,6 +740,229 @@ int cbAuiNotebook::GetTabIndexFromTooltip(const wxString& text)
     return -1;
 }
 
+// ----------------------------------------------------------------------------
+#if wxCHECK_VERSION(3, 3, 0) //wx 3.3.0 and beyond
+// ----------------------------------------------------------------------------
+
+bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
+{
+    if (layout.IsEmpty())
+        return false;
+
+    // 1. Snapshot all open windows and their properties (including tooltips) before detaching.
+    struct PageSnapshot {
+        wxWindow* window;
+        wxString caption;
+        wxString tooltip; // Preserves the tooltip file paths across layout wipes
+        bool select;
+        wxBitmapBundle bitmap;
+    };
+
+    wxVector<PageSnapshot> windowSnapshots;
+    const size_t original_count = m_tabs.GetPageCount();
+
+    for (size_t i = 0; i < original_count; ++i)
+    {
+        wxAuiNotebookPage& page = m_tabs.GetPage(i);
+        PageSnapshot snap;
+        snap.window = page.window;
+        snap.caption = GetPageText(i);
+        snap.tooltip = GetPageToolTip(i); // Capture the tooltips before they are erased
+        snap.bitmap = GetPageBitmap(i);
+        snap.select = (static_cast<int>(i) == m_curPage);
+        windowSnapshots.push_back(snap);
+    }
+
+    this->Freeze();
+
+    // 2. Clear old layout elements cleanly without deleting the actual file view windows
+    for (int i = static_cast<int>(original_count) - 1; i >= 0; --i)
+    {
+        this->RemovePage(static_cast<size_t>(i));
+    }
+    RemoveEmptyTabFrames();
+
+    wxString currentLayout;
+    if (mergeLayouts)
+    {
+        currentLayout = m_mgr.SavePerspective();
+        wxString tempLayout;
+        while (!currentLayout.empty())
+        {
+            if ( currentLayout.BeforeFirst('|').StartsWith(_("layout3")) ||
+                 currentLayout.BeforeFirst('|').StartsWith(_("layout2")) ||
+                 currentLayout.BeforeFirst('|').StartsWith(_("name=dummy")) )
+            {
+                currentLayout = currentLayout.AfterFirst('|');
+                currentLayout.Trim();
+                currentLayout.Trim(true);
+            }
+            else
+            {
+                wxString pane_part = currentLayout.BeforeFirst('|');
+                pane_part.Trim();
+                pane_part.Trim(true);
+                if (!pane_part.empty())
+                    tempLayout += pane_part + wxT("|");
+
+                currentLayout = currentLayout.AfterFirst('|');
+                currentLayout.Trim();
+                currentLayout.Trim(true);
+            }
+        }
+        currentLayout = tempLayout;
+        if (currentLayout.empty())
+            mergeLayouts = false;
+    }
+
+    size_t sel_page = 0;
+    bool global_sel_found = false; // Tracks if the absolute active tab (*) was found
+    bool found = false;
+
+    wxString tabs = layout.BeforeFirst(wxT('@'));
+    wxString frames = layout.AfterFirst(wxT('@'));
+    bool firstTabInCtrl = !currentLayout.empty();
+
+    // 3. Rebuild split notebook elements
+    while (1)
+    {
+        const wxString tab_part = tabs.BeforeFirst(wxT('|'));
+        if (tab_part.empty())
+            break;
+
+        wxString tab_list = tab_part.AfterFirst(wxT('='));
+
+        while (1)
+        {
+            wxString tab = tab_list.BeforeFirst(wxT(','));
+            wxString name = tab.AfterFirst(wxT(';'));
+            tab = tab.BeforeFirst(wxT(';'));
+
+            if (tab.empty())
+                break;
+            tab_list = tab_list.AfterFirst(wxT(','));
+
+            const wxChar marker = tab[0];
+            if (marker == wxT('+') || marker == wxT('*'))
+                tab = tab.Mid(1);
+
+            wxWindow* targetWnd = nullptr;
+            PageSnapshot matchingSnap;
+            for (size_t s = 0; s < windowSnapshots.size(); ++s)
+            {
+                if (UniqueIdFromTooltip(windowSnapshots[s].tooltip) == name)
+                {
+                    targetWnd = windowSnapshots[s].window;
+                    matchingSnap = windowSnapshots[s];
+                    break;
+                }
+            }
+
+            if (!targetWnd)
+                continue;
+
+            if (targetWnd->GetEventHandler() != targetWnd)
+            {
+                wxEvtHandler* handler = targetWnd->GetEventHandler();
+                if (handler)
+                {
+                    targetWnd->RemoveEventHandler(handler);
+                    if (handler != targetWnd)
+                        delete handler;
+                }
+            }
+
+            if (firstTabInCtrl)
+            {
+                this->AddPage(targetWnd, matchingSnap.caption, false, matchingSnap.bitmap);
+                this->SetPageToolTip(this->GetPageCount() - 1, matchingSnap.tooltip); // Re-apply tooltip
+
+                size_t newPageIdx = this->GetPageCount() - 1;
+                this->Split(newPageIdx, wxRIGHT);
+            }
+            else
+            {
+                this->AddPage(targetWnd, matchingSnap.caption, false, matchingSnap.bitmap);
+                this->SetPageToolTip(this->GetPageCount() - 1, matchingSnap.tooltip); // Re-apply tooltip
+            }
+
+            size_t currentNewIdx = this->GetPageCount() - 1;
+            if (marker == wxT('*'))
+            {
+                sel_page = currentNewIdx;
+                global_sel_found = true;
+            }
+            else if (marker == wxT('+') && !global_sel_found)
+            {
+                sel_page = currentNewIdx;
+            }
+
+            firstTabInCtrl = false;
+            found = true;
+        }
+        firstTabInCtrl = true;
+        tabs = tabs.AfterFirst(wxT('|'));
+    }
+
+    // 4. Restore any orphaned tabs
+    for (size_t s = 0; s < windowSnapshots.size(); ++s)
+    {
+        if (this->GetPageIndex(windowSnapshots[s].window) == wxNOT_FOUND)
+        {
+            wxWindow* targetWnd = windowSnapshots[s].window;
+
+            if (targetWnd->GetEventHandler() != targetWnd)
+            {
+                wxEvtHandler* handler = targetWnd->GetEventHandler();
+                if (handler)
+                {
+                    targetWnd->RemoveEventHandler(handler);
+                    if (handler != targetWnd)
+                        delete handler;
+                }
+            }
+
+            this->AddPage(targetWnd, windowSnapshots[s].caption, false, windowSnapshots[s].bitmap);
+            this->SetPageToolTip(this->GetPageCount() - 1, windowSnapshots[s].tooltip); // Re-apply tooltip
+        }
+    }
+
+    // 5. Load the perspective and update the AUI manager FIRST
+    if (mergeLayouts && !currentLayout.IsEmpty())
+    {
+        m_mgr.LoadPerspective(currentLayout);
+    }
+    else if (found && !frames.IsEmpty())
+    {
+        m_mgr.LoadPerspective(frames);
+    }
+
+    RemoveEmptyTabFrames();
+    m_mgr.Update(); // Forces layout structures to settle
+
+    // 6. Set active selection last so it cleanly overrides layout defaults
+    if (this->GetPageCount() > 0)
+    {
+        if (sel_page >= this->GetPageCount())
+            sel_page = 0;
+
+        this->SetSelection(sel_page);
+    }
+
+    UpdateTabControlsArray();
+
+    this->Thaw();
+    return true;
+}
+
+// ----------------------------------------------------------------------------
+#endif //3.3.0
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+#if !wxCHECK_VERSION(3, 3, 0) // wx 3.2.x and before. (Note the !)
+// ----------------------------------------------------------------------------
+
 bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 {
     if (layout.IsEmpty())
@@ -948,6 +1171,9 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
     UpdateTabControlsArray();
     return true;
 }
+// ----------------------------------------------------------------------------
+#endif // not 3.3.0
+// ----------------------------------------------------------------------------
 
 
 //bool cbAuiNotebook::LoadPerspective(const wxString& layout) {
