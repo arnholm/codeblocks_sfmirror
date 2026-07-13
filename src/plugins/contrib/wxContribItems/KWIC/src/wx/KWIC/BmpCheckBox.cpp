@@ -61,12 +61,7 @@ kwxBmpCheckBox::kwxBmpCheckBox(wxWindow* parent,
 	mOffSelBitmap = OffSelBitmap;
 	m_id = id;
 
-    int total_width = 0, total_height = 0 ;
-	total_width = size.GetWidth() ;
-	total_height = size.GetHeight();
-
-	SetSize(total_width, total_height);
-    SetAutoLayout(TRUE);
+    SetAutoLayout(true);
 	Refresh();
 	m_stato = 0;
 	m_oldstato = 0;
@@ -74,7 +69,8 @@ kwxBmpCheckBox::kwxBmpCheckBox(wxWindow* parent,
 	m_bBord = true ;
 	m_nStyle = wxPENSTYLE_DOT;
 
-	membitmap = new wxBitmap(total_width, total_height) ;
+	const wxSize Size(GetSize());
+	membitmap = new wxBitmap(Size.GetWidth(), Size.GetHeight());
 }
 
 void kwxBmpCheckBox::SetLabel(const wxString& label)
@@ -107,15 +103,45 @@ void kwxBmpCheckBox::OnPaint(wxPaintEvent& WXUNUSED(event))
     switch (m_stato)
     {
         case 0:
-            dc.DrawBitmap(m_bPress ? mOnBitmap : mOffBitmap, 0, 0, true);
+            if (m_bPress)
+            {
+                if (mOnBitmap.IsOk())
+                    dc.DrawBitmap(mOnBitmap, 0, 0, true);
+            }
+            else
+            {
+                if (mOffBitmap.IsOk())
+                    dc.DrawBitmap(mOffBitmap, 0, 0, true);
+            }
+
             bdraw = false;
             break;
         case 1:
-            dc.DrawBitmap(m_bPress ? mOnSelBitmap : mOffSelBitmap, 0, 0, true);
+            if (m_bPress)
+            {
+                if (mOnSelBitmap.IsOk())
+                    dc.DrawBitmap(mOnSelBitmap, 0, 0, true);
+            }
+            else
+            {
+                if (mOffSelBitmap.IsOk())
+                    dc.DrawBitmap(mOffSelBitmap, 0, 0, true);
+            }
+
             bdraw = true;
             break;
         case 2:
-            dc.DrawBitmap(m_bPress ? mOffSelBitmap : mOnSelBitmap, 0, 0, true);
+            if (m_bPress)
+            {
+                if (mOffSelBitmap.IsOk())
+                    dc.DrawBitmap(mOffSelBitmap, 0, 0, true);
+            }
+            else
+            {
+                if (mOnSelBitmap.IsOk())
+                    dc.DrawBitmap(mOnSelBitmap, 0, 0, true);
+            }
+
             bdraw = true;
     }
 

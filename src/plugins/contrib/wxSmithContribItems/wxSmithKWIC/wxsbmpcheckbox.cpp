@@ -90,45 +90,61 @@ void wxsBmpCheckbox::OnBuildCreatingCode()
     {
         case wxsCPP:
         {
-            AddHeader(_T("\"wx/KWIC/BmpCheckBox.h\""), GetInfo().ClassName);
+            AddHeader(_T("<wx/KWIC/BmpCheckBox.h>"), GetInfo().ClassName);
             // Write different code depending on whether the bitmaps are set or wxNullBitmap is used.
-            wxString sOn, sOff, sOnSel, sOffSel;
-            if(m_bdOn.IsEmpty()){
-                sOn = wxT("wxNullBitmap");
+
+            wxString sOn;
+            if (m_bdOn.IsEmpty())
+            {
+                sOn = "wxNullBitmap";
             }
-            else{
-                sOn = wxT("*pbmpOn");
-                Codef(_T("wxBitmap *pbmpOn = new %i;\n"), &m_bdOn, _T("wxART_OTHER"));
+            else
+            {
+                sOn = "bmpOn";
+                Codef(_T("const wxBitmap bmpOn = %i;\n"), &m_bdOn, _T("wxART_OTHER"));
             }
-            if(m_bdOff.IsEmpty()){
-                sOff = wxT("wxNullBitmap");
+
+            wxString sOff;
+            if (m_bdOff.IsEmpty())
+            {
+                sOff = "wxNullBitmap";
             }
-            else{
-                sOff = wxT("*pbmpOff");
-                Codef(_T("wxBitmap *pbmpOff = new %i;\n"), &m_bdOff, _T("wxART_OTHER"));
+            else
+            {
+                sOff = "bmpOff";
+                Codef(_T("const wxBitmap bmpOff = %i;\n"), &m_bdOff, _T("wxART_OTHER"));
             }
-            if(m_bdOnSel.IsEmpty()){
-                sOnSel = wxT("wxNullBitmap");
+
+            wxString sOnSel;
+            if (m_bdOnSel.IsEmpty())
+            {
+                sOnSel = "wxNullBitmap";
             }
-            else{
-                sOnSel = wxT("*pbmpOnSel");
-                Codef(_T("wxBitmap *pbmpOnSel = new %i;\n"), &m_bdOnSel, _T("wxART_OTHER"));
+            else
+            {
+                sOnSel = "bmpOnSel";
+                Codef(_T("const wxBitmap bmpOnSel = %i;\n"), &m_bdOnSel, _T("wxART_OTHER"));
             }
-            if(m_bdOffSel.IsEmpty()){
-                sOffSel = wxT("wxNullBitmap");
+
+            wxString sOffSel;
+            if (m_bdOffSel.IsEmpty())
+            {
+                sOffSel = "wxNullBitmap";
             }
-            else{
-                sOffSel = wxT("*pbmpOffSel");
-                Codef(_T("wxBitmap *pbmpOffSel = new %i;\n"), &m_bdOffSel, _T("wxART_OTHER"));
+            else
+            {
+                sOffSel = "bmpOffSel";
+                Codef(_T("const wxBitmap bmpOffSel = %i;\n"), &m_bdOffSel, _T("wxART_OTHER"));
             }
-            Codef(_T("%C(%W,%I, %s, %s, %s, %s, %P,%S, %s);\n"), sOn.wx_str(), sOff.wx_str(), sOnSel.wx_str(), sOffSel.wx_str(), _T("wxBORDER_NONE"));
+
+            Codef(_T("%C(%W,%I, %s, %s, %s, %s, %P, %S, %s);\n"), sOn.wx_str(), sOff.wx_str(), sOnSel.wx_str(), sOffSel.wx_str(), _T("wxBORDER_NONE"));
+
             // The defaults are border on and wxDOT.
-            if(!m_bBorder || m_iBorderStyle != wxPENSTYLE_DOT){
+            if (!m_bBorder || m_iBorderStyle != wxPENSTYLE_DOT)
                 Codef(_T("%ASetBorder(%b, %d);\n"), m_bBorder, m_iBorderStyle);
-            }
-            if(m_bChecked){
+
+            if (m_bChecked)
                 Codef(_T("%ASetState(true);\n"));
-            }
 
             BuildSetupWindowCode();
             break;
