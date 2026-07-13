@@ -141,18 +141,18 @@ void wxsBmpCheckbox::OnBuildCreatingCode()
 
 /*! \brief Build the code that creates the control preview.
  *
- * \param parent wxWindow*    The parent window.
- * \param flags long                    Flags used when creating the preview.
- * \return wxObject                        The control preview object.
+ * \param parent wxWindow* The parent window.
+ * \param flags long       Flags used when creating the preview.
+ * \return wxObject        The control preview object.
  *
  */
 wxObject *wxsBmpCheckbox::OnBuildPreview(wxWindow *parent, long flags)
 {
-    wxBitmap *pbmpOn = new wxBitmap(m_bdOn.GetPreview(wxDefaultSize));
-    wxBitmap *pbmpOff = new wxBitmap(m_bdOff.GetPreview(wxDefaultSize));
-    wxBitmap *pbmpOnSel = new wxBitmap(m_bdOnSel.GetPreview(wxDefaultSize));
-    wxBitmap *pbmpOffSel = new wxBitmap(m_bdOffSel.GetPreview(wxDefaultSize));
-    kwxBmpCheckBox *preview = new kwxBmpCheckBox(parent, GetId(), *pbmpOn, *pbmpOff, *pbmpOnSel, *pbmpOffSel, Pos(parent), Size(parent), wxBORDER_NONE);
+    const wxBitmap pbmpOn(m_bdOn.GetPreview(wxDefaultSize));
+    const wxBitmap pbmpOff(m_bdOff.GetPreview(wxDefaultSize));
+    const wxBitmap pbmpOnSel(m_bdOnSel.GetPreview(wxDefaultSize));
+    const wxBitmap pbmpOffSel(m_bdOffSel.GetPreview(wxDefaultSize));
+    kwxBmpCheckBox *preview = new kwxBmpCheckBox(parent, GetId(), pbmpOn, pbmpOff, pbmpOnSel, pbmpOffSel, Pos(parent), Size(parent), wxBORDER_NONE);
 
     // The defaults are border on and wxDOT.
     if (!m_bBorder || m_iBorderStyle != wxPENSTYLE_DOT)
