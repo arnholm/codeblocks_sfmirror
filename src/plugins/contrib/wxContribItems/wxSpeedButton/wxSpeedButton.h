@@ -124,44 +124,45 @@ virtual    ~wxSpeedButton();
 
 
 
-            void        SetLabel(wxString &inLabel);
-            void        SetGlyphUp(wxBitmap &inBitmap);
-            wxBitmap   &GetGlyphUp(void);
-            void        SetGlyphDown(wxBitmap &inBitmap);
-            wxBitmap   &GetGlyphDown(void);
-            void        SetGlyphDisabled(wxBitmap &inBitmap);
-            wxBitmap   &GetGlyphDisabled(void);
+            void        SetLabel(const wxString &inLabel) override;
+            void        SetGlyphUp(const wxBitmap &inBitmap);
+      const wxBitmap   &GetGlyphUp() const;
+            void        SetGlyphDown(const wxBitmap &inBitmap);
+      const wxBitmap   &GetGlyphDown() const;
+            void        SetGlyphDisabled(const wxBitmap &inBitmap);
+      const wxBitmap   &GetGlyphDisabled() const;
 
             void        SetAlign(int inAlign);
-            int         GetAlign(void);
+            int         GetAlign() const;
             void        SetMargin(int inMargin);
-            int         GetMargin(void);
+            int         GetMargin() const;
             void        SetGroupIndex(bool inIndex);
-            int         GetGroupIndex(void);
+            int         GetGroupIndex() const;
             void        SetDown(bool inDown);
-            bool        GetDown(void);
+            bool        GetDown() const;
             void        SetValue(bool inDown);
-            bool        GetValue(void);
+            bool        GetValue() const;
             void        SetAllowAllUp(bool inAllUp);
-            bool        GetAllowAllUp(void);
+            bool        GetAllowAllUp() const;
             void        SetUserData(long inData);
-            long        GetUserData(void);
+            long        GetUserData() const;
 
             void        DoClick(bool inLeft);
 
 
 protected:
 
+            void        ComputeBestSize();
             void        SplitGlyphs(const wxBitmap &inBitmap, int inCount);
             void        MakeTransparent(wxBitmap &inBitmap);
-            void        GetGlyphSize(wxBitmap &inGlyph, int &outWidth, int &outHeight);
-virtual     wxSize      DoGetBestSize(void);            // calculate best button size given the current state
-virtual     void        CalcLayout(bool inRefresh);     // calculate position for bitmap and label
+            void        GetGlyphSize(const wxBitmap &inGlyph, int &outWidth, int &outHeight) const;
+            wxSize      DoGetBestSize() const override;  // calculate best button size given the current state
+virtual     void        CalcLayout(bool inRefresh);      // calculate position for bitmap and label
             void        OnSetFocus(wxFocusEvent& event);
             void        OnKillFocus(wxFocusEvent& event);
             void        OnPaint(wxPaintEvent &event);
             void        Redraw();
-virtual     void        Paint( wxDC &dc );
+virtual     void        Paint(wxDC &dc);
 virtual     void        SendEvent(bool inLeft);
             void        OnMouseEvents(wxMouseEvent &event);
             void        OnSize( wxSizeEvent &event );
