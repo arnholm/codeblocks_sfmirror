@@ -48,19 +48,31 @@ bool wxLed::Create(wxWindow * parent, wxWindowID id, wxColour disableColour, wxC
     return true;
 }
 
-void wxLed::Enable (void)
+bool wxLed::Enable(bool enable)
 {
+    if (!enable)
+        return Disable();
+
+    if (m_isEnable)
+        return false;
+
     m_isEnable = true;
     if( m_isOn)
-        SetBitmap (m_On.GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_On.GetAsString( wxC2S_HTML_SYNTAX));
     else
-        SetBitmap (m_Off.GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_Off.GetAsString( wxC2S_HTML_SYNTAX));
+
+    return true;
 }
 
-void wxLed::Disable( void)
+bool wxLed::Disable()
 {
-    m_isEnable= false;
-    SetBitmap( m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    if (!m_isEnable)
+        return false;
+
+    m_isEnable = false;
+    SetBitmap(m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    return true;
 }
 
 void wxLed::Switch(void)

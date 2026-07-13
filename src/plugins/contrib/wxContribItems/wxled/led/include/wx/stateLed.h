@@ -35,10 +35,10 @@ class DLLEXPORT wxStateLed : public wxWindow
 		bool Create(wxWindow * parent, wxWindowID id = wxID_ANY, wxColour disabledColor = wxColour( 128,128,128));
 
         /// Enable the Led
-		void Enable (void) ;
+		bool Enable(bool enable = true) override;
 
 		/// Disable the Led
-		void Disable( void);
+		bool Disable();
 
         void RegisterState(int state, wxColour colour);
 

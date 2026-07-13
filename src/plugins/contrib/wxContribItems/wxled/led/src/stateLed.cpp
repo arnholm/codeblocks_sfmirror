@@ -33,21 +33,30 @@ bool wxStateLed ::Create(wxWindow * parent, wxWindowID id, wxColour disabledColo
     return true;
 }
 
-void wxStateLed ::Enable (void)
+bool wxStateLed::Enable(bool enable)
 {
-    if( !m_registeredState.empty())
+    if (!enable)
+        return Disable();
+
+    if (!m_registeredState.empty())
     {
         m_isEnable = true;
-        SetBitmap (m_registeredState[m_state].GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_registeredState[m_state].GetAsString( wxC2S_HTML_SYNTAX)) ;
+        return true;
     }
-    else
-        SetBitmap( m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+
+    SetBitmap(m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    return false;
 }
 
-void wxStateLed ::Disable( void)
+bool wxStateLed::Disable()
 {
-    m_isEnable= false;
-    SetBitmap( m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    if (!m_isEnable)
+        return false;
+
+    m_isEnable = false;
+    SetBitmap(m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    return true;
 }
 
 void wxStateLed::RegisterState(int state, wxColour colour)

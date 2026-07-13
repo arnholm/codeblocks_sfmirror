@@ -45,10 +45,10 @@ class DLLEXPORT wxLed : public wxWindow
 		bool Create (wxWindow * parent, wxWindowID id = wxID_ANY, wxColour disableColour = wxColour( 128,128,128), wxColour onColour = wxColour( 00, 255, 00), wxColour offColour = wxColour( 255, 00, 00));
 
         /// Enable the Led
-		void Enable (void) ;
+		bool Enable(bool enable = true) override;
 
 		/// Disable the Led
-		void Disable( void);
+		bool Disable();
 
 		/// If the Led is Enabled and on, switch the Led off else on.
 		void Switch(void);

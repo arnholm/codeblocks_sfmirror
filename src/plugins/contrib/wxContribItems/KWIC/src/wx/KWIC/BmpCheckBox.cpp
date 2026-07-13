@@ -44,25 +44,21 @@ kwxBmpCheckBox::~kwxBmpCheckBox()
 
 kwxBmpCheckBox::kwxBmpCheckBox(wxWindow* parent,
 		                   const wxWindowID id,
-                           wxBitmap& OnBitmap,
-							wxBitmap& OffBitmap,
-							wxBitmap& OnSelBitmap,
-							wxBitmap& OffSelBitmap,
+                           const wxBitmap& OnBitmap,
+                           const wxBitmap& OffBitmap,
+                           const wxBitmap& OnSelBitmap,
+                           const wxBitmap& OffSelBitmap,
                            const wxPoint& pos,
                            const wxSize& size,
-		                   const long int style)
+		                   long int style)
 	: wxControl(parent, id, pos, size, style)
 {
+    SetBackgroundColour(parent ? parent->GetBackgroundColour() : *wxLIGHT_GREY);
 
-  if (parent)
-    SetBackgroundColour(parent->GetBackgroundColour());
-  else
-    SetBackgroundColour(*wxLIGHT_GREY);
-
-	mOnBitmap  = &OnBitmap;
-	mOffBitmap = &OffBitmap;
-	mOnSelBitmap = &OnSelBitmap;
-	mOffSelBitmap = &OffSelBitmap;
+	mOnBitmap     = OnBitmap;
+	mOffBitmap    = OffBitmap;
+	mOnSelBitmap  = OnSelBitmap;
+	mOffSelBitmap = OffSelBitmap;
 	m_id = id;
 
     int total_width = 0, total_height = 0 ;
@@ -81,7 +77,7 @@ kwxBmpCheckBox::kwxBmpCheckBox(wxWindow* parent,
 	membitmap = new wxBitmap(total_width, total_height) ;
 }
 
-void kwxBmpCheckBox::SetLabel(wxString label)
+void kwxBmpCheckBox::SetLabel(const wxString& label)
 {
 	mLabelStr = label;
 }
@@ -91,7 +87,7 @@ void kwxBmpCheckBox::OnPaint(wxPaintEvent& WXUNUSED(event))
 	wxPaintDC old_dc(this);
 
 	int w,h;
-	int bdraw = 0 ;
+	bool bdraw = false;
 
 	GetClientSize(&w,&h);
 
@@ -101,52 +97,37 @@ void kwxBmpCheckBox::OnPaint(wxPaintEvent& WXUNUSED(event))
 	wxMemoryDC dc;
 	dc.SelectObject(*membitmap);
 
-
 	dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID));
 	dc.Clear();
 
 	///////////////////
 
-
 	// se impostato n bitmap lo disegno
     //if (mOffBitmap)
-	if(m_stato == 0)
-	{
-		if(m_bPress)
-			dc.DrawBitmap(*mOnBitmap, 0, 0, TRUE);
-		else
-			dc.DrawBitmap(*mOffBitmap, 0, 0, TRUE);
-		bdraw = 0 ;
-	}
-	else if(m_stato == 1)
-	{
-		if(m_bPress)
-			dc.DrawBitmap(*mOnSelBitmap, 0, 0, TRUE);
-		else
-			dc.DrawBitmap(*mOffSelBitmap, 0, 0, TRUE);
-		bdraw = 1 ;
-	}
-	else if(m_stato == 2)
-	{
-		if(m_bPress)
-			dc.DrawBitmap(*mOffSelBitmap, 0, 0, TRUE);
-		else
-			dc.DrawBitmap(*mOnSelBitmap, 0, 0, TRUE);
-		bdraw = 1 ;
-	}
+    switch (m_stato)
+    {
+        case 0:
+            dc.DrawBitmap(m_bPress ? mOnBitmap : mOffBitmap, 0, 0, true);
+            bdraw = false;
+            break;
+        case 1:
+            dc.DrawBitmap(m_bPress ? mOnSelBitmap : mOffSelBitmap, 0, 0, true);
+            bdraw = true;
+            break;
+        case 2:
+            dc.DrawBitmap(m_bPress ? mOffSelBitmap : mOnSelBitmap, 0, 0, true);
+            bdraw = true;
+    }
 
-	if(m_bBord)
-	{
-		if(bdraw)
-		{
-			// Cornice intorno
-			dc.SetPen(*wxThePenList->FindOrCreatePen(*wxRED, 1, m_nStyle));
-			dc.DrawLine(0, 0, 0, h - 1);
-			dc.DrawLine(0, 0, w, 0);
-			dc.DrawLine(0, h - 1, w, h - 1);
-			dc.DrawLine(w - 1, 0, w - 1, h - 1);
-		}
-	}
+	if (m_bBord && bdraw)
+    {
+        // Cornice intorno
+        dc.SetPen(*wxThePenList->FindOrCreatePen(*wxRED, 1, m_nStyle));
+        dc.DrawLine(0, 0, 0, h - 1);
+        dc.DrawLine(0, 0, w, 0);
+        dc.DrawLine(0, h - 1, w, h - 1);
+        dc.DrawLine(w - 1, 0, w - 1, h - 1);
+    }
 
 	// We can now draw into the memory DC...
 	// Copy from this DC to another DC.
@@ -164,7 +145,9 @@ void kwxBmpCheckBox::OnMouse(wxMouseEvent& event)
 		GetEventHandler()->ProcessEvent(ev);
 	}
 	else if (m_stato == 1 && event.LeftDown())
+	{
 		m_stato = 2;	// uscita click sul bottone
+	}
 	else if (m_stato >= 1 && event.Leaving())
 	{
 		m_stato = 0;	// uscita mouse dal bottone
@@ -178,14 +161,12 @@ void kwxBmpCheckBox::OnMouse(wxMouseEvent& event)
 		m_bPress = !m_bPress ;
 		Click();		// rilascio sul bottone genera evento
 		m_stato = 1;
-
 	}
 
-
-	if(m_oldstato != m_stato)
+	if (m_oldstato != m_stato)
 		Refresh();
-	m_oldstato=m_stato;
 
+	m_oldstato = m_stato;
 	event.Skip();
 }
 
