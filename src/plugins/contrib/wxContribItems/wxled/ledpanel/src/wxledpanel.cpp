@@ -72,7 +72,7 @@ bool wxLEDPanel::Create(wxWindow* parent, wxWindowID id, const wxSize& ledsize,
         return false;
 
     // initialise MatrixObjekt
-    m_field.Init(0,fieldsize.GetWidth(),fieldsize.GetHeight());
+    m_field.Init(nullptr,fieldsize.GetWidth(),fieldsize.GetHeight());
 
     // default backgroundcolor is black (call parent, to prevent the call of PrepareBackground)
     wxWindow::SetBackgroundColour(*wxBLACK);

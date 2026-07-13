@@ -68,6 +68,15 @@ You have to #include <wx/tglbtn.h> for EVT_TOGGLEBUTTON
 #ifndef _WX_CUSTOMBUTTON_H_
 #define _WX_CUSTOMBUTTON_H_
 
+#include "wx/bitmap.h"
+#include "wx/control.h"
+#include "wx/defs.h"
+#include "wx/event.h"
+#include "wx/gdicmn.h"
+#include "wx/string.h"
+#include "wx/timer.h"
+#include "wx/validate.h"
+#include "wx/window.h"
 #include "wx/things/thingdef.h"
 
 class WXDLLIMPEXP_FWD_BASE wxTimer;
@@ -173,8 +182,8 @@ public:
     //   all bitmaps will be centered accordingly in any case
     //   call SetSet(GetBestSize()) if you change their size and want the control to resize appropriately
     void SetBitmapLabel(const wxBitmap& bitmap);
-    void SetBitmapSelected(const wxBitmap& sel)      { m_bmpSelected = sel; CalcLayout(true); };
-    void SetBitmapFocus(const wxBitmap& focus)       { m_bmpFocus = focus; CalcLayout(true); };
+    void SetBitmapSelected(const wxBitmap& sel)      { m_bmpSelected = sel;      CalcLayout(true); };
+    void SetBitmapFocus(const wxBitmap& focus)       { m_bmpFocus    = focus;    CalcLayout(true); };
     void SetBitmapDisabled(const wxBitmap& disabled) { m_bmpDisabled = disabled; CalcLayout(true); };
     // wxBitmapButton compatibility
     void SetLabel(const wxBitmap& bitmap)            { SetBitmapLabel(bitmap); }
@@ -212,20 +221,19 @@ protected:
 
     // hack for finding the size this should be before creation
     // we cannot call SetSize() if this is a child of toolbar in GTK w/o crashing
-    virtual wxSize DoGetBestSize() const;
+    virtual wxSize DoGetBestSize()       const override;
     wxSize DoGetBestSize_(wxWindow* win) const;
 
     virtual void SendEvent();
 
     void OnMouseEvents(wxMouseEvent &event);
-
     void OnTimer(wxTimerEvent &event);
-    void OnSize( wxSizeEvent &event );
+    void OnSize(wxSizeEvent &event);
 
     virtual void CalcLayout(bool refresh);
 
-    int m_down;         // toggle state if m_down%2 then depressed
-    bool m_focused;     // mouse in window
+    int  m_down;         // toggle state if m_down%2 then depressed
+    bool m_focused;      // mouse in window
     long m_button_style;
 
     wxString m_labelString;

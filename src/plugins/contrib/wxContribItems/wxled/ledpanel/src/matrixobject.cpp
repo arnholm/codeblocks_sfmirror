@@ -16,18 +16,18 @@
 #include "wx/matrixobject.h"
 
 MatrixObject::MatrixObject() :
-	m_data(0), m_width(0), m_height(0), m_length(0)
+	m_data(nullptr), m_width(0), m_height(0), m_length(0)
 {
 }
 
 MatrixObject::MatrixObject(const char* data, int width, int height) :
-	m_data(0)
+	m_data(nullptr)
 {
 	Init(data,width,height);
 }
 
 MatrixObject::MatrixObject(const MatrixObject& mo) :
-	m_data(0)
+	m_data(nullptr)
 {
 	Init(mo);
 }
@@ -47,7 +47,7 @@ MatrixObject& MatrixObject::operator=(const MatrixObject& mo)
 void MatrixObject::Init(const char* data, int width, int height)
 {
 	// auf gleichheit testen
-	if(m_data == data && data!=0)
+	if(m_data == data && data!=nullptr)
 	{
 		wxLogMessage(wxT("Error. You cant init the Object with itself!"));
 		return;
@@ -129,7 +129,7 @@ void MatrixObject::Destroy()
 	if(!m_data) return;
 
 	delete m_data;
-	m_data=0;
+	m_data=nullptr;
 	m_length=m_width=m_height=0;
 }
 

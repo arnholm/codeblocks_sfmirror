@@ -6,7 +6,7 @@ BEGIN_EVENT_TABLE (wxStateLed , wxWindow)
     EVT_PAINT (wxStateLed ::OnPaint)
 END_EVENT_TABLE ()
 
-wxStateLed ::wxStateLed (wxWindow * parent, wxWindowID id, wxColour disabledColor, const wxPoint & pos, const wxSize & size)
+wxStateLed ::wxStateLed (wxWindow * parent, wxWindowID id, wxColour disabledColor, const wxPoint & /*pos*/, const wxSize & /*size*/)
 {
     Create(parent, id, disabledColor);
 }

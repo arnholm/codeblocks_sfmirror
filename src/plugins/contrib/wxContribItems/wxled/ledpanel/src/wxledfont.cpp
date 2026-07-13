@@ -49,7 +49,7 @@ void wxLEDFont::SetFontType(wxLEDFontType t)
 	// SPACE without fit
 	m_letters[ms_LettersChar[0]]= new MatrixObject(lettersData,m_LetterWidth,m_LetterHeight);
 	// all the other letters
-	AdvancedMatrixObject* tmp=0;
+	AdvancedMatrixObject* tmp=nullptr;
 	for(unsigned int i=1;i<ms_LettersChar.Len();++i)
 	{
 		tmp=new AdvancedMatrixObject(lettersData+i*m_LetterWidth*m_LetterHeight*sizeof(char),m_LetterWidth,m_LetterHeight);
@@ -92,7 +92,7 @@ AdvancedMatrixObject* wxLEDFont::GetMOForText(const wxString& text, wxAlignment 
 
 	// create matrixobject for the text
 	AdvancedMatrixObject* mo_forText=new AdvancedMatrixObject(
-					0,w*(m_LetterWidth+m_letterspace),
+					nullptr,w*(m_LetterWidth+m_letterspace),
 					h*(m_LetterHeight+m_letterspace)-m_letterspace);
 
 	// create array for the textlines
@@ -101,7 +101,7 @@ AdvancedMatrixObject* wxLEDFont::GetMOForText(const wxString& text, wxAlignment 
 	// create the AMOs fo the textlines
 	for (int i = 0;i <= h; ++i)
 		mo_lines[i]=new AdvancedMatrixObject(
-							0,w*(m_LetterWidth+m_letterspace),
+							nullptr,w*(m_LetterWidth+m_letterspace),
 							m_LetterHeight);
 
 	// Get the Letters and save in the MO of the line

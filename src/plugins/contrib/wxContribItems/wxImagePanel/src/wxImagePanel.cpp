@@ -32,7 +32,7 @@ wxImagePanel::wxImagePanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, 
     mBitmap  = wxNullBitmap;
     mStretch = false;
 
-    Connect(wxEVT_PAINT, (wxObjectEventFunction)&wxImagePanel::DoPaint, 0, this);
+    Connect(wxEVT_PAINT, (wxObjectEventFunction)&wxImagePanel::DoPaint, nullptr, this);
 
 };
 
@@ -67,11 +67,13 @@ bool    wxImagePanel::GetStretch(void) {
 
 //-----------------------------------------------------------------------------
 
-void    wxImagePanel::DoPaint(wxPaintEvent& event) {
+void    wxImagePanel::DoPaint(wxPaintEvent& /*event*/) {
 int         ww, wh;
 int         bw, bh;
 double      sx, sy;
+/**
 wxColour    cc;
+**/
 wxBrush     brush;
 wxPaintDC   dc(this);
 

@@ -37,7 +37,7 @@ void AdvancedMatrixObject::RotateLeft()
 	if(IsEmpty()) return;
 
 	// create tmp-object
-	MatrixObject tmp=MatrixObject(0,m_height,m_width);
+	MatrixObject tmp=MatrixObject(nullptr,m_height,m_width);
 
 	int x, y;
 	for(x=0;x<m_width;++x)
@@ -57,7 +57,7 @@ void AdvancedMatrixObject::RotateRight()
 	if(IsEmpty()) return;
 
 	// create tmp-object
-	MatrixObject tmp=MatrixObject(0,m_height,m_width);
+	MatrixObject tmp=MatrixObject(nullptr,m_height,m_width);
 
 	int x, y;
 	for(x=0;x<m_width;++x)

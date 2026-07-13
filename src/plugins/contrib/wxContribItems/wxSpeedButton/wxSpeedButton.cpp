@@ -137,7 +137,7 @@ bool wxSpeedButton::Create( wxWindow       *inParent,           // parent window
     wxString    name;
     wxPoint     pos;
     wxSize      size;
-    wxString    s;
+//    wxString    s;
 
 // make sure we can load images
 
