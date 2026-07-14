@@ -559,7 +559,8 @@ void ProjectManagerUI::RebuildTree()
 
 void ProjectManagerUI::FreezeTree()
 {
-    if (!m_pTree)
+   ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    if (!m_pTree || pPrjMgr->GetSkipTreeFreeze() )
         return;
 
     ++m_TreeFreezeCounter;
@@ -568,7 +569,8 @@ void ProjectManagerUI::FreezeTree()
 
 void ProjectManagerUI::UnfreezeTree(cb_unused bool force)
 {
-    if (!m_pTree)
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    if (!m_pTree || pPrjMgr->GetSkipTreeFreeze() )
         return;
 
     if (m_TreeFreezeCounter)

@@ -448,6 +448,18 @@ class DLLIMPORT ProjectManager : public Mgr<ProjectManager>, public wxEvtHandler
         cbProject* FindProjectForFile(const wxString& file, ProjectFile **resultFile,
                                       bool isRelative, bool isUnixFilename);
 
+        /** Tell the Freeze() function to ignore or enable further freezes.
+        *   This avoids the race condition in windows and crash in CodeBlocks
+        *   when multiple rapid Freeze() and Thaw() calls are stacked in CloseAllProjects()
+        *   and the workspace contains a large number of projects.
+        *   By utilizing the m_skipTreeFreeze flag, this will bypassed the comctl32.dll
+        *   race condition without losing visual optimization features during regular
+        *   development tasks (like expanding nodes, switching targets, or parsing files.
+        */
+        void SetSkipTreeFreeze(bool skip) { m_skipTreeFreeze = skip; }
+        bool GetSkipTreeFreeze() { return m_skipTreeFreeze;}
+
+
     private:
         ProjectManager();
         ~ProjectManager() override;
@@ -468,6 +480,8 @@ class DLLIMPORT ProjectManager : public Mgr<ProjectManager>, public wxEvtHandler
         wxString             m_InitialDir;
         bool                 m_CanSendWorkspaceChanged;
         cbPlugin*            m_RunningPlugin;
+
+        bool m_skipTreeFreeze = false;
 
         DECLARE_EVENT_TABLE()
 };

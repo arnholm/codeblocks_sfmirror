@@ -409,7 +409,9 @@ bool ProjectManager::CloseAllProjects(bool dontsave)
             return false;
     }
 
-    m_ui->FreezeTree();
+    // Tell the UI layer to ignore native freeze commands during bulk deletion
+    SetSkipTreeFreeze(true);
+
     m_IsClosingProject = true;
     while (m_pProjects->GetCount() != 0)
     {
@@ -425,12 +427,14 @@ bool ProjectManager::CloseAllProjects(bool dontsave)
 
     if (!Manager::IsAppShuttingDown())
         m_ui->RebuildTree();
-    m_ui->UnfreezeTree(true);
 
     if (!m_InitialDir.IsEmpty())
         wxFileName::SetCwd(m_InitialDir);
     m_IsClosingProject = false;
     WorkspaceChanged();
+
+    // Re-enable normal freeze/thaw behaviors for standard file loading/sorting
+    SetSkipTreeFreeze(false);
 
     long time = timer.Time();
     if (time >= 100)
