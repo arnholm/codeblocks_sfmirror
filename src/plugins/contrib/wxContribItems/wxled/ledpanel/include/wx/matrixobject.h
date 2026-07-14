@@ -49,7 +49,7 @@ class DLLEXPORT MatrixObject
         const char* GetData() const {return m_data;}
 
         // Has Data
-        bool HasData() const {return ((m_data==nullptr)?(false):(true));}
+        bool HasData() const {return m_data != nullptr;}
 
 		// all fields null?
         bool IsEmpty() const;
