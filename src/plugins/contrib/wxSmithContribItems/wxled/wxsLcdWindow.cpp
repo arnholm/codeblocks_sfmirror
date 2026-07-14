@@ -52,7 +52,7 @@ void wxsLcdWindow::OnBuildCreatingCode()
     {
         case wxsCPP:
             AddHeader(_T("<wx/lcdwindow.h>"),GetInfo().ClassName);
-            Codef(_T("%C(%W,%P,%S);\n"));
+            Codef(_T("%C(%W,%I,%P,%S);\n"));
             Codef( _T( "%ASetNumberDigits( %d);\n"), static_cast<int>(NumberOfDigits));
             if( ColourLight.GetColour() != wxColour( 00, 255, 00))
                 Codef( _T( "%ASetLightColour( %s);\n"), s1.wx_str());
@@ -72,7 +72,7 @@ void wxsLcdWindow::OnBuildCreatingCode()
 
 wxObject* wxsLcdWindow::OnBuildPreview(wxWindow* Parent,cb_unused long Flags)
 {
-    wxLCDWindow* test = new wxLCDWindow( Parent, Pos( Parent), Size( Parent));
+    wxLCDWindow* test = new wxLCDWindow(Parent, wxID_ANY, Pos(Parent), Size(Parent));
     test->SetNumberDigits( NumberOfDigits);
     if( Content.Len() > 0)
         test->SetValue( Content);
