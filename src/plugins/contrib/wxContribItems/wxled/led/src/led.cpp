@@ -11,40 +11,34 @@
 
 #include "wx/led.h"
 
-#include <string.h>
+#include <array>
+
+#define WX_LED_WIDTH       17
+#define WX_LED_HEIGHT      17
+#define WX_LED_COLORS      5
+#define WX_LED_XPM_COLS    (WX_LED_WIDTH + 1)
+#define WX_LED_XPM_LINES   (1 + WX_LED_COLORS + WX_LED_HEIGHT)
 
 BEGIN_EVENT_TABLE (wxLed, wxWindow)
     EVT_PAINT (wxLed::OnPaint)
 END_EVENT_TABLE ()
 
-wxLed::wxLed(wxWindow * parent, wxWindowID id, wxColour disableColour, wxColour onColour, wxColour offColour, const wxPoint & pos, const wxSize & size)
+wxLed::wxLed(wxWindow *parent, wxWindowID id, const wxColour &disableColour, const wxColour &onColour, const wxColour &offColour, const wxPoint &pos, const wxSize &size)
 {
     Create(parent, id, disableColour, onColour, offColour);
 }
 
-wxLed::wxLed ()
+bool wxLed::Create(wxWindow *parent, wxWindowID id, const wxColour &disableColour, const wxColour &onColour, const wxColour &offColour)
 {
-
-}
-
-wxLed::~wxLed ()
-{
-    delete m_bitmap ;
-}
-
-bool wxLed::Create(wxWindow * parent, wxWindowID id, wxColour disableColour, wxColour onColour, wxColour offColour)
-{
-    if(!wxWindow::Create(parent, id, wxDefaultPosition, wxDefaultSize))
+    if (!wxWindow::Create(parent, id, wxDefaultPosition, wxDefaultSize))
         return false;
 
-    m_bitmap    = NULL;
-    m_isEnabled = true ;
+    m_isEnable  = false;
     m_isOn      = false;
     m_Disable   = disableColour;
     m_On        = onColour;
     m_Off       = offColour;
     Enable();
-
     return true;
 }
 
@@ -57,11 +51,7 @@ bool wxLed::Enable(bool enable)
         return false;
 
     m_isEnable = true;
-    if( m_isOn)
-        SetBitmap(m_On.GetAsString( wxC2S_HTML_SYNTAX));
-    else
-        SetBitmap(m_Off.GetAsString( wxC2S_HTML_SYNTAX));
-
+    SetBitmap(m_isOn ? m_On : m_Off);
     return true;
 }
 
@@ -71,65 +61,60 @@ bool wxLed::Disable()
         return false;
 
     m_isEnable = false;
-    SetBitmap(m_Disable.GetAsString( wxC2S_HTML_SYNTAX));
+    SetBitmap(m_Disable);
     return true;
 }
 
-void wxLed::Switch(void)
+void wxLed::Switch()
 {
-    if( m_isEnable)
+    if (m_isEnable)
     {
         m_isOn = !m_isOn;
-        if(m_isOn)
-            SetBitmap (m_On.GetAsString( wxC2S_HTML_SYNTAX)) ;
-        else
-            SetBitmap (m_Off.GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_isOn ? m_On : m_Off);
     }
 }
 
-void wxLed::SwitchOn(void)
+void wxLed::SwitchOn()
 {
-    if( m_isEnable)
+    if (m_isEnable)
     {
         m_isOn = true;
-        SetBitmap (m_On.GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_On);
     }
 }
 
-void wxLed::SwitchOff( void)
+void wxLed::SwitchOff()
 {
-    if( m_isEnable)
+    if (m_isEnable)
     {
         m_isOn = false;
-        SetBitmap (m_Off.GetAsString( wxC2S_HTML_SYNTAX)) ;
+        SetBitmap(m_Off);
     }
 }
 
-void wxLed::SetOnColour (wxColour rgb)
+void wxLed::SetOnColour(const wxColour &rgb)
 {
     m_On = rgb;
-    if (m_isEnabled && m_isOn)
-        SetBitmap (m_On.GetAsString( wxC2S_HTML_SYNTAX)) ;
-
+    if (m_isEnable && m_isOn)
+        SetBitmap(m_On);
 }
 
-void wxLed::SetOffColour(wxColour rgb)
+void wxLed::SetOffColour(const wxColour &rgb)
 {
     m_Off = rgb;
-    if (m_isEnabled && !m_isOn)
-        SetBitmap (m_Off.GetAsString( wxC2S_HTML_SYNTAX)) ;
+    if (m_isEnable && !m_isOn)
+        SetBitmap(m_Off);
 }
 
-void wxLed::SetDisableColour(wxColour rgb)
+void wxLed::SetDisableColour(const wxColour &rgb)
 {
     m_Disable = rgb;
-    if (!m_isEnabled)
-        SetBitmap (m_Disable.GetAsString( wxC2S_HTML_SYNTAX)) ;
+    if (!m_isEnable)
+        SetBitmap(m_Disable);
 }
 
-void wxLed::SetOnOrOff( bool on)
+void wxLed::SetOnOrOff(bool on)
 {
-
     m_isOn = on;
     if (m_isEnable)
     {
@@ -140,81 +125,55 @@ void wxLed::SetOnOrOff( bool on)
     }
 }
 
-bool wxLed::IsEnabled( void)
+void wxLed::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
-    return m_isEnabled;
+    wxPaintDC dc(this);
+    wxCoord w, h;
+    dc.GetSize(&w, &h);
+    dc.DrawBitmap(m_bitmap, (w-m_bitmap.GetWidth())/2, (h-m_bitmap.GetHeight())/2, true);
 }
 
-bool wxLed::IsOn(void)
+void wxLed::SetBitmap(const wxColour &color)
 {
-    return m_isOn;
-}
+    std::array <char *, WX_LED_XPM_LINES>                 xpm;
+    std::array <char,   WX_LED_XPM_LINES*WX_LED_XPM_COLS> xpmData;
+    for (int i = 0 ; i < WX_LED_XPM_LINES ; ++i)
+        xpm[i] = xpmData.data()+i*WX_LED_XPM_COLS;
 
-void wxLed::OnPaint (wxPaintEvent & WXUNUSED (event))
-{
-    wxPaintDC dc (this) ;
-    m_mutex.Lock () ;
-    dc.DrawBitmap (* m_bitmap, 0, 0, true) ;
-    m_mutex.Unlock () ;
-}
+    const wxString c2s = color.GetAsString(wxC2S_HTML_SYNTAX);
 
-#define WX_LED_WIDTH    17
-#define WX_LED_HEIGHT   17
-#define WX_LED_COLORS    5
-#define WX_LED_XPM_COLS    (WX_LED_WIDTH + 1)
-#define WX_LED_XPM_LINES   (1 + WX_LED_COLORS + WX_LED_HEIGHT)
-
-void wxLed::SetBitmap (wxString color)
-{
-    char ** xpm = NULL ;
-    char * xpmData = NULL ;
-    xpm = new char * [WX_LED_XPM_LINES] ;
-    if (xpm == NULL)
-        goto end ;
-    xpmData = new char [WX_LED_XPM_LINES * WX_LED_XPM_COLS] ;
-    if (xpmData == NULL)
-        goto end ;
-    for (int i = 0 ; i < WX_LED_XPM_LINES ; i ++)
-        xpm [i] = xpmData + i * WX_LED_XPM_COLS ;
     // width height num_colors chars_per_pixel
-    sprintf (xpm [0], "%d %d %d 1", WX_LED_WIDTH, WX_LED_HEIGHT, WX_LED_COLORS) ;
+    sprintf(xpm[0], "%d %d %d 1", WX_LED_WIDTH, WX_LED_HEIGHT, WX_LED_COLORS);
     // colors
-    strncpy (xpm [1], "  c None", WX_LED_XPM_COLS) ;
-    strncpy (xpm [2], "- c #C0C0C0", WX_LED_XPM_COLS) ;
-    strncpy (xpm [3], "_ c #F8F8F8", WX_LED_XPM_COLS) ;
-    strncpy (xpm [4], "* c #FFFFFF", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS], "X c ", WX_LED_XPM_COLS) ;
-    strncpy ((xpm [WX_LED_COLORS]) + 4, color.char_str(), 8) ;
+    strncpy(xpm[1], "  c None", WX_LED_XPM_COLS);
+    strncpy(xpm[2], "- c #C0C0C0", WX_LED_XPM_COLS);
+    strncpy(xpm[3], "_ c #F8F8F8", WX_LED_XPM_COLS);
+    strncpy(xpm[4], "* c #FFFFFF", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS], "X c ", WX_LED_XPM_COLS);
+    strncpy((xpm[WX_LED_COLORS]) + 4, c2s.char_str(), 8);
     // pixels
-    strncpy (xpm [WX_LED_COLORS +  1], "      -----      ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  2], "    ---------    ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  3], "   -----------   ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  4], "  -----XXX----_  ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  5], " ----XX**XXX-___ ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  6], " ---X***XXXXX___ ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  7], "----X**XXXXXX____", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  8], "---X**XXXXXXXX___", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS +  9], "---XXXXXXXXXXX___", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 10], "---XXXXXXXXXXX___", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 11], "----XXXXXXXXX____", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 12], " ---XXXXXXXXX___ ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 13], " ---_XXXXXXX____ ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 14], "  _____XXX_____  ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 15], "   ___________   ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 16], "    _________    ", WX_LED_XPM_COLS) ;
-    strncpy (xpm [WX_LED_COLORS + 17], "      _____      ", WX_LED_XPM_COLS) ;
-    m_mutex.Lock () ;
-    delete m_bitmap ;
-    m_bitmap = new wxBitmap (xpm) ;
-    if (m_bitmap == NULL)
-    {
-        m_mutex.Unlock () ;
-        goto end ;
-    }
-    SetSize (wxSize (m_bitmap->GetWidth (), m_bitmap->GetHeight ())) ;
-    m_mutex.Unlock () ;
-    Refresh () ;
-end :
-    delete [] xpm ;
-    delete [] xpmData ;
+    strncpy(xpm[WX_LED_COLORS +  1], "      -----      ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  2], "    ---------    ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  3], "   -----------   ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  4], "  -----XXX----_  ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  5], " ----XX**XXX-___ ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  6], " ---X***XXXXX___ ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  7], "----X**XXXXXX____", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  8], "---X**XXXXXXXX___", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS +  9], "---XXXXXXXXXXX___", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 10], "---XXXXXXXXXXX___", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 11], "----XXXXXXXXX____", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 12], " ---XXXXXXXXX___ ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 13], " ---_XXXXXXX____ ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 14], "  _____XXX_____  ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 15], "   ___________   ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 16], "    _________    ", WX_LED_XPM_COLS);
+    strncpy(xpm[WX_LED_COLORS + 17], "      _____      ", WX_LED_XPM_COLS);
+    m_bitmap = wxBitmap(xpm.data());
+    Refresh ();
+}
+
+wxSize wxLed::DoGetBestClientSize() const
+{
+    return wxSize(WX_LED_WIDTH, WX_LED_HEIGHT);
 }
