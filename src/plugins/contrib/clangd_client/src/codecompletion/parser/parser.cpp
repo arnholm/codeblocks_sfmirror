@@ -2619,6 +2619,7 @@ void Parser::OnLSP_RequestedSymbolsResponse(wxCommandEvent& event)
     }
 
     if (not pProject) pProject = Manager::Get()->GetProjectManager()->GetActiveProject();
+    if (not pProject) return;
     ProcessLanguageClient* pClient = GetLSPClient();
 
     // Queue the the json data to OnLSP_ParseDocumentSymbols() event, passing it the json pointer
