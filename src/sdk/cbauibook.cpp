@@ -27,6 +27,8 @@
 #include <wx/tooltip.h>
 #include <wx/wupdlock.h>
 
+//#include "logmanager.h"   // **Debugging**
+
 // static
 bool cbAuiNotebook::s_AllowMousewheel = true;
 cbAuiNotebookArray cbAuiNotebook::s_cbAuiNotebookArray;
@@ -618,7 +620,86 @@ void cbAuiNotebook::OnNavigationKeyNotebook(wxNavigationKeyEvent& event)
         wxAuiNotebook::OnNavigationKeyNotebook(event);
     }
 }
+// ----------------------------------------------------------------------------
+#if wxCHECK_VERSION(3, 3, 0) //wx 3.3.0 and beyond
+// ----------------------------------------------------------------------------
+wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
+{
+    wxString tabs, tabsTmp;
+    wxArrayString panes;
 
+    UpdateTabControlsArray();
+
+    wxAuiPaneInfoArray& all_panes = m_mgr.GetAllPanes();
+    const size_t pane_count = all_panes.GetCount();
+    for (size_t i = 0; i < pane_count; ++i)
+    {
+        wxAuiPaneInfo& pane = all_panes.Item(i);
+        if (pane.name == wxT("dummy"))
+            continue;
+
+        wxAuiTabCtrl* tabCtrl = nullptr;
+        for (size_t j = 0; j < m_TabCtrls.GetCount(); ++j)
+        {
+            if (pane.window == GetTabFrameFromTabCtrl(m_TabCtrls.Item(j)))
+            {
+                tabCtrl = m_TabCtrls.Item(j);
+                break;
+            }
+        }
+
+        if (tabCtrl)
+        {
+            tabsTmp.Clear();
+            size_t page_count = tabCtrl->GetPageCount();
+            for (size_t p = 0; p < page_count; ++p)
+            {
+                wxAuiNotebookPage& page = tabCtrl->GetPage(p);
+                const size_t page_idx = m_tabs.GetIdxFromWindow(page.window);
+                wxString id = UniqueIdFromTooltip(GetPageToolTip(page_idx));
+
+                if (id.BeforeLast(':').empty())
+                    continue;
+                if (!projectTitle.empty() && id.BeforeLast(':') != projectTitle)
+                    continue;
+
+                if (!tabsTmp.empty())
+                    tabsTmp += ",";
+
+                if ((int)page_idx == m_curPage)
+                    tabsTmp += "*";
+                else if ((int)p == tabCtrl->GetActivePage())
+                    tabsTmp += "+";
+
+                tabsTmp += wxString::Format("%zu", page_idx);
+                tabsTmp += ";";
+                tabsTmp += id;
+            }
+
+            if (!tabsTmp.empty())
+            {
+                if (!tabs.empty())
+                    tabs += "|";
+
+                panes.Add(pane.name);
+                tabs += pane.name;
+                tabs += "=";
+                tabs += tabsTmp;
+            }
+        }//endif tabctrl
+    }//endfor
+
+    tabs += "@";
+
+    return tabs;
+
+}//end SavePerspective() for 3.3.0
+#endif // wx 3.3.0
+
+// ----------------------------------------------------------------------------
+#if !wxCHECK_VERSION(3, 3, 0) //wx 3.2.0 and previous (note the !)
+// ----------------------------------------------------------------------------
+// older SavePerspecctive before wx 3.3.0
 wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
 {
     // Build list of panes/tabs
@@ -715,6 +796,7 @@ wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
 
     return tabs;
 }
+#endif // wx 3.2.0
 
 wxString cbAuiNotebook::UniqueIdFromTooltip(const wxString& text)
 {
@@ -743,11 +825,16 @@ int cbAuiNotebook::GetTabIndexFromTooltip(const wxString& text)
 // ----------------------------------------------------------------------------
 #if wxCHECK_VERSION(3, 3, 0) //wx 3.3.0 and beyond
 // ----------------------------------------------------------------------------
-
 bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 {
     if (layout.IsEmpty())
         return false;
+
+    // **Debugging**
+    // LogManager* pLogMgr = Manager::Get()->GetLogManager();
+    // pLogMgr->DebugLog(wxString::Format("LoadPerspective input: %s", layout));
+    // pLogMgr->DebugLog(wxString::Format("LoadPerspective length: %zu", layout.Length()));
+
 
     // 1. Snapshot all open windows and their properties (including tooltips) before detaching.
     struct PageSnapshot {
@@ -821,7 +908,6 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 
     wxString tabs = layout.BeforeFirst(wxT('@'));
     wxString frames = layout.AfterFirst(wxT('@'));
-    bool firstTabInCtrl = !currentLayout.empty();
 
     // 3. Rebuild split notebook elements
     while (1)
@@ -872,19 +958,9 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
                 }
             }
 
-            if (firstTabInCtrl)
-            {
-                this->AddPage(targetWnd, matchingSnap.caption, false, matchingSnap.bitmap);
-                this->SetPageToolTip(this->GetPageCount() - 1, matchingSnap.tooltip); // Re-apply tooltip
+            this->AddPage(targetWnd, matchingSnap.caption, false, matchingSnap.bitmap);
+            this->SetPageToolTip(this->GetPageCount() - 1, matchingSnap.tooltip); // Re-apply tooltip
 
-                size_t newPageIdx = this->GetPageCount() - 1;
-                this->Split(newPageIdx, wxRIGHT);
-            }
-            else
-            {
-                this->AddPage(targetWnd, matchingSnap.caption, false, matchingSnap.bitmap);
-                this->SetPageToolTip(this->GetPageCount() - 1, matchingSnap.tooltip); // Re-apply tooltip
-            }
 
             size_t currentNewIdx = this->GetPageCount() - 1;
             if (marker == wxT('*'))
@@ -897,12 +973,11 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
                 sel_page = currentNewIdx;
             }
 
-            firstTabInCtrl = false;
             found = true;
         }
-        firstTabInCtrl = true;
         tabs = tabs.AfterFirst(wxT('|'));
-    }
+
+    }//endwhile(1)
 
     // 4. Restore any orphaned tabs
     for (size_t s = 0; s < windowSnapshots.size(); ++s)
@@ -927,12 +1002,12 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
         }
     }
 
-    // 5. Load the perspective and update the AUI manager FIRST
+    // 5. Load the perspective and update the AUI manager FIRST // (ai 26/07/12)
     if (mergeLayouts && !currentLayout.IsEmpty())
     {
         m_mgr.LoadPerspective(currentLayout);
     }
-    else if (found && !frames.IsEmpty())
+    else if (found && !frames.IsEmpty() && frames != wxT("layout3|"))
     {
         m_mgr.LoadPerspective(frames);
     }
@@ -954,15 +1029,13 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
     this->Thaw();
     return true;
 }
-
 // ----------------------------------------------------------------------------
-#endif //3.3.0
+#endif //wx 3.3.0
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
 #if !wxCHECK_VERSION(3, 3, 0) // wx 3.2.x and before. (Note the !)
 // ----------------------------------------------------------------------------
-
 bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 {
     if (layout.IsEmpty())
@@ -1175,6 +1248,8 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 #endif // not 3.3.0
 // ----------------------------------------------------------------------------
 
+// This is the original wx 3.2 code that no longer works in wx 3.3 (2026/07/13)
+// Remove this after wx 3.3 and wx 3.2 works ok for awhile
 
 //bool cbAuiNotebook::LoadPerspective(const wxString& layout) {
 //   // Remove all tab ctrls (but still keep them in main index)
