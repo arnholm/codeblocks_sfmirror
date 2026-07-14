@@ -73,7 +73,7 @@ wxsBmpCheckbox::wxsBmpCheckbox(wxsItemResData *Data) :
 {
 }
 
-/*! \brief Destructor.
+/*! \brief Destructor
  */
 wxsBmpCheckbox::~wxsBmpCheckbox()
 {
@@ -90,9 +90,9 @@ void wxsBmpCheckbox::OnBuildCreatingCode()
     {
         case wxsCPP:
         {
-            AddHeader(_T("<wx/KWIC/BmpCheckBox.h>"), GetInfo().ClassName);
-            // Write different code depending on whether the bitmaps are set or wxNullBitmap is used.
+            AddHeader(_T("\"wx/KWIC/BmpCheckBox.h\""), GetInfo().ClassName);
 
+            // Write different code depending on whether the bitmaps are set or wxNullBitmap is used
             wxString sOn;
             if (m_bdOn.IsEmpty())
             {
@@ -189,14 +189,13 @@ wxObject *wxsBmpCheckbox::OnBuildPreview(wxWindow *parent, long flags)
 void wxsBmpCheckbox::OnEnumWidgetProperties(cb_unused long Flags)
 {
     static const long    arrBorderStyles[] = {wxSOLID, wxDOT, wxLONG_DASH, wxSHORT_DASH, wxDOT_DASH};  //!< Border styles array.
-    static const wxChar* arrStyleNames[] = { _T("wxSOLID"), _T("wxDOT"), _T("wxLONG_DASH"), _T("wxSHORT_DASH"), _T("wxDOT_DASH"), nullptr };  //!< Border style names array.
+    static const wxChar* arrStyleNames[]   = {_T("wxSOLID"), _T("wxDOT"), _T("wxLONG_DASH"), _T("wxSHORT_DASH"), _T("wxDOT_DASH"), nullptr};  //!< Border style names array.
 
-    WXS_BOOL(wxsBmpCheckbox, m_bBorder, _("Show Border"), _T("show_border"), true)
-    WXS_ENUM(wxsBmpCheckbox, m_iBorderStyle, _("Border Style"), _T("border_style"), arrBorderStyles, arrStyleNames, wxDOT);
-    WXS_BOOL(wxsBmpCheckbox, m_bChecked, _("Checked"), _T("checked"), false)
-    WXS_BITMAP(wxsBmpCheckbox, m_bdOn, _("On Bitmap"),_T("bitmap_on"), _T("wxART_OTHER"))
-    WXS_BITMAP(wxsBmpCheckbox, m_bdOff, _("Off Bitmap"),_T("bitmap_off"), _T("wxART_OTHER"))
-    WXS_BITMAP(wxsBmpCheckbox, m_bdOnSel, _("On Selected Bitmap"),_T("bitmap_on_selected"), _T("wxART_OTHER"))
-    WXS_BITMAP(wxsBmpCheckbox, m_bdOffSel, _("Off Selected Bitmap"),_T("bitmap_off_selected"), _T("wxART_OTHER"))
+    WXS_BOOL(wxsBmpCheckbox,   m_bBorder,      _("Show Border"),         _T("show_border"),         true)
+    WXS_ENUM(wxsBmpCheckbox,   m_iBorderStyle, _("Border Style"),        _T("border_style"),        arrBorderStyles, arrStyleNames, wxDOT);
+    WXS_BOOL(wxsBmpCheckbox,   m_bChecked,     _("Checked"),             _T("checked"),             false)
+    WXS_BITMAP(wxsBmpCheckbox, m_bdOn,         _("On Bitmap"),           _T("bitmap_on"),           _T("wxART_OTHER"))
+    WXS_BITMAP(wxsBmpCheckbox, m_bdOff,        _("Off Bitmap"),          _T("bitmap_off"),          _T("wxART_OTHER"))
+    WXS_BITMAP(wxsBmpCheckbox, m_bdOnSel,      _("On Selected Bitmap"),  _T("bitmap_on_selected"),  _T("wxART_OTHER"))
+    WXS_BITMAP(wxsBmpCheckbox, m_bdOffSel,     _("Off Selected Bitmap"), _T("bitmap_off_selected"), _T("wxART_OTHER"))
 }
-

@@ -15,11 +15,11 @@
 #define BMPCHECKBOX_H
 
 #ifdef __WXMSW__
-    #ifndef DLLEXPORT
-	      #define DLLEXPORT __declspec (dllexport)
-    #endif
+#ifndef DLLEXPORT
+#define DLLEXPORT __declspec (dllexport)
+#endif
 #else
-    #define DLLEXPORT
+#define DLLEXPORT
 #endif
 
 ////////////////// Custom events /////////////////////////
@@ -36,58 +36,58 @@ const wxEventType kwxEVT_BITBUTTON_CLICK	= kwxEVT_BITBUTTON_FIRST + 1;
 
 //////////////////////////////////////////////////////////
 
-
 class DLLEXPORT kwxBmpCheckBox : public wxControl
 {
-
 public:
     // ctor(s)
-    kwxBmpCheckBox(void) : m_id(wxID_ANY), membitmap(nullptr) {}
+    kwxBmpCheckBox() = default;
 
     kwxBmpCheckBox(wxWindow *parent,
                    const wxWindowID id          = wxID_ANY,
-				   const wxBitmap& OnBitmap	    = wxNullBitmap,
+                   const wxBitmap& OnBitmap	    = wxNullBitmap,
                    const wxBitmap& OffBitmap	= wxNullBitmap,
-				   const wxBitmap& OnSelBitmap	= wxNullBitmap,
-				   const wxBitmap& OffSelBitmap	= wxNullBitmap,
-				   const wxPoint&  pos          = wxDefaultPosition,
-				   const wxSize&   size         = wxDefaultSize,
-				   long int        style        = 0);
+                   const wxBitmap& OnSelBitmap	= wxNullBitmap,
+                   const wxBitmap& OffSelBitmap	= wxNullBitmap,
+                   const wxPoint&  pos          = wxDefaultPosition,
+                   const wxSize&   size         = wxDefaultSize,
+                   long int        style        = 0);
 
+    virtual ~kwxBmpCheckBox() = default;
 
-	virtual ~kwxBmpCheckBox();
+    void SetBorder(bool bord, wxPenStyle style)
+    {
+        m_bBord = bord;
+        m_nStyle = style;
+    }
 
-    void	SetLabel(const wxString& str) override; // Change button label.
-	void	SetBorder(bool bord, wxPenStyle style) {m_bBord = bord ; m_nStyle = style ;}
-	bool	GetState() const {return m_bPress;}
-	void	SetState(bool newstate);
+    bool GetState() const
+    {
+        return m_bPress;
+    }
+
+    void SetState(bool newstate);
+
+protected:
+    wxSize DoGetBestClientSize() const override;
 
 private:
-
-	DECLARE_DYNAMIC_CLASS(kwxBmpCheckBox)
+    DECLARE_DYNAMIC_CLASS(kwxBmpCheckBox)
     // any class wishing to process wxWindows events must use this macro
     DECLARE_EVENT_TABLE()
 
-	void	OnPaint(wxPaintEvent& event);
-	void	OnMouse(wxMouseEvent& event);
-	void	Click();
+    void OnPaint(wxPaintEvent& event);
+    void OnMouse(wxMouseEvent& event);
 
-	wxWindowID GetID() const {return m_id;}
+    int m_stato;
+    int m_oldstato;
+    bool m_bPress;
+    bool m_bBord;
+    wxPenStyle m_nStyle;
 
-	wxWindowID m_id;
-	int m_stato;
-	int m_oldstato;
-	bool m_bPress;
-	bool m_bBord;
-	wxPenStyle m_nStyle;
-
-	wxString mLabelStr;
     wxBitmap mOffBitmap;
-	wxBitmap mOnBitmap;
-	wxBitmap mOffSelBitmap;
-	wxBitmap mOnSelBitmap;
-	wxBitmap* membitmap;
-
+    wxBitmap mOnBitmap;
+    wxBitmap mOffSelBitmap;
+    wxBitmap mOnSelBitmap;
 };
 
 #endif
