@@ -88,7 +88,7 @@ NassiDataObject::~NassiDataObject()
 NassiBrick *NassiDataObject::GetBrick()
 {
     NassiBrick* ptr = m_firstbrick;
-    m_firstbrick = 0;
+    m_firstbrick = nullptr;
     return ptr;
 }
 
@@ -188,5 +188,5 @@ bool NassiDataObject::GetDataHere(const wxDataFormat& format, void *pBuf) const
 
 bool NassiDataObject::HasBrick()
 {
-    return m_firstbrick != 0;
+    return m_firstbrick != nullptr;
 }

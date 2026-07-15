@@ -221,7 +221,7 @@ wxCommand *NassiView::Delete()
         return new NassiDeleteCommand( m_nfc, first, last);
     }
 
-    return 0;
+    return nullptr;
 }
 
 void NassiView::Cut()
@@ -256,7 +256,7 @@ void NassiView::CopyBricks()
 
     if ( !m_nfc->GetFirstBrick() ) return;
 
-    NassiDataObject *ndo = 0;
+    NassiDataObject *ndo = nullptr;
     if ( HasSelectedBricks() )
     {
         NassiBrick *first = nullptr,
@@ -518,15 +518,15 @@ HooverDrawlet *NassiView::OnMouseMove(wxMouseEvent &event, const wxPoint &pos)
 
     // if no Task is active, we check if hovering over text
     GraphNassiBrick *gbrick = GetBrickAtPosition(pos);
-    if ( !HasSelection() && gbrick && gbrick->IsOverText(pos) != 0 )
+    if ( !HasSelection() && gbrick && gbrick->IsOverText(pos) != nullptr )
     {
         cursorOverText = true;
         m_diagramwindow->SetCursor(wxCursor(wxCURSOR_IBEAM));
-        return 0;
+        return nullptr;
     }
-    else
-        // show the normal arrow cursor
-        m_diagramwindow->SetCursor(wxCursor(wxCURSOR_ARROW));
+
+    // show the normal arrow cursor
+    m_diagramwindow->SetCursor(wxCursor(wxCURSOR_ARROW));
 
     if ( DragPossible )
     {
@@ -538,7 +538,7 @@ HooverDrawlet *NassiView::OnMouseMove(wxMouseEvent &event, const wxPoint &pos)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void NassiView::OnMouseLeftDown(wxMouseEvent &event, const wxPoint &pos)
@@ -670,7 +670,7 @@ void NassiView::OnKeyDown(wxKeyEvent &event)
     if ( !hasSelectedBricks ) return;
     if ( kcode == WXK_DOWN || kcode == WXK_NUMPAD_DOWN || kcode == WXK_UP || kcode == WXK_NUMPAD_UP )
     {
-        if ( lastSelectedGBrick == 0 )
+        if ( lastSelectedGBrick == nullptr )
             lastSelectedGBrick = firstSelectedGBrick;
         NassiBrick *brick;
         if ( !event.ShiftDown() )
@@ -730,7 +730,7 @@ void NassiView::OnKeyDown(wxKeyEvent &event)
         else
             SelectLast(GetGraphBrick(brick));
     }
-    if ( lastSelectedGBrick != 0 || event.ShiftDown() ) return;
+    if ( lastSelectedGBrick != nullptr || event.ShiftDown() ) return;
     //ClearSelection();
     if ( kcode == WXK_RIGHT || kcode == WXK_NUMPAD_RIGHT )
     {
@@ -763,7 +763,7 @@ void NassiView::OnChar(wxKeyEvent &event)
 
 void NassiView::SetTask(Task* task)
 {
-    SelectFirst(0);
+    SelectFirst(nullptr);
     if ( itsTask )
         delete itsTask;
 
@@ -776,7 +776,7 @@ void NassiView::RemoveTask()
 {
     if ( itsTask )
         delete itsTask;
-    itsTask = 0;
+    itsTask = nullptr;
     ClearSelection();
     m_diagramwindow->SetCursor(wxCursor(wxCURSOR_ARROW));
 }
@@ -786,9 +786,9 @@ void NassiView::ClearSelection()
     hasSelectedBricks = false;
     reverseSelected = false;
     ChildIndicatorIsSelected = false;
-    firstSelectedGBrick = 0;
-    lastSelectedGBrick = 0;
-    ChildIndicatorParent = 0;
+    firstSelectedGBrick = nullptr;
+    lastSelectedGBrick = nullptr;
+    ChildIndicatorParent = nullptr;
 
     for ( BricksMap::iterator  it = m_GraphBricks.begin() ; it != m_GraphBricks.end() ; it++)
     {
@@ -807,9 +807,9 @@ void NassiView::SelectFirst(GraphNassiBrick *gfirst)
     hasSelectedBricks = true;
     reverseSelected = false;
     ChildIndicatorIsSelected = false;
-    ChildIndicatorParent = 0;
+    ChildIndicatorParent = nullptr;
     firstSelectedGBrick = gfirst;
-    lastSelectedGBrick = 0;
+    lastSelectedGBrick = nullptr;
 
     gfirst->SetActive(true, true);
 
@@ -834,7 +834,7 @@ void NassiView::Select(GraphNassiBrick *gfirst, GraphNassiBrick *glast)
     NassiBrick *first = gfirst->GetBrick();
     NassiBrick *last  = glast->GetBrick();
     ChildIndicatorIsSelected = false;
-    ChildIndicatorParent = 0;
+    ChildIndicatorParent = nullptr;
 
     if ( !first || !last )
     {
@@ -916,7 +916,7 @@ void NassiView::Select(GraphNassiBrick *gfirst, GraphNassiBrick *glast)
             if ( first != last )
                 first = first->GetNext();
             else
-                first = 0;
+                first = nullptr;
 
         }while ( first );
 
@@ -960,7 +960,7 @@ void NassiView::SelectChildIndicator(GraphNassiBrick *gbrick, wxUint32 child)
 void NassiView::SelectAll()
 {
     ChildIndicatorIsSelected = false;
-    ChildIndicatorParent = 0;
+    ChildIndicatorParent = nullptr;
     NassiBrick *brick = m_nfc->GetFirstBrick();
     if ( !brick )
     {
@@ -1061,7 +1061,7 @@ void NassiView::DragStart()
         }
     }
 
-    wxDataObject *dataptr  = 0;
+    wxDataObject *dataptr = nullptr;
 
     if ( HasSelectedBricks() )
     {
@@ -1125,10 +1125,10 @@ void NassiView::OnDragLeave()
 void NassiView::OnDragEnter()
 {}
 
-wxDragResult NassiView::OnDrop(const wxPoint &pos, NassiBrick *brick, wxString strc, wxString strs, wxDragResult def)
+wxDragResult NassiView::OnDrop(const wxPoint &pos, NassiBrick *brick, const wxString &strc, const wxString &strs, wxDragResult def)
 {
     wxDragResult res = def;
-    wxCommand *delcmd = 0, *addcmd = 0;
+    wxCommand *delcmd = nullptr, *addcmd = nullptr;
     if ( !m_nfc->GetFirstBrick() )
     {
         wxRect rect = GetEmptyRootRect();
@@ -1194,7 +1194,7 @@ HooverDrawlet *NassiView::OnDragOver(const wxPoint &pos, wxDragResult &def, bool
         else
         {
             def = wxDragNone;
-            return 0;
+            return nullptr;
         }
     }
 
@@ -1202,12 +1202,12 @@ HooverDrawlet *NassiView::OnDragOver(const wxPoint &pos, wxDragResult &def, bool
     if ( gbrick )
     {
         HooverDrawlet *drawlet = gbrick->GetDrawlet(pos, HasNoBricks);
-        if ( drawlet == 0 ) def = wxDragNone;
+        if ( drawlet == nullptr ) def = wxDragNone;
         return drawlet;
     }
 
     def = wxDragNone;
-    return 0;
+    return nullptr;
 }
 
 void NassiView::ExportCSource()
@@ -1636,7 +1636,7 @@ GraphNassiBrick *NassiView::GetBrickAtPosition(const wxPoint &pos)
         if ( gbrick->HasPoint(pos) )
             return gbrick;
     }
-    return 0;
+    return nullptr;
 }
 
 void NassiView::ShowCaret(bool show)

@@ -32,7 +32,7 @@ public:
     NassiBrick *SetPrevious(NassiBrick *prev);
     NassiBrick *SetParent(NassiBrick *brick);
     virtual wxUint32 GetChildCount() const { return 0;}
-    virtual NassiBrick *GetChild(wxUint32 /*n*/ = 0) const { return 0;}
+    virtual NassiBrick *GetChild(wxUint32 /*n*/ = 0) const { return nullptr;}
     virtual NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0);
     virtual void RemoveChild(wxUint32 /*pos*/) { return; }//only for switch elsif blocks
     virtual void AddChild(wxUint32 /*pos*/) { return; }//only for switch elsif blocks
@@ -86,7 +86,7 @@ public:
     }
 
     wxUint32 GetChildCount() const override {return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return nullptr;}
     NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
     void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
     const wxString *GetTextByNumber(wxUint32 n=0) const override;
@@ -112,7 +112,7 @@ public:
     }
 
     wxUint32 GetChildCount() const  override{return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return nullptr;}
     NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
     void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
     const wxString *GetTextByNumber(wxUint32 n = 0) const override;
@@ -143,7 +143,7 @@ public:
     }
     NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override
     {
-        return 0;
+        return nullptr;
     }
     NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
     void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
@@ -167,7 +167,7 @@ public:
     virtual ~NassiReturnBrick();
     NassiBrick *Clone() const override {return new NassiReturnBrick(*this);}
     wxUint32 GetChildCount() const override {return 0;}
-    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return 0;}
+    NassiBrick *GetChild(wxUint32 /*n*/ = 0) const override {return nullptr;}
     NassiBrick *SetChild(NassiBrick *brick, wxUint32 n = 0) override;
     void SetTextByNumber(const  wxString &str, wxUint32 n = 0) override;
     const wxString *GetTextByNumber(wxUint32 n = 0) const override;

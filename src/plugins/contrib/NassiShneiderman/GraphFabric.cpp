@@ -17,7 +17,7 @@ GraphNassiBrick *GraphFabric::CreateGraphBrick(NassiBrick *brick)
         brick->accept(this);
         return gbrick;
     }
-    return 0;
+    return nullptr;
 }
 
 GraphFabric::~GraphFabric(){}

@@ -102,7 +102,7 @@ class NassiView : public FileContentObserver
         NassiFileContent *m_nfc;
 
     public:
-        void Update( wxObject* hint = 0 );
+        void Update(wxObject* hint = nullptr);
     private:
         void UpdateSize();
         static const wxPoint offset;
@@ -193,7 +193,7 @@ class NassiView : public FileContentObserver
         bool DragPossible;
         bool ThisIsDnDSource;
     public:
-        wxDragResult OnDrop(const wxPoint &pt, NassiBrick *brick, wxString strc, wxString strs, wxDragResult def);
+        wxDragResult OnDrop(const wxPoint &pt, NassiBrick *brick, const wxString &strc, const wxString &strs, wxDragResult def);
         HooverDrawlet *OnDragOver(const wxPoint &pt, wxDragResult &def, bool HasNoBricks);
         void OnDragLeave();
         void OnDragEnter();

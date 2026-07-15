@@ -48,10 +48,8 @@ void PasteTask::OnMouseLeftDown(wxMouseEvent& /*event*/, const wxPoint &position
         if ( rect.Contains(position) )
         {
             NassiBrick *brick = m_brick;
-            m_brick = 0;
-            m_nfc->GetCommandProcessor()->Submit(
-                new NassiInsertFirstBrick(m_nfc, brick)
-            );
+            m_brick = nullptr;
+            m_nfc->GetCommandProcessor()->Submit(new NassiInsertFirstBrick(m_nfc, brick));
             m_done = true;
         }
         return;
@@ -65,25 +63,25 @@ void PasteTask::OnMouseLeftDown(wxMouseEvent& /*event*/, const wxPoint &position
         {
             m_nfc->GetCommandProcessor()->Submit(
                 new NassiInsertBrickAfter( m_nfc, gbrick->GetBrick(), m_brick ));
-            m_brick = 0;
+            m_brick = nullptr;
         }
         else if (m_brick && (p.pos == GraphNassiBrick::Position::top ))
         {
             m_nfc->GetCommandProcessor()->Submit(
                 new NassiInsertBrickBefore(m_nfc, gbrick->GetBrick(), m_brick ));
-            m_brick = 0;
+            m_brick = nullptr;
         }
         else if ( m_brick && ( p.pos == GraphNassiBrick::Position::child ))
         {
             m_nfc->GetCommandProcessor()->Submit(
                 new NassiInsertChildBrickCommand(m_nfc, gbrick->GetBrick(), m_brick, p.number));
-            m_brick = 0;
+            m_brick = nullptr;
         }
         else if ( p.pos == GraphNassiBrick::Position::childindicator )
         {
             m_nfc->GetCommandProcessor()->Submit(
                 new NassiAddChildIndicatorCommand(m_nfc, gbrick->GetBrick(), m_brick, p.number, m_strc, m_strs));
-            m_brick = 0;
+            m_brick = nullptr;
         }
         m_done = true;
     }
@@ -104,13 +102,13 @@ HooverDrawlet *PasteTask::OnMouseMove(wxMouseEvent& /*event*/, const wxPoint &po
         if ( rect.Contains(position) )
             return new RedHatchDrawlet(rect);
         else
-            return 0;
+            return nullptr;
     }
 
     GraphNassiBrick *gbrick = m_view->GetBrickAtPosition(position);
     if ( gbrick )
         return gbrick->GetDrawlet(position, false);
-    return 0;
+    return nullptr;
 }
 
 void PasteTask::OnKeyDown(wxKeyEvent &event)

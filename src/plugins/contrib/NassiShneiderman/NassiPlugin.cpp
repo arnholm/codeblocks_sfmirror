@@ -236,7 +236,7 @@ void NassiPlugin::BuildMenu(wxMenuBar* menuBar)
     #endif
 
 
-    wxMenu* filenewmenu = 0;
+    wxMenu* filenewmenu = nullptr;
     int pos = filemenu->FindItem( _("New") );
     if ( pos != wxNOT_FOUND )
     {
@@ -282,7 +282,7 @@ void NassiPlugin::BuildModuleMenu(const ModuleType type, wxMenu* menu, const Fil
     cbStyledTextCtrl* stc = ((cbEditor*)edb)->GetControl();
     if ( !stc ) return;
 
-    wxMenu *NassiMenu = 0;
+    wxMenu *NassiMenu = nullptr;
 
     // check if user can select to generate a diagram from selection
     if ( stc->GetLexer() == wxSCI_LEX_CPP && stc->GetSelectionEnd() - stc->GetSelectionStart() > 0 )

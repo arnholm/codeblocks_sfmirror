@@ -255,7 +255,7 @@ void NassiDiagramWindow::OnKillFocus(wxFocusEvent & /*event*/)
     RemoveDrawlet(dc);
 }
 
-wxDragResult NassiDiagramWindow::OnDrop(const wxPoint &pt, NassiBrick *brick, wxString strc, wxString strs, wxDragResult def )
+wxDragResult NassiDiagramWindow::OnDrop(const wxPoint &pt, NassiBrick *brick, const wxString &strc, const wxString &strs, wxDragResult def)
 {
     wxClientDC dc(this);
     DoPrepareDC(dc);

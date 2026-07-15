@@ -175,7 +175,7 @@ HooverDrawlet *GraphNassiBrick::GetDrawlet(const wxPoint &pos, bool HasNoBricks)
     Position p = GetPosition(pos);
 
     if ( p.pos == Position::none || HasNoBricks )
-        return 0;
+        return nullptr;
 
     if ( p.pos == Position::top )
         return new RedLineDrawlet(m_offset, GetWidth());
@@ -183,7 +183,7 @@ HooverDrawlet *GraphNassiBrick::GetDrawlet(const wxPoint &pos, bool HasNoBricks)
     return new RedLineDrawlet( m_offset + wxPoint(0, GetHeight()-1), GetWidth() );
 
 //    if ( IsActive() || !HasPoint(pos) || HasNoBricks  )
-//        return 0;
+//        return nullptr;
 //    wxPoint offset = GetOffset();
 //    wxUint32 height = GetHeight();
 //    if ( 2*pos.y > 2*offset.y + height )
@@ -252,7 +252,7 @@ HooverDrawlet *GraphNassiMinimizableBrick::GetDrawlet(const wxPoint & pos, bool 
     Position p = GetPosition(pos);
 
     if ( p.pos == Position::none || HasNoBricks )
-        return 0;
+        return nullptr;
 
     if ( p.pos == Position::top )
         return new RedLineDrawlet(m_offset, GetWidth());
@@ -509,11 +509,13 @@ void GraphNassiBreakBrick::CalcMinSize(wxDC *dc, wxPoint &size)
 
 TextGraph *GraphNassiBreakBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
         return &comment;
 
-    return 0;
+    return nullptr;
 }
 
 
@@ -613,11 +615,13 @@ void GraphNassiContinueBrick::CalcMinSize(wxDC *dc, wxPoint &size)
 
 TextGraph *GraphNassiContinueBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
         return &comment;
 
-    return 0;
+    return nullptr;
 }
 
 
@@ -753,13 +757,16 @@ void GraphNassiReturnBrick::CalcMinSize(wxDC *dc, wxPoint &size)
 
 TextGraph *GraphNassiReturnBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if (!m_visible)
+        return nullptr;
+
     if (m_view->IsDrawingComment() && comment.HasPoint(pos))
         return &comment;
+
     if (m_view->IsDrawingSource() && source.HasPoint(pos))
         return &source;
 
-    return 0;
+    return nullptr;
 }
 
 
@@ -1102,13 +1109,15 @@ bool GraphNassiIfBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiIfBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( this->IsMinimized() )
     {
         if ( m_view->IsDrawingComment() && commentHead.HasPoint(pos))
             return &commentHead;
         else
-            return 0;
+            return nullptr;
     }
     if ( m_view->IsDrawingComment() )
     {
@@ -1122,7 +1131,7 @@ TextGraph *GraphNassiIfBrick::IsOverText(const wxPoint &pos)
     if (  m_view->IsDrawingSource() && source.HasPoint(pos) )
         return &source;
 
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiIfBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -1412,20 +1421,24 @@ bool GraphNassiWhileBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiWhileBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( this->IsMinimized() )
     {
         if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
             return &comment;
         else
-            return 0;
+            return nullptr;
     }
+
     if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
         return &comment;
+
     if ( m_view->IsDrawingSource() && source.HasPoint(pos) )
         return &source;
 
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiWhileBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -1679,20 +1692,24 @@ bool GraphNassiDoWhileBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiDoWhileBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( this->IsMinimized() )
     {
         if (m_view->IsDrawingComment() && comment.HasPoint(pos) )
             return &comment;
         else
-            return 0;
+            return nullptr;
     }
+
     if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
         return &comment;
+
     if ( m_view->IsDrawingSource() && source.HasPoint(pos))
         return &source;
 
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiDoWhileBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -1945,20 +1962,24 @@ bool GraphNassiForBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiForBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( this->IsMinimized() )
     {
         if (m_view->IsDrawingComment() && comment.HasPoint(pos) )
             return &comment;
         else
-            return 0;
+            return nullptr;
     }
+
     if ( m_view->IsDrawingComment() && comment.HasPoint(pos) )
         return &comment;
+
     if ( m_view->IsDrawingSource() && source.HasPoint(pos))
         return &source;
 
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiForBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -2184,7 +2205,7 @@ bool GraphNassiBlockBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiBlockBrick::IsOverText(const wxPoint & /*pos*/)
 {
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiBlockBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -2658,28 +2679,33 @@ bool GraphNassiSwitchBrick::HasPoint(const wxPoint &pos)
 
 TextGraph *GraphNassiSwitchBrick::IsOverText(const wxPoint &pos)
 {
-    if ( !m_visible ) return 0;
+    if ( !m_visible )
+        return nullptr;
+
     if ( this->IsMinimized() )
     {
         if (m_view->IsDrawingComment() && comment.HasPoint(pos) )
             return &comment;
         else
-            return 0;
+            return nullptr;
     }
+
     if ( m_view->IsDrawingComment() )
     {   if ( comment.HasPoint(pos) ) return &comment;
         for ( wxUint32 i = 0 ; i < childcomment.size() ; i++ )
             if ( childcomments(i)->HasPoint(pos) )
                 return childcomments(i);
     }
+
     if ( m_view->IsDrawingSource() )
     {
         if ( source.HasPoint(pos) ) return &source;
         for ( wxUint32 i = 0 ; i < childsource.size() ; i++ )
-            if ( childsources(i)->HasPoint(pos) ) return childsources(i);
+            if ( childsources(i)->HasPoint(pos) )
+                return childsources(i);
     }
 
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiSwitchBrick::IsOverChild(const wxPoint &pos, wxRect *childRect, wxUint32 *childNumber)
@@ -2717,7 +2743,7 @@ TextGraph *GraphNassiSwitchBrick::childcomments(wxUint32 n)
         if ( textgraph )
             return textgraph;
     }
-    return 0;
+    return nullptr;
 }
 
 TextGraph *GraphNassiSwitchBrick::childsources(wxUint32 n)
@@ -2729,7 +2755,7 @@ TextGraph *GraphNassiSwitchBrick::childsources(wxUint32 n)
         if ( textgraph )
             return textgraph;
     }
-    return 0;
+    return nullptr;
 }
 
 bool GraphNassiSwitchBrick::HasActiveChildIndicator()
@@ -2842,7 +2868,7 @@ HooverDrawlet *GraphNassiSwitchBrick::GetDrawlet(const wxPoint & pos, bool /*Has
     Position p = GetPosition(pos);
 
     if ( p.pos == Position::none )
-        return 0;
+        return nullptr;
     if ( p.pos == Position::top )
         return new RedLineDrawlet(m_offset, GetWidth());
     if ( p.pos == Position::bottom )
@@ -2856,17 +2882,17 @@ HooverDrawlet *GraphNassiSwitchBrick::GetDrawlet(const wxPoint & pos, bool /*Has
 
     if ( m_brick->GetChildCount() == 0 )
         return new RedLineDrawlet(wxPoint(m_offset.x+m_b, m_offset.y), m_size.x - m_b);
-    else
+
+    wxPoint pt( m_offset.x + offsetToChildSeparator[p.number],
+                m_offset.y + offsetToChild[p.number]);
+
+    if ( p.number == m_brick->GetChildCount() )
     {
-        wxPoint pt( m_offset.x + offsetToChildSeparator[p.number],
-                    m_offset.y + offsetToChild[p.number]);
-        if ( p.number == m_brick->GetChildCount() )
-        {
-            pt.x = m_offset.x + m_b/2;
-            pt.y = m_offset.y + m_size.y - 1;
-        }
-        return new RedLineDrawlet(pt, m_offset.x + m_hw - pt.x );
+        pt.x = m_offset.x + m_b/2;
+        pt.y = m_offset.y + m_size.y - 1;
     }
+
+    return new RedLineDrawlet(pt, m_offset.x + m_hw - pt.x );
 }
 
 GraphNassiBrick::Position GraphNassiSwitchBrick::GetPosition(const wxPoint &pos)

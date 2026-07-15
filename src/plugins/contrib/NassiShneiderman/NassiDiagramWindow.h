@@ -51,7 +51,7 @@ private:
     void PaintBackground(wxDC &dc);
     void Draw(wxDC &dc);
 
-    bool HasFocus(){return this == this->FindFocus();}
+    bool HasFocus() const override {return this == this->FindFocus();}
     void OnKillFocus(wxFocusEvent &event);
     void OnSetFocus(wxFocusEvent &event);
 
@@ -60,7 +60,7 @@ private:
     HooverDrawlet *m_hd;
 
 public:
-    wxDragResult OnDrop(const wxPoint &pt, NassiBrick *brick, wxString strc, wxString strs, wxDragResult def);
+    wxDragResult OnDrop(const wxPoint &pt, NassiBrick *brick, const wxString &strc, const wxString &strs, wxDragResult def);
     wxDragResult OnDragOver(const wxPoint &pt, wxDragResult def, bool HasNoBricks);
     void OnDragLeave();
     void OnDragEnter();

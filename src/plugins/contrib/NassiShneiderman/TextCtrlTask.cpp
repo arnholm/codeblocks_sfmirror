@@ -171,10 +171,10 @@ void TextCtrlTask::OnMouseLeftUp(wxMouseEvent& /*event*/, const wxPoint& /*posit
 
 HooverDrawlet *TextCtrlTask::OnMouseMove(wxMouseEvent& /*event*/, const wxPoint& /*position*/)
 {
-    return 0;
+    return nullptr;
 }
 
-void TextCtrlTask::UnlinkTextGraph(){m_textgraph = 0;}
+void TextCtrlTask::UnlinkTextGraph() {m_textgraph = nullptr;}
 
 void TextCtrlTask::CloseTask()
 {

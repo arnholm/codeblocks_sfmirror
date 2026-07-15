@@ -31,11 +31,11 @@ public:
 
     bool Save(const wxString &filename);
     bool Open(const wxString &filename);
-    bool GetModified();
-    void SetModified( bool modified );
-    void Modify( bool modified );
-    void NotifyObservers(wxObject* hint = 0);
-    bool IsReadOnly();
+    bool GetModified() const;
+    void SetModified(bool modified);
+    void Modify(bool modified);
+    void NotifyObservers(wxObject* hint = nullptr);
+    bool IsReadOnly() const;
 
     virtual wxOutputStream& SaveObject(wxOutputStream& stream) = 0;
     virtual wxInputStream& LoadObject(wxInputStream& stream) = 0;

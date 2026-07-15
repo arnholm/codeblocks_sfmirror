@@ -65,10 +65,10 @@ public:
 
     virtual bool HasPoint(const wxPoint &pos);
     virtual TextGraph *IsOverText(const wxPoint &pos) = 0;
-    virtual bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0);
+    virtual bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr);
     NassiBrick *GetBrick(){ return m_brick; }
 
-    virtual bool IsOverChildIndicator(const wxPoint& /*pos*/, wxUint32* /*childNumber*/ = 0){return false;}
+    virtual bool IsOverChildIndicator(const wxPoint& /*pos*/, wxUint32* /*childNumber*/ = nullptr) {return false;}
     virtual wxUint32 ActiveChildIndicator(){return 0;}
     virtual bool SeparatesChildsVertically(){return true;}
     virtual bool HasActiveChildIndicator(){return false;}
@@ -89,7 +89,7 @@ protected:
 public:
     void SetActive(bool act = true, bool withChilds = false);
     bool IsActive(){return m_active;}
-    virtual void SetChildIndicatorActive(bool /*act*/ = true, wxUint32 /*child*/ = 0){}
+    virtual void SetChildIndicatorActive(bool /*act*/ = true, wxUint32 /*child*/ = 0) {}
 private:
     bool m_active;
 public:
@@ -121,7 +121,7 @@ public:
     virtual bool HasPoint(const wxPoint &pos) = 0;
     virtual TextGraph *IsOverText(const wxPoint &pos) = 0;
     virtual bool IsOverMinMaxBox(const wxPoint &pos);
-    virtual bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) = 0;
+    virtual bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) = 0;
     HooverDrawlet *GetDrawlet(const wxPoint &pos, bool HasNoBricks = false) override;
     GraphNassiBrick::Position GetPosition(const wxPoint &pos) override;
 private:
@@ -162,7 +162,7 @@ class GraphNassiIfBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
         // HooverDrawlet *GetDrawlet(const wxPoint &pos, bool HasNoBricks = false) override;
         GraphNassiBrick::Position GetPosition(const wxPoint &pos) override;
     private:
@@ -184,7 +184,7 @@ class GraphNassiWhileBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
     private:
         TextGraph comment;
         TextGraph source;
@@ -204,7 +204,7 @@ class GraphNassiDoWhileBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
     private:
         TextGraph comment;
         TextGraph source;
@@ -224,9 +224,9 @@ class GraphNassiSwitchBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
         bool HasActiveChildIndicator() override;
-        virtual bool IsOverChildIndicator(const wxPoint & pos, wxUint32 *childNumber = 0);
+        virtual bool IsOverChildIndicator(const wxPoint & pos, wxUint32 *childNumber = nullptr);
 
         virtual void SetChildIndicatorActive(bool act = true, wxUint32 child = 0);
         wxUint32 ActiveChildIndicator() override;
@@ -267,7 +267,7 @@ class GraphNassiBlockBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
     private:
         wxCoord m_hh;
 };
@@ -284,7 +284,7 @@ class GraphNassiForBrick : public GraphNassiMinimizableBrick
         void SetOffsetAndSize(wxDC *dc, wxPoint offset, wxPoint size) override;
         bool HasPoint(const wxPoint &pos) override;
         TextGraph *IsOverText(const wxPoint &pos) override;
-        bool IsOverChild(const wxPoint &pos, wxRect *childRect = 0, wxUint32 *childNumber = 0) override;
+        bool IsOverChild(const wxPoint &pos, wxRect *childRect = nullptr, wxUint32 *childNumber = nullptr) override;
     private:
         TextGraph comment;
         TextGraph source;

@@ -78,7 +78,7 @@ NassiBrick *NassiBrick::SetParent(NassiBrick *par)
 NassiBrick *NassiBrick::SetChild(NassiBrick *brick, wxUint32 /*n*/)
 {
 	delete brick;
-    return 0;
+    return nullptr;
 }
 
 bool NassiBrick::IsParent(NassiBrick *brick)
@@ -230,7 +230,7 @@ NassiInstructionBrick::~NassiInstructionBrick()
 NassiBrick *NassiInstructionBrick::SetChild(NassiBrick *brick, wxUint32 /*n*/)
 {
     delete brick;
-    return 0;
+    return nullptr;
 }
 
 void NassiInstructionBrick::SetTextByNumber(const  wxString &str, wxUint32 n)
@@ -300,7 +300,7 @@ NassiBreakBrick::~NassiBreakBrick(){}
 NassiBrick *NassiBreakBrick::SetChild(NassiBrick *brick, wxUint32 /*n*/)
 {
     delete brick;
-    return 0;
+    return nullptr;
 }
 
 void NassiBreakBrick::SetTextByNumber(const  wxString &str, wxUint32 n)
@@ -371,7 +371,7 @@ NassiContinueBrick::~NassiContinueBrick()
 NassiBrick *NassiContinueBrick::SetChild(NassiBrick *brick, wxUint32 /*n*/)
 {
     delete brick;
-    return 0;
+    return nullptr;
 }
 
 void NassiContinueBrick::SetTextByNumber(const  wxString &str, wxUint32 n)
@@ -386,8 +386,8 @@ const wxString *NassiContinueBrick::GetTextByNumber(wxUint32 n)const
 {
     if ( n == 0 )
         return &Comment;
-    else
-        return &Source;
+
+    return &Source;
 }
 
 void NassiContinueBrick::accept(NassiBrickVisitor *visitor)
@@ -438,7 +438,7 @@ NassiReturnBrick::~NassiReturnBrick()
 NassiBrick *NassiReturnBrick::SetChild(NassiBrick *brick, wxUint32 /*n*/)
 {
     delete brick;
-    return 0;
+    return nullptr;
 }
 
 void NassiReturnBrick::SetTextByNumber(const  wxString &str, wxUint32 n)
@@ -526,9 +526,9 @@ NassiIfBrick::NassiIfBrick(const NassiIfBrick &rhs):
 NassiIfBrick::~NassiIfBrick()
 {
     delete TrueChild;
-    TrueChild = 0;
+    TrueChild = nullptr;
     delete FalseChild;
-    FalseChild = 0;
+    FalseChild = nullptr;
 }
 
 NassiBrick *NassiIfBrick::GetChild(wxUint32 n) const
@@ -813,7 +813,7 @@ NassiBlockBrick::NassiBlockBrick(const NassiBlockBrick &rhs):
 NassiBlockBrick::~NassiBlockBrick()
 {
     delete Child;
-    Child = 0;
+    Child = nullptr;
 }
 
 NassiBrick *NassiBlockBrick::GetChild(wxUint32 /*n*/) const
@@ -1014,7 +1014,7 @@ NassiDoWhileBrick::NassiDoWhileBrick(const NassiDoWhileBrick &rhs):
 NassiDoWhileBrick::~NassiDoWhileBrick()
 {
     delete Child;
-    Child = 0;
+    Child = nullptr;
 }
 
 NassiBrick *NassiDoWhileBrick::GetChild(wxUint32 /*n*/) const

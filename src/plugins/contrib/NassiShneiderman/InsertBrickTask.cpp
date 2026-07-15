@@ -122,13 +122,14 @@ HooverDrawlet *InsertBrickTask::OnMouseMove(wxMouseEvent & /*event*/, const wxPo
         if ( rect.Contains(position) )
             return new RedHatchDrawlet(rect);
         else
-            return 0;
+            return nullptr;
     }
 
     GraphNassiBrick *gbrick = m_view->GetBrickAtPosition(position);
     if ( gbrick )
         return gbrick->GetDrawlet(position, false);
-    return 0;
+
+    return nullptr;
 }
 
 void InsertBrickTask::OnKeyDown(wxKeyEvent &event)
