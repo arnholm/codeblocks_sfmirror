@@ -146,7 +146,8 @@ public:
         m_data_object=new FEDataObject();
         SetDataObject(m_data_object);
     }
-    virtual wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def)
+
+    wxDragResult OnData(wxCoord x, wxCoord y, wxDragResult def) override
     {
         GetData();
         if(m_data_object->GetReceivedFormat().GetType()==wxDF_FILENAME )
@@ -180,19 +181,21 @@ public:
 //            }
         return wxDragCancel;
     }
-    virtual bool OnDrop(wxCoord /*x*/, wxCoord /*y*/, int /*tab*/, wxWindow */*wnd*/)
+
+    bool OnDrop(wxCoord /*x*/, wxCoord /*y*/) override
     {
         return true;
     }
-    virtual wxDragResult OnDragOver(wxCoord /*x*/, wxCoord /*y*/, wxDragResult def)
+
+    wxDragResult OnDragOver(wxCoord /*x*/, wxCoord /*y*/, wxDragResult def) override
     {
         return def;
     }
+
 private:
     FEDataObject *m_data_object;
     FileExplorer *m_fe;
 };
-
 
 
 BEGIN_EVENT_TABLE(FileTreeCtrl, wxTreeCtrl)
