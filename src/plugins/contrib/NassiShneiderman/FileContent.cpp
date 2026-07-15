@@ -13,7 +13,7 @@ FileContentObserver::~FileContentObserver(){}
 FileContent::FileContent():
     observers(),
     m_modified(false),
-    m_cmdProc(0)
+    m_cmdProc(nullptr)
 {
     if ( m_cmdProc ) delete m_cmdProc;
 }
@@ -43,7 +43,7 @@ bool FileContent::Open(const wxString &filename)
         return false;
 
     SetModified(false);
-    NotifyObservers(0);
+    NotifyObservers(nullptr);
     return true;
 }
 

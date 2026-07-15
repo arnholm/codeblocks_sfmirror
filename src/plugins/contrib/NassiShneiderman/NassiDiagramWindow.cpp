@@ -50,7 +50,7 @@ NassiDiagramWindow::NassiDiagramWindow(wxWindow *parent, NassiView *view):
         wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxWANTS_CHARS ),
         //dndpt(-1, -1),
         m_view(view),
-        m_hd(0)
+        m_hd(nullptr)
 {
     SetDropTarget( new NassiDropTarget(this, view) );
 

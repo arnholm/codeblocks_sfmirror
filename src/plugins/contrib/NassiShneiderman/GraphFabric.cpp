@@ -5,7 +5,7 @@
 
 GraphFabric::GraphFabric(NassiView *view, BricksMap *map):
     NassiBrickVisitor(),
-    gbrick(0),
+    gbrick(nullptr),
     m_view(view),
     m_map(map)
 {}

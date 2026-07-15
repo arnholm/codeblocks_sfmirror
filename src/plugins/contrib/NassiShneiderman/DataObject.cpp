@@ -21,7 +21,7 @@ const wxChar * NassiDataObject::NassiFormatId = _T("NassiDataFormat");
 NassiDataObject::NassiDataObject(NassiBrick *brick, NassiView *view, const wxString &strc, const wxString &strs):
     m_format(),
     m_dobjBitmap(),
-    m_firstbrick(0),
+    m_firstbrick(nullptr),
     m_hasBitmap(false),
     m_caseSource(strs),
     m_caseComment(strc)

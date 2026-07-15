@@ -15,7 +15,7 @@ TextGraph::TextGraph(NassiView *view, NassiBrick *brick, wxUint32 nmbr):
     m_brick(brick),
     m_nmbr(nmbr),
     m_str( brick->GetTextByNumber(nmbr) ),
-    m_editTask(0)
+    m_editTask(nullptr)
 {
     lineoffsets.clear();
     linesizes.clear();

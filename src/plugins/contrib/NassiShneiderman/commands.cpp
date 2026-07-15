@@ -556,7 +556,7 @@ NassiDeleteChildRootCommand::NassiDeleteChildRootCommand(NassiFileContent *nfc, 
     m_nfc(nfc),
     m_parent(parent),
     m_done(false),
-    m_delcmd(0),
+    m_delcmd(nullptr),
     m_childNmbr(childNumber)
 {
     m_strC = *parent->GetTextByNumber( 2*(childNumber+1) );

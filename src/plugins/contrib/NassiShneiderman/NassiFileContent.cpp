@@ -3,8 +3,7 @@
 
 #include <wx/intl.h>
 
-NassiFileContent::NassiFileContent():
-m_firstbrick(0)
+NassiFileContent::NassiFileContent() : m_firstbrick(nullptr)
 {
 }
 

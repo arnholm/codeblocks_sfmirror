@@ -18,7 +18,7 @@ NassiEditorPanel::EditorsSet NassiEditorPanel::m_AllEditors;
 NassiEditorPanel::NassiEditorPanel( const wxString &fileName, const wxString &title ):
     cbEditorPanel( fileName, title, new NassiFileContent() ),
     m_view(new NassiView((NassiFileContent *)m_filecontent )),
-    m_diagramwindow(0)
+    m_diagramwindow(nullptr)
 {
     //m_view = new NassiView((NassiFileContent *)m_filecontent);
     m_diagramwindow = m_view->CreateDiagramWindow(this);

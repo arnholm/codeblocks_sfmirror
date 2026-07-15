@@ -148,7 +148,7 @@ bool NassiEditorPanel::ParseC(const wxString &str)
     }
     else
     {
-        NassiBrick *brk = rootbrick->SetNext(0);
+        NassiBrick *brk = rootbrick->SetNext(nullptr);
         delete rootbrick;
         rootbrick = brk;
         wxCommandProcessor *prc = m_filecontent->GetCommandProcessor();

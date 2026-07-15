@@ -50,15 +50,15 @@ NassiView::NassiView(NassiFileContent *nfc):
     m_DrawSource(true),
     m_DrawComment(true),
     m_GraphBricks(),
-    m_diagramwindow(0),
-    m_graphFabric(0),
+    m_diagramwindow(nullptr),
+    m_graphFabric(nullptr),
     m_updated(false),
-    itsTask(0),
+    itsTask(nullptr),
     hasSelectedBricks(false),
     reverseSelected(false),
-    firstSelectedGBrick(0),
-    lastSelectedGBrick(0),
-    ChildIndicatorParent(0),
+    firstSelectedGBrick(nullptr),
+    lastSelectedGBrick(nullptr),
+    ChildIndicatorParent(nullptr),
     ChildIndicatorIsSelected(false),
     ChildIndicator(0),
     cursorOverText(false),
@@ -66,7 +66,7 @@ NassiView::NassiView(NassiFileContent *nfc):
     DragStartPoint(),
     DragPossible(false),
     ThisIsDnDSource(false),
-    m_txt(0)
+    m_txt(nullptr)
 {
     m_graphFabric = new GraphFabric(this, &m_GraphBricks);
     nfc->AddObserver(this);
