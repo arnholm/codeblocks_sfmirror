@@ -95,12 +95,12 @@ wxFlatNotebook::~wxFlatNotebook(void)
 
 void wxFlatNotebook::Init()
 {
-    m_popupWin = NULL;
+    m_popupWin = nullptr;
     m_sendPageChangeEvent = true;
 	m_bForceSelection = false;
 	m_nPadding = 6;
 	m_nFrom = 0;
-	m_pages = NULL;
+	m_pages = nullptr;
 	m_mainSizer = new wxBoxSizer(wxVERTICAL);
 	SetSizer(m_mainSizer);
 }
@@ -160,10 +160,9 @@ bool wxFlatNotebook::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos,
 
 bool wxFlatNotebook::SetFont(const wxFont& font)
 {
-	if ( m_pages != NULL )
-	{
+	if ( m_pages != nullptr )
 		m_pages->m_font = font;
-	}
+
 	return true;
 }
 
@@ -395,11 +394,8 @@ bool wxFlatNotebook::DeleteAllPages()
 		return false;
 
 	Freeze();
-	int i = 0;
-	for(; i<(int)m_windows.GetCount(); i++)
-	{
+	for(size_t i = 0; i < m_windows.GetCount(); ++i)
 		delete m_windows[i];
-	}
 
 	m_windows.Clear();
 	Thaw();
@@ -411,19 +407,13 @@ bool wxFlatNotebook::DeleteAllPages()
 
 wxWindow* wxFlatNotebook::GetCurrentPage() const
 {
-	int sel = m_pages->GetSelection();
-	if(sel < 0)
-		return NULL;
-
-	return m_windows[sel];
+	const int sel = m_pages->GetSelection();
+	return (sel < 0) ? nullptr : m_windows[sel];
 }
 
 wxWindow* wxFlatNotebook::GetPage(size_t page) const
 {
-	if(page >= m_windows.GetCount())
-		return NULL;
-
-	return m_windows[page];
+	return (page >= m_windows.GetCount()) ? nullptr : m_windows[page];
 }
 
 int wxFlatNotebook::GetPageIndex(wxWindow* win) const
@@ -463,7 +453,7 @@ void wxFlatNotebook::OnNavigationKey(wxNavigationKeyEvent& event)
 				m_popupWin->ShowModal();
 				m_popupWin->Destroy();
 				SetSelection((size_t)GetSelection());
-				m_popupWin = NULL;
+				m_popupWin = nullptr;
 			}
 			else if( m_popupWin )
 			{
@@ -635,7 +625,6 @@ void wxFlatNotebook::SetDisableTextColour(const wxColour& disable)
 	m_pages->m_disableTextColor = disable;
 }
 
-
 /// Gets first gradient colour
 const wxColour& wxFlatNotebook::GetGradientColorFrom()
 {
@@ -670,18 +659,18 @@ int wxFlatNotebook::GetPageImageIndex(size_t page)
 	return m_pages->GetPageImageIndex(page);
 }
 
-bool wxFlatNotebook::GetEnabled(size_t page)
+bool wxFlatNotebook::GetEnabled(size_t page) const
 {
 	return m_pages->GetEnabled(page);
 }
 
-void wxFlatNotebook::Enable(size_t page, bool enabled)
+void wxFlatNotebook::SetEnabled(size_t page, bool enabled)
 {
 	if(page >= m_windows.GetCount())
 		return;
 
 	m_windows[page]->Enable(enabled);
-	m_pages->Enable(page, enabled);
+	m_pages->SetEnabled(page, enabled);
 }
 
 const wxColour& wxFlatNotebook::GetNonActiveTabTextColour()
@@ -743,20 +732,20 @@ BEGIN_EVENT_TABLE(wxPageContainer, wxPanel)
 END_EVENT_TABLE()
 
 wxPageContainer::wxPageContainer(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
-: m_ImageList(NULL)
+: m_ImageList(nullptr)
 , m_iActivePage(-1)
-, m_pDropTarget(NULL)
+, m_pDropTarget(nullptr)
 , m_nLeftClickZone(wxFNB_NOWHERE)
 , m_customizeOptions(wxFNB_CUSTOM_ALL)
 {
-	m_pRightClickMenu = NULL;
+	m_pRightClickMenu = nullptr;
 	m_nXButtonStatus = wxFNB_BTN_NONE;
 	m_nArrowDownButtonStatus = wxFNB_BTN_NONE;
 	m_pParent = parent;
 	m_nRightButtonStatus = wxFNB_BTN_NONE;
 	m_nLeftButtonStatus = wxFNB_BTN_NONE;
 	m_nTabXButtonStatus = wxFNB_BTN_NONE;
-	m_customMenu = NULL;
+	m_customMenu = nullptr;
 	/// Patch (m_nTabStatus) ---- Ti-R ---- Enable to show next tab selected if user click
 	m_nTabStatus = wxFNB_BTN_NONE;
 
@@ -802,13 +791,13 @@ wxPageContainer::~wxPageContainer(void)
 	if(m_pRightClickMenu)
 	{
 		delete m_pRightClickMenu;
-		m_pRightClickMenu = NULL;
+		m_pRightClickMenu = nullptr;
 	}
 
 	if( m_customMenu )
 	{
 		delete m_customMenu;
-		m_customMenu = NULL;
+		m_customMenu = nullptr;
 	}
 }
 
@@ -824,7 +813,8 @@ void wxPageContainer::PopPageHistory(int page)
 {
 	int tabIdx(wxNOT_FOUND);
 	int where = m_history.Index(page);
-	while(where != wxNOT_FOUND){
+	while(where != wxNOT_FOUND)
+	{
 		tabIdx = m_history.Item(where);
 		m_history.Remove(page);
 		//remove all appearances of this page
@@ -832,10 +822,13 @@ void wxPageContainer::PopPageHistory(int page)
 	}
 
 	//update values
-	if(tabIdx != wxNOT_FOUND){
-		for(size_t i=0; i<m_history.size(); i++){
+	if(tabIdx != wxNOT_FOUND)
+	{
+		for(size_t i = 0; i < m_history.size(); ++i)
+		{
 			int &tt = m_history.Item(i);
-			if(tt > tabIdx){
+			if(tt > tabIdx)
+			{
 				tt--;
 			}
 		}
@@ -847,10 +840,10 @@ void wxPageContainer::PushPageHistory(int page)
 	if(page == wxNOT_FOUND)
 		return;
 
-	int where = m_history.Index(page);
-	if(where != wxNOT_FOUND){
+	const int where = m_history.Index(page);
+	if(where != wxNOT_FOUND)
 		m_history.Remove(page);
-	}
+
 	m_history.Insert(page, 0);
 }
 
@@ -1066,7 +1059,6 @@ void wxPageContainer::RotateLeft()
 		m_nFrom = 0;
 
 	Refresh();
-	return;
 }
 
 void wxPageContainer::RotateRight()
@@ -1266,7 +1258,7 @@ void wxPageContainer::DoSetSelection(size_t page)
 	{
 		//! fix for tabfocus
 		wxWindow* da_page = ((wxFlatNotebook *)m_pParent)->GetPage(page);
-		if ( da_page!=NULL )
+		if ( da_page != nullptr )
 			da_page->SetFocus();
 	}
 
@@ -1309,17 +1301,17 @@ void wxPageContainer::DeletePage(size_t page)
 
 bool wxPageContainer::IsTabVisible(size_t page)
 {
-	int iPage = (int)page;
-	int iLastVisiblePage = GetLastVisibleTab();
+	const int iPage = (int)page;
+	const int iLastVisiblePage = GetLastVisibleTab();
 
 	return iPage <= iLastVisiblePage && iPage >= m_nFrom;
 }
 
 int wxPageContainer::GetPreviousSelection() const
 {
-	if(m_history.empty()){
+	if(m_history.empty())
 		return wxNOT_FOUND;
-	}
+
 	//return the top of the heap
 	return m_history.Item(0);
 }
@@ -1332,16 +1324,20 @@ void wxPageContainer::DoDeletePage(size_t page)
 	PopPageHistory((int)page);
 
 	// same thing with the active page
-	if (m_iActivePage > (int)page || (int)page >= (int)(m_pagesInfoVec.Count())){
+	if (m_iActivePage > (int)page || (int)page >= (int)(m_pagesInfoVec.Count()))
+	{
 		m_iActivePage -= 1;
-	}else if (m_iActivePage == (int)page){
+	}
+	else if (m_iActivePage == (int)page)
+	{
 		m_iActivePage = GetPreviousSelection();
 		//PopPageHistory(m_iActivePage);
  	}
 
 	m_pagesInfoVec.RemoveAt(page);
 
-	if(m_iActivePage == wxNOT_FOUND && m_pagesInfoVec.Count() > 0){
+	if(m_iActivePage == wxNOT_FOUND && m_pagesInfoVec.Count() > 0)
+	{
 		m_iActivePage = 0;
 	}
 
@@ -1543,23 +1539,19 @@ int wxPageContainer::GetLastVisibleTab()
 
 int wxPageContainer::GetNumTabsCanScrollLeft()
 {
-	if( m_nFrom - 1 >= 0){
-		return 1;
-	} else {
-		return 0;
-	}
+	return (m_nFrom - 1 >= 0) ? 1 : 0;
 }
 
 bool wxPageContainer::IsDefaultTabs()
 {
-	long style = GetParent()->GetWindowStyleFlag();
-	bool res = (style & wxFNB_VC71) || (style & wxFNB_FANCY_TABS) || (style & wxFNB_VC8);
+	const long style = GetParent()->GetWindowStyleFlag();
+	const bool res = (style & wxFNB_VC71) || (style & wxFNB_FANCY_TABS) || (style & wxFNB_VC8);
 	return !res;
 }
 
 void wxPageContainer::AdvanceSelection(bool bForward)
 {
-	int nSel = GetSelection();
+	const int nSel = GetSelection();
 
 	if(nSel < 0)
 		return;
@@ -1588,7 +1580,7 @@ void wxPageContainer::OnMouseLeave(wxMouseEvent& event)
 	}
 	m_nTabStatus = wxFNB_BTN_NONE;
 
-	long style = GetParent()->GetWindowStyleFlag();
+	const long style = GetParent()->GetWindowStyleFlag();
 	wxFNBRendererPtr render = wxFNBRendererMgrST::Get()->GetRenderer(style);
 
 	wxClientDC dc(this);
@@ -1797,22 +1789,22 @@ int wxPageContainer::GetNumOfVisibleTabs()
 	return counter;
 }
 
-bool wxPageContainer::GetEnabled(size_t page)
+bool wxPageContainer::GetEnabled(size_t page) const
 {
 	if(page >= m_pagesInfoVec.GetCount())
 		return true;	// Seems strange, but this is the default
 	return m_pagesInfoVec[page].GetEnabled();
 }
 
-void wxPageContainer::Enable(size_t page, bool enabled)
+void wxPageContainer::SetEnabled(size_t page, bool enabled)
 {
-	if(page >= m_pagesInfoVec.GetCount())
+	if (page >= m_pagesInfoVec.GetCount())
 		return ;
+
     m_pagesInfoVec[page].Enable(enabled);
 
 /// Patch ---- Ti-R ---- Enable to display correctly the tab
 	Refresh();
-    return;
 }
 
 wxColor wxPageContainer::GetSingleLineBorderColor()
@@ -1895,13 +1887,13 @@ void wxPageContainer::PopupTabsMenu()
 	}
 
 	// connect an event handler to our menu
-	popupMenu.Connect(wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxPageContainer::OnTabMenuSelection), NULL, this);
+	popupMenu.Connect(wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxPageContainer::OnTabMenuSelection), nullptr, this);
 	PopupMenu( &popupMenu );
 }
 
 void wxPageContainer::OnTabMenuSelection(wxCommandEvent &event)
 {
-	int selection = event.GetId();
+	const int selection = event.GetId();
 	static_cast<wxFlatNotebook*>(m_pParent)->SetSelection( (size_t)selection );
 }
 

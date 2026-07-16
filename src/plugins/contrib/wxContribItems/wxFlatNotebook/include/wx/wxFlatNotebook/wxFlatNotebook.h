@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Name:		wxFlatNotebook.cpp 
+// Name:		wxFlatNotebook.cpp
 // Purpose:     generic implementation of flat style notebook class.
 // Author:      Eran Ifrah <eranif@bezeqint.net>
 // Modified by: Priyank Bolia <soft@priyank.in>
@@ -91,14 +91,14 @@ WX_DECLARE_USER_EXPORTED_OBJARRAY(wxWindow*, wxWindowPtrArray, WXDLLIMPEXP_FNB);
 enum wxCustomizeDlgOptions {
 	wxFNB_CUSTOM_TAB_LOOK		= 0x00000001,	///< Allow customizing the tab appearance
 	wxFNB_CUSTOM_ORIENTATION	= 0x00000002,	///< Allow customizing the tab orientation (upper | bottom)
-	wxFNB_CUSTOM_FOREIGN_DRAG	= 0x00000004,	///< Allow accept foreign tabs 
+	wxFNB_CUSTOM_FOREIGN_DRAG	= 0x00000004,	///< Allow accept foreign tabs
 	wxFNB_CUSTOM_LOCAL_DRAG		= 0x00000008,	///< Allow local drag and drop
 	wxFNB_CUSTOM_CLOSE_BUTTON	= 0x00000010,	///< Allow customizing close button
-	wxFNB_CUSTOM_ALL			= wxFNB_CUSTOM_TAB_LOOK | 
+	wxFNB_CUSTOM_ALL			= wxFNB_CUSTOM_TAB_LOOK |
 								  wxFNB_CUSTOM_ORIENTATION |
 								  wxFNB_CUSTOM_FOREIGN_DRAG |
 								  wxFNB_CUSTOM_LOCAL_DRAG |
-								  wxFNB_CUSTOM_CLOSE_BUTTON 
+								  wxFNB_CUSTOM_CLOSE_BUTTON
 };
 
 /**
@@ -110,7 +110,7 @@ class WXDLLIMPEXP_FNB wxFlatNotebook : public wxPanel
 public:
 
 	///Default constructor
-	wxFlatNotebook() 
+	wxFlatNotebook()
 	{ Init(); }
 
 	/// Parametrized constructor
@@ -124,19 +124,19 @@ public:
 	*/
 	wxFlatNotebook(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = wxT("Flat Notebook"));
 
-	/** 
+	/**
 	 * See wxFlatNotebook constructor
 	 */
 	bool Create(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = wxT("Flat Notebook"));
 
 	/// Destructor
-	virtual ~wxFlatNotebook(void);
+	virtual ~wxFlatNotebook();
 
 	/**
      * Cleans up all the optimization structures held globally
      *
 	 */
-    static void CleanUp ();
+    static void CleanUp();
 
 	/**
 	 * Advance the current selection
@@ -171,8 +171,8 @@ public:
 	/**
 	 * \param page - index of page to be deleted
 	 * \param notify - by default wxFlatNotebook fires two events:
-	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSED 
-	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSING 
+	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSED
+	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSING
 	 * to disable this functionality set notify to false
 	 */
 	void DeletePage(size_t page, bool notify = true);
@@ -202,7 +202,7 @@ public:
 
 	/**
 	* Return the previous selection, useful when implementing smart tabulation
-	* \return previous selection, or wxNOT_FOUND 
+	* \return previous selection, or wxNOT_FOUND
 	*/
 	int GetPreviousSelection() const;
 
@@ -240,8 +240,8 @@ public:
 	 * Removes the window from the notebook, and destroys the window associated with that notebook page.
 	 * \param page - index of page to be deleted
 	 * \param notify - by default wxFlatNotebook fires two events:
-	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSED 
-	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSING 
+	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSED
+	 * - wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CLOSING
 	 * to disable this functionality set notify to false
 	 */
 	bool RemovePage(size_t page, bool notify = true);
@@ -302,14 +302,14 @@ public:
 	\param border - new value of the colour of page border
 	*/
 	void SetGradientColorBorder(const wxColour& border);
-	
+
 /// Patch ---- Ti-R ---- Enable to show next tab selected if user click
 	/// Sets the colour of selected page
 	/**
 	\param select - new select value colour
 	*/
 	void SetPreviewSelectColor(const wxColour& select);
-	
+
 /// Patch ---- Ti-R ---- Set the disable color of the text
 	/// Sets the colour of disable tab text
 	/**
@@ -342,13 +342,13 @@ public:
 	\param page - page to enable/diable
 	\param enabled - set to true to enable the tab, false otherwise
 	*/
-	void Enable(size_t page, bool enabled);
+	void SetEnabled(size_t page, bool enabled);
 
 	/// Return Returns true if if the page is enabled
 	/**
 	\param page - page index
 	*/
-	bool GetEnabled(size_t page);
+	bool GetEnabled(size_t page) const;
 
 /// Patch (Font) ---- Ti-R ---- Enable to show next tab selected if user click
 
@@ -409,12 +409,12 @@ public:
 	 * this values is by default set to wxFNB_CUSTOM_ALL
 	 */
 	void SetCustomizeOptions(long options);
-	
+
 	/**
 	 * Get the customization options available for this notebook
 	 */
 	long GetCustomizeOptions() const;
-	
+
 	// Setters / Getters
 	void SetForceSelection(bool force) { m_bForceSelection = force; }
 	bool GetForceSelection() { return m_bForceSelection; }
@@ -707,16 +707,16 @@ public:
 
 	/// Enable / Disable page
 	/**
-	\param page - page to enable/diable
+	\param page - page to enable/disable
 	\param enabled - set to true to enable the tab, false otherwise
 	*/
-	virtual void Enable(size_t page, bool enabled);
+	virtual void SetEnabled(size_t page, bool enabled);
 
 	/// Return Returns true if if the page is enabled
 	/**
 	\param page - page index
 	*/
-	virtual bool GetEnabled(size_t page);
+	virtual bool GetEnabled(size_t page) const;
 
 	/// Style helper methods
 	bool HasFlag(int flag);
@@ -763,16 +763,16 @@ public:
 	int GetPreviousSelection() const;// { return m_iPreviousActivePage; }
 
 	/**
-	 * Draw a tab preview 
+	 * Draw a tab preview
 	 */
 	void DrawDragHint();
-	
+
 	/**
 	 * Set the customization options available for this notebook, can be one of the wxFNB_CUSTOM_* values
 	 * this values is by default set to wxFNB_CUSTOM_ALL
 	 */
 	void SetCustomizeOptions(long options);
-	
+
 	/**
 	 * Get the customization options available for this notebook
 	 */
@@ -795,7 +795,7 @@ public:
 	virtual void OnShowCustomizeDialog(wxCommandEvent &event);
 
 protected:
-	
+
 	void RotateLeft();
 	void RotateRight();
 
@@ -870,11 +870,11 @@ protected:
 	\param page - page index
 	*/
 	virtual bool CanFitToScreen(size_t page);
-	
+
 	void PushPageHistory(int page);
 
 	//remove page from the history by its value
-	//after the page removal, all items in the history 
+	//after the page removal, all items in the history
 	//are updated if needed
 	void PopPageHistory(int page);
 
