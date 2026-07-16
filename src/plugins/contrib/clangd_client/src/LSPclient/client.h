@@ -302,10 +302,10 @@ class LanguageClient : public JsonTransport
             params.query = query;
             return SendRequest("workspace/symbol", std::move(params));
         }
-        RequestID ExecuteCommand(string_ref cmd, option<TweakArgs> tweakArgs = {}, option<WorkspaceEdit> workspaceEdit = {}) {
+        RequestID ExecuteCommand(string_ref cmd, option<json> arguments = {})
+        {
             ExecuteCommandParams params;
-            params.tweakArgs = tweakArgs;
-            params.workspaceEdit = workspaceEdit;
+            params.arguments = arguments;
             params.command = cmd;
             return SendRequest("workspace/executeCommand", std::move(params));
         }
@@ -875,6 +875,29 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
     }
     //(christo 2024/06/26)end
 
+    void LSP_ExecuteCommand(std::string command, json arguments);
+    void LSP_RequestCodeAction_Refactor(cbEditor* pEd);
+
+  private:
+    void LSP_RequestCodeAction(cbEditor* pEd, CodeActionContext context);
+
+    // ----------------------------------------------------------------------------
+    Range GetSelection(cbStyledTextCtrl* pCtrl)
+    // ----------------------------------------------------------------------------
+    {
+        const int selectionStart = pCtrl->GetSelectionStart();
+        const int selectionEnd = pCtrl->GetSelectionEnd();
+
+        const int startLine = pCtrl->LineFromPosition(selectionStart);
+        const int endLine = pCtrl->LineFromPosition(selectionEnd);
+
+        Range range;
+        range.start.line = startLine;
+        range.start.character = selectionStart - pCtrl->PositionFromLine(startLine);
+        range.end.line = endLine;
+        range.end.character = selectionEnd - pCtrl->PositionFromLine(endLine);
+        return range;
+    }
 };
 // ----------------------------------------------------------------------------
 class ValidateUTF8vector

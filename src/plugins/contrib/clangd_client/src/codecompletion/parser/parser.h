@@ -241,6 +241,8 @@ public:
     void OnLSP_GoToFunctionResponse(wxCommandEvent& event); //unused
     void OnLSP_CompletionPopupHoverResponse(wxCommandEvent& event);
     void OnLSP_RangeFormattingResponse(wxCommandEvent& event);  // (christo 25/05/02)
+    void OnLSP_CodeActionResponse(wxCommandEvent& event);
+    void OnLSP_WorkspaceApplyEdit(wxCommandEvent& event);
 
     void OnRequestCodeActionApply(wxCommandEvent& event);
 
@@ -276,6 +278,9 @@ private:
 
     /** connect event handlers of the timers and thread pool */
     void DisconnectEvents();
+
+    /** Apply TextEdits */
+    void ApplyTextEdits(cbStyledTextCtrl* control, const json& textEdits);
 
     /** when initialized, this variable will be an instance of a ParseManager */
     ParseManager* m_pParseManager;

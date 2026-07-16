@@ -3475,6 +3475,196 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
     }//endif "textDocument/rename"
 
 }//end OnLSP_RenameResponse
+
+struct LSPCommand
+{
+    std::string title;
+    std::string command;
+    option<json> arguments;
+};
+
+// ----------------------------------------------------------------------------
+void Parser::OnLSP_CodeActionResponse(wxCommandEvent& event)
+{
+    if (GetIsShuttingDown())
+        return;
+
+    auto* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (!pEditor)
+        return;
+
+    wxString evtString = event.GetString();
+
+    if (!evtString.StartsWith("textDocument/codeAction"))
+        return;
+    json* pJson = static_cast<json*>(event.GetClientData());
+    if (!pJson->contains("result"))
+    {
+        std::cerr << "textDocument/rangeFormatting json: " << pJson->dump() << std::endl;
+        cbMessageBox(_("Unexpected LSP response"));
+    }
+    auto& children = (*pJson)["result"];
+    std::vector<LSPCommand> cmds;
+    for (auto& item : children)
+    {
+        if (!item.contains("command"))
+            continue;
+        //"result":[{"command":"clangd.applyTweak","title":"Extract to function"}]
+        //"result":[{"arguments":[{"file":"file://parser.cpp","selection":{"end":{"character":9,"line":3643},"start":{"character":0,"line":3629}},"tweakID":"ExtractFunction"}],"command":"clangd.applyTweak","title":"Extract to function"}]
+
+        LSPCommand c;
+        c.title = item.value("title", "");
+        json command = item["command"];
+        if (nlohmann::detail::value_t::string == command.type())
+        {
+            c.command = command.get<std::string>();
+        }
+        else
+        {
+            c.command = command.value("command", "");
+        }
+        if (item.contains("arguments"))
+        {
+            c.arguments = item["arguments"];
+        }
+        cmds.push_back(std::move(c));
+    }
+    if (cmds.empty())
+    {
+        cbMessageBox(_("No refactoring available"));
+        return;
+    }
+    wxArrayString items;
+    for (auto& c : cmds)
+        items.Add(c.title);
+
+    wxSingleChoiceDialog dlg(nullptr,
+                             "Select Code Action",
+                             "LSP Actions",
+                             items);
+
+    if (dlg.ShowModal() != wxID_OK)
+        return;
+
+    int selected = dlg.GetSelection();
+    auto& cmd = cmds[selected];
+
+    GetLSPClient()->LSP_ExecuteCommand(cmd.command, cmd.arguments);
+}//end OnLSP_CodeActionResponse
+
+// ----------------------------------------------------------------------------
+void Parser::OnLSP_WorkspaceApplyEdit(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    CCLogger::Get()->DebugLog("OnLSP_WorkspaceApplyEdit enter");
+    if (GetIsShuttingDown())
+        return;
+
+    EditorManager* pEdMgr = Manager::Get()->GetEditorManager();
+    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (!pEditor)
+        return;
+
+    ProjectFile* pProjectFile = pEditor->GetProjectFile();
+    if (not pProjectFile)
+        return;
+
+    cbProject* pProject = pProjectFile->GetParentProject();
+    if (not pProject)
+        return;
+
+    wxString evtString = event.GetString();
+
+    assert(evtString.StartsWith("workspace/applyEdit"));
+
+    const wxString editorFile = pEditor->GetFilename();
+    wxFileName fn(editorFile);
+    const wxString editorBasePath(fn.GetPath());
+
+    json* pJson = static_cast<json*>(event.GetClientData());
+    if (!pJson->contains("params"))
+    {
+        if (pJson->contains("error"))
+        {
+            auto& msgObject = (*pJson)["error"];
+            std::string msg = msgObject.contains("message")
+                                  ? msgObject["message"].dump()
+                                  : msgObject.dump();
+
+            CCLogger::Get()->DebugLog(msg);
+            cbMessageBox(wxString::FromUTF8(msg.c_str())); // std::string overload is available since 3.1.1
+        }
+        else
+        {
+            std::cerr << "workspace/applyEdit json: " << pJson->dump() << std::endl;
+            cbMessageBox(_("Unexpected LSP response"));
+        }
+        return;
+    }
+    //"params":{"edit":{"changes":{"file:///file.cpp":[{"newText":"auto placeholder = wxSCI_FIND_MATCHCASE | wxSCI_FIND_WHOLEWORD | wxSCI_FIND_WORDSTART;\n                    ","range":{"end":{"character":20,"line":3508},"start":{"character":20,"line":3508}}},{"newText":"placeholder","range":{"end":{"character":110,"line":3508},"start":{"character":44,"line":3508}}}]}}}
+
+    const json& params = (*pJson)["params"];
+    if (!params.contains("edit"))
+    {
+        std::cerr << "workspace/applyEdit json: " << pJson->dump() << std::endl;
+        cbMessageBox(_("Unexpected LSP response"));
+    }
+    const json& edit = params["edit"];
+    if (!edit.contains("changes"))
+    {
+        std::cerr << "workspace/applyEdit json: " << pJson->dump() << std::endl;
+        cbMessageBox(_("Unexpected LSP response"));
+    }
+    const auto& changes = edit.at("changes").get<json::object_t>();
+
+    std::stringstream message;
+    message << "workspace/applyEdit changes : " << changes << std::endl;
+    message << changes;
+    CCLogger::Get()->DebugLog(message.str());
+    for (auto& item : changes)
+    {
+        wxString URI = item.first;
+        const json& fileChanges = item.second;
+        wxFileName curFilename = fileUtils.FilePathFromURI(URI);
+        wxString absFilename = curFilename.GetFullPath();
+        if (not wxFileExists(absFilename))
+            return;
+
+        // If the file does not belong to the active project, ignore it.
+        // This is caused by dragging a project to a new directory and not
+        // deleting the (now) invalid .cache and compile_commands_json files.
+        wxFileName fnRelFilename = absFilename;
+        fnRelFilename.MakeRelativeTo(wxPathOnly(pProject->GetFilename()));
+        //-wxString lookie = fnRelFilename.GetFullPath(); // **Debugging**
+        if (not pProject->GetFileByFilename(fnRelFilename.GetFullPath()))
+        {
+            // Mark the project as needing to remove .cache and compile_commands.json
+            ProcessLanguageClient* pClient = GetLSPClient();
+            if (not pClient)
+                continue;
+            pClient->SetProjectNeedsCleanup(pProject->GetFilename());
+            continue;
+        }
+
+        // verify already open file or re-open the affected file
+        // verify if the file is already opened in built-in editor and do search in it
+        cbEditor* ed = pEdMgr->IsBuiltinOpen(absFilename);
+        cbStyledTextCtrl* control = ed ? ed->GetControl() : nullptr;
+        if (not ed)
+        {
+            ProjectFile* pf = pProject ? pProject->GetFileByFilename(absFilename) : 0;
+            ed = pEdMgr->Open(absFilename, 0, pf);
+        }
+        if (!ed)
+            continue;
+
+        control = ed->GetControl();
+        control->BeginUndoAction();
+        ApplyTextEdits(control, fileChanges);
+        control->EndUndoAction();
+    }
+}
+
 // ----------------------------------------------------------------------------
 void Parser::OnLSP_RangeFormattingResponse(wxCommandEvent& event)  // (christo 25/05/02)
 // ----------------------------------------------------------------------------
@@ -3516,13 +3706,20 @@ void Parser::OnLSP_RangeFormattingResponse(wxCommandEvent& event)  // (christo 2
         return;
     }
 
-    auto* control = pEditor->GetControl();
+    cbStyledTextCtrl* control = pEditor->GetControl();
     if (!control)
         return;
 
+    const json& textEdits = (*pJson)["result"];
     control->BeginUndoAction();
-    const auto& textEdits = (*pJson)["result"];
+    ApplyTextEdits(control, textEdits);
+    control->EndUndoAction();
+}
 
+// ----------------------------------------------------------------------------
+void Parser::ApplyTextEdits(cbStyledTextCtrl* control, const json& textEdits)
+// ----------------------------------------------------------------------------
+{
     for (auto iter = textEdits.rbegin(); iter != textEdits.rend(); ++iter)
     {
         try
@@ -3552,9 +3749,7 @@ void Parser::OnLSP_RangeFormattingResponse(wxCommandEvent& event)  // (christo 2
             CCLogger::Get()->DebugLogError(errMsg);
         }
     }
-
-    control->EndUndoAction();
-}
+} // end ApplyTextEdits()
 // ----------------------------------------------------------------------------
 void Parser::OnLSP_GoToPrevFunctionResponse(wxCommandEvent& event)  //response from LSPserver
 // ----------------------------------------------------------------------------

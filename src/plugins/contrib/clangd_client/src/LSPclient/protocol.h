@@ -737,8 +737,9 @@ JSON_SERIALIZE(PublishDiagnosticsParams, {}, {FROM_KEY(uri);FROM_KEY(diagnostics
 struct CodeActionContext {
     /// An array of diagnostics.
     std::vector<Diagnostic> diagnostics;
+    option<std::string> kind;
 };
-JSON_SERIALIZE(CodeActionContext, MAP_JSON(MAP_KEY(diagnostics)), {});
+JSON_SERIALIZE(CodeActionContext, MAP_JSON(MAP_KEY(diagnostics), MAP_KEY(kind)), {});
 
 struct CodeActionParams {
     /// The document in which the command was invoked.
@@ -774,13 +775,14 @@ JSON_SERIALIZE(TweakArgs, MAP_JSON(MAP_KEY(file), MAP_KEY(selection), MAP_KEY(tw
 struct ExecuteCommandParams {
     std::string command;
     // Arguments
-    option<WorkspaceEdit> workspaceEdit;
-    option<TweakArgs> tweakArgs;
+    option<json> arguments;
 };
-JSON_SERIALIZE(ExecuteCommandParams, MAP_JSON(MAP_KEY(command), MAP_KEY(workspaceEdit), MAP_KEY(tweakArgs)), {});
+JSON_SERIALIZE(ExecuteCommandParams, MAP_JSON(MAP_KEY(command), MAP_KEY(arguments)), {});
 
 struct LspCommand : public ExecuteCommandParams {
     std::string title;
+    option<WorkspaceEdit> workspaceEdit;
+    option<TweakArgs> tweakArgs;
 };
 JSON_SERIALIZE(LspCommand, MAP_JSON(MAP_KEY(command), MAP_KEY(workspaceEdit), MAP_KEY(tweakArgs), MAP_KEY(title)),
         {FROM_KEY(command);FROM_KEY(workspaceEdit);FROM_KEY(tweakArgs);FROM_KEY(title);});

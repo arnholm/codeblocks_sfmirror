@@ -372,6 +372,7 @@ int idPauseParsing              = wxNewId();
 int idProjectPauseParsing       = wxNewId();
 int idStartupDelayTimer         = wxNewId();
 static int idCodeFormatterActiveFile = wxNewId();   // (christo 25/05/02)
+static int idCodeActionRefactor = wxNewId();
 
 int idSpecifiedFileReparse      = XRCID("idSpecifiedFileReparse");
 
@@ -420,6 +421,7 @@ BEGIN_EVENT_TABLE(ClgdCompletion, cbCodeCompletionPlugin)
     EVT_MENU(idPauseParsing,                       ClgdCompletion::OnSelectedPauseParsing )
     EVT_MENU(idProjectPauseParsing,                ClgdCompletion::OnProjectPauseParsing )
     EVT_MENU(idCodeFormatterActiveFile, ClgdCompletion::OnFormatActiveFile) // (christo 25/05/02)
+    EVT_MENU(idCodeActionRefactor, ClgdCompletion::OnRefactor)
 
     // CC's toolbar
     EVT_CHOICE(XRCID("chcCodeCompletionScope"),    ClgdCompletion::OnScope   )
@@ -1046,6 +1048,11 @@ void ClgdCompletion::BuildModuleMenu(const ModuleType type, wxMenu* menu, const 
                     const bool enableRename = (GetParseManager()->GetParser().Done() && nameUnderCursor && !IsInclude);
                     subMenu->Append(idMenuRenameSymbols, _("Rename symbols"), _("Rename symbols under cursor"));
                     subMenu->Enable(idMenuRenameSymbols, enableRename);
+
+                    subMenu->AppendSeparator();
+                    const bool enableRefactor = GetParseManager()->GetParser().Done();
+                    subMenu->Append(idCodeActionRefactor, _("Refactor use clangd"), _("Refactor use clangd"));
+                    subMenu->Enable(idCodeActionRefactor, enableRefactor);
                 }
                 else
                     CCLogger::Get()->DebugLog(_T("Could not find Insert menu 3!"));
@@ -3744,6 +3751,23 @@ void ClgdCompletion::OnLSP_Event(wxCommandEvent& event)
         if (pParser)
             pParser->OnLSP_RangeFormattingResponse(event);
     }
+    else if (evtString.StartsWith("textDocument/codeAction"))
+    {
+        Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+        if (pParser)
+            pParser->OnLSP_CodeActionResponse(event);
+    }
+    else if (evtString.StartsWith("workspace/applyEdit"))
+    {
+        Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
+        if (pParser)
+            pParser->OnLSP_WorkspaceApplyEdit(event);
+    }
+    else
+    {
+        wxString msg = wxString::Format("Warning: unhandled lspevent :" + evtString);
+        CCLogger::Get()->DebugLogError(msg);
+    }
 }
 // ----------------------------------------------------------------------------
 void ClgdCompletion::ShutdownLSPclient(cbProject* pProject)
@@ -5952,4 +5976,19 @@ void ClgdCompletion::OnFormatActiveFile(cb_unused wxCommandEvent& event)  // (ch
     GetLSPClient(pEditor)->LSP_RequestRangeFormatting(pEditor);
 
     return;
+}
+// ----------------------------------------------------------------------------
+void ClgdCompletion::OnRefactor(wxCommandEvent& event)
+// ----------------------------------------------------------------------------
+{
+    cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    if (!pEditor)
+        return;
+    cbStyledTextCtrl* control = pEditor->GetControl();
+    if (control->GetReadOnly())
+    {
+        cbMessageBox(_("The file is read-only!"), _("Error"), wxICON_ERROR);
+        return;
+    }
+    GetLSPClient(pEditor)->LSP_RequestCodeAction_Refactor(pEditor);
 }
