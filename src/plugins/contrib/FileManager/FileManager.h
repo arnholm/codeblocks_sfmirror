@@ -28,11 +28,11 @@ class FileManagerPlugin : public cbPlugin
         virtual ~FileManagerPlugin();
 
     protected:
-        virtual void BuildMenu(wxMenuBar* /*menuBar*/) {}
-        virtual void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = 0);
-        virtual bool BuildToolBar(wxToolBar* /*toolBar*/) {return false;}
-        virtual void OnAttach();
-        virtual void OnRelease(bool appShutDown);
+        void BuildMenu(wxMenuBar* /*menuBar*/) override {}
+        void BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data = nullptr) override;
+        bool BuildToolBar(wxToolBar* /*toolBar*/) override {return false;}
+        void OnAttach() override;
+        void OnRelease(bool appShutDown) override;
         void OnOpenProjectInFileBrowser(wxCommandEvent& event);
         FileExplorer *m_fe;
         DECLARE_EVENT_TABLE();

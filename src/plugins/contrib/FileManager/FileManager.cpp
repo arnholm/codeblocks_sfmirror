@@ -24,13 +24,10 @@ END_EVENT_TABLE()
 
 
 // constructor
-FileManagerPlugin::FileManagerPlugin()
+FileManagerPlugin::FileManagerPlugin() : m_fe(nullptr)
 {
     if(!Manager::LoadResource("FileManager.zip"))
-    {
         NotifyMissingFile("FileManager.zip");
-    }
-    m_fe=0;
 }
 
 // destructor
@@ -41,21 +38,23 @@ FileManagerPlugin::~FileManagerPlugin()
 void FileManagerPlugin::OnAttach()
 {
     //Create a new instance of the FileExplorer and attach it to the Project Manager notebook
-    m_fe=new FileExplorer(Manager::Get()->GetAppWindow());
-    Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->AddPage(m_fe,_("Files"));
+    cbAuiNotebook *nb = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
+    m_fe = new FileExplorer(nb);
+    nb->AddPage(m_fe, _("Files"));
 }
 
 void FileManagerPlugin::OnRelease(bool /*appShutDown*/)
 {
-    if (m_fe) //remove the File Explorer from the managment pane and destroy it.
+    if (m_fe) //remove the File Explorer from the management pane and destroy it
     {
         cbAuiNotebook *notebook = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
         int idx = notebook->GetPageIndex(m_fe);
         if (idx != -1)
             notebook->RemovePage(idx);
+
         delete m_fe;
+        m_fe = nullptr;
     }
-    m_fe = 0;
 }
 
 void FileManagerPlugin::BuildModuleMenu(const ModuleType type, wxMenu* menu, const FileTreeData* data)
@@ -69,7 +68,7 @@ void FileManagerPlugin::BuildModuleMenu(const ModuleType type, wxMenu* menu, con
 
 void FileManagerPlugin::OnOpenProjectInFileBrowser(wxCommandEvent& /*event*/)
 {
-    cbAuiNotebook *m_nb=Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
-    m_nb->SetSelection(m_nb->GetPageIndex(m_fe));
+    cbAuiNotebook *nb = Manager::Get()->GetProjectManager()->GetUI().GetNotebook();
+    nb->SetSelection(nb->GetPageIndex(m_fe));
     m_fe->SetRootFolder(m_project_selected);
 }
