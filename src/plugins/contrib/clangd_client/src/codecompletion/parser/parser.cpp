@@ -18,6 +18,7 @@
     #include <wx/intl.h>
     #include <wx/progdlg.h>
     #include <wx/xrc/xmlres.h>
+    #include <wx/choicdlg.h>
 
     #include <cbproject.h>
     #include <configmanager.h>
