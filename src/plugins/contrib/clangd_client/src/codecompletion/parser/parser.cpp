@@ -3377,6 +3377,27 @@ void Parser::OnLSP_RenameResponse(wxCommandEvent& event)
         int curRangeStartCol  = -1;
         int curRangeEndCol    = -1 ;
 
+        if (!pJson->contains("result"))
+        {
+            if (pJson->contains("error"))
+            {
+                auto msgObject = pJson->at("error");
+                if ( msgObject.contains("message"))
+                {
+                    msgObject = msgObject["message"];
+                }
+                std::string msg = to_string(msgObject);
+                CCLogger::Get()->DebugLog(msg);
+                cbMessageBox(msg);
+            }
+            else
+            {
+                std::cerr << "textDocument/rename json :" << pJson->dump() << std::endl;
+                cbMessageBox(wxS("Unexpected LSP response"));
+            }
+            return;
+        }
+
         try
         {
             json result = pJson->at("result");
