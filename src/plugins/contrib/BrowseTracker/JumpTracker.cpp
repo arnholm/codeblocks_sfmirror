@@ -917,6 +917,7 @@ void JumpTracker::OnEditorModifiedEvent(CodeBlocksEvent& event)
             long edLine = pcbEd->GetControl()->GetCurrentLine();
             long edPosn = pcbEd->GetControl()->GetCurrentPos();
             wxString edFilename = pcbEd->GetFilename();
+            wxUnusedVar(edFilename);
             //m_pLastModified = std::make_unique<JumpData>(pcbEd->GetFilename(), edPosn, edLine);
             m_pLastModified = std::unique_ptr<JumpData>(new JumpData(pcbEd->GetFilename(), edPosn, edLine));
         }
@@ -985,6 +986,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
     m_bJumpInProgress = true;
 
     wxString activeEdFilename = wxEmptyString;
+    wxUnusedVar(activeEdFilename);
     if (pcbEd) switch(1)
     {
         default:
@@ -1338,6 +1340,8 @@ void JumpTracker::OnSearchLogDoubleClick(wxCommandEvent& event)
     wxString filenameCol = columns[0]; // not an asbsolute flename
     wxString lineCol = columns[1];
     wxString textCol = columns[2];
+    wxUnusedVar(textCol);
+    wxUnusedVar(filenameCol);
 
     long line;
     if (not lineCol.ToLong(&line))

@@ -1623,6 +1623,7 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
         EditorBase* eb = event.GetEditor();
         if (not eb) return;
         wxString editorFullPath = eb->GetFilename();
+        wxUnusedVar(editorFullPath);
         cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
         if (not cbed)
         {
@@ -2347,6 +2348,7 @@ void BrowseTracker::OnProjectOpened(CodeBlocksEvent& event)
     #endif
 
     wxString projectFilename = event.GetProject()->GetFilename();
+    wxUnusedVar(projectFilename);
     //- unused - ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
 
     // allocate a ProjectData to hold activated editors

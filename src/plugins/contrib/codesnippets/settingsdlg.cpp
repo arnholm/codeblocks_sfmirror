@@ -69,8 +69,8 @@ SettingsDlg::SettingsDlg(wxWindow* parent)
     // Put the old ToolTip options
     m_ToolTipsChkBox->SetValue( GetConfig()->GetToolTipsOption() );
 
-    // Read Mouse DragScrolling settings
-    wxString windowState = GetConfig()->GetSettingsWindowState();
+////    // Read Mouse DragScrolling settings
+////    wxString windowState = GetConfig()->GetSettingsWindowState();
 ////    if ( windowState.Contains(wxT("Floating")) ) {m_RadioFloatBtn->SetValue(true);}
 ////    if ( windowState.Contains(wxT("Docked")) ) {  m_RadioDockBtn->SetValue(true);}
 ////    //-if ( windowState.Contains(wxT("External")) ) {m_RadioExternalBtn->SetValue(true);}
