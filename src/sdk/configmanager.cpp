@@ -25,7 +25,6 @@
 #include <wx/url.h>
 #include <wx/stream.h>
 #include <wx/stdpaths.h>
-#include <wx/filename.h>
 
 #ifdef __WXMSW__
 #include <shlobj.h>
