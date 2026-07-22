@@ -37,7 +37,7 @@ wxSmithAuiToolBar::~wxSmithAuiToolBar()
     //dtor
 }
 
-int wxSmithAuiToolBar::HitTest(const wxPoint& pt)
+int wxSmithAuiToolBar::HitTool(const wxPoint& pt) const
 {
     for (unsigned int i=0; i<m_items.Count(); i++)
     {

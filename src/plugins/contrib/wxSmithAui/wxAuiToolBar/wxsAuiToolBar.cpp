@@ -401,14 +401,15 @@ bool wxsAuiToolBar::OnMouseClick(wxWindow* Preview,int PosX,int PosY)
 {
     UpdateCurrentSelection();
     wxSmithAuiToolBar* AuiToolBar = (wxSmithAuiToolBar*)Preview;
-    int Hit = AuiToolBar->HitTest(wxPoint(PosX,PosY));
-    if ( (Hit != wxNOT_FOUND) && (Hit < GetChildCount()) )
+    const int ToolIndex = AuiToolBar->HitTool(wxPoint(PosX, PosY));
+    if ( (ToolIndex != wxNOT_FOUND) && (ToolIndex < GetChildCount()) )
     {
         wxsItem* OldSel = m_CurrentSelection;
-        m_CurrentSelection = GetChild(Hit);
-        GetResourceData()->SelectItem(m_CurrentSelection,true);
+        m_CurrentSelection = GetChild(ToolIndex);
+        GetResourceData()->SelectItem(m_CurrentSelection, true);
         return OldSel != m_CurrentSelection;
     }
+
     return false;
 }
 

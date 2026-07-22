@@ -29,8 +29,7 @@ class wxSmithAuiToolBar : public wxAuiToolBar
         wxSmithAuiToolBar(wxWindow* parent,wxWindowID id = -1,const wxPoint& position = wxDefaultPosition,const wxSize& size = wxDefaultSize,long style = wxAUI_TB_DEFAULT_STYLE);
         virtual ~wxSmithAuiToolBar();
 
-        /// \brief wxAuiToolBar::HitTest don't work properly
-        int HitTest(const wxPoint& pt);
+        int HitTool(const wxPoint& pt) const;
         void AddSpacer(int pixels,wxWindowID SpacerId);
         void AddStretchSpacer(int proportion,wxWindowID SpacerId);
     protected:
