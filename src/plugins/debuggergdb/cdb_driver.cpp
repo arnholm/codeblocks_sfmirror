@@ -7,25 +7,35 @@
  * $HeadURL$
  */
 
-#include "sdk.h"
+//#include "sdk.h" clangd: not used directly
 
 #ifndef CB_PRECOMP
     #include "cbproject.h"
     #include "cbexception.h"
-    #include "configmanager.h"
+    // #include "configmanager.h" clangd: not used directly
     #include "debuggermanager.h"
     #include "globals.h"
     #include "infowindow.h"
-    #include "logmanager.h"
+    //#include "logmanager.h" clangd: not used directly
     #include "manager.h"
     #include "projectbuildtarget.h"
 #endif
 
 #include "cdb_driver.h"
-#include "cdb_commands.h"
 #include "debuggeroptionsdlg.h"
-
 #include "cbdebugger_interfaces.h"
+
+#include "cdb_commands.h"
+
+// cdb_commands.h statics initialized here since there is no cdb_commands.cpp file
+// and clangd won't quit compaining about ODB etc.
+int CdbCmd_AddBreakpoint::m_lastIndex = 1; //moved here from the header
+wxString CdbCmd_DisassemblyInit::LastAddr;
+#if wxCHECK_VERSION(3, 3, 2)
+    wxTipWindow::Ref CdbCmd_TooltipEvaluation::m_pWin{};
+#else
+    wxTipWindow*     CdbCmd_TooltipEvaluation::m_pWin = nullptr;
+#endif
 
 // Parse CDB prompts. Support both 32 and 64 bit inferiors
 // The strings looks something like this:

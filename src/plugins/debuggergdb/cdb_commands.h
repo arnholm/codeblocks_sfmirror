@@ -15,7 +15,9 @@
 #include "debugger_defs.h"
 #include "debuggergdb.h"
 #include "debuggermanager.h"
+#include "logmanager.h"
 #include "parsewatchvalue.h"
+#include "plugins/debuggergdb/debuggerdriver.h"
 
 static wxRegEx reProcessInf(_T("id:[[:blank:]]+([A-Fa-f0-9]+)[[:blank:]]+create"));
 // For 64-bit:
@@ -308,7 +310,7 @@ class CdbCmd_AddBreakpoint : public DebuggerCmd
         cb::shared_ptr<DebuggerBreakpoint> m_BP;
 };
 
-int CdbCmd_AddBreakpoint::m_lastIndex = 1;
+// int CdbCmd_AddBreakpoint::m_lastIndex = 1; moved to cdb_driver.cpp to avoid ODB
 
 /**
   * Command to remove a breakpoint.
@@ -368,9 +370,17 @@ class CdbCmd_Watch : public DebuggerCmd
 /**
   * Command to display a tooltip about a variables value.
   */
+// ( 26/07/22) wx3.3.2 fix for warnings and asserts when using the CDB debugger.
 class CdbCmd_TooltipEvaluation : public DebuggerCmd
 {
-        wxTipWindow* m_pWin;
+    // Made static so the tip window state is shared across ALL hover command instances
+    // These are initialized in cdb_driver.cpp since there is no cdb_commands.cpp
+    #if wxCHECK_VERSION(3, 3, 2)
+        static wxTipWindow::Ref m_pWin;
+    #else
+        static wxTipWindow*     m_pWin;
+    #endif
+
         wxRect m_WinRect;
         wxString m_What;
     public:
@@ -380,40 +390,45 @@ class CdbCmd_TooltipEvaluation : public DebuggerCmd
         */
         CdbCmd_TooltipEvaluation(DebuggerDriver* driver, const wxString& what, const wxRect& tiprect)
             : DebuggerCmd(driver),
-            m_pWin(nullptr),
-            m_WinRect(tiprect),
-            m_What(what)
+              // REMOVED m_pWin{} from the initializer list because static members cannot
+              // be initialized in instance constructor lists.
+              m_WinRect(tiprect),
+              m_What(what)
         {
             m_Cmd << _T("?? ") << what;
         }
+
         void ParseOutput(const wxString& output) override
         {
-//            struct HWND__ * 0x7ffd8000
-//
-//            struct tagWNDCLASSEXA
-//               +0x000 cbSize           : 0x7c8021b5
-//               +0x004 style            : 0x7c802011
-//               +0x008 lpfnWndProc      : 0x7c80b529     kernel32!GetModuleHandleA+0
-//               +0x00c cbClsExtra       : 0
-//               +0x010 cbWndExtra       : 2147319808
-//               +0x014 hInstance        : 0x00400000
-//               +0x018 hIcon            : 0x0012fe88
-//               +0x01c hCursor          : 0x0040a104
-//               +0x020 hbrBackground    : 0x689fa962
-//               +0x024 lpszMenuName     : 0x004028ae  "???"
-//               +0x028 lpszClassName    : 0x0040aa30  "CodeBlocksWindowsApp"
-//               +0x02c hIconSm          : (null)
-//
-//            char * 0x0040aa30
-//             "CodeBlocksWindowsApp"
             wxString tip = m_What + _T("=") + output;
 
+        #if wxCHECK_VERSION(3, 3, 2)
+            // Now checks the SHARED static m_pWin from the previous hover
+            if (m_pWin)
+            {
+                // 1. Tell the native window on screen to close/destroy itself
+                m_pWin->Close(); // Or m_pWin->Destroy();
+
+                // 2. Clear the reference wrapper
+                m_pWin = nullptr;
+            }
+            // Create the new tip window
+            m_pWin = wxTipWindow::New((wxWindow*)Manager::Get()->GetAppWindow(), tip, 640, &m_WinRect);
+        #else
             if (m_pWin)
                 (m_pWin)->Destroy();
+
             m_pWin = new wxTipWindow((wxWindow*)Manager::Get()->GetAppWindow(), tip, 640, &m_pWin, &m_WinRect);
-//            m_pDriver->DebugLog(output);
-        }
-};
+        #endif
+        }//end ParseOutput
+};//end CdbCmd_TooltipEvaluation
+
+// Static member definitions required in the .cpp file (outside the class definition):
+#if wxCHECK_VERSION(3, 3, 2)
+    static wxTipWindow::Ref m_pWin; //initialized in cdb_driver.cpp
+#else
+    static wxTipWindow*     m_pWin; //intialized in cdb_driver.cpp
+#endif
 
 inline bool CDBHasChild(const wxString &line)
 {
@@ -672,7 +687,7 @@ class CdbCmd_DisassemblyInit : public DebuggerCmd
             }
         }
 };
-wxString CdbCmd_DisassemblyInit::LastAddr;
+//wxString CdbCmd_DisassemblyInit::LastAddr; initialized in cdb_driver.cpp
 
 /**
   * Command to examine a memory region.
@@ -783,12 +798,10 @@ class CdbCmd_Threads : public DebuggerCmd
 class CdbCmd_LocalsFuncArgs : public DebuggerCmd
 {
         cb::shared_ptr<GDBWatch> m_watch;
-        bool m_doLocals;
     public:
         CdbCmd_LocalsFuncArgs(DebuggerDriver* driver, cb::shared_ptr<GDBWatch> watch, bool doLocals) :
             DebuggerCmd(driver),
-            m_watch(watch),
-            m_doLocals(doLocals)
+            m_watch(watch)
         {
             m_Cmd = "dv /i /t";
         }
