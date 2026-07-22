@@ -29,7 +29,7 @@ wxSmithAuiNotebook::~wxSmithAuiNotebook()
     //dtor
 }
 
-int wxSmithAuiNotebook::HitTest(const wxPoint& pt)
+int wxSmithAuiNotebook::HitTab(const wxPoint& pt)
 {
     wxAuiTabCtrl* TabCtrl = GetTabCtrlFromPoint(pt);
     wxWindow* HitTab;

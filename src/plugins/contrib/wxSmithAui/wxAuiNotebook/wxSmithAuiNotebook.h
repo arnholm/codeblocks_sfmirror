@@ -28,7 +28,7 @@ class wxSmithAuiNotebook : public wxAuiNotebook
         wxSmithAuiNotebook(wxWindow* parent,wxWindowID id = wxID_ANY,const wxPoint& pos = wxDefaultPosition,const wxSize& size = wxDefaultSize,long style = wxAUI_NB_DEFAULT_STYLE);
         virtual ~wxSmithAuiNotebook();
 
-        int HitTest(const wxPoint& pt);
+        int HitTab(const wxPoint& pt);
     protected:
     private:
 };

@@ -353,16 +353,18 @@ bool wxsAuiNotebook::OnMouseClick(wxWindow* Preview,int PosX,int PosY)
 {
     UpdateCurrentSelection();
     wxSmithAuiNotebook* AuiNotebook = (wxSmithAuiNotebook*)Preview;
-    int Hit = wxNOT_FOUND;
-
-    if ( AuiNotebook && GetChildCount() ) Hit = AuiNotebook->HitTest(wxPoint(PosX,PosY));
-    if ( Hit != wxNOT_FOUND )
+    if ( AuiNotebook && GetChildCount() )
     {
-        wxsItem* OldSel = m_CurrentSelection;
-        m_CurrentSelection = GetChild(Hit);
-        GetResourceData()->SelectItem(m_CurrentSelection,true);
-        return OldSel != m_CurrentSelection;
+        const int Tab = AuiNotebook->HitTest(wxPoint(PosX,PosY));
+        if ( Tab != wxNOT_FOUND )
+        {
+            wxsItem* OldSel = m_CurrentSelection;
+            m_CurrentSelection = GetChild(Tab);
+            GetResourceData()->SelectItem(m_CurrentSelection, true);
+            return OldSel != m_CurrentSelection;
+        }
     }
+
     return false;
 }
 
