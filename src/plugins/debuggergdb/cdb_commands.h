@@ -17,7 +17,7 @@
 #include "debuggermanager.h"
 #include "logmanager.h"
 #include "parsewatchvalue.h"
-#include "plugins/debuggergdb/debuggerdriver.h"
+#include "debuggerdriver.h"
 
 static wxRegEx reProcessInf(_T("id:[[:blank:]]+([A-Fa-f0-9]+)[[:blank:]]+create"));
 // For 64-bit:

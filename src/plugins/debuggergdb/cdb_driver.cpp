@@ -7,8 +7,6 @@
  * $HeadURL$
  */
 
-//#include "sdk.h" clangd: not used directly
-
 #ifndef CB_PRECOMP
     #include "cbproject.h"
     #include "cbexception.h"
@@ -19,6 +17,8 @@
     //#include "logmanager.h" clangd: not used directly
     #include "manager.h"
     #include "projectbuildtarget.h"
+#else
+    #include "sdk.h"
 #endif
 
 #include "cdb_driver.h"
