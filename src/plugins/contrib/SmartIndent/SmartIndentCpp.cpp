@@ -86,6 +86,12 @@ void SmartIndentCpp::DoSmartIndent(cbEditor* ed, const wxChar &ch)const
         return;
 
     const int pos = stc->GetCurrentPos();
+
+    // Do not indent inside comments
+    const int style = stc->GetStyleAt(pos);
+    if (stc->IsComment(style))
+        return;
+
     // indent
     if ( (ch == _T('\n')) || ( (stc->GetEOLMode() == wxSCI_EOL_CR) && (ch == _T('\r')) ) )
     {
