@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_plugin_manifest_file>
+    <SdkVersion major="1" minor="11"  release="12" />
+    <Plugin name="debugger_gdbmi">
+        <Value title="debugger_gdbmi" />
+        <Value version="2.2.32 26/07/24" />
+        <Value description="GDB debugger using gdb/mi interface" />
+        <Value author="pecan, based on a prototype by AndrewCott" />
+        <Value authorEmail="info@codeblocks.org" />
+        <Value authorWebsite="codeblocks.org" />
+        <Value thanksTo="CodeBlocks team" />
+        <Value license="GPL" />
+    </Plugin>
+</CodeBlocks_plugin_manifest_file>

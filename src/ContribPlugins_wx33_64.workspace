@@ -56,5 +56,6 @@
 			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx33_64.cbp" />
+		<Project filename="plugins/contrib/debugger_gdbmi/debugger_gdbmi_wx33_64.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

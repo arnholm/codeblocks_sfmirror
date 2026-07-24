@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="debugger_gdbmi wx3.2.x (Unix)WK" />
+		<Option default_target="debugger_gdbmi" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="debugger_gdbmi">
+				<Option output="../../../devel32/share/codeblocks/plugins/debugger_gdbmi" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../devel32" />
+				<Option object_output="../.obj32/plugins/contrib/debugger_gdbmi" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option parameters="--debug-log --multiple-instance --no-splash-screen --verbose -p debug --no-ipc " />
+				<Option host_application="../../../devel32/codeblocks" />
+				<Option run_host_application_in_terminal="0" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-DBUILDING_PLUGIN" />
+					<Add directory="../../../include" />
+					<Add directory="../../../sdk/wxscintilla/include/" />
+					<Add directory="../../../include/tinyxml/" />
+					<Add directory="src" />
+				</Compiler>
+				<Linker>
+					<Add option="`$(WX_CONFIG) --libs std,aui`" />
+					<Add option="-Wl,--no-undefined" />
+					<Add library="codeblocks" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="zip -j9 ../../../devel32/share/codeblocks/debugger_gdbmi.zip src/resources/*" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Environment>
+				<Variable name="GTK_VERSION" value="gtk+-3.0" />
+				<Variable name="WX_CFG" value="" />
+				<Variable name="WX_CONFIG" value="wx-config --version=3.2" />
+				<Variable name="WX_SUFFIX" value="u" />
+				<Variable name="WX_VERSION" value="32" />
+			</Environment>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="debugger_gdbmi;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fPIC" />
+			<Add option="$(#CB_RELEASE_TYPE)" />
+			<Add option="-fmessage-length=0" />
+			<Add option="-fexceptions" />
+			<Add option="-Winvalid-pch" />
+			<Add option="`$(WX_CONFIG) --cflags`" />
+			<Add option="`pkg-config --cflags $(GTK_VERSION)`" />
+			<Add option="-DcbDEBUG" />
+			<Add option="-DCB_PRECOMP" />
+			<Add directory="sdk/wxscintilla/include" />
+			<Add directory="include/tinyxml" />
+		</Compiler>
+		<Linker>
+			<Add option="`$(WX_CONFIG) --libs std,aui,propgrid`" />
+			<Add option="`pkg-config --libs $(GTK_VERSION)`" />
+			<Add option="-Wl,--no-undefined" />
+			<Add directory="../../../devel32" />
+		</Linker>
+		<Unit filename="src/actions.cpp" />
+		<Unit filename="src/actions.h" />
+		<Unit filename="src/cJSON.cpp" />
+		<Unit filename="src/cJSON.h" />
+		<Unit filename="src/cmd_queue.cpp" />
+		<Unit filename="src/cmd_queue.h" />
+		<Unit filename="src/cmd_result_parser.cpp" />
+		<Unit filename="src/cmd_result_parser.h" />
+		<Unit filename="src/cmd_result_tokens.cpp" />
+		<Unit filename="src/cmd_result_tokens.h" />
+		<Unit filename="src/config.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="src/config.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="src/databreakpointdlg.cpp" />
+		<Unit filename="src/databreakpointdlg.h" />
+		<Unit filename="src/dbgGDBmi.cpp" />
+		<Unit filename="src/dbgGDBmi.h" />
+		<Unit filename="src/debuggeroptionsdlg.cpp" />
+		<Unit filename="src/debuggeroptionsdlg.h" />
+		<Unit filename="src/debuggeroptionsprjdlg.cpp" />
+		<Unit filename="src/debuggeroptionsprjdlg.h" />
+		<Unit filename="src/definitions.cpp" />
+		<Unit filename="src/definitions.h" />
+		<Unit filename="src/editbreakpointdlg.cpp" />
+		<Unit filename="src/editbreakpointdlg.h" />
+		<Unit filename="src/editwatchdlg.cpp" />
+		<Unit filename="src/editwatchdlg.h" />
+		<Unit filename="src/escape.cpp" />
+		<Unit filename="src/escape.h" />
+		<Unit filename="src/events.cpp" />
+		<Unit filename="src/events.h" />
+		<Unit filename="src/frame.cpp" />
+		<Unit filename="src/frame.h" />
+		<Unit filename="src/gdb_executor.cpp" />
+		<Unit filename="src/gdb_executor.h" />
+		<Unit filename="src/helpers.cpp" />
+		<Unit filename="src/helpers.h" />
+		<Unit filename="src/json_node.cpp" />
+		<Unit filename="src/json_node.h" />
+		<Unit filename="src/macros.h" />
+		<Unit filename="src/parsewatchvalue.cpp" />
+		<Unit filename="src/parsewatchvalue.h" />
+		<Unit filename="src/remotedebugging.h" />
+		<Unit filename="src/resources/GDBMiManifest.xml" />
+		<Unit filename="src/resources/debugger_gdbmi_options_dlg.xrc" />
+		<Unit filename="src/updated_variable.cpp" />
+		<Unit filename="src/updated_variable.h" />
+		<Extensions>
+			<envvars set="cb_plugin" />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxPanel wxs="wxsmith/config_panel.wxs" src="src/config.cpp" hdr="src/config.h" fwddecl="1" i18n="1" name="ConfigurationPanel" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -53,6 +53,7 @@ find ../plugins/contrib/Valgrind                  | grep -P "(\.cpp|\.h)$" | xar
 find ../plugins/contrib/wxSmith                   | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o wxsmith.pot
 find ../plugins/contrib/wxSmithAui                | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o wxsmithaui.pot
 find ../plugins/contrib/wxSmithContribItems       | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o wxsmithcontribitems.pot
+find ../plugins/contrib/debugger_gdbmi            | grep -P "(\.cpp|\.h)$" | xargs xgettext --keyword=_ -o debugger_gdbmi.pot
 
 echo "running msginit"
 

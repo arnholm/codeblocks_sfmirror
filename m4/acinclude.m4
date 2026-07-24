@@ -391,6 +391,8 @@ AC_DEFUN([BUILD_CONTRIB_NONE], [
 	AM_CONDITIONAL([BUILD_MOUSESAP], [false])
 	AM_CONDITIONAL([BUILD_CCCC], [false])
 	AM_CONDITIONAL([BUILD_CPPCHECK], [false])
+	AM_CONDITIONAL([BUILD_DEBUGGER_GDBMI], [false])
+
 ])
 
 AC_DEFUN([BUILD_CONTRIB_ALL], [
@@ -435,6 +437,8 @@ AC_DEFUN([BUILD_CONTRIB_ALL], [
 	AM_CONDITIONAL([BUILD_MOUSESAP], [true])
 	AM_CONDITIONAL([BUILD_CCCC], [true])
 	AM_CONDITIONAL([BUILD_CPPCHECK], [true])
+	AM_CONDITIONAL([BUILD_DEBUGGER_GDBMI], [true])
+
 ])
 
 # default to 'none'
@@ -452,7 +456,7 @@ AC_ARG_WITH(contrib-plugins,
   [                        		     codestat, copystrings, Cscope, DoxyBlocks, dragscroll, EditorConfig, EditorTweaks, envvars, exporter, ]
   [                        		     FileManager, headerfixup, help, hexeditor, incsearch, keybinder, libfinder, MouseSap, ]
   [                        		     NassiShneiderman, ProjectOptionsManipulator, profiler, regex, ReopenEditor, rndgen, clangd_client, smartindent, spellchecker, ]
-  [                        		     symtab, ThreadSearch, ToolsPlus, Valgrind, wxcontrib, wxsmith, wxsmithcontrib, wxsmithaui ],
+  [                        		     symtab, ThreadSearch, ToolsPlus, Valgrind, wxcontrib, wxsmith, wxsmithcontrib, wxsmithaui, debugger_gdbmi ],
   plugins="$withval", plugins="none")
 
 plugins=`echo $plugins | sed 's/,/ /g'`
@@ -537,6 +541,10 @@ do
 	clangd_client)
 		AM_CONDITIONAL([BUILD_CLANGD_CLIENT], [true])
 		;;
+	debugger_gdbmi)
+		AM_CONDITIONAL([BUILD_DEBUGGER_GDBMI], [true])
+		;;
+
 	exporter)
 		AM_CONDITIONAL([BUILD_EXPORTER], [true])
 		;;
@@ -705,6 +713,9 @@ do
 	-CppCheck)
 		AM_CONDITIONAL([BUILD_CPPCHECK], [false])
 		;;
+	-debugger_gdbmi)
+		AM_CONDITIONAL([BUILD_DEBUGGER_GDBMI], [false])
+		;;
 	none|no)
 		;;
 	*)
@@ -759,6 +770,7 @@ AC_SUBST(BUILD_WXCONTRIB)
 AC_SUBST(BUILD_WXSMITH)
 AC_SUBST(BUILD_WXSMITHCONTRIB)
 AC_SUBST(BUILD_WXSMITHAUI)
+AC_SUBST(BUILD_DEBUGGER_GDBMI)
 
 GCC_PCH=0
 PCH_FLAGS=

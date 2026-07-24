@@ -48,7 +48,7 @@ Plugin names are:
     codestat, copystrings, Cscope, DoxyBlocks, dragscroll, EditorConfig, EditorTweaks, envvars,
     FileManager, headerfixup, help, hexeditor, incsearch, keybinder, libfinder, MouseSap,
     NassiShneiderman, ProjectOptionsManipulator, profiler, regex, ReopenEditor, rndgen, exporter,
-    symtab, ThreadSearch, ToolsPlus, Valgrind, wxsmith, wxsmithcontrib, wxsmithaui
+    symtab, ThreadSearch, ToolsPlus, Valgrind, wxsmith, wxsmithcontrib, wxsmithaui, debugger_gdbmi
 
 If the NassiShneiderman-plugin should be build, you might see this error, when you run configure:
 

@@ -54,5 +54,6 @@
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx30-unix.cbp" />
 		<Project filename="plugins/contrib/Valgrind/Valgrind_wx30-unix.cbp" />
+		<Project filename="plugins/contrib/debugger_gdbmi/debugger_gdbmi_wx30-unix.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -186,6 +186,7 @@ plugins. These are:
  * RAD gui-builder for wxWidgets (wxSmith)
  * wxSmith contrib items
  * wxSmith AUI
+ * debugger_gdbmi
 
 %package contrib-libs
 Summary:                    Libraries needed to run Code::Blocks contrib-plugins
@@ -293,6 +294,7 @@ wxSmith-plugins and to use the wxContribItems in own programs.
 %{plugindir}/libprojectsimporter.so
 %{plugindir}/libscriptedwizard.so
 %{plugindir}/libtodo.so
+%{plugindir}/libdebugger_gdbmi.so
 %{_datadir}/metainfo/codeblocks.appdata.xml
 %{_datadir}/applications/codeblocks.desktop
 %{_datadir}/icons/hicolor/48x48/mimetypes/*
@@ -426,8 +428,10 @@ wxSmith-plugins and to use the wxContribItems in own programs.
 %{pkgdatadir}/images/codesnippets/*
 %{pkgdatadir}/images/wxsmith/*
 %{pkgdatadir}/lib_finder/*
+%{pkgdatadir}/debugger_gdbmi.zip
 %if 0%{?spellchecker}
 %{pkgdatadir}/SpellChecker/*
+
 %endif
 %{_mandir}/man1/*snippets*
 %doc README COPYING AUTHORS BUGS COMPILERS TODO NEWS ChangeLog

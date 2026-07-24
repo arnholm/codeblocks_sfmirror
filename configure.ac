@@ -640,6 +640,8 @@ AC_CONFIG_FILES([Makefile
 	src/templates/unix/Makefile
 	src/templates/win32/Makefile
 	src/wxsmith/Makefile
+	src/plugins/contrib/debugger_gdbmi/Makefile
+	src/plugins/contrib/debugger_gdbmi/src/resources/Makefile
 	codeblocks.pc
 	codeblocks.spec.fedora
 	codeblocks.spec

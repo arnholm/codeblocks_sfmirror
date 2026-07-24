@@ -162,6 +162,10 @@ if BUILD_CPPCHECK
 MAYBE_CPPCHECK=CppCheck appdata
 endif
 
+if BUILD_DEBUGGER_GDBMI
+MAYBE_DEBUGGER_GDBMI=debugger_gdbmi appdata
+endif
+
 SUBDIRS = $(MAYBE_AUTOVERSIONING) \
 		$(MAYBE_BROWSETRACKER) \
 		$(MAYBE_BYOGAMES) \
@@ -202,7 +206,9 @@ SUBDIRS = $(MAYBE_AUTOVERSIONING) \
 		$(MAYBE_WXCONTRIB) \
 		$(MAYBE_WXSMITH) \
 		$(MAYBE_WXSMITHCONTRIB) \
-		$(MAYBE_WXSMITHAUI)
+		$(MAYBE_WXSMITHAUI) \
+		$(MAYBE_DEBUGGER_GDBMI)
+
 
 DIST_SUBDIRS = appdata \
 		AutoVersioning \
@@ -249,7 +255,8 @@ DIST_SUBDIRS = appdata \
 		wxSmithAui \
 		wxSmithDemo \
 		wxSmithIExplore \
-		wxSmithSTC
+		wxSmithSTC \
+		debugger_gdbmi
 
 EXTRA_DIST =
 if ENABLE_FORTRAN
