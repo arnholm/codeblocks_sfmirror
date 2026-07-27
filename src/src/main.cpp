@@ -3229,9 +3229,10 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
     m_LayoutManager.DetachPane(m_pInfoPane);
     m_LayoutManager.DetachPane(Manager::Get()->GetEditorManager()->GetNotebook());
 
-    #if defined ( __WIN32__ ) || defined ( _WIN64 )
-    // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
-    // crashes in Manager::Shutdown();
+    // FIX: Run floating pane cleanup on ALL platforms (especially GTK/Linux), not just Windows! //(2026-07-26 )
+    //    // The prior fix was being appied to __WIN32__ only
+    //    // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
+    //    // crashes in Manager::Shutdown();
     wxAuiPaneInfoArray& all_panes = m_LayoutManager.GetAllPanes();
     for(size_t ii = 0; ii < all_panes.Count(); ++ii)
     {
@@ -3239,7 +3240,13 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
         if (paneInfo.IsShown() and paneInfo.IsFloating())
             m_LayoutManager.ClosePane(paneInfo);
     }
-    #endif
+
+    // Disconnect plugin toolbars from m_LayoutManager before UnInit (addition to the above fix) //(2026-07-26 )
+    for (PluginToolbarsMap::iterator it = m_PluginsTools.begin(); it != m_PluginsTools.end(); ++it)
+    {
+        if (it->second)
+            m_LayoutManager.DetachPane(it->second);
+    }
 
     m_LayoutManager.UnInit();
 
