@@ -9,7 +9,7 @@
 			<Target title="debugger_gdbmi">
 				<Option output="../../../devel32/share/codeblocks/plugins/debugger_gdbmi" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../devel32" />
-				<Option object_output="../.obj32/plugins/contrib/debugger_gdbmi" />
+				<Option object_output="../.objs32/plugins/contrib/debugger_gdbmi" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option parameters="--debug-log --multiple-instance --no-splash-screen --verbose -p debug --no-ipc " />

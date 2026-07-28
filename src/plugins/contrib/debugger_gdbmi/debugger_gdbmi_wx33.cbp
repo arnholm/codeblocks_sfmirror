@@ -8,7 +8,7 @@
             <Target title="default">
                 <Option output="../../../devel33/share/CodeBlocks/plugins/debugger_gdb_mi" prefix_auto="1" extension_auto="1" />
                 <Option working_dir="../../../devel33" />
-                <Option object_output="../../../.obj33/plugins/contrib/debugger_gdb_mi" />
+                <Option object_output="../../../.objs33/plugins/contrib/debugger_gdb_mi" />
                 <Option type="3" />
                 <Option compiler="gcc" />
                 <Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --verbose --no-splash-screen  /p cbDebug332wk" />
