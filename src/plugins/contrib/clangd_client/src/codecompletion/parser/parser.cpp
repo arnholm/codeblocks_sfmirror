@@ -30,6 +30,7 @@
 
 #endif
 
+#include <sstream>
 #include <unordered_map> //(christo 2024/03/23)
 
 #include <wx/tokenzr.h>
