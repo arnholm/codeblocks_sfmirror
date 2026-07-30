@@ -115,14 +115,5 @@
 		<Unit filename="src/resources/debugger_gdbmi_options_dlg.xrc" />
 		<Unit filename="src/updated_variable.cpp" />
 		<Unit filename="src/updated_variable.h" />
-		<Extensions>
-			<envvars set="cb_plugin" />
-			<wxsmith version="1">
-				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
-				<resources>
-					<wxPanel wxs="wxsmith/config_panel.wxs" src="src/config.cpp" hdr="src/config.h" fwddecl="1" i18n="1" name="ConfigurationPanel" language="CPP" />
-				</resources>
-			</wxsmith>
-		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
