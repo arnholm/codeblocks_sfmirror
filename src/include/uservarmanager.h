@@ -6,15 +6,15 @@
 #ifndef USER_VARIABLE_MANAGER_H
 #define USER_VARIABLE_MANAGER_H
 
-#include "settings.h"
-#include "manager.h"
 #include "cbexception.h"
+#include "manager.h"
+#include "settings.h"
 
-#include <unordered_map>
-#include <set>
-#include <wx/regex.h>
 #include <algorithm>
+#include <set>
+#include <unordered_map>
 
+#include <wx/regex.h>
 #include "wxstringhash.h"   // For wx < 3.1 we need this.
 
 #ifndef CB_PRECOMP
@@ -108,19 +108,17 @@ public:
  */
 namespace UserVariableManagerConsts
 {
-static const wxString cBase     = wxString (_T("base"));        //!> Base variable value
-static const wxString cInclude  = wxString (_T("include"));
-static const wxString cLib      = wxString (_T("lib"));
-static const wxString cObj      = wxString (_T("obj"));
-static const wxString cBin      = wxString (_T("bin"));
-static const wxString cCflags   = wxString (_T("cflags"));
-static const wxString cLflags   = wxString (_T("lflags"));
-static const std::vector<wxString> cBuiltinMembers = {cBase, cInclude, cLib, cObj, cBin, cCflags, cLflags};
-static const wxString cSets     (_T("/sets/"));
-static const wxString cDir      (_T("dir"));
-
-static const wxString defaultSetName      (_T("default"));
-
+  static const wxString cBase     = wxString (_T("base"));        //!> Base variable value
+  static const wxString cInclude  = wxString (_T("include"));
+  static const wxString cLib      = wxString (_T("lib"));
+  static const wxString cObj      = wxString (_T("obj"));
+  static const wxString cBin      = wxString (_T("bin"));
+  static const wxString cCflags   = wxString (_T("cflags"));
+  static const wxString cLflags   = wxString (_T("lflags"));
+  static const wxString cSets          (_T("/sets/"));
+  static const wxString cDir           (_T("dir"));
+  static const wxString defaultSetName (_T("default"));
+  static const std::vector<wxString> cBuiltinMembers = {cBase, cInclude, cLib, cObj, cBin, cCflags, cLflags};
 }
 
 class UserVariable

@@ -13,7 +13,7 @@
 							<label>Current Set:</label>
 						</object>
 						<flag>wxALIGN_CENTER_VERTICAL</flag>
-						<border>10</border>
+						<border>5</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxChoice" name="selSet">
@@ -176,7 +176,7 @@
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -187,7 +187,7 @@
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -295,16 +295,16 @@
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxRIGHT|wxEXPAND</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 														<size>-1,10</size>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -326,7 +326,7 @@
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -348,7 +348,7 @@
 														<border>5</border>
 													</object>
 													<object class="spacer">
-														<flag>wxBOTTOM|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxEXPAND</flag>
 														<border>5</border>
 													</object>
 												</object>
@@ -376,6 +376,7 @@
 											<object class="sizeritem">
 												<object class="wxFlexGridSizer">
 													<cols>2</cols>
+													<rows>8</rows>
 													<growablecols>0,1</growablecols>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="n0" />
@@ -444,6 +445,16 @@
 													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="v6" />
+														<flag>wxBOTTOM|wxRIGHT|wxEXPAND</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="n7" />
+														<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="v7" />
 														<flag>wxBOTTOM|wxRIGHT|wxEXPAND</flag>
 														<border>5</border>
 													</object>

@@ -82,7 +82,7 @@ namespace
     {
         #ifdef __WXMSW__
             wxChar name[MAX_PATH];
-            GetModuleFileName(0L, name, MAX_PATH);
+            GetModuleFileName(nullptr, name, MAX_PATH);
             wxFileName fname(name);
             return fname.GetPath(wxPATH_GET_VOLUME);
         #else

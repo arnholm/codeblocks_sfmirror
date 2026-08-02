@@ -10,28 +10,24 @@
 #include "sdk_precomp.h"
 
 #ifndef CB_PRECOMP
-    #include "uservarmanager.h"
     #include "configmanager.h"
-    #include "logmanager.h"
-    #include "projectmanager.h"
-    #include "macrosmanager.h"
-    #include "manager.h"
-    #include "cbexception.h"
     #include "infowindow.h"
-
-    #include <wx/button.h>
+    #include "logmanager.h"
+    #include "macrosmanager.h"
+    #include "projectmanager.h"
     #include "scrollingdialog.h"
+    #include "uservarmanager.h"
+
+    #include <wx/app.h>
+    #include <wx/button.h>
+    #include <wx/choice.h>
     #include <wx/intl.h>
-    #include <wx/xrc/xmlres.h>
+    #include <wx/listbox.h>
     #include <wx/textctrl.h>
     #include <wx/textdlg.h>
     #include <wx/splitter.h>
-    #include <wx/choice.h>
-    #include <wx/listbox.h>
-    #include <wx/app.h>
+    #include <wx/xrc/xmlres.h>
 #endif
-
-#include "annoyingdialog.h"
 
 
 #if wxCHECK_VERSION(3, 0, 0)
@@ -69,7 +65,6 @@ void UserVariableManager::SetUI(std::unique_ptr<UserVarManagerUI> ui)
 {
     m_ui = std::move(ui);
 }
-
 
 void UserVariableManager::Configure()
 {
@@ -350,14 +345,18 @@ void UserVariableManager::Arrogate()
 
     wxString msg;
     if (m_Preempted.size() == 1)
+    {
         msg.Printf(_("In the currently active set, Code::Blocks does not know\n"
                      "the global compiler variable \"%s\".\n\n"
                      "Please define it."), peList.wx_str());
+    }
     else
+    {
         msg.Printf(_("In the currently active set, Code::Blocks does not know\n"
                      "the following global compiler variables:\n"
                      "%s\n\n"
                      "Please define them."), peList.wx_str());
+    }
 
     m_ui->DisplayInfoWindow(_("Global Compiler Variables"), msg);
     m_ui->OpenEditWindow(m_Preempted);

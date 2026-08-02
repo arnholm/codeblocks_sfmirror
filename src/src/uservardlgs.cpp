@@ -189,11 +189,14 @@ UsrGlblMgrEditDialog::UsrGlblMgrEditDialog(const wxString& var) :
     if (splitter)
         splitter->SetSashGravity(0.7);
 
-    wxString n;
-    m_Name.resize(7);
-    m_Value.resize(7);
-    for (int i = 0; i < 7; ++i)
+    const size_t NUM_USER_VARS = 8;
+    m_Name.resize(NUM_USER_VARS);
+    m_Value.resize(NUM_USER_VARS);
+    for (size_t i=0; i<NUM_USER_VARS; ++i)
     {
+        wxString n;
+
+        n.Printf("n%d", i);
         n.Printf("n%d", i);
         m_Name[i]  = (wxTextCtrl*) FindWindow(n);
 
