@@ -3230,9 +3230,9 @@ void MainFrame::OnApplicationClose(wxCloseEvent& event)
     m_LayoutManager.DetachPane(Manager::Get()->GetEditorManager()->GetNotebook());
 
     // FIX: Run floating pane cleanup on ALL platforms (especially GTK/Linux), not just Windows! //(2026-07-26 )
-    //    // The prior fix was being appied to __WIN32__ only
-    //    // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
-    //    // crashes in Manager::Shutdown();
+    // The prior fix was being appied to __WIN32__ only
+    // For Windows, close shown floating windows before shutdown to avoid hangs in Hide() and
+    // crashes in Manager::Shutdown();
     wxAuiPaneInfoArray& all_panes = m_LayoutManager.GetAllPanes();
     for(size_t ii = 0; ii < all_panes.Count(); ++ii)
     {
@@ -5735,5 +5735,10 @@ void MainFrame::SafeAuiUpdate()
             return;                          // skip update
     }
 #endif
+
+    #ifdef __clang__
+        if (platform::windows && Manager::IsAppShuttingDown())
+            return; // m_LayoutManager.Update() crashes on shut-down on Windows when compiled with CLANG compiler
+    #endif
     m_LayoutManager.Update();                // safe in every other case
 }
