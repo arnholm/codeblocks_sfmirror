@@ -218,7 +218,7 @@ LSP_SymbolsParser::LSP_SymbolsParser(ParserBase*          parent,
   : m_Tokenizer(tokenTree, pHiddenEditor), //This creates LSP_Tokenizer class/object
     m_Parent(parent),
     m_TokenTree(tokenTree),
-    m_LastParent(0),
+    m_LastParent(nullptr),
     m_LastScope(tsUndefined),
     m_FileSize(0),
     m_FileIdx(0),
@@ -823,7 +823,7 @@ bool LSP_SymbolsParser::DoParseDocumentSymbols(json* pJson, cbProject* pProject)
                     {
                         Token* pClassToken = nullptr;
                         wxString ancestor = newToken->m_AncestorsString.BeforeFirst(',');
-                        pClassToken = TokenExists(ancestor, 0, tkClass);
+                        pClassToken = TokenExists(ancestor, nullptr, tkClass);
                         if (not pClassToken)
                         {
                             pClassToken = DoAddToken(tkClass, ancestor,
@@ -1022,7 +1022,7 @@ void LSP_SymbolsParser::WalkDocumentSymbols(json& jref, wxString& filename, Toke
             bool isImpl = ParserCommon::FileType(filename) == ParserCommon::ftSource;
             TokenKind ccTokenKind = ConvertDocSymbolKindToCCTokenKind(kind);
             m_LastParent = pParentToken;
-            Token* newToken = TokenExists(name, 0, ccTokenKind);
+            Token* newToken = TokenExists(name, nullptr, ccTokenKind);
             if (not newToken)
             {
                 newToken = DoAddToken(ccTokenKind, name,
@@ -1326,7 +1326,7 @@ Token* LSP_SymbolsParser::FindTokenFromQueue(std::queue<wxString>& q, Token* par
 // ----------------------------------------------------------------------------
 {
     if (q.empty())
-        return 0;
+        return nullptr;
 
     wxString ns = q.front();
     q.pop();
@@ -1334,7 +1334,7 @@ Token* LSP_SymbolsParser::FindTokenFromQueue(std::queue<wxString>& q, Token* par
     Token* result = TokenExists(ns, parent, tkNamespace | tkClass);
 
     // if we can't find one in global namespace, then we check the local parent
-    if (!result && parent == 0)
+    if (!result && parent == nullptr)
     {
         result = TokenExists(ns, parentIfCreated, tkNamespace | tkClass);
     }
@@ -1379,10 +1379,10 @@ Token* LSP_SymbolsParser::DoAddToken(TokenKind       kind,
     if (name.IsEmpty())
     {
         TRACE(_T("DoAddToken() : Token name is empty!"));
-        return 0; // oops!
+        return nullptr; // oops!
     }
 
-    Token* newToken = 0;
+    Token* newToken = nullptr;
     wxString newname(name);
     m_Str.Trim(true).Trim(false);
     if (kind == tkDestructor)
@@ -1399,14 +1399,14 @@ Token* LSP_SymbolsParser::DoAddToken(TokenKind       kind,
             kind = tkVariable;
     }
 
-    Token* localParent = 0;
+    Token* localParent = nullptr;
 
     // preserve m_EncounteredTypeNamespaces; needed further down this function
     std::queue<wxString> q = m_EncounteredTypeNamespaces;
     if ((kind == tkDestructor || kind == tkConstructor) && !q.empty())
     {
         // look in m_EncounteredTypeNamespaces
-        localParent = FindTokenFromQueue(q, 0, true, m_LastParent);
+        localParent = FindTokenFromQueue(q, nullptr, true, m_LastParent);
         if (localParent)
             newToken = TokenExists(newname, baseArgs, localParent, kind);
         if (newToken)
@@ -1416,7 +1416,7 @@ Token* LSP_SymbolsParser::DoAddToken(TokenKind       kind,
     // check for implementation member function
     if (!newToken && !m_EncounteredNamespaces.empty())
     {
-        localParent = FindTokenFromQueue(m_EncounteredNamespaces, 0, true, m_LastParent);
+        localParent = FindTokenFromQueue(m_EncounteredNamespaces, nullptr, true, m_LastParent);
         if (localParent)
             newToken = TokenExists(newname, baseArgs, localParent, kind);
         if (newToken)
@@ -2461,7 +2461,7 @@ void LSP_SymbolsParser::HandleFunction(wxString& name, bool isOperator, bool isP
         int lineEnd = 0;
         bool isCtor = m_Str.IsEmpty();
         bool isDtor = m_Str.StartsWith(ParserConsts::tilde);
-        Token* localParent = 0;
+        Token* localParent = nullptr;
 
         if ((isCtor || isDtor) && !m_EncounteredTypeNamespaces.empty())
         {

@@ -63,8 +63,8 @@ Token::Token(const wxString& name, unsigned int file, unsigned int line, size_t 
     m_IsAnonymous(false),
     m_Index(-1),
     m_ParentIndex(-1),
-    m_UserData(0),
-    m_TokenTree(0),
+    m_UserData(nullptr),
+    m_TokenTree(nullptr),
     m_Ticket(ticket)
 {
     //ctor

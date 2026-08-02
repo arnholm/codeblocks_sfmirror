@@ -589,7 +589,7 @@ void CCDebugInfo::OnFindClick(cb_unused wxCommandEvent& event)
 
     wxString search = txtFilter->GetValue();
 
-    m_Token = 0;
+    m_Token = nullptr;
 
     // first determine if the user entered an ID or a search mask
     long unsigned id;

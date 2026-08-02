@@ -429,7 +429,7 @@ void TokenTree::RemoveToken(Token* oldToken)
 
     // Step 1: Detach token from its parent
 
-    Token* parentToken = 0;
+    Token* parentToken = nullptr;
     if ((size_t)(oldToken->m_ParentIndex) >= m_Tokens.size())
         oldToken->m_ParentIndex = -1;
     if (oldToken->m_ParentIndex >= 0)
@@ -515,7 +515,7 @@ int TokenTree::AddTokenToList(Token* newToken, int forceidx)
         if ((size_t)forceidx >= m_Tokens.size())
         {
             int max = 250*((forceidx + 250) / 250);
-            m_Tokens.resize((max),0); // fill next 250 items with null-values
+            m_Tokens.resize((max),nullptr); // fill next 250 items with null-values
         }
         m_Tokens[forceidx] = newToken;
         result = forceidx;
@@ -557,7 +557,7 @@ void TokenTree::RemoveTokenFromList(int idx)
     Token* oldToken = m_Tokens[idx];
     if (oldToken)
     {
-        m_Tokens[idx] = 0;
+        m_Tokens[idx] = nullptr;
         m_FreeTokens.push_back(idx);
         delete oldToken;
     }
@@ -689,7 +689,7 @@ void TokenTree::RecalcInheritanceChain(Token* token)
         // ancestors might contain namespaces, e.g. NS::Ancestor
         if (ancestor.Find(_T("::")) != wxNOT_FOUND)
         {
-            Token* ancestorToken = 0;
+            Token* ancestorToken = nullptr;
             wxStringTokenizer anctkz(ancestor, _T("::"));
             while (anctkz.HasMoreTokens())
             {
@@ -839,7 +839,7 @@ void TokenTree::RecalcFullInheritance(int parentIdx, TokenIdxSet& result)
 Token* TokenTree::GetTokenAt(int idx)
 {
     if (idx < 0 || (size_t)idx >= m_Tokens.size())
-        return 0;
+        return nullptr;
 
     return m_Tokens[idx];
 }
@@ -847,7 +847,7 @@ Token* TokenTree::GetTokenAt(int idx)
 const Token* TokenTree::GetTokenAt(int idx) const
 {
     if (idx < 0 || (size_t)idx >= m_Tokens.size())
-        return 0;
+        return nullptr;
 
     return m_Tokens[idx];
 }

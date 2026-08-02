@@ -56,8 +56,8 @@ public:
     std::string Message;
     ErrorCode Code;
     static char ID;
-    LSPError(std::string Message, ErrorCode Code)
-            : Message(std::move(Message)), Code(Code) {}
+    LSPError(std::string _Message, ErrorCode _Code)
+            : Message(std::move(_Message)), Code(_Code) {}
 };
 JSON_SERIALIZE(URIForFile, {j = value.file;}, {value.file = j.get<std::string>();});
 struct TextDocumentIdentifier {

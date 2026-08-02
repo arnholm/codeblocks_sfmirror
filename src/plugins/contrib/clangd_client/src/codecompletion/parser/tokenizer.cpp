@@ -107,7 +107,7 @@ Tokenizer::Tokenizer(TokenTree* tokenTree, const wxString& filename) :
     m_SavedNestingLevel(0),
     m_IsOK(false),
     m_State(tsNormal),
-    m_Loader(0),
+    m_Loader(nullptr),
     m_NextTokenDoc(),
     m_LastTokenIdx(-1),
     m_ReadingMacroDefinition(false)
@@ -235,7 +235,7 @@ bool Tokenizer::ReadFile()
         m_Buffer = wxString(data, m_BufferLen + 1); // + 1 => sentinel
 #endif
 
-        success = (data != 0);
+        success = (data != nullptr);
     }
     else
     {

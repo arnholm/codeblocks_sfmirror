@@ -1006,8 +1006,8 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
 
     if ( (wxFound(ccTokenIdx) and pTokenTree))
     {
-        wxString html = GenerateHTML(ccTokenIdx, pTokenTree);
-        return html;
+        wxString _html = GenerateHTML(ccTokenIdx, pTokenTree);
+        return _html;
     }
 
     return wxString();

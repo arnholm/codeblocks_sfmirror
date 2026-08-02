@@ -59,10 +59,10 @@ class MapMessageHandler : public MessageHandler
         void bindRequest(const char *method, std::function<void(Param &, RequestID)> func)
         // ----------------------------------------------------------------------------
         {
-            m_calls[method] = [=](json &params, json &id)
+            m_calls[method] = [=](json &params, json &_id)
             {
                 Param param = params.get<Param>();
-                func(param, id.get<RequestID>());
+                func(param, _id.get<RequestID>());
             };
         }
         // ----------------------------------------------------------------------------
@@ -89,10 +89,10 @@ class MapMessageHandler : public MessageHandler
             m_notify[method] = std::move(func);
         }
         // ----------------------------------------------------------------------------
-        void bindResponse(RequestID id, std::function<void(value &)>func)
+        void bindResponse(RequestID _id, std::function<void(value &)>func)
         // ----------------------------------------------------------------------------
         {
-            m_requests.emplace_back(id, std::move(func));
+            m_requests.emplace_back(_id, std::move(func));
         }
         // ----------------------------------------------------------------------------
         void onNotify(string_ref method, value &params) override
@@ -258,11 +258,11 @@ class JsonTransport : public Transport
     void notify(string_ref method, value &params) override
     // ----------------------------------------------------------------------------
     {
-        json value = {{"jsonrpc", jsonrpc},
+        json _value = {{"jsonrpc", jsonrpc},
             {"method",  method},
             {"params",  params}
         };
-        writeJson(value);
+        writeJson(_value);
     }
     // ----------------------------------------------------------------------------
     void request(string_ref method, value &params, RequestID &id) override

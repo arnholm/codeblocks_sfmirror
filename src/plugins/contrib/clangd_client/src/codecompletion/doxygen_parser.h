@@ -128,8 +128,8 @@ public:
     static wxString ConvertTypeToAnchor(wxString fullType);
     static wxString ConvertArgsToAnchors(wxString args);
     /*! returns argument base type */
-    static wxString ExtractTypeAndName(wxString type, wxString* outName = 0);
-    static wxString CommandToAnchor(Command cmd, const wxString& name, const wxString* args = 0);
+    static wxString ExtractTypeAndName(wxString type, wxString* outName = nullptr);
+    static wxString CommandToAnchor(Command cmd, const wxString& name, const wxString* args = nullptr);
     static wxString CommandToAnchorInt(Command cmd, const wxString& name, int arg0);
     static Command HrefToCommand(const wxString& href, wxString& args);
 
