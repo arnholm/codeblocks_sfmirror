@@ -238,7 +238,7 @@ class ProjectManagerUI : public wxEvtHandler, public cbProjectManagerUI
         void BuildProjectTree(cbProject* project, cbTreeCtrl* tree, const wxTreeItemId& root, int ptvs, FilesGroupsAndMasks* fgam);
 
         /** Reload the File system watcher for the project prj **/
-        void ReloadFileSystemWatcher(cbProject* prj);
+        void ReloadFileSystemWatcher(cbProject* prj) override;
 
     private:
 #if wxUSE_FSWATCHER

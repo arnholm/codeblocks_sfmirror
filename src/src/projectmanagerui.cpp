@@ -559,7 +559,7 @@ void ProjectManagerUI::RebuildTree()
 
 void ProjectManagerUI::FreezeTree()
 {
-   ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
+    ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
     if (!m_pTree || pPrjMgr->GetSkipTreeFreeze() )
         return;
 
