@@ -211,27 +211,19 @@ StartHerePage::StartHerePage(wxEvtHandler* owner, const RecentItemsList &project
 
     delete fs;
 
-#if defined(_LP64) || defined(_WIN64)
-    const int bit_type = 64;
-#else
-    const int bit_type = 32;
-#endif
-
-    revInfo.Printf("%s (%s)   ", appglobals::AppActualVersionVerb, ConfigManager::GetSvnDate());
-
-#if defined(__clang__)
-    revInfo += wxString::Format("clang %d.%d.%d ", __clang_major__, __clang_minor__, __clang_patchlevel__);
-#elif defined(__GNUC__)
-    revInfo += wxString::Format("gcc %d.%d.%d ", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
-#endif
-    revInfo += wxString::Format("%s/%s - %d bit", appglobals::AppPlatform,
-                                appglobals::AppWXAnsiUnicode, bit_type);
+    revInfo.Printf("%s (%s) ", appglobals::AppActualVersionVerb, ConfigManager::GetSvnDate());
+    revInfo += wxString::Format("%s - %s on %s, %s, %s",
+                                appglobals::AppCompilerVersion,
+                                appglobals::AppPlatform,
+                                appglobals::AppProcessor,
+                                appglobals::AppWXAnsiUnicode,
+                                appglobals::AppBitType);
 
     // perform var substitution
     buf.Replace("CB_VAR_REVISION_INFO", revInfo);
-    buf.Replace("CB_VAR_VERSION_VERB", appglobals::AppActualVersionVerb);
-    buf.Replace("CB_VAR_VERSION", appglobals::AppActualVersion);
-    buf.Replace("CB_SAFE_MODE", PluginManager::GetSafeMode() ? _("SAFE MODE") : wxString());
+    buf.Replace("CB_VAR_VERSION_VERB",  appglobals::AppActualVersionVerb);
+    buf.Replace("CB_VAR_VERSION",       appglobals::AppActualVersion);
+    buf.Replace("CB_SAFE_MODE",         PluginManager::GetSafeMode() ? _("SAFE MODE") : wxString());
 
     m_OriginalPageContent = buf; // keep a copy of original for Reload()
     Reload();

@@ -43,20 +43,26 @@ namespace appglobals
     const wxString AppProcessor          = wxGetCpuArchitectureName();
     const wxString AppEndianess          = wxIsPlatformLittleEndian() ? wxT("little endian") : wxT("big endian");
     const wxString AppWXAnsiUnicode      = platform::unicode          ? wxT("unicode")       : wxT("ANSI");
-    const wxString AppBitType            = wxIsPlatform64Bit()        ? wxT(" - 64 bit")     : wxT(" - 32 bit");
-    const wxString AppBuildTimestamp     = (  wxString(wxT(__DATE__)) + wxT(", ") + wxT(__TIME__) + wxT(" - ") + wxVERSION_STRING
+    const wxString AppBitType            = wxIsPlatform64Bit()        ? wxT("64 bit")        : wxT("32 bit");
+    const wxString AppCompilerVersion
 #if defined(__clang__)
-                                            + wxString::Format(wxT(" - clang %d.%d.%d"),
-                                                               __clang_major__, __clang_minor__, __clang_patchlevel__)
+                                         = wxString::Format(wxT("clang %d.%d.%d"),
+                                                            __clang_major__,
+                                                            __clang_minor__,
+                                                            __clang_patchlevel__);
 #elif defined(__GNUC__)
-                                            + wxT(" - gcc ") + (wxString() << __GNUC__)
-                                            + wxT(".")       + (wxString() << __GNUC_MINOR__)
-                                            + wxT(".")       + (wxString() << __GNUC_PATCHLEVEL__)
+                                         = "gcc "   + (wxString() << __GNUC__)
+                                         + wxT(".") + (wxString() << __GNUC_MINOR__)
+                                         + wxT(".") + (wxString() << __GNUC_PATCHLEVEL__);
+#else
+                                         = "unknown compiler";
 #endif
-                                            + wxT(" (") + AppPlatform + wxT(" on ")
-                                            + AppProcessor + wxT(", ")
-                                            + AppEndianess + wxT(", ")
-                                            + AppWXAnsiUnicode + wxT(")") + AppBitType );
+    const wxString AppBuildTimestamp     = ( wxString(wxT(__DATE__)) + wxT(", ") + wxT(__TIME__) + wxT(" - ") + wxVERSION_STRING
+                                         + wxT(" ")  + AppCompilerVersion
+                                         + wxT(" (") + AppPlatform + wxT(" on ")
+                                         + AppProcessor + wxT(", ")
+                                         + AppEndianess + wxT(", ")
+                                         + AppWXAnsiUnicode + wxT("), ") + AppBitType );
 
     const wxString DefaultBatchBuildArgs = _T("-na -nd -ns --batch-build-notify");
 }

@@ -29,7 +29,10 @@ namespace appglobals
     extern const wxString AppUrl;
     extern const wxString AppContactEmail;
     extern const wxString AppPlatform;
+    extern const wxString AppProcessor;
     extern const wxString AppWXAnsiUnicode;
+    extern const wxString AppBitType;
+    extern const wxString AppCompilerVersion;
     extern const wxString AppBuildTimestamp;
 
     extern const wxString DefaultBatchBuildArgs;
