@@ -74,7 +74,7 @@ public:
   const wxString GetModDate() const { return m_modDate; }
 
 private:
-  wxString m_title;        ///< The document’s title.
+  wxString m_title;        ///< The documentï¿½s title.
   wxString m_author;       ///< The name of the person who created the document.
   wxString m_subject;      ///< The subject of the document.
   wxString m_keywords;     ///< Keywords associated with the document.

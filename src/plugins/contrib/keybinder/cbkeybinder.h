@@ -523,7 +523,7 @@ class cbKeyBinder : public cbPlugin
 //
 //  closed  1/11/2006 1:20 PM opened 1/11/2006 1:20 PM
 //          Re: wxKeyBinder problems/solutions discussion
-//          « Reply #7 on: Today at 01:06:03 PM »
+//          ï¿½ Reply #7 on: Today at 01:06:03 PM ï¿½
 //      	Reply with quote
 //          Quote from: Pecan on January 10, 2006, 06:40:49 PM
 //          ...Have commited KeyBinder v0.4.8 (svn 1708)...

@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      advancedmatrixobejct.h
  * Purpose:   Defines Class AdvancedMatrixObject
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-03-02
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 
@@ -44,12 +44,12 @@ class DLLEXPORT AdvancedMatrixObject : public MatrixObject
 		void FitTop();
 		void FitBottom();
 
-		// Füllfunktionen
+		// Fï¿½llfunktionen
 		void FillLine(int y, char d);
 		void FillRow(int x, char d);
 		void FillAll(char d);
 
-		// Löschfunktionen
+		// Lï¿½schfunktionen
 		void ClearLine(int y);
 		void ClearRow(int x);
 

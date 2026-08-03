@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      advancedmatrixobejct.cpp
  * Purpose:   Code for Class AdvancedMatrixObject
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-03-02
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 
@@ -44,7 +44,7 @@ void AdvancedMatrixObject::RotateLeft()
 		for(y=0;y<m_height;++y)
 			tmp.SetDataAt(y,m_width-x-1,this->GetDataFrom(x,y));
 
-	// Daten übernehmen
+	// Daten ï¿½bernehmen
 	for(int i=0;i<m_length;++i)
 		m_data[i]=tmp.GetDataFrom(i);
 	m_width=tmp.GetWidth();
@@ -64,7 +64,7 @@ void AdvancedMatrixObject::RotateRight()
 		for(y=0;y<m_height;++y)
 			tmp.SetDataAt(m_height-y-1,x,this->GetDataFrom(x,y));
 
-	// Daten übernehmen
+	// Daten ï¿½bernehmen
 	for(int i=0;i<m_length;++i)
 		m_data[i]=tmp.GetDataFrom(i);
 	m_width=tmp.GetWidth();
@@ -308,7 +308,7 @@ void AdvancedMatrixObject::FitBottom()
 
 void AdvancedMatrixObject::FillLine(int y, char d)
 {
-	// Gibt es die Linie überhaupt
+	// Gibt es die Linie ï¿½berhaupt
 	if(y<0 || y>=m_height) return;
 
 	// Linie auf Null setzen
@@ -317,7 +317,7 @@ void AdvancedMatrixObject::FillLine(int y, char d)
 }
 void AdvancedMatrixObject::FillRow(int x, char d)
 {
-	// Gibt es die Spalte überhaupt
+	// Gibt es die Spalte ï¿½berhaupt
 	if(x<0 || x>=m_width) return;
 
 	// Spalte auf null

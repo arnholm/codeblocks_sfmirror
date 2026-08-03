@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      matrixobejct.cpp
  * Purpose:   Code for Class MatrixObject
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-03-02
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 // For compilers that support precompilation, includes "wx.h".
@@ -59,7 +59,7 @@ void MatrixObject::Init(const char* data, int width, int height)
 	// Quadratisch wenn nichts angegeben
 	if(height==0) height=width;
 
-	// Größe Speichern
+	// Grï¿½ï¿½e Speichern
     m_width=width;
     m_height=height;
     m_length=width*height;
@@ -70,7 +70,7 @@ void MatrixObject::Init(const char* data, int width, int height)
 	// Array zum internen Speichern erzeugen
     m_data=new char[m_length];
 
-	// Daten aus dem vorgegeben Array übernehmen oder mit 0 Füllen
+	// Daten aus dem vorgegeben Array ï¿½bernehmen oder mit 0 Fï¿½llen
 	if(data)
 		memcpy(m_data,data,m_length*sizeof(char));
 	else
@@ -84,7 +84,7 @@ void MatrixObject::Init(const wxImage img)
     // wenn schon initialiesiert (wird erst alles freigegeben)
     this->Destroy();
 
-    // Größe Speichern
+    // Grï¿½ï¿½e Speichern
     m_width = img.GetWidth();
     m_height = img.GetHeight();
     m_length=m_width*m_height;
@@ -135,7 +135,7 @@ void MatrixObject::Destroy()
 
 bool MatrixObject::SetDataAt(int x, int y, char data)
 {
-    // Prüfen ob der Punkt gültig
+    // Prï¿½fen ob der Punkt gï¿½ltig
     if(x<0) return false;
     if(y<0) return false;
     if(x>=m_width) return false;
@@ -149,7 +149,7 @@ bool MatrixObject::SetDataAt(int x, int y, char data)
 
 bool MatrixObject::SetDataAt(int p, char data)
 {
-    // Prüfen ob der Punkt gültig
+    // Prï¿½fen ob der Punkt gï¿½ltig
     if(p<0) return false;
     if(p>=m_length) return false;
 

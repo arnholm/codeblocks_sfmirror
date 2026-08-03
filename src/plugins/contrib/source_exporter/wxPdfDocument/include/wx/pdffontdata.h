@@ -156,7 +156,7 @@ public:
   *   \li contains "italic" or "oblique" the style is set to italic
   *   \li equals "b" the style is set to bold
   *   \li equals "i" the style is set to italic
-  *   \li equals "bi" or "ib" ´the style is set to bolditalic
+  *   \li equals "bi" or "ib" ï¿½the style is set to bolditalic
   */
   void SetStyle(const wxString& style);
 

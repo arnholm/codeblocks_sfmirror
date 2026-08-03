@@ -77,7 +77,7 @@ namespace dbg_mi
         }
     };
 
-//  GdbCmd_CallBackAction—that mimics the simplicity of wxString's event forwarding.
+//  GdbCmd_CallBackActionï¿½that mimics the simplicity of wxString's event forwarding.
 //  You pass 'this' (the object instance) and the address of the member function.
 //  Example:
 // int rowNum = 5;

@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      wxledpanel.cpp
  * Purpose:   Code for Class wxLEDPanel
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-02-28
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:      wxWindows licence
  **************************************************************/
 
@@ -448,7 +448,7 @@ void wxLEDPanel::DrawField(wxDC& dc, bool backgroundMode)
     int w=m_ledsize.GetWidth()+m_padding;
     int h=m_ledsize.GetHeight()+m_padding;
 
-    // Zähler für Zeile und Spalte
+    // Zï¿½hler fï¿½r Zeile und Spalte
     int x=0,y=0;
 
     // Pointer to avoid unnesecerie if blocks in the for block
@@ -474,7 +474,7 @@ void wxLEDPanel::DrawField(wxDC& dc, bool backgroundMode)
             dc.Blit(point.x,point.y,w,h,p_mdc_nodata,0,0);
         }
 
-        // hochzählen
+        // hochzï¿½hlen
         ++x;
         if(x==fw) {++y; x=0;}
     }

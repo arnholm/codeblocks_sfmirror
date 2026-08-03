@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      wxledpanel.h
  * Purpose:   Defines Class wxLEDPanel
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-02-28
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 #ifndef WXLEDPANEL_H
@@ -64,7 +64,7 @@ class DLLEXPORT wxLEDPanel : public wxControl
 		// Reset the Context
 		void Reset();
 
-		// Größenangaben
+		// Grï¿½ï¿½enangaben
 		wxSize GetFieldsize() const;
 		wxSize GetLEDSize() const;
 

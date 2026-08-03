@@ -1435,7 +1435,7 @@ SolveCyclic(const wxPdfArrayDouble& a, const wxPdfArrayDouble& b,
   {
     bb[i] = b[i];
   }
-  // Solve A · x = rhs.
+  // Solve A ï¿½ x = rhs.
   x.SetCount(n);
   if (!SolveTridiagonalGeneral(a, bb, c, r, x))
   {
@@ -1448,7 +1448,7 @@ SolveCyclic(const wxPdfArrayDouble& a, const wxPdfArrayDouble& b,
   u[0] = gamma;
   u[n-1] = alpha;
 
-  // Solve A · z = u.
+  // Solve A ï¿½ z = u.
   wxPdfArrayDouble z;
   z.SetCount(n);
   if (!SolveTridiagonalGeneral(a, bb, c, u, z))

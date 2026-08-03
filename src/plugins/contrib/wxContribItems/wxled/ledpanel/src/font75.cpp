@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      font75.cpp
  * Purpose:   Code for the Font with Letters in format 7x5
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-03-24
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 const int font75_letterWidth=5;

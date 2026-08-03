@@ -7,7 +7,7 @@
 // Licence:     KWIC License http://www.koansoftware.com/kwic/kwic-license.htm
 /////////////////////////////////////////////////////////////////////////////
 
-//	La classe kwxBmpSwitcher riceve una o più bitmap tramite il metodo
+//	La classe kwxBmpSwitcher riceve una o piï¿½ bitmap tramite il metodo
 //	AddBitmap, e permette lo scambio di esse tramite il metodo IncState o SetState.
 //
 //	IncState():			Passa alla bitmap successiva, se si trova all'ultima

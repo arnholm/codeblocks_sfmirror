@@ -1,5 +1,5 @@
 /* wxGridBagSizer implementation for wxSmith
- * Created by Stéphane Coquelin (sun.wu.kong@free.fr)
+ * Created by Stï¿½phane Coquelin (sun.wu.kong@free.fr)
  *
  * Most of this file consist on copy / paste and adapt to fit to wxGridBagSizer.
  * I have used wxssizer.cpp and wxsflexgridsizer.cpp to create this file.

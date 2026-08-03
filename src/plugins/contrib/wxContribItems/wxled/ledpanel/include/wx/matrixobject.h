@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      matrixobejct.h
  * Purpose:   Defines Class MatrixObject
- * Author:    Christian Gräfe (info@mcs-soft.de)
+ * Author:    Christian Grï¿½fe (info@mcs-soft.de)
  * Created:   2007-03-02
- * Copyright: Christian Gräfe (www.mcs-soft.de)
+ * Copyright: Christian Grï¿½fe (www.mcs-soft.de)
  * License:	  wxWindows licence
  **************************************************************/
 
@@ -35,7 +35,7 @@ class DLLEXPORT MatrixObject
         void Init(const MatrixObject& mo) {Init(mo.GetData(),mo.GetWidth(),mo.GetHeight());}
         void Init(const wxImage img);
 
-		// Größe des Objektes ausgeben
+		// Grï¿½ï¿½e des Objektes ausgeben
         int GetWidth()  const {return m_width;}
         int GetHeight() const {return m_height;}
         int GetLength() const {return m_length;}

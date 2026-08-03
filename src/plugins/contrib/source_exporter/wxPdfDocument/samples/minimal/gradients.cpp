@@ -116,7 +116,7 @@ gradients(bool testMode)
   int coons1 = pdf.CoonsPatchGradient(mesh1);
   pdf.SetFillGradient(20,115,80,80,coons1);
 
-  // set the coordinates for the cubic Bézier points x1,y1 ... x12, y12 of the patch
+  // set the coordinates for the cubic Bï¿½zier points x1,y1 ... x12, y12 of the patch
   // (see coons_patch_mesh_coords.jpg)
   wxPdfCoonsPatchMesh mesh2;
   wxPdfColour colors2[] = { yellow, blue, green, red };
