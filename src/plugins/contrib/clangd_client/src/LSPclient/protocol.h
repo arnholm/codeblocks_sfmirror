@@ -719,8 +719,6 @@ struct Diagnostic {
     /// (These actions can also be obtained using textDocument/codeAction).
     option<std::vector<CodeAction>> codeActions;
 };
-JSON_SERIALIZE(Diagnostic, {/*NOT REQUIRED*/},{FROM_KEY(range);FROM_KEY(code);FROM_KEY(source);FROM_KEY(message);
-                FROM_KEY(relatedInformation);FROM_KEY(category);FROM_KEY(codeActions);});
 
 struct PublishDiagnosticsParams {
     /**
@@ -732,14 +730,12 @@ struct PublishDiagnosticsParams {
 	 */
     std::vector<Diagnostic> diagnostics;
 };
-JSON_SERIALIZE(PublishDiagnosticsParams, {}, {FROM_KEY(uri);FROM_KEY(diagnostics);});
 
 struct CodeActionContext {
     /// An array of diagnostics.
     std::vector<Diagnostic> diagnostics;
     option<std::string> kind;
 };
-JSON_SERIALIZE(CodeActionContext, MAP_JSON(MAP_KEY(diagnostics), MAP_KEY(kind)), {});
 
 struct CodeActionParams {
     /// The document in which the command was invoked.
@@ -751,7 +747,6 @@ struct CodeActionParams {
     /// Context carrying additional information.
     CodeActionContext context;
 };
-JSON_SERIALIZE(CodeActionParams, MAP_JSON(MAP_KEY(textDocument), MAP_KEY(range), MAP_KEY(context)), {});
 
 struct WorkspaceEdit {
     /// Holds changes to existing resources.
@@ -805,7 +800,12 @@ struct CodeAction {
     option<LspCommand> command;
 };
 JSON_SERIALIZE(CodeAction, MAP_JSON(MAP_KEY(title), MAP_KEY(kind), MAP_KEY(diagnostics), MAP_KEY(edit), MAP_KEY(command)),
-        {FROM_KEY(title);FROM_KEY(kind);FROM_KEY(diagnostics);FROM_KEY(edit);FROM_KEY(command)});
+              {FROM_KEY(title);FROM_KEY(kind);FROM_KEY(diagnostics);FROM_KEY(edit);FROM_KEY(command)});
+JSON_SERIALIZE(Diagnostic, {/*NOT REQUIRED*/},{FROM_KEY(range);FROM_KEY(code);FROM_KEY(source);FROM_KEY(message);
+               FROM_KEY(relatedInformation);FROM_KEY(category);FROM_KEY(codeActions);});
+JSON_SERIALIZE(PublishDiagnosticsParams, {}, {FROM_KEY(uri);FROM_KEY(diagnostics);});
+JSON_SERIALIZE(CodeActionContext, MAP_JSON(MAP_KEY(diagnostics), MAP_KEY(kind)), {});
+JSON_SERIALIZE(CodeActionParams, MAP_JSON(MAP_KEY(textDocument), MAP_KEY(range), MAP_KEY(context)), {});
 
 struct SymbolInformation {
     /// The name of this symbol.
