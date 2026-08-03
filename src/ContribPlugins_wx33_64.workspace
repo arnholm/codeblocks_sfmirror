@@ -24,6 +24,7 @@
 		<Project filename="plugins/contrib/copystrings/copystrings_wx33_64.cbp" />
 		<Project filename="plugins/contrib/CppCheck/CppCheck_wx33_64.cbp" />
 		<Project filename="plugins/contrib/Cscope/Cscope_wx33_64.cbp" />
+		<Project filename="plugins/contrib/debugger_gdbmi/debugger_gdbmi_wx33_64.cbp" />
 		<Project filename="plugins/contrib/devpak_plugin/DevPakPlugin_wx33_64.cbp" />
 		<Project filename="plugins/contrib/DoxyBlocks/DoxyBlocks_wx33_64.cbp" />
 		<Project filename="plugins/contrib/dragscroll/DragScroll_wx33_64.cbp" />
@@ -56,6 +57,5 @@
 			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_64.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx33_64.cbp" />
-		<Project filename="plugins/contrib/debugger_gdbmi/debugger_gdbmi_wx33_64.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
