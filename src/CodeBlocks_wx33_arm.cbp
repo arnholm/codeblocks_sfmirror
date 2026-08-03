@@ -182,8 +182,8 @@
 					<Add after="zip -jq9 devel33_arm\share\CodeBlocks\resources.zip src\resources\*.xrc" />
 					<Add after="zip -jq9 devel33_arm\share\CodeBlocks\start_here.zip src\resources\start_here\*.html src\resources\start_here\*.png" />
 					<Add after='cmd /c &quot;cd src\resources &amp; zip -0 -q ..\..\devel33_arm\share\CodeBlocks\resources.zip images\*.png images\16x16\*.png&quot;' />
-					<Add after="cmd /c if not exist devel33_arm\exchndl.dll if exist exchndl\win64\bin\*.dll xcopy /Y exchndl\win64\bin\*.dll devel33_arm\" />
-					<Add after="cmd /c if not exist devel33_arm\symsrv.yes if exist exchndl\win64\bin\symsrv.yes xcopy /Y exchndl\win64\bin\symsrv.yes devel33_arm\" />
+					<Add after="cmd /c if not exist devel33_arm\exchndl.dll if exist exchndl\winarm\bin\*.dll xcopy /Y exchndl\winarm\bin\*.dll devel33_arm\" />
+					<Add after="cmd /c if not exist devel33_arm\symsrv.yes if exist exchndl\winarm\bin\symsrv.yes xcopy /Y exchndl\winarm\bin\symsrv.yes devel33_arm\" />
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>

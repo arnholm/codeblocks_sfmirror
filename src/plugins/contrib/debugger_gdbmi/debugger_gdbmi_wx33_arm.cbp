@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+  <FileVersion major="1" minor="6" />
+  <Project>
+    <Option title="debugger_gdbmi wx3.3.x (ARM, 64 bit)" />
+    <Option compiler="llvm-mingw-arm64_compiler" />
+    <Build>
+      <Target title="default">
+        <Option output="../../../devel33_arm/share/CodeBlocks/plugins/debugger_gdb_mi" prefix_auto="1" extension_auto="1" />
+        <Option working_dir="../../../devel33_arm" />
+        <Option object_output="../../../.objs33_arm/plugins/contrib/debugger_gdb_mi" />
+        <Option type="3" />
+        <Option compiler="llvm-mingw-arm64_compiler" />
+        <Option parameters="--debug-log --no-dde --no-check-associations --multiple-instance  --no-splash-screen --verbose -p debug" />
+        <Option host_application="../../../devel33_arm/codeblocks.exe" />
+        <Option run_host_application_in_terminal="0" />
+        <Compiler>
+          <Add option="$(#CB_RELEASE_TYPE)" />
+          <Add option="$(#CB_CPP_STD)" />
+        </Compiler>
+        <ExtraCommands>
+          <Add after="cmd /c if not exist ..\..\..\devel33_arm\share\codeblocks\plugins mkdir ..\..\..\devel33_arm\share\codeblocks\plugins" />
+          <Add after="cmd /c zip -j9 ..\..\..\devel33_arm\share\codeblocks\debugger_gdbmi.zip src\resources\*" />
+          <Mode after="always" />
+        </ExtraCommands>
+      </Target>
+      <Environment>
+        <Variable name="WX_CFG" value="" />
+        <Variable name="WX_SUFFIX" value="u" />
+        <Variable name="WX_VERSION" value="33" />
+      </Environment>
+    </Build>
+    <VirtualTargets>
+      <Add alias="All" targets="default;" />
+    </VirtualTargets>
+    <Compiler>
+      <Add option="-Wextra" />
+      <Add option="-Wall" />
+      <Add option="-m64" />
+      <Add option="$(#CB_RELEASE_TYPE)" />
+      <Add option="-pipe" />
+      <Add option="-fmessage-length=0" />
+      <Add option="-fexceptions" />
+      <Add option="$(#CB_CPP_STD)" />
+      <Add option="-DBUILDING_PLUGIN" />
+      <Add option="-DHAVE_W32API_H" />
+      <Add option="-D__WXMSW__" />
+      <Add option="-DWXUSINGDLL" />
+      <Add option="-DcbDEBUG" />
+      <Add option="-DNOPCH" />
+      <Add option="-DwxUSE_UNICODE" />
+      <Add option="-D_WIN64" />
+      <Add option="-DCC_NO_COLLAPSE_ITEM" />
+      <Add option="-DDOLOGSNIP" />
+      <Add directory="../../../include" />
+      <Add directory="../../../include/tinyxml" />
+      <Add directory="../../../sdk/wxscintilla/include" />
+      <Add directory="src" />
+      <Add directory="$(#wx33_arm.include)" />
+      <Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono/msw$(WX_SUFFIX)" />
+    </Compiler>
+    <ResourceCompiler>
+      <Add directory="$(#wx33_arm.include)" />
+      <Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono/msw$(WX_SUFFIX)" />
+    </ResourceCompiler>
+    <Linker>
+      <Add option="-m64" />
+      <Add option="-mthreads" />
+      <Add option="-Wl,--enable-auto-image-base" />
+      <Add option="-Wl,--enable-auto-import" />
+      <Add option="-Wl,--no-undefined" />
+      <Add library="codeblocks" />
+      <Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+      <Add directory="../../../devel33_arm" />
+      <Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono" />
+    </Linker>
+    <Unit filename="src/actions.cpp" />
+    <Unit filename="src/actions.h" />
+    <Unit filename="src/cJSON.cpp" />
+    <Unit filename="src/cJSON.h" />
+    <Unit filename="src/cmd_queue.cpp" />
+    <Unit filename="src/cmd_queue.h" />
+    <Unit filename="src/cmd_result_parser.cpp" />
+    <Unit filename="src/cmd_result_parser.h" />
+    <Unit filename="src/cmd_result_tokens.cpp" />
+    <Unit filename="src/cmd_result_tokens.h" />
+    <Unit filename="src/config.cpp">
+      <Option target="&lt;{~None~}&gt;" />
+    </Unit>
+    <Unit filename="src/config.h">
+      <Option target="&lt;{~None~}&gt;" />
+    </Unit>
+    <Unit filename="src/databreakpointdlg.cpp" />
+    <Unit filename="src/databreakpointdlg.h" />
+    <Unit filename="src/dbgGDBmi.cpp" />
+    <Unit filename="src/dbgGDBmi.h" />
+    <Unit filename="src/debuggeroptionsdlg.cpp" />
+    <Unit filename="src/debuggeroptionsdlg.h" />
+    <Unit filename="src/debuggeroptionsprjdlg.cpp" />
+    <Unit filename="src/debuggeroptionsprjdlg.h" />
+    <Unit filename="src/definitions.cpp" />
+    <Unit filename="src/definitions.h" />
+    <Unit filename="src/editbreakpointdlg.cpp" />
+    <Unit filename="src/editbreakpointdlg.h" />
+    <Unit filename="src/editwatchdlg.cpp" />
+    <Unit filename="src/editwatchdlg.h" />
+    <Unit filename="src/escape.cpp" />
+    <Unit filename="src/escape.h" />
+    <Unit filename="src/events.cpp" />
+    <Unit filename="src/events.h" />
+    <Unit filename="src/frame.cpp" />
+    <Unit filename="src/frame.h" />
+    <Unit filename="src/gdb_executor.cpp" />
+    <Unit filename="src/gdb_executor.h" />
+    <Unit filename="src/helpers.cpp" />
+    <Unit filename="src/helpers.h" />
+    <Unit filename="src/json_node.cpp" />
+    <Unit filename="src/json_node.h" />
+    <Unit filename="src/macros.h" />
+    <Unit filename="src/parsewatchvalue.cpp" />
+    <Unit filename="src/parsewatchvalue.h" />
+    <Unit filename="src/remotedebugging.h" />
+    <Unit filename="src/resources/debugger_gdbmi_options_dlg.xrc" />
+    <Unit filename="src/resources/manifest.xml" />
+    <Unit filename="src/updated_variable.cpp" />
+    <Unit filename="src/updated_variable.h" />
+    <Extensions />
+  </Project>
+</CodeBlocks_project_file>

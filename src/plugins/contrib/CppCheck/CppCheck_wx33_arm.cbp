@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="CppCheck/Vera++ wx3.3.x (ARM, 64 bit)" />
+		<Option pch_mode="0" />
+		<Option compiler="llvm-mingw-arm64_compiler" />
+		<Build>
+			<Target title="cppcheck_app">
+				<Option output="../../../devel33_arm/CppCheck" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/CppCheck" />
+				<Option type="1" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Option parameters="p.cpp --debug --enable=all" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wabi" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wmissing-format-attribute" />
+					<Add option="-Wno-long-long" />
+					<Add option="-Wpacked" />
+					<Add option="-Wno-missing-field-initializers" />
+					<Add option="-Wno-missing-braces" />
+					<Add option="-Wno-sign-compare" />
+					<Add option="-Wno-multichar" />
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+					<Add directory="cppcheck/externals/picojson" />
+					<Add directory="cppcheck/externals/simplecpp" />
+					<Add directory="cppcheck/externals/tinyxml2" />
+					<Add directory="cppcheck/externals" />
+					<Add directory="cppcheck/frontend" />
+					<Add directory="cppcheck/lib" />
+				</Compiler>
+				<Linker>
+					<Add library="shlwapi" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="cmd /c if not exist ..\..\..\devel33_arm\cfg mkdir ..\..\..\devel33_arm\cfg" />
+					<Add after="cmd /c xcopy /D /Y cppcheck\cfg\*.* ..\..\..\devel33_arm\cfg" />
+					<Add after="cmd /c if not exist ..\..\..\output33_arm\cfg mkdir ..\..\..\output33_arm\cfg" />
+					<Add after="cmd /c xcopy /D /Y cppcheck\cfg\*.* ..\..\..\output33_arm\cfg" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="default">
+				<Option output="../../../devel33_arm/share/codeblocks/plugins/CppCheck.dll" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/CppCheck" />
+				<Option type="3" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Option parameters="--debug-log --multiple-instance -na -ns -nd -p debug" />
+				<Option host_application="../../../devel33_arm/codeblocks.exe" />
+				<Option run_host_application_in_terminal="0" />
+				<Compiler>
+					<Add option="-fexceptions" />
+					<Add option="-DBUILDING_PLUGIN" />
+					<Add option="-DNOPCH" />
+					<Add option="-DHAVE_W32API_H" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-DcbDEBUG" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+					<Add directory="../../../include" />
+					<Add directory="../../../include/tinyxml" />
+					<Add directory="../../../sdk/wxscintilla/include" />
+					<Add directory="$(#wx33_arm.INCLUDE)" />
+					<Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono/msw$(WX_SUFFIX)" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx33_arm.include)" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="codeblocks" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add directory="../../../devel33_arm" />
+					<Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="zip -j9 ../../../devel33_arm/share/codeblocks/CppCheck.zip resources/manifest.xml" />
+					<Mode after="always" />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="WX_CFG" value="" />
+					<Variable name="WX_SUFFIX" value="u" />
+					<Variable name="WX_VERSION" value="33" />
+				</Environment>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="cppcheck_app;default;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-m64" />
+			<Add option="-Wall" />
+			<Add option="$(#CB_RELEASE_TYPE)" />
+			<Add option="-D_WIN64" />
+			<Add option="$(#CB_CPP_STD)" />
+		</Compiler>
+		<Linker>
+			<Add option="-Wl,--enable-auto-import" />
+			<Add option="-m64" />
+			<Add option="-mthreads" />
+		</Linker>
+		<Unit filename="ConfigPanel.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="ConfigPanel.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="CppCheck.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="CppCheck.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="CppCheckListLog.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="CppCheckListLog.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="cppcheck/cli/cmdlinelogger.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/cmdlineparser.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/cmdlineparser.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/cppcheckexecutor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/cppcheckexecutor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/executor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/executor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/filelister.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/filelister.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/main.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/precompiled.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/processexecutor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/processexecutor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/sehwrapper.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/sehwrapper.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/signalhandler.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/signalhandler.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/singleexecutor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/singleexecutor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/stacktrace.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/stacktrace.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/threadexecutor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/threadexecutor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/cli/version.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/externals/picojson/picojson.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/externals/simplecpp/simplecpp.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/externals/simplecpp/simplecpp.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/externals/tinyxml2/tinyxml2.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/externals/tinyxml2/tinyxml2.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/frontend/frontend.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/frontend/frontend.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/addoninfo.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/addoninfo.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/analyzer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/analyzerinfo.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/analyzerinfo.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/astutils.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/astutils.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/calculate.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/check.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/check64bit.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/check64bit.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkassert.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkassert.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkautovariables.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkautovariables.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkbool.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkbool.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkbufferoverrun.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkbufferoverrun.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkclass.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkclass.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkcondition.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkcondition.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkers.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkers.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkersidmapping.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkersreport.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkersreport.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkexceptionsafety.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkexceptionsafety.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkfunctions.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkfunctions.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkimpl.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkimpl.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkinternal.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkinternal.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkio.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkio.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkleakautovar.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkleakautovar.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkmemoryleak.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkmemoryleak.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checknullpointer.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checknullpointer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkother.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkother.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkpostfixoperator.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkpostfixoperator.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checks.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checks.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checksizeof.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checksizeof.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkstl.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkstl.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkstring.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkstring.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checktype.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checktype.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkuninitvar.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkuninitvar.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkunusedfunctions.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkunusedfunctions.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkunusedvar.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkunusedvar.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkvaarg.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/checkvaarg.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/clangimport.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/clangimport.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/color.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/color.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/config.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/cppcheck.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/cppcheck.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/ctu.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/ctu.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/errorlogger.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/errorlogger.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/errortypes.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/errortypes.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/filesettings.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/findtoken.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/findtoken.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/forwardanalyzer.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/forwardanalyzer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/fwdanalysis.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/fwdanalysis.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/importproject.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/importproject.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/infer.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/infer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/json.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/keywords.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/keywords.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/library.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/library.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/matchcompiler.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/mathlib.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/mathlib.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/path.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/path.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/pathanalysis.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/pathanalysis.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/pathmatch.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/pathmatch.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/platform.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/platform.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/precompiled.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/preprocessor.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/preprocessor.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/programmemory.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/programmemory.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/regex.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/regex.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/reverseanalyzer.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/reverseanalyzer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/rule.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/sarifreport.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/sarifreport.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/settings.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/settings.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/smallvector.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/sourcelocation.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/standards.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/standards.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/summaries.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/summaries.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/suppressions.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/suppressions.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/symboldatabase.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/symboldatabase.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/templatesimplifier.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/templatesimplifier.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/timer.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/timer.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/token.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/token.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/tokenize.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/tokenize.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/tokenlist.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/tokenlist.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/tokenrange.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/utils.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/utils.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/valueflow.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/valueflow.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/valueptr.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/version.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/version.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_analyzers.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_analyzers.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_common.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_common.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_settokenvalue.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vf_settokenvalue.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vfvalue.cpp">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/vfvalue.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="cppcheck/lib/xml.h">
+			<Option target="cppcheck_app" />
+		</Unit>
+		<Unit filename="wxsmith/ConfigPanel.wxs">
+			<Option target="default" />
+		</Unit>
+		<Extensions>
+			<wxsmith version="1">
+				<resources>
+					<wxPanel wxs="wxsmith/ConfigPanel.wxs" src="ConfigPanel.cpp" hdr="ConfigPanel.h" fwddecl="1" i18n="1" name="ConfigPanel" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

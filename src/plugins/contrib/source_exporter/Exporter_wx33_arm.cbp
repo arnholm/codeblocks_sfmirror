@@ -1,0 +1,1467 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Exporter wx3.3.x (ARM, 64 bit)" />
+		<Option pch_mode="0" />
+		<Option default_target="default" />
+		<Option compiler="llvm-mingw-arm64_compiler" />
+		<Build>
+			<Target title="wxPdfDocument">
+				<Option output="../../../devel33_arm/wxPdfDocument" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/source_exporter" />
+				<Option type="2" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Option projectCompilerOptionsRelation="2" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+					<Add option="-DWXMAKINGLIB_PDFDOC" />
+					<Add option="-DZINT_NO_PNG" />
+					<Add directory="wxPdfDocument/thirdparty/woff2/include" />
+					<Add directory="wxPdfDocument/thirdparty/woff2/brotli/include" />
+					<Add directory="wxPdfDocument/thirdparty/zint/backend" />
+					<Add directory="wxPdfDocument/thirdparty/zint/backend/fonts" />
+				</Compiler>
+			</Target>
+			<Target title="makefont">
+				<Option output="../../../devel33_arm/wxPdfDocument/makefont" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="wxPdfDocument/makefont" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/source_exporter" />
+				<Option type="1" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Compiler>
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+				</Compiler>
+				<Linker>
+					<Add library="wxPdfDocument" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add directory="../../../devel33_arm" />
+				</Linker>
+			</Target>
+			<Target title="minimal">
+				<Option output="../../../devel33_arm/wxPdfDocument/minimal" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="wxPdfDocument/samples/minimal" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/source_exporter" />
+				<Option type="1" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Compiler>
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+				</Compiler>
+				<Linker>
+					<Add library="wxPdfDocument" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add directory="../../../devel33_arm" />
+				</Linker>
+			</Target>
+			<Target title="pdfdc">
+				<Option output="../../../devel33_arm/wxPdfDocument/pdfdc" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="wxPdfDocument/samples/pdfdc" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/source_exporter" />
+				<Option type="1" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Compiler>
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+				</Compiler>
+				<Linker>
+					<Add library="wxPdfDocument" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add directory="../../../devel33_arm" />
+				</Linker>
+			</Target>
+			<Target title="default">
+				<Option output="../../../devel33_arm/share/CodeBlocks/plugins/Exporter" prefix_auto="0" extension_auto="1" />
+				<Option object_output="../../../.objs33_arm/plugins/contrib/source_exporter" />
+				<Option external_deps="../../../devel33_arm/libwxPdfDocument.a;" />
+				<Option type="3" />
+				<Option compiler="llvm-mingw-arm64_compiler" />
+				<Option parameters="--debug-log --multiple-instance -na -ns -nd -p debug" />
+				<Option host_application="../../../devel33_arm/codeblocks.exe" />
+				<Option run_host_application_in_terminal="0" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-DBUILDING_PLUGIN" />
+					<Add option="-DNOPCH" />
+					<Add option="-DcbDEBUG" />
+					<Add option="$(#CB_RELEASE_TYPE)" />
+					<Add option="$(#CB_CPP_STD)" />
+					<Add directory="../../../include" />
+					<Add directory="../../../include/tinyxml" />
+					<Add directory="../../../sdk/wxscintilla/include" />
+				</Compiler>
+				<Linker>
+					<Add library="codeblocks" />
+					<Add library="wxPdfDocument" />
+					<Add library="wxmsw$(WX_VERSION)$(WX_SUFFIX)" />
+					<Add library="gdi32" />
+					<Add directory="../../../devel33_arm" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="zip -j9 ..\..\..\devel33_arm\share\CodeBlocks\Exporter.zip manifest.xml" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Environment>
+				<Variable name="WX_CFG" value="" />
+				<Variable name="WX_SUFFIX" value="u" />
+				<Variable name="WX_VERSION" value="33" />
+			</Environment>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="wxPdfDocument;default;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="$(#CB_RELEASE_TYPE)" />
+			<Add option="-fexceptions" />
+			<Add option="-DHAVE_W32API_H" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-D_WIN64" />
+			<Add option="-DWXUSINGDLL" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-DWXMAKINGDLL_PDFDOC" />
+			<Add option="-DwxPDF_USE_WXMODULE=0" />
+			<Add option="$(#CB_CPP_STD)" />
+			<Add directory="$(#wx33_arm.include)" />
+			<Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono/msw$(WX_SUFFIX)" />
+			<Add directory="wxPdfDocument/include" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#wx33_arm.include)" />
+			<Add directory="wxPdfDocument/include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-mthreads" />
+			<Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono" />
+		</Linker>
+		<Unit filename="BaseExporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="BaseExporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="HTMLExporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="HTMLExporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="ODTExporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="ODTExporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="PDFExporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="PDFExporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="RTFExporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="RTFExporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="exporter.cpp">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="exporter.h">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="manifest.xml">
+			<Option target="default" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfannotation.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfarraydouble.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfarraytypes.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfbarcode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfbarcodezint.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfbookmark.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcffdecoder.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcffindex.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcjkfontdata.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcolour.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcoonspatchmesh.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfcorefontdata.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfdc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfdoc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfdoc_version.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfdocdef.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfdocument.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfencoding.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfencrypt.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffont.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdata.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdatacore.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdataopentype.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdatatruetype.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdatatype0.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdatatype1.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdescription.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontdetails.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontextended.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontmacosx.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontmanager.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontparser.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontparsertruetype.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontparsertype1.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontsubsetcff.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontsubsettruetype.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdffontvolt.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfform.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfgc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfgradient.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfgraphics.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfgridctrl.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfimage.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfinfo.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdflayer.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdflinestyle.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdflinks.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdflistctrl.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfobjects.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfparser.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfpattern.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfprint.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfproperties.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfrijndael.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfshape.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfspotcolour.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdftemplate.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfutility.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/include/wx/pdfxml.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/makefont/makefont.cpp">
+			<Option target="makefont" />
+		</Unit>
+		<Unit filename="wxPdfDocument/makefont/makefont.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="makefont" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/barcodes.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/bookmark.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/charting.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/cjktest.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/clipping.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/drawing.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/glyphwriting.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/gradients.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/indicfonts.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/jsform.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/kerning.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/labels.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/layers.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/minimal.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/minimal.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/protection.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/rotation.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/templates.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/transformation.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/transparency.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial1.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial2.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial3.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial4.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial5.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial6.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/tutorial7.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/wmf.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/minimal/xmlwrite.cpp">
+			<Option target="minimal" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/mondrian.ico">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/mondrian.xpm">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/printing.cpp">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/printing.h">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/printing.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/smile.jpg">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/samples/pdfdc/up.gif">
+			<Option target="pdfdc" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/random.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/random.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/saslprep.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/saslprep.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha256.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha256.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha384.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha384.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha512.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/sha512.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/crypto/unicode_norm_table.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfannotation.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfbarcode.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfbarcodezint.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcffdecoder.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcffindex.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcjkfontdata.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcmapdata.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcodepagedata.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcolour.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcolourdata.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcorefontdata.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfcorefontkerning.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfdc.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfdecode.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfdoc_version.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfdocument.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfencoding.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfencrypt.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffont.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdata.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdatacore.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdataopentype.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdatatruetype.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdatatype0.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdatatype1.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdescription.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontdetails.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontextended.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontmanager.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontparser.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontparsertruetype.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontparsertype1.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontsubsetcff.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontsubsettruetype.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdffontvolt.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfform.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfgc.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfglyphnames.inc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfgradient.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfgraphics.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfgridctrl.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfimage.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfkernel.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdflayer.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdflistctrl.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfobjects.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfocg.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfparser.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfpattern.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfprint.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfrijndael.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdftemplate.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfutility.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/pdfxml.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/private_graphics.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/srgb2014icc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/woff/woff2converter.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/woff/woff2converter.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/woff/woffconverter.cpp">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/woff/woffconverter.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/src/wxmemdbg.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/constants.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/constants.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/context.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/context.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/dictionary.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/dictionary.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/platform.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/platform.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/shared_dictionary.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/shared_dictionary_internal.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/transform.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/transform.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/common/version.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/bit_reader.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/bit_reader.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/decode.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/huffman.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/huffman.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/prefix.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/state.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/dec/state.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/backward_references.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/backward_references.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/backward_references_hq.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/backward_references_hq.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/backward_references_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/bit_cost.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/bit_cost.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/bit_cost_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/block_encoder_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/block_splitter.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/block_splitter.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/block_splitter_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/brotli_bit_stream.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/brotli_bit_stream.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/cluster.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/cluster.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/cluster_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/command.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/command.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compound_dictionary.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compound_dictionary.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compress_fragment.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compress_fragment.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compress_fragment_two_pass.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/compress_fragment_two_pass.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/dictionary_hash.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/dictionary_hash.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/encode.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/encoder_dict.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/encoder_dict.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/entropy_encode.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/entropy_encode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/entropy_encode_static.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/fast_log.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/fast_log.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/find_match_length.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_composite_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_forgetful_chain_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_longest_match64_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_longest_match64_simd_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_longest_match_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_longest_match_quickly_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_longest_match_simd_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_rolling_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/hash_to_binary_tree_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/histogram.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/histogram.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/histogram_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/literal_cost.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/literal_cost.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/matching_tag_mask.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/memory.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/memory.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/metablock.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/metablock.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/metablock_inc.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/params.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/prefix.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/quality.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/ringbuffer.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/state.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/static_dict.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/static_dict.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/static_dict_lut.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/utf8_util.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/utf8_util.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/enc/write_bits.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/include/brotli/decode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/include/brotli/encode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/include/brotli/port.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/include/brotli/shared_dictionary.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/brotli/include/brotli/types.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/include/woff2/decode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/include/woff2/encode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/include/woff2/output.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/buffer.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/convert_woff2ttf_fuzzer.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/convert_woff2ttf_fuzzer_new_entry.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/file.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/font.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/font.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/glyph.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/glyph.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/normalize.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/normalize.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/port.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/round.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/store_bytes.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/table_tags.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/table_tags.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/transform.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/transform.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/variable_length.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/variable_length.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_common.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_common.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_compress.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_dec.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_decompress.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_enc.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_info.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/woff2/src/woff2_out.cc">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/2of5.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/2of5inter.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/2of5inter_based.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/auspost.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/aztec.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/aztec.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/aztec_trace.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/bc412.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/big5.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/bmp.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/bmp.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/channel.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/channel_precalcs.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/codabar.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/codablock.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code1.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code1.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code11.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code128.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code128.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code128_based.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code16k.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code49.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/code49.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/common.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/common.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/composite.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/composite.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dllversion.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dmatrix.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dmatrix.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dmatrix_trace.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dotcode.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/dxfilmedge.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/eci.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/eci.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/eci_sb.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/emf.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/emf.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/filemem.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/filemem.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/fonts/normal_ttf.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/fonts/normal_woff2.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/fonts/upcean_ttf.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/fonts/upcean_woff2.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gb18030.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gb2312.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gbk.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/general_field.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/general_field.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gif.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gridmtx.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gridmtx.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gs1.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gs1.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/gs1_lint.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/hanxin.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/hanxin.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/imail.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/iso3166.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/iso4217.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/ksx1001.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/large.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/large.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/library.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/libzint.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/mailmark.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/maxicode.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/maxicode.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/medical.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/output.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/output.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pcx.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pcx.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pdf417.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pdf417.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pdf417_tabs.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/pdf417_trace.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/plessey.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/png.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/postal.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/ps.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/qr.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/qr.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/raster.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/raster_font.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/reedsol.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/reedsol.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/reedsol_logs.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/rss.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/rss.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/sjis.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/svg.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/telepen.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/tif.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/tif.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/ultra.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/upcean.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/vector.c">
+			<Option compilerVar="CC" />
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/zfiletypes.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/zint.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Unit filename="wxPdfDocument/thirdparty/zint/backend/zintconfig.h">
+			<Option target="wxPdfDocument" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
