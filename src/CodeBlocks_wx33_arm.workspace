@@ -2,12 +2,10 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="CodeBlocks Workspace wx3.3.x (ARM, 64 bit)">
 		<Project filename="CodeBlocks_wx33_arm.cbp" />
-
 		<Project filename="tools/Addr2LineUI/Addr2LineUI_wx33_arm.cbp" />
 		<Project filename="tools/cb_share_config/cb_share_config_wx33_arm.cbp" />
 		<Project filename="tools/CBLauncher/CbLauncher_wx33_arm.cbp" />
 		<Project filename="tools/cbp2make/cbp2make_wx33_arm.cbp" />
-		<Project filename="tools/autobuildnumber/autobuildnumber_wx33_arm.cbp" />
 		<Project filename="plugins/codecompletion/cctest_wx33_arm.cbp">
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 		</Project>
@@ -26,31 +24,6 @@
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33_arm.cbp" />
 		</Project>
-		<Project filename="plugins/contrib/wxSmithDemo/wxSmithDemo_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/wxSmithOpenGLCanvas/wxSmithOpenGLCanvas_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33_arm.cbp" />
-		</Project>
-    <!--
-		<Project filename="plugins/contrib/wxSmithSTC/wxsSmithSTC_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-			<Depends filename="plugins/contrib/wxSmith/wxSmith_wx33_arm.cbp" />
-		</Project>
-    -->
-		<Project filename="plugins/contrib/debugger_gdbmi/debugger_gdbmi_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/DisplayEvents/DisplayEvents_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-    <!--
-		<Project filename="plugins/EventsDisplay/EventsDisplay_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-    -->
 		<Project filename="plugins/headerguard/headerguard_wx33_arm.cbp">
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 		</Project>
@@ -63,7 +36,6 @@
 		<Project filename="plugins/tidycmt/tidycmt_wx33_arm.cbp">
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 		</Project>
-
 		<Project filename="plugins/contrib/AutoVersioning/AutoVersioning_wx33_arm.cbp">
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 		</Project>
@@ -180,65 +152,6 @@
 			<Depends filename="plugins/contrib/wxContribItems/wxContribItems_wx33_arm.cbp" />
 		</Project>
 		<Project filename="plugins/contrib/ToolsPlus/ToolsPlus_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<!-- Project filename="plugins/contrib/Valgrind/Valgrind-unix_wx33_arm.cbp" / -->
-
-		<Project filename="plugins/contrib/ColorCoder/ColorCoder_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/CompileOnDemand/CompileOnDemand_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/cbDiff/cbDiff_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/CBEditorConfig/editorconfig-codeblocks_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/cbGcov/cbGcov_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/cbInno/Inno_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/EditProject/EditProject_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/FormatFortranIndentPlugin/FormatFortranIndentPlugin_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/GitBlocks/GitBlocks_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/KeyMacs/KeyMacs_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/cbMakeGen/cbmakegen_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/MiniDoc/MiniDoc_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/ProjectExporter/ProjectExporter_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/ReplaceInFiles/ReplaceInFiles_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/rssblocks/rssblocks_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/TabVsSpace/TabVsSpace_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/UmlBlocks/UmlBlocks_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/UUID_Generator/UUID_Generator_wx33_arm.cbp">
-			<Depends filename="CodeBlocks_wx33_arm.cbp" />
-		</Project>
-		<Project filename="plugins/contrib/xpmeditor/XPMEditor_wx33_arm.cbp">
 			<Depends filename="CodeBlocks_wx33_arm.cbp" />
 		</Project>
 	</Workspace>
