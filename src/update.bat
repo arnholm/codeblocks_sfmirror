@@ -6,9 +6,17 @@ setlocal
 SETLOCAL ENABLEEXTENSIONS
 
 if "%1" == "" (
-    echo Missing target, use p.e. 33 for wxWidgets 3.3 in 32 bits mode or 33_64 for wxWidgets 3.3 in 64 bits mode
+    echo Missing target, use p.e. 33 for wxWidgets 3.3 in 32 bits mode, 33_64 for wxWidgets 3.3 in 64 bits mode or 33_arm for wxWidgets 3.3 in ARM, 64 bits mode
     GOTO:EOF
 )
+
+REM Prepare to fix exectables to match platform, where needed (source files, exception handler and STRIP command)
+set TARGET=%1
+set TARGET_64=%TARGET:_64=%
+set TARGET_ARM=%TARGET:_arm=%
+
+REM Try to find reference to documentation folder
+set CB_DOC_DIR=setup
 
 echo Creating output directory tree
 
@@ -17,10 +25,10 @@ set CB_OUTPUT_DIR=output%1
 set CB_DEVEL_RESDIR=%CB_DEVEL_DIR%\share\CodeBlocks
 set CB_OUTPUT_RESDIR=%CB_OUTPUT_DIR%\share\CodeBlocks
 set CB_HANDLER_DIR=exchndl\win32\bin
-set CB_DOC_DIR=setup
-set TARGET=%1
-set TARGET_CUT=%TARGET:_64=%
-if NOT "%TARGET%" == "" if NOT "%TARGET%" == "%TARGET_CUT%" set CB_HANDLER_DIR=exchndl\win64\bin
+
+REM Replace executables / libraries with appropriate version:
+if NOT "%TARGET%" == "" if NOT "%TARGET%" == "%TARGET_64%" set CB_HANDLER_DIR=exchndl\win64\bin
+if NOT "%TARGET%" == "" if NOT "%TARGET%" == "%TARGET_ARM%" set CB_HANDLER_DIR=exchndl\winarm\bin
 
 call:mkdirSilent "%CB_DEVEL_RESDIR%\compilers"
 call:mkdirSilent "%CB_DEVEL_RESDIR%\lexers"
@@ -226,7 +234,7 @@ REM =============================================
 copy tips.txt "%CB_DEVEL_RESDIR%" > nul
 copy tips.txt "%CB_OUTPUT_RESDIR%" > nul
 
-copy "%CB_DEVEL_DIR%\cb_console_runner.exe" "%CB_OUTPUT_DIR%\cb_console_runner.exe" > nul
+copy "%CB_DEVEL_DIR%\cb_console_runner.exe" "%CB_OUTPUT_DIR%" > nul
 
 echo Transferring executable files from devel to output folder
 xcopy /D /y "%CB_DEVEL_DIR%\*.exe" "%CB_OUTPUT_DIR%" > nul
@@ -238,13 +246,13 @@ echo Transferring DLL plugin files from devel to output folder
 xcopy /D /y "%CB_DEVEL_RESDIR%\plugins\*.dll" "%CB_OUTPUT_RESDIR%\plugins" > nul
 
 echo Stripping debug info from output tree
-rem Recent unix-like utilities in Msys2 no more support wilcards (see https://www.msys2.org/news/#2024-11-03-disabling-mingw-w64-wildcard-support-by-default)
+rem Recent unix-like utilities in Msys2 no more support wildcards (see https://www.msys2.org/news/#2024-11-03-disabling-mingw-w64-wildcard-support-by-default)
 rem Replacing those 3 lines by a for...do syntax
 rem strip "%CB_OUTPUT_DIR%\*.exe"
 rem strip "%CB_OUTPUT_DIR%\*.dll"
 rem strip "%CB_OUTPUT_RESDIR%\plugins\*.dll"
-for %%F in ("%CB_OUTPUT_DIR%\*.exe") do (strip "%%F")
-for %%F in ("%CB_OUTPUT_DIR%\*.dll") do (strip "%%F")
+for %%F in ("%CB_OUTPUT_DIR%\*.exe")            do (strip "%%F")
+for %%F in ("%CB_OUTPUT_DIR%\*.dll")            do (strip "%%F")
 for %%F in ("%CB_OUTPUT_RESDIR%\plugins\*.dll") do (strip "%%F")
 
 echo Copying help files
