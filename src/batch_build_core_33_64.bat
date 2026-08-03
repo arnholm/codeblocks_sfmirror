@@ -7,8 +7,6 @@ rem ------------------------------------------
 rem Setup GCC root folder with "bin" subfolder
 rem ------------------------------------------
 if not defined GCC_ROOT set GCC_ROOT=%CB_ROOT%\MinGW64
-rem run update.bat after build
-rem if not defined CB_RUN_UPDATE_BAT set CB_RUN_UPDATE_BAT=0
 
 rem -------------------------------------------
 rem Usually below here no changes are required.
@@ -34,11 +32,11 @@ echo Do not forget to run "update33_64.bat" after successful build!
 goto TheEnd
 
 :ErrNoCB
-echo Error: C::B root folder not found. Adjust batch file or supply parameter accordingly
+echo Error: C::B root folder '%CB_ROOT%' not found. Adjust batch file accordingly
 goto TheEnd
 
 :ErrNoGCC
-echo Error: GCC root folder not found. Adjust batch file or supply parameter accordingly
+echo Error: GCC root folder '%GCC_ROOT%' not found. Adjust batch file accordingly
 goto TheEnd
 
 :TheEnd

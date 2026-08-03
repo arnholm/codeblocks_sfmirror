@@ -26,17 +26,17 @@ set CB_EXE="%CB_ROOT%\codeblocks.exe"
 if not defined CB_PARAMS set CB_PARAMS=--batch-build-notify --no-batch-window-close
 set CB_CMD=%BUILD_TYPE% "%~dp0ContribPlugins_wx33.workspace"
 
-if not defined CB_TARGET set CB_TARGET=--target=All
+set CB_TARGET=--target=All
 %START_CMD% %CB_EXE% %CB_PARAMS% %CB_TARGET% %CB_CMD%
 echo Do not forget to run "update33.bat" after successful build!
 goto TheEnd
 
 :ErrNoCB
-echo Error: C::B root folder not found. Adjust batch file or supply parameter accordingly
+echo Error: C::B root folder '%CB_ROOT%' not found. Adjust batch file accordingly
 goto TheEnd
 
 :ErrNoGCC
-echo Error: GCC root folder not found. Adjust batch file or supply parameter accordingly
+echo Error: GCC root folder '%GCC_ROOT%' not found. Adjust batch file accordingly
 goto TheEnd
 
 :TheEnd
