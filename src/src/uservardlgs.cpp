@@ -192,18 +192,16 @@ UsrGlblMgrEditDialog::UsrGlblMgrEditDialog(const wxString& var) :
     const size_t NUM_USER_VARS = 8;
     m_Name.resize(NUM_USER_VARS);
     m_Value.resize(NUM_USER_VARS);
-    for (size_t i=0; i<NUM_USER_VARS; ++i)
+    for (size_t i = 0; i < NUM_USER_VARS; ++i)
     {
         wxString n;
 
-        n.Printf("n%d", i);
-        n.Printf("n%d", i);
-        m_Name[i]  = (wxTextCtrl*) FindWindow(n);
+        n.Printf("n%zu", i);
+        m_Name[i] = (wxTextCtrl*) FindWindow(n);
 
-        n.Printf("v%d", i);
+        n.Printf("v%zu", i);
         m_Value[i] = (wxTextCtrl*) FindWindow(n);
     }
-
     m_UserVarMgr = Manager::Get()->GetUserVariableManager();
     m_varMap = m_UserVarMgr->GetVariableMap();
 
