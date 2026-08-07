@@ -278,6 +278,6 @@ wxArrayString const& DebuggerConfiguration::GetInitialCommands() //(ph 2024/03/1
 // ----------------------------------------------------------------------------
 {
     wxString initCmdsStr = GetInitCommands();
-    m_InitCmdsArray = GetArrayFromString(initCmdsStr);
+    m_InitCmdsArray = GetArrayFromString(initCmdsStr,"\n");
     return m_InitCmdsArray;
 }

@@ -894,7 +894,7 @@ int Debugger_GDB_MI::StartDebugger(cbProject *project, StartType start_type)
             bool ok = relFilename.Normalize(wxPATH_NORM_ABSOLUTE|wxPATH_NORM_DOTS);
             if (ok)
                 absWorking_dir = relFilename.GetFullPath();
-            // The damn NormalizePath does not remove the last "\."
+            // The darn NormalizePath does not remove the last "\."
             if (absWorking_dir.EndsWith(fileSep + "."))
                 absWorking_dir.RemoveLast(2);
         }
