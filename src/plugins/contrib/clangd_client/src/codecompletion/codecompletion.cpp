@@ -490,6 +490,8 @@ ClgdCompletion::ClgdCompletion() :
     ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("compiler");
     wxString defaultCompiler = pCfgMgr->Read("/default_compiler");
     ns_DefaultCompilerMasterPath = defaultCompiler.Length() ? pCfgMgr->Read("/sets/"+defaultCompiler+"/master_path") : wxString();
+    if (not ns_DefaultCompilerMasterPath)
+        ns_DefaultCompilerMasterPath = defaultCompiler.Length() ? pCfgMgr->Read("/user_sets/"+defaultCompiler+"/master_path") : wxString();
     if (ns_DefaultCompilerMasterPath.empty())
     {
         SetClangdClient_Disabled();
@@ -616,6 +618,8 @@ void ClgdCompletion::OnAttach()
     ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("compiler");
     wxString defaultCompiler = pCfgMgr->Read("/default_compiler");
     ns_DefaultCompilerMasterPath = defaultCompiler.Length() ? pCfgMgr->Read("/sets/"+defaultCompiler+"/master_path") : wxString();
+    if (not ns_DefaultCompilerMasterPath)
+        ns_DefaultCompilerMasterPath = defaultCompiler.Length() ? pCfgMgr->Read("/user_sets/"+defaultCompiler+"/master_path") : wxString();
     if (ns_DefaultCompilerMasterPath.empty())
     {
         // Show plugin version as "Inactive".

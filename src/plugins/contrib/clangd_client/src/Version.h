@@ -25,7 +25,7 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.152 26/07/14")
+#define VERSION wxT("1.2.153 26/8/09")
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -51,6 +51,7 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.153   2026/08/09 Look for compiler master path in .conf 'user_sets' when 'sets' fails
 //1.2.152   2026/07/14 Fix crash in parser.cpp when there is no active process
 //                     Correct json.cpp macro spacing warnings
 //1.2.151   2026/04/29 Minor changes and cleanup for wx3.3.2
