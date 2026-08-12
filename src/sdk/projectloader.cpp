@@ -1015,8 +1015,12 @@ wxString MakePathRelativeIfNeeded(const wxString& path, const wxString& basePath
       return ".";
 
     std::string tmp;
-    for (; n > 0; --n)
+    for (; n > 1; --n)
       tmp += ".." + pathSeparator;
+
+    if (n > 0)
+        tmp += "..";
+
     for (; mm.first != e; ++mm.first)
     {
         if (tmp != "")
