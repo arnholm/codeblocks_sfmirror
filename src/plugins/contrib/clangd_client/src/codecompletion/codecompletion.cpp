@@ -1804,7 +1804,7 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
         if ( (clgdCCTokenIdx >= 0)
             and (cccToken.semanticTokenType != LSP_SemanticTokenType::Unknown) )
         {
-            // wxString tknName = cccToken.displayName.BeforeFirst('(', &tokenArgs); unused // (ph 26/04/29)
+            wxString tokenArgs = cccToken.displayName.AfterFirst('(');
             bool addParentheses = not tokenArgs.empty();
 
             // add back the beginning paren
