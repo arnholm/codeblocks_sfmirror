@@ -1800,7 +1800,6 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
             cccToken = m_CompletionTokens[clgdCCTokenIdx];
         }
 
-        wxString tokenArgs;
         if ( (clgdCCTokenIdx >= 0)
             and (cccToken.semanticTokenType != LSP_SemanticTokenType::Unknown) )
         {
