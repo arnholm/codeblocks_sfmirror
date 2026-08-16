@@ -206,7 +206,7 @@ class ScopeTreeData : public wxTreeItemData
 
 struct VariableListClientData : wxClientData
 {
-    VariableListClientData(const wxString &key, const wxString &value) : key(key), value(value) {}
+    VariableListClientData(const wxString &_key, const wxString &_value) : key(_key), value(_value) {}
     wxString key, value;
 };
 
@@ -1826,7 +1826,7 @@ wxListBox* CompilerOptionsDlg::GetDirsListBox()
 {
     wxNotebook* nb = XRCCTRL(*this, "nbDirs", wxNotebook);
     if (!nb)
-        return 0;
+        return nullptr;
     switch (nb->GetSelection())
     {
         case 0: // compiler dirs
@@ -1837,7 +1837,7 @@ wxListBox* CompilerOptionsDlg::GetDirsListBox()
             return XRCCTRL(*this, "lstResDirs", wxListBox);
         default: break;
     }
-    return 0;
+    return nullptr;
 } // GetDirsListBox
 
 CompileOptionsBase* CompilerOptionsDlg::GetVarsOwner()

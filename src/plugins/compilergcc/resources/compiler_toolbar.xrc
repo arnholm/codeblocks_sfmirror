@@ -27,9 +27,13 @@
       <bitmap stock_id="compiler/stop" />
       <disabled>1</disabled>
     </object>
+    <object class="tool" name="idCompilerMenuSilent">
+      <tooltip>Silent</tooltip>
+      <longhelp>Silence the compiler output</longhelp>
+      <bitmap stock_id="compiler/silent" />
+      <toggle>1</toggle>
+    </object>
     <object class="wxChoice" name="idToolTarget">
-      <content/>
-	  <size>136,-1</size>
       <tooltip>Build target</tooltip>
       <longhelp>Select the current build target</longhelp>
     </object>

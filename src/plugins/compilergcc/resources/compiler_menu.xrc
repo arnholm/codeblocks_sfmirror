@@ -54,6 +54,12 @@
       <help>Abort the running build process</help>
     </object>
     <object class="separator"/>
+    <object class="wxMenuItem" name="idCompilerMenuSilent">
+      <label>&amp;Silent</label>
+      <bitmap stock_id="compiler/silent"/>
+      <help>Silence the compiler output</help>
+    </object>
+    <object class="separator"/>
     <object class="wxMenu" name="idCompilerMenuErrors">
       <label>&amp;Errors</label>
       <object class="wxMenuItem" name="idCompilerMenuPreviousError">

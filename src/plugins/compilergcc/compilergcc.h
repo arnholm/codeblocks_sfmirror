@@ -146,6 +146,7 @@ class CompilerGCC : public cbCompilerPlugin
         void OnTargetCompilerOptions(wxCommandEvent& event);
         void OnCompileAndRun(wxCommandEvent& event);
         void OnKillProcess(wxCommandEvent& event);
+        void OnSilent(wxCommandEvent& event);
         void OnSelectTarget(wxCommandEvent& event);
         void OnNextError(wxCommandEvent& event);
         void OnPreviousError(wxCommandEvent& event);

@@ -143,7 +143,7 @@ public:
         {
             sizer->Detach(progress);
             progress->Destroy();
-            progress = 0;
+            progress = nullptr;
             sizer->Layout();
         }
     }
@@ -200,6 +200,7 @@ int idMenuCleanFromProjectManager                  = wxNewId();
 int idMenuCompileAndRun                            = XRCID("idCompilerMenuCompileAndRun");
 int idMenuRun                                      = XRCID("idCompilerMenuRun");
 int idMenuKillProcess                              = XRCID("idCompilerMenuKillProcess");
+int idMenuSilent                                   = XRCID("idCompilerMenuSilent");
 int idMenuSelectTarget                             = XRCID("idCompilerMenuSelectTarget");
 
 // Limit the number of menu items to try to make them all visible on the screen.
@@ -269,6 +270,7 @@ BEGIN_EVENT_TABLE(CompilerGCC, cbCompilerPlugin)
     EVT_MENU(idMenuCleanWorkspace,                  CompilerGCC::Dispatcher)
     EVT_MENU(idMenuCleanFromProjectManager,         CompilerGCC::Dispatcher)
     EVT_MENU(idMenuKillProcess,                     CompilerGCC::Dispatcher)
+    EVT_MENU(idMenuSilent,                          CompilerGCC::Dispatcher)
     EVT_MENU(idMenuNextError,                       CompilerGCC::Dispatcher)
     EVT_MENU(idMenuPreviousError,                   CompilerGCC::Dispatcher)
     EVT_MENU(idMenuClearErrors,                     CompilerGCC::Dispatcher)
@@ -384,6 +386,7 @@ void CompilerGCC::OnAttach()
         m_pArtProvider->AddMapping("compiler/compile_run", "compilerun"+ext);
         m_pArtProvider->AddMapping("compiler/rebuild",     "rebuild"+ext);
         m_pArtProvider->AddMapping("compiler/stop",        "stop"+ext);
+        m_pArtProvider->AddMapping("compiler/silent",      "silent"+ext);
 
         wxArtProvider::Push(m_pArtProvider);
     }
@@ -727,6 +730,8 @@ void CompilerGCC::Dispatcher(wxCommandEvent& event)
         OnClean(event);
     else if (eventId == idMenuKillProcess)
         OnKillProcess(event);
+    else if (eventId == idMenuSilent)
+        OnSilent(event);
     else if (eventId == idMenuNextError)
         OnNextError(event);
     else if (eventId == idMenuPreviousError)
@@ -3481,6 +3486,15 @@ void CompilerGCC::OnKillProcess(cb_unused wxCommandEvent& event)
     KillProcess();
 }
 
+void CompilerGCC::OnSilent(cb_unused wxCommandEvent& event)
+{
+    if (m_pTbar)
+    {
+        bool silence_compiler_log = m_pTbar->GetToolState(XRCID("idCompilerMenuSilent"));
+        Manager::Get()->GetConfigManager("compiler")->Write("/silence_compiler_log", silence_compiler_log);
+    }
+}
+
 void CompilerGCC::OnSelectTarget(wxCommandEvent& event)
 {
     int selection = -1;
@@ -3557,15 +3571,15 @@ void CompilerGCC::OnUpdateUI(wxUpdateUIEvent& event)
     }
 
     cbProject* prj = projectManager->GetActiveProject();
-    cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+    cbEditor*  ed  = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
 
     if (id == idMenuRun)
         event.Enable(ExecutableExists(prj));
     else if (id == idMenuCompile || id == idMenuCompileAndRun)
         event.Enable(prj || ed);
-    else if (id == idMenuBuildWorkspace || id == idMenuRebuild || id == idMenuRebuildWorkspace
-        || id == idMenuClean || id == idMenuCleanWorkspace || id == idMenuSelectTarget
-        || id == idMenuSelectTargetDialog || id == idMenuProjectCompilerOptions || idToolTarget)
+    else if (   id == idMenuBuildWorkspace     || id == idMenuRebuild                || id == idMenuRebuildWorkspace
+             || id == idMenuClean              || id == idMenuCleanWorkspace         || id == idMenuSelectTarget
+             || id == idMenuSelectTargetDialog || id == idMenuProjectCompilerOptions || idToolTarget )
     {
         event.Enable(prj);
     }
