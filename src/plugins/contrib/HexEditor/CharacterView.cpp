@@ -33,17 +33,6 @@ void CharacterView::OnActivate( bool )
     // We don't have to do anything
 }
 
-void CharacterView::OnOffsetChange(
-    OffsetT  /*screenStartOffset*/,
-    OffsetT  /*currentOffset*/,
-    OffsetT /*blockStart*/,
-    OffsetT /*blockEnd*/ )
-{
-    // commented out the fopllowing 2 lines to avoid warning, since value set the argument that can in by value --> useless
-    //blockStart = currentOffset;
-    //blockEnd   = currentOffset + 1;
-}
-
 void CharacterView::OnProcessChar(wxChar ch)
 {
     // We skip all non-printable characters

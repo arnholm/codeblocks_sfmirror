@@ -38,13 +38,6 @@ class CharacterView: public HexEditViewBase
         /** \brief Called when switching the active state */
         void OnActivate( bool becomesActive ) override;
 
-        /** \brief Called when changing current cursor offset */
-        virtual void OnOffsetChange(
-            OffsetT screenStartOffset,
-            OffsetT currentOffset,
-            OffsetT blockStart,
-            OffsetT blockEnd );
-
         /** \brief Called when character is sent to this view */
         void OnProcessChar( wxChar ch ) override;
 
