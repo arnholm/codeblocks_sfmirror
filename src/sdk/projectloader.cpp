@@ -1127,7 +1127,8 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
     std::vector<ProjectFile*> projectGlobFiles;     // We have to search in this files if the glob is present
     std::vector<ProjectFile*> projectFilesToRemove; // This files are in this glob, but are no longer on the file system
     // First search for valid project files (glob id) and also for project files we have to remove
-    for (ProjectFile* file : m_pProject->GetFilesList())
+    const FilesList& files = m_pProject->GetFilesList();  // workaround for broken range-based for loop, see P2644R1 (fixed in C++23)
+    for (ProjectFile* file : files)
     {
         if (file->globId == glob.GetId())
         {
