@@ -40,7 +40,11 @@ namespace appglobals
     const wxString AppUrl                = _T("https://www.codeblocks.org");
     const wxString AppContactEmail       = _T("info@codeblocks.org");
     const wxString AppPlatform           = wxGetOsDescription();
+#if wxCHECK_VERSION(3, 1, 5)
     const wxString AppProcessor          = wxGetCpuArchitectureName();
+#else
+    const wxString AppProcessor          = _("unknown");
+#endif
     const wxString AppEndianess          = wxIsPlatformLittleEndian() ? wxT("little endian") : wxT("big endian");
     const wxString AppWXAnsiUnicode      = platform::unicode          ? wxT("unicode")       : wxT("ANSI");
     const wxString AppBitType            = wxIsPlatform64Bit()        ? wxT("64 bit")        : wxT("32 bit");
