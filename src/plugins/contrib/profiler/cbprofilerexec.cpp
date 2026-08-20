@@ -219,11 +219,11 @@ void CBProfilerExecDlg::ParseMisc(const wxArrayString& msg, wxProgressDialog &pr
 void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialog &progress, const size_t maxcount, size_t& count)
 {
     // Setting colums names
-    outputCallGraphArea->InsertColumn(0, _("index"),    wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(1, _("% time"),   wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(2, _("self"),     wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(3, _("children"), wxLIST_FORMAT_CENTRE);
-    outputCallGraphArea->InsertColumn(4, _("called"),   wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(0, _("index"),     wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(1, "% "+_("time"), wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(2, _("self"),      wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(3, _("children"),  wxLIST_FORMAT_CENTRE);
+    outputCallGraphArea->InsertColumn(4, _("called"),    wxLIST_FORMAT_CENTRE);
     outputCallGraphArea->InsertColumn(5, _("name"));
 
     // Jump header lines
@@ -306,7 +306,7 @@ void CBProfilerExecDlg::ParseCallGraph(const wxArrayString& msg, wxProgressDialo
 void CBProfilerExecDlg::ParseFlatProfile(const wxArrayString& msg, wxProgressDialog &progress, const size_t maxcount, size_t &count)
 {
     // Setting colums names
-    outputFlatProfileArea->InsertColumn(0, _("% time"),        wxLIST_FORMAT_CENTRE);
+    outputFlatProfileArea->InsertColumn(0, "% "+_("time"),     wxLIST_FORMAT_CENTRE);
     outputFlatProfileArea->InsertColumn(1, _("cum. sec."),     wxLIST_FORMAT_CENTRE);
     outputFlatProfileArea->InsertColumn(2, _("self sec."),     wxLIST_FORMAT_CENTRE);
     outputFlatProfileArea->InsertColumn(3, _("calls"),         wxLIST_FORMAT_CENTRE);
