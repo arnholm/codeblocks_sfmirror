@@ -55,7 +55,7 @@ class DLLIMPORT cbTreeCtrl : public wxTreeCtrl
         void OnBeginDrag(wxTreeEvent & event );
         void OnEndDrag(wxTreeEvent & event );
 
-        void Scroll( bool bScrollUp );
+        void ScrollTree( bool bScrollUp );
 
         static int filesSort(const ProjectFile* arg1, const ProjectFile* arg2);
         static int filesSortNameOnly(const ProjectFile* arg1, const ProjectFile* arg2);

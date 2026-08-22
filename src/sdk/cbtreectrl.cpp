@@ -63,11 +63,11 @@ void cbTreeCtrl::CalculateScrollingAfterMove(int x, int y)
         // scrolling if the mouse is move at the top/bottom 1/5 of the tree ctrl
         if ( y <= (iHeight / 5) )
         {
-            Scroll( true ); // Scroll Up
+            ScrollTree( true ); // Scroll Up
         }
         else if ( y >= iHeight - (iHeight / 5) )
         {
-            Scroll( false ); // Scroll Down
+            ScrollTree( false ); // Scroll Down
         }
     }
 }
@@ -90,12 +90,11 @@ void cbTreeCtrl::OnMouseMove( wxMouseEvent & event )
     CalculateScrollingAfterMove(mousePt.x, mousePt.y);
 }
 
-void cbTreeCtrl::Scroll( bool bScrollUp )
+void cbTreeCtrl::ScrollTree( bool bScrollUp )
 {
-
     // Scrolling by dragging is currently not natively supported
     // by wxWidgets. We have to implement it by hand
-    // i encoutered a strange behaviour on linux that LineUp and LineDow
+    // I encountered a strange behaviour on linux that LineUp and LineDown
     // only move the scroll bar but do not redraw the tree at the
     // current scroll position.
 
@@ -110,7 +109,7 @@ void cbTreeCtrl::Scroll( bool bScrollUp )
         Refresh( true );
 #else
     // On linux we scroll by getting the current window position
-    // and add some pixel to it. The User has to move the mouse
+    // and adding some pixel to it. The User has to move the mouse
     // to actively scroll.
     int x = 0, y = 0;
     GetViewStart(&y, &y);
