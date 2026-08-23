@@ -22,11 +22,10 @@ libdebugger_gdbmi_la_LDFLAGS = \
 
 libdebugger_gdbmi_la_LIBADD = \
 			../../../sdk/libcodeblocks.la \
-			$(CB_TINYXML_LIBS) \
 			$(WX_LIBS)
 
 if ! CODEBLOCKS_NT
-libdebugger_gdbmi_la_LIBADD += -lutil
+libdebugger_gdbmi_la_LIBADD += -lutil $(CB_TINYXML_LIBS)
 endif
 
 libdebugger_gdbmi_la_SOURCES = \
