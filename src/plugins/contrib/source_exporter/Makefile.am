@@ -20,6 +20,8 @@ libexporter_la_LIBADD = ../../../sdk/libcodeblocks.la \
 
 if ! CODEBLOCKS_NT
 libexporter_la_LIBADD += $(CB_TINYXML_LIBS)
+else
+libexporter_la_LIBADD += -lgdi32
 endif
 
 libexporter_la_SOURCES = BaseExporter.cpp \
