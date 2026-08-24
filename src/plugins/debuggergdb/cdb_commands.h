@@ -423,13 +423,6 @@ class CdbCmd_TooltipEvaluation : public DebuggerCmd
         }//end ParseOutput
 };//end CdbCmd_TooltipEvaluation
 
-// Static member definitions required in the .cpp file (outside the class definition):
-#if wxCHECK_VERSION(3, 3, 2)
-    static wxTipWindow::Ref m_pWin; //initialized in cdb_driver.cpp
-#else
-    static wxTipWindow*     m_pWin; //intialized in cdb_driver.cpp
-#endif
-
 inline bool CDBHasChild(const wxString &line)
 {
     return line.Contains("ChildEBP") || line.Contains("Child-SP");
