@@ -1344,6 +1344,14 @@ bool EditorManager::SwapActiveHeaderSource()
         if (!pf)
             continue;
 
+        // verify if it is the same project
+        cbProject* foundProject = pf->GetParentProject();
+        if (!foundProject)
+            continue;
+
+        if (foundProject != project)
+            continue;
+
         fileArray.Add(pf->file.GetFullPath());
     }
 
