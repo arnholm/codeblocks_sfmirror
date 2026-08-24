@@ -25,6 +25,7 @@ class cbPlugin;
     const int idDragScrollRescan       = XRCID("idDragScrollRescan");
     const int idDragScrollReadConfig   = XRCID("idDragScrollReadConfig");
     const int idDragScrollInvokeConfig = XRCID("idDragScrollInvokeConfig");
+    const int idDragScrollDidScroll    = XRCID("idDragScrollDidScroll");
 
 // ----------------------------------------------------------------------------
 class DragScrollEvent : public wxCommandEvent

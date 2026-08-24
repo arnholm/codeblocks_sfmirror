@@ -268,6 +268,17 @@ private:
     int  m_skipOrAddCount   = 0;
     bool m_popupActive  = false;
 
+    // (ph 26/08/16)
+    enum class ScrollAxis
+    {
+        Undecided,
+        Horizontal,
+        Vertical
+    };
+
+    ScrollAxis m_scrollAxis = ScrollAxis::Undecided;
+    // (ph 26/08/16)
+
     int m_draggingX     = 0; //(ph 2024/09/03)
     int m_draggingY     = 0;
 
@@ -300,12 +311,14 @@ private:
     DECLARE_EVENT_TABLE()
 };
 //----------------------------------------
-#define VERSION "1.4.19 26/4/30"
+#define VERSION "1.5.01 26/08/16"
 //----------------------------------------
 //versions
 // ----------------------------------------------------------------------------
 //  Modification History
 // ----------------------------------------------------------------------------
+// 1.5.00   2026/08/16 Restrict scroll to either horizontal or vertical
+// 1.4.20   2026/05/19 Add notifying event DragScrollDragged !c
 // 1.4.19   2026/04/30 Fix crash in linux onTimerEvent() using garbage eventObject
 // 1.4.18   2026/04/16 Refactoring and cleanup with -Wextra
 // 1.4.17   2026/04/10 Add event.Skip() to OnMouseRightUp() solves missing context menus

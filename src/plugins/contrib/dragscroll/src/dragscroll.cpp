@@ -1443,23 +1443,28 @@ void MouseEventsHandler::OnMouseMiddleDown(wxMouseEvent& event)
 {
      LOGIT("\n%s entered %p", __FUNCTION__, event.GetEventObject());
 
+    // Note: we know that the middle_mouse key is down since we're here.
+
     if ( (not event.GetEventObject()->IsKindOf(CLASSINFO(wxWindow)))
         or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
     {
         event.Skip(); return;
     }
 
+    m_didScroll = false;
     int chosenDragKey = pDSplugin->GetchosenDragKey();
     m_isScrollKeyValid = false; // key needs validation
 
-    // NOte: we know that the middle_mouse key is down since we're here.
+    wxWindow* pWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
+    if (not pWindow)
+        {event.Skip(); return;} // (ph 26/04/16)
 
     // if chosen drag key does not contain middle mouse, ignore this mouse event
     if ( chosenDragKey < pDSplugin->dragKeyType::Middle_Mouse)
         { event.Skip(); return;}
 
-    bool isAltDown = wxGetKeyState(WXK_ALT);
-    bool isShiftDown = wxGetKeyState(WXK_SHIFT);
+    bool isAltDown = wxGetKeyState(WXK_ALT) or event.m_altDown;
+    bool isShiftDown = wxGetKeyState(WXK_SHIFT) or event.m_shiftDown;
 
     // if chosenDragKey is ONLY MIddle_Mouse, there should be no modifier keys down
     if ( (chosenDragKey == pDSplugin->dragKeyType::Middle_Mouse)
@@ -1483,6 +1488,7 @@ void MouseEventsHandler::OnMouseMiddleDown(wxMouseEvent& event)
     m_lastMouseY = event.GetY();
     m_lastMouseX = event.GetX();
     m_startPoint = wxPoint(m_firstMouseX, m_firstMouseY);   // (ph 26/04/01)
+    m_scrollAxis  = ScrollAxis::Undecided; // (ph 26/08/16)
 
     wxObject* pEvtObject = event.GetEventObject();
 
@@ -1505,6 +1511,8 @@ void MouseEventsHandler::OnMouseMiddleUp(wxMouseEvent& event)
 // ----------------------------------------------------------------------------
 {
     LOGIT("%s entered", __FUNCTION__);
+
+    m_scrollAxis  = ScrollAxis::Undecided; // (ph 26/08/16)
 
     if ( (not event.GetEventObject()->IsKindOf(CLASSINFO(wxWindow)))
         or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
@@ -1599,6 +1607,8 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
     m_lastMouseX  = m_firstMouseX;
     m_startPoint  = wxPoint(m_firstMouseX, m_firstMouseY);  // (ph 26/04/01)
 
+    m_scrollAxis  = ScrollAxis::Undecided; // (ph 26/08/16)
+
     int chosenDragKey = pDSplugin->GetchosenDragKey();
     m_isScrollKeyValid = false;
 
@@ -1608,8 +1618,8 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Windows only
     if ( chosenDragKey >= pDSplugin->dragKeyType::Middle_Mouse)
         { event.Skip(); return; }
 
-    bool isAltDown   = wxGetKeyState(WXK_ALT);
-    bool isShiftDown = wxGetKeyState(WXK_SHIFT);
+    bool isAltDown   = wxGetKeyState(WXK_ALT) or event.m_altDown;
+    bool isShiftDown = wxGetKeyState(WXK_SHIFT) or event.m_shiftDown;
 
     // if chosenDragKey is ONLY Right_Mouse, there should be no modifier keys down
     if ( (chosenDragKey == pDSplugin->dragKeyType::Right_Mouse)
@@ -1725,6 +1735,9 @@ void MouseEventsHandler::OnMouseRightUp(wxMouseEvent& event) /// Windows only
 
     LOGIT("%s entered", __FUNCTION__);
     assert(m_ignoreThisEvent >= 0);
+
+    m_scrollAxis = ScrollAxis::Undecided;   // (ph 26/08/16)
+
     if (m_ignoreThisEvent)
     {
         LOGIT( _T("[%s %s]"), __FUNCTION__, "ignored event");
@@ -1882,6 +1895,24 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
         return;
     }
 
+    // (ph 26/08/16)
+    // Lock the scroll direction from the first intentional drag movement.
+    // Do this only once per right-button drag; do not re-evaluate it on
+    // subsequent motion events, otherwise diagonal movement can wobble.
+    if (m_scrollAxis == ScrollAxis::Undecided)
+    {
+        if (abs(totalMoveX) >= abs(totalMoveY))
+            m_scrollAxis = ScrollAxis::Horizontal;
+        else
+            m_scrollAxis = ScrollAxis::Vertical;
+
+        LOGIT("Scroll axis locked: %s",
+              m_scrollAxis == ScrollAxis::Horizontal
+                  ? "horizontal"
+                  : "vertical");
+    }
+    // (ph 26/08/16)
+
     // 6. DRAG INITIALIZED
     // If we are here, the user has moved the mouse > 8 pixels.
     if (event.Dragging())
@@ -1892,8 +1923,18 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
         int deltaX = mousePos.x - m_lastMouseX;
         int deltaY = mousePos.y - m_lastMouseY;
 
-        // Update tracking variables
-        m_lastMouseX = mousePos.x;
+        // (ph 26/08/16)
+        // Lock to the axis selected by the first movement beyond the dead zone.
+        // Do not choose the axis again during this right-button drag.
+        if (m_scrollAxis == ScrollAxis::Horizontal)
+            deltaY = 0;
+        else if (m_scrollAxis == ScrollAxis::Vertical)
+            deltaX = 0;
+
+        // Save the actual mouse position, not the constrained position.
+        // That prevents suppressed movement from accumulating.
+        // (ph 26/08/16)
+         m_lastMouseX = mousePos.x;
         m_lastMouseY = mousePos.y;
 
         // m_draggingX/Y can still be used for logging if you wish
@@ -1927,13 +1968,6 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
         {
             deltaX += (deltaX < 0) ? -scrollAddLines : scrollAddLines;
             deltaY += (deltaY < 0) ? -scrollAddLines : scrollAddLines;
-        }
-
-        // Constrain to one axis (prevent diagonal "wobble")
-        if (deltaX && deltaY)
-        {
-            if (abs(deltaY) >= abs(deltaX)) deltaX = 0;
-            else deltaY = 0;
         }
 
         // ------- Perform the actual Scrolling --------------------
@@ -1970,6 +2004,10 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
     // Final check: if we didn't use the event, let it pass to the system.
     if (not m_didScroll)
         event.Skip();
+    else { // notify other plugins that DragScrolling took place
+        wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, idDragScrollDidScroll);
+        Manager::Get()->GetAppWindow()->GetEventHandler()->AddPendingEvent(evt);
+    }
 
     return;
 }

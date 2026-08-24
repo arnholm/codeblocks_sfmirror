@@ -120,6 +120,8 @@ void MouseEventsHandler::OnMouseRightDown(wxMouseEvent& event) /// Linux
     if ( chosenDragKey >= pDSplugin->dragKeyType::Middle_Mouse)
         { event.Skip(); return;}
 
+    m_scrollAxis  = ScrollAxis::Undecided; // (ph 26/08/16)
+
     m_pEventObject = event.GetEventObject(); // save event object for timer event
     wxWindow* pWindow = dynamic_cast<wxWindow*>(event.GetEventObject());
     m_pEventWindow = pWindow;
@@ -198,6 +200,7 @@ void MouseEventsHandler::OnMouseRightUp(wxMouseEvent& event) /// Linux
         or (not pDSplugin->IsAttachedTo((wxWindow*)event.GetEventObject())) )
         { event.Skip(); return; }
 
+    m_scrollAxis  = ScrollAxis::Undecided; // (ph 26/08/16)
     m_isScrollKeyValid = false;
     m_dragging = false;
 
