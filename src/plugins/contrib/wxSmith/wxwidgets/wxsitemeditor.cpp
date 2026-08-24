@@ -49,9 +49,6 @@ namespace
     const long wxsCutId        = wxNewId();
     const long wxsCopyId       = wxNewId();
 
-    inline int ToolIconSize() { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/tooliconsize"),32L); }
-    inline int PalIconSize()  { return Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/paletteiconsize"),16L); }
-
     std::map <wxString, long> Priorities;
 }
 
@@ -261,6 +258,7 @@ void wxsItemEditor::RebuildPreview()
     {
         m_VertSizer->Show(m_ToolSpace,false,false);
     }
+
     m_VertSizer->Layout();
 
     Layout();
@@ -529,7 +527,7 @@ void wxsItemEditor::InitializeImages()
         return;
 
     const wxString basePath(ConfigManager::GetDataFolder() + "/images/wxsmith/");
-    const int toolSize = ToolIconSize();
+    const int toolSize = Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/tooliconsize"),32L);
 
 #if wxCHECK_VERSION(3, 1, 6)
     const wxSize imgSize(toolSize, toolSize);
@@ -756,6 +754,9 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
     {
         aoi.Add(&(i->second));
     }
+
+    const int PalIconSize = Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/paletteiconsize"),16L);
+
     for (size_t i = 0; i < aoi.Count(); ++i)
     {
         ItemsT* Items = aoi.Item(i);
@@ -768,7 +769,7 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
         for (size_t j = Items->Count(); j-- > 0;)
         {
             wxsItemInfo* Info = Items->Item(j);
-            const wxBitmap& Icon = Info->GetIcon(PalIconSize());
+            const wxBitmap& Icon = Info->GetIcon(PalIconSize);
 
             if ( AllowNonXRCItems || Info->AllowInXRC )
             {
