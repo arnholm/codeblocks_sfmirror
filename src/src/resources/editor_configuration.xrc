@@ -65,7 +65,6 @@
 																	<object class="sizeritem">
 																		<object class="wxStaticText" name="lblEditorFont">
 																			<label>lblEditorFont</label>
-																			<bg>#FFFFFF</bg>
 																		</object>
 																		<flag>wxALIGN_CENTER_VERTICAL</flag>
 																		<border>4</border>
