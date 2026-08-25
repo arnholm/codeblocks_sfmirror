@@ -1561,9 +1561,15 @@ void wxKeyConfigPanel::BuildCtrls()
     m_pCurrCmdField = new wxStaticText(this, -1, wxT(""), wxDefaultPosition,
         wxSize(-1, 20), wxSIMPLE_BORDER | wxST_NO_AUTORESIZE | wxALIGN_CENTRE);
 
-    // we won't make it white because it must be clear to the user that this
+#if wxCHECK_VERSION(3, 3, 0)
+    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+#else
+    const bool isDark = false;
+#endif
+
+    // we won't make it completely white (or black) because it must be clear to the user that this
     // is not a text control...
-    m_pCurrCmdField->SetBackgroundColour(wxColour(200, 200, 200));
+    m_pCurrCmdField->SetBackgroundColour(isDark ? wxColour(55, 55, 55) : wxColour(200, 200, 200));
 
 #ifdef __WXGTK__
     m_pDescLabel = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition,
@@ -1571,7 +1577,7 @@ void wxKeyConfigPanel::BuildCtrls()
 #else
     m_pDescLabel = new wxStaticText(this, -1, wxT(""), wxDefaultPosition,
         wxSize(-1, 40), wxSIMPLE_BORDER | wxST_NO_AUTORESIZE);
-    m_pDescLabel->SetBackgroundColour(wxColour(255, 255, 255));
+    m_pDescLabel->SetBackgroundColour(isDark ? *wxBLACK : *wxWHITE);
 #endif
 
     // KEY PROFILES
