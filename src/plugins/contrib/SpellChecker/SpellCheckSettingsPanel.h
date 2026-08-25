@@ -26,13 +26,13 @@
 
 
 //(*Headers(SpellCheckSettingsPanel)
-#include <wx/checkbox.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/choice.h>
 #include <wx/hyperlink.h>
 #include <wx/panel.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/choice.h>
 //*)
 
 class SpellCheckerConfig;
@@ -60,18 +60,18 @@ private:
     wxButton* Button1;
     wxButton* Button2;
     wxButton* Button3;
-    wxChoice* m_choiceDictionary;
-    wxStaticText* StaticText1;
-    wxHyperlinkCtrl* HyperlinkCtrl1;
-    wxTextCtrl* m_TextThPath;
-    wxStaticText* StaticText3;
-    wxCheckBox* m_checkSpellTooltips;
-    wxStaticText* StaticText4;
-    wxStaticText* StaticText2;
-    wxTextCtrl* m_TextBitmapPath;
     wxCheckBox* m_checkEnableOnlineSpellChecker;
-    wxTextCtrl* m_TextDictPath;
+    wxCheckBox* m_checkSpellTooltips;
     wxCheckBox* m_checkThesaurusTooltips;
+    wxChoice* m_choiceDictionary;
+    wxHyperlinkCtrl* HyperlinkCtrl1;
+    wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
+    wxStaticText* StaticText3;
+    wxStaticText* StaticText4;
+    wxTextCtrl* m_TextBitmapPath;
+    wxTextCtrl* m_TextDictPath;
+    wxTextCtrl* m_TextThPath;
     //*)
 
     SpellCheckerConfig *m_sccfg;

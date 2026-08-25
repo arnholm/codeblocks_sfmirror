@@ -83,6 +83,10 @@ SpellCheckSettingsPanel::SpellCheckSettingsPanel(wxWindow* parent, SpellCheckerC
     Button2->SetToolTip(_("Select path to thesaurus (th_*.dat and th_*.idx) files"));
     Button3->SetToolTip(_("Select path to dictionary-switcher bitmaps (.png)"));
 
+#if wxCHECK_VERSION(3, 3, 0)
+    if (wxSystemSettings::GetAppearance().IsDark())
+        HyperlinkCtrl1->SetNormalColour(wxColour(0xD2, 0x82, 0x19));
+#endif
 
 #ifndef wxUSE_STATUSBAR
     // hide since they are not used atm
