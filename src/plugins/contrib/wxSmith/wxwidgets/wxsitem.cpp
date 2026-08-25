@@ -496,12 +496,13 @@ void wxsItem::Codef(const wxChar* Fmt,...)
     }
 
     va_list ap;
-    va_start(ap,Fmt);
+    va_start(ap, Fmt);
 
     Codef(GetCoderContext(), Fmt, GetCoderContext()->m_BuildingCode, ap);
 
     va_end(ap);
 }
+
 void wxsItem::Codef(const wxString &Fmt,...)
 {
     if ( !GetCoderContext() )
@@ -511,7 +512,7 @@ void wxsItem::Codef(const wxString &Fmt,...)
     }
 
     va_list ap;
-    va_start(ap,Fmt.wx_str());
+    va_start(ap, Fmt);
 
     Codef(GetCoderContext(), Fmt.c_str(), GetCoderContext()->m_BuildingCode, ap);
 
@@ -520,7 +521,8 @@ void wxsItem::Codef(const wxString &Fmt,...)
 
 void wxsItem::Codef(wxsCoderContext* Context,const wxChar* Fmt,wxString& Result,va_list ap)
 {
-    if ( !Context ) return;
+    if ( !Context )
+        return;
 
     wxsCodingLang Language = Context->m_Language;
     wxString WindowParent = Context->m_WindowParent;
