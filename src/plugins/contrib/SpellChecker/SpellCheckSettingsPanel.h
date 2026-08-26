@@ -21,10 +21,6 @@
 
 #include <configurationpanel.h>
 
-#include <map>
-#include <vector>
-
-
 //(*Headers(SpellCheckSettingsPanel)
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -54,6 +50,11 @@ public:
     /// Called when the user chooses to cancel the configuration.
     virtual void OnCancel();
 
+protected:
+
+    //(*Identifiers(SpellCheckSettingsPanel)
+    //*)
+
 private:
 
     //(*Declarations(SpellCheckSettingsPanel)
@@ -76,27 +77,14 @@ private:
 
     SpellCheckerConfig *m_sccfg;
 
-
-
-private:
-    void InitDictionaryChoice(const wxString &path = wxEmptyString);
-    void PostConfig();
-
-protected:
-
-    //(*Identifiers(SpellCheckSettingsPanel)
-    //*)
-
-private:
-
     //(*Handlers(SpellCheckSettingsPanel)
     void OnChooseDirectory(wxCommandEvent& event);
     //*)
 
+    void InitDictionaryChoice(const wxString &path = wxEmptyString);
     void OnChangeDictPathText( wxCommandEvent &event);
+    void PostConfig();
 
-
-private:
     DECLARE_EVENT_TABLE()
 };
 

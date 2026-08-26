@@ -25,6 +25,7 @@
 
 #include <wx/dir.h>
 #include <wx/dirdlg.h>
+#include <wx/settings.h>
 
 #include <map>
 #include <vector>
@@ -227,4 +228,3 @@ void SpellCheckSettingsPanel::OnChangeDictPathText(cb_unused wxCommandEvent& eve
         m_checkEnableOnlineSpellChecker->SetValue(false);
     }
 }
-
