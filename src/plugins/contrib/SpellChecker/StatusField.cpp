@@ -24,16 +24,19 @@
 
 namespace
 {
-const int idCommand[LANGS]  = {static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),
-                               static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId()),static_cast<int>(wxNewId())
-                              };
-const int idEnableSpellCheck = wxNewId();
-const int idEditPersonalDictionary = wxNewId();
+    const int idCommand[LANGS] =
+    {
+        static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId()),
+        static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId()), static_cast<int>(wxNewId())
+    };
+
+    const int idEnableSpellCheck = wxNewId();
+    const int idEditPersonalDictionary = wxNewId();
 };
 
 SpellCheckerStatusField::SpellCheckerStatusField(wxWindow* parent, SpellCheckerPlugin *plugin, SpellCheckerConfig *sccfg)
     :wxPanel(parent, wxID_ANY),
-     m_bitmap(NULL),
+     m_bitmap(nullptr),
      m_sccfg(sccfg),
      m_plugin(plugin)
 {
@@ -42,30 +45,26 @@ SpellCheckerStatusField::SpellCheckerStatusField(wxWindow* parent, SpellCheckerP
 
     Update();
 
-    Connect(wxEVT_SIZE, wxSizeEventHandler(SpellCheckerStatusField::OnSize), NULL, this);
-    Connect(idCommand[0],idCommand[LANGS-1], wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), NULL, this);
-    Connect(idEnableSpellCheck, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), NULL, this);
-    Connect(idEditPersonalDictionary, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnEditPersonalDictionary), NULL, this);
-
-    m_text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed), NULL,
-                    this);
-    Connect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed), NULL, this);
+    Connect(wxEVT_SIZE, wxSizeEventHandler(SpellCheckerStatusField::OnSize), nullptr, this);
+    Connect(idCommand[0],idCommand[LANGS-1], wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), nullptr, this);
+    Connect(idEnableSpellCheck, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), nullptr, this);
+    Connect(idEditPersonalDictionary, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnEditPersonalDictionary), nullptr, this);
+    m_text->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed), nullptr, this);
+    Connect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed), nullptr, this);
 }
 
 SpellCheckerStatusField::~SpellCheckerStatusField()
 {
     //dtor
-    Disconnect(wxEVT_SIZE, wxSizeEventHandler(SpellCheckerStatusField::OnSize), NULL, this);
-    Disconnect(idCommand[0],idCommand[LANGS-1], wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), NULL, this);
-    Disconnect(idEnableSpellCheck, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), NULL, this);
-    Disconnect(idEditPersonalDictionary, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnEditPersonalDictionary), NULL, this);
+    Disconnect(wxEVT_SIZE, wxSizeEventHandler(SpellCheckerStatusField::OnSize), nullptr, this);
+    Disconnect(idCommand[0],idCommand[LANGS-1], wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), nullptr, this);
+    Disconnect(idEnableSpellCheck, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnSelect), nullptr, this);
+    Disconnect(idEditPersonalDictionary, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(SpellCheckerStatusField::OnEditPersonalDictionary), nullptr, this);
 
     m_text->Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed));
     if (m_bitmap)
-    {
-        m_bitmap->Disconnect(wxEVT_LEFT_UP,
-                             wxMouseEventHandler(SpellCheckerStatusField::OnPressed));
-    }
+        m_bitmap->Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed));
+
     Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(SpellCheckerStatusField::OnPressed));
 }
 
