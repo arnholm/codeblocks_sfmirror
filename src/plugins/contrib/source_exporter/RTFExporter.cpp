@@ -58,6 +58,7 @@ namespace
     return ostr.str();
   }
 
+  /*
   // operator == overloaded for wxColour objects
   bool operator == (const wxColour &left, const wxColour &right)
   {
@@ -69,6 +70,7 @@ namespace
   {
     return left.Red() != right.Red() || left.Green() != right.Green() || left.Blue() != right.Blue();
   }
+  */
 
   // Helper class to append colors in RTF colortbl format to a string
   class wxColourToRTFTbl
