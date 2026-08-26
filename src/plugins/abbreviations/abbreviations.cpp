@@ -243,7 +243,7 @@ void Abbreviations::OnEditAutoComplete(cb_unused wxCommandEvent& event)
 void Abbreviations::OnEditMenuUpdateUI(wxUpdateUIEvent& event)
 {
     cbEditor* ed = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    event.Enable(ed != NULL);
+    event.Enable(ed != nullptr);
 }
 
 void Abbreviations::DoAutoComplete(cbEditor* ed)

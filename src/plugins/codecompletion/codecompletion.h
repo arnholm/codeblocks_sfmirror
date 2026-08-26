@@ -318,7 +318,7 @@ private:
     void DoParseOpenedProjectAndActiveEditor();
 
     /** highlight member variables */
-    void UpdateEditorSyntax(cbEditor* ed = NULL);
+    void UpdateEditorSyntax(cbEditor* ed = nullptr);
 
     /** delayed for toolbar update */
     void OnToolbarTimer(wxTimerEvent& event);

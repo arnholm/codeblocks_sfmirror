@@ -38,7 +38,7 @@ END_EVENT_TABLE()
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
 ProjectOptionsManipulator::ProjectOptionsManipulator() :
-  m_Dlg(NULL)
+  m_Dlg(nullptr)
 {
   //ctor
 }// ProjectOptionsManipulator

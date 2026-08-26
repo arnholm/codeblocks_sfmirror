@@ -151,7 +151,8 @@ void DoxyBlocks::OnAttach()
 void DoxyBlocks::OnProjectActivate(CodeBlocksEvent& WXUNUSED(event))
 {
     if(IsAttached()){
-        if(m_pConfig != NULL){
+        if(m_pConfig != nullptr)
+        {
             wxDELETE(m_pConfig);
             wxASSERT(!m_pConfig);
         }
@@ -938,10 +939,12 @@ void DoxyBlocks::RunCompiledHelp(const wxString& sDocPath, const wxString& sPrjN
             cmdCHM = sCHMViewer + wxT(" ") + sPathCHM;
         }
         wxProcess *proc = wxProcess::Open(cmdCHM);
-        if(proc == NULL){
+        if(proc == nullptr)
+        {
             AppendToLog(wxString::Format(_("Execution of '%s' failed."), cmdCHM.c_str()), LOG_ERROR);
         }
-        else{
+        else
+        {
             AppendToLog(wxString::Format(_("Process %ld (%s) launched."), proc->GetPid(), cmdCHM.c_str()));
         }
     }

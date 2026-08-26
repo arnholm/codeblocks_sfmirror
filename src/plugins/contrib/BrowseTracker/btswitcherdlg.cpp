@@ -43,7 +43,7 @@ void btSwitcherItem::Init()
     m_breakColumn = false;
     m_rowPos = 0;
     m_colPos = 0;
-    m_window = NULL;
+    m_window = nullptr;
 }
 
 void btSwitcherItem::Copy(const btSwitcherItem& item)
@@ -971,8 +971,8 @@ bool btSwitcherDialog::Create( const btSwitcherItems& items, wxWindow *parent, w
 
 void btSwitcherDialog::Init()
 {
-    m_listCtrl = NULL;
-    m_descriptionCtrl = NULL;
+    m_listCtrl = nullptr;
+    m_descriptionCtrl = nullptr;
     m_closing = false;
     m_switcherBorderStyle = 0;
 

@@ -1959,7 +1959,7 @@ void CodeCompletion::OnGotoDeclaration(wxCommandEvent& event)
     // one match
     if (result.size() == 1)
     {
-        Token* token = NULL;
+        Token* token = nullptr;
         Token* sel = tree->at(*(result.begin()));
         if (   (isImpl && !sel->GetImplFilename().IsEmpty())
             || (isDecl && !sel->GetFilename().IsEmpty()) )
@@ -3421,7 +3421,7 @@ void CodeCompletion::OnRealtimeParsingTimer(cb_unused wxTimerEvent& event)
 void CodeCompletion::OnProjectSavedTimer(cb_unused wxTimerEvent& event)
 {
     cbProject* project = static_cast<cbProject*>(m_TimerProjectSaved.GetClientData());
-    m_TimerProjectSaved.SetClientData(NULL);
+    m_TimerProjectSaved.SetClientData(nullptr);
 
     ProjectsArray* projs = Manager::Get()->GetProjectManager()->GetProjects();
     if (projs->Index(project) == wxNOT_FOUND)

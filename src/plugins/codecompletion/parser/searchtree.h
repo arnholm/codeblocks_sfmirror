@@ -405,7 +405,7 @@ public:
     virtual wxString SerializeItem(cb_unused size_t idx) { return wxString(_T("")); }
 
     /// Unserializes the items to be stored
-    virtual void* UnserializeItem(cb_unused const wxString& s) { return NULL; }
+    virtual void* UnserializeItem(cb_unused const wxString& s) { return nullptr; }
 
 protected:
     std::vector<T> m_Items;   /// The actual stored items

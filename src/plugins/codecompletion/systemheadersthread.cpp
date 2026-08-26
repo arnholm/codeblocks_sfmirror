@@ -229,7 +229,7 @@ void* SystemHeadersThread::Entry()
 
     TRACE(_T("SystemHeadersThread: Done."));
 
-    return NULL;
+    return nullptr;
 }
 
 // class HeaderDirTraverser

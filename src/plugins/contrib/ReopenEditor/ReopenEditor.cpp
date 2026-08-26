@@ -114,7 +114,7 @@ void ReopenEditor::OnRelease(bool /*appShutDown*/)
 cbConfigurationPanel* ReopenEditor::GetConfigurationPanel(wxWindow* parent)
 {
     if ( !IsAttached() )
-        return NULL;
+        return nullptr;
 
     ReopenEditorConfDLg* cfg = new ReopenEditorConfDLg(parent);
     return cfg;
@@ -144,7 +144,7 @@ void ReopenEditor::BuildMenu(wxMenuBar* menuBar)
             }
         }
         // if not found, just append with seperator
-        if(i == items.GetCount())
+        if (i == items.GetCount())
         {
             menu->AppendCheckItem(idReopenEditorView, _("Closed file list"), _("Toggle displaying the closed file list"));
         }
@@ -162,7 +162,7 @@ void ReopenEditor::BuildMenu(wxMenuBar* menuBar)
             }
         }
         // if not found, just append with seperator
-        if(i == items.GetCount())
+        if (i == items.GetCount())
         {
             menu->InsertSeparator(i++);
         }
@@ -173,7 +173,7 @@ void ReopenEditor::BuildMenu(wxMenuBar* menuBar)
 
 void ReopenEditor::OnReopenEditor(wxCommandEvent& /*event*/)
 {
-    if(m_pListLog->GetItemsCount() > 0)
+    if (m_pListLog->GetItemsCount() > 0)
     {
         EditorManager* em = Manager::Get()->GetEditorManager();
         wxString fname = m_pListLog->GetFilename(0);
@@ -188,22 +188,22 @@ void ReopenEditor::OnEditorClosed(CodeBlocksEvent& event)
 {
     EditorBase* eb = event.GetEditor();
 
-    if(eb && eb->IsBuiltinEditor())
+    if (eb && eb->IsBuiltinEditor())
     {
         cbProject* prj = nullptr;
         bool isPrjClosing = false;
 
         ProjectFile* prjf = ((cbEditor*)eb)->GetProjectFile();
-        if(prjf)
+        if (prjf)
             prj = prjf->GetParentProject();
 
         wxString name = wxEmptyString;
-        if(prj)
+        if (prj)
         {
             isPrjClosing = (m_ClosedProjects.Index(prj) != wxNOT_FOUND);
             name = prj->GetTitle();
         }
-        if(!prj || !isPrjClosing)
+        if (!prj || !isPrjClosing)
         {
             wxArrayString list;
             list.Add(eb->GetFilename());
@@ -228,16 +228,16 @@ void ReopenEditor::OnEditorClosed(CodeBlocksEvent& event)
 
 void ReopenEditor::OnEditorOpened(CodeBlocksEvent& event)
 {
-    if(m_pListLog->GetItemsCount() > 0)
+    if (m_pListLog->GetItemsCount() > 0)
     {
         EditorBase* eb = event.GetEditor();
 
-        if(eb && eb->IsBuiltinEditor())
+        if (eb && eb->IsBuiltinEditor())
         {
             wxString fname = eb->GetFilename();
-            for(size_t i = m_pListLog->GetItemsCount(); i > 0; --i)
+            for (size_t i = m_pListLog->GetItemsCount(); i > 0; --i)
             {
-                if(fname == m_pListLog->GetFilename(i-1))
+                if (fname == m_pListLog->GetFilename(i-1))
                 {
                     m_pListLog->RemoveAt(i-1);
                     break;
@@ -254,7 +254,7 @@ void ReopenEditor::OnProjectOpened(CodeBlocksEvent& event)
 {
     cbProject* prj = event.GetProject();
     int index = m_ClosedProjects.Index(prj);
-    if(index != wxNOT_FOUND)
+    if (index != wxNOT_FOUND)
         m_ClosedProjects.RemoveAt(index);
     event.Skip();
 }
@@ -262,12 +262,12 @@ void ReopenEditor::OnProjectOpened(CodeBlocksEvent& event)
 void ReopenEditor::OnProjectClosed(CodeBlocksEvent& event)
 {
     cbProject* prj = event.GetProject();
-    if(prj)
+    if (prj)
     {
         m_ClosedProjects.Add(prj);
-        for(int i = m_pListLog->GetItemsCount() - 1; i >= 0; --i)
+        for (int i = m_pListLog->GetItemsCount() - 1; i >= 0; --i)
         {
-            if(m_pListLog->GetProject(i) == prj)
+            if (m_pListLog->GetProject(i) == prj)
             {
                 m_pListLog->RemoveAt(i);
             }
@@ -280,9 +280,9 @@ void ReopenEditor::OnProjectClosed(CodeBlocksEvent& event)
 
 void ReopenEditor::OnViewList(wxCommandEvent& event)
 {
-    if(m_IsManaged)
+    if (m_IsManaged)
     {
-        if(event.IsChecked())
+        if (event.IsChecked())
         {
                 CodeBlocksLogEvent evtShow(cbEVT_SHOW_LOG_MANAGER);
                 Manager::Get()->ProcessEvent(evtShow);

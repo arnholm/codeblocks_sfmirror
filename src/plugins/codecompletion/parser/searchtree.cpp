@@ -278,7 +278,7 @@ size_t SearchTreeNode::AddItemNo(size_t depth, size_t itemno)
 inline SearchTreeNode* SearchTreeNode::GetParent(const BasicSearchTree* tree) const
 {
     if (!m_Depth)
-        return NULL;
+        return nullptr;
     return tree->m_Nodes[m_Parent];
 }
 
@@ -586,7 +586,7 @@ wxString BasicSearchTree::GetString(const SearchTreePoint &nn,nSearchTreeNode to
 
 SearchTreeNode* BasicSearchTree::GetNode(nSearchTreeNode n,bool NullOnZero)
 {
-    SearchTreeNode* result = NULL;
+    SearchTreeNode* result = nullptr;
     if ((n || !NullOnZero) && n < m_Nodes.size())
         result = m_Nodes[n];
     return result;

@@ -1834,7 +1834,7 @@ void ParserThread::HandleNamespace()
                 m_Tokenizer.SetState(tsNormal);
 
                 Token* lastParent = m_LastParent;
-                Token* aliasToken = NULL;
+                Token* aliasToken = nullptr;
 
                 while (IS_ALIVE)
                 {

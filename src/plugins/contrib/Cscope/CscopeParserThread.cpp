@@ -10,7 +10,7 @@ CscopeParserThread::CscopeParserThread(wxEvtHandler *notifiedWindow, const wxArr
 : wxThread( wxTHREAD_DETACHED )
 , m_notifiedWindow( notifiedWindow )
 , m_CscopeOutput( output )
-, m_result( NULL )
+, m_result( nullptr )
 {
     //ctor
 }
@@ -20,7 +20,7 @@ CscopeParserThread::~CscopeParserThread(){}
 void* CscopeParserThread::Entry()
 {
     m_result = ParseResults();
-	return NULL;
+	return nullptr;
 }
 
 

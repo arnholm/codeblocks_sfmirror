@@ -55,9 +55,9 @@ namespace
 // ----------------------------------------------------------------------------
 BrowseSelector::BrowseSelector(wxWindow* parent, BrowseTracker* pBrowseTracker, int menuID)
 // ----------------------------------------------------------------------------
-    :   m_listBox(NULL),
+    :   m_listBox(nullptr),
         m_selectedItem(-1),
-        m_panel(NULL),
+        m_panel(nullptr),
         m_pBrowseTracker(pBrowseTracker),
         m_menuID(menuID), m_KeyDownCode(0), m_KeyDownMods(0) // (blauzahn 25/06/22)
 {
@@ -93,9 +93,9 @@ BrowseSelector::BrowseSelector(wxWindow* parent, BrowseTracker* pBrowseTracker, 
 BrowseSelector::BrowseSelector()
 // ----------------------------------------------------------------------------
     : wxScrollingDialog()
-    , m_listBox(NULL)
+    , m_listBox(nullptr)
     , m_selectedItem(-1)
-    , m_panel(NULL)
+    , m_panel(nullptr)
 {
     // constructor without parent is marked private and unused
 }
@@ -125,7 +125,7 @@ void BrowseSelector::Create(wxWindow* parent, BrowseTracker* pBrowseTracker, int
     SetSizer(sz);
 
     const long flags = wxLB_SINGLE | wxNO_BORDER | wxWANTS_CHARS | wxTE_PROCESS_ENTER;
-    m_listBox = new wxListBox(this, wxID_ANY, wxDefaultPosition, wxSize(400, 150), 0, NULL, flags);
+    m_listBox = new wxListBox(this, wxID_ANY, wxDefaultPosition, wxSize(400, 150), 0, nullptr, flags);
 
     static int panelHeight = 0;
     static int imageSize = 0;
@@ -160,15 +160,15 @@ void BrowseSelector::Create(wxWindow* parent, BrowseTracker* pBrowseTracker, int
     SetSizer(sz);
 
     // Connect events to the list box
-    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_KEY_UP,   wxKeyEventHandler(BrowseSelector::OnKeyUp), NULL, this);
-    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(BrowseSelector::OnKeyDown), NULL, this);
-    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler(BrowseSelector::OnItemSelected), NULL, this);
+    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_KEY_UP,   wxKeyEventHandler(BrowseSelector::OnKeyUp), nullptr, this);
+    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(BrowseSelector::OnKeyDown), nullptr, this);
+    m_listBox->GetEventHandler()->Connect(wxID_ANY, wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler(BrowseSelector::OnItemSelected), nullptr, this);
 
-    //m_listBox->Connect(wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(BrowseSelector::OnWindowKillFocus),NULL,this); //debugging
+    //m_listBox->Connect(wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(BrowseSelector::OnWindowKillFocus),nullptr,this); //debugging
 
     // Connect paint event to the panel
-    m_panel->GetEventHandler()->Connect(wxID_ANY, wxEVT_PAINT, wxPaintEventHandler(BrowseSelector::OnPanelPaint), NULL, this);
-    m_panel->GetEventHandler()->Connect(wxID_ANY, wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(BrowseSelector::OnPanelEraseBg), NULL, this);
+    m_panel->GetEventHandler()->Connect(wxID_ANY, wxEVT_PAINT, wxPaintEventHandler(BrowseSelector::OnPanelPaint), nullptr, this);
+    m_panel->GetEventHandler()->Connect(wxID_ANY, wxEVT_ERASE_BACKGROUND, wxEraseEventHandler(BrowseSelector::OnPanelEraseBg), nullptr, this);
 
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
     m_listBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));

@@ -9,7 +9,7 @@
 
 CscopeTab::CscopeTab( wxWindow* parent, CscopeConfig *cfg )
     : wxPanel( parent )
-    , m_table(NULL)
+    , m_table(nullptr)
     , m_cfg(cfg)
 {
 
@@ -36,7 +36,7 @@ CscopeTab::CscopeTab( wxWindow* parent, CscopeConfig *cfg )
 	this->Layout();
 
 	// Connect Events
-	m_pListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,wxListEventHandler(CscopeTab::OnListItemActivated),NULL,this);
+	m_pListCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler(CscopeTab::OnListItemActivated), nullptr, this);
 
     Clear();
 
@@ -46,10 +46,10 @@ CscopeTab::CscopeTab( wxWindow* parent, CscopeConfig *cfg )
 CscopeTab::~CscopeTab()
 {
     // Disconnect Events
-	m_pListCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED,wxListEventHandler(CscopeTab::OnListItemActivated),NULL,this);
+	m_pListCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler(CscopeTab::OnListItemActivated), nullptr, this);
 	if ( m_table )
         delete m_table;
-    m_table = NULL;
+    m_table = nullptr;
 }
 
 
@@ -57,7 +57,7 @@ void CscopeTab::Clear()
 {
     if ( m_table )
         delete m_table;
-    m_table = NULL;
+    m_table = nullptr;
 
 	m_pListCtrl->ClearAll();
     m_pListCtrl->InsertColumn(0, _("File"),  wxLIST_FORMAT_LEFT,  100);

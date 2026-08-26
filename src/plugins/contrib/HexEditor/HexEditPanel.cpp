@@ -330,15 +330,15 @@ HexEditPanel::HexEditPanel( const wxString& fileName, const wxString& title )
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(HexEditPanel::OnButton1Click));
     Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(HexEditPanel::OnButton4Click1));
     Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,wxCommandEventHandler(HexEditPanel::OnCheckBox1Click));
-    m_DrawArea->Connect(wxEVT_PAINT,wxPaintEventHandler(HexEditPanel::OnContentPaint), NULL, this);
-    m_DrawArea->Connect(wxEVT_ERASE_BACKGROUND,wxEraseEventHandler(HexEditPanel::OnDrawAreaEraseBackground), NULL, this);
-    m_DrawArea->Connect(wxEVT_KEY_DOWN,wxKeyEventHandler(HexEditPanel::OnSpecialKeyDown), NULL, this);
-    m_DrawArea->Connect(wxEVT_CHAR,wxKeyEventHandler(HexEditPanel::OnDrawAreaKeyDown), NULL, this);
-    m_DrawArea->Connect(wxEVT_LEFT_DOWN,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftDown), NULL, this);
-    m_DrawArea->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftUp), NULL, this);
-    m_DrawArea->Connect(wxEVT_MOTION,wxMouseEventHandler(HexEditPanel::OnDrawAreaMouseMove), NULL, this);
-    m_DrawArea->Connect(wxEVT_LEAVE_WINDOW,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftUp), NULL, this);
-    m_DrawArea->Connect(wxEVT_MOUSEWHEEL,wxMouseEventHandler(HexEditPanel::OnContentMouseWheel), NULL, this);
+    m_DrawArea->Connect(wxEVT_PAINT,wxPaintEventHandler(HexEditPanel::OnContentPaint), nullptr, this);
+    m_DrawArea->Connect(wxEVT_ERASE_BACKGROUND,wxEraseEventHandler(HexEditPanel::OnDrawAreaEraseBackground), nullptr, this);
+    m_DrawArea->Connect(wxEVT_KEY_DOWN,wxKeyEventHandler(HexEditPanel::OnSpecialKeyDown), nullptr, this);
+    m_DrawArea->Connect(wxEVT_CHAR,wxKeyEventHandler(HexEditPanel::OnDrawAreaKeyDown), nullptr, this);
+    m_DrawArea->Connect(wxEVT_LEFT_DOWN,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftDown), nullptr, this);
+    m_DrawArea->Connect(wxEVT_LEFT_UP,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftUp), nullptr, this);
+    m_DrawArea->Connect(wxEVT_MOTION,wxMouseEventHandler(HexEditPanel::OnDrawAreaMouseMove), nullptr, this);
+    m_DrawArea->Connect(wxEVT_LEAVE_WINDOW,wxMouseEventHandler(HexEditPanel::OnDrawAreaLeftUp), nullptr, this);
+    m_DrawArea->Connect(wxEVT_MOUSEWHEEL,wxMouseEventHandler(HexEditPanel::OnContentMouseWheel), nullptr, this);
     Connect(ID_SCROLLBAR1,wxEVT_SCROLL_TOP,wxScrollEventHandler(HexEditPanel::OnContentScroll));
     Connect(ID_SCROLLBAR1,wxEVT_SCROLL_BOTTOM,wxScrollEventHandler(HexEditPanel::OnContentScroll));
     Connect(ID_SCROLLBAR1,wxEVT_SCROLL_LINEUP,wxScrollEventHandler(HexEditPanel::OnContentScroll));
@@ -501,7 +501,7 @@ void HexEditPanel::RecalculateCoefs(wxDC &dc)
     if (!m_NeedRecalc)
         return;
     m_NeedRecalc = false;
-    dc.GetTextExtent( _T("0123456789ABCDEF"), &m_FontX, &m_FontY, NULL, NULL, m_DrawFont );
+    dc.GetTextExtent( _T("0123456789ABCDEF"), &m_FontX, &m_FontY, nullptr, nullptr, m_DrawFont );
     m_FontX /= 16;
 
     // Calculate number of rows and columns in characters

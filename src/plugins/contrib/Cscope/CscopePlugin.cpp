@@ -69,20 +69,19 @@ void CscopePlugin::OnAttach()
     CodeBlocksLogEvent evt(cbEVT_ADD_LOG_WINDOW, m_view, _T("Cscope")/*, bmp*/);
     Manager::Get()->ProcessEvent(evt);
 
-//    Connect(idOnFindSymbol, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-//	  Connect(idOnFindSymbol, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-//	  Connect(idOnFindGlobalDefinition, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-//	  Connect(idOnFindGlobalDefinition, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-	Connect(idOnFindFunctionsCalledByThisFuncion, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-	Connect(idOnFindFunctionsCalledByThisFuncion, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-	Connect(idOnFindFunctionsCallingThisFunction, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-    Connect(idOnFindFunctionsCallingThisFunction, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
+//    Connect(idOnFindSymbol, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+//	  Connect(idOnFindSymbol, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+//	  Connect(idOnFindGlobalDefinition, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+//	  Connect(idOnFindGlobalDefinition, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+	Connect(idOnFindFunctionsCalledByThisFuncion, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+	Connect(idOnFindFunctionsCalledByThisFuncion, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+	Connect(idOnFindFunctionsCallingThisFunction, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+    Connect(idOnFindFunctionsCallingThisFunction, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
 
-	Connect(wxEVT_END_PROCESS, wxProcessEventHandler(CscopePlugin::OnCscopeReturned), NULL, this);
-    Connect(wxEVT_IDLE, wxIdleEventHandler(CscopePlugin::OnIdle), NULL, this);
+	Connect(wxEVT_END_PROCESS, wxProcessEventHandler(CscopePlugin::OnCscopeReturned), nullptr, this);
+    Connect(wxEVT_IDLE, wxIdleEventHandler(CscopePlugin::OnIdle), nullptr, this);
 
-    Connect(wxEVT_CSCOPE_THREAD_DONE, wxCommandEventHandler(CscopePlugin::OnParserThreadEnded), NULL, this);
-
+    Connect(wxEVT_CSCOPE_THREAD_DONE, wxCommandEventHandler(CscopePlugin::OnParserThreadEnded), nullptr, this);
 }
 
 void CscopePlugin::OnRelease(bool appShutDown)
@@ -98,19 +97,19 @@ void CscopePlugin::OnRelease(bool appShutDown)
     Manager::Get()->ProcessEvent(evt);
 
 
-//    Disconnect(idOnFindSymbol, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-//	  Disconnect(idOnFindSymbol, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-//	  Disconnect(idOnFindGlobalDefinition, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-//	  Disconnect(idOnFindGlobalDefinition, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-	Disconnect(idOnFindFunctionsCalledByThisFuncion, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-	Disconnect(idOnFindFunctionsCalledByThisFuncion, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
-	Disconnect(idOnFindFunctionsCallingThisFunction, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), NULL, (wxEvtHandler*)this);
-    Disconnect(idOnFindFunctionsCallingThisFunction, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), NULL, (wxEvtHandler*)this);
+//    Disconnect(idOnFindSymbol, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+//	  Disconnect(idOnFindSymbol, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+//	  Disconnect(idOnFindGlobalDefinition, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+//	  Disconnect(idOnFindGlobalDefinition, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+	Disconnect(idOnFindFunctionsCalledByThisFuncion, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+	Disconnect(idOnFindFunctionsCalledByThisFuncion, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
+	Disconnect(idOnFindFunctionsCallingThisFunction, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CscopePlugin::OnFind), nullptr, (wxEvtHandler*)this);
+    Disconnect(idOnFindFunctionsCallingThisFunction, wxEVT_UPDATE_UI, wxUpdateUIEventHandler(CscopePlugin::OnCscopeUI), nullptr, (wxEvtHandler*)this);
 
-    Disconnect(wxEVT_END_PROCESS, wxProcessEventHandler(CscopePlugin::OnCscopeReturned), NULL, this);
-    Disconnect(wxEVT_IDLE,          wxIdleEventHandler(CscopePlugin::OnIdle), NULL, this);
+    Disconnect(wxEVT_END_PROCESS, wxProcessEventHandler(CscopePlugin::OnCscopeReturned), nullptr, this);
+    Disconnect(wxEVT_IDLE,        wxIdleEventHandler(CscopePlugin::OnIdle), nullptr, this);
 
-    Disconnect(wxEVT_CSCOPE_THREAD_DONE, wxCommandEventHandler(CscopePlugin::OnParserThreadEnded), NULL, this);
+    Disconnect(wxEVT_CSCOPE_THREAD_DONE, wxCommandEventHandler(CscopePlugin::OnParserThreadEnded), nullptr, this);
 
 
     if ( m_thrd )
@@ -119,21 +118,20 @@ void CscopePlugin::OnRelease(bool appShutDown)
             m_thrd->Kill();
         else
             m_thrd->Delete();
-        m_thrd = NULL;
+        m_thrd = nullptr;
     }
     else
     {
         if ( m_pProcess && appShutDown )
             m_pProcess->Detach();
     }
-
 }
 
 
 cbConfigurationPanel* CscopePlugin::GetConfigurationPanel(wxWindow* parent)
 {
     if ( !IsAttached() )
-        return NULL;
+        return nullptr;
 
     return new CscopeConfigPanel(parent);
 }
@@ -245,7 +243,7 @@ void CscopePlugin::DoCscopeCommand(const wxString &cmd, const wxString &endMsg)
     if ( !wxExecute(cmd, wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER, m_pProcess) )
     {
         delete m_pProcess;
-        m_pProcess = NULL;
+        m_pProcess = nullptr;
         wxString errorMessage = _("Error while calling cscope executable occurred! You maybe have to fix the executable in Settings->Environment->CScope.");
         m_view->GetWindow()->SetMessage(errorMessage, 0);
         Manager::Get()->GetLogManager()->LogError(_("CScope: ") + errorMessage);
@@ -277,9 +275,9 @@ void CscopePlugin::OnCscopeReturned(wxProcessEvent & /*event*/)
 void CscopePlugin::OnParserThreadEnded(wxCommandEvent &event)
 {
     delete m_pProcess;
-    m_pProcess = NULL;
+    m_pProcess = nullptr;
 
-    m_thrd = NULL;
+    m_thrd = nullptr;
 
 	CscopeResultTable *result = (CscopeResultTable*)event.GetClientData();
 	m_view->GetWindow()->SetMessage(m_EndMsg, 100);

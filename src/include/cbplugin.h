@@ -621,7 +621,7 @@ class PLUGIN_EXPORT cbDebuggerPlugin: public cbPlugin
         virtual void RequestUpdate(DebugWindows window) = 0;
 
     public:
-        virtual wxString GetEditorWordAtCaret(const wxPoint *mousePosition = NULL);
+        virtual wxString GetEditorWordAtCaret(const wxPoint *mousePosition = nullptr);
         void ClearActiveMarkFromAllEditors();
 
         enum SyncEditorResult

@@ -261,7 +261,7 @@ void IncrementalSearch::OnRelease(bool /*appShutDown*/)
 cbConfigurationPanel* IncrementalSearch::GetConfigurationPanel(wxWindow* parent)
 {
     if ( !IsAttached() )
-        return NULL;
+        return nullptr;
 
     IncrementalSearchConfDlg* cfg = new IncrementalSearchConfDlg(parent);
     return cfg;

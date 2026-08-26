@@ -24,7 +24,7 @@ class BrowseTrackerConfPanel: public cbConfigurationPanel
   public:
 
 	/** Constructor. */
-    BrowseTrackerConfPanel(BrowseTracker& browseTrackerPlugin, wxWindow* parent = NULL, wxWindowID id = -1);
+    BrowseTrackerConfPanel(BrowseTracker& browseTrackerPlugin, wxWindow* parent = nullptr, wxWindowID id = wxID_ANY);
 
 	/** Returns the title displayed in the left column of the "Settings/Environment" dialog. */
 	wxString GetTitle()          const {return wxT("BrowseTracker");}

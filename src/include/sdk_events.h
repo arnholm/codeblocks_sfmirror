@@ -264,7 +264,7 @@ typedef void ( wxEvtHandler::*CodeblocksThreadEventFunction) ( CodeBlocksThreadE
 #define EVT_CODEBLOCKS_THREAD(id, fn) \
     DECLARE_EVENT_TABLE_ENTRY(wxEVT_COMMAND_MENU_SELECTED, id, wxID_ANY, \
     (wxObjectEventFunction) (wxEventFunction) (CodeblocksThreadEventFunction) \
-    wxStaticCastEvent( ThreadEventFunction, & fn ), (wxObject *) NULL ),
+    wxStaticCastEvent( ThreadEventFunction, & fn ), (wxObject *) nullptr ),
 
 //
 // if you add more event types, remember to add event sinks in Manager...
@@ -272,243 +272,243 @@ typedef void ( wxEvtHandler::*CodeblocksThreadEventFunction) ( CodeBlocksThreadE
 
 // app events
 extern EVTIMPORT const wxEventType cbEVT_APP_STARTUP_DONE;
-#define EVT_APP_STARTUP_DONE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_STARTUP_DONE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_APP_STARTUP_DONE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_STARTUP_DONE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_APP_START_SHUTDOWN;
-#define EVT_APP_START_SHUTDOWN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_START_SHUTDOWN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_APP_START_SHUTDOWN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_START_SHUTDOWN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_APP_ACTIVATED;
-#define EVT_APP_ACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_ACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_APP_ACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_ACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_APP_DEACTIVATED;
-#define EVT_APP_DEACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_DEACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_APP_DEACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_DEACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_APP_CMDLINE;
-#define EVT_APP_CMDLINE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_CMDLINE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_APP_CMDLINE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_APP_CMDLINE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 
 // plugin events
 extern EVTIMPORT const wxEventType cbEVT_PLUGIN_ATTACHED;
-#define EVT_PLUGIN_ATTACHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_ATTACHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PLUGIN_ATTACHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_ATTACHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PLUGIN_RELEASED;
-#define EVT_PLUGIN_RELEASED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_RELEASED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PLUGIN_RELEASED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_RELEASED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PLUGIN_INSTALLED;
-#define EVT_PLUGIN_INSTALLED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_INSTALLED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PLUGIN_INSTALLED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_INSTALLED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PLUGIN_UNINSTALLED;
-#define EVT_PLUGIN_UNINSTALLED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_UNINSTALLED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PLUGIN_UNINSTALLED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_UNINSTALLED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PLUGIN_LOADING_COMPLETE;
-#define EVT_PLUGIN_LOADING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_LOADING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PLUGIN_LOADING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PLUGIN_LOADING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // editor events
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_CLOSE;
-#define EVT_EDITOR_CLOSE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_CLOSE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_CLOSE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_CLOSE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_OPEN;
-#define EVT_EDITOR_OPEN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_OPEN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_OPEN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_OPEN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_SWITCHED;
-#define EVT_EDITOR_SWITCHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SWITCHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_SWITCHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SWITCHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_ACTIVATED;
-#define EVT_EDITOR_ACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_ACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_ACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_ACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_DEACTIVATED;
-#define EVT_EDITOR_DEACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_DEACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_DEACTIVATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_DEACTIVATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_BEFORE_SAVE;
-#define EVT_EDITOR_BEFORE_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_BEFORE_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_BEFORE_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_BEFORE_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_SAVE;
-#define EVT_EDITOR_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_MODIFIED;
-#define EVT_EDITOR_MODIFIED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_MODIFIED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_MODIFIED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_MODIFIED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_TOOLTIP;
-#define EVT_EDITOR_TOOLTIP(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_TOOLTIP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_TOOLTIP(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_TOOLTIP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_TOOLTIP_CANCEL;
-#define EVT_EDITOR_TOOLTIP_CANCEL(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_TOOLTIP_CANCEL, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_TOOLTIP_CANCEL(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_TOOLTIP_CANCEL, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_SPLIT;
-#define EVT_EDITOR_SPLIT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SPLIT, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_SPLIT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_SPLIT, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_UNSPLIT;
-#define EVT_EDITOR_UNSPLIT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_UNSPLIT, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_UNSPLIT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_UNSPLIT, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_UPDATE_UI;
-#define EVT_EDITOR_UPDATE_UI(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_UPDATE_UI, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_UPDATE_UI(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_UPDATE_UI, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 extern EVTIMPORT const wxEventType cbEVT_EDITOR_CC_DONE;
-#define EVT_EDITOR_CC_DONE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_CC_DONE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_EDITOR_CC_DONE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_EDITOR_CC_DONE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // project events
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_NEW;
-#define EVT_PROJECT_NEW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_NEW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_NEW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_NEW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_CLOSE;
-#define EVT_PROJECT_CLOSE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_CLOSE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_CLOSE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_CLOSE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_OPEN;
-#define EVT_PROJECT_OPEN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_OPEN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_OPEN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_OPEN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_SAVE;
-#define EVT_PROJECT_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_SAVE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_SAVE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_ACTIVATE;
-#define EVT_PROJECT_ACTIVATE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_ACTIVATE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_ACTIVATE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_ACTIVATE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_BEGIN_ADD_FILES;
-#define EVT_PROJECT_BEGIN_ADD_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_BEGIN_ADD_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_BEGIN_ADD_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_BEGIN_ADD_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_END_ADD_FILES;
-#define EVT_PROJECT_END_ADD_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_END_ADD_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_END_ADD_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_END_ADD_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_BEGIN_REMOVE_FILES;
-#define EVT_PROJECT_BEGIN_REMOVE_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_BEGIN_REMOVE_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_BEGIN_REMOVE_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_BEGIN_REMOVE_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_END_REMOVE_FILES;
-#define EVT_PROJECT_END_REMOVE_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_END_REMOVE_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_END_REMOVE_FILES(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_END_REMOVE_FILES, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_FILE_ADDED;
-#define EVT_PROJECT_FILE_ADDED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_ADDED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_FILE_ADDED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_ADDED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_FILE_REMOVED;
-#define EVT_PROJECT_FILE_REMOVED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_REMOVED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_FILE_REMOVED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_REMOVED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_FILE_CHANGED;
-#define EVT_PROJECT_FILE_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_FILE_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_FILE_RENAMED;
-#define EVT_PROJECT_FILE_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_RENAMED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_FILE_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_FILE_RENAMED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_POPUP_MENU;
-#define EVT_PROJECT_POPUP_MENU(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_POPUP_MENU, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_POPUP_MENU(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_POPUP_MENU, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_TARGETS_MODIFIED;
-#define EVT_PROJECT_TARGETS_MODIFIED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_TARGETS_MODIFIED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_TARGETS_MODIFIED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_TARGETS_MODIFIED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_RENAMED;
-#define EVT_PROJECT_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_RENAMED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_RENAMED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PROJECT_OPTIONS_CHANGED;
-#define EVT_PROJECT_OPTIONS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_OPTIONS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_PROJECT_OPTIONS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PROJECT_OPTIONS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_WORKSPACE_CHANGED;
-#define EVT_WORKSPACE_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_WORKSPACE_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_WORKSPACE_LOADING_COMPLETE;
-#define EVT_WORKSPACE_LOADING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_LOADING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_WORKSPACE_LOADING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_LOADING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_WORKSPACE_CLOSING_BEGIN;
-#define EVT_WORKSPACE_CLOSING_BEGIN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CLOSING_BEGIN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_WORKSPACE_CLOSING_BEGIN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CLOSING_BEGIN, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_WORKSPACE_CLOSING_COMPLETE;
-#define EVT_WORKSPACE_CLOSING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CLOSING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_WORKSPACE_CLOSING_COMPLETE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_WORKSPACE_CLOSING_COMPLETE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // build targets events
 extern EVTIMPORT const wxEventType cbEVT_BUILDTARGET_ADDED;
-#define EVT_BUILDTARGET_ADDED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_ADDED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_BUILDTARGET_ADDED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_ADDED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_BUILDTARGET_REMOVED;
-#define EVT_BUILDTARGET_REMOVED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_REMOVED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_BUILDTARGET_REMOVED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_REMOVED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_BUILDTARGET_RENAMED;
-#define EVT_BUILDTARGET_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_RENAMED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_BUILDTARGET_RENAMED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_RENAMED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_BUILDTARGET_SELECTED;
-#define EVT_BUILDTARGET_SELECTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_SELECTED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_BUILDTARGET_SELECTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_BUILDTARGET_SELECTED, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 
 // pipedprocess events
 extern EVTIMPORT const wxEventType cbEVT_PIPEDPROCESS_STDOUT;
-#define EVT_PIPEDPROCESS_STDOUT(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDOUT, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
-#define EVT_PIPEDPROCESS_STDOUT_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDOUT, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_PIPEDPROCESS_STDOUT(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDOUT, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
+#define EVT_PIPEDPROCESS_STDOUT_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDOUT, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PIPEDPROCESS_STDERR;
-#define EVT_PIPEDPROCESS_STDERR(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDERR, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
-#define EVT_PIPEDPROCESS_STDERR_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDERR, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_PIPEDPROCESS_STDERR(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDERR, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
+#define EVT_PIPEDPROCESS_STDERR_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_STDERR, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_PIPEDPROCESS_TERMINATED;
-#define EVT_PIPEDPROCESS_TERMINATED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_TERMINATED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) (wxNotifyEventFunction) (CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
-#define EVT_PIPEDPROCESS_TERMINATED_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_TERMINATED, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_PIPEDPROCESS_TERMINATED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_TERMINATED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) (wxNotifyEventFunction) (CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
+#define EVT_PIPEDPROCESS_TERMINATED_RANGE(id, id1, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_PIPEDPROCESS_TERMINATED, id, id1, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 
 // thread-pool events
 extern EVTIMPORT const wxEventType cbEVT_THREADTASK_STARTED;
-#define EVT_THREADTASK_STARTED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_STARTED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_THREADTASK_STARTED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_STARTED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_THREADTASK_ENDED;
-#define EVT_THREADTASK_ENDED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_ENDED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_THREADTASK_ENDED(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_ENDED, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_THREADTASK_ALLDONE;
-#define EVT_THREADTASK_ALLDONE(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_ALLDONE, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_THREADTASK_ALLDONE(id, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_THREADTASK_ALLDONE, id, wxID_ANY, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) & fn, (wxObject *) nullptr ),
 
 // request app to add and manage a docked window
 extern EVTIMPORT const wxEventType cbEVT_ADD_DOCK_WINDOW;
-#define EVT_ADD_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_ADD_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_ADD_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_ADD_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) nullptr ),
 // request app to stop managing a docked window
 extern EVTIMPORT const wxEventType cbEVT_REMOVE_DOCK_WINDOW;
-#define EVT_REMOVE_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_REMOVE_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_REMOVE_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_REMOVE_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) nullptr ),
 // request app to show a docked window
 extern EVTIMPORT const wxEventType cbEVT_SHOW_DOCK_WINDOW;
-#define EVT_SHOW_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_SHOW_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) nullptr ),
 // request app to hide a docked window
 extern EVTIMPORT const wxEventType cbEVT_HIDE_DOCK_WINDOW;
-#define EVT_HIDE_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_HIDE_DOCK_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_DOCK_WINDOW, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) nullptr ),
 // app notifies that a docked window has been hidden/shown
 // to actually find out its state use IsWindowReallyShown(event.pWindow);
 extern EVTIMPORT const wxEventType cbEVT_DOCK_WINDOW_VISIBILITY;
-#define EVT_DOCK_WINDOW_VISIBILITY(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DOCK_WINDOW_VISIBILITY, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_DOCK_WINDOW_VISIBILITY(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DOCK_WINDOW_VISIBILITY, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksDockEventFunction) & fn, (wxObject *) nullptr ),
 // force update current view layout
 extern EVTIMPORT const wxEventType cbEVT_UPDATE_VIEW_LAYOUT;
-#define EVT_UPDATE_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_UPDATE_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_UPDATE_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_UPDATE_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) nullptr ),
 // ask which is the current view layout
 extern EVTIMPORT const wxEventType cbEVT_QUERY_VIEW_LAYOUT;
-#define EVT_QUERY_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_QUERY_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_QUERY_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_QUERY_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) nullptr ),
 // request app to switch view layout
 extern EVTIMPORT const wxEventType cbEVT_SWITCH_VIEW_LAYOUT;
-#define EVT_SWITCH_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCH_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_SWITCH_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCH_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) nullptr ),
 // app notifies that a new layout has been applied
 extern EVTIMPORT const wxEventType cbEVT_SWITCHED_VIEW_LAYOUT;
-#define EVT_SWITCHED_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCHED_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_SWITCHED_VIEW_LAYOUT(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCHED_VIEW_LAYOUT, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksLayoutEventFunction) & fn, (wxObject *) nullptr ),
 // app notifies that the menubar is started being (re)created
 extern EVTIMPORT const wxEventType cbEVT_MENUBAR_CREATE_BEGIN;
-#define EVT_MENUBAR_CREATE_BEGIN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_MENUBAR_CREATE_BEGIN, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_MENUBAR_CREATE_BEGIN(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_MENUBAR_CREATE_BEGIN, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 // app notifies that the menubar (re)creation ended
 extern EVTIMPORT const wxEventType cbEVT_MENUBAR_CREATE_END;
-#define EVT_MENUBAR_CREATE_END(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_MENUBAR_CREATE_END, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) NULL ),
+#define EVT_MENUBAR_CREATE_END(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_MENUBAR_CREATE_END, -1, -1, (wxObjectEventFunction) (wxEventFunction) (CodeBlocksEventFunction) & fn, (wxObject *) nullptr ),
 
 // compiler-related events (compiler plugins usually fire them)
 extern EVTIMPORT const wxEventType cbEVT_COMPILER_STARTED;
-#define EVT_COMPILER_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPILER_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_COMPILER_FINISHED;
-#define EVT_COMPILER_FINISHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_FINISHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPILER_FINISHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_FINISHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_COMPILER_SET_BUILD_OPTIONS;
-#define EVT_COMPILER_SET_BUILD_OPTIONS(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_SET_BUILD_OPTIONS, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPILER_SET_BUILD_OPTIONS(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_SET_BUILD_OPTIONS, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_CLEAN_PROJECT_STARTED;
-#define EVT_CLEAN_PROJECT_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CLEAN_PROJECT_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_CLEAN_PROJECT_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CLEAN_PROJECT_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_CLEAN_WORKSPACE_STARTED;
-#define EVT_CLEAN_WORKSPACE_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CLEAN_WORKSPACE_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_CLEAN_WORKSPACE_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CLEAN_WORKSPACE_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_COMPILER_SETTINGS_CHANGED;
-#define EVT_COMPILER_SETTINGS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_SETTINGS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPILER_SETTINGS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILER_SETTINGS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // request app to compile a single file
 extern EVTIMPORT const wxEventType cbEVT_COMPILE_FILE_REQUEST;
-#define EVT_COMPILE_FILE_REQUEST(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILE_FILE_REQUEST, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPILE_FILE_REQUEST(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPILE_FILE_REQUEST, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // debugger-related events (debugger plugins must fire them)
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_STARTED;
-#define EVT_DEBUGGER_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_DEBUGGER_STARTED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_STARTED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_PAUSED;
-#define EVT_DEBUGGER_PAUSED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_PAUSED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_DEBUGGER_PAUSED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_PAUSED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_CONTINUED;
-#define cbEVT_DEBUGGER_CONTINUED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_CONTINUED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define cbEVT_DEBUGGER_CONTINUED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_CONTINUED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_FINISHED;
-#define EVT_DEBUGGER_FINISHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_FINISHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_DEBUGGER_FINISHED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_FINISHED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_CURSOR_CHANGED;
-#define EVT_DEBUGGER_CURSOR_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_CURSOR_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_DEBUGGER_CURSOR_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_CURSOR_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 /// Event sent when the data for a particular debug window is acquired by the debugger plugin and
 /// can be presented to the user. Calling GetInt on the event object can be used to find out the
 /// type of window which has been updated. The value has type cbDebuggerPlugin::DebugWindows.
 extern EVTIMPORT const wxEventType cbEVT_DEBUGGER_UPDATED;
-#define EVT_DEBUGGER_UPDATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_UPDATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_DEBUGGER_UPDATED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_DEBUGGER_UPDATED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // logger-related events
 
 // add a log window
 extern EVTIMPORT const wxEventType cbEVT_ADD_LOG_WINDOW;
-#define EVT_ADD_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_ADD_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_ADD_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_ADD_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // remove a log window
 extern EVTIMPORT const wxEventType cbEVT_REMOVE_LOG_WINDOW;
-#define EVT_REMOVE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_REMOVE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_REMOVE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_REMOVE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // switch to a log window (make it visible)
 extern EVTIMPORT const wxEventType cbEVT_HIDE_LOG_WINDOW;
-#define EVT_HIIDE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_HIIDE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // switch to a log window (make it visible)
 extern EVTIMPORT const wxEventType cbEVT_SWITCH_TO_LOG_WINDOW;
-#define EVT_SWITCH_TO_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCH_TO_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_SWITCH_TO_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SWITCH_TO_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // gets the active log window
 extern EVTIMPORT const wxEventType cbEVT_GET_ACTIVE_LOG_WINDOW;
-#define EVT_GET_ACTIVE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_GET_ACTIVE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_GET_ACTIVE_LOG_WINDOW(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_GET_ACTIVE_LOG_WINDOW, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // show log manager
 extern EVTIMPORT const wxEventType cbEVT_SHOW_LOG_MANAGER;
-#define EVT_SHOW_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_SHOW_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // hide log manager
 extern EVTIMPORT const wxEventType cbEVT_HIDE_LOG_MANAGER;
-#define EVT_HIDE_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_HIDE_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_HIDE_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // "lock" it (used with auto-hiding functionality)
 extern EVTIMPORT const wxEventType cbEVT_LOCK_LOG_MANAGER;
-#define EVT_LOCK_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_LOCK_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_LOCK_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_LOCK_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 // "unlock" it (used with auto-hiding functionality)
 extern EVTIMPORT const wxEventType cbEVT_UNLOCK_LOG_MANAGER;
-#define EVT_UNLOCK_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_UNLOCK_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_UNLOCK_LOG_MANAGER(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_UNLOCK_LOG_MANAGER, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksLogEventFunction)&fn, (wxObject *) nullptr ),
 
 //cbAUiNotebook related events
 // left doubleclick on a tab
 extern EVTIMPORT const wxEventType cbEVT_CBAUIBOOK_LEFT_DCLICK;
-#define EVT_CBAUIBOOK_LEFT_DCLICK(winid, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CBAUIBOOK_LEFT_DCLICK, winid, -1, (wxObjectEventFunction)(wxEventFunction)(wxMouseEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_CBAUIBOOK_LEFT_DCLICK(winid, fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_CBAUIBOOK_LEFT_DCLICK, winid, -1, (wxObjectEventFunction)(wxEventFunction)(wxMouseEventFunction)&fn, (wxObject *) nullptr ),
 
 // code-completion related events (CodeCompletion plugin usually fires them)
 extern EVTIMPORT const wxEventType cbEVT_COMPLETE_CODE;
-#define EVT_COMPLETE_CODE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPLETE_CODE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_COMPLETE_CODE(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_COMPLETE_CODE, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 extern EVTIMPORT const wxEventType cbEVT_SHOW_CALL_TIP;
-#define EVT_SHOW_CALL_TIP(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_CALL_TIP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_SHOW_CALL_TIP(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SHOW_CALL_TIP, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 // settings events
 
@@ -526,6 +526,6 @@ enum class cbSettingsType : int
     Last // use only to convert from ints
 };
 extern EVTIMPORT const wxEventType cbEVT_SETTINGS_CHANGED;
-#define EVT_SETTINGS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SETTINGS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) NULL ),
+#define EVT_SETTINGS_CHANGED(fn) DECLARE_EVENT_TABLE_ENTRY( cbEVT_SETTINGS_CHANGED, -1, -1, (wxObjectEventFunction)(wxEventFunction)(CodeBlocksEventFunction)&fn, (wxObject *) nullptr ),
 
 #endif // SDK_EVENTS_H

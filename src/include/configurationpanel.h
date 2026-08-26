@@ -61,7 +61,7 @@ class DLLIMPORT cbConfigurationPanel : public wxPanel
         }
         /** Call global cbMessageBox with m_parentDialog as parent window when
             no parent window specified */
-        int cbMessageBox(const wxString& message, const wxString& caption = wxEmptyString, int style = wxOK, wxWindow *parent = NULL, int x = -1, int y = -1)
+        int cbMessageBox(const wxString& message, const wxString& caption = wxEmptyString, int style = wxOK, wxWindow *parent = nullptr, int x = -1, int y = -1)
         {
             if (parent)
                 return ::cbMessageBox(message, caption, style, parent, x, y);

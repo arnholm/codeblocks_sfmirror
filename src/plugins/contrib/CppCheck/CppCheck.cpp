@@ -153,7 +153,7 @@ cbConfigurationPanel* CppCheck::GetConfigurationPanel(wxWindow* parent)
 {
     // Called by plugin manager to show config panel in global Setting Dialog
     if ( !IsAttached() )
-        return NULL;
+        return nullptr;
 
     return new ConfigPanel(parent);
 }

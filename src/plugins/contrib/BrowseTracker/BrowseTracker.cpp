@@ -566,7 +566,7 @@ cbConfigurationPanel* BrowseTracker::GetConfigurationPanel(wxWindow* parent)
 {
     // Called by plugin manager to show config panel in global Setting Dialog
 	if ( !IsAttached() )
-		return NULL;
+		return nullptr;
 
 	return new BrowseTrackerConfPanel(*this, parent);
 }
@@ -875,8 +875,8 @@ void BrowseTracker::OnMenuTrackerSelect(wxCommandEvent& WXUNUSED(event))
     {   // Switch tabs editor with last used order
         int index = 0;
         cbNotebookStack* body;
-        //-for (body = Manager::Get()->GetEditorManager()->GetNotebookStack(); body != NULL; body = body->next)
-        for (body = GetNotebookStack(); body != NULL; body = body->next)
+        //-for (body = Manager::Get()->GetEditorManager()->GetNotebookStack(); body != nullptr; body = body->next)
+        for (body = GetNotebookStack(); body != nullptr; body = body->next)
         {
             index = nb->GetPageIndex(body->window);
             if (index == wxNOT_FOUND)
@@ -1703,23 +1703,23 @@ void BrowseTracker::OnEditorActivated(CodeBlocksEvent& event)
                 control->GetEventHandler()->Connect(wxEVT_LEFT_UP,
                                 (wxObjectEventFunction)(wxEventFunction)
                                 (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                 NULL, this);
+                                 nullptr, this);
                 control->GetEventHandler()->Connect(wxEVT_LEFT_DOWN,
                                 (wxObjectEventFunction)(wxEventFunction)
                                 (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                 NULL, this);
+                                 nullptr, this);
                 control->GetEventHandler()->Connect(wxEVT_LEFT_DCLICK,
                                 (wxObjectEventFunction)(wxEventFunction)
                                 (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                 NULL, this);
+                                 nullptr, this);
                 control->GetEventHandler()->Connect(wxEVT_MOTION,
                                 (wxObjectEventFunction)(wxEventFunction)
                                 (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                 NULL, this);
+                                 nullptr, this);
                 control->GetEventHandler()->Connect(wxEVT_CONTEXT_MENU,
                                 (wxObjectEventFunction)(wxEventFunction)
                                 (wxContextMenuEventFunction)&BrowseTracker::OnMarginContextMenu,
-                                 NULL, this);
+                                 nullptr, this);
                 #if defined(LOGGING)
                     LOGIT( _T("BT Added hash entry for [%p][%s]"), eb, eb->GetShortName().c_str() );
                 #endif
@@ -2291,23 +2291,23 @@ void BrowseTracker::RemoveEditor(EditorBase* eb)
                     win->GetEventHandler()->Disconnect(wxEVT_LEFT_UP,
                                     (wxObjectEventFunction)(wxEventFunction)
                                     (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                     NULL, this);
+                                     nullptr, this);
                     win->GetEventHandler()->Disconnect(wxEVT_LEFT_DOWN,
                                     (wxObjectEventFunction)(wxEventFunction)
                                     (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                     NULL, this);
+                                     nullptr, this);
                     win->GetEventHandler()->Disconnect(wxEVT_LEFT_DCLICK,
                                     (wxObjectEventFunction)(wxEventFunction)
                                     (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                     NULL, this);
+                                     nullptr, this);
                     win->GetEventHandler()->Disconnect(wxEVT_MOTION,
                                     (wxObjectEventFunction)(wxEventFunction)
                                     (wxMouseEventFunction)&BrowseTracker::OnMouseKeyEvent,
-                                     NULL, this);
+                                     nullptr, this);
                     win->GetEventHandler()->Disconnect(wxEVT_CONTEXT_MENU,
                                     (wxObjectEventFunction)(wxEventFunction)
                                     (wxCommandEventFunction)&BrowseTracker::OnMarginContextMenu,
-                                     NULL, this);
+                                     nullptr, this);
                 }//if win
             }//if find page from editor
             #if defined(LOGGING)
@@ -3178,7 +3178,7 @@ cbNotebookStack* BrowseTracker::GetNotebookStack()
             {
                 wnd = m_pNotebook->GetPage(i);
                 found = false;
-                for (body = m_pNotebookStackHead->next; body != NULL; body = body->next)
+                for (body = m_pNotebookStackHead->next; body != nullptr; body = body->next)
                 {
                     if (wnd == body->window)
                     {
@@ -3196,7 +3196,7 @@ cbNotebookStack* BrowseTracker::GetNotebookStack()
         }
         if (m_nNotebookStackSize > m_pNotebook->GetPageCount())
         {
-            for (prev_body = m_pNotebookStackHead, body = prev_body->next; body != NULL; prev_body = body, body = body->next)
+            for (prev_body = m_pNotebookStackHead, body = prev_body->next; body != nullptr; prev_body = body, body = body->next)
             {
                 if (m_pNotebook->GetPageIndex(body->window) == wxNOT_FOUND)
                 {

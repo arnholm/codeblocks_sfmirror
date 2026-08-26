@@ -39,7 +39,7 @@ FileContentBase* FileContentBase::BuildInstance( const wxString& fileName )
     wxFile fl( fileName );
     if ( !fl.IsOpened() )
     {
-        return NULL;
+        return nullptr;
     }
 
     if ( (OffsetT)fl.Length() <= maxBufferedSize )
@@ -52,8 +52,7 @@ FileContentBase* FileContentBase::BuildInstance( const wxString& fileName )
         return new FileContentDisk();
     }
 
-
-    return NULL;
+    return nullptr;
 }
 
 

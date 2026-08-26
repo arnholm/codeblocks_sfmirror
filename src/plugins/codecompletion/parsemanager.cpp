@@ -268,7 +268,7 @@ cbProject* ParseManager::GetProjectByParser(ParserBase* parser)
     }
 
     TRACE(_T("ParseManager::GetProjectByParser: Returning NULL."));
-    return NULL;
+    return nullptr;
 }
 
 cbProject* ParseManager::GetProjectByFilename(const wxString& filename)
@@ -1074,7 +1074,7 @@ void ParseManager::RemoveClassBrowser(cb_unused bool appShutDown)
             Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->RemovePage(idx);
     }
     m_ClassBrowser->Destroy();
-    m_ClassBrowser = NULL;
+    m_ClassBrowser = nullptr;
 }
 
 void ParseManager::UpdateClassBrowser()
@@ -2176,7 +2176,7 @@ bool ParseManager::AddProjectDefinedMacros(cbProject* project, ParserBase* parse
     }
 
     ProjectBuildTarget* target = project->GetBuildTarget(project->GetActiveBuildTarget());
-    if (target != NULL)
+    if (target != nullptr)
     {
         if (   !parser->Options().platformCheck
             || (parser->Options().platformCheck && target->SupportsCurrentPlatform()) )
@@ -2191,7 +2191,7 @@ bool ParseManager::AddProjectDefinedMacros(cbProject* project, ParserBase* parse
     for (size_t i = 0; i < targets.GetCount(); ++i)
     {
         target = project->GetBuildTarget(targets[i]);
-        if (target != NULL)
+        if (target != nullptr)
         {
             if (   !parser->Options().platformCheck
                 || (parser->Options().platformCheck && target->SupportsCurrentPlatform()) )
@@ -2598,9 +2598,9 @@ void ParseManager::OnEditorActivated(EditorBase* editor)
     {
         m_StandaloneFiles.RemoveAt(pos);
         if (m_StandaloneFiles.IsEmpty())
-            DeleteParser(NULL);
+            DeleteParser(nullptr);
         else
-            RemoveFileFromParser(NULL, activatedFile);
+            RemoveFileFromParser(nullptr, activatedFile);
     }
 
     ParserBase* parser = GetParserByProject(project);
@@ -2656,9 +2656,9 @@ void ParseManager::OnEditorClosed(EditorBase* editor)
     {
         m_StandaloneFiles.RemoveAt(pos);
         if (m_StandaloneFiles.IsEmpty())
-            DeleteParser(NULL);
+            DeleteParser(nullptr);
         else
-            RemoveFileFromParser(NULL, filename);
+            RemoveFileFromParser(nullptr, filename);
     }
 }
 

@@ -442,10 +442,10 @@ extern DLLIMPORT wxRect cbGetMonitorRectForWindow(wxWindow *window);
   * @note The return value for wxOK would be wxID_OK and so on for other buttons.
   * So, read wxMessageDialog 's documentation, *not* wxMessageBox 's...
   */
-extern DLLIMPORT int cbMessageBox(const wxString& message, const wxString& caption = wxEmptyString, int style = wxOK, wxWindow *parent = NULL, int x = -1, int y = -1);
+extern DLLIMPORT int cbMessageBox(const wxString& message, const wxString& caption = wxEmptyString, int style = wxOK, wxWindow *parent = nullptr, int x = -1, int y = -1);
 
 extern DLLIMPORT int cbGetSingleChoiceIndex(const wxString& message, const wxString& caption,
-                                            const wxArrayString& choices, wxWindow *parent = NULL,
+                                            const wxArrayString& choices, wxWindow *parent = nullptr,
                                             const wxSize &size = wxSize(300, 300),
                                             int initialSelection = 0);
 
@@ -462,7 +462,7 @@ extern DLLIMPORT const char *cbGetTextFromUserPromptStr;
 
 extern DLLIMPORT wxString cbGetTextFromUser(const wxString &message,
                                             const wxString &caption = cbGetTextFromUserPromptStr,
-                                            const wxString &default_value = wxEmptyString, wxWindow *parent = NULL,
+                                            const wxString &default_value = wxEmptyString, wxWindow *parent = nullptr,
                                             int x = wxDefaultCoord, int y = wxDefaultCoord, bool centre = true);
 
 inline void NotifyMissingFile(const wxString &name)

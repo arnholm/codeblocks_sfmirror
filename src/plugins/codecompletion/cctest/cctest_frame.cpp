@@ -75,11 +75,11 @@ BEGIN_EVENT_TABLE(CCTestFrame, wxFrame)
 END_EVENT_TABLE()
 
 CCTestFrame::CCTestFrame(const wxString& main_file) :
-    m_ProgDlg(NULL),
+    m_ProgDlg(nullptr),
     m_MainFile(main_file),
     m_CurrentFile(),
     m_LogCount(0),
-    m_FRDlg(NULL)
+    m_FRDlg(nullptr)
 {
     //(*Initialize(CCTestFrame)
     wxBoxSizer* bszCompletionTest;
@@ -500,10 +500,10 @@ void CCTestFrame::OnMenuOpenSelected(wxCommandEvent& /*event*/)
 
 void CCTestFrame::OnMenuFindSelected(wxCommandEvent& /*event*/)
 {
-    if (m_FRDlg != NULL)
+    if (m_FRDlg != nullptr)
     {
         delete m_FRDlg;
-        m_FRDlg = NULL;
+        m_FRDlg = nullptr;
     }
     else
     {
@@ -650,7 +650,7 @@ void CCTestFrame::OnFindDialog(wxFindDialogEvent& event)
     else if (type == wxEVT_COMMAND_FIND_CLOSE)
     {
         delete m_FRDlg;
-        m_FRDlg = NULL;
+        m_FRDlg = nullptr;
     }
 }
 
