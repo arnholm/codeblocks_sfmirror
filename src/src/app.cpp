@@ -304,7 +304,7 @@ class Splash
                 wxBitmap bmp = cbLoadBitmap(ConfigManager::ReadDataPath() + (isDark ? "/images/splash_2503_dark.png" : "/images/splash_2503.png"));
                 wxMemoryDC dc;
                 dc.SelectObject(bmp);
-                cbSplashScreen::DrawReleaseInfo(dc);
+                cbSplashScreen::DrawReleaseInfo(dc, isDark);
                 dc.SelectObject(wxNullBitmap);
                 m_pSplash = new cbSplashScreen(bmp);
                 Manager::Yield();

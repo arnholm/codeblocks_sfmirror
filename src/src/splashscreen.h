@@ -11,7 +11,7 @@ class cbSplashScreen : public wxSplashScreen
 {
 public:
     cbSplashScreen(const wxBitmap& bitmap);
-    static void DrawReleaseInfo(class wxDC &dc);
+    static void DrawReleaseInfo(class wxDC &dc, bool isDark);
 private:
 
     void OnCloseWindow(wxCloseEvent &event);

@@ -10,7 +10,6 @@
 #include "splashscreen.h"
 
 #include <wx/dc.h>
-#include <wx/settings.h>
 
 #include "appglobals.h"
 #include "configmanager.h"
@@ -27,7 +26,7 @@ cbSplashScreen::cbSplashScreen(const wxBitmap& bitmap)
 {
 }
 
-void cbSplashScreen::DrawReleaseInfo(wxDC& dc)
+void cbSplashScreen::DrawReleaseInfo(wxDC& dc, bool isDark)
 {
     wxCoord w, h;
     const int text_center = 450;
@@ -37,12 +36,6 @@ void cbSplashScreen::DrawReleaseInfo(wxDC& dc)
     const wxString safeMode = _("SAFE MODE");
     const wxString release(RELEASE);
     const wxString revision = " "+ConfigManager::GetRevisionString();
-
-#if wxCHECK_VERSION(3, 3, 0)
-    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-    const bool isDark = false;
-#endif
 
     dc.SetTextForeground(isDark ? *wxWHITE : *wxBLACK);
 

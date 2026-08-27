@@ -30,6 +30,7 @@
 #include <wx/bitmap.h>
 #include <wx/dcmemory.h>    // wxMemoryDC
 #include <wx/display.h>
+#include <wx/settings.h>
 #include <wx/statbmp.h>
 
 #include <algorithm>        // for std::sort only
@@ -92,7 +93,12 @@ dlgAbout::dlgAbout(wxWindow* parent)
                                    "any kind of functionality to the core program, through the use of "
                                    "plugins...\n");
 
-    wxString file = ConfigManager::ReadDataPath() + "/images/splash_1312.png";
+#if wxCHECK_VERSION(3, 3, 0)
+    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+#else
+    const bool isDark = false;
+#endif
+    const wxString file = ConfigManager::ReadDataPath() + (isDark ? "/images/splash_2503_dark.png" : "/images/splash_2503.png");
 
     wxImage im;
     im.LoadFile(file, wxBITMAP_TYPE_PNG);
@@ -101,7 +107,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
     wxBitmap bmp(im);
     wxMemoryDC dc;
     dc.SelectObject(bmp);
-    cbSplashScreen::DrawReleaseInfo(dc);
+    cbSplashScreen::DrawReleaseInfo(dc, isDark);
 
     wxStaticBitmap *bmpControl = XRCCTRL(*this, "lblTitle", wxStaticBitmap);
     bmpControl->SetSize(im.GetWidth(),im.GetHeight());
