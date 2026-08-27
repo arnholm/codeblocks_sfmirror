@@ -84,7 +84,7 @@ wxObject* wxsCommandLinkButton::OnBuildPreview(wxWindow* Parent, long _Flags)
 
 void wxsCommandLinkButton::OnEnumWidgetProperties(cb_unused long _Flags)
 {
-    WXS_STRING(wxsCommandLinkButton, Label, _("Label"), _T("label"), _T(""), false)
-    WXS_STRING(wxsCommandLinkButton, Note,  _("Note"),  _T("label"), _T(""), false)
-    WXS_BOOL(wxsCommandLinkButton, IsDefault, _("Is default"), _T("default"), false)
+    WXS_STRING(wxsCommandLinkButton, Label,     _("Label"),      "label",   "", false)
+    WXS_STRING(wxsCommandLinkButton, Note,      _("Note"),       "note",    "", false)
+    WXS_BOOL(wxsCommandLinkButton,   IsDefault, _("Is default"), "default", false)
 }
