@@ -4,10 +4,10 @@
    height="190"
    version="1.1"
    id="svg93"
-   sodipodi:docname="title_1312.svg"
-   inkscape:export-filename="title_1312.png"
-   inkscape:export-xdpi="144"
-   inkscape:export-ydpi="144"
+   sodipodi:docname="title_1312_dark.svg"
+   inkscape:export-filename="..\..\..\..\..\Users\Miguel\Desktop\title_2503_dark.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="1.3954545"
-     inkscape:cx="165.17915"
-     inkscape:cy="95.667752"
+     inkscape:zoom="3.1545455"
+     inkscape:cx="220"
+     inkscape:cy="94.942363"
      inkscape:window-width="1920"
      inkscape:window-height="1018"
      inkscape:window-x="-8"
@@ -323,4 +323,19 @@
          id="path87" />
     </g>
   </g>
+  <text
+     x="204.69183"
+     y="95.825325"
+     fill="#000000"
+     font-family="FreeSans"
+     letter-spacing="0px"
+     word-spacing="0px"
+     style="line-height:0%;fill:#ffffff;fill-opacity:1"
+     xml:space="preserve"
+     id="text27"><tspan
+       x="204.69183"
+       y="95.825325"
+       font-size="12px"
+       style="line-height:1.25;fill:#ffffff;fill-opacity:1"
+       id="tspan25">The open source, cross-platform IDE</tspan></text>
 </svg>
