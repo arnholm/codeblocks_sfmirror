@@ -24,6 +24,7 @@
 #include <wx/msgout.h>
 #include <wx/notebook.h>
 #include <wx/regex.h>
+#include <wx/settings.h>
 #include <wx/stdpaths.h>
 #include <wx/xrc/xmlres.h>
 
@@ -295,7 +296,12 @@ class Splash
         {
             if (show)
             {
-                wxBitmap bmp = cbLoadBitmap(ConfigManager::ReadDataPath() + _T("/images/splash_1312.png"));
+#if wxCHECK_VERSION(3, 3, 0)
+                const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+#else
+                const bool isDark = false;
+#endif
+                wxBitmap bmp = cbLoadBitmap(ConfigManager::ReadDataPath() + (isDark ? "/images/splash_2503_dark.png" : "/images/splash_2503.png"));
                 wxMemoryDC dc;
                 dc.SelectObject(bmp);
                 cbSplashScreen::DrawReleaseInfo(dc);

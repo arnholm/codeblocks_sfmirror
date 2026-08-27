@@ -10,6 +10,7 @@
 #include "splashscreen.h"
 
 #include <wx/dc.h>
+#include <wx/settings.h>
 
 #include "appglobals.h"
 #include "configmanager.h"
@@ -37,7 +38,13 @@ void cbSplashScreen::DrawReleaseInfo(wxDC& dc)
     const wxString release(RELEASE);
     const wxString revision = " "+ConfigManager::GetRevisionString();
 
-    dc.SetTextForeground(*wxBLACK);
+#if wxCHECK_VERSION(3, 3, 0)
+    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+#else
+    const bool isDark = false;
+#endif
+
+    dc.SetTextForeground(isDark ? *wxWHITE : *wxBLACK);
 
     dc.SetFont(wxFont(14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.GetMultiLineTextExtent(title, &w, &h);
@@ -77,7 +84,7 @@ void cbSplashScreen::DrawReleaseInfo(wxDC& dc)
         dc.SetFont(smallFont);
         dc.SetTextForeground(*wxRED);
         dc.DrawText(safeMode, text_center - (sm_width)/2, y - sm_height + sm_descend + lf_height+10);
-        dc.SetTextForeground(*wxBLACK);
+        dc.SetTextForeground(isDark ? *wxWHITE : *wxBLACK);
     }
 }
 
