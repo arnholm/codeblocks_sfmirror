@@ -38,6 +38,9 @@
 #include <scriptingmanager.h>
 #include <scripting/bindings/sc_utils.h>
 #include <scripting/bindings/sc_typeinfo_all.h>
+#if wxCHECK_VERSION(3, 3, 0)
+#include <wx/settings.h>
+#endif
 
 namespace
 {
