@@ -36,7 +36,7 @@ namespace BlkAllc
         "Number of stale objects: %d %s"),
         cn2.c_str(),
         blockSize, poolSize, blockSize * poolSize,
-        max_refs, total_refs, ref_count, (ref_count == 0 ? _T("") : _T("(memory leak)")));
+        max_refs, total_refs, ref_count, (ref_count == 0 ? "" : "(memory leak)"));
 
         wxSafeShowMessage(_T("Block Allocator"), s);
     } // end of DebugLog

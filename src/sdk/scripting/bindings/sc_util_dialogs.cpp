@@ -76,7 +76,7 @@ namespace ScriptBindings
 
     SQInteger EditArrayFileDlg_Ctor(HSQUIRRELVM v)
     {
-        // env table, array, useRelativePaths = false, basePath = _T("")
+        // env table, array, useRelativePaths = false, basePath = wxEmptyString
         ExtractParamsBase extractor(v);
         if (!extractor.CheckNumArguments(2, 4, "EditArrayFileDlg::contructor"))
             return extractor.ErrorMessage();
