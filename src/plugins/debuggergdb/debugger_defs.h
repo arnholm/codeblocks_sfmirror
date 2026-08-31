@@ -51,7 +51,7 @@ struct Cursor
 class DebuggerCmd
 {
     public:
-        DebuggerCmd(DebuggerDriver* driver, const wxString& cmd = _T(""), bool logToNormalLog = false);
+        DebuggerCmd(DebuggerDriver* driver, const wxString& cmd = wxEmptyString, bool logToNormalLog = false);
         virtual ~DebuggerCmd(){}
 
         /** Executes an action.
@@ -105,7 +105,7 @@ class DebuggerInfoCmd : public DebuggerCmd
 class DebuggerContinueBaseCmd : public DebuggerCmd
 {
     public:
-        DebuggerContinueBaseCmd(DebuggerDriver* driver, const wxString& cmd = _T(""), bool logToNormalLog = false) :
+        DebuggerContinueBaseCmd(DebuggerDriver* driver, const wxString& cmd = wxEmptyString, bool logToNormalLog = false) :
             DebuggerCmd(driver, cmd, logToNormalLog)
         {
         }

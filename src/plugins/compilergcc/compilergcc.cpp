@@ -572,7 +572,7 @@ void CompilerGCC::BuildMenu(wxMenuBar* menuBar)
 
     // target selection menu
     wxMenuItem* tmpitem=m_Menu->FindItem(idMenuSelectTarget, nullptr);
-    m_TargetMenu = tmpitem ? tmpitem->GetSubMenu() : new wxMenu(_T(""));
+    m_TargetMenu = tmpitem ? tmpitem->GetSubMenu() : new wxMenu(wxEmptyString);
     DoRecreateTargetMenu();
     //m_Menu->Append(idMenuSelectTarget, _("Select target..."), m_TargetMenu);
 
@@ -2208,7 +2208,7 @@ wxString CompilerGCC::GetMakeCommandFor(MakeCommand cmd, cbProject* project, Pro
     Compiler* compiler = CompilerFactory::GetCompiler(compilerId);
     command.Replace(_T("$makefile"), project->GetMakefile());
     command.Replace(_T("$make"), compiler ? compiler->GetPrograms().MAKE : _T("make"));
-    command.Replace(_T("$target"), target ? target->GetTitle() : _T(""));
+    command.Replace(_T("$target"), target ? target->GetTitle() : wxString());
     Manager::Get()->GetMacrosManager()->ReplaceMacros(command);
 
 //    Manager::Get()->GetMessageManager()->Log(m_PageIndex, _T("Make: %s"), command.c_str()));
@@ -2224,7 +2224,7 @@ void CompilerGCC::DoClean(const wxArrayString& commands)
 
 int CompilerGCC::Clean(ProjectBuildTarget* target)
 {
-    return Clean(target ? target->GetTitle() : _T(""));
+    return Clean(target ? target->GetTitle() : wxString());
 }
 
 int CompilerGCC::Clean(const wxString& target)
@@ -2956,12 +2956,12 @@ int CompilerGCC::Build(const wxString& target)
 
 int CompilerGCC::Build(ProjectBuildTarget* target)
 {
-    return Build(target ? target->GetTitle() : _T(""));
+    return Build(target ? target->GetTitle() : wxString());
 }
 
 int CompilerGCC::Rebuild(ProjectBuildTarget* target)
 {
-    return Rebuild(target ? target->GetTitle() : _T(""));
+    return Rebuild(target ? target->GetTitle() : wxString());
 }
 
 int CompilerGCC::Rebuild(const wxString& target)

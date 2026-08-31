@@ -64,7 +64,7 @@ wxString MSVC7Loader::ReplaceMSVCMacros(const wxString& str)
     ret.Replace(_T("$(ProjectDir)"), m_pProject->GetBasePath());
     ret.Replace(_T("$(TargetPath)"), m_TargetPath);
     ret.Replace(_T("$(TargetFileName)"), m_TargetFilename);
-    ret.Replace(_T("\""), _T(""));
+    ret.Replace(_T("\""), wxEmptyString);
     //ret.Replace(_T("&quot;"), _T("\""));
 
     // env. vars substitution removed because C::B recognizes them
@@ -429,7 +429,7 @@ bool MSVC7Loader::DoImport(TiXmlElement* conf)
    http://msdn2.microsoft.com/en-us/library/microsoft.visualstudio.vcprojectengine.debugoption(VS.80).aspx */
             tmp = cbC2U(tool->Attribute("DebugInformationFormat"));
             if (tmp.IsSameAs(_T("3")))
-                bt->AddCompilerOption(m_ConvertSwitches ? _T("") : _T("/Zi"));
+                bt->AddCompilerOption(m_ConvertSwitches ? wxEmptyString : _T("/Zi"));
             else if (tmp.IsSameAs(_T("4")))
                 bt->AddCompilerOption(m_ConvertSwitches ? _T("-g") : _T("/ZI"));
 

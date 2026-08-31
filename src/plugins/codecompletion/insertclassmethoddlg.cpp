@@ -171,7 +171,7 @@ void InsertClassMethodDlg::FillMethods()
     InsertClassMethodDlgHelper::DoFillMethodsFor(
         clb,
         parentToken,
-        parentToken ? parentToken->m_Name + _T("::") : _T(""),
+        parentToken ? parentToken->m_Name + _T("::") : wxString(),
         includePrivate,
         includeProtected,
         includePublic);

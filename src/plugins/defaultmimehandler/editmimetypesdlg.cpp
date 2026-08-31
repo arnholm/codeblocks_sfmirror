@@ -135,10 +135,9 @@ void EditMimeTypesDlg::OnNew(cb_unused wxCommandEvent& event)
     mt->wildcard = wild;
     mt->useEditor = true;
     mt->useAssoc = false;
-    mt->program = _T("");
+    mt->program = wxEmptyString;
     mt->programIsModal = false;
     m_Array.Add(mt);
-
     FillList();
     m_Selection = m_Array.GetCount() - 1;
     m_LastSelection = m_Selection;

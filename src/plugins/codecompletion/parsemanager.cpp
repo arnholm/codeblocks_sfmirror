@@ -2354,7 +2354,7 @@ void ParseManager::AddIncludeDirsToParser(const wxArrayString& dirs, const wxStr
 bool ParseManager::SafeExecute(const wxString& app_path, const wxArrayString& extra_path, const wxString& app, const wxString& args, wxArrayString& output, wxArrayString& error)
 {
     wxString sep = (platform::windows ? _T("\\") : _T("/"));
-    wxString pth = (app_path.IsEmpty() ? _T("") : (app_path + sep + _T("bin") + sep));
+    wxString pth = (app_path.empty() ? wxString() : (app_path + sep + _T("bin") + sep));
     Manager::Get()->GetMacrosManager()->ReplaceMacros(pth);
     wxString cmd = pth + app;
     Manager::Get()->GetMacrosManager()->ReplaceMacros(cmd);

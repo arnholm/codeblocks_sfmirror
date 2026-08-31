@@ -27,7 +27,7 @@ class FilePathPanel: public wxPanel
 		virtual ~FilePathPanel();
 
         wxString GetFilename() const { return txtFilename->GetValue(); }
-        wxString GetHeaderGuard() const { return txtGuard->IsShown() ? txtGuard->GetValue() : _T(""); }
+        wxString GetHeaderGuard() const { return txtGuard->IsShown() ? txtGuard->GetValue() : wxString(); }
         bool GetAddToProject() const { return chkAddToProject->GetValue(); }
         void SetAddToProject(bool add);
         int GetTargetIndex();

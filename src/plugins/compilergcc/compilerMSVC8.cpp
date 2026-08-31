@@ -55,14 +55,14 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
         name.AppendDir(_T("IDE"));
         idepath = name.GetPath();
         if ( !wxDirExists(idepath) )
-            idepath = _T("");
+            idepath = wxEmptyString;
 
         name.RemoveLastDir();
         name.RemoveLastDir();
         name.AppendDir(_T("VC"));
         m_MasterPath = name.GetPath();
         if ( !wxDirExists(m_MasterPath) )
-            m_MasterPath = _T("");
+            m_MasterPath = wxEmptyString;
     }
 
     if (m_MasterPath.IsEmpty())

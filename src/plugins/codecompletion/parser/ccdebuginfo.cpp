@@ -70,8 +70,8 @@ namespace CCDebugInfoHelper
         wxString fname;
         wxFileDialog dlg (Manager::Get()->GetAppWindow(),
                         fileDesc,
-                        _T(""),
-                        _T(""),
+                        wxEmptyString,
+                        wxEmptyString,
                         _T("Text files (*.txt)|*.txt|Any file (*)|*"),
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         PlaceWindow(&dlg);

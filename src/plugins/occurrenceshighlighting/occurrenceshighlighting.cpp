@@ -319,7 +319,7 @@ void OccurrencesHighlighting::OnPanelPopupMenu(wxContextMenuEvent& WXUNUSED(even
     if (m_pPanel->GetListCtrl()->GetSelectedItemCount() > 0)
     {
         wxMenu *menu = new wxMenu;
-        menu->Append(idContextRemove, _T("Remove"), _T(""));
+        menu->Append(idContextRemove, _T("Remove"), wxEmptyString);
 
         m_pPanel->GetListCtrl()->PopupMenu(menu);
     }

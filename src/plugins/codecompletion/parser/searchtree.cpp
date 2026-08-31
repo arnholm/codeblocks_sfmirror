@@ -291,7 +291,7 @@ inline SearchTreeNode* SearchTreeNode::GetChild(BasicSearchTree* tree,wxChar ch)
 wxString SearchTreeNode::GetLabel(const BasicSearchTree* tree) const
 {
     if (!m_Depth || m_Label >= tree->m_Labels.size())
-        return wxString(_T(""));
+        return wxEmptyString;
     return tree->m_Labels[m_Label].substr(m_LabelStart,m_LabelLen);
 }
 
@@ -417,7 +417,7 @@ wxString SearchTreeNode::U2S(unsigned int u)
 {
     if (!u)
         return _T("0");
-    wxString result(_T("")),revresult(_T(""));
+    wxString result, revresult;
     int i = 0;
     while (u>0)
     {
@@ -435,7 +435,7 @@ wxString SearchTreeNode::U2S(unsigned int u)
 
 wxString SearchTreeNode::I2S(int i)
 {
-    wxString result(_T(""));
+    wxString result;
     if (i<0)
         result << _T('-');
     result << U2S(abs(i));
@@ -495,7 +495,7 @@ wxString SearchTreeNode::Serialize(BasicSearchTree* tree,nSearchTreeNode node_id
 
 void SearchTreeNode::Dump(BasicSearchTree* tree, nSearchTreeNode node_id, const wxString& prefix, wxString& result)
 {
-    wxString suffix(_T(""));
+    wxString suffix;
     suffix << _T("- \"") << SerializeString(GetLabel(tree)) << _T("\" (") << U2S(node_id) << _T(")");
     if (prefix.length() && prefix[prefix.length()-1]=='|')
         result << prefix.substr(0,prefix.length()-1) << _T('+') << suffix << _T('\n');
@@ -557,7 +557,7 @@ void BasicSearchTree::clear()
 const wxString BasicSearchTree::GetString(size_t n) const
 {
     if (n >= m_Points.size())
-        return _T("");
+        return wxEmptyString;
     return GetString(m_Points[n],0);
 }
 
@@ -901,7 +901,7 @@ bool SearchTreeNode::UnSerializeString(const wxString& s,wxString& result)
     result.Clear();
     size_t i;
     int mode = 0;
-    wxString entity(_T(""));
+    wxString entity;
     unsigned int u;
     for (i = 0;mode >=0 && i<s.length();i++)
     {
@@ -1009,7 +1009,7 @@ bool SearchTreeNode::S2I(const wxString& s,int& i)
 
 wxString SearchTreeNode::SerializeString(const wxString& s)
 {
-    wxString result(_T(""));
+    wxString result;
     size_t i;
     wxChar ch;
     for (i=0;i<s.length();i++)
@@ -1039,7 +1039,7 @@ wxString SearchTreeNode::SerializeString(const wxString& s)
 
 wxString BasicSearchTree::SerializeLabel(nSearchTreeLabel labelno)
 {
-    wxString result(_T(""));
+    wxString result;
     wxString label = m_Labels[labelno];
     result = SearchTreeNode::SerializeString(label);
     return result;
@@ -1059,7 +1059,7 @@ wxString BasicSearchTree::SerializeLabels()
 
 wxString BasicSearchTree::dump()
 {
-    wxString result(_T(""));
-    m_Nodes[0]->Dump(this, 0, _T(""), result);
+    wxString result;
+    m_Nodes[0]->Dump(this, 0, wxEmptyString, result);
     return result;
 }

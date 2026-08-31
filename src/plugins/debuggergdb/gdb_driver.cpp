@@ -959,7 +959,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             {
                 m_Cursor.file = re->GetMatch(lines[i], 3);
                 m_Cursor.function = re->GetMatch(lines[i], 2);
-                // wxString lineStr = _T("");
+                // wxString lineStr;
                 m_Cursor.address = re->GetMatch(lines[i], 1);
                 m_Cursor.line = -1;
                 m_Cursor.changed = true;
@@ -979,7 +979,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             }
             else if (reBreak3.Matches(lines[i]) )
             {
-                m_Cursor.file=_T("");
+                m_Cursor.file=wxEmptyString;
                 m_Cursor.function= reBreak3.GetMatch(lines[i], 2);
                 m_Cursor.address = reBreak3.GetMatch(lines[i], 1);
                 m_Cursor.line = -1;

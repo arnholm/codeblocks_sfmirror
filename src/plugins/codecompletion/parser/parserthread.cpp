@@ -86,7 +86,7 @@ const wxString g_UnnamedSymbol = _T("__Unnamed");
 namespace ParserConsts
 {
     // length: 0
-    const wxString empty           (_T(""));
+    const wxString empty           (wxEmptyString);
     const wxChar   null            (_T('\0'));
     // length: 1
     const wxChar   eol_chr         (_T('\n'));
@@ -3333,7 +3333,7 @@ bool ParserThread::GetBaseArgs(const wxString& args, wxString& baseArgs)
                 skip = false; // don't skip this (it's part of the stripped arg)
             else
                 skip = true;  // safely skip this as it is the args name
-            word = _T(""); // reset
+            word = wxEmptyString; // reset
             sym  = false;
             break;
         case ParserConsts::ptr_chr: // handle pointer args
@@ -3346,7 +3346,7 @@ bool ParserThread::GetBaseArgs(const wxString& args, wxString& baseArgs)
             }
             // ...and fall through:
         case ParserConsts::ref_chr: // handle references
-            word = _T(""); // reset
+            word = wxEmptyString; // reset
             skip = true;
             sym  = true;
 
@@ -3475,12 +3475,12 @@ bool ParserThread::GetBaseArgs(const wxString& args, wxString& baseArgs)
                 {
                     ++ptr; // next char
                 }
-                word = _T(""); // reset
+                word = wxEmptyString; // reset
                 sym  = false;  // no symbol is added
                 skip = false;  // don't skip the next token
                 break;
             }
-            word = _T(""); // reset
+            word = wxEmptyString; // reset
             sym  = true;
             skip = false;
             break;

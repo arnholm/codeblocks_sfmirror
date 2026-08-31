@@ -185,14 +185,14 @@ bool Token::IsValidAncestor(const wxString& ancestor)
 wxString Token::GetFilename() const
 {
     if (!m_TokenTree)
-        return wxString(_T(""));
+        return wxEmptyString;
     return m_TokenTree->GetFilename(m_FileIdx);
 }
 
 wxString Token::GetImplFilename() const
 {
     if (!m_TokenTree)
-        return wxString(_T(""));
+        return wxEmptyString;
     return m_TokenTree->GetFilename(m_ImplFileIdx);
 }
 

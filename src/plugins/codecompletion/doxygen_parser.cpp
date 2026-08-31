@@ -47,7 +47,7 @@ namespace Doxygen
             are used the argument is optional.
     */
     const wxString DoxygenParser::Keywords[] = {
-        _T(""),                     // no keyword
+        wxEmptyString,              // no keyword
         _T("param"),                // \param [(dir)] <parameter-name> { parameter description }
         _T("return"), _T("result"), // \return { description of the return value }
         _T("brief"), _T("short"),   // \brief { brief description }
@@ -516,7 +516,7 @@ wxString DocumentationHelper::DoxygenToHTML(const wxString& doc)
 
 wxString DocumentationHelper::ConvertTypeToAnchor(wxString fullType)
 {
-    static Token ancestorChecker(_T(""), 0, 0, 0); // Because IsValidAncestor isn't static
+    static Token ancestorChecker(wxEmptyString, 0, 0, 0); // Because IsValidAncestor isn't static
     const wxString& argType = ExtractTypeAndName(fullType);
     if (!ancestorChecker.IsValidAncestor(argType))
         return fullType;

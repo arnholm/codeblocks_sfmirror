@@ -193,7 +193,7 @@ void FilePathPanel::OnbtnBrowseClick(cb_unused wxCommandEvent& event)
     cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
     wxFileDialog dlg(this,
                      _("Select filename"),
-                     prj ? prj->GetBasePath() : _T(""),
+                     prj ? prj->GetBasePath() : wxString(),
                      txtFilename->GetValue(),
                      m_ExtFilter,
                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);

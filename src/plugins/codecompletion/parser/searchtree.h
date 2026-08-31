@@ -402,7 +402,7 @@ public:
     T& operator[](const wxString& s);
 
     /// Serializes the stored items
-    virtual wxString SerializeItem(cb_unused size_t idx) { return wxString(_T("")); }
+    virtual wxString SerializeItem(cb_unused size_t idx) { return wxEmptyString; }
 
     /// Unserializes the items to be stored
     virtual void* UnserializeItem(cb_unused const wxString& s) { return nullptr; }

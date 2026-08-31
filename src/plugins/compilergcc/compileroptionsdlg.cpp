@@ -853,7 +853,7 @@ inline void DoGetCompileOptions(wxArrayString& array, const wxTextCtrl* control)
     if (nl == -1)
     {
         line = tmp;
-        tmp = _T("");
+        tmp = wxEmptyString;
     }
     else
         line = tmp.Left(nl);
@@ -872,7 +872,7 @@ inline void DoGetCompileOptions(wxArrayString& array, const wxTextCtrl* control)
         if (nl == -1)
         {
             line = tmp;
-            tmp = _T("");
+            tmp = wxEmptyString;
         }
         else
             line = tmp.Left(nl);
@@ -1943,8 +1943,8 @@ void CompilerOptionsDlg::OnOptionChanged(wxPropertyGridEvent& event)
 void CompilerOptionsDlg::OnAddDirClick(cb_unused wxCommandEvent& event)
 {
     EditPathDlg dlg(this,
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
             _("Add directory"));
 
     PlaceWindow(&dlg);
@@ -1977,7 +1977,7 @@ void CompilerOptionsDlg::OnEditDirClick(cb_unused wxCommandEvent& event)
 
     EditPathDlg dlg(this,
                     control->GetString(selections[0]),
-                    m_pProject ? m_pProject->GetBasePath() : _T(""),
+                    m_pProject ? m_pProject->GetBasePath() : wxString(),
                     _("Edit directory"));
 
     PlaceWindow(&dlg);
@@ -2374,8 +2374,8 @@ void CompilerOptionsDlg::OnAddLibClick(cb_unused wxCommandEvent& event)
     wxListBox* lstLibs = XRCCTRL(*this, "lstLibs", wxListBox);
 
     EditPathDlg dlg(this,
-            _T(""),
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
+            wxEmptyString,
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
             _("Add library"),
             _("Choose library to link"),
             false,
@@ -2409,7 +2409,7 @@ void CompilerOptionsDlg::OnEditLibClick(cb_unused wxCommandEvent& event)
     {
       EditPathDlg dlg(this,
               lstLibs->GetString(sels[0]),
-              m_pProject ? m_pProject->GetBasePath() : _T(""),
+              m_pProject ? m_pProject->GetBasePath() : wxString(),
               _("Edit library"),
               _("Choose library to link"),
               false,
@@ -2520,7 +2520,7 @@ void CompilerOptionsDlg::OnCopyLibsClick(cb_unused wxCommandEvent& event)
 
 void CompilerOptionsDlg::OnAddExtraPathClick(cb_unused wxCommandEvent& event)
 {
-    EditPathDlg dlg(this, _T(""), _T(""), _("Add directory"));
+    EditPathDlg dlg(this, wxEmptyString, wxEmptyString, _("Add directory"));
 
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)
@@ -2557,7 +2557,7 @@ void CompilerOptionsDlg::OnEditExtraPathClick(cb_unused wxCommandEvent& event)
     if (dir.DirExists())
         initial = dir.GetPath(wxPATH_GET_VOLUME);
 
-    EditPathDlg dlg(this, initial, _T(""), _("Edit directory"));
+    EditPathDlg dlg(this, initial, wxEmptyString, _("Edit directory"));
 
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)

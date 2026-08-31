@@ -130,7 +130,7 @@ class DebuggerGDB : public cbDebuggerPlugin
 
         static void ConvertToGDBFriendly(wxString& str);
         static void ConvertToGDBFile(wxString& str);
-        static void ConvertToGDBDirectory(wxString& str, wxString base = _T(""), bool relative = true);
+        static void ConvertToGDBDirectory(wxString& str, wxString base = wxEmptyString, bool relative = true);
         static void StripQuotes(wxString& str);
 
         void DebuggeeContinued();

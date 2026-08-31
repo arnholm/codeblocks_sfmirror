@@ -43,7 +43,7 @@ AutoDetectResult CompilerGNUARM::AutoDetectInstallationDir()
     {
         // Search for GNUARM installation dir
         wxString windir = wxGetOSDirectory();
-        wxFileConfig ini(_T(""), _T(""), windir + _T("/GnuARM.ini"), _T(""), wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
+        wxFileConfig ini(wxEmptyString, wxEmptyString, windir + _T("/GnuARM.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
         // need it as const , so correct overloaded method will be selected
         wxString Programs = _T("C:\\Program Files");
         // what's the "Program Files" location

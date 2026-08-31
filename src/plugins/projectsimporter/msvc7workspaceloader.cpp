@@ -197,7 +197,7 @@ bool MSVC7WorkspaceLoader::Open(const wxString& filename, wxString& Title)
 
             // read project UUID, i.e. "{35AFBABB-DF05-43DE-91A7-BB828A874015}"
             uuid = comps[2];
-            uuid.Replace(_T("\""), _T("")); // remove quotes
+            uuid.Replace(_T("\""), wxEmptyString); // remove quotes
 
             ++count;
             wxFileName fname(UnixFilename(prjFile));

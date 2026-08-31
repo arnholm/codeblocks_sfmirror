@@ -1396,7 +1396,7 @@ class GdbCmd_InfoRegisters : public DebuggerCmd
             wxArrayString lines = GetArrayFromString(output, _T("\n"));
 
             // check for empty or short string
-            if((output == _T("")) || (lines.GetCount()<2))
+            if (output.empty() || (lines.GetCount()<2))
             {
                 return;
             }

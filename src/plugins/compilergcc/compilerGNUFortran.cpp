@@ -75,7 +75,7 @@ AutoDetectResult CompilerGNUFortran::AutoDetectInstallationDir()
         {
             // no... search for MinGW installation dir
             wxString windir = wxGetOSDirectory();
-            wxFileConfig ini(_T(""), _T(""), windir + _T("/MinGW.ini"), _T(""), wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
+            wxFileConfig ini(wxEmptyString, wxEmptyString, windir + _T("/MinGW.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
             m_MasterPath = ini.Read(_T("/InstallSettings/InstallPath"), _T("C:\\MinGW"));
             if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
             {

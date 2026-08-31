@@ -239,8 +239,8 @@ void DebuggerOptionsProjectDlg::OnAdd(wxCommandEvent& WXUNUSED(event))
     wxListBox* control = XRCCTRL(*this, "lstSearchDirs", wxListBox);
 
     EditPathDlg dlg(this,
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
             _("Add directory"));
 
     PlaceWindow(&dlg);
@@ -260,7 +260,7 @@ void DebuggerOptionsProjectDlg::OnEdit(wxCommandEvent& WXUNUSED(event))
 
     EditPathDlg dlg(this,
             control->GetString(sel),
-            m_pProject ? m_pProject->GetBasePath() : _T(""),
+            m_pProject ? m_pProject->GetBasePath() : wxString(),
             _("Edit directory"));
 
     PlaceWindow(&dlg);

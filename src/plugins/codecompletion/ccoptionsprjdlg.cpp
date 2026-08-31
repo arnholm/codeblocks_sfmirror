@@ -56,8 +56,8 @@ void CCOptionsProjectDlg::OnAdd(cb_unused wxCommandEvent& event)
     wxListBox* control = XRCCTRL(*this, "lstPaths", wxListBox);
 
     EditPathDlg dlg(this,
-                    m_Project ? m_Project->GetBasePath() : _T(""),
-                    m_Project ? m_Project->GetBasePath() : _T(""),
+                    m_Project ? m_Project->GetBasePath() : wxString(),
+                    m_Project ? m_Project->GetBasePath() : wxString(),
                     _("Add directory"));
 
     PlaceWindow(&dlg);
@@ -77,7 +77,7 @@ void CCOptionsProjectDlg::OnEdit(cb_unused wxCommandEvent& event)
 
     EditPathDlg dlg(this,
                     control->GetString(sel),
-                    m_Project ? m_Project->GetBasePath() : _T(""),
+                    m_Project ? m_Project->GetBasePath() : wxString(),
                     _("Edit directory"));
 
     PlaceWindow(&dlg);

@@ -74,7 +74,7 @@ void DefaultMimeHandler::OnAttach()
             mt->useAssoc = false;
             mt->programIsModal = array[1] == _T("true");
             mt->wildcard = array[2];
-            mt->program = array.GetCount() == 4 ? array[3] : _T("");
+            mt->program = array.GetCount() == 4 ? array[3] : wxString();
         }
         else
         {
@@ -82,7 +82,7 @@ void DefaultMimeHandler::OnAttach()
             mt->useAssoc = array[1] == _T("true");
             mt->programIsModal = array[2] == _T("true");
             mt->wildcard = array[3];
-            mt->program = array.GetCount() == 5 ? array[4] : _T("");
+            mt->program = array.GetCount() == 5 ? array[4] : wxString();
         }
         mt->program.Trim();
 
@@ -217,13 +217,18 @@ int DefaultMimeHandler::OpenFile(const wxString& filename)
                     mt->useAssoc = true;
                     m_MimeTypes.Add(mt);
                     return DoOpenFile(mt, filename);
+                    break;
                 case 2: // open in editor
+                {
                     mt = new cbMimeType;
                     mt->wildcard = wild;
                     mt->useEditor = true;
                     mt->useAssoc = false;
                     m_MimeTypes.Add(mt);
                     return DoOpenFile(mt, filename);
+                    break;
+                }
+                default: break;
             }
         }
         else if (answer == wxID_CANCEL)

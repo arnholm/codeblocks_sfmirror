@@ -257,9 +257,9 @@ bool MSVC10Loader::GetProjectConfigurations(const TiXmlElement* root)
         if (pc.bNoImportLib==-1)
             pc.bNoImportLib=m_NoImportLib;
 //        if (pc.sExePath.IsEmpty())
-//            pc.sExePath=_T("");
+//            pc.sExePath=wxEmptyString;
 //        if (pc.sSourcePath.IsEmpty())
-//            pc.sSourcePath=_T("");
+//            pc.sSourcePath=wxEmptyString;
         ReplaceConfigMacros(pc, pc.sOutDir);
         ReplaceConfigMacros(pc, pc.sIntDir);
         ReplaceConfigMacros(pc, pc.sTargetName);
@@ -1012,14 +1012,14 @@ wxString MSVC10Loader::ReplaceMSVCMacros(const wxString& str)
 {
     wxString ret = str;
     ret.Replace(_T("$(SolutionDir)"),m_WorkspacePath);
-    ret.Replace(_T("$(ProjectDir)"),_T("")); // use relative and not m_pProject->GetBasePath()
-    ret.Replace(_T("$(ProfileDir)"),_T("")); // same as above, seen at least once in MSVC 10-12
+    ret.Replace(_T("$(ProjectDir)"),wxEmptyString); // use relative and not m_pProject->GetBasePath()
+    ret.Replace(_T("$(ProfileDir)"),wxEmptyString); // same as above, seen at least once in MSVC 10-12
     ret.Replace(_T("$(ProjectName)"),m_ProjectName);
     ret.Replace(_T("$(ConfigurationName)"),m_ConfigurationName);
     ret.Replace(_T("$(PlatformName)"),m_PlatformName);
     ret.Replace(_T("$(TargetPath)"),m_TargetPath);
     ret.Replace(_T("$(TargetFileName)"),m_TargetFilename);
-//    ret.Replace(_T("\""),_T(""));
+//    ret.Replace(_T("\""),wxEmptyString);
     return ret;
 }
 
@@ -1039,11 +1039,11 @@ wxString MSVC10Loader::SubstituteConfigMacros(const wxString& sString)
 {
     wxString sResult(sString);
 
-    sResult.Replace(_T("$(Configuration)"), _T(""));
-    sResult.Replace(_T("$(Platform)"),      _T(""));
-    sResult.Replace(_T("=="),               _T(""));
-    sResult.Replace(_T("\'"),               _T(""));
-    sResult.Replace(_T("|"),                _T(" "));
+    sResult.Replace(_T("$(Configuration)"), wxEmptyString);
+    sResult.Replace(_T("$(Platform)"),      wxEmptyString);
+    sResult.Replace(_T("=="),               wxEmptyString);
+    sResult.Replace(_T("\'"),               wxEmptyString);
+    sResult.Replace(_T("|"),                wxEmptyString);
     sResult.Trim(false);
 
     return sResult;
