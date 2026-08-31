@@ -75,7 +75,7 @@ enum CompilerLineType
 struct RegExStruct
 {
     RegExStruct()
-        : desc(_("Unknown")), lt(cltError), filename(0), line(0), regex(_T("")), regexCompiled(false)
+        : desc(_("Unknown")), lt(cltError), filename(0), line(0), regex(wxEmptyString), regexCompiled(false)
     {
         memset(msg, 0, sizeof(msg));
     }

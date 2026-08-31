@@ -594,7 +594,7 @@ class PLUGIN_EXPORT cbDebuggerPlugin: public cbPlugin
             StartTypeStepInto
         };
     protected:
-        virtual void ConvertDirectory(wxString& str, wxString base = _T(""), bool relative = true) = 0;
+        virtual void ConvertDirectory(wxString& str, wxString base = wxEmptyString, bool relative = true) = 0;
         virtual cbProject* GetProject() = 0;
         virtual void ResetProject() = 0;
         virtual void CleanupWhenProjectClosed(cbProject *project) = 0;

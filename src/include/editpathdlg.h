@@ -16,7 +16,7 @@ class DLLIMPORT EditPathDlg : public wxScrollingDialog
                 const wxString& path,       // initial path
                 const wxString& basepath,   // for relative pathes
                 const wxString& title = _("Edit Path"),      // title of the dialog
-                const wxString& message = _T(""),    // message displayed in the dialogs
+                const wxString& message = wxEmptyString,    // message displayed in the dialogs
                 const bool wantDir = true,  // whether to open a dir or a file dialog
                 const bool allowMultiSel = false,  // whether to allow for multiple files selection
                 const wxString& filter = _("All files(*)|*"));  // wildcard for files

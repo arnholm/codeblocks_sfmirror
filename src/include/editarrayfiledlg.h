@@ -13,7 +13,7 @@
 class DLLIMPORT EditArrayFileDlg : public wxScrollingDialog
 {
 	public:
-		EditArrayFileDlg(wxWindow* parent, wxArrayString& array, bool useRelativePaths = false, const wxString& basePath = _T(""));
+		EditArrayFileDlg(wxWindow* parent, wxArrayString& array, bool useRelativePaths = false, const wxString& basePath = wxEmptyString);
 		~EditArrayFileDlg() override;
 		EditArrayFileDlg& operator=(const EditArrayFileDlg&){ return *this; } // just to satisfy script bindings (never used)
 		void EndModal(int retCode) override;

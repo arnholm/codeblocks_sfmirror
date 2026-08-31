@@ -8,7 +8,7 @@
 
 #include <wx/string.h>
 
-#define CB_TOOLS_SEPARATOR _T("---separator---")
+#define CB_TOOLS_SEPARATOR "---separator---"
 
 class cbTool
 {

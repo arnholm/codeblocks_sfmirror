@@ -244,8 +244,8 @@ extern DLLIMPORT bool CreateDirRecursively(const wxString& full_path, int perms 
 extern DLLIMPORT bool CreateDir(const wxString& full_path, int perms = 0755);
 extern DLLIMPORT wxString ChooseDirectory(wxWindow* parent,
                                           const wxString& message = _("Select directory"),
-                                          const wxString& initialPath = _T(""),
-                                          const wxString& basePath = _T(""),
+                                          const wxString& initialPath = wxEmptyString,
+                                          const wxString& basePath = wxEmptyString,
                                           bool askToMakeRelative = false, // relative to basePath
                                           bool showCreateDirButton = false); // where supported
 
