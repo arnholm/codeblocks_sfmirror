@@ -131,7 +131,7 @@ protected:
         wxFont font;
         wxColour colour;
     };
-    ListStyles style[num_levels];
+    wxTextAttr style[num_levels];
 
     wxString GetItemAsText(long item) const;
 public:

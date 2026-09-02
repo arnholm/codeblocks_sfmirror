@@ -329,25 +329,25 @@ void ListCtrlLogger::UpdateSettings()
     wxColour default_text_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
     for(unsigned int i = 0; i < num_levels; ++i)
     {
-        style[i].font = default_font;
-        style[i].colour = default_text_colour;
+        style[i].SetFont(default_font);
+        style[i].SetTextColour(default_text_colour);
     }
 
     ColourManager *colours = Manager::Get()->GetColourManager();
 
-    style[caption].font = bigger_font;
-    style[success].colour = colours->GetColour(wxT("logs_success_text"));
-    style[failure].colour = colours->GetColour(wxT("logs_failure_text"));
+    style[caption].SetFont(bigger_font);
+    style[success].SetTextColour(colours->GetColour(wxT("logs_success_text")));
+    style[failure].SetTextColour(colours->GetColour(wxT("logs_failure_text")));
 
-    style[warning].font = italic_font;
-    style[warning].colour = colours->GetColour(wxT("logs_warning_text"));
+    style[warning].SetFont(italic_font);
+    style[warning].SetTextColour(colours->GetColour(wxT("logs_warning_text")));
 
-    style[error].colour = colours->GetColour(wxT("logs_error_text"));
+    style[error].SetTextColour(colours->GetColour(wxT("logs_error_text")));
 
-    style[critical].font = bold_font;
-    style[critical].colour = colours->GetColour(wxT("logs_critical_text_listctrl"));
+    style[critical].SetFont(bold_font);
+    style[critical].SetTextColour(colours->GetColour(wxT("logs_critical_text_listctrl")));
 
-    style[spacer].font = small_font;
+    style[spacer].SetFont(small_font);
     style[pagetitle] = style[caption];
 
     // Tell control and items about the font change
@@ -374,8 +374,8 @@ void ListCtrlLogger::Append(const wxString& msg, Logger::level lv)
 
     control->Freeze();
     control->InsertItem(idx, msg);
-    control->SetItemFont(idx, style[lv].font);
-    control->SetItemTextColour(idx, style[lv].colour);
+    control->SetItemFont(idx, style[lv].GetFont());
+    control->SetItemTextColour(idx, style[lv].GetTextColour());
 
     if (autoScroll)
         control->EnsureVisible(idx);
