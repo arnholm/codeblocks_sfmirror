@@ -1470,7 +1470,7 @@ Token* ParserThread::FindTokenFromQueue(std::queue<wxString>& q, Token* parent, 
         TRACE("FindTokenFromQueue() : Created unknown class/namespace %s (%d) under %s (%d)",
               ns.wx_str(),
               newidx,
-              parent ? parent->m_Name.wx_str() : "<globals>",
+              parent ? parent->m_Name.wx_str() : _T("<globals>"),
               parent ? parent->m_Index : -1);
     }
 
@@ -2344,7 +2344,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             TRACE("HandleFunction() : Ctor/Dtor '%s', m_Str='%s', localParent='%s'",
                 name.wx_str(),
                 m_Str.wx_str(),
-                localParent ? localParent->m_Name.wx_str() : "<none>");
+                localParent ? localParent->m_Name.wx_str() : _T("<none>"));
         }
         else
         {
@@ -2354,7 +2354,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             TRACE("HandleFunction() : !(Ctor/Dtor) '%s', m_Str='%s', localParent='%s'",
                 name.wx_str(),
                 m_Str.wx_str(),
-                localParent ? localParent->m_Name.wx_str() : "<none>");
+                localParent ? localParent->m_Name.wx_str() : _T("<none>"));
         }
 
         bool isCtorOrDtor = m_LastParent && name == m_LastParent->m_Name;
@@ -2368,7 +2368,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
         TRACE("HandleFunction() : Adding function '%s', ': m_Str='%s', enc_ns='%s'.",
               name.wx_str(),
               m_Str.wx_str(),
-              m_EncounteredNamespaces.size() ? m_EncounteredNamespaces.front().wx_str() : "nil");
+              m_EncounteredNamespaces.size() ? m_EncounteredNamespaces.front().wx_str() : _T("nil"));
 
         bool isImpl = false;
         bool isConst = false;
@@ -2988,7 +2988,7 @@ void ParserThread::HandleTypedef()
             || token == ParserConsts::kw_union)
         {
             // "typedef struct|class|union"
-            TRACE(_("HandleTypedef() : Before HandleClass m_LastUnnamedTokenName='%s'"), m_LastUnnamedTokenName.wx_str());
+            TRACE(_("HandleTypedef() : Before HandleClass m_LastUnnamedTokenName='%s'"), kkm_LastUnnamedTokenName.wx_str());
             HandleClass(token == ParserConsts::kw_class ? ctClass :
                         token == ParserConsts::kw_union ? ctUnion :
                                                           ctStructure);
@@ -3197,7 +3197,7 @@ bool ParserThread::ReadVarNames()
         {
             TRACE("ReadVarNames() : Adding variable '%s' as '%s' to '%s'",
                   token.wx_str(), m_Str.wx_str(),
-                  (m_LastParent ? m_LastParent->m_Name.wx_str() : "<no-parent>"));
+                  (m_LastParent ? m_LastParent->m_Name.wx_str() : _T("<no-parent>")));
 
             // Detects anonymous ancestor and gives him a name based on the first found alias.
             if (m_Str.StartsWith(g_UnnamedSymbol))
@@ -3255,7 +3255,7 @@ bool ParserThread::ReadClsNames(wxString& ancestor)
             TRACE("ReadClsNames() : Adding variable '%s' as '%s' to '%s'",
                   token.wx_str(),
                   m_Str.wx_str(),
-                  (m_LastParent ? m_LastParent->m_Name.wx_str() : "<no-parent>"));
+                  (m_LastParent ? m_LastParent->m_Name.wx_str() : _T("<no-parent>")));
 
             m_Str.clear();
             m_Str = ancestor;
