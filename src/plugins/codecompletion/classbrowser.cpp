@@ -174,8 +174,15 @@ ClassBrowser::ClassBrowser(wxWindow* parent, ParseManager* pm) :
     m_CCTreeCtrlBottom = XRCCTRL(*this, "treeMembers", CCTreeCtrl);
 
     // Registration of images
-    m_CCTreeCtrl->SetImageList(m_ParseManager->GetImageList(16));
-    m_CCTreeCtrlBottom->SetImageList(m_ParseManager->GetImageList(16));
+    if (m_ParseManager)
+    {
+        wxImageList* imgList = m_ParseManager->GetImageList(16);
+        if (imgList)
+        {
+            m_CCTreeCtrl->SetImageList(imgList);
+            m_CCTreeCtrlBottom->SetImageList(imgList);
+        }
+    }
 
     ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion");
     const int filter = cfg->ReadInt("/browser_display_filter", bdfFile);
@@ -238,12 +245,16 @@ void ClassBrowser::SetParser(ParserBase* parser)
     {
         const int sel = XRCCTRL(*this, "cmbView", wxChoice)->GetSelection();
         BrowserDisplayFilter filter = static_cast<BrowserDisplayFilter>(sel);
-        if (!m_ParseManager->IsParserPerWorkspace() && filter == bdfWorkspace)
+        if (m_ParseManager && !m_ParseManager->IsParserPerWorkspace() && filter == bdfWorkspace)
             filter = bdfProject;
 
         m_Parser->ClassBrowserOptions().displayFilter = filter;
         m_Parser->WriteOptions(/*classbrowserOnly=*/true);  //(ph 2025/02/13)
-        UpdateClassBrowserView();
+
+        // Guard: Only update the class browser view if the application
+        // subsystems (ProjectManager, EditorManager) are fully initialized.
+        if (Manager::Get()->GetProjectManager() && Manager::Get()->GetEditorManager())
+            UpdateClassBrowserView();
     }
     else
         CCLogger::Get()->DebugLog("SetParser: No parser available.");

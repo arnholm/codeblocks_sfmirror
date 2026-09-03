@@ -1041,15 +1041,24 @@ void ParseManager::CreateClassBrowser()
     }
     else
     {
+        // Guard against ProjectManager not being ready yet (macOS startup race)
+        ProjectManager* prjMgr = Manager::Get()->GetProjectManager();
+        if (!prjMgr || !prjMgr->GetUI().GetNotebook())
+        {
+            CCLogger::Get()->DebugLog("CreateClassBrowser: ProjectManager not ready, deferring.");
+            return;
+        }
+
         // make this a tab in projectmanager notebook
-        m_ClassBrowser = new ClassBrowser(Manager::Get()->GetProjectManager()->GetUI().GetNotebook(), this);
-        Manager::Get()->GetProjectManager()->GetUI().GetNotebook()->AddPage(m_ClassBrowser, _("Symbols"));
+        m_ClassBrowser = new ClassBrowser(prjMgr->GetUI().GetNotebook(), this);
+        prjMgr->GetUI().GetNotebook()->AddPage(m_ClassBrowser, _("Symbols"));
         m_ClassBrowser->UpdateSash();
     }
 
     // Dreaded DDE-open bug related: do not touch unless for a good reason
     // TODO (Morten): ? what's bug? I test it, it's works well now.
-    m_ClassBrowser->SetParser(m_Parser); // Also updates class browser
+    if (m_Parser)
+        m_ClassBrowser->SetParser(m_Parser); // Also updates class browser
 
     TRACE("ParseManager::CreateClassBrowser: Leave");
 }
