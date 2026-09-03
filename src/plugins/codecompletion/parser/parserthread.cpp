@@ -2988,7 +2988,7 @@ void ParserThread::HandleTypedef()
             || token == ParserConsts::kw_union)
         {
             // "typedef struct|class|union"
-            TRACE(_("HandleTypedef() : Before HandleClass m_LastUnnamedTokenName='%s'"), kkm_LastUnnamedTokenName.wx_str());
+            TRACE(_("HandleTypedef() : Before HandleClass m_LastUnnamedTokenName='%s'"), m_LastUnnamedTokenName.wx_str());
             HandleClass(token == ParserConsts::kw_class ? ctClass :
                         token == ParserConsts::kw_union ? ctUnion :
                                                           ctStructure);
