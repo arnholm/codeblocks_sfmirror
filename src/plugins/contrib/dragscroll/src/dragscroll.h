@@ -250,9 +250,16 @@ public:
     bool SelectItemUnderCursor(wxTreeCtrl* pTreeCtrl);
     void SimulateRightMouseDown(wxWindow* pWindow, const wxPoint& pos);
 
+    bool HasExceededRightDragThreshold(const wxPoint& currentPoint) const;
+    void ReleaseRightMouseCapture();
+    void ResetScrollMouseGesture();
+    void OpenRightClickContextMenu(wxWindow* window);
+    void OnLinuxMouseMotion(wxMouseEvent& event);
+
+
 private:
     wxWindow* m_Window;
-    //?bool m_rightIsDown = false;  // Linux
+    //unused bool m_rightIsDown = false;  // Linux
     bool m_middleIsDown = false;    //  Linux
     bool m_dragging     = false;    // (ph 26/04/01) init all vars
     bool m_didScroll    = false;
@@ -311,13 +318,14 @@ private:
     DECLARE_EVENT_TABLE()
 };
 //----------------------------------------
-#define VERSION "1.5.01 26/08/16"
+#define VERSION "1.5.01 26/09/02"
 //----------------------------------------
 //versions
 // ----------------------------------------------------------------------------
 //  Modification History
 // ----------------------------------------------------------------------------
-// 1.5.00   2026/08/16 Restrict scroll to either horizontal or vertical
+// 1.5.01   2026/09/02 Refactor Linux mouse events !commited
+// 1.5.00   2026/08/16 Restrict scroll to either horizontal or vertical !ccommited
 // 1.4.20   2026/05/19 Add notifying event DragScrollDragged !c
 // 1.4.19   2026/04/30 Fix crash in linux onTimerEvent() using garbage eventObject
 // 1.4.18   2026/04/16 Refactoring and cleanup with -Wextra
