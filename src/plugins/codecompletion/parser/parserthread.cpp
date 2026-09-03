@@ -81,117 +81,117 @@
 #define IS_ALIVE !TestDestroy()
 #endif
 
-const wxString g_UnnamedSymbol = _T("__Unnamed");
+const wxString g_UnnamedSymbol = "__Unnamed";
 
 namespace ParserConsts
 {
     // length: 0
     const wxString empty           (wxEmptyString);
-    const wxChar   null            (_T('\0'));
+    const wxChar   null            ('\0');
     // length: 1
-    const wxChar   eol_chr         (_T('\n'));
-    const wxString space           (_T(" "));
-    const wxChar   space_chr       (_T(' '));
-    const wxChar   tab_chr         (_T('\t'));
-    const wxString equals          (_T("="));
-    const wxChar   equals_chr      (_T('='));
-    const wxString hash            (_T("#"));
-    const wxChar   hash_chr        (_T('#'));
-    const wxString plus            (_T("+"));
-    const wxChar   plus_chr        (_T('+'));
-    const wxString dash            (_T("-"));
-    const wxChar   dash_chr        (_T('-'));
-    const wxString ptr             (_T("*"));
-    const wxChar   ptr_chr         (_T('*'));
-    const wxString ref             (_T("&"));
-    const wxChar   ref_chr         (_T('&'));
-    const wxString comma           (_T(","));
-    const wxChar   comma_chr       (_T(','));
-    const wxString dot             (_T("."));
-    const wxChar   dot_chr         (_T('.'));
-    const wxString colon           (_T(":"));
-    const wxChar   colon_chr       (_T(':'));
-    const wxString semicolon       (_T(";"));
-    const wxChar   semicolon_chr   (_T(';'));
-    const wxChar   opbracket_chr   (_T('('));
-    const wxChar   clbracket_chr   (_T(')'));
-    const wxString opbracket       (_T("("));
-    const wxString clbracket       (_T(")"));
-    const wxString opbrace         (_T("{"));
-    const wxChar   opbrace_chr     (_T('{'));
-    const wxString clbrace         (_T("}"));
-    const wxChar   clbrace_chr     (_T('}'));
-    const wxString oparray         (_T("["));
-    const wxChar   oparray_chr     (_T('['));
-    const wxString clarray         (_T("]"));
-    const wxChar   clarray_chr     (_T(']'));
-    const wxString tilde           (_T("~"));
-    const wxString lt              (_T("<"));
-    const wxChar   lt_chr          (_T('<'));
-    const wxString gt              (_T(">"));
-    const wxChar   gt_chr          (_T('>'));
-    const wxChar   underscore_chr  (_T('_'));
-    const wxChar   question_chr    (_T('?'));
+    const wxChar   eol_chr         ('\n');
+    const wxString space           (" ");
+    const wxChar   space_chr       (' ');
+    const wxChar   tab_chr         ('\t');
+    const wxString equals          ("=");
+    const wxChar   equals_chr      ('=');
+    const wxString hash            ("#");
+    const wxChar   hash_chr        ('#');
+    const wxString plus            ("+");
+    const wxChar   plus_chr        ('+');
+    const wxString dash            ("-");
+    const wxChar   dash_chr        ('-');
+    const wxString ptr             ("*");
+    const wxChar   ptr_chr         ('*');
+    const wxString ref             ("&");
+    const wxChar   ref_chr         ('&');
+    const wxString comma           (",");
+    const wxChar   comma_chr       (',');
+    const wxString dot             (".");
+    const wxChar   dot_chr         ('.');
+    const wxString colon           (":");
+    const wxChar   colon_chr       (':');
+    const wxString semicolon       (";");
+    const wxChar   semicolon_chr   (';');
+    const wxChar   opbracket_chr   ('(');
+    const wxChar   clbracket_chr   (')');
+    const wxString opbracket       ("(");
+    const wxString clbracket       (")");
+    const wxString opbrace         ("{");
+    const wxChar   opbrace_chr     ('{');
+    const wxString clbrace         ("}");
+    const wxChar   clbrace_chr     ('}');
+    const wxString oparray         ("[");
+    const wxChar   oparray_chr     ('[');
+    const wxString clarray         ("]");
+    const wxChar   clarray_chr     (']');
+    const wxString tilde           ("~");
+    const wxString lt              ("<");
+    const wxChar   lt_chr          ('<');
+    const wxString gt              (">");
+    const wxChar   gt_chr          ('>');
+    const wxChar   underscore_chr  ('_');
+    const wxChar   question_chr    ('?');
     // length: 2
-    const wxString dcolon          (_T("::"));
-    const wxString opbracesemicolon(_T("{;"));
-    const wxString commaclbrace    (_T(",}"));
-    const wxString semicolonopbrace(_T(";{"));
-    const wxString semicolonclbrace(_T(";}"));
-    const wxString gtsemicolon     (_T(">;"));
-    const wxString quot            (_T("\""));
-    const wxString kw_do           (_T("do"));
-    const wxString kw_if           (_T("if"));
+    const wxString dcolon          ("::");
+    const wxString opbracesemicolon("{;");
+    const wxString commaclbrace    (",}");
+    const wxString semicolonopbrace(";{");
+    const wxString semicolonclbrace(";}");
+    const wxString gtsemicolon     (">;");
+    const wxString quot            ("\"");
+    const wxString kw_do           ("do");
+    const wxString kw_if           ("if");
     // length: 3
-    const wxString spaced_colon    (_T(" : "));
-    const wxString kw__C_          (_T("\"C\""));
-    const wxString kw_for          (_T("for"));
-    const wxString kw_try          (_T("try"));
-    const wxString commasemicolonopbrace(_T(",;{"));
+    const wxString spaced_colon    (" : ");
+    const wxString kw__C_          ("\"C\"");
+    const wxString kw_for          ("for");
+    const wxString kw_try          ("try");
+    const wxString commasemicolonopbrace(",;{");
     // length: 4
-    const wxString kw___at         (_T("__at"));
-    const wxString kw_else         (_T("else"));
-    const wxString kw_enum         (_T("enum"));
-    const wxString kw_elif         (_T("elif"));
-    const wxString kw_case         (_T("case"));
+    const wxString kw___at         ("__at");
+    const wxString kw_else         ("else");
+    const wxString kw_enum         ("enum");
+    const wxString kw_elif         ("elif");
+    const wxString kw_case         ("case");
     // length: 5
-    const wxString kw__CPP_        (_T("\"C++\""));
-    const wxString kw___asm        (_T("__asm"));
-    const wxString kw_catch        (_T("catch"));
-    const wxString kw_class        (_T("class"));
-    const wxString kw_const        (_T("const"));
-    const wxString kw_union        (_T("union"));
-    const wxString kw_using        (_T("using"));
-    const wxString kw_throw        (_T("throw"));
-    const wxString kw_while        (_T("while"));
+    const wxString kw__CPP_        ("\"C++\"");
+    const wxString kw___asm        ("__asm");
+    const wxString kw_catch        ("catch");
+    const wxString kw_class        ("class");
+    const wxString kw_const        ("const");
+    const wxString kw_union        ("union");
+    const wxString kw_using        ("using");
+    const wxString kw_throw        ("throw");
+    const wxString kw_while        ("while");
     // length: 6
-    const wxString kw_delete       (_T("delete"));
-    const wxString kw_extern       (_T("extern"));
-    const wxString kw_friend       (_T("friend"));
-    const wxString kw_inline       (_T("inline"));
-    const wxString kw_public       (_T("public"));
-    const wxString kw_return       (_T("return"));
-    const wxString kw_static       (_T("static"));
-    const wxString kw_struct       (_T("struct"));
-    const wxString kw_switch       (_T("switch"));
+    const wxString kw_delete       ("delete");
+    const wxString kw_extern       ("extern");
+    const wxString kw_friend       ("friend");
+    const wxString kw_inline       ("inline");
+    const wxString kw_public       ("public");
+    const wxString kw_return       ("return");
+    const wxString kw_static       ("static");
+    const wxString kw_struct       ("struct");
+    const wxString kw_switch       ("switch");
     // length: 7
-    const wxString kw_include      (_T("include"));
-    const wxString kw_private      (_T("private"));
-    const wxString kw_typedef      (_T("typedef"));
-    const wxString kw_virtual      (_T("virtual"));
+    const wxString kw_include      ("include");
+    const wxString kw_private      ("private");
+    const wxString kw_typedef      ("typedef");
+    const wxString kw_virtual      ("virtual");
     // length: 8
-    const wxString kw_noexcept     (_T("noexcept"));
-    const wxString kw_operator     (_T("operator"));
-    const wxString kw_template     (_T("template"));
-    const wxString kw_typename     (_T("typename"));
-    const wxString kw_volatile     (_T("volatile"));
+    const wxString kw_noexcept     ("noexcept");
+    const wxString kw_operator     ("operator");
+    const wxString kw_template     ("template");
+    const wxString kw_typename     ("typename");
+    const wxString kw_volatile     ("volatile");
     // length: 9
-    const wxString kw_namespace    (_T("namespace"));
-    const wxString kw_protected    (_T("protected"));
+    const wxString kw_namespace    ("namespace");
+    const wxString kw_protected    ("protected");
     // length: 10
-    const wxString kw_declspec     (_T("__declspec"));
+    const wxString kw_declspec     ("__declspec");
     // length: 13
-    const wxString kw_attribute    (_T("__attribute__"));
+    const wxString kw_attribute    ("__attribute__");
 }
 
 // ----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ ParserThread::ParserThread(ParserBase*          parent,
     m_Tokenizer.SetTokenizerOption(parserThreadOptions.wantPreprocessor,
                                    parserThreadOptions.storeDocumentation);
     if (!m_TokenTree)
-        cbThrow(_T("m_TokenTree is a nullptr?!"));
+        cbThrow("m_TokenTree is a nullptr?!");
 }
 
 ParserThread::~ParserThread()
@@ -481,18 +481,18 @@ bool ParserThread::InitTokenizer()
                     m_Filename = m_Buffer;
                     m_FileSize = file.Length();
 
-                    TRACE(_T("InitTokenizer() : m_Filename='%s', m_FileSize=%u."), m_Filename.wx_str(), m_FileSize);
+                    TRACE("InitTokenizer() : m_Filename='%s', m_FileSize=%u.", m_Filename.wx_str(), m_FileSize);
 
                     bool ret = m_Tokenizer.Init(m_Filename, m_Options.loader);
                     // must delete the loader, since it was allocated by SDK's Load() function
                     Delete(m_Options.loader);
 
-                    if (!ret) { TRACE(_T("InitTokenizer() : Could not initialise tokenizer for file '%s'."), m_Filename.wx_str()); }
+                    if (!ret) { TRACE("InitTokenizer() : Could not initialise tokenizer for file '%s'.", m_Filename.wx_str()); }
                     return ret;
                 }
             }
 
-            TRACE(_T("InitTokenizer() : Could not open file: '%s'."), m_Buffer.wx_str());
+            TRACE("InitTokenizer() : Could not open file: '%s'.", m_Buffer.wx_str());
             return false;
         }
         else
@@ -505,7 +505,7 @@ bool ParserThread::InitTokenizer()
         }
     }
 
-    TRACE(_T("InitTokenizer() : Buffer is empty."));
+    TRACE("InitTokenizer() : Buffer is empty.");
     return false;
 }
 
@@ -514,7 +514,7 @@ bool ParserThread::Parse()
     if (!IS_ALIVE || !InitTokenizer())
         return false;
 
-    TRACE(_T("Parse() : Parsing '%s'"), m_Filename.wx_str());
+    TRACE("Parse() : Parsing '%s'", m_Filename.wx_str());
 
     bool result      = false;
     m_ParsingTypedef = false;
@@ -569,7 +569,7 @@ void ParserThread::DoParse()
         if (token.IsEmpty())
             continue;
 
-        TRACE(_T("DoParse() : Loop:m_Str='%s', token='%s'"), m_Str.wx_str(), token.wx_str());
+        TRACE("DoParse() : Loop:m_Str='%s', token='%s'", m_Str.wx_str(), token.wx_str());
 
         bool switchHandled = true;
         switch (token.Length())
@@ -795,7 +795,7 @@ void ParserThread::DoParse()
             }
             else if (token == ParserConsts::kw_const)
             {
-                m_Str << token << _T(" ");
+                m_Str << token << " ";
             }
             else if (token==ParserConsts::kw_using)
             {
@@ -995,14 +995,14 @@ void ParserThread::DoParse()
                 //    use_facet<codecvt<char, char, mbstate_t> >(const locale&);
                 // read <> as a whole token
                 m_TemplateArgument = ReadAngleBrackets();
-                TRACE(_T("DoParse() : Template argument='%s'"), m_TemplateArgument.wx_str());
+                TRACE("DoParse() : Template argument='%s'", m_TemplateArgument.wx_str());
                 m_Str.Clear();
                 if (m_Tokenizer.PeekToken() != ParserConsts::kw_class)
                     m_TemplateArgument.clear();
             }
             else if (token == ParserConsts::kw_noexcept)
             {
-                m_Str << token << _T(" ");
+                m_Str << token << " ";
             }
             else if (token == ParserConsts::kw_operator)
             {
@@ -1255,7 +1255,7 @@ void ParserThread::DoParse()
                     peek = m_Tokenizer.PeekToken();
                     if (peek==ParserConsts::dcolon)
                     {
-                        TRACE(_T("DoParse() : peek='::', token='") + token + _T("', m_LastToken='") + m_LastToken + _T("', m_Str='") + m_Str + _T("'"));
+                        TRACE("DoParse() : peek='::', token='" + token + "', m_LastToken='" + m_LastToken + "', m_Str='" + m_Str + "'");
                         if (m_Str.IsEmpty())
                             m_EncounteredTypeNamespaces.push(token); // it's a type's namespace
                         else
@@ -1361,7 +1361,7 @@ Token* ParserThread::TokenExists(const wxString& name, const wxString& baseArgs,
 
 wxString ParserThread::GetTokenBaseType()
 {
-    TRACE(_T("GetTokenBaseType() : Searching within m_Str='%s'"), m_Str.wx_str());
+    TRACE("GetTokenBaseType() : Searching within m_Str='%s'", m_Str.wx_str());
 
     // Compensate for spaces between namespaces (e.g. NAMESPACE :: SomeType)
     // which is valid C++ construct.
@@ -1381,7 +1381,7 @@ wxString ParserThread::GetTokenBaseType()
             ++pos;
     }
 
-    TRACE(_T("GetTokenBaseType() : Compensated m_Str='%s'"), m_Str.wx_str());
+    TRACE("GetTokenBaseType() : Compensated m_Str='%s'", m_Str.wx_str());
 
     // TODO (Morten#5#): Handle stuff like the following gracefully:
     // int __cdecl __MINGW_NOTHROW vscanf (const char * __restrict__, __VALIST);
@@ -1431,12 +1431,12 @@ wxString ParserThread::GetTokenBaseType()
             if (typeCandidate.IsSameAs(ParserConsts::kw_const))
                 continue;
 
-            TRACE(_T("GetTokenBaseType() : Found '%s'"), typeCandidate.wx_str());
+            TRACE("GetTokenBaseType() : Found '%s'", typeCandidate.wx_str());
             return typeCandidate;
         }
     }
 
-    TRACE(_T("GetTokenBaseType() : Returning '%s'"), m_Str.wx_str());
+    TRACE("GetTokenBaseType() : Returning '%s'", m_Str.wx_str());
     return m_Str; // token ends at start of phrase
 }
 
@@ -1467,10 +1467,10 @@ Token* ParserThread::FindTokenFromQueue(std::queue<wxString>& q, Token* parent, 
         if (parentIfCreated)
             parentIfCreated->AddChild(newidx);
 
-        TRACE(_T("FindTokenFromQueue() : Created unknown class/namespace %s (%d) under %s (%d)"),
+        TRACE("FindTokenFromQueue() : Created unknown class/namespace %s (%d) under %s (%d)",
               ns.wx_str(),
               newidx,
-              parent ? parent->m_Name.wx_str() : _T("<globals>"),
+              parent ? parent->m_Name.wx_str() : "<globals>",
               parent ? parent->m_Index : -1);
     }
 
@@ -1494,7 +1494,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
 {
     if (name.IsEmpty())
     {
-        TRACE(_T("DoAddToken() : Token name is empty!"));
+        TRACE("DoAddToken() : Token name is empty!");
         return nullptr; // oops!
     }
 
@@ -1526,7 +1526,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
         if (localParent)
             newToken = TokenExists(newname, baseArgs, localParent, kind);
         if (newToken)
-        {   TRACE(_T("DoAddToken() : Found token (ctor/dtor).")); }
+        {   TRACE("DoAddToken() : Found token (ctor/dtor)."); }
     }
 
     // check for implementation member function
@@ -1537,7 +1537,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
             newToken = TokenExists(newname, baseArgs, localParent, kind);
         if (newToken)
         {
-            TRACE(_T("DoAddToken() : Found token (member function)."));
+            TRACE("DoAddToken() : Found token (member function).");
             // Special handling function implementation here, a function declaration and its
             // function implementation share one Token. But the function implementation's arguments
             // should take precedence, as they will be used for code-completion.
@@ -1552,7 +1552,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
         newToken = TokenExists(newname, baseArgs, m_LastParent, kind);
         if (newToken)
         {
-            TRACE(_T("DoAddToken() : Found token (parent)."));
+            TRACE("DoAddToken() : Found token (parent).");
             // Special handling function implementation, see comments above
             if (isImpl && (kind & tkAnyFunction))
                 newToken->m_Args = args;
@@ -1623,7 +1623,7 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
                 m_EncounteredTypeNamespaces.pop();
             }
 
-            TRACE(_T("DoAddToken() : Prepending '%s'"), prepend.wx_str());
+            TRACE("DoAddToken() : Prepending '%s'", prepend.wx_str());
             tokenBaseType.Prepend(prepend);
         }
         newToken->m_FullType = tokenFullType;
@@ -1651,12 +1651,12 @@ Token* ParserThread::DoAddToken(TokenKind       kind,
     // this will append the doxygen style comments to the Token
     m_Tokenizer.SetLastTokenIdx(newToken->m_Index);
 
-    TRACE(_T("DoAddToken() : Added/updated token '%s' (%d), kind '%s', type '%s', actual '%s'. Parent is %s (%d)"),
+    TRACE("DoAddToken() : Added/updated token '%s' (%d), kind '%s', type '%s', actual '%s'. Parent is %s (%d)",
           name.wx_str(), newToken->m_Index, newToken->GetTokenKindString().wx_str(), newToken->m_FullType.wx_str(),
           newToken->m_BaseType.wx_str(), m_TokenTree->at(newToken->m_ParentIndex) ?
           m_TokenTree->at(newToken->m_ParentIndex)->m_Name.wx_str() : wxEmptyString,
           newToken->m_ParentIndex);
-    ADDTOKEN(_T("Token: Index %7d Line %7d: Type: %s: -> '%s'"),
+    ADDTOKEN("Token: Index %7d Line %7d: Type: %s: -> '%s'",
              newToken->m_Index, line, newToken->GetTokenKindString().wx_str(), name.wx_str());
 
     // Notice: clears the queue "m_EncounteredTypeNamespaces"
@@ -1689,7 +1689,7 @@ void ParserThread::HandleIncludes()
             while (pos < token.Length())
             {
                 wxChar c = token.GetChar(pos);
-                if (c != _T('"'))
+                if (c != '"')
                     filename << c;
                 ++pos;
             }
@@ -1717,7 +1717,7 @@ void ParserThread::HandleIncludes()
 
     if (!filename.IsEmpty())
     {
-        TRACE(_T("HandleIncludes() : Found include file '%s'"), filename.wx_str());
+        TRACE("HandleIncludes() : Found include file '%s'", filename.wx_str());
         do
         {
             // setting all #includes as global
@@ -1726,7 +1726,7 @@ void ParserThread::HandleIncludes()
 
             if (!(isGlobal ? m_Options.followGlobalIncludes : m_Options.followLocalIncludes))
             {
-                TRACE(_T("HandleIncludes() : File '%s' not requested to parse after checking options, skipping"), filename.wx_str());
+                TRACE("HandleIncludes() : File '%s' not requested to parse after checking options, skipping", filename.wx_str());
                 break; // Nothing to do!
             }
 
@@ -1735,17 +1735,17 @@ void ParserThread::HandleIncludes()
 
             if (real_filename.IsEmpty())
             {
-                TRACE(_T("HandleIncludes() : File '%s' not found, skipping"), filename.wx_str());
+                TRACE("HandleIncludes() : File '%s' not found, skipping", filename.wx_str());
                 break; // File not found, do nothing.
             }
 
             if (m_TokenTree->IsFileParsed(real_filename))
             {
-                TRACE(_T("HandleIncludes() : File '%s' is already being parsed, skipping"), real_filename.wx_str());
+                TRACE("HandleIncludes() : File '%s' is already being parsed, skipping", real_filename.wx_str());
                 break; // Already being parsed elsewhere
             }
 
-            TRACE(_T("HandleIncludes() : Adding include file '%s'"), real_filename.wx_str());
+            TRACE("HandleIncludes() : Adding include file '%s'", real_filename.wx_str());
             m_Parent->ParseFile(real_filename, isGlobal, true);
         }
         while (false);
@@ -1790,7 +1790,7 @@ void ParserThread::HandleNamespace()
                     newToken = DoAddToken(tkNamespace, ns, line);
                 if (!newToken)
                 {
-                    TRACE(_T("HandleNamespace() : Unable to create/add new token: ") + ns);
+                    TRACE("HandleNamespace() : Unable to create/add new token: " + ns);
                     return;
                 }
 
@@ -1909,7 +1909,7 @@ void ParserThread::HandleClass(EClassType ct)
         // remove __attribute__ or __declspec qualifiers
         if (current == ParserConsts::kw_attribute || current == ParserConsts::kw_declspec)
         {
-            TRACE(_T("HandleClass() : Skip __attribute__ or __declspec"));
+            TRACE("HandleClass() : Skip __attribute__ or __declspec");
 
             // Handle stuff like: __attribute__(( whatever ))
             m_Tokenizer.GetToken();  // eat __attribute__
@@ -1917,7 +1917,7 @@ void ParserThread::HandleClass(EClassType ct)
             next    = m_Tokenizer.PeekToken(); // peek again
         }
 
-        TRACE(_T("HandleClass() : Found class '%s', next='%s'"), current.wx_str(), next.wx_str());
+        TRACE("HandleClass() : Found class '%s', next='%s'", current.wx_str(), next.wx_str());
 
         if (current.IsEmpty() || next.IsEmpty())
             break;
@@ -1935,7 +1935,7 @@ void ParserThread::HandleClass(EClassType ct)
         if (next == ParserConsts::colon) // has ancestor(s)
         // -------------------------------------------------------------------
         {
-            TRACE(_T("HandleClass() : Class '%s' has ancestors"), current.wx_str());
+            TRACE("HandleClass() : Class '%s' has ancestors", current.wx_str());
             m_Tokenizer.GetToken(); // eat ":"
             while (IS_ALIVE)
             {
@@ -1959,7 +1959,7 @@ void ParserThread::HandleClass(EClassType ct)
                         ancestors << tmp;
                     else
                         ancestors << tmp << ParserConsts::comma_chr;
-                    TRACE(_T("HandleClass() : Adding ancestor ") + tmp);
+                    TRACE("HandleClass() : Adding ancestor " + tmp);
                 }
 
                 // -----------------------------------------------------------
@@ -1984,7 +1984,7 @@ void ParserThread::HandleClass(EClassType ct)
                     m_Tokenizer.UngetToken();
                 }
             }
-            TRACE(_T("HandleClass() : Ancestors: ") + ancestors);
+            TRACE("HandleClass() : Ancestors: " + ancestors);
         }
 
         // -------------------------------------------------------------------
@@ -1999,7 +1999,7 @@ void ParserThread::HandleClass(EClassType ct)
             // Maybe it is a bug here. I just fixed it.
             if (!newToken)
             {
-                TRACE(_T("HandleClass() : Unable to create/add new token: ") + unnamedTmp);
+                TRACE("HandleClass() : Unable to create/add new token: " + unnamedTmp);
 
                 // restore tokenizer's functionality
                 m_Tokenizer.SetState(oldState);
@@ -2011,7 +2011,7 @@ void ParserThread::HandleClass(EClassType ct)
             SplitTemplateFormalParameters(m_TemplateArgument, formals);
 #ifdef CC_PARSER_TEST
             for (size_t i = 0; i < formals.GetCount(); ++i)
-                TRACE(_T("The template formal arguments are '%s'."), formals[i].wx_str());
+                TRACE("The template formal arguments are '%s'.", formals[i].wx_str());
 #endif
             newToken->m_TemplateType = formals;
             m_TemplateArgument.Clear();
@@ -2044,16 +2044,16 @@ void ParserThread::HandleClass(EClassType ct)
             if (m_ParsingTypedef)
             {
                 m_Str.Clear();
-                TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
+                TRACE("HandleClass() : Unable to create/add new token: " + current);
                 if ( !ReadClsNames(newToken->m_Name) )
-                {   TRACE(_T("HandleClass() : ReadClsNames returned false [1].")); }
+                {   TRACE("HandleClass() : ReadClsNames returned false [1]."); }
                 break;
             }
             else
             {
                 m_Str = newToken->m_Name;
                 if ( !ReadVarNames() )
-                {   TRACE(_T("HandleClass() : ReadVarNames returned false [1].")); }
+                {   TRACE("HandleClass() : ReadVarNames returned false [1]."); }
                 m_Str.Clear();
                 break;
             }
@@ -2088,7 +2088,7 @@ void ParserThread::HandleClass(EClassType ct)
             Token* newToken = DoAddToken(tkClass, current, lineNr, 0, 0, args);
             if (!newToken)
             {
-                TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
+                TRACE("HandleClass() : Unable to create/add new token: " + current);
 
                 // restore tokenizer's functionality
                 m_Tokenizer.SetState(oldState);
@@ -2114,7 +2114,7 @@ void ParserThread::HandleClass(EClassType ct)
 
 #ifdef CC_PARSER_TEST
             for (size_t i = 0; i < formals.GetCount(); ++i)
-                TRACE(_T("The template formal arguments are '%s'."), formals[i].wx_str());
+                TRACE("The template formal arguments are '%s'.", formals[i].wx_str());
 #endif
             newToken->m_TemplateType = formals;
             m_TemplateArgument.Clear();
@@ -2134,14 +2134,14 @@ void ParserThread::HandleClass(EClassType ct)
             {
                 m_Str.Clear();
                 if ( !ReadClsNames(newToken->m_Name) )
-                {   TRACE(_T("HandleClass() : ReadClsNames returned false [2].")); }
+                {   TRACE("HandleClass() : ReadClsNames returned false [2]."); }
                 break;
             }
             else
             {
                 m_Str = newToken->m_Name;   // pattern: class A{} b; b is a variable
                 if ( !ReadVarNames() )
-                {   TRACE(_T("HandleClass() : ReadVarNames returned false [2].")); }
+                {   TRACE("HandleClass() : ReadVarNames returned false [2]."); }
                 m_Str.Clear();
                 break;
             }
@@ -2183,7 +2183,7 @@ void ParserThread::HandleClass(EClassType ct)
 
                 if (!newToken)
                 {
-                    TRACE(_T("HandleClass() : Unable to create/add new token: ") + current);
+                    TRACE("HandleClass() : Unable to create/add new token: " + current);
 
                     // restore tokenizer's functionality
                     m_Tokenizer.SetState(oldState);
@@ -2196,7 +2196,7 @@ void ParserThread::HandleClass(EClassType ct)
                 m_Str.Clear();
                 if ( !ReadClsNames(newToken->m_Name) )
                 {
-                    TRACE(_T("HandleClass() : ReadClsNames returned false [2]."));
+                    TRACE("HandleClass() : ReadClsNames returned false [2].");
                 }
 
                 break;
@@ -2282,11 +2282,11 @@ void ParserThread::HandleClass(EClassType ct)
 
 void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointer)
 {
-    TRACE(_T("HandleFunction() : Adding function '")+name+_T("': m_Str='")+m_Str+_T("'"));
+    TRACE("HandleFunction() : Adding function '" + name + "': m_Str='" + m_Str+ "'");
     int lineNr = m_Tokenizer.GetLineNumber();
     wxString args = m_Tokenizer.GetToken();
     wxString peek = m_Tokenizer.PeekToken();
-    TRACE(_T("HandleFunction() : name='")+name+_T("', args='")+args+_T("', peek='")+peek+_T("'"));
+    TRACE("HandleFunction() : name='" + name + "', args='" + args + "', peek='" + peek + "'");
 
     // NOTE: Avoid using return, because m_Str needs to be cleared
     // at the end of this function.
@@ -2311,7 +2311,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             if (pos != wxNOT_FOUND)
                 name.Remove(pos).Trim(true);
 
-            TRACE(_T("HandleFunction() : Add token name='")+name+_T("', args='")+args+_T("', return type='") + m_Str+ _T("'"));
+            TRACE("HandleFunction() : Add token name='" + name + "', args='" + args + "', return type='" + m_Str+ "'");
             Token* newToken =  DoAddToken(tkFunction, name, lineNr, 0, 0, args);
             if (newToken)
             {
@@ -2322,7 +2322,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             }
             else
             {
-                TRACE(_T("HandleFunction() : Unable to create/add new token: ") + name);
+                TRACE("HandleFunction() : Unable to create/add new token: " + name);
             }
             m_TemplateArgument.Clear();
         }
@@ -2341,20 +2341,20 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             std::queue<wxString> q = m_EncounteredTypeNamespaces; // preserve m_EncounteredTypeNamespaces; needed in DoAddToken()
             localParent = FindTokenFromQueue(q, m_LastParent);
 
-            TRACE(_T("HandleFunction() : Ctor/Dtor '%s', m_Str='%s', localParent='%s'"),
+            TRACE("HandleFunction() : Ctor/Dtor '%s', m_Str='%s', localParent='%s'",
                 name.wx_str(),
                 m_Str.wx_str(),
-                localParent ? localParent->m_Name.wx_str() : _T("<none>"));
+                localParent ? localParent->m_Name.wx_str() : "<none>");
         }
         else
         {
             std::queue<wxString> q = m_EncounteredNamespaces; // preserve m_EncounteredNamespaces; needed in DoAddToken()
             localParent = FindTokenFromQueue(q, m_LastParent);
 
-            TRACE(_T("HandleFunction() : !(Ctor/Dtor) '%s', m_Str='%s', localParent='%s'"),
+            TRACE("HandleFunction() : !(Ctor/Dtor) '%s', m_Str='%s', localParent='%s'",
                 name.wx_str(),
                 m_Str.wx_str(),
-                localParent ? localParent->m_Name.wx_str() : _T("<none>"));
+                localParent ? localParent->m_Name.wx_str() : "<none>");
         }
 
         bool isCtorOrDtor = m_LastParent && name == m_LastParent->m_Name;
@@ -2365,10 +2365,10 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
         if (!isCtorOrDtor && m_Options.useBuffer)
             isCtorOrDtor = isCtor || isDtor;
 
-        TRACE(_T("HandleFunction() : Adding function '%s', ': m_Str='%s', enc_ns='%s'."),
+        TRACE("HandleFunction() : Adding function '%s', ': m_Str='%s', enc_ns='%s'.",
               name.wx_str(),
               m_Str.wx_str(),
-              m_EncounteredNamespaces.size() ? m_EncounteredNamespaces.front().wx_str() : wxT("nil"));
+              m_EncounteredNamespaces.size() ? m_EncounteredNamespaces.front().wx_str() : "nil");
 
         bool isImpl = false;
         bool isConst = false;
@@ -2440,7 +2440,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             }
             else
             {
-                TRACE(_T("HandleFunction() : Possible macro '%s' in function '%s' (file name='%s', line numer %d)."),
+                TRACE("HandleFunction() : Possible macro '%s' in function '%s' (file name='%s', line numer %d).",
                       peek.wx_str(), name.wx_str(), m_Filename.wx_str(), m_Tokenizer.GetLineNumber());
                 break; // darned macros that do not end with a semicolon :/
             }
@@ -2450,7 +2450,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
             peek = m_Tokenizer.PeekToken();
         } // while
 
-        TRACE(_T("HandleFunction() : Add token name='")+name+_T("', args='")+args+_T("', return type='") + m_Str+ _T("'"));
+        TRACE("HandleFunction() : Add token name='" + name + "', args='" + args + "', return type='" + m_Str+ "'");
         TokenKind tokenKind = !isCtorOrDtor ? tkFunction : (isDtor ? tkDestructor : tkConstructor);
         Token* newToken =  DoAddToken(tokenKind, name, lineNr, lineStart, lineEnd, args, isOperator, isImpl);
         if (newToken)
@@ -2463,7 +2463,7 @@ void ParserThread::HandleFunction(wxString& name, bool isOperator, bool isPointe
         }
         else
         {
-            TRACE(_T("HandleFunction() : Unable to create/add new token: ") + name);
+            TRACE("HandleFunction() : Unable to create/add new token: " + name);
         }
         m_TemplateArgument.Clear();
     }
@@ -2494,10 +2494,10 @@ void ParserThread::HandleConditionalArguments()
     wxString args = m_Tokenizer.GetToken();
 
     // remove braces
-    if (args.StartsWith(_T("(")))
+    if (args.StartsWith("("))
         args = args.Mid(1, args.length() - 1);
 
-    if (args.EndsWith(_T(")")))
+    if (args.EndsWith(")"))
         args = args.Mid(0, args.length() - 1);
 
     // parse small tokens inside for loop head
@@ -2530,7 +2530,7 @@ void ParserThread::HandleConditionalArguments()
                 if (newToken && !m_TemplateArgument.IsEmpty())
                     ResolveTemplateArgs(newToken);
                 else
-                {   TRACE(_T("HandleConditionalArguments() : Unable to create/add new token: ") + token); }
+                {   TRACE("HandleConditionalArguments() : Unable to create/add new token: " + token); }
 
             }
 
@@ -2543,7 +2543,7 @@ void ParserThread::HandleConditionalArguments()
             else
             {
                 if (!m_Str.empty())
-                    m_Str << _T(" ");
+                    m_Str << " ";
 
                 m_Str << token;
             }
@@ -2572,9 +2572,9 @@ void ParserThread::HandleForLoopArguments()
     wxString args = m_Tokenizer.GetToken();
 
     // remove braces
-    if (args.StartsWith(_T("(")))
+    if (args.StartsWith("("))
         args = args.Mid(1, args.length() - 1);
-    if (args.EndsWith(_T(")")))
+    if (args.EndsWith(")"))
         args = args.Mid(0, args.length() - 1);
 
     // parse small tokens inside for loop head
@@ -2636,7 +2636,7 @@ void ParserThread::HandleForLoopArguments()
             else
             {
                 if (!m_Str.empty())
-                    m_Str << _T(" ");
+                    m_Str << " ";
 
                 m_Str << token;
             }
@@ -2655,7 +2655,7 @@ void ParserThread::HandleForLoopArguments()
             if (newToken && !m_TemplateArgument.IsEmpty())
                 ResolveTemplateArgs(newToken);
             else
-            {   TRACE(_T("HandleForLoopArguments() : Unable to create/add new token: ") + token); }
+            {   TRACE("HandleForLoopArguments() : Unable to create/add new token: " + token); }
 
         }
 
@@ -2867,7 +2867,7 @@ bool ParserThread::CalcEnumExpression(Token* tokenParent, long& result, wxString
         wxString token = m_Tokenizer.GetToken();
         if (token.IsEmpty())
             return false;
-        if (token == _T("\\"))
+        if (token == "\\")
             continue;
         if (token == ParserConsts::comma || token == ParserConsts::clbrace)
         {
@@ -2902,13 +2902,13 @@ bool ParserThread::CalcEnumExpression(Token* tokenParent, long& result, wxString
         }
 
         // only remaining number now
-        if (!token.StartsWith(_T("0x")))
+        if (!token.StartsWith("0x"))
             exp.AddToInfixExpression(token);
         else
         {
             long value;
             if (token.ToLong(&value, 16))
-                exp.AddToInfixExpression(wxString::Format(_T("%ld"), value));
+                exp.AddToInfixExpression(wxString::Format("%ld", value));
             else
             {
                 peek = SkipToOneOfChars(ParserConsts::commaclbrace);
@@ -2962,7 +2962,7 @@ void ParserThread::HandleTypedef()
     std::queue<wxString> components;
     // get everything on the same line
 
-    TRACE(_T("HandleTypedef() : Typedef start"));
+    TRACE("HandleTypedef() : Typedef start");
     wxString args;
     wxString token;
     wxString peek;
@@ -2973,7 +2973,7 @@ void ParserThread::HandleTypedef()
         token = m_Tokenizer.GetToken();
         peek  = m_Tokenizer.PeekToken();
 
-        TRACE(_T("HandleTypedef() : token=%s, peek=%s"), token.wx_str(), peek.wx_str());
+        TRACE("HandleTypedef() : token=%s, peek=%s", token.wx_str(), peek.wx_str());
         if (token.IsEmpty() || token == ParserConsts::semicolon)
         {
             m_Tokenizer.UngetToken();   // NOTE: preserve ';' for the next GetToken();
@@ -3017,7 +3017,7 @@ void ParserThread::HandleTypedef()
                 }
                 if ( !ReadClsNames(ancestor) )
                 {
-                    TRACE(_T("HandleTypedef() : ReadClsNames returned false."));
+                    TRACE("HandleTypedef() : ReadClsNames returned false.");
                     m_Tokenizer.GetToken(); // eat it
                 }
             }
@@ -3059,7 +3059,7 @@ void ParserThread::HandleTypedef()
                 }
                 else
                 {
-                    typ = _T("(*)");
+                    typ = "(*)";
                     token.Remove(0, 1); // remove opening parenthesis
                 }
                 args = peek;
@@ -3089,9 +3089,9 @@ void ParserThread::HandleTypedef()
             continue;
         }
 
-        TRACE(_T(" + '%s'"), token.wx_str());
+        TRACE(" + '%s'", token.wx_str());
     }
-    TRACE(_T("HandleTypedef() : Typedef done"));
+    TRACE("HandleTypedef() : Typedef done");
     m_ParsingTypedef = false;
 
     if (components.empty())
@@ -3158,7 +3158,7 @@ void ParserThread::HandleTypedef()
             tdef->m_FullType        = ancestor;
             tdef->m_BaseType        = actualAncestor;
             tdef->m_TemplateAlias   = alias;
-            TRACE(_T("The typedef alias is %s."), tdef->m_TemplateAlias.wx_str());
+            TRACE("The typedef alias is %s.", tdef->m_TemplateAlias.wx_str());
 
             if (tdef->IsValidAncestor(ancestor))
                 tdef->m_AncestorsString = ancestor;
@@ -3195,9 +3195,9 @@ bool ParserThread::ReadVarNames()
         else if (   wxIsalpha(token.GetChar(0))
                  || (token.GetChar(0) == ParserConsts::underscore_chr) )
         {
-            TRACE(_T("ReadVarNames() : Adding variable '%s' as '%s' to '%s'"),
+            TRACE("ReadVarNames() : Adding variable '%s' as '%s' to '%s'",
                   token.wx_str(), m_Str.wx_str(),
-                  (m_LastParent ? m_LastParent->m_Name.wx_str() : _T("<no-parent>")));
+                  (m_LastParent ? m_LastParent->m_Name.wx_str() : "<no-parent>"));
 
             // Detects anonymous ancestor and gives him a name based on the first found alias.
             if (m_Str.StartsWith(g_UnnamedSymbol))
@@ -3206,13 +3206,13 @@ bool ParserThread::ReadVarNames()
             Token* newToken = DoAddToken(tkVariable, token, m_Tokenizer.GetLineNumber());
             if (!newToken)
             {
-                TRACE(_T("ReadVarNames() : Unable to create/add new token: ") + token);
+                TRACE("ReadVarNames() : Unable to create/add new token: " + token);
                 break;
             }
         }
         else // unexpected
         {
-            TRACE(F(_T("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %u."),
+            TRACE(F("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                     token.wx_str(), m_Str.wx_str(), m_Tokenizer.GetFilename().wx_str(), m_Tokenizer.GetLineNumber()));
             CCLogger::Get()->DebugLog(wxString::Format("ReadVarNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                                                        token, m_Str, m_Tokenizer.GetFilename(), m_Tokenizer.GetLineNumber()));
@@ -3252,10 +3252,10 @@ bool ParserThread::ReadClsNames(wxString& ancestor)
         else if (   wxIsalpha(token.GetChar(0))
                  || (token.GetChar(0) == ParserConsts::underscore_chr) )
         {
-            TRACE(_T("ReadClsNames() : Adding variable '%s' as '%s' to '%s'"),
+            TRACE("ReadClsNames() : Adding variable '%s' as '%s' to '%s'",
                   token.wx_str(),
                   m_Str.wx_str(),
-                  (m_LastParent ? m_LastParent->m_Name.wx_str() : _T("<no-parent>")));
+                  (m_LastParent ? m_LastParent->m_Name.wx_str() : "<no-parent>"));
 
             m_Str.clear();
             m_Str = ancestor;
@@ -3270,7 +3270,7 @@ bool ParserThread::ReadClsNames(wxString& ancestor)
             Token* newToken = DoAddToken(tkTypedef, token, m_Tokenizer.GetLineNumber());
             if (!newToken)
             {
-                TRACE(_T("ReadClsNames() : Unable to create/add new token: ") + token);
+                TRACE("ReadClsNames() : Unable to create/add new token: " + token);
                 break;
             }
             else
@@ -3278,7 +3278,7 @@ bool ParserThread::ReadClsNames(wxString& ancestor)
         }
         else // unexpected
         {
-            TRACE(F(_T("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %u."),
+            TRACE(F("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                     token.wx_str(), m_Str.wx_str(), m_Tokenizer.GetFilename().wx_str(), m_Tokenizer.GetLineNumber()));
             CCLogger::Get()->DebugLog(wxString::Format("ReadClsNames() : Unexpected token '%s' for '%s', file '%s', line %u.",
                                                        token, m_Str, m_Tokenizer.GetFilename(), m_Tokenizer.GetLineNumber()));
@@ -3309,7 +3309,7 @@ bool ParserThread::GetBaseArgs(const wxString& args, wxString& baseArgs)
     // until we meet a "," or ")".
 
 
-    TRACE(_T("GetBaseArgs() : args='%s'."), args.wx_str());
+    TRACE("GetBaseArgs() : args='%s'.", args.wx_str());
     baseArgs.Alloc(args.Len() + 1);
 
     // Verify ptr is valid (still within the range of the string)
@@ -3520,18 +3520,18 @@ bool ParserThread::GetBaseArgs(const wxString& args, wxString& baseArgs)
     if (one && baseArgs.Len() > 2)
     {
         const wxChar ch = baseArgs[1];
-        if (   (ch <= _T('9') && ch >= _T('0'))             // number, 0 ~ 9
-            || baseArgs.Find(_T('"')) != wxNOT_FOUND    // string
-            || baseArgs.Find(_T('\'')) != wxNOT_FOUND ) // character
+        if (   (ch <= '9' && ch >= '0')             // number, 0 ~ 9
+            || baseArgs.Find('"') != wxNOT_FOUND    // string
+            || baseArgs.Find('\'') != wxNOT_FOUND ) // character
         {
             return false; // not function, it should be variable
         }
 
-        if (baseArgs == _T("(void)"))
-            baseArgs = _T("()");
+        if (baseArgs == "(void)")
+            baseArgs = "()";
     }
 
-    TRACE(_T("GetBaseArgs() : baseArgs='%s'."), baseArgs.wx_str());
+    TRACE("GetBaseArgs() : baseArgs='%s'.", baseArgs.wx_str());
     return true;
 }
 
@@ -3581,12 +3581,12 @@ void ParserThread::GetTemplateArgs()
 
 void ParserThread::ResolveTemplateArgs(Token* newToken)
 {
-    TRACE(_T("The variable template arguments are '%s'."), m_TemplateArgument.wx_str());
+    TRACE("The variable template arguments are '%s'.", m_TemplateArgument.wx_str());
     newToken->m_TemplateArgument = m_TemplateArgument;
     wxArrayString actuals;
     SplitTemplateActualParameters(m_TemplateArgument, actuals);
     for (size_t i=0; i<actuals.GetCount(); ++i)
-        TRACE(_T("The template actual arguments are '%s'."), actuals[i].wx_str());
+        TRACE("The template actual arguments are '%s'.", actuals[i].wx_str());
 
     newToken->m_TemplateType = actuals;
     // now resolve the template normal and actual map
@@ -3661,7 +3661,7 @@ void ParserThread::SplitTemplateActualParameters(const wxString& templateArgs, w
 
     // for debug purposes only
     for (size_t j = 0; j < n; ++j)
-        TRACE(_T("The container elements are '%s'."), container[j].wx_str());
+        TRACE("The container elements are '%s'.", container[j].wx_str());
 
     int level = 0;
     for (size_t j = 0; j < n; ++j)
@@ -3710,8 +3710,8 @@ bool ParserThread::ResolveTemplateMap(const wxString& typeStr, const wxArrayStri
             {
                 tokenFullType = token->m_FullType;
                 // we are only interested in the type name, so remove the scope qualifiers
-                if (tokenFullType.Find(_T("::")) != wxNOT_FOUND)
-                    tokenFullType = tokenFullType.substr(tokenFullType.Find(_T("::"))+2);
+                if (tokenFullType.Find("::") != wxNOT_FOUND)
+                    tokenFullType = tokenFullType.substr(tokenFullType.Find("::")+2);
                 break;
             }
         }
@@ -3734,13 +3734,13 @@ bool ParserThread::ResolveTemplateMap(const wxString& typeStr, const wxArrayStri
                 // Get the formal template argument lists
                 wxArrayString formals =  normalToken->m_TemplateType;
                 for (size_t i=0; i<formals.GetCount(); ++i)
-                    TRACE(_T("ResolveTemplateMap get the formal template arguments are '%s'."), formals[i].wx_str());
+                    TRACE("ResolveTemplateMap get the formal template arguments are '%s'.", formals[i].wx_str());
 
                 size_t n = formals.GetCount() < actuals.GetCount() ? formals.GetCount() : actuals.GetCount();
                 for (size_t i=0; i<n; ++i)
                 {
                     results[formals[i]] = actuals[i];
-                    TRACE(_T("In ResolveTemplateMap function the normal is '%s',the actual is '%s'."), formals[i].wx_str(), actuals[i].wx_str());
+                    TRACE("In ResolveTemplateMap function the normal is '%s',the actual is '%s'.", formals[i].wx_str(), actuals[i].wx_str());
                 }
             }
         }
@@ -3807,7 +3807,7 @@ bool ParserThread::IsStillAlive(cb_unused const wxString& funcInfo)
     const bool alive = !TestDestroy();
     if (!alive)
     {
-        TRACE(_T("IsStillAlive() : %s "), funcInfo.wx_str());
+        TRACE("IsStillAlive() : %s ", funcInfo.wx_str());
         free(0);
     }
     return alive;
@@ -3821,13 +3821,13 @@ void ParserThread::RefineAnonymousTypeToken(short int typeMask, const wxString& 
     Token* unnamedAncestor = TokenExists(m_Str, m_LastParent, typeMask);
     if (unnamedAncestor && unnamedAncestor->m_IsAnonymous) // Unnamed ancestor found - rename it to something useful.
     {
-        if (m_Str.Contains(_T("Union")))
-            m_Str = _T("union");
-        else if (m_Str.Contains(_T("Struct")))
-            m_Str = _T("struct");
+        if (m_Str.Contains("Union"))
+            m_Str = "union";
+        else if (m_Str.Contains("Struct"))
+            m_Str = "struct";
         else
-            m_Str = _T("tag");
-        m_Str << m_FileIdx << _T("_") << alias;
+            m_Str = "tag";
+        m_Str << m_FileIdx << "_" << alias;
         m_TokenTree->RenameToken(unnamedAncestor, m_Str);
     }
 }
@@ -3835,7 +3835,7 @@ void ParserThread::RefineAnonymousTypeToken(short int typeMask, const wxString& 
 wxString ParserThread::ReadAngleBrackets()
 {
     wxString str = m_Tokenizer.GetToken();
-    if (str != wxT("<"))
+    if (str != "<")
         return wxEmptyString;
 
     int level = 1; // brace level of '<' and '>'
@@ -3843,12 +3843,12 @@ wxString ParserThread::ReadAngleBrackets()
     while (m_Tokenizer.NotEOF())
     {
         wxString token = m_Tokenizer.GetToken();
-        if (token == _T("<"))
+        if (token == "<")
         {
             ++level;
             str << token;
         }
-        else if (token == _T(">"))
+        else if (token == ">")
         {
             --level;
             str << token;
@@ -3856,16 +3856,16 @@ wxString ParserThread::ReadAngleBrackets()
                 break;
 
         }
-        else if (token == _T("*") || token == _T("&") || token == _T(","))
+        else if (token == "*" || token == "&" || token == ",")
         {
             str << token;
         }
         else
         {
-            if (str.Last() == _T('<')) // there is no space between '(' and the following token
+            if (str.Last() == '<') // there is no space between '(' and the following token
                 str << token;
             else                       // otherwise, a space is needed
-                str << _T(" ") << token;
+                str << " " << token;
         }
 
         if (level == 0)

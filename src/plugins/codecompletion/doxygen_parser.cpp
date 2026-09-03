@@ -48,31 +48,31 @@ namespace Doxygen
     */
     const wxString DoxygenParser::Keywords[] = {
         wxEmptyString,              // no keyword
-        _T("param"),                // \param [(dir)] <parameter-name> { parameter description }
-        _T("return"), _T("result"), // \return { description of the return value }
-        _T("brief"), _T("short"),   // \brief { brief description }
-        _T("sa"), _T("see"),        // \sa { references }
+        "param",                // \param [(dir)] <parameter-name> { parameter description }
+        "return", "result", // \return { description of the return value }
+        "brief", "short",   // \brief { brief description }
+        "sa", "see",        // \sa { references }
 
         // structural commands:
-        _T("class"), _T("struct"),  //
-        _T("union"),                //
-        _T("enum"),                 //
-        _T("namespace"),            //
+        "class", "struct",  //
+        "union",                //
+        "enum",                 //
+        "namespace",            //
 
-        _T("fn"),                   //
-        _T("var"),                  //
-        _T("def"),                  //
+        "fn",                   //
+        "var",                  //
+        "def",                  //
 
-        _T("code"),                 //
-        _T("endcode"),              //
+        "code",                 //
+        "endcode",              //
 
-        _T("b"),                    //
+        "b",                    //
 
     };
 
     const int DoxygenParser::KwCount = sizeof(DoxygenParser::Keywords)/sizeof(DoxygenParser::Keywords[0]);
 
-    const wxString DoxygenParser::NewLineReplacment = _T("\n");
+    const wxString DoxygenParser::NewLineReplacment = "\n";
 
     DoxygenParser::DoxygenParser() :
         m_FoundKw(-1),
@@ -208,7 +208,7 @@ namespace Doxygen
 
         if (m_Pos + kwLen < (int)doc.size())
         {
-            if ( !IsOneOf(doc[m_Pos + kwLen], _T(" \t\n")))
+            if ( !IsOneOf(doc[m_Pos + kwLen], wxString(" \t\n")) )
                 return NO_KEYWORD;
         }
 
@@ -225,8 +225,8 @@ namespace Doxygen
         {
             int tmpPos = m_Pos;
             nestedArgsCount += GetLineArgument(doc, output);
-            HandleNewLine(doc,output,_T(' '));
-            if (doc[m_Pos] == _T('\n') || m_Pos == tmpPos)
+            HandleNewLine(doc,output,' ');
+            if (doc[m_Pos] == '\n' || m_Pos == tmpPos )
             {
                 //++i;
                 break;
@@ -244,9 +244,9 @@ namespace Doxygen
             wxChar c = doc[m_Pos];
             switch (c)
             {
-            case _T('\n'):
-            case _T(' '):
-            case _T('\t'):
+            case '\n':
+            case ' ':
+            case '\t':
                 if (gotWord)
                     return;
 
@@ -275,13 +275,13 @@ namespace Doxygen
             wxChar c = doc[m_Pos];
             switch (c)
             {
-            case _T('\n'):
+            case '\n':
                 //SkipDecorations(doc);
                 return nestedArgsCount;
                 break;
 
-            case _T('@'):
-            case _T('\\'):
+            case '@':
+            case '\\':
                 if ( IsKeywordBegin(doc) )
                 {
                     int tmpI = m_Pos;
@@ -311,15 +311,15 @@ namespace Doxygen
 
     bool DoxygenParser::IsKeywordBegin(const wxString& doc) const
     {
-        bool isSpecial = doc[m_Pos] == _T('@') || doc[m_Pos] == _T('\\');
+        bool isSpecial = doc[m_Pos] == '@' || doc[m_Pos] == '\\';
 
         if (!isSpecial)
             return false;
 
         if (m_Pos > 0)
         {
-            bool isPrevWhitespace = doc[m_Pos - 1] == _T(' ') ||
-                doc[m_Pos - 1] == _T('\n') || doc[m_Pos - 1] == _T('\t');
+            bool isPrevWhitespace = doc[m_Pos - 1] == ' ' ||
+                doc[m_Pos - 1] == '\n' || doc[m_Pos - 1] == '\t';
 
             return isPrevWhitespace;
         }
@@ -348,7 +348,7 @@ namespace Doxygen
 
     int DoxygenParser::GetEndLine(const wxString& doc) const
     {
-        size_t endLine = doc.find(_T('\n'), m_Pos);
+        size_t endLine = doc.find('\n', m_Pos);
         if (endLine == wxString::npos)
             endLine = doc.size();
         return endLine;
@@ -357,11 +357,11 @@ namespace Doxygen
     bool DoxygenParser::SkipDecorations(const wxString& doc)
     {
         //ignore everything from beginig of line to first word
-        if (doc[m_Pos] != _T('\n'))
+        if (doc[m_Pos] != '\n')
             return false;
         ++m_Pos;
 
-        while (!IsEnd(doc) && IsOneOf(doc[m_Pos], _T(" \t*/")))
+        while (!IsEnd(doc) && IsOneOf(doc[m_Pos], wxString(" \t*/")) )
             ++m_Pos;
 
         return true;
@@ -385,21 +385,21 @@ namespace Doxygen
 
 namespace HTMLTags
 {
-    static const wxString br = _T("<br>");
-    static const wxString sep = _T(" ");
-    static const wxString b1 = _T("<b>");
-    static const wxString b0 = _T("</b>");
+    static const wxString br = "<br>";
+    static const wxString sep = " ";
+    static const wxString b1 = "<b>";
+    static const wxString b0 = "</b>";
 
-    static const wxString a1 = _T("<a>");
-    static const wxString a0 = _T("</a>");
+    static const wxString a1 = "<a>";
+    static const wxString a0 = "</a>";
 
-    static const wxString i1 = _T("<i>");
-    static const wxString i0 = _T("</i>");
+    static const wxString i1 = "<i>";
+    static const wxString i0 = "</i>";
 
-    static const wxString pre1 = _T("<pre>");
-    static const wxString pre0 = _T("</pre>");
+    static const wxString pre1 = "<pre>";
+    static const wxString pre0 = "</pre>";
 
-    static const wxString nbsp(_T("&nbsp;"));
+    static const wxString nbsp("&nbsp;");
     static const wxString tab = nbsp + nbsp + nbsp;
 }
 
@@ -485,29 +485,29 @@ wxString DocumentationHelper::DoxygenToHTML(const wxString& doc)
         html += b1 + brief + b0 + br;
 
     if (params.size() > 0)
-        html += b1 + _T("Parameters:") + b0 + br + params;
+        html += b1 + "Parameters:" + b0 + br + params;
 
     if (returns.size() > 0)
-        html += b1 + _T("Returns:") + b0 + br + tab + returns + br;
+        html += b1 + "Returns:" + b0 + br + tab + returns + br;
 
     if (plainText.size()>0)
     {
         plainText.Trim(false);
         plainText.Trim(true);
-        html += b1 + _T("Description:") + b0 + br + tab;
-        plainText.Replace(_T("\n"), br + tab);
+        html += b1 + "Description:" + b0 + br + tab;
+        plainText.Replace("\n", br + tab);
         html += plainText + br;
     }
 
     if (seeAlso.size() > 0)
     {
-        html += b1 + _T("See also: ") + b0;
-        wxStringTokenizer tokenizer(seeAlso, _T(" \n\t,;"));
+        html += b1 + "See also: " + b0;
+        wxStringTokenizer tokenizer(seeAlso, " \n\t,;");
         while ( tokenizer.HasMoreTokens() )
         {
             const wxString& tok = tokenizer.GetNextToken();
             if (tok.size() > 0)
-                html += CommandToAnchor(cmdSearchAll, tok, &tok) + _T(" ");
+                html += CommandToAnchor(cmdSearchAll, tok, &tok) + " ";
         }
     }
 
@@ -532,34 +532,34 @@ wxString DocumentationHelper::ConvertArgsToAnchors(wxString args)
         return args;
 
     //removes '(' and ')'
-    wxStringTokenizer tokenizer(args.SubString(1,args.find_last_of(_T(')'))-1), _T(","));
+    wxStringTokenizer tokenizer(args.SubString(1,args.find_last_of(')')-1), ",");
     args.clear();
     while ( tokenizer.HasMoreTokens() )
     {
         wxString tok = tokenizer.GetNextToken();
         args += ConvertTypeToAnchor(tok);
         if (tokenizer.HasMoreTokens())
-            args += _T(", ");
+            args += ", ";
     }
-    return _T('(') + args +_T(')');
+    return '(' + args +')';
 }
 
 //! \return type
 wxString DocumentationHelper::ExtractTypeAndName(wxString tok, wxString* outName)
 {
     // remove default argument
-    size_t eqPos = tok.Find(_T('='));
+    size_t eqPos = tok.Find('=');
     if (eqPos != wxString::npos)
         tok.resize(eqPos);
 
-    tok.Replace(_T("*"), _T(" "),true); //remove all '*'
-    tok.Replace(_T("&"), _T(" "),true); //remove all '&'
-    if (tok.GetChar(0) != _T(' '))
-        tok.insert(0u, _T(" ")); //it will be easer to find " const " and " volatile "
+    tok.Replace("*", " ",true); //remove all '*'
+    tok.Replace("&", " ",true); //remove all '&'
+    if (tok.GetChar(0) != ' ')
+        tok.insert(0u, " "); //it will be easer to find " const " and " volatile "
 
     //remove cv:
-    tok.Replace(_T(" const "), _T(" "),true);
-    tok.Replace(_T(" volatile "), _T(" "),true);
+    tok.Replace(" const ", " ",true);
+    tok.Replace(" volatile ", " ",true);
     tok.Trim(true);
     //tok.Trim(false);
 
@@ -567,7 +567,7 @@ wxString DocumentationHelper::ExtractTypeAndName(wxString tok, wxString* outName
     if (!outName)
         outName = &_outName;
 
-    static const wxString whitespace = _T(" \n\t");
+    static const wxString whitespace = " \n\t";
     size_t found = tok.find_last_of(whitespace);
     if (found != wxString::npos)
     {
@@ -602,17 +602,17 @@ wxString DocumentationHelper::CommandToAnchor(Command cmd, const wxString& name,
 {
     if (args)
     {
-        return _T("<a href=\"") + commandTag + wxString::Format(_T("%i"), (int)cmd) +
-               separatorTag + *args + _T("\">") + name + _T("</a>");
+        return "<a href=\"" + commandTag + wxString::Format("%i", (int)cmd) +
+               separatorTag + *args + "\">" + name + "</a>";
     }
 
-    return _T("<a href=\"") + commandTag + wxString::Format(_T("%i"), (int)cmd) +
-           _T("\">") + name + _T("</a>");
+    return "<a href=\"" + commandTag + wxString::Format("%i", (int)cmd) +
+           "\">" + name + "</a>";
 }
 
 wxString DocumentationHelper::CommandToAnchorInt(Command cmd, const wxString& name, int arg0)
 {
-    const wxString& tmp = wxString::Format(_T("%i"),arg0);
+    const wxString& tmp = wxString::Format("%i",arg0);
     return CommandToAnchor(cmd, name, &tmp);
 }
 
@@ -638,8 +638,8 @@ DocumentationHelper::Command DocumentationHelper::HrefToCommand(const wxString& 
     return (Command)(command);
 }
 
-const wxChar   DocumentationHelper::separatorTag = _T('+');
-const wxString DocumentationHelper::commandTag = _T("cmd=");
+const wxChar   DocumentationHelper::separatorTag = '+';
+const wxString DocumentationHelper::commandTag = "cmd=";
 
 DocumentationHelper::DocumentationHelper(CodeCompletion* cc) :
     m_CC(cc),
@@ -680,12 +680,12 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
         return wxEmptyString;
     ColourManager *colours = Manager::Get()->GetColourManager();
 
-    wxString html = _T("<html><body bgcolor=\"");
-    html += colours->GetColour(wxT("cc_docs_back")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\" text=\"");
-    html += colours->GetColour(wxT("cc_docs_fore")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\" link=\"");
-    html += colours->GetColour(wxT("cc_docs_link")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\">");
+    wxString html = "<html><body bgcolor=\"";
+    html += colours->GetColour("cc_docs_back").GetAsString(wxC2S_HTML_SYNTAX) + "\" text=\"";
+    html += colours->GetColour("cc_docs_fore").GetAsString(wxC2S_HTML_SYNTAX) + "\" link=\"";
+    html += colours->GetColour("cc_docs_link").GetAsString(wxC2S_HTML_SYNTAX) + "\">";
 
-    html += _T("<a name=\"top\"></a>");
+    html += "<a name=\"top\"></a>";
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
@@ -717,9 +717,9 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
         html += ConvertTypeToAnchor(token->m_FullType) + sep + b1 + token->m_Name + b0;
         html += ConvertArgsToAnchors(token->GetFormattedArgs());
         if (token->m_IsConst)
-            html += _T(" const");
+            html += " const";
         if (token->m_IsNoExcept)
-            html += _T(" noexcept");
+            html += " noexcept";
         html += br;
         break;
 
@@ -765,38 +765,38 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
 
     //add kind:
     if (token->m_TokenKind != tkUndefined)
-        html += i1 + _T("<font color=\"green\" size=3>") + _T("(") +
-            token->GetTokenKindString() +_T(")") + _T("</font>") + i0 + br;
+        html += i1 + "<font color=\"green\" size=3>" + "(" +
+            token->GetTokenKindString() + ")" + "</font>" + i0 + br;
 
     html += DoxygenToHTML(doxyDoc);
 
     //add go to declaration / implementation
     {
-        const wxString& arg0 = wxString::Format(_T("%i"), token->m_Index);
+        const wxString& arg0 = wxString::Format("%i", token->m_Index);
 
-        html += br + br + CommandToAnchor(cmdOpenDecl, _T("Open declaration"), &arg0);
+        html += br + br + CommandToAnchor(cmdOpenDecl, "Open declaration", &arg0);
         if ((token->m_TokenKind & tkAnyFunction) && token->m_ImplLine > 0)
-            html += br + CommandToAnchor(cmdOpenImpl, _T("Open implementation"), &arg0);
+            html += br + CommandToAnchor(cmdOpenImpl, "Open implementation", &arg0);
     }
 
     //add details:
     switch (token->m_TokenKind)
     {
         case tkClass:
-            html += br + b1 + _T("Members:") + b0;
+            html += br + b1 + "Members:" + b0;
             for (TokenIdxSet::iterator it = token->m_Children.begin(); it != token->m_Children.end(); ++it)
             {
                 const Token* t2 = tree->at(*it);
                 if (t2 && !t2->m_Name.IsEmpty())
                 {
                     html += br + sep + CommandToAnchorInt(cmdDisplayToken, t2->m_Name, *it) +
-                        t2->GetStrippedArgs() + _T(": ") + t2->m_FullType;
+                        t2->GetStrippedArgs() + ": " + t2->m_FullType;
                 }
             }
             break;
 
         case tkEnum:
-            html += br + b1 + _T("Values:") + b0;
+            html += br + b1 + "Values:" + b0;
             for (TokenIdxSet::iterator it = token->m_Children.begin(); it != token->m_Children.end(); ++it)
             {
                 const Token* t2 = tree->at(*it);
@@ -827,13 +827,13 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
 
     // Append 'back' link:
     if (m_LastTokenIdx >= 0)
-        html += CommandToAnchorInt(cmdDisplayToken, _T("Back"), m_LastTokenIdx);
+        html += CommandToAnchorInt(cmdDisplayToken, "Back", m_LastTokenIdx);
 
     // Append 'close' link:
-    html += _T(" ") + CommandToAnchor(cmdClose, _T("Close"));
-    html += _T(" <a href=\"#top\">Top</a> ");
+    html += " " + CommandToAnchor(cmdClose, "Close");
+    html += " <a href=\"#top\">Top</a> ";
 
-    html += _T("</body></html>");
+    html += "</body></html>";
 
     return html;
 }
@@ -848,14 +848,14 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
     if (tokensIdx.size() == 1)
         return GenerateHTML(*tokensIdx.begin(),tree);
     ColourManager *colours = Manager::Get()->GetColourManager();
-    wxString html = _T("<html><body bgcolor=\"");
-    html += colours->GetColour(wxT("cc_docs_back")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\" text=\"");
-    html += colours->GetColour(wxT("cc_docs_fore")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\" link=\"");
-    html += colours->GetColour(wxT("cc_docs_link")).GetAsString(wxC2S_HTML_SYNTAX) + _T("\">");
+    wxString html = "<html><body bgcolor=\"";
+    html += colours->GetColour(wxT("cc_docs_back")).GetAsString(wxC2S_HTML_SYNTAX) + "\" text=\"";
+    html += colours->GetColour(wxT("cc_docs_fore")).GetAsString(wxC2S_HTML_SYNTAX) + "\" link=\"";
+    html += colours->GetColour(wxT("cc_docs_link")).GetAsString(wxC2S_HTML_SYNTAX) + "\">";
 
-    html += _T("<a name=\"top\"></a>");
+    html += "<a name=\"top\"></a>";
 
-    html += _T("Multiple matches, please select one:<br>");
+    html += "Multiple matches, please select one:<br>";
     TokenIdxSet::const_iterator it = tokensIdx.begin();
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
@@ -866,25 +866,25 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
 
         html += token->GetNamespace() + CommandToAnchorInt(cmdDisplayToken, token->m_Name, token->m_Index);
         html += nbsp + nbsp + token->GetTokenKindString();
-        html += _T("<br>");
+        html += "<br>";
 
         ++it;
     }
 
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
 
-    html += _T("<br>");
+    html += "<br>";
 
     //Append 'back' link:
     if (m_LastTokenIdx >= 0)
-        html += CommandToAnchorInt(cmdDisplayToken, _T("Back"), m_LastTokenIdx);
+        html += CommandToAnchorInt(cmdDisplayToken, "Back", m_LastTokenIdx);
 
 
     //Append 'close' link:
-    html += _T(" ") + CommandToAnchor(cmdClose, _T("Close"));
-    html += _T(" <a href=\"#top\">Top</a> ");
+    html += " " + CommandToAnchor(cmdClose, "Close");
+    html += " <a href=\"#top\">Top</a> ";
 
-    html += _T("</body></html>");
+    html += "</body></html>";
 
     return html;
 }
@@ -892,9 +892,9 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
 void DocumentationHelper::RereadOptions(ConfigManager* cfg)
 {
     if (!cfg)
-        cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
+        cfg = Manager::Get()->GetConfigManager("code_completion");
 
-    m_Enabled = cfg->ReadBool(_T("/use_documentation_helper"), true);
+    m_Enabled = cfg->ReadBool("/use_documentation_helper", true);
 
     // Apply changes
     if (m_Enabled)
@@ -906,9 +906,9 @@ void DocumentationHelper::RereadOptions(ConfigManager* cfg)
 void DocumentationHelper::WriteOptions(ConfigManager* cfg)
 {
     if (!cfg)
-        cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
+        cfg = Manager::Get()->GetConfigManager("code_completion");
 
-    cfg->Write(_T("/use_documentation_helper"), m_Enabled);
+    cfg->Write("/use_documentation_helper", m_Enabled);
 }
 
 void DocumentationHelper::SaveTokenIdx()
@@ -939,8 +939,8 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
     case cmdSearch:
     case cmdSearchAll:
         {
-            size_t opb = args.find_last_of(_T('('));
-            size_t clb = args.find_last_of(_T(')'));
+            size_t opb = args.find_last_of('(');
+            size_t clb = args.find_last_of(')');
             int kindToSearch = tkUndefined;
             if (opb != wxString::npos && clb != wxString::npos)
             {
@@ -949,7 +949,7 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
             }
 
             TokenIdxSet result;
-            size_t scpOp = args.rfind(_T("::"));
+            size_t scpOp = args.rfind("::");
             if (scpOp != wxString::npos)
             {
                 //it may be function
@@ -1003,9 +1003,9 @@ wxString DocumentationHelper::OnDocumentationLink(wxHtmlLinkEvent& event, bool& 
 
     case cmdNone:
     default:
-        if (href.size()>1 && href[0] == _T('#'))
+        if (href.size()>1 && href[0] == '#')
             event.Skip(); // go to anchor
-        else if (href.StartsWith(_T("www.")) || href.StartsWith(_T("http://")))
+        else if (href.StartsWith("www.") || href.StartsWith("http://"))
             wxLaunchDefaultBrowser(href);
     }
     // don't skip this event

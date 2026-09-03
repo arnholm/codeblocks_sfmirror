@@ -29,7 +29,7 @@
 // this auto-registers the plugin
 namespace
 {
-    PluginRegistrant<ClassWizard> reg(_T("ClassWizard"));
+    PluginRegistrant<ClassWizard> reg("ClassWizard");
 
     int idLaunch = wxNewId();
 }
@@ -40,9 +40,9 @@ END_EVENT_TABLE()
 
 ClassWizard::ClassWizard()
 {
-    if(!Manager::LoadResource(_T("classwizard.zip")))
+    if(!Manager::LoadResource("classwizard.zip"))
     {
-        NotifyMissingFile(_T("classwizard.zip"));
+        NotifyMissingFile("classwizard.zip");
     }
 }
 
@@ -86,10 +86,10 @@ void ClassWizard::BuildMenu(wxMenuBar* menuBar)
 			m_FileNewMenu->Insert(2, idLaunch, _("Class..."));
         }
 		else
-			Manager::Get()->GetLogManager()->DebugLog(_T("Could not find File->New menu!"));
+			Manager::Get()->GetLogManager()->DebugLog("Could not find File->New menu!");
     }
     else
-        Manager::Get()->GetLogManager()->DebugLog(_T("Could not find File menu!"));
+        Manager::Get()->GetLogManager()->DebugLog("Could not find File menu!");
 }
 
 void ClassWizard::OnLaunch(cb_unused wxCommandEvent& event)

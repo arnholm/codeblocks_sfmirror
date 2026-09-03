@@ -21,10 +21,9 @@ public:
     ~CCOptionsProjectDlg() override;
 
     wxString GetTitle() const override { return _("C/C++ parser options"); }
-    wxString GetBitmapBaseName() const override { return _T("generic-plugin"); }
+    wxString GetBitmapBaseName() const override { return "generic-plugin"; }
     void OnApply() override;
     void OnCancel() override {}
-
 protected:
     void OnAdd(wxCommandEvent& event);
     void OnEdit(wxCommandEvent& event);

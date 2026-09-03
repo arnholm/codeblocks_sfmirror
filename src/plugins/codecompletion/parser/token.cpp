@@ -81,17 +81,17 @@ wxString Token::DisplayName() const
 {
     wxString result;
     if      (m_TokenKind == tkClass)
-        return result << _T("class ")     << m_Name << m_BaseArgs << _T(" {...}");
+        return result << "class "     << m_Name << m_BaseArgs << " {...}";
     else if (m_TokenKind == tkNamespace)
-        return result << _T("namespace ") << m_Name << _T(" {...}");
+        return result << "namespace " << m_Name << " {...}";
     else if (m_TokenKind == tkEnum)
-        return result << _T("enum ")      << m_Name << _T(" {...}");
+        return result << "enum "    << m_Name << " {...}";
     else if (m_TokenKind == tkTypedef)
     {
-        result << _T("typedef");
+        result << "typedef";
 
         if (!m_FullType.IsEmpty())
-            result << _T(" ") << m_FullType;
+            result << " " << m_FullType;
 
         // we support 2 cases of typedef'd function pointers, and in each case the type is stored
         // as below:
@@ -103,29 +103,29 @@ wxString Token::DisplayName() const
         if (result.Find('*', true) != wxNOT_FOUND && result.Last() == ')')
         {
             result.RemoveLast();
-            return result << m_Name << _T(")") <<  GetFormattedArgs();
+            return result << m_Name << ")" <<  GetFormattedArgs();
         }
 
         if (!m_TemplateArgument.IsEmpty())
             result << m_TemplateArgument;
 
-        return result << _T(" ") << m_Name;
+        return result << " " << m_Name;
     }
     else if (m_TokenKind == tkMacroDef)
     {
-        result << _T("#define ") << m_Name << GetFormattedArgs();
+        result << "#define " << m_Name << GetFormattedArgs();
         if (!m_FullType.IsEmpty())
-            result << _T(" ") << m_FullType;
+            result << " " << m_FullType;
 
         return result;
     }
 
     // else
     if (!m_FullType.IsEmpty())
-        result << m_FullType << m_TemplateArgument << _T(" ");
+        result << m_FullType << m_TemplateArgument << " ";
 
     if (m_TokenKind == tkEnumerator)
-        return result << GetNamespace() << m_Name << _T("=") << GetFormattedArgs();
+        return result << GetNamespace() << m_Name << "=" << GetFormattedArgs();
 
     return result << GetNamespace() << m_Name << GetStrippedArgs();
 }
@@ -135,44 +135,44 @@ bool Token::IsValidAncestor(const wxString& ancestor)
     switch (ancestor.Len())
     {
     case 3:
-        if (ancestor == _T("int"))
+        if (ancestor == "int")
             return false;
         break;
 
     case 4:
-        if (   ancestor == _T("void")
-            || ancestor == _T("bool")
-            || ancestor == _T("long")
-            || ancestor == _T("char") )
+        if (   ancestor == "void"
+            || ancestor == "bool"
+            || ancestor == "long"
+            || ancestor == "char" )
         {
             return false;
         }
         break;
 
     case 5:
-        if (   ancestor == _T("short")
-            || ancestor == _T("float") )
+        if (   ancestor == "short"
+            || ancestor == "float" )
         {
             return false;
         }
         break;
 
     case 6:
-        if (   ancestor == _T("size_t")
-            || ancestor == _T("double") )
+        if (   ancestor == "size_t"
+            || ancestor == "double" )
         {
             return false;
         }
         break;
 
     case 10:
-        if (ancestor == _T("value_type"))
+        if (ancestor == "value_type")
             return false;
         break;
 
     default:
-        if (   ancestor.StartsWith(_T("unsigned"))
-            || ancestor.StartsWith(_T("signed")) )
+        if (   ancestor.StartsWith("unsigned")
+            || ancestor.StartsWith("signed") )
         {
             return false;
         }
@@ -199,7 +199,7 @@ wxString Token::GetImplFilename() const
 wxString Token::GetFormattedArgs() const
 {
     wxString args(m_Args);
-    args.Replace(_T("\n"), wxEmptyString);
+    args.Replace("\n", wxEmptyString);
     return args;
 }
 
@@ -216,22 +216,22 @@ wxString Token::GetStrippedArgs() const
     for (size_t i = 0; i < m_Args.Len(); ++i)
     {
         const wxChar ch = m_Args[i];
-        if (ch == _T('\n'))
+        if (ch == '\n')
             continue;
-        else if (ch == _T('='))
+        else if (ch == '=')
         {
             skipDefaultValue = true;
             args.Trim();
         }
-        else if (ch == _T(','))
+        else if (ch == ',')
             skipDefaultValue = false;
 
         if (!skipDefaultValue)
             args << ch;
     }
 
-    if (args.Last() != _T(')'))
-        args << _T(')');
+    if (args.Last() != ')')
+        args << ')';
 
     return args;
 }
@@ -252,7 +252,7 @@ bool Token::MatchesFiles(const TokenFileSet& files)
 
 wxString Token::GetNamespace() const
 {
-    const wxString dcolon(_T("::"));
+    const wxString dcolon("::");
     wxString res;
     Token* parentToken = m_TokenTree->at(m_ParentIndex);
     while (parentToken)
@@ -312,20 +312,20 @@ wxString Token::GetTokenKindString() const
 {
     switch (m_TokenKind)
     {
-        case tkClass:           return _T("class");
-        case tkNamespace:       return _T("namespace");
-        case tkTypedef:         return _T("typedef");
-        case tkEnum:            return _T("enum");
-        case tkEnumerator:      return _T("enumerator");
-        case tkFunction:        return _T("function");
-        case tkConstructor:     return _T("constructor");
-        case tkDestructor:      return _T("destructor");
-        case tkMacroDef:        return _T("macro definition");
-        case tkMacroUse:        return _T("macro usage");
-        case tkVariable:        return _T("variable");
-        case tkAnyContainer:    return _T("any container");
-        case tkAnyFunction:     return _T("any function");
-        case tkUndefined:       return _T("undefined");
+        case tkClass:           return "class";
+        case tkNamespace:       return "namespace";
+        case tkTypedef:         return "typedef";
+        case tkEnum:            return "enum";
+        case tkEnumerator:      return "enumerator";
+        case tkFunction:        return "function";
+        case tkConstructor:     return "constructor";
+        case tkDestructor:      return "destructor";
+        case tkMacroDef:        return "macro definition";
+        case tkMacroUse:        return "macro usage";
+        case tkVariable:        return "variable";
+        case tkAnyContainer:    return "any container";
+        case tkAnyFunction:     return "any function";
+        case tkUndefined:       return "undefined";
         default:                return wxEmptyString; // tkUndefined
     }
 }
@@ -334,10 +334,10 @@ wxString Token::GetTokenScopeString() const
 {
     switch (m_Scope)
     {
-        case tsPrivate:   return _T("private");
-        case tsProtected: return _T("protected");
-        case tsPublic:    return _T("public");
-        case tsUndefined: return _T("undefined");
+        case tsPrivate:   return "private";
+        case tsProtected: return "protected";
+        case tsPublic:    return "public";
+        case tsUndefined: return "undefined";
         default:          return wxEmptyString;
     }
 }

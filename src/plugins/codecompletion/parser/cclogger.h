@@ -70,31 +70,31 @@ private:
     // TRACKING MUTXES
     // [1] Implementations for tracking mutexes:
     #define THREAD_LOCKER_MTX_LOCK(NAME)                                         \
-        CCLogger::Get()->DebugLog(F(_T("%s.Lock() : %s(), %s, %d"),              \
+        CCLogger::Get()->DebugLog(F("%s.Lock() : %s(), %s, %d",              \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_MTX_LOCK_SUCCESS(NAME)                                 \
-        CCLogger::Get()->DebugLog(F(_T("%s.Lock().Success() : %s(), %s, %d"),    \
+        CCLogger::Get()->DebugLog(F("%s.Lock().Success() : %s(), %s, %d",    \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_MTX_UNLOCK(NAME)                                       \
-        CCLogger::Get()->DebugLog(F(_T("%s.Unlock() : %s(), %s, %d"),            \
+        CCLogger::Get()->DebugLog(F("%s.Unlock() : %s(), %s, %d",            \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_MTX_UNLOCK_SUCCESS(NAME)                               \
-        CCLogger::Get()->DebugLog(F(_T("%s.Unlock().Success() : %s(), %s, %d"),  \
+        CCLogger::Get()->DebugLog(F("%s.Unlock().Success() : %s(), %s, %d",  \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_MTX_FAIL(NAME)                                         \
-        CCLogger::Get()->DebugLog(F(_T("%s.Fail() : %s(), %s, %d"),              \
+        CCLogger::Get()->DebugLog(F("%s.Fail() : %s(), %s, %d",              \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
@@ -124,19 +124,19 @@ private:
     // TRACKING CRITICAL SECIONS
     // [2] Implementations for tracking critical sections:
     #define THREAD_LOCKER_CS_ENTER(NAME)                                         \
-        CCLogger::Get()->DebugLog(F(_T("%s.Enter() : %s(), %s, %d"),             \
+        CCLogger::Get()->DebugLog(F("%s.Enter() : %s(), %s, %d",             \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_CS_ENTERED(NAME)                                       \
-        CCLogger::Get()->DebugLog(F(_T("%s.Entered() : %s(), %s, %d"),           \
+        CCLogger::Get()->DebugLog(F("%s.Entered() : %s(), %s, %d",           \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \
                                     __LINE__))
     #define THREAD_LOCKER_CS_LEAVE(NAME)                                         \
-        CCLogger::Get()->DebugLog(F(_T("%s.Leave() : %s(), %s, %d"),             \
+        CCLogger::Get()->DebugLog(F("%s.Leave() : %s(), %s, %d",             \
                                     wxString(#NAME, wxConvUTF8).wx_str(),        \
                                     wxString(__FUNCTION__, wxConvUTF8).wx_str(), \
                                     wxString(__FILE__, wxConvUTF8).wx_str(),     \

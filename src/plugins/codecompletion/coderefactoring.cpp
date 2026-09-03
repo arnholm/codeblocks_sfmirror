@@ -72,7 +72,7 @@ public:
     {
         wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
         wxBoxSizer* infoSizer = new wxBoxSizer(wxHORIZONTAL);
-        const wxBitmap iconBmp = wxArtProvider::GetBitmap(wxT("core/find"), wxART_BUTTON);
+        const wxBitmap iconBmp = wxArtProvider::GetBitmap("core/find", wxART_BUTTON);
         wxStaticBitmap* findIco = new wxStaticBitmap(this, wxID_ANY, iconBmp, wxDefaultPosition,
                                                      wxSize(iconBmp.GetWidth(),
                                                             iconBmp.GetHeight()));

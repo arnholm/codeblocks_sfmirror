@@ -98,16 +98,16 @@ size_t ParseManagerBase::FindAIMatches(TokenTree*                  tree,
         return 0;
 
     if (g_DebugSmartSense)
-        CCLogger::Get()->DebugLog(_T("FindAIMatches() ----- FindAIMatches - enter -----"));
+        CCLogger::Get()->DebugLog("FindAIMatches() ----- FindAIMatches - enter -----");
 
-    TRACE(_T("ParseManager::FindAIMatches()"));
+    TRACE("ParseManager::FindAIMatches()");
 
     // pop top component
     ParserComponent parser_component = components.front();
     components.pop();
 
     // handle the special keyword "this".
-    if ((parentTokenIdx != -1) && (parser_component.component == _T("this")))
+    if ((parentTokenIdx != -1) && (parser_component.component == "this"))
     {
         // this will make the AI behave like it's the previous scope (or the current if no previous scope)
 
@@ -146,7 +146,7 @@ size_t ParseManagerBase::FindAIMatches(TokenTree*                  tree,
         if (!token)
         {
             if (g_DebugSmartSense)
-                CCLogger::Get()->DebugLog(_T("FindAIMatches() Token is NULL?!"));
+                CCLogger::Get()->DebugLog("FindAIMatches() Token is NULL?!");
             continue;
         }
 
@@ -213,7 +213,7 @@ size_t ParseManagerBase::FindAIMatches(TokenTree*                  tree,
                     {
                         temp_search_scope.insert(parent->m_Index);
                         if (g_DebugSmartSense)
-                            CCLogger::Get()->DebugLog(_T("FindAIMatches() Implicit search scope added:") + parent->m_Name);
+                            CCLogger::Get()->DebugLog("FindAIMatches() Implicit search scope added:" + parent->m_Name);
                     }
                 }
             }
@@ -294,7 +294,7 @@ size_t ParseManagerBase::FindAIMatches(TokenTree*                  tree,
     }
 
     if (g_DebugSmartSense)
-        CCLogger::Get()->DebugLog(_T("FindAIMatches() ----- FindAIMatches - leave -----"));
+        CCLogger::Get()->DebugLog("FindAIMatches() ----- FindAIMatches - leave -----");
 
     return result.size();
 }
@@ -324,8 +324,8 @@ void ParseManagerBase::FindCurrentFunctionScope(TokenTree*        tree,
         if (g_DebugSmartSense)
         {
             const Token* parent = tree->at(token->m_ParentIndex);
-            CCLogger::Get()->DebugLog(_T("AI() Adding search namespace: ") +
-                                      (parent ? parent->m_Name : _T("Global namespace")));
+            CCLogger::Get()->DebugLog("AI() Adding search namespace: " +
+                                      (parent ? parent->m_Name : "Global namespace"));
         }
     }
 
@@ -358,7 +358,7 @@ void ParseManagerBase::GetCallTipHighlight(const wxString& calltip,
                                            int*            end,
                                            int             typedCommas)
 {
-    TRACE(_T("ParseManagerBase::GetCallTipHighlight()"));
+    TRACE("ParseManagerBase::GetCallTipHighlight()");
 
     int pos = 0;
     int paramsCloseBracket = calltip.length() - 1;
@@ -408,13 +408,13 @@ int ParseManagerBase::FindFunctionOpenParenthesis(const wxString& calltip)
     for (size_t i = calltip.length(); i > 0; --i)
     {
         wxChar c = calltip[i - 1];
-        if (c == wxT('('))
+        if (c == '(')
         {
             --nest;
             if (nest == 0)
             return i - 1;
         }
-        else if (c == wxT(')'))
+        else if (c == ')')
             ++nest;
     }
     return -1;
@@ -433,8 +433,8 @@ wxString ParseManagerBase::GetCCToken(wxString&        line,
     unsigned int startAt = FindCCTokenStart(line);
     wxString res = GetNextCCToken(line, startAt, tokenOperatorType);
 
-    TRACE(_T("GetCCToken() : FindCCTokenStart returned %u \"%s\""), startAt, line.wx_str());
-    TRACE(_T("GetCCToken() : GetNextCCToken returned %u \"%s\""), startAt, res.wx_str());
+    TRACE("GetCCToken() : FindCCTokenStart returned %u \"%s\"", startAt, line.wx_str());
+    TRACE("GetCCToken() : GetNextCCToken returned %u \"%s\"", startAt, res.wx_str());
 
 
     if (startAt == line.Len())
@@ -471,7 +471,7 @@ wxString ParseManagerBase::GetCCToken(wxString&        line,
             line.Clear();
     }
 
-    TRACE(_T("GetCCToken() : Left \"%s\""), line.wx_str());
+    TRACE("GetCCToken() : Left \"%s\"", line.wx_str());
 
     if (tokenOperatorType == otOperatorParentheses)
         tokenType = pttFunction;
@@ -550,7 +550,7 @@ unsigned int ParseManagerBase::FindCCTokenStart(const wxString& line)
 
     startAt = AfterWhitespace(startAt, line);
 
-    TRACE(_T("FindCCTokenStart() : Starting at %u \"%s\""), startAt, line.Mid(startAt).wx_str());
+    TRACE("FindCCTokenStart() : Starting at %u \"%s\"", startAt, line.Mid(startAt).wx_str());
 
     return startAt;
 }
@@ -572,13 +572,13 @@ wxString ParseManagerBase::GetNextCCToken(const wxString& line,
         {
             if (line.GetChar(startAt) == '(')
                 ++nest;
-            if (line.GetChar(startAt) == _T('*'))
+            if (line.GetChar(startAt) == '*')
                 tokenOperatorType = otOperatorStar;
             ++startAt;
         }
     }
 
-    TRACE(_T("GetNextCCToken() : at %u (%c): res=%s"), startAt, line.GetChar(startAt), res.wx_str());
+    TRACE("GetNextCCToken() : at %u (%c): res=%s", startAt, line.GetChar(startAt), res.wx_str());
 
     while (InsideToken(startAt, line))
     {
@@ -596,14 +596,14 @@ wxString ParseManagerBase::GetNextCCToken(const wxString& line,
         ++startAt;
     }
 
-    TRACE(_T("GetNextCCToken() : Done nest: at %u (%c): res=%s"), startAt, line.GetChar(startAt), res.wx_str());
+    TRACE("GetNextCCToken() : Done nest: at %u (%c): res=%s", startAt, line.GetChar(startAt), res.wx_str());
 
     startAt = AfterWhitespace(startAt, line);
     if (IsOpeningBracket(startAt, line))
     {
-        if (line.GetChar(startAt) == _T('('))
+        if (line.GetChar(startAt) == '(')
             tokenOperatorType = otOperatorParentheses;
-        else if (line.GetChar(startAt) == _T('['))
+        else if (line.GetChar(startAt) == '[')
             tokenOperatorType = otOperatorSquare;
         ++nest;
         while (   (startAt < line.Len()-1)
@@ -626,7 +626,7 @@ wxString ParseManagerBase::GetNextCCToken(const wxString& line,
             if (IsOpeningBracket(startAt, line))
                 ++nest;
             //NOTE: do not skip successive closing brackets. Eg,
-            // "GetConfigManager(_T("code_completion"))->ReadBool"
+            // "GetConfigManager("code_completion")->ReadBool"
             //                                        ^
             if (IsClosingBracket(startAt, line))
             {
@@ -639,7 +639,7 @@ wxString ParseManagerBase::GetNextCCToken(const wxString& line,
     if (IsOperatorBegin(startAt, line))
         ++startAt;
 
-    TRACE(_T("GetNextCCToken() : Return at %u (%c): res=%s"), startAt, line.GetChar(startAt), res.wx_str());
+    TRACE("GetNextCCToken() : Return at %u (%c): res=%s", startAt, line.GetChar(startAt), res.wx_str());
 
     return res;
 }
@@ -683,7 +683,7 @@ size_t ParseManagerBase::BreakUpComponents(const wxString&              actual,
     // break up components of phrase
     if (g_DebugSmartSense)
         CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Breaking up '%s'", statement));
-    TRACE(_T("ParseManagerBase::BreakUpComponents()"));
+    TRACE("ParseManagerBase::BreakUpComponents()");
 
     while (true)
     {
@@ -700,16 +700,16 @@ size_t ParseManagerBase::BreakUpComponents(const wxString&              actual,
             switch (tokenType)
             {
                 case (pttFunction):
-                {   tokenTypeString = _T("Function");   break; }
+                {   tokenTypeString = "Function";  break; }
                 case (pttClass):
-                {   tokenTypeString = _T("Class");      break; }
+                {   tokenTypeString = "Class";      break; }
                 case (pttNamespace):
-                {   tokenTypeString = _T("Namespace");  break; }
+                {   tokenTypeString = "Namespace";  break; }
                 case (pttSearchText):
-                {   tokenTypeString = _T("SearchText"); break; }
+                {   tokenTypeString = "SearchText"; break; }
                 case (pttUndefined):
                 default:
-                {   tokenTypeString = _T("Undefined");         }
+                {   tokenTypeString = "Undefined";         }
             }
             CCLogger::Get()->DebugLog(wxString::Format("BreakUpComponents() Found component: '%s' (%s)",
                                                        tok, tokenTypeString));
@@ -756,7 +756,7 @@ size_t ParseManagerBase::ResolveExpression(TokenTree*                  tree,
         ParserComponent subComponent = components.front();
         components.pop();
         wxString searchText = subComponent.component;
-        if (searchText == _T("this"))
+        if (searchText == "this")
         {
             initialScope.erase(-1);
             TokenIdxSet tempInitialScope = initialScope;
@@ -976,7 +976,7 @@ void ParseManagerBase::AddConstructors(TokenTree *tree, const TokenIdxSet& sourc
             {
                 const Token* tk = tree->at(*chIt);
                 if (   tk && (   tk->m_TokenKind == tkConstructor
-                              || (tk->m_IsOperator && tk->m_Name.EndsWith(wxT("()"))) )
+                              || (tk->m_IsOperator && tk->m_Name.EndsWith("()")) )
                     && (tk->m_Scope == tsPublic || tk->m_Scope == tsUndefined) )
                 {
                     dest.insert(*chIt);
@@ -1017,13 +1017,13 @@ void ParseManagerBase::ResolveOperator(TokenTree*          tree,
     switch(tokenOperatorType)
     {
         case otOperatorParentheses:
-            operatorStr = _T("operator()"); break;
+            operatorStr = "operator()"; break;
         case otOperatorSquare:
-            operatorStr = _T("operator[]"); break;
+            operatorStr = "operator[]"; break;
         case otOperatorPointer:
-            operatorStr = _T("operator->"); break;
+            operatorStr = "operator->"; break;
         case otOperatorStar:
-            operatorStr = _T("operator*"); break;
+            operatorStr = "operator*"; break;
         case otOperatorUndefined:
         default:
             break;
@@ -1176,7 +1176,7 @@ void ParseManagerBase::AddTemplateAlias(TokenTree*         tree,
     {
         actualTypeStr = it->second;
 
-        if (actualTypeStr.Last() == _T('&') || actualTypeStr.Last() == _T('*'))
+        if (actualTypeStr.Last() == '&' || actualTypeStr.Last() == '*')
             actualTypeStr.RemoveLast();
 
         TokenIdxSet actualTypeResult;
@@ -1220,7 +1220,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*      tree,
                                            bool            isPrefix,
                                            short int       kindMask)
 {
-    TRACE(_T("ParseManagerBase::GenerateResultSet_1()"));
+    TRACE("ParseManagerBase::GenerateResultSet_1()");
 
     Token* parent = tree->at(parentIdx);
     if (g_DebugSmartSense)
@@ -1401,7 +1401,7 @@ size_t ParseManagerBase::GenerateResultSet(TokenTree*          tree,
 {
     if (!tree) return 0;
 
-    TRACE(_T("ParseManagerBase::GenerateResultSet_2()"));
+    TRACE("ParseManagerBase::GenerateResultSet_2()");
 
     if (target.IsEmpty())
     {
@@ -1594,7 +1594,7 @@ bool ParseManagerBase::IsAllocator(TokenTree*   tree,
         return false;
 
     const Token* token = tree->at(id);
-    return (token && token->m_Name.IsSameAs(_T("allocator")));
+    return (token && token->m_Name.IsSameAs("allocator"));
 }
 
 // No critical section needed in this recursive function!
@@ -1613,13 +1613,13 @@ bool ParseManagerBase::DependsOnAllocator(TokenTree*    tree,
 
     // If the STL class depends on allocator, it will have the form:
     // template <typename T, typename _Alloc = std::allocator<T> > class AAA { ... };
-    if (token->m_TemplateArgument.Find(_T("_Alloc")) != wxNOT_FOUND)
+    if (token->m_TemplateArgument.Find("_Alloc") != wxNOT_FOUND)
         return true;
 
     // The STL class could also be a container adapter:
     // template <typename T, typename _Sequence = AAA<T> > class BBB { ... };
     // where AAA depends on allocator.
-    if (token->m_TemplateArgument.Find(_T("_Sequence")) != wxNOT_FOUND)
+    if (token->m_TemplateArgument.Find("_Sequence") != wxNOT_FOUND)
         return true;
 
     return DependsOnAllocator(tree, token->m_ParentIndex);
@@ -1661,7 +1661,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
                                               size_t             curLine,
                                               const wxString&    file)
 {
-    TRACE(_T("ParseManagerBase::GetTokenFromCurrentLine()"));
+    TRACE("ParseManagerBase::GetTokenFromCurrentLine()");
 
     int result = -1;
     bool found = false;
@@ -1676,7 +1676,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
         if (!token)
             continue;
 
-        TRACE(_T("GetTokenFromCurrentLine() Iterating: tN='%s', tF='%s', tStart=%u, tEnd=%u"),
+        TRACE("GetTokenFromCurrentLine() Iterating: tN='%s', tF='%s', tStart=%u, tEnd=%u",
               token->DisplayName().wx_str(), token->GetFilename().wx_str(),
               token->m_ImplLineStart, token->m_ImplLineEnd);
 
@@ -1685,7 +1685,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
             && token->m_ImplLine    <= curLine
             && token->m_ImplLineEnd >= curLine)
         {
-            TRACE(_T("GetTokenFromCurrentLine() tkAnyFunction : tN='%s', tF='%s', tStart=%u, tEnd=%u"),
+            TRACE("GetTokenFromCurrentLine() tkAnyFunction : tN='%s', tF='%s', tStart=%u, tEnd=%u",
                    token->DisplayName().wx_str(), token->GetFilename().wx_str(),
                    token->m_ImplLineStart, token->m_ImplLineEnd);
             result = token->m_Index;
@@ -1696,7 +1696,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
                  && token->m_ImplLine <= curLine
                  && token->m_ImplLineStart >= curLine)
         {
-            TRACE(_T("GetTokenFromCurrentLine() tkConstructor : tN='%s', tF='%s', tStart=%u, tEnd=%u"),
+            TRACE("GetTokenFromCurrentLine() tkConstructor : tN='%s', tF='%s', tStart=%u, tEnd=%u",
                   token->DisplayName().wx_str(), token->GetFilename().wx_str(),
                   token->m_ImplLineStart, token->m_ImplLineEnd);
             result = token->m_Index;
@@ -1706,7 +1706,7 @@ int ParseManagerBase::GetTokenFromCurrentLine(TokenTree*         tree,
                  && token->m_ImplLineStart <= curLine
                  && token->m_ImplLineEnd >= curLine)
         {
-            TRACE(_T("GetTokenFromCurrentLine() tkClass : tN='%s', tF='%s', tStart=%u, tEnd=%u"),
+            TRACE("GetTokenFromCurrentLine() tkClass : tN='%s', tF='%s', tStart=%u, tEnd=%u",
                   token->DisplayName().wx_str(), token->GetFilename().wx_str(),
                   token->m_ImplLineStart, token->m_ImplLineEnd);
             classToken = token;
@@ -1762,7 +1762,7 @@ void ParseManagerBase::ComputeCallTip(TokenTree*         tree,
             {
                 const Token* tk = tree->at(*chIt);
                 if (   tk && (   tk->m_TokenKind == tkConstructor
-                              || (tk->m_IsOperator && tk->m_Name.EndsWith(wxT("()"))) )
+                              || (tk->m_IsOperator && tk->m_Name.EndsWith("()")) )
                     && (tk->m_Scope == tsPublic || tk->m_Scope == tsUndefined) )
                 {
                     wxString tkTip;
@@ -1800,7 +1800,7 @@ void ParseManagerBase::ComputeCallTip(TokenTree*         tree,
                 // if we try to expand the token, and finally find some one who do have m_Args, then
                 // the expanded token's m_Args can used as call tips.
                 Tokenizer smallTokenizer(tree);
-                smallTokenizer.InitFromBuffer(token->m_FullType + _T('\n'));
+                smallTokenizer.InitFromBuffer(token->m_FullType + '\n');
                 tk = tree->at(tree->TokenExists(smallTokenizer.GetToken(), -1, tkFunction|tkMacroDef|tkVariable));
                 // only if the expanded result is a single token
                 if (tk && smallTokenizer.PeekToken().empty())
@@ -1810,7 +1810,7 @@ void ParseManagerBase::ComputeCallTip(TokenTree*         tree,
 
         wxString tkTip;
         if ( !PrettyPrintToken(tree, token, tkTip) )
-            tkTip = wxT("Error while pretty printing token!");
+            tkTip = "Error while pretty printing token!";
         items.Add(tkTip);
 
     }// for
@@ -1855,11 +1855,11 @@ bool ParseManagerBase::PrettyPrintToken(TokenTree*   tree,
             return true;
 
         case tkFunction:
-            result = token->m_FullType + wxT(" ") + result + token->m_Name + token->GetFormattedArgs();
+            result = token->m_FullType + " " + result + token->m_Name + token->GetFormattedArgs();
             if (token->m_IsConst)
-                result += wxT(" const");
+                result += " const";
             if (token->m_IsNoExcept)
-                result += wxT(" noexcept");
+                result += " noexcept";
             return true;
 
         case tkClass:
@@ -1867,16 +1867,16 @@ bool ParseManagerBase::PrettyPrintToken(TokenTree*   tree,
             if (isRoot)
                 result += token->m_Name;
             else
-                result += token->m_Name + wxT("::");
+                result += token->m_Name + "::";
             return true;
 
         case tkMacroDef:
             if (!token->GetFormattedArgs().IsEmpty())
-                result = wxT("#define ") + token->m_Name + token->GetFormattedArgs();
+                result = "#define " + token->m_Name + token->GetFormattedArgs();
             return true;
 
         case tkTypedef:
-            result = token->m_BaseType + wxT(" ") + result + name + token->GetFormattedArgs();
+            result = token->m_BaseType + " " + result + name + token->GetFormattedArgs();
             return true;
 
         case tkEnum:

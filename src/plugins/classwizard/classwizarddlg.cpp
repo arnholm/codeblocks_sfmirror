@@ -58,14 +58,14 @@ END_EVENT_TABLE()
 
 ClassWizardDlg::ClassWizardDlg(wxWindow* parent)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgNewClass"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgNewClass", "wxScrollingDialog");
 
     ProjectManager* prjMan = Manager::Get()->GetProjectManager();
     cbProject* prj = prjMan->GetActiveProject();
     if (prj)
     {
-        XRCCTRL(*this, "txtIncludeDir", wxTextCtrl)->SetValue(prj->GetCommonTopLevelPath() + _T("include"));
-        XRCCTRL(*this, "txtImplDir", wxTextCtrl)->SetValue(prj->GetCommonTopLevelPath() + _T("src"));
+        XRCCTRL(*this, "txtIncludeDir", wxTextCtrl)->SetValue(prj->GetCommonTopLevelPath() + "include");
+        XRCCTRL(*this, "txtImplDir", wxTextCtrl)->SetValue(prj->GetCommonTopLevelPath() + "src");
         XRCCTRL(*this, "txtCommonDir", wxTextCtrl)->SetValue(prj->GetCommonTopLevelPath());
     }
     else
@@ -74,17 +74,17 @@ ClassWizardDlg::ClassWizardDlg(wxWindow* parent)
         XRCCTRL(*this, "txtImplDir", wxTextCtrl)->SetValue(::wxGetCwd());
         XRCCTRL(*this, "txtCommonDir", wxTextCtrl)->SetValue(::wxGetCwd());
     }
-    XRCCTRL(*this, "txtInheritanceFilename", wxTextCtrl)->SetValue(_T("<>"));
+    XRCCTRL(*this, "txtInheritanceFilename", wxTextCtrl)->SetValue("<>");
     XRCCTRL(*this, "cmbInheritanceScope", wxComboBox)->SetSelection(0);
     XRCCTRL(*this, "cmbMemberScope", wxComboBox)->SetSelection(2);
-    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue(_T("\"\""));
+    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue("\"\"");
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("classwizard"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("classwizard");
     if (cfg)
     {
-        XRCCTRL(*this, "chkDocumentation", wxCheckBox)->SetValue(cfg->ReadBool(_T("documentation")));
-        XRCCTRL(*this, "chkCommonDir",     wxCheckBox)->SetValue(cfg->ReadBool(_T("common_dir")));
-        XRCCTRL(*this, "chkLowerCase",     wxCheckBox)->SetValue(cfg->ReadBool(_T("lower_case")));
+        XRCCTRL(*this, "chkDocumentation", wxCheckBox)->SetValue(cfg->ReadBool("documentation"));
+        XRCCTRL(*this, "chkCommonDir",     wxCheckBox)->SetValue(cfg->ReadBool("common_dir"));
+        XRCCTRL(*this, "chkLowerCase",     wxCheckBox)->SetValue(cfg->ReadBool("lower_case"));
     }
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 }
@@ -92,12 +92,12 @@ ClassWizardDlg::ClassWizardDlg(wxWindow* parent)
 ClassWizardDlg::~ClassWizardDlg()
 {
     // NOTE (Morten#3#): Not nice to have it here (should be in OnApply of the plugin)
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("classwizard"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("classwizard");
     if (cfg)
     {
-        cfg->Write(_T("documentation"), (bool) XRCCTRL(*this, "chkDocumentation", wxCheckBox)->GetValue());
-        cfg->Write(_T("common_dir"),    (bool) XRCCTRL(*this, "chkCommonDir",     wxCheckBox)->GetValue());
-        cfg->Write(_T("lower_case"),    (bool) XRCCTRL(*this, "chkLowerCase",     wxCheckBox)->GetValue());
+        cfg->Write("documentation", (bool) XRCCTRL(*this, "chkDocumentation", wxCheckBox)->GetValue());
+        cfg->Write("common_dir",    (bool) XRCCTRL(*this, "chkCommonDir",     wxCheckBox)->GetValue());
+        cfg->Write("lower_case",    (bool) XRCCTRL(*this, "chkLowerCase",     wxCheckBox)->GetValue());
     }
 }
 
@@ -202,8 +202,8 @@ void ClassWizardDlg::OnAddMemberVar(cb_unused wxCommandEvent& event)
     mv.Typ = memtyp;
     mv.Var = memvar;
     mv.Scp = memscp;
-    if (getter) mv.Get = _T("Get") + method; else mv.Get = wxEmptyString;
-    if (setter) mv.Set = _T("Set") + method; else mv.Set = wxEmptyString;
+    if (getter) mv.Get = "Get" + method; else mv.Get = wxEmptyString;
+    if (setter) mv.Set = "Set" + method; else mv.Set = wxEmptyString;
     m_MemberVars.push_back(mv);
 
     XRCCTRL(*this, "lstMemberVars", wxListBox)->Append(DoMemVarRepr(memtyp, memvar, memscp));
@@ -298,9 +298,9 @@ void ClassWizardDlg::OnOKClick(wxCommandEvent& WXUNUSED(event))
     m_Header         = XRCCTRL(*this, "txtHeader", wxTextCtrl)->GetValue();
     m_Implementation = XRCCTRL(*this, "txtImplementation", wxTextCtrl)->GetValue();
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("classwizard"));
-    cfg->Write(_T("header_type"), m_Header.AfterLast('.'));
-    cfg->Write(_T("source_type"), m_Implementation.AfterLast('.'));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("classwizard");
+    cfg->Write("header_type", m_Header.AfterLast('.'));
+    cfg->Write("source_type", m_Implementation.AfterLast('.'));
 
 
     // obtain variable for easy reference
@@ -314,7 +314,7 @@ void ClassWizardDlg::OnOKClick(wxCommandEvent& WXUNUSED(event))
         return;
     }
     // Extract namespaces from class name
-    wxStringTokenizer tkz(m_Name, _T("::"));
+    wxStringTokenizer tkz(m_Name, "::");
     m_Name = wxEmptyString;
     while ( tkz.HasMoreTokens() )
     {
@@ -370,10 +370,10 @@ void ClassWizardDlg::OnOKClick(wxCommandEvent& WXUNUSED(event))
     m_HeaderInclude          = XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->GetValue();
 
     // Common stuff
-    bool usestabs = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_tab"),    false);
-    int  tabsize  = Manager::Get()->GetConfigManager(_T("editor"))->ReadInt(_T("/tab_size"),    4);
+    bool usestabs = Manager::Get()->GetConfigManager("editor")->ReadBool("/use_tab",    false);
+    int  tabsize  = Manager::Get()->GetConfigManager("editor")->ReadInt("/tab_size",    4);
 
-    m_TabStr = usestabs ? wxString(_T("\t")) : wxString(_T(' '), tabsize);
+    m_TabStr = usestabs ? wxString("\t") : wxString(' ', tabsize);
     m_EolStr = GetEOLStr();
 
     // actual file creation starts here
@@ -429,35 +429,35 @@ bool ClassWizardDlg::DoHeader()
 
     if (!m_AncestorFilename.IsEmpty() && !m_AncestorFilename.IsSameAs(_T("<>")))
     {
-        buffer << _T("#include ") << m_AncestorFilename << m_EolStr;
+        buffer << "#include " << m_AncestorFilename << m_EolStr;
         buffer << m_EolStr;
     }
 
     for (unsigned int i=0; i<m_NameSpaces.GetCount(); ++i)
     {
-        buffer << _T("namespace ") << m_NameSpaces[i] << _T(" {") << m_EolStr;
+        buffer << "namespace " << m_NameSpaces[i] << " {" << m_EolStr;
     }
     buffer << m_EolStr;
 
     // Begin of class
-    buffer << _T("class ") << m_Name;
+    buffer << "class " << m_Name;
     if (m_Inherits)
     {
-        buffer << _T(" : ") << m_AncestorScope << _T(" ") << m_Ancestor;
+        buffer << " : " << m_AncestorScope << " " << m_Ancestor;
     }
     buffer << m_EolStr;
     buffer << _T("{") << m_EolStr;
 
     // focus: public
-    buffer << m_TabStr << _T("public:") << m_EolStr;
+    buffer << m_TabStr << "public:" << m_EolStr;
 
     // ctor
     if (m_Documentation)
     {
         buffer << m_TabStr << m_TabStr << _("/** Default constructor */") << m_EolStr;
     }
-    buffer << m_TabStr << m_TabStr << m_Name << _T("(") << m_Arguments << _T(")")
-           << (!m_GenerateImplementation ? _T(" {}") : _T(";")) << m_EolStr;
+    buffer << m_TabStr << m_TabStr << m_Name << "(" << m_Arguments << ")"
+           << (!m_GenerateImplementation ? wxString(" {}") : wxString(";") << m_EolStr);
 
     if (m_HasDestructor)
     {
@@ -468,10 +468,10 @@ bool ClassWizardDlg::DoHeader()
         buffer << m_TabStr << m_TabStr;
         if (m_VirtualDestructor)
         {
-            buffer << _T("virtual ");
+            buffer << "virtual ";
         }
-        buffer << _T('~') << m_Name << _T("()");
-        buffer << (!m_GenerateImplementation ? _T(" {}") : _T(";")) << m_EolStr;
+        buffer << '~' << m_Name << "()";
+        buffer << (!m_GenerateImplementation ? wxString(" {}") : wxString(";")) << m_EolStr;
     }
 
     if (m_HasCopyCtor)
@@ -483,11 +483,11 @@ bool ClassWizardDlg::DoHeader()
             buffer << m_TabStr << m_TabStr
                    << " *  \\param other " << _("Object to copy from") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _T(" */") << m_EolStr;
+                   << " */" << m_EolStr;
         }
         buffer << m_TabStr << m_TabStr;
-        buffer << m_Name << _T("(const ") << m_Name << _T("& other)");
-        buffer << (!m_GenerateImplementation ? _T(" {}") : _T(";")) << m_EolStr;
+        buffer << m_Name << "(const " << m_Name << "& other)";
+        buffer << (!m_GenerateImplementation ? wxString(" {}") : wxString(";")) << m_EolStr;
     }
 
     if (m_HasAssignmentOp)
@@ -501,11 +501,11 @@ bool ClassWizardDlg::DoHeader()
             buffer << m_TabStr << m_TabStr
                    << " *  \\return " << _("A reference to 'this'") << m_EolStr;
             buffer << m_TabStr << m_TabStr
-                   << _T(" */") << m_EolStr;
+                   << " */" << m_EolStr;
         }
         buffer << m_TabStr << m_TabStr;
-        buffer << m_Name << _T("& ") << _T("operator=(const ") << m_Name << _T("& other)");
-        buffer << (!m_GenerateImplementation ? _T(" { return *this; }") : _T(";")) << m_EolStr;
+        buffer << m_Name << "& " << "operator=(const " << m_Name << "& other)";
+        buffer << (!m_GenerateImplementation ? _T("{ return *this; }") : _T(";")) << m_EolStr;
     }
     buffer << m_EolStr;
 
@@ -523,9 +523,9 @@ bool ClassWizardDlg::DoHeader()
                 buffer << m_TabStr << m_TabStr
                        << " * \\return " << _("The current value of ") << (*it).Var << m_EolStr;
                 buffer << m_TabStr << m_TabStr
-                       << _T(" */") << m_EolStr;
+                       << " */" << m_EolStr;
             }
-            buffer << m_TabStr << m_TabStr << (*it).Typ << _T(" ") << (*it).Get
+            buffer << m_TabStr << m_TabStr << (*it).Typ << " " << (*it).Get
                    << _T("() { return ") << (*it).Var << _T("; }") << m_EolStr;
         }
         if (!(*it).Set.IsEmpty())
@@ -540,8 +540,8 @@ bool ClassWizardDlg::DoHeader()
                 buffer << m_TabStr << m_TabStr
                        << " */" << m_EolStr;
             }
-            buffer << m_TabStr << m_TabStr << _T("void ") << (*it).Set << _T("(")
-                   << (*it).Typ << _T(" val) { ") << (*it).Var << _T(" = val; }") << m_EolStr;
+            buffer << m_TabStr << m_TabStr << "void " << (*it).Set << "("
+                   << (*it).Typ << " val) { " << (*it).Var << " = val; }" << m_EolStr;
         }
         ++it;
     }
@@ -556,7 +556,7 @@ bool ClassWizardDlg::DoHeader()
         {
             addnewline = true;
             buffer << m_TabStr << m_TabStr
-                   << (*it).Typ << _T(" ") << (*it).Var << _T(";");
+                   << (*it).Typ << " " << (*it).Var << ";";
 
             if (m_Documentation)
                 buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
@@ -569,14 +569,14 @@ bool ClassWizardDlg::DoHeader()
         buffer << m_EolStr;
 
     // focus: protected
-    buffer << m_TabStr << _T("protected:") << m_EolStr;
+    buffer << m_TabStr << "protected:" << m_EolStr;
 
     for( it = m_MemberVars.begin(); it != m_MemberVars.end(); ++it )
     {
         if ((*it).Scp == 1)
         {
             buffer << m_TabStr << m_TabStr
-                   << (*it).Typ << _T(" ") << (*it).Var << _T(";");
+                   << (*it).Typ << " " << (*it).Var << ";";
 
             if (m_Documentation)
                 buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
@@ -587,14 +587,14 @@ bool ClassWizardDlg::DoHeader()
     buffer << m_EolStr;
 
     // focus: private
-    buffer << m_TabStr << _T("private:") << m_EolStr;
+    buffer << m_TabStr << "private:" << m_EolStr;
 
     for( it = m_MemberVars.begin(); it != m_MemberVars.end(); ++it )
     {
         if ((*it).Scp == 2)
         {
             buffer << m_TabStr << m_TabStr
-                   << (*it).Typ << _T(" ") << (*it).Var << _T(";");
+                   << (*it).Typ << " " << (*it).Var << _T(";");
 
             if (m_Documentation)
                 buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
@@ -664,7 +664,7 @@ bool ClassWizardDlg::DoImpl()
         buffer << m_EolStr;
         for (unsigned int i=0; i<m_NameSpaces.GetCount(); ++i)
         {
-            buffer << _T("namespace ") << m_NameSpaces[i] << _T(" {") << m_EolStr;
+            buffer << "namespace " << m_NameSpaces[i] << " {" << m_EolStr;
         }
     }
 
@@ -686,21 +686,21 @@ bool ClassWizardDlg::DoImpl()
     if (m_HasCopyCtor)
     {
         buffer << m_EolStr;
-        buffer << m_Name << _T("::") << m_Name << _T("(const ") << m_Name << _T("& other)") << m_EolStr;;
-        buffer << _T("{") << m_EolStr;
-        buffer << m_TabStr << _T("//copy ctor") << m_EolStr;
-        buffer << _T("}") << m_EolStr;
+        buffer << m_Name << "::" << m_Name << "(const " << m_Name << "& other)" << m_EolStr;;
+        buffer << "{" << m_EolStr;
+        buffer << m_TabStr << "//copy ctor" << m_EolStr;
+        buffer << "}" << m_EolStr;
     }
 
     if (m_HasAssignmentOp)
     {
         buffer << m_EolStr;
-        buffer << m_Name << _T("& ") << m_Name << _T("::operator=(const ") << m_Name << _T("& rhs)") << m_EolStr;;
-        buffer << _T("{") << m_EolStr;
-        buffer << m_TabStr << _T("if (this == &rhs) return *this; // handle self assignment") << m_EolStr;
-        buffer << m_TabStr << _T("//assignment operator") << m_EolStr;
-        buffer << m_TabStr << _T("return *this;") << m_EolStr;
-        buffer << _T("}") << m_EolStr;
+        buffer << m_Name << "& " << m_Name << "::operator=(const " << m_Name << "& rhs)" << m_EolStr;;
+        buffer << "{" << m_EolStr;
+        buffer << m_TabStr << "if (this == &rhs) return *this; // handle self assignment" << m_EolStr;
+        buffer << m_TabStr << "//assignment operator" << m_EolStr;
+        buffer << m_TabStr << "return *this;" << m_EolStr;
+        buffer << "}" << m_EolStr;
     }
 
     if (m_NameSpaces.GetCount())
@@ -731,11 +731,11 @@ void ClassWizardDlg::DoGuardBlock()
     m_Header = XRCCTRL(*this, "txtHeader", wxTextCtrl)->GetValue();
     wxString GuardWord = m_Header;
     GuardWord.MakeUpper();
-    while (GuardWord.Replace(_T("."), _T("_")))
+    while (GuardWord.Replace(".", "_"))
         ;
-    while (GuardWord.Replace(_T("/"), _T("_")))
+    while (GuardWord.Replace("/", "_"))
         ;
-    while (GuardWord.Replace(_T("\\"), _T("_")))
+    while (GuardWord.Replace("\\", "_"))
         ;
     XRCCTRL(*this, "txtGuardBlock", wxTextCtrl)->SetValue(GuardWord);
 }
@@ -746,16 +746,16 @@ void ClassWizardDlg::DoFileNames()
     if (XRCCTRL(*this, "chkLowerCase", wxCheckBox)->GetValue())
         name.MakeLower();
 
-    while (name.Replace(_T("::"), _T("/")))
+    while (name.Replace("::", "/"))
         ;
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("classwizard"));
-    wxString  headerType  = cfg->Read(_T("header_type"), _T("h"));
-    wxString  sourceType  = cfg->Read(_T("source_type"), _T("cpp"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("classwizard");
+    wxString  headerType  = cfg->Read("header_type", "h");
+    wxString  sourceType  = cfg->Read("source_type", "cpp");
 
-    XRCCTRL(*this, "txtHeader", wxTextCtrl)->SetValue(name + _T(".") + headerType);
-    XRCCTRL(*this, "txtImplementation", wxTextCtrl)->SetValue(name + _T(".") + sourceType);
-    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue(_T("\"") + name + _T(".") + headerType +_T("\""));
+    XRCCTRL(*this, "txtHeader", wxTextCtrl)->SetValue(name + "." + headerType);
+    XRCCTRL(*this, "txtImplementation", wxTextCtrl)->SetValue(name + "." + sourceType);
+    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue("\"" + name + "." + headerType + "\"");
 }
 
 void ClassWizardDlg::DoForceDirectory(const wxFileName & filename)
@@ -776,15 +776,15 @@ wxString ClassWizardDlg::DoMemVarRepr(const wxString & typ, const wxString & var
     switch(scp)
     {
         case 0:
-            scpstr = _T("pub :: ");
+            scpstr = "pub :: ";
             break;
 
         case 1:
-            scpstr = _T("pro :: ");
+            scpstr = "pro :: ";
             break;
 
         case 2:
-            scpstr = _T("pri :: ");
+            scpstr = "pri :: ";
             break;
     }
 

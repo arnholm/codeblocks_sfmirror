@@ -22,7 +22,7 @@ public:
     ~CCOptionsDlg() override;
 
     wxString GetTitle() const override { return _("Code completion"); }
-    wxString GetBitmapBaseName() const override { return _T("codecompletion"); }
+    wxString GetBitmapBaseName() const override { return "codecompletion"; }
     void OnApply() override;
     void OnCancel() override {}
 

@@ -67,20 +67,20 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool /*
 {
     static bool          empty_ext = true;
     static wxArrayString header_ext;
-    header_ext.Add(_T("h")); header_ext.Add(_T("hpp")); header_ext.Add(_T("tcc")); header_ext.Add(_T("xpm"));
+    header_ext.Add("h"); header_ext.Add("hpp"); header_ext.Add("tcc"); header_ext.Add("xpm");
     static wxArrayString source_ext;
-    source_ext.Add(_T("c")); source_ext.Add(_T("cpp")); source_ext.Add(_T("cxx")); source_ext.Add(_T("cc")); source_ext.Add(_T("c++"));
+    source_ext.Add("c"); source_ext.Add("cpp"); source_ext.Add("cxx"); source_ext.Add("cc"); source_ext.Add("c++");
 
     if (filename.IsEmpty())
     {
         wxString log;
-        log.Printf(wxT("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftOther' (empty)."), filename.wx_str());
+        log.Printf("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftOther' (empty).", filename.wx_str());
         //CCLogger::Get()->Log(log);
         return ParserCommon::ftOther;
     }
 
     const wxString file = filename.AfterLast(wxFILE_SEP_PATH).Lower();
-    const int      pos  = file.Find(_T('.'), true);
+    const int      pos  = file.Find('.', true);
     wxString       ext;
     if (pos != wxNOT_FOUND)
         ext = file.SubString(pos + 1, file.Len());
@@ -88,7 +88,7 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool /*
     if (empty_ext && ext.IsEmpty())
     {
         wxString log;
-        log.Printf(wxT("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftHeader' (w/o ext.)."), filename.wx_str());
+        log.Printf("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftHeader' (w/o ext.).", filename.wx_str());
         //CCLogger::Get()->Log(log);
         return ParserCommon::ftHeader;
     }
@@ -98,7 +98,7 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool /*
         if (ext==header_ext[i])
         {
             wxString log;
-            log.Printf(wxT("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftHeader' (w/ ext.)."), filename.wx_str());
+            log.Printf("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftHeader' (w/ ext.).", filename.wx_str());
             TRACE(log);
             return ParserCommon::ftHeader;
         }
@@ -109,14 +109,14 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool /*
         if (ext==source_ext[i])
         {
             wxString log;
-            log.Printf(wxT("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftSource' (w/ ext.)."), filename.wx_str());
+            log.Printf("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftSource' (w/ ext.).", filename.wx_str());
             TRACE(log);
             return ParserCommon::ftSource;
         }
     }
 
     wxString log;
-    log.Printf(wxT("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftOther' (unknown ext)."), filename.wx_str());
+    log.Printf("ParserDummy::ParserCommon::FileType() : File '%s' is of type 'ftOther' (unknown ext).", filename.wx_str());
     TRACE(log);
 
     return ParserCommon::ftOther;
@@ -131,18 +131,18 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool fo
 
     if (!cfg_read || force_refresh)
     {
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
-        empty_ext               = cfg->ReadBool(_T("/empty_ext"), true);
-        wxString header_ext_str = cfg->Read(_T("/header_ext"), _T("h,hpp,hxx,hh,h++,tcc,tpp,xpm"));
-        wxString source_ext_str = cfg->Read(_T("/source_ext"), _T("c,cpp,cxx,cc,c++"));
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion");
+        empty_ext               = cfg->ReadBool("/empty_ext", true);
+        wxString header_ext_str = cfg->Read("/header_ext", "h,hpp,hxx,hh,h++,tcc,tpp,xpm");
+        wxString source_ext_str = cfg->Read("/source_ext", "c,cpp,cxx,cc,c++");
 
         header_ext.Clear();
-        wxStringTokenizer header_ext_tknzr(header_ext_str, _T(","));
+        wxStringTokenizer header_ext_tknzr(header_ext_str, ",");
         while (header_ext_tknzr.HasMoreTokens())
             header_ext.Add(header_ext_tknzr.GetNextToken().Trim(false).Trim(true).Lower());
 
         source_ext.Clear();
-        wxStringTokenizer source_ext_tknzr(source_ext_str, _T(","));
+        wxStringTokenizer source_ext_tknzr(source_ext_str, ",");
         while (source_ext_tknzr.HasMoreTokens())
             source_ext.Add(source_ext_tknzr.GetNextToken().Trim(false).Trim(true).Lower());
 
@@ -153,7 +153,7 @@ ParserCommon::EFileType ParserCommon::FileType(const wxString& filename, bool fo
         return ParserCommon::ftOther;
 
     const wxString file = filename.AfterLast(wxFILE_SEP_PATH).Lower();
-    const int      pos  = file.Find(_T('.'), true);
+    const int      pos  = file.Find('.', true);
     wxString       ext;
     if (pos != wxNOT_FOUND)
         ext = file.SubString(pos + 1, file.Len());
@@ -291,13 +291,13 @@ void ParserBase::AddIncludeDir(const wxString& dir)
         base.RemoveLast();
     if (!wxDir::Exists(base))
     {
-        TRACE(_T("ParserBase::AddIncludeDir(): Directory %s does not exist?!"), base.wx_str());
+        TRACE("ParserBase::AddIncludeDir(): Directory %s does not exist?!", base.wx_str());
         return;
     }
 
     if (m_IncludeDirs.Index(base) == wxNOT_FOUND)
     {
-        TRACE(_T("ParserBase::AddIncludeDir(): Adding %s"), base.wx_str());
+        TRACE("ParserBase::AddIncludeDir(): Adding %s", base.wx_str());
         m_IncludeDirs.Add(base);
     }
 }
@@ -383,7 +383,7 @@ size_t ParserBase::FindTokensInFile(const wxString& filename, TokenIdxSet& resul
     result.clear();
     size_t tokens_found = 0;
 
-    TRACE(_T("Parser::FindTokensInFile() : Searching for file '%s' in tokens tree..."), filename.wx_str());
+    TRACE("Parser::FindTokensInFile() : Searching for file '%s' in tokens tree...", filename.wx_str());
 
     CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 

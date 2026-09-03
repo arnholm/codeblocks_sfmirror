@@ -394,9 +394,9 @@ private:
     {
         wxChar last = PreviousChar();
         // if DOS line endings, we have hit \r and we skip to \n...
-        if (last == _T('\r') && m_TokenIndex >= 2)
-            return m_Buffer.GetChar(m_TokenIndex - 2) == _T('\\');
-        return last == _T('\\');
+        if (last == '\r' && m_TokenIndex >= 2)
+            return m_Buffer.GetChar(m_TokenIndex - 2) == '\\';
+        return last == '\\';
     }
 
     /** #if xxxx, calculate the value of "xxxx" */

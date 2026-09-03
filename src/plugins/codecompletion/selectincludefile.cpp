@@ -21,7 +21,7 @@ END_EVENT_TABLE()
 
 SelectIncludeFile::SelectIncludeFile(wxWindow* parent, cb_unused wxWindowID id) // TODO: verify if class def shouldn't be different
 {
-    wxXmlResource::Get()->LoadObject(this,parent,_T("SelectIncludeFile"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this,parent,"SelectIncludeFile","wxScrollingDialog");
     LstIncludeFiles = XRCCTRL(*this,"ID_LBX_INCLUDE_FILES",wxListBox);
 }
 

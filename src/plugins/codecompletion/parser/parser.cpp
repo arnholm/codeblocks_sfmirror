@@ -171,15 +171,15 @@ wxString Parser::NotDoneReason()
 {
     CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex)
 
-    wxString reason = _T(" > Reasons:");
+    wxString reason = " > Reasons:";
     if (!m_BatchParseFiles.empty())
-        reason += _T("\n- still batch parse files to parse");
+        reason += "\n- still batch parse files to parse";
     if (!m_PredefinedMacros.IsEmpty())
-        reason += _T("\n- still pre-defined macros to operate");
+        reason += "\n- still pre-defined macros to operate";
     if (m_NeedMarkFileAsLocal)
-        reason += _T("\n- still need to mark files as local");
+        reason += "\n- still need to mark files as local";
     if (!m_Pool.Done())
-        reason += _T("\n- thread pool is not done yet");
+        reason += "\n- thread pool is not done yet";
 
     CC_LOCKER_TRACK_P_MTX_UNLOCK(ParserCommon::s_ParserMutex)
 
@@ -191,7 +191,7 @@ void Parser::AddPredefinedMacros(const wxString& defs)
     if (m_BatchTimer.IsRunning())
     {
         m_BatchTimer.Stop();
-        TRACE(_T("Parser::AddPredefinedMacros(): Stop the m_BatchTimer."));
+        TRACE("Parser::AddPredefinedMacros(): Stop the m_BatchTimer.");
     }
 
     CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex)
@@ -206,7 +206,7 @@ void Parser::AddPredefinedMacros(const wxString& defs)
 
     if (!m_IsParsing)
     {
-        TRACE(_T("Parser::AddPredefinedMacros(): Starting m_BatchTimer."));
+        TRACE("Parser::AddPredefinedMacros(): Starting m_BatchTimer.");
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
     }
 
@@ -225,7 +225,7 @@ void Parser::ClearPredefinedMacros()
 
 const wxString Parser::GetPredefinedMacros() const
 {
-    CCLogger::Get()->DebugLog(_T("Parser::GetPredefinedMacros()"));
+    CCLogger::Get()->DebugLog("Parser::GetPredefinedMacros()");
     return m_LastPredefinedMacros;
 }
 
@@ -248,7 +248,7 @@ void Parser::AddBatchParse(const StringList& filenames)
 
     if (!m_IsParsing)
     {
-        TRACE(_T("Parser::AddBatchParse(): Starting m_BatchTimer."));
+        TRACE("Parser::AddBatchParse(): Starting m_BatchTimer.");
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
     }
 
@@ -268,7 +268,7 @@ void Parser::AddParse(const wxString& filename)
 
     if (!m_IsParsing)
     {
-        TRACE(_T("Parser::AddParse(): Starting m_BatchTimer."));
+        TRACE("Parser::AddParse(): Starting m_BatchTimer.");
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
     }
 
@@ -319,7 +319,7 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
 
         if (!canparse)
         {
-            TRACE(_T("Parser::Parse(): file already parsed or reserved for parsing") + filename);
+            TRACE("Parser::Parse(): file already parsed or reserved for parsing" + filename);
             break;
         }
 
@@ -342,7 +342,7 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
 
         // we are going to parse this file, so create a ParserThread
         ParserThread* thread = new ParserThread(this, filename, isLocal, opts, m_TokenTree);
-        TRACE(_T("Parser::Parse(): Parsing %s"), filename.wx_str());
+        TRACE("Parser::Parse(): Parsing %s", filename.wx_str());
 
         // We now properly parse each source file from top to bottom (i.e., expanding each
         // #include directive: If locked is true, which means this function is called when handling
@@ -355,7 +355,7 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
             wxMilliSleep(1);
             CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
 
-            TRACE(_T("Parser::Parse(): Parsing included header, %s"), filename.wx_str());
+            TRACE("Parser::Parse(): Parsing included header, %s", filename.wx_str());
             // run the parse recursively
             AddParserThread(thread);
             result = thread->Parse();
@@ -366,7 +366,7 @@ bool Parser::Parse(const wxString& filename, bool isLocal, bool locked)
         else
         {
             // files should not be parsed immediately, so we need to put it to the pool.
-            TRACE(_T("Parser::Parse(): Adding a Parsing job for %s"), filename.wx_str());
+            TRACE("Parser::Parse(): Adding a Parsing job for %s", filename.wx_str());
             m_Pool.AddTask(thread, true); // autodelete = true
         }
 
@@ -532,7 +532,7 @@ bool Parser::Reparse(const wxString& filename, cb_unused bool isLocal)
 {
     if (!Done())
     {
-        wxString msg(_T("Parser::Reparse : The Parser is not done."));
+        wxString msg("Parser::Reparse : The Parser is not done.");
         msg += NotDoneReason();
         CCLogger::Get()->DebugLog(msg);
         return false;
@@ -548,7 +548,7 @@ bool Parser::Reparse(const wxString& filename, cb_unused bool isLocal)
     CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
 
     m_NeedsReparse = true;
-    TRACE(_T("Parser::Reparse(): Starting m_ReparseTimer."));
+    TRACE("Parser::Reparse(): Starting m_ReparseTimer.");
     m_ReparseTimer.Start(ParserCommon::PARSER_REPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
 
     return true;
@@ -573,7 +573,7 @@ bool Parser::UpdateParsingProject(cbProject* project)
 
     else if (!Done())
     {
-        wxString msg(_T("Parser::UpdateParsingProject(): The Parser is not done."));
+        wxString msg("Parser::UpdateParsingProject(): The Parser is not done.");
         msg += NotDoneReason();
         CCLogger::Get()->DebugLog(msg);
         return false;
@@ -597,16 +597,16 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
     // only the m_Pool (thread pool) can send such message, so do sanity check here
     if (event.GetId() != m_Pool.GetId())
     {
-        CCLogger::Get()->DebugLog(_T("Parser::OnAllThreadsDone(): Why is event.GetId() not equal m_Pool.GetId()?"));
+        CCLogger::Get()->DebugLog("Parser::OnAllThreadsDone(): Why is event.GetId() not equal m_Pool.GetId()?");
         return;
     }
 
     if (!m_TokenTree)
-        cbThrow(_T("m_TokenTree is a nullptr?!"));
+        cbThrow("m_TokenTree is a nullptr?!");
 
     if (!m_IsParsing)
     {
-        CCLogger::Get()->DebugLog(_T("Parser::OnAllThreadsDone(): Why is m_IsParsing false?"));
+        CCLogger::Get()->DebugLog("Parser::OnAllThreadsDone(): Why is m_IsParsing false?");
         return;
     }
 
@@ -614,7 +614,7 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
     if (!m_PredefinedMacros.IsEmpty()
         || !m_BatchParseFiles.empty() )
     {
-        TRACE(_T("Parser::OnAllThreadsDone(): Still some tasks left, starting m_BatchTimer."));
+        TRACE("Parser::OnAllThreadsDone(): Still some tasks left, starting m_BatchTimer.");
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_RUN_IMMEDIATELY, wxTIMER_ONE_SHOT);
     }
 #if defined(CC_PARSER_PROFILE_TEST)
@@ -628,7 +628,7 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
         m_NeedMarkFileAsLocal = false;
         MarkFileAsLocalThreadedTask* thread = new MarkFileAsLocalThreadedTask(this, m_Project);
         m_Pool.AddTask(thread, true);
-        TRACE(_T("Parser::OnAllThreadsDone(): Add a MarkFileAsLocalThreadedTask."));
+        TRACE("Parser::OnAllThreadsDone(): Add a MarkFileAsLocalThreadedTask.");
     }
 #endif
     // Finish all task, then we need post a PARSER_END event
@@ -645,7 +645,7 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
 
         EndStopWatch(); // stop counting the time we take for parsing the files
 
-        wxString prj = (m_Project ? m_Project->GetTitle() : _T("*NONE*"));
+        wxString prj = (m_Project ? m_Project->GetTitle() : "*NONE*");
         wxString parseEndLog;
 
         CC_LOCKER_TRACK_TT_MTX_LOCK(s_TokenTreeMutex)
@@ -669,7 +669,7 @@ void Parser::OnAllThreadsDone(CodeBlocksEvent& event)
 
         // the current parser is not parsing any files, so set the static pointer to NULL
         ParserCommon::s_CurrentParser = nullptr;
-        TRACE(_T("Parser::OnAllThreadsDone(): Post a PARSER_END event"));
+        TRACE("Parser::OnAllThreadsDone(): Post a PARSER_END event");
     }
 }
 
@@ -726,7 +726,7 @@ void Parser::OnBatchTimer(cb_unused wxTimerEvent& event)
     if (ParserCommon::s_CurrentParser && ParserCommon::s_CurrentParser != this)
     {
         // Current batch parser already exists, just return later
-        TRACE(_T("Parser::OnBatchTimer(): Starting m_BatchTimer."));
+        TRACE("Parser::OnBatchTimer(): Starting m_BatchTimer.");
         m_BatchTimer.Start(ParserCommon::PARSER_BATCHPARSE_TIMER_DELAY_LONG, wxTIMER_ONE_SHOT);
         return;
     }
@@ -747,7 +747,7 @@ void Parser::OnBatchTimer(cb_unused wxTimerEvent& event)
         CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex)
 
         ParserThreadedTask* thread = new ParserThreadedTask(this, ParserCommon::s_ParserMutex);
-        TRACE(_T("Parser::OnBatchTimer(): Adding a ParserThreadedTask thread to m_Pool."));
+        TRACE("Parser::OnBatchTimer(): Adding a ParserThreadedTask thread to m_Pool.");
 
         // once this function is called, the thread will be executed from the pool immediately
         m_Pool.AddTask(thread, true);
@@ -768,7 +768,7 @@ void Parser::OnBatchTimer(cb_unused wxTimerEvent& event)
         if (sendStartParseEvent)
             ProcessParserEvent(m_ParserState,             ParserCommon::idParserStart);
         else
-            ProcessParserEvent(ParserCommon::ptUndefined, ParserCommon::idParserStart, _T("Unexpected behaviour!"));
+            ProcessParserEvent(ParserCommon::ptUndefined, ParserCommon::idParserStart, "Unexpected behaviour!");
     }
 }
 
@@ -776,11 +776,11 @@ void Parser::ReparseModifiedFiles()
 {
     if ( !Done() )
     {
-        wxString msg(_T("Parser::ReparseModifiedFiles : The Parser is not done."));
+        wxString msg("Parser::ReparseModifiedFiles : The Parser is not done.");
         msg += NotDoneReason();
         CCLogger::Get()->DebugLog(msg);
 
-        TRACE(_T("Parser::ReparseModifiedFiles(): Starting m_ReparseTimer."));
+        TRACE("Parser::ReparseModifiedFiles(): Starting m_ReparseTimer.");
         m_ReparseTimer.Start(ParserCommon::PARSER_REPARSE_TIMER_DELAY, wxTIMER_ONE_SHOT);
         return;
     }
@@ -872,48 +872,48 @@ void Parser::ProcessParserEvent(ParserCommon::ParserState state, int id, const w
 
 void Parser::ReadOptions()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion");
 
     // one-time default settings change: upgrade everyone
-    bool force_all_on = !cfg->ReadBool(_T("/parser_defaults_changed"), false);
+    bool force_all_on = !cfg->ReadBool("/parser_defaults_changed", false);
     if (force_all_on)
     {
-        cfg->Write(_T("/parser_defaults_changed"),       true);
+        cfg->Write("/parser_defaults_changed",       true);
 
-        cfg->Write(_T("/parser_follow_local_includes"),  true);
-        cfg->Write(_T("/parser_follow_global_includes"), true);
-        cfg->Write(_T("/want_preprocessor"),             true);
-        cfg->Write(_T("/parse_complex_macros"),          true);
-        cfg->Write(_T("/platform_check"),                true);
+        cfg->Write("/parser_follow_local_includes",  true);
+        cfg->Write("/parser_follow_global_includes", true);
+        cfg->Write("/want_preprocessor",             true);
+        cfg->Write("/parse_complex_macros",          true);
+        cfg->Write("/platform_check",                true);
     }
 
     // Page "Code Completion"
-    m_Options.useSmartSense        = cfg->ReadBool(_T("/use_SmartSense"),                true);
-    m_Options.whileTyping          = cfg->ReadBool(_T("/while_typing"),                  true);
+    m_Options.useSmartSense        = cfg->ReadBool("/use_SmartSense",                true);
+    m_Options.whileTyping          = cfg->ReadBool("/while_typing",                  true);
 
     // the m_Options.caseSensitive is following the global option in ccmanager
     // ccmcfg means ccmanager's config
-    ConfigManager* ccmcfg = Manager::Get()->GetConfigManager(_T("ccmanager"));
-    m_Options.caseSensitive        = ccmcfg->ReadBool(_T("/case_sensitive"),             false);
+    ConfigManager* ccmcfg = Manager::Get()->GetConfigManager("ccmanager");
+    m_Options.caseSensitive        = ccmcfg->ReadBool("/case_sensitive",             false);
 
     // Page "C / C++ parser"
-    m_Options.followLocalIncludes  = cfg->ReadBool(_T("/parser_follow_local_includes"),  true);
-    m_Options.followGlobalIncludes = cfg->ReadBool(_T("/parser_follow_global_includes"), true);
-    m_Options.wantPreprocessor     = cfg->ReadBool(_T("/want_preprocessor"),             true);
-    m_Options.parseComplexMacros   = cfg->ReadBool(_T("/parse_complex_macros"),          true);
-    m_Options.platformCheck        = cfg->ReadBool(_T("/platform_check"),                true);
+    m_Options.followLocalIncludes  = cfg->ReadBool("/parser_follow_local_includes",  true);
+    m_Options.followGlobalIncludes = cfg->ReadBool("/parser_follow_global_includes", true);
+    m_Options.wantPreprocessor     = cfg->ReadBool("/want_preprocessor",             true);
+    m_Options.parseComplexMacros   = cfg->ReadBool("/parse_complex_macros",          true);
+    m_Options.platformCheck        = cfg->ReadBool("/platform_check",                true);
 
     // Page "Symbol browser"
-    m_BrowserOptions.showInheritance = cfg->ReadBool(_T("/browser_show_inheritance"),    false);
-    m_BrowserOptions.expandNS        = cfg->ReadBool(_T("/browser_expand_ns"),           false);
-    m_BrowserOptions.treeMembers     = cfg->ReadBool(_T("/browser_tree_members"),        true);
+    m_BrowserOptions.showInheritance = cfg->ReadBool("/browser_show_inheritance",    false);
+    m_BrowserOptions.expandNS        = cfg->ReadBool("/browser_expand_ns",           false);
+    m_BrowserOptions.treeMembers     = cfg->ReadBool("/browser_tree_members",        true);
 
     // Token tree
-    m_BrowserOptions.displayFilter   = (BrowserDisplayFilter)cfg->ReadInt(_T("/browser_display_filter"), bdfFile);
-    m_BrowserOptions.sortType        = (BrowserSortType)cfg->ReadInt(_T("/browser_sort_type"),           bstKind);
+    m_BrowserOptions.displayFilter   = (BrowserDisplayFilter)cfg->ReadInt("/browser_display_filter", bdfFile);
+    m_BrowserOptions.sortType        = (BrowserSortType)cfg->ReadInt("/browser_sort_type",           bstKind);
 
     // Page "Documentation:
-    m_Options.storeDocumentation     = cfg->ReadBool(_T("/use_documentation_helper"),         false);
+    m_Options.storeDocumentation     = cfg->ReadBool("/use_documentation_helper",         false);
 
     // force re-read of file types
     ParserCommon::EFileType ft_dummy = ParserCommon::FileType(wxEmptyString, true);
@@ -964,7 +964,7 @@ void Parser::WriteOptions(bool classBrowserOnly)
     if (classBrowserOnly)
         allowGlobalUpdate = false;
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("code_completion"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion");
 
     // ----------------------------------------------------------------------------
     // set any user changed CB global settings for CodeCompletion
@@ -972,15 +972,15 @@ void Parser::WriteOptions(bool classBrowserOnly)
     if (allowGlobalUpdate)
     {
         // Page "Code Completion"
-        cfg->Write(_T("/use_SmartSense"),                m_Options.useSmartSense);
-        cfg->Write(_T("/while_typing"),                  m_Options.whileTyping);
+        cfg->Write("/use_SmartSense",                m_Options.useSmartSense);
+        cfg->Write("/while_typing",                  m_Options.whileTyping);
 
         // Page "C / C++ parser"
-        cfg->Write(_T("/parser_follow_local_includes"),  m_Options.followLocalIncludes);
-        cfg->Write(_T("/parser_follow_global_includes"), m_Options.followGlobalIncludes);
-        cfg->Write(_T("/want_preprocessor"),             m_Options.wantPreprocessor);
-        cfg->Write(_T("/parse_complex_macros"),          m_Options.parseComplexMacros);
-        cfg->Write(_T("/platform_check"),                m_Options.platformCheck);
+        cfg->Write("/parser_follow_local_includes",  m_Options.followLocalIncludes);
+        cfg->Write("/parser_follow_global_includes", m_Options.followGlobalIncludes);
+        cfg->Write("/want_preprocessor",             m_Options.wantPreprocessor);
+        cfg->Write("/parse_complex_macros",          m_Options.parseComplexMacros);
+        cfg->Write("/platform_check",                m_Options.platformCheck);
 
         ShowGlobalChangeAnnoyingMsg(); // warn user to re-parse projects
 
@@ -998,13 +998,13 @@ void Parser::WriteOptions(bool classBrowserOnly)
     // ----------------------------------------------------------------------------
 
     // Page "Symbol browser"
-    cfg->Write(_T("/browser_show_inheritance"),      m_BrowserOptions.showInheritance);
-    cfg->Write(_T("/browser_expand_ns"),             m_BrowserOptions.expandNS);
-    cfg->Write(_T("/browser_tree_members"),          m_BrowserOptions.treeMembers);
+    cfg->Write("/browser_show_inheritance",      m_BrowserOptions.showInheritance);
+    cfg->Write("/browser_expand_ns",             m_BrowserOptions.expandNS);
+    cfg->Write("/browser_tree_members",          m_BrowserOptions.treeMembers);
 
     // Token tree
-    cfg->Write(_T("/browser_display_filter"),        m_BrowserOptions.displayFilter);
-    cfg->Write(_T("/browser_sort_type"),             m_BrowserOptions.sortType);
+    cfg->Write("/browser_display_filter",        m_BrowserOptions.displayFilter);
+    cfg->Write("/browser_sort_type",             m_BrowserOptions.sortType);
 
     // Page "Documentation":
     // m_Options.storeDocumentation will be written by DocumentationPopup

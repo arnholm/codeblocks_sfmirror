@@ -63,7 +63,7 @@ ParserThreadedTask::ParserThreadedTask(Parser* parser, wxMutex& parserMTX) :
 
 int ParserThreadedTask::Execute()
 {
-    TRACE(_T("ParserThreadedTask::Execute(): Enter"));
+    TRACE("ParserThreadedTask::Execute(): Enter");
     if (!m_Parser) return 0;
 
     CC_LOCKER_TRACK_P_MTX_LOCK(m_ParserMutex)
@@ -74,7 +74,7 @@ int ParserThreadedTask::Execute()
     CC_LOCKER_TRACK_P_MTX_UNLOCK(m_ParserMutex);
 
     // Here, it first parse the predefs, which is the predefined macros
-    TRACE(_T("ParserThreadedTask::Execute(): Parse predefined macros(in buffer)"));
+    TRACE("ParserThreadedTask::Execute(): Parse predefined macros(in buffer)");
     if (!preDefs.IsEmpty())
         m_Parser->ParseBuffer(preDefs, false, false);
 
@@ -84,10 +84,10 @@ int ParserThreadedTask::Execute()
     if (m_Parser->m_IgnoreThreadEvents)
         m_Parser->m_IsFirstBatch = true;
 
-    TRACE(_T("ParserThreadedTask::Execute(): Parse source files"));
+    TRACE("ParserThreadedTask::Execute(): Parse source files");
     while (!batchFiles.empty())
     {
-        TRACE(_T("-ParserThreadedTask::Execute(): Parse %s"), batchFiles.front().wx_str());
+        TRACE("-ParserThreadedTask::Execute(): Parse %s", batchFiles.front().wx_str());
         m_Parser->Parse(batchFiles.front()); // bool isLocal = true, bool locked = false
         batchFiles.pop_front();
     }
@@ -103,7 +103,7 @@ int ParserThreadedTask::Execute()
     }
 
     CC_LOCKER_TRACK_P_MTX_UNLOCK(m_ParserMutex);
-    TRACE(_T("ParserThreadedTask::Execute(): Leave"));
+    TRACE("ParserThreadedTask::Execute(): Leave");
 
     return 0;
 }
@@ -117,7 +117,7 @@ MarkFileAsLocalThreadedTask::MarkFileAsLocalThreadedTask(Parser* parser, cbProje
 
 int MarkFileAsLocalThreadedTask::Execute()
 {
-    TRACE(_T("MarkFileAsLocalThreadedTask::Execute()"));
+    TRACE("MarkFileAsLocalThreadedTask::Execute()");
     if (!m_Project) return 0;
     if (!m_Parser)  return 0;
 

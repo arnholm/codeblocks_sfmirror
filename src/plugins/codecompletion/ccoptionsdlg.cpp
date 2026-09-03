@@ -40,7 +40,7 @@
 #include "doxygen_parser.h" // For DocumentationHelper
 
 static const wxString g_SampleClasses =
-    _T("class A_class"
+    wxString("class A_class"
     "{"
     "    public:"
     "        int someInt_A;"
@@ -169,9 +169,9 @@ CCOptionsDlg::CCOptionsDlg(wxWindow* parent, ParseManager* pm, CodeCompletion* c
     XRCCTRL(*this, "chkDocumentation",      wxCheckBox)->SetValue(m_Documentation->IsEnabled());
 
     ColourManager *colours = Manager::Get()->GetColourManager();
-    XRCCTRL(*this, "cpDocBgColor",          wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_back")));
-    XRCCTRL(*this, "cpDocTextColor",        wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_fore")));
-    XRCCTRL(*this, "cpDocLinkColor",        wxColourPickerCtrl)->SetColour(colours->GetColour(wxT("cc_docs_link")));
+    XRCCTRL(*this, "cpDocBgColor",          wxColourPickerCtrl)->SetColour(colours->GetColour("cc_docs_back"));
+    XRCCTRL(*this, "cpDocTextColor",        wxColourPickerCtrl)->SetColour(colours->GetColour("cc_docs_fore"));
+    XRCCTRL(*this, "cpDocLinkColor",        wxColourPickerCtrl)->SetColour(colours->GetColour("cc_docs_link"));
 
 //    m_Parser.ParseBuffer(g_SampleClasses, true);
 //    m_Parser.BuildTree(*XRCCTRL(*this, "treeClasses", wxTreeCtrl));
@@ -282,11 +282,11 @@ void CCOptionsDlg::OnApply()
 
     ColourManager *colours = Manager::Get()->GetColourManager();
     wxColor colour = XRCCTRL(*this, "cpDocBgColor", wxColourPickerCtrl)->GetColour();
-    colours->SetColour(wxT("cc_docs_back"), colour);
+    colours->SetColour("cc_docs_back", colour);
     colour = XRCCTRL(*this, "cpDocTextColor", wxColourPickerCtrl)->GetColour();
-    colours->SetColour(wxT("cc_docs_text"), colour);
+    colours->SetColour("cc_docs_text", colour);
     colour = XRCCTRL(*this, "cpDocLinkColor", wxColourPickerCtrl)->GetColour();
-    colours->SetColour(wxT("cc_docs_link"), colour);
+    colours->SetColour("cc_docs_link", colour);
 
     // Now write the parser options and re-read them again to make sure they are up-to-date
     m_Parser.WriteOptions();

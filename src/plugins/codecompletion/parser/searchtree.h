@@ -525,17 +525,16 @@ template <class T> T& SearchTree<T>::operator[](const wxString& s)
 template <class T> wxString SearchTree<T>::Serialize()
 {
     wxString result;
-    result << _T("<SearchTree>\n");
+    result << "<SearchTree>\n";
     result << SerializeLabels();
-    result << _T("<nodes>\n");
+    result << "<nodes>\n";
     for (size_t i = 0; i < m_Nodes.size(); ++i)
         result << m_Nodes[i]->Serialize(this, i, false);
-    result << _T("</nodes>\n");
-    result << _T(" <items>\n");
+    result << "</nodes>\n";
+    result << " <items>\n";
     for (size_t i = 1; i < m_Items.size(); ++i)
         result << SerializeItem(i);
-    result << _T(" </items>\n");
-    result << _T("</SearchTree>\n");
+    result << " </items>\n" ;   result << "</SearchTree>\n";
     return result;
 }
 

@@ -72,7 +72,7 @@ namespace CCDebugInfoHelper
                         fileDesc,
                         wxEmptyString,
                         wxEmptyString,
-                        _T("Text files (*.txt)|*.txt|Any file (*)|*"),
+                        "Text files (*.txt)|*.txt|Any file (*)|*",
                         wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         PlaceWindow(&dlg);
         if (dlg.ShowModal() != wxID_OK)
@@ -416,12 +416,12 @@ void CCDebugInfo::FillMacros()
     lstMacros->Freeze();
     lstMacros->Clear();
 
-    wxStringTokenizer tknzr(m_Parser->GetPredefinedMacros(), wxT("#"));
+    wxStringTokenizer tknzr(m_Parser->GetPredefinedMacros(), "#");
     while ( tknzr.HasMoreTokens() )
     {
         wxString macro = tknzr.GetNextToken();
         if (!macro.IsEmpty())
-            lstMacros->Append(wxT("#") + macro);
+            lstMacros->Append("#" + macro);
     }
 
     lstMacros->Thaw();
@@ -464,12 +464,12 @@ void CCDebugInfo::DisplayTokenInfo()
     wxString fullType = m_Token->m_FullType;
 
     // so they can be displayed in wxStaticText
-    args.Replace(_T("&"), _T("&&"), true);
-    argsStr.Replace(_T("&"), _T("&&"), true);
-    tmplArg.Replace(_T("&"), _T("&&"), true);
-    fullType.Replace(_T("&"), _T("&&"), true);
+    args.Replace("&", "&&", true);
+    argsStr.Replace("&", "&&", true);
+    tmplArg.Replace("&", "&&", true);
+    fullType.Replace("&", "&&", true);
 
-    txtID->SetLabel(wxString::Format(_T("%d"), m_Token->m_Index));
+    txtID->SetLabel(wxString::Format("%d", m_Token->m_Index));
     txtName->SetLabel(m_Token->m_Name);
     txtKind->SetLabel(m_Token->GetTokenKindString());
     txtScope->SetLabel(m_Token->GetTokenScopeString());
@@ -489,21 +489,21 @@ void CCDebugInfo::DisplayTokenInfo()
         label = parent->m_Name;
     else
         label = _("<Global namespace>");
-    txtParent->SetLabel(wxString::Format(_T("%s (%d)"), label.wx_str(), m_Token->m_ParentIndex));
+    txtParent->SetLabel(wxString::Format("%s (%d)", label.wx_str(), m_Token->m_ParentIndex));
 
     FillChildren();
     FillAncestors();
     FillDescendants();
 
     if (!m_Token->GetFilename().IsEmpty())
-        txtDeclFile->SetLabel(wxString::Format(_T("%s : %u"), m_Token->GetFilename().c_str(), m_Token->m_Line));
+        txtDeclFile->SetLabel(wxString::Format("%s : %u", m_Token->GetFilename().c_str(), m_Token->m_Line));
     else
         txtDeclFile->SetLabel(wxEmptyString);
     if (!m_Token->GetImplFilename().IsEmpty())
         txtImplFile->SetLabel(wxString::Format(_("%s : %u (code lines: %u to %u)"), m_Token->GetImplFilename().c_str(), m_Token->m_ImplLine, m_Token->m_ImplLineStart, m_Token->m_ImplLineEnd));
     else
         txtImplFile->SetLabel(wxEmptyString);
-    txtUserData->SetLabel(wxString::Format(_T("0x%p"), m_Token->m_UserData));
+    txtUserData->SetLabel(wxString::Format("0x%p", m_Token->m_UserData));
 }
 
 void CCDebugInfo::FillChildren()
@@ -517,7 +517,7 @@ void CCDebugInfo::FillChildren()
     {
         const Token* child = tree->at(*it);
         const wxString msgInvalidToken = _("<invalid token>");
-        cmbChildren->Append(wxString::Format(_T("%s (%d)"), child ? child->m_Name.wx_str() : msgInvalidToken.wx_str(), *it));
+        cmbChildren->Append(wxString::Format("%s (%d)", child ? child->m_Name.wx_str() : msgInvalidToken.wx_str(), *it));
     }
     cmbChildren->SetSelection(0);
 }
@@ -533,7 +533,7 @@ void CCDebugInfo::FillAncestors()
     {
         const Token* ancestor = tree->at(*it);
         const wxString msgInvalidToken = _("<invalid token>");
-        cmbAncestors->Append(wxString::Format(_T("%s (%d)"), ancestor ? ancestor->m_Name.wx_str() : msgInvalidToken.wx_str(), *it));
+        cmbAncestors->Append(wxString::Format("%s (%d)", ancestor ? ancestor->m_Name.wx_str() : msgInvalidToken.wx_str(), *it));
     }
     cmbAncestors->SetSelection(0);
 }
@@ -743,7 +743,7 @@ void CCDebugInfo::OnSave(cb_unused wxCommandEvent& event)
                 {
                     wxString file = tree->m_FilenameMap.GetString(i);
                     if (!file.IsEmpty())
-                        files += file + _T("\r\n");
+                        files += file + "\r\n";
                 }
 
                 CCDebugInfoHelper::SaveCCDebugInfo(_("Save file list"), files);
@@ -757,7 +757,7 @@ void CCDebugInfo::OnSave(cb_unused wxCommandEvent& event)
                 {
                     const wxString& dir = dirsArray[i];
                     if (!dir.IsEmpty())
-                        dirs += dir + _T("\r\n");
+                        dirs += dir + "\r\n";
                 }
                 CCDebugInfoHelper::SaveCCDebugInfo(_("Save list of include directories"), dirs);
             }
@@ -774,24 +774,23 @@ void CCDebugInfo::OnSave(cb_unused wxCommandEvent& event)
                         const wxString file = tree->m_FilenameMap.GetString(i);
                         if (!file.IsEmpty())
                         {
-                            fileTokens += file + _T("\r\n");
+                            fileTokens += file + "\r\n";
 
                             TokenIdxSet result;
                             tree->FindTokensInFile(file, result, tkUndefined);
                             for (TokenIdxSet::const_iterator it = result.begin(); it != result.end(); ++it)
                             {
                                 const Token* token = tree->at(*it);
-                                fileTokens << token->GetTokenKindString() << _T(" ");
+                                fileTokens << token->GetTokenKindString() << " ";
                                 if (token->m_TokenKind == tkFunction)
-                                    fileTokens << token->m_Name << token->GetFormattedArgs() << _T("\t");
+                                    fileTokens << token->m_Name << token->GetFormattedArgs() << "\t";
                                 else
-                                    fileTokens << token->DisplayName() << _T("\t");
-                                fileTokens << _T("[") << token->m_Line << _T(",") << token->m_ImplLine << _T("]");
-                                fileTokens << _T("\r\n");
+                                    fileTokens << token->DisplayName() << "\t";
+                                fileTokens << "[" << token->m_Line << "," << token->m_ImplLine << "]";
+                                fileTokens << "\r\n";
                             }
                         }
-                        fileTokens += _T("\r\n");
-                    }
+                        fileTokens += "\r\n";                    }
                 }
 
                 CCDebugInfoHelper::SaveCCDebugInfo(_("Save token list of files"), fileTokens);

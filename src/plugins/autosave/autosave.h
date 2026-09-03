@@ -44,7 +44,7 @@ class AutosaveConfigDlg : public cbConfigurationPanel
 		virtual ~AutosaveConfigDlg(){};
 
         wxString GetTitle() const override { return _("Autosave"); }
-        wxString GetBitmapBaseName() const override { return _T("autosave"); }
+        wxString GetBitmapBaseName() const override { return "autosave"; }
         void OnApply() override { SaveSettings(); }
         void OnCancel() override {}
 	private:

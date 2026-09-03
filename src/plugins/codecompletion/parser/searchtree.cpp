@@ -416,12 +416,12 @@ void SearchTreeNode::UpdateItems(BasicSearchTree* tree)
 wxString SearchTreeNode::U2S(unsigned int u)
 {
     if (!u)
-        return _T("0");
+        return "0";
     wxString result, revresult;
     int i = 0;
     while (u>0)
     {
-        revresult <<  (wxChar)(_T('0') + (u % 10));
+        revresult <<  (wxChar)('0' + (u % 10));
         u/=10;
         i++;
     }
@@ -437,7 +437,7 @@ wxString SearchTreeNode::I2S(int i)
 {
     wxString result;
     if (i<0)
-        result << _T('-');
+        result << '-';
     result << U2S(abs(i));
     return result;
 }
@@ -453,33 +453,33 @@ wxString SearchTreeNode::Serialize(BasicSearchTree* tree,nSearchTreeNode node_id
     slabelstart = U2S(m_LabelStart);
     slabellen = U2S(m_LabelLen);
 
-    result << _T(" <node id=\"") << node_id << _T("\" parent=\"") << sparent << _T("\"");
-    result << _T(" depth=\"") << sdepth << _T("\" label=\"");
-    result << slabelno << _T(',') << slabelstart << _T(',') << slabellen;
-    result << _T("\">\n");
-    result << _T("  <items>\n");
+    result << " <node id=\"" << node_id << "\" parent=\"" << sparent << "\"";
+    result << " depth=\"" << sdepth << "\" label=\"";
+    result << slabelno << ',' << slabelstart << ',' << slabellen;
+    result << "\">\n";
+    result << "  <items>\n";
     for (item = m_Items.begin();item != m_Items.end();item++)
     {
         if (item->second)
         {
-            result << _T("    <item depth=\"") << U2S(item->first)
-                   << _T("\" itemid=\"")       << U2S(item->second)
-                   <<  _T("\"") << _T(" />\n");
+            result << "    <item depth=\"" << U2S(item->first)
+                   << "\" itemid=\""       << U2S(item->second)
+                   <<  "\"" << " />\n";
         }
     }
-    result << _T("  </items>\n");
-    result << _T("  <children>\n");
+    result << "  </items>\n";
+    result << "  <children>\n";
     for (link = m_Children.begin();link != m_Children.end();link++)
     {
         if (link->second)
         {
-            result << _T("    <child char=\"") << SerializeString(wxString(link->first))
-                   << _T("\" nodeid=\"") << U2S(link->second) <<  _T("\"") << _T(" />\n");
+            result << "    <child char=\"" << SerializeString(wxString(link->first))
+                   << "\" nodeid=\"" << U2S(link->second) <<  "\"" << " />\n";
         }
     }
 
-    result << _T("  </children>\n");
-    result << _T(" </node>\n");
+    result << "  </children>\n";
+    result << " </node>\n";
     if (withchildren)
     {
         for (link = m_Children.begin();link != m_Children.end();link++)
@@ -496,22 +496,22 @@ wxString SearchTreeNode::Serialize(BasicSearchTree* tree,nSearchTreeNode node_id
 void SearchTreeNode::Dump(BasicSearchTree* tree, nSearchTreeNode node_id, const wxString& prefix, wxString& result)
 {
     wxString suffix;
-    suffix << _T("- \"") << SerializeString(GetLabel(tree)) << _T("\" (") << U2S(node_id) << _T(")");
+    suffix << "- \"" << SerializeString(GetLabel(tree)) << "\" (" << U2S(node_id) << ")";
     if (prefix.length() && prefix[prefix.length()-1]=='|')
-        result << prefix.substr(0,prefix.length()-1) << _T('+') << suffix << _T('\n');
+        result << prefix.substr(0,prefix.length()-1) << '+' << suffix << '\n';
     else if (prefix.length() && prefix[prefix.length()-1]==' ')
-        result << prefix.substr(0,prefix.length()-1) << _T('\\') << suffix << _T('\n');
+        result << prefix.substr(0,prefix.length()-1) << '\\' << suffix << '\n';
     else
-        result << prefix << suffix << _T('\n');
+        result << prefix << suffix << '\n';
     wxString newprefix(prefix);
-    newprefix.append(suffix.length() - 2, _T(' '));
-    newprefix << _T("|");
+    newprefix.append(suffix.length() - 2, ' ');
+    newprefix << "|";
     SearchTreeLinkMap::const_iterator i;
     unsigned int cnt = 0;
     for (i = m_Children.begin(); i!= m_Children.end(); i++)
     {
         if (cnt == m_Children.size() - 1)
-            newprefix[newprefix.length() - 1] = _T(' ');
+            newprefix[newprefix.length() - 1] = ' ';
         tree->GetNode(i->second,false)->Dump(tree,i->second,newprefix,result);
         cnt++;
     }
@@ -906,7 +906,7 @@ bool SearchTreeNode::UnSerializeString(const wxString& s,wxString& result)
     for (i = 0;mode >=0 && i<s.length();i++)
     {
         wxChar ch = s[i];
-        if (ch==_T('"') || ch==_T('>') || ch==_T('<'))
+        if (ch=='"' || ch=='>' || ch=='<')
         {
             mode = -1; // Error
             break;
@@ -914,7 +914,7 @@ bool SearchTreeNode::UnSerializeString(const wxString& s,wxString& result)
         switch(mode)
         {
             case 0: // normal
-                if (ch==_T('&'))
+                if (ch=='&')
                 {
                     mode = 1;
                     entity.Clear();
@@ -922,25 +922,25 @@ bool SearchTreeNode::UnSerializeString(const wxString& s,wxString& result)
                 else
                     result << ch;
             case 1: // escaped
-                if (ch==_T('&'))
+                if (ch=='&')
                 {
                     mode = -1; // Error
                     break;
                 }
-                else if (ch==_T(';'))
+                else if (ch==';')
                 {
                     mode = 0;
-                    if      (entity==_T("quot"))
-                        ch = _T('"');
-                    else if (entity==_T("amp"))
-                        ch = _T('&');
-                    else if (entity==_T("apos"))
-                        ch = _T('\'');
-                    else if (entity==_T("lt"))
-                        ch = _T('<');
-                    else if (entity==_T("gt"))
-                        ch = _T('>');
-                    else if (entity[0]==_T('#') && S2U(entity.substr(1),u))
+                    if      (entity=="quot")
+                        ch = '"';
+                    else if (entity=="amp")
+                        ch = '&';
+                    else if (entity=="apos")
+                        ch = '\'';
+                    else if (entity=="lt")
+                        ch = '<';
+					else if (entity=="gt")
+                        ch = '>';
+                    else if (entity[0]=='#' && S2U(entity.substr(1),u))
                         ch = u;
                     else
                     {
@@ -968,7 +968,7 @@ bool SearchTreeNode::S2U(const wxString& s,unsigned int& u)
     for (i = 0; is_ok && i < s.length();i++)
     {
         ch = s[i];
-        if (ch >= _T('0') && ch <= _T('9'))
+        if (ch >= '0' && ch <= '9')
         {
             u*=10;
             u+=((unsigned int)ch) & 15;
@@ -989,7 +989,7 @@ bool SearchTreeNode::S2I(const wxString& s,int& i)
     if (!s.IsEmpty())
     {
         unsigned int u = 0;
-        if (s[0]==_T('-'))
+        if (s[0]=='-')
         {
             if (!S2U(s.substr(1),u))
                 is_ok = false;
@@ -1017,21 +1017,21 @@ wxString SearchTreeNode::SerializeString(const wxString& s)
         ch=s[i];
         switch(ch)
         {
-            case _T('"'):
-                result << _T("&quot;");break;
-            case _T('\''):
-                result << _T("&#39;");break;
-            case _T('<'):
-                result << _T("&lt;");break;
-            case _T('>'):
-                result << _T("&gt;");break;
-            case _T('&'):
-                result << _T("&amp;");break;
+            case '"':
+                result << "&quot;";break;
+            case '\'':
+                result << "&#39;";break;
+            case '<':
+                result << "&lt;";break;
+            case '>':
+                result << "&gt;";break;
+            case '&':
+                result << "&amp;";break;
             default:
                 if (ch >= 32 && ch <= 126)
                     result << ch;
                 else
-                    result << _T("&#") << SearchTreeNode::U2S((unsigned int)ch) << _T(";");
+                    result << "&#" << SearchTreeNode::U2S((unsigned int)ch) << ";";
         }
     }
     return result;
@@ -1048,12 +1048,12 @@ wxString BasicSearchTree::SerializeLabel(nSearchTreeLabel labelno)
 wxString BasicSearchTree::SerializeLabels()
 {
     wxString result;
-    result << _T(" <labels>\n");
+    result << " <labels>\n";
     for (unsigned int i=0;i<m_Labels.size();i++)
     {
-        result << _T("  <label id=\"") << SearchTreeNode::U2S(i) << _T("\" data=\"") << SerializeLabel(i) << _T("\" />\n");
+        result << "  <label id=\"" << SearchTreeNode::U2S(i) << "\" data=\"" << SerializeLabel(i) << "\" />\n";
     }
-    result << _T(" </labels>\n");
+    result << " </labels>\n";
     return result;
 }
 

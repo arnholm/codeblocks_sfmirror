@@ -62,27 +62,27 @@
 
 namespace ExpressionConsts
 {
-    const wxString Plus         (_T("+"));
-    const wxString Subtract     (_T("-"));
-    const wxString Multiply     (_T("*"));
-    const wxString Divide       (_T("/"));
-    const wxString LParenthesis (_T("("));
-    const wxString RParenthesis (_T(")"));
-    const wxString Mod          (_T("%"));
-    const wxString Power        (_T("^"));
-    const wxString BitwiseAnd   (_T("&"));
-    const wxString BitwiseOr    (_T("|"));
-    const wxString And          (_T("&&"));
-    const wxString Or           (_T("||"));
-    const wxString Not          (_T("!"));
-    const wxString Equal        (_T("=="));
-    const wxString Unequal      (_T("!="));
-    const wxString GT           (_T(">"));
-    const wxString LT           (_T("<"));
-    const wxString GTOrEqual    (_T(">="));
-    const wxString LTOrEqual    (_T("<="));
-    const wxString LShift       (_T("<<"));
-    const wxString RShift       (_T(">>"));
+    const wxString Plus         ("+");
+    const wxString Subtract     ("-");
+    const wxString Multiply     ("*");
+    const wxString Divide       ("/");
+    const wxString LParenthesis ("(");
+    const wxString RParenthesis (")");
+    const wxString Mod          ("%");
+    const wxString Power        ("^");
+    const wxString BitwiseAnd   ("&");
+    const wxString BitwiseOr    ("|");
+    const wxString And          ("&&");
+    const wxString Or           ("||");
+    const wxString Not          ("!");
+    const wxString Equal        ("==");
+    const wxString Unequal      ("!=");
+    const wxString GT           (">");
+    const wxString LT           ("<");
+    const wxString GTOrEqual    (">=");
+    const wxString LTOrEqual    ("<=");
+    const wxString LShift       ("<<");
+    const wxString RShift       (">>");
 }
 
 ExpressionNode::ExpressionNode()
@@ -198,12 +198,12 @@ bool ExpressionNode::IsBinaryOperator(const wxString& first, const wxString& sec
 {
     switch ((wxChar)first.GetChar(0))
     {
-        case _T('&'):
-        case _T('|'):
-        case _T('='):
-        case _T('!'):
-        case _T('>'):
-        case _T('<'):
+        case '&':
+        case '|':
+        case '=':
+        case '!':
+        case '>':
+        case '<':
         {
             const wxString newOperator(first + second);
             if (newOperator == ExpressionConsts::And ||
@@ -348,11 +348,11 @@ void Expression::ConvertInfixToPostfix()
 #ifdef CC_PARSER_TEST
     wxString infix, postfix;
     for (InfixVector::size_type i = 0; i < m_InfixExpression.size(); ++i)
-        infix += m_InfixExpression[i] + _T(" ");
+        infix += m_InfixExpression[i] + " ";
     for (PostfixVector::size_type i = 0; i < m_PostfixExpression.size(); ++i)
-        postfix += m_PostfixExpression[i].GetToken() + _T(" ");
-    TRACE(_T("ConvertInfixToPostfix() : InfixExpression : %s"),   infix.wx_str());
-    TRACE(_T("ConvertInfixToPostfix() : PostfixExpression : %s"), postfix.wx_str());
+        postfix += m_PostfixExpression[i].GetToken() + " ";
+    TRACE("ConvertInfixToPostfix() : InfixExpression : %s",   infix.wx_str());
+    TRACE("ConvertInfixToPostfix() : PostfixExpression : %s", postfix.wx_str());
 #endif
 }
 
@@ -377,7 +377,7 @@ bool Expression::CalcPostfix()
             {
                 --cntNumeric;
                 stack.push(pair.first);
-                TRACE(_T("CalcPostfix() : stack.push(pair.first) : %ld"), pair.first);
+                TRACE("CalcPostfix() : stack.push(pair.first) : %ld", pair.first);
                 pair.first = pair.second;
                 pair.second = node.GetTokenValue();
             }
@@ -407,14 +407,14 @@ bool Expression::CalcPostfix()
                     }
                     pair.second = pair.first;
                     pair.first = stack.top();
-                    TRACE(_T("CalcPostfix() : stack.pop() : %ld"), pair.first);
+                    TRACE("CalcPostfix() : stack.pop() : %ld", pair.first);
                     stack.pop();
                     pair.first = Calculate(type, pair.first, pair.second);
                 }
             }
         }
 
-        TRACE(_T("CalcPostfix() : pair.first : %ld, pair.second : %ld"), pair.first, pair.second);
+        TRACE("CalcPostfix() : pair.first : %ld, pair.second : %ld", pair.first, pair.second);
 
         if (!m_Status)
             return false;

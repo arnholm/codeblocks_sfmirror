@@ -54,8 +54,8 @@ namespace InsertClassMethodDlgHelper
             if (valid)
             {
                 wxString str;
-                str << token->m_FullType << _T(" ") << ns << token->m_Name << token->GetFormattedArgs();
-                str.Replace(_T("&"), _T("&&"));
+                str << token->m_FullType << " " << ns << token->m_Name << token->GetFormattedArgs();
+                str.Replace("&", "&&");
                 if (clb->FindString(str) == wxNOT_FOUND)
                     clb->Append(str);
             }
@@ -95,7 +95,7 @@ InsertClassMethodDlg::InsertClassMethodDlg(wxWindow* parent, ParserBase* parser,
     m_Filename(filename)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgInsertClassMethod"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgInsertClassMethod", "wxScrollingDialog");
     XRCCTRL(*this, "rbCode", wxRadioBox)->SetSelection(0);
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
     FillClasses();
@@ -119,11 +119,11 @@ wxArrayString InsertClassMethodDlg::GetCode() const
             if (XRCCTRL(*this, "chkAddDoc", wxCheckBox)->IsChecked())
             {
                 // add doc block
-                str << _T("/** @brief (one liner)\n  *\n  * (documentation goes here)\n  */\n");
+                str << "/** @brief (one liner)\n  *\n  * (documentation goes here)\n  */\n";
             }
             str << clb->GetString(i);
-            str.Replace(_T("&&"), _T("&"));
-            array.Add(str + (m_Decl ? _T(";\n") : _T("\n{\n\t\n}\n\n")));
+            str.Replace("&&", "&");
+            array.Add(str + (m_Decl ? wxString(";\n") : wxString("\n{\n\t\n}\n\n")));
         }
     }
 
@@ -171,7 +171,7 @@ void InsertClassMethodDlg::FillMethods()
     InsertClassMethodDlgHelper::DoFillMethodsFor(
         clb,
         parentToken,
-        parentToken ? parentToken->m_Name + _T("::") : wxString(),
+        parentToken ? parentToken->m_Name + "::" : wxString(),
         includePrivate,
         includeProtected,
         includePublic);

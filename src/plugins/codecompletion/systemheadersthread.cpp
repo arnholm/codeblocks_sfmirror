@@ -149,7 +149,7 @@ SystemHeadersThread::SystemHeadersThread(wxEvtHandler*        parent,
 
 SystemHeadersThread::~SystemHeadersThread()
 {
-    TRACE(_T("SystemHeadersThread: Terminated."));
+    TRACE("SystemHeadersThread: Terminated.");
 }
 
 void* SystemHeadersThread::Entry()
@@ -188,7 +188,7 @@ void* SystemHeadersThread::Entry()
         {
             CodeBlocksThreadEvent evt(wxEVT_COMMAND_MENU_SELECTED, idSystemHeadersThreadMessage);
             evt.SetClientData(this);
-            evt.SetString(wxString::Format(_T("SystemHeadersThread: Unable to open: %s"),
+            evt.SetString(wxString::Format("SystemHeadersThread: Unable to open: %s",
                                            dirs[i].wx_str()));
             wxPostEvent(m_Parent, evt);
             continue;
@@ -197,7 +197,7 @@ void* SystemHeadersThread::Entry()
         {
             CodeBlocksThreadEvent evt(wxEVT_COMMAND_MENU_SELECTED, idSystemHeadersThreadMessage);
             evt.SetClientData(this);
-            evt.SetString(wxString::Format(_T("SystemHeadersThread: Start traversing: %s"),
+            evt.SetString(wxString::Format("SystemHeadersThread: Start traversing: %s",
                                            dirs[i].wx_str()));
             wxPostEvent(m_Parent, evt);
         }
@@ -227,7 +227,7 @@ void* SystemHeadersThread::Entry()
         wxPostEvent(m_Parent, evt);
     }
 
-    TRACE(_T("SystemHeadersThread: Done."));
+    TRACE("SystemHeadersThread: Done.");
 
     return nullptr;
 }
@@ -265,11 +265,11 @@ wxDirTraverseResult HeaderDirTraverser::OnFile(const wxString& filename)
     AddLock(true); // true means we are adding a file
 
     wxFileName fn(filename);
-    if (!fn.HasExt() || fn.GetExt().GetChar(0) == _T('h'))
+    if (!fn.HasExt() || fn.GetExt().GetChar(0) == 'h')
     {
         fn.MakeRelativeTo(m_SearchDir);
         wxString header(fn.GetFullPath());
-        header.Replace(_T("\\"), _T("/"), true); // Unix style
+        header.Replace("\\", "/", true); // Unix style
         m_Headers.insert(header);
     }
 

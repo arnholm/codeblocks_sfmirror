@@ -312,12 +312,12 @@ size_t TokenTree::FindTokensInFile(const wxString& filename, TokenIdxSet& result
     // get file idx
     wxString f(filename);
     // convert the UNIX path style
-    while (f.Replace(_T("\\"),_T("/")))
+    while (f.Replace("\\","/"))
         { ; }
 
     if ( !m_FilenameMap.HasItem(f) )
     {
-        TRACE(_T("TokenTree::FindTokensInFile() : File '%s' not found in file names map."), f.wx_str());
+        TRACE("TokenTree::FindTokensInFile() : File '%s' not found in file names map.", f.wx_str());
         return 0;
     }
 
@@ -327,7 +327,7 @@ size_t TokenTree::FindTokensInFile(const wxString& filename, TokenIdxSet& result
     TokenFileMap::iterator itf = m_FileMap.find(idx);
     if (itf == m_FileMap.end())
     {
-        TRACE(_T("TokenTree::FindTokensInFile() : No tokens found for file '%s' (index %d)."), f.wx_str(), idx);
+        TRACE("TokenTree::FindTokensInFile() : No tokens found for file '%s' (index %d).", f.wx_str(), idx);
         return 0;
     }
 
@@ -462,7 +462,7 @@ void TokenTree::RemoveToken(Token* oldToken)
     {
         if (*it == idx) // that should not happen, we can not be our own descendant, but in fact that can happen with boost
         {
-            CCLogger::Get()->DebugLog(_T("Break out the loop to remove descendants, to avoid a crash. We can not be our own descendant!"));
+            CCLogger::Get()->DebugLog("Break out the loop to remove descendants, to avoid a crash. We can not be our own descendant!");
             break;
         }
         RemoveToken(*it);
@@ -661,10 +661,10 @@ void TokenTree::RecalcInheritanceChain(Token* token)
     token->m_DirectAncestors.clear();
     token->m_Ancestors.clear();
 
-    wxStringTokenizer tkz(token->m_AncestorsString, _T(","));
-    TRACE(_T("RecalcInheritanceChain() : Token %s, Ancestors %s"), token->m_Name.wx_str(),
+    wxStringTokenizer tkz(token->m_AncestorsString, ",");
+    TRACE("RecalcInheritanceChain() : Token %s, Ancestors %s", token->m_Name.wx_str(),
           token->m_AncestorsString.wx_str());
-    TRACE(_T("RecalcInheritanceChain() : Removing ancestor string from %s"), token->m_Name.wx_str());
+    TRACE("RecalcInheritanceChain() : Removing ancestor string from %s", token->m_Name.wx_str());
     token->m_AncestorsString.Clear();
 
     while (tkz.HasMoreTokens())
@@ -673,13 +673,13 @@ void TokenTree::RecalcInheritanceChain(Token* token)
         if (ancestor.IsEmpty() || ancestor == token->m_Name)
             continue;
 
-        TRACE(_T("RecalcInheritanceChain() : Ancestor %s"), ancestor.wx_str());
+        TRACE("RecalcInheritanceChain() : Ancestor %s", ancestor.wx_str());
 
         // ancestors might contain namespaces, e.g. NS::Ancestor
-        if (ancestor.Find(_T("::")) != wxNOT_FOUND)
+        if (ancestor.Find("::") != wxNOT_FOUND)
         {
             Token* ancestorToken = nullptr;
-            wxStringTokenizer anctkz(ancestor, _T("::"));
+            wxStringTokenizer anctkz(ancestor, "::");
             while (anctkz.HasMoreTokens())
             {
                 wxString ns = anctkz.GetNextToken();
@@ -696,15 +696,15 @@ void TokenTree::RecalcInheritanceChain(Token* token)
                 && ancestorToken != token
                 && (ancestorToken->m_TokenKind == tkClass || ancestorToken->m_TokenKind == tkNamespace) )
             {
-                TRACE(_T("RecalcInheritanceChain() : Resolved to %s"), ancestorToken->m_Name.wx_str());
+                TRACE("RecalcInheritanceChain() : Resolved to %s", ancestorToken->m_Name.wx_str());
                 RecalcInheritanceChain(ancestorToken);
                 token->m_Ancestors.insert(ancestorToken->m_Index);
                 ancestorToken->m_Descendants.insert(token->m_Index);
-                TRACE(_T("RecalcInheritanceChain() :  + '%s'"), ancestorToken->m_Name.wx_str());
+                TRACE("RecalcInheritanceChain() :  + '%s'", ancestorToken->m_Name.wx_str());
             }
             else
             {
-                TRACE(_T("RecalcInheritanceChain() :  ! '%s' (unresolved)"), ancestor.wx_str());
+                TRACE("RecalcInheritanceChain() :  ! '%s' (unresolved)", ancestor.wx_str());
             }
         }
         else // no namespaces in ancestor
@@ -726,13 +726,13 @@ void TokenTree::RecalcInheritanceChain(Token* token)
                     RecalcInheritanceChain(ancestorToken);
                     token->m_Ancestors.insert(*it);
                     ancestorToken->m_Descendants.insert(token->m_Index);
-                    TRACE(_T("RecalcInheritanceChain() :  + '%s'"), ancestorToken->m_Name.wx_str());
+                    TRACE("RecalcInheritanceChain() :  + '%s'", ancestorToken->m_Name.wx_str());
                 }
             }
 #if defined(CC_TOKEN_DEBUG_OUTPUT)
     #if CC_TOKEN_DEBUG_OUTPUT
             if (result.empty())
-                TRACE(_T("RecalcInheritanceChain() :  ! '%s' (unresolved)"), ancestor.wx_str());
+                TRACE("RecalcInheritanceChain() :  ! '%s' (unresolved)", ancestor.wx_str());
     #endif
 #endif
         }
@@ -744,7 +744,7 @@ void TokenTree::RecalcInheritanceChain(Token* token)
 #if defined(CC_TOKEN_DEBUG_OUTPUT)
     #if CC_TOKEN_DEBUG_OUTPUT
     wxStopWatch sw;
-    TRACE(_T("RecalcInheritanceChain() : First iteration took : %ld ms"), sw.Time());
+    TRACE("RecalcInheritanceChain() : First iteration took : %ld ms", sw.Time());
     sw.Start();
     #endif
 #endif
@@ -770,14 +770,14 @@ void TokenTree::RecalcInheritanceChain(Token* token)
     if (token)
     {
         // debug loop
-        TRACE(_T("RecalcInheritanceChain() : Ancestors for %s:"), token->m_Name.wx_str());
+        TRACE("RecalcInheritanceChain() : Ancestors for %s:", token->m_Name.wx_str());
         for (TokenIdxSet::const_iterator it = token->m_Ancestors.begin(); it != token->m_Ancestors.end(); ++it)
         {
             const Token* anc_token = at(*it);
             if (anc_token)
-                TRACE(_T("RecalcInheritanceChain() :  + %s"), anc_token->m_Name.wx_str());
+                TRACE("RecalcInheritanceChain() :  + %s", anc_token->m_Name.wx_str());
             else
-                TRACE(_T("RecalcInheritanceChain() :  + NULL?!"));
+                TRACE("RecalcInheritanceChain() :  + NULL?!");
         }
     }
     #endif
@@ -785,11 +785,11 @@ void TokenTree::RecalcInheritanceChain(Token* token)
 
 #if defined(CC_TOKEN_DEBUG_OUTPUT)
     #if CC_TOKEN_DEBUG_OUTPUT
-    TRACE(_T("RecalcInheritanceChain() : Second iteration took : %ld ms"), sw.Time());
+    TRACE("RecalcInheritanceChain() : Second iteration took : %ld ms", sw.Time());
     #endif
 #endif
 
-    TRACE(_T("RecalcInheritanceChain() : Full inheritance calculated."));
+    TRACE("RecalcInheritanceChain() : Full inheritance calculated.");
 }
 
 // caches the inheritance info for each token (recursive function)
@@ -808,7 +808,7 @@ void TokenTree::RecalcFullInheritance(int parentIdx, TokenIdxSet& result)
     if ( !(ancestor->m_TokenKind & (tkClass | tkTypedef)) )
         return;
 
-    TRACE(_T("RecalcFullInheritance() : Anc: '%s'"), ancestor->m_Name.wx_str());
+    TRACE("RecalcFullInheritance() : Anc: '%s'", ancestor->m_Name.wx_str());
 
     // for all its ancestors
     for (TokenIdxSet::const_iterator it = ancestor->m_Ancestors.begin(); it != ancestor->m_Ancestors.end(); ++it)
@@ -843,7 +843,7 @@ const Token* TokenTree::GetTokenAt(int idx) const
 
 size_t TokenTree::InsertFileOrGetIndex(const wxString& filename)
 {
-    wxString f(filename); while (f.Replace(_T("\\"),_T("/"))) { ; }
+    wxString f(filename); while (f.Replace("\\","/")) { ; }
 
     // Insert does not alter the tree if the filename is already found.
     return m_FilenameMap.insert(f);
@@ -852,14 +852,14 @@ size_t TokenTree::InsertFileOrGetIndex(const wxString& filename)
 size_t TokenTree::GetFileMatches(const wxString& filename, std::set<size_t>& result,
                                   bool caseSensitive,       bool              is_prefix)
 {
-  wxString f(filename); while (f.Replace(_T("\\"),_T("/"))) { ; }
+  wxString f(filename); while (f.Replace("\\","/")) { ; }
 
   return m_FilenameMap.FindMatches(f, result, caseSensitive, is_prefix);
 }
 
 size_t TokenTree::GetFileIndex(const wxString& filename)
 {
-  wxString f(filename); while (f.Replace(_T("\\"),_T("/"))) { ; }
+  wxString f(filename); while (f.Replace("\\","/")) { ; }
 
   return m_FilenameMap.GetItemNo(f);
 }
