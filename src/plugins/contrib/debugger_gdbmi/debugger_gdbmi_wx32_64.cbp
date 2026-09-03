@@ -20,7 +20,7 @@
 				</ExtraCommands>
 			</Target>
 			<Environment>
-				<Variable name="CB_TRUNK" value="../....\..\" />
+				<Variable name="CB_TRUNK" value="..\..\..\..\" />
 				<Variable name="WX_CFG" value="" />
 				<Variable name="WX_SUFFIX" value="u" />
 				<Variable name="WX_VERSION" value="32" />
@@ -120,11 +120,13 @@
 		<Unit filename="src/json_node.cpp" />
 		<Unit filename="src/json_node.h" />
 		<Unit filename="src/macros.h" />
+		<Unit filename="src/parsewatchvalue.cpp" />
+		<Unit filename="src/parsewatchvalue.h" />
 		<Unit filename="src/remotedebugging.h" />
 		<Unit filename="src/resources/GDBMiManifest.xml" />
+		<Unit filename="src/resources/python.py" />
 		<Unit filename="src/updated_variable.cpp" />
 		<Unit filename="src/updated_variable.h" />
-		<Unit filename="src/resources/python.py" />
-		<Extensions/>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
