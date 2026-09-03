@@ -68,7 +68,7 @@
 			<Add directory="$(#wx33_64.lib)/gcc_dll$(WX_CFG)" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="update33_64.bat" />
+			<Add after="zip -j9 ..\..\..\devel33_64\share\CodeBlocks\codesnippets.zip manifest.xml" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />
@@ -99,9 +99,6 @@
 		</Unit>
 		<Unit filename="snippetsimages.cpp" />
 		<Unit filename="snippetsimages.h" />
-		<Unit filename="update.bat" />
-		<Unit filename="update33_64" />
-		<Unit filename="update33_64.bat" />
 		<Unit filename="version.cpp" />
 		<Unit filename="version.h" />
 		<Extensions />

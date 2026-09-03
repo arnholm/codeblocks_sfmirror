@@ -83,12 +83,15 @@ class CodeSnippetsWindow : public wxPanel
 		bool AddTextToClipBoard(const wxString& text);
         void SetSnippetImage(wxTreeItemId itemId);
         void CheckForExternallyModifiedFiles();
-        void ShowSnippetsAbout(const wxString& buildInfo);
+        void ShowSnippetsAbout(wxString buildInfo);
 		wxTreeItemId SearchSnippet(const wxString& searchTerms, const wxTreeItemId& node);
 		bool IsTreeBusy(){
-		    if (not GetSnippetsTreeCtrl()) return true; //debugging
-		    return GetSnippetsTreeCtrl()->IsTreeBusy();
+		    if (not GetSnippetsTreeCtrl()) return true; // not yet allocated, say busy is true
+		    return GetSnippetsTreeCtrl()->IsTreeBusy(); // if allocated, check if properties dlg is busy
         }//IsTreeBusy
+
+        int CreateDirListFile(const wxString& rootPath);
+        void ListDirectoryRecursive(const wxString& dirPath, wxTextFile& outputFile, int indentLevel);
 
 		wxTextCtrl*             m_SearchSnippetCtrl;
 		wxButton*               m_SearchCfgBtn;
@@ -99,17 +102,22 @@ class CodeSnippetsWindow : public wxPanel
         TiXmlDocument*          pTiXmlDoc;
         bool                    m_bIsEditingLabel;
 
+        wxTextFile m_DirTxtFile;
+
         //-Utils utils;
 
 		void OnSearchCfg(wxCommandEvent& event);
 		void OnSearch(wxCommandEvent& event);
 		void OnItemActivated(wxTreeEvent& event);
+
 		void OnItemMenu(wxTreeEvent& event);
-		void OnTreeItemRightClick(wxTreeEvent& event);
+        void OnTreeItemRightClick(wxTreeEvent& event);
+        void OnTreeContextMenu(wxContextMenuEvent& event);
 
 		void OnBeginDrag(wxTreeEvent& event);
 		void OnEndDrag(wxTreeEvent& event);
 		void OnMnuAddSubCategory(wxCommandEvent& event);
+		void OnMnuAddDirectory(wxCommandEvent& event);
 		void OnMnuRemove(wxCommandEvent& event);
 		void OnMnuRename(wxCommandEvent& event);
 		void OnMnuConvertToCategory(wxCommandEvent& event);

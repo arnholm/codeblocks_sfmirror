@@ -68,7 +68,7 @@
 			<Add directory="$(#wx33_arm.lib)/clang_x64_dll_mono" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="update33_arm.bat" />
+			<Add after="zip -j9 ..\..\..\devel33_arm\share\CodeBlocks\codesnippets.zip manifest.xml" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />

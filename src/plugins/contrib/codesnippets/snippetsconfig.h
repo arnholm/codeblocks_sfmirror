@@ -61,10 +61,10 @@ class CodeSnippetsConfig
     void     SettingsLoad();
     void     SettingsSave();
     void     SettingsSaveWinPosition();
-    void     SettingsSaveString(const wxString& settingName, const wxString& settingValue);
-    wxString SettingsReadString(const wxString& settingName);
+    void     SettingsSaveString(const wxString settingName, const wxString settingValue );
+    wxString SettingsReadString(const wxString settingName );
     wxString GetSettingsWindowState();
-    void     SetSettingsWindowState(const wxString& windowState);
+    void     SetSettingsWindowState(const wxString windowState);
 
     wxWindow*       GetMainFrame(){return pMainFrame;}
     wxMenuBar*      GetMenuBar(){return m_pMenuBar;}
@@ -92,8 +92,8 @@ class CodeSnippetsConfig
 
     EditorManager*         GetEditorManager(wxFrame* pFrame);
     EditorManager*         GetEditorManager(wxWindow* frame);
-    int                     GetEditorManagerCount();
-    wxFrame*                GetEditorManagerFrame(const int index);
+    int                    GetEditorManagerCount();
+    wxFrame*               GetEditorManagerFrame(const int index);
     EditorManager*         GetEditorManager(const int index);
 
     void                    RegisterEditorManager(wxFrame* pFrame, EditorManager* pEdMgr);

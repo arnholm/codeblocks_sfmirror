@@ -32,7 +32,7 @@
 #include <wx/filename.h>
 #include "wx/mimetype.h"
 
-#include "sdk.h"
+#include "sdk.h" // IWYU pragma: keep; Tell cland to hushup
 #ifndef CB_PRECOMP
 #include "manager.h"
 #include "editormanager.h"
@@ -248,43 +248,48 @@ int CodeSnippetsTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTree
     if (data1 && data2)
     {
         int compareIndex1 = 0;
+
         switch (data1->GetType())
         {
-        case SnippetTreeItemData::TYPE_ROOT:
-            compareIndex1 = 0;
-            break;
+            case SnippetTreeItemData::TYPE_ROOT:
+                compareIndex1 = 0;
+                break;
 
-        case SnippetTreeItemData::TYPE_CATEGORY:
-            compareIndex1 = 1;
-            break;
+            case SnippetTreeItemData::TYPE_CATEGORY:
+                compareIndex1 = 1;
+                break;
 
-        case SnippetTreeItemData::TYPE_SNIPPET:
-            compareIndex1 = 2;
-            break;
+            case SnippetTreeItemData::TYPE_SNIPPET:
+                compareIndex1 = 2;
+                break;
         }
+
         int compareIndex2 = 0;
+
         switch (data2->GetType())
         {
-        case SnippetTreeItemData::TYPE_ROOT:
-            compareIndex2 = 0;
-            break;
+            case SnippetTreeItemData::TYPE_ROOT:
+                compareIndex2 = 0;
+                break;
 
-        case SnippetTreeItemData::TYPE_CATEGORY:
-            compareIndex2 = 1;
-            break;
+            case SnippetTreeItemData::TYPE_CATEGORY:
+                compareIndex2 = 1;
+                break;
 
-        case SnippetTreeItemData::TYPE_SNIPPET:
-            compareIndex2 = 2;
-            break;
-        }
+            case SnippetTreeItemData::TYPE_SNIPPET:
+                compareIndex2 = 2;
+                break;
+        }//end switch
 
         // Compare the types
         if (compareIndex1 == compareIndex2)
         {
-            // If they are both the same type, just use normal compare
-            return wxTreeCtrl::OnCompareItems(item1, item2);
+            // If they are both the same type, ignore case
+            const wxString label1 = GetItemText(item1);
+            const wxString label2 = GetItemText(item2);
+            return label1.CmpNoCase(label2);
         }
-        else if (compareIndex1 > compareIndex2)
+        else if (compareIndex1 > compareIndex2) // types are different
         {
             return 1;
         }
@@ -1781,12 +1786,12 @@ void CodeSnippetsTreeCtrl::EditSnippetWithMimeOrCB()
     // -------------------------------------------
     // Try open using mime association
     // -------------------------------------------
-    wxString s_defaultExt = _T("xyz");
+    //unused wxString s_defaultExt = _T("xyz");
     wxString msg;
 
     if ( not fileNameExt.empty() )
     {
-        s_defaultExt = fileNameExt;
+        //unused s_defaultExt = fileNameExt;
 
         // init MIME database if not done yet
         if ( not m_mimeDatabase )
@@ -1863,7 +1868,6 @@ void CodeSnippetsTreeCtrl::EditSnippetWithMimeOrCB()
     ////m_mimeDatabase = 0;
 }
 // ----------------------------------------------------------------------------
-//int CodeSnippetsTreeCtrl::ExecuteDialog(wxScrollingDialog* pdlg, wxSemaphore& waitSem)
 int CodeSnippetsTreeCtrl::ExecuteDialog(SnippetProperty* pdlg, wxSemaphore& waitSem)
 // ----------------------------------------------------------------------------
 {
@@ -1947,7 +1951,7 @@ void CodeSnippetsTreeCtrl::SaveAllOpenEditors()
 
     // Editor closes can change the editor array count
     // This 'for loop' reads it on each iteration
-    for (int ii=knt; ii and m_EditorPtrArray.GetCount(); --ii)   // (ph 26/03/25)
+    for (size_t ii=knt; ii and m_EditorPtrArray.GetCount(); --ii)   // (ph 26/03/25)
     {
         EditorBase* eb = m_EditorPtrArray[ii-1];
 

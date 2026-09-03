@@ -45,7 +45,7 @@
 			<Add directory="../../../devel32" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="./update32" />
+			<Add after="zip -j9 ../../../devel32/share/CodeBlocks/codesnippets.zip manifest.xml" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />
 		<Unit filename="codesnippets.cpp" />

@@ -58,7 +58,7 @@ class AppVersion
 
 #include <wx/string.h>
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.7 26/3/25")
+#define VERSION wxT("1.4.15 26/08/27")
 //------------------------------------------
 // Release - Current development level
 // Feature - User interface level
@@ -66,6 +66,17 @@ class AppVersion
 #endif // VERSION_H
 
 //versions
+// 1.4.15 2026/08/27 Remove context events for right mouse click from event table
+//           and Bind() differently for wx33 vs linux vs all other wxWidgets
+// 1.4.14 2026/08/26 On initial run place "Right click Root item. Use Settings to set a better editor."
+//          into the search text ctrl.
+// 1.4.13 2026/08/25 Add sort ability to the items tree
+// 1.4.12 2026/08/24 Add EVT_TREE_ITEM_RIGHT_CLICK for missing EVT_TREE_ITEM_MENU on wx3.2.8
+// 1.4.11 2026/04/23 Mark #CodeSnippets directory list with date/time header
+// 1.4.11 2026/04/12 Use personalities (not implemented yet ?)
+// 1.4.10 2026/04/12 Fix location of snippets.xml and change opening files in Dir lists
+// 1.4.9 2026/04/08 Ask before running an executable
+// 1.4.8 2026/04/05 Add Directory listing as a snippet feature
 // 1.4.7 2026/03/25 Don't create duplicate temp txt files
 // 1.4.6 2026/02/24 Clean up/simplyfy post build steps
 //      Fix the right-mouse-click to show the context menus

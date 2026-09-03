@@ -32,14 +32,16 @@
     #include <wx/filedlg.h>
     #include <wx/tokenzr.h>
 #endif
+
     #include <wx/filename.h>
     #include <wx/toplevel.h>
     #include <wx/tooltip.h>
+    #include <wx/stdpaths.h>
 
 // wxWidget headers not include in wx_pch.h
     #include <wx/clipbrd.h>
 
-    #include "sdk.h"
+    #include "sdk.h" // IWYU pragma: keep; Tell clangd to shutup
     #ifndef CB_PRECOMP
         #include "manager.h"
         #include "logmanager.h"
@@ -62,17 +64,6 @@
 #include "codesnippetstreectrl.h"
 #include "settingsdlg.h"
 #include "menuidentifiers.h"
-
-//#include "../Utils/ToolBox/ToolBox.h"
-
-//-#define SNIPPETS_TREE_IMAGE_COUNT 3
-// above redefined in snipimages.h to 6
-
-//const wxString snippetsTreeImageFileNames[] = {
-//    _T("allsnippets.png"),
-//    _T("category.png"),
-//    _T("snippet.png")
-//};
 
 int idSearchSnippetCtrl         = wxNewId();
 int idSearchCfgBtn              = wxNewId();
@@ -98,6 +89,7 @@ int idMnuOpenFileLink           = wxNewId();
 int idMnuConvertToFileLink      = wxNewId();
 int idMnuProperties             = wxNewId();
 int idMnuSettings               = wxNewId();
+int idMnuAddDirectory           = wxNewId(); // (ph 26/04/06)
 int idMnuAbout                  = wxNewId();
 int idMnuTest                   = wxNewId();
 
@@ -120,6 +112,7 @@ BEGIN_EVENT_TABLE(CodeSnippetsWindow, wxPanel)
     EVT_MENU(idMnuPaste,            CodeSnippetsWindow::OnMnuPaste)
     EVT_MENU(idMnuConvertToCategory,CodeSnippetsWindow::OnMnuConvertToCategory)
     EVT_MENU(idMnuAddSubCategory,   CodeSnippetsWindow::OnMnuAddSubCategory)
+    EVT_MENU(idMnuAddDirectory,     CodeSnippetsWindow::OnMnuAddDirectory)
     EVT_MENU(idMnuAddSnippet,       CodeSnippetsWindow::OnMnuAddSnippet)
     EVT_MENU(idMnuApplySnippet,     CodeSnippetsWindow::OnMnuApplySnippet)
     EVT_MENU(idMnuLoadSnippetsFromFile, CodeSnippetsWindow::OnMnuLoadSnippetsFromFile)
@@ -149,9 +142,14 @@ BEGIN_EVENT_TABLE(CodeSnippetsWindow, wxPanel)
     EVT_BUTTON(idSearchCfgBtn, CodeSnippetsWindow::OnSearchCfg)
     EVT_TEXT(idSearchSnippetCtrl, CodeSnippetsWindow::OnSearch)
     EVT_TREE_ITEM_ACTIVATED(idSnippetsTreeCtrl, CodeSnippetsWindow::OnItemActivated)
-    EVT_TREE_ITEM_MENU(idSnippetsTreeCtrl, CodeSnippetsWindow::OnItemMenu)
-    EVT_TREE_ITEM_RIGHT_CLICK(idSnippetsTreeCtrl, CodeSnippetsWindow::OnTreeItemRightClick)
-///EVT_TREE_ITEM_RIGHT_CLICK(ID_TREE_CTRL, MyFrame::OnTreeRightClick)
+    //-EVT_TREE_ITEM_MENU(idSnippetsTreeCtrl, CodeSnippetsWindow::OnItemMenu)
+
+////    // Some wierd bug will not send EVT_TREE_ITEM_MENU to wxWidgets 3.2.8
+////    #if wxCHECK_VERSION(3, 3, 0)
+////    EVT_TREE_ITEM_MENU(idSnippetsTreeCtrl, CodeSnippetsWindow::OnItemMenu)
+////    #else
+////    EVT_TREE_ITEM_RIGHT_CLICK(idSnippetsTreeCtrl,CodeSnippetsWindow::OnTreeItemRightClick)
+////    #endif
 
     EVT_TREE_BEGIN_DRAG(idSnippetsTreeCtrl, CodeSnippetsWindow::OnBeginDrag)
     EVT_TREE_END_DRAG(idSnippetsTreeCtrl, CodeSnippetsWindow::OnEndDrag)
@@ -249,9 +247,23 @@ CodeSnippetsWindow::CodeSnippetsWindow(wxWindow* parent)
     wxString s(__FUNCTION__, wxConvUTF8);
     LOGIT(s+wxT("LoadingFile:%s"),GetConfig()->SettingsSnippetsXmlPath.c_str());
 
+    wxFileName fnSnippets(GetConfig()->SettingsSnippetsXmlPath);
+    //-wxString lookie = fnSnippets.GetFullPath(); // **Debugging**
+    if (wxDirExists(GetConfig()->SettingsSnippetsFolder))   // (ph 26/04/11)
+        fnSnippets.SetPath(GetConfig()->SettingsSnippetsFolder);
+    //lookie = fnSnippets.GetFullPath(); // **Debugging**
     // Load the snippets
-    GetSnippetsTreeCtrl()->LoadItemsFromFile(GetConfig()->SettingsSnippetsXmlPath, /*appending=*/false);
+    GetSnippetsTreeCtrl()->LoadItemsFromFile(fnSnippets.GetFullPath(), /*appending=*/false);
     //-GetSnippetsTreeCtrl()->FetchFileModificationTime(); done by LoadItemsFromFile()
+
+   // wx3.3.3 bug does not honor EVT_CONTEXT_MENU for wxTreeCtrl
+   #if wxMAJOR_VERSION == 3 && \
+        wxMINOR_VERSION == 3 && \
+        wxRELEASE_NUMBER == 3
+    GetSnippetsTreeCtrl()->Bind(wxEVT_TREE_ITEM_MENU, &CodeSnippetsWindow::OnItemMenu, this);
+   #else   //does not work on wx33 but works for linux and all other versions of wxWidgets // (ph 26/08/28)
+    GetSnippetsTreeCtrl()->Bind(wxEVT_CONTEXT_MENU, &CodeSnippetsWindow::OnTreeContextMenu, this);
+   #endif
 }
 // ----------------------------------------------------------------------------
 CodeSnippetsWindow::~CodeSnippetsWindow()
@@ -260,6 +272,15 @@ CodeSnippetsWindow::~CodeSnippetsWindow()
     #if defined(LOGGING)
     //LOGIT( _T("~CodeSnippetsWindow:return"));
     #endif
+   // wx3.3.3 bug does not honor EVT_CONTEXT_MENU for wxTreeCtrl
+   #if wxMAJOR_VERSION == 3 && \
+        wxMINOR_VERSION == 3 && \
+        wxRELEASE_NUMBER == 3
+    GetSnippetsTreeCtrl()->Unbind(wxEVT_TREE_ITEM_MENU, &CodeSnippetsWindow::OnItemMenu, this);
+   #else   //does not work on wx33 but works for linux and all other versions of wxWidgets // (ph 26/08/28)
+    GetSnippetsTreeCtrl()->Unbind(wxEVT_CONTEXT_MENU, &CodeSnippetsWindow::OnTreeContextMenu, this);
+   #endif
+    GetSnippetsTreeCtrl()->Unbind(wxEVT_CONTEXT_MENU, &CodeSnippetsWindow::OnTreeContextMenu, this);
 }
 // ----------------------------------------------------------------------------
 void CodeSnippetsWindow::OnEnterWindow (wxMouseEvent &event)
@@ -335,7 +356,8 @@ void CodeSnippetsWindow::InitDlg()
 
     wxBoxSizer* searchCtrlSizer = new wxBoxSizer(wxHORIZONTAL);
 
-    m_SearchSnippetCtrl = new wxTextCtrl(this, idSearchSnippetCtrl, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+    wxString initSeachStr = _("For help, right click root item");
+    m_SearchSnippetCtrl = new wxTextCtrl(this, idSearchSnippetCtrl, initSeachStr, wxDefaultPosition, wxDefaultSize, 0);
     searchCtrlSizer->Add(m_SearchSnippetCtrl, 1, wxBOTTOM|wxLEFT|wxTOP, 5);
 
     m_SearchCfgBtn = new wxButton(this, idSearchCfgBtn, _T(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
@@ -506,12 +528,25 @@ void CodeSnippetsWindow::OnItemActivated(wxTreeEvent& event)
 
     OnMnuEditSnippet( ev );
 }
+
+
+// ----------------------------------------------------------------------------
+void CodeSnippetsWindow::OnTreeContextMenu(wxContextMenuEvent& event)
+// ----------------------------------------------------------------------------
+{
+    //Used for all wxWidgets version except buggy wx3.3.3
+    wxUnusedVar(event);
+    // call the common wxTreeEvent
+    wxTreeEvent evt;
+    OnItemMenu(evt);
+}
 // ----------------------------------------------------------------------------
 void CodeSnippetsWindow::OnTreeItemRightClick(wxTreeEvent& event)
 // ----------------------------------------------------------------------------
 {
-    OnItemMenu(event);
-    return;
+    wxUnusedVar(event);
+////    // wx3.2.8 does not issue EVT_TREE_ITEM_MENU, so fake it
+////    OnItemMenu(event);
 }
 // ----------------------------------------------------------------------------
 void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
@@ -520,12 +555,18 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
     // The context menu for the selected item has been requested, either by a
     // right click or by using the menu key.
 
-    if ( IsTreeBusy() ) return;
+    wxUnusedVar(event);
+    if (IsTreeBusy())
+        return;
 
     // Get the item associated with the event
-    wxTreeItemId itemId = event.GetItem();
+    //wxTreeItemId itemId = event.GetItem();//?
+    wxTreeItemId itemId = m_SnippetsTreeCtrl->GetSelection();
+    if (!itemId.IsOk())
+        return;
 
-    if (const SnippetTreeItemData* eventItem = (SnippetTreeItemData*)(GetSnippetsTreeCtrl()->GetItemData(event.GetItem())))
+    if (const SnippetTreeItemData* eventItem =
+        (SnippetTreeItemData*)(GetSnippetsTreeCtrl()->GetItemData(itemId)))
     {
         wxMenu* snippetsTreeMenu = new wxMenu();
 
@@ -538,6 +579,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
             case SnippetTreeItemData::TYPE_ROOT:
                 snippetsTreeMenu->Append(idMnuAddSnippet, _("Add Snippet"));
                 snippetsTreeMenu->Append(idMnuAddSubCategory, _("Add SubCategory"));
+                snippetsTreeMenu->Append(idMnuAddDirectory, _("Add Directory"));
                 snippetsTreeMenu->AppendSeparator();
                 snippetsTreeMenu->Append(idMnuPaste, _("Paste Items"));
                 snippetsTreeMenu->Enable(idMnuPaste, pTiXmlDoc);
@@ -582,6 +624,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
                 snippetsTreeMenu->Append(idMnuSettings, _("Settings..."));
                if ( GetConfig() ){
                     snippetsTreeMenu->Append(idMnuAbout, _("About..."));
+                    snippetsTreeMenu->Append(idMnuAbout, _("Help..."));
                     #if defined(LOGGING)
                     snippetsTreeMenu->Append(idMnuTest, _("Test")); //debugging
                     #endif
@@ -594,6 +637,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
             case SnippetTreeItemData::TYPE_CATEGORY:
                 snippetsTreeMenu->Append(idMnuAddSnippet, _("Add Snippet"));
                 snippetsTreeMenu->Append(idMnuAddSubCategory, _("Add SubCategory"));
+                snippetsTreeMenu->Append(idMnuAddDirectory, _("Add Directory"));
                 snippetsTreeMenu->AppendSeparator();
                 snippetsTreeMenu->Append(idMnuCopy,  _("Copy Category"));
                 snippetsTreeMenu->Append(idMnuPaste, _("Paste Tree Items"));
@@ -644,7 +688,7 @@ void CodeSnippetsWindow::OnItemMenu(wxTreeEvent& event)
         //-m_MnuAssociatedItemID = eventItem->GetId();
         GetSnippetsTreeCtrl()->SetAssociatedItemID( eventItem->GetId() );
 
-        PopupMenu(snippetsTreeMenu); //<-- NB: won't popup when brkpnt in this routine
+        PopupMenu(snippetsTreeMenu); //<-- NB: won't popup when breakpoint in this routine
 
         delete snippetsTreeMenu;
     }
@@ -678,6 +722,157 @@ void CodeSnippetsWindow::OnMnuAddSubCategory(wxCommandEvent& event)
     if ( (newItem.IsOk()) && (pTree->GetItemText(newItem).IsEmpty()) )
         pTree->RemoveItem(newItem);
 }
+// ----------------------------------------------------------------------------
+void CodeSnippetsWindow::OnMnuAddDirectory(wxCommandEvent& /*event*/)   // (ph 26/04/06)
+// ----------------------------------------------------------------------------
+{
+    // Ask user for directory name
+    wxString errorMsg = wxString();
+
+    wxDirDialog dlg(::wxGetTopLevelParent(0),   //parent  window
+                 _T("Select path "),            //message
+                 ::wxGetCwd(),                  //default directory
+                 wxDD_DEFAULT_STYLE );          //style
+
+   // move dialog into the parents frame space
+    wxPoint mousePosn = ::wxGetMousePosition();
+    dlg.Move(mousePosn.x, mousePosn.y);
+    PlaceWindow(&dlg);
+    // Force the path again specifically before showing
+    wxFileName fnPath = wxStandardPaths::Get().GetExecutablePath();
+    dlg.SetPath(fnPath.GetPath());
+    if (dlg.ShowModal() != wxID_OK) return;
+
+    fnPath.AssignDir(dlg.GetPath());
+    if (not fnPath.IsDirReadable())
+        errorMsg = "Directory is not readable";
+
+    if (errorMsg.empty()
+        and (wxNOT_FOUND == CreateDirListFile(fnPath.GetPath())))
+        errorMsg = "Directory list could not be created.";
+
+    //Make a wxString of the directory data
+    wxString dirData;
+    for (size_t ii=0; ii < m_DirTxtFile.GetLineCount(); ++ii)
+        dirData += (m_DirTxtFile[ii] + "\n");
+
+    if ( errorMsg.empty() and (m_DirTxtFile.GetLineCount() > 0))
+    {
+            GetSnippetsTreeCtrl()->AddCodeSnippet(GetAssociatedItemID(),
+                fnPath.GetPath(),   //snippet name
+                dirData,            //data string goes here
+                /*newID*/0,
+                /*editNow*/true);
+        return;
+    }
+
+    if (errorMsg.Length()) {
+        wxMessageBox("Error: " + errorMsg, "Error");
+    }
+}
+// ----------------------------------------------------------------------------
+int CodeSnippetsWindow::CreateDirListFile(const wxString& rootPath)
+// ----------------------------------------------------------------------------
+{
+    // Set up the output file and start the directory crawl.
+
+    // Ensure the temp directory exists
+    if (not wxDirExists(rootPath))
+        return wxNOT_FOUND;
+
+    wxString tempFilePath = wxFileName::CreateTempFileName("dir");
+    // Assigns the name AND try to open it in one go
+    if (not m_DirTxtFile.Open(tempFilePath)) {
+        // If it's a brand new temp file, Create() instead
+        if (not m_DirTxtFile.Create(tempFilePath)) {
+            return wxNOT_FOUND;
+        }
+    }
+    // Get current date and time
+    wxDateTime now = wxDateTime::Now();
+    // Format it as a string (e.g., "2026-04-23 17:35:00")
+    wxString timeStr = now.Format("%Y-%m-%d %H:%M:%S");
+
+    m_DirTxtFile.AddLine("#CodeSnippets generated directory listing " + timeStr);
+    m_DirTxtFile.AddLine("#Use Ctrl+DoubleLeftButton to run or edit the file.");
+    m_DirTxtFile.AddLine(rootPath);
+    ListDirectoryRecursive(rootPath, m_DirTxtFile, 1);
+    if (not (m_DirTxtFile.GetLineCount() > 1))
+        return wxNOT_FOUND;
+
+    m_DirTxtFile.Write();
+
+    // **Debugging**
+    /*
+    wxString fullPath;
+    for (int ii=0; ii<int(m_DirTxtFile.GetLineCount()); ++ii)
+    {
+        fullPath = ReconstructPath(m_DirTxtFile, ii);
+        wxPrintf("FullFilePath: %s\n", fullPath);
+    }
+
+    // Close the file to release the OS handle
+    m_DirTxtFile.Close();
+    // Delete the file from the disk
+    if (wxFileName::Exists(tempFilePath)) {
+        if (!wxRemoveFile(tempFilePath)) {
+            wxLogError("Failed to delete temporary file: %s", tempFilePath);
+        }
+    }
+    */
+
+    return 0;
+
+}
+
+/**
+ * @brief Recursively scans a directory and writes its structure to a file.
+ *
+ * This function traverses the specified directory, listing all files and subdirectories.
+ * It indents the output to reflect the directory hierarchy and filters out specific
+ * directories (e.g., ".cache").
+ *
+ * @param dirPath The path to the directory to scan.
+ * @param outputFile A reference to the wxTextFile object where the directory structure is written.
+ * @param indentLevel The current depth in the directory hierarchy, used for calculating indentation.
+ */
+// ----------------------------------------------------------------------------
+void CodeSnippetsWindow::ListDirectoryRecursive(const wxString& dirPath, wxTextFile& outputFile, int indentLevel)
+// ----------------------------------------------------------------------------
+{
+    wxDir dir(dirPath);
+    if (!dir.IsOpened()) return;
+
+    wxString indent(wxT(' '), indentLevel * 2);
+    wxString name;
+
+    // 1. Process Files in this directory
+    bool hasFiles = dir.GetFirst(&name, wxEmptyString, wxDIR_FILES);
+    while (hasFiles) {
+        // AddLine automatically handles line endings based on the OS
+        outputFile.AddLine(wxString::Format("%s%s", indent, name));
+        hasFiles = dir.GetNext(&name);
+    }
+
+    // 2. Process Sub-directories
+    bool hasSubDirs = dir.GetFirst(&name, wxEmptyString, wxDIR_DIRS);
+    while (hasSubDirs) {
+        // Filter
+        if (name == wxT(".cache")) {
+            hasSubDirs = dir.GetNext(&name);
+            continue;
+        }
+
+        outputFile.AddLine(wxString::Format("%s%s/", indent, name));
+
+        // Construct the full path for the next recursion
+        wxString subPath = dirPath + wxFileName::GetPathSeparator() + name;
+        ListDirectoryRecursive(subPath, outputFile, indentLevel + 1);
+
+        hasSubDirs = dir.GetNext(&name);
+    }
+}
+
 // ----------------------------------------------------------------------------
 void CodeSnippetsWindow::OnMnuRemove(wxCommandEvent& /*event*/)
 // ----------------------------------------------------------------------------
@@ -925,10 +1120,13 @@ void CodeSnippetsWindow::OnMnuLoadSnippetsFromFile(wxCommandEvent& event)
 void CodeSnippetsWindow::OnMnuSaveSnippets(wxCommandEvent& /*event*/)
 // ----------------------------------------------------------------------------
 {
-    {
-        GetSnippetsTreeCtrl()->SaveItemsToFile( GetConfig()->SettingsSnippetsXmlPath );
-        SetFileChanged(false);
-    }
+    wxFileName fnSnippets(GetConfig()->SettingsSnippetsXmlPath);    // (ph 26/04/11)
+    if (wxDirExists((GetConfig()->SettingsSnippetsFolder)))
+        fnSnippets.SetPath(GetConfig()->SettingsSnippetsFolder);
+
+    GetSnippetsTreeCtrl()->SaveItemsToFile( fnSnippets.GetFullPath() );
+    SetFileChanged(false);
+
 }
 // ----------------------------------------------------------------------------
 void CodeSnippetsWindow::OnMnuSaveSnippetsAs(wxCommandEvent& /*event*/)
@@ -1027,7 +1225,11 @@ void CodeSnippetsWindow::OnMnuSearchExtended(wxCommandEvent& event)
 
     // save any changes before handing off the xml file to search
     if ( GetFileChanged() ){
-        GetSnippetsTreeCtrl()->SaveItemsToFile( GetConfig()->SettingsSnippetsXmlPath );
+            wxFileName fnSnippets(GetConfig()->SettingsSnippetsXmlPath);    // (ph 26/04/11)
+        if (wxDirExists((GetConfig()->SettingsSnippetsFolder)))
+            fnSnippets.SetPath(GetConfig()->SettingsSnippetsFolder);
+
+        GetSnippetsTreeCtrl()->SaveItemsToFile( fnSnippets.GetFullPath() );
         #if defined(LOGGING)
         LOGIT( _T("OnMnuSearchExtended Saved[%s]"), GetConfig()->SettingsSnippetsXmlPath.c_str());
         #endif
@@ -1401,7 +1603,7 @@ void CodeSnippetsWindow::OnMnuAbout(wxCommandEvent& event)
     wxString pgmVersionString = wxT("CodeSnippets v") + GetConfig()->GetVersion();
     wxString buildInfo = wxT("\t")+pgmVersionString + wxT("\n") + wxT("\t") + wxbuild;
     buildInfo = buildInfo + wxT("\n\n\t")+wxT("Original Code by Arto Jonsson");
-    buildInfo = buildInfo + wxT("\n\t")+wxT("Modified/Enhanced by Pecan Heber");
+    buildInfo = buildInfo + wxT("\n\t")+wxT("Maintained by Pecan Heber");
 
     ShowSnippetsAbout( buildInfo);
 }
@@ -1428,40 +1630,92 @@ void CodeSnippetsWindow::OnMnuTest(wxCommandEvent& event)
         ////wxUnusedVar(done);
     }
 }
+
 // ----------------------------------------------------------------------------
-void CodeSnippetsWindow::ShowSnippetsAbout(const wxString& buildInfo)
+void CodeSnippetsWindow::ShowSnippetsAbout(wxString buildInfo)
 // ----------------------------------------------------------------------------
 {
-
-    //wxString msg = wxbuildinfo(long_f);
     wxString helpText;
+
+    // Keep this block between the two blank-line separators.
     helpText << wxT("\n\n")
-             << wxT("Each Snippet item may specify either text or a File Link.")
+             << wxT("TLDR:\n")
+             << wxT("Text or File item:  Double Left click - Edit\n")
+             << wxT("Text or File item:  Right click       - Item menu\n")
+             << wxT("Category item:      Right click       - Category menu\n")
+             << wxT("Root item:          Right click       - Help/Settings")
              << wxT("\n\n")
-             << wxT("Snippets may be edited via the context menu")
+
+             << wxT("Each Snippet item may specify either text or a File Link.\n")
+             << wxT("Snippets may be edited via the item's context menu.")
              << wxT("\n\n")
 
              << wxT("File Link snippets are created by dragging text to a new snippet, ")
-             << wxT("then using the context menu to \"Convert to File Link\". ")
+             << wxT("optionaly using the context menu to \"Convert to File Link\". ")
              << wxT("The data will be written to the specified file and the filename ")
-             << wxT("will be placed in the snippets text area as a Link.")
+             << wxT("will be placed in the snippet's text/property area as a link.")
              << wxT("\n\n")
 
-             << wxT("Snippets are accessed by using the context menu \"Edit\" ")
-             << wxT("or via the Properties context menu entry.")
-             << wxT("\n\n")
+             << wxT("Snippets are accessed using the context-menu \"Edit\" command ")
+             << wxT("or via the Properties context menu.")
+             << wxT("\n")
 
              << wxT("Use the \"Settings\" menu to specify an external editor and ")
-             << wxT("to specify a non-default Snippets index file.")
+             << wxT("a non-default Snippets index file.")
              << wxT("\n\n")
 
-             << wxT("Both the text and file snippets may be dragged outward ")
+             << wxT("Both text and file snippets may be dragged outward ")
              << wxT("or copied to the clipboard.")
-             << wxT("\n\n")
+             << wxT("\n")
 
              << wxT("Dragging a file snippet onto an external program window ")
-             << wxT("will open the file. Dragging it into the edit area will ")
-             << wxT("insert the text.");
+             << wxT("will open the file.\n")
+             << wxT("Dragging it into the edit area will insert the text.")
+             << wxT("\n\n")
 
-    wxMessageBox( wxT("\n\n")+ buildInfo + helpText, _("About"),wxOK);
+             << wxT("\"Add Directory\" creates a tree structure of the items.\n")
+             << wxT("Ctrl + Double Left Click opens an item in its associated file handler.\n")
+             << wxT("To set the open option for a particular file extension\n")
+             << wxT("see Settings/Environment/File extension handling.\n")
+             << wxT("\n")
+             << wxT("More documentation at:")
+             << wxT("\nhttps://wiki.codeblocks.org/index.php?title=Code_Snippets_plugin");
+
+
+    wxDialog aboutDialog(
+        this,
+        wxID_ANY,
+        _("About"),
+        wxDefaultPosition,
+        wxSize(700, 520),
+        wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+
+    wxTextCtrl* helpCtrl = new wxTextCtrl(
+        &aboutDialog,
+        wxID_ANY,
+        buildInfo + helpText,
+        wxDefaultPosition,
+        wxDefaultSize,
+        wxTE_MULTILINE | wxTE_READONLY);
+
+    // A fixed-width font makes space-based columns align predictably.
+    wxFont helpFont(
+        10,
+        wxFONTFAMILY_TELETYPE,
+        wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_NORMAL);
+
+    helpCtrl->SetFont(helpFont);
+
+    wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
+    topSizer->Add(helpCtrl, 1, wxEXPAND | wxALL, 10);
+    topSizer->Add(
+        aboutDialog.CreateSeparatedButtonSizer(wxOK),
+        0,
+        wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM,
+        10);
+
+    aboutDialog.SetSizer(topSizer);
+    aboutDialog.CentreOnParent();
+    aboutDialog.ShowModal();
 }

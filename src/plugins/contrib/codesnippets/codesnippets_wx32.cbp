@@ -63,7 +63,7 @@
 			<Add directory="$(#WX32.lib)/gcc_dll$(WX_CFG)" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="update32.bat" />
+			<Add after="zip -j9 ..\..\..\devel32\share\CodeBlocks\codesnippets.zip manifest.xml" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />

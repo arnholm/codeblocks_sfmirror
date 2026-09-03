@@ -102,30 +102,31 @@ SettingsDlgForm::SettingsDlgForm( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_CfgFolderStaticText = new wxStaticText( this, wxID_ANY, wxT("CfgFolder"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_CfgFolderStaticText = new wxStaticText( this, wxID_ANY, wxT("Default Folder:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_CfgFolderStaticText->Wrap( -1 );
 	bSizer6->Add( m_CfgFolderStaticText, 0, wxALL, 5 );
 
 	m_CfgFolderTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
 	m_CfgFolderTextCtrl->Enable( false );
 
-	bSizer6->Add( m_CfgFolderTextCtrl, 1, wxALL, 5 );
+	//-bSizer6->Add( m_CfgFolderTextCtrl, 1, wxALL, 5 );
+    bSizer6->Add(m_CfgFolderTextCtrl, 1, wxLEFT | wxRIGHT, 5);
 
-	bSizer->Add( bSizer6, 1, wxEXPAND, 5 );
+	bSizer->Add( bSizer6, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer61;
 	bSizer61 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_IniFolderStaticText = new wxStaticText( this, wxID_ANY, wxT("IniFolder "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_IniFolderStaticText = new wxStaticText( this, wxID_ANY, wxT("IniFolder:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_IniFolderStaticText->Wrap( -1 );
 	bSizer61->Add( m_IniFolderStaticText, 0, wxALL, 5 );
 
 	m_IniFolderTextCtrl = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
 	m_IniFolderTextCtrl->Enable( false );
 
-	bSizer61->Add( m_IniFolderTextCtrl, 1, wxALL, 5 );
+	bSizer61->Add( m_IniFolderTextCtrl, 1, wxLEFT|wxRIGHT, 5 );
 
-	bSizer->Add( bSizer61, 1, wxEXPAND, 5 );
+	bSizer->Add( bSizer61, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer5;
 	bSizer5 = new wxBoxSizer( wxVERTICAL );

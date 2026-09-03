@@ -21,6 +21,7 @@
 #define CODESNIPPETS_H_INCLUDED
 
 #include <wx/dnd.h>
+#include <wx/event.h>
 
 #include "cbplugin.h" // for "class cbPlugin"
 //#include "wxaui/manager.h"
@@ -169,6 +170,15 @@ class CodeSnippets : public cbPlugin
         void OnPrjTreeMouseLeaveWindowEvent(wxMouseEvent& event);
         void SendMouseLeftUp(const wxWindow* pWin, const int mouseX, const int mouseY);
         void MSW_MouseMove(int x, int y );
+
+        void OnEditorOpened(CodeBlocksEvent& event);
+        void OnEditorClosed(CodeBlocksEvent& event);
+        void OnEditorActivated(CodeBlocksEvent& event);
+
+        void OnMouseKeyEvent(wxMouseEvent& event); // (ph 26/04/07)
+        wxString ReconstructPath(cbEditor* pEd, int lineNum);    // (ph 26/04/07)
+
+
 
 		wxWindow*       m_pAppWin;
         ProjectManager* m_pProjectMgr;

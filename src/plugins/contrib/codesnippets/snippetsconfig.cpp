@@ -207,9 +207,9 @@ void CodeSnippetsConfig::SettingsLoad()
 
     // set a global snippets xml file path
     wxFileName SettingsFullPath(SettingsSnippetsCfgPath);
+
     if (SettingsSnippetsXmlPath.IsEmpty())
         SettingsSnippetsXmlPath = SettingsFullPath.GetPath() + wxFILE_SEP_PATH +  AppName + _T(".xml");
-
 }
 // ----------------------------------------------------------------------------
 void CodeSnippetsConfig::SettingsSave()
@@ -273,7 +273,7 @@ void CodeSnippetsConfig::SettingsSave()
     cfgFile.Flush();
 }
 // ----------------------------------------------------------------------------
-void CodeSnippetsConfig::SettingsSaveString(const wxString& settingName, const wxString& settingValue )
+void CodeSnippetsConfig::SettingsSaveString(const wxString settingName, const wxString settingValue )
 // ----------------------------------------------------------------------------
 {
         // file will be saved in $HOME/codesnippets.ini
@@ -292,7 +292,7 @@ void CodeSnippetsConfig::SettingsSaveString(const wxString& settingName, const w
 
 }
 // ----------------------------------------------------------------------------
-wxString CodeSnippetsConfig::SettingsReadString(const wxString& settingName )
+wxString CodeSnippetsConfig::SettingsReadString(const wxString settingName )
 // ----------------------------------------------------------------------------
 {
     // fetch .ini string value for caller
@@ -318,7 +318,7 @@ wxString CodeSnippetsConfig::GetSettingsWindowState()
     return m_SettingsWindowState;
 }
 // ----------------------------------------------------------------------------
-void CodeSnippetsConfig::SetSettingsWindowState(const wxString& windowState)
+void CodeSnippetsConfig::SetSettingsWindowState(const wxString windowState)
 // ----------------------------------------------------------------------------
 {
     m_SettingsWindowState = windowState;

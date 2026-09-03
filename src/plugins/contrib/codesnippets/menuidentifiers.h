@@ -52,6 +52,7 @@ extern int idMnuEditSnippet     ;
 extern int idMnuConvertToFileLink      ;
 extern int idMnuProperties      ;
 extern int idMnuSettings        ;
+extern int idMnuAddDirectory    ;       // (ph 26/04/06)
 
 
 // Search config menu items

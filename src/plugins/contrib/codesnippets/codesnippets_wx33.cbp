@@ -65,7 +65,7 @@
 			<Add directory="$(#wx33.lib)/gcc_dll$(WX_CFG)" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="update33.bat" />
+			<Add after="zip -j9 ..\..\..\devel33\share\CodeBlocks\codesnippets.zip manifest.xml" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="Makefile.am" />
