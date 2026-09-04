@@ -33,6 +33,7 @@
     #include <wx/tokenzr.h>
 #endif
 
+    #include <wx/dir.h>
     #include <wx/filename.h>
     #include <wx/toplevel.h>
     #include <wx/tooltip.h>
