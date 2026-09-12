@@ -46,39 +46,26 @@ static wxString GetInitialInfo()
 
     wxString initialInfo;
 
-    if (IsDark)
-        initialInfo << _T("<html><body><font color=\"#6666AA\">");
-    else
-        initialInfo << _T("<html><body><font color=\"#0000AA\">");
-
+    initialInfo << "<html><body><font color=\"" << (IsDark ? "#6666AA" : "#0000AA") << "\">";
     initialInfo << _("Tip: The above list allows for multiple selections.");
-    initialInfo << _T("</font><br /><br /><b><font color=\"red\">");
+    initialInfo << "</font><br /><br /><b><font color=\"red\">";
     initialInfo << _("Have you saved your work first?");
-    initialInfo << _T("</font></b><br /><i><font color=\"black\">\n");
+    initialInfo << "</font></b><br /><i><font color=\"" << (IsDark ? "white" : "black") << "\">\n";
     initialInfo << _("If a plugin is not well-written, it could cause Code::Blocks to crash when performing any operation on it...");
-    initialInfo << _T("<br></font></b><br /><i><font color=\"green\">\n");
+    initialInfo << "<br></font></b><br /><i><font color=\"green\">\n";
     initialInfo << _("Some additional plugins can be found here:");
-    if (IsDark)
-        initialInfo << _T("</font></b><br /><i><font color=\"white\">\n");
-    else
-        initialInfo << _T("</font></b><br /><i><font color=\"black\">\n");
-
-    initialInfo << _T("<A href=\"https://wiki.codeblocks.org/index.php?title=Announcement_for_plugins/patches\">");
-    initialInfo << _T("https://wiki.codeblocks.org/index.php?title=Announcement_for_plugins/patches\n </A>");
-
+    initialInfo << "</font></b><br /><i><font color=\"" << (IsDark ? "white" : "black") << "\">\n";
+    initialInfo << "<a href=\"https://wiki.codeblocks.org/index.php?title=Announcement_for_plugins/patches\">";
+    initialInfo << "https://wiki.codeblocks.org/index.php?title=Announcement_for_plugins/patches</a>\n";
     if (PluginManager::GetSafeMode())
     {
-        initialInfo << _T("</font></i><br /><br /><b><font color=\"red\">");
+        initialInfo << "</font></i><br/><br/><b><font color=\"red\">";
         initialInfo << _("Code::Blocks started up in \"safe-mode\"");
-        if (IsDark)
-            initialInfo << _T("</font></b><br /><i><font color=\"white\">\n");
-        else
-            initialInfo << _T("</font></b><br /><i><font color=\"black\">\n");
-
+        initialInfo << "</font></b><br/><i><font color=\"" << (IsDark ? "white" : "black") << "\">\n";
         initialInfo << _("All plugins were disabled on startup so that you can troubleshoot problematic plugins. Enable plugins at will now...");
     }
 
-    initialInfo << _T("</font></i><br /></body></html>\n");
+    initialInfo << "</font></i><br /></body></html>\n";
     return initialInfo;
 }
 
