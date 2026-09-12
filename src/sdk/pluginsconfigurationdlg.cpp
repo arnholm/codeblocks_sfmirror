@@ -39,7 +39,7 @@
 static wxString GetInitialInfo()
 {
 #if wxCHECK_VERSION(3, 3, 2)
-    const bool IsDark = wxSystemSettings::GetAppearance()IsDark();
+    const bool IsDark = wxSystemSettings::GetAppearance().IsDark();
 #else
     const bool IsDark = false;
 #endif
