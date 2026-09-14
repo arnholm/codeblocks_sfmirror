@@ -376,8 +376,40 @@
 											<object class="sizeritem">
 												<object class="wxFlexGridSizer">
 													<cols>2</cols>
-													<rows>8</rows>
+													<rows>9</rows>
 													<growablecols>0,1</growablecols>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT2">
+															<label>Name</label>
+															<font>
+																<size>10</size>
+																<style>normal</style>
+																<weight>bold</weight>
+																<underlined>0</underlined>
+																<family>swiss</family>
+																<face>Sans</face>
+															</font>
+														</object>
+														<flag>wxTOP|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT12">
+															<label>Value</label>
+															<font>
+																<size>10</size>
+																<style>normal</style>
+																<weight>bold</weight>
+																<underlined>0</underlined>
+																<family>swiss</family>
+																<face>Sans</face>
+															</font>
+														</object>
+														<flag>wxTOP|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="n0" />
 														<flag>wxALL|wxEXPAND</flag>
