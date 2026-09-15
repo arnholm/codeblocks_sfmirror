@@ -47,7 +47,7 @@ ScriptingSettingsDlg::ScriptingSettingsDlg(wxWindow* parent)
     : m_IgnoreTextEvents(false)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgScriptingSettings"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgScriptingSettings","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
@@ -75,14 +75,14 @@ void ScriptingSettingsDlg::FillScripts()
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
     list->DeleteAllItems();
 
-    ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("scripting"));
-    wxArrayString keys = mgr->EnumerateKeys(_T("/startup_scripts"));
+    ConfigManager* mgr = Manager::Get()->GetConfigManager("scripting");
+    wxArrayString keys = mgr->EnumerateKeys("/startup_scripts");
 
     for (size_t i = 0; i < keys.GetCount(); ++i)
     {
         ScriptEntry se;
         wxString ser;
-        if (mgr->Read(_T("/startup_scripts/") + keys[i], &ser))
+        if (mgr->Read("/startup_scripts/" + keys[i], &ser))
         {
             se.SerializeIn(ser);
             m_ScriptsVector.push_back(se);
@@ -99,7 +99,7 @@ void ScriptingSettingsDlg::FillScripts()
 void ScriptingSettingsDlg::UpdateState()
 {
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
     bool hasSelection = false;
     bool enabled = false;
@@ -139,22 +139,22 @@ void ScriptingSettingsDlg::FillTrusts()
     UpdateTrustsState();
 
     // fill main switches
-    ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("security"));
-    XRCCTRL(*this, "chkMkDir", wxCheckBox)->SetValue(mgr->ReadBool(_T("CreateDir"), false));
-    XRCCTRL(*this, "chkRmDir", wxCheckBox)->SetValue(mgr->ReadBool(_T("RemoveDir"), false));
-    XRCCTRL(*this, "chkCp", wxCheckBox)->SetValue(mgr->ReadBool(_T("CopyFile"), false));
-    XRCCTRL(*this, "chkMv", wxCheckBox)->SetValue(mgr->ReadBool(_T("RenameFile"), false));
-    XRCCTRL(*this, "chkRm", wxCheckBox)->SetValue(mgr->ReadBool(_T("RemoveFile"), false));
-    XRCCTRL(*this, "chkTouch", wxCheckBox)->SetValue(mgr->ReadBool(_T("CreateFile"), false));
-    XRCCTRL(*this, "chkExec", wxCheckBox)->SetValue(mgr->ReadBool(_T("Execute"), false));
+    ConfigManager* mgr = Manager::Get()->GetConfigManager("security");
+    XRCCTRL(*this, "chkMkDir", wxCheckBox)->SetValue(mgr->ReadBool("CreateDir",  false));
+    XRCCTRL(*this, "chkRmDir", wxCheckBox)->SetValue(mgr->ReadBool("RemoveDir",  false));
+    XRCCTRL(*this, "chkCp",    wxCheckBox)->SetValue(mgr->ReadBool("CopyFile",   false));
+    XRCCTRL(*this, "chkMv",    wxCheckBox)->SetValue(mgr->ReadBool("RenameFile", false));
+    XRCCTRL(*this, "chkRm",    wxCheckBox)->SetValue(mgr->ReadBool("RemoveFile", false));
+    XRCCTRL(*this, "chkTouch", wxCheckBox)->SetValue(mgr->ReadBool("CreateFile", false));
+    XRCCTRL(*this, "chkExec",  wxCheckBox)->SetValue(mgr->ReadBool("Execute",    false));
 }
 
 void ScriptingSettingsDlg::UpdateTrustsState()
 {
     wxListCtrl* list = XRCCTRL(*this, "lstTrustedScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
-    bool en = sel != -1;
+    const bool en = sel != -1;
 
     XRCCTRL(*this, "btnDeleteTrust", wxButton)->Enable(en);
     XRCCTRL(*this, "btnValidateTrusts", wxButton)->Enable(en);
@@ -164,26 +164,26 @@ void ScriptingSettingsDlg::EndModal(int retCode)
 {
     if (retCode == wxID_OK)
     {
-        ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("scripting"));
-        mgr->DeleteSubPath(_T("/startup_scripts"));
+        ConfigManager* mgr = Manager::Get()->GetConfigManager("scripting");
+        mgr->DeleteSubPath("/startup_scripts");
 
         ScriptsVector::iterator it;
         int i = 0;
         for (it = m_ScriptsVector.begin(); it != m_ScriptsVector.end(); ++it, ++i)
         {
             ScriptEntry& se = *it;
-            wxString key = wxString::Format(_T("/startup_scripts/script%d"), i);
+            wxString key = wxString::Format("/startup_scripts/script%d", i);
             mgr->Write(key, se.SerializeOut());
         }
 
-        mgr = Manager::Get()->GetConfigManager(_T("security"));
-        mgr->Write(_T("CreateDir"), XRCCTRL(*this, "chkMkDir", wxCheckBox)->GetValue());
-        mgr->Write(_T("RemoveDir"), XRCCTRL(*this, "chkRmDir", wxCheckBox)->GetValue());
-        mgr->Write(_T("CopyFile"), XRCCTRL(*this, "chkCp", wxCheckBox)->GetValue());
-        mgr->Write(_T("RenameFile"), XRCCTRL(*this, "chkMv", wxCheckBox)->GetValue());
-        mgr->Write(_T("RemoveFile"), XRCCTRL(*this, "chkRm", wxCheckBox)->GetValue());
-        mgr->Write(_T("CreateFile"), XRCCTRL(*this, "chkTouch", wxCheckBox)->GetValue());
-        mgr->Write(_T("Execute"), XRCCTRL(*this, "chkExec", wxCheckBox)->GetValue());
+        mgr = Manager::Get()->GetConfigManager("security");
+        mgr->Write("CreateDir",  XRCCTRL(*this, "chkMkDir", wxCheckBox)->GetValue());
+        mgr->Write("RemoveDir",  XRCCTRL(*this, "chkRmDir", wxCheckBox)->GetValue());
+        mgr->Write("CopyFile",   XRCCTRL(*this, "chkCp",    wxCheckBox)->GetValue());
+        mgr->Write("RenameFile", XRCCTRL(*this, "chkMv",    wxCheckBox)->GetValue());
+        mgr->Write("RemoveFile", XRCCTRL(*this, "chkRm",    wxCheckBox)->GetValue());
+        mgr->Write("CreateFile", XRCCTRL(*this, "chkTouch", wxCheckBox)->GetValue());
+        mgr->Write("Execute",    XRCCTRL(*this, "chkExec",  wxCheckBox)->GetValue());
     }
 
     wxScrollingDialog::EndModal(retCode);
@@ -229,8 +229,7 @@ void ScriptingSettingsDlg::OnListSelection(wxListEvent& event)
 //    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Selected %d", event.GetIndex()));
 
     // load
-    long sel = event.GetIndex();
-    LoadItem(sel);
+    LoadItem(event.GetIndex());
 
     UpdateState();
 }
@@ -240,8 +239,7 @@ void ScriptingSettingsDlg::OnListDeselection(wxListEvent& event)
 //    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Deselected %d", event.GetIndex()));
 
     // save
-    long sel = event.GetIndex();
-    SaveItem(sel);
+    SaveItem(event.GetIndex());
 
     UpdateState();
 }
@@ -250,8 +248,9 @@ void ScriptingSettingsDlg::OnScriptChanged(cb_unused wxCommandEvent& event)
 {
     if (m_IgnoreTextEvents)
         return;
+
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     SaveItem(sel);
     UpdateState();
 }
@@ -260,8 +259,9 @@ void ScriptingSettingsDlg::OnScriptMenuChanged(cb_unused wxCommandEvent& event)
 {
     if (m_IgnoreTextEvents)
         return;
+
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     SaveItem(sel);
     UpdateState();
 }
@@ -269,7 +269,7 @@ void ScriptingSettingsDlg::OnScriptMenuChanged(cb_unused wxCommandEvent& event)
 void ScriptingSettingsDlg::OnEnable(cb_unused wxCommandEvent& event)
 {
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     SaveItem(sel);
     UpdateState();
 }
@@ -277,7 +277,7 @@ void ScriptingSettingsDlg::OnEnable(cb_unused wxCommandEvent& event)
 void ScriptingSettingsDlg::OnRegister(cb_unused wxCommandEvent& event)
 {
     wxListCtrl* list = XRCCTRL(*this, "chkStartupScripts", wxListCtrl);
-    long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    const long sel = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     SaveItem(sel);
     UpdateState();
 }
@@ -285,7 +285,7 @@ void ScriptingSettingsDlg::OnRegister(cb_unused wxCommandEvent& event)
 void ScriptingSettingsDlg::OnAddScript(wxCommandEvent& event)
 {
     ScriptEntry se;
-    se.script = _T("new.script");
+    se.script = "new.script";
     se.enabled = true;
     se.registered = false;
     m_ScriptsVector.push_back(se);
@@ -295,7 +295,7 @@ void ScriptingSettingsDlg::OnAddScript(wxCommandEvent& event)
     // update view
     long item = list->InsertItem(list->GetItemCount(), se.script);
     list->SetItem(item, 1, _("No"));
-    list->SetItem(item, 2, wxString(_("No")));
+    list->SetItem(item, 2, _("No"));
 
     list->SetItemState(item, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
 
@@ -310,11 +310,15 @@ void ScriptingSettingsDlg::OnRemoveScript(cb_unused wxCommandEvent& event)
     list->DeleteItem(sel);
     m_ScriptsVector.erase(m_ScriptsVector.begin() + sel);
 
-    if (sel > list->GetItemCount())
+    if (sel == list->GetItemCount())
         --sel;
-    list->SetItemState(sel, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+
     if (sel >= 0)
+    {
+        list->SetItemState(sel, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
         LoadItem(sel);
+    }
+
     UpdateState();
 }
 
@@ -324,8 +328,9 @@ void ScriptingSettingsDlg::OnBrowse(cb_unused wxCommandEvent& event)
                      _("Select script file"),
                      XRCCTRL(*this, "txtScript", wxTextCtrl)->GetValue(),
                      XRCCTRL(*this, "txtScript", wxTextCtrl)->GetValue(),
-                     FileFilters::GetFilterString(_T(".script")),
+                     FileFilters::GetFilterString(".script"),
                      wxFD_OPEN | compatibility::wxHideReadonly );
+
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)
     {
@@ -341,6 +346,7 @@ void ScriptingSettingsDlg::OnBrowse(cb_unused wxCommandEvent& event)
         {
             f.MakeRelativeTo(globaldir);
         }
+
         XRCCTRL(*this, "txtScript", wxTextCtrl)->SetValue(f.GetFullPath());
     }
 }
