@@ -66,21 +66,21 @@ byoGameBase::~byoGameBase()
 
 void byoGameBase::ReloadFromConfig()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("byogames"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("byogames");
 
-    colours[0] = cfg->ReadColour(_T("/col01"),wxColour(0xFF,0,0));
-    colours[1] = cfg->ReadColour(_T("/col02"),wxColour(0,0xFF,0));
-    colours[2] = cfg->ReadColour(_T("/col03"),wxColour(0,0,0xFF));
-    colours[3] = cfg->ReadColour(_T("/col04"),wxColour(0xFF,0xFF,0));
-    colours[4] = cfg->ReadColour(_T("/col05"),wxColour(0xFF,0,0xFF));
-    colours[5] = cfg->ReadColour(_T("/col06"),wxColour(0,0xFF,0xFF));
+    colours[0] = cfg->ReadColour("/col01",wxColour(0xFF,0,0));
+    colours[1] = cfg->ReadColour("/col02",wxColour(0,0xFF,0));
+    colours[2] = cfg->ReadColour("/col03",wxColour(0,0,0xFF));
+    colours[3] = cfg->ReadColour("/col04",wxColour(0xFF,0xFF,0));
+    colours[4] = cfg->ReadColour("/col05",wxColour(0xFF,0,0xFF));
+    colours[5] = cfg->ReadColour("/col06",wxColour(0,0xFF,0xFF));
 
-    IsMaxPlayTime = cfg->ReadBool(_T("/ismaxplaytime"),true);
-    MaxPlayTime = cfg->ReadInt(_T("/maxplaytime"),60*10);
-    IsMinWorkTime = cfg->ReadBool(_T("/isminworktime"),true);
-    MinWorkTime = cfg->ReadInt(_T("/minworktime"),60*60);
-    IsMaxWorkTime = cfg->ReadBool(_T("/isoverworktime"),false);
-    MaxWorkTime = cfg->ReadInt(_T("/overworktime"),3*60*60);
+    IsMaxPlayTime = cfg->ReadBool("/ismaxplaytime",true);
+    MaxPlayTime = cfg->ReadInt("/maxplaytime",60*10);
+    IsMinWorkTime = cfg->ReadBool("/isminworktime",true);
+    MinWorkTime = cfg->ReadInt("/minworktime",60*60);
+    IsMaxWorkTime = cfg->ReadBool("/isoverworktime",false);
+    MaxWorkTime = cfg->ReadInt("/overworktime",3*60*60);
 }
 
 void byoGameBase::BackToWorkTimer()

@@ -27,7 +27,7 @@ END_EVENT_TABLE()
 // Register the plugin
 namespace
 {
-    PluginRegistrant<BYOGames> reg(_T("BYOGames"));
+    PluginRegistrant<BYOGames> reg("BYOGames");
 };
 
 BYOGames::BYOGames(): SecondTick(this,1)

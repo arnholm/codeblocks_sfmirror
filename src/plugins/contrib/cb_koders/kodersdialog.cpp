@@ -104,7 +104,7 @@ void KodersDialog::SetSearch(const wxString &search)
 
 wxString KodersDialog::GetSearch() const
 {
-  wxString search(_T(""));
+  wxString search;
 
   if (txtSearch)
     search = txtSearch->GetValue();

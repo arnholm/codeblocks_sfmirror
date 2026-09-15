@@ -30,14 +30,14 @@
 // Register the plugin
 namespace
 {
-    PluginRegistrant<Cccc> reg(_T("Cccc"));
+    PluginRegistrant<Cccc> reg("Cccc");
 };
 
 Cccc::Cccc()
 {
     m_CcccLog = 0;
     m_LogPageIndex = 0; // good init value ???
-    m_CcccApp = _T("cccc");
+    m_CcccApp = "cccc";
 } // end of constructor
 
 Cccc::~Cccc()
@@ -120,10 +120,10 @@ int Cccc::Execute()
     for (FilesList::iterator it = Project->GetFilesList().begin(); it != Project->GetFilesList().end(); ++it)
     {
         ProjectFile* pf = *it;
-        ListOfFileNames += _T("\"") + pf->relativeFilename + _T("\" ");
+        ListOfFileNames += "\"" + pf->relativeFilename + "\" ";
     }
 
-    wxString CommandLine = m_CcccApp + _T(" ") + ListOfFileNames.Trim();
+    wxString CommandLine = m_CcccApp + " " + ListOfFileNames.Trim();
     AppendToLog(CommandLine);
     wxArrayString Output, Errors;
     long pid = -1;
@@ -143,7 +143,7 @@ int Cccc::Execute()
             if (!filename.empty()) // otherwise the user selected cancel
             {
                 // try again using the user-provided executable
-                CommandLine = filename + _T(" ") + ListOfFileNames.Trim();
+                CommandLine = filename + " " + ListOfFileNames.Trim();
                 AppendToLog(CommandLine);
                 {
                     wxWindowDisabler disableAll;
@@ -180,7 +180,7 @@ int Cccc::Execute()
     {
         AppendToLog(Errors[idxCount]);
     } // end for : idx: idxCount
-    const wxString FileName = _T("./.cccc/cccc.html");
+    const wxString FileName = "./.cccc/cccc.html";
     if(wxFile::Exists(FileName))
     {
         if (cbMimePlugin* p = Manager::Get()->GetPluginManager()->GetMIMEHandlerForFile(FileName))
