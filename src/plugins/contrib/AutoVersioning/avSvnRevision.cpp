@@ -8,10 +8,10 @@
 
 bool QuerySvn(const wxString& workingDir, wxString& revision, wxString& date)
 {
-    revision = _T("0");
-    date = _T("unknown date");
-    wxString svncmd = _T("svn info --xml --non-interactive ");
-    svncmd.Append(_T("\"") + workingDir + _T("\""));
+    revision = "0";
+    date = "unknown date";
+    wxString svncmd = "svn info --xml --non-interactive ";
+    svncmd.Append("\"" + workingDir + "\"");
     wxArrayString xmlOutput;
 
     if (wxExecute(svncmd, xmlOutput) != -1)

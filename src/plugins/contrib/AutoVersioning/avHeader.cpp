@@ -31,7 +31,7 @@ bool avHeader::LoadFile(const wxString& fileName)
 {
     if (!fileName.IsEmpty())
     {
-        wxFFile file( fileName, _T("r") );
+        wxFFile file( fileName, "r" );
         if (file.IsOpened())
         {
             file.ReadAll(&m_text);
@@ -54,8 +54,8 @@ bool avHeader::LoadFile(const wxString& fileName)
 long avHeader::GetValue(const wxString& nameOfVariable ) const
 {
     wxString strExpression;
-    strExpression << _T("(") << nameOfVariable << _T(")");
-    strExpression << _T("([ \t\n\r\f\v])*([=])([ \t\n\r\f\v])*([0-9]+)([ \t\n\r\f\v])*([;])+");
+    strExpression << "(" << nameOfVariable << ")";
+    strExpression << "([ \t\n\r\f\v])*([=])([ \t\n\r\f\v])*([0-9]+)([ \t\n\r\f\v])*([;])+";
     wxRegEx expression;
 
     if (!expression.Compile(strExpression))
@@ -67,7 +67,7 @@ long avHeader::GetValue(const wxString& nameOfVariable ) const
     {
         wxString strResult;
         strResult = expression.GetMatch(m_text);
-        expression.ReplaceAll(&strResult, wxT("\\5"));
+        expression.ReplaceAll(&strResult, "\\5");
         long value;
         strResult.ToLong(&value);
         return value;
@@ -79,23 +79,23 @@ long avHeader::GetValue(const wxString& nameOfVariable ) const
 wxString avHeader::GetString(const wxString& nameOfVariable ) const
 {
     wxString strExpression;
-    strExpression << _T("(") << nameOfVariable << _T(")");
-    strExpression << _T("([\\[\\]]+)([ \t\n\r\f\v])*([=])([ \t\n\r\f\v])*([\\\"])+([0-9A-Za-z \\-]+)([\\\"])+([ \t\n\r\f\v])*([;])+");
+    strExpression << "(" << nameOfVariable << ")";
+    strExpression << "([\\[\\]]+)([ \t\n\r\f\v])*([=])([ \t\n\r\f\v])*([\\\"])+([0-9A-Za-z \\-]+)([\\\"])+([ \t\n\r\f\v])*([;])+";
     wxRegEx expression;
 
     if (!expression.Compile(strExpression))
     {
-        return _T("");
+        return wxEmptyString;
     }
 
     if (expression.Matches(m_text))
     {
         wxString strResult;
         strResult = expression.GetMatch(m_text);
-        expression.ReplaceAll(&strResult, wxT("\\7"));
+        expression.ReplaceAll(&strResult, "\\7");
         return strResult;
     }
 
-    return _T("");
+    return wxEmptyString;
 }
 //}

@@ -58,7 +58,7 @@ END_EVENT_TABLE()
 
 namespace
 {
-    PluginRegistrant<AutoVersioning> reg(_T("AutoVersioning"));
+    PluginRegistrant<AutoVersioning> reg("AutoVersioning");
 }
 
 //{Constructor and Destructor
@@ -329,7 +329,7 @@ void AutoVersioning::OnCompilerStarted(CodeBlocksEvent& event)
             const bool askToIncrement = GetConfig().Settings.AskToIncrement;
             if (doAutoIncrement && askToIncrement)
             {
-                if (wxMessageBox(_("Do you want to increment the version?"),_T(""),wxYES_NO) == wxYES)
+                if (wxMessageBox(_("Do you want to increment the version?"), wxEmptyString, wxYES_NO) == wxYES)
                 {
                     CommitChanges();
                 }
@@ -739,7 +739,7 @@ void AutoVersioning::UpdateVersionHeader()
  */
 void AutoVersioning::UpdateManifest()
 {
-	wxFileName fnManifest(Manager::Get()->GetProjectManager()->GetActiveProject()->GetCommonTopLevelPath() + wxT("manifest.xml"));
+	wxFileName fnManifest(Manager::Get()->GetProjectManager()->GetActiveProject()->GetCommonTopLevelPath() + "manifest.xml");
 	wxString sPathManifest(fnManifest.GetFullPath());
 	if (wxFile::Exists(sPathManifest))
 	{
@@ -751,7 +751,7 @@ void AutoVersioning::UpdateManifest()
 			size_t i;
 			while(!(sLine = fileManifest.GetNextLine()).IsEmpty())
 			{
-				if(sLine.Find(wxT("<Value version=")) != wxNOT_FOUND)
+				if(sLine.Find("<Value version=") != wxNOT_FOUND)
 				{
 					i = fileManifest.GetCurrentLine();
 					int iFirst, iLast;
@@ -761,7 +761,7 @@ void AutoVersioning::UpdateManifest()
 					iLast = sLine.Find('"', true);
 					// Create a new version string...
 					wxString sVersion = sLine.SubString(iFirst, iLast);
-					wxString sNewVersion = wxString::Format(wxT("\"%ld.%ld.%ld\""), GetVersionState().Values.Major, GetVersionState().Values.Minor, GetVersionState().Values.Build);
+					wxString sNewVersion = wxString::Format("\"%ld.%ld.%ld\"", GetVersionState().Values.Major, GetVersionState().Values.Minor, GetVersionState().Values.Build);
 					// ...and insert it into the XML.
 					sLine.Replace(sVersion, sNewVersion);
 					// Remove the existing line and replace it with the new one.
@@ -836,7 +836,7 @@ void AutoVersioning::CommitChanges()
 void AutoVersioning::GenerateChanges()
 {
     avChangesDlg changesDlg((wxWindow*) Manager::Get()->GetAppWindow(),0L);
-    changesDlg.SetTemporaryChangesFile(m_Project->GetBasePath() + _T("changes.tmp"));
+    changesDlg.SetTemporaryChangesFile(m_Project->GetBasePath() + "changes.tmp");
     PlaceWindow(&changesDlg);
     changesDlg.ShowModal();
 
@@ -844,35 +844,35 @@ void AutoVersioning::GenerateChanges()
 
     if (!changes.IsEmpty())
     {
-        changes.Prepend(_T("        -"));
-        changes.Replace(_T("\n"), _T("\n        -"));
+        changes.Prepend("        -");
+        changes.Replace("\n", "\n        -");
 
         wxDateTime actualDate = wxDateTime::Now();
         wxString changesTitle = cbC2U(GetConfig().ChangesLog.AppTitle.c_str());
 
-        changesTitle.Replace(_T("%d"), actualDate.Format(_T("%d")));
-        changesTitle.Replace(_T("%o"), actualDate.Format(_T("%m")));
-        changesTitle.Replace(_T("%y"), actualDate.Format(_T("%Y")));
+        changesTitle.Replace("%d", actualDate.Format("%d"));
+        changesTitle.Replace("%o", actualDate.Format("%m"));
+        changesTitle.Replace("%y", actualDate.Format("%Y"));
 
         wxString value;
-        value.Printf(_T("%ld"), GetVersionState().Values.Major);
-        changesTitle.Replace(_T("%M"), value);
+        value.Printf("%ld", GetVersionState().Values.Major);
+        changesTitle.Replace("%M", value);
 
-        value.Printf(_T("%ld"), GetVersionState().Values.Minor);
-        changesTitle.Replace(_T("%m"), value);
+        value.Printf("%ld", GetVersionState().Values.Minor);
+        changesTitle.Replace("%m", value);
 
-        value.Printf(_T("%ld"), GetVersionState().Values.Build);
-        changesTitle.Replace(_T("%b"), value);
+        value.Printf("%ld", GetVersionState().Values.Build);
+        changesTitle.Replace("%b", value);
 
-        value.Printf(_T("%ld"), GetVersionState().Values.Revision);
-        changesTitle.Replace(_T("%r"), value);
+        value.Printf("%ld", GetVersionState().Values.Revision);
+        changesTitle.Replace("%r", value);
 
-        value.Printf(_T("%d"), GetConfig().Settings.Svn?1:0);
-        changesTitle.Replace(_T("%s"),value);
+        value.Printf("%d", GetConfig().Settings.Svn?1:0);
+        changesTitle.Replace("%s",value);
 
-        changesTitle.Replace(_T("%T"), cbC2U(GetVersionState().Status.SoftwareStatus.c_str()));
-        changesTitle.Replace(_T("%t"), cbC2U(GetVersionState().Status.Abbreviation.c_str()));
-        changesTitle.Replace(_T("%p"), m_Project->GetTitle());
+        changesTitle.Replace("%T", cbC2U(GetVersionState().Status.SoftwareStatus.c_str()));
+        changesTitle.Replace("%t", cbC2U(GetVersionState().Status.Abbreviation.c_str()));
+        changesTitle.Replace("%p", m_Project->GetTitle());
 
         wxString changesFile = FileNormalize(cbC2U(GetConfig().ChangesLog.ChangesLogPath.c_str()), m_Project->GetBasePath());
         wxString changesCurrentContent;
@@ -887,10 +887,10 @@ void AutoVersioning::GenerateChanges()
 
         wxString changesOutput;
 
-        changesOutput << actualDate.Format(_T("%d %B %Y\n"));
-        changesOutput << _T("   ") << changesTitle << _T("\n");
-        changesOutput << _T("\n     Change log:\n");
-        changesOutput << changes << _T("\n\n");
+        changesOutput << actualDate.Format("%d %B %Y\n");
+        changesOutput << "   " << changesTitle << "\n";
+        changesOutput << "\n     Change log:\n";
+        changesOutput << changes << "\n\n";
         changesOutput << changesCurrentContent;
 
         wxFile file;

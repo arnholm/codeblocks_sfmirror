@@ -13,9 +13,9 @@
 //Choices to initialize the l_TypesArray
 const wxString strTypes[] =
 {
-    _T("Added"), _T("Applied"), _T("Cleaned"),
-    _T("Fixed"), _T("New"), _T("Removed"),
-    _T("Typo"), _T("Updated")
+    "Added", "Applied", "Cleaned",
+    "Fixed", "New", "Removed",
+    "Typo", "Updated"
 };
 
 //List of choices available for the data grid column [Type]
@@ -241,8 +241,8 @@ void avChangesDlg::SetTemporaryChangesFile(const wxString& fileName)
                     grdChanges->SetCellValue(grdChanges->GetNumberRows()-1, 0, type);
                     grdChanges->SetCellEditor(grdChanges->GetNumberRows()-1, 0, new wxGridCellChoiceEditor(g_TypesArray,true));
                     grdChanges->SetCellValue(grdChanges->GetNumberRows()-1, 1, description);
-                    type = _T("");
-                    description = _T("");
+                    type = wxEmptyString;
+                    description = wxEmptyString;
                     isType = true;
                 }
             }

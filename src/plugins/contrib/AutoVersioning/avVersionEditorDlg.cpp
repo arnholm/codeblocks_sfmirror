@@ -384,7 +384,7 @@ void avVersionEditorDlg::SetMajor(long value)
 {
     m_major = value;
     wxString strValue;
-    strValue.Printf(_T("%ld"),value);
+    strValue.Printf("%ld",value);
     txtMajorVersion->SetValue(strValue);
 }
 
@@ -392,7 +392,7 @@ void avVersionEditorDlg::SetMinor(long value)
 {
     m_minor = value;
     wxString strValue;
-    strValue.Printf(_T("%ld"),value);
+    strValue.Printf("%ld",value);
     txtMinorVersion->SetValue(strValue);
 }
 
@@ -400,7 +400,7 @@ void avVersionEditorDlg::SetBuild(long value)
 {
     m_build = value;
     wxString strValue;
-    strValue.Printf(_T("%ld"),value);
+    strValue.Printf("%ld",value);
     txtBuildNumber->SetValue(strValue);
 }
 
@@ -408,7 +408,7 @@ void avVersionEditorDlg::SetRevision(long value)
 {
     m_revision = value;
     wxString strValue;
-    strValue.Printf(_T("%ld"),value);
+    strValue.Printf("%ld",value);
     txtRevisionNumber->SetValue(strValue);
 }
 
@@ -416,7 +416,7 @@ void avVersionEditorDlg::SetCount(long value)
 {
     m_count = value;
     wxString strValue;
-    strValue.Printf(_T("%ld"),value);
+    strValue.Printf("%ld",value);
     txtBuildCount->SetValue(strValue);
 }
 //}
@@ -533,7 +533,7 @@ void avVersionEditorDlg::SetMinorMaximum(long value)
 {
 	m_minorMaximun = value;
 	wxString strValue;
-	strValue.Printf(_T("%ld"),value);
+	strValue.Printf("%ld",value);
 	txtMinorMaximun->SetValue(strValue);
 }
 
@@ -541,7 +541,7 @@ void avVersionEditorDlg::SetBuildMaximum(long value)
 {
 	m_buildMaximun = value;
 	wxString strValue;
-	strValue.Printf(_T("%ld"),value);
+	strValue.Printf("%ld",value);
 	txtBuildNumberMaximun->SetValue(strValue);
 }
 
@@ -549,7 +549,7 @@ void avVersionEditorDlg::SetRevisionMaximum(long value)
 {
 	m_revisionMaximun = value;
 	wxString strValue;
-	strValue.Printf(_T("%ld"),value);
+	strValue.Printf("%ld",value);
 	txtRevisionMax->SetValue(strValue);
 }
 
@@ -557,7 +557,7 @@ void avVersionEditorDlg::SetRevisionRandomMaximum(long value)
 {
 	m_revisionRandomMaximun = value;
 	wxString strValue;
-	strValue.Printf(_T("%ld"),value);
+	strValue.Printf("%ld",value);
 	txtRevisionRandom->SetValue(strValue);
 }
 
@@ -565,7 +565,7 @@ void avVersionEditorDlg::SetBuildTimesToMinorIncrement(long value)
 {
 	m_buildTimesToMinorIncrement = value;
 	wxString strValue;
-	strValue.Printf(_T("%ld"),value);
+	strValue.Printf("%ld",value);
 	txtBuildTimes->SetValue(strValue);
 }
 //}
@@ -714,8 +714,8 @@ void avVersionEditorDlg::OnCmbStatusSelect(wxCommandEvent&)
     }
     else
     {
-        cmbAbbreviation->SetValue(_T(""));
-        cmbStatus->SetValue(_T(""));
+        cmbAbbreviation->SetValue(wxEmptyString);
+        cmbStatus->SetValue(wxEmptyString);
     }
 }
 
@@ -728,7 +728,7 @@ void avVersionEditorDlg::ValidateInput()
         type = cbC2U(typeid(*(this->FindFocus())).name());
     }
 
-    if (type.Find(_T("wxTextCtrl")) != wxNOT_FOUND)
+    if (type.Find("wxTextCtrl") != wxNOT_FOUND)
     {
         ForceValidation:; //To force validation when the user clicks the Accept buttom or other control not of type wxTexCtrl
 
@@ -737,37 +737,37 @@ void avVersionEditorDlg::ValidateInput()
             wxString ifBlank;
             wxString ifZero;
 
-            if (l_FocusedControl->GetName() == _T("ID_MINORMAXIMUM_TEXT"))
+            if (l_FocusedControl->GetName() == "ID_MINORMAXIMUM_TEXT")
             {
-                ifBlank = _T("10");
-                ifZero = _T("1");
+                ifBlank = "10";
+                ifZero = "1";
             }
-            else if(l_FocusedControl->GetName() == _T("ID_BUILDNUMBERMAX_TEXT"))
+            else if(l_FocusedControl->GetName() == "ID_BUILDNUMBERMAX_TEXT")
             {
-                ifBlank = _T("0");
-                ifZero = _T("0");
+                ifBlank = "0";
+                ifZero = "0";
             }
-            else if(l_FocusedControl->GetName() == _T("ID_REVISIONMAX_TEXT"))
+            else if(l_FocusedControl->GetName() == "ID_REVISIONMAX_TEXT")
             {
-                ifBlank = _T("0");
-                ifZero = _T("0");
+                ifBlank = "0";
+                ifZero = "0";
             }
-            else if(l_FocusedControl->GetName() == _T("ID_BUILDTIMES_TEXT"))
+            else if(l_FocusedControl->GetName() == "ID_BUILDTIMES_TEXT")
             {
-                ifBlank = _T("100");
-                ifZero = _T("1");
+                ifBlank = "100";
+                ifZero = "1";
             }
-            else if(l_FocusedControl->GetName() == _T("ID_REVISIONRANDOM_TEXT"))
+            else if(l_FocusedControl->GetName() == "ID_REVISIONRANDOM_TEXT")
             {
-                ifBlank = _T("10");
-                ifZero = _T("1");
+                ifBlank = "10";
+                ifZero = "1";
             }
 
-            if(l_FocusedControl->GetValue() == _T("0"))
+            if(l_FocusedControl->GetValue() == "0")
             {
                 l_FocusedControl->SetValue(ifZero);
             }
-            else if(l_FocusedControl->GetValue().Trim() == _T(""))
+            else if(l_FocusedControl->GetValue().Trim() == "")
             {
                 l_FocusedControl->SetValue(ifBlank);
             }
@@ -822,7 +822,7 @@ void avVersionEditorDlg::OnHeaderPathClick(wxCommandEvent& /*event*/)
     wxFileName::SplitPath(m_headerPath, &path, &filename, &extension);
 
     wxString fullpath;
-    fullpath = wxFileSelector(_("Select the header path and filename:"), path, filename, extension, _T("C/C++ Header (*.h)|*.h|All Files (*.*)|*.*"));
+    fullpath = wxFileSelector(_("Select the header path and filename:"), path, filename, extension, _("C/C++ Header (*.h)|*.h|All Files (*.*)|*.*"));
 
     if(!fullpath.IsEmpty())
     {
@@ -839,7 +839,7 @@ void avVersionEditorDlg::OnChangesLogPathClick(wxCommandEvent& /*event*/)
     wxFileName::SplitPath(m_changesLogPath, &path, &filename, &extension);
 
     wxString fullpath;
-    fullpath = wxFileSelector(_("Select the changeslog path and filename:"), path, filename, extension, _T("Text File (*.txt)|*.txt"));
+    fullpath = wxFileSelector(_("Select the changeslog path and filename:"), path, filename, extension, _("Text File (*.txt)|*.txt"));
 
     if(!fullpath.IsEmpty()){
         wxFileName relativeFile(fullpath);
