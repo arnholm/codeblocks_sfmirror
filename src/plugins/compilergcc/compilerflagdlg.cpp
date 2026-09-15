@@ -15,7 +15,7 @@
 CompilerFlagDlg::CompilerFlagDlg(wxWindow* parent, CompOption* opt, wxArrayString& categ,
                                  const wxString &selectedCategory)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, wxT("CompilerFlagDlg"), wxT("wxDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "CompilerFlagDlg", "wxDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
     NameText = (wxTextCtrl*)FindWindow(XRCID("ID_Name"));
     CompilerText = (wxTextCtrl*)FindWindow(XRCID("ID_Compiler"));
@@ -34,9 +34,9 @@ CompilerFlagDlg::CompilerFlagDlg(wxWindow* parent, CompOption* opt, wxArrayStrin
     {
         SetTitle(_("Modify flag"));
         wxString oName;
-        copt->name.EndsWith(wxT("[") + copt->option + wxT("]"), &oName);
+        copt->name.EndsWith("[" + copt->option + "]", &oName);
         if (oName == wxEmptyString)
-            copt->name.EndsWith(wxT("[") + copt->additionalLibs + wxT("]"), &oName);
+            copt->name.EndsWith("[" + copt->additionalLibs + "]", &oName);
         if (oName == wxEmptyString)
             oName = copt->name;
         NameText->SetValue(oName.Trim());
@@ -95,7 +95,7 @@ void CompilerFlagDlg::EndModal(int retCode)
     copt->additionalLibs = LinkerText->GetValue().Trim().Trim(false);
     copt->category       = CategoryCombo->GetValue().Trim().Trim(false);
     if (copt->category.IsEmpty())
-        copt->category = wxT("General");
+        copt->category = "General";
     copt->checkAgainst = AgainstText->GetValue().Trim().Trim(false);
     if (!copt->checkAgainst.IsEmpty())
         copt->checkMessage = MessageText->GetValue().Trim().Trim(false);

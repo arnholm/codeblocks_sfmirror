@@ -17,7 +17,7 @@ class ToDoSettingsDlg : public cbConfigurationPanel
 		~ToDoSettingsDlg() override;
 
         wxString GetTitle() const override { return _("Todo list"); }
-        wxString GetBitmapBaseName() const override { return _T("todo"); }
+        wxString GetBitmapBaseName() const override { return "todo"; }
         void OnApply() override;
         void OnCancel() override {}
 };

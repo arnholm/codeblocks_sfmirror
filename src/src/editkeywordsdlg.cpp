@@ -34,7 +34,7 @@ EditKeywordsDlg::EditKeywordsDlg(wxWindow* parent, EditorColourSet* theme, Highl
     descriptions(descr)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditLangKeywords"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditLangKeywords","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     spnSet      = XRCCTRL(*this, "spnSet",      wxSpinCtrl);

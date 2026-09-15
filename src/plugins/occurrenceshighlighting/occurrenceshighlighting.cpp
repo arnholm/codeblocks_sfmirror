@@ -33,7 +33,7 @@
 // We are using an anonymous namespace so we don't litter the global one.
 namespace
 {
-    PluginRegistrant<OccurrencesHighlighting> reg(_T("OccurrencesHighlighting"));
+    PluginRegistrant<OccurrencesHighlighting> reg("OccurrencesHighlighting");
 
     const int idViewOccurencesPanel               = wxNewId();
     const int idMenuEntryPermanent                = wxNewId();
@@ -58,14 +58,14 @@ OccurrencesHighlighting::OccurrencesHighlighting():
     // Make sure our resources are available.
     // In the generated boilerplate code we have no resources but when
     // we add some, it will be nice that this code is in place already ;)
-    if (!Manager::LoadResource(_T("occurrenceshighlighting.zip")))
-        NotifyMissingFile(_T("occurrenceshighlighting.zip"));
+    if (!Manager::LoadResource("occurrenceshighlighting.zip"))
+        NotifyMissingFile("occurrenceshighlighting.zip");
 
     ColourManager* cm = Manager::Get()->GetColourManager();
-    cm->RegisterColour(_("Editor"), _("Highlight occurrence"),      wxT("editor_highlight_occurrence"), *wxRED);
-    cm->RegisterColour(_("Editor"), _("Highlight occurrence text"), wxT("editor_highlight_occurrence_text"), *wxWHITE);
-    cm->RegisterColour(_("Editor"), _("Permanently highlighted occurrences"), wxT("editor_highlight_occurrence_permanently"), *wxGREEN);
-    cm->RegisterColour(_("Editor"), _("Permanently highlighted occurrences text"), wxT("editor_highlight_occurrence_permanently_text"), *wxBLACK);
+    cm->RegisterColour(_("Editor"), _("Highlight occurrence"),      "editor_highlight_occurrence", *wxRED);
+    cm->RegisterColour(_("Editor"), _("Highlight occurrence text"), "editor_highlight_occurrence_text", *wxWHITE);
+    cm->RegisterColour(_("Editor"), _("Permanently highlighted occurrences"), "editor_highlight_occurrence_permanently", *wxGREEN);
+    cm->RegisterColour(_("Editor"), _("Permanently highlighted occurrences text"), "editor_highlight_occurrence_permanently_text", *wxBLACK);
 }
 
 // destructor
@@ -97,7 +97,7 @@ void OccurrencesHighlighting::OnAttach()
 
     // add the foldpanel to the docking system
     CodeBlocksDockEvent dockevt(cbEVT_ADD_DOCK_WINDOW);
-    dockevt.name = _T("HighlightedOccurrences");
+    dockevt.name = "HighlightedOccurrences";
     dockevt.title = _("Highlighted Occurrences");
     dockevt.pWindow = m_pPanel;
     dockevt.minimumSize.Set(50, 50);
@@ -267,7 +267,7 @@ wxString OccurrencesHighlighting::GetWordAtCaret()const
             wxString selectedText = control->GetSelectedText();
 
             if ( selectedText.IsEmpty() ||
-                 selectedText.Contains(_T(" ")) ||selectedText.Contains(_T("\t")) )
+                 selectedText.Contains(" ") ||selectedText.Contains("\t") )
             {
                 const int pos = control->GetCurrentPos();
                 const int ws = control->WordStartPosition(pos, true);
@@ -319,7 +319,7 @@ void OccurrencesHighlighting::OnPanelPopupMenu(wxContextMenuEvent& WXUNUSED(even
     if (m_pPanel->GetListCtrl()->GetSelectedItemCount() > 0)
     {
         wxMenu *menu = new wxMenu;
-        menu->Append(idContextRemove, _T("Remove"), wxEmptyString);
+        menu->Append(idContextRemove, "Remove", wxEmptyString);
 
         m_pPanel->GetListCtrl()->PopupMenu(menu);
     }

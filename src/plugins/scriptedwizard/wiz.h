@@ -158,7 +158,7 @@ class Wiz : public cbWizardPlugin
                              bool allowCompilerChange = true, bool allowConfigChange = true);
         void AddBuildTargetPage(const wxString& targetName, bool isDebug, bool showCompiler = false,
                                 const wxString& compilerID = wxEmptyString,
-                                const wxString& validCompilerIDs = _T("*"),
+                                const wxString& validCompilerIDs = "*",
                                 bool allowCompilerChange = true);
         void AddGenericSingleChoiceListPage(const wxString& pageName, const wxString& descr,
                                             const wxString& choices, int defChoice);

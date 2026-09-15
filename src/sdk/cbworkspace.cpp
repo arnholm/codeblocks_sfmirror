@@ -102,7 +102,7 @@ void cbWorkspace::Load()
 bool cbWorkspace::Save(bool force)
 {
     if (m_Filename.GetFullPath().IsEmpty())
-        return SaveAs(_T(""));
+        return SaveAs("");
 
     // always save the layout file
     SaveLayout();
@@ -135,7 +135,7 @@ bool cbWorkspace::SaveAs(cb_unused const wxString& filename)
 
     m_Filename = dlg.GetPath();
     if (m_Filename.GetExt() == wxEmptyString)
-        m_Filename.SetExt(_T("workspace"));
+        m_Filename.SetExt("workspace");
 
     if (m_Filename.GetFullName().Matches(DEFAULT_WORKSPACE))
         m_IsDefault = true;
@@ -195,7 +195,7 @@ bool cbWorkspace::LoadLayout()
     LogManager *log = Manager::Get()->GetLogManager();
     WorkspaceLoader wsl;
     wxFileName fn(m_Filename);
-    fn.SetExt( _T("workspace.layout") );
+    fn.SetExt( "workspace.layout" );
     const wxString fullPath(fn.GetFullPath());
     bool rc = false;
     if ( fn.FileExists() )

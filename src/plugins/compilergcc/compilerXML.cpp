@@ -22,8 +22,8 @@ CompilerXML::CompilerXML(const wxString& name, const wxString& ID, const wxStrin
 {
     wxXmlDocument compiler;
     compiler.Load(m_fileName);
-    m_Weight = wxAtoi(compiler.GetRoot()->GetAttribute(wxT("weight"), wxT("100")));
-    m_MultiLineMessages = _T("0") != compiler.GetRoot()->GetAttribute(wxT("multilinemessages"), wxT("0"));
+    m_Weight = wxAtoi(compiler.GetRoot()->GetAttribute("weight", "100"));
+    m_MultiLineMessages = "0" != compiler.GetRoot()->GetAttribute("multilinemessages", "0");
     Reset();
 }
 
@@ -41,13 +41,13 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
     SearchMode sm = none;
 
     wxString path;
-    wxGetEnv(wxT("PATH"), &path);
+    wxGetEnv("PATH", &path);
     wxString origPath = path;
 
     if (!m_MasterPath.IsEmpty())
     {
         path += wxPATH_SEP + m_MasterPath;
-        wxSetEnv(wxT("PATH"), path);
+        wxSetEnv("PATH", path);
         m_MasterPath.Clear();
     }
 
@@ -59,7 +59,7 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
         while (node)
         {
             // *****  Nested IFs
-            if (node->GetName() == wxT("if") && node->GetChildren())
+            if (node->GetName() == "if" && node->GetChildren())
             {
                 if (EvalXMLCondition(node))
                 {
@@ -68,7 +68,7 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                     continue;
                 }
                 // *****  Nested ELSE  IFs
-                else if (node->GetNext() && node->GetNext()->GetName() == wxT("else") &&
+                else if (node->GetNext() && node->GetNext()->GetName() == "else" &&
                          node->GetNext()->GetChildren())
                 {
                     node = node->GetNext()->GetChildren();
@@ -77,18 +77,18 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                 }
             }
             // **** Compiler path
-            else if (node->GetName() == wxT("Path") && node->GetChildren())
+            else if (node->GetName() == "Path" && node->GetChildren())
             {
-                wxString value = node->GetAttribute(wxT("type"), wxEmptyString);
-                if (value == wxT("master"))
+                wxString value = node->GetAttribute("type", wxEmptyString);
+                if (value == "master")
                     sm = master;
-                else if (value == wxT("extra"))
+                else if (value == "extra")
                     sm = extra;
-                else if (value == wxT("include"))
+                else if (value == "include")
                     sm = include;
-                else if (value == wxT("resource"))
+                else if (value == "resource")
                     sm = resource;
-                else if (value == wxT("lib"))
+                else if (value == "lib")
                     sm = lib;
                 if (sm != master || m_MasterPath.IsEmpty())
                 {
@@ -100,85 +100,85 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                     sm = none;
             }
             // **** Search path
-            else if (node->GetName() == wxT("Search") && sm != none)
+            else if (node->GetName() == "Search" && sm != none)
             {
                 wxString value;
                 // **** Environment variables
-                if (node->GetAttribute(wxT("envVar"), &value))
+                if (node->GetAttribute("envVar", &value))
                 {
                     wxString pathValues;
                     wxGetEnv(value, &pathValues);
                     if (!pathValues.IsEmpty())
                     {
                         wxArrayString pathArray = GetArrayFromString(pathValues, wxPATH_SEP);
-                        wxString targ = GetExecName(node->GetAttribute(wxT("for"), wxEmptyString));
+                        wxString targ = GetExecName(node->GetAttribute("for", wxEmptyString));
                         for (size_t i = 0; i < pathArray.GetCount(); ++i)
                         {
                             if ((targ.IsEmpty() && wxDirExists(pathArray[i])) || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + targ))
                             {
-                                if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute(wxT("rmDirs"), wxT("0")))))
+                                if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute("rmDirs", "0"))))
                                     break;
                             }
-                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxT("bin")))
-                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + targ)) )
+                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
+                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)) )
                             {
-                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + wxT("bin"), sm))
+                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + "bin", sm))
                                     break;
                             }
                         }
                     }
                 }
                 // **** Code::Blocks macros
-                if (node->GetAttribute(wxT("macro"), &value))
+                if (node->GetAttribute("macro", &value))
                 {
                     wxString value_without_macros(value);
                     Manager::Get()->GetMacrosManager()->ReplaceMacros(value_without_macros);
                     if (!value_without_macros.IsEmpty())
                     {
                         wxArrayString pathArray = GetArrayFromString(value_without_macros, wxPATH_SEP);
-                        wxString targ = GetExecName(node->GetAttribute(wxT("for"), wxEmptyString));
+                        wxString targ = GetExecName(node->GetAttribute("for", wxEmptyString));
                         for (size_t i = 0; i < pathArray.GetCount(); ++i)
                         {
                             if ((targ.IsEmpty() && wxDirExists(pathArray[i])) || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + targ))
                             {
-                                if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute(wxT("rmDirs"), wxT("0")))))
+                                if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute("rmDirs", "0"))))
                                     break;
                             }
-                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxT("bin")))
-                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + targ)) )
+                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
+                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)) )
                             {
-                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + wxT("bin"), sm))
+                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + "bin", sm))
                                     break;
                             }
                         }
                     }
                 }
                 // **** Path
-                else if (node->GetAttribute(wxT("path"), &value))
+                else if (node->GetAttribute("path", &value))
                 {
-                    wxString targ = GetExecName(node->GetAttribute(wxT("for"), wxEmptyString));
+                    wxString targ = GetExecName(node->GetAttribute("for", wxEmptyString));
                     if (wxIsWild(value))
                     {
                         path = wxFindFirstFile(value, wxDIR);
                         if (!path.IsEmpty() &&
                              ((targ.IsEmpty() && wxDirExists(path)) ||
                               wxFileExists(path + wxFILE_SEP_PATH + targ) ||
-                              wxFileExists(path + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + targ)))
+                              wxFileExists(path + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)))
                         {
                             AddPath(path, sm);
                         }
                     }
                     else if ((targ.IsEmpty() && wxDirExists(value)) || wxFileExists(value + wxFILE_SEP_PATH + targ))
                         AddPath(value, sm);
-                    else if (sm == master && (  (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxT("bin")))
-                                              || wxFileExists(value + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + targ)))
-                        AddPath(value + wxFILE_SEP_PATH + wxT("bin"), sm);
+                    else if (sm == master && (  (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
+                                              || wxFileExists(value + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)))
+                        AddPath(value + wxFILE_SEP_PATH + "bin", sm);
                 }
                 // **** Files
-                else if (node->GetAttribute(wxT("file"), &value))
+                else if (node->GetAttribute("file", &value))
                 {
-                    wxString regexp = node->GetAttribute(wxT("regex"), wxEmptyString);
-                    int idx = wxAtoi(node->GetAttribute(wxT("index"), wxT("0")));
+                    wxString regexp = node->GetAttribute("regex", wxEmptyString);
+                    int idx = wxAtoi(node->GetAttribute("index", "0"));
                     wxRegEx re;
                     if (wxFileExists(value) && re.Compile(regexp))
                     {
@@ -196,14 +196,14 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                 }
 #ifdef __WXMSW__ // for wxRegKey
                 // **** Registry on MSW
-                else if (node->GetAttribute(wxT("registry"), &value))
+                else if (node->GetAttribute("registry", &value))
                 {
                     wxRegKey key;
                     wxString dir;
                     key.SetName(value);
                     if (key.Exists() && key.Open(wxRegKey::Read))
                     {
-                        key.QueryValue(node->GetAttribute(wxT("value"), wxEmptyString), dir);
+                        key.QueryValue(node->GetAttribute("value", wxEmptyString), dir);
                         if (!dir.IsEmpty() && wxDirExists(dir))
                             AddPath(dir, sm);
                         key.Close();
@@ -212,14 +212,14 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
 #endif // __WXMSW__
             }
             // **** Additional information
-            else if (node->GetName() == wxT("Add"))
+            else if (node->GetName() == "Add")
             {
                 wxString value;
-                if (node->GetAttribute(wxT("cFlag"), &value))
+                if (node->GetAttribute("cFlag", &value))
                     AddCompilerOption(value);
-                else if (node->GetAttribute(wxT("lFlag"), &value))
+                else if (node->GetAttribute("lFlag", &value))
                     AddLinkerOption(value);
-                else if (node->GetAttribute(wxT("lib"), &value))
+                else if (node->GetAttribute("lib", &value))
                     AddLinkLib(value);
                 else if (sm != none)
                 {
@@ -229,14 +229,14 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                     {
                         if (child->GetType() == wxXML_TEXT_NODE || child->GetType() == wxXML_CDATA_SECTION_NODE)
                             path << child->GetContent();
-                        else if (child->GetName() == wxT("master"))
+                        else if (child->GetName() == "master")
                             path << m_MasterPath;
-                        else if (child->GetName() == wxT("separator"))
+                        else if (child->GetName() == "separator")
                             path << wxFILE_SEP_PATH;
-                        else if (child->GetName() == wxT("envVar"))
+                        else if (child->GetName() == "envVar")
                         {
-                            value = child->GetAttribute(wxT("default"), wxEmptyString);
-                            wxGetEnv(child->GetAttribute(wxT("value"), wxEmptyString), &value);
+                            value = child->GetAttribute("default", wxEmptyString);
+                            wxGetEnv(child->GetAttribute("value", wxEmptyString), &value);
                             path << value;
                         }
                         child = child->GetNext();
@@ -244,9 +244,9 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                     AddPath(path.Trim().Trim(false), sm);
                 }
             }
-            else if (node->GetName() == wxT("Fallback") && sm != none)
+            else if (node->GetName() == "Fallback" && sm != none)
             {
-                wxString value = node->GetAttribute(wxT("path"), wxEmptyString);
+                wxString value = node->GetAttribute("path", wxEmptyString);
                 switch (sm)
                 {
                 case master:
@@ -279,7 +279,7 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                     depth > 0 )
             {
                 node = node->GetParent();
-                if (node->GetName() == wxT("Path"))
+                if (node->GetName() == "Path")
                 {
                     sm = none;
                 }
@@ -289,14 +289,14 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
         }
     }
 
-    wxSetEnv(wxT("PATH"), origPath);
+    wxSetEnv("PATH", origPath);
 
     wxString master_path_without_macros(m_MasterPath);
     Manager::Get()->GetMacrosManager()->ReplaceMacros(master_path_without_macros);
 
-    if (   wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + m_Programs.C)
+    if (   wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C)
         || wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + m_Programs.C)
-        || (GetID() == wxT("null")) ) // Special case so "No Compiler" is valid
+        || (GetID() == "null") ) // Special case so "No Compiler" is valid
     {
         return adrDetected;
     }
@@ -319,7 +319,7 @@ bool CompilerXML::AddPath(const wxString& pth, SearchMode sm, int rmDirs)
     switch (sm)
     {
     case master:
-        if (path.AfterLast(wxFILE_SEP_PATH) == wxT("bin"))
+        if (path.AfterLast(wxFILE_SEP_PATH) == "bin")
             m_MasterPath = path.BeforeLast(wxFILE_SEP_PATH);
         else
             m_MasterPath = path;

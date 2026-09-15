@@ -16,7 +16,7 @@ class wxWindow;
 namespace
 {
     static wxString temp_string(_T('\0'), 250);
-    static wxString newline_string(_T("\n"));
+    static wxString newline_string("\n");
 }
 
 /** The base class for all kinds of loggers, see loggers.h for its derived classes */

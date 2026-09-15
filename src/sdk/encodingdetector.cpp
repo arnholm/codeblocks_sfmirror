@@ -96,11 +96,11 @@ class EncodingDetectorImpl : public nsUniversalDetector
 
         bool DetectEncoding(const wxByte* buffer, size_t size)
         {
-            ConfigManager* cfgMgr = Manager::Get()->GetConfigManager(_T("editor"));
-            const wxString &encname = cfgMgr->Read(_T("/default_encoding"),
+            ConfigManager* cfgMgr = Manager::Get()->GetConfigManager("editor");
+            const wxString &encname = cfgMgr->Read("/default_encoding",
                                                    wxLocale::GetSystemEncodingName());
 
-            if (cfgMgr->ReadInt(_T("/default_encoding/use_option"), 0) == 1)
+            if (cfgMgr->ReadInt("/default_encoding/use_option", 0) == 1)
             {
                 // Bypass C::B's auto-detection
                 m_Encoding = wxFontMapper::Get()->CharsetToEncoding(encname, false);
@@ -126,7 +126,7 @@ class EncodingDetectorImpl : public nsUniversalDetector
                     if (m_UseBOM && m_UseLog)
                     {
                         wxString msg;
-                        msg.Printf(_T("Detected encoding via BOM: %s (ID: %d)"),
+                        msg.Printf("Detected encoding via BOM: %s (ID: %d)",
                                    wxFontMapper::Get()->GetEncodingDescription(m_Encoding).c_str(),
                                    m_Encoding);
                         Manager::Get()->GetLogManager()->DebugLog(msg);
@@ -153,7 +153,7 @@ class EncodingDetectorImpl : public nsUniversalDetector
 
                     if (m_Encoding == wxFONTENCODING_DEFAULT)
                     {
-                        wxString enc_name = Manager::Get()->GetConfigManager(_T("editor"))->Read(_T("/default_encoding"), wxLocale::GetSystemEncodingName());
+                        wxString enc_name = Manager::Get()->GetConfigManager("editor")->Read("/default_encoding", wxLocale::GetSystemEncodingName());
                         m_Encoding = wxFontMapper::GetEncodingFromName(enc_name);
                         if (m_UseLog)
                         {
@@ -189,14 +189,14 @@ class EncodingDetectorImpl : public nsUniversalDetector
             if (m_UseLog)
             {
                 wxString msg;
-                msg.Printf(_T("Final encoding detected: %s (ID: %d)"),
+                msg.Printf("Final encoding detected: %s (ID: %d)",
                            wxFontMapper::Get()->GetEncodingDescription(m_Encoding).c_str(),
                            m_Encoding);
                 Manager::Get()->GetLogManager()->DebugLog(msg);
             }
 
             if (!ConvertToWxString(buffer, size) && m_UseLog)
-                Manager::Get()->GetLogManager()->DebugLog(_T("Something seriously went wrong while converting file content to wxString!"));
+                Manager::Get()->GetLogManager()->DebugLog("Something seriously went wrong while converting file content to wxString!");
 
             return true;
         }
@@ -376,9 +376,9 @@ class EncodingDetectorImpl : public nsUniversalDetector
             if (m_UseLog)
                 Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Mozilla universal detection engine detected '%s'.", m_MozillaResult));
 
-            if (m_MozillaResult == _T("gb18030")) // hack, because wxWidgets only knows cp936
-                m_MozillaResult = _T("cp936");
-            else if (m_MozillaResult.Contains(wxT("*ASCII*"))) // remove our "specials"
+            if (m_MozillaResult == "gb18030") // hack, because wxWidgets only knows cp936
+                m_MozillaResult = "cp936";
+            else if (m_MozillaResult.Contains("*ASCII*")) // remove our "specials"
                 m_MozillaResult = wxEmptyString;
         }
 
@@ -397,7 +397,7 @@ class EncodingDetectorImpl : public nsUniversalDetector
             {
                 if (m_UseLog)
                 {
-                    logmsg.Printf(_T("Encoding conversion has failed (buffer is empty)!"));
+                    logmsg.Printf("Encoding conversion has failed (buffer is empty)!");
                     logmgr->DebugLog(logmsg);
                 }
                 return false; // Nothing we can do...
@@ -501,13 +501,13 @@ class EncodingDetectorImpl : public nsUniversalDetector
             }
 
             // Try system locale as fall-back (if requested by the settings)
-            ConfigManager* cfgMgr = Manager::Get()->GetConfigManager(_T("editor"));
-            if (cfgMgr->ReadBool(_T("/default_encoding/use_system"), true))
+            ConfigManager* cfgMgr = Manager::Get()->GetConfigManager("editor");
+            if (cfgMgr->ReadBool("/default_encoding/use_system", true))
             {
                 if (platform::windows)
                 {
                     if (m_UseLog)
-                        logmgr->DebugLog(_T("Trying system locale as fallback..."));
+                        logmgr->DebugLog("Trying system locale as fallback...");
 
                     m_Encoding = wxLocale::GetSystemEncoding();
                 }
@@ -515,7 +515,7 @@ class EncodingDetectorImpl : public nsUniversalDetector
                 {
                     // We can rely on the UTF-8 detection code ;-)
                     if (m_UseLog)
-                        logmgr->DebugLog(_T("Trying ISO-8859-1 as fallback..."));
+                        logmgr->DebugLog("Trying ISO-8859-1 as fallback...");
 
                     m_Encoding = wxFONTENCODING_ISO8859_1;
                 }

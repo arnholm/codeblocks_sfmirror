@@ -69,9 +69,9 @@ BacktraceDlg::BacktraceDlg(wxWindow* parent) :
     m_list->InsertColumn(4, _("Line"), wxLIST_FORMAT_RIGHT, 64);
 
     Manager::Get()->GetColourManager()->RegisterColour(_("Debugger"), _("Backtrace active frame background"),
-                                                       wxT("dbg_backtrace_active_background"), *wxRED);
+                                                       "dbg_backtrace_active_background", *wxRED);
     Manager::Get()->GetColourManager()->RegisterColour(_("Debugger"), _("Backtrace active frame foreground"),
-                                                       wxT("dbg_backtrace_active_foreground"), *wxWHITE);
+                                                       "dbg_backtrace_active_foreground", *wxWHITE);
 }
 
 void BacktraceDlg::Reload()
@@ -81,8 +81,8 @@ void BacktraceDlg::Reload()
         return;
 
     ColourManager &colours = *Manager::Get()->GetColourManager();
-    const wxColour &activeBackground = colours.GetColour(wxT("dbg_backtrace_active_background"));
-    const wxColour &activeForeground = colours.GetColour(wxT("dbg_backtrace_active_foreground"));
+    const wxColour &activeBackground = colours.GetColour("dbg_backtrace_active_background");
+    const wxColour &activeForeground = colours.GetColour("dbg_backtrace_active_foreground");
 
     m_list->Freeze();
     m_list->DeleteAllItems();
@@ -94,7 +94,7 @@ void BacktraceDlg::Reload()
         cb::shared_ptr<const cbStackFrame> frame = plugin->GetStackFrame(ii);
         wxString addr = frame->GetAddressAsString();
         wxString num;
-        num.Printf(wxT("%d"), frame->GetNumber());
+        num.Printf("%d", frame->GetNumber());
         int idx = m_list->InsertItem(m_list->GetItemCount(), num);
         m_list->SetItem(idx, 1, addr);
         m_list->SetItem(idx, 2, frame->GetSymbol());
@@ -221,13 +221,13 @@ void BacktraceDlg::OnSave(cb_unused wxCommandEvent& event)
         info.SetId(ii);
         info.SetColumn(1);
         info.SetMask(wxLIST_MASK_TEXT);
-        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(2);
-        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(3);
-        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(4);
-        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
 
         text << '#' << m_list->GetItemText(ii) << ' '
              << addr << '\t'
@@ -248,13 +248,13 @@ void BacktraceDlg::OnCopyToClipboard(cb_unused wxCommandEvent& event)
         info.SetId(ii);
         info.SetColumn(1);
         info.SetMask(wxLIST_MASK_TEXT);
-        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString addr(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(2);
-        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString func(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(3);
-        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString file(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
         info.SetColumn(4);
-        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : _T("??"));
+        const wxString line(m_list->GetItem(info) && !info.GetText().empty() ? info.GetText() : "??");
 
         text << '#' << m_list->GetItemText(ii) << ' '
              << addr << '\t'

@@ -28,7 +28,7 @@ typedef struct SQVM* cbHSQUIRRELVM;
   * Here's an example to load and execute a script:
   *
   * @code
-  * Manager::Get()->GetScriptingManager()->LoadScript(_T("some.script"));
+  * Manager::Get()->GetScriptingManager()->LoadScript("some.script");
   * @endcode
   *
   * And here's an example to call a script function:
@@ -82,7 +82,7 @@ class DLLIMPORT ScriptingManager : public Mgr<ScriptingManager>
           * @param debugName A debug name. This will appear in any errors displayed.
           * @return True if the script compiled, false if not.
           */
-        bool LoadBuffer(const wxString& buffer, const wxString& debugName = _T("CommandLine"));
+        bool LoadBuffer(const wxString& buffer, const wxString& debugName = "CommandLine");
 
         /** @brief Loads a string buffer and captures its output.
           *

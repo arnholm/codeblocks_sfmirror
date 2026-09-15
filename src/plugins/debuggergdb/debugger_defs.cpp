@@ -116,7 +116,7 @@ int DebuggerBreakpoint::GetLine() const
 
 wxString DebuggerBreakpoint::GetLineString() const
 {
-    return (type == bptCode) ? wxString::Format(wxT("%d"), line) : wxString(wxEmptyString);
+    return (type == bptCode) ? wxString::Format("%d", line) : wxString(wxEmptyString);
 }
 
 wxString DebuggerBreakpoint::GetType() const
@@ -155,16 +155,16 @@ wxString DebuggerBreakpoint::GetInfo() const
             if (useIgnoreCount)
             {
                 if (!s.empty())
-                    s += wxT(" ");
+                    s += " ";
                 s += wxString::Format(_("ignore count: %d"), ignoreCount);
             }
             if (temporary)
             {
                 if (!s.empty())
-                    s += wxT(" ");
+                    s += " ";
                 s += _("temporary");
             }
-            s += wxString::Format(wxT(" (index: %ld)"), index);
+            s += wxString::Format(" (index: %ld)", index);
             return s;
         }
         case bptFunction:
@@ -273,7 +273,7 @@ wxString GDBWatch::GetDebugString() const
 
 wxString GDBWatch::MakeSymbolToAddress() const
 {
-    return wxT("&") + m_symbol;
+    return "&" + m_symbol;
 }
 
 bool GDBWatch::IsPointerType() const
@@ -465,7 +465,7 @@ bool IsPointerType(const wxString &type)
 // If the last character is '\', GDB will treat it as line continuation and it will stall.
 wxString CleanStringValue(wxString value)
 {
-    while (value.EndsWith(wxT("\\")))
+    while (value.EndsWith("\\"))
         value.RemoveLast();
     return value;
 }

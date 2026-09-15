@@ -285,7 +285,7 @@ class GDBMemoryRangeWatch  : public cbWatch
         bool GetIsValueErrorMessage() override { return m_ValueErrorMessage; }
         void SetIsValueErrorMessage(bool value) override { m_ValueErrorMessage = value; }
         void GetFullWatchString(wxString &full_watch) const override { full_watch = wxEmptyString; }
-        void GetType(wxString &type) const override { type = wxT("Memory range"); }
+        void GetType(wxString &type) const override { type = "Memory range"; }
         void SetType(cb_unused const wxString &type) override {}
 
         wxString GetDebugString() const override { return wxString(); }

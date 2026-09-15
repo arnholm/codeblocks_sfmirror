@@ -38,11 +38,11 @@ using namespace std;
 template<> MacrosManager* Mgr<MacrosManager>::instance = nullptr;
 template<> bool  Mgr<MacrosManager>::isShutdown = false;
 
-static const wxString const_COIN(_T("COIN"));
-static const wxString const_RANDOM(_T("RANDOM"));
-static const wxString toNativePath(_T("$TO_NATIVE_PATH{"));
-static const wxString toUnixPath(_T("$TO_UNIX_PATH{"));
-static const wxString toWindowsPath(_T("$TO_WINDOWS_PATH{"));
+static const wxString const_COIN("COIN");
+static const wxString const_RANDOM("RANDOM");
+static const wxString toNativePath("$TO_NATIVE_PATH{");
+static const wxString toUnixPath("$TO_UNIX_PATH{");
+static const wxString toWindowsPath("$TO_WINDOWS_PATH{");
 
 MacrosManager::MacrosManager()
 {
@@ -88,18 +88,18 @@ void MacrosManager::Reset()
 
 bool MacrosManager::CompileRegexes()
 {
-    m_RE_Unix.Compile(_T("([^$]|^)(\\$[({]?(#?[A-Za-z_0-9.]+)[\\)} /\\\\]?)"),
+    m_RE_Unix.Compile("([^$]|^)(\\$[({]?(#?[A-Za-z_0-9.]+)[\\)} /\\\\]?)",
                       wxRE_EXTENDED | wxRE_NEWLINE);
     wxCHECK_MSG(m_RE_Unix.IsValid(), false, "Invalid regex (m_RE_Unix) in macros manager");
 
-    m_RE_DOS.Compile(_T("([^%]|^)(%(#?[A-Za-z_0-9.]+)%)"), wxRE_EXTENDED | wxRE_NEWLINE);
+    m_RE_DOS.Compile("([^%]|^)(%(#?[A-Za-z_0-9.]+)%)", wxRE_EXTENDED | wxRE_NEWLINE);
     wxCHECK_MSG(m_RE_DOS.IsValid(), false, "Invalid regex (m_RE_DOS) in macros manager");
 
-    m_RE_IfSp.Compile(_T("(([^=!<>]+)[ ]*(=|==|!=|>|<|>=|<=)[ ]*([^=!<>]+))"),
+    m_RE_IfSp.Compile("(([^=!<>]+)[ ]*(=|==|!=|>|<|>=|<=)[ ]*([^=!<>]+))",
                       wxRE_EXTENDED | wxRE_NEWLINE);
     wxCHECK_MSG(m_RE_IfSp.IsValid(), false, "Invalid regex (m_RE_IfSp) in macros manager");
 
-    m_RE_Script.Compile(_T("(\\[\\[(.*)\\]\\])"), wxRE_EXTENDED | wxRE_NEWLINE);
+    m_RE_Script.Compile("(\\[\\[(.*)\\]\\])", wxRE_EXTENDED | wxRE_NEWLINE);
     wxCHECK_MSG(m_RE_Script.IsValid(), false, "Invalid regex (m_RE_Script) in macros manager");
 
 #ifndef __WXMAC__
@@ -108,14 +108,14 @@ bool MacrosManager::CompileRegexes()
     const int flagsForMac = wxRE_EXTENDED;
 #endif
 
-    m_RE_ToAbsolutePath.Compile(_T("\\$TO_ABSOLUTE_PATH{([^}]*)}"), flagsForMac);
+    m_RE_ToAbsolutePath.Compile("\\$TO_ABSOLUTE_PATH{([^}]*)}", flagsForMac);
     wxCHECK_MSG(m_RE_ToAbsolutePath.IsValid(), false,
                 "Invalid regex (m_RE_ToAbsolutePath) in macros manager");
 
-    m_RE_To83Path.Compile(_T("\\$TO_83_PATH{([^}]*)}"), flagsForMac);
+    m_RE_To83Path.Compile("\\$TO_83_PATH{([^}]*)}", flagsForMac);
     wxCHECK_MSG(m_RE_To83Path.IsValid(), false, "Invalid regex (m_RE_To83Path) in macros manager");
 
-    m_RE_RemoveQuotes.Compile(_T("\\$REMOVE_QUOTES{([^}]*)}"), flagsForMac);
+    m_RE_RemoveQuotes.Compile("\\$REMOVE_QUOTES{([^}]*)}", flagsForMac);
     wxCHECK_MSG(m_RE_RemoveQuotes.IsValid(), false,
                 "Invalid regex (m_RE_RemoveQuotes) in macros manager");
     return true;
@@ -125,41 +125,41 @@ void MacrosManager::ClearProjectKeys()
 {
     m_Macros.clear();
 
-    m_Macros[_T("AMP")]        = _T("&");
-    m_Macros[_T("CODEBLOCKS")] = m_AppPath;
-    m_Macros[_T("APP_PATH")]   = m_AppPath;
-    m_Macros[_T("APP-PATH")]   = m_AppPath;
-    m_Macros[_T("APPPATH")]    = m_AppPath;
-    m_Macros[_T("DATA_PATH")]  = m_DataPath;
-    m_Macros[_T("DATA-PATH")]  = m_DataPath;
-    m_Macros[_T("DATAPATH")]   = m_DataPath;
-    m_Macros[_T("PLUGINS")]    = m_Plugins;
-    m_Macros[_T("LANGUAGE")]   = wxLocale::GetLanguageName(wxLocale::GetSystemLanguage());
-    m_Macros[_T("ENCODING")]   = wxLocale::GetSystemEncodingName();
+    m_Macros["AMP"]        = "&";
+    m_Macros["CODEBLOCKS"] = m_AppPath;
+    m_Macros["APP_PATH"]   = m_AppPath;
+    m_Macros["APP-PATH"]   = m_AppPath;
+    m_Macros["APPPATH"]    = m_AppPath;
+    m_Macros["DATA_PATH"]  = m_DataPath;
+    m_Macros["DATA-PATH"]  = m_DataPath;
+    m_Macros["DATAPATH"]   = m_DataPath;
+    m_Macros["PLUGINS"]    = m_Plugins;
+    m_Macros["LANGUAGE"]   = wxLocale::GetLanguageName(wxLocale::GetSystemLanguage());
+    m_Macros["ENCODING"]   = wxLocale::GetSystemEncodingName();
 
     if (platform::windows)
     {
-        m_Macros[_T("CMD_NULL")]  = _T("NUL");
+        m_Macros["CMD_NULL"]  = "NUL";
 
-        const wxString cmd(_T("cmd /c "));
-        m_Macros[_T("CMD_CP")]    = cmd + _T("copy");
-        m_Macros[_T("CMD_RM")]    = cmd + _T("del");
-        m_Macros[_T("CMD_MV")]    = cmd + _T("move");
-        m_Macros[_T("CMD_MKDIR")] = cmd + _T("md");
-        m_Macros[_T("CMD_RMDIR")] = cmd + _T("rd");
+        const wxString cmd("cmd /c ");
+        m_Macros["CMD_CP"]    = cmd + "copy";
+        m_Macros["CMD_RM"]    = cmd + "del";
+        m_Macros["CMD_MV"]    = cmd + "move";
+        m_Macros["CMD_MKDIR"] = cmd + "md";
+        m_Macros["CMD_RMDIR"] = cmd + "rd";
 
-        m_Macros[_T("PLATFORM")] = _T("msw");
+        m_Macros["PLATFORM"] = "msw";
     }
     else
     {
-        m_Macros[_T("CMD_CP")]     = _T("cp --preserve=timestamps");
-        m_Macros[_T("CMD_RM")]     = _T("rm");
-        m_Macros[_T("CMD_MV")]     = _T("mv");
-        m_Macros[_T("CMD_NULL")]   = _T("/dev/null");
-        m_Macros[_T("CMD_MKDIR")]  = _T("mkdir -p");
-        m_Macros[_T("CMD_RMDIR")]  = _T("rmdir");
+        m_Macros["CMD_CP"]     = "cp --preserve=timestamps";
+        m_Macros["CMD_RM"]     = "rm";
+        m_Macros["CMD_MV"]     = "mv";
+        m_Macros["CMD_NULL"]   = "/dev/null";
+        m_Macros["CMD_MKDIR"]  = "mkdir -p";
+        m_Macros["CMD_RMDIR"]  = "rmdir";
 
-        m_Macros[_T("PLATFORM")] = _T("unix");
+        m_Macros["PLATFORM"] = "unix";
     }
 
     cbWorkspace* wksp = Manager::Get()->GetProjectManager()->GetWorkspace();
@@ -177,17 +177,17 @@ void MacrosManager::ClearProjectKeys()
         m_WorkspaceName = wxEmptyString;
         m_WorkspaceDir = wxEmptyString;
     }
-    m_Macros[_T("WORKSPACE_FILE")]      = m_WorkspaceFilename;
-    m_Macros[_T("WORKSPACE_FILENAME")]  = m_WorkspaceFilename;
-    m_Macros[_T("WORKSPACE_FILE_NAME")] = m_WorkspaceFilename;
-    m_Macros[_T("WORKSPACEFILE")]       = m_WorkspaceFilename;
-    m_Macros[_T("WORKSPACEFILENAME")]   = m_WorkspaceFilename;
-    m_Macros[_T("WORKSPACENAME")]       = m_WorkspaceName;
-    m_Macros[_T("WORKSPACE_NAME")]      = m_WorkspaceName;
-    m_Macros[_T("WORKSPACE_DIR")]       = m_WorkspaceDir;
-    m_Macros[_T("WORKSPACE_DIRECTORY")] = m_WorkspaceDir;
-    m_Macros[_T("WORKSPACEDIR")]        = m_WorkspaceDir;
-    m_Macros[_T("WORKSPACEDIRECTORY")]  = m_WorkspaceDir;
+    m_Macros["WORKSPACE_FILE"]      = m_WorkspaceFilename;
+    m_Macros["WORKSPACE_FILENAME"]  = m_WorkspaceFilename;
+    m_Macros["WORKSPACE_FILE_NAME"] = m_WorkspaceFilename;
+    m_Macros["WORKSPACEFILE"]       = m_WorkspaceFilename;
+    m_Macros["WORKSPACEFILENAME"]   = m_WorkspaceFilename;
+    m_Macros["WORKSPACENAME"]       = m_WorkspaceName;
+    m_Macros["WORKSPACE_NAME"]      = m_WorkspaceName;
+    m_Macros["WORKSPACE_DIR"]       = m_WorkspaceDir;
+    m_Macros["WORKSPACE_DIRECTORY"] = m_WorkspaceDir;
+    m_Macros["WORKSPACEDIR"]        = m_WorkspaceDir;
+    m_Macros["WORKSPACEDIRECTORY"]  = m_WorkspaceDir;
 }
 
 static wxString GetSelectedText()
@@ -275,23 +275,23 @@ void MacrosManager::RecalcVars(const cbProject* project, EditorBase* editor, con
         m_Makefile        = wxEmptyString;
         m_LastProject     = nullptr;
         ClearProjectKeys();
-        m_Macros[_T("PROJECTFILE")]          = wxEmptyString;
-        m_Macros[_T("PROJECT_FILE")]         = wxEmptyString;
-        m_Macros[_T("PROJECTFILENAME")]      = wxEmptyString;
-        m_Macros[_T("PROJECT_FILENAME")]     = wxEmptyString;
-        m_Macros[_T("PROJECT_FILE_NAME")]    = wxEmptyString;
-        m_Macros[_T("PROJECTNAME")]          = wxEmptyString;
-        m_Macros[_T("PROJECT_NAME")]         = wxEmptyString;
-        m_Macros[_T("PROJECTDIR")]           = wxEmptyString;
-        m_Macros[_T("PROJECT_DIR")]          = wxEmptyString;
-        m_Macros[_T("PROJECTDIRECTORY")]     = wxEmptyString;
-        m_Macros[_T("PROJECT_DIRECTORY")]    = wxEmptyString;
-        m_Macros[_T("PROJECTTOPDIR")]        = wxEmptyString;
-        m_Macros[_T("PROJECT_TOPDIR")]       = wxEmptyString;
-        m_Macros[_T("PROJECTTOPDIRECTORY")]  = wxEmptyString;
-        m_Macros[_T("PROJECT_TOPDIRECTORY")] = wxEmptyString;
-        m_Macros[_T("MAKEFILE")]             = wxEmptyString;
-        m_Macros[_T("ALL_PROJECT_FILES")]    = wxEmptyString;
+        m_Macros["PROJECTFILE"]          = wxEmptyString;
+        m_Macros["PROJECT_FILE"]         = wxEmptyString;
+        m_Macros["PROJECTFILENAME"]      = wxEmptyString;
+        m_Macros["PROJECT_FILENAME"]     = wxEmptyString;
+        m_Macros["PROJECT_FILE_NAME"]    = wxEmptyString;
+        m_Macros["PROJECTNAME"]          = wxEmptyString;
+        m_Macros["PROJECT_NAME"]         = wxEmptyString;
+        m_Macros["PROJECTDIR"]           = wxEmptyString;
+        m_Macros["PROJECT_DIR"]          = wxEmptyString;
+        m_Macros["PROJECTDIRECTORY"]     = wxEmptyString;
+        m_Macros["PROJECT_DIRECTORY"]    = wxEmptyString;
+        m_Macros["PROJECTTOPDIR"]        = wxEmptyString;
+        m_Macros["PROJECT_TOPDIR"]       = wxEmptyString;
+        m_Macros["PROJECTTOPDIRECTORY"]  = wxEmptyString;
+        m_Macros["PROJECT_TOPDIRECTORY"] = wxEmptyString;
+        m_Macros["MAKEFILE"]             = wxEmptyString;
+        m_Macros["ALL_PROJECT_FILES"]    = wxEmptyString;
     }
     else if ( (project != m_LastProject) || (project->GetTitle() != m_ProjectName)
                 || (UnixFilename(project->GetBasePath()) != m_ProjectDir)
@@ -315,23 +315,23 @@ void MacrosManager::RecalcVars(const cbProject* project, EditorBase* editor, con
         }
 
         ClearProjectKeys();
-        m_Macros[_T("PROJECTFILE")]          = m_ProjectFilename;
-        m_Macros[_T("PROJECT_FILE")]         = m_ProjectFilename;
-        m_Macros[_T("PROJECTFILENAME")]      = m_ProjectFilename;
-        m_Macros[_T("PROJECT_FILENAME")]     = m_ProjectFilename;
-        m_Macros[_T("PROJECT_FILE_NAME")]    = m_ProjectFilename;
-        m_Macros[_T("PROJECTNAME")]          = m_ProjectName;
-        m_Macros[_T("PROJECT_NAME")]         = m_ProjectName;
-        m_Macros[_T("PROJECTDIR")]           = m_ProjectDir;
-        m_Macros[_T("PROJECT_DIR")]          = m_ProjectDir;
-        m_Macros[_T("PROJECTDIRECTORY")]     = m_ProjectDir;
-        m_Macros[_T("PROJECT_DIRECTORY")]    = m_ProjectDir;
-        m_Macros[_T("PROJECTTOPDIR")]        = m_ProjectTopDir;
-        m_Macros[_T("PROJECT_TOPDIR")]       = m_ProjectTopDir;
-        m_Macros[_T("PROJECTTOPDIRECTORY")]  = m_ProjectTopDir;
-        m_Macros[_T("PROJECT_TOPDIRECTORY")] = m_ProjectTopDir;
-        m_Macros[_T("MAKEFILE")]             = m_Makefile;
-        m_Macros[_T("ALL_PROJECT_FILES")]    = m_ProjectFiles;
+        m_Macros["PROJECTFILE"]          = m_ProjectFilename;
+        m_Macros["PROJECT_FILE"]         = m_ProjectFilename;
+        m_Macros["PROJECTFILENAME"]      = m_ProjectFilename;
+        m_Macros["PROJECT_FILENAME"]     = m_ProjectFilename;
+        m_Macros["PROJECT_FILE_NAME"]    = m_ProjectFilename;
+        m_Macros["PROJECTNAME"]          = m_ProjectName;
+        m_Macros["PROJECT_NAME"]         = m_ProjectName;
+        m_Macros["PROJECTDIR"]           = m_ProjectDir;
+        m_Macros["PROJECT_DIR"]          = m_ProjectDir;
+        m_Macros["PROJECTDIRECTORY"]     = m_ProjectDir;
+        m_Macros["PROJECT_DIRECTORY"]    = m_ProjectDir;
+        m_Macros["PROJECTTOPDIR"]        = m_ProjectTopDir;
+        m_Macros["PROJECT_TOPDIR"]       = m_ProjectTopDir;
+        m_Macros["PROJECTTOPDIRECTORY"]  = m_ProjectTopDir;
+        m_Macros["PROJECT_TOPDIRECTORY"] = m_ProjectTopDir;
+        m_Macros["MAKEFILE"]             = m_Makefile;
+        m_Macros["ALL_PROJECT_FILES"]    = m_ProjectFiles;
 
         for (int i = 0; i < project->GetBuildTargetsCount(); ++i)
         {
@@ -339,14 +339,14 @@ void MacrosManager::RecalcVars(const cbProject* project, EditorBase* editor, con
             if (!it_target)
                 continue;
             wxString title = it_target->GetTitle().Upper();
-            while (title.Replace(_T(" "), _T("_")))
+            while (title.Replace(" ", "_"))
                 ; // replace spaces with underscores (what about other invalid chars?)
 
             const wxString outputName = it_target->GetOutputFilename();
-            m_Macros[title + _T("_OUTPUT_FILE")]     = UnixFilename(outputName);
-            m_Macros[title + _T("_OUTPUT_DIR")]      = UnixFilename(it_target->GetBasePath());
-            m_Macros[title + _T("_OUTPUT_BASENAME")] = wxFileName(outputName).GetName();
-            m_Macros[title + _T("_PARAMETERS")]      = it_target->GetExecutionParameters();
+            m_Macros[title + "_OUTPUT_FILE"]     = UnixFilename(outputName);
+            m_Macros[title + "_OUTPUT_DIR"]      = UnixFilename(it_target->GetBasePath());
+            m_Macros[title + "_OUTPUT_BASENAME"] = wxFileName(outputName).GetName();
+            m_Macros[title + "_PARAMETERS"]      = it_target->GetExecutionParameters();
         }
         m_LastProject = project;
     }
@@ -387,80 +387,80 @@ void MacrosManager::RecalcVars(const cbProject* project, EditorBase* editor, con
 
         if (Compiler* c = CompilerFactory::GetCompiler(target->GetCompilerID()))
         {
-            m_Macros[_T("TARGET_CC")]           = c->GetPrograms().C;
-            m_Macros[_T("TARGET_CPP")]          = c->GetPrograms().CPP;
-            m_Macros[_T("TARGET_LD")]           = c->GetPrograms().LD;
-            m_Macros[_T("TARGET_LIB")]          = c->GetPrograms().LIB;
+            m_Macros["TARGET_CC"]           = c->GetPrograms().C;
+            m_Macros["TARGET_CPP"]          = c->GetPrograms().CPP;
+            m_Macros["TARGET_LD"]           = c->GetPrograms().LD;
+            m_Macros["TARGET_LIB"]          = c->GetPrograms().LIB;
             wxFileName MasterPath;
             MasterPath.SetPath(c->GetMasterPath(), wxPATH_NATIVE);
-            m_Macros[_T("TARGET_COMPILER_DIR")] = MasterPath.GetPathWithSep(wxPATH_NATIVE);
+            m_Macros["TARGET_COMPILER_DIR"] = MasterPath.GetPathWithSep(wxPATH_NATIVE);
 
             // support wx-config in MSYS2 MinGW
-            m_Macros[_T("TARGET_COMPILER_UNIX_PATH")] = MasterPath.GetVolume() +
+            m_Macros["TARGET_COMPILER_UNIX_PATH"] = MasterPath.GetVolume() +
                 MasterPath.GetVolumeSeparator() + MasterPath.GetPath(wxPATH_GET_VOLUME, wxPATH_UNIX);
         }
-        m_Macros[_T("TARGET_OBJECT_DIR")] = target->GetObjectOutput();
+        m_Macros["TARGET_OBJECT_DIR"] = target->GetObjectOutput();
     }
 
-    m_Macros[_T("TARGET_OUTPUT_DIR")]      = m_TargetOutputDir;
-    m_Macros[_T("TARGET_NAME")]            = m_TargetName;
-    m_Macros[_T("TARGET_OUTPUT_BASENAME")] = m_TargetOutputBaseName;
-    m_Macros[_T("TARGET_OUTPUT_FILENAME")] = m_TargetOutputFilename;
-    m_Macros[_T("TARGET_OUTPUT_FILE")]     = m_TargetFilename;
+    m_Macros["TARGET_OUTPUT_DIR"]      = m_TargetOutputDir;
+    m_Macros["TARGET_NAME"]            = m_TargetName;
+    m_Macros["TARGET_OUTPUT_BASENAME"] = m_TargetOutputBaseName;
+    m_Macros["TARGET_OUTPUT_FILENAME"] = m_TargetOutputFilename;
+    m_Macros["TARGET_OUTPUT_FILE"]     = m_TargetFilename;
 
-    m_Macros[_T("ACTIVE_EDITOR_FILENAME")] = UnixFilename(m_ActiveEditorFilename);
-    wxFileName fn(m_Macros[_T("ACTIVE_EDITOR_FILENAME")]);
-    m_Macros[_T("ACTIVE_EDITOR_DIRNAME")]  = fn.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
-    m_Macros[_T("ACTIVE_EDITOR_STEM")]     = fn.GetName();
-    m_Macros[_T("ACTIVE_EDITOR_EXT")]      = fn.GetExt();
+    m_Macros["ACTIVE_EDITOR_FILENAME"] = UnixFilename(m_ActiveEditorFilename);
+    wxFileName fn(m_Macros["ACTIVE_EDITOR_FILENAME"]);
+    m_Macros["ACTIVE_EDITOR_DIRNAME"]  = fn.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
+    m_Macros["ACTIVE_EDITOR_STEM"]     = fn.GetName();
+    m_Macros["ACTIVE_EDITOR_EXT"]      = fn.GetExt();
 
     wxString temp_str;
-    temp_str.Printf(_T("%d"), m_ActiveEditorLine);
-    m_Macros[_T("ACTIVE_EDITOR_LINE")]     = temp_str;
-    temp_str.Printf(_T("%d"), (m_ActiveEditorLine>0) ? m_ActiveEditorLine-1 : -1); // zero based, but keep value for "invalid"
-    m_Macros[_T("ACTIVE_EDITOR_LINE_0")]   = temp_str;
-    temp_str.Printf(_T("%d"), m_ActiveEditorColumn);
-    m_Macros[_T("ACTIVE_EDITOR_COLUMN")]   = temp_str;
-    temp_str.Printf(_T("%d"), (m_ActiveEditorColumn>0) ? m_ActiveEditorColumn-1 : -1); // zero based, but keep value for "invalid"
-    m_Macros[_T("ACTIVE_EDITOR_COLUMN_0")] = temp_str;
-    m_Macros[_T("ACTIVE_EDITOR_SELECTION")] = GetSelectedText();
+    temp_str.Printf("%d", m_ActiveEditorLine);
+    m_Macros["ACTIVE_EDITOR_LINE"]     = temp_str;
+    temp_str.Printf("%d", (m_ActiveEditorLine>0) ? m_ActiveEditorLine-1 : -1); // zero based, but keep value for "invalid"
+    m_Macros["ACTIVE_EDITOR_LINE_0"]   = temp_str;
+    temp_str.Printf("%d", m_ActiveEditorColumn);
+    m_Macros["ACTIVE_EDITOR_COLUMN"]   = temp_str;
+    temp_str.Printf("%d", (m_ActiveEditorColumn>0) ? m_ActiveEditorColumn-1 : -1); // zero based, but keep value for "invalid"
+    m_Macros["ACTIVE_EDITOR_COLUMN_0"] = temp_str;
+    m_Macros["ACTIVE_EDITOR_SELECTION"] = GetSelectedText();
 
     // Wrapper for WX standard path's methods:
 
     // Unix: prefix/share/appname   Windows: EXE path
-    m_Macros[_T("GET_DATA_DIR")]            = ((const wxStandardPaths&)wxStandardPaths::Get()).GetDataDir();
+    m_Macros["GET_DATA_DIR"]            = ((const wxStandardPaths&)wxStandardPaths::Get()).GetDataDir();
     // Unix: /etc/appname   Windows: EXE path
-    m_Macros[_T("GET_LOCAL_DATA_DIR")]      = ((const wxStandardPaths&)wxStandardPaths::Get()).GetLocalDataDir();
+    m_Macros["GET_LOCAL_DATA_DIR"]      = ((const wxStandardPaths&)wxStandardPaths::Get()).GetLocalDataDir();
     // Unix: ~   Windows: C:\Documents and Settings\username\Documents
-    m_Macros[_T("GET_DOCUMENTS_DIR")]       = ((const wxStandardPaths&)wxStandardPaths::Get()).GetDocumentsDir();
+    m_Macros["GET_DOCUMENTS_DIR"]       = ((const wxStandardPaths&)wxStandardPaths::Get()).GetDocumentsDir();
     // Unix: /etc   Windows: C:\Documents and Settings\All Users\Application Data
-    m_Macros[_T("GET_CONFIG_DIR")]          = ((const wxStandardPaths&)wxStandardPaths::Get()).GetConfigDir();
+    m_Macros["GET_CONFIG_DIR"]          = ((const wxStandardPaths&)wxStandardPaths::Get()).GetConfigDir();
     // Unix: ~   Windows: C:\Documents and Settings\username\Application Data\appname
-    m_Macros[_T("GET_USER_CONFIG_DIR")]     = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserConfigDir();
+    m_Macros["GET_USER_CONFIG_DIR"]     = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserConfigDir();
     // Unix: ~/.appname   Windows: C:\Documents and Settings\username\Application Data
-    m_Macros[_T("GET_USER_DATA_DIR")]       = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserDataDir();
+    m_Macros["GET_USER_DATA_DIR"]       = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserDataDir();
     // Unix: ~/.appname   Windows: C:\Documents and Settings\username\Local Settings\Application Data\appname
-    m_Macros[_T("GET_USER_LOCAL_DATA_DIR")] = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserLocalDataDir();
+    m_Macros["GET_USER_LOCAL_DATA_DIR"] = ((const wxStandardPaths&)wxStandardPaths::Get()).GetUserLocalDataDir();
     // ALl platforms: A writable, temporary directory
-    m_Macros[_T("GET_TEMP_DIR")]            = ((const wxStandardPaths&)wxStandardPaths::Get()).GetTempDir();
+    m_Macros["GET_TEMP_DIR"]            = ((const wxStandardPaths&)wxStandardPaths::Get()).GetTempDir();
 
     wxDateTime now(wxDateTime::Now());
-    m_Macros[_T("TDAY")]        = now.Format(_T("%Y%m%d"));
-    m_Macros[_T("TODAY")]       = now.Format(_T("%Y-%m-%d"));
-    m_Macros[_T("NOW")]         = now.Format(_T("%Y-%m-%d-%H.%M"));
-    m_Macros[_T("NOW_L")]       = now.Format(_T("%Y-%m-%d-%H.%M.%S"));
-    m_Macros[_T("WEEKDAY")]     = now.Format(_T("%A"));
+    m_Macros["TDAY"]        = now.Format("%Y%m%d");
+    m_Macros["TODAY"]       = now.Format("%Y-%m-%d");
+    m_Macros["NOW"]         = now.Format("%Y-%m-%d-%H.%M");
+    m_Macros["NOW_L"]       = now.Format("%Y-%m-%d-%H.%M.%S");
+    m_Macros["WEEKDAY"]     = now.Format("%A");
 
     wxDateTime nowGMT(now.ToGMT());
-    m_Macros[_T("TDAY_UTC")]    = nowGMT.Format(_T("%Y%m%d"));
-    m_Macros[_T("TODAY_UTC")]   = nowGMT.Format(_T("%Y-%m-%d"));
-    m_Macros[_T("NOW_UTC")]     = nowGMT.Format(_T("%Y-%m-%d-%H.%M"));
-    m_Macros[_T("NOW_L_UTC")]   = nowGMT.Format(_T("%Y-%m-%d-%H.%M.%S"));
-    m_Macros[_T("WEEKDAY_UTC")] = nowGMT.Format(_T("%A"));
+    m_Macros["TDAY_UTC"]    = nowGMT.Format("%Y%m%d");
+    m_Macros["TODAY_UTC"]   = nowGMT.Format("%Y-%m-%d");
+    m_Macros["NOW_UTC"]     = nowGMT.Format("%Y-%m-%d-%H.%M");
+    m_Macros["NOW_L_UTC"]   = nowGMT.Format("%Y-%m-%d-%H.%M.%S");
+    m_Macros["WEEKDAY_UTC"] = nowGMT.Format("%A");
 
     wxDateTime january_1_2010(1, wxDateTime::Jan, 2010, 0, 0, 0, 0);
     wxTimeSpan ts = now.Subtract(january_1_2010);
-    m_Macros[_T("DAYCOUNT")] = wxString::Format(_T("%d"), ts.GetDays());
+    m_Macros["DAYCOUNT"] = wxString::Format("%d", ts.GetDays());
 
 }
 
@@ -561,7 +561,7 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
         return;
     }
 
-    static const wxString delim(_T("$%["));
+    static const wxString delim("$%[");
     if ( buffer.find_first_of(delim) == wxString::npos )
         return;
 
@@ -591,14 +591,14 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
     wxString search;
     wxString replace;
 
-    size_t ifPosition = buffer.find(_T("$if"));
+    size_t ifPosition = buffer.find("$if");
     while (ifPosition != wxString::npos)
     {
         wxString condition, trueCondition, falseCondition;
         search = ParseIfCondition(buffer, ifPosition, condition, trueCondition, falseCondition);
         replace = EvalCondition(condition, trueCondition, falseCondition, target);
         buffer.Replace(search, replace, false);
-        ifPosition = buffer.find(_T("$if"));
+        ifPosition = buffer.find("$if");
     }
     while (m_RE_Script.Matches(buffer))
     {
@@ -656,9 +656,9 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
     {
         search = m_RE_RemoveQuotes.GetMatch(buffer, 0);
         wxString content = m_RE_RemoveQuotes.GetMatch(buffer, 1).Trim().Trim(false);
-        if (content.StartsWith(wxT("$")))
+        if (content.StartsWith("$"))
             ReplaceMacros(content, target, subrequest);
-        if (content.Len()>2 && content.StartsWith(wxT("\"")) && content.EndsWith(wxT("\"")))
+        if (content.Len()>2 && content.StartsWith("\"") && content.EndsWith("\""))
         {
             replace = content.Mid(1,content.Len()-2); // with first and last char (the quotes) removed
             buffer.Replace(search, replace, false);
@@ -681,7 +681,7 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
             if (var.compare(const_COIN) == 0)
                 replace.assign(1u, rand() & 1 ? _T('1') : _T('0'));
             else if (var.compare(const_RANDOM) == 0)
-                replace = wxString::Format(_T("%d"), rand() & 0xffff);
+                replace = wxString::Format("%d", rand() & 0xffff);
             else
             {
                 MacrosMap::iterator it;
@@ -714,7 +714,7 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
             if (var.compare(const_COIN) == 0)
                 replace.assign(1u, rand() & 1 ? _T('1') : _T('0'));
             else if (var.compare(const_RANDOM) == 0)
-                replace = wxString::Format(_T("%d"), rand() & 0xffff);
+                replace = wxString::Format("%d", rand() & 0xffff);
             else
             {
                 MacrosMap::iterator it;
@@ -731,8 +731,8 @@ void MacrosManager::ReplaceMacros(wxString& buffer, const ProjectBuildTarget* ta
 
     if (!subrequest)
     {
-        buffer.Replace(_T("%%"), _T("%"));
-        buffer.Replace(_T("$$"), _T("$"));
+        buffer.Replace("%%", "%");
+        buffer.Replace("$$", "$");
     }
 }
 
@@ -749,7 +749,7 @@ wxString MacrosManager::EvalCondition(const wxString& in_cond, const wxString& t
         // If we do not match any condition we have one single word like true or false
         // in this case we make a simple compare.
         // Everything is true if it is not explicitly 0|false|FALSE
-        if (cond.IsEmpty() || cond.IsSameAs(_T("0")) || cond.IsSameAs(_T("false")) || cond.IsSameAs(_T("FALSE")))
+        if (cond.IsEmpty() || cond.IsSameAs("0") || cond.IsSameAs("false") || cond.IsSameAs("FALSE"))
             return false_clause;
         return true_clause;
     }
@@ -769,17 +769,17 @@ wxString MacrosManager::EvalCondition(const wxString& in_cond, const wxString& t
 
     int condCode = 0;
 
-    if (cmpToken.IsSameAs(_T("==")) || cmpToken.IsSameAs(_T("=")))
+    if (cmpToken.IsSameAs("==") || cmpToken.IsSameAs("="))
         condCode = EQ;
-    if (cmpToken.IsSameAs(_T("<")))
+    if (cmpToken.IsSameAs("<"))
         condCode = LT;
-    if (cmpToken.IsSameAs(_T(">")))
+    if (cmpToken.IsSameAs(">"))
         condCode = GT;
-    if (cmpToken.IsSameAs(_T("<=")))
+    if (cmpToken.IsSameAs("<="))
         condCode = EQ | LT;
-    if (cmpToken.IsSameAs(_T(">=")))
+    if (cmpToken.IsSameAs(">="))
         condCode = EQ | GT;
-    if (cmpToken.IsSameAs(_T("!=")))
+    if (cmpToken.IsSameAs("!="))
         condCode = NE;
 
     return (condCode & compare) ? true_clause : false_clause;

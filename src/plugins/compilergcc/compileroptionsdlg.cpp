@@ -289,7 +289,7 @@ CompilerOptionsDlg::CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, 
     m_bFlagsDirty(false),
     m_BuildingTree(false)
 {
-    wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgCompilerOptions"));
+    wxXmlResource::Get()->LoadPanel(this, parent, "dlgCompilerOptions");
 
     m_FlagsPG = new wxPropertyGrid(this, XRCID("pgCompilerFlags"), wxDefaultPosition, wxDefaultSize,
                                    wxTAB_TRAVERSAL|wxPG_SPLITTER_AUTO_CENTER);
@@ -298,7 +298,7 @@ CompilerOptionsDlg::CompilerOptionsDlg(wxWindow* parent, CompilerGCC* compiler, 
     m_FlagsPG->SetColumnProportion(1, 30);
 
     m_FlagsPG->SetMinSize(wxSize(400, 400));
-    wxXmlResource::Get()->AttachUnknownControl(wxT("pgCompilerFlags"), m_FlagsPG);
+    wxXmlResource::Get()->AttachUnknownControl("pgCompilerFlags", m_FlagsPG);
 
     if (m_pProject)
     {
@@ -562,8 +562,8 @@ void CompilerOptionsDlg::DoFillCompilerPrograms()
                  itConf != data.GetConfigurations().end();
                  ++itConf)
             {
-                const wxString &def = it->first->GetSettingsName() + wxT(":") + (*itConf)->GetName();
-                int index = cmbDebugger->Append(it->first->GetGUIName() + wxT(" : ") + (*itConf)->GetName(),
+                const wxString &def = it->first->GetSettingsName() + ":" + (*itConf)->GetName();
+                int index = cmbDebugger->Append(it->first->GetGUIName() + " : " + (*itConf)->GetName(),
                                                 new wxStringClientData(def));
                 if (def == progs.DBGconfig)
                     cmbDebugger->SetSelection(index);
@@ -594,7 +594,7 @@ void CompilerOptionsDlg::DoFillVars()
         return;
     for (StringHash::const_iterator it = vars->begin(); it != vars->end(); ++it)
     {
-        wxString text = it->first + _T(" = ") + it->second;
+        wxString text = it->first + " = " + it->second;
         lst->Append(text, new VariableListClientData(it->first, it->second));
     }
 } // DoFillVars
@@ -722,7 +722,7 @@ void CompilerOptionsDlg::DoFillOptions()
     for (size_t i = 0; i < m_Options.GetCount(); ++i)
     {
         const CompOption* option = m_Options.GetOption(i);
-        if (option->category == wxT("General"))
+        if (option->category == "General")
         {
             wxPropertyCategory *categoryProp = new wxPropertyCategory(option->category);
             m_FlagsPG->Append(categoryProp);
@@ -797,7 +797,7 @@ void CompilerOptionsDlg::TextToOptions()
         {
             // definition
             XRCCTRL(*this, "txtCompilerDefines", wxTextCtrl)->AppendText(rest);
-            XRCCTRL(*this, "txtCompilerDefines", wxTextCtrl)->AppendText(_T("\n"));
+            XRCCTRL(*this, "txtCompilerDefines", wxTextCtrl)->AppendText("\n");
             m_CompilerOptions.RemoveAt(i, 1);
         }
         else
@@ -863,8 +863,8 @@ inline void DoGetCompileOptions(wxArrayString& array, const wxTextCtrl* control)
         if (!line.IsEmpty())
         {
             // just to make sure..
-            line.Replace(_T("\r"), _T(" "), true); // remove CRs
-            line.Replace(_T("\n"), _T(" "), true); // remove LFs
+            line.Replace("\r", " ", true); // remove CRs
+            line.Replace("\n", " ", true); // remove LFs
             array.Add(line.Strip(wxString::both));
         }
         tmp.Remove(0, nl + 1);
@@ -884,8 +884,8 @@ inline void DoGetCompileOptions(wxArrayString& array, const wxTextCtrl* control)
         wxString tmp = control->GetLineText(i);
         if (!tmp.IsEmpty())
         {
-            tmp.Replace(_T("\r"), _T(" "), true); // remove CRs
-            tmp.Replace(_T("\n"), _T(" "), true); // remove LFs
+            tmp.Replace("\r", " ", true); // remove CRs
+            tmp.Replace("\n", " ", true); // remove LFs
             array.Add(tmp.Strip(wxString::both));
         }
     }
@@ -1011,7 +1011,7 @@ void CompilerOptionsDlg::OptionsToText()
     {
         if (!array[i].IsEmpty())
         {
-            if (array[i].StartsWith(compiler ? compiler->GetSwitches().genericSwitch : _T("-")))
+            if (array[i].StartsWith(compiler ? compiler->GetSwitches().genericSwitch : "-"))
             {
                 if (m_CompilerOptions.Index(array[i]) == wxNOT_FOUND)
                     m_CompilerOptions.Add(array[i]);
@@ -1053,8 +1053,8 @@ void CompilerOptionsDlg::OptionsToText()
     if (!compilerOpConflicts.IsEmpty() || !linkerOpConflicts.IsEmpty())
     {
         wxString msg = _("The compiler flags\n  ")
-                       + GetStringFromArray(compilerOpConflicts, wxT("\n  "))
-                       + GetStringFromArray(linkerOpConflicts,   wxT("\n  "));
+                       + GetStringFromArray(compilerOpConflicts, "\n  ")
+                       + GetStringFromArray(linkerOpConflicts,   "\n  ");
         msg.RemoveLast(2); // remove two trailing spaces
         msg += _("were stated in 'Other Options' but unchecked in 'Compiler Flags'.\n"
                  "Do you want to enable these flags?");
@@ -1145,7 +1145,7 @@ void CompilerOptionsDlg::DoSaveOptions()
             m_pProject->SetMakeCommandFor(mcDistClean, XRCCTRL(*this, "txtMakeCmd_DistClean", wxTextCtrl)->GetValue());
             m_pProject->SetMakeCommandFor(mcAskRebuildNeeded, XRCCTRL(*this, "txtMakeCmd_AskRebuildNeeded", wxTextCtrl)->GetValue());
 //            m_pProject->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_SilentBuild", wxTextCtrl)->GetValue());
-            m_pProject->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_Build", wxTextCtrl)->GetValue() + _T(" > $(CMD_NULL)"));
+            m_pProject->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_Build", wxTextCtrl)->GetValue() + " > $(CMD_NULL)");
         }
         else
         {
@@ -1183,7 +1183,7 @@ void CompilerOptionsDlg::DoSaveOptions()
             m_pTarget->SetMakeCommandFor(mcDistClean, XRCCTRL(*this, "txtMakeCmd_DistClean", wxTextCtrl)->GetValue());
             m_pTarget->SetMakeCommandFor(mcAskRebuildNeeded, XRCCTRL(*this, "txtMakeCmd_AskRebuildNeeded", wxTextCtrl)->GetValue());
 //            m_pTarget->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_SilentBuild", wxTextCtrl)->GetValue());
-            m_pTarget->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_Build", wxTextCtrl)->GetValue() + _T(" > $(CMD_NULL)"));
+            m_pTarget->SetMakeCommandFor(mcSilentBuild, XRCCTRL(*this, "txtMakeCmd_Build", wxTextCtrl)->GetValue() + " > $(CMD_NULL)");
         }
     }
 } // DoSaveOptions
@@ -1260,173 +1260,173 @@ void CompilerOptionsDlg::DoSaveVars()
 
 void CompilerOptionsDlg::DoSaveCompilerDefinition()
 {
-    wxXmlNode* root = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("CodeBlocks_compiler_options"));
-    const wxString name = wxT("name");
-    const wxString value = wxT("value");
-    wxXmlNode* node = new wxXmlNode(root, wxXML_ELEMENT_NODE, wxT("Program"));
-    node->AddAttribute(name, wxT("C"));
+    wxXmlNode* root = new wxXmlNode(wxXML_ELEMENT_NODE, "CodeBlocks_compiler_options");
+    const wxString name = "name";
+    const wxString value = "value";
+    wxXmlNode* node = new wxXmlNode(root, wxXML_ELEMENT_NODE, "Program");
+    node->AddAttribute(name, "C");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().C);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("CPP"));
+    node->AddAttribute(name, "CPP");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().CPP);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("LD"));
+    node->AddAttribute(name, "LD");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().LD);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("DBGconfig"));
+    node->AddAttribute(name, "DBGconfig");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().DBGconfig);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("LIB"));
+    node->AddAttribute(name, "LIB");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().LIB);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("WINDRES"));
+    node->AddAttribute(name, "WINDRES");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().WINDRES);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Program")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Program"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("MAKE"));
+    node->AddAttribute(name, "MAKE");
     node->AddAttribute(value, m_CurrentCompiler->GetPrograms().MAKE);
 
 
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("includeDirs"));
+    node->AddAttribute(name, "includeDirs");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().includeDirs);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("libDirs"));
+    node->AddAttribute(name, "libDirs");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().libDirs);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("linkLibs"));
+    node->AddAttribute(name, "linkLibs");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().linkLibs);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("defines"));
+    node->AddAttribute(name, "defines");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().defines);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("genericSwitch"));
+    node->AddAttribute(name, "genericSwitch");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().genericSwitch);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("objectExtension"));
+    node->AddAttribute(name, "objectExtension");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().objectExtension);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("forceFwdSlashes"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceFwdSlashes ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "forceFwdSlashes");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceFwdSlashes ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("forceLinkerUseQuotes"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceLinkerUseQuotes ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "forceLinkerUseQuotes");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceLinkerUseQuotes ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("forceCompilerUseQuotes"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceCompilerUseQuotes ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "forceCompilerUseQuotes");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().forceCompilerUseQuotes ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("needDependencies"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().needDependencies ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "needDependencies");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().needDependencies ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("logging"));
+    node->AddAttribute(name, "logging");
     if (m_CurrentCompiler->GetSwitches().logging == CompilerSwitches::defaultLogging)
-        node->AddAttribute(value, wxT("default"));
+        node->AddAttribute(value, "default");
     else if (m_CurrentCompiler->GetSwitches().logging == clogFull)
-        node->AddAttribute(value, wxT("full"));
+        node->AddAttribute(value, "full");
     else if (m_CurrentCompiler->GetSwitches().logging == clogSimple)
-        node->AddAttribute(value, wxT("simple"));
+        node->AddAttribute(value, "simple");
     else if (m_CurrentCompiler->GetSwitches().logging == clogNone)
-        node->AddAttribute(value, wxT("none"));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+        node->AddAttribute(value, "none");
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("libPrefix"));
+    node->AddAttribute(name, "libPrefix");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().libPrefix);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("libExtension"));
+    node->AddAttribute(name, "libExtension");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().libExtension);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("linkerNeedsLibPrefix"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsLibPrefix ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "linkerNeedsLibPrefix");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsLibPrefix ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("linkerNeedsLibExtension"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsLibExtension ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "linkerNeedsLibExtension");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsLibExtension ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("linkerNeedsPathResolved"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsPathResolved ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "linkerNeedsPathResolved");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().linkerNeedsPathResolved ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("supportsPCH"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().supportsPCH ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "supportsPCH");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().supportsPCH ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("PCHExtension"));
+    node->AddAttribute(name, "PCHExtension");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().PCHExtension);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("UseFlatObjects"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().UseFlatObjects ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "UseFlatObjects");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().UseFlatObjects ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("UseFullSourcePaths"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().UseFullSourcePaths ? wxT("true") : wxT("false")));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "UseFullSourcePaths");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().UseFullSourcePaths ? "true" : "false"));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("includeDirSeparator"));
+    node->AddAttribute(name, "includeDirSeparator");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().includeDirSeparator);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("libDirSeparator"));
+    node->AddAttribute(name, "libDirSeparator");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().libDirSeparator);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("objectSeparator"));
+    node->AddAttribute(name, "objectSeparator");
     node->AddAttribute(value, m_CurrentCompiler->GetSwitches().objectSeparator);
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("statusSuccess"));
-    node->AddAttribute(value, wxString::Format(wxT("%d"), m_CurrentCompiler->GetSwitches().statusSuccess));
-    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Switch")));
+    node->AddAttribute(name, "statusSuccess");
+    node->AddAttribute(value, wxString::Format("%d", m_CurrentCompiler->GetSwitches().statusSuccess));
+    node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Switch"));
     node = node->GetNext();
-    node->AddAttribute(name, wxT("Use83Paths"));
-    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().Use83Paths ? wxT("true") : wxT("false")));
+    node->AddAttribute(name, "Use83Paths");
+    node->AddAttribute(value, (m_CurrentCompiler->GetSwitches().Use83Paths ? "true" : "false"));
 
     for (size_t i = 0; i < m_Options.GetCount(); ++i)
     {
         CompOption* opt = m_Options.GetOption(i);
-        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Option")));
+        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Option"));
         node = node->GetNext();
         wxString oName;
-        opt->name.EndsWith(wxT("[") + opt->option + wxT("]"), &oName);
+        opt->name.EndsWith("[" + opt->option + "]", &oName);
         if (oName == wxEmptyString)
-            opt->name.EndsWith(wxT("[") + opt->additionalLibs + wxT("]"), &oName);
+            opt->name.EndsWith("[" + opt->additionalLibs + "]", &oName);
         if (oName == wxEmptyString)
             oName = opt->name;
         node->AddAttribute(name, oName.Trim());
         if (opt->option != wxEmptyString)
-            node->AddAttribute(wxT("option"), opt->option);
-        if (opt->category != wxT("General"))
-            node->AddAttribute(wxT("category"), opt->category);
+            node->AddAttribute("option", opt->option);
+        if (opt->category != "General")
+            node->AddAttribute("category", opt->category);
         if (opt->additionalLibs != wxEmptyString)
-            node->AddAttribute(wxT("additionalLibs"), opt->additionalLibs);
+            node->AddAttribute("additionalLibs", opt->additionalLibs);
         if (opt->checkAgainst != wxEmptyString)
         {
-            node->AddAttribute(wxT("checkAgainst"), opt->checkAgainst);
-            node->AddAttribute(wxT("checkMessage"), opt->checkMessage);
+            node->AddAttribute("checkAgainst", opt->checkAgainst);
+            node->AddAttribute("checkMessage", opt->checkMessage);
         }
         if (opt->supersedes != wxEmptyString)
-            node->AddAttribute(wxT("supersedes"), opt->supersedes);
+            node->AddAttribute("supersedes", opt->supersedes);
         if (opt->exclusive)
-            node->AddAttribute(wxT("exclusive"), wxT("true"));
+            node->AddAttribute("exclusive", "true");
     }
 
     for (int i = 0; i < ctCount; ++i)
@@ -1434,73 +1434,73 @@ void CompilerOptionsDlg::DoSaveCompilerDefinition()
         const CompilerToolsVector& vec = m_CurrentCompiler->GetCommandToolsVector((CommandType)i);
         wxString op;
         if (i == ctCompileObjectCmd)
-            op = wxT("CompileObject");
+            op = "CompileObject";
         else if (i == ctGenDependenciesCmd)
-            op = wxT("GenDependencies");
+            op = "GenDependencies";
         else if (i == ctCompileResourceCmd)
-            op = wxT("CompileResource");
+            op = "CompileResource";
         else if (i == ctLinkExeCmd)
-            op = wxT("LinkExe");
+            op = "LinkExe";
         else if (i == ctLinkConsoleExeCmd)
-            op = wxT("LinkConsoleExe");
+            op = "LinkConsoleExe";
         else if (i == ctLinkDynamicCmd)
-            op = wxT("LinkDynamic");
+            op = "LinkDynamic";
         else if (i == ctLinkStaticCmd)
-            op = wxT("LinkStatic");
+            op = "LinkStatic";
         else if (i == ctLinkNativeCmd)
-            op = wxT("LinkNative");
+            op = "LinkNative";
         for (size_t j = 0; j < vec.size(); ++j)
         {
-            node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Command")));
+            node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Command"));
             node = node->GetNext();
             node->AddAttribute(name, op);
             node->AddAttribute(value, vec[j].command);
             if (!vec[j].extensions.IsEmpty())
-                node->AddAttribute(wxT("ext"), GetStringFromArray(vec[j].extensions, DEFAULT_ARRAY_SEP, false));
+                node->AddAttribute("ext", GetStringFromArray(vec[j].extensions, DEFAULT_ARRAY_SEP, false));
             if (!vec[j].generatedFiles.IsEmpty())
-                node->AddAttribute(wxT("gen"), GetStringFromArray(vec[j].generatedFiles, DEFAULT_ARRAY_SEP, false));
+                node->AddAttribute("gen", GetStringFromArray(vec[j].generatedFiles, DEFAULT_ARRAY_SEP, false));
         }
     }
 
     const RegExArray& regexes = m_CurrentCompiler->GetRegExArray();
     for (size_t i = 0; i < regexes.size(); ++i)
     {
-        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("RegEx")));
+        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "RegEx"));
         node = node->GetNext();
         node->AddAttribute(name, regexes[i].desc);
         wxString tp;
         if (regexes[i].lt == cltNormal)
-            tp = wxT("normal");
+            tp = "normal";
         else if (regexes[i].lt == cltWarning)
-            tp = wxT("warning");
+            tp = "warning";
         else if (regexes[i].lt == cltError)
-            tp = wxT("error");
+            tp = "error";
         else if (regexes[i].lt == cltInfo)
-            tp = wxT("info");
-        node->AddAttribute(wxT("type"), tp);
-        tp = wxString::Format(wxT("%d;%d;%d"), regexes[i].msg[0], regexes[i].msg[1], regexes[i].msg[2]);
-        tp.Replace(wxT(";0"), wxEmptyString);
-        node->AddAttribute(wxT("msg"), tp);
+            tp = "info";
+        node->AddAttribute("type", tp);
+        tp = wxString::Format("%d;%d;%d", regexes[i].msg[0], regexes[i].msg[1], regexes[i].msg[2]);
+        tp.Replace(";0", wxEmptyString);
+        node->AddAttribute("msg", tp);
         if (regexes[i].filename != 0)
-            node->AddAttribute(wxT("file"), wxString::Format(wxT("%d"), regexes[i].filename));
+            node->AddAttribute("file", wxString::Format("%d", regexes[i].filename));
         if (regexes[i].line != 0)
-            node->AddAttribute(wxT("line"), wxString::Format(wxT("%d"), regexes[i].line));
+            node->AddAttribute("line", wxString::Format("%d", regexes[i].line));
         tp = regexes[i].GetRegExString();
-        tp.Replace(wxT("\t"), wxT("\\t"));
+        tp.Replace("\t", "\\t");
         node->AddChild(new wxXmlNode(wxXML_CDATA_SECTION_NODE, wxEmptyString, tp));
     }
 
     if (!m_CurrentCompiler->GetCOnlyFlags().IsEmpty())
     {
-        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Sort")));
+        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Sort"));
         node = node->GetNext();
-        node->AddAttribute(wxT("CFlags"), m_CurrentCompiler->GetCOnlyFlags());
+        node->AddAttribute("CFlags", m_CurrentCompiler->GetCOnlyFlags());
     }
     if (!m_CurrentCompiler->GetCPPOnlyFlags().IsEmpty())
     {
-        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Sort")));
+        node->SetNext(new wxXmlNode(wxXML_ELEMENT_NODE, "Sort"));
         node = node->GetNext();
-        node->AddAttribute(wxT("CPPFlags"), m_CurrentCompiler->GetCPPOnlyFlags());
+        node->AddAttribute("CPPFlags", m_CurrentCompiler->GetCPPOnlyFlags());
     }
 
     wxXmlDocument doc;
@@ -1869,7 +1869,7 @@ void CompilerOptionsDlg::OnOptionChanged(wxPropertyGridEvent& event)
     {
         if (!option->checkAgainst.IsEmpty())
         {
-            wxArrayString check = GetArrayFromString(option->checkAgainst, wxT(" "));
+            wxArrayString check = GetArrayFromString(option->checkAgainst, " ");
             for (size_t i = 0; i < check.Count(); ++i)
             {
                 CompOption* against = m_Options.GetOptionByOption(check[i]);
@@ -1892,7 +1892,7 @@ void CompilerOptionsDlg::OnOptionChanged(wxPropertyGridEvent& event)
         }
         if (option->supersedes != wxEmptyString)
         {
-            wxArrayString supersede = GetArrayFromString(option->supersedes, wxT(" "));
+            wxArrayString supersede = GetArrayFromString(option->supersedes, " ");
             for (size_t i = 0; i < supersede.Count(); ++i)
             {
                 for (size_t j = 0; j < m_Options.GetCount(); ++j)
@@ -1910,7 +1910,7 @@ void CompilerOptionsDlg::OnOptionChanged(wxPropertyGridEvent& event)
                     wxPGProperty* p = *it;
                     if (p->IsCategory() || p == property)
                         continue;
-                    if (p->GetLabel().EndsWith(wxT("[") + supersede[i] + wxT("]")))
+                    if (p->GetLabel().EndsWith("[" + supersede[i] + "]"))
                         m_FlagsPG->SetPropertyValue(p, false);
                 }
             }
@@ -2108,7 +2108,7 @@ void CompilerOptionsDlg::OnAddVarClick(cb_unused wxCommandEvent& event)
         QuoteString(value, _("Add variable quote string"));
         CustomVarAction Action = {CVA_Add, key, value};
         m_CustomVarActions.push_back(Action);
-        XRCCTRL(*this, "lstVars", wxListBox)->Append(key + _T(" = ") + value, new VariableListClientData(key, value));
+        XRCCTRL(*this, "lstVars", wxListBox)->Append(key + " = " + value, new VariableListClientData(key, value));
         m_bDirty = true;
     }
 } // OnAddVarClick
@@ -2134,9 +2134,9 @@ void CompilerOptionsDlg::OnEditVarClick(cb_unused wxCommandEvent& event)
 
         if (value != data->value  ||  key != data->key)
         { // something has changed
-            CustomVarAction Action = {CVA_Edit, data->key, key + _T(" = ") + value};
+            CustomVarAction Action = {CVA_Edit, data->key, key + " = " + value};
             m_CustomVarActions.push_back(Action);
-            list->SetString(sel, key + _T(" = ") + value);
+            list->SetString(sel, key + " = " + value);
             data->key = key;
             data->value = value;
             m_bDirty = true;
@@ -2352,7 +2352,7 @@ void CompilerOptionsDlg::OnResetCompilerClick(cb_unused wxCommandEvent& event)
     {
         if (m_CurrentCompiler)
         {
-            const wxString file = wxT("/compilers/options_") + m_CurrentCompiler->GetID() + wxT(".xml");
+            const wxString file = "/compilers/options_" + m_CurrentCompiler->GetID() + ".xml";
             if (   wxFileExists(ConfigManager::GetDataFolder(true) + file)
                 && wxFileExists(ConfigManager::GetDataFolder(false) + file) )
             {
@@ -2506,7 +2506,7 @@ void CompilerOptionsDlg::OnCopyLibsClick(cb_unused wxCommandEvent& event)
 
         if (!base)
         {
-            Manager::Get()->GetLogManager()->LogWarning(_T("Could not get build target in CompilerOptionsDlg::OnCopyLibsClick"));
+            Manager::Get()->GetLogManager()->LogWarning("Could not get build target in CompilerOptionsDlg::OnCopyLibsClick");
             continue;
         }
 
@@ -2799,7 +2799,7 @@ void CompilerOptionsDlg::OnSelectProgramClick(wxCommandEvent& event)
         file_selection = _("Executable files (*.exe)|*.exe");
     wxFileDialog dlg(this,
                      _("Select file"),
-                     XRCCTRL(*this, "txtMasterPath", wxTextCtrl)->GetValue() + _T("/bin"),
+                     XRCCTRL(*this, "txtMasterPath", wxTextCtrl)->GetValue() + "/bin",
                      obj->GetValue(),
                      file_selection,
                      wxFD_OPEN | wxFD_FILE_MUST_EXIST | compatibility::wxHideReadonly );
@@ -3057,10 +3057,10 @@ void CompilerOptionsDlg::OnMyCharHook(wxKeyEvent& event)
     int myid = 0;
     unsigned int myidx = 0;
 
-    const wxChar* str_libs[4] = { _T("btnEditLib"),  _T("btnAddLib"),  _T("btnDelLib"),     _T("btnClearLib")   };
-    const wxChar* str_dirs[4] = { _T("btnEditDir"),  _T("btnAddDir"),  _T("btnDelDir"),     _T("btnClearDir")   };
-    const wxChar* str_vars[4] = { _T("btnEditVar"),  _T("btnAddVar"),  _T("btnDeleteVar"),  _T("btnClearVar")   };
-    const wxChar* str_xtra[4] = { _T("btnExtraEdit"),_T("btnExtraAdd"),_T("btnExtraDelete"),_T("btnExtraClear") };
+    const wxChar* str_libs[4] = { wxS("btnEditLib"), wxS("btnAddLib"), wxS("btnDelLib"), wxS("btnClearLib") };
+    const wxChar* str_dirs[4] = { wxS("btnEditDir"), wxS("btnAddDir"), wxS("btnDelDir"), wxS("btnClearDir") };
+    const wxChar* str_vars[4] = { wxS("btnEditVar"), wxS("btnAddVar"), wxS("btnDeleteVar"), wxS("btnClearVar") };
+    const wxChar* str_xtra[4] = { wxS("btnExtraEdit"), wxS("btnExtraAdd"), wxS("btnExtraDelete"), wxS("btnExtraClear") };
 
     if (keycode == WXK_RETURN || keycode == WXK_NUMPAD_ENTER)
     { myidx = 0; } // Edit
@@ -3146,10 +3146,10 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
         PlaceWindow(&dlg);
         dlg.ShowModal();
         wxString flags = dlg.GetValue();
-        flags.Replace(wxT("\n"), wxT(" "));
-        flags.Replace(wxT("\r"), wxT(" "));
-        flags.Replace(wxT("\t"), wxT(" "));
-        flags = MakeUniqueString(flags, wxT(" "));
+        flags.Replace("\n", " ");
+        flags.Replace("\r", " ");
+        flags.Replace("\t", " ");
+        flags = MakeUniqueString(flags, " ");
         if (flags != m_CurrentCompiler->GetCOnlyFlags())
         {
             m_CurrentCompiler->SetCOnlyFlags(flags);
@@ -3170,10 +3170,10 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
         PlaceWindow(&dlg);
         dlg.ShowModal();
         wxString flags = dlg.GetValue();
-        flags.Replace(wxT("\n"), wxT(" "));
-        flags.Replace(wxT("\r"), wxT(" "));
-        flags.Replace(wxT("\t"), wxT(" "));
-        flags = MakeUniqueString(flags, wxT(" "));
+        flags.Replace("\n", " ");
+        flags.Replace("\r", " ");
+        flags.Replace("\t", " ");
+        flags = MakeUniqueString(flags, " ");
         if (flags != m_CurrentCompiler->GetCPPOnlyFlags())
         {
             m_CurrentCompiler->SetCPPOnlyFlags(flags);
@@ -3222,7 +3222,7 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
                 categ.Add(opt->category);
         }
         if (categ.IsEmpty())
-            categ.Add(wxT("General"));
+            categ.Add("General");
         CompOption copt;
 
         wxString categoryName;
@@ -3278,12 +3278,12 @@ void CompilerOptionsDlg::OnFlagsPopup(wxPropertyGridEvent& event)
             if (property)
             {
                 CompOption* opt = m_Options.GetOptionByName(property->GetLabel());
-                wxString name = copt.name + wxT("  [");
+                wxString name = copt.name + "  [";
                 if (copt.option.IsEmpty())
                     name += copt.additionalLibs;
                 else
                     name += copt.option;
-                name += wxT("]");
+                name += "]";
                 opt->name           = name;
                 opt->option         = copt.option;
                 opt->additionalLibs = copt.additionalLibs;

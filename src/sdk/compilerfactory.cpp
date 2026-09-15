@@ -50,7 +50,7 @@ Compiler* CompilerFactory::GetCompiler(const wxString& id)
     for (size_t i = 0; i < Compilers.GetCount(); ++i)
     {
         wxString oldId = Compilers[i]->GetID();
-        oldId.Replace(wxT("-"), wxEmptyString);
+        oldId.Replace("-", wxEmptyString);
         if (oldId.IsSameAs(id, false))
             return Compilers[i];
     }
@@ -79,7 +79,7 @@ int CompilerFactory::GetCompilerIndex(const wxString& id)
     for (size_t i = 0; i < Compilers.GetCount(); ++i)
     {
         wxString oldId = Compilers[i]->GetID();
-        oldId.Replace(wxT("-"), wxEmptyString);
+        oldId.Replace("-", wxEmptyString);
         if (oldId.IsSameAs(lid))
             return i;
     }
@@ -120,7 +120,7 @@ bool CompilerFactory::CompilerInheritsFrom(Compiler* compiler, const wxString& f
         Compiler* newcompiler = GetCompiler(id);
         if (compiler == newcompiler)
         {
-            Manager::Get()->GetLogManager()->DebugLog(_T("Compiler circular dependency detected?!?!?"));
+            Manager::Get()->GetLogManager()->DebugLog("Compiler circular dependency detected?!?!?");
             break;
         }
         compiler = newcompiler;
@@ -144,16 +144,16 @@ void CompilerFactory::RegisterCompiler(Compiler* compiler)
 
 void CompilerFactory::RegisterUserCompilers()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("compiler"));
-    wxArrayString paths = cfg->EnumerateSubPaths(_T("/user_sets"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("compiler");
+    wxArrayString paths = cfg->EnumerateSubPaths("/user_sets");
     for (unsigned int i = 0; i < paths.GetCount(); ++i)
     {
-        wxString base = _T("/user_sets/") + paths[i];
-        wxString parent = cfg->Read(base + _T("/parent"), wxEmptyString);
+        wxString base = "/user_sets/" + paths[i];
+        wxString parent = cfg->Read(base + "/parent", wxEmptyString);
         if (!parent.IsEmpty())
         {
             Compiler* compiler = GetCompiler(parent);
-            wxString name = cfg->Read(base + _T("/name"), wxEmptyString);
+            wxString name = cfg->Read(base + "/name", wxEmptyString);
             CreateCompilerCopy(compiler, name);
         }
     }
@@ -183,7 +183,7 @@ Compiler* CompilerFactory::CreateCompilerCopy(Compiler* compiler, const wxString
     }
     newC->ReloadOptions();
     RegisterCompiler(newC);
-    newC->LoadSettings(_T("/user_sets"));
+    newC->LoadSettings("/user_sets");
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Added compiler \"%s\"", newC->GetName()));
     return newC; // return the index for the new compiler
 }
@@ -192,7 +192,7 @@ void CompilerFactory::RemoveCompiler(Compiler* compiler)
 {
     if (!compiler || compiler->m_ParentID.IsEmpty())
         return;
-    Manager::Get()->GetConfigManager(_T("compiler"))->DeleteSubPath(_T("/user_sets/") + compiler->GetID());
+    Manager::Get()->GetConfigManager("compiler")->DeleteSubPath("/user_sets/" + compiler->GetID());
 
     Compilers.Remove(compiler);
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Compiler \"%s\" removed", compiler->GetName()));
@@ -247,12 +247,12 @@ void CompilerFactory::SetDefaultCompiler(Compiler* compiler)
 void CompilerFactory::SaveSettings()
 {
     // clear old keys before saving
-    Manager::Get()->GetConfigManager(_T("compiler"))->DeleteSubPath(_T("/sets"));
-    Manager::Get()->GetConfigManager(_T("compiler"))->DeleteSubPath(_T("/user_sets"));
+    Manager::Get()->GetConfigManager("compiler")->DeleteSubPath("/sets");
+    Manager::Get()->GetConfigManager("compiler")->DeleteSubPath("/user_sets");
 
     for (size_t i = 0; i < Compilers.GetCount(); ++i)
     {
-        wxString baseKey = Compilers[i]->GetParentID().IsEmpty() ? _T("/sets") : _T("/user_sets");
+        wxString baseKey = Compilers[i]->GetParentID().IsEmpty() ? "/sets" : "/user_sets";
         Compilers[i]->SaveSettings(baseKey);
 
         CodeBlocksEvent event(cbEVT_COMPILER_SETTINGS_CHANGED);
@@ -268,7 +268,7 @@ void CompilerFactory::LoadSettings()
     bool needAutoDetection = false;
     for (size_t i = 0; i < Compilers.GetCount(); ++i)
     {
-        wxString baseKey = Compilers[i]->GetParentID().IsEmpty() ? _T("/sets") : _T("/user_sets");
+        wxString baseKey = Compilers[i]->GetParentID().IsEmpty() ? "/sets" : "/user_sets";
         Compilers[i]->LoadSettings(baseKey);
 
         CodeBlocksEvent event(cbEVT_COMPILER_SETTINGS_CHANGED);

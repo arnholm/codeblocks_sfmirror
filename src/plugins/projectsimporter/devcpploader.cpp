@@ -48,35 +48,35 @@ bool DevCppLoader::Open(const wxString& filename)
     m_pProject->ClearAllProperties();
 
     wxFileConfig dev(wxEmptyString, wxEmptyString, filename, wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
-    dev.SetPath(_T("/Project"));
+    dev.SetPath("/Project");
     int unitCount{};
-    dev.Read(_T("UnitCount"), &unitCount, 0);
+    dev.Read("UnitCount", &unitCount, 0);
 
     wxString path, tmp, title, output, out_path, obj_path;
     wxArrayString array;
 
     // read project options
-    dev.Read(_T("Name"), &title, wxEmptyString);
+    dev.Read("Name", &title, wxEmptyString);
     m_pProject->SetTitle(title);
 
-    dev.Read(_T("CppCompiler"), &tmp, wxEmptyString);
+    dev.Read("CppCompiler", &tmp, wxEmptyString);
     if (tmp.IsEmpty())
-        dev.Read(_T("Compiler"), &tmp, wxEmptyString);
-    array = GetArrayFromString(tmp, _T("_@@_"));
+        dev.Read("Compiler", &tmp, wxEmptyString);
+    array = GetArrayFromString(tmp, "_@@_");
     m_pProject->SetCompilerOptions(array);
 
-    dev.Read(_T("Linker"), &tmp, wxEmptyString);
+    dev.Read("Linker", &tmp, wxEmptyString);
     // some .dev I got my hands on, had the following in the linker options
     // remove them
-    tmp.Replace(_T("-o$@"), wxEmptyString);
-    tmp.Replace(_T("-o $@"), wxEmptyString);
+    tmp.Replace("-o$@", wxEmptyString);
+    tmp.Replace("-o $@", wxEmptyString);
     // read the list of linker options
-    array = GetArrayFromString(tmp, _T("_@@_"));
+    array = GetArrayFromString(tmp, "_@@_");
     // but separate the libs
     size_t i = 0;
     while (i < array.GetCount())
     {
-        if (array[i].StartsWith(_T("-l")))
+        if (array[i].StartsWith("-l"))
         {
             wxString tmplib = array[i].Right(array[i].Length() - 2);
             // there might be multiple libs defined in a single line, like:
@@ -84,10 +84,10 @@ bool DevCppLoader::Open(const wxString& filename)
             // we got to split by "-l" too...
             if (tmplib.Find(_T(' ')) != wxNOT_FOUND)
             {
-                wxArrayString tmparr = GetArrayFromString(array[i], _T(" "));
+                wxArrayString tmparr = GetArrayFromString(array[i], " ");
                 while (tmparr.GetCount())
                 {
-                    if (tmparr[0].StartsWith(_T("-l")))
+                    if (tmparr[0].StartsWith("-l"))
                         m_pProject->AddLinkLib(tmparr[0].Right(tmparr[0].Length() - 2));
                     else
                         array.Add(tmparr[0]);
@@ -105,18 +105,18 @@ bool DevCppLoader::Open(const wxString& filename)
     m_pProject->SetLinkerOptions(array);
 
     // read compiler's dirs
-    dev.Read(_T("Includes"), &tmp, wxEmptyString);
-    array = GetArrayFromString(tmp, _T(";"));
+    dev.Read("Includes", &tmp, wxEmptyString);
+    array = GetArrayFromString(tmp, ";");
     m_pProject->SetIncludeDirs(array);
 
     // read linker's dirs
-    dev.Read(_T("Libs"), &tmp, wxEmptyString);
-    array = GetArrayFromString(tmp, _T(";"));
+    dev.Read("Libs", &tmp, wxEmptyString);
+    array = GetArrayFromString(tmp, ";");
     m_pProject->SetLibDirs(array);
 
     // read resource files
-    dev.Read(_T("Resources"), &tmp, wxEmptyString);
-    array = GetArrayFromString(tmp, _T(",")); // make sure that this is comma-separated
+    dev.Read("Resources", &tmp, wxEmptyString);
+    array = GetArrayFromString(tmp, ","); // make sure that this is comma-separated
     for (unsigned int j = 0; j < array.GetCount(); ++j)
     {
         if (array[j].IsEmpty())
@@ -128,19 +128,19 @@ bool DevCppLoader::Open(const wxString& filename)
     // read project units
     for (int x = 0; x < unitCount; ++x)
     {
-        path.Printf(_T("/Unit%d"), x + 1);
+        path.Printf("/Unit%d", x + 1);
         dev.SetPath(path);
         tmp.Clear();
-        dev.Read(_T("FileName"), &tmp, wxEmptyString);
+        dev.Read("FileName", &tmp, wxEmptyString);
         if (tmp.IsEmpty())
             continue;
 
         bool compile{};
-        dev.Read(_T("Compile"), &compile, false);
+        dev.Read("Compile", &compile, false);
         bool compileCpp{};
-        dev.Read(_T("CompileCpp"), &compileCpp, true);
+        dev.Read("CompileCpp", &compileCpp, true);
         bool link{};
-        dev.Read(_T("Link"), &link, true);
+        dev.Read("Link", &link, true);
 
         // .dev files set Link=0 for resources which is plain wrong for C::B.
         // correct this...
@@ -149,9 +149,9 @@ bool DevCppLoader::Open(const wxString& filename)
 
         ProjectFile* pf = m_pProject->AddFile(0, tmp, compile || compileCpp, link);
         if (pf)
-            pf->compilerVar = compileCpp ? _T("CPP") : _T("CC");
+            pf->compilerVar = compileCpp ? "CPP" : "CC";
     }
-    dev.SetPath(_T("/Project"));
+    dev.SetPath("/Project");
 
     // set the target type
     ProjectBuildTarget* const target = m_pProject->GetBuildTarget(0);
@@ -160,21 +160,21 @@ bool DevCppLoader::Open(const wxString& filename)
       return false;
     }
     int typ{};
-    dev.Read(_T("Type"), &typ, 0);
+    dev.Read("Type", &typ, 0);
     target->SetTargetType(TargetType(typ));
 
     // decide on the output filename
-    if (dev.ReadLong(_T("OverrideOutput"), 0) == 1)
-        dev.Read(_T("OverrideOutputName"), &output, wxEmptyString);
+    if (dev.ReadLong("OverrideOutput", 0) == 1)
+        dev.Read("OverrideOutputName", &output, wxEmptyString);
     if (output.IsEmpty())
         output = target->SuggestOutputFilename();
-    dev.Read(_T("ExeOutput"), &out_path, wxEmptyString);
+    dev.Read("ExeOutput", &out_path, wxEmptyString);
     if (!out_path.IsEmpty())
-        output = out_path + _T("\\") + output;
+        output = out_path + "\\" + output;
     target->SetOutputFilename(output);
 
     // set the object output
-    dev.Read(_T("ObjectOutput"), &obj_path, wxEmptyString);
+    dev.Read("ObjectOutput", &obj_path, wxEmptyString);
     if (!obj_path.IsEmpty())
         target->SetObjectOutput(obj_path);
 

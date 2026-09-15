@@ -74,7 +74,7 @@ void UserVariableManager::Configure()
 
 void UserVariableManager::Reload()
 {
-    m_ActiveSet = Manager::Get()->GetConfigManager(_T("gcv"))->Read(_T("/active"), UserVariableManagerConsts::defaultSetName);
+    m_ActiveSet = Manager::Get()->GetConfigManager("gcv")->Read("/active", UserVariableManagerConsts::defaultSetName);
     m_VariableSetMap.clear();
     wxArrayString sets = m_CfgMan->EnumerateSubPaths(UserVariableManagerConsts::cSets);
     for (const wxString& set : sets)
@@ -105,7 +105,7 @@ void UserVariableManager::Reload()
 
 void UserVariableManager::Save()
 {
-    ConfigManager* manager = Manager::Get()->GetConfigManager(_T("gcv"));
+    ConfigManager* manager = Manager::Get()->GetConfigManager("gcv");
     // Delete all sets, we write them new
     manager->DeleteSubPath(UserVariableManagerConsts::cSets);
     for (VariableSetMap::const_iterator itr = m_VariableSetMap.cbegin(); itr != m_VariableSetMap.cend(); ++itr)
@@ -365,7 +365,7 @@ void UserVariableManager::Arrogate()
 
 UserVariableManager::UserVariableManager()
 {
-    m_CfgMan = Manager::Get()->GetConfigManager(_T("gcv"));
+    m_CfgMan = Manager::Get()->GetConfigManager("gcv");
     m_ui = std::unique_ptr<UserVarManagerUI>(new UserVarManagerNoGuiUI());
 
     Migrate();
@@ -455,9 +455,9 @@ void UserVariableManager::ParseCommandLine(wxCmdLineParser& parser)
 
 void UserVariableManager::Migrate()
 {
-    ConfigManager *cfgman_gcv = Manager::Get()->GetConfigManager(_T("gcv"));
+    ConfigManager *cfgman_gcv = Manager::Get()->GetConfigManager("gcv");
 
-    m_ActiveSet = cfgman_gcv->Read(_T("/active"));
+    m_ActiveSet = cfgman_gcv->Read("/active");
 
     if (!m_ActiveSet.IsEmpty())
         return;
@@ -468,8 +468,8 @@ void UserVariableManager::Migrate()
     wxString oldpath;
     wxString newpath;
 
-    ConfigManager *cfgman_old = Manager::Get()->GetConfigManager(_T("global_uservars"));
-    wxArrayString vars = cfgman_old->EnumerateSubPaths(_T("/"));
+    ConfigManager *cfgman_old = Manager::Get()->GetConfigManager("global_uservars");
+    wxArrayString vars = cfgman_old->EnumerateSubPaths("/");
 
     for (unsigned int i = 0; i < vars.GetCount(); ++i)
     {
@@ -478,8 +478,8 @@ void UserVariableManager::Migrate()
 
         for (unsigned j = 0; j < members.GetCount(); ++j)
         {
-            oldpath.assign(vars[i] + _T("/") + members[j]);
-            newpath.assign(_T("/sets/default") + vars[i] + _T("/") + members[j]);
+            oldpath.assign(vars[i] + "/" + members[j]);
+            newpath.assign("/sets/default" + vars[i] + "/" + members[j]);
 
             cfgman_gcv->Write(newpath, cfgman_old->Read(oldpath));
         }

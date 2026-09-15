@@ -38,7 +38,7 @@ namespace Wizard {
 
 void FillCompilerControl(wxItemContainer *control, const wxString& compilerID, const wxString& validCompilerIDs)
 {
-    const wxArrayString &valids = GetArrayFromString(validCompilerIDs, _T(";"), true);
+    const wxArrayString &valids = GetArrayFromString(validCompilerIDs, ";", true);
     wxString def = compilerID;
     if (def.IsEmpty())
         def = CompilerFactory::GetDefaultCompilerID();
@@ -96,13 +96,13 @@ WizPageBase::WizPageBase(const wxString& pageName, wxWizard* parent, const wxBit
 {
     // duplicate pageIDs are not allowed
     if (s_PagesByName[m_PageName])
-        cbThrow(_T("Page ID in use:") + pageName);
+        cbThrow("Page ID in use:" + pageName);
 
     // register this to the static pages map
     s_PagesByName[m_PageName] = this;
 
     // if this is true, the page won't be added to the wizard
-    m_SkipPage = Manager::Get()->GetConfigManager(_T("scripts"))->ReadBool(_T("/generic_wizard/") + m_PageName + _T("/skip"), false);
+    m_SkipPage = Manager::Get()->GetConfigManager("scripts")->ReadBool("/generic_wizard/" + m_PageName + "/skip", false);
 }
 
 //------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ wxWizardPage* WizPageBase::GetPrev() const
     ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
     ScriptBindings::Caller caller(scriptMgr->GetVM());
 
-    const wxString sig = _T("OnGetPrevPage_") + m_PageName;
+    const wxString sig = "OnGetPrevPage_" + m_PageName;
     if (caller.SetupFunc(cbU2C(sig)))
     {
         wxString *result = nullptr;
@@ -143,7 +143,7 @@ wxWizardPage* WizPageBase::GetNext() const
     ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
     ScriptBindings::Caller caller(scriptMgr->GetVM());
 
-    const wxString sig = _T("OnGetNextPage_") + m_PageName;
+    const wxString sig = "OnGetNextPage_" + m_PageName;
     if (caller.SetupFunc(cbU2C(sig)))
     {
         wxString *result = nullptr;
@@ -162,11 +162,11 @@ wxWizardPage* WizPageBase::GetNext() const
 
 void WizPageBase::OnPageChanging(wxWizardEvent& event)
 {
-    Manager::Get()->GetConfigManager(_T("scripts"))->Write(_T("/generic_wizard/") + m_PageName + _T("/skip"), (bool)m_SkipPage);
+    Manager::Get()->GetConfigManager("scripts")->Write("/generic_wizard/" + m_PageName + "/skip", (bool)m_SkipPage);
     ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
     ScriptBindings::Caller caller(scriptMgr->GetVM());
 
-    const wxString sig = _T("OnLeave_") + m_PageName;
+    const wxString sig = "OnLeave_" + m_PageName;
     if (caller.SetupFunc(cbU2C(sig)))
     {
         bool result;
@@ -187,7 +187,7 @@ void WizPageBase::OnPageChanged(wxWizardEvent& event)
     ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
     ScriptBindings::Caller caller(scriptMgr->GetVM());
 
-    const wxString sig = _T("OnEnter_") + m_PageName;
+    const wxString sig = "OnEnter_" + m_PageName;
     if (caller.SetupFunc(cbU2C(sig)))
     {
         const bool forward = (event.GetDirection() != 0); // !=0 forward, ==0 backward
@@ -233,7 +233,7 @@ void WizPage::OnButton(wxCommandEvent& event)
     ScriptingManager *scriptMgr = Manager::Get()->GetScriptingManager();
     ScriptBindings::Caller caller(scriptMgr->GetVM());
 
-    const wxString sig = _T("OnClick_") + win->GetName();
+    const wxString sig = "OnClick_" + win->GetName();
     if (caller.SetupFunc(cbU2C(sig)))
     {
         if (!caller.Call0())
@@ -272,14 +272,14 @@ void WizInfoPanel::OnPageChanging(wxWizardEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 
 WizFilePathPanel::WizFilePathPanel(bool showHeaderGuard, wxWizard* parent, const wxBitmap& bitmap)
-    : WizPageBase(_T("FilePathPage"), parent, bitmap),
+    : WizPageBase("FilePathPage", parent, bitmap),
     m_AddToProject(false)
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("scripts"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("scripts");
     m_pFilePathPanel = new FilePathPanel(this);
 
     m_pFilePathPanel->ShowHeaderGuard(showHeaderGuard);
-    m_pFilePathPanel->SetAddToProject(cfg->ReadBool(_T("/generic_wizard/add_file_to_project"), true));
+    m_pFilePathPanel->SetAddToProject(cfg->ReadBool("/generic_wizard/add_file_to_project", true));
 }
 
 //------------------------------------------------------------------------------
@@ -316,8 +316,8 @@ void WizFilePathPanel::OnPageChanging(wxWizardEvent& event)
             return;
         }
 
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("scripts"));
-        cfg->Write(_T("/generic_wizard/add_file_to_project"), (bool)m_pFilePathPanel->GetAddToProject());
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("scripts");
+        cfg->Write("/generic_wizard/add_file_to_project", (bool)m_pFilePathPanel->GetAddToProject());
     }
     WizPageBase::OnPageChanging(event); // let the base class handle it too
 }
@@ -331,7 +331,7 @@ BEGIN_EVENT_TABLE(WizProjectPathPanel, WizPageBase)
 END_EVENT_TABLE()
 
 WizProjectPathPanel::WizProjectPathPanel(wxWizard* parent, const wxBitmap& bitmap)
-    : WizPageBase(_T("ProjectPathPage"), parent, bitmap)
+    : WizPageBase("ProjectPathPage", parent, bitmap)
 {
     m_pProjectPathPanel = new ProjectPathPanel(this);
 }
@@ -442,7 +442,7 @@ WizGenericSelectPathPanel::WizGenericSelectPathPanel(const wxString& pageId, con
                                             wxWizard* parent, const wxBitmap& bitmap)
     : WizPageBase(pageId, parent, bitmap)
 {
-    wxString savedValue = Manager::Get()->GetConfigManager(_T("project_wizard"))->Read(_T("/generic_paths/") + pageId);
+    wxString savedValue = Manager::Get()->GetConfigManager("project_wizard")->Read("/generic_paths/" + pageId);
     if (savedValue.IsEmpty())
         savedValue = defValue;
 
@@ -484,7 +484,7 @@ void WizGenericSelectPathPanel::OnPageChanging(wxWizardEvent& event)
 
     if (event.GetDirection() != 0 && event.IsAllowed())
     {
-        Manager::Get()->GetConfigManager(_T("project_wizard"))->Write(_T("/generic_paths/") + GetPageName(), m_pGenericSelectPath->txtFolder->GetValue());
+        Manager::Get()->GetConfigManager("project_wizard")->Write("/generic_paths/" + GetPageName(), m_pGenericSelectPath->txtFolder->GetValue());
     }
 }
 
@@ -494,7 +494,7 @@ void WizGenericSelectPathPanel::OnPageChanging(wxWizardEvent& event)
 
 WizCompilerPanel::WizCompilerPanel(const wxString& compilerID, const wxString& validCompilerIDs, wxWizard* parent, const wxBitmap& bitmap,
                                     bool allowCompilerChange, bool allowConfigChange)
-    : WizPageBase(_T("CompilerPage"), parent, bitmap),
+    : WizPageBase("CompilerPage", parent, bitmap),
     m_AllowConfigChange(allowConfigChange)
 {
     m_pCompilerPanel = new CompilerPanel(this, GetParent());
@@ -505,17 +505,17 @@ WizCompilerPanel::WizCompilerPanel(const wxString& compilerID, const wxString& v
 
     m_pCompilerPanel->EnableConfigurationTargets(m_AllowConfigChange);
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("scripts"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("scripts");
 
-    m_pCompilerPanel->SetWantDebug(cfg->ReadBool(_T("/generic_wizard/want_debug"), true));
-    m_pCompilerPanel->SetDebugName(cfg->Read(_T("/generic_wizard/debug_name"), _T("Debug")));
-    m_pCompilerPanel->SetDebugOutputDir(cfg->Read(_T("/generic_wizard/debug_output"), _T("bin") + wxString(wxFILE_SEP_PATH) + _T("Debug")));
-    m_pCompilerPanel->SetDebugObjectOutputDir(cfg->Read(_T("/generic_wizard/debug_objects_output"), _T("obj") + wxString(wxFILE_SEP_PATH) + _T("Debug")));
+    m_pCompilerPanel->SetWantDebug(cfg->ReadBool("/generic_wizard/want_debug", true));
+    m_pCompilerPanel->SetDebugName(cfg->Read("/generic_wizard/debug_name", "Debug"));
+    m_pCompilerPanel->SetDebugOutputDir(cfg->Read("/generic_wizard/debug_output", "bin" + wxString(wxFILE_SEP_PATH) + "Debug"));
+    m_pCompilerPanel->SetDebugObjectOutputDir(cfg->Read("/generic_wizard/debug_objects_output", "obj" + wxString(wxFILE_SEP_PATH) + "Debug"));
 
-    m_pCompilerPanel->SetWantRelease(cfg->ReadBool(_T("/generic_wizard/want_release"), true));
-    m_pCompilerPanel->SetReleaseName(cfg->Read(_T("/generic_wizard/release_name"), _T("Release")));
-    m_pCompilerPanel->SetReleaseOutputDir(cfg->Read(_T("/generic_wizard/release_output"), _T("bin") + wxString(wxFILE_SEP_PATH) + _T("Release")));
-    m_pCompilerPanel->SetReleaseObjectOutputDir(cfg->Read(_T("/generic_wizard/release_objects_output"), _T("obj") + wxString(wxFILE_SEP_PATH) + _T("Release")));
+    m_pCompilerPanel->SetWantRelease(cfg->ReadBool("/generic_wizard/want_release", true));
+    m_pCompilerPanel->SetReleaseName(cfg->Read("/generic_wizard/release_name", "Release"));
+    m_pCompilerPanel->SetReleaseOutputDir(cfg->Read("/generic_wizard/release_output", "bin" + wxString(wxFILE_SEP_PATH) + "Release"));
+    m_pCompilerPanel->SetReleaseObjectOutputDir(cfg->Read("/generic_wizard/release_objects_output", "obj" + wxString(wxFILE_SEP_PATH) + "Release"));
 }
 
 //------------------------------------------------------------------------------
@@ -600,17 +600,17 @@ void WizCompilerPanel::OnPageChanging(wxWizardEvent& event)
 
         if (m_AllowConfigChange)
         {
-            ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("scripts"));
+            ConfigManager* cfg = Manager::Get()->GetConfigManager("scripts");
 
-            cfg->Write(_T("/generic_wizard/want_debug"), (bool)GetWantDebug());
-            cfg->Write(_T("/generic_wizard/debug_name"), GetDebugName());
-            cfg->Write(_T("/generic_wizard/debug_output"), GetDebugOutputDir());
-            cfg->Write(_T("/generic_wizard/debug_objects_output"), GetDebugObjectOutputDir());
+            cfg->Write("/generic_wizard/want_debug", (bool)GetWantDebug());
+            cfg->Write("/generic_wizard/debug_name", GetDebugName());
+            cfg->Write("/generic_wizard/debug_output", GetDebugOutputDir());
+            cfg->Write("/generic_wizard/debug_objects_output", GetDebugObjectOutputDir());
 
-            cfg->Write(_T("/generic_wizard/want_release"), (bool)GetWantRelease());
-            cfg->Write(_T("/generic_wizard/release_name"), GetReleaseName());
-            cfg->Write(_T("/generic_wizard/release_output"), GetReleaseOutputDir());
-            cfg->Write(_T("/generic_wizard/release_objects_output"), GetReleaseObjectOutputDir());
+            cfg->Write("/generic_wizard/want_release", (bool)GetWantRelease());
+            cfg->Write("/generic_wizard/release_name", GetReleaseName());
+            cfg->Write("/generic_wizard/release_output", GetReleaseOutputDir());
+            cfg->Write("/generic_wizard/release_objects_output", GetReleaseObjectOutputDir());
         }
     }
     WizPageBase::OnPageChanging(event); // let the base class handle it too
@@ -625,7 +625,7 @@ WizBuildTargetPanel::WizBuildTargetPanel(const wxString& targetName, bool isDebu
                                     bool showCompiler,
                                     const wxString& compilerID, const wxString& validCompilerIDs,
                                     bool allowCompilerChange)
-    : WizPageBase(_T("BuildTargetPage"), parent, bitmap)
+    : WizPageBase("BuildTargetPage", parent, bitmap)
 {
     m_pBuildTargetPanel = new BuildTargetPanel(this);
     m_pBuildTargetPanel->SetTargetName(targetName);
@@ -711,7 +711,7 @@ void WizBuildTargetPanel::OnPageChanging(wxWizardEvent& event)
 WizGenericSingleChoiceList::WizGenericSingleChoiceList(const wxString& pageId, const wxString& descr, const wxArrayString& choices, int defChoice, wxWizard* parent, const wxBitmap& bitmap)
     : WizPageBase(pageId, parent, bitmap)
 {
-    int savedValue = Manager::Get()->GetConfigManager(_T("project_wizard"))->ReadInt(_T("/generic_single_choices/") + pageId, -1);
+    int savedValue = Manager::Get()->GetConfigManager("project_wizard")->ReadInt("/generic_single_choices/" + pageId, -1);
     if (savedValue == -1)
         savedValue = defChoice;
 
@@ -745,6 +745,6 @@ void WizGenericSingleChoiceList::OnPageChanging(wxWizardEvent& event)
     // save selection value
     if (event.GetDirection() != 0 && event.IsAllowed())
     {
-        Manager::Get()->GetConfigManager(_T("project_wizard"))->Write(_T("/generic_single_choices/") + GetPageName(), (int)m_pGenericSingleChoiceList->GetChoice());
+        Manager::Get()->GetConfigManager("project_wizard")->Write("/generic_single_choices/" + GetPageName(), (int)m_pGenericSingleChoiceList->GetChoice());
     }
 }

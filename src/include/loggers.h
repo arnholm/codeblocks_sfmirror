@@ -42,7 +42,7 @@ class DLLIMPORT FileLogger : public Logger
 protected:
     wxFFile f;
 public:
-    FileLogger(const wxString& filename) : f(filename, _T("wb")) {};
+    FileLogger(const wxString& filename) : f(filename, "wb") {};
     FileLogger() {};
 
     void Append(const wxString& msg, cb_unused Logger::level lv) override
@@ -51,7 +51,7 @@ public:
         fputs(::newline_string.mb_str(), f.fp());
     };
 
-    virtual void Open(const wxString& filename) { Close(); f.Open(filename, _T("wb")); };
+    virtual void Open(const wxString& filename) { Close(); f.Open(filename, "wb"); };
     virtual void Close(){ if(f.IsOpened()) f.Close(); };
 };
 

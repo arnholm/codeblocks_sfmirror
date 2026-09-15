@@ -112,7 +112,7 @@ void DebuggerDriver::ResetCursor()
 
 void DebuggerDriver::QueueCommand(DebuggerCmd* dcmd, QueuePriority prio)
 {
-//    DebugLog(_T("Queueing command: ") + dcmd->m_Cmd);
+//    DebugLog("Queueing command: " + dcmd->m_Cmd);
     if (prio == Low)
         m_DCmds.Add(dcmd);
     else
@@ -132,7 +132,7 @@ void DebuggerDriver::RunQueue()
 
     DebuggerCmd *command = CurrentCommand();
 
-//    Log(_T("Running command: ") + CurrentCommand()->m_Cmd);
+//    Log("Running command: " + CurrentCommand()->m_Cmd);
     // don't send a command if empty; most debuggers repeat the last command this way...
     if (!command->m_Cmd.IsEmpty())
     {
@@ -160,7 +160,7 @@ void DebuggerDriver::RemoveTopCommand(bool deleteIt)
     if (m_QueueBusy || !m_DCmds.GetCount())
         return;
 
-//    Log(_T("Removing command: ") + CurrentCommand()->m_Cmd);
+//    Log("Removing command: " + CurrentCommand()->m_Cmd);
     if (deleteIt)
         delete m_DCmds[0];
     m_DCmds.RemoveAt(0);

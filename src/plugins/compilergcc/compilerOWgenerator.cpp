@@ -36,7 +36,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
     wxArrayString LibDirs = compiler->GetLibDirs();
     if (LibDirs.IsEmpty())
         return wxEmptyString;
-    wxString ResultStr = compiler->GetSwitches().libDirs + _T(" ");
+    wxString ResultStr = compiler->GetSwitches().libDirs + " ";
     if (target)
     {
         wxString tmp, targetStr, projectStr;
@@ -46,7 +46,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
         {
             tmp = targetArr[i];
             Manager::Get()->GetMacrosManager()->ReplaceMacros(tmp, target);
-            targetStr << tmp << _T(";");
+            targetStr << tmp << ";";
         }
         // Now for project
         const wxArrayString projectArr = target->GetParentProject()->GetLibDirs();
@@ -54,7 +54,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
         {
             tmp = projectArr[i];
             Manager::Get()->GetMacrosManager()->ReplaceMacros(tmp, target);
-            projectStr << tmp << _T(";");
+            projectStr << tmp << ";";
         }
         // Decide order and arrange it
         ResultStr << GetOrderedOptions(target, ortLibDirs, projectStr, targetStr);
@@ -66,7 +66,7 @@ wxString CompilerOWGenerator::SetupLibrariesDirs(Compiler* compiler, ProjectBuil
     {
         tmp = compilerArr[i];
         Manager::Get()->GetMacrosManager()->ReplaceMacros(tmp, target);
-        compilerStr << tmp << _T(";");
+        compilerStr << tmp << ";";
     }
     // Now append it
     ResultStr << compilerStr;
@@ -113,46 +113,46 @@ wxString CompilerOWGenerator::SetupLinkerOptions(Compiler* compiler, ProjectBuil
 
 // TODO (Biplab#5#): Move the linker options parsing code to a different function
                 //Let's not scan all the options unnecessarily
-                if (Temp.Matches(_T("-b*")))
+                if (Temp.Matches("-b*"))
                 {
                     if (target)
                     {
                         Temp = MapTargetType(Temp, target->GetTargetType());
-                        if (!Temp.IsEmpty() && LinkerOptions.Find(_T("system")) == wxNOT_FOUND)
+                        if (!Temp.IsEmpty() && LinkerOptions.Find("system") == wxNOT_FOUND)
                             LinkerOptions += Temp;
                     }
                 }
                 // TODO: Map and Set All Debug Flags
-                else if (Temp.Matches(_T("-d*")) && Temp.Length() <= 4)
+                else if (Temp.Matches("-d*") && Temp.Length() <= 4)
                 {
                     LinkerOptions = LinkerOptions + MapDebugOptions(Temp);
                 }
                 // Debugger Type: -hw (Watcom), -hd (Dwarf), -hc (CodeView)
-                else if (Temp.Matches(_T("-h?")))
+                else if (Temp.Matches("-h?"))
                 {
                     MapDebuggerOptions(Temp);
                 }
-                else if (Temp.StartsWith(_T("-l=")))
+                else if (Temp.StartsWith("-l="))
                 {
                     Temp = Temp.AfterFirst(_T('='));
-                    if (LinkerOptions.Find(_T("system")) == wxNOT_FOUND && !Temp.IsEmpty())
-                        LinkerOptions += _T("system ") + Temp + _T(" ");
+                    if (LinkerOptions.Find("system") == wxNOT_FOUND && !Temp.IsEmpty())
+                        LinkerOptions += "system " + Temp + " ";
                 }
-                else if (Temp.StartsWith(_T("-fm")))
+                else if (Temp.StartsWith("-fm"))
                 {
-                    LinkerOptions += _T("option map");
+                    LinkerOptions += "option map";
                     int pos = Temp.Find(_T('='));
                     if (pos != wxNOT_FOUND)
                         LinkerOptions += Temp.Mid(pos);
-                    LinkerOptions.Append(_T(" "));
+                    LinkerOptions.Append(" ");
                 }
-                else if (Temp.StartsWith(_T("-k")))
+                else if (Temp.StartsWith("-k"))
                 {
-                    LinkerOptions += _T("option stack=") + Temp.Mid(2) + _T(" ");
+                    LinkerOptions += "option stack=" + Temp.Mid(2) + " ";
                 }
-                else if (Temp.StartsWith(_T("@")))
+                else if (Temp.StartsWith("@"))
                 {
-                    LinkerOptions += Temp + _T(" ");
+                    LinkerOptions += Temp + " ";
                 }
             }
         }
@@ -167,7 +167,7 @@ wxString CompilerOWGenerator::SetupLinkerOptions(Compiler* compiler, ProjectBuil
                 Temp = OtherLinkerOptions[i];
                 /* Let's make a small check. It should not start with - or /  */
                 if ((Temp[0] != _T('-')) && (Temp[0] != _T('/')))
-                    LinkerOptions = LinkerOptions + Temp + _T(" ");
+                    LinkerOptions = LinkerOptions + Temp + " ";
             }
         }
         // Finally add it to an array
@@ -193,11 +193,11 @@ wxString CompilerOWGenerator::SetupLinkLibraries(Compiler* compiler, ProjectBuil
         // Start with target first
         Libs = target->GetLinkLibs();
         for (size_t i = 0; i < Libs.GetCount(); ++i)
-            targetStr << Libs[i] + _T(",");
+            targetStr << Libs[i] + ",";
         // Next process project
         Libs = target->GetParentProject()->GetLinkLibs();
         for (size_t i = 0; i < Libs.GetCount(); ++i)
-            projectStr << Libs[i] + _T(",");
+            projectStr << Libs[i] + ",";
         // Set them in proper order
         if (!targetStr.IsEmpty() || !projectStr.IsEmpty())
             ResultStr << GetOrderedOptions(target, ortLinkerOptions, projectStr, targetStr);
@@ -205,7 +205,7 @@ wxString CompilerOWGenerator::SetupLinkLibraries(Compiler* compiler, ProjectBuil
     // Now prepare compiler libraries, if any
     Libs = compiler->GetLinkLibs();
     for (size_t i = 0; i < Libs.GetCount(); ++i)
-        compilerStr << Libs[i] << _T(",");
+        compilerStr << Libs[i] << ",";
     // Append it to result
     ResultStr << compilerStr;
     // Now trim trailing spaces, if any, and the ',' at the end
@@ -214,27 +214,27 @@ wxString CompilerOWGenerator::SetupLinkLibraries(Compiler* compiler, ProjectBuil
         ResultStr = ResultStr.RemoveLast();
 
     if (!ResultStr.IsEmpty())
-        ResultStr.Prepend(_T("library "));
+        ResultStr.Prepend("library ");
     return ResultStr;
 }
 
 wxString CompilerOWGenerator::MapTargetType(const wxString& Opt, int target_type)
 {
-    if (Opt.IsSameAs(_T("-bt=nt")) || Opt.IsSameAs(_T("-bcl=nt")))
+    if (Opt.IsSameAs("-bt=nt") || Opt.IsSameAs("-bcl=nt"))
     {
         if (target_type == ttExecutable || target_type == ttStaticLib) // Win32 Executable
-            return _T("system nt_win ");
+            return "system nt_win ";
         else if (target_type == ttConsoleOnly) // Console
-            return _T("system nt ");
+            return "system nt ";
         else if (target_type == ttDynamicLib) // DLL
-            return _T("system nt_dll ");
+            return "system nt_dll ";
         else
-            return _T("system nt_win ref '_WinMain@16' "); // Default to Win32 executables
+            return "system nt_win ref '_WinMain@16' "; // Default to Win32 executables
     }
-    else if (Opt.IsSameAs(_T("-bt=linux")) || Opt.IsSameAs(_T("-bcl=linux")))
+    else if (Opt.IsSameAs("-bt=linux") || Opt.IsSameAs("-bcl=linux"))
     {
         /* The support is experimental. Need proper manual to improve it. */
-        return _T("system linux ");
+        return "system linux ";
     }
     return wxEmptyString;
 }
@@ -244,17 +244,17 @@ wxString CompilerOWGenerator::MapTargetType(const wxString& Opt, int target_type
 */
 wxString CompilerOWGenerator::MapDebugOptions(const wxString& Opt)
 {
-    if (Opt.IsSameAs(_T("-d0"))) // No Debug
+    if (Opt.IsSameAs("-d0")) // No Debug
     {
         return wxEmptyString;
     }
-    if (Opt.IsSameAs(_T("-d1")))
+    if (Opt.IsSameAs("-d1"))
     {
-        return wxString(_T("debug ") + m_DebuggerType + _T("lines "));
+        return wxString("debug " + m_DebuggerType + "lines ");
     }
-    if (Opt.IsSameAs(_T("-d2")) || Opt.IsSameAs(_T("-d3")))
+    if (Opt.IsSameAs("-d2") || Opt.IsSameAs("-d3"))
     {
-        return wxString(_T("debug ") + m_DebuggerType + _T("all "));
+        return wxString("debug " + m_DebuggerType + "all ");
     }
     // Nothing Matched
     return wxEmptyString;
@@ -262,17 +262,17 @@ wxString CompilerOWGenerator::MapDebugOptions(const wxString& Opt)
 
 void CompilerOWGenerator::MapDebuggerOptions(const wxString& Opt)
 {
-  if (Opt.IsSameAs(_T("-hw")))
+  if (Opt.IsSameAs("-hw"))
   {
-      m_DebuggerType = _T("watcom ");
+      m_DebuggerType = "watcom ";
   }
-  else if (Opt.IsSameAs(_T("-hd")))
+  else if (Opt.IsSameAs("-hd"))
   {
-      m_DebuggerType = _T("dwarf ");
+      m_DebuggerType = "dwarf ";
   }
-  else if (Opt.IsSameAs(_T("-hc")))
+  else if (Opt.IsSameAs("-hc"))
   {
-      m_DebuggerType = _T("codeview ");
+      m_DebuggerType = "codeview ";
   }
   else
   {

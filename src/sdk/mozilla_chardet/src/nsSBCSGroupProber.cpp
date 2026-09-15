@@ -55,7 +55,7 @@ nsSBCSGroupProber::nsSBCSGroupProber()
   // disable latin2 before latin1 is available, otherwise all latin1
   // will be detected as latin2 because of their similarity.
   //  enable latin2-probers if configured in C::B (jens 2009-08-07)
-  if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/default_encoding/find_latin2"), false))
+  if (Manager::Get()->GetConfigManager("editor")->ReadBool("/default_encoding/find_latin2", false))
   {
     mProbers[14] = new nsSingleByteCharSetProber(&Latin2HungarianModel);
     mProbers[15] = new nsSingleByteCharSetProber(&Win1250HungarianModel);

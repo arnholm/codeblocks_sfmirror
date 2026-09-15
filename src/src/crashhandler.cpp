@@ -32,12 +32,12 @@ inline void CrashHandlerSaveEditorFiles(wxString& buf)
     {   //get at least the profiles folder
         path = ConfigManager::GetHomeFolder();
     }
-    path << _T("\\cb-crash-recover");
+    path << "\\cb-crash-recover";
     if (!wxDirExists(path)) wxMkdir(path);
 
     //make a sub-directory of the current date & time
     wxDateTime now = wxDateTime::Now();
-    path << now.Format(_T("\\%Y%m%d-%H%M%S"));
+    path << now.Format("\\%Y%m%d-%H%M%S");
 
     EditorManager* em = Manager::Get()->GetEditorManager();
     if (em)
@@ -51,12 +51,12 @@ inline void CrashHandlerSaveEditorFiles(wxString& buf)
                 if (ed)
                 {
                     wxFileName fn(ed->GetFilename());
-                    wxString fnpath = path + _T("/") + fn.GetFullName();
+                    wxString fnpath = path + "/" + fn.GetFullName();
                     wxString newfnpath = fnpath;
                     // add number if filename already exists e.g. main.cpp.001, main.cpp.002, ...
                     int j = 1;
                     while (wxFileExists(newfnpath))
-                        newfnpath = fnpath + wxString::Format(wxT(".%03d"),j);
+                        newfnpath = fnpath + wxString::Format(".%03d",j);
 
                     if (cbSaveToFile(newfnpath,
                                     ed->GetControl()->GetText(),
@@ -106,7 +106,7 @@ LONG WINAPI CrashHandlerFunc(PEXCEPTION_POINTERS ExceptionInfo)
               "3. Press 'Retry' to return to the offending instruction (this is almost certain to fail again, but might nevertheless work in rare cases).");
 
 
-    switch(MessageBox(0, buf.c_str(), _T("Woah!"), MB_ABORTRETRYIGNORE))
+    switch(MessageBox(0, buf.c_str(), "Woah!", MB_ABORTRETRYIGNORE))
     {
         case IDABORT:
         return EXCEPTION_CONTINUE_SEARCH;
@@ -133,7 +133,7 @@ CrashHandler::CrashHandler(bool bDisabled) : handler(0)
 {
     if (!bDisabled)
     {
-        AddHandler_t AddHandler = (AddHandler_t) GetProcAddress(GetModuleHandle(_T("kernel32")), "AddVectoredExceptionHandler");
+        AddHandler_t AddHandler = (AddHandler_t) GetProcAddress(GetModuleHandle("kernel32"), "AddVectoredExceptionHandler");
 
         if (AddHandler)
             handler = AddHandler(1, CrashHandlerFunc);
@@ -144,7 +144,7 @@ CrashHandler::~CrashHandler()
 {
     if (handler)
     {
-        RemoveHandler_t RemoveHandler = (RemoveHandler_t) GetProcAddress(GetModuleHandle(_T("kernel32")), "RemoveVectoredExceptionHandler");
+        RemoveHandler_t RemoveHandler = (RemoveHandler_t) GetProcAddress(GetModuleHandle("kernel32"), "RemoveVectoredExceptionHandler");
         RemoveHandler(handler);
     }
 }

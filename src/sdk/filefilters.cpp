@@ -25,17 +25,17 @@ void FileFilters::AddDefaultFileFilters()
     if (s_Filters.size() != 0)
         return;
 
-    Add(_("Code::Blocks workspace files"),         _T("*.workspace"));
-    Add(_("Code::Blocks project files"),           _T("*.cbp"));
-    Add(_("Code::Blocks project/workspace files"), _T("*.workspace;*.cbp"));
-    Add(_("Bloodshed Dev-C++ project files"),      _T("*.dev"));
-    Add(_("MS Visual C++ 6.0 project files"),      _T("*.dsp"));
-    Add(_("MS Visual Studio 7.0+ project files"),  _T("*.vcproj"));
-    Add(_("MS Visual C++ 6.0 workspace files"),    _T("*.dsw"));
-    Add(_("MS Visual Studio 7.0+ solution files"), _T("*.sln"));
-    Add(_("Apple Xcode 1.x project bundles"),      _T("*.xcode"));
-    Add(_("Apple Xcode 2.x project bundles"),      _T("*.xcodeproj"));
-    Add(_("MS Visual Studio 10.0+ project files"), _T("*.vcxproj"));
+    Add(_("Code::Blocks workspace files"),         "*.workspace");
+    Add(_("Code::Blocks project files"),           "*.cbp");
+    Add(_("Code::Blocks project/workspace files"), "*.workspace;*.cbp");
+    Add(_("Bloodshed Dev-C++ project files"),      "*.dev");
+    Add(_("MS Visual C++ 6.0 project files"),      "*.dsp");
+    Add(_("MS Visual Studio 7.0+ project files"),  "*.vcproj");
+    Add(_("MS Visual C++ 6.0 workspace files"),    "*.dsw");
+    Add(_("MS Visual Studio 7.0+ solution files"), "*.sln");
+    Add(_("Apple Xcode 1.x project bundles"),      "*.xcode");
+    Add(_("Apple Xcode 2.x project bundles"),      "*.xcodeproj");
+    Add(_("MS Visual Studio 10.0+ project files"), "*.vcxproj");
 }
 
 bool FileFilters::Add(const wxString& name, const wxString& mask)
@@ -47,7 +47,7 @@ bool FileFilters::Add(const wxString& name, const wxString& mask)
     {
         // replace commas with semicolons
         wxString tmp = mask;
-        while (tmp.Replace(_T(","), _T(";")))
+        while (tmp.Replace(",", ";"))
             ;
         s_Filters[name] = tmp;
     }
@@ -67,7 +67,7 @@ wxString FileFilters::GetFilterString(const wxString& ext)
         {
             // filter based on parameter
             bool match = false;
-            wxArrayString array = GetArrayFromString(it->second, _T(";"), true);
+            wxArrayString array = GetArrayFromString(it->second, ";", true);
             for (size_t i = 0; i < array.GetCount(); ++i)
             {
                 if (ext.Matches(array[i]))
@@ -113,7 +113,7 @@ bool FileFilters::GetFilterIndexFromName(const wxString& FiltersList, const wxSt
 {
     bool bFound = false;
     // the List will contain 2 entries per type (description, mask)
-    wxArrayString List = GetArrayFromString(FiltersList, _T("|"), true);
+    wxArrayString List = GetArrayFromString(FiltersList, "|", true);
     int LoopEnd = static_cast<int>(List.GetCount());
     for(int idxList = 0; idxList < LoopEnd; idxList+=2)
     {
@@ -131,7 +131,7 @@ bool FileFilters::GetFilterNameFromIndex(const wxString& FiltersList, int Index,
 {    // we return the name (not the mask)
     bool bFound = false;
     // the List will contain 2 entries per type (description, mask)
-    wxArrayString List = GetArrayFromString(FiltersList, _T("|"), true);
+    wxArrayString List = GetArrayFromString(FiltersList, "|", true);
     int LoopEnd = static_cast<int>(List.GetCount());
     if (2*Index < LoopEnd)
     {
@@ -143,62 +143,62 @@ bool FileFilters::GetFilterNameFromIndex(const wxString& FiltersList, int Index,
 
 // define some constants used throughout C::B
 
-const wxString FileFilters::WORKSPACE_EXT           = _T("workspace");
-const wxString FileFilters::CODEBLOCKS_EXT          = _T("cbp");
-const wxString FileFilters::DEVCPP_EXT              = _T("dev");
-const wxString FileFilters::MSVC6_EXT               = _T("dsp");
-const wxString FileFilters::MSVC7_EXT               = _T("vcproj");
-const wxString FileFilters::MSVC10_EXT              = _T("vcxproj");
-const wxString FileFilters::MSVC6_WORKSPACE_EXT     = _T("dsw");
-const wxString FileFilters::MSVC7_WORKSPACE_EXT     = _T("sln");
-const wxString FileFilters::XCODE1_EXT              = _T("xcode");
-const wxString FileFilters::XCODE2_EXT              = _T("xcodeproj");
-const wxString FileFilters::ASM_EXT                 = _T("asm");
-const wxString FileFilters::D_EXT                   = _T("d");
-const wxString FileFilters::F_EXT                   = _T("f");
-const wxString FileFilters::F77_EXT                 = _T("f77");
-const wxString FileFilters::F90_EXT                 = _T("f90");
-const wxString FileFilters::F95_EXT                 = _T("f95");
-const wxString FileFilters::FOR_EXT                 = _T("for");
-const wxString FileFilters::FPP_EXT                 = _T("fpp");
-const wxString FileFilters::F03_EXT                 = _T("f03");
-const wxString FileFilters::F08_EXT                 = _T("f08");
-const wxString FileFilters::JAVA_EXT                = _T("java");
-const wxString FileFilters::C_EXT                   = _T("c");
-const wxString FileFilters::CC_EXT                  = _T("cc");
-const wxString FileFilters::CPP_EXT                 = _T("cpp");
-const wxString FileFilters::TPP_EXT                 = _T("tpp");
-const wxString FileFilters::TCC_EXT                 = _T("tcc");
-const wxString FileFilters::CXX_EXT                 = _T("cxx");
-const wxString FileFilters::CPLPL_EXT               = _T("c++");
-const wxString FileFilters::INL_EXT                 = _T("inl");
-const wxString FileFilters::H_EXT                   = _T("h");
-const wxString FileFilters::HH_EXT                  = _T("hh");
-const wxString FileFilters::HPP_EXT                 = _T("hpp");
-const wxString FileFilters::HXX_EXT                 = _T("hxx");
-const wxString FileFilters::HPLPL_EXT               = _T("h++");
-const wxString FileFilters::S_EXT                   = _T("s");
-const wxString FileFilters::SS_EXT                  = _T("ss");
-const wxString FileFilters::S62_EXT                 = _T("s62");
-const wxString FileFilters::OBJECT_EXT              = _T("o");
-const wxString FileFilters::XRCRESOURCE_EXT         = _T("xrc");
-const wxString FileFilters::STATICLIB_EXT           = _T("a");
-const wxString FileFilters::RESOURCE_EXT            = _T("rc");
-const wxString FileFilters::RESOURCEBIN_EXT         = _T("res");
-const wxString FileFilters::XML_EXT                 = _T("xml");
-const wxString FileFilters::SCRIPT_EXT              = _T("script");
+const wxString FileFilters::WORKSPACE_EXT           = "workspace";
+const wxString FileFilters::CODEBLOCKS_EXT          = "cbp";
+const wxString FileFilters::DEVCPP_EXT              = "dev";
+const wxString FileFilters::MSVC6_EXT               = "dsp";
+const wxString FileFilters::MSVC7_EXT               = "vcproj";
+const wxString FileFilters::MSVC10_EXT              = "vcxproj";
+const wxString FileFilters::MSVC6_WORKSPACE_EXT     = "dsw";
+const wxString FileFilters::MSVC7_WORKSPACE_EXT     = "sln";
+const wxString FileFilters::XCODE1_EXT              = "xcode";
+const wxString FileFilters::XCODE2_EXT              = "xcodeproj";
+const wxString FileFilters::ASM_EXT                 = "asm";
+const wxString FileFilters::D_EXT                   = "d";
+const wxString FileFilters::F_EXT                   = "f";
+const wxString FileFilters::F77_EXT                 = "f77";
+const wxString FileFilters::F90_EXT                 = "f90";
+const wxString FileFilters::F95_EXT                 = "f95";
+const wxString FileFilters::FOR_EXT                 = "for";
+const wxString FileFilters::FPP_EXT                 = "fpp";
+const wxString FileFilters::F03_EXT                 = "f03";
+const wxString FileFilters::F08_EXT                 = "f08";
+const wxString FileFilters::JAVA_EXT                = "java";
+const wxString FileFilters::C_EXT                   = "c";
+const wxString FileFilters::CC_EXT                  = "cc";
+const wxString FileFilters::CPP_EXT                 = "cpp";
+const wxString FileFilters::TPP_EXT                 = "tpp";
+const wxString FileFilters::TCC_EXT                 = "tcc";
+const wxString FileFilters::CXX_EXT                 = "cxx";
+const wxString FileFilters::CPLPL_EXT               = "c++";
+const wxString FileFilters::INL_EXT                 = "inl";
+const wxString FileFilters::H_EXT                   = "h";
+const wxString FileFilters::HH_EXT                  = "hh";
+const wxString FileFilters::HPP_EXT                 = "hpp";
+const wxString FileFilters::HXX_EXT                 = "hxx";
+const wxString FileFilters::HPLPL_EXT               = "h++";
+const wxString FileFilters::S_EXT                   = "s";
+const wxString FileFilters::SS_EXT                  = "ss";
+const wxString FileFilters::S62_EXT                 = "s62";
+const wxString FileFilters::OBJECT_EXT              = "o";
+const wxString FileFilters::XRCRESOURCE_EXT         = "xrc";
+const wxString FileFilters::STATICLIB_EXT           = "a";
+const wxString FileFilters::RESOURCE_EXT            = "rc";
+const wxString FileFilters::RESOURCEBIN_EXT         = "res";
+const wxString FileFilters::XML_EXT                 = "xml";
+const wxString FileFilters::SCRIPT_EXT              = "script";
 #if   defined(__WXMSW__)
-    const wxString FileFilters::DYNAMICLIB_EXT      = _T("dll");
-    const wxString FileFilters::EXECUTABLE_EXT      = _T("exe");
-    const wxString FileFilters::NATIVE_EXT          = _T("sys");
+    const wxString FileFilters::DYNAMICLIB_EXT      = "dll";
+    const wxString FileFilters::EXECUTABLE_EXT      = "exe";
+    const wxString FileFilters::NATIVE_EXT          = "sys";
 #elif defined(__WXMAC__)
-    const wxString FileFilters::DYNAMICLIB_EXT      = _T("dylib");
-    const wxString FileFilters::EXECUTABLE_EXT      = _T("");
-    const wxString FileFilters::NATIVE_EXT          = _T("");
+    const wxString FileFilters::DYNAMICLIB_EXT      = "dylib";
+    const wxString FileFilters::EXECUTABLE_EXT      = "";
+    const wxString FileFilters::NATIVE_EXT          = "";
 #else
-    const wxString FileFilters::DYNAMICLIB_EXT      = _T("so");
-    const wxString FileFilters::EXECUTABLE_EXT      = _T("");
-    const wxString FileFilters::NATIVE_EXT          = _T("");
+    const wxString FileFilters::DYNAMICLIB_EXT      = "so";
+    const wxString FileFilters::EXECUTABLE_EXT      = "";
+    const wxString FileFilters::NATIVE_EXT          = "";
 #endif
 
 // dot.ext version

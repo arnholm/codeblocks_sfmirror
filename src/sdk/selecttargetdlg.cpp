@@ -45,7 +45,7 @@ class TargetListData : public wxClientData
             // This is necessary because a multiline text control may add
             // '\n' to the text but these characters must not be part of the
             // parameters when executing the program.
-            m_ExecParameters.Replace(_T("\n"), _T(" "));
+            m_ExecParameters.Replace("\n", " ");
         }
         void SetHostApp(const wxString &hostApp) { m_HostApp = hostApp; }
         void SetRunHostAppInTerminal(bool runAppInTerminal) { m_RunHostAppInTerminal = runAppInTerminal; }
@@ -77,7 +77,7 @@ SelectTargetDlg::SelectTargetDlg(wxWindow* parent, cbProject* project, int selec
     //ctor
     cbAssert(m_pProject);
 
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgSelectTarget"), _T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgSelectTarget", "wxScrollingDialog");
 
     m_List = XRCCTRL(*this, "lstItems", wxListBox);
     m_List->Clear();
@@ -169,7 +169,7 @@ void SelectTargetDlg::OnHostApplicationButtonClick(cb_unused wxCommandEvent& eve
     {
         wxFileDialog dlg(this,
                          _("Select host application"),
-                         _T(""),
+                         "",
                          obj->GetValue(),
 #ifdef __WXMSW__
                          _("Executable files (*.exe)|*.exe"),

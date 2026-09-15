@@ -476,12 +476,12 @@ void ProjectOptionsDlg::OnProjectTypeChanged(cb_unused wxCommandEvent& event)
     wxString ext = fname.GetExt();
     wxString extI = fname.GetExt();
     wxString extD = fname.GetExt();
-    wxString libext = compiler ? compiler->GetSwitches().libExtension : _T("");
-    // wxString libextI = compiler ? compiler->GetSwitches().libExtension : _T(""); // TODO: add specialized compiler option for this
+    wxString libext = compiler ? compiler->GetSwitches().libExtension : "";
+    // wxString libextI = compiler ? compiler->GetSwitches().libExtension : ""; // TODO: add specialized compiler option for this
     // wxString libextD = "def";                                                    // TODO: add specialized compiler option for this
-    wxString libpre = compiler ? compiler->GetSwitches().libPrefix : _T("");
-    wxString libpreI = compiler ? compiler->GetSwitches().libPrefix : _T("");    // TODO: add specialized compiler option for this
-    wxString libpreD = compiler ? compiler->GetSwitches().libPrefix : _T("");    // TODO: add specialized compiler option for this
+    wxString libpre = compiler ? compiler->GetSwitches().libPrefix : "";
+    wxString libpreI = compiler ? compiler->GetSwitches().libPrefix : "";    // TODO: add specialized compiler option for this
+    wxString libpreD = compiler ? compiler->GetSwitches().libPrefix : "";    // TODO: add specialized compiler option for this
 
     switch (targetType)
     {

@@ -26,7 +26,7 @@ namespace BlkAllc
         if(total_refs == 0)
             return; // pointless
 
-        wxRegEx r(_T("^[A-Z]?[0-9]+(.*)"));
+        wxRegEx r("^[A-Z]?[0-9]+(.*)");
         if(r.Matches(cn))
             cn2 = r.GetMatch(cn, 1);
 
@@ -38,6 +38,6 @@ namespace BlkAllc
         blockSize, poolSize, blockSize * poolSize,
         max_refs, total_refs, ref_count, (ref_count == 0 ? "" : "(memory leak)"));
 
-        wxSafeShowMessage(_T("Block Allocator"), s);
+        wxSafeShowMessage("Block Allocator", s);
     } // end of DebugLog
 }

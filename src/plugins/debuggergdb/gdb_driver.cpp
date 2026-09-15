@@ -27,12 +27,12 @@
 // will seem like frozen (only "stop" button available). Using this dummy prefix,
 // we allow for a few characters to be "eaten" this way and still get our
 // expected prompt back.
-#define GDB_PROMPT _T("cb_gdb:")
-#define FULL_GDB_PROMPT _T(">>>>>>") GDB_PROMPT
+#define GDB_PROMPT "cb_gdb:"
+#define FULL_GDB_PROMPT ">>>>>>" GDB_PROMPT
 
 //[Switching to thread 2 (Thread 1082132832 (LWP 12298))]#0  0x00002aaaac5a2aca in pthread_cond_wait@@GLIBC_2.3.2 () from /lib/libpthread.so.0
-static wxRegEx reThreadSwitch(_T("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*)"));
-static wxRegEx reThreadSwitch2(_T("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*):([0-9]+)"));
+static wxRegEx reThreadSwitch("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*)");
+static wxRegEx reThreadSwitch2("^\\[Switching to thread .*\\]#0[[:blank:]]+(0x[A-Fa-f0-9]+) in (.*) from (.*):([0-9]+)");
 
 // Regular expresion for breakpoint. wxRegEx don't want to recognize '?' command, so a bit more general rule is used
 // here.
@@ -40,40 +40,40 @@ static wxRegEx reThreadSwitch2(_T("^\\[Switching to thread .*\\]#0[[:blank:]]+(0
 //  ([^:]+) corresponds to the path in linux or to the path within windows disk in windows to current file;
 //  ([0-9]+) corresponds to line number in current file;
 //  (0x[0-9A-Fa-f]+) correponds to current memory address.
-static wxRegEx reBreak(_T("\032*([A-Za-z]*[:]*)([^:]+):([0-9]+):[0-9]+:[begmidl]+:(0x[0-9A-Fa-f]+)"));
+static wxRegEx reBreak("\032*([A-Za-z]*[:]*)([^:]+):([0-9]+):[0-9]+:[begmidl]+:(0x[0-9A-Fa-f]+)");
 
-static wxRegEx reBreak2(_T("^(0x[A-Fa-f0-9]+) in (.*) from (.*)"));
-static wxRegEx reBreak3(_T("^(0x[A-Fa-f0-9]+) in (.*)"));
+static wxRegEx reBreak2("^(0x[A-Fa-f0-9]+) in (.*) from (.*)");
+static wxRegEx reBreak3("^(0x[A-Fa-f0-9]+) in (.*)");
 // Catchpoint 1 (exception thrown), 0x00007ffff7b982b0 in __cxa_throw () from /usr/lib/gcc/x86_64-pc-linux-gnu/4.4.4/libstdc++.so.6
-static wxRegEx reCatchThrow(_T("^Catchpoint ([0-9]+) \\(exception thrown\\), (0x[0-9a-f]+) in (.+) from (.+)$"));
+static wxRegEx reCatchThrow("^Catchpoint ([0-9]+) \\(exception thrown\\), (0x[0-9a-f]+) in (.+) from (.+)$");
 // Catchpoint 1 (exception thrown), 0x00401610 in __cxa_throw ()
-static wxRegEx reCatchThrowNoFile(_T("^Catchpoint ([0-9]+) \\(exception thrown\\), (0x[0-9a-f]+) in (.+)$"));
+static wxRegEx reCatchThrowNoFile("^Catchpoint ([0-9]+) \\(exception thrown\\), (0x[0-9a-f]+) in (.+)$");
 
 // easily match cygwin paths
-//static wxRegEx reCygwin(_T("/cygdrive/([A-Za-z])/"));
+//static wxRegEx reCygwin("/cygdrive/([A-Za-z])/");
 
 // Pending breakpoint "C:/Devel/libs/irr_svn/source/Irrlicht/CSceneManager.cpp:1077" resolved
 #ifdef __WXMSW__
-static wxRegEx rePendingFound(_T("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([A-Za-z]:)([^:]+):([0-9]+)\".*"));
+static wxRegEx rePendingFound("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([A-Za-z]:)([^:]+):([0-9]+)\".*");
 #else
-static wxRegEx rePendingFound(_T("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([^:]+):([0-9]+)\".*"));
+static wxRegEx rePendingFound("^Pending[[:blank:]]+breakpoint[[:blank:]]+[\"]+([^:]+):([0-9]+)\".*");
 #endif
 // Breakpoint 2, irr::scene::CSceneManager::getSceneNodeFromName (this=0x3fa878, name=0x3fbed8 "MainLevel", start=0x3fa87c) at CSceneManager.cpp:1077
-static wxRegEx rePendingFound1(_T("^Breakpoint[[:blank:]]+([0-9]+),.*"));
+static wxRegEx rePendingFound1("^Breakpoint[[:blank:]]+([0-9]+),.*");
 
 // Temporary breakpoint 2, main () at /path/projects/tests/main.cpp:136
-static wxRegEx reTempBreakFound(wxT("^[Tt]emporary[[:blank:]]breakpoint[[:blank:]]([0-9]+),.*"));
+static wxRegEx reTempBreakFound("^[Tt]emporary[[:blank:]]breakpoint[[:blank:]]([0-9]+),.*");
 
 
 // [Switching to Thread -1234655568 (LWP 18590)]
 // [New Thread -1234655568 (LWP 18590)]
-static wxRegEx reChildPid1(_T("Thread[[:blank:]]+[xA-Fa-f0-9-]+[[:blank:]]+\\(LWP ([0-9]+)\\)]"));
+static wxRegEx reChildPid1("Thread[[:blank:]]+[xA-Fa-f0-9-]+[[:blank:]]+\\(LWP ([0-9]+)\\)]");
 // MinGW GDB 6.8 and later
 // [New Thread 2684.0xf40] or [New thread 2684.0xf40]
-static wxRegEx reChildPid2(_T("\\[New [tT]hread[[:blank:]]+[0-9]+\\.[xA-Fa-f0-9-]+\\]"));
+static wxRegEx reChildPid2("\\[New [tT]hread[[:blank:]]+[0-9]+\\.[xA-Fa-f0-9-]+\\]");
 
-static wxRegEx reInferiorExited(wxT("^\\[Inferior[[:blank:]].+[[:blank:]]exited normally\\]$"), wxRE_EXTENDED);
-static wxRegEx reInferiorExitedWithCode(wxT("^\\[[Ii]nferior[[:blank:]].+[[:blank:]]exited[[:blank:]]with[[:blank:]]code[[:blank:]]([0-9]+)\\]$"), wxRE_EXTENDED);
+static wxRegEx reInferiorExited("^\\[Inferior[[:blank:]].+[[:blank:]]exited normally\\]$", wxRE_EXTENDED);
+static wxRegEx reInferiorExitedWithCode("^\\[[Ii]nferior[[:blank:]].+[[:blank:]]exited[[:blank:]]with[[:blank:]]code[[:blank:]]([0-9]+)\\]$", wxRE_EXTENDED);
 
 GDB_driver::GDB_driver(DebuggerGDB* plugin) :
     DebuggerDriver(plugin),
@@ -103,10 +103,10 @@ wxString GDB_driver::GetCommandLine(const wxString& debugger, const wxString& de
     wxString cmd;
     cmd << debugger;
     if (m_pDBG->GetActiveConfigEx().GetFlag(DebuggerConfiguration::DisableInit))
-        cmd << _T(" -nx");      // don't run .gdbinit
-    cmd << _T(" -fullname");    // report full-path filenames when breaking
-    cmd << _T(" -quiet");       // don't display version on startup
-    cmd << wxT(" ") << userArguments;
+        cmd << " -nx";      // don't run .gdbinit
+    cmd << " -fullname";    // report full-path filenames when breaking
+    cmd << " -quiet";       // don't display version on startup
+    cmd << " " << userArguments;
 
     wxString actualDebuggee;
     if (platform::windows && m_CygwinPresent)
@@ -117,7 +117,7 @@ wxString GDB_driver::GetCommandLine(const wxString& debugger, const wxString& de
     else
         actualDebuggee = debuggee;
 
-    cmd << _T(" -args ") << actualDebuggee;
+    cmd << " -args " << actualDebuggee;
     return cmd;
 }
 
@@ -126,10 +126,10 @@ wxString GDB_driver::GetCommandLine(const wxString& debugger, cb_unused int pid,
     wxString cmd;
     cmd << debugger;
     if (m_pDBG->GetActiveConfigEx().GetFlag(DebuggerConfiguration::DisableInit))
-        cmd << _T(" -nx");      // don't run .gdbinit
-    cmd << _T(" -fullname");    // report full-path filenames when breaking
-    cmd << _T(" -quiet");       // don't display version on startup
-    cmd << wxT(" ") << userArguments;
+        cmd << " -nx";      // don't run .gdbinit
+    cmd << " -fullname";    // report full-path filenames when breaking
+    cmd << " -quiet";       // don't display version on startup
+    cmd << " " << userArguments;
     return cmd;
 }
 
@@ -285,12 +285,12 @@ void GDB_driver::Start(bool breakOnEntry)
         m_ManualBreakOnEntry = !m_isRemoteDebugging;
         // start the process
         if (breakOnEntry)
-            QueueCommand(new GdbCmd_Start(this, m_isRemoteDebugging ? _T("continue") : _T("start")));
+            QueueCommand(new GdbCmd_Start(this, m_isRemoteDebugging ? "continue" : "start"));
         else
         {
             // if breakOnEntry is not set, we need to use 'run' to make gdb stop at a breakpoint at first instruction
             m_ManualBreakOnEntry=false;  // must be reset or gdb does not stop at first breakpoint
-            QueueCommand(new GdbCmd_Start(this, m_isRemoteDebugging ? _T("continue") : _T("run")));
+            QueueCommand(new GdbCmd_Start(this, m_isRemoteDebugging ? "continue" : "run"));
         }
         m_IsStarted = true;
     }
@@ -300,8 +300,8 @@ void GDB_driver::Stop()
 {
     ResetCursor();
     if (m_pDBG->IsAttachedToProcess())
-        QueueCommand(new DebuggerCmd(this, wxT("kill")));
-    QueueCommand(new DebuggerCmd(this, _T("quit")));
+        QueueCommand(new DebuggerCmd(this, "kill"));
+    QueueCommand(new DebuggerCmd(this, "quit"));
     m_IsStarted = false;
     m_attachedToProcess = false;
 }
@@ -317,7 +317,7 @@ void GDB_driver::Continue()
         if (m_isRemoteDebugging)
             QueueCommand(new GdbCmd_Continue(this));
         else
-            QueueCommand(new GdbCmd_Start(this, m_ManualBreakOnEntry ? wxT("start") : wxT("run")));
+            QueueCommand(new GdbCmd_Start(this, m_ManualBreakOnEntry ? "start" : "run"));
         m_ManualBreakOnEntry = false;
         m_IsStarted = true;
         m_attachedToProcess = false;
@@ -327,7 +327,7 @@ void GDB_driver::Continue()
 void GDB_driver::Step()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("next")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "next"));
 }
 
 void GDB_driver::StepInstruction()
@@ -345,20 +345,20 @@ void GDB_driver::StepIntoInstruction()
 void GDB_driver::StepIn()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("step")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "step"));
 }
 
 void GDB_driver::StepOut()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("finish")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "finish"));
 }
 
 void GDB_driver::SetNextStatement(const wxString& filename, int line)
 {
     ResetCursor();
-    QueueCommand(new DebuggerCmd(this, wxString::Format(wxT("tbreak %s:%d"), filename.c_str(), line)));
-    QueueCommand(new DebuggerContinueBaseCmd(this, wxString::Format(wxT("jump %s:%d"), filename.c_str(), line)));
+    QueueCommand(new DebuggerCmd(this, wxString::Format("tbreak %s:%d", filename.c_str(), line)));
+    QueueCommand(new DebuggerContinueBaseCmd(this, wxString::Format("jump %s:%d", filename.c_str(), line)));
 }
 
 void GDB_driver::Backtrace()
@@ -385,13 +385,13 @@ void GDB_driver::CPURegisters()
 void GDB_driver::SwitchToFrame(size_t number)
 {
     ResetCursor();
-    QueueCommand(new DebuggerCmd(this, wxString(_T("frame ")) << number));
+    QueueCommand(new DebuggerCmd(this, wxString("frame ") << number));
 }
 
 void GDB_driver::SetVarValue(const wxString& var, const wxString& value)
 {
     const wxString &cleanValue=CleanStringValue(value);
-    QueueCommand(new DebuggerCmd(this, wxString::Format(_T("set variable %s=%s"), var.c_str(), cleanValue.c_str())));
+    QueueCommand(new DebuggerCmd(this, wxString::Format("set variable %s=%s", var.c_str(), cleanValue.c_str())));
 }
 
 void GDB_driver::SetMemoryRangeValue(uint64_t addr, const wxString& value)
@@ -400,15 +400,15 @@ void GDB_driver::SetMemoryRangeValue(uint64_t addr, const wxString& value)
     if(size == 0)
         return;
 
-    wxString dataStr = wxT("{");
+    wxString dataStr = "{";
     const wxCharBuffer &data = value.To8BitData();
     for (size_t i = 0; i < size; i++)
     {
         if (i != 0)
-            dataStr << wxT(",");
-        dataStr << wxString::Format(wxT("0x%x"), uint8_t(data[i]));
+            dataStr << ",";
+        dataStr << wxString::Format("0x%x", uint8_t(data[i]));
     }
-    dataStr << wxT("}");
+    dataStr << "}";
 
     wxString commandStr;
 // Check if build is for WX MS Windows
@@ -430,15 +430,15 @@ void GDB_driver::SetMemoryRangeValue(wxString address, const wxString& value)
     if ((size == 0) || (!address.ToULongLong(&llAddres, 16)))
         return;
 
-    wxString dataStr = wxT("{");
+    wxString dataStr = "{";
     const wxCharBuffer &data = value.To8BitData();
     for (size_t i = 0; i < size; i++)
     {
         if (i != 0)
-            dataStr << wxT(",");
-        dataStr << wxString::Format(wxT("0x%x"), uint8_t(data[i]));
+            dataStr << ",";
+        dataStr << wxString::Format("0x%x", uint8_t(data[i]));
     }
-    dataStr << wxT("}");
+    dataStr << "}";
 
     wxString commandStr;
     // Check if build is for WX MS Windows
@@ -466,39 +466,39 @@ void GDB_driver::RunningThreads()
 
 void GDB_driver::InfoFrame()
 {
-    QueueCommand(new DebuggerInfoCmd(this, _T("info frame"), _("Selected frame")));
+    QueueCommand(new DebuggerInfoCmd(this, "info frame", _("Selected frame")));
 }
 
 void GDB_driver::InfoDLL()
 {
     if (platform::windows)
-        QueueCommand(new DebuggerInfoCmd(this, _T("info dll"), _("Loaded libraries")));
+        QueueCommand(new DebuggerInfoCmd(this, "info dll", _("Loaded libraries")));
     else
-        QueueCommand(new DebuggerInfoCmd(this, _T("info sharedlibrary"), _("Loaded libraries")));
+        QueueCommand(new DebuggerInfoCmd(this, "info sharedlibrary", _("Loaded libraries")));
 }
 
 void GDB_driver::InfoFiles()
 {
-    QueueCommand(new DebuggerInfoCmd(this, _T("info files"), _("Files and targets")));
+    QueueCommand(new DebuggerInfoCmd(this, "info files", _("Files and targets")));
 }
 
 void GDB_driver::InfoFPU()
 {
-    QueueCommand(new DebuggerInfoCmd(this, _T("info float"), _("Floating point unit")));
+    QueueCommand(new DebuggerInfoCmd(this, "info float", _("Floating point unit")));
 }
 
 void GDB_driver::InfoSignals()
 {
-    QueueCommand(new DebuggerInfoCmd(this, _T("info signals"), _("Signals handling")));
+    QueueCommand(new DebuggerInfoCmd(this, "info signals", _("Signals handling")));
 }
 
 void GDB_driver::EnableCatchingThrow(bool enable)
 {
     if (enable)
-        QueueCommand(new GdbCmd_SetCatch(this, wxT("throw"), &m_catchThrowIndex));
+        QueueCommand(new GdbCmd_SetCatch(this, "throw", &m_catchThrowIndex));
     else if (m_catchThrowIndex != -1)
     {
-        QueueCommand(new DebuggerCmd(this, wxString::Format(wxT("delete %d"), m_catchThrowIndex)));
+        QueueCommand(new DebuggerCmd(this, wxString::Format("delete %d", m_catchThrowIndex)));
         m_catchThrowIndex = -1;
     }
 }
@@ -520,7 +520,7 @@ void GDB_driver::AddBreakpoint(cb::shared_ptr<DebuggerBreakpoint> bp)
     {
         if (bp->func.IsEmpty() && !bp->lineText.IsEmpty())
         {
-            wxRegEx reCtorDtor(_T("([0-9A-z_]+)::([~]?)([0-9A-z_]+)[[:blank:]\(]*"));
+            wxRegEx reCtorDtor("([0-9A-z_]+)::([~]?)([0-9A-z_]+)[[:blank:]\(]*");
             if (reCtorDtor.Matches(bp->lineText))
             {
                 wxString strBase = reCtorDtor.GetMatch(bp->lineText, 1);
@@ -529,7 +529,7 @@ void GDB_driver::AddBreakpoint(cb::shared_ptr<DebuggerBreakpoint> bp)
                 if (strBase.IsSameAs(strMethod))
                 {
                     bp->func = strBase;
-                    bp->func << _T("::");
+                    bp->func << "::";
                     bp->func << strDtor;
                     bp->func << strMethod;
     //                if (bp->temporary)
@@ -671,10 +671,10 @@ void GDB_driver::ParseOutput(const wxString& output)
         }
     }
 
-    if (   output.StartsWith(_T("gdb: "))
-        || output.StartsWith(_T("warning: "))
-        || output.StartsWith(_T("Warning: "))
-        || output.StartsWith(_T("ContinueDebugEvent ")) )
+    if (   output.StartsWith("gdb: ")
+        || output.StartsWith("warning: ")
+        || output.StartsWith("Warning: ")
+        || output.StartsWith("ContinueDebugEvent ") )
     {
         return;
     }
@@ -699,7 +699,7 @@ void GDB_driver::ParseOutput(const wxString& output)
     DebuggerCmd* cmd = CurrentCommand();
     if (cmd)
     {
-//        DebugLog(wxString::Format(_T("Command parsing output (cmd: %s): %s"), cmd->m_Cmd.c_str(), buffer.Left(idx).c_str()));
+//        DebugLog(wxString::Format("Command parsing output (cmd: %s): %s", cmd->m_Cmd.c_str(), buffer.Left(idx).c_str()));
         RemoveTopCommand(false);
         buffer.Remove(idx);
         // remove the '>>>>>>' part of the prompt (or what's left of it)
@@ -731,12 +731,12 @@ void GDB_driver::ParseOutput(const wxString& output)
     for (unsigned int i = 0; i < lines.GetCount(); ++i)
     {
         // log GDB's version
-        if (lines[i].StartsWith(_T("GNU gdb")))
+        if (lines[i].StartsWith("GNU gdb"))
         {
             // it's the gdb banner. Just display the version and "eat" the rest
             m_pDBG->Log(_("Debugger name and version: ") + lines[i]);
             // keep major and minor version numbers handy
-            wxRegEx re(_T("([0-9.]+)"));
+            wxRegEx re("([0-9.]+)");
             if (!re.Matches(lines[i]))
             {
                 m_pDBG->Log(_("Unable to determine the version of gdb"));
@@ -750,7 +750,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             major.ToLong(&m_GDBVersionMajor);
             minor.ToLong(&m_GDBVersionMinor);
 //            wxString log;
-//            log.Printf(_T("Line: %s\nMajor: %s (%d)\nMinor: %s (%d)"),
+//            log.Printf("Line: %s\nMajor: %s (%d)\nMinor: %s (%d)",
 //                        lines[i].c_str(),
 //                        major.c_str(),
 //                        m_GDBVersionMajor,
@@ -761,34 +761,34 @@ void GDB_driver::ParseOutput(const wxString& output)
         }
 
         // Is the program exited?
-        else if (   lines[i].StartsWith(_T("Error creating process"))
-                 || lines[i].StartsWith(_T("Program exited"))
-                 || lines[i].StartsWith(wxT("Program terminated with signal"))
-                 || lines[i].StartsWith(wxT("During startup program exited"))
-                 || lines[i].Contains(_T("program is not being run"))
-                 || lines[i].Contains(_T("Target detached"))
+        else if (   lines[i].StartsWith("Error creating process")
+                 || lines[i].StartsWith("Program exited")
+                 || lines[i].StartsWith("Program terminated with signal")
+                 || lines[i].StartsWith("During startup program exited")
+                 || lines[i].Contains("program is not being run")
+                 || lines[i].Contains("Target detached")
                  || reInferiorExited.Matches(lines[i])
                  || reInferiorExitedWithCode.Matches(lines[i]) )
         {
             m_pDBG->Log(lines[i]);
             m_ProgramIsStopped = true;
-            QueueCommand(new DebuggerCmd(this, _T("quit")));
+            QueueCommand(new DebuggerCmd(this, "quit"));
             m_IsStarted = false;
         }
 
         // no debug symbols?
-        else if (lines[i].Contains(_T("(no debugging symbols found)")))
+        else if (lines[i].Contains("(no debugging symbols found)"))
             m_pDBG->Log(lines[i]);
 
         // signal
-        else if (lines[i].StartsWith(_T("Program received signal SIG")))
+        else if (lines[i].StartsWith("Program received signal SIG"))
         {
             m_ProgramIsStopped = true;
             m_QueueBusy = false;
 
-            if (   lines[i].StartsWith(_T("Program received signal SIGINT"))
-                || lines[i].StartsWith(_T("Program received signal SIGTRAP"))
-                || lines[i].StartsWith(_T("Program received signal SIGSTOP")) )
+            if (   lines[i].StartsWith("Program received signal SIGINT")
+                || lines[i].StartsWith("Program received signal SIGTRAP")
+                || lines[i].StartsWith("Program received signal SIGSTOP") )
             {
                 // these are break/trace signals, just log them
                 Log(lines[i]);
@@ -801,7 +801,7 @@ void GDB_driver::ParseOutput(const wxString& output)
                 if (Manager::Get()->GetDebuggerManager()->ShowBacktraceDialog())
                     m_forceUpdate = true;
 
-                InfoWindow::Display(_("Signal received"), _T("\n\n") + lines[i] + _T("\n\n"));
+                InfoWindow::Display(_("Signal received"), "\n\n" + lines[i] + "\n\n");
                 m_needsUpdate = true;
                 // the backtrace will be generated when NotifyPlugins() is called
                 // and only if the backtrace window is shown
@@ -810,15 +810,15 @@ void GDB_driver::ParseOutput(const wxString& output)
 
         // general errors
         // we don't deal with them, just relay them back to the user
-        else if (   lines[i].StartsWith(_T("Error "))
-                 || lines[i].StartsWith(_T("No such"))
-                 || lines[i].StartsWith(_T("Cannot evaluate")) )
+        else if (   lines[i].StartsWith("Error ")
+                 || lines[i].StartsWith("No such")
+                 || lines[i].StartsWith("Cannot evaluate") )
         {
             m_pDBG->Log(lines[i]);
         }
 
-        else if (   (lines[i].StartsWith(_T("Cannot find bounds of current function")))
-                 || (lines[i].StartsWith(_T("No stack"))) )
+        else if (   (lines[i].StartsWith("Cannot find bounds of current function"))
+                 || (lines[i].StartsWith("No stack")) )
         {
             m_pDBG->Log(lines[i]);
             m_ProgramIsStopped = true;
@@ -828,7 +828,7 @@ void GDB_driver::ParseOutput(const wxString& output)
         // e.g.
         // Pending breakpoint "C:/Devel/libs/irr_svn/source/Irrlicht/CSceneManager.cpp:1077" resolved
         // Breakpoint 2, irr::scene::CSceneManager::getSceneNodeFromName (this=0x3fa878, name=0x3fbed8 "MainLevel", start=0x3fa87c) at CSceneManager.cpp:1077
-        else if (lines[i].StartsWith(_T("Pending breakpoint ")))
+        else if (lines[i].StartsWith("Pending breakpoint "))
         {
             m_pDBG->Log(lines[i]);
 
@@ -848,7 +848,7 @@ void GDB_driver::ParseOutput(const wxString& output)
 
                 // Breakpoint 2, irr::scene::CSceneManager::getSceneNodeFromName (this=0x3fa878, name=0x3fbed8 "MainLevel", start=0x3fa87c) at CSceneManager.cpp:1077
                 wxString newbpstr = lines[++i];
-                while (i < lines.GetCount() - 1 && newbpstr.StartsWith(_T("[")))
+                while (i < lines.GetCount() - 1 && newbpstr.StartsWith("["))
                     newbpstr = lines[++i];
 
                 if (rePendingFound1.Matches(newbpstr))
@@ -893,7 +893,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             }
         }
 
-        else if (lines[i].StartsWith(wxT("Breakpoint ")))
+        else if (lines[i].StartsWith("Breakpoint "))
         {
             if (rePendingFound1.Matches(lines[i]))
             {
@@ -910,7 +910,7 @@ void GDB_driver::ParseOutput(const wxString& output)
             }
         }
 
-        else if (lines[i].StartsWith(wxT("Temporary breakpoint")))
+        else if (lines[i].StartsWith("Temporary breakpoint"))
         {
             if (reTempBreakFound.Matches(lines[i]))
             {

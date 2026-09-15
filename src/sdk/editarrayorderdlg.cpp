@@ -28,7 +28,7 @@ END_EVENT_TABLE()
 EditArrayOrderDlg::EditArrayOrderDlg(wxWindow* parent, const wxArrayString& array)
     : m_Array(array)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditArrayOrder"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditArrayOrder","wxScrollingDialog");
     DoFillList();
 
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();

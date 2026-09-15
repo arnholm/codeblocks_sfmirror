@@ -65,23 +65,23 @@ wxString CompilerMINGWGenerator::SetupIncludeDirs(Compiler* compiler, ProjectBui
                     if ( gcc_major < 4 )
                         pch_prepend << compiler->GetSwitches().includeDirs << dir << _T(' ');
                     else
-                        pch_prepend << _T("-iquote") << dir << _T(' ');
+                        pch_prepend << "-iquote" << dir << _T(' ');
                 }
                 HasPCH = true; // there is at least one header file to be compiled
             }
         }
         // for gcc-4.0+, use the following:
-        // pch_prepend << _T("-iquote") << dir << _T(' ');
+        // pch_prepend << "-iquote" << dir << _T(' ');
         // for earlier versions, -I- must be used
         if ( gcc_major < 4 )
-            pch_prepend << _T("-I- ");
+            pch_prepend << "-I- ";
         int count = (int)includedDirs.GetCount();
         for (int i = 0; i < count; ++i)
         {
             QuoteStringIfNeeded(includedDirs[i]);
             pch_prepend << compiler->GetSwitches().includeDirs << includedDirs[i] << _T(' ');
         }
-        pch_prepend << _T("-I. ");
+        pch_prepend << "-I. ";
     }
 
     // add in array

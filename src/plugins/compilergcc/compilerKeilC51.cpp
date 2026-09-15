@@ -22,7 +22,7 @@
 #endif
 
 CompilerKeilC51::CompilerKeilC51()
-    : Compiler(_("Keil C51 Compiler"), _T("keilc51"))
+    : Compiler(_("Keil C51 Compiler"), "keilc51")
 {
     m_Weight = 73;
     Reset();
@@ -50,36 +50,36 @@ AutoDetectResult CompilerKeilC51::AutoDetectInstallationDir()
     {
 #ifdef __WXMSW__ // for wxRegKey
         wxRegKey key;   // defaults to HKCR
-        key.SetName(wxT("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Keil \265Vision3")); // 'backslash265' is the mu character
+        key.SetName("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Keil \265Vision3"); // 'backslash265' is the mu character
         if (key.Exists() && key.Open(wxRegKey::Read)) // found; read it
-            key.QueryValue(wxT("LastInstallDir"), m_MasterPath);
+            key.QueryValue("LastInstallDir", m_MasterPath);
 #endif // __WXMSW__
 
         if (m_MasterPath.IsEmpty())
         {
             // just a guess; the default installation dir
-            m_MasterPath = wxT("C:\\Keil");
+            m_MasterPath = "C:\\Keil";
         }
 
-        m_MasterPath = m_MasterPath + wxFILE_SEP_PATH + wxT("C51");
+        m_MasterPath = m_MasterPath + wxFILE_SEP_PATH + "C51";
 
         if ( wxDirExists(m_MasterPath) )
         {
-            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxT("inc"));
-            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + wxT("lib"));
-            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxT("bin"));
+            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "inc");
+            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + "lib");
+            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "bin");
         }
     }
     else
-        m_MasterPath=_T("/usr/local"); // default
+        m_MasterPath="/usr/local"; // default
 
-    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + wxT("bin") + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
 }
 
 //------------------------------------------------------------
 
 CompilerKeilCX51::CompilerKeilCX51()
-    : CompilerKeilC51(_("Keil CX51 Compiler"), _T("keilcx51"))
+    : CompilerKeilC51(_("Keil CX51 Compiler"), "keilcx51")
 {
     m_Weight = 74;
 }

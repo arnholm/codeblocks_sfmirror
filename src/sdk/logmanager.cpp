@@ -69,24 +69,24 @@ LogManager::LogManager()
     SetLog(new StdoutLogger, stdout_log);
     SetLog(new StdoutLogger, app_log);
     SetLog(new StdoutLogger, debug_log);
-    slot[stdout_log].title = _T("stdout");
-    slot[app_log].title = _T("Code::Blocks");
-    slot[debug_log].title = _T("Code::Blocks Debug");
+    slot[stdout_log].title = "stdout";
+    slot[app_log].title = "Code::Blocks";
+    slot[debug_log].title = "Code::Blocks Debug";
 
     ColourManager *manager = Manager::Get()->GetColourManager();
-    manager->RegisterColour(_("Logs"), _("Success text"), wxT("logs_success_text"), *wxBLUE);
-    manager->RegisterColour(_("Logs"), _("Warning text"), wxT("logs_warning_text"), *wxBLUE);
-    manager->RegisterColour(_("Logs"), _("Error text"), wxT("logs_error_text"), wxColour(0xf0, 0x00, 0x00));
-    manager->RegisterColour(_("Logs"), _("Critical text"), wxT("logs_critical_text"), *wxWHITE);
-    manager->RegisterColour(_("Logs"), _("Critical background"), wxT("logs_critical_back"), *wxRED);
+    manager->RegisterColour(_("Logs"), _("Success text"), "logs_success_text", *wxBLUE);
+    manager->RegisterColour(_("Logs"), _("Warning text"), "logs_warning_text", *wxBLUE);
+    manager->RegisterColour(_("Logs"), _("Error text"), "logs_error_text", wxColour(0xf0, 0x00, 0x00));
+    manager->RegisterColour(_("Logs"), _("Critical text"), "logs_critical_text", *wxWHITE);
+    manager->RegisterColour(_("Logs"), _("Critical background"), "logs_critical_back", *wxRED);
     manager->RegisterColour(_("Logs"), _("Critical text (ListCtrl)"),
-                            wxT("logs_critical_text_listctrl"), wxColour(0x0a, 0x00, 0x00));
-    manager->RegisterColour(_("Logs"), _("Failure text"), wxT("logs_failure_text"), wxColour(0x00, 0x00, 0xa0));
+                            "logs_critical_text_listctrl", wxColour(0x0a, 0x00, 0x00));
+    manager->RegisterColour(_("Logs"), _("Failure text"), "logs_failure_text", wxColour(0x00, 0x00, 0xa0));
 
-    Register(_T("null"),   new Instantiator<NullLogger>);
-    Register(_T("stdout"), new Instantiator<StdoutLogger>);
-    Register(_T("text"),   new Instantiator<TextCtrlLogger>);
-    Register(_T("file"),   new Instantiator<FileLogger, true>);
+    Register("null",   new Instantiator<NullLogger>);
+    Register("stdout", new Instantiator<StdoutLogger>);
+    Register("text",   new Instantiator<TextCtrlLogger>);
+    Register("file",   new Instantiator<FileLogger, true>);
 }
 
 LogManager::~LogManager()
@@ -198,11 +198,11 @@ void LogManager::Register(const wxString& name, InstantiatorBase* ins)
 
 void LogManager::Panic(const wxString& msg, const wxString& component)
 {
-    wxString title(_T("Panic: "));
+    wxString title("Panic: ");
     title.Append(component);
 
     if (!component)
-        title.Append(_T("Code::Blocks"));
+        title.Append("Code::Blocks");
 
     wxSafeShowMessage(title, msg);
 }

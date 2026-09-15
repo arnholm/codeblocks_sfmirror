@@ -24,14 +24,14 @@ class cbTextInputStream : public wxTextInputStream
         bool m_allowMBconversion;
     public:
 #if wxUSE_UNICODE
-        cbTextInputStream(wxInputStream& s, const wxString &sep=wxT(" \t"), wxMBConv& conv = wxConvLocal )
+        cbTextInputStream(wxInputStream& s, const wxString &sep=" \t", wxMBConv& conv = wxConvLocal )
             : wxTextInputStream(s, sep, conv),
             m_allowMBconversion(true)
         {
             memset((void*)m_lastBytes, 0, 10);
         }
 #else
-        cbTextInputStream(wxInputStream& s, const wxString &sep=wxT(" \t") )
+        cbTextInputStream(wxInputStream& s, const wxString &sep=" \t" )
             : wxTextInputStream(s, sep)
         {
             memset((void*)m_lastBytes, 0, 10);

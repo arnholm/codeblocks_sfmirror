@@ -1001,10 +1001,10 @@ namespace ScriptBindings
             return FindXmlElementResult();
 
         // Note: This is slow!
-        const wxArrayString names = GetArrayFromString(query, wxT("/"), false);
+        const wxArrayString names = GetArrayFromString(query, "/", false);
         for (const wxString &name : names)
         {
-            const wxString::size_type openBracePos = name.find_first_of(wxT("[("));
+            const wxString::size_type openBracePos = name.find_first_of("[(");
             if (openBracePos != wxString::npos)
             {
                 if (name[openBracePos] == wxT('['))
@@ -1013,7 +1013,7 @@ namespace ScriptBindings
                     if (closeBracePos == wxString::npos || closeBracePos != name.length() - 1)
                     {
                         FindXmlElementResult result;
-                        result.errorStr.Printf(wxT("Invalid index format in '%s'!"), name.wx_str());
+                        result.errorStr.Printf("Invalid index format in '%s'!", name.wx_str());
                         return result;
                     }
 
@@ -1024,7 +1024,7 @@ namespace ScriptBindings
                     if (!indexStr.ToLong(&lIndex))
                     {
                         FindXmlElementResult result;
-                        result.errorStr.Printf(wxT("Can't convert '%s' to integer!"),
+                        result.errorStr.Printf("Can't convert '%s' to integer!",
                                                indexStr.wx_str());
                         return result;
                     }
@@ -1055,7 +1055,7 @@ namespace ScriptBindings
                     if (closeBracePos == wxString::npos || closeBracePos != name.length() - 1)
                     {
                         FindXmlElementResult result;
-                        result.errorStr.Printf(wxT("Invalid attribute format in '%s'!"),
+                        result.errorStr.Printf("Invalid attribute format in '%s'!",
                                                name.wx_str());
                         return result;
                     }
@@ -1067,7 +1067,7 @@ namespace ScriptBindings
                     if (equalPos == wxString::npos)
                     {
                         FindXmlElementResult result;
-                        result.errorStr.Printf(wxT("Invalid attribute format in '%s'!"),
+                        result.errorStr.Printf("Invalid attribute format in '%s'!",
                                                attributeStr.wx_str());
                         return result;
                     }
@@ -1271,7 +1271,7 @@ namespace ScriptBindings
         {
             if (queryResult.errorStr.empty())
             {
-                queryResult.errorStr.Printf(wxT("Can't find extension node '%s'!"),
+                queryResult.errorStr.Printf("Can't find extension node '%s'!",
                                             extractor.p1->wx_str());
             }
             return sq_throwerror(v, queryResult.errorStr.utf8_str().data());
@@ -1295,7 +1295,7 @@ namespace ScriptBindings
         {
             if (queryResult.errorStr.empty())
             {
-                queryResult.errorStr.Printf(wxT("Can't find extension node '%s'!"),
+                queryResult.errorStr.Printf("Can't find extension node '%s'!",
                                             extractor.p1->wx_str());
             }
             return sq_throwerror(v, queryResult.errorStr.utf8_str().data());
@@ -1321,7 +1321,7 @@ namespace ScriptBindings
         {
             if (queryResult.errorStr.empty())
             {
-                queryResult.errorStr.Printf(wxT("Can't find extension node '%s'!"),
+                queryResult.errorStr.Printf("Can't find extension node '%s'!",
                                             extractor.p1->wx_str());
             }
             return sq_throwerror(v, queryResult.errorStr.utf8_str().data());
@@ -1345,7 +1345,7 @@ namespace ScriptBindings
         {
             if (queryResult.errorStr.empty())
             {
-                queryResult.errorStr.Printf(wxT("Can't find extension node '%s'!"),
+                queryResult.errorStr.Printf("Can't find extension node '%s'!",
                                             extractor.p1->wx_str());
             }
             return sq_throwerror(v, queryResult.errorStr.utf8_str().data());

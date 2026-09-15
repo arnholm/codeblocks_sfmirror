@@ -162,36 +162,36 @@ EditorManager::EditorManager()
     m_pNotebook = new cbAuiNotebook(Manager::Get()->GetAppWindow(), ID_NBEditorManager, wxDefaultPosition, wxDefaultSize,
                                     wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_WINDOWLIST_BUTTON | wxNO_FULL_REPAINT_ON_RESIZE | wxCLIP_CHILDREN);
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/editor_tabs_bottom"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/editor_tabs_bottom", false))
         m_pNotebook->SetWindowStyleFlag(m_pNotebook->GetWindowStyleFlag() | wxAUI_NB_BOTTOM);
 
-    Manager::Get()->GetLogManager()->DebugLog(_T("Initialize EditColourSet ....."));
-    m_Theme = new EditorColourSet(Manager::Get()->GetConfigManager(_T("editor"))->Read(_T("/colour_sets/active_colour_set"), COLORSET_DEFAULT));
-    Manager::Get()->GetLogManager()->DebugLog(_T("Initialize EditColourSet: done."));
+    Manager::Get()->GetLogManager()->DebugLog("Initialize EditColourSet .....");
+    m_Theme = new EditorColourSet(Manager::Get()->GetConfigManager("editor")->Read("/colour_sets/active_colour_set", COLORSET_DEFAULT));
+    Manager::Get()->GetLogManager()->DebugLog("Initialize EditColourSet: done.");
 
     Manager::Get()->GetAppWindow()->PushEventHandler(this);
 
-    m_Zoom = Manager::Get()->GetConfigManager(_T("editor"))->ReadInt(_T("/zoom"));
+    m_Zoom = Manager::Get()->GetConfigManager("editor")->ReadInt("/zoom");
     Manager::Get()->RegisterEventSink(cbEVT_BUILDTARGET_SELECTED,       new cbEventFunctor<EditorManager, CodeBlocksEvent>(this, &EditorManager::CollectDefines));
     Manager::Get()->RegisterEventSink(cbEVT_PROJECT_ACTIVATE,           new cbEventFunctor<EditorManager, CodeBlocksEvent>(this, &EditorManager::CollectDefines));
     Manager::Get()->RegisterEventSink(cbEVT_WORKSPACE_LOADING_COMPLETE, new cbEventFunctor<EditorManager, CodeBlocksEvent>(this, &EditorManager::CollectDefines));
 
     ColourManager* colours = Manager::Get()->GetColourManager();
-    colours->RegisterColour(_("Editor"), _("Changebar (unsaved lines)"), wxT("changebar_unsaved"), wxColour(0xFF, 0xE6, 0x04));
-    colours->RegisterColour(_("Editor"), _("Changebar (saved lines)"),   wxT("changebar_saved"),   wxColour(0x04, 0xFF, 0x50));
-    colours->RegisterColour(_("Editor"), _("Caret"), wxT("editor_caret"), *wxBLACK);
-    colours->RegisterColour(_("Editor"), _("Right margin"), wxT("editor_gutter"), *wxLIGHT_GREY);
-    colours->RegisterColour(_("Editor"), _("Line numbers foreground colour"), wxT("editor_linenumbers_fg"),
+    colours->RegisterColour(_("Editor"), _("Changebar (unsaved lines)"), "changebar_unsaved", wxColour(0xFF, 0xE6, 0x04));
+    colours->RegisterColour(_("Editor"), _("Changebar (saved lines)"),   "changebar_saved",   wxColour(0x04, 0xFF, 0x50));
+    colours->RegisterColour(_("Editor"), _("Caret"), "editor_caret", *wxBLACK);
+    colours->RegisterColour(_("Editor"), _("Right margin"), "editor_gutter", *wxLIGHT_GREY);
+    colours->RegisterColour(_("Editor"), _("Line numbers foreground colour"), "editor_linenumbers_fg",
                             wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
-    colours->RegisterColour(_("Editor"), _("Line numbers background colour"), wxT("editor_linenumbers_bg"),
+    colours->RegisterColour(_("Editor"), _("Line numbers background colour"), "editor_linenumbers_bg",
                             wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 
     // These two are taken from Platform::Chrome() and Platform::ChromeHightlight()
-    colours->RegisterColour(_("Editor"), _("Margin chrome colour"), wxT("editor_margin_chrome"),
+    colours->RegisterColour(_("Editor"), _("Margin chrome colour"), "editor_margin_chrome",
                             wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
-    colours->RegisterColour(_("Editor"), _("Margin chrome highlight colour"), wxT("editor_margin_chrome_highlight"),
+    colours->RegisterColour(_("Editor"), _("Margin chrome highlight colour"), "editor_margin_chrome_highlight",
                             wxSystemSettings::GetColour(wxSYS_COLOUR_3DHIGHLIGHT));
-    colours->RegisterColour(_("Editor"), _("Whitespace"), wxT("editor_whitespace"), wxColor(195, 195, 195));
+    colours->RegisterColour(_("Editor"), _("Whitespace"), "editor_whitespace", wxColor(195, 195, 195));
 }
 
 EditorManager::~EditorManager()
@@ -200,7 +200,7 @@ EditorManager::~EditorManager()
     delete m_pNotebookStackHead;
     delete m_Theme;
     delete m_pData;
-    Manager::Get()->GetConfigManager(_T("editor"))->Write(_T("/zoom"), m_Zoom);
+    Manager::Get()->GetConfigManager("editor")->Write("/zoom", m_Zoom);
 }
 
 cbNotebookStack* EditorManager::GetNotebookStack()
@@ -426,7 +426,7 @@ cbEditor* EditorManager::Open(LoaderBase* fileLdr, const wxString& filename, int
     {
         // First checks if we're already being passed a ProjectFile as a parameter
         if (data)
-            Manager::Get()->GetLogManager()->DebugLog(_T("Project data set for ") + data->file.GetFullPath());
+            Manager::Get()->GetLogManager()->DebugLog("Project data set for " + data->file.GetFullPath());
         else
             Manager::Get()->GetProjectManager()->FindProjectForFile(ed->GetFilename(), &data, false, false);
         if (data)
@@ -513,8 +513,8 @@ cbEditor* EditorManager::New(const wxString& newFileName)
 
     // add default text
     wxString key;
-    key.Printf(_T("/default_code/set%d"), (int)FileTypeOf(ed->GetFilename()));
-    wxString code = Manager::Get()->GetConfigManager(_T("editor"))->Read(key, wxEmptyString);
+    key.Printf("/default_code/set%d", (int)FileTypeOf(ed->GetFilename()));
+    wxString code = Manager::Get()->GetConfigManager("editor")->Read(key, wxEmptyString);
     // Allow usage of macros
     // TODO (Morten#5#): Is it worth making this configurable?!
     Manager::Get()->GetMacrosManager()->ReplaceMacros(code);
@@ -1117,7 +1117,7 @@ bool EditorManager::IsHeaderSource(const wxFileName& candidateFile, const wxFile
             if (candidateFile.GetPath() != activeFile.GetPath()) // Check if we are not in the same Directory
             {
                 wxArrayString fileArray;
-                wxDir::GetAllFiles(candidateFile.GetPath(wxPATH_GET_VOLUME), &fileArray, candidateFile.GetName() + _T(".*"), wxDIR_FILES | wxDIR_HIDDEN);
+                wxDir::GetAllFiles(candidateFile.GetPath(wxPATH_GET_VOLUME), &fileArray, candidateFile.GetName() + ".*", wxDIR_FILES | wxDIR_HIDDEN);
                 for (unsigned i=0; i<fileArray.GetCount(); i++)                             // if in this directory there is already
                     if (wxFileName(fileArray[i]).GetFullName() == activeFile.GetFullName()) // a header file (or source file) for our candidate
                         return false;                                                       // file it can't be our candidate file
@@ -1184,8 +1184,8 @@ static OpenContainingFolderData detectNautilus(const wxString &command, ConfigMa
     // If the user hasn't changed the command, try to detect nautilus using xdg-mime.
     if (command == cbDEFAULT_OPEN_FOLDER_CMD)
     {
-        const wxString shell = appConfig->Read(_T("/console_shell"), DEFAULT_CONSOLE_SHELL);
-        const wxString cmdGetManager = shell + wxT(" 'xdg-mime query default inode/directory'");
+        const wxString shell = appConfig->Read("/console_shell", DEFAULT_CONSOLE_SHELL);
+        const wxString cmdGetManager = shell + " 'xdg-mime query default inode/directory'";
         wxArrayString output, errors;
         wxExecute(cmdGetManager, output, errors, wxEXEC_SYNC);
         if (output.empty())
@@ -1196,26 +1196,26 @@ static OpenContainingFolderData detectNautilus(const wxString &command, ConfigMa
         fileManager = command;
 
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("File manager is: '%s'", fileManager));
-    if (fileManager.find(wxT("nautilus")) == wxString::npos)
+    if (fileManager.find("nautilus") == wxString::npos)
         return OpenContainingFolderData(command, false);
     // If the file manager ends with desktop then this is produced by xdg-mime.
     // This means that we could use the system nautilus (not entirely correct).
-    if (fileManager.EndsWith(wxT(".desktop")))
-        fileManager = wxT("nautilus");
+    if (fileManager.EndsWith(".desktop"))
+        fileManager = "nautilus";
 
     wxArrayString output, errors;
-    wxExecute(fileManager + wxT(" --version"), output, errors, wxEXEC_SYNC);
+    wxExecute(fileManager + " --version", output, errors, wxEXEC_SYNC);
     if (output.empty())
         return OpenContainingFolderData(command, false);
     // It is assumed that the output looks like GNOME nautilus 3.20.4
-    const wxString prefix(wxT("GNOME nautilus "));
+    const wxString prefix("GNOME nautilus ");
 
     const wxString firstLine = output[0].Trim(true).Trim(false);
     Manager::Get()->GetLogManager()->DebugLog(wxString::Format("Nautilus version is: '%s'", firstLine));
 
     if (firstLine.StartsWith(prefix))
     {
-        wxArrayString versionTokens = wxStringTokenize(firstLine.substr(prefix.length()), wxT("."));
+        wxArrayString versionTokens = wxStringTokenize(firstLine.substr(prefix.length()), ".");
         int fullVersion = 0;
         int multiplier = 1;
         for (int ii = versionTokens.GetCount() - 1; ii >= 0; --ii)
@@ -1226,7 +1226,7 @@ static OpenContainingFolderData detectNautilus(const wxString &command, ConfigMa
             multiplier *= 100;
         }
         if (fullVersion >= 30002)
-            return OpenContainingFolderData(fileManager + wxT(" --select"), true);
+            return OpenContainingFolderData(fileManager + " --select", true);
     }
     return OpenContainingFolderData(command, false);
 }
@@ -1238,8 +1238,8 @@ bool EditorManager::OpenContainingFolder()
     if (!ed)
         return false;
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("app"));
-    const wxString &command = cfg->Read(_T("open_containing_folder"), cbDEFAULT_OPEN_FOLDER_CMD);
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("app");
+    const wxString &command = cfg->Read("open_containing_folder", cbDEFAULT_OPEN_FOLDER_CMD);
 #if defined __WXMSW__ || defined __WXMAC__
     OpenContainingFolderData cmdData(command, true);
 #else
@@ -1314,7 +1314,7 @@ bool EditorManager::SwapActiveHeaderSource()
 
     // find all files with the same name as the active file, but with possibly different extension
     // search in the directory of the active file:
-    wxDir::GetAllFiles(theFile.GetPath(wxPATH_GET_VOLUME), &fileArray, theFile.GetName() + _T(".*"), wxDIR_FILES | wxDIR_HIDDEN);
+    wxDir::GetAllFiles(theFile.GetPath(wxPATH_GET_VOLUME), &fileArray, theFile.GetName() + ".*", wxDIR_FILES | wxDIR_HIDDEN);
 
     // try to find the header/source in the list
     wxFileName currentCandidateFile = FindHeaderSource(fileArray, theFile, isCandidate);
@@ -1430,7 +1430,7 @@ bool EditorManager::SwapActiveHeaderSource()
 
             fileArray.Clear();
             // find all files inside the directory with the same name as the active file, but with possibly different extension
-            wxDir::GetAllFiles(dname.GetPath(), &fileArray, theFile.GetName() + _T(".*"), wxDIR_FILES | wxDIR_HIDDEN);
+            wxDir::GetAllFiles(dname.GetPath(), &fileArray, theFile.GetName() + ".*", wxDIR_FILES | wxDIR_HIDDEN);
             // try to find the header/source in the list
             currentCandidateFile = FindHeaderSource(fileArray, theFile, isCandidate);
 
@@ -1545,7 +1545,7 @@ void EditorManager::OnPageChanged(wxAuiNotebookEvent& event)
     CodeBlocksEvent evt2(cbEVT_EDITOR_ACTIVATED, -1, nullptr, eb);
     Manager::Get()->GetPluginManager()->NotifyPlugins(evt2);
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/tabs_stacked_based_switching")))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/tabs_stacked_based_switching"))
     {
         wxWindow*        wnd;
         cbNotebookStack* body;
@@ -1613,7 +1613,7 @@ void EditorManager::OnPageClose(wxAuiNotebookEvent& event)
         }
     }
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/tabs_stacked_based_switching")))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/tabs_stacked_based_switching"))
     {
         wxWindow* wnd;
         cbNotebookStack* body;
@@ -1652,7 +1652,7 @@ void EditorManager::OnPageContextMenu(wxAuiNotebookEvent& event)
             EditorBase* other = GetEditor(i);
             if (!other)
                 continue;
-            const wxString name = (other->GetModified() ? wxT("*") : wxEmptyString) + other->GetShortName();
+            const wxString name = (other->GetModified() ? "*" : "") + other->GetShortName();
             if (other == current)
             {
                 pop->AppendCheckItem(wxID_ANY, name); // do nothing if the current tab is selected
@@ -1729,7 +1729,7 @@ void EditorManager::OnPageContextMenu(wxAuiNotebookEvent& event)
         pop->AppendSeparator();
     }
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/editor_tabs_bottom"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/editor_tabs_bottom", false))
         pop->Append(idNBTabTop, _("Tabs at top"));
     else
         pop->Append(idNBTabBottom, _("Tabs at bottom"));
@@ -1830,7 +1830,7 @@ void EditorManager::OnTabPosition(wxCommandEvent& event)
     m_pNotebook->Refresh();
 
     // (style & wxAUI_NB_BOTTOM) saves info only about the the tabs position
-    Manager::Get()->GetConfigManager(_T("app"))->Write(_T("/environment/editor_tabs_bottom"),       (bool)(style & wxAUI_NB_BOTTOM));
+    Manager::Get()->GetConfigManager("app")->Write("/environment/editor_tabs_bottom",       (bool)(style & wxAUI_NB_BOTTOM));
 }
 
 void EditorManager::OnProperties(cb_unused wxCommandEvent& event)
@@ -1933,8 +1933,8 @@ void EditorManager::CollectDefines(CodeBlocksEvent& event)
 {
     cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
     if (   !prj
-        || !Manager::Get()->GetConfigManager(wxT("editor"))->ReadBool(wxT("/track_preprocessor"),  true)
-        || !Manager::Get()->GetConfigManager(wxT("editor"))->ReadBool(wxT("/collect_prj_defines"), true) )
+        || !Manager::Get()->GetConfigManager("editor")->ReadBool("/track_preprocessor",  true)
+        || !Manager::Get()->GetConfigManager("editor")->ReadBool("/collect_prj_defines", true) )
     {
         event.Skip();
         return;
@@ -1963,146 +1963,146 @@ void EditorManager::CollectDefines(CodeBlocksEvent& event)
     wxArrayString defines;
     for (size_t i = 0; i < compilerFlags.GetCount(); ++i)
     {
-        if (   compilerFlags[i].StartsWith(wxT("-D"))
-            || compilerFlags[i].StartsWith(wxT("/D")) )
+        if (   compilerFlags[i].StartsWith("-D")
+            || compilerFlags[i].StartsWith("/D") )
         {
             defines.Add(compilerFlags[i].Mid(2));
         }
-        else if (compilerFlags[i].Find(wxT("`")) != wxNOT_FOUND)
+        else if (compilerFlags[i].Find("`") != wxNOT_FOUND)
         {
             wxString str = compilerFlags[i];
             cbExpandBackticks(str);
-            str.Replace(wxT("`"), wxT(" ")); // remove any leftover backticks to prevent an infinite loop
-            AppendArray(GetArrayFromString(str, wxT(" ")), compilerFlags);
+            str.Replace("`", " "); // remove any leftover backticks to prevent an infinite loop
+            AppendArray(GetArrayFromString(str, " "), compilerFlags);
         }
-        else if (   compilerFlags[i] == wxT("-ansi")
-                 || compilerFlags[i] == wxT("-std=c90")
-                 || compilerFlags[i] == wxT("-std=c++98"))
+        else if (   compilerFlags[i] == "-ansi"
+                 || compilerFlags[i] == "-std=c90"
+                 || compilerFlags[i] == "-std=c++98")
         {
-            defines.Add(wxT("__STRICT_ANSI__"));
+            defines.Add("__STRICT_ANSI__");
         }
     }
 
-    defines.Add(wxT("__cplusplus"));
+    defines.Add("__cplusplus");
     for (FilesList::iterator it = lst->begin(); it != lst->end(); ++it)
     {
-        if ((*it)->relativeFilename.EndsWith(wxT(".c")))
+        if ((*it)->relativeFilename.EndsWith(".c"))
         {
             defines.RemoveAt(defines.GetCount() - 1); // do not define '__cplusplus' if even a single C file is found
             break;
         }
     }
 
-    if (id.Find(wxT("gcc")) != wxNOT_FOUND)
+    if (id.Find("gcc") != wxNOT_FOUND)
     {
-        defines.Add(wxT("__GNUC__"));
-        defines.Add(wxT("__GNUG__"));
+        defines.Add("__GNUC__");
+        defines.Add("__GNUG__");
     }
-    else if (id.Find(wxT("msvc")) != wxNOT_FOUND)
+    else if (id.Find("msvc") != wxNOT_FOUND)
     {
-        defines.Add(wxT("_MSC_VER"));
-        defines.Add(wxT("__VISUALC__"));
+        defines.Add("_MSC_VER");
+        defines.Add("__VISUALC__");
     }
 
-    if (Manager::Get()->GetConfigManager(wxT("editor"))->ReadBool(wxT("/platform_defines"), false))
+    if (Manager::Get()->GetConfigManager("editor")->ReadBool("/platform_defines", false))
     {
         if (platform::windows)
         {
-            defines.Add(wxT("_WIN32"));
-            defines.Add(wxT("__WIN32"));
-            defines.Add(wxT("__WIN32__"));
-            defines.Add(wxT("WIN32"));
-            defines.Add(wxT("__WINNT"));
-            defines.Add(wxT("__WINNT__"));
-            defines.Add(wxT("WINNT"));
-            defines.Add(wxT("__WXMSW__"));
-            defines.Add(wxT("__WINDOWS__"));
+            defines.Add("_WIN32");
+            defines.Add("__WIN32");
+            defines.Add("__WIN32__");
+            defines.Add("WIN32");
+            defines.Add("__WINNT");
+            defines.Add("__WINNT__");
+            defines.Add("WINNT");
+            defines.Add("__WXMSW__");
+            defines.Add("__WINDOWS__");
             if (platform::bits == 64)
             {
-                defines.Add(wxT("_WIN64"));
-                defines.Add(wxT("__WIN64__"));
+                defines.Add("_WIN64");
+                defines.Add("__WIN64__");
             }
         }
         else if (platform::macosx)
         {
-            defines.Add(wxT("__WXMAC__"));
-            defines.Add(wxT("__WXOSX__"));
-            defines.Add(wxT("__WXCOCOA__"));
-            defines.Add(wxT("__WXOSX_MAC__"));
-            defines.Add(wxT("__APPLE__"));
+            defines.Add("__WXMAC__");
+            defines.Add("__WXOSX__");
+            defines.Add("__WXCOCOA__");
+            defines.Add("__WXOSX_MAC__");
+            defines.Add("__APPLE__");
         }
         else if (platform::Linux)
         {
-            defines.Add(wxT("LINUX"));
-            defines.Add(wxT("linux"));
-            defines.Add(wxT("__linux"));
-            defines.Add(wxT("__linux__"));
+            defines.Add("LINUX");
+            defines.Add("linux");
+            defines.Add("__linux");
+            defines.Add("__linux__");
         }
         else if (platform::freebsd)
         {
-            defines.Add(wxT("FREEBSD"));
-            defines.Add(wxT("__FREEBSD__"));
+            defines.Add("FREEBSD");
+            defines.Add("__FREEBSD__");
         }
         else if (platform::netbsd)
         {
-            defines.Add(wxT("NETBSD"));
-            defines.Add(wxT("__NETBSD__"));
+            defines.Add("NETBSD");
+            defines.Add("__NETBSD__");
         }
         else if (platform::openbsd)
         {
-            defines.Add(wxT("OPENBSD"));
-            defines.Add(wxT("__OPENBSD__"));
+            defines.Add("OPENBSD");
+            defines.Add("__OPENBSD__");
         }
         else if (platform::darwin)
         {
-            defines.Add(wxT("DARWIN"));
-            defines.Add(wxT("__APPLE__"));
+            defines.Add("DARWIN");
+            defines.Add("__APPLE__");
         }
         else if (platform::solaris)
         {
-            defines.Add(wxT("sun"));
-            defines.Add(wxT("__sun"));
-            defines.Add(wxT("__SUN__"));
-            defines.Add(wxT("__SUNOS__"));
-            defines.Add(wxT("__SOLARIS__"));
+            defines.Add("sun");
+            defines.Add("__sun");
+            defines.Add("__SUN__");
+            defines.Add("__SUNOS__");
+            defines.Add("__SOLARIS__");
         }
         if (platform::Unix)
         {
-            defines.Add(wxT("unix"));
-            defines.Add(wxT("__unix"));
-            defines.Add(wxT("__unix__"));
-            defines.Add(wxT("__UNIX__"));
+            defines.Add("unix");
+            defines.Add("__unix");
+            defines.Add("__unix__");
+            defines.Add("__UNIX__");
         }
         if (platform::gtk)
-            defines.Add(wxT("__WXGTK__"));
+            defines.Add("__WXGTK__");
         if (platform::bits == 32)
         {
-            defines.Add(wxT("i386"));
-            defines.Add(wxT("__i386"));
-            defines.Add(wxT("__i386__"));
-            defines.Add(wxT("__i386__"));
-            defines.Add(wxT("_X86_"));
-            defines.Add(wxT("__INTEL__"));
+            defines.Add("i386");
+            defines.Add("__i386");
+            defines.Add("__i386__");
+            defines.Add("__i386__");
+            defines.Add("_X86_");
+            defines.Add("__INTEL__");
         }
         else if (platform::bits == 64)
         {
-            defines.Add(wxT("__amd64"));
-            defines.Add(wxT("__amd64__"));
-            defines.Add(wxT("__x86_64"));
-            defines.Add(wxT("__x86_64__"));
-            defines.Add(wxT("__IA64__"));
+            defines.Add("__amd64");
+            defines.Add("__amd64__");
+            defines.Add("__x86_64");
+            defines.Add("__x86_64__");
+            defines.Add("__IA64__");
         }
     }
 
-    const wxString keywords = GetStringFromArray(MakeUniqueArray(defines, true), wxT(" "), false);
-    const HighlightLanguage hlCpp = m_Theme->GetHighlightLanguage(wxT("C/C++"));
+    const wxString keywords = GetStringFromArray(MakeUniqueArray(defines, true), " ", false);
+    const HighlightLanguage hlCpp = m_Theme->GetHighlightLanguage("C/C++");
     if (m_Theme->GetKeywords(hlCpp, 4) == keywords)
         return; // no change
 
     m_Theme->SetKeywords(hlCpp, 4, keywords);
-    const wxString key = wxT("/colour_sets/") + m_Theme->GetName() + wxT("/cc/");
-    Manager::Get()->GetConfigManager(wxT("editor"))->Write(key + wxT("editor/keywords/set4"), keywords);
-    Manager::Get()->GetConfigManager(wxT("editor"))->Write(key + wxT("name"), wxT("C/C++"));
+    const wxString key = "/colour_sets/" + m_Theme->GetName() + "/cc/";
+    Manager::Get()->GetConfigManager("editor")->Write(key + "editor/keywords/set4", keywords);
+    Manager::Get()->GetConfigManager("editor")->Write(key + "name", "C/C++");
 
     // update open editors
     for (int index = 0; index < GetEditorsCount(); ++index)

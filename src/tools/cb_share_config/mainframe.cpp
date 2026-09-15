@@ -68,8 +68,8 @@ END_EVENT_TABLE()
 //***********************************************************************
 
 MainFrame::MainFrame(wxWindow* parent,wxWindowID id) :
-  mFileSrc(wxT("")), mCfgSrc(nullptr), mCfgSrcValid(false), mNodesSrc(),
-  mFileDst(wxT("")), mCfgDst(nullptr), mCfgDstValid(false), mNodesDst()
+  mFileSrc(""), mCfgSrc(nullptr), mCfgSrcValid(false), mNodesSrc(),
+  mFileDst(""), mCfgDst(nullptr), mCfgDstValid(false), mNodesDst()
 {
 	//(*Initialize(MainFrame)
 	wxButton* btnClose;
@@ -198,7 +198,7 @@ void MainFrame::OnBtnFileDstClick(wxCommandEvent& /*event*/)
     wxMessageBox(wxT("Hint: To backup (export) your configuration use the \"Export\" button,\n"
                      "to transfer to an existing (valid Code::Blocks) configuration file,\n"
                      "use the \"Transfer\" button."),
-                 wxT("Information"), wxICON_INFORMATION | wxOK);
+                 "Information", wxICON_INFORMATION | wxOK);
     mCfgDstValid = false;
     return;
   }
@@ -217,8 +217,8 @@ void MainFrame::OnBtnTransferClick(wxCommandEvent& /*event*/)
 {
   if (mCfgSrcValid && mCfgDstValid)
   {
-    if (wxMessageBox(wxT("Are you sure to transfer the selected nodes to the destination?"),
-                     wxT("Question"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT ) == wxYES)
+    if (wxMessageBox("Are you sure to transfer the selected nodes to the destination?",
+                     "Question", wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT ) == wxYES)
     {
       // Set all (checked) variables of lstEnvVars
       int items_selected = 0;
@@ -233,9 +233,9 @@ void MainFrame::OnBtnTransferClick(wxCommandEvent& /*event*/)
 
           if (!TransferNode(&node, PathToArray(path)))
           {
-            wxMessageBox(wxT("The node \"") + path + wxT("\" could not be transferred.\n"
+            wxMessageBox("The node \"" + path + wxT("\" could not be transferred.\n"
                              "Corrupted / unexpected configuration structure?"),
-                         wxT("Error"), wxICON_EXCLAMATION | wxOK);
+                         "Error", wxICON_EXCLAMATION | wxOK);
             return;
           }
         }
@@ -248,12 +248,12 @@ void MainFrame::OnBtnTransferClick(wxCommandEvent& /*event*/)
 
         wxMessageBox(wxT("Selected items have been transferred successfully.\n"
                          "Save the destination file to update the configuration permanently."),
-                     wxT("Info"), wxICON_INFORMATION | wxOK);
+                     "Info", wxICON_INFORMATION | wxOK);
       }
       else
       {
-        wxMessageBox(wxT("There were no items selected to transfer."),
-                     wxT("Warning"), wxICON_EXCLAMATION | wxOK);
+        wxMessageBox("There were no items selected to transfer.",
+                     "Warning", wxICON_EXCLAMATION | wxOK);
       }
     }
   }
@@ -261,7 +261,7 @@ void MainFrame::OnBtnTransferClick(wxCommandEvent& /*event*/)
   {
     wxMessageBox(wxT("Cannot begin transfer.\n"
                      "At least one configuration is empty or invalid!"),
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+                 "Error", wxICON_EXCLAMATION | wxOK);
   }
 }// OnBtnTransferClick
 
@@ -284,7 +284,7 @@ void MainFrame::OnBtnExportAllClick(wxCommandEvent& /*event*/)
                    "Please note that the nodes show here do not cover the whole C::B configuration.\n"
                    "The backup files only contain some nodes for transferring them using cb_share_config.\n"
                    "WARNING: Existing files in the target directory will be OVERWRITTEN."),
-               wxT("Information"), wxICON_INFORMATION);
+               "Information", wxICON_INFORMATION);
 
   bool items_selected = false;
   for (unsigned int i=0; i<clbCfgSrc->GetCount(); ++i)
@@ -298,8 +298,8 @@ void MainFrame::OnBtnExportAllClick(wxCommandEvent& /*event*/)
 
   if (items_selected)
   {
-    bool selected_only = (wxYES == wxMessageBox(wxT("DO you want to export only the selected nodes?"),
-                                                wxT("Question"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT));
+    bool selected_only = (wxYES == wxMessageBox("DO you want to export only the selected nodes?",
+                                                "Question", wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT));
     DoExport(selected_only);
   }
   else
@@ -316,15 +316,15 @@ void MainFrame::OnBtnExportClick(wxCommandEvent& /*event*/)
   TiXmlDocument* doc = new TiXmlDocument();
   if (!doc)
   {
-    wxMessageBox(wxT("Cannot create empty XML document...?!"),
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("Cannot create empty XML document...?!",
+                 "Error", wxICON_EXCLAMATION | wxOK);
     return;
   }
 
   wxMessageBox(wxT("You are about to export the selected node(s) to a backup C::B configuration file.\n"
                    "Please note that this is *not* complete because it includes the selected node(s) only.\n"
                    "It's purpose is to backup misc. nodes for transferring them using cb_share_config."),
-               wxT("Information"), wxICON_INFORMATION);
+               "Information", wxICON_INFORMATION);
 
   TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "yes");
   TiXmlElement*     root = new TiXmlElement("CodeBlocksConfig");
@@ -349,10 +349,10 @@ void MainFrame::OnBtnExportClick(wxCommandEvent& /*event*/)
   {
     wxString filename = wxFileSelector
     (
-      wxT("Choose a Code::Blocks backup configuration file"), // title
-      wxT(""),                                                // default path
-      wxT("backup.conf"),                                     // default file
-      wxT("*.conf"),                                          // default extension
+      "Choose a Code::Blocks backup configuration file", // title
+      "",                                                // default path
+      "backup.conf",                                     // default file
+      "*.conf",                                          // default extension
       wxT("Code::Blocks configuration files (*.conf)|*.conf|"
           "All files (*.*)|*.*"),                             // wildcards
       wxFD_SAVE                                               // flags
@@ -361,20 +361,20 @@ void MainFrame::OnBtnExportClick(wxCommandEvent& /*event*/)
     {
       if (TiXmlSaveDocument(filename, doc))
       {
-        wxMessageBox(wxT("Backup configuration file has been saved."),
-                     wxT("Information"), wxICON_INFORMATION | wxOK);
+        wxMessageBox("Backup configuration file has been saved.",
+                     "Information", wxICON_INFORMATION | wxOK);
       }
       else
       {
-        wxMessageBox(wxT("Could not save backup configuration file."),
-                     wxT("Warning"), wxICON_EXCLAMATION | wxOK);
+        wxMessageBox("Could not save backup configuration file.",
+                     "Warning", wxICON_EXCLAMATION | wxOK);
       }
     }
   }
   else
   {
-    wxMessageBox(wxT("There were no items selected to backup."),
-                 wxT("Warning"), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("There were no items selected to backup.",
+                 "Warning", wxICON_EXCLAMATION | wxOK);
   }
 
   delete doc;
@@ -384,18 +384,18 @@ void MainFrame::OnBtnExportClick(wxCommandEvent& /*event*/)
 
 void MainFrame::OnBtnSaveClick(wxCommandEvent& /*event*/)
 {
-  if (wxMessageBox(wxT("Are you sure to save destination configuration file?"),
-                   wxT("Question"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT ) == wxYES)
+  if (wxMessageBox("Are you sure to save destination configuration file?",
+                   "Question", wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT ) == wxYES)
   {
     if (TiXmlSaveDocument(mFileDst, mCfgDst))
     {
-      wxMessageBox(wxT("Destination file has been saved (updated)."),
-                   wxT("Information"), wxICON_INFORMATION | wxOK);
+      wxMessageBox("Destination file has been saved (updated).",
+                   "Information", wxICON_INFORMATION | wxOK);
     }
     else
     {
-      wxMessageBox(wxT("Could not save destination configuration file."),
-                   wxT("Warning"), wxICON_EXCLAMATION | wxOK);
+      wxMessageBox("Could not save destination configuration file.",
+                   "Warning", wxICON_EXCLAMATION | wxOK);
     }
   }
 }// OnBtnSaveClick
@@ -414,7 +414,7 @@ wxString MainFrame::FileSelector()
 #ifdef __WXMSW__
   TCHAR szPath[MAX_PATH];
   SHGetFolderPath(NULL, CSIDL_APPDATA, 0, 0, szPath);
-  wxString config_folder = wxString(szPath) + wxT("\\codeblocks");
+  wxString config_folder = wxString(szPath) + "\\codeblocks";
 #else
 #ifdef __linux__
   wxString config_folder = wxString::FromUTF8(g_build_filename (g_get_user_config_dir(), "codeblocks", NULL));
@@ -426,10 +426,10 @@ wxString MainFrame::FileSelector()
 
   wxString filename = wxFileSelector
   (
-    wxT("Choose a Code::Blocks configuration file"), // title
+    "Choose a Code::Blocks configuration file", // title
     config_folder,                                   // default path
-    wxT("default.conf"),                             // default file
-    wxT("*.conf"),                                   // default extension
+    "default.conf",                             // default file
+    "*.conf",                                   // default extension
     wxT("Code::Blocks configuration files (*.conf)|*.conf|"
         "All files (*.*)|*.*"),                      // wildcards
     wxFD_OPEN | wxFD_FILE_MUST_EXIST                 // flags
@@ -447,8 +447,8 @@ bool MainFrame::LoadConfig(const wxString& filename, TiXmlDocument** doc)
 
   if (!TiXmlLoadDocument(filename, *doc))
   {
-    wxMessageBox(wxT("Error accessing configuration file!"),
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("Error accessing configuration file!",
+                 "Error", wxICON_EXCLAMATION | wxOK);
     return false;
   }
 
@@ -463,8 +463,8 @@ bool MainFrame::LoadConfig(const wxString& filename, TiXmlDocument** doc)
   const char *vers = docroot->Attribute("version");
   if (!vers || atoi(vers) != 1)
   {
-    wxMessageBox(wxT("Unknown config file version encountered!"),
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("Unknown config file version encountered!",
+                 "Error", wxICON_EXCLAMATION | wxOK);
     return false;
   }
 
@@ -481,7 +481,7 @@ bool MainFrame::SameConfig(const wxString& filename, wxTextCtrl* txt)
   {
     wxMessageBox(wxT("Cannot transfer configurations between the same file.\n"
                      "Please select two different configuration files!"),
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+                 "Error", wxICON_EXCLAMATION | wxOK);
     return true;
   }
 
@@ -519,216 +519,216 @@ void MainFrame::OfferNode(TiXmlNode** node,               wxListBox* listbox,
   wxString section((*node)->Value(), wxConvLocal);
   const wxString &sectionLower = section.MakeLower();
 
-  if      (sectionLower.Matches(wxT("auto_complete"))) // auto complete (abbreviations)
+  if      (sectionLower.Matches("auto_complete")) // auto complete (abbreviations)
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("code_completion"))) // code completion plugin token replacements
+  else if (sectionLower.Matches("code_completion")) // code completion plugin token replacements
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<code_completion>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<code_completion>"); // recursive call
     }
   }
-  else if (sectionLower.Matches(wxT("compiler")))    // compiler sets
+  else if (sectionLower.Matches("compiler"))    // compiler sets
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node); // COMPLETE compiler section
 
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<compiler>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<compiler>"); // recursive call
     }
   }
-  else if (sectionLower.Matches(wxT("debugger_common"))) // debugger common options
+  else if (sectionLower.Matches("debugger_common")) // debugger common options
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node); // COMPLETE debugger section
 
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<debugger_common>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<debugger_common>"); // recursive call
     }
   }
-  else if (sectionLower.Matches(wxT("editor")))      // editor colour sets
+  else if (sectionLower.Matches("editor"))      // editor colour sets
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<editor>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<editor>"); // recursive call
     }
   }
-  else if (sectionLower.Matches(wxT("envvars")))     // envvar plugin variables
+  else if (sectionLower.Matches("envvars"))     // envvar plugin variables
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("gcv")))         // global variables
+  else if (sectionLower.Matches("gcv"))         // global variables
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("help_plugin"))) // help plugin files
+  else if (sectionLower.Matches("help_plugin")) // help plugin files
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("mime_types")))  // mime types
+  else if (sectionLower.Matches("mime_types"))  // mime types
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("plugins")))     // plugins
+  else if (sectionLower.Matches("plugins"))     // plugins
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("colours")))     // plugins
+  else if (sectionLower.Matches("colours"))     // plugins
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
-  else if (sectionLower.Matches(wxT("project_manager"))) // file groups
+  else if (sectionLower.Matches("project_manager")) // file groups
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<project_manager>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<project_manager>"); // recursive call
     }
   }
-  else if (sectionLower.Matches(wxT("tools")))       // tools setup by the user
+  else if (sectionLower.Matches("tools"))       // tools setup by the user
   {
-    listbox->Append(wxT("<") + section + wxT(">"));
+    listbox->Append("<" + section + ">");
     nodes->push_back(*node);
   }
 
   // ----------------------------------------------------------
   // 1st recursion level: code_completion -> token_replacements
   // ----------------------------------------------------------
-  else if (   prefix.Matches(wxT("<code_completion>"))
-           && sectionLower.Matches(wxT("token_replacements")))// token replacements
+  else if (   prefix.Matches("<code_completion>")
+           && sectionLower.Matches("token_replacements"))// token replacements
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // -----------------------------------------------
   // 1st recursion level: compiler -> sets/user sets
   // -----------------------------------------------
-  else if (   prefix.Matches(wxT("<compiler>"))
-           && sectionLower.Matches(wxT("sets")))     // compiler sets
+  else if (   prefix.Matches("<compiler>")
+           && sectionLower.Matches("sets"))     // compiler sets
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<compiler><sets>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<compiler><sets>"); // recursive call
     }
   }
-  else if (   prefix.Matches(wxT("<compiler>"))
-           && sectionLower.Matches(wxT("user_sets")))// compiler user sets
+  else if (   prefix.Matches("<compiler>")
+           && sectionLower.Matches("user_sets"))// compiler user sets
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<compiler><user_sets>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<compiler><user_sets>"); // recursive call
     }
   }
 
   // --------------------------------------------------------
   // 2nd recursion level: compiler -> sets -> individual sets
   // --------------------------------------------------------
-  else if (prefix.Matches(wxT("<compiler><sets>")))         // individual compiler sets
+  else if (prefix.Matches("<compiler><sets>"))         // individual compiler sets
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // -------------------------------------------------------------
   // 2nd recursion level: compiler -> user sets -> individual sets
   // -------------------------------------------------------------
-  else if (prefix.Matches(wxT("<compiler><user_sets>")))    // individual compiler user sets
+  else if (prefix.Matches("<compiler><user_sets>"))    // individual compiler user sets
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // --------------------------------------------
   // 1st recursion level: debugger_common -> sets
   // --------------------------------------------
-  else if (   prefix.Matches(wxT("<debugger_common>"))
-           && sectionLower.Matches(wxT("sets")))     // debugger sets
+  else if (   prefix.Matches("<debugger_common>")
+           && sectionLower.Matches("sets"))     // debugger sets
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<debugger_common><sets>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<debugger_common><sets>"); // recursive call
     }
   }
 
   // ---------------------------------------------------------------
   // 2nd recursion level: debugger_common -> sets -> individual sets
   // ---------------------------------------------------------------
-  else if (prefix.Matches(wxT("<debugger_common><sets>"))) // individual debugger sets
+  else if (prefix.Matches("<debugger_common><sets>")) // individual debugger sets
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // ------------------------------------------
   // 1st recursion level: editor -> colour sets
   // ------------------------------------------
-  else if (   prefix.Matches(wxT("<editor>"))
-           && sectionLower.Matches(wxT("colour_sets")))// colour sets
+  else if (   prefix.Matches("<editor>")
+           && sectionLower.Matches("colour_sets"))// colour sets
   {
     TiXmlNode* child = NULL;
     for (child = (*node)->FirstChild(); child; child = child->NextSibling())
     {
       if (child->Type()==TiXmlNode::TINYXML_ELEMENT)
-        OfferNode(&child, listbox, nodes, wxT("<editor><colour_sets>")); // recursive call
+        OfferNode(&child, listbox, nodes, "<editor><colour_sets>"); // recursive call
     }
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
   // --------------------------------------------------------
   // 2st recursion level: editor -> colour sets -> theme name
   // --------------------------------------------------------
-  else if (   prefix.Matches(wxT("<editor><colour_sets>"))
-           && !sectionLower.Matches(wxT("active_colour_set"))
-           && !sectionLower.Matches(wxT("active_lang"))) // colour sets themes
+  else if (   prefix.Matches("<editor><colour_sets>")
+           && !sectionLower.Matches("active_colour_set")
+           && !sectionLower.Matches("active_lang")) // colour sets themes
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // -------------------------------------------
   // 1st recursion level: editor -> default code
   // -------------------------------------------
-  else if (   prefix.Matches(wxT("<editor>"))
-           && sectionLower.Matches(wxT("default_code")))// default code
+  else if (   prefix.Matches("<editor>")
+           && sectionLower.Matches("default_code"))// default code
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 
   // ---------------------------------------------------
   // 1st recursion level: project_manager -> file_groups
   // ---------------------------------------------------
-  else if (   prefix.Matches(wxT("<project_manager>"))
-           && sectionLower.Matches(wxT("file_groups")))// file groups
+  else if (   prefix.Matches("<project_manager>")
+           && sectionLower.Matches("file_groups"))// file groups
   {
-    listbox->Append(prefix + wxT("<") + section + wxT(">"));
+    listbox->Append(prefix + "<" + section + ">");
     nodes->push_back(*node);
   }
 }// OfferNode
@@ -866,7 +866,7 @@ void MainFrame::AttachNode(size_t idx, TiXmlElement* root)
 
 void MainFrame::DoExport(bool selected_only)
 {
-  wxDirDialog dlg(this, wxT("Choose target directory"), wxEmptyString,
+  wxDirDialog dlg(this, "Choose target directory", wxEmptyString,
                   wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
   if (wxID_OK != dlg.ShowModal())
     return; // Cancel
@@ -882,8 +882,8 @@ void MainFrame::DoExport(bool selected_only)
     TiXmlDocument* doc = new TiXmlDocument();
     if (!doc)
     {
-      wxMessageBox(wxT("Cannot create empty XML document...?!"),
-                   wxT("Error"), wxICON_EXCLAMATION | wxOK);
+      wxMessageBox("Cannot create empty XML document...?!",
+                   "Error", wxICON_EXCLAMATION | wxOK);
       return;
     }
 
@@ -906,8 +906,8 @@ void MainFrame::DoExport(bool selected_only)
                       + wxFileName::GetPathSeparator()
                       + path_arr.Item(0);
     for (size_t p=1; p<path_arr.GetCount(); p++)
-      filename += wxT("_") + path_arr.Item(p);
-    filename += wxT(".conf");
+      filename += "_" + path_arr.Item(p);
+    filename += ".conf";
     if (filename.IsEmpty())
       continue;
 
@@ -919,13 +919,13 @@ void MainFrame::DoExport(bool selected_only)
 
   if (errors)
   {
-    wxMessageBox(wxT("Could not save all backup configuration files."),
-                 wxT("Warning"), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("Could not save all backup configuration files.",
+                 "Warning", wxICON_EXCLAMATION | wxOK);
   }
   else
   {
-    wxMessageBox(wxT("Backup configuration files have been saved."),
-                 wxT("Information"), wxICON_INFORMATION | wxOK);
+    wxMessageBox("Backup configuration files have been saved.",
+                 "Information", wxICON_INFORMATION | wxOK);
   }
 }// DoExport
 
@@ -938,7 +938,7 @@ wxArrayString MainFrame::PathToArray(const wxString& path)
 
   if (path_modifications.Freq('<')==path_modifications.Freq('>'))
   {
-    wxStringTokenizer tkz(path_modifications, wxT("<"));
+    wxStringTokenizer tkz(path_modifications, "<");
     while (tkz.HasMoreTokens())
     {
       wxString token = tkz.GetNextToken();
@@ -948,8 +948,8 @@ wxArrayString MainFrame::PathToArray(const wxString& path)
   }
   else
   {
-    wxMessageBox(wxT("Cannot convert XML path into array of strings!"),
-                 wxT("Assertion failure."), wxICON_EXCLAMATION | wxOK);
+    wxMessageBox("Cannot convert XML path into array of strings!",
+                 "Assertion failure.", wxICON_EXCLAMATION | wxOK);
   }
 
   return as;
@@ -1001,13 +1001,13 @@ bool MainFrame::TiXmlSuccess(TiXmlDocument* doc)
 {
   if (doc->ErrorId())
   {
-    wxMessageBox(wxT("TinyXML error: ") +
+    wxMessageBox("TinyXML error: " +
 #if wxUSE_UNICODE
                  wxString(doc->ErrorDesc(), wxConvUTF8),
 #else
                  wxString(doc->ErrorDesc()),
 #endif
-                 wxT("Error"), wxICON_EXCLAMATION | wxOK);
+                 "Error", wxICON_EXCLAMATION | wxOK);
     return false;
   }
 

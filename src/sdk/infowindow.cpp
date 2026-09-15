@@ -298,9 +298,9 @@ void InfoWindow::Display(const wxString& title, const wxString& message, unsigne
 
     if (std::find(active_messages.begin(), active_messages.end(), message) != active_messages.end())
     {
-        const wxString dups = _T("Multiple information windows with the same\nmessage have been suppressed.");
+        const wxString dups = "Multiple information windows with the same\nmessage have been suppressed.";
         if (std::find(active_messages.begin(), active_messages.end(), dups) == active_messages.end())
-            new InfoWindow(_T("Info"), dups, delay, 1);
+            new InfoWindow("Info", dups, delay, 1);
         return; // currently displaying already
     }
 

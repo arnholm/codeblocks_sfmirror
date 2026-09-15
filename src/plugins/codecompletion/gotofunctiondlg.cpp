@@ -69,7 +69,7 @@ wxString GotoFunctionDlg::Iterator::GetDisplayText(int index, int column) const
             return t.paramsAndreturnType;
 
         default:
-            return wxT("<invalid>");
+            return "<invalid>";
         }
     }
     else

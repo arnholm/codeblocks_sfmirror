@@ -65,7 +65,7 @@ void CompilerErrors::Next()
         if (m_Errors[bkp].lineType == cltError)
         {
             const bool isNote = ((m_Errors[bkp].errors.GetCount()>0)
-                                 && m_Errors[bkp].errors[0].StartsWith(_T("note:")));
+                                 && m_Errors[bkp].errors[0].StartsWith("note:"));
             if(!isNote)
             {
                 found = true;
@@ -93,7 +93,7 @@ void CompilerErrors::Previous()
         if (m_Errors[bkp].lineType == cltError)
         {
             const bool isNote = ((m_Errors[bkp].errors.GetCount()>0)
-                                 && m_Errors[bkp].errors[0].StartsWith(_T("note:")));
+                                 && m_Errors[bkp].errors[0].StartsWith("note:"));
             if(!isNote)
             {
                 found = true;
@@ -149,8 +149,8 @@ void CompilerErrors::DoGotoError(const CompileError& error)
     {
         wxString filename = error.filename;
         bool isAbsolute = (filename.Length() > 1 && filename.GetChar(1) == ':') ||
-                           filename.StartsWith(_T("/")) ||
-                           filename.StartsWith(_T("\\"));
+                           filename.StartsWith("/") ||
+                           filename.StartsWith("\\");
         ProjectFile* f = project->GetFileByFilename(error.filename, !isAbsolute, true);
         if (f)
         {

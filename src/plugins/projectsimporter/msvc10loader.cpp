@@ -40,7 +40,7 @@
     A CodeBlock target is created for each element in this hash map.
 **/
 
-const wxString MSVC10Loader::g_AdditionalDependencies = _T("winmm.lib;comctl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib");
+const wxString MSVC10Loader::g_AdditionalDependencies = "winmm.lib;comctl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib";
 
 MSVC10Loader::MSVC10Loader(cbProject* project) :
     m_pProject(project),
@@ -48,13 +48,13 @@ MSVC10Loader::MSVC10Loader(cbProject* project) :
     m_NoImportLib(false)
 {
     if (platform::windows)
-        m_PlatformName = _T("Win32");
+        m_PlatformName = "Win32";
     else if (platform::Linux)
-        m_PlatformName = _T("Linux");
+        m_PlatformName = "Linux";
     else if (platform::macosx)
-        m_PlatformName = _T("MacOSX");
+        m_PlatformName = "MacOSX";
     else
-        m_PlatformName = _T("Unknown");
+        m_PlatformName = "Unknown";
 }
 
 MSVC10Loader::~MSVC10Loader()
@@ -66,7 +66,7 @@ bool MSVC10Loader::Open(const wxString& filename)
     LogManager* pMsg = Manager::Get()->GetLogManager();
     if (!pMsg) return false;
 
-    m_ConvertSwitches = m_pProject->GetCompilerID().IsSameAs(_T("gcc"));
+    m_ConvertSwitches = m_pProject->GetCompilerID().IsSameAs("gcc");
     m_ProjectName = wxFileName(filename).GetName();
     if (!MSVC7WorkspaceLoader::g_WorkspacePath.IsEmpty())
     {
@@ -94,10 +94,10 @@ bool MSVC10Loader::Open(const wxString& filename)
     m_pProject->SetModified(true);
     if (!m_ConvertSwitches)
     {
-//        m_pProject->AddCompilerOption(_T("/EHsc")); // default, "/EHs /EHc" works as well
-        m_pProject->AddLinkerOption(_T("/pdb:$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pdb"));
-        m_pProject->AddIncludeDir(_T(".")); // some projects require it. Implicit with Visual Studio
-        m_pProject->AddResourceIncludeDir(_T("."));
+//        m_pProject->AddCompilerOption("/EHsc"); // default, "/EHs /EHc" works as well
+        m_pProject->AddLinkerOption("/pdb:$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pdb");
+        m_pProject->AddIncludeDir("."); // some projects require it. Implicit with Visual Studio
+        m_pProject->AddResourceIncludeDir(".");
     }
 
     bool bResult = GetProjectGlobals(root)         // get project name & type
@@ -145,7 +145,7 @@ bool MSVC10Loader::GetProjectGlobals(const TiXmlElement* root)
         if (!attr) continue;
 
         wxString label = cbC2U(attr);
-        if (label.IsSameAs(_T("Globals"),false))
+        if (label.IsSameAs("Globals",false))
         {
             const TiXmlElement* pProjectName = prop->FirstChildElement("ProjectName"); // new
             if (!pProjectName)  pProjectName = prop->FirstChildElement("RootNamespace"); // old
@@ -196,7 +196,7 @@ bool MSVC10Loader::GetProjectConfigurations(const TiXmlElement* root)
         if (!attr) continue;
 
         wxString label = cbC2U(attr);
-        if (label.IsSameAs(_T("ProjectConfigurations"),false))
+        if (label.IsSameAs("ProjectConfigurations",false))
         {
             const TiXmlElement* conf = prop->FirstChildElement("ProjectConfiguration");
             for (; conf; conf=conf->NextSiblingElement("ProjectConfiguration"))
@@ -210,13 +210,13 @@ bool MSVC10Loader::GetProjectConfigurations(const TiXmlElement* root)
                     SProjectConfiguration pc;
                     pc.bt           = NULL;
                     // ProjectConfiguration
-                    pc.sName        = cbC2U(name); pc.sName.Replace(_T("|"), _T(" "));
+                    pc.sName        = cbC2U(name); pc.sName.Replace("|", " ");
                     pc.sConf        = GetText(cfg);
                     pc.sPlatform    = GetText(plat);
                     // PropertyGroup
-                    pc.TargetType   = _T("Application");
-//                    pc.UseDebugLibs = _T("true");
-                    pc.Charset      = _T("NotSet");
+                    pc.TargetType   = "Application";
+//                    pc.UseDebugLibs = "true";
+                    pc.Charset      = "NotSet";
                     pc.bIsDefault   = false;
                     pc.bNoImportLib = -1; // unset, use global
                     m_pc[pc.sName]  = pc;
@@ -241,15 +241,15 @@ bool MSVC10Loader::GetProjectConfigurations(const TiXmlElement* root)
     for (HashProjectsConfs::iterator it=m_pc.begin(); it!=m_pc.end(); ++it)
     {
         SProjectConfiguration& pc = it->second;
-        if (pc.sOutDir.IsEmpty())     pc.sOutDir = m_OutDir.IsEmpty() ? wxString(_T("$(SolutionDir)$(Configuration)"))+wxFILE_SEP_PATH : m_OutDir;
-        if (pc.sIntDir.IsEmpty())     pc.sIntDir = m_IntDir.IsEmpty() ? wxString(_T("$(Configuration)"))+wxFILE_SEP_PATH : m_IntDir;
-        if (pc.sTargetName.IsEmpty()) pc.sTargetName = _T("$(ProjectName)");
+        if (pc.sOutDir.IsEmpty())     pc.sOutDir = m_OutDir.IsEmpty() ? wxString("$(SolutionDir)$(Configuration)")+wxFILE_SEP_PATH : m_OutDir;
+        if (pc.sIntDir.IsEmpty())     pc.sIntDir = m_IntDir.IsEmpty() ? wxString("$(Configuration)")+wxFILE_SEP_PATH : m_IntDir;
+        if (pc.sTargetName.IsEmpty()) pc.sTargetName = "$(ProjectName)";
 
         if (pc.sTargetExt.IsEmpty())
         {
-            if (pc.TargetType.IsSameAs(_T("DynamicLibrary"), false))
+            if (pc.TargetType.IsSameAs("DynamicLibrary", false))
                 pc.sTargetExt = !m_ConvertSwitches ? ".dll" : ".so";
-            else if (pc.TargetType.IsSameAs(_T("StaticLibrary"),  false))
+            else if (pc.TargetType.IsSameAs("StaticLibrary",  false))
                 pc.sTargetExt = !m_ConvertSwitches ? ".lib" : ".a";
             else
                 pc.sTargetExt = !m_ConvertSwitches ? ".exe" : "";
@@ -352,7 +352,7 @@ void MSVC10Loader::SetConfigurationValuesBool(const TiXmlElement* root, const ch
             value = (char*)((char*)&m_pc[config]+target);
 
         wxString val = GetText(e);
-        if (!val.IsEmpty() && ((val.IsSameAs(_T("true"),false)) || val.IsSameAs(_T("1"))))
+        if (!val.IsEmpty() && ((val.IsSameAs("true",false)) || val.IsSameAs("1")))
             *value = true;
         else
             *value = false;
@@ -372,7 +372,7 @@ bool MSVC10Loader::GetConfiguration(const TiXmlElement* root)
     for (; prop; prop=prop->NextSiblingElement("PropertyGroup"))
     {
         const char* attr = prop->Attribute("Label");
-        if (attr && !cbC2U(attr).IsSameAs(_T("Configuration"),false))
+        if (attr && !cbC2U(attr).IsSameAs("Configuration",false))
             continue;
 
         wxString config;
@@ -563,12 +563,12 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                 ProjectBuildTarget* bt = m_pc[sName].bt;
                 if (!m_ConvertSwitches && !m_pc[sName].Charset.IsEmpty())
                 {
-                    if (m_pc[sName].Charset.IsSameAs(_T("NotSet"),false))
+                    if (m_pc[sName].Charset.IsSameAs("NotSet",false))
                         ; // nop
-                    else if (m_pc[sName].Charset.IsSameAs(_T("Unicode"),false))
-                        bt->AddCompilerOption(_T("/D_UNICODE /DUNICODE"));
-                    else if (m_pc[sName].Charset.IsSameAs(_T("MultiByte"),false))
-                        bt->AddCompilerOption(_T("/D_MBCS"));
+                    else if (m_pc[sName].Charset.IsSameAs("Unicode",false))
+                        bt->AddCompilerOption("/D_UNICODE /DUNICODE");
+                    else if (m_pc[sName].Charset.IsSameAs("MultiByte",false))
+                        bt->AddCompilerOption("/D_MBCS");
                     else
                         pMsg->DebugLog(_("Import; Unsupported CharacterSet: ") + m_pc[sName].Charset);
                 }
@@ -583,12 +583,12 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
 
                 if (!m_pc[sName].sConf.IsEmpty())
                 {
-                    if (m_pc[sName].sConf.IsSameAs(_T("Release"), false))
+                    if (m_pc[sName].sConf.IsSameAs("Release", false))
                     {
                         // nop
                     }
-                    else if (m_pc[sName].sConf.IsSameAs(_T("Debug"),false))
-                        bt->AddCompilerOption(!m_ConvertSwitches ? _T("/Zi") : _T("-g"));
+                    else if (m_pc[sName].sConf.IsSameAs("Debug",false))
+                        bt->AddCompilerOption(!m_ConvertSwitches ? "/Zi" : "-g");
                     else
                         pMsg->DebugLog(_("Import; Unsupported Configuration: ") + m_pc[sName].sConf);
                 }
@@ -605,7 +605,7 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                     const TiXmlElement* pp = comp->FirstChildElement("PreprocessorDefinitions");
                     wxArrayString pps = GetArray(pp);
                     for (size_t j=0; j<pps.Count(); ++j)
-                        bt->AddCompilerOption((m_ConvertSwitches ? _T("-D") : _T("/D")) + pps.Item(j));
+                        bt->AddCompilerOption((m_ConvertSwitches ? "-D" : "/D") + pps.Item(j));
 
                     const TiXmlElement* cinc = comp->FirstChildElement("AdditionalIncludeDirectories");
                     wxArrayString cdirs = GetArrayPaths(cinc, m_pc[sName]);
@@ -613,7 +613,7 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                         bt->AddIncludeDir(cdirs.Item(j));
 
                     const TiXmlElement* copt = comp->FirstChildElement("AdditionalOptions");
-                    wxArrayString copts = GetArray(copt,_T(" "));
+                    wxArrayString copts = GetArray(copt," ");
                     if (!m_ConvertSwitches)
                     {
                         for (size_t j=0; j<copts.Count(); ++j)
@@ -623,68 +623,68 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                     if ((copt=comp->FirstChildElement("Optimization")))
                     {
                         wxString val = GetText(copt);
-                        if (val.IsSameAs(_T("Disabled"),false))
-                            bt->AddCompilerOption(!m_ConvertSwitches ? _T("/Od") : _T("-O0"));
-                        else if (val.IsSameAs(_T("MinSpace"), false))
+                        if (val.IsSameAs("Disabled",false))
+                            bt->AddCompilerOption(!m_ConvertSwitches ? "/Od" : "-O0");
+                        else if (val.IsSameAs("MinSpace", false))
                         {
-                            if (!m_ConvertSwitches) bt->AddCompilerOption(_T("/O1"));
+                            if (!m_ConvertSwitches) bt->AddCompilerOption("/O1");
                             else
                             {
-                                bt->AddLinkerOption(_T("-s"));
-                                bt->AddCompilerOption(_T("-Os"));
+                                bt->AddLinkerOption("-s");
+                                bt->AddCompilerOption("-Os");
                             }
                         }
-                        else if (val.IsSameAs(_T("MaxSpeed"),false))
+                        else if (val.IsSameAs("MaxSpeed",false))
                         {
-                            if (!m_ConvertSwitches) bt->AddCompilerOption(_T("/O2"));
+                            if (!m_ConvertSwitches) bt->AddCompilerOption("/O2");
                             else
                             {
-                                bt->AddLinkerOption(_T("-s"));
-                                bt->AddCompilerOption(_T("-O1"));
+                                bt->AddLinkerOption("-s");
+                                bt->AddCompilerOption("-O1");
                             }
                         }
-                        else if (val.IsSameAs(_T("Full"),false))
+                        else if (val.IsSameAs("Full",false))
                         {
-                            if (!m_ConvertSwitches) bt->AddCompilerOption(_T("/Ox"));
+                            if (!m_ConvertSwitches) bt->AddCompilerOption("/Ox");
                             else
                             {
-                                bt->AddLinkerOption(_T("-s"));
-                                bt->AddCompilerOption(_T("-O2"));
+                                bt->AddLinkerOption("-s");
+                                bt->AddCompilerOption("-O2");
                             }
                         }
                         else
-                            pMsg->DebugLog(_("Import; Unsupported Optimization: ") + val+_T("\n"));
+                            pMsg->DebugLog(_("Import; Unsupported Optimization: ") + val+"\n");
                     }
                     if (!m_ConvertSwitches && (copt=comp->FirstChildElement("RuntimeLibrary")))
                     {
                         wxString val = GetText(copt);
-                        if (val.IsSameAs(_T("MultiThreaded"),false))
-                            bt->AddCompilerOption(_T("/MT"));
-                        else if (val.IsSameAs(_T("MultiThreadedDebug"),false))
-                            bt->AddCompilerOption(_T("/MTd"));
-                        else if (val.IsSameAs(_T("MultiThreadedDll"),false))
-                            bt->AddCompilerOption(_T("/MD"));
-                        else if(val.IsSameAs(_T("MultiThreadedDebugDll"),false))
-                            bt->AddCompilerOption(_T("/MDd"));
+                        if (val.IsSameAs("MultiThreaded",false))
+                            bt->AddCompilerOption("/MT");
+                        else if (val.IsSameAs("MultiThreadedDebug",false))
+                            bt->AddCompilerOption("/MTd");
+                        else if (val.IsSameAs("MultiThreadedDll",false))
+                            bt->AddCompilerOption("/MD");
+                        else if(val.IsSameAs("MultiThreadedDebugDll",false))
+                            bt->AddCompilerOption("/MDd");
                         else
                             pMsg->DebugLog(_("Import; Unsupported RuntimeLibrary: ")+val);
                     }
                     if ((copt=comp->FirstChildElement("WarningLevel")))
                     {
                         wxString val = GetText(copt);
-                        if (val.IsSameAs(_T("Level1"),false))
-                        {   if (!m_ConvertSwitches) bt->AddCompilerOption(_T("/W1")); }
-                        else if (val.IsSameAs(_T("Level2"),false))
-                            bt->AddCompilerOption(!m_ConvertSwitches ? _T("/W2") : _T("-Wall"));
-                        else if (val.IsSameAs(_T("Level3"),false))
-                            bt->AddCompilerOption(!m_ConvertSwitches ? _T("/W3") : _T("-Wall"));
-                        else if (val.IsSameAs(_T("Level4"),false))
+                        if (val.IsSameAs("Level1",false))
+                        {   if (!m_ConvertSwitches) bt->AddCompilerOption("/W1"); }
+                        else if (val.IsSameAs("Level2",false))
+                            bt->AddCompilerOption(!m_ConvertSwitches ? "/W2" : "-Wall");
+                        else if (val.IsSameAs("Level3",false))
+                            bt->AddCompilerOption(!m_ConvertSwitches ? "/W3" : "-Wall");
+                        else if (val.IsSameAs("Level4",false))
                         {
-                            if (!m_ConvertSwitches) bt->AddCompilerOption(_T("/W4"));
+                            if (!m_ConvertSwitches) bt->AddCompilerOption("/W4");
                             else
                             {
-                                bt->AddCompilerOption(_T("-Wall"));
-                                bt->AddCompilerOption(_T("-Wextra"));
+                                bt->AddCompilerOption("-Wall");
+                                bt->AddCompilerOption("-Wextra");
                             }
                         }
                         else
@@ -694,7 +694,7 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                     {
                         wxArrayString warns = GetArray(copt);
                         for (size_t j=0; j<warns.Count(); ++j)
-                            bt->AddCompilerOption(_T("/wd") + warns.Item(j));
+                            bt->AddCompilerOption("/wd" + warns.Item(j));
                     }
                 }
 
@@ -704,7 +704,7 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                     const TiXmlElement* pp = res->FirstChildElement("PreprocessorDefinitions");
                     wxArrayString pps = GetArray(pp);
                     for (size_t j=0; j<pps.Count(); ++j)
-                        bt->AddCompilerOption((m_ConvertSwitches ? _T("-D") : _T("/D")) + pps.Item(j));
+                        bt->AddCompilerOption((m_ConvertSwitches ? "-D" : "/D") + pps.Item(j));
 
                     const TiXmlElement* cinc = res->FirstChildElement("AdditionalIncludeDirectories");
                     wxArrayString cdirs = GetArrayPaths(cinc,m_pc[sName]);
@@ -712,7 +712,7 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                         bt->AddResourceIncludeDir(cdirs.Item(j));
 
                     const TiXmlElement* copt = res->FirstChildElement("AdditionalOptions");
-                    wxArrayString copts = GetArray(copt,_T(" "));
+                    wxArrayString copts = GetArray(copt," ");
                     if (!m_ConvertSwitches)
                     {
                         for (size_t j=0; j<copts.Count(); ++j)
@@ -762,14 +762,14 @@ bool MSVC10Loader::GetTargetSpecific(const TiXmlElement* root)
                     if (!m_ConvertSwitches)
                     {
                         copt = link->FirstChildElement("AdditionalOptions");
-                        wxArrayString lopts = GetArray(copt,_T(" "));
+                        wxArrayString lopts = GetArray(copt," ");
                         for (size_t j=0; j<lopts.Count(); ++j)
                             bt->AddLinkerOption(lopts.Item(j));
 
                         copt = link->FirstChildElement("GenerateDebugInformation");
                         wxString sDebug = GetText(copt);
-                        if (sDebug.IsSameAs(_T("true"),false))
-                            bt->AddLinkerOption(_T("/debug"));
+                        if (sDebug.IsSameAs("true",false))
+                            bt->AddLinkerOption("/debug");
                     }
                 }
 
@@ -862,10 +862,10 @@ bool MSVC10Loader::DoCreateConfigurations()
             bt->AddPlatform(spAll); // target all platforms, SupportedPlatforms enum in "globals.h"
 
             TargetType tt = ttExecutable;
-            if      (it->second.TargetType == _T("Application"))    tt = ttExecutable;
-            else if (it->second.TargetType == _T("Console"))        tt = ttConsoleOnly;
-            else if (it->second.TargetType == _T("StaticLibrary"))  tt = ttStaticLib;
-            else if (it->second.TargetType == _T("DynamicLibrary")) tt = ttDynamicLib;
+            if      (it->second.TargetType == "Application")    tt = ttExecutable;
+            else if (it->second.TargetType == "Console")        tt = ttConsoleOnly;
+            else if (it->second.TargetType == "StaticLibrary")  tt = ttStaticLib;
+            else if (it->second.TargetType == "DynamicLibrary") tt = ttDynamicLib;
             else
                 pMsg->DebugLog(_("Import; Unsupported target type: ") + it->second.TargetType);
 
@@ -919,7 +919,7 @@ void MSVC10Loader::HandleFilesAndExcludes(const TiXmlElement* e, ProjectFile* pf
         {
             const char* value = do_excl->Value();
             wxString  s_value = cbC2U(value);
-            if (s_value.IsSameAs(_T("true"), false))
+            if (s_value.IsSameAs("true", false))
             {
                 const char* cond = excl->Attribute("Condition");
                 if (cond)
@@ -940,11 +940,11 @@ wxArrayString MSVC10Loader::GetArrayPaths(const TiXmlElement* e, const SProjectC
         wxString val = GetText(e);
         // Specific: for ItemGroups (not Dollar, but percentage)
         ReplaceConfigMacros(pc,val);
-        val.Replace(_T("%(AdditionalIncludeDirectories)"), wxEmptyString); // not supported
-        val.Replace(_T("%(AdditionalLibraryDirectories)"), wxEmptyString); // not supported
+        val.Replace("%(AdditionalIncludeDirectories)", wxEmptyString); // not supported
+        val.Replace("%(AdditionalLibraryDirectories)", wxEmptyString); // not supported
         if (!val.IsEmpty())
         {
-            wxArrayString aVal = GetArrayFromString(val, _T(";"));
+            wxArrayString aVal = GetArrayFromString(val, ";");
             for (size_t i=0; i<aVal.Count(); ++i)
             {
                 val = aVal.Item(i);
@@ -969,9 +969,9 @@ wxArrayString MSVC10Loader::GetArray(const TiXmlElement* e, wxString delim)
     {
         wxString val = GetText(e);
         // Specific: for ItemGroups (not Dollar, but percentage)
-        val.Replace(_T("%(PreprocessorDefinitions)"), wxEmptyString); // not supported
-        val.Replace(_T("%(AdditionalOptions)"), wxEmptyString); // not supported
-        val.Replace(_T("%(DisableSpecificWarnings)"), wxEmptyString); // not supported
+        val.Replace("%(PreprocessorDefinitions)", wxEmptyString); // not supported
+        val.Replace("%(AdditionalOptions)", wxEmptyString); // not supported
+        val.Replace("%(DisableSpecificWarnings)", wxEmptyString); // not supported
         if (!val.IsEmpty()){
             wxArrayString aVal = GetArrayFromString(val, delim);
             for (size_t i=0; i<aVal.Count(); ++i)
@@ -992,12 +992,12 @@ wxArrayString MSVC10Loader::GetLibs(const TiXmlElement* e)
     if (e)
         val = GetText(e);
     else
-        val=_T("%(AdditionalDependencies)");
+        val="%(AdditionalDependencies)";
     // Specific: for ItemGroups (not Dollar, but percentage)
-    val.Replace(_T("%(AdditionalDependencies)"), g_AdditionalDependencies);
+    val.Replace("%(AdditionalDependencies)", g_AdditionalDependencies);
     if (!val.IsEmpty())
     {
-        wxArrayString aVal = GetArrayFromString(val, _T(";"));
+        wxArrayString aVal = GetArrayFromString(val, ";");
         for (size_t i=0; i<aVal.Count(); ++i)
         {
             val = aVal.Item(i);
@@ -1011,27 +1011,27 @@ wxArrayString MSVC10Loader::GetLibs(const TiXmlElement* e)
 wxString MSVC10Loader::ReplaceMSVCMacros(const wxString& str)
 {
     wxString ret = str;
-    ret.Replace(_T("$(SolutionDir)"),m_WorkspacePath);
-    ret.Replace(_T("$(ProjectDir)"),wxEmptyString); // use relative and not m_pProject->GetBasePath()
-    ret.Replace(_T("$(ProfileDir)"),wxEmptyString); // same as above, seen at least once in MSVC 10-12
-    ret.Replace(_T("$(ProjectName)"),m_ProjectName);
-    ret.Replace(_T("$(ConfigurationName)"),m_ConfigurationName);
-    ret.Replace(_T("$(PlatformName)"),m_PlatformName);
-    ret.Replace(_T("$(TargetPath)"),m_TargetPath);
-    ret.Replace(_T("$(TargetFileName)"),m_TargetFilename);
-//    ret.Replace(_T("\""),wxEmptyString);
+    ret.Replace("$(SolutionDir)",m_WorkspacePath);
+    ret.Replace("$(ProjectDir)",wxEmptyString); // use relative and not m_pProject->GetBasePath()
+    ret.Replace("$(ProfileDir)",wxEmptyString); // same as above, seen at least once in MSVC 10-12
+    ret.Replace("$(ProjectName)",m_ProjectName);
+    ret.Replace("$(ConfigurationName)",m_ConfigurationName);
+    ret.Replace("$(PlatformName)",m_PlatformName);
+    ret.Replace("$(TargetPath)",m_TargetPath);
+    ret.Replace("$(TargetFileName)",m_TargetFilename);
+//    ret.Replace("\"",wxEmptyString);
     return ret;
 }
 
 void MSVC10Loader::ReplaceConfigMacros(const SProjectConfiguration &pc, wxString &str)
 {
-    str.Replace(_T("$(Configuration)"),pc.sConf);
-    str.Replace(_T("$(Platform)"),pc.sPlatform);
+    str.Replace("$(Configuration)",pc.sConf);
+    str.Replace("$(Platform)",pc.sPlatform);
 
-    str.Replace(_T("$(OutDir)"),pc.sOutDir);
-    str.Replace(_T("$(IntDir)"),pc.sIntDir);
-    str.Replace(_T("$(TargetName)"),pc.sTargetName);
-    str.Replace(_T("$(TargetExt)"),pc.sTargetExt);
+    str.Replace("$(OutDir)",pc.sOutDir);
+    str.Replace("$(IntDir)",pc.sIntDir);
+    str.Replace("$(TargetName)",pc.sTargetName);
+    str.Replace("$(TargetExt)",pc.sTargetExt);
     str = ReplaceMSVCMacros(str);
 }
 
@@ -1039,11 +1039,11 @@ wxString MSVC10Loader::SubstituteConfigMacros(const wxString& sString)
 {
     wxString sResult(sString);
 
-    sResult.Replace(_T("$(Configuration)"), wxEmptyString);
-    sResult.Replace(_T("$(Platform)"),      wxEmptyString);
-    sResult.Replace(_T("=="),               wxEmptyString);
-    sResult.Replace(_T("\'"),               wxEmptyString);
-    sResult.Replace(_T("|"),                wxEmptyString);
+    sResult.Replace("$(Configuration)", wxEmptyString);
+    sResult.Replace("$(Platform)",      wxEmptyString);
+    sResult.Replace("==",               wxEmptyString);
+    sResult.Replace("\'",               wxEmptyString);
+    sResult.Replace("|",                wxEmptyString);
     sResult.Trim(false);
 
     return sResult;

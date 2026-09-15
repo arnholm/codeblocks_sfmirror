@@ -18,7 +18,7 @@
 
 namespace
 {
-    wxRegEx reInsert(_T("([0-9]+):.+"));
+    wxRegEx reInsert("([0-9]+):.+");
 }
 
 MenuItemsManager::MenuItemsManager(bool autoClearOnDestroy)
@@ -155,7 +155,7 @@ int MenuItemsManager::CreateFromString(const wxString& menuPath, int id)
         }
         else
         {
-            bool needsSep = current.StartsWith(_T("-"));
+            bool needsSep = current.StartsWith("-");
             if (needsSep)
                 current.Remove(0, 1); // remove dash (-)
 

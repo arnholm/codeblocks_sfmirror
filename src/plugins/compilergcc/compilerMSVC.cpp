@@ -19,7 +19,7 @@
 #endif // __WXMSW__
 
 CompilerMSVC::CompilerMSVC()
-    : Compiler(_("Microsoft Visual C++ Toolkit 2003"), _T("msvctk"))
+    : Compiler(_("Microsoft Visual C++ Toolkit 2003"), "msvctk")
 {
     m_Weight = 8;
     Reset();
@@ -40,47 +40,47 @@ AutoDetectResult CompilerMSVC::AutoDetectInstallationDir()
     wxString sep = wxFileName::GetPathSeparator();
 
     // Read the VCToolkitInstallDir environment variable
-    wxGetEnv(_T("VCToolkitInstallDir"), &m_MasterPath);
+    wxGetEnv("VCToolkitInstallDir", &m_MasterPath);
 
     if (m_MasterPath.IsEmpty())
     {
         // just a guess; the default installation dir
-        wxString Programs = _T("C:\\Program Files");
+        wxString Programs = "C:\\Program Files";
         // what's the "Program Files" location
         // TO DO : support 64 bit ->    32 bit apps are in "ProgramFiles(x86)"
         //                              64 bit apps are in "ProgramFiles"
-        wxGetEnv(_T("ProgramFiles"), &Programs);
-        m_MasterPath = Programs + _T("\\Microsoft Visual C++ Toolkit 2003");
+        wxGetEnv("ProgramFiles", &Programs);
+        m_MasterPath = Programs + "\\Microsoft Visual C++ Toolkit 2003";
     }
     if (!m_MasterPath.IsEmpty())
     {
-        AddIncludeDir(m_MasterPath + sep + _T("include"));
-        AddLibDir(m_MasterPath + sep + _T("lib"));
+        AddIncludeDir(m_MasterPath + sep + "include");
+        AddLibDir(m_MasterPath + sep + "lib");
 
 #ifdef __WXMSW__
         // add include dirs for MS Platform SDK too
         wxRegKey key; // defaults to HKCR
-        key.SetName(_T("HKEY_CURRENT_USER\\Software\\Microsoft\\Win32SDK\\Directories"));
+        key.SetName("HKEY_CURRENT_USER\\Software\\Microsoft\\Win32SDK\\Directories");
         if (key.Exists() && key.Open(wxRegKey::Read))
         {
             wxString dir;
-            key.QueryValue(_T("Install Dir"), dir);
+            key.QueryValue("Install Dir", dir);
             if (!dir.IsEmpty())
             {
                 if (dir.GetChar(dir.Length() - 1) != '\\')
                     dir += sep;
-                AddIncludeDir(dir + _T("include"));
-                AddLibDir(dir + _T("lib"));
-                m_ExtraPaths.Add(dir + _T("bin"));
+                AddIncludeDir(dir + "include");
+                AddLibDir(dir + "lib");
+                m_ExtraPaths.Add(dir + "bin");
             }
         }
 
         // add extra paths for "Debugging tools" too
-        key.SetName(_T("HKEY_CURRENT_USER\\Software\\Microsoft\\DebuggingTools"));
+        key.SetName("HKEY_CURRENT_USER\\Software\\Microsoft\\DebuggingTools");
         if (key.Exists() && key.Open(wxRegKey::Read))
         {
             wxString dir;
-            key.QueryValue(_T("WinDbg"), dir);
+            key.QueryValue("WinDbg", dir);
             if (!dir.IsEmpty())
             {
                 if (dir.GetChar(dir.Length() - 1) == '\\')
@@ -91,5 +91,5 @@ AutoDetectResult CompilerMSVC::AutoDetectInstallationDir()
 #endif // __WXMSW__
     }
 
-    return wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C) ? adrDetected : adrGuessed;
 }

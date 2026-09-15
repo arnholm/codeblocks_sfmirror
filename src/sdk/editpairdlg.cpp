@@ -21,7 +21,7 @@
 #include "editpairdlg.h"
 #include "filefilters.h"
 
-static const wxRegEx reKey(wxT("^[[:alnum:]_]+$"), wxRE_EXTENDED);
+static const wxRegEx reKey("^[[:alnum:]_]+$", wxRE_EXTENDED);
 
 BEGIN_EVENT_TABLE(EditPairDlg, wxScrollingDialog)
     EVT_BUTTON(XRCID("btnBrowse"), EditPairDlg::OnBrowse)
@@ -34,7 +34,7 @@ EditPairDlg::EditPairDlg(wxWindow* parent, wxString& key, wxString& value, const
     m_BrowseMode(allowBrowse)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditPair"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditPair","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
     SetTitle(title);
     XRCCTRL(*this, "btnBrowse", wxButton)->Enable(m_BrowseMode != bmDisable);
@@ -65,7 +65,7 @@ void EditPairDlg::OnBrowse(cb_unused wxCommandEvent& event)
             wxFileDialog dlg(this,
                             _("Select file"),
                             XRCCTRL(*this, "txtValue", wxTextCtrl)->GetValue(),
-                            _T(""),
+                            "",
                             FileFilters::GetFilterAll(),
                             wxFD_OPEN | compatibility::wxHideReadonly);
             PlaceWindow(&dlg);
@@ -78,7 +78,7 @@ void EditPairDlg::OnBrowse(cb_unused wxCommandEvent& event)
             wxString dir = ChooseDirectory(this,
                                             _("Select directory"),
                                             XRCCTRL(*this, "txtValue", wxTextCtrl)->GetValue(),
-                                            _T(""),
+                                            "",
                                             false,
                                             true);
             if (!dir.IsEmpty())

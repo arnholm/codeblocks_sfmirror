@@ -120,11 +120,11 @@ void DebuggerSettingsDlg::OnOK(cb_unused wxCommandEvent &event)
     DebuggerManager *dbgManager = Manager::Get()->GetDebuggerManager();
 
     const DebuggerManager::RegisteredPlugins &plugins = dbgManager->GetAllDebuggers();
-    ConfigManager *mainConfig = Manager::Get()->GetConfigManager(wxT("debugger_common"));
+    ConfigManager *mainConfig = Manager::Get()->GetConfigManager("debugger_common");
 
     for (DebuggerManager::RegisteredPlugins::const_iterator it = plugins.begin(); it != plugins.end(); ++it)
     {
-        wxString path(wxT("/sets/"));
+        wxString path("/sets/");
         path << it->first->GetSettingsName();
 
         mainConfig->DeleteSubPath(path);
@@ -145,9 +145,9 @@ void DebuggerSettingsDlg::OnOK(cb_unused wxCommandEvent &event)
 
             wxString namePath = c->GetConfig().GetBasepath();
             namePath.Remove(namePath.length() - 7); // trim the "values/" from the path
-            mainConfig->Write(namePath + wxT("name"), c->GetName());
+            mainConfig->Write(namePath + "name", c->GetName());
 
-            t += it->second.pluginGUIName + wxT(" - ") + c->GetName() + wxT("\n");
+            t += it->second.pluginGUIName + " - " + c->GetName() + "\n";
             if (!c->SaveChanges(static_cast<wxPanel*>(it->first)))
                 break;
         }

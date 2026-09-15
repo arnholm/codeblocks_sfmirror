@@ -144,13 +144,13 @@ void ClassWizardDlg::OnAncestorChange(wxCommandEvent& WXUNUSED(event))
 {
     wxString name = XRCCTRL(*this, "txtInheritance", wxTextCtrl)->GetValue();
 
-    while (name.Replace(_T("::"), _T("/")))
+    while (name.Replace("::", "/"))
         ;
 
     wxString old = XRCCTRL(*this, "txtInheritanceFilename", wxTextCtrl)->GetValue();
     wxChar first = old.GetChar(0);
     wxChar last = old.Last();
-    XRCCTRL(*this, "txtInheritanceFilename", wxTextCtrl)->SetValue(first + name + _T(".h") + last);
+    XRCCTRL(*this, "txtInheritanceFilename", wxTextCtrl)->SetValue(first + name + ".h" + last);
     DoGuardBlock();
 }
 
@@ -289,7 +289,7 @@ void ClassWizardDlg::OnImplDirClick(wxCommandEvent& WXUNUSED(event))
 void ClassWizardDlg::OnHeaderChange(wxCommandEvent& WXUNUSED(event))
 {
     wxString name = XRCCTRL(*this, "txtHeader", wxTextCtrl)->GetValue();
-    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue(_T("\"") + name + _T("\""));
+    XRCCTRL(*this, "txtHeaderInclude", wxTextCtrl)->SetValue("\"" + name + "\"");
 }
 
 void ClassWizardDlg::OnOKClick(wxCommandEvent& WXUNUSED(event))
@@ -422,12 +422,12 @@ bool ClassWizardDlg::DoHeader()
     // let's start with the header file
     if (m_GuardBlock)
     {
-        buffer << _T("#ifndef ") << m_GuardWord << m_EolStr;
-        buffer << _T("#define ") << m_GuardWord << m_EolStr;
+        buffer << "#ifndef " << m_GuardWord << m_EolStr;
+        buffer << "#define " << m_GuardWord << m_EolStr;
         buffer << m_EolStr;
     }
 
-    if (!m_AncestorFilename.IsEmpty() && !m_AncestorFilename.IsSameAs(_T("<>")))
+    if (!m_AncestorFilename.IsEmpty() && !m_AncestorFilename.IsSameAs("<>"))
     {
         buffer << "#include " << m_AncestorFilename << m_EolStr;
         buffer << m_EolStr;
@@ -446,7 +446,7 @@ bool ClassWizardDlg::DoHeader()
         buffer << " : " << m_AncestorScope << " " << m_Ancestor;
     }
     buffer << m_EolStr;
-    buffer << _T("{") << m_EolStr;
+    buffer << "{" << m_EolStr;
 
     // focus: public
     buffer << m_TabStr << "public:" << m_EolStr;
@@ -505,7 +505,7 @@ bool ClassWizardDlg::DoHeader()
         }
         buffer << m_TabStr << m_TabStr;
         buffer << m_Name << "& " << "operator=(const " << m_Name << "& other)";
-        buffer << (!m_GenerateImplementation ? _T("{ return *this; }") : _T(";")) << m_EolStr;
+        buffer << (!m_GenerateImplementation ? "{ return *this; }" : ";") << m_EolStr;
     }
     buffer << m_EolStr;
 
@@ -526,7 +526,7 @@ bool ClassWizardDlg::DoHeader()
                        << " */" << m_EolStr;
             }
             buffer << m_TabStr << m_TabStr << (*it).Typ << " " << (*it).Get
-                   << _T("() { return ") << (*it).Var << _T("; }") << m_EolStr;
+                   << "() { return " << (*it).Var << "; }" << m_EolStr;
         }
         if (!(*it).Set.IsEmpty())
         {
@@ -594,7 +594,7 @@ bool ClassWizardDlg::DoHeader()
         if ((*it).Scp == 2)
         {
             buffer << m_TabStr << m_TabStr
-                   << (*it).Typ << " " << (*it).Var << _T(";");
+                   << (*it).Typ << " " << (*it).Var << ";";
 
             if (m_Documentation)
                 buffer << _(" //!< Member variable \"") << (*it).Var << "\"";
@@ -604,21 +604,21 @@ bool ClassWizardDlg::DoHeader()
     }
 
     // End of class
-    buffer << _T("};") << m_EolStr;
+    buffer << "};" << m_EolStr;
 
     if (m_NameSpaces.GetCount())
     {
         buffer << m_EolStr;
         for (int i=m_NameSpaces.GetCount(); i>0; --i)
         {
-            buffer << _T("} // namespace ") << m_NameSpaces[i-1] << m_EolStr;
+            buffer << "} // namespace " << m_NameSpaces[i-1] << m_EolStr;
         }
     }
 
     if (m_GuardBlock)
     {
         buffer << m_EolStr;
-        buffer << _T("#endif // ") << m_GuardWord << m_EolStr;
+        buffer << "#endif // " << m_GuardWord << m_EolStr;
     }
 
     new_ed->GetControl()->SetText(buffer);
@@ -657,7 +657,7 @@ bool ClassWizardDlg::DoImpl()
     wxString buffer = new_ed->GetControl()->GetText();
     Manager::Get()->GetMacrosManager()->ReplaceMacros(buffer);
 
-    buffer << _T("#include ") << m_HeaderInclude << m_EolStr;
+    buffer << "#include " << m_HeaderInclude << m_EolStr;
 
     if (m_NameSpaces.GetCount())
     {
@@ -669,18 +669,18 @@ bool ClassWizardDlg::DoImpl()
     }
 
     buffer << m_EolStr;
-    buffer << m_Name << _T("::") << m_Name << _T("(") << m_Arguments << _T(")") << m_EolStr;
-    buffer << _T("{") << m_EolStr;
-    buffer << m_TabStr << _T("//ctor") << m_EolStr;
-    buffer << _T("}") << m_EolStr;
+    buffer << m_Name << "::" << m_Name << "(" << m_Arguments << ")" << m_EolStr;
+    buffer << "{" << m_EolStr;
+    buffer << m_TabStr << "//ctor" << m_EolStr;
+    buffer << "}" << m_EolStr;
 
     if (m_HasDestructor)
     {
         buffer << m_EolStr;
-        buffer << m_Name << _T("::~") << m_Name << _T("()") << m_EolStr;
-        buffer << _T("{") << m_EolStr;
-        buffer << m_TabStr << _T("//dtor") << m_EolStr;
-        buffer << _T("}") << m_EolStr;
+        buffer << m_Name << "::~" << m_Name << "()" << m_EolStr;
+        buffer << "{" << m_EolStr;
+        buffer << m_TabStr << "//dtor" << m_EolStr;
+        buffer << "}" << m_EolStr;
     }
 
     if (m_HasCopyCtor)
@@ -708,7 +708,7 @@ bool ClassWizardDlg::DoImpl()
         buffer << m_EolStr;
         for (int i=m_NameSpaces.GetCount(); i>0; --i)
         {
-            buffer << _T("} // namespace ") << m_NameSpaces[i-1] << m_EolStr;
+            buffer << "} // namespace " << m_NameSpaces[i-1] << m_EolStr;
         }
     }
 
@@ -788,7 +788,7 @@ wxString ClassWizardDlg::DoMemVarRepr(const wxString & typ, const wxString & var
             break;
     }
 
-    return (scpstr + _T("[") + typ + _T("] : ") + var);
+    return (scpstr + "[" + typ + "] : " + var);
 }
 
 wxString ClassWizardDlg::GetIncludeDir()

@@ -99,7 +99,7 @@ public:
     cbDummyEditor() {}
     wxString GetName() const override
     {
-        return wxT("cbDummyEditor");
+        return "cbDummyEditor";
     }
 
     wxPGWindowList CreateControls(cb_unused wxPropertyGrid* propgrid,
@@ -135,7 +135,7 @@ class cbTextCtrlAndButtonTooltipEditor : public wxPGTextCtrlAndButtonEditor
 public:
     wxString GetName() const override
     {
-        return wxT("cbTextCtrlAndButtonTooltipEditor");
+        return "cbTextCtrlAndButtonTooltipEditor";
     }
 
     wxPGWindowList CreateControls(wxPropertyGrid* propgrid, wxPGProperty* property,
@@ -234,7 +234,7 @@ class WatchRawDialog : public wxScrollingDialog
             else if (wxGetKeyState(WXK_SHIFT))
                 dlg->m_type = TypeWatchTree;
 
-            dlg->SetTitle(wxString::Format(wxT("Watch '%s' raw value"), watch->GetName().c_str()));
+            dlg->SetTitle(wxString::Format("Watch '%s' raw value", watch->GetName().c_str()));
             dlg->SetValue(watch);
             dlg->Raise();
 
@@ -313,16 +313,16 @@ class WatchRawDialog : public wxScrollingDialog
             watch.GetSymbol(sym);
             watch.GetValue(value);
 
-            result += indent + wxT("[symbol = ") + sym + wxT("]\n");
-            result += indent + wxT("[value = ") + value + wxT("]\n");
-            result += indent + wxString::Format(wxT("[children = %d]\n"), watch.GetChildCount());
+            result += indent + "[symbol = " + sym + "]\n";
+            result += indent + "[value = " + value + "]\n";
+            result += indent + wxString::Format("[children = %d]\n", watch.GetChildCount());
 
             for(int child_index = 0; child_index < watch.GetChildCount(); ++child_index)
             {
                 cb::shared_ptr<const cbWatch> child = watch.GetChild(child_index);
 
-                result += indent + wxString::Format(wxT("[child %d]\n"), child_index);
-                WatchToString(result, *child, indent + wxT("    "));
+                result += indent + wxString::Format("[child %d]\n", child_index);
+                WatchToString(result, *child, indent + "    ");
             }
         }
     private:
@@ -415,14 +415,14 @@ WatchesDlg::WatchesDlg() :
 
     wxPGProperty *prop = m_grid->Append(new WatchesProperty(wxEmptyString, wxEmptyString,
                                                             cb::shared_ptr<cbWatch>(), false));
-    m_grid->SetPropertyAttribute(prop, wxT("Units"), wxEmptyString);
+    m_grid->SetPropertyAttribute(prop, "Units", wxEmptyString);
 
     m_grid->Connect(idGrid, wxEVT_KEY_DOWN, wxKeyEventHandler(WatchesDlg::OnKeyDown), nullptr, this);
 
     Manager *manager = Manager::Get();
 
     ColourManager *colours = manager->GetColourManager();
-    colours->RegisterColour(_("Debugger"), _("Watches changed value"), wxT("dbg_watches_changed"), *wxRED);
+    colours->RegisterColour(_("Debugger"), _("Watches changed value"), "dbg_watches_changed", *wxRED);
 
     typedef cbEventFunctor<WatchesDlg, CodeBlocksEvent> Functor;
     manager->RegisterEventSink(cbEVT_DEBUGGER_UPDATED,
@@ -444,11 +444,11 @@ static void AppendChildren(wxPropertyGrid &grid, wxPGProperty &property, cbWatch
         wxPGProperty *prop = new WatchesProperty(symbol, value, child, readonly);
         prop->SetExpanded(child->IsExpanded());
         wxPGProperty *new_prop = grid.AppendIn(&property, prop);
-        grid.SetPropertyAttribute(new_prop, wxT("Units"), type);
+        grid.SetPropertyAttribute(new_prop, "Units", type);
         if (value.empty())
             grid.SetPropertyHelpString(new_prop, wxEmptyString);
         else
-            grid.SetPropertyHelpString(new_prop, symbol + wxT("=") + value);
+            grid.SetPropertyHelpString(new_prop, symbol + "=" + value);
         grid.EnableProperty(new_prop, grid.IsPropertyEnabled(&property));
 
         if (child->IsChanged())
@@ -468,7 +468,7 @@ static void UpdateWatch(wxPropertyGrid *grid, wxPGProperty *property, cb::shared
 {
     if (!property)
         return;
-    const wxColour &changedColour = Manager::Get()->GetColourManager()->GetColour(wxT("dbg_watches_changed"));
+    const wxColour &changedColour = Manager::Get()->GetColourManager()->GetColour("dbg_watches_changed");
 
     wxString value, symbol, type;
     watch->GetSymbol(symbol);
@@ -481,17 +481,17 @@ static void UpdateWatch(wxPropertyGrid *grid, wxPGProperty *property, cb::shared
         grid->SetPropertyTextColour(property, changedColour);
     else
         grid->SetPropertyColoursToDefault(property);
-    grid->SetPropertyAttribute(property, wxT("Units"), type);
+    grid->SetPropertyAttribute(property, "Units", type);
     if (value.empty())
         grid->SetPropertyHelpString(property, wxEmptyString);
     else
     {
         wxString valueTruncated;
         if (value.length() > 128)
-            valueTruncated = value.Left(128) + wxT("...");
+            valueTruncated = value.Left(128) + "...";
         else
             valueTruncated=value;
-        grid->SetPropertyHelpString(property, symbol + wxT("=") + valueTruncated);
+        grid->SetPropertyHelpString(property, symbol + "=" + valueTruncated);
     }
 
     property->DeleteChildren();

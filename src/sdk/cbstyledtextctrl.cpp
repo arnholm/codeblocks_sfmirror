@@ -23,8 +23,8 @@
 #include "ccmanager.h"
 #include "debuggermanager.h"
 
-static const wxString s_leftBrace(_T("([{'\""));
-static const wxString s_rightBrace(_T(")]}'\""));
+static const wxString s_leftBrace("([{'\"");
+static const wxString s_rightBrace(")]}'\"");
 static const int s_indicHighlight(20);
 
 std::map<int, std::set<int> > cbStyledTextCtrl::CharacterLexerStyles;
@@ -127,7 +127,7 @@ void cbStyledTextCtrl::OnMouseMiddleDown(wxMouseEvent& event)
 {
     if (platform::gtk == false) // only if OnMouseMiddleDown is not already implemented by the OS
     {
-        if (not Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/enable_middle_mouse_paste"), false))
+        if (not Manager::Get()->GetConfigManager("editor")->ReadBool("/enable_middle_mouse_paste", false))
             {event.Skip(); return;}
 
         int pos = PositionFromPoint(wxPoint(event.GetX(), event.GetY()));
@@ -367,8 +367,8 @@ void cbStyledTextCtrl::DoBraceCompletion(const wxChar& ch)
     if (IsString(style) || IsCharacter(style))
         return; // do nothing
 
-    const wxString opBraces(wxT("([{")); const int opBraceIdx = opBraces.Find(ch);
-    const wxString clBraces(wxT(")]}")); const int clBraceIdx = clBraces.Find(ch);
+    const wxString opBraces("([{"); const int opBraceIdx = opBraces.Find(ch);
+    const wxString clBraces(")]}"); const int clBraceIdx = clBraces.Find(ch);
     if ( (opBraceIdx != wxNOT_FOUND) || (clBraceIdx != wxNOT_FOUND) )
     {
         if ( GetCharAt(pos) == ch )
@@ -397,7 +397,7 @@ bool cbStyledTextCtrl::DoSelectionBraceCompletion(const wxChar& ch)
         return false;
     if (GetLastSelectedText().IsEmpty())
         return false; // nothing changed
-    const wxString braces(wxT("([{<'\")]}>'\""));
+    const wxString braces("([{<'\")]}>'\"");
     const int braceAIdx = braces.Find(ch, true); // from end (so caret is placed after quotes)
     if (braceAIdx == wxNOT_FOUND)
         return false; // nothing changed
@@ -449,7 +449,7 @@ void cbStyledTextCtrl::HighlightRightBrace()
                 break;
 
             wxString cur((wxChar)GetCharAt(pos));
-            if (cur == _T("\n"))
+            if (cur == "\n")
                 break;
 
             int style = GetStyleAt(pos);

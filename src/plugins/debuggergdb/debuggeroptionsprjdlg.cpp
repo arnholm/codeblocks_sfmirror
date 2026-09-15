@@ -36,7 +36,7 @@ DebuggerOptionsProjectDlg::DebuggerOptionsProjectDlg(wxWindow* parent, DebuggerG
     m_pProject(project),
     m_LastTargetSel(-1)
 {
-    if (!wxXmlResource::Get()->LoadPanel(this, parent, _T("pnlDebuggerProjectOptions")))
+    if (!wxXmlResource::Get()->LoadPanel(this, parent, "pnlDebuggerProjectOptions"))
         return;
 
     m_OldPaths = DebuggerGDB::ParseSearchDirs(*project);
@@ -171,7 +171,7 @@ void DebuggerOptionsProjectDlg::LoadCurrentRemoteDebuggingRecord()
         XRCCTRL(*this, "cmbConnType", wxChoice)->SetSelection((int)rd.connType);
         XRCCTRL(*this, "txtSerial", wxTextCtrl)->SetValue(rd.serialPort);
 
-        const wxString baud = (rd.serialBaud.empty() ? wxString(wxT("115200")) : rd.serialBaud);
+        const wxString baud = (rd.serialBaud.empty() ? wxString("115200") : rd.serialBaud);
         XRCCTRL(*this, "cmbBaud", wxChoice)->SetStringSelection(baud);
 
         XRCCTRL(*this, "txtIP", wxTextCtrl)->SetValue(rd.ip);

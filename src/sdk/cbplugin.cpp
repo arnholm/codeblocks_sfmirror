@@ -108,7 +108,7 @@ void cbPlugin::Release(bool appShutDown)
 
 void cbPlugin::NotImplemented(const wxString& log) const
 {
-    Manager::Get()->GetLogManager()->DebugLog(log + _T(" : not implemented"));
+    Manager::Get()->GetLogManager()->DebugLog(log + " : not implemented");
 }
 
 /////
@@ -531,7 +531,7 @@ void cbDebuggerPlugin::Log(const wxString& msg, Logger::level level)
 {
     if (IsAttached())
     {
-        Manager::Get()->GetLogManager()->Log((m_lastLineWasNormal ? wxEmptyString : wxT("\n")) + msg, m_LogPageIndex,
+        Manager::Get()->GetLogManager()->Log((m_lastLineWasNormal ? "" : "\n") + msg, m_LogPageIndex,
                                              level);
         m_lastLineWasNormal = true;
     }
@@ -542,7 +542,7 @@ void cbDebuggerPlugin::DebugLog(const wxString& msg, Logger::level level)
     // gdb debug messages
     if (IsAttached() && HasDebugLog())
     {
-        Manager::Get()->GetLogManager()->Log((!m_lastLineWasNormal ? wxT("[debug]") : wxT("\n[debug]")) + msg,
+        Manager::Get()->GetLogManager()->Log((!m_lastLineWasNormal ? "[debug]" : "\n[debug]") + msg,
                                              m_LogPageIndex, level);
         m_lastLineWasNormal = false;
     }
@@ -576,7 +576,7 @@ void cbDebuggerPlugin::SwitchToDebuggingLayout()
         perspectiveName = GetGUIName();
         break;
     case cbDebuggerCommonConfig::OnePerDebuggerConfig:
-        perspectiveName = GetGUIName() + wxT(":") + config.GetName();
+        perspectiveName = GetGUIName() + ":" + config.GetName();
         break;
     case cbDebuggerCommonConfig::UseCurrent:
         m_PreviousLayout = wxString();
@@ -750,7 +750,7 @@ namespace
 {
 wxString MakeSleepCommand()
 {
-    return wxString::Format(wxT("sleep %lu"), 80000000 + ::wxGetProcessId());
+    return wxString::Format("sleep %lu", 80000000 + ::wxGetProcessId());
 }
 
 struct ConsoleInfo
@@ -769,7 +769,7 @@ ConsoleInfo GetConsoleTty(int consolePID)
     wxArrayString psOutput;
     wxArrayString psErrors;
 
-    int result = wxExecute(wxT("ps x -o tty,pid,command"), psOutput, psErrors, wxEXEC_SYNC);
+    int result = wxExecute("ps x -o tty,pid,command", psOutput, psErrors, wxEXEC_SYNC);
     if (result != 0)
         return ConsoleInfo();
 
@@ -803,7 +803,7 @@ ConsoleInfo GetConsoleTty(int consolePID)
                 // "sleep" string. One for the sleep process and one for the terminal process. We want to skip the
                 // line for the terminal process.
                 if (pidForLine != consolePID)
-                    return ConsoleInfo(wxT("/dev/") + psCmd.BeforeFirst(' '), pidForLine);
+                    return ConsoleInfo("/dev/" + psCmd.BeforeFirst(' '), pidForLine);
             }
         }
     }
@@ -845,10 +845,10 @@ int cbDebuggerPlugin::RunNixConsole(wxString &consoleTty)
     wxString cmd;
     int consolePid = 0;
     // Use the terminal specified by the user in the Settings -> Environment.
-    wxString term = Manager::Get()->GetConfigManager(_T("app"))->Read(_T("/console_terminal"), DEFAULT_CONSOLE_TERM);
+    wxString term = Manager::Get()->GetConfigManager("app")->Read("/console_terminal", DEFAULT_CONSOLE_TERM);
 
-    term.Replace(_T("$TITLE"), wxString(wxT("'"))+_("Program Console")+wxT("'"));
-    cmd << term << _T(" ");
+    term.Replace("$TITLE", wxString("'")+_("Program Console")+"'");
+    cmd << term << " ";
 
     const wxString &sleepCommand = MakeSleepCommand();
     cmd << sleepCommand;
@@ -1063,27 +1063,27 @@ void cbSmartIndentPlugin::OnRelease(cb_unused bool appShutDown)
 
 bool cbSmartIndentPlugin::AutoIndentEnabled()const
 {
-    return Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/auto_indent"), true);
+    return Manager::Get()->GetConfigManager("editor")->ReadBool("/auto_indent", true);
 }
 
 bool cbSmartIndentPlugin::SmartIndentEnabled()const
 {
-    return Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/smart_indent"), true);
+    return Manager::Get()->GetConfigManager("editor")->ReadBool("/smart_indent", true);
 }
 
 bool cbSmartIndentPlugin::BraceSmartIndentEnabled()const
 {
-    return Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/brace_smart_indent"), true);
+    return Manager::Get()->GetConfigManager("editor")->ReadBool("/brace_smart_indent", true);
 }
 
 bool cbSmartIndentPlugin::BraceCompletionEnabled()const
 {
-    return Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/brace_completion"), true);
+    return Manager::Get()->GetConfigManager("editor")->ReadBool("/brace_completion", true);
 }
 
 bool cbSmartIndentPlugin::SelectionBraceCompletionEnabled()const
 {
-    return Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/selection_brace_completion"), false);
+    return Manager::Get()->GetConfigManager("editor")->ReadBool("/selection_brace_completion", false);
 }
 
 void cbSmartIndentPlugin::Indent(cbStyledTextCtrl* stc, wxString &indent)const

@@ -46,7 +46,7 @@ EditPathDlg::EditPathDlg(wxWindow* parent,
         const wxString& filter)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditPath"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditPath","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     wxTextCtrl *txtPath = XRCCTRL(*this, "txtPath", wxTextCtrl);

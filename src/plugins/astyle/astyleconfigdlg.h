@@ -23,7 +23,7 @@ class AstyleConfigDlg : public cbConfigurationPanel
         void OnBreakBlocksChange(wxCommandEvent& event);
 
         wxString GetTitle() const  override { return _("Source formatter"); }
-        wxString GetBitmapBaseName() const  override { return _T("astyle-plugin"); }
+        wxString GetBitmapBaseName() const  override { return "astyle-plugin"; }
         void OnApply() override { SaveSettings(); }
         void OnCancel() override {}
 

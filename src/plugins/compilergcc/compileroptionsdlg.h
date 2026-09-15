@@ -32,7 +32,7 @@ class CompilerOptionsDlg : public cbConfigurationPanel
         ~CompilerOptionsDlg() override;
 
         wxString GetTitle() const override { return _("Global compiler settings"); }
-        wxString GetBitmapBaseName() const override { return _T("compiler"); }
+        wxString GetBitmapBaseName() const override { return "compiler"; }
         void OnApply() override;
         void OnCancel() override {}
     private:

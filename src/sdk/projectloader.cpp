@@ -612,7 +612,7 @@ void ProjectLoader::DoBuildTargetOptions(TiXmlElement* parentNode, ProjectBuildT
         if (node->Attribute("run_host_application_in_terminal"))
         {
             wxString runInTerminal = cbC2U(node->Attribute("run_host_application_in_terminal"));
-            runHostApplicationInTerminal = (runInTerminal == wxT("1"));
+            runHostApplicationInTerminal = (runInTerminal == "1");
         }
 
         // used in versions prior to 1.5
@@ -795,9 +795,9 @@ void ProjectLoader::DoLinkerOptions(TiXmlElement* parentNode, ProjectBuildTarget
         const wxString value = cbC2U(child->Attribute("value"));
 
         wxString str[int(LinkerExecutableOption::Last) - 1] = {
-            wxT("CCompiler"),
-            wxT("CppCompiler"),
-            wxT("Linker")
+            "CCompiler",
+            "CppCompiler",
+            "Linker"
         };
 
         int index;
@@ -1175,7 +1175,7 @@ bool ProjectLoader::UpdateGlob(const ProjectGlob& glob)
         {
             ProjectFile* pf = m_pProject->AddFile(-1, UnixFilename(file));
             if (!pf)
-                Manager::Get()->GetLogManager()->DebugLog(_T("Can't load file ") + file);
+                Manager::Get()->GetLogManager()->DebugLog("Can't load file " + file);
             else
             {
                 modified = true;
@@ -1230,7 +1230,7 @@ void ProjectLoader::DoUnits(const TiXmlElement* parentNode)
             long long idNr = -0;
             if (!id.ToLongLong(&idNr))
             {
-                  Manager::Get()->GetLogManager()->DebugLog(_T("Can't read glob id for glob ") + directory);
+                  Manager::Get()->GetLogManager()->DebugLog("Can't read glob id for glob " + directory);
                   glob = ProjectGlob(directory, wildCard, isRecursive);
             }
             else
@@ -1472,9 +1472,9 @@ static void SaveLinkerExecutable(TiXmlElement *linkerNode, const CompileOptionsB
         && linkerExe < LinkerExecutableOption::Last)
     {
         wxString str[int(LinkerExecutableOption::Last) - 1] = {
-            wxT("CCompiler"),
-            wxT("CppCompiler"),
-            wxT("Linker")
+            "CCompiler",
+            "CppCompiler",
+            "Linker"
         };
         AddElement(linkerNode, "LinkerExe", "value", str[int(linkerExe) - 1]);
     }
@@ -1525,7 +1525,7 @@ bool ProjectLoader::ExportTargetAsProject(const wxString& filename, const wxStri
         for (size_t i = 0; i < virtualFolders.GetCount(); i++)
         {
             if (!result.IsEmpty())
-                result << wxT(";"); // add the delimiter
+                result << ";"; // add the delimiter
 
             result << UnixFilename(virtualFolders[i], wxPATH_UNIX); // append Unix format folder name
         }

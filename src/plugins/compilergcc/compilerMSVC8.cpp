@@ -19,7 +19,7 @@
 #endif // __WXMSW__
 
 CompilerMSVC8::CompilerMSVC8()
-    : Compiler(_("Microsoft Visual C++ 2005/2008"), _T("msvc8"))
+    : Compiler(_("Microsoft Visual C++ 2005/2008"), "msvc8")
 {
     m_Weight = 12;
     Reset();
@@ -41,10 +41,10 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
     wxString idepath;
 
     // Read the VCToolkitInstallDir environment variable
-    wxGetEnv(_T("VS90COMNTOOLS"), &m_MasterPath);
+    wxGetEnv("VS90COMNTOOLS", &m_MasterPath);
     if(m_MasterPath.IsEmpty())
     {
-        wxGetEnv(_T("VS80COMNTOOLS"), &m_MasterPath);
+        wxGetEnv("VS80COMNTOOLS", &m_MasterPath);
     }
 
     if ( !m_MasterPath.IsEmpty() )
@@ -52,14 +52,14 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
         wxFileName name = wxFileName::DirName(m_MasterPath);
 
         name.RemoveLastDir();
-        name.AppendDir(_T("IDE"));
+        name.AppendDir("IDE");
         idepath = name.GetPath();
         if ( !wxDirExists(idepath) )
             idepath = wxEmptyString;
 
         name.RemoveLastDir();
         name.RemoveLastDir();
-        name.AppendDir(_T("VC"));
+        name.AppendDir("VC");
         m_MasterPath = name.GetPath();
         if ( !wxDirExists(m_MasterPath) )
             m_MasterPath = wxEmptyString;
@@ -68,17 +68,17 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
     if (m_MasterPath.IsEmpty())
     {
         // just a guess; the default installation dir
-        wxString Programs = _T("C:\\Program Files");
+        wxString Programs = "C:\\Program Files";
         // what's the "Program Files" location
         // TO DO : support 64 bit ->    32 bit apps are in "ProgramFiles(x86)"
         //                              64 bit apps are in "ProgramFiles"
-        wxGetEnv(_T("ProgramFiles"), &Programs);
-        m_MasterPath = Programs + _T("\\Microsoft Visual Studio 9.0\\VC");
-        idepath = Programs + _T("\\Microsoft Visual Studio 9.0\\Common7\\IDE");
+        wxGetEnv("ProgramFiles", &Programs);
+        m_MasterPath = Programs + "\\Microsoft Visual Studio 9.0\\VC";
+        idepath = Programs + "\\Microsoft Visual Studio 9.0\\Common7\\IDE";
         if(!wxDirExists(m_MasterPath))
         {
-            m_MasterPath = Programs + _T("\\Microsoft Visual Studio 8\\VC");
-            idepath = Programs + _T("\\Microsoft Visual Studio 8\\Common7\\IDE");
+            m_MasterPath = Programs + "\\Microsoft Visual Studio 8\\VC";
+            idepath = Programs + "\\Microsoft Visual Studio 8\\Common7\\IDE";
         }
     }
 
@@ -93,19 +93,19 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
 #ifdef __WXMSW__
         wxRegKey key; // defaults to HKCR
         // try to detect Platform SDK (old versions)
-        key.SetName(_T("HKEY_CURRENT_USER\\Software\\Microsoft\\Win32SDK\\Directories"));
+        key.SetName("HKEY_CURRENT_USER\\Software\\Microsoft\\Win32SDK\\Directories");
         if (key.Exists() && key.Open(wxRegKey::Read))
         {
-            key.QueryValue(_T("Install Dir"), dir);
+            key.QueryValue("Install Dir", dir);
             if (!dir.IsEmpty() && wxDirExists(dir))
                 sdkfound = true;
             key.Close();
         }
 
         // try to detect Platform SDK (newer versions)
-        wxString msPsdkKeyName[2] = { _T("HKEY_CURRENT_USER\\Software\\Microsoft\\MicrosoftSDK\\InstalledSDKs"),
-                                      _T("HKEY_CURRENT_USER\\Software\\Microsoft\\Microsoft SDKs\\Windows") };
-        wxString msPsdkKeyValue[2] = { _T("Install Dir"), _T("InstallationFolder") };
+        wxString msPsdkKeyName[2] = { "HKEY_CURRENT_USER\\Software\\Microsoft\\MicrosoftSDK\\InstalledSDKs",
+                                      "HKEY_CURRENT_USER\\Software\\Microsoft\\Microsoft SDKs\\Windows" };
+        wxString msPsdkKeyValue[2] = { "Install Dir", "InstallationFolder" };
         for (int i = 0; i < 2; ++i)
         {
             key.SetName(msPsdkKeyName[i]);
@@ -142,10 +142,10 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
         // take a guess
         if (!sdkfound)
         {
-            dir = wxT("C:\\Program Files");
-            wxGetEnv(wxT("ProgramFiles"), &dir);
-            dir +=  wxT("\\Microsoft SDKs\\Windows\\v");
-            wxArrayString vers = GetArrayFromString(wxT("7.1;7.0A;7.0;6.1;6.0A;6.0"));
+            dir = "C:\\Program Files";
+            wxGetEnv("ProgramFiles", &dir);
+            dir +=  "\\Microsoft SDKs\\Windows\\v";
+            wxArrayString vers = GetArrayFromString("7.1;7.0A;7.0;6.1;6.0A;6.0");
             for (size_t i = 0; i < vers.GetCount(); ++i)
             {
                 if (wxDirExists(dir + vers[i]))
@@ -162,23 +162,23 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
         {
             if (dir.GetChar(dir.Length() - 1) != '\\')
                 dir += sep;
-            AddIncludeDir(dir + _T("include"));
-            AddResourceIncludeDir(dir + _T("include"));
-            AddLibDir(dir + _T("lib"));
-            m_ExtraPaths.Add(dir + _T("bin"));
+            AddIncludeDir(dir + "include");
+            AddResourceIncludeDir(dir + "include");
+            AddLibDir(dir + "lib");
+            m_ExtraPaths.Add(dir + "bin");
         }
 
         // now the compiler's include directories
-        AddIncludeDir(m_MasterPath + sep + _T("include"));
-        AddLibDir(m_MasterPath + sep + _T("lib"));
-        AddResourceIncludeDir(m_MasterPath + sep + _T("include"));
+        AddIncludeDir(m_MasterPath + sep + "include");
+        AddLibDir(m_MasterPath + sep + "lib");
+        AddResourceIncludeDir(m_MasterPath + sep + "include");
 
 #ifdef __WXMSW__
         // add extra paths for "Debugging tools" too
-        key.SetName(_T("HKEY_CURRENT_USER\\Software\\Microsoft\\DebuggingTools"));
+        key.SetName("HKEY_CURRENT_USER\\Software\\Microsoft\\DebuggingTools");
         if (key.Exists() && key.Open(wxRegKey::Read))
         {
-            key.QueryValue(_T("WinDbg"), dir);
+            key.QueryValue("WinDbg", dir);
             if (!dir.IsEmpty() && wxDirExists(dir))
             {
                 if (dir.GetChar(dir.Length() - 1) == '\\')
@@ -190,5 +190,5 @@ AutoDetectResult CompilerMSVC8::AutoDetectInstallationDir()
 #endif // __WXMSW__
     }
 
-    return wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C) ? adrDetected : adrGuessed;
 }

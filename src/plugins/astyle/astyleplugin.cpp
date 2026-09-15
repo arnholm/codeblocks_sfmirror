@@ -55,15 +55,15 @@ END_EVENT_TABLE()
 
 namespace
 {
-    PluginRegistrant<AStylePlugin> reg(_T("AStylePlugin"));
+    PluginRegistrant<AStylePlugin> reg("AStylePlugin");
 }
 
 AStylePlugin::AStylePlugin()
 {
     //ctor
 
-    if (!Manager::LoadResource(_T("Astyle.zip")))
-        NotifyMissingFile(_T("Astyle.zip"));
+    if (!Manager::LoadResource("Astyle.zip"))
+        NotifyMissingFile("Astyle.zip");
 }
 
 AStylePlugin::~AStylePlugin()

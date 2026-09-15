@@ -323,7 +323,7 @@ class DLLIMPORT cbAuiNotebook : public wxAuiNotebook
         static void AllowScrolling(bool allow = true);
         /** \brief Sets the modifier keys for scrolling
          */
-        static void SetModKeys(wxString keys = _T("Strg"));
+        static void SetModKeys(wxString keys = "Strg");
         /** \brief Use modkey to advance through tabs with mouse wheel
          */
         static void UseModToAdvance(bool use = false);

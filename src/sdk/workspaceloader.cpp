@@ -76,14 +76,14 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
         root = doc.FirstChildElement("Code::Blocks_workspace_file");
         if (!root)
         {
-            GetpMsg()->DebugLog(_T("Not a valid Code::Blocks workspace file..."));
+            GetpMsg()->DebugLog("Not a valid Code::Blocks workspace file...");
             return false;
         }
     }
     TiXmlElement* wksp = root->FirstChildElement("Workspace");
     if (!wksp)
     {
-        GetpMsg()->DebugLog(_T("No 'Workspace' element in file..."));
+        GetpMsg()->DebugLog("No 'Workspace' element in file...");
         return false;
     }
 
@@ -92,7 +92,7 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
     TiXmlElement* proj = wksp->FirstChildElement("Project");
     if (!proj)
     {
-        GetpMsg()->DebugLog(_T("Workspace file contains no projects..."));
+        GetpMsg()->DebugLog("Workspace file contains no projects...");
         return false;
     }
 
@@ -105,7 +105,7 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
         wxString projectFilename = UnixFilename(cbC2U(proj->Attribute("filename")));
         if (projectFilename.IsEmpty())
         {
-            GetpMsg()->DebugLog(_T("'Project' node exists, but no filename?!?"));
+            GetpMsg()->DebugLog("'Project' node exists, but no filename?!?");
         }
         else
         {
@@ -140,7 +140,7 @@ bool WorkspaceLoader::Open(const wxString& filename, wxString& Title)
         wxString projectFilename = UnixFilename(cbC2U(proj->Attribute("filename")));
         if (projectFilename.IsEmpty())
         {
-            GetpMsg()->DebugLog(_T("'Project' node exists, but no filename?!?"));
+            GetpMsg()->DebugLog("'Project' node exists, but no filename?!?");
             thisprj = nullptr;
         }
         else
@@ -266,7 +266,7 @@ bool WorkspaceLoader::SaveLayout(const wxString& filename)
     }
     // else No workspace present to save.
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_editor_layout"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_editor_layout", false))
     {
         TiXmlElement *el =
             static_cast<TiXmlElement*>(
@@ -290,7 +290,7 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
     TiXmlElement* root = doc.FirstChildElement("CodeBlocks_workspace_layout_file");
     if (!root)
     {
-        GetpMsg()->DebugLog(_T("Unable to load Code::Blocks workspace layout file: File is invalid."));
+        GetpMsg()->DebugLog("Unable to load Code::Blocks workspace layout file: File is invalid.");
         return false;
     }
 
@@ -326,7 +326,7 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
             {
                 msg << _("0.0 (unversioned) to 1.0:\n");
                 msg << _("  * save editor-pane layout and order.\n");
-                msg << _T("\n");
+                msg << "\n";
             }
 
             if (!msg.IsEmpty())
@@ -389,7 +389,7 @@ bool WorkspaceLoader::LoadLayout(const wxString& filename)
     // else XML element 'PreferredTarget' not found?!
 
     if (   (major >= 1)
-        && (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_editor_layout"), false)) )
+        && (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_editor_layout", false)) )
     {
         if (TiXmlElement* el = root->FirstChildElement("EditorTabsLayout"))
         {

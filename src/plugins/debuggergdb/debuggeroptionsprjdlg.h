@@ -24,7 +24,7 @@ class DebuggerOptionsProjectDlg : public cbConfigurationPanel
         ~DebuggerOptionsProjectDlg() override;
 
         wxString GetTitle() const override { return _("Debugger"); }
-        wxString GetBitmapBaseName() const override { return _T("debugger"); }
+        wxString GetBitmapBaseName() const override { return "debugger"; }
         void OnApply() override;
         void OnCancel() override {}
     protected:

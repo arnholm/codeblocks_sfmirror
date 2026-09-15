@@ -83,7 +83,7 @@ void RecentItemsList::AskToRemoveFileFromHistory(size_t id, bool cannot_open)
     if (cannot_open)
     {
         query << _("The file cannot be opened (probably it's not available anymore).")
-              << _T("\n") << question;
+              << "\n" << question;
     }
     else
         query << question;
@@ -106,7 +106,7 @@ void RecentItemsList::ClearHistory()
 {
     while (m_list->GetCount())
         m_list->RemoveFileFromHistory(0);
-    Manager::Get()->GetConfigManager(_T("app"))->DeleteSubPath(m_configPath);
+    Manager::Get()->GetConfigManager("app")->DeleteSubPath(m_configPath);
 
     Initialize();
     RefreshStartHerePage();
@@ -121,7 +121,7 @@ void RecentItemsList::Initialize()
     wxMenu* recentFiles = GetMenu();
     if (recentFiles)
     {
-        wxArrayString files = Manager::Get()->GetConfigManager(_T("app"))->ReadArrayString(m_configPath);
+        wxArrayString files = Manager::Get()->GetConfigManager("app")->ReadArrayString(m_configPath);
         for (int i = (int)files.GetCount() - 1; i >= 0; --i)
         {
             if (wxFileExists(files[i]))
@@ -139,7 +139,7 @@ void RecentItemsList::TerminateHistory()
         wxArrayString files;
         for (unsigned int i = 0; i < m_list->GetCount(); ++i)
             files.Add(m_list->GetHistoryFile(i));
-        Manager::Get()->GetConfigManager(_T("app"))->Write(m_configPath, files);
+        Manager::Get()->GetConfigManager("app")->Write(m_configPath, files);
 
         wxMenu* recentFiles = GetMenu();
         if (recentFiles)

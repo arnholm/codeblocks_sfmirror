@@ -65,7 +65,7 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
         root = doc.FirstChildElement("Code::Blocks_layout_file");
         if (!root)
         {
-            pMsg->DebugLog(_T("Not a valid Code::Blocks layout file..."));
+            pMsg->DebugLog("Not a valid Code::Blocks layout file...");
             return false;
         }
     }
@@ -101,7 +101,7 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
             {
                 msg << _("0.0 (unversioned) to 1.0:\n");
                 msg << _("  * save editor-pane layout and order.\n");
-                msg << _T("\n");
+                msg << "\n";
             }
 
             if (!msg.IsEmpty())
@@ -146,7 +146,7 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
     elem = root->FirstChildElement("File");
     if (!elem)
     {
-        //pMsg->DebugLog(_T("No 'File' element in file..."));
+        //pMsg->DebugLog("No 'File' element in file...");
         return false;
     }
 
@@ -156,7 +156,7 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
         fname = cbC2U(elem->Attribute("name"));
         if (fname.IsEmpty())
         {
-            //pMsg->DebugLog(_T("'File' node exists, but no filename?!?"));
+            //pMsg->DebugLog("'File' node exists, but no filename?!?");
             pf = nullptr;
         }
         else
@@ -236,7 +236,7 @@ bool ProjectLayoutLoader::Open(const wxString& filename)
     }
 
     if (   (major >= 1)
-        && (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_editor_layout"), false)) )
+        && (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_editor_layout", false)) )
     {
         elem = root->FirstChildElement("EditorTabsLayout");
         if (elem)
@@ -320,7 +320,7 @@ bool ProjectLayoutLoader::Save(const wxString& filename)
         }
     }
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_editor_layout"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_editor_layout", false))
     {
         TiXmlElement *el =
             static_cast<TiXmlElement*>(

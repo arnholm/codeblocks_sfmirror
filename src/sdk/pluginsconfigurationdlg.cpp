@@ -92,14 +92,14 @@ END_EVENT_TABLE()
 // class constructor
 PluginsConfigurationDlg::PluginsConfigurationDlg(wxWindow* parent)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgConfigurePlugins"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgConfigurePlugins","wxScrollingDialog");
     XRCCTRL(*this, "wxID_CANCEL", wxButton)->SetDefault();
     FillList();
 
     // install options
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("plugins"));
-    bool globalInstall = cfg->ReadBool(_T("/install_globally"), true);
-    bool confirmation = cfg->ReadBool(_T("/install_confirmation"), true);
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("plugins");
+    bool globalInstall = cfg->ReadBool("/install_globally", true);
+    bool confirmation = cfg->ReadBool("/install_confirmation", true);
 
     // verify user can install globally
     DirAccessCheck access = cbDirAccessCheck(ConfigManager::GetFolder(sdPluginsGlobal));
@@ -240,8 +240,8 @@ void PluginsConfigurationDlg::OnToggle(wxCommandEvent& event)
 
             // update configuration
             wxString baseKey;
-            baseKey << _T("/") << elem->info.name;
-            Manager::Get()->GetConfigManager(_T("plugins"))->Write(baseKey, elem->plugin->IsAttached());
+            baseKey << "/" << elem->info.name;
+            Manager::Get()->GetConfigManager("plugins")->Write(baseKey, elem->plugin->IsAttached());
         }
     }
     if (!failure.IsEmpty())                                                     //(ph 2021/07/15)
@@ -318,12 +318,12 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
     if (list->GetSelectedItemCount() == 0)
         return;
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("plugins_configuration"));
-    wxDirDialog dd(this, _("Select directory to export plugin"), cfg->Read(_T("/last_export_path")), wxDD_NEW_DIR_BUTTON);
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("plugins_configuration");
+    wxDirDialog dd(this, _("Select directory to export plugin"), cfg->Read("/last_export_path"), wxDD_NEW_DIR_BUTTON);
     PlaceWindow(&dd);
     if (dd.ShowModal() != wxID_OK)
         return;
-    cfg->Write(_T("/last_export_path"), dd.GetPath());
+    cfg->Write("/last_export_path", dd.GetPath());
 
     wxBusyCursor busy;
     wxProgressDialog pd(_("Exporting plugin(s)"),
@@ -372,7 +372,7 @@ void PluginsConfigurationDlg::OnExport(cb_unused wxCommandEvent& event)
         wxFileName fname;
         fname.SetPath(dd.GetPath());
         fname.SetName(wxFileName(elem->fileName).GetName() + "-" + version);
-        fname.SetExt(_T("cbplugin"));
+        fname.SetExt("cbplugin");
 
         pd.Update(++count,
                     wxString::Format(_("Exporting \"%s\"..."), elem->info.title),
@@ -426,16 +426,16 @@ void PluginsConfigurationDlg::OnSelect(cb_unused wxListEvent& event)
         return;
 
     wxString description(elem->info.description);
-    description.Replace(_T("\n"), _T("<br />\n"));
+    description.Replace("\n", "<br />\n");
 
     wxString info;
-    info << _T("<html><body>\n");
-    info << _T("<h3>") << elem->info.title << " ";
-    info << _T("<font color=\"#0000AA\">") << elem->info.version << _T("</font></h3>");
-    info << _T("<i><font color=\"#808080\" size=\"-1\">") << UnixFilename(elem->fileName) << _T("</font></i><br />\n");
-    info << _T("<br />\n");
-    info << description << _T("<br />\n");
-    info << _T("</body></html>\n");
+    info << "<html><body>\n";
+    info << "<h3>" << elem->info.title << " ";
+    info << "<font color=\"#0000AA\">" << elem->info.version << "</font></h3>";
+    info << "<i><font color=\"#808080\" size=\"-1\">" << UnixFilename(elem->fileName) << "</font></i><br />\n";
+    info << "<br />\n";
+    info << description << "<br />\n";
+    info << "</body></html>\n";
 
     XRCCTRL(*this, "htmlInfo", wxHtmlWindow)->SetPage(info);
 }
@@ -498,10 +498,10 @@ void PluginsConfigurationDlg::OnUpdateUI(wxUpdateUIEvent& event)
 
 void PluginsConfigurationDlg::EndModal(int retCode)
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("plugins"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("plugins");
 
-    cfg->Write(_T("/install_globally"), XRCCTRL(*this, "chkInstallGlobally", wxCheckBox)->GetValue());
-    cfg->Write(_T("/install_confirmation"), XRCCTRL(*this, "chkInstallConfirmation", wxCheckBox)->GetValue());
+    cfg->Write("/install_globally", XRCCTRL(*this, "chkInstallGlobally", wxCheckBox)->GetValue());
+    cfg->Write("/install_confirmation", XRCCTRL(*this, "chkInstallConfirmation", wxCheckBox)->GetValue());
 
     Manager::Get()->GetCCManager()->NotifyPluginStatus();
 

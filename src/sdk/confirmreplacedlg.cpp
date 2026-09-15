@@ -32,9 +32,9 @@ END_EVENT_TABLE()
 ConfirmReplaceDlg::ConfirmReplaceDlg(wxWindow* parent, bool replaceInFiles, const wxString& label)
 {
     if (replaceInFiles)
-        wxXmlResource::Get()->LoadObject(this, parent, _T("dlgConfirmReplaceMultiple"),_T("wxScrollingDialog"));
+        wxXmlResource::Get()->LoadObject(this, parent, "dlgConfirmReplaceMultiple","wxScrollingDialog");
     else
-        wxXmlResource::Get()->LoadObject(this, parent, _T("dlgConfirmReplace"),_T("wxScrollingDialog"));
+        wxXmlResource::Get()->LoadObject(this, parent, "dlgConfirmReplace","wxScrollingDialog");
     XRCCTRL(*this, "lblMessage", wxStaticText)->SetLabel(label);
     this->SetEscapeId(XRCID("btnCancel"));
 }

@@ -382,11 +382,11 @@ namespace cb
 }
 
 #if defined(__APPLE__) && defined(__MACH__)
-    #define CB_LIBRARY_ENVVAR _T("DYLD_LIBRARY_PATH")
+    #define CB_LIBRARY_ENVVAR "DYLD_LIBRARY_PATH"
 #elif !defined(__WXMSW__)
-    #define CB_LIBRARY_ENVVAR _T("LD_LIBRARY_PATH")
+    #define CB_LIBRARY_ENVVAR "LD_LIBRARY_PATH"
 #else
-    #define CB_LIBRARY_ENVVAR _T("PATH")
+    #define CB_LIBRARY_ENVVAR "PATH"
 #endif
 
 #endif

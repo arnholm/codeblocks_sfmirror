@@ -55,23 +55,23 @@ void AnnoyingDialog::Init(const wxString &caption, const wxString &id, const wxS
     static_assert(wxMinimumVersion<3,0,0>::eval, "wxWidgets 3.0.0 or higher is required");
 
     ConfigManagerContainer::StringSet disabled;
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(wxT("an_dlg"));
-    if (cfg->Exists(wxT("/disabled_ret")))
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("an_dlg");
+    if (cfg->Exists("/disabled_ret"))
     {
         // new config style, includes return code in format:
         // "id:dReturnType"
         // example:
         // "Question XYZ?:4"
-        disabled = cfg->ReadSSet(wxT("/disabled_ret"));
+        disabled = cfg->ReadSSet("/disabled_ret");
     }
     else
     {
         // if the new config key does not exist, read from the old one
         // old keys are in format:
         // "id"
-        disabled = cfg->ReadSSet(wxT("/disabled"));
+        disabled = cfg->ReadSSet("/disabled");
         // and copy it to the new one
-        cfg->Write(wxT("/disabled_ret"), disabled);
+        cfg->Write("/disabled_ret", disabled);
         // we do not do an in place upgrade of the format to maintain
         // compatibility with previous versions
     }
@@ -254,8 +254,8 @@ void AnnoyingDialog::OnButton(wxCommandEvent& event)
 
     if(m_CheckBox->IsChecked())
     {
-        ConfigManager* cfg = Manager::Get()->GetConfigManager(wxT("an_dlg"));
-        ConfigManagerContainer::StringSet disabled = cfg->ReadSSet(wxT("/disabled_ret"));
+        ConfigManager* cfg = Manager::Get()->GetConfigManager("an_dlg");
+        ConfigManagerContainer::StringSet disabled = cfg->ReadSSet("/disabled_ret");
         // if we are supposed to remember the users choice, save the button
         disabled.insert(m_Id + wxString::Format(":%d", m_DefRet == rtSAVE_CHOICE ? id : m_DefRet));
         cfg->Write("/disabled_ret", disabled);

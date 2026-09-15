@@ -723,7 +723,7 @@ XYPOSITION SurfaceImpl::WidthChar(Font &font, char ch) {
     return w;
 }
 
-#define EXTENT_TEST wxT(" `~!@#$%^&*()-_=+\\|[]{};:\"\'<,>.?/1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+#define EXTENT_TEST " `~!@#$%^&*()-_=+\\|[]{};:\"\'<,>.?/1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 XYPOSITION SurfaceImpl::Ascent(Font &font) {
     SetFont(font);
@@ -2566,7 +2566,7 @@ void ListBoxImpl::Append(const wxString& text, int type) {
     GETLB(wid)->SetItem(itemID, 1, text);
     maxStrWidth = wxMax(maxStrWidth, text.length());
     if (type != -1) {
-        wxCHECK_RET(imgTypeMap, wxT("Unexpected NULL imgTypeMap"));
+        wxCHECK_RET(imgTypeMap, "Unexpected NULL imgTypeMap");
         idx = imgTypeMap->Item(type);
     }
     GETLB(wid)->SetItemImage(itemID, idx, idx);
@@ -2889,7 +2889,7 @@ void Platform::Assert(const char *c, const char *file, int line) {
     if (assertionPopUps) {
         /*int idButton = */
         wxMessageBox(sci2wx(buffer),
-                     wxT("Assertion failure"),
+                     "Assertion failure",
                      wxICON_HAND | wxOK);
     } else {
         strcat(buffer, "\r\n");

@@ -36,7 +36,7 @@ EditArrayFileDlg::EditArrayFileDlg(wxWindow* parent, wxArrayString& array, bool 
     m_BasePath(basePath)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditArrayString"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditArrayString","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     wxListBox* list = XRCCTRL(*this, "lstItems", wxListBox);
@@ -80,7 +80,7 @@ void EditArrayFileDlg::OnAdd(wxCommandEvent& WXUNUSED(event))
     wxFileDialog dlg(this,
                     _("Select file"),
                     m_BasePath,
-                    _T(""),
+                    "",
                     FileFilters::GetFilterAll(),
                     wxFD_OPEN | compatibility::wxHideReadonly);
     PlaceWindow(&dlg);

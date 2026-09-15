@@ -160,10 +160,9 @@ class WizBuildTargetPanel : public WizPageBase
         WizBuildTargetPanel(const wxString& targetName, bool isDebug,
                         wxWizard* parent, const wxBitmap& bitmap = wxNullBitmap,
                         bool showCompiler = false,
-                        const wxString& compilerID = wxEmptyString, const wxString& validCompilerIDs = _T("*"),
+                        const wxString& compilerID = wxEmptyString, const wxString& validCompilerIDs = "*",
                         bool allowCompilerChange = true);
         ~WizBuildTargetPanel() override;
-
         wxString GetCompilerID() const;
         bool GetEnableDebug() const;
         wxString GetTargetName() const;

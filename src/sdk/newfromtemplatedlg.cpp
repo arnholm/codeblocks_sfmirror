@@ -268,7 +268,7 @@ void NewFromTemplateDlg::BuildListFor(TemplateOutputType otype, wxListCtrl* list
                 {
                     list->SetItemPtrData(index, (wxUIntPtr)(new ListItemData(nullptr, plugin, w)));
                     // if the script exists in the user's configuration, mark that it's been customized
-                    wxString script = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + plugin->GetScriptFilename(w);
+                    wxString script = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + plugin->GetScriptFilename(w);
                     if (wxFileExists(script))
                     {
                         list->SetItemTextColour(index, *wxRED);
@@ -353,7 +353,7 @@ bool NewFromTemplateDlg::SelectedUserTemplate() const
 wxString NewFromTemplateDlg::GetSelectedUserTemplate() const
 {
     int sel = XRCCTRL(*this, "lstUser", wxListBox)->GetSelection();
-    return sel != -1 ? XRCCTRL(*this, "lstUser", wxListBox)->GetString(sel) : _T("");
+    return sel != -1 ? XRCCTRL(*this, "lstUser", wxListBox)->GetString(sel) : "";
 }
 
 void NewFromTemplateDlg::EditScript(const wxString& filename)
@@ -363,11 +363,11 @@ void NewFromTemplateDlg::EditScript(const wxString& filename)
 
     // edited before?
     bool first_time = false;
-    wxString script = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + filename;
+    wxString script = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + filename;
     if (!wxFileExists(script))
     {
         first_time = true;
-        script = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + filename;
+        script = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + filename;
     }
 
     cbEditor* ed = Manager::Get()->GetEditorManager()->Open(script);
@@ -377,10 +377,10 @@ void NewFromTemplateDlg::EditScript(const wxString& filename)
         if (first_time)
         {
             // first time editing this script; change the filename to point to the user's dir
-            ed->SetFilename(ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + filename);
+            ed->SetFilename(ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + filename);
             ed->SetModified(true);
             // also make sure the destination directory exists
-            CreateDirRecursively(ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + filename);
+            CreateDirRecursively(ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + filename);
         }
         EndModal(wxID_CANCEL);
         return;
@@ -421,7 +421,7 @@ void NewFromTemplateDlg::OnListRightClick(wxListEvent& event)
         menu->Append(idEditWizardScript, _("Edit this script"));
 
         // if the script exists in the user's configuration, it has been customized
-        wxString script = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + data->plugin->GetScriptFilename(data->wizPluginIndex);
+        wxString script = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + data->plugin->GetScriptFilename(data->wizPluginIndex);
         if (wxFileExists(script))
         {
             menu->Append(idDiscardWizardScript, _("Discard modifications of this script"));
@@ -469,7 +469,7 @@ void NewFromTemplateDlg::OnDiscardScript(cb_unused wxCommandEvent& event)
     if (!data)
         return;
 
-    wxString script = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + data->plugin->GetScriptFilename(data->wizPluginIndex);
+    wxString script = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + data->plugin->GetScriptFilename(data->wizPluginIndex);
     if (wxFileExists(script))
     {
         if (cbMessageBox(_("Are you sure you want to discard all local modifications to this script?"),
@@ -486,7 +486,7 @@ void NewFromTemplateDlg::OnEditGlobalScript(cb_unused wxCommandEvent& event)
     cbMessageBox(_("Any changes you make to the global wizard registration script will "
                     "take effect after you restart Code::Blocks."),
                     _("Information"), wxICON_INFORMATION, this);
-    EditScript(_T("config.script"));
+    EditScript("config.script");
 }
 
 void NewFromTemplateDlg::OnViewChange(cb_unused wxCommandEvent& event)
@@ -507,7 +507,7 @@ void NewFromTemplateDlg::OnHelp(cb_unused wxCommandEvent& event)
                     "the only way to re-enable the globally installed script is to remove "
                     "the customized one.\n\n"
                     "On this computer, the customized scripts are located under:\n") +
-                    ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/"),
+                    ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/",
                     _("Help"),
                     wxICON_INFORMATION, this);
 }
@@ -524,7 +524,7 @@ void NewFromTemplateDlg::EndModal(int retCode)
 {
     // save view prefs
     int sel = XRCCTRL(*this, "rbView", wxRadioBox)->GetSelection();
-    Manager::Get()->GetConfigManager(_T("new_from_template"))->Write(_T("/view"), (int)sel);
+    Manager::Get()->GetConfigManager("new_from_template")->Write("/view", (int)sel);
 
     GetSelectedTemplate();
     wxScrollingDialog::EndModal(retCode);

@@ -113,7 +113,7 @@ void ManageGlobsDlg::PopulateList()
     {
         const ProjectGlob& globObj = tmpGlobObj.glob;
         m_ListGlobs->InsertItem(i, globObj.GetPath());
-        wxString rec = wxString::Format(wxT("%i"), globObj.GetRecursive());
+        wxString rec = wxString::Format("%i", globObj.GetRecursive());
         m_ListGlobs->SetItem(i, 1, rec);
         m_ListGlobs->SetItem(i, 2, globObj.GetWildCard());
         m_ListGlobs->SetItem(i, 3, wxJoin(globObj.GetTargets(), ','));

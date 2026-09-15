@@ -88,7 +88,7 @@ cbDebuggerConfiguration* DebuggerConfiguration::Clone() const
 wxPanel* DebuggerConfiguration::MakePanel(wxWindow *parent)
 {
     DebuggerConfigurationPanel *panel = new DebuggerConfigurationPanel;
-    if (!wxXmlResource::Get()->LoadPanel(panel, parent, wxT("dlgDebuggerOptions")))
+    if (!wxXmlResource::Get()->LoadPanel(panel, parent, "dlgDebuggerOptions"))
         return panel;
 
     XRCCTRL(*panel, "txtExecutablePath", wxTextCtrl)->ChangeValue(GetDebuggerExecutable(false));
@@ -105,26 +105,26 @@ wxPanel* DebuggerConfiguration::MakePanel(wxWindow *parent)
     XRCCTRL(*panel, "chkTooltipEval",    wxCheckBox)->SetValue(GetFlag(EvalExpression));
     XRCCTRL(*panel, "chkAddForeignDirs", wxCheckBox)->SetValue(GetFlag(AddOtherProjectDirs));
     XRCCTRL(*panel, "chkDoNotRun",       wxCheckBox)->SetValue(GetFlag(DoNotRun));
-    XRCCTRL(*panel, "choDisassemblyFlavor", wxChoice)->SetSelection(m_config.ReadInt(wxT("disassembly_flavor"), 0));
-    XRCCTRL(*panel, "txtInstructionSet", wxTextCtrl)->ChangeValue(m_config.Read(wxT("instruction_set"), wxEmptyString));
+    XRCCTRL(*panel, "choDisassemblyFlavor", wxChoice)->SetSelection(m_config.ReadInt("disassembly_flavor", 0));
+    XRCCTRL(*panel, "txtInstructionSet", wxTextCtrl)->ChangeValue(m_config.Read("instruction_set", wxEmptyString));
     return panel;
 }
 
 bool DebuggerConfiguration::SaveChanges(wxPanel *panel)
 {
-    m_config.Write(wxT("executable_path"),       XRCCTRL(*panel, "txtExecutablePath", wxTextCtrl)->GetValue());
-    m_config.Write(wxT("disable_init"),          XRCCTRL(*panel, "chkDisableInit",    wxCheckBox)->GetValue());
-    m_config.Write(wxT("user_arguments"),        XRCCTRL(*panel, "txtArguments",      wxTextCtrl)->GetValue());
-    m_config.Write(wxT("type"),                  XRCCTRL(*panel, "rbType",            wxRadioBox)->GetSelection());
-    m_config.Write(wxT("init_commands"),         XRCCTRL(*panel, "txtInit",           wxTextCtrl)->GetValue());
-    m_config.Write(wxT("watch_args"),            XRCCTRL(*panel, "chkWatchArgs",      wxCheckBox)->GetValue());
-    m_config.Write(wxT("watch_locals"),          XRCCTRL(*panel, "chkWatchLocals",    wxCheckBox)->GetValue());
-    m_config.Write(wxT("catch_exceptions"),      XRCCTRL(*panel, "chkCatchExceptions",wxCheckBox)->GetValue());
-    m_config.Write(wxT("eval_tooltip"),          XRCCTRL(*panel, "chkTooltipEval",    wxCheckBox)->GetValue());
-    m_config.Write(wxT("add_other_search_dirs"), XRCCTRL(*panel, "chkAddForeignDirs", wxCheckBox)->GetValue());
-    m_config.Write(wxT("do_not_run"),            XRCCTRL(*panel, "chkDoNotRun",       wxCheckBox)->GetValue());
-    m_config.Write(wxT("disassembly_flavor"),    XRCCTRL(*panel, "choDisassemblyFlavor", wxChoice)->GetSelection());
-    m_config.Write(wxT("instruction_set"),       XRCCTRL(*panel, "txtInstructionSet", wxTextCtrl)->GetValue());
+    m_config.Write("executable_path",       XRCCTRL(*panel, "txtExecutablePath", wxTextCtrl)->GetValue());
+    m_config.Write("disable_init",          XRCCTRL(*panel, "chkDisableInit",    wxCheckBox)->GetValue());
+    m_config.Write("user_arguments",        XRCCTRL(*panel, "txtArguments",      wxTextCtrl)->GetValue());
+    m_config.Write("type",                  XRCCTRL(*panel, "rbType",            wxRadioBox)->GetSelection());
+    m_config.Write("init_commands",         XRCCTRL(*panel, "txtInit",           wxTextCtrl)->GetValue());
+    m_config.Write("watch_args",            XRCCTRL(*panel, "chkWatchArgs",      wxCheckBox)->GetValue());
+    m_config.Write("watch_locals",          XRCCTRL(*panel, "chkWatchLocals",    wxCheckBox)->GetValue());
+    m_config.Write("catch_exceptions",      XRCCTRL(*panel, "chkCatchExceptions",wxCheckBox)->GetValue());
+    m_config.Write("eval_tooltip",          XRCCTRL(*panel, "chkTooltipEval",    wxCheckBox)->GetValue());
+    m_config.Write("add_other_search_dirs", XRCCTRL(*panel, "chkAddForeignDirs", wxCheckBox)->GetValue());
+    m_config.Write("do_not_run",            XRCCTRL(*panel, "chkDoNotRun",       wxCheckBox)->GetValue());
+    m_config.Write("disassembly_flavor",    XRCCTRL(*panel, "choDisassemblyFlavor", wxChoice)->GetSelection());
+    m_config.Write("instruction_set",       XRCCTRL(*panel, "txtInstructionSet", wxTextCtrl)->GetValue());
 
     return true;
 }
@@ -134,19 +134,19 @@ bool DebuggerConfiguration::GetFlag(Flags flag)
     switch (flag)
     {
         case DisableInit:
-            return m_config.ReadBool(wxT("disable_init"), true);
+            return m_config.ReadBool("disable_init", true);
         case WatchFuncArgs:
-            return m_config.ReadBool(wxT("watch_args"), true);
+            return m_config.ReadBool("watch_args", true);
         case WatchLocals:
-            return m_config.ReadBool(wxT("watch_locals"), true);
+            return m_config.ReadBool("watch_locals", true);
         case CatchExceptions:
-            return m_config.ReadBool(wxT("catch_exceptions"), true);
+            return m_config.ReadBool("catch_exceptions", true);
         case EvalExpression:
-            return m_config.ReadBool(wxT("eval_tooltip"), false);
+            return m_config.ReadBool("eval_tooltip", false);
         case AddOtherProjectDirs:
-            return m_config.ReadBool(wxT("add_other_search_dirs"), false);
+            return m_config.ReadBool("add_other_search_dirs", false);
         case DoNotRun:
-            return m_config.ReadBool(wxT("do_not_run"), false);
+            return m_config.ReadBool("do_not_run", false);
         default:
             return false;
     }
@@ -156,25 +156,25 @@ void DebuggerConfiguration::SetFlag(Flags flag, bool value)
     switch (flag)
     {
         case DisableInit:
-            m_config.Write(wxT("disable_init"), value);
+            m_config.Write("disable_init", value);
             break;
         case WatchFuncArgs:
-            m_config.Write(wxT("watch_args"), value);
+            m_config.Write("watch_args", value);
             break;
         case WatchLocals:
-            m_config.Write(wxT("watch_locals"), value);
+            m_config.Write("watch_locals", value);
             break;
         case CatchExceptions:
-            m_config.Write(wxT("catch_exceptions"), value);
+            m_config.Write("catch_exceptions", value);
             break;
         case EvalExpression:
-            m_config.Write(wxT("eval_tooltip"), value);
+            m_config.Write("eval_tooltip", value);
             break;
         case AddOtherProjectDirs:
-            m_config.Write(wxT("add_other_search_dirs"), value);
+            m_config.Write("add_other_search_dirs", value);
             break;
         case DoNotRun:
-            m_config.Write(wxT("do_not_run"), value);
+            m_config.Write("do_not_run", value);
             break;
         default:
             ;
@@ -183,20 +183,20 @@ void DebuggerConfiguration::SetFlag(Flags flag, bool value)
 
 bool DebuggerConfiguration::IsGDB()
 {
-    return m_config.ReadInt(wxT("type"), 0) == 0;
+    return m_config.ReadInt("type", 0) == 0;
 }
 
 wxString DebuggerConfiguration::GetDebuggerExecutable(bool expandMacro)
 {
-    wxString result = m_config.Read(wxT("executable_path"), wxEmptyString);
+    wxString result = m_config.Read("executable_path", wxEmptyString);
     if (expandMacro)
         Manager::Get()->GetMacrosManager()->ReplaceEnvVars(result);
-    return !result.empty() ? result : cbDetectDebuggerExecutable(wxT("gdb"));
+    return !result.empty() ? result : cbDetectDebuggerExecutable("gdb");
 }
 
 wxString DebuggerConfiguration::GetUserArguments(bool expandMacro)
 {
-    wxString result = m_config.Read(wxT("user_arguments"), wxEmptyString);
+    wxString result = m_config.Read("user_arguments", wxEmptyString);
     if (expandMacro)
         Manager::Get()->GetMacrosManager()->ReplaceEnvVars(result);
     return result;
@@ -204,38 +204,38 @@ wxString DebuggerConfiguration::GetUserArguments(bool expandMacro)
 
 wxString DebuggerConfiguration::GetDisassemblyFlavorCommand()
 {
-    int disassembly_flavour = m_config.ReadInt(wxT("disassembly_flavor"), 0);
+    int disassembly_flavour = m_config.ReadInt("disassembly_flavor", 0);
 
-    wxString flavour = wxT("set disassembly-flavor ");
+    wxString flavour = "set disassembly-flavor ";
     switch (disassembly_flavour)
     {
         case 1: // AT & T
         {
-            flavour << wxT("att");
+            flavour << "att";
             break;
         }
         case 2: // Intel
         {
-            flavour << wxT("intel");
+            flavour << "intel";
             break;
         }
         case 3: // Custom
         {
-            wxString instruction_set = m_config.Read(wxT("instruction_set"), wxEmptyString);
+            wxString instruction_set = m_config.Read("instruction_set", wxEmptyString);
             flavour << instruction_set;
             break;
         }
         default: // including case 0: // System default
 
         if(platform::windows)
-            flavour << wxT("att");
+            flavour << "att";
         else
-            flavour << wxT("intel");
+            flavour << "intel";
     }// switch
     return flavour;
 }
 
 wxString DebuggerConfiguration::GetInitCommands()
 {
-    return m_config.Read(wxT("init_commands"), wxEmptyString);
+    return m_config.Read("init_commands", wxEmptyString);
 }

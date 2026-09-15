@@ -37,7 +37,7 @@ END_EVENT_TABLE()
 GetUserVariableDialog::GetUserVariableDialog(wxWindow *parent, const wxString &old) :
     m_old(old)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, wxT("dlgGetGlobalUsrVar"), wxT("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgGetGlobalUsrVar", "wxScrollingDialog");
     m_treectrl = XRCCTRL(*this, "ID_GET_USER_VAR_TREE", wxTreeCtrl);
 
     if (m_treectrl == nullptr)
@@ -46,7 +46,7 @@ GetUserVariableDialog::GetUserVariableDialog(wxWindow *parent, const wxString &o
     Load();
 
     // Try to open the old variable
-    if (m_old != wxEmptyString && m_old.StartsWith(wxT("$(#")))
+    if (m_old != wxEmptyString && m_old.StartsWith("$(#"))
     {
         // Remove "$(#"
         wxString tmp = m_old.AfterFirst('#');
@@ -138,11 +138,11 @@ wxString GetUserVariableDialog::GetSelectedVariable()
         return wxEmptyString;
 
     wxString ret;
-    ret << wxT("$(#");
+    ret << "$(#";
     if (var == m_treectrl->GetRootItem()) // It is only a variable
-        ret << m_treectrl->GetItemText(subVar) << wxT(")");
+        ret << m_treectrl->GetItemText(subVar) << ")";
     else // var with subitem
-        ret << m_treectrl->GetItemText(var) << wxT(".") <<  m_treectrl->GetItemText(subVar) << wxT(")");
+        ret << m_treectrl->GetItemText(var) << "." <<  m_treectrl->GetItemText(subVar) << ")";
 
     return ret;
 }
@@ -174,7 +174,7 @@ UsrGlblMgrEditDialog::UsrGlblMgrEditDialog(const wxString& var) :
     m_CurrentSetName(Manager::Get()->GetUserVariableManager()->GetActiveSetName()),
     m_CurrentVar(var)
 {
-    wxXmlResource::Get()->LoadObject(this, Manager::Get()->GetAppWindow(), _T("dlgGlobalUservars"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, Manager::Get()->GetAppWindow(), "dlgGlobalUservars","wxScrollingDialog");
     m_SelSet    = XRCCTRL(*this, "selSet",   wxChoice);
     m_SelVar    = XRCCTRL(*this, "selVar",   wxListBox);
     m_DeleteSet = XRCCTRL(*this, "deleteSet",wxButton);
@@ -494,7 +494,7 @@ void UsrGlblMgrEditDialog::Sanitise(wxString& s)
 
     if (s.IsEmpty())
     {
-        s = _T("[?empty?]");
+        s = "[?empty?]";
         return;
     }
 
@@ -506,10 +506,10 @@ void UsrGlblMgrEditDialog::Sanitise(wxString& s)
 #endif
 
     if (s.GetChar(0) == _T('_'))
-        s.Prepend(_T("set"));
+        s.Prepend("set");
 
     if (s.GetChar(0) >= _T('0') && s.GetChar(0) <= _T('9'))
-        s.Prepend(_T("set_"));
+        s.Prepend("set_");
 }
 
 void UsrGlblMgrEditDialog::NewVar(cb_unused wxCommandEvent& event)
@@ -718,7 +718,7 @@ void UsrGlblMgrEditDialog::OnFS(wxCommandEvent& event)
     else if (id == XRCID("fs5"))
         c = m_Bin;
     else
-        cbThrow(_T("Encountered invalid button ID"));
+        cbThrow("Encountered invalid button ID");
 
     wxString path = ChooseDirectory(this, _("Choose a location"), c->GetValue());
     if (!path.IsEmpty())
@@ -727,5 +727,5 @@ void UsrGlblMgrEditDialog::OnFS(wxCommandEvent& event)
 
 void UsrGlblMgrEditDialog::Help(cb_unused wxCommandEvent& event)
 {
-    wxLaunchDefaultBrowser(_T("http://wiki.codeblocks.org/index.php?title=Global_compiler_variables"));
+    wxLaunchDefaultBrowser("http://wiki.codeblocks.org/index.php?title=Global_compiler_variables");
 }

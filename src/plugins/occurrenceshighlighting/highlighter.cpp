@@ -186,17 +186,17 @@ void Highlighter::DoSetIndications(cbEditor* ctrl)const
 
     //if(stc->SelectionIsRectangle() || (stcr && stcr->SelectionIsRectangle())) return;
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));// /highlight_occurrence"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("editor");// /highlight_occurrence"));
 
-    const int alpha = cfg->ReadInt(_T("/highlight_occurrence/alpha_permanently"), 100);
-    const int borderAlpha = cfg->ReadInt(_T("/highlight_occurrence/border_alpha_permanently"), 255);
-    const bool overrideText = cfg->ReadBool(_T("/highlight_occurrence/override_text_permanently"), false);
+    const int alpha = cfg->ReadInt("/highlight_occurrence/alpha_permanently", 100);
+    const int borderAlpha = cfg->ReadInt("/highlight_occurrence/border_alpha_permanently", 255);
+    const bool overrideText = cfg->ReadBool("/highlight_occurrence/override_text_permanently", false);
 
     if (m_OldCtrl != ctrl)
     {
         ColourManager *colourManager = Manager::Get()->GetColourManager();
-        const wxColour background = colourManager->GetColour(wxT("editor_highlight_occurrence_permanently"));
-        const wxColour text = colourManager->GetColour(wxT("editor_highlight_occurrence_permanently_text"));
+        const wxColour background = colourManager->GetColour("editor_highlight_occurrence_permanently");
+        const wxColour text = colourManager->GetColour("editor_highlight_occurrence_permanently_text");
 
         SetupIndicator(stc, Indicator::Background, background, alpha, borderAlpha, overrideText);
         SetupTextIndicator(stc, Indicator::TextBackground, text);
@@ -211,10 +211,10 @@ void Highlighter::DoSetIndications(cbEditor* ctrl)const
     m_OldCtrl = ctrl;
 
     int flag = 0;
-    if (cfg->ReadBool(_T("/highlight_occurrence/case_sensitive_permanently"), true))
+    if (cfg->ReadBool("/highlight_occurrence/case_sensitive_permanently", true))
         flag |= wxSCI_FIND_MATCHCASE;
 
-    if (cfg->ReadBool(_T("/highlight_occurrence/whole_word_permanently"), true))
+    if (cfg->ReadBool("/highlight_occurrence/whole_word_permanently", true))
         flag |= wxSCI_FIND_WHOLEWORD;
 
     for (int i = 0; i < (int)m_InvalidatedRangesStart.GetCount(); i++)
@@ -320,26 +320,26 @@ void Highlighter::HighlightOccurrencesOfSelection(cbEditor* ctrl)const
         return;
     // check if the selected text has space, tab or new line in it
     wxString selectedText(control->GetTextRange(curr.first, curr.second));
-    if (selectedText.find_first_of(wxT(" \t\n")) != wxString::npos)
+    if (selectedText.find_first_of(" \t\n") != wxString::npos)
         return;
 
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("editor");
 
     // check if the feature is enabled
-    if (!cfg->ReadBool(_T("/highlight_occurrence/enabled"), true))
+    if (!cfg->ReadBool("/highlight_occurrence/enabled", true))
         return;
 
     // selected text has a minimal length of controlled by the user (by default it is 3)
-    wxString::size_type minLength = std::max(cfg->ReadInt(_T("/highlight_occurrence/min_length"), 3), 1);
+    wxString::size_type minLength = std::max(cfg->ReadInt("/highlight_occurrence/min_length", 3), 1);
     if (selectedText.length() >= minLength)
     {
         ColourManager *colourManager = Manager::Get()->GetColourManager();
-        const wxColour highlightColour(colourManager->GetColour(wxT("editor_highlight_occurrence")));
-        const wxColour highlightTextColour(colourManager->GetColour(wxT("editor_highlight_occurrence_text")));
+        const wxColour highlightColour(colourManager->GetColour("editor_highlight_occurrence"));
+        const wxColour highlightTextColour(colourManager->GetColour("editor_highlight_occurrence_text"));
 
-        const int alpha = cfg->ReadInt(_T("/highlight_occurrence/alpha"), 100);
-        const int borderAlpha = cfg->ReadInt(_T("/highlight_occurrence/border_alpha"), 255);
-        const bool overrideText = cfg->ReadBool(_T("/highlight_occurrence/override_text"), false);
+        const int alpha = cfg->ReadInt("/highlight_occurrence/alpha", 100);
+        const int borderAlpha = cfg->ReadInt("/highlight_occurrence/border_alpha", 255);
+        const bool overrideText = cfg->ReadBool("/highlight_occurrence/override_text", false);
         if (!overrideText)
             control->SetIndicatorCurrent(Indicator::Selection);
 
@@ -357,11 +357,11 @@ void Highlighter::HighlightOccurrencesOfSelection(cbEditor* ctrl)const
         }
 
         int flag = 0;
-        if (cfg->ReadBool(_T("/highlight_occurrence/case_sensitive"), true))
+        if (cfg->ReadBool("/highlight_occurrence/case_sensitive", true))
         {
             flag |= wxSCI_FIND_MATCHCASE;
         }
-        if (cfg->ReadBool(_T("/highlight_occurrence/whole_word"), true))
+        if (cfg->ReadBool("/highlight_occurrence/whole_word", true))
         {
             flag |= wxSCI_FIND_WHOLEWORD;
         }

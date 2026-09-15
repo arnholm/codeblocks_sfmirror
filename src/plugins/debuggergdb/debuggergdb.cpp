@@ -118,7 +118,7 @@ long idMenuWatchDereference = wxNewId();
 long idMenuWatchSymbol = wxNewId();
 
 // this auto-registers the plugin
-PluginRegistrant<DebuggerGDB> reg(_T("Debugger"));
+PluginRegistrant<DebuggerGDB> reg("Debugger");
 }
 
 BEGIN_EVENT_TABLE(DebuggerGDB, cbDebuggerPlugin)
@@ -158,7 +158,7 @@ BEGIN_EVENT_TABLE(DebuggerGDB, cbDebuggerPlugin)
 END_EVENT_TABLE()
 
 DebuggerGDB::DebuggerGDB() :
-    cbDebuggerPlugin(_("GDB/CDB debugger"), wxT("gdb_debugger")),
+    cbDebuggerPlugin(_("GDB/CDB debugger"), "gdb_debugger"),
     m_State(this),
     m_pProcess(nullptr),
     m_LastExitCode(0),
@@ -173,9 +173,9 @@ DebuggerGDB::DebuggerGDB() :
     m_TemporaryBreak(false),
     m_printElements(200)
 {
-    if (!Manager::LoadResource(_T("debugger.zip")))
+    if (!Manager::LoadResource("debugger.zip"))
     {
-        NotifyMissingFile(_T("debugger.zip"));
+        NotifyMissingFile("debugger.zip");
     }
 
     // get a function pointer to DebugBreakProcess under windows (XP+)
@@ -407,7 +407,7 @@ RemoteDebuggingMap DebuggerGDB::ParseRemoteDebuggingMap(cbProject &project)
                     if (rdOpt->Attribute("serial_baud"))
                         rd.serialBaud = cbC2U(rdOpt->Attribute("serial_baud"));
                     if (rd.serialBaud.empty())
-                        rd.serialBaud = wxT("115200");
+                        rd.serialBaud = "115200";
 
                     if (rdOpt->Attribute("ip_address"))
                         rd.ip = cbC2U(rdOpt->Attribute("ip_address"));
@@ -418,9 +418,9 @@ RemoteDebuggingMap DebuggerGDB::ParseRemoteDebuggingMap(cbProject &project)
                     if (rdOpt->Attribute("additional_cmds_before"))
                         rd.additionalCmdsBefore = cbC2U(rdOpt->Attribute("additional_cmds_before"));
                     if (rdOpt->Attribute("skip_ld_path"))
-                        rd.skipLDpath = cbC2U(rdOpt->Attribute("skip_ld_path")) != _T("0");
+                        rd.skipLDpath = cbC2U(rdOpt->Attribute("skip_ld_path")) != "0";
                     if (rdOpt->Attribute("extended_remote"))
-                        rd.extendedRemote = cbC2U(rdOpt->Attribute("extended_remote")) != _T("0");
+                        rd.extendedRemote = cbC2U(rdOpt->Attribute("extended_remote")) != "0";
                     if (rdOpt->Attribute("additional_shell_cmds_after"))
                         rd.additionalShellCmdsAfter = cbC2U(rdOpt->Attribute("additional_shell_cmds_after"));
                     if (rdOpt->Attribute("additional_shell_cmds_before"))
@@ -459,7 +459,7 @@ void DebuggerGDB::SetRemoteDebuggingMap(cbProject &project, const RemoteDebuggin
             const RemoteDebugging& rd = *it->second;
 
             // if no different than defaults, skip it
-            if (rd.serialPort.IsEmpty() && rd.serialBaud == wxT("115200")
+            if (rd.serialPort.IsEmpty() && rd.serialBaud == "115200"
                 && rd.ip.IsEmpty() && rd.ipPort.IsEmpty()
                 && !rd.skipLDpath && !rd.extendedRemote
                 && rd.additionalCmds.IsEmpty() && rd.additionalCmdsBefore.IsEmpty()
@@ -477,7 +477,7 @@ void DebuggerGDB::SetRemoteDebuggingMap(cbProject &project, const RemoteDebuggin
             tgtnode->SetAttribute("conn_type", (int)rd.connType);
             if (!rd.serialPort.IsEmpty())
                 tgtnode->SetAttribute("serial_port", cbU2C(rd.serialPort));
-            if (rd.serialBaud != wxT("115200"))
+            if (rd.serialBaud != "115200")
                 tgtnode->SetAttribute("serial_baud", cbU2C(rd.serialBaud));
             if (!rd.ip.IsEmpty())
                 tgtnode->SetAttribute("ip_address", cbU2C(rd.ip));
@@ -540,7 +540,7 @@ static wxString GetShellString()
 {
     if (platform::windows)
         return wxEmptyString;
-    wxString shell = Manager::Get()->GetConfigManager(_T("app"))->Read(_T("/console_shell"),
+    wxString shell = Manager::Get()->GetConfigManager("app")->Read("/console_shell",
                                                                        DEFAULT_CONSOLE_SHELL);
     // GDB expects the SHELL variable's value to be a path to the shell's executable, so we need to
     // remove all parameters and do some trimming.
@@ -593,7 +593,7 @@ int DebuggerGDB::LaunchProcess(const wxString& cmd, const wxString& cwd)
         wxArrayString psOutput;
         wxArrayString psErrors;
 
-        psCmd << wxT("/bin/ps -o ppid,pid,command");
+        psCmd << "/bin/ps -o ppid,pid,command";
         DebugLog(wxString::Format( _("Executing: %s"), psCmd.wx_str()) );
         int result = wxExecute(psCmd, psOutput, psErrors, wxEXEC_SYNC);
 
@@ -851,7 +851,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
         if (!path.empty())
         {
             ConvertToGDBDirectory(path);
-            if (path != _T(".")) // avoid silly message "changing to ."
+            if (path != ".") // avoid silly message "changing to ."
             {
                 Log(_("Changing directory to: ") + path);
                 m_State.GetDriver()->SetWorkingDirectory(path);
@@ -896,8 +896,8 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
         if (actualCompiler && target)
         {
             wxString newLibPath;
-            const wxString libPathSep = platform::windows ? _T(";") : _T(":");
-            newLibPath << _T(".") << libPathSep;
+            const wxString libPathSep = platform::windows ? ";" : ":";
+            newLibPath << "." << libPathSep;
 
             CompilerCommandGenerator *generator = actualCompiler->GetCommandGenerator(m_pProject);
             newLibPath << GetStringFromArray(generator->GetLinkerSearchDirs(target), libPathSep);
@@ -907,7 +907,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
                 newLibPath << libPathSep;
             newLibPath << oldLibPath;
             wxSetEnv(CB_LIBRARY_ENVVAR, newLibPath);
-            Log(wxString(_("Set variable: ")) + CB_LIBRARY_ENVVAR wxT("=") + newLibPath);
+            Log(wxString(_("Set variable: ")) + CB_LIBRARY_ENVVAR "=" + newLibPath);
         }
     }
 
@@ -929,7 +929,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
     // start the gdb process
     wxString wdir = m_State.GetDriver()->GetDebuggersWorkingDirectory();
     if (wdir.empty())
-        wdir = m_pProject ? m_pProject->GetBasePath() : _T(".");
+        wdir = m_pProject ? m_pProject->GetBasePath() : ".";
     DebugLog(_("Command-line: ") + cmdline);
     DebugLog(_("Working dir : ") + wdir);
     int ret = LaunchProcess(cmdline, wdir);
@@ -979,7 +979,7 @@ int DebuggerGDB::DoDebug(bool breakOnEntry)
         {
             m_stopDebuggerConsoleClosed = true;
             wxString gdbTtyCmd;
-            gdbTtyCmd << wxT("tty ") << consoleTty;
+            gdbTtyCmd << "tty " << consoleTty;
             m_State.GetDriver()->QueueCommand(new DebuggerCmd(m_State.GetDriver(), gdbTtyCmd, true));
             DebugLog(wxString::Format( _("Queued:[%s]"), gdbTtyCmd.wx_str()) );
         }
@@ -1006,7 +1006,7 @@ void DebuggerGDB::AddSourceDir(const wxString& dir)
     wxString filename = dir;
     Manager::Get()->GetMacrosManager()->ReplaceEnvVars(filename); // apply env vars
     Log(_("Adding source dir: ") + filename);
-    ConvertToGDBDirectory(filename, _T(""), false);
+    ConvertToGDBDirectory(filename, "", false);
     m_State.GetDriver()->AddDirectory(filename);
 }
 
@@ -1024,12 +1024,12 @@ void DebuggerGDB::ConvertToGDBFriendly(wxString& str)
         return;
 
     str = UnixFilename(str);
-    while (str.Replace(_T("\\"), _T("/")))
+    while (str.Replace("\\", "/"))
         ;
-    while (str.Replace(_T("//"), _T("/")))
+    while (str.Replace("//", "/"))
         ;
     if (str.Find(_T(' ')) != -1 && str.GetChar(0) != _T('"'))
-        str = _T("\"") + str + _T("\"");
+        str = "\"" + str + "\"";
 }
 
 // static
@@ -1071,7 +1071,7 @@ void DebuggerGDB::ConvertToGDBDirectory(wxString& str, wxString base, bool relat
 
             while (!str.IsEmpty())
             {
-                base += _T("/") + str.BeforeFirst(_T('/'));
+                base += "/" + str.BeforeFirst(_T('/'));
                 if (str.Find(_T('/')) != wxNOT_FOUND) str = str.AfterFirst(_T('/'));
                 else                                  str.Clear();
             }
@@ -1128,7 +1128,7 @@ void DebuggerGDB::ConvertToGDBDirectory(wxString& str, wxString base, bool relat
         }
         while (!base.IsEmpty())
         {
-            str = _T("../") + str;
+            str = "../" + str;
             if (base.Find(_T('/')) == wxNOT_FOUND) base.Clear();
             else                                   base = base.AfterFirst(_T('/'));
         }
@@ -1140,7 +1140,7 @@ void DebuggerGDB::SendCommand(const wxString& cmd, bool debugLog)
 {
     const wxString &cleandCmd = CleanStringValue(cmd);
     if (!debugLog)
-        Log(_T("> ") + cleandCmd);
+        Log("> " + cleandCmd);
 
     if (debugLog)
         DoSendCommand(cleandCmd);
@@ -1154,7 +1154,7 @@ void DebuggerGDB::DoSendCommand(const wxString& cmd)
         return;
 
     if (HasDebugLog())
-        DebugLog(wxT("> ") + cmd);
+        DebugLog("> " + cmd);
 
     m_pProcess->SendString(cmd);
 }
@@ -1546,7 +1546,7 @@ void DebuggerGDB::ShiftBreakpoint(int index, int lines_to_shift)
 void DebuggerGDB::EnableBreakpoint(cb::shared_ptr<cbBreakpoint> breakpoint, bool enable)
 {
     bool debuggerIsRunning = !IsStopped();
-    DebugLog(wxString::Format(wxT("DebuggerGDB::EnableBreakpoint(running=%d);"), debuggerIsRunning?1:0));
+    DebugLog(wxString::Format("DebuggerGDB::EnableBreakpoint(running=%d);", debuggerIsRunning?1:0));
     if (debuggerIsRunning)
         DoBreak(true);
 
@@ -1795,9 +1795,9 @@ void DebuggerGDB::GetCurrentPosition(wxString &filename, int &line)
 void DebuggerGDB::OnAddSymbolFile(wxCommandEvent& WXUNUSED(event))
 {
     wxString file = wxFileSelector(_("Choose file to read symbols from"),
-                                    _T(""),
-                                    _T(""),
-                                    _T(""),
+                                    "",
+                                    "",
+                                    "",
                                     _("Executables and libraries|*.exe;*.dll"),
                                     wxFD_OPEN | wxFD_FILE_MUST_EXIST | compatibility::wxHideReadonly);
     if (file.IsEmpty())
@@ -1856,7 +1856,7 @@ void DebuggerGDB::OnPrintElements(wxCommandEvent &event)
     else
         return;
 
-    wxString cmd = wxString::Format(wxT("set print elements %d"), m_printElements);
+    wxString cmd = wxString::Format("set print elements %d", m_printElements);
     m_State.GetDriver()->QueueCommand(new DebuggerCmd(m_State.GetDriver(), cmd));
     RequestUpdate(Watches);
 }
@@ -2459,7 +2459,7 @@ void DebuggerGDB::OnMenuWatchDereference(cb_unused wxCommandEvent& event)
     if (!watches)
         return;
 
-    watches->RenameWatch(m_watchToDereferenceProperty, wxT("*") + m_watchToDereferenceSymbol);
+    watches->RenameWatch(m_watchToDereferenceProperty, "*" + m_watchToDereferenceSymbol);
     m_watchToDereferenceProperty = NULL;
     m_watchToDereferenceSymbol = wxEmptyString;
 }

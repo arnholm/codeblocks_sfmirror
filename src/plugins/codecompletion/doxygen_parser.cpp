@@ -648,9 +648,9 @@ DocumentationHelper::DocumentationHelper(CodeCompletion* cc) :
     m_Enabled(true)
 {
     ColourManager *colours = Manager::Get()->GetColourManager();
-    colours->RegisterColour(_("Code completion"), _("Documentation popup background"), wxT("cc_docs_back"), *wxWHITE);
-    colours->RegisterColour(_("Code completion"), _("Documentation popup text"), wxT("cc_docs_fore"), *wxBLACK);
-    colours->RegisterColour(_("Code completion"), _("Documentation popup link"), wxT("cc_docs_link"), *wxBLUE);
+    colours->RegisterColour(_("Code completion"), _("Documentation popup background"), "cc_docs_back", *wxWHITE);
+    colours->RegisterColour(_("Code completion"), _("Documentation popup text"), "cc_docs_fore", *wxBLACK);
+    colours->RegisterColour(_("Code completion"), _("Documentation popup link"), "cc_docs_link", *wxBLUE);
 }
 
 DocumentationHelper::~DocumentationHelper()
@@ -738,7 +738,7 @@ wxString DocumentationHelper::GenerateHTML(int tokenIdx, TokenTree* tree)
             html += i1 + token->GetTokenScopeString() + i0 + sep;
         html += token->m_FullType + sep + b1 + token->m_Name + b0;
         if (!token->m_Args.IsEmpty())
-            html += wxT(" = ") + token->GetFormattedArgs();
+            html += " = " + token->GetFormattedArgs();
         html += br;
         break;
 
@@ -849,9 +849,9 @@ wxString DocumentationHelper::GenerateHTML(const TokenIdxSet& tokensIdx, TokenTr
         return GenerateHTML(*tokensIdx.begin(),tree);
     ColourManager *colours = Manager::Get()->GetColourManager();
     wxString html = "<html><body bgcolor=\"";
-    html += colours->GetColour(wxT("cc_docs_back")).GetAsString(wxC2S_HTML_SYNTAX) + "\" text=\"";
-    html += colours->GetColour(wxT("cc_docs_fore")).GetAsString(wxC2S_HTML_SYNTAX) + "\" link=\"";
-    html += colours->GetColour(wxT("cc_docs_link")).GetAsString(wxC2S_HTML_SYNTAX) + "\">";
+    html += colours->GetColour("cc_docs_back").GetAsString(wxC2S_HTML_SYNTAX) + "\" text=\"";
+    html += colours->GetColour("cc_docs_fore").GetAsString(wxC2S_HTML_SYNTAX) + "\" link=\"";
+    html += colours->GetColour("cc_docs_link").GetAsString(wxC2S_HTML_SYNTAX) + "\">";
 
     html += "<a name=\"top\"></a>";
 

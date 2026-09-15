@@ -32,7 +32,7 @@ EditArrayStringDlg::EditArrayStringDlg(wxWindow* parent, wxArrayString& array)
     : m_Array(array)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditArrayString"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditArrayString","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     wxListBox* list = XRCCTRL(*this, "lstItems", wxListBox);

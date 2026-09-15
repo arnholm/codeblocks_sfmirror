@@ -101,7 +101,7 @@ namespace ScriptBindings
         ExtractParams1<SkipParam> extractor(v);
         if (!extractor.Process("GetConfigManager"))
             return extractor.ErrorMessage();
-        return ConstructAndReturnNonOwnedPtr(v, Manager::Get()->GetConfigManager(_T("scripts")));
+        return ConstructAndReturnNonOwnedPtr(v, Manager::Get()->GetConfigManager("scripts"));
     }
 
     SQInteger GetCF(HSQUIRRELVM v)

@@ -32,7 +32,7 @@
 // static
 bool cbAuiNotebook::s_AllowMousewheel = true;
 cbAuiNotebookArray cbAuiNotebook::s_cbAuiNotebookArray;
-wxString cbAuiNotebook::s_modKeys = _T("Ctrl");
+wxString cbAuiNotebook::s_modKeys = "Ctrl";
 bool cbAuiNotebook::s_modToAdvance = false;
 int cbAuiNotebook::s_advanceDirection = 1;
 int cbAuiNotebook::s_moveDirection = 1;
@@ -58,15 +58,15 @@ cbAuiNotebook::cbAuiNotebook(wxWindow* pParent, wxWindowID id, const wxPoint& po
 #ifdef __WXGTK__
     m_mgr.SetFlags((m_mgr.GetFlags() | wxAUI_MGR_VENETIAN_BLINDS_HINT) & ~wxAUI_MGR_TRANSPARENT_HINT);
 #endif  // #ifdef __WXGTK__
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
 #if defined __WXMSW__
     wxToolTip::SetMaxWidth(-1);
 #endif
-    s_AllowMousewheel = cfg->ReadBool(_T("/environment/tabs_use_mousewheel"),true);
-    s_modKeys = cfg->Read(_T("/environment/tabs_mousewheel_modifier"),_T("Ctrl"));
-    s_modToAdvance = cfg->ReadBool(_T("/environment/tabs_mousewheel_advance"),false);
-    cbAuiNotebook::InvertAdvanceDirection(cfg->ReadBool(_T("/environment/tabs_invert_advance"),false));
-    cbAuiNotebook::InvertMoveDirection(cfg->ReadBool(_T("/environment/tabs_invert_move"),false));
+    s_AllowMousewheel = cfg->ReadBool("/environment/tabs_use_mousewheel",true);
+    s_modKeys = cfg->Read("/environment/tabs_mousewheel_modifier","Ctrl");
+    s_modToAdvance = cfg->ReadBool("/environment/tabs_mousewheel_advance",false);
+    cbAuiNotebook::InvertAdvanceDirection(cfg->ReadBool("/environment/tabs_invert_advance",false));
+    cbAuiNotebook::InvertMoveDirection(cfg->ReadBool("/environment/tabs_invert_move",false));
 
     if (s_cbAuiNotebookArray.Index(this) == wxNOT_FOUND)
         s_cbAuiNotebookArray.Add(this);
@@ -84,15 +84,15 @@ bool cbAuiNotebook::CheckKeyModifier()
     wxString str = s_modKeys;
     str.MakeUpper();
 
-    if (result && str.Contains(wxT("ALT")))
+    if (result && str.Contains("ALT"))
         result = wxGetKeyState(WXK_ALT);
-    if (result && str.Contains(wxT("CTRL")))
+    if (result && str.Contains("CTRL"))
         result = wxGetKeyState(WXK_CONTROL);
 #if defined(__WXMAC__) || defined(__WXCOCOA__)
-    if (result && str.Contains(wxT("XCTRL")))
+    if (result && str.Contains("XCTRL"))
         result = wxGetKeyState(WXK_COMMAND);
 #endif
-    if (result && str.Contains(wxT("SHIFT")))
+    if (result && str.Contains("SHIFT"))
         result = wxGetKeyState(WXK_SHIFT);
     return result;
 }
@@ -555,7 +555,7 @@ int cbAuiNotebook::GetTabPositionFromIndex(int index)
     for (size_t i = 0; i < pane_count; ++i)
     {
         wxAuiPaneInfo& pane = all_panes[i];
-        if (pane.name == wxT("dummy"))
+        if (pane.name == "dummy")
             continue;
 
         if (pane.window == GetTabFrameFromTabCtrl(tabCtrl))
@@ -635,7 +635,7 @@ wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
     for (size_t i = 0; i < pane_count; ++i)
     {
         wxAuiPaneInfo& pane = all_panes.Item(i);
-        if (pane.name == wxT("dummy"))
+        if (pane.name == "dummy")
             continue;
 
         wxAuiTabCtrl* tabCtrl = nullptr;
@@ -714,7 +714,7 @@ wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
     for (size_t i = 0; i < pane_count; ++i)
     {
         wxAuiPaneInfo& pane = all_panes.Item(i);
-        if (pane.name == wxT("dummy"))
+        if (pane.name == "dummy")
             continue;
 
         wxAuiTabCtrl* tabCtrl = nullptr;
@@ -775,21 +775,21 @@ wxString cbAuiNotebook::SavePerspective(const wxString projectTitle)
 
     tabsTmp = m_mgr.SavePerspective();
 
-    wxArrayString arTabsTmp = GetArrayFromString(tabsTmp, wxT("|"));
+    wxArrayString arTabsTmp = GetArrayFromString(tabsTmp, "|");
 
     for (size_t i = arTabsTmp.GetCount(); i > 0 ; )
     {
-        if (arTabsTmp.Item(--i).StartsWith(wxT("name=")))
+        if (arTabsTmp.Item(--i).StartsWith("name="))
         {
             wxString strTmp = arTabsTmp.Item(i).AfterFirst('=').BeforeFirst(';');
-            if (strTmp == wxT("dummy"))
+            if (strTmp == "dummy")
                 continue;
             if (panes.Index(strTmp) < 0)
                 arTabsTmp.RemoveAt(i);
         }
     }
 
-    tabsTmp = GetStringFromArray(arTabsTmp, wxT("|"));
+    tabsTmp = GetStringFromArray(arTabsTmp, "|");
 
     // Add frame perspective
     tabs += tabsTmp;
@@ -812,7 +812,7 @@ wxString cbAuiNotebook::UniqueIdFromTooltip(const wxString& text)
 
 int cbAuiNotebook::GetTabIndexFromTooltip(const wxString& text)
 {
-    if (text == wxT(""))
+    if (text == "")
         return -1;
     for (size_t i = 0; i < m_tabs.GetPageCount(); ++i)
     {
@@ -890,7 +890,7 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
                 pane_part.Trim();
                 pane_part.Trim(true);
                 if (!pane_part.empty())
-                    tempLayout += pane_part + wxT("|");
+                    tempLayout += pane_part + "|";
 
                 currentLayout = currentLayout.AfterFirst('|');
                 currentLayout.Trim();
@@ -1007,7 +1007,7 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
     {
         m_mgr.LoadPerspective(currentLayout);
     }
-    else if (found && !frames.IsEmpty() && frames != wxT("layout3|"))
+    else if (found && !frames.IsEmpty() && frames != "layout3|")
     {
         m_mgr.LoadPerspective(frames);
     }
@@ -1089,7 +1089,7 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
                 pane_part.Trim();
                 pane_part.Trim(true);
                 if (!pane_part.empty())
-                    tempLayout += pane_part + wxT("|");
+                    tempLayout += pane_part + "|";
 
                 currentLayout = currentLayout.AfterFirst('|');
                 currentLayout.Trim();
@@ -1211,11 +1211,11 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
 
     if (mergeLayouts)
     {
-        wxRegEx reDockSize(_T("(dock_size[()0-9,]+=)[0-9]+"));
-        const wxString replacement(wxT("\\1-1"));
+        wxRegEx reDockSize("(dock_size[()0-9,]+=)[0-9]+");
+        const wxString replacement("\\1-1");
         // Make a centered frame left docked
-        frames.Replace(wxString::Format(wxT("dock_size(%d"), wxAUI_DOCK_CENTER), wxString::Format(wxT("dock_size(%d"), wxAUI_DOCK_LEFT));
-        frames.Replace(wxString::Format(wxT("dir=%d"), wxAUI_DOCK_CENTER), wxString::Format(wxT("dir=%d"), wxAUI_DOCK_LEFT));
+        frames.Replace(wxString::Format("dock_size(%d", wxAUI_DOCK_CENTER), wxString::Format("dock_size(%d", wxAUI_DOCK_LEFT));
+        frames.Replace(wxString::Format("dir=%d", wxAUI_DOCK_CENTER), wxString::Format("dir=%d", wxAUI_DOCK_LEFT));
         if (reDockSize.Matches(frames))
             reDockSize.ReplaceAll(&frames,replacement);
         if (reDockSize.Matches(currentLayout))
@@ -1226,7 +1226,7 @@ bool cbAuiNotebook::LoadPerspective(const wxString& layout, bool mergeLayouts)
             pane_part.Trim();
             pane_part.Trim(true);
             if (!pane_part.empty())
-                frames += pane_part + wxT("|");
+                frames += pane_part + "|";
             currentLayout = currentLayout.AfterFirst('|');
             currentLayout.Trim();
             currentLayout.Trim(true);

@@ -180,7 +180,7 @@ void FilePathPanel::OntxtFilenameText(cb_unused wxCommandEvent& event)
             name[i] = '_';
         }
     }
-    name << _T("_INCLUDED");
+    name << "_INCLUDED";
     if (wxIsdigit(name[0]))
     {
         name.Prepend('_');

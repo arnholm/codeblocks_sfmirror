@@ -20,12 +20,12 @@ template<> bool  Mgr<ColourManager>::isShutdown = false;
 
 void ColourManager::Load()
 {
-    ConfigManager *config = Manager::Get()->GetConfigManager(wxT("colours"));
-    const wxArrayString &colours = config->EnumerateKeys(wxT("list"));
+    ConfigManager *config = Manager::Get()->GetConfigManager("colours");
+    const wxArrayString &colours = config->EnumerateKeys("list");
     for (size_t ii = 0; ii < colours.GetCount(); ++ii)
     {
         const wxString &id = colours[ii].Lower();
-        const wxColour &colour = config->ReadColour(wxT("list/") + id);
+        const wxColour &colour = config->ReadColour("list/" + id);
 
         ColourDefMap::iterator it = m_colours.find(id);
         if (it != m_colours.end())
@@ -41,13 +41,13 @@ void ColourManager::Load()
 
 void ColourManager::Save()
 {
-    ConfigManager *config = Manager::Get()->GetConfigManager(wxT("colours"));
+    ConfigManager *config = Manager::Get()->GetConfigManager("colours");
     for (ColourDefMap::const_iterator it = m_colours.begin(); it != m_colours.end(); ++it)
     {
         if (it->second.value != it->second.defaultValue)
-            config->Write(wxT("list/") + it->first, it->second.value);
+            config->Write("list/" + it->first, it->second.value);
         else
-            config->UnSet(wxT("list/") + it->first);
+            config->UnSet("list/" + it->first);
     }
 }
 

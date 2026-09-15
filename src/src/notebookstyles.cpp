@@ -155,7 +155,7 @@ void NbStyleVC71::DrawTab(wxDC& dc, wxWindow* wnd,
     // if the caption is empty, measure some temporary text
     wxString caption = page.caption;
     if (caption.empty())
-        caption = wxT("Xj");
+        caption = "Xj";
 
     wxCoord textx;
     wxCoord texty;
@@ -218,7 +218,7 @@ int NbStyleVC71::GetBestTabCtrlSize(wxWindow* wnd,
     wxClientDC dc(wnd);
     dc.SetFont(m_measuringFont);
     int x_ext = 0;
-    wxSize s = GetTabSize(dc, wnd, wxT("ABCDEFGHIj"), wxNullBitmap, true,
+    wxSize s = GetTabSize(dc, wnd, "ABCDEFGHIj", wxNullBitmap, true,
                             wxAUI_BUTTON_STATE_HIDDEN, &x_ext);
     return s.y + 4;
 }
@@ -340,7 +340,7 @@ void NbStyleFF2::DrawTab(wxDC& dc, wxWindow* wnd,
     // if the caption is empty, measure some temporary text
     wxString caption = page.caption;
     if (caption.empty())
-        caption = wxT("Xj");
+        caption = "Xj";
 
     wxCoord textx;
     wxCoord texty;
@@ -403,7 +403,7 @@ int NbStyleFF2::GetBestTabCtrlSize(wxWindow* wnd,
     wxClientDC dc(wnd);
     dc.SetFont(m_measuringFont);
     int x_ext = 0;
-    wxSize s = GetTabSize(dc, wnd, wxT("ABCDEFGHIj"), wxNullBitmap, true,
+    wxSize s = GetTabSize(dc, wnd, "ABCDEFGHIj", wxNullBitmap, true,
                             wxAUI_BUTTON_STATE_HIDDEN, &x_ext);
     return s.y + 6;
 }
@@ -440,7 +440,7 @@ wxSize NbStyleVC71::GetPageTabSize(wxReadOnlyDC& dc, wxWindow* wnd,
                                   int* x_extent)
 // ----------------------------------------------------------------------------
 {
-    wxString caption = page.caption.empty() ? wxT("Xj") : page.caption;
+    wxString caption = page.caption.empty() ? "Xj" : page.caption;
 
     wxCoord textx = 0, texty = 0;
     dc.GetTextExtent(caption, &textx, &texty);
@@ -573,7 +573,7 @@ int NbStyleVC71::DrawPageTab(wxDC& dc, wxWindow* wnd,
         text_offset = tab_x + 8;
     }
 
-    wxString caption = page.caption.empty() ? wxT("Xj") : page.caption;
+    wxString caption = page.caption.empty() ? "Xj" : page.caption;
     wxCoord textx, texty;
     dc.SetFont(page.active ? m_selectedFont : m_normalFont);
     dc.GetTextExtent(caption, &textx, &texty);
@@ -616,7 +616,7 @@ int NbStyleVC71::GetBestTabCtrlSize(wxWindow* wnd,
 
     // Create a mock page to query sizes matching the new wx3.3 footprint signature
     wxAuiNotebookPage dummy_page;
-    dummy_page.caption = wxT("ABCDEFGHIj");
+    dummy_page.caption = "ABCDEFGHIj";
 
     int x_ext = 0;
     wxSize s = GetPageTabSize(dc, wnd, dummy_page, &x_ext);
@@ -647,7 +647,7 @@ wxSize NbStyleFF2::GetPageTabSize(wxReadOnlyDC& dc, wxWindow* wnd,
                                   int* x_extent)
 // ----------------------------------------------------------------------------
 {
-    wxString caption = page.caption.empty() ? wxT("Xj") : page.caption;
+    wxString caption = page.caption.empty() ? "Xj" : page.caption;
 
     wxCoord textx = 0, texty = 0;
     dc.GetTextExtent(caption, &textx, &texty);
@@ -770,7 +770,7 @@ int NbStyleFF2::DrawPageTab(wxDC& dc, wxWindow* wnd,
 #endif
     }
 
-    wxString caption = page.caption.empty() ? wxT("Xj") : page.caption;
+    wxString caption = page.caption.empty() ? "Xj" : page.caption;
     wxCoord textx, texty;
     dc.SetFont(page.active ? m_selectedFont : m_normalFont);
     dc.GetTextExtent(caption, &textx, &texty);

@@ -115,8 +115,8 @@ ScriptConsole::ScriptConsole(wxWindow* parent,wxWindowID id)
 
     {
         // Use the Messages logs' font size for the console.
-        ConfigManager *mcfg = Manager::Get()->GetConfigManager(_T("message_manager"));
-        const int fontSize = mcfg->ReadInt(_T("/log_font_size"), (platform::macosx ? 10 : 8));
+        ConfigManager *mcfg = Manager::Get()->GetConfigManager("message_manager");
+        const int fontSize = mcfg->ReadInt("/log_font_size", (platform::macosx ? 10 : 8));
         wxFont defaultFont(fontSize, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         txtConsole->SetFont(defaultFont);
     }
@@ -205,8 +205,8 @@ void ScriptConsole::OnbtnExecuteClick(cb_unused wxCommandEvent& event)
         return;
     }
 
-    Log(_T("> ") + cmd);
-    if (Manager::Get()->GetScriptingManager()->LoadBuffer(cmd, _T("ScriptConsole")))
+    Log("> " + cmd);
+    if (Manager::Get()->GetScriptingManager()->LoadBuffer(cmd, "ScriptConsole"))
     {
         if (txtCommand->FindString(cmd) == wxNOT_FOUND)
             txtCommand->Insert(cmd, 1); // right after the blank entry
@@ -218,18 +218,18 @@ void ScriptConsole::OnbtnExecuteClick(cb_unused wxCommandEvent& event)
 
 void ScriptConsole::OnbtnLoadClick(cb_unused wxCommandEvent& event)
 {
-    ConfigManager* mgr = Manager::Get()->GetConfigManager(_T("app"));
-    wxString path = mgr->Read(_T("/file_dialogs/file_run_script/directory"), wxEmptyString);
+    ConfigManager* mgr = Manager::Get()->GetConfigManager("app");
+    wxString path = mgr->Read("/file_dialogs/file_run_script/directory", wxEmptyString);
     wxFileDialog dlg(this,
                      _("Load script"),
                      path,
                      wxEmptyString,
-                     _T("Script files (*.script)|*.script"),
+                     "Script files (*.script)|*.script",
                      wxFD_OPEN | compatibility::wxHideReadonly);
     PlaceWindow(&dlg);
     if (dlg.ShowModal() == wxID_OK)
     {
-        mgr->Write(_T("/file_dialogs/file_run_script/directory"), dlg.GetDirectory());
+        mgr->Write("/file_dialogs/file_run_script/directory", dlg.GetDirectory());
         if (Manager::Get()->GetScriptingManager()->LoadScript(dlg.GetPath()))
             Log(_("Script loaded successfully"));
         else

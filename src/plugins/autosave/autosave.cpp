@@ -314,7 +314,7 @@ void AutosaveConfigDlg::LoadSettings()
     ConfigManager *cfg = Manager::Get()->GetConfigManager("autosave");
 
     bool doProjects = cfg->ReadBool("do_project");
-    bool doSources = cfg->ReadBool(_T("do_sources"));
+    bool doSources = cfg->ReadBool("do_sources");
     XRCCTRL(*this, "do_project", wxCheckBox)->SetValue(doProjects);
     XRCCTRL(*this, "do_sources", wxCheckBox)->SetValue(doSources);
     XRCCTRL(*this, "do_workspace", wxCheckBox)->SetValue(cfg->ReadBool("do_workspace", true));
@@ -352,10 +352,10 @@ void AutosaveConfigDlg::SaveSettings()
     if (sm < 1)
         sm = 1;
 
-    cfg->Write(_T("project_mins"), (int) pm);
-    cfg->Write(_T("source_mins"), (int) sm);
+    cfg->Write("project_mins", (int) pm);
+    cfg->Write("source_mins", (int) sm);
 
-    cfg->Write(_T("method"), XRCCTRL(*this, "method", wxChoice)->GetSelection());
+    cfg->Write("method", XRCCTRL(*this, "method", wxChoice)->GetSelection());
 
     plugin->Start();
 }

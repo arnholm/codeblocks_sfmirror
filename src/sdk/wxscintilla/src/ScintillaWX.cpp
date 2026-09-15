@@ -127,7 +127,7 @@ public:
           m_ct(ct), m_swx(swx), m_cx(wxDefaultCoord), m_cy(wxDefaultCoord)
         {
             SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-            SetName(wxT("wxSTCCallTip"));
+            SetName("wxSTCCallTip");
         }
 
     ~wxSCICallTip() {
@@ -267,9 +267,9 @@ ScintillaWX::ScintillaWX(wxScintilla* win) {
 
 #ifdef wxHAVE_SCI_RECT_FORMAT
 #if defined(__WXMSW__)
-    m_clipRectTextFormat = wxDataFormat(wxT("MSDEVColumnSelect"));
+    m_clipRectTextFormat = wxDataFormat("MSDEVColumnSelect");
 #elif defined(__WXGTK__)
-    m_clipRectTextFormat = wxDataFormat(wxT("SECONDARY"));
+    m_clipRectTextFormat = wxDataFormat("SECONDARY");
 #else
     #error "Must define rectangular text selection clipboard format."
 #endif
@@ -772,7 +772,7 @@ bool ScintillaWX::FineTickerAvailable() {
 bool ScintillaWX::FineTickerRunning(TickReason reason) {
     bool running = false;
     TimersHash::iterator i = timers.find(reason);
-    wxASSERT_MSG( i != timers.end(), wxT("At least one TickReason is missing a timer."));
+    wxASSERT_MSG( i != timers.end(), "At least one TickReason is missing a timer.");
     if ( i != timers.end() ) {
         running = i->second->IsRunning();
     }

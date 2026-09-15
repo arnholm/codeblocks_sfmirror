@@ -73,9 +73,9 @@ void cbFindReplaceData::ConvertEOLs(int newmode)
 {
     if (eolMode != newmode)
     {
-        const wxChar* eol_lf = _T("\n");
-        const wxChar* eol_crlf = _T("\r\n");
-        const wxChar* eol_cr = _T("\r");
+        const wxChar* eol_lf = wxS("\n");
+        const wxChar* eol_crlf = wxS("\r\n");
+        const wxChar* eol_cr = wxS("\r");
 
         const wxChar* eol_from = eol_lf;
         const wxChar* eol_to = eol_lf;
@@ -102,7 +102,7 @@ bool cbFindReplaceData::IsMultiLine()
     if (regEx) // For regex always assume multiline if the multiline checkbox is enabled because the user can enter "\n" to search for newlines
         return multiLine;
     // otherwise only treat the search as a multiline search only if there are newline characters in the search string
-    return  ((findText.Find(_T("\n")) != wxNOT_FOUND) || (findText.Find(_T("\r")) != wxNOT_FOUND));
+    return  ((findText.Find("\n") != wxNOT_FOUND) || (findText.Find("\r") != wxNOT_FOUND));
 }
 
 FindReplace::FindReplace() :
@@ -152,18 +152,18 @@ void FindReplace::LogSearch(const wxString& file, int line, const wxString& line
 
     // line number -1 is used for empty string
     if (line != -1)
-        lineStr.Printf(_T("%d"), line);
+        lineStr.Printf("%d", line);
     else
-        lineStr.Printf(_T(" "));
+        lineStr.Printf(" ");
 
     lineTextL = lineText;
-    lineTextL.Replace(_T("\t"), _T(" "));
-    lineTextL.Replace(_T("\r"), _T(" "));
-    lineTextL.Replace(_T("\n"), _T(" "));
+    lineTextL.Replace("\t", " ");
+    lineTextL.Replace("\r", " ");
+    lineTextL.Replace("\n", " ");
     lineTextL.Trim(false);
     lineTextL.Trim(true);
     if (lineTextL.Length() > 300)
-        lineTextL.Truncate(280) += _T("...");
+        lineTextL.Truncate(280) += "...";
 
     values.Add(file);
     values.Add(lineStr);
@@ -444,10 +444,10 @@ int FindReplace::Replace(cbStyledTextCtrl* control, cbFindReplaceData* data)
     if (data->regEx)
     {
         flags |= wxSCI_FIND_REGEXP;
-        if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_posix_style_regexes"), false))
+        if (Manager::Get()->GetConfigManager("editor")->ReadBool("/use_posix_style_regexes", false))
             flags |= wxSCI_FIND_POSIX;
         #ifdef wxHAS_REGEX_ADVANCED
-        advRegex = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_advanced_regexes"), false);
+        advRegex = Manager::Get()->GetConfigManager("editor")->ReadBool("/use_advanced_regexes", false);
         #endif
     }
 
@@ -656,9 +656,9 @@ int FindReplace::Replace(cbStyledTextCtrl* control, cbFindReplaceData* data)
     control->EndUndoAction();
     wxString msg;
     if (foundcount == 0)
-        msg = _T("No matches found for \"") + data->findText + _T("\"");
+        msg = "No matches found for \"" + data->findText + "\"";
     else if (replacecount == 0 && foundcount == 1)
-        msg = _T("One match found but not replaced");
+        msg = "One match found but not replaced";
     else
         msg.Printf(_("Replaced %i of %i matches"), replacecount, foundcount);
     cbMessageBox(msg, _("Result"), wxICON_INFORMATION);
@@ -794,10 +794,10 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
     if (data->regEx)
     {
         flags |= wxSCI_FIND_REGEXP;
-        if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_posix_style_regexes"), false))
+        if (Manager::Get()->GetConfigManager("editor")->ReadBool("/use_posix_style_regexes", false))
             flags |= wxSCI_FIND_POSIX;
         #ifdef wxHAS_REGEX_ADVANCED
-        advRegex = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_advanced_regexes"), false);
+        advRegex = Manager::Get()->GetConfigManager("editor")->ReadBool("/use_advanced_regexes", false);
         #endif
     }
 
@@ -825,7 +825,7 @@ int FindReplace::ReplaceInFiles(cbFindReplaceData* data)
 
     wxProgressDialog* progress = nullptr;
     wxString fileContents;
-    wxString enc_name = Manager::Get()->GetConfigManager(_T("editor"))->Read(_T("/default_encoding"), wxLocale::GetSystemEncodingName());
+    wxString enc_name = Manager::Get()->GetConfigManager("editor")->Read("/default_encoding", wxLocale::GetSystemEncodingName());
     wxFontEncoding def_encoding = wxFontMapper::GetEncodingFromName(enc_name);
 
     // keep a copy of the find struct
@@ -1135,10 +1135,10 @@ int FindReplace::Find(cbStyledTextCtrl* control, cbFindReplaceData* data)
     if (data->regEx)
     {
         flags |= wxSCI_FIND_REGEXP;
-        if (Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_posix_style_regexes"), false))
+        if (Manager::Get()->GetConfigManager("editor")->ReadBool("/use_posix_style_regexes", false))
             flags |= wxSCI_FIND_POSIX;
         #ifdef wxHAS_REGEX_ADVANCED
-        advRegex = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/use_advanced_regexes"), false);
+        advRegex = Manager::Get()->GetConfigManager("editor")->ReadBool("/use_advanced_regexes", false);
         #endif
     }
 
@@ -1399,7 +1399,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
                     (data->hiddenSearch ? wxDIR_HIDDEN : 0);
         wxArrayString masks = GetArrayFromString(data->searchMask);
         if (!masks.GetCount())
-            masks.Add(_T("*"));
+            masks.Add("*");
         unsigned int count = masks.GetCount();
 
         for (unsigned int i = 0; i < count; ++i)
@@ -1446,7 +1446,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
 
     if ( !data->delOldSearches )
     {
-        LogSearch(_T("=========="), -1, _T("=== \"") + data->findText + _T("\" ==="));
+        LogSearch("==========", -1, "=== \"" + data->findText + "\" ===");
         oldcount++;
     }
 
@@ -1519,9 +1519,9 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     // We have to check different view options:
     //    auto_hide -> auto show/hide the log panel -> if this option is not set we are not allowed to show the log panel
     //    auto_show_search -> sub option to explicitly disable the search window
-    bool automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_hide"), false);
+    bool automaticallyShowPanel = Manager::Get()->GetConfigManager("message_manager")->ReadBool("/auto_hide", false);
     if (automaticallyShowPanel)
-        automaticallyShowPanel = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true);
+        automaticallyShowPanel = Manager::Get()->GetConfigManager("message_manager")->ReadBool("/auto_show_search", true);
 
     const bool isLogPaneVisible = ((MainFrame*) Manager::Get()->GetAppFrame())->IsLogPaneVisible();
 
@@ -1548,7 +1548,7 @@ int FindReplace::FindInFiles(cbFindReplaceData* data)
     else
     {
         const wxString msg = wxString::Format(_("\"%s\" not found in %zu files"), data->findText, filesList.GetCount());
-        LogSearch(_T(""), -1, msg );
+        LogSearch("", -1, msg );
         m_pSearchLog->FocusEntry(oldcount);
 
         if (!isLogPaneVisible && !m_pSearchLog->IsVisible() && !automaticallyShowPanel)   // Only use a message box if the log panel is not visible and we are not allowed to open it

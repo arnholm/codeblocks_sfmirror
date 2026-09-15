@@ -35,7 +35,7 @@ ProjectsFileMasksDlg::ProjectsFileMasksDlg(wxWindow* parent, FilesGroupsAndMasks
     m_pFileGroupsAndMasks(fgam),
     m_LastListSelection(0)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgProjectsFileMasks"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgProjectsFileMasks","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     RebuildList();

@@ -33,15 +33,15 @@
 // this auto-registers the plugin
 namespace
 {
-    PluginRegistrant<DefaultMimeHandler> reg(_T("FilesExtensionHandler"));
+    PluginRegistrant<DefaultMimeHandler> reg("FilesExtensionHandler");
 }
 
 DefaultMimeHandler::DefaultMimeHandler()
 {
     //ctor
-    if(!Manager::LoadResource(_T("defaultmimehandler.zip")))
+    if(!Manager::LoadResource("defaultmimehandler.zip"))
     {
-        NotifyMissingFile(_T("defaultmimehandler.zip"));
+        NotifyMissingFile("defaultmimehandler.zip");
     }
 }
 
@@ -55,11 +55,11 @@ void DefaultMimeHandler::OnAttach()
     // load configuration
     WX_CLEAR_ARRAY(m_MimeTypes);
 
-    ConfigManager* conf = Manager::Get()->GetConfigManager(_T("mime_types"));
-    wxArrayString list = conf->EnumerateKeys(_T("/"));
+    ConfigManager* conf = Manager::Get()->GetConfigManager("mime_types");
+    wxArrayString list = conf->EnumerateKeys("/");
     for (unsigned int i = 0; i < list.GetCount(); ++i)
     {
-        wxArrayString array = GetArrayFromString(conf->Read(list[i]), _T(";"), false);
+        wxArrayString array = GetArrayFromString(conf->Read(list[i]), ";", false);
         if (array.GetCount() < 3)
             continue;
 
@@ -70,17 +70,17 @@ void DefaultMimeHandler::OnAttach()
         bool isOld = array.GetCount() == 3 || array.GetCount() == 4;
         if (isOld)
         {
-            mt->useEditor = array[0] == _T("true");
+            mt->useEditor = array[0] == "true";
             mt->useAssoc = false;
-            mt->programIsModal = array[1] == _T("true");
+            mt->programIsModal = array[1] == "true";
             mt->wildcard = array[2];
             mt->program = array.GetCount() == 4 ? array[3] : wxString();
         }
         else
         {
-            mt->useEditor = array[0] == _T("true");
-            mt->useAssoc = array[1] == _T("true");
-            mt->programIsModal = array[2] == _T("true");
+            mt->useEditor = array[0] == "true";
+            mt->useAssoc = array[1] == "true";
+            mt->programIsModal = array[2] == "true";
             mt->wildcard = array[3];
             mt->program = array.GetCount() == 5 ? array[4] : wxString();
         }
@@ -96,7 +96,7 @@ void DefaultMimeHandler::OnAttach()
 
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
     evt.pWindow = m_Html;
-    evt.name = _T("DefMimeHandler_HTMLViewer");
+    evt.name = "DefMimeHandler_HTMLViewer";
     evt.title = _("HTML viewer");
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
     evt.desiredSize.Set(350, 250);
@@ -116,8 +116,8 @@ void DefaultMimeHandler::OnRelease(cb_unused bool appShutDown)
     m_Html = 0;
 
     // save configuration
-    ConfigManager* conf = Manager::Get()->GetConfigManager(_T("mime_types"));
-    wxArrayString list = conf->EnumerateKeys(_T("/"));
+    ConfigManager* conf = Manager::Get()->GetConfigManager("mime_types");
+    wxArrayString list = conf->EnumerateKeys("/");
     for (unsigned int i = 0; i < list.GetCount(); ++i)
     {
         conf->UnSet(list[i]);
@@ -126,13 +126,13 @@ void DefaultMimeHandler::OnRelease(cb_unused bool appShutDown)
     {
         cbMimeType* mt = m_MimeTypes[i];
         wxString txt;
-        txt << (mt->useEditor ? _T("true") : _T("false")) << _T(";");
-        txt << (mt->useAssoc ? _T("true") : _T("false")) << _T(";");
-        txt << (mt->programIsModal ? _T("true") : _T("false")) << _T(";");
-        txt << mt->wildcard << _T(";");
+        txt << (mt->useEditor ? "true" : "false") << ";";
+        txt << (mt->useAssoc ? "true" : "false") << ";";
+        txt << (mt->programIsModal ? "true" : "false") << ";";
+        txt << mt->wildcard << ";";
         txt << mt->program << _T(' ');
         wxString key;
-        key.Printf(_T("MimeType%u"), i);
+        key.Printf("MimeType%u", i);
         conf->Write(key, txt);
     }
     WX_CLEAR_ARRAY(m_MimeTypes);
@@ -163,8 +163,8 @@ int DefaultMimeHandler::OpenFile(const wxString& filename)
     cbMimeType* mt = FindMimeTypeFor(filename);
     if (mt)
         return DoOpenFile(mt, filename);
-    else if (the_file.GetExt().CmpNoCase(_T("htm")) == 0 ||
-            the_file.GetExt().CmpNoCase(_T("html")) == 0)
+    else if (the_file.GetExt().CmpNoCase("htm") == 0 ||
+            the_file.GetExt().CmpNoCase("html") == 0)
     {
         // embedded help viewer (unless the user has added an explicit association manually)
         m_Html->Open(filename);
@@ -191,7 +191,7 @@ int DefaultMimeHandler::OpenFile(const wxString& filename)
             wxString ext = the_file.GetExt().Lower();
             wxString wild = ext.IsEmpty()
                             ? the_file.GetName().Lower()
-                            : wxString(_T("*.")) + ext;
+                            : wxString("*.") + ext;
             switch (answer)
             {
                 case 0: // choose external program
@@ -291,13 +291,13 @@ int DefaultMimeHandler::DoOpenFile(cbMimeType* mt, const wxString& filename)
     {
         // easy too. use associated app
         #ifdef __WXMSW__
-        ShellExecute(0, wxString(_T("open")).c_str(), filename.c_str(), 0, 0, SW_SHOW);
+        ShellExecute(0, wxString("open").c_str(), filename.c_str(), 0, 0, SW_SHOW);
         #endif
         #ifdef __WXGTK__
-        wxExecute(wxString::Format(_T("xdg-open \"%s\""), filename.c_str()));
+        wxExecute(wxString::Format("xdg-open \"%s\"", filename.c_str()));
         #endif
         #ifdef __WXMAC__
-        wxExecute(wxString::Format(_T("open \"%s\""), filename.c_str()));
+        wxExecute(wxString::Format("open \"%s\"", filename.c_str()));
         #endif
         return 0;
     }
@@ -307,10 +307,10 @@ int DefaultMimeHandler::DoOpenFile(cbMimeType* mt, const wxString& filename)
 
         // create command line
         wxString external = mt->program;
-        if (external.Find(_T("$(FILE)")) != -1)
-            external.Replace(_T("$(FILE)"), filename);
+        if (external.Find("$(FILE)") != -1)
+            external.Replace("$(FILE)", filename);
         else
-            external << _T(" \"") << filename << _T("\""); // file args wrapped in quotes (bug #1187231)
+            external << " \"" << filename << "\""; // file args wrapped in quotes (bug #1187231)
 
         Manager::Get()->GetLogManager()->Log(_("Launching command: ") + external);
 

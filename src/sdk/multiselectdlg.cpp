@@ -35,7 +35,7 @@ MultiSelectDlg::MultiSelectDlg(wxWindow* parent,
                                 const wxString& title)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgGenericMultiSelect"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgGenericMultiSelect","wxScrollingDialog");
 
     SetTitle(title);
     XRCCTRL(*this, "lblLabel", wxStaticText)->SetLabel(label);
@@ -53,12 +53,12 @@ MultiSelectDlg::MultiSelectDlg(wxWindow* parent,
                                 const wxString& title)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgGenericMultiSelect"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgGenericMultiSelect","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     SetTitle(title);
     XRCCTRL(*this, "lblLabel", wxStaticText)->SetLabel(label);
-    Init(items, selectall ? _T("*") : _T(""));
+    Init(items, selectall ? "*" : "");
 
     wxButton *buttonOK = XRCCTRL(*this, "wxID_OK", wxButton);
     buttonOK->SetDefault();
@@ -89,7 +89,7 @@ void MultiSelectDlg::UpdateStatus()
             ++count;
     }
     wxString msg;
-    msg << _("Selected: ") << wxString::Format(_T("%d"), count);
+    msg << _("Selected: ") << wxString::Format("%d", count);
     XRCCTRL(*this, "lblStatus", wxStaticText)->SetLabel(msg);
 }
 
@@ -121,7 +121,7 @@ void MultiSelectDlg::SelectWildCard(const wxString& wild, bool select, bool clea
 {
     if (wild.IsEmpty())
         return;
-    wxArrayString wilds = GetArrayFromString(wild, _T(";"));
+    wxArrayString wilds = GetArrayFromString(wild, ";");
     wxCheckListBox* lst = XRCCTRL(*this, "lstItems", wxCheckListBox);
     for (size_t i = 0; i < lst->GetCount(); ++i)
     {

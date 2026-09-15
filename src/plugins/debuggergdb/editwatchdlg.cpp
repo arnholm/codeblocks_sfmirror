@@ -29,7 +29,7 @@ EditWatchDlg::EditWatchDlg(cb::shared_ptr<GDBWatch> w, wxWindow* parent)
     : m_watch(w)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgEditWatch"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgEditWatch","wxScrollingDialog");
 
     if (m_watch)
     {

@@ -338,10 +338,10 @@ bool wxToolBarAddOnXmlHandler::CanHandle(wxXmlNode *node)
 {
 // NOTE (mandrav#1#): wxXmlResourceHandler::IsOfClass() doesn't work in unicode (2.6.2)
 // Don't ask why. It does this and doesn't work for our custom handler:
-//    return node->GetPropVal(wxT("class"), wxEmptyString) == classname;
+//    return node->GetPropVal("class", wxEmptyString) == classname;
 //
 // This works though:
-//    return node->GetPropVal(wxT("class"), wxEmptyString).Matches(classname);
+//    return node->GetPropVal("class", wxEmptyString).Matches(classname);
 //
 // Don't ask me why... >:-|
 

@@ -121,7 +121,7 @@ wxArrayInt CreateModuleMenu(const ModuleType typ, wxMenu* menu, const FileTreeDa
             log->LogError(wxString::Format(_("Calling 'GetModuleMenu' for '%s' failed!"), it->first));
 
             const wxString error = scriptManager->GetErrorString(true);
-            log->LogError(wxString::Format(_T("The Error is: %s"), error));
+            log->LogError(wxString::Format("The Error is: %s", error));
             log->LogError(_("Check the 'View -> Script console' for details!"));
             continue;
         }
@@ -302,10 +302,10 @@ class cbScriptPlugin
     info = PluginInfo();
     constructor()
     {
-        info.name = _T("cbScriptPlugin");
-        info.title = _T("Base script plugin");
-        info.version = _T("0.1a");
-        info.license = _T("GPL");
+        info.name = "cbScriptPlugin";
+        info.title = "Base script plugin";
+        info.version = "0.1a";
+        info.license = "GPL";
     }
     function GetPluginInfo()
     {
@@ -321,16 +321,16 @@ class cbScriptPlugin
     }
     function Execute()
     {
-        LogDebug(info.name + _T("::Run() : not implemented"));
+        LogDebug(info.name + "::Run() : not implemented");
         return -1;
     }
     function OnMenuClicked(index)
     {
-        LogDebug(info.name + _T(": menu clicked: ") + index);
+        LogDebug(info.name + ": menu clicked: " + index);
     }
     function OnModuleMenuClicked(index)
     {
-        LogDebug(info.name + _T(": module menu clicked: ") + index);
+        LogDebug(info.name + ": module menu clicked: " + index);
     }
 };
 

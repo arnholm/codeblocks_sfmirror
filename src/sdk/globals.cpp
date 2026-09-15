@@ -54,23 +54,23 @@
     #include <sys/stat.h> // lstat
 #endif
 
-const wxString DEFAULT_WORKSPACE     = _T("default.workspace");
-const wxString DEFAULT_ARRAY_SEP     = _T(";");
+const wxString DEFAULT_WORKSPACE     = "default.workspace";
+const wxString DEFAULT_ARRAY_SEP     = ";";
 
 #ifdef __WXMAC__
-const wxString DEFAULT_CONSOLE_TERM  = _T("osascript -e 'tell app \"Terminal\"' -e 'activate' -e 'do script \"$SCRIPT\"' -e 'end tell'");
-const wxString DEFAULT_CONSOLE_SHELL = _T("/bin/zsh -c");
+const wxString DEFAULT_CONSOLE_TERM  = "osascript -e 'tell app \"Terminal\"' -e 'activate' -e 'do script \"$SCRIPT\"' -e 'end tell'";
+const wxString DEFAULT_CONSOLE_SHELL = "/bin/zsh -c";
 #else
-const wxString DEFAULT_CONSOLE_TERM  = _T("xterm -T $TITLE -e");
-const wxString DEFAULT_CONSOLE_SHELL = _T("/bin/sh -c");
+const wxString DEFAULT_CONSOLE_TERM  = "xterm -T $TITLE -e";
+const wxString DEFAULT_CONSOLE_SHELL = "/bin/sh -c";
 #endif
 
 #if defined __WXMSW__
-const wxString cbDEFAULT_OPEN_FOLDER_CMD = _T("explorer.exe /select,");
+const wxString cbDEFAULT_OPEN_FOLDER_CMD = "explorer.exe /select,";
 #elif defined __WXMAC__
-const wxString cbDEFAULT_OPEN_FOLDER_CMD = _T("open -R");
+const wxString cbDEFAULT_OPEN_FOLDER_CMD = "open -R";
 #else
-const wxString cbDEFAULT_OPEN_FOLDER_CMD = _T("xdg-open");
+const wxString cbDEFAULT_OPEN_FOLDER_CMD = "xdg-open";
 #endif
 
 int GetPlatformsFromString(const wxString& platforms)
@@ -241,19 +241,19 @@ wxString UnixFilename(const wxString& filename, wxPathFormat format)
     }
 
     // Unc-names always override platform specific settings otherwise they become corrupted
-    bool unc_name = result.StartsWith(_T("\\\\"));
+    bool unc_name = result.StartsWith("\\\\");
     if (format == wxPATH_WIN || unc_name) // wxPATH_WIN == wxPATH_DOS == wxPATH_OS2
     {
-        result.Replace(wxT("/"), wxT("\\"));
-        while (result.Replace(wxT("\\\\"), wxT("\\")))
+        result.Replace("/", "\\");
+        while (result.Replace("\\\\", "\\"))
             ; // loop for recursive removal of duplicate slashes
         if (unc_name)
-            result.Prepend(wxT("\\"));
+            result.Prepend("\\");
     }
     else
     {
-        result.Replace(wxT("\\"), wxT("/"));
-        while (result.Replace(wxT("//"), wxT("/")))
+        result.Replace("\\", "/");
+        while (result.Replace("//", "/"))
             ; // loop for recursive removal of duplicate slashes
     }
 
@@ -263,7 +263,7 @@ wxString UnixFilename(const wxString& filename, wxPathFormat format)
 void QuoteStringIfNeeded(wxString& str)
 {
     if ( NeedQuotes(str) )
-        str = wxString(_T("\"")) + str + _T("\"");
+        str = wxString("\"") + str + "\"";
 }
 
 bool NeedQuotes(const wxString &str)
@@ -279,8 +279,8 @@ wxString EscapeSpaces(const wxString& str)
     if (!ret.IsEmpty() && ret[0] != _T('"') && ret[0] != _T('\''))
     {
         // TODO: make it faster
-        ret.Replace(_T(" "), _T("\\ "));
-        ret.Replace(_T("\t"), _T("\\\t"));
+        ret.Replace(" ", "\\ ");
+        ret.Replace("\t", "\\\t");
     }
     return ret;
 }
@@ -403,14 +403,14 @@ FileType FileTypeOf(const wxString& filename)
         //    const FilesGroupsAndMasks* fgm = prjMgr->GetFilesGroupsAndMasks();
         //    // Since "ext" var has no "." prefixed, but FilesGropupsAndMasks uses
         //    // dot notation(".ext"), prefix a '.' here.
-        //    wxString dotExt = _T(".") + ext;
+        //    wxString dotExt = "." + ext;
         //   if (fgm)
         //    {
         //       for (unsigned int i = 0; i != fgm->GetGroupsCount(); ++i)
         //       {
-        //            if (fgm->GetGroupName(i) == _T("Sources") && fgm->MatchesMask(dotExt, i))
+        //            if (fgm->GetGroupName(i) == "Sources" && fgm->MatchesMask(dotExt, i))
         //                return ftSource;
-        //            if (fgm->GetGroupName(i) == _T("Headers") && fgm->MatchesMask(dotExt, i))
+        //            if (fgm->GetGroupName(i) == "Headers" && fgm->MatchesMask(dotExt, i))
         //                return ftHeader;
         //       }
         //    }
@@ -423,18 +423,18 @@ FileType FileTypeOf(const wxString& filename)
 wxString cbFindFileInPATH(const wxString &filename)
 {
     wxString pathValues;
-    wxGetEnv(_T("PATH"), &pathValues);
+    wxGetEnv("PATH", &pathValues);
     if (pathValues.empty())
         return wxEmptyString;
 
-    const wxString &sep = platform::windows ? _T(";") : _T(":");
+    const wxString &sep = platform::windows ? ";" : ":";
     wxChar pathSep = wxFileName::GetPathSeparator();
     const wxArrayString &pathArray = GetArrayFromString(pathValues, sep);
     for (size_t i = 0; i < pathArray.GetCount(); ++i)
     {
         if (wxFileExists(pathArray[i] + pathSep + filename))
         {
-            if (pathArray[i].AfterLast(pathSep).IsSameAs(_T("bin")))
+            if (pathArray[i].AfterLast(pathSep).IsSameAs("bin"))
                 return pathArray[i];
         }
     }
@@ -454,7 +454,7 @@ void DoRememberSelectedNodes(wxTreeCtrl* tree, wxArrayString& selectedItemPaths)
         wxTreeItemId item = items[i];
         while(item.IsOk())
         {
-            path = _T("/") + tree->GetItemText(item) + path;
+            path = "/" + tree->GetItemText(item) + path;
             item = tree->GetItemParent(item);
         }
         if (path != wxEmptyString)
@@ -520,7 +520,7 @@ bool DoRememberExpandedNodes(wxTreeCtrl* tree, const wxTreeItemId& parent, wxArr
         if (tree->ItemHasChildren(child) && tree->IsExpanded(child))
         {
             found = true;
-            path << _T("/") << tree->GetItemText(child);
+            path << "/" << tree->GetItemText(child);
             DoRememberExpandedNodes(tree, child, nodePaths, path);
             nodePaths.Add(path);
             path = originalPath;
@@ -647,7 +647,7 @@ wxString ChooseDirectory(wxWindow* parent,
                          bool askToMakeRelative, // relative to initialPath
                          bool showCreateDirButton) // where supported
 {
-    wxDirDialog dlg(parent, message, _T(""),
+    wxDirDialog dlg(parent, message, "",
                     (showCreateDirButton ? wxDD_NEW_DIR_BUTTON : 0) | wxRESIZE_BORDER);
     dlg.SetPath(initialPath);
     PlaceWindow(&dlg);
@@ -820,18 +820,18 @@ wxString GetEOLStr(int eolMode)
     if (eolMode == -1)
     {
         static const int defEOL = platform::windows ? wxSCI_EOL_CRLF : wxSCI_EOL_LF;
-        eolMode = Manager::Get()->GetConfigManager(wxT("editor"))->ReadInt(wxT("/eol/eolmode"), defEOL);
+        eolMode = Manager::Get()->GetConfigManager("editor")->ReadInt("/eol/eolmode", defEOL);
         if (eolMode == 3) // auto-detect EOL
             eolMode = defEOL;
     }
     switch (eolMode)
     {
       case wxSCI_EOL_CR:
-          return wxT("\r");
+          return "\r";
       case wxSCI_EOL_LF:
-          return wxT("\n");
+          return "\n";
       default: // wxSCI_EOL_CRLF
-          return wxT("\r\n");
+          return "\r\n";
     }
 }
 
@@ -854,7 +854,7 @@ wxString URLEncode(const wxString &str) // not sure this is 100% standards compl
             ret.Append(_T('+'));
         else
         {
-            t.sprintf(_T("%%%02X"), (unsigned int) c);
+            t.sprintf("%%%02X", (unsigned int) c);
             ret.Append(t);
         }
     }
@@ -902,15 +902,15 @@ wxString cbExpandBackticks(wxString& str) // backticks are written in-place to s
                 fullCmd = "cmd /c " + cmd;
             else
             {
-                ConfigManager *conf = Manager::Get()->GetConfigManager(_T("app"));
-                const wxString shell = conf->Read(_T("/console_shell"), DEFAULT_CONSOLE_SHELL);
+                ConfigManager *conf = Manager::Get()->GetConfigManager("app");
+                const wxString shell = conf->Read("/console_shell", DEFAULT_CONSOLE_SHELL);
                 fullCmd = cmd;
                 fullCmd.Replace("'", "\\'");
                 fullCmd = shell + " '" + fullCmd + "'";
             }
             wxArrayString output;
             const long exitCode = wxExecute(fullCmd, output, wxEXEC_NODISABLE);
-            bt = GetStringFromArray(output, _T(" "), false);
+            bt = GetStringFromArray(output, " ", false);
             // add it in the cache
             m_Backticks[cmd] = bt;
             log->DebugLog(wxString::Format("Cached: '%s' (full cmd: '%s' exit code: %d)", bt,
@@ -1003,7 +1003,7 @@ bool IsSuffixOfPath(wxFileName const & suffix, wxFileName const & path)
     for (int i = suffixDirArray.GetCount() - 1; i >= 0; i--)
     {
         // skip paths like /./././ and ////
-        if (suffixDirArray[i] == _T(".") || suffixDirArray[i] == _T(""))
+        if (suffixDirArray[i] == "." || suffixDirArray[i] == "")
             continue;
 
         // suffix has more directories than path - cannot represent the same path
@@ -1012,7 +1012,7 @@ bool IsSuffixOfPath(wxFileName const & suffix, wxFileName const & path)
 
         // suffix contains ".." - from now on we cannot precisely determine
         // whether suffix and path match - we assume that they do
-        if (suffixDirArray[i] == _T(".."))
+        if (suffixDirArray[i] == "..")
             return true;
         // the corresponding directories of the two paths differ
         else if (suffixDirArray[i] != pathDirArray[j])
@@ -1097,7 +1097,7 @@ bool UsesCommonControls6()
 {
     bool result = false;
     HINSTANCE hinstDll;
-    hinstDll = LoadLibrary(_T("comctl32.dll"));
+    hinstDll = LoadLibrary("comctl32.dll");
     if (hinstDll)
     {
         DLLGETVERSIONPROC pDllGetVersion;
@@ -1376,7 +1376,7 @@ SettingsIconsStyle GetSettingsIconsStyle(cb_unused wxListCtrl* lc)
 
 SettingsIconsStyle GetSettingsIconsStyle()
 {
-    return SettingsIconsStyle(Manager::Get()->GetConfigManager(_T("app"))->ReadInt(_T("/environment/settings_size"), 0));
+    return SettingsIconsStyle(Manager::Get()->GetConfigManager("app")->ReadInt("/environment/settings_size", 0));
 }
 
 wxRect cbGetMonitorRectForWindow(wxWindow *window)
@@ -1405,7 +1405,7 @@ wxRect cbGetMonitorRectForWindow(wxWindow *window)
 
 cbChildWindowPlacement cbGetChildWindowPlacement(ConfigManager &appConfig)
 {
-    int intChildWindowPlacement = appConfig.ReadInt(wxT("/dialog_placement/child_placement"),
+    int intChildWindowPlacement = appConfig.ReadInt("/dialog_placement/child_placement",
                                                     int(cbChildWindowPlacement::CenterOnParent));
     if (intChildWindowPlacement < 0 || intChildWindowPlacement >= 3)
         intChildWindowPlacement = 0;
@@ -1416,13 +1416,13 @@ cbChildWindowPlacement cbGetChildWindowPlacement(ConfigManager &appConfig)
 void PlaceWindow(wxTopLevelWindow *w, cbPlaceDialogMode mode, bool enforce)
 {
     if (!w)
-        cbThrow(_T("Passed nullptr pointer to PlaceWindow."));
+        cbThrow("Passed nullptr pointer to PlaceWindow.");
 
     int the_mode = int(mode);
 
     if (!enforce)
     {
-        ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
+        ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
         const cbChildWindowPlacement placement =  cbGetChildWindowPlacement(*cfg);
         switch (placement)
         {
@@ -1432,7 +1432,7 @@ void PlaceWindow(wxTopLevelWindow *w, cbPlaceDialogMode mode, bool enforce)
             case cbChildWindowPlacement::CenterOnDisplay:
             {
                 if (mode == pdlBest)
-                    the_mode = cfg->ReadInt(_T("/dialog_placement/dialog_position"), (int) pdlCentre);
+                    the_mode = cfg->ReadInt("/dialog_placement/dialog_position", (int) pdlCentre);
                 else
                     the_mode = (int) mode;
                 break;

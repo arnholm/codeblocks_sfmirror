@@ -20,7 +20,7 @@
 #include "compilerGNUARM.h"
 
 CompilerGNUARM::CompilerGNUARM()
-    : Compiler(_("GNU GCC Compiler for ARM"), _T("arm-elf-gcc"))
+    : Compiler(_("GNU GCC Compiler for ARM"), "arm-elf-gcc")
 {
     m_Weight = 56;
     Reset();
@@ -43,30 +43,30 @@ AutoDetectResult CompilerGNUARM::AutoDetectInstallationDir()
     {
         // Search for GNUARM installation dir
         wxString windir = wxGetOSDirectory();
-        wxFileConfig ini(wxEmptyString, wxEmptyString, windir + _T("/GnuARM.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
+        wxFileConfig ini(wxEmptyString, wxEmptyString, windir + "/GnuARM.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
         // need it as const , so correct overloaded method will be selected
-        wxString Programs = _T("C:\\Program Files");
+        wxString Programs = "C:\\Program Files";
         // what's the "Program Files" location
         // TO DO : support 64 bit ->    32 bit apps are in "ProgramFiles(x86)"
         //                              64 bit apps are in "ProgramFiles"
-        wxGetEnv(_T("ProgramFiles"), &Programs);
+        wxGetEnv("ProgramFiles", &Programs);
         // need it as const , so correct overloaded method will be selected
-        const wxString ProgramsConst = Programs + _T("\\GNUARM");
-        m_MasterPath = ini.Read(_T("/InstallSettings/InstallPath"), ProgramsConst);
+        const wxString ProgramsConst = Programs + "\\GNUARM";
+        m_MasterPath = ini.Read("/InstallSettings/InstallPath", ProgramsConst);
 
-        if (wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
+        if (wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C))
         {
-            m_Programs.MAKE = _T("make.exe"); // we distribute "make" not "mingw32-make"
+            m_Programs.MAKE = "make.exe"; // we distribute "make" not "mingw32-make"
         }
     }
     else
-        m_MasterPath = _T("/usr");
+        m_MasterPath = "/usr";
 
-    AutoDetectResult ret = wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C) ? adrDetected : adrGuessed;
+    AutoDetectResult ret = wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C) ? adrDetected : adrGuessed;
     if (ret == adrDetected)
     {
-        AddIncludeDir(m_MasterPath + sep + _T("include"));
-        AddLibDir(m_MasterPath + sep + _T("lib"));
+        AddIncludeDir(m_MasterPath + sep + "include");
+        AddLibDir(m_MasterPath + sep + "lib");
     }
     return ret;
 } // end of AutoDetectInstallationDir

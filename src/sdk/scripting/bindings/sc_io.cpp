@@ -63,7 +63,7 @@ namespace ScriptBindings
                 return true;
 
 
-            if (Manager::Get()->GetConfigManager(_T("security"))->ReadBool(operation, false))
+            if (Manager::Get()->GetConfigManager("security")->ReadBool(operation, false))
                 return true;
 
             ScriptSecurityWarningDlg dlg(Manager::Get()->GetAppWindow(), operation, descr, !path.IsEmpty() && path != "ScriptConsole");
@@ -78,7 +78,7 @@ namespace ScriptBindings
                     return true;
 
                 case ssrAllowAll:
-                    Manager::Get()->GetConfigManager(_T("security"))->Write(operation, true);
+                    Manager::Get()->GetConfigManager("security")->Write(operation, true);
                     return true;
 
                 case ssrTrust: // purposely fall through
@@ -122,7 +122,7 @@ namespace ScriptBindings
 
             wxFileName fname(Manager::Get()->GetMacrosManager()->ReplaceMacros(*extractor.p1));
             NormalizePath(fname, wxEmptyString);
-            if (SecurityAllows(v, _T("CreateDir"), fname.GetFullPath()))
+            if (SecurityAllows(v, "CreateDir", fname.GetFullPath()))
             {
                 const int perms = extractor.p2;
                 sq_pushbool(v, ::CreateDirRecursively(fname.GetFullPath(), perms));
@@ -154,7 +154,7 @@ namespace ScriptBindings
 
             wxFileName fname(Manager::Get()->GetMacrosManager()->ReplaceMacros(*extractor.p1));
             NormalizePath(fname, wxEmptyString);
-            if (SecurityAllows(v, _T("RemoveDir"), fname.GetFullPath()))
+            if (SecurityAllows(v, "RemoveDir", fname.GetFullPath()))
                 sq_pushbool(v, wxRmdir(fname.GetFullPath()));
             else
                 sq_pushbool(v, false);

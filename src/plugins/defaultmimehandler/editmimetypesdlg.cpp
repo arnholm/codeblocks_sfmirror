@@ -35,7 +35,7 @@ EditMimeTypesDlg::EditMimeTypesDlg(wxWindow* parent, MimeTypesArray& array)
     m_LastSelection(-1)
 {
     //ctor
-    wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgEditFilesHandling"));
+    wxXmlResource::Get()->LoadPanel(this, parent, "dlgEditFilesHandling");
     FillList();
     UpdateDisplay();
 }

@@ -70,9 +70,9 @@ wxString ConfigManager::temp_folder;
 
 namespace CfgMgrConsts
 {
-    const wxString app_path(_T("app_path"));
-    const wxString data_path(_T("data_path"));
-    const wxString dotDot(_T(".."));
+    const wxString app_path("app_path");
+    const wxString data_path("data_path");
+    const wxString dotDot("..");
     const int version = 1;
 }
 
@@ -90,7 +90,7 @@ namespace
             char c[PATH_MAX+1];
             char *p = realpath("/proc/self/exe", &c[0]);
             if (p == nullptr)
-                return _T(".");
+                return ".";
             wxFileName fname(cbC2U(p));
             return fname.GetPath(wxPATH_GET_VOLUME);
         #elif defined(sun) || defined(__sun)
@@ -104,7 +104,7 @@ namespace
             wxFileName fname(wxString(path, wxConvUTF8));
             return fname.GetPath(wxPATH_GET_VOLUME);
         #else
-            return _T(".");
+            return ".";
         #endif
         #endif
     }
@@ -118,11 +118,11 @@ namespace
             CFStringRef cfStrPath = CFURLCopyFileSystemPath(absoluteURL,kCFURLPOSIXPathStyle);
             CFRelease(absoluteURL);
             wxString str = wxCFStringRef(cfStrPath).AsString(wxLocale::GetSystemEncoding());
-            if (!str.Contains(wxString(_T("/Resources"))))
-               return ::DetermineExecutablePath() + _T("/.."); // not a bundle, use relative path
+            if (!str.Contains(wxString("/Resources")))
+               return ::DetermineExecutablePath() + "/.."; // not a bundle, use relative path
             return str;
         #else
-            return _T(".");
+            return ".";
         #endif
     }
 }
@@ -167,17 +167,17 @@ CfgMgrBldr::CfgMgrBldr() : doc(nullptr), volatile_doc(nullptr), r(false)
     TiXmlBase::SetCondenseWhiteSpace(false);
     wxString personality(Manager::Get()->GetPersonalityManager()->GetPersonality());
 
-    if (personality.StartsWith(_T("http://")))
+    if (personality.StartsWith("http://"))
     {
         SwitchToR(personality);
         return;
     }
 
-    cfg = FindConfigFile(personality + _T(".conf"));
+    cfg = FindConfigFile(personality + ".conf");
 
     if (cfg.IsEmpty())
     {
-        cfg = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + personality + _T(".conf");
+        cfg = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + personality + ".conf";
         doc = new TiXmlDocument();
         doc->InsertEndChild(TiXmlDeclaration("1.0", "UTF-8", "yes"));
         doc->InsertEndChild(TiXmlElement("CodeBlocksConfig"));
@@ -266,24 +266,24 @@ void CfgMgrBldr::SwitchTo(const wxString& fileName)
                     "\t svn_revision:\t%u\n"
                     "\t build_date:\t%s, %s\n"), ConfigManager::GetRevisionNumber(), wxT(__DATE__), wxT(__TIME__));
 #if defined(__clang__)
-    info += wxString::Format(wxT("\t compiler_version:\tclang %d.%d.%d\n"), __clang_major__,
+    info += wxString::Format("\t compiler_version:\tclang %d.%d.%d\n", __clang_major__,
                              __clang_minor__, __clang_patchlevel__);
 #elif defined(__GNUC__)
-    info += wxString::Format(wxT("\t compiler_version:\tgcc %d.%d.%d\n"), __GNUC__, __GNUC_MINOR__,
+    info += wxString::Format("\t compiler_version:\tgcc %d.%d.%d\n", __GNUC__, __GNUC_MINOR__,
                              __GNUC_PATCHLEVEL__);
 #endif
 
     if (platform::windows)
-        info.append(_T("\t Windows "));
+        info.append("\t Windows ");
     else if (platform::Linux)
-        info.append(_T("\t Linux "));
+        info.append("\t Linux ");
     else if (platform::macosx)
-        info.append(_T("\t Mac OS X "));
+        info.append("\t Mac OS X ");
     else if (platform::Unix)
-        info.append(_T("\t Unix "));
+        info.append("\t Unix ");
 
-    info.append(platform::unicode ? _T("Unicode") : _T("ANSI"));
-    info.append(wxT("\n"));
+    info.append(platform::unicode ? "Unicode" : "ANSI");
+    info.append("\n");
     TiXmlComment c;
     c.SetValue((const char*) info.mb_str());
 
@@ -357,7 +357,7 @@ void CfgMgrBldr::Flush()
 {
     if (doc)
     {
-        if (!cfg.StartsWith(_T("http://")))
+        if (!cfg.StartsWith("http://"))
         {
             bool done = false;
             do
@@ -416,7 +416,7 @@ ConfigManager* CfgMgrBldr::Build(const wxString& name_space)
 
     TiXmlElement* docroot;
 
-    if (name_space.StartsWith(_T("volatile:")))
+    if (name_space.StartsWith("volatile:"))
     {
         if (!volatile_doc)
         {
@@ -499,7 +499,7 @@ inline void to_lower(wxString& s)
 
 wxString ConfigManager::GetProxy()
 {
-    return Manager::Get()->GetConfigManager(_T("app"))->Read(_T("network_proxy"));
+    return Manager::Get()->GetConfigManager("app")->Read("network_proxy");
 }
 
 wxString ConfigManager::GetFolder(SearchDirs dir)
@@ -531,19 +531,19 @@ wxString ConfigManager::GetFolder(SearchDirs dir)
 
         case sdPluginsGlobal:
 #ifndef CB_AUTOCONF
-            return ConfigManager::data_path_global + wxFILE_SEP_PATH + _T("plugins");
+            return ConfigManager::data_path_global + wxFILE_SEP_PATH + "plugins";
 #else
             return ConfigManager::plugin_path_global;
 #endif
 
         case sdPluginsUser:
-            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + _T("plugins");
+            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + "plugins";
 
         case sdScriptsGlobal:
-            return ConfigManager::data_path_global + wxFILE_SEP_PATH + _T("scripts");
+            return ConfigManager::data_path_global + wxFILE_SEP_PATH + "scripts";
 
         case sdScriptsUser:
-            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + _T("scripts");
+            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + "scripts";
 
         case sdDataGlobal:
             return ConfigManager::data_path_global;
@@ -566,8 +566,8 @@ inline wxString ConfigManager::GetUserDataFolder()
         return alternate_user_data_path;
 #ifdef __WINDOWS__
     TCHAR buffer[MAX_PATH];
-    if (!ConfigManager::has_alternate_user_data_path && ::GetEnvironmentVariable(_T("APPDATA"), buffer, MAX_PATH))
-        return wxString::Format(_T("%s\\CodeBlocks"), buffer);
+    if (!ConfigManager::has_alternate_user_data_path && ::GetEnvironmentVariable("APPDATA", buffer, MAX_PATH))
+        return wxString::Format("%s\\CodeBlocks", buffer);
     else
         return wxStandardPathsBase::Get().GetUserDataDir();
 #else
@@ -629,7 +629,7 @@ wxString ConfigManager::LocateDataFile(const wxString& filename, int search_dirs
 
     // PATH env. var
     if (search_dirs & sdPath)
-        searchPaths.AddEnvList(_T("PATH"));
+        searchPaths.AddEnvList("PATH");
 
     return searchPaths.FindValidPath(filename);
 }
@@ -688,7 +688,7 @@ TiXmlElement* ConfigManager::AssertPath(wxString& path)
 {
     Collapse(path);
 
-    wxString illegal(_T(" -:.\"\'$&()[]<>+#"));
+    wxString illegal(" -:.\"\'$&()[]<>+#");
     size_t i = 0;
     while ((i = path.find_first_of(illegal, i)) != wxString::npos)
         path[i] = _T('_');
@@ -715,7 +715,7 @@ TiXmlElement* ConfigManager::AssertPath(wxString& path)
             localPath = localPath->Parent()->ToElement();
         else if (sub.GetChar(0) < _T('a') || sub.GetChar(0) > _T('z'))
         {
-            cbThrow(InvalidNameMessage(_T("subpath"), sub, localPath));
+            cbThrow(InvalidNameMessage("subpath", sub, localPath));
         }
         else
         {
@@ -730,7 +730,7 @@ TiXmlElement* ConfigManager::AssertPath(wxString& path)
     to_upper(path);
 
     if (!path.IsEmpty() && (path.GetChar(0) < _T('A') || path.GetChar(0) > _T('Z')))
-        cbThrow(InvalidNameMessage(_T("key"), path, localPath));
+        cbThrow(InvalidNameMessage("key", path, localPath));
 
     return localPath;
 }
@@ -766,7 +766,7 @@ void ConfigManager::DeleteAll()
     CfgMgrBldr * bld = CfgMgrBldr::Get();
     const wxString ns(cbC2U(root->Value()));
 
-    if (!ns.IsSameAs(_T("app")))
+    if (!ns.IsSameAs("app"))
         cbThrow(_("Illegal attempt to invoke DeleteAll()."));
 
     wxCriticalSectionLocker(bld->cs);
@@ -834,7 +834,7 @@ void ConfigManager::Write(const wxString& name,  const wxString& value, bool ign
 
     TiXmlElement *str = GetUniqElement(e, key);
 
-    TiXmlElement *s = GetUniqElement(str, _T("str"));
+    TiXmlElement *s = GetUniqElement(str, "str");
 
     TiXmlText t(value.mb_str(wxConvUTF8));
     t.SetCDATA(true);
@@ -897,7 +897,7 @@ void ConfigManager::Write(const wxString& name,  const wxColour& c)
 
     TiXmlElement *leaf = GetUniqElement(e, key);
 
-    TiXmlElement *s = GetUniqElement(leaf, _T("colour"));
+    TiXmlElement *s = GetUniqElement(leaf, "colour");
     if (c == wxNullColour)
     {
         s->SetAttribute("null", "true");
@@ -1089,9 +1089,9 @@ void ConfigManager::Write(const wxString& name,  const wxArrayString& arrayStrin
     TiXmlElement *leaf = GetUniqElement(e, key);
 
     TiXmlElement *as;
-    as = GetUniqElement(leaf, _T("astr"));
+    as = GetUniqElement(leaf, "astr");
     leaf->RemoveChild(as);
-    as = GetUniqElement(leaf, _T("astr"));
+    as = GetUniqElement(leaf, "astr");
 
     for (unsigned int i = 0; i < arrayString.GetCount(); ++i)
     {
@@ -1135,7 +1135,7 @@ void ConfigManager::WriteBinary(const wxString& name,  const wxString& source)
 
     TiXmlElement *str = GetUniqElement(e, key);
 
-    TiXmlElement *s = GetUniqElement(str, _T("bin"));
+    TiXmlElement *s = GetUniqElement(str, "bin");
     s->SetAttribute("crc", wxCrc32::FromString(source));
     SetNodeText(s, TiXmlText(wxBase64::Encode(source).mb_str(wxConvUTF8)));
 }
@@ -1195,7 +1195,7 @@ void ConfigManager::DeleteSubPath(const wxString& thePath)
 {
     if (doc->ErrorId())
     {
-        cbMessageBox(wxString(_T("### TinyXML error:\n")) << cbC2U(doc->ErrorDesc()));
+        cbMessageBox(wxString("### TinyXML error:\n") << cbC2U(doc->ErrorDesc()));
         doc->ClearError();
     }
 
@@ -1204,7 +1204,7 @@ void ConfigManager::DeleteSubPath(const wxString& thePath)
 
     Collapse(path);
 
-    wxString illegal(_T(" :.,;!\"\'$%&()[]<>{}?*+-|#"));
+    wxString illegal(" :.,;!\"\'$%&()[]<>{}?*+-|#");
     size_t i;
     while ((i = path.find_first_of(illegal)) != wxString::npos)
         path[i] = _T('_');
@@ -1212,7 +1212,7 @@ void ConfigManager::DeleteSubPath(const wxString& thePath)
     if (path.Last() == _T('/'))
         path.RemoveLast();
 
-    if (path.IsSameAs(_T("/"))) // this function will refuse to remove root!
+    if (path.IsSameAs("/")) // this function will refuse to remove root!
         return;
 
     TiXmlElement* parent = pathNode ? pathNode : root;
@@ -1227,9 +1227,9 @@ void ConfigManager::DeleteSubPath(const wxString& thePath)
 
             if (sub.IsEmpty())
                 parent = root;
-            else if (sub.IsSameAs(_T(".")))
+            else if (sub.IsSameAs("."))
                 ;
-            else if (parent != root && sub.IsSameAs(_T("..")))
+            else if (parent != root && sub.IsSameAs(".."))
                 parent = parent->Parent()->ToElement();
             else
             {
@@ -1279,7 +1279,7 @@ void ConfigManager::Write(const wxString& name, const ISerializable& object)
 
     TiXmlElement *obj = GetUniqElement(e, key);
 
-    TiXmlElement *s = GetUniqElement(obj, _T("obj"));
+    TiXmlElement *s = GetUniqElement(obj, "obj");
     SetNodeText(s, TiXmlText(cbU2C(wxBase64::Encode(object.SerializeOut()))));
 }
 
@@ -1308,9 +1308,9 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::St
     TiXmlElement *leaf = GetUniqElement(e, key);
 
     TiXmlElement *mNode;
-    mNode = GetUniqElement(leaf, _T("ssmap"));
+    mNode = GetUniqElement(leaf, "ssmap");
     leaf->RemoveChild(mNode);
-    mNode = GetUniqElement(leaf, _T("ssmap"));
+    mNode = GetUniqElement(leaf, "ssmap");
 
     for (ConfigManagerContainer::StringToStringMap::const_iterator it = map.begin(); it != map.end(); ++it)
     {
@@ -1355,14 +1355,14 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::In
     TiXmlElement *leaf = GetUniqElement(e, key);
 
     TiXmlElement *mNode;
-    mNode = GetUniqElement(leaf, _T("ismap"));
+    mNode = GetUniqElement(leaf, "ismap");
     leaf->RemoveChild(mNode);
-    mNode = GetUniqElement(leaf, _T("ismap"));
+    mNode = GetUniqElement(leaf, "ismap");
 
     wxString tmp;
     for (ConfigManagerContainer::IntToStringMap::const_iterator it = map.begin(); it != map.end(); ++it)
     {
-        tmp.Printf(_T("x%d"), (int) it->first);
+        tmp.Printf("x%d", (int) it->first);
         TiXmlElement s(tmp.mb_str());
 
         TiXmlText t(cbU2C(it->second));
@@ -1408,9 +1408,9 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::St
     TiXmlElement *leaf = GetUniqElement(e, key);
 
     TiXmlElement *mNode;
-    mNode = GetUniqElement(leaf, _T("sset"));
+    mNode = GetUniqElement(leaf, "sset");
     leaf->RemoveChild(mNode);
-    mNode = GetUniqElement(leaf, _T("sset"));
+    mNode = GetUniqElement(leaf, "sset");
 
     for (ConfigManagerContainer::StringSet::const_iterator it = set.begin(); it != set.end(); ++it)
     {
@@ -1455,9 +1455,9 @@ void ConfigManager::Write(const wxString& name, const ConfigManagerContainer::Se
     TiXmlElement *leaf = GetUniqElement(e, key);
 
     TiXmlElement *mNode;
-    mNode = GetUniqElement(leaf, _T("objmap"));
+    mNode = GetUniqElement(leaf, "objmap");
     leaf->RemoveChild(mNode);
-    mNode = GetUniqElement(leaf, _T("objmap"));
+    mNode = GetUniqElement(leaf, "objmap");
 
     for (ConfigManagerContainer::SerializableObjectMap::const_iterator it = map->begin(); it != map->end(); ++it)
     {
@@ -1479,12 +1479,12 @@ void ConfigManager::InitPaths()
     {
         if (platform::windows)
 #ifdef CB_AUTOCONF
-            ConfigManager::data_path_global = app_path + _T("/../share/codeblocks");
+            ConfigManager::data_path_global = app_path + "/../share/codeblocks";
 #else
-            ConfigManager::data_path_global = app_path + _T("\\share\\codeblocks");
+            ConfigManager::data_path_global = app_path + "\\share\\codeblocks";
 #endif
         else if (platform::macosx)
-            ConfigManager::data_path_global = res_path + _T("/share/codeblocks");
+            ConfigManager::data_path_global = res_path + "/share/codeblocks";
         else
             ConfigManager::data_path_global = wxStandardPathsBase::Get().GetDataDir();
     }
@@ -1495,28 +1495,28 @@ void ConfigManager::InitPaths()
     if (plugin_path_global.IsEmpty())
     {
         if (platform::windows)
-            ConfigManager::plugin_path_global = app_path + _T("\\..\\lib\\codeblocks\\plugins");
+            ConfigManager::plugin_path_global = app_path + "\\..\\lib\\codeblocks\\plugins";
         else if (platform::macosx)
-            ConfigManager::plugin_path_global = data_path_global + _T("/plugins");
+            ConfigManager::plugin_path_global = data_path_global + "/plugins";
         else
         {
 #ifdef __WXGTK__
             // It seems we can not longer rely on wxStandardPathsBase::Get().GetPluginsDir(),
             // because its behaviour has changed on some systems (at least Fedora 14 64-bit).
             // So we create the pathname manually
-            ConfigManager::plugin_path_global = ((const wxStandardPaths&)wxStandardPaths::Get()).GetInstallPrefix() + _T("/lib/codeblocks/plugins");
+            ConfigManager::plugin_path_global = ((const wxStandardPaths&)wxStandardPaths::Get()).GetInstallPrefix() + "/lib/codeblocks/plugins";
             // first assume, we use standard-paths
             if (!wxDirExists(ConfigManager::plugin_path_global) && wxIsPlatform64Bit())
             {
                 // if standard-path does not exist and we are on 64-bit system, use lib64 instead
-                ConfigManager::plugin_path_global = ((const wxStandardPaths&)wxStandardPaths::Get()).GetInstallPrefix() + _T("/lib64/codeblocks/plugins");
+                ConfigManager::plugin_path_global = ((const wxStandardPaths&)wxStandardPaths::Get()).GetInstallPrefix() + "/lib64/codeblocks/plugins";
             }
 #endif // __WXGTK__
         }
     }
 #endif
 
-    wxString dataPathUser = ConfigManager::config_folder + wxFILE_SEP_PATH + _T("share");
+    wxString dataPathUser = ConfigManager::config_folder + wxFILE_SEP_PATH + "share";
 #ifdef __linux__
     if (!has_alternate_user_data_path)
     {
@@ -1526,7 +1526,7 @@ void ConfigManager::InitPaths()
     }
 #endif // __linux__
 
-    ConfigManager::data_path_user = dataPathUser + wxFILE_SEP_PATH + _T("codeblocks");
+    ConfigManager::data_path_user = dataPathUser + wxFILE_SEP_PATH + "codeblocks";
 
     // if user- and global-datapath are the same (can happen in portable mode) we run in conflicts
     // so we extend the user-datapath with the users name
@@ -1534,8 +1534,8 @@ void ConfigManager::InitPaths()
         ConfigManager::data_path_user.append("." + wxGetUserId());
 
     CreateDirRecursively(ConfigManager::config_folder);
-    CreateDirRecursively(ConfigManager::data_path_user   + _T("/plugins/"));
-    CreateDir(ConfigManager::data_path_user   + _T("/scripts/"));
+    CreateDirRecursively(ConfigManager::data_path_user   + "/plugins/");
+    CreateDir(ConfigManager::data_path_user   + "/scripts/");
 
     ConfigManager::temp_folder = wxStandardPathsBase::Get().GetTempDir();
 }
@@ -1555,8 +1555,8 @@ void ConfigManager::MigrateFolders()
         return;
 
     wxString oldConfigFolder = wxStandardPaths::Get().GetUserDataDir();
-    wxString oldDataFolder = oldConfigFolder + wxFILE_SEP_PATH + _T("share") + wxFILE_SEP_PATH + _T("codeblocks");
-    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), nullptr)) + wxFILE_SEP_PATH + _T("codeblocks");
+    wxString oldDataFolder = oldConfigFolder + wxFILE_SEP_PATH + "share" + wxFILE_SEP_PATH + "codeblocks";
+    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), nullptr)) + wxFILE_SEP_PATH + "codeblocks";
     wxString msg;
     msg = F(_("The places where the configuration files and user-data files are stored\n"
               "have been changed to be more standard-conform.\n"
@@ -1577,7 +1577,7 @@ void ConfigManager::MigrateFolders()
         // make sure the target-folder exists
         CreateDirRecursively(newDataFolder);
         success = wxRenameFile(oldDataFolder, newDataFolder);
-        wxRmdir(oldConfigFolder + wxFILE_SEP_PATH + _T("share"));
+        wxRmdir(oldConfigFolder + wxFILE_SEP_PATH + "share");
     }
     if (success)
     {
@@ -1710,20 +1710,20 @@ static wxString getCompilerPluginFilename()
 {
     if (platform::windows)
 #ifdef CB_AUTOCONF
-        return wxT("libcompiler.dll");
+        return "libcompiler.dll";
 #else
-        return wxT("compiler.dll");
+        return "compiler.dll";
 #endif
     else if (platform::darwin || platform::macosx)
-        return wxT("libcompiler.dylib");
+        return "libcompiler.dylib";
     else
-        return wxT("libcompiler.so");
+        return "libcompiler.so";
 }
 
 wxArrayString cbReadBatchBuildPlugins()
 {
-    ConfigManager *bbcfg = Manager::Get()->GetConfigManager(_T("plugins"));
-    wxArrayString bbplugins = bbcfg->ReadArrayString(_T("/batch_build_plugins"));
+    ConfigManager *bbcfg = Manager::Get()->GetConfigManager("plugins");
+    wxArrayString bbplugins = bbcfg->ReadArrayString("/batch_build_plugins");
 
     if (!bbplugins.GetCount())
         bbplugins.Add(getCompilerPluginFilename());
@@ -1742,6 +1742,6 @@ void cbWriteBatchBuildPlugins(wxArrayString bbplugins, wxWindow *messageBoxParen
                     "Automatically re-enabled."),
                     _("Warning"), wxICON_WARNING, messageBoxParent);
     }
-    ConfigManager *bbcfg = Manager::Get()->GetConfigManager(_T("plugins"));
-    bbcfg->Write(_T("/batch_build_plugins"), bbplugins);
+    ConfigManager *bbcfg = Manager::Get()->GetConfigManager("plugins");
+    bbcfg->Write("/batch_build_plugins", bbplugins);
 }

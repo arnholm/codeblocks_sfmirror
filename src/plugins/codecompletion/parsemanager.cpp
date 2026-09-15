@@ -1796,10 +1796,10 @@ bool ParseManager::ParseLocalBlock(ccSearchData* searchData, TokenIdxSet& search
             }
             const wxString text = stc->GetTextRange(stc->WordStartPosition(prevCharIdx, true),
                                                     stc->WordEndPosition(  prevCharIdx, true));
-            if (text == wxT("for"))
-                buffer.Prepend(wxT("(;;){"));
-            else if (text == wxT("if") || text == wxT("while") || text == wxT("catch"))
-                buffer.Prepend(wxT("(0){"));
+            if (text == "for")
+                buffer.Prepend("(;;){");
+            else if (text == "if" || text == "while" || text == "catch")
+                buffer.Prepend("(0){");
             else
                 continue;
             startLn = stc->LineFromPosition(prevCharIdx);

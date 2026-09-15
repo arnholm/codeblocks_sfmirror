@@ -34,13 +34,13 @@ ExamineMemoryDlg::ExamineMemoryDlg(wxWindow* parent) :
     m_LastRowStartingAddress(0)
 {
     //ctor
-    if (!wxXmlResource::Get()->LoadPanel(this, parent, _T("MemoryDumpPanel")))
+    if (!wxXmlResource::Get()->LoadPanel(this, parent, "MemoryDumpPanel"))
         return;
 
     m_pText = XRCCTRL(*this, "txtDump", wxTextCtrl);
 
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    int bytes = c->ReadInt(wxT("/common/examine_memory/size_to_show"), 32);
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    int bytes = c->ReadInt("/common/examine_memory/size_to_show", 32);
     wxString strBytes;
     strBytes << bytes;
     wxComboBox *combo = XRCCTRL(*this, "cmbBytes", wxComboBox);
@@ -88,7 +88,7 @@ void ExamineMemoryDlg::AddError(const wxString& err)
 
 void ExamineMemoryDlg::AddHexByte(const wxString& addr, const wxString& hexbyte)
 {
-//    m_pDbg->Log(_T("AddHexByte(") + addr + _T(", ") + hexbyte + _T(')'));
+//    m_pDbg->Log("AddHexByte(" + addr + ", " + hexbyte + _T(')'));
     int bcmod = m_ByteCounter % 16;
 
     if (m_ByteCounter == 0)
@@ -107,8 +107,8 @@ void ExamineMemoryDlg::AddHexByte(const wxString& addr, const wxString& hexbyte)
 
     unsigned long hb;
     hexbyte.ToULong(&hb, 16);
-//    m_pDbg->Log(wxString::Format(_T("hb=%d, [0]=%c, [1]=%c"), hb, hexbyte[0], hexbyte[1]));
-//    m_pDbg->Log(wxString::Format(_T("HEX_OFFSET(bcmod)=%d, CHAR_OFFSET(bcmod)=%d"), HEX_OFFSET(bcmod), CHAR_OFFSET(bcmod)));
+//    m_pDbg->Log(wxString::Format("hb=%d, [0]=%c, [1]=%c", hb, hexbyte[0], hexbyte[1]));
+//    m_pDbg->Log(wxString::Format("HEX_OFFSET(bcmod)=%d, CHAR_OFFSET(bcmod)=%d", HEX_OFFSET(bcmod), CHAR_OFFSET(bcmod)));
     m_LineText[HEX_OFFSET(bcmod)] = hexbyte[0];
     m_LineText[HEX_OFFSET(bcmod) + 1] = hexbyte[1];
     m_LineText[CHAR_OFFSET(bcmod)] = hb >= 32 ? wxChar(hb) : wxChar(_T('.'));
@@ -136,8 +136,8 @@ void ExamineMemoryDlg::OnGo(cb_unused wxCommandEvent& event)
 
     // Save the value of the bytes combo box in the config,
     // so it is the same next time the dialog is used.
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    c->Write(wxT("/common/examine_memory/size_to_show"), GetBytes());
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    c->Write("/common/examine_memory/size_to_show", GetBytes());
 
     if (plugin)
         plugin->RequestUpdate(cbDebuggerPlugin::ExamineMemory);

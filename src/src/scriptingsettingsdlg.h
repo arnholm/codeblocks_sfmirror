@@ -16,16 +16,16 @@ class ScriptEntry// : public ISerializable (<-- can't make it work)
 public:
     wxString SerializeOut() const
     {
-        return wxString::Format(_T("%s;%d;%d;%s"), script.c_str(), enabled ? 1 : 0, registered ? 1 : 0, menu.c_str());
+        return wxString::Format("%s;%d;%d;%s", script.c_str(), enabled ? 1 : 0, registered ? 1 : 0, menu.c_str());
     }
     void SerializeIn(const wxString& s)
     {
         wxString tmp = s;
         script = tmp.BeforeFirst(_T(';'));
         tmp = tmp.AfterFirst(_T(';'));
-        enabled = tmp.BeforeFirst(_T(';')) == _T("1") ? true : false;
+        enabled = tmp.BeforeFirst(_T(';')) == "1" ? true : false;
         tmp = tmp.AfterFirst(_T(';'));
-        registered = tmp.BeforeFirst(_T(';')) == _T("1") ? true : false;
+        registered = tmp.BeforeFirst(_T(';')) == "1" ? true : false;
         tmp = tmp.AfterFirst(_T(';'));
         menu = tmp.BeforeFirst(_T(';'));
     }

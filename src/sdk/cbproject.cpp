@@ -316,11 +316,11 @@ wxString cbProject::CreateUniqueFilename()
     int projCount = arr->GetCount();
     int iter = 1;
     bool ok = false;
-    tmp << prefix << wxString::Format(_T("%d"), iter);
+    tmp << prefix << wxString::Format("%d", iter);
     while (!ok)
     {
         tmp.Clear();
-        tmp << prefix << wxString::Format(_T("%d"), iter);
+        tmp << prefix << wxString::Format("%d", iter);
 
         ok = true;
         for (int i = 0; i < projCount; ++i)
@@ -338,7 +338,7 @@ wxString cbProject::CreateUniqueFilename()
             break;
         ++iter;
     }
-    return tmp << _T(".") << FileFilters::CODEBLOCKS_EXT;
+    return tmp << "." << FileFilters::CODEBLOCKS_EXT;
 }
 
 void cbProject::ClearAllProperties()
@@ -446,9 +446,9 @@ void cbProject::CalculateCommonTopLevelPath()
     const wxString sep       = wxFileName::GetPathSeparator();
     wxFileName base           = GetBasePath() + sep;
     wxString   vol            = base.GetVolume();
-    bool       prjHasUNCName  = base.GetFullPath().StartsWith(_T("\\\\"));
+    bool       prjHasUNCName  = base.GetFullPath().StartsWith("\\\\");
 
-    Manager::Get()->GetLogManager()->DebugLog(_T("Project's base path: ") + base.GetFullPath());
+    Manager::Get()->GetLogManager()->DebugLog("Project's base path: " + base.GetFullPath());
 
     // This loop takes ~30ms for 1000 project files
     // it's as fast as it can get, considered that it used to take ~1200ms ;)
@@ -465,7 +465,7 @@ void cbProject::CalculateCommonTopLevelPath()
         if ( !vol.IsSameAs(f->file.GetVolume()) )
             continue;
 
-        bool fileHasUNCName = f->file.GetFullPath().StartsWith(_T("\\\\"));
+        bool fileHasUNCName = f->file.GetFullPath().StartsWith("\\\\");
 
         if (   (!prjHasUNCName &&  fileHasUNCName)
             || ( prjHasUNCName && !fileHasUNCName) )
@@ -499,7 +499,7 @@ void cbProject::CalculateCommonTopLevelPath()
 #endif
 
     m_CommonTopLevelPath = base.GetFullPath();
-    Manager::Get()->GetLogManager()->DebugLog(_T("Project's common toplevel path: ") + m_CommonTopLevelPath);
+    Manager::Get()->GetLogManager()->DebugLog("Project's common toplevel path: " + m_CommonTopLevelPath);
 
     const wxString &projectBasePath = GetBasePath();
 
@@ -510,7 +510,7 @@ void cbProject::CalculateCommonTopLevelPath()
             continue;
 
         wxString fileName = f->file.GetFullPath();
-        bool fileHasUNCName = fileName.StartsWith(_T("\\\\"));
+        bool fileHasUNCName = fileName.StartsWith("\\\\");
 
         if (   (prjHasUNCName && fileHasUNCName)
             || (   !prjHasUNCName
@@ -623,11 +623,11 @@ bool cbProject::SaveLayout()
     if (m_Filename.IsEmpty())
         return false;
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_project_layout"), true) == false)
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_project_layout", true) == false)
         return true;
 
     wxFileName fname(m_Filename);
-    fname.SetExt(_T("layout"));
+    fname.SetExt("layout");
     ProjectLayoutLoader loader(this);
     return loader.Save(fname.GetFullPath());
 }
@@ -637,10 +637,10 @@ bool cbProject::LoadLayout()
     if (m_Filename.IsEmpty())
         return false;
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/enable_project_layout"), true) == false)
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/enable_project_layout", true) == false)
         return true;
 
-    int openmode = Manager::Get()->GetConfigManager(_T("project_manager"))->ReadInt(_T("/open_files"), (long int)1);
+    int openmode = Manager::Get()->GetConfigManager("project_manager")->ReadInt("/open_files", (long int)1);
     if (openmode==2)
         return true; // Do not open any files
 
@@ -660,7 +660,7 @@ bool cbProject::LoadLayout()
     else if (openmode == 1)// Open last open files
     {
         wxFileName fname(m_Filename);
-        fname.SetExt(_T("layout"));
+        fname.SetExt("layout");
         ProjectLayoutLoader loader(this);
         if (loader.Open(fname.GetFullPath()))
         {
@@ -697,7 +697,7 @@ bool cbProject::LoadLayout()
             ProjectFile* f = loader.GetTopProjectFile();
             if (f)
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("Top Editor: ") + f->file.GetFullPath());
+                Manager::Get()->GetLogManager()->DebugLog("Top Editor: " + f->file.GetFullPath());
                 EditorBase* eb = Manager::Get()->GetEditorManager()->Open(f->file.GetFullPath());
                 if (eb)
                     eb->Activate();
@@ -787,11 +787,11 @@ ProjectFile* cbProject::AddFile(int targetIndex, const wxString& filename, bool 
 
     const wxString &ext = fname.GetExt();
     if (ext.IsSameAs(FileFilters::C_EXT, false))
-        pf->compilerVar = _T("CC");
+        pf->compilerVar = "CC";
     else if (platform::windows && ext.IsSameAs(FileFilters::RESOURCE_EXT))
-        pf->compilerVar = _T("WINDRES");
+        pf->compilerVar = "WINDRES";
     else
-        pf->compilerVar = _T("CPP"); // default
+        pf->compilerVar = "CPP"; // default
 
     if (!m_Targets.GetCount())
     {
@@ -885,7 +885,7 @@ ProjectFile* cbProject::AddFile(int targetIndex, const wxString& filename, bool 
     {
         fname.Assign(filename);
     }
-    else if (fname.GetFullPath().StartsWith(_T("\\\\"))) // UNC path
+    else if (fname.GetFullPath().StartsWith("\\\\")) // UNC path
     {
         fname.Assign(filename);
     }
@@ -962,16 +962,16 @@ ProjectFile* cbProject::AddFile(int targetIndex, const wxString& filename, bool 
                 wxString tmps = tmp.GetFullPath();
                 // any macro replacements here, should also be done in
                 // CompilerCommandGenerator::GenerateCommandLine !!!
-                tmps.Replace(_T("$file_basename"), pf->file.GetName()); // old way - remove later
-                tmps.Replace(_T("$file_name"),     pf->file.GetName());
-                tmps.Replace(_T("$file_dir"),      pf->file.GetPath());
-                tmps.Replace(_T("$file_ext"),      pf->file.GetExt());
-                tmps.Replace(_T("$file"),          pf->file.GetFullName());
+                tmps.Replace("$file_basename", pf->file.GetName()); // old way - remove later
+                tmps.Replace("$file_name",     pf->file.GetName());
+                tmps.Replace("$file_dir",      pf->file.GetPath());
+                tmps.Replace("$file_ext",      pf->file.GetExt());
+                tmps.Replace("$file",          pf->file.GetFullName());
                 Manager::Get()->GetMacrosManager()->ReplaceMacros(tmps);
 
                 ProjectFile* pfile = AddFile(targetIndex, UnixFilename(tmps));
                 if (!pfile)
-                    Manager::Get()->GetLogManager()->DebugLog(_T("Can't add auto-generated file ") + tmps);
+                    Manager::Get()->GetLogManager()->DebugLog("Can't add auto-generated file " + tmps);
                 else
                 {
                     pf->generatedFiles.push_back(pfile);
@@ -996,7 +996,7 @@ bool cbProject::RemoveFile(ProjectFile* pf)
 
 		if (it == m_Files.end())
 		{
-			Manager::Get()->GetLogManager()->DebugLog(_T("Can't locate node for ProjectFile* !"));
+			Manager::Get()->GetLogManager()->DebugLog("Can't locate node for ProjectFile* !");
 		}
 		else
 		{
@@ -1105,8 +1105,8 @@ void cbProject::SetVirtualFolders(const wxArrayString& folders)
     m_VirtualFolders = folders;
     for (size_t i = 0; i < m_VirtualFolders.GetCount(); ++i)
     {
-        m_VirtualFolders[i].Replace(_T("/"), wxString(wxFILE_SEP_PATH));
-        m_VirtualFolders[i].Replace(_T("\\"), wxString(wxFILE_SEP_PATH));
+        m_VirtualFolders[i].Replace("/", wxString(wxFILE_SEP_PATH));
+        m_VirtualFolders[i].Replace("\\", wxString(wxFILE_SEP_PATH));
     }
 }
 
@@ -1127,8 +1127,8 @@ const wxString& cbProject::GetMakefile() const
 
     wxFileName makefile(m_Makefile);
     makefile.Assign(m_Filename);
-    makefile.SetName(_T("Makefile"));
-    makefile.SetExt(_T(""));
+    makefile.SetName("Makefile");
+    makefile.SetExt("");
     makefile.MakeRelativeTo( GetBasePath() );
 
     m_Makefile = makefile.GetFullPath();
@@ -1197,8 +1197,8 @@ ProjectFile* cbProject::GetFileByFilename(const wxString& filename, bool isRelat
         // make sure filename doesn't start with ".\"
         // our own relative files don't have it, so the search would fail
         // this happens when importing MS projects...
-        if (tmp.StartsWith(_T(".\\")) ||
-            tmp.StartsWith(_T("./")))
+        if (tmp.StartsWith(".\\") ||
+            tmp.StartsWith("./"))
         {
             tmp.Remove(0, 2);
         }
@@ -1282,7 +1282,7 @@ int cbProject::SelectTarget(int initial, bool evenIfOne)
 
 ProjectBuildTarget* cbProject::AddDefaultBuildTarget()
 {
-    return AddBuildTarget(_T("default"));
+    return AddBuildTarget("default");
 }
 
 ProjectBuildTarget* cbProject::AddBuildTarget(const wxString& targetName)
@@ -1813,7 +1813,7 @@ void cbProject::SetTitle(const wxString& title)
 TiXmlNode* cbProject::GetExtensionsNode()
 {
     if (!m_pExtensionsElement)
-        m_pExtensionsElement = new TiXmlElement(cbU2C(_T("Extensions")));
+        m_pExtensionsElement = new TiXmlElement(cbU2C("Extensions"));
     return m_pExtensionsElement;
 }
 
@@ -2034,8 +2034,8 @@ wxString cbGetDynamicLinkerPathForTarget(cbProject* project, ProjectBuildTarget*
               return wxEmptyString;
 
         wxString libPath;
-        const wxString libPathSep = platform::windows ? _T(";") : _T(":");
-        libPath << _T(".") << libPathSep;
+        const wxString libPathSep = platform::windows ? ";" : ":";
+        libPath << "." << libPathSep;
         libPath << GetStringFromArray(generator->GetLinkerSearchDirs(target), libPathSep);
         if (!libPath.IsEmpty() && libPath.Mid(libPath.Length() - 1, 1) == libPathSep)
             libPath.Truncate(libPath.Length() - 1);
@@ -2064,8 +2064,8 @@ wxString cbGetCompilerBinPathForTarget(cbProject* project, ProjectBuildTarget* t
         const wxString pathSep     = wxFileName::GetPathSeparator(); // "\" or "/"
         const wxString compilerApp = compiler->GetPrograms().C;
         wxString       compilerPath(wxEmptyString);
-        if ( wxFileExists(masterPath + pathSep + wxT("bin") + pathSep + compilerApp) )
-            compilerPath = masterPath + pathSep + wxT("bin");
+        if ( wxFileExists(masterPath + pathSep + "bin" + pathSep + compilerApp) )
+            compilerPath = masterPath + pathSep + "bin";
         else if ( wxFileExists(masterPath + pathSep + compilerApp) )
             compilerPath = masterPath;
 
@@ -2078,7 +2078,7 @@ wxString cbGetCompilerBinPathForTarget(cbProject* project, ProjectBuildTarget* t
 wxString cbMergeLibPaths(const wxString &oldPath, const wxString &newPath)
 {
     wxString result = newPath;
-    const wxString libPathSep = platform::windows ? _T(";") : _T(":");
+    const wxString libPathSep = platform::windows ? ";" : ":";
     if (!newPath.IsEmpty() && newPath.Mid(newPath.Length() - 1, 1) != libPathSep)
         result << libPathSep;
     result << oldPath;

@@ -37,7 +37,7 @@
 // images by order of pages
 const wxString base_imgs[] =
 {
-    _T("batch"),
+    "batch",
 };
 const int IMAGES_COUNT = sizeof(base_imgs) / sizeof(wxString);
 
@@ -50,7 +50,7 @@ END_EVENT_TABLE()
 
 CompilerSettingsDlg::CompilerSettingsDlg(wxWindow* parent)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgCompilerSettings"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgCompilerSettings","wxScrollingDialog");
     XRCCTRL(*this, "wxID_OK", wxButton)->SetDefault();
 
     m_pImageList = new wxImageList(80, 80);
@@ -60,7 +60,7 @@ CompilerSettingsDlg::CompilerSettingsDlg(wxWindow* parent)
 
     // tab "Batch builds"
     if (platform::windows)
-        XRCCTRL(*this, "txtBatchBuildsCmdLine", wxTextCtrl)->SetValue(Manager::Get()->GetConfigManager(_T("app"))->Read(_T("/batch_build_args"), appglobals::DefaultBatchBuildArgs));
+        XRCCTRL(*this, "txtBatchBuildsCmdLine", wxTextCtrl)->SetValue(Manager::Get()->GetConfigManager("app")->Read("/batch_build_args", appglobals::DefaultBatchBuildArgs));
     else
         XRCCTRL(*this, "txtBatchBuildsCmdLine", wxTextCtrl)->Enable(false);
 
@@ -108,9 +108,9 @@ CompilerSettingsDlg::~CompilerSettingsDlg()
 
 void CompilerSettingsDlg::AddPluginPanels()
 {
-    const wxString base = _T("images/settings/");
+    const wxString base = "images/settings/";
     // for plugins who do not supply icons, use common generic icons
-    const wxString noimg = _T("images/settings/generic-plugin");
+    const wxString noimg = "images/settings/generic-plugin";
     wxListbook* lb = XRCCTRL(*this, "nbMain", wxListbook);
 
     // we 'll remove the existing page and add it when appropriate
@@ -132,12 +132,12 @@ void CompilerSettingsDlg::AddPluginPanels()
         panel->SetParentDialog(this);
         lb->AddPage(panel, panel->GetTitle());
 
-        wxString onFile = ConfigManager::LocateDataFile(base + panel->GetBitmapBaseName() + _T(".png"), sdDataGlobal | sdDataUser);
+        wxString onFile = ConfigManager::LocateDataFile(base + panel->GetBitmapBaseName() + ".png", sdDataGlobal | sdDataUser);
         if (onFile.IsEmpty())
-			onFile = ConfigManager::LocateDataFile(noimg + _T(".png"), sdDataGlobal | sdDataUser);
-        wxString offFile = ConfigManager::LocateDataFile(base + panel->GetBitmapBaseName() + _T("-off.png"), sdDataGlobal | sdDataUser);
+			onFile = ConfigManager::LocateDataFile(noimg + ".png", sdDataGlobal | sdDataUser);
+        wxString offFile = ConfigManager::LocateDataFile(base + panel->GetBitmapBaseName() + "-off.png", sdDataGlobal | sdDataUser);
         if (offFile.IsEmpty())
-			offFile = ConfigManager::LocateDataFile(noimg + _T("-off.png"), sdDataGlobal | sdDataUser);
+			offFile = ConfigManager::LocateDataFile(noimg + "-off.png", sdDataGlobal | sdDataUser);
 
         m_pImageList->Add(cbLoadBitmap(onFile));
         m_pImageList->Add(cbLoadBitmap(offFile));
@@ -149,12 +149,12 @@ void CompilerSettingsDlg::AddPluginPanels()
 
     // now load the builtin pages' images
     lb->AddPage(existingPage, existingTitle);
-	wxString onFile = ConfigManager::LocateDataFile(base + base_imgs[0] + _T(".png"), sdDataGlobal | sdDataUser);
+	wxString onFile = ConfigManager::LocateDataFile(base + base_imgs[0] + ".png", sdDataGlobal | sdDataUser);
 	if (onFile.IsEmpty())
-		onFile = ConfigManager::LocateDataFile(noimg + _T(".png"), sdDataGlobal | sdDataUser);
-	wxString offFile = ConfigManager::LocateDataFile(base + base_imgs[0] + _T("-off.png"), sdDataGlobal | sdDataUser);
+		onFile = ConfigManager::LocateDataFile(noimg + ".png", sdDataGlobal | sdDataUser);
+	wxString offFile = ConfigManager::LocateDataFile(base + base_imgs[0] + "-off.png", sdDataGlobal | sdDataUser);
 	if (offFile.IsEmpty())
-		offFile = ConfigManager::LocateDataFile(noimg + _T("-off.png"), sdDataGlobal | sdDataUser);
+		offFile = ConfigManager::LocateDataFile(noimg + "-off.png", sdDataGlobal | sdDataUser);
 
     m_pImageList->Add(cbLoadBitmap(onFile));
     m_pImageList->Add(cbLoadBitmap(offFile));
@@ -168,7 +168,7 @@ void CompilerSettingsDlg::UpdateListbookImages()
     wxListbook* lb = XRCCTRL(*this, "nbMain", wxListbook);
     int sel = lb->GetSelection();
 
-    if (SettingsIconsStyle(Manager::Get()->GetConfigManager(_T("app"))->ReadInt(_T("/environment/settings_size"), 0)))
+    if (SettingsIconsStyle(Manager::Get()->GetConfigManager("app")->ReadInt("/environment/settings_size", 0)))
     {
         SetSettingsIconsStyle(lb->GetListView(), sisNoIcons);
         lb->SetImageList(nullptr);
@@ -185,7 +185,7 @@ void CompilerSettingsDlg::UpdateListbookImages()
     // update the page title
     wxString label = lb->GetPageText(sel);
     // replace any stray & with && because label makes it an underscore
-    while (label.Replace(_T(" & "), _T(" && ")))
+    while (label.Replace(" & ", " && "))
         ;
     XRCCTRL(*this, "lblBigTitle", wxStaticText)->SetLabel(label);
     XRCCTRL(*this, "pnlTitleInfo", wxPanel)->Layout();
@@ -225,11 +225,11 @@ void CompilerSettingsDlg::EndModal(int retCode)
     {
         // tab "Batch builds"
 #ifdef __WXMSW__  /* TODO: remove preprocessor when Associations::SetXXX are supported on non-Windows platforms */
-        ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
+        ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
         wxString bbargs = XRCCTRL(*this, "txtBatchBuildsCmdLine", wxTextCtrl)->GetValue();
-        if (bbargs != cfg->Read(_T("/batch_build_args"), appglobals::DefaultBatchBuildArgs))
+        if (bbargs != cfg->Read("/batch_build_args", appglobals::DefaultBatchBuildArgs))
         {
-            cfg->Write(_T("/batch_build_args"), bbargs);
+            cfg->Write("/batch_build_args", bbargs);
             Associations::SetBatchBuildOnly();
         }
 #endif //#ifdef __WXMSW__

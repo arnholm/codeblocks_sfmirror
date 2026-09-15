@@ -54,7 +54,7 @@ WX_DEFINE_OBJARRAY(Wizards); // TODO: find out why this causes a shadow warning 
 
 namespace
 {
-    PluginRegistrant<Wiz> reg(_T("ScriptedWizard"));
+    PluginRegistrant<Wiz> reg("ScriptedWizard");
 }
 
 namespace ScriptBindings
@@ -106,13 +106,13 @@ void Wiz::OnAttach()
     // this registers all available wizard scripts with us
 
     // user script first
-    wxString templatePath = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/");
-    wxString script = templatePath + _T("/config.script");
+    wxString templatePath = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/";
+    wxString script = templatePath + "/config.script";
     if (!wxFileExists(script))
     {
         // global script next
-        templatePath = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/");
-        script = templatePath + _T("/config.script");
+        templatePath = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/";
+        script = templatePath + "/config.script";
         if (!wxFileExists(script))
             script = wxString();
     }
@@ -133,13 +133,13 @@ void Wiz::OnAttach()
     wxString sep = wxString(wxFILE_SEP_PATH);
     m_DefCompilerID = CompilerFactory::GetDefaultCompilerID();
     m_WantDebug = true;
-    m_DebugName = _T("Debug");
-    m_DebugOutputDir = _T("bin") + sep + _T("Debug") + sep;
-    m_DebugObjOutputDir = _T("obj") + sep + _T("Debug") + sep;
+    m_DebugName = "Debug";
+    m_DebugOutputDir = "bin" + sep + "Debug" + sep;
+    m_DebugObjOutputDir = "obj" + sep + "Debug" + sep;
     m_WantRelease = true;
-    m_ReleaseName = _T("Release");
-    m_ReleaseOutputDir = _T("bin") + sep + _T("Release") + sep;
-    m_ReleaseObjOutputDir = _T("obj") + sep + _T("Release") + sep;
+    m_ReleaseName = "Release";
+    m_ReleaseOutputDir = "bin" + sep + "Release" + sep;
+    m_ReleaseObjOutputDir = "obj" + sep + "Release" + sep;
 }
 
 void Wiz::OnRelease(bool appShutDown)
@@ -253,7 +253,7 @@ CompileTargetBase* Wiz::Launch(int index, wxString* pFilename)
                                                     "function GetFilesDir(){return _T(\"\");};\n"
                                                     "function GetGeneratedFile(index){return _T(\"\");};\n"
                                                     "function GetTargetName() { return _T(\"\"); }\n");
-    scriptMgr->LoadBuffer(clearout_wizscripts, _T("ClearWizState"));
+    scriptMgr->LoadBuffer(clearout_wizscripts, "ClearWizState");
 
     // early check: build target wizards need an active project
     if (m_Wizards[index].output_type == totTarget &&
@@ -286,8 +286,8 @@ CompileTargetBase* Wiz::Launch(int index, wxString* pFilename)
                       m_Wizards[index].wizardPNG, wxDefaultPosition,
                       wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 
-    const wxString global_commons = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/common_functions.script");
-    const wxString user_commons = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/common_functions.script");
+    const wxString global_commons = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/common_functions.script";
+    const wxString user_commons = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/common_functions.script";
     if (!scriptMgr->LoadScript(global_commons) && // load global common functions
         !scriptMgr->LoadScript(user_commons)) // and/or load user common functions
     {
@@ -298,9 +298,9 @@ CompileTargetBase* Wiz::Launch(int index, wxString* pFilename)
     }
 
     // locate the script
-    wxString script = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + m_Wizards[index].script;
+    wxString script = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + m_Wizards[index].script;
     if (!wxFileExists(script))
-        script = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + m_Wizards[index].script;
+        script = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + m_Wizards[index].script;
 
     if (!scriptMgr->LoadScript(script)) // build and run script
     {
@@ -438,7 +438,7 @@ CompileTargetBase* Wiz::RunProjectWizard(wxString* pFilename)
     // create a "default" target
     if (theproject->GetBuildTargetsCount() == 0)
     {
-        ProjectBuildTarget* target = theproject->AddBuildTarget(_T("default"));
+        ProjectBuildTarget* target = theproject->AddBuildTarget("default");
         if (target)
         {
             target->SetCompilerID(GetCompilerID());
@@ -524,7 +524,7 @@ CompileTargetBase* Wiz::RunProjectWizard(wxString* pFilename)
                     // Add the file only if it does not exist
                     if (theproject->GetFileByFilename(files[i], true, true) == NULL)
                     {
-                        Manager::Get()->GetLogManager()->DebugLog(_T("Generated file ") + actual);
+                        Manager::Get()->GetLogManager()->DebugLog("Generated file " + actual);
                         // add it to the project
                         Manager::Get()->GetProjectManager()->AddFileToProject(actual, theproject, targetIndices);
                     }
@@ -741,7 +741,7 @@ wxString Wiz::GenerateFile(const wxString& basePath, const wxString& filename, c
         case ftResourceBin:
         case ftObject:
 //        case ftOther:
-            Manager::Get()->GetLogManager()->DebugLog(_T("Attempt to generate a file with forbidden extension!\nFile: ") + fname.GetFullPath());
+            Manager::Get()->GetLogManager()->DebugLog("Attempt to generate a file with forbidden extension!\nFile: " + fname.GetFullPath());
             return wxEmptyString;
         default: break;
     }
@@ -755,7 +755,7 @@ wxString Wiz::GenerateFile(const wxString& basePath, const wxString& filename, c
     int IntDirCount = 0;
     for ( size_t i=0; i<Dirs.Count(); i++ )
     {
-        if ( Dirs[i] == _T("..") )
+        if ( Dirs[i] == ".." )
         {
             if ( IntDirCount-- == 0 )
             {
@@ -767,7 +767,7 @@ wxString Wiz::GenerateFile(const wxString& basePath, const wxString& filename, c
                 break;
             }
         }
-        else if ( Dirs[i] != _T(".") )
+        else if ( Dirs[i] != "." )
             IntDirCount++;
     }
 
@@ -776,12 +776,12 @@ wxString Wiz::GenerateFile(const wxString& basePath, const wxString& filename, c
     {
         wxString query_overwrite;
         query_overwrite.Printf(
-          _T("Warning:\n")
-          _T("The wizard is about to OVERWRITE the following existing file:\n")+
-          fname.GetFullPath()+_T("\n\n") +
-          _T("Are you sure that you want to OVERWRITE the file?\n\n")+
-          _T("(If you answer 'No' the existing file will be kept.)"));
-        if (cbMessageBox(query_overwrite, _T("Confirmation"),
+          "Warning:\n"
+          "The wizard is about to OVERWRITE the following existing file:\n"+
+          fname.GetFullPath()+"\n\n" +
+          "Are you sure that you want to OVERWRITE the file?\n\n"+
+          "(If you answer 'No' the existing file will be kept.)");
+        if (cbMessageBox(query_overwrite, "Confirmation",
                          wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT) == wxID_NO)
         {
             return fname.GetFullPath();
@@ -802,12 +802,12 @@ void Wiz::CopyFiles(cbProject* theproject, const wxString&  prjdir, const wxStri
 {
     // first get the dir with the files
     wxArrayString filesList;
-    wxString enumdirs = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + srcdir;
-    if ( !wxDirExists(enumdirs + _T("/")) )
-        enumdirs = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + srcdir;
+    wxString enumdirs = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + srcdir;
+    if ( !wxDirExists(enumdirs + "/") )
+        enumdirs = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + srcdir;
     wxString basepath = wxFileName(enumdirs).GetFullPath();
 
-    if ( wxDirExists(enumdirs + _T("/")) )
+    if ( wxDirExists(enumdirs + "/") )
     {
         // recursively enumerate all files under srcdir
         wxDir::GetAllFiles(enumdirs, &filesList);
@@ -841,12 +841,12 @@ void Wiz::CopyFiles(cbProject* theproject, const wxString&  prjdir, const wxStri
         {
             wxString query_overwrite;
             query_overwrite.Printf(
-              _T("Warning:\n")
-              _T("The wizard is about to OVERWRITE the following existing file:\n")+
-              wxFileName(dstfile).GetFullPath()+_T("\n\n")+
-              _T("Are you sure that you want to OVERWRITE the file?\n\n")+
-              _T("(If you answer 'No' the existing file will be kept.)"));
-            if (cbMessageBox(query_overwrite, _T("Confirmation"),
+              "Warning:\n"
+              "The wizard is about to OVERWRITE the following existing file:\n"+
+              wxFileName(dstfile).GetFullPath()+"\n\n"+
+              "Are you sure that you want to OVERWRITE the file?\n\n"+
+              "(If you answer 'No' the existing file will be kept.)");
+            if (cbMessageBox(query_overwrite, "Confirmation",
                              wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT) != wxID_YES)
             {
                 do_copy = false; // keep the old (existing) file
@@ -868,9 +868,9 @@ void Wiz::CopyFiles(cbProject* theproject, const wxString&  prjdir, const wxStri
 
 wxString Wiz::FindTemplateFile(const wxString& filename)
 {
-    wxString f = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + filename;
+    wxString f = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + filename;
     if (!wxFileExists(f))
-        f = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + filename;
+        f = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + filename;
     return f;
 }
 
@@ -917,15 +917,15 @@ void Wiz::FillContainerWithCompilers(const wxString& name, const wxString& compi
 void Wiz::FillContainerWithSelectCompilers( const wxString& name, const wxString& validCompilerIDs )
 {
     // Fill the named window with compilers matching a mask/filter
-    // Example: FillContainerWithSelectCompilers(_T("GenericChoiceList"), _T("*arm*;rx*;mips*"));
+    // Example: FillContainerWithSelectCompilers("GenericChoiceList", "*arm*;rx*;mips*");
 
     wxWizardPage* page = m_pWizard->GetCurrentPage();
     if (page)
     {
-        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? _T("GenericChoiceList") : name , page ) );
+        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? "GenericChoiceList" : name , page ) );
         if (win)
         {
-            wxArrayString valids = GetArrayFromString(validCompilerIDs, _T(";"), true);
+            wxArrayString valids = GetArrayFromString(validCompilerIDs, ";", true);
             win->Clear();
             for (size_t i = 0; i < CompilerFactory::GetCompilersCount(); ++i)
             {
@@ -953,20 +953,20 @@ void Wiz::FillContainerWithSelectCompilers( const wxString& name, const wxString
 void Wiz::AppendContainerWithSelectCompilers( const wxString& name, const wxString& validCompilerIDs )
 {
     // Add to the named window the compilers matching a mask/filter
-    // Example: AppendContainerWithSelectCompilers(_T("GenericChoiceList"), _T("*arm*;rx*;mips*"));
+    // Example: AppendContainerWithSelectCompilers("GenericChoiceList", "*arm*;rx*;mips*");
 
     wxWizardPage* page = m_pWizard->GetCurrentPage();
     if (page)
     {
-        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? _T("GenericChoiceList") : name , page ) );
+        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? "GenericChoiceList" : name , page ) );
         if (win)
         {
-            wxArrayString valids = GetArrayFromString(validCompilerIDs, _T(";"), true);
+            wxArrayString valids = GetArrayFromString(validCompilerIDs, ";", true);
             size_t iItemsCount = win->GetCount();
-            wxString nameInItems = _T(";");
+            wxString nameInItems = ";";
             for( size_t i = 0; i < iItemsCount; ++i )
             {
-                nameInItems += win->GetString(i) + _T(";");
+                nameInItems += win->GetString(i) + ";";
             }
             for (size_t i = 0; i < CompilerFactory::GetCompilersCount(); ++i)
             {
@@ -974,7 +974,7 @@ void Wiz::AppendContainerWithSelectCompilers( const wxString& name, const wxStri
                 if (compiler)
                 {
                     wxString compilerName = compiler->GetName();
-                    if( wxNOT_FOUND != nameInItems.Find( _T(";") + compilerName + _T(";") ) )
+                    if( wxNOT_FOUND != nameInItems.Find( ";" + compilerName + ";" ) )
                         continue;
                     for (size_t n = 0; n < valids.GetCount(); ++n)
                     {
@@ -982,7 +982,7 @@ void Wiz::AppendContainerWithSelectCompilers( const wxString& name, const wxStri
                         if (CompilerFactory::CompilerInheritsFrom(compiler, valids[n]))
                         {
                             win->Append( compilerName );
-                            nameInItems += compilerName + _T(";");
+                            nameInItems += compilerName + ";";
                             break;
                         }
                     }
@@ -1120,7 +1120,7 @@ wxString Wiz::GetListboxSelections(const wxString& name)
             wxArrayInt selections;
             lbox->GetSelections(selections);
             for (i = 0; i < selections.GetCount(); ++i)
-                result.Append(wxString::Format(_T("%d;"), selections[i]));
+                result.Append(wxString::Format("%d;", selections[i]));
             return result;
         }
     }
@@ -1141,7 +1141,7 @@ wxString Wiz::GetListboxStringSelections(const wxString& name)
             wxArrayInt selections;
             lbox->GetSelections(selections);
             for (i = 0; i < selections.GetCount(); ++i)
-                result.Append(lbox->GetString(selections[i]) + _T(";"));
+                result.Append(lbox->GetString(selections[i]) + ";");
             return result;
         }
     }
@@ -1173,7 +1173,7 @@ wxString Wiz::GetCheckListboxChecked(const wxString& name)
             for (i = 0; i < clb->GetCount(); ++i)
             {
                 if (clb->IsChecked(i))
-                    result.Append(wxString::Format(_T("%u;"), i));
+                    result.Append(wxString::Format("%u;", i));
             }
             return result;
         }
@@ -1194,7 +1194,7 @@ wxString Wiz::GetCheckListboxStringChecked(const wxString& name)
             for (i = 0; i < clb->GetCount(); ++i)
             {
                 if (clb->IsChecked(i))
-                    result.Append(wxString::Format(_T("%s;"), clb->GetString(i).wx_str()));
+                    result.Append(wxString::Format("%s;", clb->GetString(i).wx_str()));
             }
             return result;
         }
@@ -1363,7 +1363,7 @@ void Wiz::AddBuildTargetPage(const wxString& targetName, bool isDebug, bool show
 void Wiz::AddGenericSingleChoiceListPage(const wxString& pageName, const wxString& descr, const wxString& choices, int defChoice)
 {
     // we don't track this; can add more than one
-    WizPageBase* page = new WizGenericSingleChoiceList(pageName, descr, GetArrayFromString(choices, _T(";")), defChoice, m_pWizard, m_Wizards[m_LaunchIndex].wizardPNG);
+    WizPageBase* page = new WizGenericSingleChoiceList(pageName, descr, GetArrayFromString(choices, ";"), defChoice, m_pWizard, m_Wizards[m_LaunchIndex].wizardPNG);
     if (!page->SkipPage())
         m_Pages.Add(page);
     else
@@ -1423,15 +1423,15 @@ void Wiz::AddWizard(TemplateOutputType otype,
     }
 
     // locate the images and XRC
-    wxString tpng = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + templatePNG;
+    wxString tpng = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + templatePNG;
     if (!wxFileExists(tpng))
-        tpng = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + templatePNG;
-    wxString wpng = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + wizardPNG;
+        tpng = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + templatePNG;
+    wxString wpng = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + wizardPNG;
     if (!wxFileExists(wpng))
-        wpng = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + wizardPNG;
-    wxString _xrc = ConfigManager::GetFolder(sdDataUser) + _T("/templates/wizard/") + xrc;
+        wpng = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + wizardPNG;
+    wxString _xrc = ConfigManager::GetFolder(sdDataUser) + "/templates/wizard/" + xrc;
     if (!wxFileExists(_xrc))
-        _xrc = ConfigManager::GetFolder(sdDataGlobal) + _T("/templates/wizard/") + xrc;
+        _xrc = ConfigManager::GetFolder(sdDataGlobal) + "/templates/wizard/" + xrc;
 
     WizardInfo info;
     info.output_type = otype;
@@ -1457,11 +1457,11 @@ void Wiz::AddWizard(TemplateOutputType otype,
     wxString typS;
     switch (otype)
     {
-        case totProject: typS = _T("Project");      break;
-        case totTarget:  typS = _T("Build-target"); break;
-        case totFiles:   typS = _T("File(s)");      break;
-        case totUser:    typS = _T("User");         break;
-        case totCustom:  typS = _T("Custom");       break;
+        case totProject: typS = "Project";      break;
+        case totTarget:  typS = "Build-target"; break;
+        case totFiles:   typS = "File(s)";      break;
+        case totUser:    typS = "User";         break;
+        case totCustom:  typS = "Custom";       break;
         default: break;
     }
 
@@ -1663,16 +1663,16 @@ void Wiz::SetReleaseTargetDefaults(bool wantRelease,
 int Wiz::FillContainerWithChoices( const wxString& name, const wxString& choices )
 {
     // Fill the named window with a semi-colon separated set of strings
-    // Eg: FillContainerWithChoices(_T("GenericChoiceList"), _T("this;that;another"));
+    // Eg: FillContainerWithChoices("GenericChoiceList", "this;that;another");
 
     wxWizardPage* page = m_pWizard->GetCurrentPage();
     if (page)
     {
-        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? _T("GenericChoiceList") : name , page ) );
+        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? "GenericChoiceList" : name , page ) );
         if (win)
         {
             win->Clear();
-            wxArrayString items = GetArrayFromString( choices, _T(";") );
+            wxArrayString items = GetArrayFromString( choices, ";" );
             unsigned int nItems = items.GetCount();
             for ( unsigned int i = 0; i < nItems; i++ )
             {
@@ -1688,29 +1688,29 @@ int Wiz::FillContainerWithChoices( const wxString& name, const wxString& choices
 int Wiz::AppendContainerWithChoices( const wxString& name, const wxString& choices )
 {
     // Add to the named window, a semi-colon separated set of strings
-    // Eg: AppendContainerWithChoices(_T("GenericChoiceList"), _T("this;that;another"));
+    // Eg: AppendContainerWithChoices("GenericChoiceList", "this;that;another");
 
     wxWizardPage* page = m_pWizard->GetCurrentPage();
     if (page)
     {
-        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? _T("GenericChoiceList") : name , page ) );
+        wxItemContainer* win = dynamic_cast<wxItemContainer*>( page->FindWindowByName( name.IsEmpty() ? "GenericChoiceList" : name , page ) );
         if (win)
         {
-            wxArrayString items = GetArrayFromString( choices, _T(";") );
+            wxArrayString items = GetArrayFromString( choices, ";" );
             size_t iItemsCount = win->GetCount();
-            wxString nameInItems = _T(";");
+            wxString nameInItems = ";";
             for( size_t i = 0; i < iItemsCount; ++i )
             {
-                nameInItems += win->GetString(i) + _T(";");
+                nameInItems += win->GetString(i) + ";";
             }
             unsigned int nItems = items.GetCount();
             for ( unsigned int i = 0; i < nItems; i++ )
             {
                 wxString tItemsName = items[i];
-                if( wxNOT_FOUND != nameInItems.Find( _T(";") + tItemsName + _T(";") ) )
+                if( wxNOT_FOUND != nameInItems.Find( ";" + tItemsName + ";" ) )
                     continue;
                 win->Append( tItemsName );
-                nameInItems += tItemsName + _T(";");
+                nameInItems += tItemsName + ";";
             }
 
             return 0;
@@ -1722,7 +1722,7 @@ int Wiz::AppendContainerWithChoices( const wxString& name, const wxString& choic
 wxString Wiz::GetWizardScriptFolder(void)
 {
     // Return the name only of the current wizard folder (this is not a path)
-    //ie., would return only _T("arm") for ...\trunk\src\output\share\CodeBlocks\templates\wizard\arm
+    //ie., would return only "arm" for ...\trunk\src\output\share\CodeBlocks\templates\wizard\arm
 
     return m_WizardScriptFolder;
 }

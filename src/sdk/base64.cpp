@@ -98,10 +98,10 @@ wxString wxBase64::Decode(const wxString& data)
     {
         // TODO: check all Find results for -1 as result of wrong input data for release build
         c = cvt.Find(data[i]);
-        wxASSERT_MSG(c >= 0, _T("invalid base64 input"));
+        wxASSERT_MSG(c >= 0, "invalid base64 input");
         ++i;
         c1 = cvt.Find(data[i]);
-        wxASSERT_MSG(c1 >= 0, _T("invalid base64 input"));
+        wxASSERT_MSG(c1 >= 0, "invalid base64 input");
         c = (c << 2) | ((c1 >> 4) & 0x3);
         ret.Append(static_cast<wxUniChar>(c), 1);
         if (++i < len)
@@ -111,7 +111,7 @@ wxString wxBase64::Decode(const wxString& data)
                 break;
 
             c = cvt.Find(static_cast<wxUniChar>(c));
-            wxASSERT_MSG(c >= 0, _T("invalid base64 input"));
+            wxASSERT_MSG(c >= 0, "invalid base64 input");
             c1 = ((c1 << 4) & 0xf0) | ((c >> 2) & 0xf);
             ret.Append(static_cast<wxUniChar>(c1), 1);
         }
@@ -123,7 +123,7 @@ wxString wxBase64::Decode(const wxString& data)
                 break;
 
             c1 = cvt.Find(static_cast<wxUniChar>(c1));
-            wxASSERT_MSG(c1 >= 0, _T("invalid base64 input"));
+            wxASSERT_MSG(c1 >= 0, "invalid base64 input");
             c = ((c << 6) & 0xc0) | c1;
             ret.Append(static_cast<wxUniChar>(c), 1);
         }

@@ -790,7 +790,7 @@ std::vector<CodeCompletion::CCToken> CodeCompletion::GetAutocompList(bool isAuto
                 && stc->GetCharAt(tknEnd - 2) != ':' )
             || (   curChar == '>' // '->'
                 && stc->GetCharAt(tknEnd - 2) != '-' )
-            || (   wxString(wxT("<\"/")).Find(curChar) != wxNOT_FOUND // #include directive
+            || (   wxString("<\"/").Find(curChar) != wxNOT_FOUND // #include directive
                 && !stc->IsPreprocessor(style) ) )
         {
             return tokens;
@@ -1673,9 +1673,9 @@ void CodeCompletion::RereadOptions()
 void CodeCompletion::UpdateToolBar()
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager("code_completion") ;
-    const bool showScope = cfg->ReadBool(_T("/scope_filter"), true);
-    const int scopeLength = cfg->ReadInt(_T("/toolbar_scope_length"), 280);
-    const int functionLength = cfg->ReadInt(_T("/toolbar_function_length"), 660);
+    const bool showScope = cfg->ReadBool("/scope_filter", true);
+    const int scopeLength = cfg->ReadInt("/toolbar_scope_length", 280);
+    const int functionLength = cfg->ReadInt("/toolbar_function_length", 660);
 
     if (showScope && !m_Scope)
     {
@@ -1747,7 +1747,7 @@ void CodeCompletion::OnUpdateUI(wxUpdateUIEvent& event)
 
 void CodeCompletion::OnViewClassBrowser(wxCommandEvent& event)
 {
-    if (!Manager::Get()->GetConfigManager(_T("code_completion"))->ReadBool(_T("/use_symbols_browser"), true))
+    if (!Manager::Get()->GetConfigManager("code_completion")->ReadBool("/use_symbols_browser", true))
     {
         cbMessageBox(_("The symbols browser is disabled in code-completion options.\n"
                         "Please enable it there first..."), _("Information"), wxICON_INFORMATION);
@@ -1766,7 +1766,7 @@ void CodeCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
     if (!ed || !parser)
         return;
 
-    TRACE(_T("OnGotoFunction"));
+    TRACE("OnGotoFunction");
 
     parser->ParseBufferForFunctions(ed->GetControl()->GetText());
 
@@ -1819,7 +1819,7 @@ void CodeCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
                 const GotoFunctionDlg::FunctionToken *ft = iterator.GetToken(selection);
                 if (ed && ft)
                 {
-                    TRACE(F(_T("OnGotoFunction() : Token '%s' found at line %u."), ft->name.wx_str(), ft->line));
+                    TRACE(F("OnGotoFunction() : Token '%s' found at line %u.", ft->name.wx_str(), ft->line));
                     ed->GotoTokenPosition(ft->implLine - 1, ft->name);
                 }
             }
@@ -1855,7 +1855,7 @@ void CodeCompletion::OnGotoDeclaration(wxCommandEvent& event)
     if (!(editor && parser))
         return;
 
-    TRACE(_T("OnGotoDeclaration"));
+    TRACE("OnGotoDeclaration");
 
     const int pos      = editor->GetControl()->GetCurrentPos();
     const int startPos = editor->GetControl()->WordStartPosition(pos, true);
@@ -1894,7 +1894,7 @@ void CodeCompletion::OnGotoDeclaration(wxCommandEvent& event)
             const Token* token = tree->at(*it);
             if (token && token->m_TokenKind == tkClass)
             {
-                token = tree->at(tree->TokenExists(_T("~") + target, token->m_Index, tkDestructor));
+                token = tree->at(tree->TokenExists("~" + target, token->m_Index, tkDestructor));
                 if (token)
                     result.insert(token->m_Index);
             }
@@ -2101,7 +2101,7 @@ void CodeCompletion::OnOpenIncludeFile(cb_unused wxCommandEvent& event)
     if (!MoveOn)
         return; // nothing under cursor or thing under cursor is not an include
 
-    TRACE(_T("OnOpenIncludeFile"));
+    TRACE("OnOpenIncludeFile");
 
     ParserBase* parser = m_ParseManager.GetParserPtr();
     wxArrayString foundSet;
@@ -2198,7 +2198,7 @@ void CodeCompletion::OnSelectedFileReparse(wxCommandEvent& event)
         ProjectFile* pf = data->GetProjectFile();
         if (pf && m_ParseManager.ReparseFile(project, pf->file.GetFullPath()))
         {
-             CCLogger::Get()->DebugLog(_T("Reparsing the selected file ") +
+             CCLogger::Get()->DebugLog("Reparsing the selected file " +
                                        pf->file.GetFullPath());
         }
     }
@@ -2300,7 +2300,7 @@ void CodeCompletion::OnProjectSaved(CodeBlocksEvent& event)
     // reparse project (compiler search dirs might have changed)
     m_TimerProjectSaved.SetClientData(event.GetProject());
     // we need more time for waiting wxExecute in ParseManager::AddCompilerPredefinedMacros
-    TRACE(_T("CodeCompletion::OnProjectSaved: Starting m_TimerProjectSaved."));
+    TRACE("CodeCompletion::OnProjectSaved: Starting m_TimerProjectSaved.");
     m_TimerProjectSaved.Start(200, wxTIMER_ONE_SHOT);
 
     event.Skip();
@@ -2330,7 +2330,7 @@ void CodeCompletion::OnProjectFileChanged(CodeBlocksEvent& event)
         if (!project)
             project = m_ParseManager.GetProjectByFilename(filename);
         if (project && m_ParseManager.ReparseFile(project, filename))
-            CCLogger::Get()->DebugLog(_T("Reparsing when file changed: ") + filename);
+            CCLogger::Get()->DebugLog("Reparsing when file changed: " + filename);
     }
     event.Skip();
 }
@@ -2352,7 +2352,7 @@ void CodeCompletion::OnEditorSave(CodeBlocksEvent& event)
             it->second.Add(filename);
 
         // start the timer, so that it will be handled in timer event handler
-        TRACE(_T("CodeCompletion::OnEditorSave: Starting m_TimerReparsing."));
+        TRACE("CodeCompletion::OnEditorSave: Starting m_TimerReparsing.");
         m_TimerReparsing.Start(EDITOR_ACTIVATED_DELAY + it->second.GetCount() * 10, wxTIMER_ONE_SHOT);
     }
 
@@ -2376,18 +2376,18 @@ void CodeCompletion::OnEditorOpen(CodeBlocksEvent& event)
 
 void CodeCompletion::OnEditorActivated(CodeBlocksEvent& event)
 {
-    TRACE(_T("CodeCompletion::OnEditorActivated(): Enter"));
+    TRACE("CodeCompletion::OnEditorActivated(): Enter");
 
     if (!ProjectManager::IsBusy() && IsAttached() && m_InitDone && event.GetEditor())
     {
         m_LastEditor = Manager::Get()->GetEditorManager()->GetBuiltinEditor(event.GetEditor());
 
-        TRACE(_T("CodeCompletion::OnEditorActivated(): Starting m_TimerEditorActivated."));
+        TRACE("CodeCompletion::OnEditorActivated(): Starting m_TimerEditorActivated.");
         m_TimerEditorActivated.Start(EDITOR_ACTIVATED_DELAY, wxTIMER_ONE_SHOT);
     }
 
     event.Skip();
-    TRACE(_T("CodeCompletion::OnEditorActivated(): Leave"));
+    TRACE("CodeCompletion::OnEditorActivated(): Leave");
 }
 
 void CodeCompletion::OnEditorClosed(CodeBlocksEvent& event)
@@ -2404,7 +2404,7 @@ void CodeCompletion::OnEditorClosed(CodeBlocksEvent& event)
     if (eb)
         activeFile = eb->GetFilename();
 
-    TRACE(_T("CodeCompletion::OnEditorClosed(): Closed editor's file is %s"), activeFile.wx_str());
+    TRACE("CodeCompletion::OnEditorClosed(): Closed editor's file is %s", activeFile.wx_str());
 
     if (m_LastEditor == event.GetEditor())
         m_LastEditor = nullptr;
@@ -2488,7 +2488,7 @@ void CodeCompletion::OnParserEnd(wxCommandEvent& event)
     if (editor)
     {
         m_ToolbarNeedReparse = true;
-        TRACE(_T("CodeCompletion::OnParserEnd: Starting m_TimerToolbar."));
+        TRACE("CodeCompletion::OnParserEnd: Starting m_TimerToolbar.");
         m_TimerToolbar.Start(TOOLBAR_REFRESH_DELAY, wxTIMER_ONE_SHOT);
     }
 
@@ -2637,7 +2637,7 @@ int CodeCompletion::DoAllMethodsImpl()
     TokenFileSet result;
     for (size_t i = 0; i < paths.GetCount(); ++i)
     {
-        CCLogger::Get()->DebugLog(_T("CodeCompletion::DoAllMethodsImpl(): Trying to find matches for: ") + paths[i]);
+        CCLogger::Get()->DebugLog("CodeCompletion::DoAllMethodsImpl(): Trying to find matches for: " + paths[i]);
         TokenFileSet result_file;
         tree->GetFileMatches(paths[i], result_file, true, true);
         for (TokenFileSet::const_iterator it = result_file.begin(); it != result_file.end(); ++it)
@@ -2701,7 +2701,7 @@ int CodeCompletion::DoAllMethodsImpl()
         int line = control->LineFromPosition(pos);
         control->GotoPos(control->PositionFromLine(line));
 
-        bool addDoxgenComment = Manager::Get()->GetConfigManager(_T("code_completion"))->ReadBool(_T("/add_doxgen_comment"), false);
+        bool addDoxgenComment = Manager::Get()->GetConfigManager("code_completion")->ReadBool("/add_doxgen_comment", false);
 
         wxArrayInt indices = dlg.GetSelectedIndices();
         for (size_t i = 0; i < indices.GetCount(); ++i)
@@ -2716,11 +2716,11 @@ int CodeCompletion::DoAllMethodsImpl()
             // actual code generation
             wxString str;
             if (i > 0)
-                str << _T("\n");
+                str << "\n";
             else
                 str << ed->GetLineIndentString(line - 1);
             if (addDoxgenComment)
-                str << _T("/** @brief ") << token->m_Name << _T("\n  *\n  * @todo: document this function\n  */\n");
+                str << "/** @brief " << token->m_Name << "\n  *\n  * @todo: document this function\n  */\n";
             wxString type = token->m_FullType;
             if (!type.IsEmpty())
             {
@@ -2731,20 +2731,20 @@ int CodeCompletion::DoAllMethodsImpl()
                     type[type.Len() - 2] = type.Last();
                     type.RemoveLast();
                 }
-                str << type << _T(" ");
+                str << type << " ";
             }
             if (token->m_ParentIndex != -1)
             {
                 const Token* parent = tree->at(token->m_ParentIndex);
                 if (parent)
-                    str << parent->m_Name << _T("::");
+                    str << parent->m_Name << "::";
             }
             str << token->m_Name << token->GetStrippedArgs();
             if (token->m_IsConst)
-                str << _T(" const");
+                str << " const";
             if (token->m_IsNoExcept)
-                str << _T(" noexcept");
-            str << _T("\n{\n\t\n}\n");
+                str << " noexcept";
+            str << "\n{\n\t\n}\n";
 
             MatchCodeStyle(str, control->GetEOLMode(), ed->GetLineIndentString(line - 1), control->GetUseTabs(), control->GetTabWidth());
 
@@ -2970,7 +2970,7 @@ void CodeCompletion::OnFunction(cb_unused wxCommandEvent& event)
  */
 void CodeCompletion::ParseFunctionsAndFillToolbar()
 {
-    TRACE(_T("ParseFunctionsAndFillToolbar() : m_ToolbarNeedReparse=%d, m_ToolbarNeedRefresh=%d, "),
+    TRACE("ParseFunctionsAndFillToolbar() : m_ToolbarNeedReparse=%d, m_ToolbarNeedRefresh=%d, ",
           m_ToolbarNeedReparse?1:0, m_ToolbarNeedRefresh?1:0);
 
     EditorManager* edMan = Manager::Get()->GetEditorManager();
@@ -3060,13 +3060,13 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
                     fs.ShortName = result_str;
                     result_str << token->GetFormattedArgs();
                     if (!token->m_BaseType.IsEmpty())
-                        result_str << _T(" : ") << token->m_BaseType;
+                        result_str << " : " << token->m_BaseType;
                     fs.Name = result_str;
                     funcdata->m_FunctionsScope.push_back(fs);
                 }
                 else if (token->m_TokenKind & (tkEnum | tkClass | tkNamespace))
                 {
-                    fs.Scope = token->GetNamespace() + token->m_Name + _T("::");
+                    fs.Scope = token->GetNamespace() + token->m_Name + "::";
                     funcdata->m_FunctionsScope.push_back(fs);
                 }
             }
@@ -3147,7 +3147,7 @@ void CodeCompletion::ParseFunctionsAndFillToolbar()
             m_ToolbarNeedRefresh = false;
         if (m_LastFile != filename)
         {
-            TRACE(_T("ParseFunctionsAndFillToolbar() : Update last file is %s"), filename.wx_str());
+            TRACE("ParseFunctionsAndFillToolbar() : Update last file is %s", filename.wx_str());
             m_LastFile = filename;
         }
 
@@ -3373,7 +3373,7 @@ void CodeCompletion::UpdateEditorSyntax(cbEditor* ed)
 
 void CodeCompletion::OnToolbarTimer(cb_unused wxTimerEvent& event)
 {
-    TRACE(_T("CodeCompletion::OnToolbarTimer(): Enter"));
+    TRACE("CodeCompletion::OnToolbarTimer(): Enter");
 
     if (!ProjectManager::IsBusy())
         ParseFunctionsAndFillToolbar();
@@ -3381,11 +3381,11 @@ void CodeCompletion::OnToolbarTimer(cb_unused wxTimerEvent& event)
     {
         // Ensure non-recursive call
         CallAfter([this]() {
-            TRACE(_T("CodeCompletion::OnToolbarTimer(): Starting m_TimerToolbar."));
+            TRACE("CodeCompletion::OnToolbarTimer(): Starting m_TimerToolbar.");
             m_TimerToolbar.Start(TOOLBAR_REFRESH_DELAY, wxTIMER_ONE_SHOT); });
     }
 
-    TRACE(_T("CodeCompletion::OnToolbarTimer(): Leave"));
+    TRACE("CodeCompletion::OnToolbarTimer(): Leave");
 }
 
 void CodeCompletion::OnRealtimeParsingTimer(cb_unused wxTimerEvent& event)
@@ -3394,7 +3394,7 @@ void CodeCompletion::OnRealtimeParsingTimer(cb_unused wxTimerEvent& event)
     if (!editor)
         return;
 
-    TRACE(_T("OnRealtimeParsingTimer"));
+    TRACE("OnRealtimeParsingTimer");
 
     // the real time parsing timer event has arrived, but the document size has changed, in this
     // case, we should fire another timer event, and do the parsing job later
@@ -3402,8 +3402,8 @@ void CodeCompletion::OnRealtimeParsingTimer(cb_unused wxTimerEvent& event)
     if (curLen != m_CurrentLength)
     {
         m_CurrentLength = curLen;
-        TRACE(_T("CodeCompletion::OnRealtimeParsingTimer: Starting m_TimerRealtimeParsing."));
-        CCLogger::Get()->DebugLog(_T("CodeCompletion::OnRealtimeParsingTimer: Starting m_TimerRealtimeParsing."));
+        TRACE("CodeCompletion::OnRealtimeParsingTimer: Starting m_TimerRealtimeParsing.");
+        CCLogger::Get()->DebugLog("CodeCompletion::OnRealtimeParsingTimer: Starting m_TimerRealtimeParsing.");
 
         // Defer the re-start until *after* this callback unwinds:
         CallAfter([this]() { m_TimerRealtimeParsing.Start(REALTIME_PARSING_DELAY,wxTIMER_ONE_SHOT); });
@@ -3415,7 +3415,7 @@ void CodeCompletion::OnRealtimeParsingTimer(cb_unused wxTimerEvent& event)
     if (project && !project->GetFileByFilename(m_LastFile, false, true))
         return;
     if (m_ParseManager.ReparseFile(project, m_LastFile))
-        CCLogger::Get()->DebugLog(_T("Reparsing when typing for editor ") + m_LastFile);
+        CCLogger::Get()->DebugLog("Reparsing when typing for editor " + m_LastFile);
 }
 
 void CodeCompletion::OnProjectSavedTimer(cb_unused wxTimerEvent& event)
@@ -3429,7 +3429,7 @@ void CodeCompletion::OnProjectSavedTimer(cb_unused wxTimerEvent& event)
 
     if (IsAttached() && m_InitDone && project)
     {
-        TRACE(_T("OnProjectSavedTimer"));
+        TRACE("OnProjectSavedTimer");
         if (project &&  m_ParseManager.GetParserByProject(project))
         {
             ReparsingMap::iterator it = m_ReparsingMap.find(project);
@@ -3437,7 +3437,7 @@ void CodeCompletion::OnProjectSavedTimer(cb_unused wxTimerEvent& event)
                 m_ReparsingMap.erase(it);
             if (m_ParseManager.DeleteParser(project))
             {
-                CCLogger::Get()->DebugLog(_T("Reparsing project."));
+                CCLogger::Get()->DebugLog("Reparsing project.");
                 m_ParseManager.CreateParser(project);
             }
         }
@@ -3449,11 +3449,11 @@ void CodeCompletion::OnReparsingTimer(cb_unused wxTimerEvent& event)
     if (ProjectManager::IsBusy() || !IsAttached() || !m_InitDone)
     {
         m_ReparsingMap.clear();
-        CCLogger::Get()->DebugLog(_T("Reparsing files failed!"));
+        CCLogger::Get()->DebugLog("Reparsing files failed!");
         return;
     }
 
-    TRACE(_T("OnReparsingTimer"));
+    TRACE("OnReparsingTimer");
 
     ReparsingMap::iterator it = m_ReparsingMap.begin();
     if (it != m_ReparsingMap.end() && m_ParseManager.Done())
@@ -3476,11 +3476,11 @@ void CodeCompletion::OnReparsingTimer(cb_unused wxTimerEvent& event)
                 if (m_ParseManager.ReparseFile(project, files.Last()))
                 {
                     ++reparseCount;
-                    TRACE(_T("OnReparsingTimer: Reparsing file : ") + files.Last());
+                    TRACE("OnReparsingTimer: Reparsing file : " + files.Last());
                     if (files.Last() == curFile)
                     {
                         m_ToolbarNeedReparse = true;
-                        TRACE(_T("CodeCompletion::OnReparsingTimer: Starting m_TimerToolbar."));
+                        TRACE("CodeCompletion::OnReparsingTimer: Starting m_TimerToolbar.");
                         OnToolbarTimer(event);
                     }
                 }
@@ -3498,7 +3498,7 @@ void CodeCompletion::OnReparsingTimer(cb_unused wxTimerEvent& event)
 
     if (!m_ReparsingMap.empty())
     {
-        TRACE(_T("CodeCompletion::OnReparsingTimer: Starting m_TimerReparsing."));
+        TRACE("CodeCompletion::OnReparsingTimer: Starting m_TimerReparsing.");
         CallAfter([this]() { m_TimerReparsing.Start(EDITOR_ACTIVATED_DELAY,wxTIMER_ONE_SHOT); });
     }
 }
@@ -3513,7 +3513,7 @@ void CodeCompletion::OnEditorActivatedTimer(cb_unused wxTimerEvent& event)
     EditorBase* editor  = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (!editor || editor != m_LastEditor)
     {
-        TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Not a builtin editor."));
+        TRACE("CodeCompletion::OnEditorActivatedTimer(): Not a builtin editor.");
         //m_LastEditor = nullptr;
         EnableToolbarTools(false);
         return;
@@ -3523,16 +3523,16 @@ void CodeCompletion::OnEditorActivatedTimer(cb_unused wxTimerEvent& event)
     // if the same file was activated, no need to update the toolbar
     if ( !m_LastFile.IsEmpty() && m_LastFile == curFile )
     {
-        TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Same as the last activated file(%s)."), curFile.wx_str());
+        TRACE("CodeCompletion::OnEditorActivatedTimer(): Same as the last activated file(%s).", curFile.wx_str());
         return;
     }
 
-    TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Need to notify ParseManager and Refresh toolbar."));
+    TRACE("CodeCompletion::OnEditorActivatedTimer(): Need to notify ParseManager and Refresh toolbar.");
 
     m_ParseManager.OnEditorActivated(editor);
-    TRACE(_T("CodeCompletion::OnEditorActivatedTimer: Starting m_TimerToolbar."));
+    TRACE("CodeCompletion::OnEditorActivatedTimer: Starting m_TimerToolbar.");
     OnToolbarTimer(event);
-    TRACE(_T("CodeCompletion::OnEditorActivatedTimer(): Current activated file is %s"), curFile.wx_str());
+    TRACE("CodeCompletion::OnEditorActivatedTimer(): Current activated file is %s", curFile.wx_str());
     UpdateEditorSyntax();
 }
 

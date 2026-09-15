@@ -266,10 +266,10 @@ void ProjectFile::SetObjName(const wxString& name)
         else
         {
             if (extendedObjectNames)
-                m_ObjName += _T(".o"); // fallback?
+                m_ObjName += ".o"; // fallback?
             else
             {
-                fname.SetExt(_T(".o"));
+                fname.SetExt(".o");
                 m_ObjName = fname.GetFullPath();
             }
         }
@@ -395,8 +395,8 @@ void pfDetails::Update(ProjectBuildTarget* target, ProjectFile* pf)
 
     wxFileName prjbase(target->GetParentProject()->GetBasePath());
 
-    wxString objOut  = target ? target->GetObjectOutput() : _T(".");
-    wxString depsOut = target ? target->GetDepsOutput()   : _T(".");
+    wxString objOut  = target ? target->GetObjectOutput() : ".";
+    wxString depsOut = target ? target->GetDepsOutput()   : ".";
 
     // we must replace any macros here early because if the macros expand
     // to absolute paths (like global vars usually do), we 're gonna create
@@ -565,7 +565,7 @@ void pfDetails::Update(ProjectBuildTarget* target, ProjectFile* pf)
     object_file_absolute_native      = o_file.GetFullPath();
     object_file_flat_absolute_native = o_file_flat.GetFullPath();
 
-    obj_name.SetExt(_T("depend"));
+    obj_name.SetExt("depend");
     dep_file_native = depsOut + sep + obj_name.GetFullPath();
 
     wxFileName d_file(dep_file_native);

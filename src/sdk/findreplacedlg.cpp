@@ -36,7 +36,7 @@
 
 #include "incremental_select_helper.h"
 
-#define CONF_GROUP _T("/replace_options")
+#define CONF_GROUP "/replace_options"
 
 const int maxTargetCount = 100;
 
@@ -75,63 +75,63 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
     m_findReplaceInFilesActive(findReplaceInFilesActive),
     m_findMode(findMode)
 {
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgFindReplace"),_T("wxScrollingDialog"));
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
-    m_advancedRegex = cfg->ReadBool(_T("/use_advanced_regexes"), false);
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgFindReplace","wxScrollingDialog");
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("editor");
+    m_advancedRegex = cfg->ReadBool("/use_advanced_regexes", false);
 
     // load last searches
-    FillComboWithLastValues(XRCCTRL(*this, "cmbFind1",    wxComboBox), CONF_GROUP _T("/last"));
-    FillComboWithLastValues(XRCCTRL(*this, "cmbReplace1", wxComboBox), CONF_GROUP _T("/lastReplace"));
-    FillComboWithLastValues(XRCCTRL(*this, "cmbFind2",    wxComboBox), CONF_GROUP _T("/last"));
-    FillComboWithLastValues(XRCCTRL(*this, "cmbReplace2", wxComboBox), CONF_GROUP _T("/lastReplace"));
+    FillComboWithLastValues(XRCCTRL(*this, "cmbFind1",    wxComboBox), CONF_GROUP "/last");
+    FillComboWithLastValues(XRCCTRL(*this, "cmbReplace1", wxComboBox), CONF_GROUP "/lastReplace");
+    FillComboWithLastValues(XRCCTRL(*this, "cmbFind2",    wxComboBox), CONF_GROUP "/last");
+    FillComboWithLastValues(XRCCTRL(*this, "cmbReplace2", wxComboBox), CONF_GROUP "/lastReplace");
 
     // load last multiline searches
-    XRCCTRL(*this, "txtMultiLineFind1",    wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP _T("/lastMultiLineFind"),    _T("")));
-    XRCCTRL(*this, "txtMultiLineReplace1", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP _T("/lastMultiLineReplace"), _T("")));
-    XRCCTRL(*this, "txtMultiLineFind2",    wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP _T("/lastMultiLineFind"),    _T("")));
-    XRCCTRL(*this, "txtMultiLineReplace2", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP _T("/lastMultiLineReplace"), _T("")));
+    XRCCTRL(*this, "txtMultiLineFind1",    wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP "/lastMultiLineFind",    ""));
+    XRCCTRL(*this, "txtMultiLineReplace1", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP "/lastMultiLineReplace", ""));
+    XRCCTRL(*this, "txtMultiLineFind2",    wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP "/lastMultiLineFind",    ""));
+    XRCCTRL(*this, "txtMultiLineReplace2", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP "/lastMultiLineReplace", ""));
 
     // replace options
     XRCCTRL(*this, "cmbFind1", wxComboBox)->SetValue(initial);
 
-    bool flgWholeWord = cfg->ReadBool(CONF_GROUP _T("/match_word"), false);
-    bool flgStartWord = cfg->ReadBool(CONF_GROUP _T("/start_word"), false);
-    bool flgStartFile = cfg->ReadBool(CONF_GROUP _T("/start_file"), false);
+    bool flgWholeWord = cfg->ReadBool(CONF_GROUP "/match_word", false);
+    bool flgStartWord = cfg->ReadBool(CONF_GROUP "/start_word", false);
+    bool flgStartFile = cfg->ReadBool(CONF_GROUP "/start_file", false);
     XRCCTRL(*this, "chkLimitTo1", wxCheckBox)->SetValue(flgWholeWord || flgStartWord || flgStartFile);
     XRCCTRL(*this, "rbLimitTo1",  wxRadioBox)->Enable(flgWholeWord || flgStartWord || flgStartFile);
     XRCCTRL(*this, "rbLimitTo1",  wxRadioBox)->SetSelection(flgStartFile ? 2 : (flgStartWord ? 1 : 0));
 
-    XRCCTRL(*this, "chkMatchCase1", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/match_case"), false));
-    XRCCTRL(*this, "chkRegEx1",     wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/regex"),      false));
-    XRCCTRL(*this, "rbDirection",   wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP _T("/direction"), 1));
+    XRCCTRL(*this, "chkMatchCase1", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/match_case", false));
+    XRCCTRL(*this, "chkRegEx1",     wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/regex",      false));
+    XRCCTRL(*this, "rbDirection",   wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP "/direction", 1));
     XRCCTRL(*this, "rbDirection",   wxRadioBox)->Enable(!XRCCTRL(*this, "chkRegEx1", wxCheckBox)->GetValue()); // if regex, only forward searches
-    XRCCTRL(*this, "rbOrigin",      wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP _T("/origin"), 0));
+    XRCCTRL(*this, "rbOrigin",      wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP "/origin", 0));
     XRCCTRL(*this, "rbScope1",      wxRadioBox)->SetSelection(hasSelection);
     // special key, uses same config for both find & replace options
-    XRCCTRL(*this, "chkAutoWrapSearch", wxCheckBox)->SetValue(cfg->ReadBool(_T("/find_options/auto_wrap_search"), true));
+    XRCCTRL(*this, "chkAutoWrapSearch", wxCheckBox)->SetValue(cfg->ReadBool("/find_options/auto_wrap_search", true));
 
     // replace in files options
-    flgWholeWord = cfg->ReadBool(CONF_GROUP _T("/match_word2"), false);
-    flgStartWord = cfg->ReadBool(CONF_GROUP _T("/start_word2"), false);
-    flgStartFile = cfg->ReadBool(CONF_GROUP _T("/start_file2"), false);
+    flgWholeWord = cfg->ReadBool(CONF_GROUP "/match_word2", false);
+    flgStartWord = cfg->ReadBool(CONF_GROUP "/start_word2", false);
+    flgStartFile = cfg->ReadBool(CONF_GROUP "/start_file2", false);
     XRCCTRL(*this, "chkLimitTo2", wxCheckBox)->SetValue(flgWholeWord || flgStartWord || flgStartFile);
     XRCCTRL(*this, "rbLimitTo2",  wxRadioBox)->Enable(flgWholeWord || flgStartWord || flgStartFile);
     XRCCTRL(*this, "rbLimitTo2",  wxRadioBox)->SetSelection(flgStartFile ? 2 : (flgStartWord ? 1 : 0));
 
     XRCCTRL(*this, "cmbFind2",      wxComboBox)->SetValue(initial);
-    XRCCTRL(*this, "chkMatchCase2", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP    _T("/match_case2"), false));
-    XRCCTRL(*this, "chkRegEx2",     wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP    _T("/regex2"),      false));
-    XRCCTRL(*this, "rbScope2",      wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP _T("/scope2"),      0));
+    XRCCTRL(*this, "chkMatchCase2", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP    "/match_case2", false));
+    XRCCTRL(*this, "chkRegEx2",     wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP    "/regex2",      false));
+    XRCCTRL(*this, "rbScope2",      wxRadioBox)->SetSelection(cfg->ReadInt(CONF_GROUP "/scope2",      0));
 
     XRCCTRL(*this, "chkMultiLine1", wxCheckBox)->SetValue(false);
-    XRCCTRL(*this, "chkFixEOLs1",   wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/fix_eols1"), false));
+    XRCCTRL(*this, "chkFixEOLs1",   wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/fix_eols1", false));
     XRCCTRL(*this, "chkFixEOLs1",   wxCheckBox)->Enable(XRCCTRL(*this, "chkMultiLine1", wxCheckBox)->GetValue());
 
     XRCCTRL(*this, "chkMultiLine2",       wxCheckBox)->SetValue(false);
-    XRCCTRL(*this, "chkFixEOLs2",         wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/fix_eols2"), false));
+    XRCCTRL(*this, "chkFixEOLs2",         wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/fix_eols2", false));
     XRCCTRL(*this, "chkFixEOLs2",         wxCheckBox)->Enable(XRCCTRL(*this, "chkMultiLine2", wxCheckBox)->GetValue());
-    XRCCTRL(*this, "chkDelOldSearchRes2", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/delete_old_searches2"), true));
-    XRCCTRL(*this, "chkAutoOpen2",        wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/auto_open_first_result2"), true));
+    XRCCTRL(*this, "chkDelOldSearchRes2", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/delete_old_searches2", true));
+    XRCCTRL(*this, "chkAutoOpen2",        wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/auto_open_first_result2", true));
     XRCCTRL(*this, "chkAutoOpen2",        wxCheckBox)->Enable(XRCCTRL(*this, "rbScope2", wxRadioBox)->GetSelection() != 0);
 
     wxSize szReplaceMulti = XRCCTRL(*this, "nbReplaceMulti", wxPanel)->GetEffectiveMinSize();
@@ -159,24 +159,24 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
     cbProject *active_project = Manager::Get()->GetProjectManager()->GetActiveProject();
 
     // load search path options
-    XRCCTRL(*this, "txtSearchPath", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP _T("/search_path"),
-                                                                    (active_project ? active_project->GetBasePath() : wxT(""))));
+    XRCCTRL(*this, "txtSearchPath", wxTextCtrl)->SetValue(cfg->Read(CONF_GROUP "/search_path",
+                                                                    (active_project ? active_project->GetBasePath() : "")));
     wxComboBox* cmbSearchMask = XRCCTRL(*this, "cmbSearchMask", wxComboBox);
-    if (cfg->Exists(CONF_GROUP _T("/search_mask")))
+    if (cfg->Exists(CONF_GROUP "/search_mask"))
     {
         // Migrate from previous config setting of "search_mask" string (since it used to be a textbox)
         // to new config setting of "search_masks" array for the combobox
-        cmbSearchMask->Append(cfg->Read(CONF_GROUP _T("/search_mask")));
-        cfg->UnSet(CONF_GROUP _T("/search_mask"));
+        cmbSearchMask->Append(cfg->Read(CONF_GROUP "/search_mask"));
+        cfg->UnSet(CONF_GROUP "/search_mask");
     }
     else
-        FillComboWithLastValues(cmbSearchMask, CONF_GROUP _T("/search_masks"));
+        FillComboWithLastValues(cmbSearchMask, CONF_GROUP "/search_masks");
 
     if (cmbSearchMask->GetCount() > 0)
         XRCCTRL(*this, "cmbSearchMask", wxComboBox)->SetSelection(0);
 
-    XRCCTRL(*this, "chkSearchRecursively", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/search_recursive"), false));
-    XRCCTRL(*this, "chkSearchHidden", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP _T("/search_hidden"), false));
+    XRCCTRL(*this, "chkSearchRecursively", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/search_recursive", false));
+    XRCCTRL(*this, "chkSearchHidden", wxCheckBox)->SetValue(cfg->ReadBool(CONF_GROUP "/search_hidden", false));
 
     wxChoice *chProject = XRCCTRL(*this, "chProject", wxChoice);
     wxChoice *chTarget = XRCCTRL(*this, "chTarget", wxChoice);
@@ -191,7 +191,7 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
             chTarget->Freeze();
             chTarget->Append(_("All project files"));
 
-            const bool selectScopeAll = cfg->ReadBool(CONF_GROUP _T("/target_scope_all"), true);
+            const bool selectScopeAll = cfg->ReadBool(CONF_GROUP "/target_scope_all", true);
 
             const int targetCount = active_project->GetBuildTargetsCount();
             if (targetCount < maxTargetCount)
@@ -313,68 +313,68 @@ FindReplaceDlg::FindReplaceDlg(wxWindow* parent, const wxString& initial, bool h
 
 FindReplaceDlg::~FindReplaceDlg()
 {
-    ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("editor"));
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("editor");
 
     // save last searches (up to 10)
     if ( IsFindInFiles() )
     {
-        SaveComboValues(XRCCTRL(*this, "cmbFind2",    wxComboBox), CONF_GROUP _T("/last"));
-        SaveComboValues(XRCCTRL(*this, "cmbReplace2", wxComboBox), CONF_GROUP _T("/lastReplace"));
+        SaveComboValues(XRCCTRL(*this, "cmbFind2",    wxComboBox), CONF_GROUP "/last");
+        SaveComboValues(XRCCTRL(*this, "cmbReplace2", wxComboBox), CONF_GROUP "/lastReplace");
 
         // Save last multi-line search & replace
-        cfg->Write(CONF_GROUP _T("/lastMultiLineFind"),    XRCCTRL(*this, "txtMultiLineFind2",    wxTextCtrl)->GetValue());
-        cfg->Write(CONF_GROUP _T("/lastMultiLineReplace"), XRCCTRL(*this, "txtMultiLineReplace2", wxTextCtrl)->GetValue());
+        cfg->Write(CONF_GROUP "/lastMultiLineFind",    XRCCTRL(*this, "txtMultiLineFind2",    wxTextCtrl)->GetValue());
+        cfg->Write(CONF_GROUP "/lastMultiLineReplace", XRCCTRL(*this, "txtMultiLineReplace2", wxTextCtrl)->GetValue());
     }
     else
     {
-        SaveComboValues(XRCCTRL(*this, "cmbFind1",    wxComboBox), CONF_GROUP _T("/last"));
-        SaveComboValues(XRCCTRL(*this, "cmbReplace1", wxComboBox), CONF_GROUP _T("/lastReplace"));
+        SaveComboValues(XRCCTRL(*this, "cmbFind1",    wxComboBox), CONF_GROUP "/last");
+        SaveComboValues(XRCCTRL(*this, "cmbReplace1", wxComboBox), CONF_GROUP "/lastReplace");
 
         // Save last multi-line search & replace
-        cfg->Write(CONF_GROUP _T("/lastMultiLineFind"),    XRCCTRL(*this, "txtMultiLineFind1",    wxTextCtrl)->GetValue());
-        cfg->Write(CONF_GROUP _T("/lastMultiLineReplace"), XRCCTRL(*this, "txtMultiLineReplace1", wxTextCtrl)->GetValue());
+        cfg->Write(CONF_GROUP "/lastMultiLineFind",    XRCCTRL(*this, "txtMultiLineFind1",    wxTextCtrl)->GetValue());
+        cfg->Write(CONF_GROUP "/lastMultiLineReplace", XRCCTRL(*this, "txtMultiLineReplace1", wxTextCtrl)->GetValue());
     }
 
     if (!m_findReplaceInFilesActive)
     {
         // find(replace) options
-        cfg->Write(CONF_GROUP _T("/fix_eols1"),  XRCCTRL(*this, "chkFixEOLs1",   wxCheckBox)->GetValue());
-        cfg->Write(CONF_GROUP _T("/match_case"), XRCCTRL(*this, "chkMatchCase1", wxCheckBox)->GetValue());
-        cfg->Write(CONF_GROUP _T("/regex"),      XRCCTRL(*this, "chkRegEx1",     wxCheckBox)->GetValue());
-        cfg->Write(CONF_GROUP _T("/direction"),  XRCCTRL(*this, "rbDirection",   wxRadioBox)->GetSelection());
-        cfg->Write(CONF_GROUP _T("/origin"),     XRCCTRL(*this, "rbOrigin",      wxRadioBox)->GetSelection());
+        cfg->Write(CONF_GROUP "/fix_eols1",  XRCCTRL(*this, "chkFixEOLs1",   wxCheckBox)->GetValue());
+        cfg->Write(CONF_GROUP "/match_case", XRCCTRL(*this, "chkMatchCase1", wxCheckBox)->GetValue());
+        cfg->Write(CONF_GROUP "/regex",      XRCCTRL(*this, "chkRegEx1",     wxCheckBox)->GetValue());
+        cfg->Write(CONF_GROUP "/direction",  XRCCTRL(*this, "rbDirection",   wxRadioBox)->GetSelection());
+        cfg->Write(CONF_GROUP "/origin",     XRCCTRL(*this, "rbOrigin",      wxRadioBox)->GetSelection());
 
         bool flgLimitTo = XRCCTRL(*this, "chkLimitTo1", wxCheckBox)->GetValue();
         int  valLimitTo = XRCCTRL(*this, "rbLimitTo1",  wxRadioBox)->GetSelection();
 
-        cfg->Write(CONF_GROUP _T("/match_word"), flgLimitTo && valLimitTo == 0);
-        cfg->Write(CONF_GROUP _T("/start_word"), flgLimitTo && valLimitTo == 1);
-        cfg->Write(CONF_GROUP _T("/start_file"), flgLimitTo && valLimitTo == 2);
+        cfg->Write(CONF_GROUP "/match_word", flgLimitTo && valLimitTo == 0);
+        cfg->Write(CONF_GROUP "/start_word", flgLimitTo && valLimitTo == 1);
+        cfg->Write(CONF_GROUP "/start_file", flgLimitTo && valLimitTo == 2);
 
         // special key, uses same config for both find & replace options
-        cfg->Write(_T("/find_options/auto_wrap_search"), XRCCTRL(*this, "chkAutoWrapSearch", wxCheckBox)->GetValue());
+        cfg->Write("/find_options/auto_wrap_search", XRCCTRL(*this, "chkAutoWrapSearch", wxCheckBox)->GetValue());
     }
 
     // find(replace) in files options
     bool flgLimitTo = XRCCTRL(*this, "chkLimitTo2", wxCheckBox)->GetValue();
     int  valLimitTo = XRCCTRL(*this, "rbLimitTo2",  wxRadioBox)->GetSelection();
 
-    cfg->Write(CONF_GROUP _T("/match_word2"), flgLimitTo && valLimitTo == 0);
-    cfg->Write(CONF_GROUP _T("/start_word2"), flgLimitTo && valLimitTo == 1);
-    cfg->Write(CONF_GROUP _T("/start_file2"), flgLimitTo && valLimitTo == 2);
+    cfg->Write(CONF_GROUP "/match_word2", flgLimitTo && valLimitTo == 0);
+    cfg->Write(CONF_GROUP "/start_word2", flgLimitTo && valLimitTo == 1);
+    cfg->Write(CONF_GROUP "/start_file2", flgLimitTo && valLimitTo == 2);
 
-    cfg->Write(CONF_GROUP _T("/fix_eols2"),               XRCCTRL(*this, "chkFixEOLs2",         wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/match_case2"),             XRCCTRL(*this, "chkMatchCase2",       wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/regex2"),                  XRCCTRL(*this, "chkRegEx2",           wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/scope2"),                  XRCCTRL(*this, "rbScope2",            wxRadioBox)->GetSelection());
-    cfg->Write(CONF_GROUP _T("/delete_old_searches2"),    XRCCTRL(*this, "chkDelOldSearchRes2", wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/auto_open_first_result2"), XRCCTRL(*this, "chkAutoOpen2",        wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/fix_eols2",               XRCCTRL(*this, "chkFixEOLs2",         wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/match_case2",             XRCCTRL(*this, "chkMatchCase2",       wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/regex2",                  XRCCTRL(*this, "chkRegEx2",           wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/scope2",                  XRCCTRL(*this, "rbScope2",            wxRadioBox)->GetSelection());
+    cfg->Write(CONF_GROUP "/delete_old_searches2",    XRCCTRL(*this, "chkDelOldSearchRes2", wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/auto_open_first_result2", XRCCTRL(*this, "chkAutoOpen2",        wxCheckBox)->GetValue());
 
-    cfg->Write(CONF_GROUP _T("/search_path"),      XRCCTRL(*this, "txtSearchPath",        wxTextCtrl)->GetValue());
-    SaveComboValues(XRCCTRL(*this, "cmbSearchMask", wxComboBox), CONF_GROUP _T("/search_masks"));
-    cfg->Write(CONF_GROUP _T("/search_recursive"), XRCCTRL(*this, "chkSearchRecursively", wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/search_hidden"),    XRCCTRL(*this, "chkSearchHidden",      wxCheckBox)->GetValue());
-    cfg->Write(CONF_GROUP _T("/target_scope_all"),(XRCCTRL(*this, "chTarget",             wxChoice)->GetSelection() == 0));
+    cfg->Write(CONF_GROUP "/search_path",      XRCCTRL(*this, "txtSearchPath",        wxTextCtrl)->GetValue());
+    SaveComboValues(XRCCTRL(*this, "cmbSearchMask", wxComboBox), CONF_GROUP "/search_masks");
+    cfg->Write(CONF_GROUP "/search_recursive", XRCCTRL(*this, "chkSearchRecursively", wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/search_hidden",    XRCCTRL(*this, "chkSearchHidden",      wxCheckBox)->GetValue());
+    cfg->Write(CONF_GROUP "/target_scope_all",(XRCCTRL(*this, "chTarget",             wxChoice)->GetSelection() == 0));
 
     if (m_findPage!=nullptr)
         m_findPage->Destroy();
@@ -781,7 +781,7 @@ void FindReplaceDlg::OnLimitToChange(wxCommandEvent& event)
 void FindReplaceDlg::FillComboWithLastValues(wxComboBox* combo, const wxString& configKey)
 {
     wxArrayString values;
-    Manager::Get()->GetConfigManager(_T("editor"))->Read(configKey, &values);
+    Manager::Get()->GetConfigManager("editor")->Read(configKey, &values);
 
     combo->Append(values);
 }
@@ -809,7 +809,7 @@ void FindReplaceDlg::SaveComboValues(wxComboBox* combo, const wxString& configKe
             values.Add(item);
     }
 
-    Manager::Get()->GetConfigManager(_T("editor"))->Write(configKey, values);
+    Manager::Get()->GetConfigManager("editor")->Write(configKey, values);
 }
 
 void FindReplaceDlg::OnSelectTarget(cb_unused wxCommandEvent& event)

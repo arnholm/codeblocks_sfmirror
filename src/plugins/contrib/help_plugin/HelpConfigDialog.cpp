@@ -123,7 +123,10 @@ void HelpConfigDialog::ChooseFile()
     wxEmptyString,
     wxEmptyString,
 #ifdef __WXMSW__
-    _("Windows help files (*.chm;*.hlp)|*.hlp;*.chm|All files (*.*)|*.*")
+    _(
+      "Windows help files (*.chm;*.hlp)|*.hlp;*.chm|"
+      "All files (*.*)|*.*"
+    )
 #else
     _("All files (*.*)|*.*")
 #endif

@@ -25,7 +25,7 @@
 // in wx >=  3.0 unicode-build (default) we need the %ls here, or the strings get
 // cut after the first character
         ::temp_string = msg;
-        ::temp_string.Replace(_T("%s"), _T("%ls"));
+        ::temp_string.Replace("%s", "%ls");
         msg = ::temp_string.wx_str();
 #endif
         ::temp_string = wxString::FormatV(msg, arg_list);
@@ -42,7 +42,7 @@
 // in wx >=  2.9 unicode-build (default) we need the %ls here, or the strings get
 // cut after the first character
         ::temp_string = msg;
-        ::temp_string.Replace(_T("%s"), _T("%ls"));
+        ::temp_string.Replace("%s", "%ls");
         ::temp_string = wxString::FormatV(::temp_string, arg_list);
 #else
         ::temp_string = wxString::FormatV(msg, arg_list);
@@ -159,7 +159,7 @@ public:
          * These functions allow to obtain a list of names for all generic Loggers that are presently available
          * and to create a new Logger by name without knowing the type at compile time.
          *
-         *   logptr = LogManager::Get()->New(_T("stdout"));  // does exactly the same as
+         *   logptr = LogManager::Get()->New("stdout");  // does exactly the same as
          *   logptr = new StdoutLogger();
          *
          * You normally do not need to worry about creating Loggers. Only ever consider using these functions if you

@@ -23,7 +23,7 @@
 #endif // __WXMSW__
 
 CompilerLCC::CompilerLCC() :
-    Compiler(_("LCC Compiler"), _T("lcc")),
+    Compiler(_("LCC Compiler"), "lcc"),
     m_RegistryUpdated(false)
 {
     m_Weight = 36;
@@ -58,7 +58,7 @@ void CompilerLCC::Reset()
 
 AutoDetectResult CompilerLCC::AutoDetectInstallationDir()
 {
-    wxString compiler; compiler << wxFILE_SEP_PATH << _T("bin") << wxFILE_SEP_PATH << m_Programs.C;
+    wxString compiler; compiler << wxFILE_SEP_PATH << "bin" << wxFILE_SEP_PATH << m_Programs.C;
 
 #ifdef __WXMSW__
     wxRegKey key; // defaults to HKCR
@@ -69,33 +69,33 @@ AutoDetectResult CompilerLCC::AutoDetectInstallationDir()
     wxString mpCompiler = wxEmptyString;
 
     // Query uninstall information if installed with admin rights:
-    key.SetName(_T("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\lcc-win32 (base system)_is1"));
+    key.SetName("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\lcc-win32 (base system)_is1");
     if (key.Exists() && key.Open(wxRegKey::Read))
-        key.QueryValue(_T("Inno Setup: App Path"), mpHKLM);
+        key.QueryValue("Inno Setup: App Path", mpHKLM);
 
     // Query uninstall information if installed *without* admin rights:
-    key.SetName(_T("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\lcc-win32 (base system)_is1"));
+    key.SetName("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\lcc-win32 (base system)_is1");
     if (key.Exists() && key.Open(wxRegKey::Read))
-        key.QueryValue(_T("Inno Setup: App Path"), mpHKCU);
+        key.QueryValue("Inno Setup: App Path", mpHKCU);
 
     // Check the LCC lccroot path
-    key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc"));
+    key.SetName("HKEY_CURRENT_USER\\Software\\lcc");
     if (key.Exists() && key.Open(wxRegKey::Read))
-        key.QueryValue(_T("lccroot"), mpLccRoot);
+        key.QueryValue("lccroot", mpLccRoot);
     if (mpLccRoot.IsEmpty())
     {
         // Check the LCC lccroot path
-        key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\lccroot"));
+        key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\lccroot");
         if (key.Exists() && key.Open(wxRegKey::Read))
-            key.QueryValue(_T("path"), mpLccRoot);
+            key.QueryValue("path", mpLccRoot);
     }
 
     // Check the LCC lcclnk path
-    key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\lcclnk"));
+    key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\lcclnk");
     if (key.Exists() && key.Open(wxRegKey::Read))
     {
-        key.QueryValue(_T("libpath"), mpLccLnk);
-        wxString lib_path = _T("\\lib");
+        key.QueryValue("libpath", mpLccLnk);
+        wxString lib_path = "\\lib";
         if (   !mpLccLnk.IsEmpty()
             && (mpLccLnk.Length()>lib_path.Length())
             && (mpLccLnk.Lower().EndsWith(lib_path)) )
@@ -106,11 +106,11 @@ AutoDetectResult CompilerLCC::AutoDetectInstallationDir()
     }
 
     // Check the LCC compiler path
-    key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\compiler"));
+    key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\compiler");
     if (key.Exists() && key.Open(wxRegKey::Read))
     {
-        key.QueryValue(_T("includepath"), mpCompiler);
-        wxString inc_path = _T("\\include");
+        key.QueryValue("includepath", mpCompiler);
+        wxString inc_path = "\\include";
         if (   !mpCompiler.IsEmpty()
             && (mpCompiler.Length()>inc_path.Length())
             && (mpCompiler.Lower().EndsWith(inc_path)) )
@@ -133,13 +133,13 @@ AutoDetectResult CompilerLCC::AutoDetectInstallationDir()
         m_MasterPath = mpCompiler;
     else
 #endif // __WXMSW__
-        m_MasterPath = _T("C:\\lcc"); // just a guess; the default installation dir
+        m_MasterPath = "C:\\lcc"; // just a guess; the default installation dir
 
     if (!m_MasterPath.IsEmpty())
     {
-        AddIncludeDir   (m_MasterPath + wxFILE_SEP_PATH + _T("include"));
-        AddLibDir       (m_MasterPath + wxFILE_SEP_PATH + _T("lib"));
-        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + _T("bin"));
+        AddIncludeDir   (m_MasterPath + wxFILE_SEP_PATH + "include");
+        AddLibDir       (m_MasterPath + wxFILE_SEP_PATH + "lib");
+        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "bin");
     }
 
     m_RegistryUpdated = false; // Check the registry another time on IsValid()
@@ -153,11 +153,11 @@ bool CompilerLCC::IsValid()
     if (!m_RegistryUpdated)
     {
         wxString compiler = m_MasterPath + wxFILE_SEP_PATH
-                          + _T("bin") + wxFILE_SEP_PATH + m_Programs.C;
+                          + "bin" + wxFILE_SEP_PATH + m_Programs.C;
 
         if (wxFileExists(compiler))
         {
-            Manager::Get()->GetLogManager()->DebugLog(_T("LCC: Updating registry..."));
+            Manager::Get()->GetLogManager()->DebugLog("LCC: Updating registry...");
 
             // Make sure the registry is setup as it should be after an installation.
             // This avoids the "smart and clever" LCC compiler asking for the
@@ -165,21 +165,21 @@ bool CompilerLCC::IsValid()
             // Note: A compiler *never ever* should ask on std::cin anything!!!
             wxRegKey key; // defaults to HKCR
 
-            key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc"));
+            key.SetName("HKEY_CURRENT_USER\\Software\\lcc");
             if (!key.Exists() && key.Create())
-                key.SetValue(_T("lccroot"),     m_MasterPath                 );
+                key.SetValue("lccroot",     m_MasterPath                 );
 
-            key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\compiler"));
+            key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\compiler");
             if (!key.Exists() && key.Create())
-                key.SetValue(_T("includepath"), m_MasterPath+_T("\\include") );
+                key.SetValue("includepath", m_MasterPath+"\\include" );
 
-            key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\lcclnk"));
+            key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\lcclnk");
             if (!key.Exists() && key.Create())
-                key.SetValue(_T("libpath"),     m_MasterPath+_T("\\lib")     );
+                key.SetValue("libpath",     m_MasterPath+"\\lib"     );
 
-            key.SetName(_T("HKEY_CURRENT_USER\\Software\\lcc\\lccroot"));
+            key.SetName("HKEY_CURRENT_USER\\Software\\lcc\\lccroot");
             if (!key.Exists() && key.Create())
-                key.SetValue(_T("path"),        m_MasterPath                 );
+                key.SetValue("path",        m_MasterPath                 );
 
             m_RegistryUpdated = true;
         }

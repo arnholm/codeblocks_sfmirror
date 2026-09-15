@@ -397,28 +397,28 @@ ProjectManagerUI::ProjectManagerUI() :
 {
     m_pNotebook = new cbAuiNotebook(Manager::Get()->GetAppWindow(), idNB,
                                     wxDefaultPosition, wxDefaultSize, wxAUI_NB_WINDOWLIST_BUTTON);
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/project_tabs_bottom"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/project_tabs_bottom", false))
         m_pNotebook->SetWindowStyleFlag(m_pNotebook->GetWindowStyleFlag() | wxAUI_NB_BOTTOM);
 
     InitPane();
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("project_manager"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("project_manager");
     m_TreeVisualState  = ptvsNone;
-    m_TreeVisualState |= (cfg->ReadBool(_T("/categorize_tree"),  true)  ? ptvsCategorize     : ptvsNone);
-    m_TreeVisualState |= (cfg->ReadBool(_T("/use_folders"),      true)  ? ptvsUseFolders     : ptvsNone);
-    m_TreeVisualState |= (cfg->ReadBool(_T("/hide_folder_name"), false) ? ptvsHideFolderName : ptvsNone);
-    m_TreeVisualState |= (cfg->ReadBool(_T("/sort_alpha"),       false) ? ptvsSortAlpha      : ptvsNone);
+    m_TreeVisualState |= (cfg->ReadBool("/categorize_tree",  true)  ? ptvsCategorize     : ptvsNone);
+    m_TreeVisualState |= (cfg->ReadBool("/use_folders",      true)  ? ptvsUseFolders     : ptvsNone);
+    m_TreeVisualState |= (cfg->ReadBool("/hide_folder_name", false) ? ptvsHideFolderName : ptvsNone);
+    m_TreeVisualState |= (cfg->ReadBool("/sort_alpha",       false) ? ptvsSortAlpha      : ptvsNone);
     // fix invalid combination, "use folders" has precedence
     if ( (m_TreeVisualState&ptvsUseFolders) && (m_TreeVisualState&ptvsHideFolderName) )
     {
         m_TreeVisualState &= ~ptvsHideFolderName;
-        cfg->Write(_T("/hide_folder_name"), false);
+        cfg->Write("/hide_folder_name", false);
     }
 
     RebuildTree();
 
     Manager::Get()->GetColourManager()->RegisterColour(_("Project Tree"), _("Not-compiled files (headers/resources)"),
-                                                       wxT("project_tree_non_source_files"),
+                                                       "project_tree_non_source_files",
                                                        wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
 
     // Event handling. This must be THE LAST THING activated on startup.
@@ -841,7 +841,7 @@ void ProjectManagerUI::CreateMenu(wxMenuBar* menuBar)
         if (menu)
         {
             menu->Insert(menu->GetMenuItemCount() - 1, idMenuFileProperties, _("Properties..."));
-            menu->Insert(menu->GetMenuItemCount() - 1, wxID_SEPARATOR, _T("")); // instead of AppendSeparator();
+            menu->Insert(menu->GetMenuItemCount() - 1, wxID_SEPARATOR, ""); // instead of AppendSeparator();
         }
 
         pos = menuBar->FindMenu(_("&Project"));
@@ -891,12 +891,12 @@ void ProjectManagerUI::CreateMenuTreeProps(wxMenu* menu, bool popup)
     treeprops->AppendCheckItem(idMenuViewSortAlphabetically,  _("Sort projects alphabetically"));
     treeprops->Append(idMenuTreeCollapseAll,  _("Collapse all projects"));
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("project_manager"));
-    bool do_categorise       = cfg->ReadBool(_T("/categorize_tree"),  true);
-    bool do_use_folders      = cfg->ReadBool(_T("/use_folders"),      true);
-    bool do_sort_alpha       = cfg->ReadBool(_T("/sort_alpha"),       false);
-    bool do_hide_folder_name = !do_use_folders && cfg->ReadBool(_T("/hide_folder_name"), false); // "use folders" has precedence
-    cfg->Write(_T("/hide_folder_name"), do_hide_folder_name); // make sure that configuration is consistent
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("project_manager");
+    bool do_categorise       = cfg->ReadBool("/categorize_tree",  true);
+    bool do_use_folders      = cfg->ReadBool("/use_folders",      true);
+    bool do_sort_alpha       = cfg->ReadBool("/sort_alpha",       false);
+    bool do_hide_folder_name = !do_use_folders && cfg->ReadBool("/hide_folder_name", false); // "use folders" has precedence
+    cfg->Write("/hide_folder_name", do_hide_folder_name); // make sure that configuration is consistent
 
     treeprops->Check((popup ? idMenuViewCategorizePopup     : idMenuViewCategorize),     do_categorise);
     treeprops->Check((popup ? idMenuViewUseFoldersPopup     : idMenuViewUseFolders),     do_use_folders);
@@ -1283,7 +1283,7 @@ void ProjectManagerUI::OpenFilesRecursively(wxTreeItemId& sel_id)
 void ProjectManagerUI::OnTabContextMenu(cb_unused wxAuiNotebookEvent& event)
 {
     wxMenu* NBmenu = new wxMenu();
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/project_tabs_bottom"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/project_tabs_bottom", false))
         NBmenu->Append(idNB_TabTop, _("Tabs at top"));
     else
         NBmenu->Append(idNB_TabBottom, _("Tabs at bottom"));
@@ -1301,7 +1301,7 @@ void ProjectManagerUI::OnTabPosition(wxCommandEvent& event)
     m_pNotebook->SetWindowStyleFlag(style);
     m_pNotebook->Refresh();
     // (style & wxAUI_NB_BOTTOM) saves info only about the the tabs position
-    Manager::Get()->GetConfigManager(_T("app"))->Write(_T("/environment/project_tabs_bottom"), (bool)(style & wxAUI_NB_BOTTOM));
+    Manager::Get()->GetConfigManager("app")->Write("/environment/project_tabs_bottom", (bool)(style & wxAUI_NB_BOTTOM));
 }
 
 void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
@@ -1357,7 +1357,7 @@ void ProjectManagerUI::OnTreeBeginDrag(wxTreeEvent& event)
         // and with the composite TreeDNDObject we know that this is from the tree in
         // the drop code
         wxDataObjectComposite dropObject;
-        dropObject.Add(new wxTextDataObject(GetStringFromArray(fileList , wxT("\n"), false)));
+        dropObject.Add(new wxTextDataObject(GetStringFromArray(fileList , "\n", false)));
         dropObject.Add(new TreeDNDObject(), true);
 
         wxDropSource dragSource(m_pTree);
@@ -1702,15 +1702,15 @@ void ProjectManagerUI::OnAddFilesToProjectRecursively(wxCommandEvent& event)
         // discard directories, as well as some well known SCMs control folders ;)
         // also discard C::B project files
         if (wxDirExists(array[i]) ||
-            array[i].Contains(_T("/.git/")) ||
-            array[i].Contains(_T("\\.git\\")) ||
-            array[i].Contains(_T("\\.hg\\")) ||
-            array[i].Contains(_T("/.hg/")) ||
-            array[i].Contains(_T("\\.svn\\")) ||
-            array[i].Contains(_T("/.svn/")) ||
-            array[i].Contains(_T("\\CVS\\")) ||
-            array[i].Contains(_T("/CVS/")) ||
-            array[i].Lower().Matches(_T("*.cbp")))
+            array[i].Contains("/.git/") ||
+            array[i].Contains("\\.git\\") ||
+            array[i].Contains("\\.hg\\") ||
+            array[i].Contains("/.hg/") ||
+            array[i].Contains("\\.svn\\") ||
+            array[i].Contains("/.svn/") ||
+            array[i].Contains("\\CVS\\") ||
+            array[i].Contains("/CVS/") ||
+            array[i].Lower().Matches("*.cbp"))
         {
             array.RemoveAt(i);
         }
@@ -2174,7 +2174,7 @@ void ProjectManagerUI::OnProperties(wxCommandEvent& event)
     cbProject* activePrj = pm->GetActiveProject();
     if (event.GetId() == idMenuProjectProperties)
     {
-        wxString backupTitle = activePrj ? activePrj->GetTitle() : _T("");
+        wxString backupTitle = activePrj ? activePrj->GetTitle() : "";
         if (ProjectShowOptions(activePrj))
         {
             // make sure that cbEVT_PROJECT_ACTIVATE
@@ -2192,7 +2192,7 @@ void ProjectManagerUI::OnProperties(wxCommandEvent& event)
         FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(sel);
 
         cbProject* prj = ftd ? ftd->GetProject() : activePrj;
-        wxString backupTitle = prj ? prj->GetTitle() : _T("");
+        wxString backupTitle = prj ? prj->GetTitle() : "";
         if (ProjectShowOptions(prj) && prj == activePrj)
         {
             // rebuild tree and make sure that cbEVT_PROJECT_ACTIVATE
@@ -2449,7 +2449,7 @@ void ProjectManagerUI::OnGotoFile(cb_unused wxCommandEvent& event)
         wxString MakeDisplayName(ProjectFile &pf) const
         {
             if (m_ShowProject)
-                return pf.relativeFilename + wxT(" (") + pf.GetParentProject()->GetTitle() + wxT(")");
+                return pf.relativeFilename + " (" + pf.GetParentProject()->GetTitle() + ")";
             else
                 return pf.relativeFilename;
         }
@@ -2481,7 +2481,7 @@ void ProjectManagerUI::OnViewCategorize(wxCommandEvent& event)
         m_TreeVisualState &= ~ptvsCategorize;
 
     Manager::Get()->GetAppFrame()->GetMenuBar()->Check(idMenuViewCategorize, do_categorise);
-    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/categorize_tree"), do_categorise);
+    Manager::Get()->GetConfigManager("project_manager")->Write("/categorize_tree", do_categorise);
 
     RebuildTree();
 }
@@ -2497,14 +2497,14 @@ void ProjectManagerUI::OnViewUseFolders(wxCommandEvent& event)
 
     Manager::Get()->GetAppFrame()->GetMenuBar()->Check(idMenuViewUseFolders, do_use_folders);
     Manager::Get()->GetAppFrame()->GetMenuBar()->Enable(idMenuViewHideFolderName, !do_use_folders);
-    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/use_folders"), do_use_folders);
+    Manager::Get()->GetConfigManager("project_manager")->Write("/use_folders", do_use_folders);
 
     // Do not create an invalid state
     if (do_use_folders)
     {
         m_TreeVisualState &= ~ptvsHideFolderName;
         Manager::Get()->GetAppFrame()->GetMenuBar()->Check(idMenuViewHideFolderName, false);
-        Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/hide_folder_name"), false);
+        Manager::Get()->GetConfigManager("project_manager")->Write("/hide_folder_name", false);
     }
 
     RebuildTree();
@@ -2513,7 +2513,7 @@ void ProjectManagerUI::OnViewUseFolders(wxCommandEvent& event)
 void ProjectManagerUI::OnViewSortAlphabetically(wxCommandEvent& event)
 {
     bool do_sort_alpha = event.IsChecked();
-    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/sort_alpha"), do_sort_alpha);
+    Manager::Get()->GetConfigManager("project_manager")->Write("/sort_alpha", do_sort_alpha);
 
     // Do not create an invalid state
     if (do_sort_alpha)
@@ -2546,14 +2546,14 @@ void ProjectManagerUI::OnViewHideFolderName(wxCommandEvent& event)
 
     Manager::Get()->GetAppFrame()->GetMenuBar()->Check(idMenuViewHideFolderName, do_hide_folder_name);
     Manager::Get()->GetAppFrame()->GetMenuBar()->Enable(idMenuViewUseFolders, !do_hide_folder_name);
-    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/hide_folder_name"), do_hide_folder_name);
+    Manager::Get()->GetConfigManager("project_manager")->Write("/hide_folder_name", do_hide_folder_name);
 
     // Do not create an invalid state
     if (do_hide_folder_name)
     {
         m_TreeVisualState &= ~ptvsUseFolders;
         Manager::Get()->GetAppFrame()->GetMenuBar()->Check(idMenuViewUseFolders, false);
-        Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("/use_folders"), false);
+        Manager::Get()->GetConfigManager("project_manager")->Write("/use_folders", false);
     }
 
     RebuildTree();
@@ -2584,7 +2584,7 @@ wxArrayString ProjectManagerUI::ListNodes(wxTreeItemId node) const
             const wxArrayString& children = ListNodes(item);
             const wxString parent = nodes.Last();
             for (size_t i = 0; i < children.GetCount(); ++i)
-                nodes.Add(parent + wxT("/") + children[i]);
+                nodes.Add(parent + "/" + children[i]);
         }
         item = m_pTree->GetNextChild(node, cookie);
     }
@@ -2671,11 +2671,11 @@ void ProjectManagerUI::OnFindFile(cb_unused wxCommandEvent& event)
     GotoFile dlg(Manager::Get()->GetAppWindow(), &iter, _("Find file..."),
                  _("Please enter the name of the file you are searching:"));
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(wxT("project_manager"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("project_manager");
 
     // Add a checkbox at the bottom that control if the selected file will be opened in an editor.
     wxCheckBox *chkOpen = new wxCheckBox(&dlg, wxID_ANY, _("Open file"));
-    chkOpen->SetValue(cfg->ReadBool(wxT("/find_file_open"), false));
+    chkOpen->SetValue(cfg->ReadBool("/find_file_open", false));
     dlg.AddControlBelowList(chkOpen);
 
     PlaceWindow(&dlg);
@@ -2695,7 +2695,7 @@ void ProjectManagerUI::OnFindFile(cb_unused wxCommandEvent& event)
     {
         if (m_pTree->GetItemText(item) == file)
             break; // found it, exit
-        else if (file.StartsWith(m_pTree->GetItemText(item) + wxT("/")))
+        else if (file.StartsWith(m_pTree->GetItemText(item) + "/"))
         {
             // expand node
             file = file.Mid(m_pTree->GetItemText(item).Length() + 1);
@@ -2721,7 +2721,7 @@ void ProjectManagerUI::OnFindFile(cb_unused wxCommandEvent& event)
                 pm->SetProject(ftd->GetProject(), false);
             }
         }
-        cfg->Write(wxT("/find_file_open"), chkOpen->IsChecked());
+        cfg->Write("/find_file_open", chkOpen->IsChecked());
     }
     else
     {
@@ -3087,7 +3087,7 @@ bool ProjectManagerUI::QueryCloseWorkspace()
         return true;
 
     // Don't ask to save the default workspace, if blank workspace is used on app startup.
-    bool blankWorkspace = Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/blank_workspace"), true);
+    bool blankWorkspace = Manager::Get()->GetConfigManager("app")->ReadBool("/environment/blank_workspace", true);
     if (!(wkspc->IsDefault() && blankWorkspace))
     {
         // always save workspace layout
@@ -3396,7 +3396,7 @@ static wxTreeItemId ProjectAddTreeNode(cbProject* project, wxTreeCtrl* tree,  co
         if (!compiles)
         {
             ColourManager *manager = Manager::Get()->GetColourManager();
-            tree->SetItemTextColour(ret, manager->GetColour(wxT("project_tree_non_source_files")));
+            tree->SetItemTextColour(ret, manager->GetColour("project_tree_non_source_files"));
         }
     }
     return ret;
@@ -3775,8 +3775,8 @@ static bool ProjectVirtualFolderAdded(cbProject* project, wxTreeCtrl* tree,
 {
     wxString foldername = GetRelativeFolderPath(tree, parent_node);
     foldername << virtual_folder;
-    foldername.Replace(_T("/"),  wxString(wxFILE_SEP_PATH), true);
-    foldername.Replace(_T("\\"), wxString(wxFILE_SEP_PATH), true);
+    foldername.Replace("/",  wxString(wxFILE_SEP_PATH), true);
+    foldername.Replace("\\", wxString(wxFILE_SEP_PATH), true);
     if (foldername.Last() != wxFILE_SEP_PATH)
         foldername << wxFILE_SEP_PATH;
 
@@ -3958,7 +3958,7 @@ void ProjectManagerUI::BuildProjectTree(cbProject* project, cbTreeCtrl* tree,
         ProjectFile* pf = *it;
         if (!pf)
         {
-            Manager::Get()->GetLogManager()->DebugLogError(_T("Looks like the project's file list is broken?!"));
+            Manager::Get()->GetLogManager()->DebugLogError("Looks like the project's file list is broken?!");
             continue;
         }
 
@@ -3979,7 +3979,7 @@ void ProjectManagerUI::BuildProjectTree(cbProject* project, cbTreeCtrl* tree,
         {
             nodetext       = pf->virtual_path + wxFILE_SEP_PATH + pf->file.GetFullName();
             folders_kind   = FileTreeData::ftdkVirtualFolder;
-            wxString slash = pf->virtual_path.Last() == wxFILE_SEP_PATH ? _T("") : wxString(wxFILE_SEP_PATH);
+            wxString slash = pf->virtual_path.Last() == wxFILE_SEP_PATH ? "" : wxString(wxFILE_SEP_PATH);
             ftd->SetFolder(pf->virtual_path);
 
             project->AppendUniqueVirtualFolder(pf->virtual_path + slash);

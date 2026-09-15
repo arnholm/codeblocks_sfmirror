@@ -25,9 +25,9 @@ FormatterSettings::~FormatterSettings()
 void FormatterSettings::ApplyTo(astyle::ASFormatter& formatter)
 {
   // NOTE: Keep this in sync with DlgFormatterSettings::ApplyTo
-  ConfigManager* cfg = Manager::Get()->GetConfigManager(_T("astyle"));
+  ConfigManager* cfg = Manager::Get()->GetConfigManager("astyle");
 
-  int style = cfg->ReadInt(_T("/style"), 0);
+  int style = cfg->ReadInt("/style", 0);
   switch (style)
   {
     case aspsAllman: // Allman (ANSI)
@@ -94,83 +94,83 @@ void FormatterSettings::ApplyTo(astyle::ASFormatter& formatter)
       break;
   }
 
-  formatter.setAttachClass(cfg->ReadBool(_T("/attach_classes")));
-  formatter.setAttachExternC(cfg->ReadBool(_T("/attach_extern_c")));
-  formatter.setAttachNamespace(cfg->ReadBool(_T("/attach_namespaces")));
-  formatter.setAttachInline(cfg->ReadBool(_T("/attach_inlines")));
+  formatter.setAttachClass(cfg->ReadBool("/attach_classes"));
+  formatter.setAttachExternC(cfg->ReadBool("/attach_extern_c"));
+  formatter.setAttachNamespace(cfg->ReadBool("/attach_namespaces"));
+  formatter.setAttachInline(cfg->ReadBool("/attach_inlines"));
 
-  int spaceNum = cfg->ReadInt(_T("/indentation"), 4);
-  bool value = cfg->ReadBool(_T("/force_tabs"));
-  if (cfg->ReadBool(_T("/use_tabs")))
+  int spaceNum = cfg->ReadInt("/indentation", 4);
+  bool value = cfg->ReadBool("/force_tabs");
+  if (cfg->ReadBool("/use_tabs"))
     formatter.setTabIndentation(spaceNum, value);
   else
     formatter.setSpaceIndentation(spaceNum);
 
-  int contNum = cfg->ReadInt(_T("/continuation"), 0);
+  int contNum = cfg->ReadInt("/continuation", 0);
   if (contNum>0 && contNum<=4)
     formatter.setContinuationIndentation(contNum);
 
-  formatter.setCaseIndent(cfg->ReadBool(_T("/indent_case")));
-  formatter.setClassIndent(cfg->ReadBool(_T("/indent_classes")));
-  formatter.setLabelIndent(cfg->ReadBool(_T("/indent_labels")));
-  formatter.setModifierIndent(cfg->ReadBool(_T("/indent_modifiers")));
-  formatter.setNamespaceIndent(cfg->ReadBool(_T("/indent_namespaces")));
-  formatter.setSwitchIndent(cfg->ReadBool(_T("/indent_switches")));
-  formatter.setPreprocBlockIndent(cfg->ReadBool(_T("/indent_preproc_block")));
-  formatter.setPreprocDefineIndent(cfg->ReadBool(_T("/indent_preproc_define")));
-  formatter.setPreprocConditionalIndent(cfg->ReadBool(_T("/indent_preproc_cond")));
-  formatter.setIndentCol1CommentsMode(cfg->ReadBool(_T("/indent_col1_comments")));
-  formatter.setMinConditionalIndentOption(cfg->ReadInt(_T("/min_conditional_indent"), 2));
-  formatter.setMaxInStatementIndentLength(cfg->ReadInt(_T("/max_instatement_indent"), 40));
+  formatter.setCaseIndent(cfg->ReadBool("/indent_case"));
+  formatter.setClassIndent(cfg->ReadBool("/indent_classes"));
+  formatter.setLabelIndent(cfg->ReadBool("/indent_labels"));
+  formatter.setModifierIndent(cfg->ReadBool("/indent_modifiers"));
+  formatter.setNamespaceIndent(cfg->ReadBool("/indent_namespaces"));
+  formatter.setSwitchIndent(cfg->ReadBool("/indent_switches"));
+  formatter.setPreprocBlockIndent(cfg->ReadBool("/indent_preproc_block"));
+  formatter.setPreprocDefineIndent(cfg->ReadBool("/indent_preproc_define"));
+  formatter.setPreprocConditionalIndent(cfg->ReadBool("/indent_preproc_cond"));
+  formatter.setIndentCol1CommentsMode(cfg->ReadBool("/indent_col1_comments"));
+  formatter.setMinConditionalIndentOption(cfg->ReadInt("/min_conditional_indent", 2));
+  formatter.setMaxInStatementIndentLength(cfg->ReadInt("/max_instatement_indent", 40));
 
-  formatter.setBreakClosingHeaderBracesMode(cfg->ReadBool(_T("/break_closing")));
-  formatter.setBreakElseIfsMode(cfg->ReadBool(_T("/break_elseifs")));
-  formatter.setAddBracketsMode(cfg->ReadBool(_T("/add_brackets")));
-  formatter.setAddOneLineBracketsMode(cfg->ReadBool(_T("/add_one_line_brackets")));
-  formatter.setRemoveBracketsMode(cfg->ReadBool(_T("/remove_brackets")));
-  formatter.setBreakOneLineBlocksMode(!cfg->ReadBool(_T("/keep_blocks")));
-  formatter.setBreakOneLineHeadersMode(cfg->ReadBool(_T("/keep_headers")));
-  formatter.setBreakOneLineStatementsMode(!cfg->ReadBool(_T("/keep_statements")));
-  formatter.setTabSpaceConversionMode(cfg->ReadBool(_T("/convert_tabs")));
-  formatter.setCloseTemplatesMode(cfg->ReadBool(_T("/close_templates")));
-  formatter.setStripCommentPrefix(cfg->ReadBool(_T("/remove_comment_prefix")));
+  formatter.setBreakClosingHeaderBracesMode(cfg->ReadBool("/break_closing"));
+  formatter.setBreakElseIfsMode(cfg->ReadBool("/break_elseifs"));
+  formatter.setAddBracketsMode(cfg->ReadBool("/add_brackets"));
+  formatter.setAddOneLineBracketsMode(cfg->ReadBool("/add_one_line_brackets"));
+  formatter.setRemoveBracketsMode(cfg->ReadBool("/remove_brackets"));
+  formatter.setBreakOneLineBlocksMode(!cfg->ReadBool("/keep_blocks"));
+  formatter.setBreakOneLineHeadersMode(cfg->ReadBool("/keep_headers"));
+  formatter.setBreakOneLineStatementsMode(!cfg->ReadBool("/keep_statements"));
+  formatter.setTabSpaceConversionMode(cfg->ReadBool("/convert_tabs"));
+  formatter.setCloseTemplatesMode(cfg->ReadBool("/close_templates"));
+  formatter.setStripCommentPrefix(cfg->ReadBool("/remove_comment_prefix"));
 
-  if (cfg->ReadBool(_T("/break_lines")))
+  if (cfg->ReadBool("/break_lines"))
   {
-    formatter.setMaxCodeLength( wxAtoi(cfg->Read(_T("/max_line_length"))) );
-    formatter.setBreakAfterMode(cfg->ReadBool(_T("/break_after_mode")));
+    formatter.setMaxCodeLength( wxAtoi(cfg->Read("/max_line_length")) );
+    formatter.setBreakAfterMode(cfg->ReadBool("/break_after_mode"));
   }
   else
     formatter.setMaxCodeLength(INT_MAX);
 
-  formatter.setBreakBlocksMode(cfg->ReadBool(_T("/break_blocks")));
-  formatter.setBreakClosingHeaderBlocksMode(cfg->ReadBool(_T("/break_blocks_all")));
-  formatter.setOperatorPaddingMode(cfg->ReadBool(_T("/pad_operators")));
-  formatter.setParensOutsidePaddingMode(cfg->ReadBool(_T("/pad_parentheses_out")));
-  formatter.setParensInsidePaddingMode(cfg->ReadBool(_T("/pad_parentheses_in")));
-  formatter.setParensFirstPaddingMode(cfg->ReadBool(_T("/pad_first_paren_out")));
-  formatter.setParensHeaderPaddingMode(cfg->ReadBool(_T("/pad_header")));
-  formatter.setParensUnPaddingMode(cfg->ReadBool(_T("/unpad_parentheses")));
-  formatter.setCommaPaddingMode(cfg->ReadBool(_T("/pad_comma")));
-  formatter.setDeleteEmptyLinesMode(cfg->ReadBool(_T("/delete_empty_lines")));
-  formatter.setEmptyLineFill(cfg->ReadBool(_T("/fill_empty_lines")));
+  formatter.setBreakBlocksMode(cfg->ReadBool("/break_blocks"));
+  formatter.setBreakClosingHeaderBlocksMode(cfg->ReadBool("/break_blocks_all"));
+  formatter.setOperatorPaddingMode(cfg->ReadBool("/pad_operators"));
+  formatter.setParensOutsidePaddingMode(cfg->ReadBool("/pad_parentheses_out"));
+  formatter.setParensInsidePaddingMode(cfg->ReadBool("/pad_parentheses_in"));
+  formatter.setParensFirstPaddingMode(cfg->ReadBool("/pad_first_paren_out"));
+  formatter.setParensHeaderPaddingMode(cfg->ReadBool("/pad_header"));
+  formatter.setParensUnPaddingMode(cfg->ReadBool("/unpad_parentheses"));
+  formatter.setCommaPaddingMode(cfg->ReadBool("/pad_comma"));
+  formatter.setDeleteEmptyLinesMode(cfg->ReadBool("/delete_empty_lines"));
+  formatter.setEmptyLineFill(cfg->ReadBool("/fill_empty_lines"));
 
-  wxString pointerAlign = cfg->Read(_T("/pointer_align"));
-  if      (pointerAlign == _T("Type"))
+  wxString pointerAlign = cfg->Read("/pointer_align");
+  if      (pointerAlign == "Type")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_TYPE);
-  else if (pointerAlign == _T("Middle"))
+  else if (pointerAlign == "Middle")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_MIDDLE);
-  else if (pointerAlign == _T("Name"))
+  else if (pointerAlign == "Name")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_NAME);
   else
     formatter.setPointerAlignment(astyle::PTR_ALIGN_NONE);
 
-  wxString referenceAlign = cfg->Read(_T("/reference_align"));
-  if      (referenceAlign == _T("Type"))
+  wxString referenceAlign = cfg->Read("/reference_align");
+  if      (referenceAlign == "Type")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_TYPE);
-  else if (referenceAlign == _T("Middle"))
+  else if (referenceAlign == "Middle")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_MIDDLE);
-  else if (referenceAlign == _T("Name"))
+  else if (referenceAlign == "Name")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_NAME);
   else
     formatter.setReferenceAlignment(astyle::REF_ALIGN_NONE);

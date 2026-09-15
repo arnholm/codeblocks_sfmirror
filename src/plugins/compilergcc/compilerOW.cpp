@@ -51,39 +51,39 @@ AutoDetectResult CompilerOW::AutoDetectInstallationDir()
     /* Following code is Not necessary as OpenWatcom does not write to
        Registry anymore */
     /*wxRegKey key; // defaults to HKCR
-    key.SetName(wxT("HKEY_LOCAL_MACHINE\\Software\\Open Watcom\\c_1.0"));
+    key.SetName("HKEY_LOCAL_MACHINE\\Software\\Open Watcom\\c_1.0");
     if (key.Open())
         // found; read it
-        key.QueryValue(wxT("Install Location"), m_MasterPath);*/
+        key.QueryValue("Install Location", m_MasterPath);*/
 
     if (m_MasterPath.IsEmpty())
         // just a guess; the default installation dir
-        m_MasterPath = wxT("C:\\watcom");
+        m_MasterPath = "C:\\watcom";
 
     if (!m_MasterPath.IsEmpty())
     {
-        AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxT("h"));
-        AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxT("h") + wxFILE_SEP_PATH + wxT("nt"));
-        AddLibDir(m_MasterPath + wxFILE_SEP_PATH + wxT("lib386"));
-        AddLibDir(m_MasterPath + wxFILE_SEP_PATH + wxT("lib386") + wxFILE_SEP_PATH + wxT("nt"));
-        AddResourceIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxT("h"));
-        AddResourceIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxT("h") + wxFILE_SEP_PATH + wxT("nt"));
-        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxT("binnt"));
-        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxT("binw"));
+        AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "h");
+        AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "h" + wxFILE_SEP_PATH + "nt");
+        AddLibDir(m_MasterPath + wxFILE_SEP_PATH + "lib386");
+        AddLibDir(m_MasterPath + wxFILE_SEP_PATH + "lib386" + wxFILE_SEP_PATH + "nt");
+        AddResourceIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "h");
+        AddResourceIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "h" + wxFILE_SEP_PATH + "nt");
+        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "binnt");
+        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "binw");
     }
-    wxSetEnv(wxT("WATCOM"), m_MasterPath);
+    wxSetEnv("WATCOM", m_MasterPath);
 
-    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + wxT("binnt") + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + "binnt" + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
 }
 
 void CompilerOW::LoadSettings(const wxString& baseKey)
 {
     Compiler::LoadSettings(baseKey);
-    wxSetEnv(wxT("WATCOM"), m_MasterPath);
+    wxSetEnv("WATCOM", m_MasterPath);
 }
 
 void CompilerOW::SetMasterPath(const wxString& path)
 {
     Compiler::SetMasterPath(path);
-    wxSetEnv(wxT("WATCOM"), m_MasterPath);
+    wxSetEnv("WATCOM", m_MasterPath);
 }

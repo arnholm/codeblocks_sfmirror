@@ -81,7 +81,7 @@ ProjectManager::ProjectManager() :
     m_IsLoadingWorkspace(false),
     m_IsClosingProject(false),
     m_IsClosingWorkspace(false),
-    m_InitialDir(_T("")),
+    m_InitialDir(""),
     m_CanSendWorkspaceChanged(false),
     m_RunningPlugin(nullptr)
 {
@@ -139,7 +139,7 @@ void ProjectManager::SetUI(cbProjectManagerUI *ui)
 
 wxString ProjectManager::GetDefaultPath()
 {
-    wxString path = Manager::Get()->GetConfigManager(_T("project_manager"))->Read(_T("default_path"), wxEmptyString);
+    wxString path = Manager::Get()->GetConfigManager("project_manager")->Read("default_path", wxEmptyString);
     if (!path.IsEmpty() && path.Last() != _T('/') && path.Last() != _T('\\'))
         path.Append(wxFILE_SEP_PATH);
     return path;
@@ -147,7 +147,7 @@ wxString ProjectManager::GetDefaultPath()
 
 void ProjectManager::SetDefaultPath(const wxString& path)
 {
-    Manager::Get()->GetConfigManager(_T("project_manager"))->Write(_T("default_path"), path);
+    Manager::Get()->GetConfigManager("project_manager")->Write("default_path", path);
 }
 
 bool ProjectManager::IsProjectStillOpen(cbProject* project)
@@ -566,7 +566,7 @@ cbWorkspace* ProjectManager::GetWorkspace()
 {
     if (!m_pWorkspace)
     {
-        m_pWorkspace = new cbWorkspace(_T(""));
+        m_pWorkspace = new cbWorkspace("");
         m_pWorkspace->SetTitle(_("Workspace"));
         m_pWorkspace->SetModified(false);
     }
@@ -951,7 +951,7 @@ void ProjectManager::ClearProjectDependencies(cbProject* base)
     if (m_pWorkspace)
         m_pWorkspace->SetModified(true);
 
-    Manager::Get()->GetLogManager()->DebugLog(_T("Removed all deps from ") + base->GetTitle());
+    Manager::Get()->GetLogManager()->DebugLog("Removed all deps from " + base->GetTitle());
 }
 
 void ProjectManager::RemoveProjectFromAllDependencies(cbProject* base)
@@ -1032,7 +1032,7 @@ void ProjectManager::RemoveFileFromProject(ProjectFile *pfile, cbProject* projec
 {
     if (!pfile)
     {
-        Manager::Get()->GetLogManager()->DebugLog(_T("Invalid project file!"));
+        Manager::Get()->GetLogManager()->DebugLog("Invalid project file!");
         return;
     }
 
@@ -1059,7 +1059,7 @@ bool ProjectManager::BeginLoadingProject()
     if (m_IsLoadingProject)
         return false;
 
-    if (!Manager::Get()->GetPluginManager()->FindPluginByName(_T("Compiler")))
+    if (!Manager::Get()->GetPluginManager()->FindPluginByName("Compiler"))
     {
         cbMessageBox(_("Deactivating the compiler plugin is most unwise.\n\nIf you intend to open a project, you have to re-activate the compiler plugin first."), _("Error"));
         return false;

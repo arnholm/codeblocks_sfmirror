@@ -1015,15 +1015,15 @@ void cbSwitcherDialog::ShowDescription(int i)
 
     wxString backgroundColourHex = ColourToHexString(colour);
 
-    wxString html = wxT("<body bgcolor=\"#") + backgroundColourHex + wxT("\"><b>") + item.GetTitle() + wxT("</b>");
+    wxString html = "<body bgcolor=\"#" + backgroundColourHex + "\"><b>" + item.GetTitle() + "</b>";
 
     if (!item.GetDescription().IsEmpty())
     {
-        html += wxT("<p>");
+        html += "<p>";
         html += item.GetDescription();
     }
 
-    html += wxT("</body>");
+    html += "</body>";
 
     m_descriptionCtrl->SetPage(html);
 }

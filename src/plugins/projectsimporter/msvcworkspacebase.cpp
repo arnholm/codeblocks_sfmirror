@@ -33,14 +33,14 @@ MSVCWorkspaceBase::~MSVCWorkspaceBase()
 void MSVCWorkspaceBase::registerProject(const wxString& projectID, cbProject* project)
 {
     // just set the initial project dependencies as empty and register the idcode
-    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_T("MSVC import: registered project uuid=%s"), projectID.c_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("MSVC import: registered project uuid=%s", projectID.c_str()));
     _projects[projectID.Lower()] = ProjectRecord(project);
 }
 
 void MSVCWorkspaceBase::addDependency(const wxString& projectID, const wxString& dependencyID)
 {
     // add the dependency to the last project
-    Manager::Get()->GetLogManager()->DebugLog(wxString::Format(_T("MSVC import: Add dependency uuid=%s, key[1]=%s"), projectID.c_str(), dependencyID.c_str()));
+    Manager::Get()->GetLogManager()->DebugLog(wxString::Format("MSVC import: Add dependency uuid=%s, key[1]=%s", projectID.c_str(), dependencyID.c_str()));
 
     HashProjects::iterator it = _projects.find(projectID.Lower());
     if (it != _projects.end())
@@ -49,7 +49,7 @@ void MSVCWorkspaceBase::addDependency(const wxString& projectID, const wxString&
             it->second._dependencyList.Add(dependencyID.Lower());
     }
     else
-        Manager::Get()->GetLogManager()->DebugLog(_T("ERROR: project id not found: ") + projectID);
+        Manager::Get()->GetLogManager()->DebugLog("ERROR: project id not found: " + projectID);
 }
 
 void MSVCWorkspaceBase::addWorkspaceConfiguration(const wxString& config)
@@ -59,12 +59,12 @@ void MSVCWorkspaceBase::addWorkspaceConfiguration(const wxString& config)
 
 void MSVCWorkspaceBase::addConfigurationMatching(const wxString& projectID, const wxString& workspConfig, const wxString& projConfig)
 {
-    //Manager::Get()->GetLogManager()->DebugLog(_T("adding conf match: '%s' - '%s'"), workspConfig.c_str(), projConfig.c_str());
+    //Manager::Get()->GetLogManager()->DebugLog("adding conf match: '%s' - '%s'", workspConfig.c_str(), projConfig.c_str());
     HashProjects::iterator it = _projects.find(projectID);
     if (it != _projects.end())
         it->second._configurations[workspConfig] = projConfig;
     else
-        Manager::Get()->GetLogManager()->DebugLog(_T("ERROR: project id not found: ") + projectID);
+        Manager::Get()->GetLogManager()->DebugLog("ERROR: project id not found: " + projectID);
 }
 
 void MSVCWorkspaceBase::updateProjects()
@@ -79,7 +79,7 @@ void MSVCWorkspaceBase::updateProjects()
     unsigned int j;
     int k;
 
-    Manager::Get()->GetLogManager()->DebugLog(_T("Update projects"));
+    Manager::Get()->GetLogManager()->DebugLog("Update projects");
 
     // no per-workspace config for msvc6, so build a fake one ;)
     if (_workspaceConfigurations.IsEmpty())
@@ -132,7 +132,7 @@ void MSVCWorkspaceBase::updateProjects()
                             for (int l=0; l<proj._project->GetBuildTargetsCount(); ++l)
                             {
                                 pconfig = proj._project->GetBuildTarget(l)->GetTitle();
-                                //Manager::Get()->GetLogManager()->DebugLog(_T("Test: %s <-> %s"), wconfig.c_str(), pconfig.c_str());
+                                //Manager::Get()->GetLogManager()->DebugLog("Test: %s <-> %s", wconfig.c_str(), pconfig.c_str());
                                 if (wconfig.StartsWith(pconfig) || pconfig.StartsWith(wconfig))
                                     targetProj = proj._project->GetBuildTarget(l);
                             }
@@ -155,7 +155,7 @@ void MSVCWorkspaceBase::updateProjects()
                             for (int l=0; l<dep._project->GetBuildTargetsCount(); ++l)
                             {
                                 pconfig = dep._project->GetBuildTarget(l)->GetTitle();
-                                //Manager::Get()->GetLogManager()->DebugLog(_T("Test: %s <-> %s"), wconfig.c_str(), pconfig.c_str());
+                                //Manager::Get()->GetLogManager()->DebugLog("Test: %s <-> %s", wconfig.c_str(), pconfig.c_str());
                                 if (wconfig.StartsWith(pconfig) || pconfig.StartsWith(wconfig))
                                     targetDep = dep._project->GetBuildTarget(l);
                             }
@@ -170,7 +170,7 @@ void MSVCWorkspaceBase::updateProjects()
 
                     if ((targetDep==0) || (targetProj==0))
                     {
-                        Manager::Get()->GetLogManager()->DebugLog(_T("ERROR: could not find targets"));
+                        Manager::Get()->GetLogManager()->DebugLog("ERROR: could not find targets");
                         continue;
                     }
 
@@ -202,7 +202,7 @@ void MSVCWorkspaceBase::updateProjects()
                }
             }
             else
-                Manager::Get()->GetLogManager()->DebugLog(_T("ERROR: dependency not found ") + proj._dependencyList[i]);
+                Manager::Get()->GetLogManager()->DebugLog("ERROR: dependency not found " + proj._dependencyList[i]);
         }
     }
 }

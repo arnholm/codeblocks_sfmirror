@@ -116,12 +116,12 @@ bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data,
 {
     const wxString strData = wxConnection::GetTextFromData(data, size, format);
 
-    if (strData.StartsWith(_T("[IfExec_Open(\"")))
+    if (strData.StartsWith("[IfExec_Open(\""))
         return false; // let Shell Open handle the request as we *know* that we have registered the Shell Open command, too
 
-    if (strData.StartsWith(_T("[Open(\"")))
+    if (strData.StartsWith("[Open(\""))
     {
-        wxRegEx reCmd(_T("\"(.*)\""));
+        wxRegEx reCmd("\"(.*)\"");
         if (reCmd.Matches(strData))
         {
             const wxString file = reCmd.GetMatch(strData, 1);
@@ -133,9 +133,9 @@ bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data,
         }
         return true;
     }
-    else if (strData.StartsWith(_T("[OpenLine(\"")))
+    else if (strData.StartsWith("[OpenLine(\""))
     {
-        wxRegEx reCmd(_T("\"(.*)\""));
+        wxRegEx reCmd("\"(.*)\"");
         if (reCmd.Matches(strData))
         {
             wxString file = reCmd.GetMatch(strData, 1);
@@ -144,7 +144,7 @@ bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data,
         }
         return true;
     }
-    else if (strData.StartsWith(_T("[Raise]")))
+    else if (strData.StartsWith("[Raise]"))
     {
         if (m_Frame)
         {
@@ -154,7 +154,7 @@ bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data,
         }
         return true;
     }
-    else if (strData.StartsWith(_T("[CmdLine({")))
+    else if (strData.StartsWith("[CmdLine({"))
     {
         wxString cmdLine, cwd;
 
@@ -188,7 +188,7 @@ bool DDEConnection::OnExecute(cb_unused const wxString& topic, const void *data,
         }
         return true;
     }
-    wxSafeShowMessage(wxT("Warning"),wxString::Format(wxT("DDE topic %s not handled."),strData.wx_str()));
+    wxSafeShowMessage("Warning",wxString::Format("DDE topic %s not handled.",strData.wx_str()));
     return false;
 }
 
@@ -422,27 +422,27 @@ bool CodeBlocksApp::LoadConfig()
             return false;
     }
 
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
 
     wxString data(wxT(APP_PREFIX));
 
     if (platform::windows)
 #ifdef CB_AUTOCONF
-        data = GetAppPath() + _T("/..");
+        data = GetAppPath() + "/..";
 #else
         data.assign(GetAppPath());
 #endif
     else if (platform::macosx)
     {
         data.assign(GetResourcesDir());                 // CodeBlocks.app/Contents/Resources
-        if (!data.Contains(wxString(_T("/Resources")))) // not a bundle, use relative path
-            data = GetAppPath() + _T("/..");
+        if (!data.Contains(wxString("/Resources"))) // not a bundle, use relative path
+            data = GetAppPath() + "/..";
     }
 
     if (data.IsEmpty())
     {
         data.assign(GetAppPath());  // fallback
-        data.Replace(_T("/bin"),_T(""));
+        data.Replace("/bin","");
     }
 
 
@@ -452,12 +452,12 @@ bool CodeBlocksApp::LoadConfig()
     {
 
         wxString env;
-        wxGetEnv(_T("CODEBLOCKS_DATA_DIR"), &env);
+        wxGetEnv("CODEBLOCKS_DATA_DIR", &env);
         if (!env.IsEmpty())
             data = env;
     }
 
-    data.append(_T("/share/codeblocks"));
+    data.append("/share/codeblocks");
 
     // Make sure the path to our resources is always an absolute path, because resource loading
     // would fail with a relative path if some part of the code changes the current working
@@ -467,10 +467,10 @@ bool CodeBlocksApp::LoadConfig()
         filename.MakeAbsolute();
     data = filename.GetFullPath();
 
-    cfg->Write(_T("data_path"), data);
+    cfg->Write("data_path", data);
 
-    //m_HasDebugLog = Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/has_debug_log"), false) || m_HasDebugLog;
-    //Manager::Get()->GetConfigManager(_T("message_manager"))->Write(_T("/has_debug_log"), m_HasDebugLog);
+    //m_HasDebugLog = Manager::Get()->GetConfigManager("message_manager")->ReadBool("/has_debug_log", false) || m_HasDebugLog;
+    //Manager::Get()->GetConfigManager("message_manager")->Write("/has_debug_log", m_HasDebugLog);
 
     return true;
 }
@@ -478,8 +478,8 @@ bool CodeBlocksApp::LoadConfig()
 void CodeBlocksApp::InitAssociations()
 {
 #ifdef __WXMSW__
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
-    if (m_Assocs && cfg->ReadBool(_T("/environment/check_associations"), true))
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
+    if (m_Assocs && cfg->ReadBool("/environment/check_associations", true))
     {
         if (!Associations::Check())
         {
@@ -489,7 +489,7 @@ void CodeBlocksApp::InitAssociations()
             switch(dlg.ShowModal())
             {
             case ASC_ASSOC_DLG_NO_DONT_ASK:
-                cfg->Write(_T("/environment/check_associations"), false);
+                cfg->Write("/environment/check_associations", false);
                 break;
             case ASC_ASSOC_DLG_NO_ONLY_NOW:
                 break;
@@ -549,7 +549,7 @@ void CodeBlocksApp::InitExceptionHandler()
 
 bool CodeBlocksApp::InitXRCStuff()
 {
-    if ( !Manager::LoadResource(_T("resources.zip")) )
+    if ( !Manager::LoadResource("resources.zip") )
     {
 
         wxString msg;
@@ -585,10 +585,10 @@ MainFrame* CodeBlocksApp::InitFrame()
 void CodeBlocksApp::CheckVersion()
 {
     // This is a remnant from early 2006 (Windows only), but keep the revision tag for possible future use
-    ConfigManager *cfg = Manager::Get()->GetConfigManager(_T("app"));
+    ConfigManager *cfg = Manager::Get()->GetConfigManager("app");
 
-    if (cfg->Read(_T("version")) != appglobals::AppActualVersion)
-        cfg->Write(_T("version"), appglobals::AppActualVersion);
+    if (cfg->Read("version") != appglobals::AppActualVersion)
+        cfg->Write("version", appglobals::AppActualVersion);
 }
 
 void CodeBlocksApp::InitLocale()
@@ -781,7 +781,7 @@ bool CodeBlocksApp::OnInit()
 
 #if wxCHECK_VERSION(3,3,0)
         // Dark/Light mode switching works reliable starting with wxWidgets 3.3.x
-        int appearance = appCfg->ReadInt(_T("/environment/appearance"), 0);
+        int appearance = appCfg->ReadInt("/environment/appearance", 0);
         switch (appearance)
         {
             case 1: // Dark mode
@@ -1037,7 +1037,7 @@ int CodeBlocksApp::BatchJob()
     if (!compiler)
         return -3;
 
-    if (!m_Clean && m_BatchTarget.Lower() == _T("ask"))
+    if (!m_Clean && m_BatchTarget.Lower() == "ask")
     {
         m_BatchTarget.Clear();
         cbProject* prj = Manager::Get()->GetProjectManager()->GetActiveProject();
@@ -1231,7 +1231,7 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
 
         const size_t count = parser.GetParamCount();
 
-        parser.Found(_T("file"), &m_AutoFile);
+        parser.Found("file", &m_AutoFile);
 
         if (!m_AutoFile.empty() && !CWD.empty())
         {
@@ -1286,52 +1286,52 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
     else
     {
         wxString val;
-        parser.Found(_T("prefix"), &m_Prefix);
-        parser.Found(_T("user-data-dir"), &m_UserDataDir);
+        parser.Found("prefix", &m_Prefix);
+        parser.Found("user-data-dir", &m_UserDataDir);
 #ifdef __WXMSW__
-        m_DDE = !parser.Found(_T("no-dde"));
-        m_Assocs = !parser.Found(_T("no-check-associations"));
+        m_DDE = !parser.Found("no-dde");
+        m_Assocs = !parser.Found("no-check-associations");
 #else
-        m_DDE = !parser.Found(_T("no-ipc"));
+        m_DDE = !parser.Found("no-ipc");
 #endif
-        m_SafeMode = parser.Found(_T("safe-mode"));
-        m_Splash = !parser.Found(_T("no-splash-screen"));
-        m_HasDebugLog = parser.Found(_T("debug-log"));
-        m_CrashHandler = !parser.Found(_T("no-crash-handler"));
+        m_SafeMode = parser.Found("safe-mode");
+        m_Splash = !parser.Found("no-splash-screen");
+        m_HasDebugLog = parser.Found("debug-log");
+        m_CrashHandler = !parser.Found("no-crash-handler");
 
-        wxLog::EnableLogging(parser.Found(_T("verbose")));
+        wxLog::EnableLogging(parser.Found("verbose"));
 
-        if (   parser.Found(_T("personality"), &val)
-            || parser.Found(_T("profile"),     &val) )
+        if (   parser.Found("personality", &val)
+            || parser.Found("profile",     &val) )
         {
             SetupPersonality(val);
         }
 
         // batch jobs
-        m_BatchNotify          = parser.Found(_T("batch-build-notify"));
-        m_BatchWindowAutoClose = !parser.Found(_T("no-batch-window-close"));
-        m_Build                = parser.Found(_T("build"));
-        m_ReBuild              = parser.Found(_T("rebuild"));
-        m_Clean                = parser.Found(_T("clean"));
-        parser.Found(_T("target"), &m_BatchTarget);
-        parser.Found(_T("script"), &m_Script);
+        m_BatchNotify          = parser.Found("batch-build-notify");
+        m_BatchWindowAutoClose = !parser.Found("no-batch-window-close");
+        m_Build                = parser.Found("build");
+        m_ReBuild              = parser.Found("rebuild");
+        m_Clean                = parser.Found("clean");
+        parser.Found("target", &m_BatchTarget);
+        parser.Found("script", &m_Script);
         // initial setting for batch flag (will be reset when ParseCmdLine() is called again).
         m_Batch = m_Build || m_ReBuild || m_Clean;
 
 
-        if (parser.Found(_T("no-log")) == false)
+        if (parser.Found("no-log") == false)
             Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::app_log);
-        if (parser.Found(_T("log-to-file")))
-            Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks.log")), LogManager::app_log);
+        if (parser.Found("log-to-file"))
+            Manager::Get()->GetLogManager()->SetLog(new FileLogger("codeblocks.log"), LogManager::app_log);
         if (m_HasDebugLog)
             Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::debug_log);
-        if (parser.Found(_T("debug-log-to-file")))
-            Manager::Get()->GetLogManager()->SetLog(new FileLogger(_T("codeblocks-debug.log")), LogManager::debug_log);
+        if (parser.Found("debug-log-to-file"))
+            Manager::Get()->GetLogManager()->SetLog(new FileLogger("codeblocks-debug.log"), LogManager::debug_log);
     }
 
     // Always parse the debugger attach parameters.
-    parser.Found(_T("dbg-attach"), &m_DebuggerAttach);
-    parser.Found(_T("dbg-config"), &m_DebuggerConfig);
+    parser.Found("dbg-attach", &m_DebuggerAttach);
+    parser.Found("dbg-config", &m_DebuggerConfig);
 #endif // wxUSE_CMDLINE_PARSER
 
     return filesInCmdLine ? 1 : 0;
@@ -1341,7 +1341,7 @@ void CodeBlocksApp::SetupPersonality(const wxString& personality)
 {
     PersonalityManager *personalityMgr = Manager::Get()->GetPersonalityManager();
 
-    if (personality.CmpNoCase(_T("ask")) == 0)
+    if (personality.CmpNoCase("ask") == 0)
     {
         const wxArrayString items(personalityMgr->GetPersonalitiesList());
 
@@ -1421,8 +1421,8 @@ void CodeBlocksApp::AttachDebugger()
         {
             logManager->LogError(
                 _("For attaching to work you need to provide both '--dbg-attach' and '--dbg-config'"));
-            logManager->Log(wxT("    --dbg-attach='") + localAttach + wxT("'"));
-            logManager->Log(wxT("    --dbg-config='") + localConfig + wxT("'"));
+            logManager->Log("    --dbg-attach='" + localAttach + "'");
+            logManager->Log("    --dbg-config='" + localConfig + "'");
         }
         return;
     }
@@ -1549,7 +1549,7 @@ void CodeBlocksApp::OnAppActivate(wxActivateEvent& event)
     // fix for bug #18007: In batch build mode the following is not needed
     if (  !m_Batch
         && Manager::Get()->GetEditorManager()
-        && Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/check_modified_files"), true))
+        && Manager::Get()->GetConfigManager("app")->ReadBool("/environment/check_modified_files", true))
     {
         // for some reason a mouse up event doesn't make it into scintilla (scintilla bug)
         // therefore the workaround is not to directly call the editorManager, but

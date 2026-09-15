@@ -52,7 +52,7 @@ using namespace Scintilla;
 
 //----------------------------------------------------------------------
 
-const wxChar wxSCINameStr[] = wxT("SCIwindow");
+const wxChar wxSCINameStr[] = wxS("SCIwindow");
 
 #ifdef MAKELONG
 #undef MAKELONG
@@ -592,10 +592,10 @@ int wxScintilla::GetNextTabStop(int line, int x)
 void wxScintilla::SetCodePage(int codePage) {
 #if wxUSE_UNICODE
     wxASSERT_MSG(codePage == wxSCI_CP_UTF8,
-                 wxT("Only wxSCI_CP_UTF8 may be used when wxUSE_UNICODE is on."));
+                 "Only wxSCI_CP_UTF8 may be used when wxUSE_UNICODE is on.");
 #else
     wxASSERT_MSG(codePage != wxSCI_CP_UTF8,
-                 wxT("wxSCI_CP_UTF8 may not be used when wxUSE_UNICODE is off."));
+                 "wxSCI_CP_UTF8 may not be used when wxUSE_UNICODE is off.");
 #endif
     SendMsg(SCI_SETCODEPAGE, codePage);
 }
@@ -3010,7 +3010,7 @@ void wxScintilla::BraceBadLightIndicator(bool useSetting, int indicator)
 // The maxReStyle must be 0 for now. It may be defined in a future release.
 int wxScintilla::BraceMatch(int pos, int maxReStyle){
         wxASSERT_MSG(maxReStyle==0,
-                     wxT("The second argument passed to BraceMatch should be 0"));
+                     "The second argument passed to BraceMatch should be 0");
 
         return SendMsg(SCI_BRACEMATCH, pos, maxReStyle);
 }
@@ -4827,38 +4827,38 @@ int wxScintilla::GetCurrentLine() {
 //
 void wxScintilla::StyleSetSpec(int styleNum, const wxString& spec) {
 
-    wxStringTokenizer tkz(spec, wxT(","));
+    wxStringTokenizer tkz(spec, ",");
     while (tkz.HasMoreTokens()) {
         wxString token = tkz.GetNextToken();
 
         wxString option = token.BeforeFirst(':');
         wxString val = token.AfterFirst(':');
 
-        if (option == wxT("bold"))
+        if (option == "bold")
             StyleSetBold(styleNum, true);
 
-        else if (option == wxT("italic"))
+        else if (option == "italic")
             StyleSetItalic(styleNum, true);
 
-        else if (option == wxT("underline"))
+        else if (option == "underline")
             StyleSetUnderline(styleNum, true);
 
-        else if (option == wxT("eol"))
+        else if (option == "eol")
             StyleSetEOLFilled(styleNum, true);
 
-        else if (option == wxT("size")) {
+        else if (option == "size") {
             long points;
             if (val.ToLong(&points))
                 StyleSetSize(styleNum, points);
         }
 
-        else if (option == wxT("face"))
+        else if (option == "face")
             StyleSetFaceName(styleNum, val);
 
-        else if (option == wxT("fore"))
+        else if (option == "fore")
             StyleSetForeground(styleNum, wxColourFromSpec(val));
 
-        else if (option == wxT("back"))
+        else if (option == "back")
             StyleSetBackground(styleNum, wxColourFromSpec(val));
     }
 }
@@ -4889,7 +4889,7 @@ void wxScintilla::StyleSetFont(int styleNum, const wxFont& font) {
 #ifdef __WXGTK__
     // Ensure that the native font is initialized
     int x, y;
-    GetTextExtent(wxT("X"), &x, &y, NULL, NULL, &font);
+    GetTextExtent("X", &x, &y, NULL, NULL, &font);
 #endif
     int            size     = font.GetPointSize();
     wxString       faceName = font.GetFaceName();

@@ -32,7 +32,7 @@ ProjectDepsDlg::ProjectDepsDlg(wxWindow* parent, cbProject* sel)
     : m_LastSel(-1)
 {
     //ctor
-    wxXmlResource::Get()->LoadObject(this, parent, _T("dlgConfigureProjectDeps"),_T("wxScrollingDialog"));
+    wxXmlResource::Get()->LoadObject(this, parent, "dlgConfigureProjectDeps","wxScrollingDialog");
     XRCCTRL(*this, "wxID_CANCEL", wxButton)->SetDefault();
 
     wxChoice* cmb = XRCCTRL(*this, "cmbProject", wxChoice);

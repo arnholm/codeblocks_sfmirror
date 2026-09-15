@@ -133,7 +133,7 @@ void IncrementalSelectHandler::FilterItems()
 
     // We put a star before and after pattern to find search expression everywhere in path
     // that is: if user enter "a", it will match "123a", "12a" or "a12".
-    wxString search(wxT("*") + inputPattern + wxT("*"));
+    wxString search("*" + inputPattern + "*");
     bool isWord = !inputPattern.empty();
     for (auto ch : inputPattern)
     {
@@ -373,18 +373,18 @@ void IncrementalSelectDialog::BuildContent(wxWindow* parent, IncrementalSelectIt
                                            const wxString &message)
 {
     Create(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
-           wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
+           wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, "wxID_ANY");
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
     wxStaticText *labelCtrl = new wxStaticText(this, wxID_ANY, message, wxDefaultPosition, wxDefaultSize, 0,
-                                               _T("wxID_ANY"));
+                                               "wxID_ANY");
     sizer->Add(labelCtrl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
     m_text = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER, wxDefaultValidator,
-                            _T("ID_TEXTCTRL1"));
+                            "ID_TEXTCTRL1");
     m_text->SetFocus();
     sizer->Add(m_text, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
     m_resultList = new IncrementalListCtrl(this, ID_RESULT_LIST, wxDefaultPosition, wxDefaultSize,
                                            wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_VIRTUAL|wxVSCROLL|wxHSCROLL,
-                                           wxDefaultValidator, _T("ID_RESULT_LIST"));
+                                           wxDefaultValidator, "ID_RESULT_LIST");
     m_resultList->SetMinSize(wxSize(500,300));
     sizer->Add(m_resultList, 1, wxALL|wxEXPAND, 5);
     SetSizer(sizer);

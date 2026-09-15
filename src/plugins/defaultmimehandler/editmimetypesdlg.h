@@ -17,7 +17,7 @@ class EditMimeTypesDlg : public cbConfigurationPanel
         ~EditMimeTypesDlg() override;
 
         wxString GetTitle() const override { return _("Files extension handling"); }
-        wxString GetBitmapBaseName() const override { return _T("extensions"); }
+        wxString GetBitmapBaseName() const override { return "extensions"; }
         void OnApply() override;
         void OnCancel() override {}
     private:

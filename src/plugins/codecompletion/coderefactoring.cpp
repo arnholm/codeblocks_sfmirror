@@ -83,11 +83,11 @@ public:
         sizer->Add(infoSizer, 1, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
         wxBoxSizer* btnSizer = new wxBoxSizer(wxHORIZONTAL);
         m_OpenFiles = new wxButton(this, ID_OPEN_FILES, _("&Open files"), wxDefaultPosition, wxDefaultSize, 0,
-                                   wxDefaultValidator, _T("ID_OPEN_FILES"));
+                                   wxDefaultValidator, "ID_OPEN_FILES");
         m_OpenFiles->SetDefault();
         btnSizer->Add(m_OpenFiles, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
         m_ProjectFiles = new wxButton(this, ID_PROJECT_FILES, _("&Project files"), wxDefaultPosition,
-                                      wxDefaultSize, 0, wxDefaultValidator, _T("ID_PROJECT_FILES"));
+                                      wxDefaultSize, 0, wxDefaultValidator, "ID_PROJECT_FILES");
         btnSizer->Add(m_ProjectFiles, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
         wxButton *closeButton = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
                                       wxDefaultSize);
@@ -489,7 +489,7 @@ void CodeRefactoring::DoFindReferences()
             wxFileName curFn(it->first);
             curFn.MakeRelativeTo(basePath);
             values.Add(curFn.GetFullPath());
-            values.Add(wxString::Format(_T("%d"), itList->line));
+            values.Add(wxString::Format("%d", itList->line));
             values.Add(itList->text);
             searchLog->Append(values, Logger::info);
 
@@ -497,7 +497,7 @@ void CodeRefactoring::DoFindReferences()
         }
     }
 
-    if (Manager::Get()->GetConfigManager(_T("message_manager"))->ReadBool(_T("/auto_show_search"), true))
+    if (Manager::Get()->GetConfigManager("message_manager")->ReadBool("/auto_show_search", true))
     {
         CodeBlocksLogEvent evtSwitch(cbEVT_SWITCH_TO_LOG_WINDOW, searchLog);
         CodeBlocksLogEvent evtShow(cbEVT_SHOW_LOG_MANAGER);

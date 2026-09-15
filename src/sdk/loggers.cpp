@@ -73,8 +73,8 @@ void TextCtrlLogger::UpdateSettings()
 
     control->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
 
-    ConfigManager* cfgman = Manager::Get()->GetConfigManager(_T("message_manager"));
-    int size = cfgman->ReadInt(_T("/log_font_size"), (platform::macosx ? 10 : 8));
+    ConfigManager* cfgman = Manager::Get()->GetConfigManager("message_manager");
+    int size = cfgman->ReadInt("/log_font_size", (platform::macosx ? 10 : 8));
 
     wxFont default_font(size, fixed ? wxFONTFAMILY_MODERN : wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     wxFont bold_font(default_font);
@@ -111,17 +111,17 @@ void TextCtrlLogger::UpdateSettings()
 
     ColourManager *colours = Manager::Get()->GetColourManager();
 
-    style[success].SetTextColour(colours->GetColour(wxT("logs_success_text")));
+    style[success].SetTextColour(colours->GetColour("logs_success_text"));
 
     style[warning].SetFont(italic_font);
-    style[warning].SetTextColour(colours->GetColour(wxT("logs_warning_text")));
+    style[warning].SetTextColour(colours->GetColour("logs_warning_text"));
 
     style[error].SetFont(bold_font);
-    style[error].SetTextColour(colours->GetColour(wxT("logs_error_text")));
+    style[error].SetTextColour(colours->GetColour("logs_error_text"));
 
     style[critical].SetFont(bold_font);
-    style[critical].SetTextColour(colours->GetColour(wxT("logs_critical_text")));     // we're setting both fore and background colors here
-    style[critical].SetBackgroundColour(colours->GetColour(wxT("logs_critical_back"))); // so we don't have to mix in default colors
+    style[critical].SetTextColour(colours->GetColour("logs_critical_text"));     // we're setting both fore and background colors here
+    style[critical].SetBackgroundColour(colours->GetColour("logs_critical_back")); // so we don't have to mix in default colors
     style[spacer].SetFont(small_font);
 
     // Tell control about the font change
@@ -139,7 +139,7 @@ void TextCtrlLogger::Append(const wxString& msg, Logger::level lv)
     }
 
     ::temp_string.assign(msg);
-    ::temp_string.append(_T("\n"));
+    ::temp_string.append("\n");
 
     if (lv == caption)
     {
@@ -238,7 +238,7 @@ void TimestampTextCtrlLogger::Append(const wxString& msg, Logger::level lv)
         return;
 
     wxDateTime timestamp(wxDateTime::UNow());
-    ::temp_string.Printf(_T("[%2.2d:%2.2d:%2.2d.%3.3d] %s\n"), timestamp.GetHour(), timestamp.GetMinute(), timestamp.GetSecond(), timestamp.GetMillisecond(), msg.c_str());
+    ::temp_string.Printf("[%2.2d:%2.2d:%2.2d.%3.3d] %s\n", timestamp.GetHour(), timestamp.GetMinute(), timestamp.GetSecond(), timestamp.GetMillisecond(), msg.c_str());
 
     control->SetDefaultStyle(style[lv]);
     control->AppendText(::temp_string);
@@ -310,8 +310,8 @@ void ListCtrlLogger::UpdateSettings()
     if (!control)
         return;
 
-    ConfigManager* cfgman = Manager::Get()->GetConfigManager(_T("message_manager"));
-    int size = cfgman->ReadInt(_T("/log_font_size"), (platform::macosx ? 10 : 8));
+    ConfigManager* cfgman = Manager::Get()->GetConfigManager("message_manager");
+    int size = cfgman->ReadInt("/log_font_size", (platform::macosx ? 10 : 8));
     wxFont default_font(size, fixed ? wxFONTFAMILY_MODERN : wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     wxFont bold_font(default_font);
     wxFont italic_font(default_font);
@@ -336,16 +336,16 @@ void ListCtrlLogger::UpdateSettings()
     ColourManager *colours = Manager::Get()->GetColourManager();
 
     style[caption].SetFont(bigger_font);
-    style[success].SetTextColour(colours->GetColour(wxT("logs_success_text")));
-    style[failure].SetTextColour(colours->GetColour(wxT("logs_failure_text")));
+    style[success].SetTextColour(colours->GetColour("logs_success_text"));
+    style[failure].SetTextColour(colours->GetColour("logs_failure_text"));
 
     style[warning].SetFont(italic_font);
-    style[warning].SetTextColour(colours->GetColour(wxT("logs_warning_text")));
+    style[warning].SetTextColour(colours->GetColour("logs_warning_text"));
 
-    style[error].SetTextColour(colours->GetColour(wxT("logs_error_text")));
+    style[error].SetTextColour(colours->GetColour("logs_error_text"));
 
     style[critical].SetFont(bold_font);
-    style[critical].SetTextColour(colours->GetColour(wxT("logs_critical_text_listctrl")));
+    style[critical].SetTextColour(colours->GetColour("logs_critical_text_listctrl"));
 
     style[spacer].SetFont(small_font);
     style[pagetitle] = style[caption];
@@ -443,20 +443,20 @@ void ListCtrlLogger::AutoFitColumns(int column)
 }
 
 CSS::CSS() :
-    caption  (_T("font-size: 12pt;")),
+    caption  ("font-size: 12pt;"),
     info     (wxEmptyString),
-    warning  (_T("margin-left: 2em;")),
+    warning  ("margin-left: 2em;"),
     success  (wxEmptyString),
-    error    (_T("margin-left: 2em; border-left: 1px solid ")),
-    critical (_T("color: ")),
-    failure  (_T("color: ")),
-    pagetitle(_T("font-size: 16pt;")),
+    error    ("margin-left: 2em; border-left: 1px solid "),
+    critical ("color: "),
+    failure  ("color: "),
+    pagetitle("font-size: 16pt;"),
     spacer   (wxEmptyString),
-    asterisk (_T("font-family: Arial, Helvetica, \"Bitstream Vera Sans\", sans;"))
+    asterisk ("font-family: Arial, Helvetica, \"Bitstream Vera Sans\", sans;")
 {
-    error    += BlendTextColour(*wxRED).GetAsString(wxC2S_HTML_SYNTAX) + _T(";");
-    critical += BlendTextColour(*wxRED).GetAsString(wxC2S_HTML_SYNTAX) + _T("; font-weight: bold;");
-    failure  += BlendTextColour(wxColour(0x80, 0x00, 0x00)).GetAsString(wxC2S_HTML_SYNTAX) + _T(";");
+    error    += BlendTextColour(*wxRED).GetAsString(wxC2S_HTML_SYNTAX) + ";";
+    critical += BlendTextColour(*wxRED).GetAsString(wxC2S_HTML_SYNTAX) + "; font-weight: bold;";
+    failure  += BlendTextColour(wxColour(0x80, 0x00, 0x00)).GetAsString(wxC2S_HTML_SYNTAX) + ";";
 }
 
 CSS::operator wxString()

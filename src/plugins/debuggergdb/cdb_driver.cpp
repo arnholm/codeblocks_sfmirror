@@ -41,13 +41,13 @@ wxString CdbCmd_DisassemblyInit::LastAddr;
 // The strings looks something like this:
 // 0:000>
 // 0:000:x86>
-static wxRegEx rePrompt(_T("([0-9]+:){1,2}[0-9]+(:x86)?>"));
+static wxRegEx rePrompt("([0-9]+:){1,2}[0-9]+(:x86)?>");
 
-static wxRegEx reBP(_T("Breakpoint ([0-9]+) hit"));
+static wxRegEx reBP("Breakpoint ([0-9]+) hit");
 // one stack frame (to access current file; is there another way???)
 //  # ChildEBP RetAddr
 // 00 0012fe98 00401426 Win32GUI!WinMain+0x89 [c:\devel\tmp\win32 test\main.cpp @ 55]
-static wxRegEx reFile(_T("[[:blank:]]([A-z]+.*)[[:blank:]]+\\[([A-z]:)(.*) @ ([0-9]+)\\]"));
+static wxRegEx reFile("[[:blank:]]([A-z]+.*)[[:blank:]]+\\[([A-z]:)(.*) @ ([0-9]+)\\]");
 
 CDB_driver::CDB_driver(DebuggerGDB* plugin)
     : DebuggerDriver(plugin),
@@ -126,7 +126,7 @@ void CDB_driver::Prepare(cb_unused bool isConsole, cb_unused int printElements,
     // The very first command won't get the right output back due to the spam on CDB launch.
     // Throw in a dummy command to flush the output buffer.
     m_QueueBusy = true;
-    QueueCommand(new DebuggerCmd(this,_T(".echo Clear buffer")),High);
+    QueueCommand(new DebuggerCmd(this,".echo Clear buffer"),High);
 
     // Either way, get the PID of the child
     QueueCommand(new CdbCmd_GetPID(this));
@@ -135,9 +135,9 @@ void CDB_driver::Prepare(cb_unused bool isConsole, cb_unused int printElements,
 void CDB_driver::Start(cb_unused bool breakOnEntry)
 {
     // start the process
-    QueueCommand(new DebuggerCmd(this, _T("l+t"))); // source mode
-    QueueCommand(new DebuggerCmd(this, _T("l+s"))); // show source lines
-    QueueCommand(new DebuggerCmd(this, _T("l+o"))); // only source lines
+    QueueCommand(new DebuggerCmd(this, "l+t")); // source mode
+    QueueCommand(new DebuggerCmd(this, "l+s")); // show source lines
+    QueueCommand(new DebuggerCmd(this, "l+o")); // only source lines
 
     if (!m_pDBG->GetActiveConfigEx().GetFlag(DebuggerConfiguration::DoNotRun))
     {
@@ -149,7 +149,7 @@ void CDB_driver::Start(cb_unused bool breakOnEntry)
 void CDB_driver::Stop()
 {
     ResetCursor();
-    QueueCommand(new DebuggerCmd(this, _T("q")));
+    QueueCommand(new DebuggerCmd(this, "q"));
     m_IsStarted = false;
 }
 
@@ -163,7 +163,7 @@ void CDB_driver::Continue()
 void CDB_driver::Step()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("p")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "p"));
     // print a stack frame to find out about the file we 've stopped
     QueueCommand(new CdbCmd_SwitchFrame(this, -1));
 }
@@ -181,14 +181,14 @@ void CDB_driver::StepIntoInstruction()
 void CDB_driver::StepIn()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("t")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "t"));
     Step();
 }
 
 void CDB_driver::StepOut()
 {
     ResetCursor();
-    QueueCommand(new DebuggerContinueBaseCmd(this, _T("gu")));
+    QueueCommand(new DebuggerContinueBaseCmd(this, "gu"));
     QueueCommand(new CdbCmd_SwitchFrame(this, -1));
 }
 
@@ -414,13 +414,13 @@ void CDB_driver::ParseOutput(const wxString& output)
     wxArrayString lines = GetArrayFromString(buffer, _T('\n'));
     for (unsigned int i = 0; i < lines.GetCount(); ++i)
     {
-//            Log(_T("DEBUG: ") + lines[i]); // write it in the full debugger log
+//            Log("DEBUG: " + lines[i]); // write it in the full debugger log
 
-        if (lines[i].StartsWith(_T("Cannot execute ")))
+        if (lines[i].StartsWith("Cannot execute "))
         {
             Log(lines[i]);
         }
-        else if (lines[i].Contains(_T("Access violation")))
+        else if (lines[i].Contains("Access violation"))
         {
             m_ProgramIsStopped = true;
             Log(lines[i]);
@@ -446,7 +446,7 @@ void CDB_driver::ParseOutput(const wxString& output)
             DoBacktrace(true);
             break;
         }
-        else if (lines[i].Contains(_T("Break instruction exception")) && !m_pDBG->IsTemporaryBreak())
+        else if (lines[i].Contains("Break instruction exception") && !m_pDBG->IsTemporaryBreak())
         {
             m_ProgramIsStopped = true;
         	// Code breakpoint / assert

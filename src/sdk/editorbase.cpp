@@ -102,7 +102,7 @@ wxString EditorBase::CreateUniqueFilename()
     while (true)
     {
         tmp.Clear();
-        tmp << path << prefix << wxString::Format(_T("%d"), iter);
+        tmp << path << prefix << wxString::Format("%d", iter);
         if (!Manager::Get()->GetEditorManager()->GetEditor(tmp) &&
                 !wxFileExists(path + tmp))
         {
@@ -233,7 +233,7 @@ wxMenu* EditorBase::CreateContextSubMenu(long id) // For context menus
                 continue;
             id = idSwitchFile1+i;
             m_SwitchTo[id] = other;
-            menu->Append(id, (other->GetModified() ? wxT("*") : wxEmptyString) + other->GetShortName());
+            menu->Append(id, (other->GetModified() ? "*" : "") + other->GetShortName());
         }
         if (!menu->GetMenuItemCount())
         {
@@ -437,15 +437,15 @@ void EditorBase::OnContextMenuEntry(wxCommandEvent& event)
     else
     {
         if      (id == idGoogle)
-            wxLaunchDefaultBrowser(wxString(_T("http://www.google.com/search?q="))                       << URLEncode(lastWord));
+            wxLaunchDefaultBrowser(wxString("http://www.google.com/search?q=")                       << URLEncode(lastWord));
         else if (id == idMsdn)
-            wxLaunchDefaultBrowser(wxString(_T("http://social.msdn.microsoft.com/Search/en-US/?query=")) << URLEncode(lastWord) << _T("&ac=8"));
+            wxLaunchDefaultBrowser(wxString("http://social.msdn.microsoft.com/Search/en-US/?query=") << URLEncode(lastWord) << "&ac=8");
         else if (id == idStackOverflow)
-            wxLaunchDefaultBrowser(wxString(_T("http://stackoverflow.com/search?q="))                    << URLEncode(lastWord));
+            wxLaunchDefaultBrowser(wxString("http://stackoverflow.com/search?q=")                    << URLEncode(lastWord));
         else if (id == idCodeProject)
-            wxLaunchDefaultBrowser(wxString(_T("http://www.codeproject.com/search.aspx?q="))             << URLEncode(lastWord));
+            wxLaunchDefaultBrowser(wxString("http://www.codeproject.com/search.aspx?q=")             << URLEncode(lastWord));
         else if (id == idCPlusPlusCom)
-            wxLaunchDefaultBrowser(wxString(_T("http://www.cplusplus.com/search.do?q="))                 << URLEncode(lastWord));
+            wxLaunchDefaultBrowser(wxString("http://www.cplusplus.com/search.do?q=")                 << URLEncode(lastWord));
     }
 }
 

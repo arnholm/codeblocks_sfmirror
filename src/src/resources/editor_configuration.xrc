@@ -804,13 +804,13 @@
 													</object>
 												</object>
 											</object>
-											<label>Encoding settings</label>
-										</object>
-									</object>
-									<flag>wxALL|wxEXPAND</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
+                                                                                        <label>Encoding settings</label>
+                                                                                </object>
+                                                                        </object>
+                                                                        <flag>wxALL|wxEXPAND</flag>
+                                                                        <border>5</border>
+                                                                        <option>1</option>
+                                                                </object>
 							</object>
 						</object>
 						<label>General settings</label>

@@ -82,13 +82,13 @@ wxString InfoPane::SaveTabOrder()
     for (size_t i = 0 ; i < m_Pages.GetCount(); ++i)
     {
         layout << m_Pages.Item(i)->title;
-        layout << _T("=");
+        layout << "=";
         layout << m_Pages.Item(i)->indexInNB;
-        layout << _T(";");
+        layout << ";";
     }
-    layout << _T("|selection=");
+    layout << "|selection=";
     layout << GetSelection();
-    layout << _T(";");
+    layout << ";";
     return layout;
 }
 
@@ -99,7 +99,7 @@ void InfoPane::LoadTabOrder(wxString layout)
     long selectedTab;
     theLayout.AfterLast('=').ToLong(&selectedTab);
     theLayout.Remove(theLayout.Find('|',true));
-    wxStringTokenizer strTok(theLayout, _T(";"));
+    wxStringTokenizer strTok(theLayout, ";");
     wxString title;
     while (strTok.HasMoreTokens())
     {
@@ -485,7 +485,7 @@ void InfoPane::DoShowContextMenu()
     if (menu.GetMenuItemCount() > 0)
         menu.AppendSeparator();
 
-    if (Manager::Get()->GetConfigManager(_T("app"))->ReadBool(_T("/environment/infopane_tabs_bottom"), false))
+    if (Manager::Get()->GetConfigManager("app")->ReadBool("/environment/infopane_tabs_bottom", false))
     	menu.Append(idNB_TabTop, _("Tabs at top"));
     else
     	menu.Append(idNB_TabBottom, _("Tabs at bottom"));
@@ -519,7 +519,7 @@ void InfoPane::OnTabPosition(wxCommandEvent& event)
     SetWindowStyleFlag(style);
     Refresh();
     // (style & wxAUI_NB_BOTTOM) saves info only about the the tabs position
-    Manager::Get()->GetConfigManager(_T("app"))->Write(_T("/environment/infopane_tabs_bottom"), (bool)(style & wxAUI_NB_BOTTOM));
+    Manager::Get()->GetConfigManager("app")->Write("/environment/infopane_tabs_bottom", (bool)(style & wxAUI_NB_BOTTOM));
 }
 
 #if wxCHECK_VERSION(3, 1, 6)
@@ -604,7 +604,7 @@ bool InfoPane::RemoveNonLogger(wxWindow* p)
         if (m_Pages.Item(i)->window == p)
         {
             if (m_Pages.Item(i)->islogger)
-                cbThrow(_T("Bad API usage. Shame on you."));
+                cbThrow("Bad API usage. Shame on you.");
 
             RemovePage(GetPageIndex(m_Pages.Item(i)->window));
             m_Pages.RemoveAt(i);
@@ -622,7 +622,7 @@ bool InfoPane::DeleteNonLogger(wxWindow* p)
         if (m_Pages.Item(i)->window == p)
         {
             if (m_Pages.Item(i)->islogger)
-                cbThrow(_T("Bad API usage. Shame on you."));
+                cbThrow("Bad API usage. Shame on you.");
 
             if (m_Pages.Item(i)->indexInNB >= 0)
                 DeletePage(GetPageIndex(m_Pages.Item(i)->window));

@@ -156,7 +156,7 @@ void BreakpointsDlg::Reload()
 
     for (Items::const_iterator it = m_breakpoints.begin(); it != m_breakpoints.end(); ++it)
     {
-        m_pList->InsertItem(m_pList->GetItemCount(), _T(""));
+        m_pList->InsertItem(m_pList->GetItemCount(), "");
         long item = m_pList->GetItemCount() - 1;
         int imageId;
         if (it->plugin != activeDebugger)

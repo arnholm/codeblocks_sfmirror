@@ -32,10 +32,10 @@ void cbException::ShowErrorMessage(bool safe)
 {
     wxString compilerVersion;
 #if defined(__clang__)
-    compilerVersion.Printf(_T("clang %d.%d.%d"), __clang_major__, __clang_minor__,
+    compilerVersion.Printf("clang %d.%d.%d", __clang_major__, __clang_minor__,
                            __clang_patchlevel__);
 #elif defined(__GNUC__)
-    compilerVersion.Printf(_T("gcc %d.%d.%d"), __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+    compilerVersion.Printf("gcc %d.%d.%d", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #endif
 
     wxString title = _("Exception");

@@ -37,7 +37,7 @@ END_EVENT_TABLE()
 CompilerMessages::CompilerMessages(const wxArrayString& titles_in, const wxArrayInt& widths_in)
     : ListCtrlLogger(titles_in, widths_in, true)
 {
-    m_autoFit = Manager::Get()->GetConfigManager(wxT("compiler"))->ReadBool(wxT("/autofit_during_build"), false);
+    m_autoFit = Manager::Get()->GetConfigManager("compiler")->ReadBool("/autofit_during_build", false);
     //ctor
 }
 
@@ -143,7 +143,7 @@ void CompilerMessages::OnFit(wxCommandEvent& WXUNUSED(event))
 void CompilerMessages::OnAutoFit(wxCommandEvent& event)
 {
     m_autoFit = event.IsChecked();
-    Manager::Get()->GetConfigManager(wxT("compiler"))->Write(wxT("/autofit_during_build"), m_autoFit);
+    Manager::Get()->GetConfigManager("compiler")->Write("/autofit_during_build", m_autoFit);
 }
 
 void CompilerMessages::AutoFitColumns(int cb_unused column)

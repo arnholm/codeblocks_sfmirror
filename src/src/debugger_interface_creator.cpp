@@ -49,7 +49,7 @@ cbBacktraceDlg* DebugInterfaceFactory::CreateBacktrace()
 {
     BacktraceDlg *dialog = new BacktraceDlg(Manager::Get()->GetAppWindow());
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("CallStackPane");
+    evt.name = "CallStackPane";
     evt.title = _("Call stack");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -71,7 +71,7 @@ cbBreakpointsDlg* DebugInterfaceFactory::CreateBreapoints()
     BreakpointsDlg *dialog = new BreakpointsDlg;
 
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("BreakpointsPane");
+    evt.name = "BreakpointsPane";
     evt.title = _("Breakpoints");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -93,7 +93,7 @@ cbCPURegistersDlg* DebugInterfaceFactory::CreateCPURegisters()
     CPURegistersDlg *dialog = new CPURegistersDlg(Manager::Get()->GetAppWindow());
 
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("CPURegistersPane");
+    evt.name = "CPURegistersPane";
     evt.title = _("CPU Registers");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -115,7 +115,7 @@ cbDisassemblyDlg* DebugInterfaceFactory::CreateDisassembly()
     DisassemblyDlg *dialog = new DisassemblyDlg(Manager::Get()->GetAppWindow());
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
 
-    evt.name = _T("DisassemblyPane");
+    evt.name = "DisassemblyPane";
     evt.title = _("Disassembly");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -136,7 +136,7 @@ cbExamineMemoryDlg* DebugInterfaceFactory::CreateMemory()
 {
     ExamineMemoryDlg *dialog = new ExamineMemoryDlg(Manager::Get()->GetAppWindow());
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("ExamineMemoryPane");
+    evt.name = "ExamineMemoryPane";
     evt.title = _("Memory");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -158,7 +158,7 @@ cbThreadsDlg* DebugInterfaceFactory::CreateThreads()
     ThreadsDlg *dialog = new ThreadsDlg(Manager::Get()->GetAppWindow());
 
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("ThreadsPane");
+    evt.name = "ThreadsPane";
     evt.title = _("Running threads");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;
@@ -179,7 +179,7 @@ cbWatchesDlg* DebugInterfaceFactory::CreateWatches()
 {
     WatchesDlg *dialog = new WatchesDlg;
     CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-    evt.name = _T("WatchesPane");
+    evt.name = "WatchesPane";
     evt.title = _("Watches");
     evt.pWindow = dialog;
     evt.dockSide = CodeBlocksDockEvent::dsFloating;

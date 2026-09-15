@@ -41,14 +41,14 @@
 // this auto-registers the plugin
 namespace
 {
-    PluginRegistrant<ProjectsImporter> reg(_T("ProjectsImporter"));
+    PluginRegistrant<ProjectsImporter> reg("ProjectsImporter");
 }
 
 ProjectsImporter::ProjectsImporter()
 {
     //ctor
-    if (!Manager::LoadResource(_T("projectsimporter.zip")))
-        NotifyMissingFile(_T("projectsimporter.zip"));
+    if (!Manager::LoadResource("projectsimporter.zip"))
+        NotifyMissingFile("projectsimporter.zip");
 }
 
 ProjectsImporter::~ProjectsImporter()

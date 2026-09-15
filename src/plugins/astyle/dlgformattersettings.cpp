@@ -128,21 +128,21 @@ void DlgFormatterSettings::ApplyTo(astyle::ASFormatter& formatter)
   formatter.setEmptyLineFill(XRCCTRL(*m_dlg, "chkFillEmptyLines",                wxCheckBox)->GetValue());
 
   wxString pointerAlign = XRCCTRL(*m_dlg, "cmbPointerAlign", wxComboBox)->GetValue();
-  if      (pointerAlign == _T("Type"))
+  if      (pointerAlign == "Type")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_TYPE);
-  else if (pointerAlign == _T("Middle"))
+  else if (pointerAlign == "Middle")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_MIDDLE);
-  else if (pointerAlign == _T("Name"))
+  else if (pointerAlign == "Name")
     formatter.setPointerAlignment(astyle::PTR_ALIGN_NAME);
   else
     formatter.setPointerAlignment(astyle::PTR_ALIGN_NONE);
 
   wxString referenceAlign = XRCCTRL(*m_dlg, "cmbReferenceAlign", wxComboBox)->GetValue();
-  if      (referenceAlign == _T("Type"))
+  if      (referenceAlign == "Type")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_TYPE);
-  else if (referenceAlign == _T("Middle"))
+  else if (referenceAlign == "Middle")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_MIDDLE);
-  else if (referenceAlign == _T("Name"))
+  else if (referenceAlign == "Name")
     formatter.setReferenceAlignment(astyle::REF_ALIGN_NAME);
   else
     formatter.setReferenceAlignment(astyle::REF_ALIGN_NONE);

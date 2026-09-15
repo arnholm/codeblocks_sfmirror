@@ -14,7 +14,7 @@ class CompilerMINGW : public Compiler
     public:
         // added arguments to ctor so we can derive other gcc-flavours directly
         // from MinGW (e.g. the cygwin compiler is derived from this one).
-        CompilerMINGW(const wxString& name = _("GNU GCC Compiler"), const wxString& ID = _T("gcc"));
+        CompilerMINGW(const wxString& name = _("GNU GCC Compiler"), const wxString& ID = "gcc");
         ~CompilerMINGW() override;
         AutoDetectResult AutoDetectInstallationDir() override;
         CompilerCommandGenerator* GetCommandGenerator(cbProject *project) override;

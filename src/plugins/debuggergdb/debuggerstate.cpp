@@ -97,7 +97,7 @@ void DebuggerState::CleanUp()
 wxString DebuggerState::ConvertToValidFilename(const wxString& filename)
 {
     wxString fname = filename;
-    fname.Replace(_T("\\"), _T("/"));
+    fname.Replace("\\", "/");
     return fname;
 } // end of ConvertToValidFilename
 

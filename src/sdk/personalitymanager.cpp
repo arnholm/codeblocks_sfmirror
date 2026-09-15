@@ -41,12 +41,12 @@ const wxString PersonalityManager::GetPersonality()
 const wxArrayString PersonalityManager::GetPersonalitiesList()
 {
     wxArrayString list, allConf;
-    wxDir::GetAllFiles(ConfigManager::GetConfigFolder(), &allConf, _T("*.conf"), wxDIR_FILES);
+    wxDir::GetAllFiles(ConfigManager::GetConfigFolder(), &allConf, "*.conf", wxDIR_FILES);
 
     for(size_t i = 0; i < allConf.GetCount(); ++i)
     {
         // return only <personality>.conf names, exclude <personality>.some.other.conf
-        if (wxFileName(allConf[i]).GetName().Contains(wxT(".cbKeyBinder")))
+        if (wxFileName(allConf[i]).GetName().Contains(".cbKeyBinder"))
             continue;
         list.Add(wxFileName(allConf[i]).GetName());
     }

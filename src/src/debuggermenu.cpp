@@ -373,7 +373,7 @@ void DebuggerMenuHandler::RebuildMenus()
                 (*itConf)->SetMenuId(id);
             }
 
-            menu->AppendRadioItem(id, it->first->GetGUIName() + wxT(": ") + (*itConf)->GetName());
+            menu->AppendRadioItem(id, it->first->GetGUIName() + ": " + (*itConf)->GetName());
             Connect(id, wxEVT_COMMAND_MENU_SELECTED,
                     wxObjectEventFunction(&DebuggerMenuHandler::OnActiveDebuggerClick));
             Connect(id, wxEVT_UPDATE_UI,
@@ -540,7 +540,7 @@ void DebuggerMenuHandler::LogActiveConfig()
     if (it != allDebuggers.end())
     {
         cbDebuggerConfiguration &config = m_activeDebugger->GetActiveConfig();
-        configName = it->first->GetGUIName() + wxT(":") + config.GetName();
+        configName = it->first->GetGUIName() + ":" + config.GetName();
     }
     m_activeDebugger->Log(_("Active debugger config: ") + configName);
 }
@@ -810,7 +810,7 @@ wxToolBar* DebuggerToolbarHandler::GetToolbar(bool create)
             return nullptr;
 
         m_Toolbar = Manager::Get()->CreateEmptyToolbar();
-        Manager::AddonToolBar(m_Toolbar, wxT("debugger_toolbar"));
+        Manager::AddonToolBar(m_Toolbar, "debugger_toolbar");
 
         m_Toolbar->Realize();
         m_Toolbar->SetInitialSize();

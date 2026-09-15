@@ -49,7 +49,7 @@ DisassemblyDlg::DisassemblyDlg(wxWindow* parent) :
     m_LastActiveAddr(0),
     m_ClearFlag(false)
 {
-    if (!wxXmlResource::Get()->LoadPanel(this, parent, _T("dlgDisassembly")))
+    if (!wxXmlResource::Get()->LoadPanel(this, parent, "dlgDisassembly"))
         return;
 
     m_pCode = new wxScintilla(this, wxID_ANY, wxDefaultPosition, wxSize(1,1));
@@ -61,7 +61,7 @@ DisassemblyDlg::DisassemblyDlg(wxWindow* parent) :
     m_pCode->SetMarginMask(1, (1 << DEBUG_MARKER));
     m_pCode->MarkerDefine(DEBUG_MARKER, DEBUG_STYLE);
     m_pCode->MarkerSetBackground(DEBUG_MARKER, wxColour(0xFF, 0xFF, 0x00));
-    wxXmlResource::Get()->AttachUnknownControl(_T("lcCode"), m_pCode);
+    wxXmlResource::Get()->AttachUnknownControl("lcCode", m_pCode);
 
     // set a default font
 #if wxCHECK_VERSION(3, 1, 0)
@@ -97,8 +97,8 @@ DisassemblyDlg::DisassemblyDlg(wxWindow* parent) :
 
 void DisassemblyDlg::Clear(const cbStackFrame& frame)
 {
-    m_FrameFunction = frame.IsValid() ? frame.GetSymbol() : _T("??");
-    m_FrameAddress = _T("??");
+    m_FrameFunction = frame.IsValid() ? frame.GetSymbol() : "??";
+    m_FrameAddress = "??";
     if (frame.IsValid())
         m_FrameAddress = frame.GetAddressAsString();
 
@@ -138,7 +138,7 @@ void DisassemblyDlg::AddAssemblerLine(uint64_t addr, const wxString& line)
         m_pCode->ClearAll();
     }
 
-    m_pCode->AppendText(cbDebuggerAddressToString(addr) + wxT("\t") + line + wxT("\n"));
+    m_pCode->AppendText(cbDebuggerAddressToString(addr) + "\t" + line + "\n");
     SetActiveAddress(m_LastActiveAddr);
     m_pCode->SetReadOnly(true);
     m_LineTypes.push_back('D') ;
@@ -153,7 +153,7 @@ void DisassemblyDlg::AddSourceLine(int lineno, const wxString& line)
         m_pCode->ClearAll();
     }
     wxString fmt;
-    fmt.Printf(_T(";%-3d:\t%s\n"), lineno, line.c_str());
+    fmt.Printf(";%-3d:\t%s\n", lineno, line.c_str());
 
     m_pCode->AppendText(fmt);
 
@@ -239,7 +239,7 @@ void DisassemblyDlg::OnSave(cb_unused wxCommandEvent& event)
 {
     wxFileDialog dlg(this,
                      _("Save as text file"),
-                     _T("assembly_dump.txt"),
+                     "assembly_dump.txt",
                      wxEmptyString,
                      FileFilters::GetFilterAll(),
                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);

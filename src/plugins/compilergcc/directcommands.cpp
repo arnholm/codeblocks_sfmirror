@@ -33,15 +33,15 @@
 #include "filefilters.h"
 #include "depslib.h"
 
-const wxString COMPILER_SIMPLE_LOG(_T("SLOG:"));
-const wxString COMPILER_NOTE_LOG(_T("SLOG:NLOG:"));
+const wxString COMPILER_SIMPLE_LOG("SLOG:");
+const wxString COMPILER_NOTE_LOG("SLOG:NLOG:");
 /// Print a NOTE log message to the build log, without advancing the progress counter
-const wxString COMPILER_ONLY_NOTE_LOG(_T("SLOG:ONLOG:"));
-const wxString COMPILER_WARNING_LOG(_T("SLOG:WLOG:"));
-const wxString COMPILER_ERROR_LOG(_T("SLOG:ELOG:"));
-const wxString COMPILER_TARGET_CHANGE(_T("TGT:"));
-const wxString COMPILER_WAIT(_T("WAIT"));
-const wxString COMPILER_WAIT_LINK(_T("LINK"));
+const wxString COMPILER_ONLY_NOTE_LOG("SLOG:ONLOG:");
+const wxString COMPILER_WARNING_LOG("SLOG:WLOG:");
+const wxString COMPILER_ERROR_LOG("SLOG:ELOG:");
+const wxString COMPILER_TARGET_CHANGE("TGT:");
+const wxString COMPILER_WAIT("WAIT");
+const wxString COMPILER_WAIT_LINK("LINK");
 
 const wxString COMPILER_NOTE_ID_LOG = COMPILER_NOTE_LOG.AfterFirst(wxT(':'));
 const wxString COMPILER_ONLY_NOTE_ID_LOG = COMPILER_ONLY_NOTE_LOG.AfterFirst(wxT(':'));
@@ -98,7 +98,7 @@ DirectCommands::~DirectCommands()
     if (stats.cache_updated)
     {
         wxFileName fname(m_pProject->GetFilename());
-        fname.SetExt(_T("depend"));
+        fname.SetExt("depend");
         depsCacheWrite(fname.GetFullPath().mb_str());
     }
 
@@ -117,7 +117,7 @@ void DirectCommands::AddCommandsToArray(const wxString& cmds, wxArrayString& arr
     wxString cmd = cmds;
     while (!cmd.IsEmpty())
     {
-        int idx = cmd.Find(_T("\n"));
+        int idx = cmd.Find("\n");
         wxString cmdpart = idx != -1 ? cmd.Left(idx) : cmd;
         cmdpart.Trim(false);
         cmdpart.Trim(true);
@@ -430,7 +430,7 @@ wxArrayString DirectCommands::GetCompileSingleFileCommand(const wxString& filena
         return ret;
 
     // please leave this check here for convenience: single file compilation is "special"
-    if (!m_pGenerator) cbThrow(_T("Command generator not initialised through ctor!"));
+    if (!m_pGenerator) cbThrow("Command generator not initialised through ctor!");
 
     wxString compilerCmd = compiler->GetCommand(ctCompileObjectCmd, srcExt);
     CompilerCommandGenerator::Result compilerResult(&compilerCmd);
@@ -696,7 +696,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
     wxString linkfiles;
     wxString FlatLinkFiles;
     wxString resfiles;
-    bool IsOpenWatcom = target->GetCompilerID().IsSameAs(_T("ow"));
+    bool IsOpenWatcom = target->GetCompilerID().IsSameAs("ow");
 
     time_t outputtime;
     depsTimeStamp(output.mb_str(), &outputtime);
@@ -738,7 +738,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
         // So, we first scan the command for this special case and, if found,
         // set a flag so that the linkfiles array is filled with the correct options
         wxString compilerCmd = compiler ? compiler->GetCommand(ctLinkStaticCmd) : wxString(wxEmptyString);
-        wxRegEx re(_T("\\$([-+]+)link_objects"));
+        wxRegEx re("\\$([-+]+)link_objects");
         if (re.Matches(compilerCmd))
             prependHack = re.GetMatch(compilerCmd, 1);
     }
@@ -753,7 +753,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
     }
 
     if (IsOpenWatcom && target->GetTargetType() != ttStaticLib)
-        linkfiles << _T("file ");
+        linkfiles << "file ";
 
     bool subseqLink(false);
     bool subseqRes(false);
@@ -765,7 +765,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
         // we have to test again for each file if it is to be compiled
         // and we can't check the file for existence because we 're still
         // generating the command lines that will create the files...
-        wxString macro = _T("$compiler");
+        wxString macro = "$compiler";
         CompilerCommandGenerator::Result result(&macro);
         CompilerCommandGenerator::Params params;
         params.target = target;
@@ -791,7 +791,7 @@ wxArrayString DirectCommands::GetTargetLinkCommands(ProjectBuildTarget* target, 
             // -----------------------------------------
             // Following lines have been modified for OpenWatcom
             if (IsOpenWatcom)
-                resfiles << _T("option resource=") << Object;
+                resfiles << "option resource=" << Object;
             else
                 resfiles << Object;
             // ------------------------------------------
@@ -1046,7 +1046,7 @@ bool DirectCommands::AreExternalDepsOutdated(ProjectBuildTarget* target,
 
                 // if user manually pointed to a library, without using the lib dirs,
                 // then just check the file directly w/out involving the search dirs...
-                if (lib.Contains(_T("/")) || lib.Contains(_T("\\")))
+                if (lib.Contains("/") || lib.Contains("\\"))
                 {
                     Manager::Get()->GetMacrosManager()->ReplaceMacros(lib, target);
                     lib = UnixFilename(lib);
@@ -1066,8 +1066,8 @@ bool DirectCommands::AreExternalDepsOutdated(ProjectBuildTarget* target,
 
                 if (!lib.StartsWith(compiler->GetSwitches().libPrefix))
                     lib = compiler->GetSwitches().libPrefix + lib;
-                if (!lib.EndsWith(_T(".") + compiler->GetSwitches().libExtension))
-                    lib += _T(".") + compiler->GetSwitches().libExtension;
+                if (!lib.EndsWith("." + compiler->GetSwitches().libExtension))
+                    lib += "." + compiler->GetSwitches().libExtension;
 
                 for (size_t l = 0; l < libDirs.GetCount(); ++l)
                 {
@@ -1091,8 +1091,8 @@ bool DirectCommands::AreExternalDepsOutdated(ProjectBuildTarget* target,
     }
 
     // array is separated by ;
-    wxArrayString extDeps  = GetArrayFromString(target->GetExternalDeps(), _T(";"));
-    wxArrayString addFiles = GetArrayFromString(target->GetAdditionalOutputFiles(), _T(";"));
+    wxArrayString extDeps  = GetArrayFromString(target->GetExternalDeps(), ";");
+    wxArrayString addFiles = GetArrayFromString(target->GetAdditionalOutputFiles(), ";");
     for (size_t i = 0; i < extDeps.GetCount(); ++i)
     {
         if (extDeps[i].IsEmpty())
@@ -1188,7 +1188,7 @@ bool DirectCommands::IsObjectOutdated(ProjectBuildTarget* target, const pfDetail
         return true;
 
     // Do the check for includes only, if not disabled by the user, e.g. in case of non C/C++ compilers
-    if ( Manager::Get()->GetConfigManager(_T("compiler"))->ReadBool(_T("/skip_include_deps"), false) )
+    if ( Manager::Get()->GetConfigManager("compiler")->ReadBool("/skip_include_deps", false) )
         return false;
 
     // Scan the source file for headers. Result is NULL if the file does

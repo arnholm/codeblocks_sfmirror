@@ -365,21 +365,21 @@ long cbDebuggerConfiguration::GetMenuId() const
 
 bool cbDebuggerCommonConfig::GetFlag(Flags flag)
 {
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
     switch (flag)
     {
         case AutoBuild:
-            return c->ReadBool(wxT("/common/auto_build"), true);
+            return c->ReadBool("/common/auto_build", true);
         case AutoSwitchFrame:
-            return c->ReadBool(wxT("/common/auto_switch_frame"), true);
+            return c->ReadBool("/common/auto_switch_frame", true);
         case ShowDebuggersLog:
-            return c->ReadBool(wxT("/common/debug_log"), false);
+            return c->ReadBool("/common/debug_log", false);
         case JumpOnDoubleClick:
-            return c->ReadBool(wxT("/common/jump_on_double_click"), false);
+            return c->ReadBool("/common/jump_on_double_click", false);
         case RequireCtrlForTooltips:
-            return c->ReadBool(wxT("/common/require_ctrl_for_tooltips"), false);
+            return c->ReadBool("/common/require_ctrl_for_tooltips", false);
         case ShowTemporaryBreakpoints:
-            return c->ReadBool(wxT("/common/show_temporary_breakpoints"), false);
+            return c->ReadBool("/common/show_temporary_breakpoints", false);
         default:
             return false;
     }
@@ -387,26 +387,26 @@ bool cbDebuggerCommonConfig::GetFlag(Flags flag)
 
 void cbDebuggerCommonConfig::SetFlag(Flags flag, bool value)
 {
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
     switch (flag)
     {
         case AutoBuild:
-            c->Write(wxT("/common/auto_build"), value);
+            c->Write("/common/auto_build", value);
             break;
         case AutoSwitchFrame:
-            c->Write(wxT("/common/auto_switch_frame"), value);
+            c->Write("/common/auto_switch_frame", value);
             break;
         case ShowDebuggersLog:
-            c->Write(wxT("/common/debug_log"), value);
+            c->Write("/common/debug_log", value);
             break;
         case JumpOnDoubleClick:
-            c->Write(wxT("/common/jump_on_double_click"), value);
+            c->Write("/common/jump_on_double_click", value);
             break;
         case RequireCtrlForTooltips:
-            c->Write(wxT("/common/require_ctrl_for_tooltips"), value);
+            c->Write("/common/require_ctrl_for_tooltips", value);
             break;
         case ShowTemporaryBreakpoints:
-            c->Write(wxT("/common/show_temporary_breakpoints"), value);
+            c->Write("/common/show_temporary_breakpoints", value);
         default:
             ;
     }
@@ -418,8 +418,8 @@ wxString cbDebuggerCommonConfig::GetValueTooltipFont()
     system.SetPointSize(std::max(system.GetPointSize() - 3, 7));
     wxString defaultFont = system.GetNativeFontInfo()->ToString();
 
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    wxString configFont = c->Read(wxT("/common/tooltip_font"));
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    wxString configFont = c->Read("/common/tooltip_font");
 
     return configFont.empty() ? defaultFont : configFont;
 }
@@ -430,15 +430,15 @@ void cbDebuggerCommonConfig::SetValueTooltipFont(const wxString &font)
 
     if (font != oldFont && !font.empty())
     {
-        ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-        c->Write(wxT("/common/tooltip_font"), font);
+        ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+        c->Write("/common/tooltip_font", font);
     }
 }
 
 cbDebuggerCommonConfig::Perspective cbDebuggerCommonConfig::GetPerspective()
 {
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    int v = c->ReadInt(wxT("/common/perspective"),
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    int v = c->ReadInt("/common/perspective",
                        static_cast<int>(Perspective::OnePerDebuggerConfig));
     if (v < Perspective::OnlyOne || v > Perspective::UseCurrent)
         return Perspective::OnePerDebuggerConfig;
@@ -447,32 +447,32 @@ cbDebuggerCommonConfig::Perspective cbDebuggerCommonConfig::GetPerspective()
 
 void cbDebuggerCommonConfig::SetPerspective(int perspective)
 {
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
     if (perspective < Perspective::OnlyOne || perspective > Perspective::UseCurrent)
         perspective = Perspective::OnePerDebuggerConfig;
-    c->Write(wxT("/common/perspective"), perspective);
+    c->Write("/common/perspective", perspective);
 }
 
 wxString cbDetectDebuggerExecutable(const wxString &exeName)
 {
-    wxString exeExt(platform::windows ? wxT(".exe") : wxEmptyString);
+    wxString exeExt(platform::windows ? ".exe" : "");
     wxString exePath = cbFindFileInPATH(exeName);
     wxChar sep = wxFileName::GetPathSeparator();
 
     if (exePath.empty())
     {
         if (!platform::windows)
-            exePath = wxT("/usr/bin/") + exeName + exeExt;
+            exePath = "/usr/bin/" + exeName + exeExt;
         else
         {
             const wxString &cbInstallFolder = ConfigManager::GetExecutableFolder();
-            if (wxFileExists(cbInstallFolder + sep + wxT("MINGW") + sep + wxT("bin") + sep + exeName + exeExt))
-                exePath = cbInstallFolder + sep + wxT("MINGW") + sep + wxT("bin");
+            if (wxFileExists(cbInstallFolder + sep + "MINGW" + sep + "bin" + sep + exeName + exeExt))
+                exePath = cbInstallFolder + sep + "MINGW" + sep + "bin";
             else
             {
-                exePath = wxT("C:\\MinGW\\bin");
+                exePath = "C:\\MinGW\\bin";
                 if (!wxDirExists(exePath))
-                    exePath = wxT("C:\\MinGW32\\bin");
+                    exePath = "C:\\MinGW32\\bin";
             }
         }
     }
@@ -570,7 +570,7 @@ public:
         sizer->Add(text_control, wxEXPAND, wxEXPAND | wxALL , 0);
         sizer->Add(control_sizer, 0, wxEXPAND | wxALL, 0);
 
-        wxStaticText *label = new wxStaticText(this, wxID_ANY, _T("Command:"),
+        wxStaticText *label = new wxStaticText(this, wxID_ANY, "Command:",
                                                wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
 
         m_command_entry = new wxComboBox(this, idDebug_LogEntryControl, wxEmptyString,
@@ -590,18 +590,18 @@ public:
         wxBitmapButton *button_execute;
         button_execute = new wxBitmapButton(this, idDebug_ExecuteButton, execute_bitmap, wxDefaultPosition,
                                             wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator,
-                                            _T("idDebug_ExecuteButton"));
+                                            "idDebug_ExecuteButton");
         button_execute->SetToolTip(_("Execute current command"));
 
         wxBitmapButton *button_load = new wxBitmapButton(this, idDebug_LoadButton, file_open_bitmap, wxDefaultPosition,
                                                          wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator,
-                                                         _T("idDebug_LoadButton"));
+                                                         "idDebug_LoadButton");
         button_load->SetDefault();
         button_load->SetToolTip(_("Load from file"));
 
         wxBitmapButton *button_clear = new wxBitmapButton(this, idDebug_ClearButton, clear_bitmap, wxDefaultPosition,
                                                           wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator,
-                                                          _T("idDebug_ClearButton"));
+                                                          "idDebug_ClearButton");
         button_clear->SetDefault();
         button_clear->SetToolTip(_("Clear output window"));
 
@@ -676,17 +676,17 @@ public:
         if (!plugin)
             return;
 
-        ConfigManager* manager = Manager::Get()->GetConfigManager(_T("app"));
-        wxString path = manager->Read(_T("/file_dialogs/file_run_dbg_script/directory"), wxEmptyString);
+        ConfigManager* manager = Manager::Get()->GetConfigManager("app");
+        wxString path = manager->Read("/file_dialogs/file_run_dbg_script/directory", wxEmptyString);
 
         wxFileDialog dialog(this, _("Load script"), path, wxEmptyString,
-                            _T("Debugger script files (*.gdb)|*.gdb"), wxFD_OPEN | compatibility::wxHideReadonly);
+                            "Debugger script files (*.gdb)|*.gdb", wxFD_OPEN | compatibility::wxHideReadonly);
         PlaceWindow(&dialog);
         if (dialog.ShowModal() == wxID_OK)
         {
-            manager->Write(_T("/file_dialogs/file_run_dbg_script/directory"), dialog.GetDirectory());
+            manager->Write("/file_dialogs/file_run_dbg_script/directory", dialog.GetDirectory());
 
-            plugin->SendCommand(_T("source ") + dialog.GetPath(), m_debug_log);
+            plugin->SendCommand("source " + dialog.GetPath(), m_debug_log);
         }
     }
 
@@ -714,19 +714,19 @@ template<> bool  Mgr<DebuggerManager>::isShutdown = false;
 
 inline void ReadActiveDebuggerConfig(wxString &name, int &configIndex)
 {
-    ConfigManager &config = *Manager::Get()->GetConfigManager(_T("debugger_common"));
-    name = config.Read(wxT("active_debugger"), wxEmptyString);
+    ConfigManager &config = *Manager::Get()->GetConfigManager("debugger_common");
+    name = config.Read("active_debugger", wxEmptyString);
     if (name.empty())
         configIndex = -1;
     else
-        configIndex = std::max(0, config.ReadInt(wxT("active_debugger_config"), 0));
+        configIndex = std::max(0, config.ReadInt("active_debugger_config", 0));
 }
 
 inline void WriteActiveDebuggerConfig(const wxString &name, int configIndex)
 {
-    ConfigManager &configMgr = *Manager::Get()->GetConfigManager(_T("debugger_common"));
-    configMgr.Write(wxT("active_debugger"), name);
-    configMgr.Write(wxT("active_debugger_config"), configIndex);
+    ConfigManager &configMgr = *Manager::Get()->GetConfigManager("debugger_common");
+    configMgr.Write("active_debugger", name);
+    configMgr.Write("active_debugger_config", configIndex);
 }
 
 cbDebuggerConfiguration* DebuggerManager::PluginData::GetConfiguration(int index)
@@ -769,8 +769,8 @@ DebuggerManager::DebuggerManager() :
     if (activeDebuggerName.empty() && activeConfig == -1)
         m_useTargetsDefault = true;
 
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    m_isDisassemblyMixedMode = c->ReadBool(wxT("/common/disassembly/mixed_mode"), false);
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    m_isDisassemblyMixedMode = c->ReadBool("/common/disassembly/mixed_mode", false);
 
 }
 
@@ -791,7 +791,7 @@ bool DebuggerManager::RegisterDebugger(cbDebuggerPlugin *plugin)
     const wxString &guiName=plugin->GetGUIName();
     const wxString &settingsName=plugin->GetSettingsName();
 
-    wxRegEx regExSettingsName(wxT("^[a-z_][a-z0-9_]+$"));
+    wxRegEx regExSettingsName("^[a-z_][a-z0-9_]+$");
     if (!regExSettingsName.Matches(settingsName))
     {
         wxString s;
@@ -873,14 +873,14 @@ void DebuggerManager::ProcessSettings(RegisteredPlugins::iterator it)
 {
     cbDebuggerPlugin *plugin = it->first;
     PluginData &data = it->second;
-    ConfigManager *config = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    wxString path = wxT("/sets/") + plugin->GetSettingsName();
+    ConfigManager *config = Manager::Get()->GetConfigManager("debugger_common");
+    wxString path = "/sets/" + plugin->GetSettingsName();
     wxArrayString configs = config->EnumerateSubPaths(path);
     configs.Sort();
 
     if (configs.empty())
     {
-        config->Write(path + wxT("/conf1/name"), wxString(wxT("Default")));
+        config->Write(path + "/conf1/name", wxString("Default"));
         configs = config->EnumerateSubPaths(path);
         configs.Sort();
     }
@@ -890,11 +890,11 @@ void DebuggerManager::ProcessSettings(RegisteredPlugins::iterator it)
 
     for (size_t jj = 0; jj < configs.Count(); ++jj)
     {
-        wxString configPath = path + wxT("/") + configs[jj];
-        wxString name = config->Read(configPath + wxT("/name"));
+        wxString configPath = path + "/" + configs[jj];
+        wxString name = config->Read(configPath + "/name");
 
         cbDebuggerConfiguration *pluginConfig;
-        pluginConfig = plugin->LoadConfig(ConfigManagerWrapper(wxT("debugger_common"), configPath + wxT("/values")));
+        pluginConfig = plugin->LoadConfig(ConfigManagerWrapper("debugger_common", configPath + "/values"));
         if (pluginConfig)
         {
             pluginConfig->SetName(name);
@@ -909,11 +909,11 @@ ConfigManagerWrapper DebuggerManager::NewConfig(cbDebuggerPlugin *plugin, cb_unu
     if (it == m_registered.end())
         return ConfigManagerWrapper();
 
-    wxString path = wxT("/sets/") + it->first->GetSettingsName();
+    wxString path = "/sets/" + it->first->GetSettingsName();
 
     if (it->second.m_lastConfigID == -1)
     {
-        ConfigManager *config = Manager::Get()->GetConfigManager(wxT("debugger_common"));
+        ConfigManager *config = Manager::Get()->GetConfigManager("debugger_common");
         wxArrayString configs = config->EnumerateSubPaths(path);
         for (size_t ii = 0; ii < configs.GetCount(); ++ii)
         {
@@ -923,9 +923,9 @@ ConfigManagerWrapper DebuggerManager::NewConfig(cbDebuggerPlugin *plugin, cb_unu
         }
     }
 
-    path << wxT("/conf") << ++it->second.m_lastConfigID;
+    path << "/conf" << ++it->second.m_lastConfigID;
 
-    return ConfigManagerWrapper(wxT("debugger_common"), path +  wxT("/values"));
+    return ConfigManagerWrapper("debugger_common", path +  "/values");
 }
 
 void DebuggerManager::RebuildAllConfigs()
@@ -948,7 +948,7 @@ wxMenu* DebuggerManager::GetMenu()
 
     if (!menu)
     {
-        menu = Manager::Get()->LoadMenu(_T("debugger_menu"),true);
+        menu = Manager::Get()->LoadMenu("debugger_menu",true);
 
         // ok, now, where do we insert?
         // three possibilities here:
@@ -1341,7 +1341,7 @@ void DebuggerManager::FindTargetsDebugger()
 
     if (name.empty() || config.empty())
     {
-        if (compiler->GetID() != wxT("null"))
+        if (compiler->GetID() != "null")
         {
             log->LogError(wxString::Format(_("Current compiler '%s' doesn't have correctly defined debugger!"),
                                            compiler->GetName().c_str()));
@@ -1396,8 +1396,8 @@ bool DebuggerManager::IsDisassemblyMixedMode()
 void DebuggerManager::SetDisassemblyMixedMode(bool mixed)
 {
     m_isDisassemblyMixedMode = mixed;
-    ConfigManager *c = Manager::Get()->GetConfigManager(wxT("debugger_common"));
-    c->Write(wxT("/common/disassembly/mixed_mode"), m_isDisassemblyMixedMode);
+    ConfigManager *c = Manager::Get()->GetConfigManager("debugger_common");
+    c->Write("/common/disassembly/mixed_mode", m_isDisassemblyMixedMode);
 }
 
 void DebuggerManager::OnProjectActivated(cb_unused CodeBlocksEvent& event)

@@ -62,7 +62,7 @@ const cbProject* ProjectBuildTarget::GetParentProject() const
 
 wxString ProjectBuildTarget::GetFullTitle() const
 {
-    return m_Project->GetTitle() + _T(" - ") + GetTitle();
+    return m_Project->GetTitle() + " - " + GetTitle();
 }
 
 const wxString & ProjectBuildTarget::GetExternalDeps() const

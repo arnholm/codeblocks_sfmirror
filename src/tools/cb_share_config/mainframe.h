@@ -99,7 +99,7 @@ class MainFrame: public wxFrame
                                std::vector<TiXmlNode*> *nodes);
     void          OfferNode   (TiXmlNode** node, wxListBox* listbox,
                                std::vector<TiXmlNode*> *nodes,
-                               const wxString& prefix = wxT(""));
+                               const wxString& prefix = "");
     bool          TransferNode(TiXmlNode** node, const wxArrayString& path);
     void          AttachNode(size_t idx, TiXmlElement* root);
     void          DoExport(bool selected_only);

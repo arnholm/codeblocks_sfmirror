@@ -227,7 +227,7 @@ ScriptingManager::ScriptingManager() : m_data(new Data(this))
 {
     m_data->m_vm = sq_open(1024);
     if (m_data->m_vm == nullptr)
-        cbThrow(_T("Can't create scripting engine!"));
+        cbThrow("Can't create scripting engine!");
 
     // FIXME (squirrel) Provide special error function?
     sq_setprintfunc(m_data->m_vm, ScriptsPrintFunc, ScriptsErrorFunc);
@@ -272,11 +272,11 @@ ScriptingManager::~ScriptingManager()
     {
         if (!it->second.permanent)
             continue;
-        wxString key = wxString::Format(_T("trust%d"), i++);
-        wxString value = wxString::Format(_T("%s?%x"), it->first.c_str(), it->second.crc);
+        wxString key = wxString::Format("trust%d", i++);
+        wxString value = wxString::Format("%s?%x", it->first.c_str(), it->second.crc);
         myMap.insert(myMap.end(), std::make_pair(key, value));
     }
-    Manager::Get()->GetConfigManager(_T("security"))->Write(_T("/trusted_scripts"), myMap);
+    Manager::Get()->GetConfigManager("security")->Write("/trusted_scripts", myMap);
 
     if (m_data->m_vm)
     {
@@ -330,7 +330,7 @@ bool ScriptingManager::LoadScript(const wxString& filename)
             f.Open(fname);
             if (!f.IsOpened())
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("Can't open script ") + filename);
+                Manager::Get()->GetLogManager()->DebugLog("Can't open script " + filename);
                 return false;
             }
         }
@@ -515,7 +515,7 @@ bool ScriptingManager::RegisterScriptMenu(const wxString& menuPath, const wxStri
 bool ScriptingManager::UnRegisterScriptMenu(cb_unused const wxString& menuPath)
 {
     // TODO: not implemented
-    Manager::Get()->GetLogManager()->DebugLog(_T("ScriptingManager::UnRegisterScriptMenu() not implemented"));
+    Manager::Get()->GetLogManager()->DebugLog("ScriptingManager::UnRegisterScriptMenu() not implemented");
     return false;
 }
 
@@ -584,7 +584,7 @@ bool ScriptingManager::IsScriptTrusted(const wxString& script)
     wxUint32 crc = wxCrc32::FromFile(script);
     if (crc == it->second.crc)
         return true;
-    cbMessageBox(script + _T("\n\n") + _("The script was marked as \"trusted\" but it has been modified "
+    cbMessageBox(script + "\n\n" + _("The script was marked as \"trusted\" but it has been modified "
                     "since then.\nScript not trusted anymore."),
                 _("Warning"), wxICON_WARNING);
     m_data->m_TrustedScripts.erase(it);
@@ -643,7 +643,7 @@ void ScriptingManager::RefreshTrusts()
     // reload trusted scripts set
     m_data->m_TrustedScripts.clear();
     ConfigManagerContainer::StringToStringMap myMap;
-    Manager::Get()->GetConfigManager(_T("security"))->Read(_T("/trusted_scripts"), &myMap);
+    Manager::Get()->GetConfigManager("security")->Read("/trusted_scripts", &myMap);
     ConfigManagerContainer::StringToStringMap::iterator it;
     for (it = myMap.begin(); it != myMap.end(); ++it)
     {

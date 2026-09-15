@@ -18,8 +18,8 @@
 
 #define NOT_IMPLEMENTED()   \
     do {                    \
-        DebugLog(wxString(cbC2U(__PRETTY_FUNCTION__)) + _T(": Not implemented in driver"));     \
-        Log(wxString(cbC2U(__PRETTY_FUNCTION__)) + _T(": Not implemented in driver"));           \
+        DebugLog(wxString(cbC2U(__PRETTY_FUNCTION__)) + ": Not implemented in driver");     \
+        Log(wxString(cbC2U(__PRETTY_FUNCTION__)) + ": Not implemented in driver");           \
     } while(0)
 
 class DebuggerGDB;

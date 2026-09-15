@@ -47,7 +47,7 @@ GenericSingleChoiceList::GenericSingleChoiceList(wxWindow* parent,wxWindowID id)
 	BoxSizer1->SetSizeHints(this);
 	//*)
 
-    GenericChoiceList->SetName(_T("GenericChoiceList"));
+    GenericChoiceList->SetName("GenericChoiceList");
 }
 
 GenericSingleChoiceList::~GenericSingleChoiceList()

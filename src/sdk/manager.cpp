@@ -54,66 +54,66 @@ static Manager* s_ManagerInstance = nullptr;
 static wxString GetCodeblocksEventName(wxEventType type)
 {
     wxString name;
-    if      (type==cbEVT_APP_STARTUP_DONE) name = _T("cbEVT_APP_STARTUP_DONE");
-    else if (type==cbEVT_APP_START_SHUTDOWN) name = _T("cbEVT_APP_START_SHUTDOWN");
-    else if (type==cbEVT_APP_ACTIVATED) name = _T("cbEVT_APP_ACTIVATED");
-    else if (type==cbEVT_APP_DEACTIVATED) name = _T("cbEVT_APP_DEACTIVATED");
-    else if (type==cbEVT_PLUGIN_ATTACHED) name = _T("cbEVT_PLUGIN_ATTACHED");
-    else if (type==cbEVT_PLUGIN_RELEASED) name = _T("cbEVT_PLUGIN_RELEASED");
-    else if (type==cbEVT_PLUGIN_INSTALLED) name = _T("cbEVT_PLUGIN_INSTALLED");
-    else if (type==cbEVT_PLUGIN_UNINSTALLED) name = _T("cbEVT_PLUGIN_UNINSTALLED");
-    else if (type==cbEVT_PLUGIN_LOADING_COMPLETE) name = _T("cbEVT_PLUGIN_LOADING_COMPLETE");
-    else if (type==cbEVT_EDITOR_CLOSE) name = _T("cbEVT_EDITOR_CLOSE");
-    else if (type==cbEVT_EDITOR_OPEN) name = _T("cbEVT_EDITOR_OPEN");
-    else if (type==cbEVT_EDITOR_SWITCHED) name = _T("cbEVT_EDITOR_SWITCHED");
-    else if (type==cbEVT_EDITOR_ACTIVATED) name = _T("cbEVT_EDITOR_ACTIVATED");
-    else if (type==cbEVT_EDITOR_DEACTIVATED) name = _T("cbEVT_EDITOR_DEACTIVATED");
-    else if (type==cbEVT_EDITOR_BEFORE_SAVE) name = _T("cbEVT_EDITOR_BEFORE_SAVE");
-    else if (type==cbEVT_EDITOR_SAVE) name = _T("cbEVT_EDITOR_SAVE");
-    else if (type==cbEVT_EDITOR_MODIFIED) name = _T("cbEVT_EDITOR_MODIFIED");
-    else if (type==cbEVT_EDITOR_TOOLTIP) name = _T("cbEVT_EDITOR_TOOLTIP");
-    else if (type==cbEVT_EDITOR_TOOLTIP_CANCEL) name = _T("cbEVT_EDITOR_TOOLTIP_CANCEL");
-    else if (type==cbEVT_EDITOR_SPLIT) name = _T("cbEVT_EDITOR_SPLIT");
-    else if (type==cbEVT_EDITOR_UNSPLIT) name = _T("cbEVT_EDITOR_UNSPLIT");
-    else if (type==cbEVT_EDITOR_UPDATE_UI) name = _T("cbEVT_EDITOR_UPDATE_UI");
-    else if (type==cbEVT_PROJECT_NEW) name = _T("cbEVT_PROJECT_NEW");
-    else if (type==cbEVT_PROJECT_CLOSE) name = _T("cbEVT_PROJECT_CLOSE");
-    else if (type==cbEVT_PROJECT_OPEN) name = _T("cbEVT_PROJECT_OPEN");
-    else if (type==cbEVT_PROJECT_SAVE) name = _T("cbEVT_PROJECT_SAVE");
-    else if (type==cbEVT_PROJECT_ACTIVATE) name = _T("cbEVT_PROJECT_ACTIVATE");
-    else if (type==cbEVT_PROJECT_BEGIN_ADD_FILES) name = _T("cbEVT_PROJECT_BEGIN_ADD_FILES");
-    else if (type==cbEVT_PROJECT_END_ADD_FILES) name = _T("cbEVT_PROJECT_END_ADD_FILES");
-    else if (type==cbEVT_PROJECT_BEGIN_REMOVE_FILES) name = _T("cbEVT_PROJECT_BEGIN_REMOVE_FILES");
-    else if (type==cbEVT_PROJECT_END_REMOVE_FILES) name = _T("cbEVT_PROJECT_END_REMOVE_FILES");
-    else if (type==cbEVT_PROJECT_FILE_ADDED) name = _T("cbEVT_PROJECT_FILE_ADDED");
-    else if (type==cbEVT_PROJECT_FILE_REMOVED) name = _T("cbEVT_PROJECT_FILE_REMOVED");
-    else if (type==cbEVT_PROJECT_POPUP_MENU) name = _T("cbEVT_PROJECT_POPUP_MENU");
-    else if (type==cbEVT_PROJECT_TARGETS_MODIFIED) name = _T("cbEVT_PROJECT_TARGETS_MODIFIED");
-    else if (type==cbEVT_PROJECT_RENAMED) name = _T("cbEVT_PROJECT_RENAMED");
-    else if (type==cbEVT_WORKSPACE_CHANGED) name = _T("cbEVT_WORKSPACE_CHANGED");
-    else if (type==cbEVT_BUILDTARGET_ADDED) name = _T("cbEVT_BUILDTARGET_ADDED");
-    else if (type==cbEVT_BUILDTARGET_REMOVED) name = _T("cbEVT_BUILDTARGET_REMOVED");
-    else if (type==cbEVT_BUILDTARGET_RENAMED) name = _T("cbEVT_BUILDTARGET_RENAMED");
-    else if (type==cbEVT_BUILDTARGET_SELECTED) name = _T("cbEVT_BUILDTARGET_SELECTED");
-    else if (type==cbEVT_PIPEDPROCESS_STDOUT) name = _T("cbEVT_PIPEDPROCESS_STDOUT");
-    else if (type==cbEVT_PIPEDPROCESS_STDERR) name = _T("cbEVT_PIPEDPROCESS_STDERR");
-    else if (type==cbEVT_PIPEDPROCESS_TERMINATED) name = _T("cbEVT_PIPEDPROCESS_TERMINATED");
-    else if (type==cbEVT_THREADTASK_STARTED) name = _T("cbEVT_THREADTASK_STARTED");
-    else if (type==cbEVT_THREADTASK_ENDED) name = _T("cbEVT_THREADTASK_ENDED");
-    else if (type==cbEVT_THREADTASK_ALLDONE) name = _T("cbEVT_THREADTASK_ALLDONE");
-    else if (type==cbEVT_MENUBAR_CREATE_BEGIN) name = _T("cbEVT_MENUBAR_CREATE_BEGIN");
-    else if (type==cbEVT_MENUBAR_CREATE_END) name = _T("cbEVT_MENUBAR_CREATE_END");
-    else if (type==cbEVT_COMPILER_STARTED) name = _T("cbEVT_COMPILER_STARTED");
-    else if (type==cbEVT_COMPILER_FINISHED) name = _T("cbEVT_COMPILER_FINISHED");
-    else if (type==cbEVT_COMPILER_SET_BUILD_OPTIONS) name = _T("cbEVT_COMPILER_SET_BUILD_OPTIONS");
-    else if (type==cbEVT_CLEAN_PROJECT_STARTED) name = _T("cbEVT_CLEAN_PROJECT_STARTED");
-    else if (type==cbEVT_CLEAN_WORKSPACE_STARTED) name = _T("cbEVT_CLEAN_WORKSPACE_STARTED");
-    else if (type==cbEVT_DEBUGGER_STARTED) name = _T("cbEVT_DEBUGGER_STARTED");
-    else if (type==cbEVT_DEBUGGER_PAUSED) name = _T("cbEVT_DEBUGGER_PAUSED");
-    else if (type==cbEVT_DEBUGGER_CONTINUED) name = _T("cbEVT_DEBUGGER_CONTINUED");
-    else if (type==cbEVT_DEBUGGER_FINISHED) name = _T("cbEVT_DEBUGGER_FINISHED");
-    else if (type==cbEVT_DEBUGGER_CURSOR_CHANGED) name = _T("cbEVT_DEBUGGER_CURSOR_CHANGED");
-    else if (type==cbEVT_DEBUGGER_UPDATED) name = _T("cbEVT_DEBUGGER_UPDATED");
+    if      (type==cbEVT_APP_STARTUP_DONE) name = "cbEVT_APP_STARTUP_DONE";
+    else if (type==cbEVT_APP_START_SHUTDOWN) name = "cbEVT_APP_START_SHUTDOWN";
+    else if (type==cbEVT_APP_ACTIVATED) name = "cbEVT_APP_ACTIVATED";
+    else if (type==cbEVT_APP_DEACTIVATED) name = "cbEVT_APP_DEACTIVATED";
+    else if (type==cbEVT_PLUGIN_ATTACHED) name = "cbEVT_PLUGIN_ATTACHED";
+    else if (type==cbEVT_PLUGIN_RELEASED) name = "cbEVT_PLUGIN_RELEASED";
+    else if (type==cbEVT_PLUGIN_INSTALLED) name = "cbEVT_PLUGIN_INSTALLED";
+    else if (type==cbEVT_PLUGIN_UNINSTALLED) name = "cbEVT_PLUGIN_UNINSTALLED";
+    else if (type==cbEVT_PLUGIN_LOADING_COMPLETE) name = "cbEVT_PLUGIN_LOADING_COMPLETE";
+    else if (type==cbEVT_EDITOR_CLOSE) name = "cbEVT_EDITOR_CLOSE";
+    else if (type==cbEVT_EDITOR_OPEN) name = "cbEVT_EDITOR_OPEN";
+    else if (type==cbEVT_EDITOR_SWITCHED) name = "cbEVT_EDITOR_SWITCHED";
+    else if (type==cbEVT_EDITOR_ACTIVATED) name = "cbEVT_EDITOR_ACTIVATED";
+    else if (type==cbEVT_EDITOR_DEACTIVATED) name = "cbEVT_EDITOR_DEACTIVATED";
+    else if (type==cbEVT_EDITOR_BEFORE_SAVE) name = "cbEVT_EDITOR_BEFORE_SAVE";
+    else if (type==cbEVT_EDITOR_SAVE) name = "cbEVT_EDITOR_SAVE";
+    else if (type==cbEVT_EDITOR_MODIFIED) name = "cbEVT_EDITOR_MODIFIED";
+    else if (type==cbEVT_EDITOR_TOOLTIP) name = "cbEVT_EDITOR_TOOLTIP";
+    else if (type==cbEVT_EDITOR_TOOLTIP_CANCEL) name = "cbEVT_EDITOR_TOOLTIP_CANCEL";
+    else if (type==cbEVT_EDITOR_SPLIT) name = "cbEVT_EDITOR_SPLIT";
+    else if (type==cbEVT_EDITOR_UNSPLIT) name = "cbEVT_EDITOR_UNSPLIT";
+    else if (type==cbEVT_EDITOR_UPDATE_UI) name = "cbEVT_EDITOR_UPDATE_UI";
+    else if (type==cbEVT_PROJECT_NEW) name = "cbEVT_PROJECT_NEW";
+    else if (type==cbEVT_PROJECT_CLOSE) name = "cbEVT_PROJECT_CLOSE";
+    else if (type==cbEVT_PROJECT_OPEN) name = "cbEVT_PROJECT_OPEN";
+    else if (type==cbEVT_PROJECT_SAVE) name = "cbEVT_PROJECT_SAVE";
+    else if (type==cbEVT_PROJECT_ACTIVATE) name = "cbEVT_PROJECT_ACTIVATE";
+    else if (type==cbEVT_PROJECT_BEGIN_ADD_FILES) name = "cbEVT_PROJECT_BEGIN_ADD_FILES";
+    else if (type==cbEVT_PROJECT_END_ADD_FILES) name = "cbEVT_PROJECT_END_ADD_FILES";
+    else if (type==cbEVT_PROJECT_BEGIN_REMOVE_FILES) name = "cbEVT_PROJECT_BEGIN_REMOVE_FILES";
+    else if (type==cbEVT_PROJECT_END_REMOVE_FILES) name = "cbEVT_PROJECT_END_REMOVE_FILES";
+    else if (type==cbEVT_PROJECT_FILE_ADDED) name = "cbEVT_PROJECT_FILE_ADDED";
+    else if (type==cbEVT_PROJECT_FILE_REMOVED) name = "cbEVT_PROJECT_FILE_REMOVED";
+    else if (type==cbEVT_PROJECT_POPUP_MENU) name = "cbEVT_PROJECT_POPUP_MENU";
+    else if (type==cbEVT_PROJECT_TARGETS_MODIFIED) name = "cbEVT_PROJECT_TARGETS_MODIFIED";
+    else if (type==cbEVT_PROJECT_RENAMED) name = "cbEVT_PROJECT_RENAMED";
+    else if (type==cbEVT_WORKSPACE_CHANGED) name = "cbEVT_WORKSPACE_CHANGED";
+    else if (type==cbEVT_BUILDTARGET_ADDED) name = "cbEVT_BUILDTARGET_ADDED";
+    else if (type==cbEVT_BUILDTARGET_REMOVED) name = "cbEVT_BUILDTARGET_REMOVED";
+    else if (type==cbEVT_BUILDTARGET_RENAMED) name = "cbEVT_BUILDTARGET_RENAMED";
+    else if (type==cbEVT_BUILDTARGET_SELECTED) name = "cbEVT_BUILDTARGET_SELECTED";
+    else if (type==cbEVT_PIPEDPROCESS_STDOUT) name = "cbEVT_PIPEDPROCESS_STDOUT";
+    else if (type==cbEVT_PIPEDPROCESS_STDERR) name = "cbEVT_PIPEDPROCESS_STDERR";
+    else if (type==cbEVT_PIPEDPROCESS_TERMINATED) name = "cbEVT_PIPEDPROCESS_TERMINATED";
+    else if (type==cbEVT_THREADTASK_STARTED) name = "cbEVT_THREADTASK_STARTED";
+    else if (type==cbEVT_THREADTASK_ENDED) name = "cbEVT_THREADTASK_ENDED";
+    else if (type==cbEVT_THREADTASK_ALLDONE) name = "cbEVT_THREADTASK_ALLDONE";
+    else if (type==cbEVT_MENUBAR_CREATE_BEGIN) name = "cbEVT_MENUBAR_CREATE_BEGIN";
+    else if (type==cbEVT_MENUBAR_CREATE_END) name = "cbEVT_MENUBAR_CREATE_END";
+    else if (type==cbEVT_COMPILER_STARTED) name = "cbEVT_COMPILER_STARTED";
+    else if (type==cbEVT_COMPILER_FINISHED) name = "cbEVT_COMPILER_FINISHED";
+    else if (type==cbEVT_COMPILER_SET_BUILD_OPTIONS) name = "cbEVT_COMPILER_SET_BUILD_OPTIONS";
+    else if (type==cbEVT_CLEAN_PROJECT_STARTED) name = "cbEVT_CLEAN_PROJECT_STARTED";
+    else if (type==cbEVT_CLEAN_WORKSPACE_STARTED) name = "cbEVT_CLEAN_WORKSPACE_STARTED";
+    else if (type==cbEVT_DEBUGGER_STARTED) name = "cbEVT_DEBUGGER_STARTED";
+    else if (type==cbEVT_DEBUGGER_PAUSED) name = "cbEVT_DEBUGGER_PAUSED";
+    else if (type==cbEVT_DEBUGGER_CONTINUED) name = "cbEVT_DEBUGGER_CONTINUED";
+    else if (type==cbEVT_DEBUGGER_FINISHED) name = "cbEVT_DEBUGGER_FINISHED";
+    else if (type==cbEVT_DEBUGGER_CURSOR_CHANGED) name = "cbEVT_DEBUGGER_CURSOR_CHANGED";
+    else if (type==cbEVT_DEBUGGER_UPDATED) name = "cbEVT_DEBUGGER_UPDATED";
     else name = _("unknown CodeBlocksEvent");
 
     return name;
@@ -176,11 +176,11 @@ Manager* Manager::Get(wxFrame *appWindow)
     if (appWindow)
     {
         if (Get()->m_pAppWindow)
-            cbThrow(_T("Illegal argument to Manager::Get()"));
+            cbThrow("Illegal argument to Manager::Get()");
         else
         {
             Get()->m_pAppWindow = appWindow;
-            LoadResource(_T("manager_resources.zip"));
+            LoadResource("manager_resources.zip");
             Get()->GetLogManager()->Log(_("Manager initialized"));
         }
     }
@@ -363,7 +363,7 @@ wxMenuBar *Manager::LoadMenuBar(wxString resid,bool createonfailure)
 wxMenu *Manager::LoadMenu(wxString menu_id,bool createonfailure)
 {
     wxMenu *m = wxXmlResource::Get()->LoadMenu(menu_id);
-    if (!m && createonfailure) m = new wxMenu(_T(""));
+    if (!m && createonfailure) m = new wxMenu("");
     return m;
 }
 
@@ -391,7 +391,7 @@ void Manager::AddonToolBar(wxToolBar* toolBar,wxString resid)
         return;
     if (m_ToolbarHandler)
         m_ToolbarHandler->SetCurrentResourceID(resid);
-    wxXmlResource::Get()->LoadObject(toolBar,nullptr,resid,_T("wxToolBarAddOn"));
+    wxXmlResource::Get()->LoadObject(toolBar,nullptr,resid,"wxToolBarAddOn");
     if (m_ToolbarHandler)
         m_ToolbarHandler->SetCurrentResourceID(wxString());
 }
@@ -516,7 +516,7 @@ CCManager* Manager::GetCCManager() const
 bool Manager::LoadResource(const wxString& file)
 {
     wxString resourceFile = ConfigManager::LocateDataFile(file, sdDataGlobal | sdDataUser);
-    wxString memoryFile = _T("memory:") + file;
+    wxString memoryFile = "memory:" + file;
 
     if (wxFile::Access(resourceFile, wxFile::read) == false)
     {

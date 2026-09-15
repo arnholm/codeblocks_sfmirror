@@ -114,9 +114,9 @@ void EditorLexerLoader::DoStyles(HighlightLanguage language, TiXmlElement* node)
             bool underlined = style->Attribute("underlined") ? atol(style->Attribute("underlined")) != 0 : false;
 
             // break-up arrays
-            wxArrayString indices = GetArrayFromString(index, _T(","));
-            wxArrayString fgarray = GetArrayFromString(fg, _T(","));
-            wxArrayString bgarray = GetArrayFromString(bg, _T(","));
+            wxArrayString indices = GetArrayFromString(index, ",");
+            wxArrayString fgarray = GetArrayFromString(fg, ",");
+            wxArrayString bgarray = GetArrayFromString(bg, ",");
 
             wxColour fgcolour = wxNullColour;
             if (fgarray.GetCount() == 3)
@@ -163,7 +163,7 @@ void EditorLexerLoader::DoStyles(HighlightLanguage language, TiXmlElement* node)
                     break;
                 }
 
-//                LOGSTREAM << _("Adding style: ") << name << _T("(") << value << _T(")\n");
+//                LOGSTREAM << _("Adding style: ") << name << "(" << value << ")\n";
                 m_pTarget->AddOption(language, name, value,
                                     fgcolour,
                                     bgcolour,
@@ -178,27 +178,27 @@ void EditorLexerLoader::DoStyles(HighlightLanguage language, TiXmlElement* node)
 
     if (!foundSelection)
     {
-        m_pTarget->AddOption(language, wxT("Selection"), cbSELECTION, wxNullColour,
+        m_pTarget->AddOption(language, "Selection", cbSELECTION, wxNullColour,
                              wxColour(217, 217, 217), false, false, false, false);
     }
     if (!foundActiveLine)
     {
-        m_pTarget->AddOption(language, wxT("Active line"), cbHIGHLIGHT_LINE, wxNullColour,
+        m_pTarget->AddOption(language, "Active line", cbHIGHLIGHT_LINE, wxNullColour,
                              wxColour(255, 255, 160), false, false, false, false);
     }
     if (!foundMatchBrace)
     {
-        m_pTarget->AddOption(language, wxT("Matching brace highlight"), wxSCI_STYLE_BRACELIGHT,
+        m_pTarget->AddOption(language, "Matching brace highlight", wxSCI_STYLE_BRACELIGHT,
                              wxColour(0, 0, 0), wxColour(128, 255, 255), true, false, false, true);
     }
     if (!foundBraceError)
     {
-        m_pTarget->AddOption(language, wxT("No matching brace highlight"), wxSCI_STYLE_BRACEBAD,
+        m_pTarget->AddOption(language, "No matching brace highlight", wxSCI_STYLE_BRACEBAD,
                              wxColour(255, 255, 255), wxColour(255, 0, 0), true, false, false, true);
     }
     if (!foundIndentationGuide)
     {
-        m_pTarget->AddOption(language, wxT("Indentation guide"), wxSCI_STYLE_INDENTGUIDE,
+        m_pTarget->AddOption(language, "Indentation guide", wxSCI_STYLE_INDENTGUIDE,
                              wxColour(55, 55, 55), wxNullColour, false, false, false, true);
     }
 }
@@ -208,10 +208,10 @@ void EditorLexerLoader::DoKeywords(HighlightLanguage language, TiXmlElement* nod
     TiXmlElement* keywords = node->FirstChildElement("Keywords");
     if (!keywords)
         return;
-    DoSingleKeywordNode(language, keywords, _T("Language"));
-    DoSingleKeywordNode(language, keywords, _T("Documentation"));
-    DoSingleKeywordNode(language, keywords, _T("User"));
-    DoSingleKeywordNode(language, keywords, _T("Set"));
+    DoSingleKeywordNode(language, keywords, "Language");
+    DoSingleKeywordNode(language, keywords, "Documentation");
+    DoSingleKeywordNode(language, keywords, "User");
+    DoSingleKeywordNode(language, keywords, "Set");
 }
 
 void EditorLexerLoader::DoSingleKeywordNode(HighlightLanguage language, TiXmlElement* node, const wxString& nodename)
@@ -225,9 +225,9 @@ void EditorLexerLoader::DoSingleKeywordNode(HighlightLanguage language, TiXmlEle
         if (keyidx != -1)
         {
             // the lexer file contains keywords indented - remove the extra spacing and EOLs
-            wxRegEx regex(_T("[[:space:]]+"));
+            wxRegEx regex("[[:space:]]+");
             wxString value(keywords->Attribute("value"), wxConvUTF8);
-            regex.Replace(&value, _T(" "));
+            regex.Replace(&value, " ");
 
             m_pTarget->SetKeywords(language, keyidx, value );
         }
@@ -296,7 +296,7 @@ bool EditorLexerLoader::DoLangAttributesLexerStyles(TiXmlElement* attribs, const
 {
     styles.clear();
     wxString str = wxString ( attribs->Attribute(attributeName), wxConvUTF8 );
-    wxArrayString strarray = GetArrayFromString(str, _T(","));
+    wxArrayString strarray = GetArrayFromString(str, ",");
 
     for ( unsigned int i = 0; i < strarray.Count(); ++i )
     {

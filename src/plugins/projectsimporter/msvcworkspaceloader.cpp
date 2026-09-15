@@ -89,24 +89,24 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
         wxString line = input.ReadLine();
         if (line.IsEmpty())
         {
-            Manager::Get()->GetLogManager()->DebugLog(_T("Workspace file has unsupported format."));
+            Manager::Get()->GetLogManager()->DebugLog("Workspace file has unsupported format.");
             return false;
         }
-        comps = GetArrayFromString(line, _T(","));
+        comps = GetArrayFromString(line, ",");
         line = comps[0];
         line.Trim(true);
         line.Trim(false);
-        if (line != _T("Microsoft Developer Studio Workspace File"))
+        if (line != "Microsoft Developer Studio Workspace File")
         {
-            Manager::Get()->GetLogManager()->DebugLog(_T("Workspace file has unsupported format."));
+            Manager::Get()->GetLogManager()->DebugLog("Workspace file has unsupported format.");
             return false;
         }
         line = comps.GetCount() > 1 ? comps[1] : wxString(wxEmptyString);
         line.Trim(true);
         line.Trim(false);
 
-        if (line != _T("Format Version 6.00"))
-            Manager::Get()->GetLogManager()->DebugLog(_T("Workspace format not recognized. Will try to parse though..."));
+        if (line != "Format Version 6.00")
+            Manager::Get()->GetLogManager()->DebugLog("Workspace format not recognized. Will try to parse though...");
     }
 
     ImportersGlobals::UseDefaultCompiler = !askForCompiler;
@@ -121,7 +121,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
     cbProject* firstproject = nullptr;
     wxFileName wfname = filename;
     wfname.Normalize(wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE | wxPATH_NORM_LONG | wxPATH_NORM_SHORTCUT);
-    Manager::Get()->GetLogManager()->DebugLog(_T("Workspace dir: ") + wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
+    Manager::Get()->GetLogManager()->DebugLog("Workspace dir: " + wfname.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
 
     while (!file.Eof())
     {
@@ -132,7 +132,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
 
         // example wanted line:
         //Project: "Demo_BSP"=.\Samples\BSP\scripts\Demo_BSP.dsp - Package Owner=<4>
-        if (line.StartsWith(_T("Project:")))
+        if (line.StartsWith("Project:"))
         {
             line.Remove(0, 8); // remove "Project:"
             // now we need to find the equal sign (=) that separates the
@@ -143,7 +143,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
 
             if (equal == -1 || minus == -1)
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("Skipping invalid project (unrecognised format) in workspace file."));
+                Manager::Get()->GetLogManager()->DebugLog("Skipping invalid project (unrecognised format) in workspace file.");
                 continue;
             }
 
@@ -153,7 +153,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
             prjTitle.Trim(false);
             if (prjTitle.IsEmpty())
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("Skipping invalid project (empty name) in workspace file."));
+                Manager::Get()->GetLogManager()->DebugLog("Skipping invalid project (empty name) in workspace file.");
                 continue;
             }
             if (prjTitle.GetChar(0) == _T('\"'))
@@ -170,7 +170,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
 
             if (prjFile.IsEmpty())
             {
-                Manager::Get()->GetLogManager()->DebugLog(_T("Skipping invalid project (empty file) in workspace file."));
+                Manager::Get()->GetLogManager()->DebugLog("Skipping invalid project (empty file) in workspace file.");
                 continue;
             }
 
@@ -223,7 +223,7 @@ bool MSVCWorkspaceLoader::Open(const wxString& filename, wxString& Title)
          * and add the dependency/link of the VstSDK project to the current project
          * be carefull, the dependent projects could not have already been read, so we have to remember them
          */
-        else if (line.StartsWith(_T("Project_Dep_Name")))
+        else if (line.StartsWith("Project_Dep_Name"))
         {
             line.Remove(0, 16);
             line.Trim(false);

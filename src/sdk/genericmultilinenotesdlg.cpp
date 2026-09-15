@@ -29,7 +29,7 @@ GenericMultiLineNotesDlg::GenericMultiLineNotesDlg(wxWindow* parent, const wxStr
       m_ReadOnly(readOnly)
 {
     // Create and populate from XRC
-    if (!wxXmlResource::Get()->LoadDialog(this, parent, _T("dlgGenericMultiLineNotes")))
+    if (!wxXmlResource::Get()->LoadDialog(this, parent, "dlgGenericMultiLineNotes"))
     {
         wxLogError("Missing XRC resource: dlgGenericMultiLineNotes");
         return; // fail gracefully

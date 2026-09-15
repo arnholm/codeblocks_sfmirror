@@ -177,8 +177,8 @@ enum SupportedPlatforms
 // NOTE: if you add/remove platforms, remember to update the relevant Get/Set globals
 
 typedef wxString HighlightLanguage;
-#define HL_AUTO _T(" ")
-#define HL_NONE _T("  ")
+#define HL_AUTO " "
+#define HL_NONE "  "
 
 extern DLLIMPORT const wxString DEFAULT_WORKSPACE;
 extern DLLIMPORT const wxString DEFAULT_ARRAY_SEP;
@@ -468,7 +468,7 @@ extern DLLIMPORT wxString cbGetTextFromUser(const wxString &message,
 inline void NotifyMissingFile(const wxString &name)
 {
     wxString msg;
-    msg.Printf(_T("The file %s could not be found.\nPlease check your installation."), name.c_str());
+    msg.Printf("The file %s could not be found.\nPlease check your installation.", name.c_str());
     cbMessageBox(msg);
 }
 

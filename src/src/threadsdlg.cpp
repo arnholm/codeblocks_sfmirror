@@ -49,9 +49,9 @@ ThreadsDlg::ThreadsDlg(wxWindow* parent) : wxPanel(parent)
     m_list->InsertColumn(2, _("Info"), wxLIST_FORMAT_LEFT);
 
     Manager::Get()->GetColourManager()->RegisterColour(_("Debugger"), _("Active thread text"),
-                                                       wxT("dbg_threads_active_text"), *wxWHITE);
+                                                       "dbg_threads_active_text", *wxWHITE);
     Manager::Get()->GetColourManager()->RegisterColour(_("Debugger"), _("Active thread background"),
-                                                       wxT("dbg_threads_active_back"), *wxRED);
+                                                       "dbg_threads_active_back", *wxRED);
 }
 
 void ThreadsDlg::Reload()
@@ -69,14 +69,14 @@ void ThreadsDlg::Reload()
     {
         cb::shared_ptr<const cbThread> thread = plugin->GetThread(ii);
 
-        long index = m_list->InsertItem(m_list->GetItemCount(), thread->IsActive() ? wxT("-->") : wxT(""));
+        long index = m_list->InsertItem(m_list->GetItemCount(), thread->IsActive() ? "-->" : "");
 
-        m_list->SetItem(index, 1, wxString::Format(wxT("%d"), thread->GetNumber()));
+        m_list->SetItem(index, 1, wxString::Format("%d", thread->GetNumber()));
         m_list->SetItem(index, 2, thread->GetInfo());
         if (thread->IsActive())
         {
-            m_list->SetItemTextColour(index, colours->GetColour(wxT("dbg_threads_active_text")));
-            m_list->SetItemBackgroundColour(index, colours->GetColour(wxT("dbg_threads_active_back")));
+            m_list->SetItemTextColour(index, colours->GetColour("dbg_threads_active_text"));
+            m_list->SetItemBackgroundColour(index, colours->GetColour("dbg_threads_active_back"));
             active_index = index;
         }
     }

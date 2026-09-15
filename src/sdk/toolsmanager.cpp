@@ -106,9 +106,9 @@ bool ToolsManager::Execute(const cbTool* tool)
     {
 #ifndef __WXMSW__
         // for non-win platforms, use m_ConsoleTerm to run the console app
-        wxString term = Manager::Get()->GetConfigManager(_T("app"))->Read(_T("/console_terminal"), DEFAULT_CONSOLE_TERM);
-        term.Replace(_T("$TITLE"), _T("'") + tool->GetName() + _T("'"));
-        cmdline << term << _T(" ");
+        wxString term = Manager::Get()->GetConfigManager("app")->Read("/console_terminal", DEFAULT_CONSOLE_TERM);
+        term.Replace("$TITLE", "'" + tool->GetName() + "'");
+        cmdline << term << " ";
         #define CONSOLE_RUNNER "cb_console_runner"
 #else
         #define CONSOLE_RUNNER "cb_console_runner.exe"
@@ -118,7 +118,7 @@ bool ToolsManager::Execute(const cbTool* tool)
             cmdline << baseDir << wxT("/" CONSOLE_RUNNER " ");
     }
 
-    if (!cmdline.Replace(_T("$SCRIPT"), cmd << _T(" ") << params))
+    if (!cmdline.Replace("$SCRIPT", cmd << " " << params))
         // if they didn't specify $SCRIPT, append:
         cmdline << cmd;
 
@@ -285,7 +285,7 @@ void ToolsManager::SaveTools()
 
         // prepend a 0-padded 2-digit number to keep ordering
         wxString tmp;
-        tmp.Printf(_T("tool%2.2d"), count++);
+        tmp.Printf("tool%2.2d", count++);
 
         elem << '/' << tmp << '/';
         cfg->Write(elem + "name", tool->GetName());
@@ -305,7 +305,7 @@ void ToolsManager::BuildToolsMenu(wxMenu* menu)
     m_Menu = menu;
     if (m_Menu->GetMenuItemCount() > 0)
     {
-        m_ItemsManager.Add(menu, wxID_SEPARATOR, _T(""), _T(""));
+        m_ItemsManager.Add(menu, wxID_SEPARATOR, "", "");
     }
 
     for (ToolsList::iterator it = m_Tools.begin(); it != m_Tools.end(); ++it)
@@ -313,7 +313,7 @@ void ToolsManager::BuildToolsMenu(wxMenu* menu)
         cbTool* tool = *it;
         if (tool->GetName() == CB_TOOLS_SEPARATOR)
         {
-            m_ItemsManager.Add(menu, wxID_SEPARATOR, _T(""), _T(""));
+            m_ItemsManager.Add(menu, wxID_SEPARATOR, "", "");
             continue;
         }
         if (tool->GetMenuId() == -1)
@@ -328,7 +328,7 @@ void ToolsManager::BuildToolsMenu(wxMenu* menu)
 
     if (m_Tools.GetCount() > 0)
     {
-        m_ItemsManager.Add(menu, wxID_SEPARATOR, _T(""), _T(""));
+        m_ItemsManager.Add(menu, wxID_SEPARATOR, "", "");
     }
     m_ItemsManager.Add(menu, idToolsConfigure, _("&Configure tools..."), _("Add/remove user-defined tools"));
 }

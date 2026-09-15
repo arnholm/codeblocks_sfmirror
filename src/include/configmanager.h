@@ -144,11 +144,11 @@ public:
     * @par
     * So, code that looked like this in the old days:
     * @code
-    * wxString some_file = ConfigManager::GetScriptsFolder() + wxFILE_SEP_PATH + _T("startup.script");
+    * wxString some_file = ConfigManager::GetScriptsFolder() + wxFILE_SEP_PATH + "startup.script";
     * @endcode
     * should be converted to this:
     * @code
-    * wxString some_file = ConfigManager::LocateDataFile(_T("startup.script"), sdScriptsUser | sdScriptsGlobal);
+    * wxString some_file = ConfigManager::LocateDataFile("startup.script", sdScriptsUser | sdScriptsGlobal);
     * @endcode
     * This would try to locate the file named "startup.script" in the global and also in the user's scripts folders.
     * @note User's dirs @b always have precedence over global dirs.
@@ -319,8 +319,8 @@ public:
     ConfigManagerWrapper() {}
     ConfigManagerWrapper(wxString namespace_, wxString basepath) : m_namespace(namespace_), m_basepath(basepath)
     {
-        if (!m_basepath.EndsWith(wxT("/")))
-            m_basepath += wxT("/");
+        if (!m_basepath.EndsWith("/"))
+            m_basepath += "/";
     }
     bool IsValid() const { return !m_namespace.empty(); }
     const wxString& GetBasepath() const { return m_basepath; }

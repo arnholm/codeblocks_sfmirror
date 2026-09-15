@@ -139,7 +139,7 @@ class MSVC10Loader : public IBaseLoader
           */
         wxString GetText(const TiXmlElement* e);
         void HandleFilesAndExcludes(const TiXmlElement* e, ProjectFile* pf); ///< \brief convenience function for getting exclusion state of files
-        wxArrayString GetArray(const TiXmlElement* e, const wxString delim = _T(";")); ///< \brief convenience function for getting 'delim' separated values (defines,options)
+        wxArrayString GetArray(const TiXmlElement* e, const wxString delim = ";"); ///< \brief convenience function for getting 'delim' separated values (defines,options)
         wxArrayString GetArrayPaths(const TiXmlElement* e, const SProjectConfiguration &pc); ///< \brief convenience function for getting separated directories
         wxArrayString GetLibs(const TiXmlElement* e); ///< \brief convenience function for getting separated link libraries or default libs
 

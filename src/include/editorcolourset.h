@@ -19,7 +19,7 @@
 class cbEditor;
 class cbStyledTextCtrl;
 
-#define COLORSET_DEFAULT _T("default")
+#define COLORSET_DEFAULT "default"
 
 const int cbHIGHLIGHT_LINE = -98; // highlight line under caret virtual style
 const int cbSELECTION      = -99; // selection virtual style

@@ -23,7 +23,7 @@
 #endif
 
 CompilerGNUFortran::CompilerGNUFortran()
-    : Compiler(_("GNU Fortran Compiler"), _T("gfortran"))
+    : Compiler(_("GNU Fortran Compiler"), "gfortran")
 {
     m_Weight = 88;
     m_MultiLineMessages = true;
@@ -44,17 +44,17 @@ AutoDetectResult CompilerGNUFortran::AutoDetectInstallationDir()
 {
     // try to find MinGW in environment variable PATH first
     wxString pathValues;
-    wxGetEnv(_T("PATH"), &pathValues);
+    wxGetEnv("PATH", &pathValues);
     if (!pathValues.IsEmpty())
     {
-        wxString sep = platform::windows ? _T(";") : _T(":");
+        wxString sep = platform::windows ? ";" : ":";
         wxChar pathSep = platform::windows ? _T('\\') : _T('/');
         wxArrayString pathArray = GetArrayFromString(pathValues, sep);
         for (size_t i = 0; i < pathArray.GetCount(); ++i)
         {
             if (wxFileExists(pathArray[i] + pathSep + m_Programs.C))
             {
-                if (pathArray[i].AfterLast(pathSep).IsSameAs(_T("bin")))
+                if (pathArray[i].AfterLast(pathSep).IsSameAs("bin"))
                 {
                     m_MasterPath = pathArray[i].BeforeLast(pathSep);
                     return adrDetected;
@@ -68,26 +68,26 @@ AutoDetectResult CompilerGNUFortran::AutoDetectInstallationDir()
     {
         // look first if MinGW was installed with Code::Blocks (new in beta6)
         m_MasterPath = ConfigManager::GetExecutableFolder();
-        if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
+        if (!wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C))
             // if that didn't do it, look under C::B\MinGW, too (new in 08.02)
-            m_MasterPath += sep + _T("MinGW");
-        if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
+            m_MasterPath += sep + "MinGW";
+        if (!wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C))
         {
             // no... search for MinGW installation dir
             wxString windir = wxGetOSDirectory();
-            wxFileConfig ini(wxEmptyString, wxEmptyString, windir + _T("/MinGW.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
-            m_MasterPath = ini.Read(_T("/InstallSettings/InstallPath"), _T("C:\\MinGW"));
-            if (!wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C))
+            wxFileConfig ini(wxEmptyString, wxEmptyString, windir + "/MinGW.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
+            m_MasterPath = ini.Read("/InstallSettings/InstallPath", "C:\\MinGW");
+            if (!wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C))
             {
 #ifdef __WXMSW__ // for wxRegKey
                 // not found...
                 // look for dev-cpp installation
                 wxRegKey key; // defaults to HKCR
-                key.SetName(_T("HKEY_LOCAL_MACHINE\\Software\\Dev-C++"));
+                key.SetName("HKEY_LOCAL_MACHINE\\Software\\Dev-C++");
                 if (key.Exists() && key.Open(wxRegKey::Read))
                 {
                     // found; read it
-                    key.QueryValue(_T("Install_Dir"), m_MasterPath);
+                    key.QueryValue("Install_Dir", m_MasterPath);
                 }
                 else
                 {
@@ -95,31 +95,31 @@ AutoDetectResult CompilerGNUFortran::AutoDetectInstallationDir()
                     // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Minimalist GNU for Windows 4.1_is1
                     wxString name;
                     long index;
-                    key.SetName(_T("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
+                    key.SetName("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall");
                     //key.SetName("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion");
                     bool ok = key.GetFirstKey(name, index);
-                    while (ok && !name.StartsWith(_T("Minimalist GNU for Windows")))
+                    while (ok && !name.StartsWith("Minimalist GNU for Windows"))
                     {
                         ok = key.GetNextKey(name, index);
                     }
                     if (ok)
                     {
-                        name = key.GetName() + _T("\\") + name;
+                        name = key.GetName() + "\\" + name;
                         key.SetName(name);
                         if (key.Exists() && key.Open(wxRegKey::Read))
-                            key.QueryValue(_T("InstallLocation"), m_MasterPath);
+                            key.QueryValue("InstallLocation", m_MasterPath);
                     }
                 }
 #endif
             }
         }
         else
-            m_Programs.MAKE = _T("make.exe"); // we distribute "make" not "mingw32-make"
+            m_Programs.MAKE = "make.exe"; // we distribute "make" not "mingw32-make"
     }
     else
-        m_MasterPath = _T("/usr");
+        m_MasterPath = "/usr";
 
-    AutoDetectResult ret = wxFileExists(m_MasterPath + sep + _T("bin") + sep + m_Programs.C) ? adrDetected : adrGuessed;
+    AutoDetectResult ret = wxFileExists(m_MasterPath + sep + "bin" + sep + m_Programs.C) ? adrDetected : adrGuessed;
     // don't add lib/include dirs. GCC knows where its files are located
 
     //SetVersionString();
