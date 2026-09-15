@@ -228,8 +228,7 @@ const wxCmdLineEntryDesc cmdLineDesc[] =
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_SWITCH, CMD_ENTRY("nd"), CMD_ENTRY("no-dde"),                CMD_ENTRY("don't start a DDE server"),
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
-#endif
-#ifndef __WXMSW__
+#else
     { wxCMD_LINE_SWITCH, CMD_ENTRY("ni"), CMD_ENTRY("no-ipc"),                CMD_ENTRY("don't start an IPC server"),
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
 #endif
