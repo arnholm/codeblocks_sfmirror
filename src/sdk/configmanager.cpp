@@ -566,7 +566,7 @@ inline wxString ConfigManager::GetUserDataFolder()
         return alternate_user_data_path;
 #ifdef __WINDOWS__
     TCHAR buffer[MAX_PATH];
-    if (!ConfigManager::has_alternate_user_data_path && ::GetEnvironmentVariable("APPDATA", buffer, MAX_PATH))
+    if (!ConfigManager::has_alternate_user_data_path && ::GetEnvironmentVariable(_T("APPDATA"), buffer, MAX_PATH))
         return wxString::Format("%s\\CodeBlocks", buffer);
     else
         return wxStandardPathsBase::Get().GetUserDataDir();
