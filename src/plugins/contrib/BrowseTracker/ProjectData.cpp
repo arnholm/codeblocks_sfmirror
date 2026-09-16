@@ -126,7 +126,7 @@ bool ProjectData::FindFilename( const wxString& filePath)
     FileBrowse_MarksHash& hash = m_FileBrowse_MarksArchive;
     FileBrowse_MarksHash::iterator it = hash.find(filePath);
     if ( it == hash.end() ) {
-        //DumpHash(wxT("BrowseMarks"));
+        //DumpHash("BrowseMarks");
         return false;
     }
     return true;
@@ -182,14 +182,14 @@ void ProjectData::LoadLayout()
 {
     // Load a layout file for this project
     #if defined(LOGGING)
-    LOGIT( _T("ProjectData::LoadLayout()for[%s]"),m_ProjectFilename.c_str() );
+    LOGIT( "ProjectData::LoadLayout()for[%s]",m_ProjectFilename.c_str() );
     #endif
 
     if (m_ProjectFilename.IsEmpty())
         return ;
 
     wxFileName fname(m_ProjectFilename);
-    fname.SetExt(_T("bmarks"));
+    fname.SetExt("bmarks");
     BrowseTrackerLayout layout( m_pCBProject );
     layout.Open(fname.GetFullPath(), m_FileBrowse_MarksArchive );
     m_bLayoutLoaded = true;
@@ -200,16 +200,16 @@ void ProjectData::SaveLayout()
 {
     // Write a layout file for this project
     #if defined(LOGGING)
-    LOGIT( _T("ProjectData::SAVELayout()") );
+    LOGIT( "ProjectData::SAVELayout()" );
     #endif
 
     if (m_ProjectFilename.IsEmpty())
         return ;
 
     wxFileName fname(m_ProjectFilename);
-    fname.SetExt(_T("bmarks"));
+    fname.SetExt("bmarks");
     BrowseTrackerLayout layout( m_pCBProject );
-    //DumpBrowse_Marks(wxT("BrowseMarks"));
+    //DumpBrowse_Marks("BrowseMarks");
     layout.Save(fname.GetFullPath(), m_FileBrowse_MarksArchive );
 
 
@@ -218,7 +218,7 @@ void ProjectData::SaveLayout()
     //cbEditor* cbed = Manager::Get()->GetEditorManager()->GetBuiltinEditor(eb);
     //cbStyledTextCtrl* control = cbed->GetControl();
     //#if defined(LOGGING)
-    //LOGIT( _T("eb[%p]cbed[%p]control[%p]"), eb, cbed, control );
+    //LOGIT( "eb[%p]cbed[%p]control[%p]", eb, cbed, control );
     //#endif
 
     // *Testing* Check against our array
@@ -226,7 +226,7 @@ void ProjectData::SaveLayout()
     //cbed = m_cbEditorArray[1];
     //control = m_cbSTCArray[1];
     //#if defined(LOGGING)
-    //LOGIT( _T("eb[%p]cbed[%p]control[%p]"), eb, cbed, control );
+    //LOGIT( "eb[%p]cbed[%p]control[%p]", eb, cbed, control );
     //#endif
 
 
@@ -265,7 +265,7 @@ void ProjectData::DumpBrowse_Marks( const wxString&
 // ----------------------------------------------------------------------------
 {
     #if defined(LOGGING)
-    LOGIT( _T("--- DumpBrowseData ---[%s]"), hashType.c_str()  );
+    LOGIT( "--- DumpBrowseData ---[%s]", hashType.c_str()  );
 
     FileBrowse_MarksHash* phash = &m_FileBrowse_MarksArchive;
     FileBrowse_MarksHash& hash = *phash;

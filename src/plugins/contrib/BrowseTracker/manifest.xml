@@ -3,7 +3,7 @@
     <SdkVersion major="1" minor="11"  release="11" />
     <Plugin name="BrowseTracker">
         <Value title="BrowseTracker" />
-        <Value version="0.1" />
+        <Value version="1.4.134 26/09/16" />
         <Value description="Browse to previous source positions" />
         <Value author="Pecan Heber" />
         <Value authorEmail="" />

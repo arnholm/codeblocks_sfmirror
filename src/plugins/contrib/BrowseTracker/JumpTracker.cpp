@@ -29,7 +29,7 @@ WX_DEFINE_OBJARRAY(ArrayOfJumpData);
 // We are using an anonymous namespace so we don't litter the global one.
 namespace
 {
-    //-PluginRegistrant<JumpTracker> reg(_T("JumpTracker"));
+    //-PluginRegistrant<JumpTracker> reg("JumpTracker");
     int idMenuJump     = wxNewId();
     int idMenuJumpBack = wxNewId();
     int idMenuJumpNext = wxNewId();
@@ -64,9 +64,9 @@ JumpTracker::JumpTracker()
     // Make sure our resources are available.
     // In the generated boilerplate code we have no resources but when
     // we add some, it will be nice that this code is in place already ;)
-//    if(!Manager::LoadResource(_T("JumpTracker.zip")))
+//    if(!Manager::LoadResource("JumpTracker.zip"))
 //    {
-//        NotifyMissingFile(_T("JumpTracker.zip"));
+//        NotifyMissingFile("JumpTracker.zip");
 //    }
 
     m_bShuttingDown = false;
@@ -103,10 +103,10 @@ void JumpTracker::OnAttach()
     //    PlgnVersion plgnVersion;
     //    #if LOGGING
     //     wxLog::EnableLogging(true);
-    //     m_pPlgnLog = new wxLogWindow( Manager::Get()->GetAppWindow(), _T(" JumpTracker"),true,false);
+    //     m_pPlgnLog = new wxLogWindow( Manager::Get()->GetAppWindow(), " JumpTracker",true,false);
     //     wxLog::SetActiveTarget( m_pPlgnLog);
     //     m_pPlgnLog->GetFrame()->SetSize(20,30,600,300);
-    //     LOGIT( _T("JT JumpTracker Logging Started[%s]"),plgnVersion.GetVersion().c_str());
+    //     LOGIT( "JT JumpTracker Logging Started[%s]",plgnVersion.GetVersion().c_str());
     //     m_pPlgnLog->Flush();
     //    #endif
 
@@ -202,7 +202,7 @@ void JumpTracker::BuildMenu(wxMenuBar* menuBar)
     //to add any menu items you want...
     //Append any items you need in the menu...
     //NOTE: Be careful in here... The application's menubar is at your disposal.
-    //-NotImplemented(_T("JumpTracker::BuildMenu()"));
+    //-NotImplemented("JumpTracker::BuildMenu()");
 
      // insert menu items
     wxMenu* jump_submenu = new wxMenu;
@@ -257,7 +257,7 @@ void JumpTracker::BuildModuleMenu(const ModuleType /*type*/, wxMenu* /*menu*/, c
     //Check the parameter \"type\" and see which module it is
     //and append any items you need in the menu...
     //TIP: for consistency, add a separator as the first item...
-    //-NotImplemented(_T("JumpTracker::BuildModuleMenu()"));
+    //-NotImplemented("JumpTracker::BuildModuleMenu()");
 }
 // ----------------------------------------------------------------------------
 bool JumpTracker::BuildToolBar(wxToolBar* toolBar)
@@ -268,7 +268,7 @@ bool JumpTracker::BuildToolBar(wxToolBar* toolBar)
     //The application is offering its toolbar for your plugin,
     //to add any toolbar items you want...
     //Append any items you need on the toolbar...
-    //-NotImplemented(_T("JumpTracker::BuildToolBar()"));
+    //-NotImplemented("JumpTracker::BuildToolBar()");
 
     // return true if you add toolbar items
     return false;
@@ -293,7 +293,7 @@ void JumpTracker::CreateJumpTrackerView()
 
     // Ask DragScroll plugin to apply its support for this log
     //wxWindow* pWindow = GetJumpTrackerView()->m_pControl;
-    //cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
+    //cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("cbDragScroll");
     //if (pWindow && pPlgn)
     //{
     //    /// *bug* Dragscroll plugin may not be initialized yet; code moved to OnStartupDone()
@@ -304,7 +304,7 @@ void JumpTracker::CreateJumpTrackerView()
 
     // Floating windows must be set by their parent
 	CodeBlocksDockEvent evt(cbEVT_ADD_DOCK_WINDOW);
-	evt.name = _T("JumpTrackerPane");
+	evt.name = "JumpTrackerPane";
 	evt.title = _("JumpTracker View");
 	evt.pWindow = GetJumpTrackerView()->m_pListCtrl;
     evt.desiredSize.Set(300, 300);
@@ -331,8 +331,8 @@ void JumpTracker::OnViewJumpTrackerWindow(wxCommandEvent& event)
     wxMenu* pViewMenu = 0;
     wxMenuItem* pViewItem = pbar->FindItem(idMenuJumpView, &pViewMenu);
     #if defined(LOGGING)
-    LOGIT( _T("OnViewJumpTracker [%s] Checked[%d] IsShown[%d]"),
-            GetConfig()->IsFloatingWindow()?_T("float"):_T("dock"),
+    LOGIT( "OnViewJumpTracker [%s] Checked[%d] IsShown[%d]",
+            GetConfig()->IsFloatingWindow()?"float":"dock",
             pViewMenu->IsChecked(idViewJumpTracker),
             IsWindowReallyShown(JumpTrackerWindow())
             );
@@ -349,8 +349,8 @@ void JumpTracker::OnViewJumpTrackerWindow(wxCommandEvent& event)
 
 
     #if defined(LOGGING)
-    LOGIT( _T("OnView [%s] Checked[%d] IsShown[%d]"),
-            GetConfig()->IsFloatingWindow()?_T("float"):_T("dock"),
+    LOGIT( "OnView [%s] Checked[%d] IsShown[%d]",
+            GetConfig()->IsFloatingWindow()?"float":"dock",
             pViewItem->IsChecked(),
             IsWindowReallyShown(GetJumpTrackerWindow())
             );
@@ -364,7 +364,7 @@ void JumpTracker::OnViewJumpTrackerWindow(wxCommandEvent& event)
             if ( GetConfigBool("IsFloatingWindow") )
                 SettingsSaveWinPosition();
             #if defined(LOGGING)
-            LOGIT( _T("OnViewJumpTracker saving settings on HideWindow"));
+            LOGIT( "OnViewJumpTracker saving settings on HideWindow");
             #endif
         }
     }
@@ -380,7 +380,7 @@ void JumpTracker::OnSwitchViewLayout(CodeBlocksLayoutEvent& event)
 {
     //event.layout
     #if defined(LOGGING)
-    LOGIT( _T("cbEVT_SWITCH_LAYOUT[%s]"),event.layout.c_str() );
+    LOGIT( "cbEVT_SWITCH_LAYOUT[%s]",event.layout.c_str() );
     #endif
     event.Skip();
 }
@@ -390,7 +390,7 @@ void JumpTracker::OnSwitchedViewLayout(CodeBlocksLayoutEvent& event)
 {
     //event.layout
     #if defined(LOGGING)
-    LOGIT( _T("cbEVT_SWITCHED_LAYOUT[%s]"),event.layout.c_str() );
+    LOGIT( "cbEVT_SWITCHED_LAYOUT[%s]",event.layout.c_str() );
     #endif
     event.Skip();
 }
@@ -404,7 +404,7 @@ void JumpTracker::OnDockWindowVisability(CodeBlocksDockEvent& event)
     //event.layout
     //BUG: the event.GetId() is always null. It should be the window pointer.
     #if defined(LOGGING)
-    LOGIT( _T("cbEVT_DOCK_WINDOW_VISIBILITY[%p]"),event.GetId() );
+    LOGIT( "cbEVT_DOCK_WINDOW_VISIBILITY[%p]",event.GetId() );
     #endif
     wxMenuBar* pbar = Manager::Get()->GetAppFrame()->GetMenuBar();
     if (not IsWindowReallyShown(GetJumpTrackerViewControl()))
@@ -468,8 +468,8 @@ void JumpTracker::OnEditorUpdateUIEvent(CodeBlocksEvent& event)
     long edPosn = pControl->GetCurrentPos();
 
     #if defined(LOGGING)
-    //LOGIT( _T("JT OnEditorUpdateEvent Filename[%s] line[%ld] pos[%ld] "), edFilename.c_str(), edLine, edPosn);
-    //LOGIT( _T("JT \ttopLine[%ld] botLine[%ld] OnScrn[%ld] "), topLine, botLine, edstc->LinesOnScreen());
+    //LOGIT( "JT OnEditorUpdateEvent Filename[%s] line[%ld] pos[%ld] ", edFilename.c_str(), edLine, edPosn);
+    //LOGIT( "JT \ttopLine[%ld] botLine[%ld] OnScrn[%ld] ", topLine, botLine, edstc->LinesOnScreen());
     #endif
 
     // Newly activated editor ?
@@ -570,7 +570,7 @@ void JumpTracker::OnEditorClosed(CodeBlocksEvent& event)
 
     EditorBase* pEdBase = event.GetEditor();
     #if defined(LOGGING)
-        LOGIT( _T("JT OnEditorClosed Eb[%p][%s]"), eb, eb->GetShortName().c_str() );
+        LOGIT( "JT OnEditorClosed Eb[%p][%s]", eb, eb->GetShortName().c_str() );
     #endif
 
 
@@ -688,8 +688,8 @@ void JumpTracker::OnProjectOpened(CodeBlocksEvent& event)   // (ph 25/05/07)
     ProjectManager* pPrjMgr = Manager::Get()->GetProjectManager();
 
     #if defined(LOGGING)
-     LOGIT( _T("JT -----------------------------------"));
-     LOGIT( _T("JT Project OPENED[%s]"), event.GetProject()->GetFilename().c_str() );
+     LOGIT( "JT -----------------------------------");
+     LOGIT( "JT Project OPENED[%s]", event.GetProject()->GetFilename().c_str() );
     #endif
 
     // Record an initial jump tracker entry for the active project
@@ -726,7 +726,7 @@ void JumpTracker::OnProjectOpened(CodeBlocksEvent& event)   // (ph 25/05/07)
 //        pEvt->SetProject(pProject);
 //        CallAfter([this, pEvt]() { OnProjectOpened(*pEvt);});
 //        #if defined(LOGGING)
-//        LOGIT( _T("JT OnProjectOpened [%p][%s]"), pActiveEd, pActiveEd->GetShortName().c_str() );
+//        LOGIT( "JT OnProjectOpened [%p][%s]", pActiveEd, pActiveEd->GetShortName().c_str() );
 //        #endif
 //    }
 //
@@ -869,7 +869,7 @@ void JumpTracker::JumpDataAdd(const wxString& inFilename, const long inPosn, con
     SetJumpTrackerViewIndex(m_ArrayCursor); // (ph 25/04/26)
 
     #if defined(LOGGING)
-    LOGIT( _T("JT JumpDataAdd[%s][%ld][%d]"), filename.c_str(), posn, m_insertNext);
+    LOGIT( "JT JumpDataAdd[%s][%ld][%d]", filename.c_str(), posn, m_insertNext);
     #endif
 
 ////    if ( kount == maxJumpEntries ) // (ph 25/04/27)
@@ -963,7 +963,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
 // ----------------------------------------------------------------------------
 {
     #if defined(LOGGING)
-    LOGIT( _T("JT [%s]"), _T("OnMenuJumpBack"));
+    LOGIT( "JT [%s]", "OnMenuJumpBack");
     #endif
 
     int knt = m_ArrayOfJumpData.GetCount();
@@ -1004,7 +1004,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
         long edPosn = jumpData.GetPosition();
 
         #if defined(LOGGING)
-        LOGIT( _T("JT OnMenuJumpBack [%s][%ld]curs[%d]"), edFilename.wx_str(), edPosn, m_ArrayCursor);
+        LOGIT( "JT OnMenuJumpBack [%s][%ld]curs[%d]", edFilename.wx_str(), edPosn, m_ArrayCursor);
         #endif
 
         // activate editor
@@ -1027,7 +1027,7 @@ void JumpTracker::OnMenuJumpBack(wxCommandEvent &/*event*/)
     }
 
     #if defined(LOGGING)
-    LOGIT( _T("JT [%s]"), _T("END OnMenuJumpBack"));
+    LOGIT( "JT [%s]", "END OnMenuJumpBack");
     wxCommandEvent evt;
     OnMenuJumpDump(evt);
     #endif
@@ -1040,7 +1040,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
 // ----------------------------------------------------------------------------
 {
     #if defined(LOGGING)
-    LOGIT( _T("JT [%s]"), _T("OnMenuJumpNext"));
+    LOGIT( "JT [%s]", "OnMenuJumpNext");
     #endif
 
     int knt = 0;
@@ -1075,7 +1075,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
         wxString edFilename = jumpdata.GetFilename();
         long edPosn = jumpdata.GetPosition();
         #if defined(LOGGING)
-        LOGIT( _T("JT OnMenuJumpBack [%s][%ld]curs[%d]"), edFilename.wx_str(), edPosn, m_ArrayCursor);
+        LOGIT( "JT OnMenuJumpBack [%s][%ld]curs[%d]", edFilename.wx_str(), edPosn, m_ArrayCursor);
         #endif
 
         // activate editor
@@ -1098,7 +1098,7 @@ void JumpTracker::OnMenuJumpNext(wxCommandEvent &/*event*/)
     }
 
     #if defined(LOGGING)
-    LOGIT( _T("JT [%s]"), _T("END OnMenuJumpBack"));
+    LOGIT( "JT [%s]", "END OnMenuJumpBack");
     wxCommandEvent evt;
     OnMenuJumpDump(evt);
     #endif
@@ -1120,7 +1120,7 @@ void JumpTracker::OnMenuJumpDump(wxCommandEvent &/*event*/)
 {
     #if defined(LOGGING)
     if (not m_ArrayOfJumpData.GetCount())
-        LOGIT( _T("JumpDump Empty"));
+        LOGIT( "JumpDump Empty");
 
     for (size_t count = 0; count < m_ArrayOfJumpData.GetCount(); ++count)
     {
@@ -1139,11 +1139,11 @@ void JumpTracker::OnMenuJumpDump(wxCommandEvent &/*event*/)
             edLine +=1; //editors are 1 origin
         }
 
-        wxString msg = wxString::Format(_T("[%d][%s][%ld][%ld]"), count, edFilename.c_str(), edPosn, edLine);
+        wxString msg = wxString::Format("[%d][%s][%ld][%ld]", count, edFilename.c_str(), edPosn, edLine);
         if (count == (size_t)m_ArrayCursor)
-            msg.Append(_T("<--c"));
+            msg.Append("<--c");
         if (count == (size_t)m_insertNext)
-            msg.Append(_T("<--i"));
+            msg.Append("<--i");
         LOGIT( msg );
     }
 
@@ -1200,9 +1200,9 @@ void JumpTracker::SettingsSaveWinPosition()
     pwin->GetSize( &winWidth, &winHeight );
 
     wxString winPos;
-    winPos = wxString::Format(wxT("%d %d %d %d"), winXposn,winYposn,winWidth,winHeight);
+    winPos = wxString::Format("%d %d %d %d", winXposn,winYposn,winWidth,winHeight);
     SetConfigString("JTViewWindowPosition",  winPos) ;
-    // LOGIT( _T("SavingWindowPosition[%s]"), winPos.c_str() );
+    // LOGIT( "SavingWindowPosition[%s]", winPos.c_str() );
 }
 // ----------------------------------------------------------------------------
 void JumpTracker::UpdateJumpTrackerViewWindow()
@@ -1245,7 +1245,7 @@ void JumpTracker::UpdateJumpTrackerViewWindow()
 
         wxString msg = wxString::Format("[%d][%s][%d][%d]", int(count), edFilename.c_str(), int(edPosn), int(edLine));
         if (count == (size_t)m_ArrayCursor)
-            msg.Append(_T("<--c"));
+            msg.Append("<--c");
         //LOGIT( msg );
     }
 }//UpdateViewWindow
@@ -1370,7 +1370,7 @@ void JumpTracker::OnAppStartupDone(CodeBlocksEvent& event)
     }
     // Ask DragScroll plugin to apply its support for this log
     wxWindow* pWindow = GetJumpTrackerView()->m_pControl;
-    cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName(_T("cbDragScroll"));
+    cbPlugin* pPlgn = Manager::Get()->GetPluginManager()->FindPluginByName("cbDragScroll");
     if (pWindow && pPlgn)
     {
         wxCommandEvent dsEvt(wxEVT_COMMAND_MENU_SELECTED, XRCID("idDragScrollAddWindow"));

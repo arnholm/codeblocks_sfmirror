@@ -59,7 +59,7 @@ class AppVersion
 #include <wx/string.h>
 //versions
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.4.133 25/10/22")
+#define VERSION "1.4.134 26/09/16"
 //------------------------------------------
 // Release - Current development identifier
 // Feature - User interface level
@@ -67,6 +67,7 @@ class AppVersion
 #endif // VERSION_H
 //versions
 // ----------------------------------------------------------------------------
+// 1.4.134  2026/09/16 Apply Letartare ticket 1640 removing _T() and wxT()
 // 1.4.133  2025/10/22 Apply Christo & Letartare fixes for assert in JumpTrackerView.h
 //                     https://forums.codeblocks.org/index.php?topic=26149.msg177897#msg177897
 // 1.4.132  2025/10/01 Apply Christo Patch

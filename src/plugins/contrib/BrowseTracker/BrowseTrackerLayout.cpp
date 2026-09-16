@@ -96,7 +96,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
         root = doc.FirstChildElement("BrowseTracker_layout_file");
         if (!root)
         {
-            pMsg->DebugLog(_T("Not a valid BrowseTracker layout file..."));
+            pMsg->DebugLog("Not a valid BrowseTracker layout file...");
             return false;
         }
     }
@@ -113,7 +113,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
     elem = root->FirstChildElement("File");
     if (!elem)
     {
-        //pMsg->DebugLog(_T("No 'File' element in file..."));
+        //pMsg->DebugLog("No 'File' element in file...");
         return false;
     }
 
@@ -123,7 +123,7 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
         fname = cbC2U(elem->Attribute("name"));
         if (fname.IsEmpty())
         {
-            //pMsg->DebugLog(_T("'File' node exists, but no filename?!?"));
+            //pMsg->DebugLog("'File' node exists, but no filename?!?");
             pf = nullptr;
         }
         else
@@ -167,17 +167,17 @@ bool BrowseTrackerLayout::Open(const wxString& filename, FileBrowse_MarksHash& m
             }
 
             #if defined(LOGGING)
-            ///LOGIT( _T("Open Layout processing for[%s]"),fname.c_str() );
+            ///LOGIT( "Open Layout processing for[%s]",fname.c_str() );
             #endif
 
             TiXmlElement* browsemarks = cursor ? cursor->NextSiblingElement("BrowseMarks") : nullptr; // (blauzahn 25/06/22)
             //if (not browsemarks)
-            //    LOGIT( _T("OPEN LAYOUT failed for BrowseMarks") );
+            //    LOGIT( "OPEN LAYOUT failed for BrowseMarks" );
             if (browsemarks)
             {
                 wxString marksString = cbC2U(browsemarks->Attribute("positions"));
                 #if defined(LOGGING)
-                //LOGIT( _T("OPEN_LAYOUT BROWSEMarksStrng[%s][%s]"), fname.c_str(), marksString.c_str() );
+                //LOGIT( "OPEN_LAYOUT BROWSEMarksStrng[%s][%s]", fname.c_str(), marksString.c_str() );
                 #endif
                 ParseBrowse_MarksString( fname, marksString, m_FileBrowse_MarksArchive );
             }
@@ -200,7 +200,7 @@ bool BrowseTrackerLayout::ParseBrowse_MarksString(const wxString& filename, cons
 
    // parse the comma delimited string
     BrowseMarks*  pEdPosnArchive = new BrowseMarks(filenamePath );
-    wxStringTokenizer tkz(BrowseMarksString, wxT(","));
+    wxStringTokenizer tkz(BrowseMarksString, ",");
     while ( tkz.HasMoreTokens() )
     {   long longnum;
         tkz.GetNextToken().ToLong(&longnum);
@@ -213,7 +213,7 @@ bool BrowseTrackerLayout::ParseBrowse_MarksString(const wxString& filename, cons
 bool BrowseTrackerLayout::Save(const wxString& filename, FileBrowse_MarksHash& m_FileBrowse_MarksArchive)
 // ----------------------------------------------------------------------------
 {
-    //DumpBrowse_Marks(wxT("BookMarks"), m_FileBrowse_MarksArchive, m_EdBook_MarksArchive);
+    //DumpBrowse_Marks("BookMarks", m_FileBrowse_MarksArchive, m_EdBook_MarksArchive);
 
     const char* ROOT_TAG = "BrowseTracker_layout_file";
 
@@ -256,7 +256,7 @@ bool BrowseTrackerLayout::Save(const wxString& filename, FileBrowse_MarksHash& m
                 if (not pBrowse_Marks) break;
                 wxString browseMarks = pBrowse_Marks->GetStringOfBrowse_Marks();
                 #if defined(LOGGING)
-                //LOGIT( _T("Layout writing BROWSEMarkString [%p]is[%s]"), pBrowse_Marks, browseMarks.c_str());
+                //LOGIT( "Layout writing BROWSEMarkString [%p]is[%s]", pBrowse_Marks, browseMarks.c_str());
                 #endif
                 TiXmlElement* btMarks = static_cast<TiXmlElement*>(node->InsertEndChild(TiXmlElement("BrowseMarks")));
                 btMarks->SetAttribute("positions", cbU2C(browseMarks));

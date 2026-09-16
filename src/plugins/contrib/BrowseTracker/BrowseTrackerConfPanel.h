@@ -27,12 +27,12 @@ class BrowseTrackerConfPanel: public cbConfigurationPanel
     BrowseTrackerConfPanel(BrowseTracker& browseTrackerPlugin, wxWindow* parent = nullptr, wxWindowID id = wxID_ANY);
 
 	/** Returns the title displayed in the left column of the "Settings/Environment" dialog. */
-	wxString GetTitle()          const {return wxT("BrowseTracker");}
+	wxString GetTitle()          const {return "BrowseTracker";}
 
 	/** Returns string used to build active/inactive images path in the left column
 	  * of the "Settings/Environment" dialog.
 	  */
-	wxString GetBitmapBaseName() const {return wxT("BrowseTracker");}
+	wxString GetBitmapBaseName() const {return "BrowseTracker";}
 
 	/** Called automatically when user clicks on OK
 	  */

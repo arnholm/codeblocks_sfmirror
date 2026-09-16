@@ -154,12 +154,12 @@ class JumpTracker : public cbPlugin
 		void OnViewJumpTrackerWindow(wxCommandEvent& event);
 		bool GetConfigBool(const wxString& parm)
 		{
-            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager(_T("BrowseTracker"));
+            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("BrowseTracker");
             return pCfgMgr->ReadBool(parm);
 		}
 		void SetConfigString(const wxString& key, const wxString& value)
 		{
-            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager(_T("BrowseTracker"));
+            ConfigManager* pCfgMgr = Manager::Get()->GetConfigManager("BrowseTracker");
             pCfgMgr->Write(key,value);
 		}
         void SettingsSaveWinPosition();

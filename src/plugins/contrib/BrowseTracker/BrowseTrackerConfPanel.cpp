@@ -64,7 +64,7 @@ BrowseTrackerConfPanel::BrowseTrackerConfPanel(BrowseTracker& browseTrackerPlugi
     // read current user options
     GetUserOptions( m_BrowseTrackerPlugin.GetBrowseTrackerCfgFilename() );
     // get ctrl-key ownership if editor multi-selection is enabled
-    bEdMultiSelOn = Manager::Get()->GetConfigManager(_T("editor"))->ReadBool(_T("/selection/multi_select"), false);
+    bEdMultiSelOn = Manager::Get()->GetConfigManager("editor")->ReadBool("/selection/multi_select", false);
 
     // enable/disable dialog options mapped to user options
     wxCommandEvent evt;
