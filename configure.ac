@@ -15,12 +15,17 @@ AC_MSG_RESULT([${enable_flags_setting}])
 m4_include([m4/acinclude.m4])
 m4_include([m4/ax_cxx_compile_stdcxx.m4])
 m4_include([m4/ax_boost_base.m4])
+m4_include([m4/ax_prog_cc_for_build.m4])
+m4_include([m4/ax_prog_cxx_for_build.m4])
 
 CODEBLOCKS_CHECK_DEBUG
 
 AM_INIT_AUTOMAKE([foreign dist-bzip2 no-dist-gzip subdir-objects])
 
 AC_DISABLE_STATIC
+
+AX_PROG_CC_FOR_BUILD
+AX_PROG_CXX_FOR_BUILD
 
 LT_INIT
 AC_CONFIG_MACRO_DIRS([m4])
