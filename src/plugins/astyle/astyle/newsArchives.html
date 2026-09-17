@@ -23,13 +23,13 @@
         With a new Artistic Style release some unchanged source files will be formatted because of changes to Artistic
         Style. You may want to format your source before making program changes in order to bring it up to date.</p>
     <p>
-        A new programming language, Objective&#8209;C, has been added to Artistic Style. Four new options, "align&#8209;method&#8209;colon",
+        A new programming language, <span style="white-space: nowrap;">Objective-C</span>, has been added to Artistic Style. Four new options, "align&#8209;method&#8209;colon",
         "pad&#8209;method&#8209;colon=", "pad&#8209;method&#8209;prefix", and "unpad&#8209;method&#8209;prefix" have been
-        added to format the methods. The options are described in a new "Objective&#8209;C" section in the documentation.
-        These new options affect only Objective&#8209;C source code. They have no effect on the other programming
+        added to format the methods. The options are described in a new "<span style="white-space: nowrap;">Objective-C</span>" section in the documentation.
+        These new options affect only <span style="white-space: nowrap;">Objective-C</span> source code. They have no effect on the other programming
         languages.</p>
     <p>
-        Because of the longer continuation indents sometimes needed for Objective&#8209;C, the option "max-instatement-indent"
+        Because of the longer continuation indents sometimes needed for <span style="white-space: nowrap;">Objective-C</span>, the option "max-instatement-indent"
         may need to be increased. If you are not getting the paren and block paren alignment you want, try increasing
         this value. The default minimum is 40 and the maximum is 120.</p>
     <p>
@@ -87,11 +87,11 @@
         The "Links" page has two new sections for links mentioned in previous versions of Artistic Style. It links to
         free software and other information.</p>
     <p>
-        The "Developer Information" section has a new example and download for calling Artistic Style from an Objective&#8209;C
+        The "Developer Information" section has a new example and download for calling Artistic Style from an <span style="white-space: nowrap;">Objective-C</span>
         program. Since it is another "C" language the only thing needed is to link the program with a library build of
         Artistic Style. The example was developed on Windows and Linux using the GNUstep project. Since the example is
         a console program the problems with the GNUstep GUI have been avoided. It has not been tested on a Mac, but should
-        be close to working. The "Developer Information" section also has a new page for "Objective&#8209;C on Windows
+        be close to working. The "Developer Information" section also has a new page for "<span style="white-space: nowrap;">Objective-C</span> on Windows
         and Linux" which has information on compiling and running the example on those systems.</p>
     <p>
         The executable included in the Windows distribution was compiled with Visual Studio 2010 (platform toolset v100).
@@ -209,7 +209,7 @@
         This bug fix release is issued because of the length of time required for the some of the changes in the next
         release (2.03). Bugs with the breaking of "case" statements and a crash with pointer to pointer (**) in align-pointer=type
         have been fixed. The "case" statements that have been incorrectly broken will be fixed in this release. Pointers
-        and references are now processed for C# files. See the "Release Notes" for more information and additional 
+        and references are now processed for C# files. See the "Release Notes" for more information and additional
         changes.</p>
 
     <h4><strong>The following information is for the original 2.02 release.</strong></h4>
@@ -229,8 +229,8 @@
         must be input from the command line and not an option file. See the documentation for details.</p>
     <p>
         The translations were mostly done with an automated translation program, Google Translate, so they may not be
-        the best translation possible. The translations are at the end of ASLocalizer.cpp in the form of an 
-        English&#8209;Translation pair. If you correct a translation, send the source as a bug report and it will be 
+        the best translation possible. The translations are at the end of ASLocalizer.cpp in the form of an
+        English&#8209;Translation pair. If you correct a translation, send the source as a bug report and it will be
         included in the next release.</p>
     <p>
         To add a language, add a new translation class to ASLocalizer.h. Add the English&#8209;Translation pair to the
@@ -270,15 +270,15 @@
         of containing no uninformative lines. Like Pico, it is also a very compact style.</p>
     <p>
         The option "brackets=horstmann" has been removed. Instead use "style=horstmann" or "A9". The short option "g"
-        is now equivalent to the new "brackets=run-in". Run-in brackets are used for both Horstmann and Pico 
+        is now equivalent to the new "brackets=run-in". Run-in brackets are used for both Horstmann and Pico
         styles.</p>
     <p>
-        The option "indent-brackets" and short option "B" have been removed. Instead use "style=whitesmith" or 
+        The option "indent-brackets" and short option "B" have been removed. Instead use "style=whitesmith" or
         "style=banner".</p>
     <p>
         The option "indent-blocks" and short option "G" have been removed. Instead use "style=gnu".</p>
     <p>
-        Two new options, "style=break" and "style=attach", have been added for Allman and Java bracket styles 
+        Two new options, "style=break" and "style=attach", have been added for Allman and Java bracket styles
         respectively.</p>
 
     <h4>Other Changes</h4>
@@ -399,7 +399,7 @@
         is no change necessary to the input. Otherwise, check the documentation for the new codes.</p>
     <p>
         The --style=linux has been changed to ALWAYS use a minimum conditional indent of one-half the indent length. This
-        is in the style definition and cannot be changed. If you do not want this setting use the K&amp;R style 
+        is in the style definition and cannot be changed. If you do not want this setting use the K&amp;R style
         instead.</p>
     <p>
         The MFC macros BEGIN_DISPATCH_MAP, BEGIN_EVENT_MAP, and BEGIN_PROPPAGEIDS are now formatted.</p>
@@ -518,7 +518,7 @@
         should result in a noticeable speed improvement.</p>
     <p>
         Checks for the maximum in-statement indent have been fixed. The indent for some long continuation lines may be
-        decreased. If you want the previous indentation, increase the &#8209;&#8209;max&#8209;in&#8209;statement 
+        decreased. If you want the previous indentation, increase the &#8209;&#8209;max&#8209;in&#8209;statement
         option.</p>
     <p>
         Occasionally, someone will use Artistic Style to format a file encoded with UTF-16 or UTF-32 bit encoding. These
@@ -529,7 +529,7 @@
         of Unicode encodings", "Compatibility issues".</p>
     <p>
         The Artistic Style documentation has been changed to include a new "Padding Options" section. The padding options
-        were previously in the "Formatting Options" section. This was done to allow space for additional options in 
+        were previously in the "Formatting Options" section. This was done to allow space for additional options in
         GUIs.</p>
     <p>
         The Scripts page has a couple of new scripts, including a "clean" script in python.</p>
@@ -669,7 +669,7 @@
         and Emacs does not have the style. <strong>Artistic Style uses an extra indent for switch blocks and C++ class blocks
             for both Whitesmith and Banner styles.</strong> This provides the best appearance in defining the style. If
         a different format is wanted, use the individual options instead of the predefined style. You can try indent&#8209;brackets,
-        indent&#8209;classes, and indent&#8209;swiches on a class or switch block to see the results.</p>
+        indent&#8209;classes, and indent&#8209;switches on a class or switch block to see the results.</p>
     <p>
         The GNU style and indent&#8209;blocks option have been changed to indent only the blocks within a function body.
         The opening bracket for namespaces and classes is no longer indented. The opening bracket for functions remains
@@ -794,13 +794,13 @@
         The OpenVMS distribution is prepared by Jim Duff, an OpenVMS Systems Specialist living in Sydney, Australia. His
         website is eight&#8209;cubed.com.</p>
     <p>
-        Thanks to Eran Ifrah and Max Horn for their contributions. Travis Robinson wrote the original C# interface 
+        Thanks to Eran Ifrah and Max Horn for their contributions. Travis Robinson wrote the original C# interface
         program.</p>
 
     <h4>Developers</h4>
 
     <p>
-        There is a new page in the Developer Information that has an example of calling Artistic Style from a C# 
+        There is a new page in the Developer Information that has an example of calling Artistic Style from a C#
         program.</p>
     <p>
         There was an omission in the peekNextLine function added in the last release which causes it to bypass empty lines.
@@ -815,7 +815,7 @@
     <p>
         The predefined style options will now override all other options. The order of entry does not matter as in previous
         versions. This will be done even if astyle_main is not used by your system. This was done by moving the checks
-        from astyle_main to ASFormatter. The procedure is in the function fixOptionVariableConflicts in 
+        from astyle_main to ASFormatter. The procedure is in the function fixOptionVariableConflicts in
         ASFormatter.</p>
     <p>
         The predefined style options now define only the bracket placement and sometimes the spaces per tab. This will
@@ -824,7 +824,7 @@
         The conflicts will be resolved by the fixOptionVariableConflicts function which is called after all options have
         been processed. All you need to do is set the options selected by the user.</p>
     <p>
-        The Artistic Style for Windows program has been updated to support the current release. It is available at 
+        The Artistic Style for Windows program has been updated to support the current release. It is available at
         jimp03.zxq.net</p>
     <p>
         I apologize for the unplanned changes this may add to your system. But Artistic Style is starting to mature as
@@ -869,7 +869,7 @@
     <p>
         When processing directories recursively it is sometimes necessary to exclude certain files or directories. This
         can be done using a new exclude (&#8209;&#8209;exclude=file&#8209;or&#8209;directory) option. There is no short
-        option. Multiple exclude statements are allowed. The Other Options section of the documentation contains the 
+        option. Multiple exclude statements are allowed. The Other Options section of the documentation contains the
         details.</p>
     <p>
         It is always a good idea to create a backup for files that have been formatted. This can cause a problem in that
@@ -964,7 +964,7 @@
         There is now a distribution package for OpenVMS thanks to Jim Duff, an OpenVMS Systems Specialist living in Sydney
         Australia. His website is at eight-cubed.com.</p>
     <p>
-        Thanks to Norbert Holzki and Siemens AG, Medical Solutions, Forchheim, Germany for testing the array 
+        Thanks to Norbert Holzki and Siemens AG, Medical Solutions, Forchheim, Germany for testing the array
         formatting.</p>
     <p>
         Thanks to Sam Cooler for testing the Mac OS X version.</p>
@@ -996,7 +996,7 @@
     <p>
         There is a sample GUI program for Windows available at http://jimp03.zxq.net/. It uses the unmodified Artistic
         Style compiled for a GUI. The source code needs some work so it is not available for now. It should work under
-        Linux using WINE. Future enhancements and platform support will depend on the response to the sample 
+        Linux using WINE. Future enhancements and platform support will depend on the response to the sample
         program.</p>
     <p>
         To support the new Artistic Style preprocessor option there are new makefiles and project files. Windows users
@@ -1024,7 +1024,7 @@
         A new option, unpad=paren, was added. This will undo the pad=paren, pad=paren-out and pad=paren-in options. It
         can be used alone or with pad=paren-out or pad=paren-in. If used alone it will unpad all parens that have been
         previously padded. If used with a paren padding option, the paren padding option will take precedence and only
-        the unnecessary padding will be removed. This will enable the paren padding to be changed in one formatting 
+        the unnecessary padding will be removed. This will enable the paren padding to be changed in one formatting
         run.</p>
     <p>
         Padding to paren headers (e.g. "if", "for", "while") was reinstated. This was done in previous releases if pad=oper

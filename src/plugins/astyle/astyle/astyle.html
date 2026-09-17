@@ -1,8 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-
+<!doctype html>
+<html lang="en">
 <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Artistic Style</title>
     <meta http-equiv="Content-Language" content="en-us" />
     <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
@@ -17,15 +20,16 @@
     <style type="text/css">
         hr { margin-left: -0.4in; }
         /* the following styles are for formatting code samples */
-        div.code { background: #DADAFF; }
+        div.code { }
         /* code */
-        p.code { margin-left: 0.3in; }
-        code { color: navy; }
-            code.title { font-size: larger; font-weight: bold; }
+        code { color: mediumblue; }
+        code.title { font-size: larger; font-weight: bold; }
         /* spans */
         span.brace { color: red; }
         span.comment { color: dimgray; font-style: italic; }
         span.option { color: saddlebrown; font-weight: bold; }
+
+        p.contents2 > a { margin-left: 2em; display: list-item;}
     </style>
 
     <!--  When the user scrolls down from the top of the document, show the button -->
@@ -55,174 +59,204 @@
 
 </head>
 
-<body>
+<body id="Contents">
 
-    <button onclick="topFunction()" id="topBtn" title="Go to Contents"><b>Top</b></button>
+    <div id="slogan">Artistic Style Manual</div>
+    <button onclick="topFunction()" id="topBtn" title="Go to Contents"><span class="menu-arrow">&#9650;</span> <b>Top</b></button>
 
-    <h1>Artistic Style 3.2</h1>
+    <label for="responsive-button" class="responsive-button">Artistic Style Manual</label>
+	<input type="checkbox" id="responsive-button" role="button">
 
-    <h2>
-        A Free, Fast, and Small Automatic Formatter<br />
-        for C, C++, C++/CLI, Objective&#8209;C, C#, and Java Source Code
-    </h2>
+    <nav class="menu">
 
-    <h3 id="Contents">Contents</h3>
+        <ul>
+              <li><a href="#_General_Information">Usage <span class="menu-arrow">&#9660;</span></a>
+                  <ul>
+                      <li><a href="#_Quick_Start">Quick Start</a></li>
+                      <li><a href="#_Usage">Usage</a></li>
+                      <li><a href="#_Options">Options</a></li>
+                      <li><a href="#_Option_Files">Option Files</a></li>
+                      <li><a href="#_Disable_Formatting">Disable Formatting</a></li>
+                   </ul>
+              </li>
 
-    <p class="contents1">
-        <a class="contents" href="#_General_Information">General&nbsp;Information</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Quick_Start">Quick&nbsp;Start</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Usage">Usage</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Options">Options</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Option_Files">Option&nbsp;Files</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Disable_Formatting">Disable&nbsp;Formatting</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Basic_Brace_Styles">Basic&nbsp;Brace&nbsp;Styles</a></p>
-    <p class="contents1">
-        <a class="contents" href="#_Brace_Style_Options">Brace&nbsp;Style&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_default_brace_style">default&nbsp;brace&nbsp;style</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=allman">style=allman</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=java">style=java</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=kr">style=kr</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=stroustrup">style=stroustrup</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=whitesmith">style=whitesmith</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=vtk">style=vtk</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=ratliff">style=ratliff</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=gnu">style=gnu</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=linux">style=linux</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=horstmann">style=horstmann</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=1tbs">style=1tbs</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=google">style=google</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=mozilla">style=mozilla</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=webkit">style=webkit</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=pico">style=pico</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_style=lisp">style=lisp</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Tab_Options">Tab&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_default_indent">default&nbsp;indent</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent=spaces">indent=spaces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent=tab">indent=tab</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent=force-tab">indent=force&#8209;tab</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent=force-tab-x">--indent=force&#8209;tab&#8209;x</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Brace_Modify_Options">Brace&nbsp;Modify&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_attach_namespaces">attach&#8209;namespaces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_attach_classes">attach&#8209;classes</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_attach_inlines">attach&#8209;inlines</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_attach-extern-c">attach&#8209;extern&#8209;c</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_attach-closing-while">attach&#8209;closing&#8209;while</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Indentation_Options">Indentation&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_indent-classes">indent&#8209;classes</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-modifiers">indent&#8209;modifiers</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-switches">indent&#8209;switches</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-cases">indent&#8209;cases</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-namespaces">indent&#8209;namespaces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-after-parens">indent&#8209;after&#8209;parens</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-continuation">indent&#8209;continuation</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-labels">indent&#8209;labels</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-preproc-block">indent&#8209;preproc&#8209;block</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-preproc-define">indent&#8209;preproc&#8209;define</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-preproc-cond">indent&#8209;preproc&#8209;cond</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_indent-col1-comments">indent&#8209;col1&#8209;comments</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_min-conditional-indent">min&#8209;conditional&#8209;indent</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_max-continuation-indent">max&#8209;continuation&#8209;indent</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Padding_Options">Padding&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_break-blocks">break&#8209;blocks</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_break-blocks=all">break&#8209;blocks=all</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-oper">pad&#8209;oper</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-comma">pad&#8209;comma</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-paren">pad&#8209;paren</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-paren-out">pad&#8209;paren&#8209;out</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-first-paren-out">pad&#8209;first&#8209;paren&#8209;out</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-paren-in">pad&#8209;paren&#8209;in</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-header">pad&#8209;header</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_unpad-paren">unpad&#8209;paren</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_delete-empty-lines">delete&#8209;empty&#8209;lines</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_fill-empty-lines">fill&#8209;empty&#8209;lines</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_align-pointer">align&#8209;pointer</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_align-reference">align&#8209;reference</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Formatting_Options">Formatting&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_break-closing-braces">break&#8209;closing&#8209;braces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_break-elseifs">break&#8209;elseifs</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_break-one-line-headers">break&#8209;one&#8209;line&#8209;headers</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_add-braces">add&#8209;braces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_add-one-line-braces">add&#8209;one&#8209;line&#8209;braces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_remove-braces">remove&#8209;braces</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_break-return-type">break&#8209;return&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_attach-return-type">attach&#8209;return&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_keep-one-line-blocks">keep&#8209;one&#8209;line&#8209;blocks</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_keep-one-line-statements">keep&#8209;one&#8209;line&#8209;statements</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_convert-tabs">convert&#8209;tabs</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_close-templates">close&#8209;templates</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_remove-comment-prefix">remove&#8209;comment&#8209;prefix</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_max-code-length">max&#8209;code&#8209;length</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_max-code-length">break&#8209;after&#8209;logical</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_mode">mode</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Objective_C_Options">Objective&#8209;C&nbsp;Options</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_pad-method-prefix">pad&#8209;method&#8209;prefix</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_unpad-method-prefix">unpad&#8209;method&#8209;prefix</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-return-type">pad&#8209;return&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_unpad-return-type">unpad&#8209;return&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-param-type">pad&#8209;param&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_unpad-param-type">unpad&#8209;param&#8209;type</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_align-method-colon">align&#8209;method&#8209;colon</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_pad-method-colon">pad&#8209;method&#8209;colon</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Other_Options">Other&nbsp;Options</a>&nbsp;&nbsp;&nbsp;</p>
-    <p class="contents2">
-        <a class="contents" href="#_suffix">suffix</a>&nbsp;&nbsp;&nbsp; <a class="contents" href="#_suffix=none">suffix=none</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_recursive">recursive</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_dry-run">dry-run</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_exclude">exclude</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_ignore-exclude-errors">ignore&#8209;exclude&#8209;errors</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_ignore-exclude-errors-x">ignore&#8209;exclude&#8209;errors&#8209;x</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_errors-to-stdout">errors&#8209;to&#8209;stdout</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_preserve-date">preserve&#8209;date</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_verbose">verbose</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_formatted">formatted</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_quiet">quiet</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_lineend">lineend</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p class="contents1">
-        <a class="contents" href="#_Command_Line_Only">Command&nbsp;Line&nbsp;Only</a></p>
-    <p class="contents2">
-        <a class="contents" href="#_options">options</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_project">project</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_ascii">ascii</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_version">version</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_help">help</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_html">html</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_html=">html=</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_stdin=">stdin=</a>&nbsp;&nbsp;&nbsp;
-        <a class="contents" href="#_stdout=">stdout=</a>&nbsp;&nbsp;&nbsp;
-    </p>
-    <p>
-        &nbsp;</p>
-    <hr />
+              <li><a href="#_Brace_Style_Options">Brace Options <span class="menu-arrow">&#9660;</span></a>
+                   <ul>
+                      <li><a href="#_Basic_Brace_Styles">Basic Brace Styles</a></li>
+                      <li><a href="#_default_brace_style">Default Style</a></li>
+                      <li><a href="#_style=allman">style=allman</a></li>
+                      <li><a href="#_style=java">style=java</a></li>
+                      <li><a href="#_style=kr">style=kr</a></li>
+                      <li><a href="#_style=stroustrup">style=stroustrup</a></li>
+                      <li><a href="#_style=whitesmith">style=whitesmith</a></li>
+                      <li><a href="#_style=vtk">style=vtk</a></li>
+                      <li><a href="#_style=ratliff">style=ratliff</a></li>
+                      <li><a href="#_style=gnu">style=gnu</a></li>
+                      <li><a href="#_style=linux">style=linux</a></li>
+                      <li><a href="#_style=horstmann">style=horstmann</a></li>
+                      <li><a href="#_style=1tbs">style=1tbs</a></li>
+                      <li><a href="#_style=google">style=google</a></li>
+                      <li><a href="#_style=mozilla">style=mozilla</a></li>
+                      <li><a href="#_style=webkit">style=webkit</a></li>
+                      <li><a href="#_style=pico">style=pico</a></li>
+                      <li><a href="#_style=lisp">style=lisp</a></li>
+                   </ul>
+              </li>
 
-    <!--  * * * * * * * * * * * *  General Information<  * * * * * * * * * * * *  -->
+              <li><a href="#">Brace Attach Options <span class="menu-arrow">&#9660;</span></a>
+                  <ul>
+                      <li><a href="#_attach_namespaces">attach-namespaces</a></li>
+                      <li><a href="#_attach_classes">attach-classes</a></li>
+                      <li><a href="#_attach_inlines">attach-inlines</a></li>
+                      <li><a href="#_attach-extern-c">attach-extern-c</a></li>
+                      <li><a href="#_attach-closing-while">attach-closing-while</a></li>
+                  </ul>
+             </li>
+
+              <li><a href="#_Tab_Options">Tab Options <span class="menu-arrow">&#9660;</span></a>
+                  <ul>
+                       <li><a href="#_default_indent">Default Indent </a></li>
+                       <li><a href="#_indent=spaces">indent=spaces </a></li>
+                       <li><a href="#_indent=tab">indent=tab </a></li>
+                       <li><a href="#_indent=force-tab">indent=force-tab </a></li>
+                       <li><a href="#_indent=force-tab-x">indent=force-tab-x </a></li>
+                  </ul>
+             </li>
+
+             <li><a href="#_Indentation_Options">Indentation Options <span class="menu-arrow">&#9660;</span></a>
+                  <ul>
+                       <li><a href="#_indent-classes">indent-classes </a></li>
+                       <li><a href="#_indent-modifiers">indent-modifiers </a></li>
+                       <li><a href="#_indent-switches">indent-switches </a></li>
+                       <li><a href="#_indent-cases">indent-cases </a></li>
+                       <li><a href="#_indent-namespaces">indent-namespaces </a></li>
+                       <li><a href="#_indent-after-parens">indent-after-parens </a></li>
+                       <li><a href="#_indent-continuation">indent-continuation </a></li>
+                       <li><a href="#_indent-labels">indent-labels </a></li>
+                       <li><a href="#_indent-preproc-block">indent-preproc-block </a></li>
+                       <li><a href="#_indent-preproc-define">indent-preproc-define </a></li>
+                       <li><a href="#_indent-preproc-cond">indent-preproc-cond </a></li>
+                       <li><a href="#_indent-col1-comments">indent-col1-comments </a></li>
+                       <li><a href="#_min-conditional-indent">min-conditional-indent </a></li>
+                       <li><a href="#_max-continuation-indent">max-continuation-indent </a></li>
+                       <li><a href="#_indent_lambda">indent-lambda </a></li>
+                       <li><a href="#_no-indent-if-after-else">no-indent-if-after-else </a></li>
+                       
+                  </ul>
+             </li>
+
+
+             <li><a href="#_Padding_Options">Padding Options <span class="menu-arrow">&#9660;</span></a>
+              <ul>
+                   <li><a href="#_break-blocks">break-blocks </a><li>
+                   <li><a href="#_break-blocks=all">break-blocks=all </a><li>
+                   <li><a href="#_pad-oper">pad-oper </a><li>
+                   <li><a href="#_pad-comma">pad-comma </a><li>
+                   <li><a href="#_pad-negation">pad-negation </a><li>
+                   <li><a href="#_pad-include">pad-include </a><li>
+                   <li><a href="#_pad-paren">pad-paren </a><li>
+                   <li><a href="#_pad-paren-out">pad-paren=out </a><li>
+                   <li><a href="#_pad-first-paren-out">pad-first-paren-out </a><li>
+                   <li><a href="#_pad-paren-in">pad-paren=in </a><li>
+                   <li><a href="#_pad-header">pad-header </a><li>
+                   <li><a href="#_unpad-paren">pad-paren=none </a><li>
+                   <li><a href="#_pad-empty-paren">pad-empty-paren </a><li>
+                   <li><a href="#_pad-brackets">pad-brackets </a><li>
+                   <li><a href="#_pad-brackets-in">pad-brackets=in </a><li>
+                   <li><a href="#_pad-brackets-out">pad-brackets=out </a><li>
+                   <li><a href="#_unpad-brackets">pad-brackets=none </a><li>
+                   <li><a href="#_pad-semicolon">pad-semicolon </a><li>
+                   <li><a href="#_delete-empty-lines">delete-empty-lines </a><li>
+                   <li><a href="#_fill-empty-lines">fill-empty-lines </a><li>
+                   <li><a href="#_line-between-members">line-between-members </a><li>
+                   <li><a href="#_squeeze-ws">squeeze-ws </a><li>
+                   <li><a href="#_preserve-ws">preserve-ws </a><li>
+                   <li><a href="#_squeeze-lines">squeeze-lines </a><li>
+                   <li><a href="#_align-pointer">align-pointer </a><li>
+                   <li><a href="#_align-reference">align-reference </a><li>
+              </ul>
+         </li>
+
+         <li><a href="#_Formatting_Options">Formatting Options <span class="menu-arrow">&#9660;</span></a>
+          <ul>
+               <li><a href="#_break-closing-braces">break-closing-braces </a><li>
+               <li><a href="#_break-elseifs">break-elseifs </a><li>
+               <li><a href="#_break-one-line-headers">break-one-line-headers </a><li>
+               <li><a href="#_add-braces">add-braces </a><li>
+               <li><a href="#_add-one-line-braces">add-one-line-braces </a><li>
+               <li><a href="#_remove-braces">remove-braces </a><li>
+               <li><a href="#_break-return-type">break-return-type </a><li>
+               <li><a href="#_attach-return-type">attach-return-type </a><li>
+               <li><a href="#_keep-one-line-blocks">keep-one-line-blocks </a><li>
+               <li><a href="#_keep-one-line-statements">keep-one-line-statements </a><li>
+               <li><a href="#_convert-tabs">convert-tabs </a><li>
+               <li><a href="#_close-templates">close-templates </a><li>
+               <li><a href="#_remove-comment-prefix">remove-comment-prefix </a><li>
+               <li><a href="#_max-code-length">max-code-length </a><li>
+               <li><a href="#_max-code-length-mode">max-code-length-mode </a><li>
+               <li><a href="#_max-code-length">break-after-logical </a><li>
+               <li><a href="#_mode">mode </a><li>
+          </ul>
+     </li>
+
+     <!--
+     <li><a href="#_Objective_C_Options">Objective C <span class="menu-arrow">&#9660;</span></a>
+      <ul>
+              <li><a href="#_pad-method-prefix">pad-method-prefix </a><li>
+              <li><a href="#_unpad-method-prefix">pad-method-prefix=none </a><li>
+              <li><a href="#_pad-return-type">pad-return-type </a><li>
+              <li><a href="#_unpad-return-type">pad-return-type=none </a><li>
+              <li><a href="#_pad-param-type">pad-param-type </a><li>
+              <li><a href="#_unpad-param-type">pad-param-type=none </a><li>
+              <li><a href="#_align-method-colon">align-method-colon </a><li>
+              <li><a href="#_pad-method-colon">pad-method-colon </a><li>
+      </ul>
+      </li>
+      -->
+
+     <li><a href="#_Formatting_Options">Other Options <span class="menu-arrow">&#9660;</span></a>
+          <ul>
+              <li><a href="#_suffix">suffix </a><li>
+              <li><a href="#_suffix=none">suffix=none </a><li>
+              <li><a href="#_recursive">recursive </a><li>
+              <li><a href="#_dry-run">dry-run </a><li>
+              <li><a href="#_error-on-changes">error-on-changes </a><li>
+              <li><a href="#_exclude">exclude </a><li>
+              <li><a href="#_ignore-exclude-errors">ignore-exclude-errors </a><li>
+              <li><a href="#_ignore-exclude-errors-x">ignore-exclude-errors-x </a><li>
+              <li><a href="#_accept-empty-list">accept-empty-list </a><li>
+              <li><a href="#_errors-to-stdout">errors-to-stdout </a><li>
+              <li><a href="#_preserve-date">preserve-date </a><li>
+              <li><a href="#_verbose">verbose </a><li>
+              <li><a href="#_formatted">formatted </a><li>
+              <li><a href="#_quiet">quiet </a><li>
+              <li><a href="#_lineend">lineend </a><li>
+              <li><a href="#_options">options </a><li>
+              <li><a href="#_project">project </a><li>
+              <li><a href="#_ascii">ascii </a><li>
+              <li><a href="#_version">version </a><li>
+              <li><a href="#_help">help </a><li>
+              <li><a href="#_stdin=">stdin= </a><li>
+              <li><a href="#_stdout=">stdout= </a><li>
+          </ul>
+      </li>
+
+     <li><a href="#_Deprecated_Options">Deprecated Options <span class="menu-arrow">&#9660;</span></a>
+          <ul>
+              <li><a href="#_deprecated-style-synonyms">style synonyms </a><li>
+              <li><a href="#_deprecated-mode-synonyms">mode synonyms </a><li>
+              <li><a href="#_deprecated-paren-bracket-side">pad-paren-in/-out, pad-brackets-in/-out </a><li>
+              <li><a href="#_deprecated-unpad">unpad-* options </a><li>
+              <li><a href="#_deprecated-return-type-decl">*-return-type-decl options </a><li>
+          </ul>
+      </li>
+
+         </ul>
+
+        </nav>
+
+
+        <div style="margin-left: 2em;margin-top: 1em;">
 
     <h3 id="_General_Information">General Information</h3>
 
@@ -236,7 +270,7 @@
 
     <p>
         Artistic Style will determine the file type from the file extension. The extension ".java" indicates a Java file,
-        and ".cs" indicates a C# file. Everything else is a C type file (C, C++, C++/CLI, or Objective-C). If you are
+        and ".cs" indicates a C# file. Everything else is a C type file (C, C++, C++/CLI, or <span style="white-space: nowrap;">Objective-C</span>). If you are
         using a non-standard file extension for Java or C#, use one of the --mode= options.</p>
 
     <h4>Wildcards and Recursion</h4>
@@ -268,11 +302,11 @@
         these settings. If no translation is available it will default to English. There is an "ascii" option to use English
         instead of the system language.</p>
     <p>
-        The source code for the translations is at the end of ASLocalizer.cpp in the form of an English&#8209;Translation
+        The source code for the translations is at the end of ASLocalizer.cpp in the form of an English-Translation
         pair. If you make corrections to a translation, send the source as a bug report and it will be included in the
         next release.</p>
     <p>
-        To add a new language, add a new translation class to ASLocalizer.h. Add the English&#8209;Translation pair to
+        To add a new language, add a new translation class to ASLocalizer.h. Add the English-Translation pair to
         the constructor in ASLocalizer.cpp. Update the WinLangCode array and add the language code to the function setTranslationClass().
         The ASLocalizer.cpp program contains comments that give web pages for obtaining the LCIDs and language codes.
         Send the source code as a bug report and it will be included in the next release.</p>
@@ -283,10 +317,10 @@
         The names of special characters used in programming vary by region. The terminology used by Artistic Style,
         followed by other common names, is<strong>:</strong></p>
     <blockquote>
-        braces or curly braces { } &#8209; also called brackets, or curly brackets.<br />
-        parens or round brackets ( ) &#8209; also called parentheses, brackets, circle brackets, or soft brackets.<br />
-        square brackets [ ] &#8209; also called block parens, brackets, closed brackets, or hard brackets.<br />
-        angle brackets < > &#8209; also called brackets, pointy brackets, triangular brackets, diamond brackets, tuples,
+        braces or curly braces { } - also called brackets, or curly brackets.<br />
+        parens or round brackets ( ) - also called parentheses, brackets, circle brackets, or soft brackets.<br />
+        square brackets [ ] - also called block parens, brackets, closed brackets, or hard brackets.<br />
+        angle brackets < > - also called brackets, pointy brackets, triangular brackets, diamond brackets, tuples,
         or chevrons.
     </blockquote>
     <p>
@@ -304,12 +338,12 @@
         hanging indent format is used. If the "exec sql" statement is indented more than the following statements, the
         SQL will be aligned in a single column.</p>
     <p>
-        Unicode files encoded as UTF&#8209;16, both big and little endian, will be formatted. The files must begin with
-        a byte order mark (BOM) to be recognized. Files encoded as UTF&#8209;32 will be rejected. Some compilers do not
-        support these encodings. These files can be converted to UTF&#8209;8 encoding with the program "iconv". There
+        Unicode files encoded as UTF-16, both big and little endian, will be formatted. The files must begin with
+        a byte order mark (BOM) to be recognized. Files encoded as UTF-32 will be rejected. Some compilers do not
+        support these encodings. These files can be converted to UTF-8 encoding with the program "iconv". There
         are Linux and Windows versions available (the Windows version does not seem to work for all encodings). Visual
         Studio can convert the files from the "File &gt; Advanced Save Options" menu. There are other development environments
-        and text editors, such as SciTE, that can convert files to UTF&#8209;8.</p>
+        and text editors, such as SciTE, that can convert files to UTF-8.</p>
     <p>
         Embedded statements that are multiple-line and are NOT in a C-type format, such as Python, are usually mal-formatted
         (a C-type format has blocks enclosed by braces and statements terminated by a semi-colon). Macros that define
@@ -317,11 +351,6 @@
         from the definition. If you have source code with these types of statements, exclude them with the
         <a href="#_exclude">exclude=####</a> option described in the <a href="#_Other_Options">Other Options</a>
         section.</p>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * * *  Quick Start  * * * * * * * * * * * * * *  -->
 
     <h3 id="_Quick_Start">Quick Start</h3>
 
@@ -345,11 +374,6 @@
         the file name. </p>
     <p>
         Once you are familiar with the options you can customize the format to your personal preference.</p>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * * * *  Usage  * * * * * * * * * * * * * * *  -->
 
     <h3 id="_Usage">Usage</h3>
 
@@ -392,7 +416,7 @@
     <h4>Redirection</h4>
 
     <p>
-        The < and > characters may be used to redirect the files into standard input (stdin) and out of standard output
+        The &lt; and &gt; characters may be used to redirect the files into standard input (stdin) and out of standard output
         (stdout) - don't forget them! With this option, only one file at a time can be formatted. Wildcards are not
         recognized, there are no console messages, and a backup is not created. On Windows, the output will always have
         Windows line ends. The options "stdin=" and "stdout=" can be used instead of redirection.</p>
@@ -406,17 +430,13 @@
         <pre>astyle --style=allman --stdin=<em>OriginalSourceFile</em> --stdout=<em>BeautifiedSourceFile</em>
 </pre>
     </div>
-    <div class="code">
+
+    <div class="code" style="margin-top:1em">
         <p class="code">
             The redirection option may be used to display the formatted file without updating:</p>
         <pre>astyle --style=allman &lt; <em>OriginalSourceFile</em> | less
 </pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * * * *  Options  * * * * * * * * * * * * * * *  -->
 
     <h3 id="_Options">Options</h3>
 
@@ -437,11 +457,6 @@
     <p>
         These options start with a single '<strong>-</strong>', and may be concatenated together.<br />
         (Example: '-bps4' is the same as writing '-b -p -s4'.)</p>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * * *  Options File  * * * * * * * * * * * * * *  -->
 
     <h3 id="_Option_Files">Option Files</h3>
 
@@ -451,7 +466,7 @@
     <p>
         Options may be set apart by new-lines, tabs, commas, or spaces. Long options in the option file may be written
         without the preceding '--'. Lines within the option file that begin with '#' are considered line-comments.
-        The option files used in formatting and their location can be displayed by using the --verbose 
+        The option files used in formatting and their location can be displayed by using the --verbose
         option. </p>
     <ol>
         <li>The <strong>command line options</strong> have precedence. If there is a conflict between a command line option
@@ -465,18 +480,18 @@
             <ul>
                 <li>the file name indicated by the --project= command line option.</li>
                 <li>the file named .astylerc or _ astylerc and the --project command line option. </li>
-                <li>the file name identified by the environment variable ARTISTIC_STYLE_PROJECT_OPTIONS if it exists. The value of 
+                <li>the file name identified by the environment variable ARTISTIC_STYLE_PROJECT_OPTIONS if it exists. The value of
                     the variable should be a file name only, no path.</li>
                 <li>the file or environment variable can be disabled by specifying --project=none on the command line.</li>
             </ul>
             The file is expected to be in the top directory of the project being formatted. Only one file will be used per
-            execution and all files to be formatted are assumed to be in the same project. Artistic Style will search 
+            execution and all files to be formatted are assumed to be in the same project. Artistic Style will search
             backward in the directory path to find the project option file. The initial directory path for the search is obtained
             from one of the following locations in the following order.
             <ul>
                 <li>The first <em>SourceFilePath</em> entered on the command line.</li>
                 <li>The value of "--stdin=" if it is used for redirection.</li>
-                <li>The current directory if "<" is used for redirection. If the file to be formatted is not in the current 
+                <li>The current directory if "<" is used for redirection. If the file to be formatted is not in the current
                     directory, use the "--stdin=" option instead.</li>
             </ul>
         </li>
@@ -486,11 +501,11 @@
             following order.
             <ul>
                 <li>the file path indicated by the --options= command line option.</li>
-                <li>the file path indicated by the environment variable ARTISTIC_STYLE_OPTIONS if it exists. The value of the 
+                <li>the file path indicated by the environment variable ARTISTIC_STYLE_OPTIONS if it exists. The value of the
                     variable should be a path including the file name.</li>
-                <li>the file named .astylerc in the directory pointed to by the HOME environment variable 
+                <li>the file named .astylerc in the directory pointed to by the HOME environment variable
                     (e.g. "$HOME<strong>/.</strong>astylerc" on Linux); </li>
-                <li>the file named astylerc in the directory pointed to by the APPDATA environment variable 
+                <li>the file named astylerc in the directory pointed to by the APPDATA environment variable
                     (e.g. "%APPDATA%<strong>\</strong>astylerc" on Windows). </li>
                 <li>the file or environment variable can be disabled by specifying --options=none on the command line.</li>
             </ul>
@@ -508,12 +523,6 @@ indent-switches     <span class="comment"># cannot do this on the command line</
 <span class="comment"># short options can be concatenated together</span>
 -M60Ucv</pre>
     </div>
-    <p>
-        &nbsp;</p>
-
-    <hr />
-
-    <!--  * * * * * * * * * * * * *  Disable Formatting   * * * * * * * * * * * * *  -->
 
     <h3 id="_Disable_Formatting">Disable Formatting</h3>
 
@@ -561,11 +570,6 @@ indent-switches     <span class="comment"># cannot do this on the command line</
             The following prevents the operator padding from changing:</p>
         <pre>size_t foo = (unsigned int) -1;  <span class="comment">// *NOPAD*</span></pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * *   Basic Brace Styles    * * * * * * * * * * * *  -->
 
     <h3 id="_Basic_Brace_Styles">Basic Brace Styles</h3>
 
@@ -591,12 +595,6 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         Style you can easily modify source code to suit your
         preference.</p>
 
-    <p>
-        &nbsp;</p>
-    <hr />
-
-
-    <!--  * * * * * * * * * * * *   Brace Style Options    * * * * * * * * * * * *  -->
 
     <h3 id="_Brace_Style_Options">Brace Style Options</h3>
 
@@ -655,8 +653,8 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         a function.</p>
     <p>
         Using the k&amp;r option may cause problems because of the &amp;. This can be resolved by enclosing the k&amp;r
-        in quotes (e.g. &#8209;&#8209;style="k&amp;r") or by using one of the alternates &#8209;&#8209;style=kr or
-         &#8209;&#8209;style=k/r.</p>
+        in quotes (e.g. --style="k&amp;r") or by using one of the alternates --style=kr or
+         --style=k/r.</p>
     <div class="code">
         <pre>int Foo(bool isBar)
 <span class="brace">{</span>
@@ -675,7 +673,7 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         Stroustrup style uses linux braces. Opening braces are broken from function definitions only. The opening braces
         are attached to everything else, including namespaces, classes, arrays, structs, enums, and statements within
         a function.&nbsp; The closing headers are broken from closing braces (e.g. --break-closing-headers). This style
-        frequently is used with attach&#8209;closing&#8209;while, tabbed indents, and an indent of 5 
+        frequently is used with attach-closing-while, tabbed indents, and an indent of 5
         spaces. </p>
     <div class="code">
         <pre>int Foo(bool isBar)
@@ -712,7 +710,7 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         &nbsp;</p>
     <p id="_style=vtk">
         <code class="title">--style=vtk / -A15</code><br />
-        VTK (Visualization Toolkit) style uses broken, indented braces, except for the opening brace of classes, 
+        VTK (Visualization Toolkit) style uses broken, indented braces, except for the opening brace of classes,
         arrays, structs, enums, and function definitions.. Switch blocks are indented to prevent a 'hanging
         indent' with following case statements. </p>
     <div class="code">
@@ -750,7 +748,7 @@ indent-switches     <span class="comment"># cannot do this on the command line</
     <p id="_style=gnu">
         <code class="title">--style=gnu / -A7</code><br />
         GNU style uses broken braces. Extra indentation is added to blocks <strong>within a function</strong>
-        only. The entire block is indented, not just the brace. This style frequently is used with an indent of 2 
+        only. The entire block is indented, not just the brace. This style frequently is used with an indent of 2
         spaces. </p>
     <div class="code">
         <pre>int Foo(bool isBar)
@@ -814,7 +812,7 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         else, including arrays, structs, enums, and statements within a function. </p>
     <p>
         In the following example, braces have been added to the "return 0;" statement. The option
-        &#8209;&#8209;add&#8209;one&#8209;line&#8209;braces can also be used with this style.</p>
+        --add-one-line-braces can also be used with this style.</p>
     <div class="code">
         <pre>int Foo(bool isBar)
 <span class="brace">{</span>
@@ -852,7 +850,8 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         The braces are attached to everything else, including namespaces, arrays, and statements within a function. This
         style frequently is used with an indent of 2 spaces and --break-return-type.</p>
     <div class="code">
-        <pre>int Foo(bool isBar)/span>
+        <pre>int Foo(bool isBar)
+<span class="brace">{</span>
     if (isBar) <span class="brace">{</span>
         bar();
         return 1;
@@ -867,7 +866,7 @@ indent-switches     <span class="comment"># cannot do this on the command line</
         <code class="title">--style=webkit / -A17</code><br />
         WebKit style uses linux braces. Opening braces are broken from function definitions only. The opening braces are
         attached to everything else, including namespaces, classes, arrays, structs, enums, and statements within a function.
-        This style frequently is used with attach&#8209;closing&#8209;while, and an indent of 4 spaces.
+        This style frequently is used with attach-closing-while, and an indent of 4 spaces.
     </p>
     <div class="code">
         <pre>int Foo(bool isBar)
@@ -907,17 +906,12 @@ indent-switches     <span class="comment"># cannot do this on the command line</
     <div class="code">
         <pre>int Foo(bool isBar) <span class="brace">{</span>
     if (isBar) <span class="brace">{
-</span>        bar()
+</span>        bar();
         return 1; <span class="brace">}
  </span>   else
         return 0; <span class="brace">}</span>
 </pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * * * *   Tab Options  * * * * * * * * * * * * * * * -->
 
     <h3 id="_Tab_Options">Tab Options</h3>
 
@@ -1024,11 +1018,6 @@ indent-switches     <span class="comment"># cannot do this on the command line</
 <span class="brace">}</span>
 </pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * *   Brace Modify Options   * * * * * * * * * * * * -->
 
     <h3 id="_Brace_Modify_Options">Brace Modify Options</h3>
 
@@ -1120,11 +1109,6 @@ while x == 1;
 <span class="brace">}</span> while x == 1;
 </pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * *   Indentation Options  * * * * * * * * * * * * *  -->
 
     <h3 id="_Indentation_Options">Indentation Options</h3>
 
@@ -1157,7 +1141,7 @@ public:
         <code class="title">--indent-modifiers / -xG</code><br />
         Indent 'class ' and 'struct' access modifiers, 'public:', 'protected:'
         and 'private:', one half indent. The rest of the class is not indented. This option is effective
-        for C++ files only. If used with indent&#8209;classes this option will be ignored.</p>
+        for C++ files only. If used with indent-classes this option will be ignored.</p>
     <div class="code">
         <pre>class Foo
 <span class="brace">{</span>
@@ -1442,7 +1426,7 @@ error:
     <p id="_indent-col1-comments">
         <code class="title">--indent-col1-comments / -Y</code><br />
         Indent C++ comments beginning in column one. By default C++ comments beginning in column one are
-        assumed to be commented&#8209;out code and not indented. This option will allow the comments to be indented with
+        assumed to be commented-out code and not indented. This option will allow the comments to be indented with
         the code.</p>
     <div class="code">
         <pre>void Foo()\n"
@@ -1507,6 +1491,7 @@ if (a &lt; b
     </div>
     <p>
         &nbsp;</p>
+
     <p id="_max-continuation-indent">
         <code class="title">--max-continuation-indent=<span class="option">#</span> / -M<span class="option">#</span></code><br />
         Set the &nbsp;maximum of <span class="option">#</span> spaces to indent a continuation line. The
@@ -1534,11 +1519,76 @@ fooFunction(barArg1,
             barArg3);
 </pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
 
-    <!--  * * * * * * * * * * * * *   Padding Options  * * * * * * * * * * * * *  -->
+<p id="_indent_lambda">
+    <code class="title">--indent-lambda</code><br />
+    This option improves indentation of C++ lambda functions. As it currently does not work well with complex lambda function bodies, this feature is not enabled by default.
+</p>
+
+<div class="code">
+    <pre>void abssort (float* x, unsigned n)
+{
+    std::sort (x, x + n,
+    [] (float a, float b) {
+        return (std::abs (a) < std::abs (b));
+    }
+              );
+}</pre>
+</div>
+
+<p class="code">
+    becomes:</p>
+
+<div class="code">
+    <pre>void abssort (float* x, unsigned n)
+{
+    std::sort (x, x + n,
+                [] (float a, float b) {
+                    return (std::abs (a) < std::abs (b));
+                }
+               );
+}</pre>
+</div>
+
+<p id="_no-indent-if-after-else">
+    <code class="title">--no-indent-if-after-else</code><br />
+    This option removes extra indentation made by default when an "if" statement comes on the next line after "else".  
+</p>
+
+<div class="code">
+    <pre>if (x)
+{
+} 
+else
+  if (y)
+  {
+  }
+  else
+    if (z)
+    {
+    }
+</pre>
+</div>
+
+<p class="code">
+    becomes:</p>
+
+<div class="code">
+    <pre>if (x)
+{
+} 
+else
+if (y)
+{
+}
+else
+if (z)
+{
+}
+</pre>
+</div>
+
+
 
     <h3 id="_Padding_Options">Padding Options</h3>
 
@@ -1572,7 +1622,7 @@ isBar = false;
     <p id="_break-blocks=all">
         <code class="title">--break-blocks=all / -F</code><br />
         Pad empty lines around header blocks (e.g. 'if', 'for', 'while'...). Treat
-        closing header blocks (e.g. 'else', 'catch') as stand-alone blocks.</p>
+        closing header blocks (e.g. 'else', 'catch'), structs and functions as stand-alone blocks.</p>
     <div class="code">
         <pre>isFoo = true;
 if (isFoo) <span class="brace">{</span>
@@ -1629,6 +1679,77 @@ isBar = false;
     bar(a, b);
 </pre>
     </div>
+
+
+    <p>
+        &nbsp;</p>
+    <p id="_pad-include">
+        <code class="title">--pad-include</code><br />
+        Insert space padding after include directives and removes superfluous whitespace.
+    </p>
+    <div class="code">
+        <pre>#include&lt;stdio&gt;
+#include&nbsp;&nbsp;&nbsp;&lt;iostream&gt;
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>#include &lt;stdio&gt;
+#include &lt;iostream&gt;
+</pre>
+    </div>
+
+    <p>
+        &nbsp;</p>
+    <p>
+        <code class="title">--pad-include=none</code><br />
+        Remove space padding after include directives.
+    </p>
+    <div class="code">
+        <pre>#include&lt;stdio&gt;
+#include&nbsp;&nbsp;&nbsp;&lt;iostream&gt;
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>#include&lt;stdio&gt;
+#include&lt;iostream&gt;
+</pre>
+    </div>
+
+
+    <p>
+        &nbsp;</p>
+    <p id="_pad-negation">
+        <code class="title">--pad-negation</code><br />
+        Insert space padding after negations.
+    </p>
+    <div class="code">
+        <pre>if (!isFoo(a,b))
+    bar(a,b);
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>if (! isFoo(a, b))
+    bar(a, b);
+</pre>
+    </div>
+
+    <p>
+        &nbsp;</p>
+    <p id="_pad-negation">
+        <code class="title">--pad-negation=before</code><br />
+        Insert space padding also before negations.
+    </p>
+    <div class="code">
+        <pre>if (!isFoo(a,b))
+    bar(a,b);
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>if ( ! isFoo(a, b))
+    bar(a, b);
+</pre>
+    </div>
+
     <p>
         &nbsp;</p>
     <p id="_pad-paren">
@@ -1649,11 +1770,11 @@ isBar = false;
     <p>
         &nbsp;</p>
     <p id="_pad-paren-out">
-        <code class="title">--pad-paren-out / -d </code>
+        <code class="title">--pad-paren=out / -d </code>
         <br />
         Insert space padding around parens on the <strong>outside</strong> only. Parens that are empty will
         not be padded. Any end of line comments will remain in the original column, if possible. This can be used with
-        unpad-paren below to remove unwanted spaces.</p>
+        pad-paren=none below to remove unwanted spaces.</p>
     <div class="code">
         <pre>if (isFoo((a+2), b))
     bar(a, b);
@@ -1671,9 +1792,9 @@ isBar = false;
         <br />
         Insert space padding around the <strong>first</strong> paren in a series on the <strong>outside</strong>
         only. Parens that are empty will not be padded. Any end of line comments will remain in the original column,
-        if possible. This can be used with unpad-paren below to remove unwanted spaces. If used with pad&#8209;paren or
-        pad&#8209;paren&#8209;out, this option will be ignored. If used with pad&#8209;paren&#8209;in, the result will
-        be the pad&#8209;paren.</p>
+        if possible. This can be used with pad-paren=none below to remove unwanted spaces. If used with pad-paren or
+        pad-paren=out, this option will be ignored. If used with pad-paren=in, the result will
+        be the pad-paren.</p>
     <div class="code">
         <pre>if (isFoo((a+2), b))
     bar(a, b);
@@ -1687,10 +1808,10 @@ isBar = false;
     <p>
         &nbsp;</p>
     <p id="_pad-paren-in">
-        <code class="title">--pad-paren-in / -D </code>
+        <code class="title">--pad-paren=in / -D </code>
         <br />
         Insert space padding around paren on the <strong>inside</strong> only. Any end of line comments will remain
-        in the original column, if possible. This can be used with unpad-paren below to remove unwanted spaces.</p>
+        in the original column, if possible. This can be used with pad-paren=none below to remove unwanted spaces.</p>
     <div class="code">
         <pre>if (isFoo((a+2), b))
     bar(a, b);
@@ -1708,7 +1829,7 @@ isBar = false;
         <br />
         Insert space padding between a header (e.g. 'if', 'for', 'while'...)
         and the following paren. Any end of line comments will remain in the original column, if possible. This can
-        be used with unpad-paren to remove unwanted spaces.</p>
+        be used with pad-paren=none to remove unwanted spaces.</p>
     <div class="code">
         <pre>if(isFoo((a+2), b))
     bar(a, b);</pre>
@@ -1721,17 +1842,17 @@ isBar = false;
     <p>
         &nbsp;</p>
     <p id="_unpad-paren">
-        <code class="title">--unpad-paren / -U </code>
+        <code class="title">--pad-paren=none / -U </code>
         <br />
         Remove extra space padding around parens on the inside and outside. Any end of line comments will remain
         in the original column, if possible. This option can be used in combination with the paren padding options
-        pad&#8209;paren, pad&#8209;paren&#8209;out, pad&#8209;paren&#8209;in,
-        and pad&#8209;header above. Only padding that has not been requested by other options will be
+        pad-paren, pad-paren=out, pad-paren=in,
+        and pad-header above. Only padding that has not been requested by other options will be
         removed.</p>
     <p>
         For example, if a source has parens padded on both the inside and outside, and you want inside only. You need
-        to use unpad-paren to remove the outside padding, and pad&#8209;paren&#8209;in to
-        retain the inside padding. Using only pad&#8209;paren&#8209;in> would not remove the outside
+        to use pad-paren=none to remove the outside padding, and pad-paren=in to
+        retain the inside padding. Using only pad-paren=in would not remove the outside
         padding.</p>
     <div class="code">
         <pre>if ( isFoo( ( a+2 ), b ) )
@@ -1743,13 +1864,110 @@ isBar = false;
     bar(a, b);
 </pre>
     </div>
+
+
+    <p id="_pad-empty-paren">
+        <code class="title">--pad-empty-paren / -xo </code>
+        <br />
+        Apply padding to empty pairs of parentheses; combine with other
+        parentheses padding options.
+    </p>
+    <div class="code">
+        <pre>if (isFoo())
+    bar(a, b);
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>if ( isFoo () )
+    bar( a, b );
+</pre>
+    </div>
+    <p>
+        &nbsp;</p>
+
+    <p id="_pad-brackets">
+        <code class="title">--pad-brackets</code>
+        <br />
+        Insert space padding around square brackets on both the <strong>outside</strong> and the <strong>inside</strong>.
+    </p>
+    <div class="code">
+        <pre>a = b[a[1]];</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>a = b [ a [ 1 ] ];</pre>
+    </div>
+
+    <p id="_pad-brackets-in">
+        <code class="title">--pad-brackets=in</code>
+        <br />
+        Insert space padding around square brackets the <strong>inside</strong> only.
+    </p>
+    <div class="code">
+        <pre>a = b[a[1]];</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>a = b[ a[ 1 ] ];</pre>
+    </div>
+
+    <p id="_pad-brackets-out">
+        <code class="title">--pad-brackets=out</code>
+        <br />
+        Insert space padding around square brackets the <strong>outside</strong> only.
+    </p>
+    <div class="code">
+        <pre>a = b[a[1]];</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>a = b [a [1]];</pre>
+    </div>
+
+
+    <p id="_unpad-brackets">
+        <code class="title">--pad-brackets=none</code>
+        <br />
+        Remove padding around square brackets on both the <strong>outside</strong> and the <strong>inside</strong>.
+    </p>
+    <div class="code">
+        <pre>a = b [ a [ 1 ] ];</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>a = b[a[1]];</pre>
+    </div>
+
+
+    <p id="_pad-semicolon">
+        <code class="title">--pad-semicolon=none</code>
+        <br />
+        Remove space padding <strong>before</strong> a semicolon.
+        An empty statement on a line of its own keeps its indent, and the empty
+        expressions of a <code>for</code> header are left unchanged.
+    </p>
+    <div class="code">
+        <pre>void Foo()
+<span class="brace">{</span>
+    bar() ;
+    for (i = 0 ; i &lt; 10 ; i++)
+        baz() ;
+<span class="brace">}</span>
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>void Foo()
+<span class="brace">{</span>
+    bar();
+    for (i = 0; i &lt; 10; i++)
+        baz();
+<span class="brace">}</span>
+</pre>
+    </div>
+
     <p>
         &nbsp;</p>
     <p id="_delete-empty-lines">
         <code class="title">--delete-empty-lines / -xe</code><br />
-        Delete empty lines within a function or method. Empty lines outside of functions or methods are NOT deleted. If
-        used with break-blocks or break-blocks=all it will delete all lines EXCEPT the lines added by the break-blocks
-        options.</p>
+        Eliminates unnecessary empty lines from within functions and methods.
+        Empty lines outside of nested functions and methods, as well as lines specified by break-block options, are kept intact.
+    </p>
     <div class="code">
         <pre>void Foo()
 <span class="brace">{</span>
@@ -1766,14 +1984,130 @@ isBar = false;
 <span class="brace">{</span>
     foo1 = 1;
     foo2 = 2;
+<span class="brace">}</span></pre>
+    </div>
+    <p>
+        &nbsp;</p>
+
+    <p id="_fill-empty-lines">
+        <code class="title">--fill-empty-lines / -E</code><br />
+        Fill empty lines with the white space of the previous line.</p>
+
+    <p>
+        &nbsp;</p>
+    <p id="_line-between-members">
+        <code class="title">--line-between-members</code><br />
+        <code class="title">--line-between-members=all</code><br />
+        Ensures that there is at least one empty line between class members and, in C/C++, between functions.
+        When the "all" parameter is omitted, two or more class <i>fields</i> that are not separated by an empty line stay this way (so, multiple fields can be grouped in a compact way). 
+        If the "all" parameter is specified, an empty line is enforced for any combinations of class members. 
+        Existing empty lines are kept intact.
+    </p>
+    <div class="code">
+        <pre>int i;
+int j;
+void foo()
+<span class="brace">{</span>
+<span class="brace">}</span>
+void bar()
+<span class="brace">{</span>
+<span class="brace">}</span>
+</pre>
+        <p class="code">
+            becomes:</p>
+        <pre>int i;
+int j;
+        
+void foo()
+<span class="brace">{</span>
+<span class="brace">}</span>
+
+void bar()
+<span class="brace">{</span>
 <span class="brace">}</span>
 </pre>
     </div>
     <p>
+        With the "all" parameter, the code becomes
+    </p>
+    <div class="code">
+        <pre>int i;
+        
+int j;
+        
+void foo()
+<span class="brace">{</span>
+<span class="brace">}</span>
+
+void bar()
+<span class="brace">{</span>
+<span class="brace">}</span>
+</pre>
+    </div>
+    
+    
+    <p>
         &nbsp;</p>
-    <p id="_fill-empty-lines">
-        <code class="title">--fill-empty-lines / -E</code><br />
-        Fill empty lines with the white space of the previous line.</p>
+
+
+        <p id="_squeeze-lines">
+            <code class="title">--squeeze-lines=#</code><br />
+            Remove superfluous empty lines exceeding the given number.</p>
+        <div class="code">
+            <pre>void Foo()
+<span class="brace">{</span>
+    foo1 = 1;
+<span class="brace">}</span>
+
+
+
+
+void Foo2()
+<span class="brace">{</span>
+    foo1 = 1;
+<span class="brace">}</span>
+    </pre>
+            <p class="code">
+                becomes:</p>
+            <pre>void Foo()
+<span class="brace">{</span>
+    foo1 = 1;
+<span class="brace">}</span>
+
+
+void Foo2()
+<span class="brace">{</span>
+    foo1 = 1;
+<span class="brace">}</span></pre>
+        </div>
+
+
+    <p>
+            &nbsp;</p>
+        <p id="_squeeze-ws">
+            <code class="title">--squeeze-ws</code><br />
+            Remove superfluous whitespace</p>
+        <div class="code">
+            <pre>void       Foo    ()
+<span class="brace">{</span>
+    foo1   =   1;
+<span class="brace">}</span>
+    </pre>
+            <p class="code">
+                becomes:</p>
+<pre>void Foo ()
+<span class="brace">{</span>
+    foo1 = 1;
+<span class="brace">}</span></pre>
+        </div>
+
+    <p>
+        &nbsp;</p>
+    <p id="_preserve-ws">
+        <code class="title">--preserve-ws</code><br />
+        Preserve whitespace near comma operators if squeeze-ws is not set.</p>
+
+
     <p>
         &nbsp;</p>
     <p id="_align-pointer">
@@ -1795,7 +2129,7 @@ string ^s1;</pre>
 char&amp; foo2;
 string^ s1;</pre>
     </div>
-    <div class="code">
+    <div class="code" style="margin-top:1em">
         <pre>char* foo1;
 char &amp; foo2;
 string ^s1;</pre>
@@ -1805,7 +2139,7 @@ string ^s1;</pre>
 char &amp; foo2;
 string ^ s1;</pre>
     </div>
-    <div class="code">
+    <div class="code" style="margin-top:1em">
         <pre>char* foo1;
 char &amp; foo2;
 string ^s1;</pre>
@@ -1833,23 +2167,18 @@ string ^s1;</pre>
             becomes (with align-reference=type):</p>
         <pre>char&amp; foo1;</pre>
     </div>
-    <div class="code">
+    <div class="code" style="margin-top:1em">
         <pre>char&amp; foo2;</pre>
         <p class="code">
             becomes (with align-reference=middle):</p>
         <pre>char &amp; foo2;</pre>
     </div>
-    <div class="code">
-        <pre>char& foo3;</pre>
+    <div class="code" style="margin-top:1em">
+        <pre>char&amp; foo3;</pre>
         <p class="code">
             becomes (with align-reference=name):</p>
         <pre>char &amp;foo3;</pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * * *   Formatting Options  * * * * * * * * * * * * *  -->
 
     <h3 id="_Formatting_Options">Formatting Options</h3>
 
@@ -1895,7 +2224,7 @@ else if (isFoo1()) <span class="brace">{</span>
     bar1();
 <span class="brace">}</span>
 else if (isFoo2()) <span class="brace">{</span>
-    bar2;
+    bar2();
 <span class="brace">}</span>
 </pre>
         <p class="code">
@@ -2005,11 +2334,11 @@ else
     <p>
         &nbsp;</p>
     <p id="_break-return-type">
-        <code class="title">--break-return-type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / -xB</code><br />
-        <code class="title">--break-return-type-decl / -xD</code><br />
+        <code class="title">--break-return-type &nbsp;&nbsp;&nbsp;&nbsp; / -xB</code><br />
+        <code class="title">--break-return-type=decl / -xD</code><br />
         Break the return type from the function name. The two options are for the function definitions (-xB), and the
         function declarations or signatures (-xD). If used with --attach-return-type, the result will be to break the
-        return type. This option has no effect on Objective-C functions.</p>
+        return type. This option has no effect on <span style="white-space: nowrap;">Objective-C</span> functions.</p>
     <div class="code">
         <pre>void Foo(bool isFoo);</pre>
         <p class="code">
@@ -2020,12 +2349,12 @@ Foo(bool isFoo);</pre>
     <p>
         &nbsp;</p>
     <p id="_attach-return-type">
-        <code class="title">--attach-return-type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / -xf</code><br />
-        <code class="title">--attach-return-type-decl / -xh</code><br />
-        Attach the return type to the function name. The two options are for the function definitions (-xf), and the 
+        <code class="title">--attach-return-type &nbsp;&nbsp;&nbsp;&nbsp; / -xf</code><br />
+        <code class="title">--attach-return-type=decl / -xh</code><br />
+        Attach the return type to the function name. The two options are for the function definitions (-xf), and the
         function declarations or signatures (-xh). They are intended to undo the --break-return-type options. If used
-        with --break-return-type, the result will be to break the return type. This option has no effect on 
-        Objective-C functions.</p>
+        with --break-return-type, the result will be to break the return type. This option has no effect on
+        <span style="white-space: nowrap;">Objective-C</span> functions.</p>
     <div class="code">
         <pre>void
 Foo(bool isFoo);</pre>
@@ -2110,19 +2439,28 @@ Foo(bool isFoo);</pre>
         <code class="title">--max-code-length=<span class="option">#</span>&nbsp;&nbsp; / -xC<span class="option">#</span>
             <br />
             --break-after-logical / -xL</code><br />
-        The option max&#8209;code&#8209;length will break a line if the code exceeds <span class="option">#</span>
+        The option max-code-length will break a line if the code exceeds <span class="option">#</span>
         characters. The valid values are <strong>50</strong> thru <strong>200</strong>. Lines without logical conditionals
         will break on a logical conditional (||, &amp;&amp;, ...), comma, paren, semicolon, or space.</p>
     <p>
-        Some code will not be broken, such as comments, quotes, and arrays. If used with keep&#8209;one&#8209;line&#8209;blocks
-        or add-one-line-braces the blocks will NOT be broken. If used with keep&#8209;one&#8209;line&#8209;statements
+        Some code will not be broken, such as comments, quotes, and arrays. If used with keep-one-line-blocks
+        or add-one-line-braces the blocks will NOT be broken. If used with keep-one-line-statements
         the statements will be broken at a semicolon if the line goes over the maximum length. If there is no available
         break point within the max code length, the line will be broken at the first available break point after the max
         code length.</p>
     <p>
         By default logical conditionals will be placed first in the new line. The option
-        <strong>break&#8209;after&#8209;logical</strong> will cause the logical conditionals to be placed last on the
-        previous line. This option has no effect without max&#8209;code&#8209;length.</p>
+        <strong>break-after-logical</strong> will cause the logical conditionals to be placed last on the
+        previous line. This option has no effect without max-code-length.</p>
+    <p id="_max-code-length-mode">
+        <code class="title">--max-code-length-mode=<span class="option">####</span></code><br />
+        This option determines how line length is measured. Valid options are:
+    </p>
+    <ul>
+        <li><strong>code</strong> - code only, excluding indentation (default)</li>
+        <li><strong>total</strong> - entire line, including indentation (experimental)</li>
+        <li><strong>ignore-side-comments</strong> - ignore trailing side comments (experimental)</li>
+    </ul>
     <div class="code">
         <pre>if (thisVariable1 == thatVariable1 || thisVariable2 == thatVariable2 || thisVariable3 == thatVariable3)
     bar();</pre>
@@ -2133,7 +2471,7 @@ Foo(bool isFoo);</pre>
         || thisVariable3 == thatVariable3)
     bar();</pre>
         <p class="code">
-            becomes (with break&#8209;after&#8209;logical):</p>
+            becomes (with break-after-logical):</p>
         <pre>if (thisVariable1 == thatVariable1 ||
         thisVariable2 == thatVariable2 ||
         thisVariable3 == thatVariable3)
@@ -2144,29 +2482,31 @@ Foo(bool isFoo);</pre>
     <p id="_mode">
         <code class="title">--mode=c</code><br />
         <code class="title">--mode=cs</code><br />
+        <code class="title">--mode=js</code><br />
         <code class="title">--mode=java</code><br />
-        Indent a C type, C#, or Java file. C type files are C, C++, C++/CLI, and Objective-C. The option is usually
-        set from the file extension for each file. You can override the setting with this entry. It will be used for all
-        files, regardless of the file extension. It allows the formatter to identify language specific syntax such as
-        C++ classes, templates, and keywords.</p>
-    <p>
-        &nbsp;</p>
-    <hr />
+        <code class="title">--mode=objc</code><br />
+        <code class="title">--mode=js <i>(experimental)</i></code><br />
+        <code class="title">--mode=ghc <i>(experimental)</i></code><br />
+        <code class="title">--mode=gsc <i>(experimental)</i></code><br />
+        Indent a C type, C#, Javascript, Java or <span style="white-space: nowrap;">Objective-C</span> file.
+        The other listed modes are experimental.<br>
+        C type files are C, C++, C++/CLI. The option is usually set from the file extension for each file.
+        You can override the setting with this entry. It will be used for all files, regardless of the file extension.
+        It allows the formatter to identify language specific syntax such as C++ classes, templates, and keywords.
+    </p>
 
-    <!--  * * * * * * * * * * * * *   Objective-C Options  * * * * * * * * * * * * *  -->
-
-    <h3 id="_Objective_C_Options">Objective&#8209;C Options</h3>
+    <h3 id="_Objective_C_Options"><span style="white-space: nowrap;">Objective-C</span> Options</h3>
 
     <p>
-        These options are effective for Objective&#8209;C files only. The standard paren padding options will still apply
-        to the Objective-C method prefix and return type unless overridden by the following options.</p>
+        These options are effective for <span style="white-space: nowrap;">Objective-C</span> files only. The standard paren padding options will still apply
+        to the <span style="white-space: nowrap;">Objective-C</span> method prefix and return type unless overridden by the following options.</p>
     <p>
-        Because of the longer indents sometimes needed for Objective&#8209;C, the option "max-continuation-indent" may
+        Because of the longer indents sometimes needed for <span style="white-space: nowrap;">Objective-C</span>, the option "max-continuation-indent" may
         need to be increased. If you are not getting the paren and square bracket alignment you want, try increasing
         this value. The option is described in the "Indentation Options" section.</p>
     <p id="_pad-method-prefix">
         <code class="title">--pad-method-prefix / -xQ</code><br />
-        Insert space padding <strong>after</strong> the '-' or '+' Objective&#8209;C method prefix. This will add
+        Insert space padding <strong>after</strong> the '-' or '+' <span style="white-space: nowrap;">Objective-C</span> method prefix. This will add
         exactly one space. Any additional spaces will be deleted.</p>
     <div class="code">
         <pre>-(void)foo1;
@@ -2179,9 +2519,9 @@ Foo(bool isFoo);</pre>
     <p>
         &nbsp;</p>
     <p id="_unpad-method-prefix">
-        <code class="title">--unpad-method-prefix / -xR</code><br />
-        Remove all space padding <strong>after</strong> the &#39;-&#39; or &#39;+&#39; Objective&#8209;C method prefix.&nbsp;
-        This option will be ignored if used with pad&#8209;method&#8209;prefix. This option  takes precedence over the
+        <code class="title">--pad-method-prefix=none / -xR</code><br />
+        Remove all space padding <strong>after</strong> the &#39;-&#39; or &#39;+&#39; <span style="white-space: nowrap;">Objective-C</span> method prefix.&nbsp;
+        This option will be ignored if used with pad-method-prefix. This option  takes precedence over the
         pad paren outside option.</p>
     <div class="code">
         <pre>- (void) foo1;
@@ -2195,7 +2535,7 @@ Foo(bool isFoo);</pre>
         &nbsp;</p>
     <p id="_pad-return-type">
         <code class="title">--pad-return-type / -xq</code><br />
-        Insert space padding <strong>after</strong> the Objective&#8209;C return type. This will add exactly one
+        Insert space padding <strong>after</strong> the <span style="white-space: nowrap;">Objective-C</span> return type. This will add exactly one
         space. Any additional spaces will be deleted. </p>
     <div class="code">
         <pre>-(void)foo1;
@@ -2208,9 +2548,9 @@ Foo(bool isFoo);</pre>
     <p>
         &nbsp;</p>
     <p id="_unpad-return-type">
-        <code class="title">--unpad-return-type / -xr</code><br />
-        Remove all space padding <strong>after</strong> the Objective&#8209;C return type. This option
-        will be ignored if used with pad&#8209;return&#8209;type. This option  takes precedence over the pad paren
+        <code class="title">--pad-return-type=none / -xr</code><br />
+        Remove all space padding <strong>after</strong> the <span style="white-space: nowrap;">Objective-C</span> return type. This option
+        will be ignored if used with pad-return-type. This option  takes precedence over the pad paren
         outside option. </p>
     <div class="code">
         <pre>-(void) foo1;
@@ -2224,7 +2564,7 @@ Foo(bool isFoo);</pre>
         &nbsp;</p>
     <p id="_pad-param-type">
         <code class="title">--pad-param-type / -xS</code><br />
-        Insert space padding around an Objective&#8209;C parameter type. This will add exactly
+        Insert space padding around an <span style="white-space: nowrap;">Objective-C</span> parameter type. This will add exactly
         one space. Any additional spaces will be deleted. This has precedence over the pad method colon option and
         will always cause space padding after a method colon.</p>
     <div class="code">
@@ -2238,8 +2578,8 @@ Foo(bool isFoo);</pre>
     <p>
         &nbsp;</p>
     <p id="_unpad-param-type">
-        <code class="title">--unpad-param-type / -xs</code><br />
-        Remove all space padding around an Objective&#8209;C parameter type. This option  takes precedence over the
+        <code class="title">--pad-param-type=none / -xs</code><br />
+        Remove all space padding around an <span style="white-space: nowrap;">Objective-C</span> parameter type. This option  takes precedence over the
         pad paren outside option. The pad method colon option has precedence over the <strong>opening</strong> paren.
         The closing paren will always be unpadded.</p>
     <div class="code">
@@ -2259,7 +2599,7 @@ Foo(bool isFoo);</pre>
         &nbsp;</p>
     <p id="_align-method-colon">
         <code class="title">--align-method-colon / -xM</code><br />
-        Align the colons in Objective&#8209;C method declarations
+        Align the colons in <span style="white-space: nowrap;">Objective-C</span> method declarations
         and method calls. If this option is not declared, method definitions will be indented uniformly, and method calls
         will align with the first keyword.</p>
     <div class="code">
@@ -2301,7 +2641,7 @@ Foo(bool isFoo);</pre>
             --pad-method-colon=after&nbsp; / -xP2<br />
             --pad-method-colon=before / -xP3
         </code><br />
-        Add or remove space padding before or after the colons in an Objective&#8209;C method call. These options will
+        Add or remove space padding before or after the colons in an <span style="white-space: nowrap;">Objective-C</span> method call. These options will
         pad exactly one space. Any additional spaces will be deleted. The space padding after the method colon can be
         overridden by pad-param-type.</p>
     <div class="code">
@@ -2318,11 +2658,6 @@ Foo(bool isFoo);</pre>
             with pad-method-colon=before:</p>
         <pre>-(void)insertKey :(id)key;</pre>
     </div>
-    <p>
-        &nbsp;</p>
-    <hr />
-
-    <!--  * * * * * * * * * * * *  Other Command Line Options  * * * * * * * * * * * *  -->
 
     <h3 id="_Other_Options">Other Options</h3>
 
@@ -2347,6 +2682,12 @@ Foo(bool isFoo);</pre>
     <p id="_dry-run">
         <code class="title">--dry-run</code><br />
         Perform a trial run with no changes made to the files. The report will be output as usual.</p>
+    <p id="_error-on-changes">
+        <code class="title">--error-on-changes</code><br />
+        With --dry-run: Report any file reformat as error.</p>
+    <p id="_accept-empty-list">
+        <code class="title">--accept-empty-list</code><br />
+        With wildcard or -R: Do not report an empty input file list as error.</p>
     <p id="_exclude">
         <code class="title">--exclude=<span class="option">####</span></code><br />
         Specify a file or subdirectory #### to be excluded from processing.</p>
@@ -2361,7 +2702,7 @@ Foo(bool isFoo);</pre>
         required files.</p>
     <p>
         Wildcards are NOT allowed. There may be more than one exclude statement. The file path and name may be placed
-        in double quotes (e.g. &#8209;&#8209;exclude="foo&nbsp;bar.cpp").</p>
+        in double quotes (e.g. --exclude="foo&nbsp;bar.cpp").</p>
     <p id="_ignore-exclude-errors">
         <code class="title">--ignore-exclude-errors / -i</code><br />
         Allow processing to continue if there are errors in the "exclude=###" options.<br />
@@ -2386,7 +2727,7 @@ Foo(bool isFoo);</pre>
         file.</p>
     <p id="_verbose">
         <code class="title">--verbose / -v</code><br />
-        Verbose display mode. Display optional information, such as release number, date, 
+        Verbose display mode. Display optional information, such as release number, date,
         option file locations, and statistical data.</p>
     <p id="_formatted">
         <code class="title">--formatted / -Q</code><br />
@@ -2406,11 +2747,6 @@ Foo(bool isFoo);</pre>
     <p>
         When <strong>redirection</strong> is used on Windows the output will always have Windows line ends. This option
         will be ignored.</p>
-    <p>
-        &nbsp;</p>
-    <hr style="margin-left: -0.4in;" />
-
-    <!--  * * * * * * * * * * * *  Command-Line Options  * * * * * * * * * * * *  -->
 
     <h3 id="_Command_Line_Only">Command Line Only</h3>
 
@@ -2420,7 +2756,7 @@ Foo(bool isFoo);</pre>
         <code class="title">--options=<span class="option">####</span></code><br />
         <code class="title">--options=none</code><br />
         Specify an options file #### to read and use. It must contain a file path and a file name. This will allow
-        the file name to be changed from astylerc or .astylerc.</p>
+        the file name to be changed from .astylerc or _astylerc.</p>
     <p>
         The "none" option will disable the default options file if one exists. Only command-line parameters will be used.
     </p>
@@ -2430,7 +2766,7 @@ Foo(bool isFoo);</pre>
         <code class="title">--project</code><br />
         <code class="title">--project=<span class="option">####</span></code><br />
         <code class="title">--project=none</code> <br />
-        The first option specifies a project option file to use. The option file 
+        The first option specifies a project option file to use. The option file
         should have&nbsp; the default name of .astylerc or _astylerc and should be in the top directory of the project
         being formatted. </p>
     <p>
@@ -2456,18 +2792,6 @@ Foo(bool isFoo);</pre>
         <code class="title">--help / -h / -?</code><br />
         Print a help message and quit. The short option must be by itself, it cannot be concatenated with other
         options.</p>
-    <p id="_html">
-        <code class="title">--html / -!</code><br />
-        Open the HTML help file "astyle.html" in the default browser and quit. The short option must be by itself, it
-        cannot be concatenated with other options. The documentation must be installed in the standard install path (/usr/share/doc/astyle/html
-        for Linux or %PROGRAMFILES%\AStyle\doc for Windows). If installed to a different path use html=###.</p>
-    <p id="_html=">
-        <code class="title">--html=<span class="option">####</span></code><br />
-        Open an HTML help file in the default browser using the file path #### and quit. An HTML file other than "astyle.help"
-        may be specified. The path may include a directory path and a file name, or a file name only (e.g. html=install.html).
-        If only a file name is used, it is assumed to be in the standard install path (/usr/share/doc/astyle/html
-        for Linux or %PROGRAMFILES%\AStyle\doc for Windows). In both cases, the file name must include the html extension.
-        File paths containing spaces must be enclosed in quotes.</p>
     <p>
         On Linux the HTML file is opened using the script "xdg-open" from the install package "xdg-utils". This should
         be installed by default on most distributions.</p>
@@ -2482,21 +2806,74 @@ Foo(bool isFoo);</pre>
         <code class="title">--stdout=<span class="option">####</span></code><br />
         Open a file using the file path #### as output from single file formatting. This is a replacement for redirection.
         Do not use this with "&gt;" redirection.</p>
-    <p>
-        &nbsp;</p>
-    <hr style="margin-left: -0.4in;" />
 
-    <p style="margin-left: -0.4in; text-align: center;">
+    <h3 id="_Deprecated_Options">Deprecated Options</h3>
+
+    <p>
+        The options listed below still parse and behave exactly as before, but are no longer shown in
+        <code>--help</code> or the man page. Use the listed equivalent instead in new scripts and configuration
+        files.</p>
+
+    <h4 id="_deprecated-style-synonyms">Style Synonyms</h4>
+    <p>
+        <code class="title">--style=bsd</code>, <code class="title">--style=break</code> &mdash;
+        equivalent to <a href="#_style=allman">--style=allman</a>.<br />
+        <code class="title">--style=k&amp;r</code>, <code class="title">--style=k/r</code> &mdash;
+        equivalent to <a href="#_style=kr">--style=kr</a>.<br />
+        <code class="title">--style=banner</code> &mdash;
+        equivalent to <a href="#_style=ratliff">--style=ratliff</a>.<br />
+        <code class="title">--style=knf</code> &mdash;
+        equivalent to <a href="#_style=linux">--style=linux</a>.<br />
+        <code class="title">--style=run-in</code> &mdash;
+        equivalent to <a href="#_style=horstmann">--style=horstmann</a>.<br />
+        <code class="title">--style=otbs</code> &mdash;
+        equivalent to <a href="#_style=1tbs">--style=1tbs</a>.<br />
+        <code class="title">--style=python</code> &mdash;
+        equivalent to <a href="#_style=lisp">--style=lisp</a>.</p>
+
+    <h4 id="_deprecated-mode-synonyms">Mode Synonyms</h4>
+    <p>
+        <code class="title">--mode=ghc</code> &mdash;
+        equivalent to <a href="#_mode">--mode=gsc</a>.</p>
+
+    <h4 id="_deprecated-paren-bracket-side">Paren / Bracket Side Padding</h4>
+    <p>
+        <code class="title">--pad-paren-in</code> &mdash;
+        equivalent to <a href="#_pad-paren-in">--pad-paren=in</a>.<br />
+        <code class="title">--pad-paren-out</code> &mdash;
+        equivalent to <a href="#_pad-paren-out">--pad-paren=out</a>.<br />
+        <code class="title">--pad-brackets-in</code> &mdash;
+        equivalent to <a href="#_pad-brackets-in">--pad-brackets=in</a>.<br />
+        <code class="title">--pad-brackets-out</code> &mdash;
+        equivalent to <a href="#_pad-brackets-out">--pad-brackets=out</a>.</p>
+
+    <h4 id="_deprecated-unpad">Unpadding Options</h4>
+    <p>
+        <code class="title">--unpad-paren</code> &mdash;
+        equivalent to <a href="#_unpad-paren">--pad-paren=none</a>.<br />
+        <code class="title">--unpad-brackets</code> &mdash;
+        equivalent to <a href="#_unpad-brackets">--pad-brackets=none</a>.<br />
+        <code class="title">--unpad-method-prefix</code> &mdash;
+        equivalent to <a href="#_unpad-method-prefix">--pad-method-prefix=none</a>.<br />
+        <code class="title">--unpad-return-type</code> &mdash;
+        equivalent to <a href="#_unpad-return-type">--pad-return-type=none</a>.<br />
+        <code class="title">--unpad-param-type</code> &mdash;
+        equivalent to <a href="#_unpad-param-type">--pad-param-type=none</a>.</p>
+
+    <h4 id="_deprecated-return-type-decl">Return-Type Declaration Options</h4>
+    <p>
+        <code class="title">--break-return-type-decl</code> &mdash;
+        equivalent to <a href="#_break-return-type">--break-return-type=decl</a>.<br />
+        <code class="title">--attach-return-type-decl</code> &mdash;
+        equivalent to <a href="#_attach-return-type">--attach-return-type=decl</a>.</p>
+
+    <p >
         <a href="http://sourceforge.net/projects/astyle">
             <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=2319&type=16" alt="" />
         </a></p>
 
-    <p>
-        &nbsp;</p>
-    <p>
-        &nbsp;</p>
+    </div>
 
 </body>
 
 </html>
-

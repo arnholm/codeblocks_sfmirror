@@ -20,7 +20,7 @@
     <h3>Artistic Style 2.04&nbsp; (November 2013)</h3>
 
     <ul>
-        <li>Add new programming language Objective&#8209;C.</li>
+        <li>Add new programming language <span style="white-space: nowrap;">Objective-C</span>.</li>
         <li>Add new bracket style option "style=google" (-A14). </li>
         <li>Add new option "indent-preproc-cond" (xw) to indent preprocessor conditional statements (#118). </li>
         <li>Add new bracket modify options "attach-namespaces", "attach-classes", "attach-inlines", and "attach-extern-c".
@@ -28,9 +28,9 @@
         <li>Add new option "indent-modifiers" (-xG) to indent class access modifiers one-half indent (#130). </li>
         <li>Add new option "remove-brackets" (-xj) to remove brackets from single line conditional statements.</li>
         <li>Add new option "remove-comment-prefix" (-xp) to remove the leading '*' from multi-line comments. </li>
-        <li>Add new option "align-method-colon" (-xM) to align Objective&#8209;C method colons. </li>
-        <li>Add new option "pad-method-colon=#" (-xP#) to space pad Objective&#8209;C method colons. </li>
-        <li>Add new options "pad-method-prefix" (-xQ), and "unpad-method-prefix" (-xR) to pad the Objective&#8209;C "-" and
+        <li>Add new option "align-method-colon" (-xM) to align <span style="white-space: nowrap;">Objective-C</span> method colons. </li>
+        <li>Add new option "pad-method-colon=#" (-xP#) to space pad <span style="white-space: nowrap;">Objective-C</span> method colons. </li>
+        <li>Add new options "pad-method-prefix" (-xQ), and "unpad-method-prefix" (-xR) to pad the <span style="white-space: nowrap;">Objective-C</span> "-" and
             "+" method prefix. </li>
         <li>Add new dll entry point AStyleMainUtf16 for processing C# UTF-16 strings. </li>
         <li>Add formatting of C++11 raw string literals (#222). </li>
@@ -39,7 +39,7 @@
         <li>Improve recognition and formatting of pointers and references (#174 and other changes). </li>
         <li>Improve the recognition of block-opening brackets.</li>
         <li>Improve code using a static code analyzer (#195).</li>
-        <li>Change "max-code-length" to include Objective&#8209;C methods.</li>
+        <li>Change "max-code-length" to include <span style="white-space: nowrap;">Objective-C</span> methods.</li>
         <li>Change "indent-elseifs" and "break-blocks" to look ahead only if in command-type brackets (speed improvement).
         </li>
         <li>Fix linux bracket styles to break the opening bracket in inline function definitions (#185). </li>
@@ -876,7 +876,7 @@
         <li>Compilation under G++ 3.0 now works properly.</li>
         <li>Bug fix: Opening brackets that appear at the beginning of a line immediately after an empty line comment are now
             handled properly, and not appended as part of the line comment.</li>
-        <li>Bug fix: Brackets inside comments are now not mis-indented within the comment.</li>
+        <li>Bug fix: Brackets inside comments are properly indented within the comment.</li>
     </ul>
 
     <h3>Artistic Style 1.14.1 (2 June 2001)</h3>
@@ -1015,13 +1015,13 @@
     <h3>Artistic Style 1.11.1 (3 September 1999)</h3>
 
     <ul>
-        <li>Fixed a bug that inserted an empty line at the begining of source files.</li>
+        <li>Fixed a bug that inserted an empty line at the beginning of source files.</li>
     </ul>
 
     <h3>Artistic Style 1.11.0 (3 September 1999)</h3>
 
     <ul>
-        <li>Astyle now filters out line-feeds ('\r') before begining to parse lines. This should take care of bizarre formatting
+        <li>Astyle now filters out line-feeds ('\r') before beginning to parse lines. This should take care of bizarre formatting
             that existed when moving source files from Windows (which breaks lines with a linefeed AND newline ("\r\n") to
             unix (which breaks lines only with newlines).</li>
         <li>The "struct", "static" and "synchronized" keywords are now finally handled correctly in both the contexts of block
@@ -1088,7 +1088,7 @@
             for similarity with the new option above.</li>
         <li>Changed the short option name of the option '-<strong>-errors-to-standard-output</strong>' from '<strong>-o</strong>'
             to '<strong>-X</strong>'.</li>
-        <li>Up to now, Artistic Style always inserted a minimal indent of <strong>t</strong>wice the current selected indent
+        <li>Up to now, Artistic Style always inserted a minimal indent of <strong>twice</strong> the current selected indent
             size inside multi-line conditional headers ('if', 'while' ...), so that it would be clear where the headers end
             and the code after them begins. The current version adds the option '<strong>--min-conditional-indent=#</strong>'
             (or '<strong>-m#</strong>') that sets the absolute minimal indent between conditional headers and their multiple-line
@@ -1347,4 +1347,3 @@
 </body>
 
 </html>
-

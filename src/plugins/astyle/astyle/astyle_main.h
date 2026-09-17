@@ -1,5 +1,5 @@
 // astyle_main.h
-// Copyright (c) 2018 by Jim Pattee <jimp03@email.com>.
+// Copyright (c) 2026 The Artistic Style Authors.
 // This code is licensed under the MIT License.
 // License.md describes the conditions under which this software may be distributed.
 
@@ -14,6 +14,7 @@
 
 #include <ctime>
 #include <sstream>
+#include <filesystem>
 
 #if defined(__BORLANDC__) && __BORLANDC__ < 0x0650
 	// Embarcadero needs this for the following utime.h
@@ -108,31 +109,29 @@ public:
 public:	// function declarations
 	explicit ASStreamIterator(T* in);
 	~ASStreamIterator() override;
-	bool getLineEndChange(int lineEndFormat) const;
+
 	int  getStreamLength() const override;
-	string nextLine(bool emptyLineWasDeleted) override;
-	string peekNextLine() override;
+	std::string nextLine(bool emptyLineWasDeleted) override;
+	std::string peekNextLine() override;
 	void peekReset() override;
 	void saveLastInputLine();
-	streamoff tellg() override;
+	std::streamoff tellg() override;
 
 private:
 	T* inStream;            // pointer to the input stream
-	string buffer;          // current input line
-	string prevBuffer;      // previous input line
-	string outputEOL;       // next output end of line char
-	int eolWindows;         // number of Windows line endings, CRLF
-	int eolLinux;           // number of Linux line endings, LF
-	int eolMacOld;          // number of old Mac line endings. CR
-	streamoff streamLength; // length of the input file stream
-	streamoff peekStart;    // starting position for peekNextLine
+	std::string buffer;          // current input line
+	std::string prevBuffer;      // previous input line
+	std::string lastOutputEOL;       // next output end of line char
+
+	std::streamoff streamLength; // length of the input file stream
+	std::streamoff peekStart;    // starting position for peekNextLine
 	bool prevLineDeleted;   // the previous input line was deleted
 
 public:	// inline functions
-	bool compareToInputBuffer(const string& nextLine_) const
+	bool compareToInputBuffer(const std::string& nextLine_) const
 	{ return (nextLine_ == prevBuffer); }
-	const string& getOutputEOL() const { return outputEOL; }
-	streamoff getPeekStart() const override { return peekStart; }
+	const std::string& getLastOutputEOL() const { return lastOutputEOL; }
+	std::streamoff getPeekStart() const override { return peekStart; }
 	bool hasMoreLines() const override { return !inStream->eof(); }
 };
 
@@ -179,28 +178,28 @@ public:
 #else
 	ASOptions(ASFormatter& formatterArg, ASConsole& consoleArg);
 #endif
-	string getOptionErrors() const;
-	void importOptions(stringstream& in, vector<string>& optionsVector);
-	bool parseOptions(vector<string>& optionsVector, const string& errorInfo);
+	std::string getOptionErrors() const;
+	void importOptions(std::stringstream& in, std::vector<std::string>& optionsVector);
+	bool parseOptions(std::vector<std::string>& optionsVector);
 
 private:
 	// variables
 	ASFormatter& formatter;
-	stringstream optionErrors;		// option error messages
+	std::stringstream optionErrors;		// option error messages
 #ifndef ASTYLE_LIB
 	ASConsole& console;				// DO NOT USE for ASTYLE_LIB
 #endif
 
 	// functions
-	string getParam(const string& arg, const char* op);
-	string getParam(const string& arg, const char* op1, const char* op2);
-	bool isOption(const string& arg, const char* op);
-	bool isOption(const string& arg, const char* op1, const char* op2);
-	void isOptionError(const string& arg, const string& errorInfo);
-	bool isParamOption(const string& arg, const char* option);
-	bool isParamOption(const string& arg, const char* option1, const char* option2);
-	void parseOption(const string& arg, const string& errorInfo);
-	bool parseOptionContinued(const string& arg, const string& errorInfo);
+	std::string getParam(const std::string& arg, const char* op);
+	std::string getParam(const std::string& arg, const char* op1, const char* op2);
+	bool isOption(const std::string& arg, const char* op);
+	bool isOption(const std::string& arg, const char* op1, const char* op2);
+	void isOptionError(const std::string& arg);
+	bool isParamOption(const std::string& arg, const char* option);
+	bool isParamOption(const std::string& arg, const char* option1, const char* option2);
+	void parseOption(const std::string& arg);
+	bool parseOptionContinued(const std::string& arg);
 };
 
 #ifndef	ASTYLE_LIB
@@ -215,7 +214,7 @@ private:    // variables
 	ASFormatter& formatter;             // reference to the ASFormatter object
 	ASEncoding encode;                  // file encoding conversion
 	ASLocalizer localizer;              // language translation
-	ostream* errorStream;               // direct error messages to cerr or cout
+	std::ostream* errorStream;               // direct error messages to cerr or std::cout
 	// command line options
 	bool isRecursive;                   // recursive option
 	bool isDryRun;                      // dry-run option
@@ -232,43 +231,46 @@ private:    // variables
 	bool hasWildcard;                   // file name includes a wildcard
 	size_t mainDirectoryLength;         // directory length to be excluded in displays
 	bool filesAreIdentical;             // input and output files are identical
+	bool acceptEmptyFileList;           // empty input file list will not be reported as error
+	bool rejectDryRunWithFormat;        // formatted files in dry run mode will be reported as error
+
 	int  filesFormatted;                // number of files formatted
 	int  filesUnchanged;                // number of files unchanged
-	bool lineEndsMixed;                 // output has mixed line ends
 	int  linesOut;                      // number of output lines
 
-	string outputEOL;                   // current line end
-	string prevEOL;                     // previous line end
-	string astyleExePath;               // absolute executable path and name from argv[0]
-	string optionFileName;              // file path and name of the options file
-	string origSuffix;                  // suffix= option
-	string projectOptionFileName;       // file path and name of the project options file
-	string stdPathIn;                   // path to input from stdin=
-	string stdPathOut;                  // path to output from stdout=
-	string targetDirectory;             // path to the directory being processed
-	string targetFilename;              // file name being processed
+	std::string outputEOL;                   // current line end
 
-	vector<string> excludeVector;       // exclude from wildcard hits
-	vector<bool>   excludeHitsVector;   // exclude flags for error reporting
-	vector<string> fileNameVector;      // file paths and names from the command line
-	vector<string> optionsVector;       // options from the command line
-	vector<string> projectOptionsVector;// project options from the project options file
-	vector<string> fileOptionsVector;   // options from the options file
-	vector<string> fileName;            // files to be processed including path
+	std::string astyleExePath;               // absolute executable path and name from argv[0]
+	std::string optionFileName;              // file path and name of the options file
+	std::string origSuffix;                  // suffix= option
+	std::string projectOptionFileName;       // file path and name of the project options file
+	std::string stdPathIn;                   // path to input from stdin=
+	std::string stdPathOut;                  // path to output from stdout=
+	std::string targetDirectory;             // path to the directory being processed
+	std::string targetFilename;              // file name being processed
+
+	std::vector<std::string> excludeVector;       // exclude from wildcard hits
+	std::vector<bool>   excludeHitsVector;   // exclude flags for error reporting
+	std::vector<std::string> fileNameVector;      // file paths and names from the command line
+	std::vector<std::string> includeVector;       // --include patterns from options files
+	std::vector<std::string> optionsVector;       // options from the command line
+	std::vector<std::string> projectOptionsVector;// project options from the project options file
+	std::vector<std::string> fileOptionsVector;   // options from the options file
+	std::vector<std::string> fileName;            // files to be processed including path
 
 public:     // functions
 	explicit ASConsole(ASFormatter& formatterArg);
 	ASConsole(const ASConsole&)            = delete;
 	ASConsole& operator=(ASConsole const&) = delete;
-	void convertLineEnds(ostringstream& out, int lineEnd);
+
 	FileEncoding detectEncoding(const char* data, size_t dataSize) const;
 	void error() const;
 	void error(const char* why, const char* what) const;
 	void formatCinToCout();
-	vector<string> getArgvOptions(int argc, char** argv);
+	std::vector<std::string> getArgvOptions(int argc, char** argv);
 	bool fileExists(const char* file) const;
 	bool fileNameVectorIsEmpty() const;
-	ostream* getErrorStream() const;
+	std::ostream* getErrorStream() const;
 	bool getFilesAreIdentical() const;
 	int  getFilesFormatted() const;
 	bool getIgnoreExcludeErrors() const;
@@ -281,75 +283,82 @@ public:     // functions
 	bool getLineEndsMixed() const;
 	bool getNoBackup() const;
 	bool getPreserveDate() const;
-	string getLanguageID() const;
-	string getNumberFormat(int num, size_t lcid = 0) const;
-	string getNumberFormat(int num, const char* groupingArg, const char* separator) const;
-	string getOptionFileName() const;
-	string getOrigSuffix() const;
-	string getProjectOptionFileName() const;
-	string getStdPathIn() const;
-	string getStdPathOut() const;
-	void getTargetFilenames(string& targetFilename_, vector<string>& targetFilenameVector) const;
+
+	std::string getLanguageID() const;
+	std::string getNumberFormat(int num, size_t lcid = 0) const;
+	std::string getNumberFormat(int num, const char* groupingArg, const char* separator) const;
+	std::string getOptionFileName() const;
+	std::string getOrigSuffix() const;
+	std::string getProjectOptionFileName() const;
+	std::string getStdPathIn() const;
+	std::string getStdPathOut() const;
+	void getTargetFilenames(std::string& targetFilename_, std::vector<std::string>& targetFilenameVector) const;
 	void processFiles();
-	void processOptions(const vector<string>& argvOptions);
+	void processOptions(const std::vector<std::string>& argvOptions);
 	void setBypassBrowserOpen(bool state);
-	void setErrorStream(ostream* errStreamPtr);
+	void setErrorStream(std::ostream* errStreamPtr);
 	void setIgnoreExcludeErrors(bool state);
 	void setIgnoreExcludeErrorsAndDisplay(bool state);
 	void setIsDryRun(bool state);
+	void setRejectFormatWithDryRun(bool state);
 	void setIsFormattedOnly(bool state);
 	void setIsQuiet(bool state);
 	void setIsRecursive(bool state);
 	void setIsVerbose(bool state);
 	void setNoBackup(bool state);
-	void setOptionFileName(const string& name);
-	void setOrigSuffix(const string& suffix);
+	void setOptionFileName(const std::string& name);
+	void setOrigSuffix(const std::string& suffix);
 	void setPreserveDate(bool state);
-	void setProjectOptionFileName(const string& optfilepath);
-	void setStdPathIn(const string& path);
-	void setStdPathOut(const string& path);
-	void standardizePath(string& path, bool removeBeginningSeparator = false) const;
-	bool stringEndsWith(const string& str, const string& suffix) const;
-	void updateExcludeVector(const string& suffixParam);
-	vector<string> getExcludeVector() const;
-	vector<bool>   getExcludeHitsVector() const;
-	vector<string> getFileNameVector() const;
-	vector<string> getOptionsVector() const;
-	vector<string> getProjectOptionsVector() const;
-	vector<string> getFileOptionsVector() const;
-	vector<string> getFileName() const;
+	void setProjectOptionFileName(const std::string& optfilepath);
+	void setStdPathIn(const std::string& path);
+	void setStdPathOut(const std::string& path);
+	void setAcceptEmptyInputFileList(bool state);
+	void standardizePath(std::string& path, bool removeBeginningSeparator = false) const;
+	bool stringEndsWith(std::string_view str, std::string_view suffix) const;
+	void updateExcludeVector(const std::string& suffixParam);
+	void addIncludePattern(const std::string& pattern);
+
+	std::vector<std::string> getExcludeVector() const;
+	std::vector<bool>   getExcludeHitsVector() const;
+	std::vector<std::string> getFileNameVector() const;
+	std::vector<std::string> getIncludeVector() const;
+	std::vector<std::string> getOptionsVector() const;
+	std::vector<std::string> getProjectOptionsVector() const;
+	std::vector<std::string> getFileOptionsVector() const;
+	std::vector<std::string> getFileName() const;
 
 private:	// functions
-	void correctMixedLineEnds(ostringstream& out);
-	void formatFile(const string& fileName_);
-	string getParentDirectory(const string& absPath) const;
-	string findProjectOptionFilePath(const string& fileName_) const;
-	string getCurrentDirectory(const string& fileName_) const;
-	void getFileNames(const string& directory, const vector<string>& wildcards);
-	void getFilePaths(const string& filePath);
-	string getFullPathName(const string& relativePath) const;
-	string getHtmlInstallPrefix() const;
-	string getParam(const string& arg, const char* op);
-	bool isHomeOrInvalidAbsPath(const string& absPath) const;
+
+	void formatFile(const std::string& fileName_);
+	std::string getParentDirectory(const std::string& absPath) const;
+	std::string findProjectOptionFilePath(const std::string& fileName_) const;
+	std::string getCurrentDirectory(const std::string& fileName_) const;
+	void getFileNames(const std::string& directory, const std::vector<std::string>& wildcards);
+	void getFilePaths(const std::string& filePath);
+	std::string getFullPathName(const std::string& relativePath) const;
+	std::string getHtmlInstallPrefix() const;
+	std::string getParam(const std::string& arg, const char* op);
+	bool isBomlessUtf16(const char* data, size_t dataSize) const;
+	bool isHomeOrInvalidAbsPath(const std::string& absPath) const;
+	bool isWriteable(const std::filesystem::path& path) const;
 	void initializeOutputEOL(LineEndFormat lineEndFormat);
-	bool isOption(const string& arg, const char* op);
-	bool isOption(const string& arg, const char* a, const char* b);
-	bool isParamOption(const string& arg, const char* option);
-	bool isPathExclued(const string& subPath);
+	bool isOption(const std::string& arg, const char* op);
+	bool isOption(const std::string& arg, const char* a, const char* b);
+	bool isParamOption(const std::string& arg, const char* option);
+	bool isPathExcluded(const std::string& subPath);
 	void launchDefaultBrowser(const char* filePathIn = nullptr) const;
 	void printHelp() const;
-	void printMsg(const char* msg, const string& data) const;
+	void printMsg(const char* msg, const std::string& data) const;
 	void printSeparatingLine() const;
 	void printVerboseHeader() const;
 	void printVerboseStats(clock_t startTime) const;
-	FileEncoding readFile(const string& fileName_, stringstream& in) const;
+	FileEncoding readFile(const std::string& fileName_, std::stringstream& in) const;
 	void removeFile(const char* fileName_, const char* errMsg) const;
 	void renameFile(const char* oldFileName, const char* newFileName, const char* errMsg) const;
-	void setOutputEOL(LineEndFormat lineEndFormat, const string& currentEOL);
 	void sleep(int seconds) const;
 	int  waitForRemove(const char* newFileName) const;
 	int  wildcmp(const char* wild, const char* data) const;
-	void writeFile(const string& fileName_, FileEncoding encoding, ostringstream& out) const;
+	void writeFile(const std::string& fileName_, FileEncoding encoding, std::ostringstream& out) const;
 #ifdef _WIN32
 	void displayLastError();
 #endif
@@ -391,6 +400,7 @@ private:
 void  STDCALL javaErrorHandler(int errorNumber, const char* errorMessage);
 char* STDCALL javaMemoryAlloc(unsigned long memoryNeeded);
 // the following function names are constructed from method names in the calling java program
+
 extern "C" EXPORT
 jstring STDCALL Java_AStyleInterface_AStyleGetVersion(JNIEnv* env, jclass);
 extern "C" EXPORT
@@ -398,6 +408,13 @@ jstring STDCALL Java_AStyleInterface_AStyleMain(JNIEnv* env,
                                                 jobject obj,
                                                 jstring textInJava,
                                                 jstring optionsJava);
+extern "C" EXPORT
+jstring STDCALL Java_cc_arduino_packages_formatter_AStyleInterface_AStyleGetVersion(JNIEnv* env, jclass);
+extern "C" EXPORT
+jstring STDCALL Java_cc_arduino_packages_formatter_AStyleInterface_AStyleMain(JNIEnv* env,
+        jobject obj,
+        jstring textInJava,
+        jstring optionsJava);
 #endif //  ASTYLE_JNI
 
 //----------------------------------------------------------------------------

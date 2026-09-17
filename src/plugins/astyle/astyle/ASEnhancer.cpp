@@ -1,5 +1,5 @@
 // ASEnhancer.cpp
-// Copyright (c) 2018 by Jim Pattee <jimp03@email.com>.
+// Copyright (c) 2026 The Artistic Style Authors.
 // This code is licensed under the MIT License.
 // License.md describes the conditions under which this software may be distributed.
 
@@ -34,7 +34,8 @@ void ASEnhancer::init(int  _fileType,
                       bool _preprocBlockIndent,
                       bool _preprocDefineIndent,
                       bool _emptyLineFill,
-                      vector<const pair<const string, const string>* >* _indentableMacros)
+                      std::vector<const std::pair<const std::string, const std::string>* >* _indentableMacros,
+                      bool _preserveIndent)
 {
 	// formatting variables from ASFormatter and ASBeautifier
 	ASBase::init(_fileType);
@@ -48,6 +49,7 @@ void ASEnhancer::init(int  _fileType,
 	preprocDefineIndent = _preprocDefineIndent;
 	emptyLineFill = _emptyLineFill;
 	indentableMacros = _indentableMacros;
+	preserveIndent = _preserveIndent;
 	quoteChar = '\'';
 
 	// unindent variables
@@ -84,11 +86,14 @@ void ASEnhancer::init(int  _fileType,
  *
  * @param line       the original formatted line will be updated if necessary.
  */
-void ASEnhancer::enhance(string& line, bool isInNamespace, bool isInPreprocessor, bool isInSQL)
+void ASEnhancer::enhance(std::string& line, bool isInNamespace, bool isInPreprocessor, bool isInSQL)
 {
 	shouldUnindentLine = true;
 	shouldUnindentComment = false;
 	lineNumber++;
+
+	if (preserveIndent)
+		return;
 
 	// check for beginning of event table
 	if (nextLineIsEventIndent)
@@ -104,7 +109,7 @@ void ASEnhancer::enhance(string& line, bool isInNamespace, bool isInPreprocessor
 		nextLineIsDeclareIndent = false;
 	}
 
-	if (line.length() == 0
+	if (line.empty()
 	        && !isInEventTable
 	        && !isInDeclareSection
 	        && !emptyLineFill)
@@ -125,7 +130,7 @@ void ASEnhancer::enhance(string& line, bool isInNamespace, bool isInPreprocessor
 	if (isInDeclareSection)
 	{
 		size_t firstText = line.find_first_not_of(" \t");
-		if (firstText == string::npos || line[firstText] != '#')
+		if (firstText == std::string::npos || line[firstText] != '#')
 			indentLine(line, 1);
 	}
 
@@ -135,7 +140,7 @@ void ASEnhancer::enhance(string& line, bool isInNamespace, bool isInPreprocessor
 	            || (namespaceIndent && isInNamespace)))
 	{
 		size_t firstText = line.find_first_not_of(" \t");
-		if (firstText == string::npos || line[firstText] != '#')
+		if (firstText == std::string::npos || line[firstText] != '#')
 			indentLine(line, 1);
 	}
 
@@ -150,12 +155,12 @@ void ASEnhancer::enhance(string& line, bool isInNamespace, bool isInPreprocessor
  *
  * @param line          a reference to the line that will be converted.
  */
-void ASEnhancer::convertForceTabIndentToSpaces(string& line) const
+void ASEnhancer::convertForceTabIndentToSpaces(std::string& line) const
 {
 	// replace tab indents with spaces
 	for (size_t i = 0; i < line.length(); i++)
 	{
-		if (!isWhiteSpace(line[i]))
+		if (!std::isblank(line[i]))
 			break;
 		if (line[i] == '\t')
 		{
@@ -171,7 +176,7 @@ void ASEnhancer::convertForceTabIndentToSpaces(string& line) const
  *
  * @param line          a reference to the line that will be converted.
  */
-void ASEnhancer::convertSpaceIndentToForceTab(string& line) const
+void ASEnhancer::convertSpaceIndentToForceTab(std::string& line) const
 {
 	assert(tabLength > 0);
 
@@ -188,7 +193,7 @@ void ASEnhancer::convertSpaceIndentToForceTab(string& line) const
  * @param caseIndex     the line index of the case statement.
  * @return              the line index of the colon.
  */
-size_t ASEnhancer::findCaseColon(const string& line, size_t caseIndex) const
+size_t ASEnhancer::findCaseColon(std::string_view line, size_t caseIndex) const
 {
 	size_t i = caseIndex;
 	bool isInQuote_ = false;
@@ -236,9 +241,9 @@ size_t ASEnhancer::findCaseColon(const string& line, size_t caseIndex) const
  * @param indent        the number of tabsets to insert.
  * @return              the number of characters inserted.
  */
-int ASEnhancer::indentLine(string& line, int indent) const
+int ASEnhancer::indentLine(std::string& line, int indent) const
 {
-	if (line.length() == 0
+	if (line.empty()
 	        && !emptyLineFill)
 		return 0;
 
@@ -276,22 +281,22 @@ int ASEnhancer::indentLine(string& line, int indent) const
  * @param index         the current line index.
  * @return              true if a hit.
  */
-bool ASEnhancer::isBeginDeclareSectionSQL(const string& line, size_t index) const
+bool ASEnhancer::isBeginDeclareSectionSQL(std::string_view line, size_t index) const
 {
-	string word;
+
 	size_t hits = 0;
 	size_t i;
 	for (i = index; i < line.length(); i++)
 	{
 		i = line.find_first_not_of(" \t", i);
-		if (i == string::npos)
+		if (i == std::string::npos)
 			return false;
 		if (line[i] == ';')
 			break;
 		if (!isCharPotentialHeader(line, i))
 			continue;
-		word = getCurrentWord(line, i);
-		for (char& character : word)
+		std::string_view word = getCurrentWord(line, i);
+		for (char character : word)
 			character = (char) toupper(character);
 		if (word == "EXEC" || word == "SQL")
 		{
@@ -325,22 +330,21 @@ bool ASEnhancer::isBeginDeclareSectionSQL(const string& line, size_t index) cons
  * @param index         the current line index.
  * @return              true if a hit.
  */
-bool ASEnhancer::isEndDeclareSectionSQL(const string& line, size_t index) const
+bool ASEnhancer::isEndDeclareSectionSQL(std::string_view line, size_t index) const
 {
-	string word;
 	size_t hits = 0;
 	size_t i;
 	for (i = index; i < line.length(); i++)
 	{
 		i = line.find_first_not_of(" \t", i);
-		if (i == string::npos)
+		if (i == std::string::npos)
 			return false;
 		if (line[i] == ';')
 			break;
 		if (!isCharPotentialHeader(line, i))
 			continue;
-		word = getCurrentWord(line, i);
-		for (char& character : word)
+		std::string_view word = getCurrentWord(line, i);
+		for (char character : word)
 			character = (char) toupper(character);
 		if (word == "EXEC" || word == "SQL")
 		{
@@ -374,7 +378,7 @@ bool ASEnhancer::isEndDeclareSectionSQL(const string& line, size_t index) const
  * @return     false = one-line brace has not been reached.
  *             true  = one-line brace has been reached.
  */
-bool ASEnhancer::isOneLineBlockReached(const string& line, int startChar) const
+bool ASEnhancer::isOneLineBlockReached(std::string_view line, int startChar) const
 {
 	assert(line[startChar] == '{');
 
@@ -446,7 +450,7 @@ bool ASEnhancer::isOneLineBlockReached(const string& line, int startChar) const
  * parse characters in the current line to determine if an indent
  * or unindent is needed.
  */
-void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isInSQL)
+void ASEnhancer::parseCurrentLine(std::string& line, bool isInPreprocessor, bool isInSQL)
 {
 	bool isSpecialChar = false;			// is a backslash escape character
 
@@ -455,7 +459,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
 		char ch = line[i];
 
 		// bypass whitespace
-		if (isWhiteSpace(ch))
+		if (std::isblank(ch))
 			continue;
 
 		// handle special characters (i.e. backslash+character such as \n, \t, ...)
@@ -516,7 +520,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
 				shouldUnindentComment = true;
 			isInComment = true;
 			size_t commentEnd = line.find("*/", i);
-			if (commentEnd == string::npos)
+			if (commentEnd == std::string::npos)
 				i = line.length() - 1;
 			else
 				i = commentEnd - 1;
@@ -537,7 +541,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
 			if (sw.switchBraceCount == 1 && sw.unindentCase)
 				shouldUnindentComment = true;
 			size_t commentEnd = line.find("*/", i);
-			if (commentEnd == string::npos)
+			if (commentEnd == std::string::npos)
 				i = line.length() - 1;
 			else
 				i = commentEnd - 1;
@@ -555,7 +559,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
 		// check for preprocessor within an event table
 		if (isInEventTable && line[i] == '#' && preprocBlockIndent)
 		{
-			string preproc;
+			std::string preproc;
 			preproc = line.substr(i + 1);
 			if (preproc.substr(0, 2) == "if") // #if, #ifdef, #ifndef)
 				eventPreprocDepth += 1;
@@ -619,7 +623,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
 			// bypass the entire word
 			if (isPotentialKeyword)
 			{
-				string name = getCurrentWord(line, i);
+				std::string_view name = getCurrentWord(line, i);
 				i += name.length() - 1;
 			}
 			continue;
@@ -637,7 +641,7 @@ void ASEnhancer::parseCurrentLine(string& line, bool isInPreprocessor, bool isIn
  * @param index         the current line index.
  * @return              the new line index.
  */
-size_t ASEnhancer::processSwitchBlock(string& line, size_t index)
+size_t ASEnhancer::processSwitchBlock(std::string& line, size_t index)
 {
 	size_t i = index;
 	bool isPotentialKeyword = isCharPotentialHeader(line, i);
@@ -692,7 +696,7 @@ size_t ASEnhancer::processSwitchBlock(string& line, size_t index)
 		i++;
 		for (; i < line.length(); i++)			// bypass whitespace
 		{
-			if (!isWhiteSpace(line[i]))
+			if (!std::isblank(line[i]))
 				break;
 		}
 		if (i < line.length())
@@ -712,7 +716,7 @@ size_t ASEnhancer::processSwitchBlock(string& line, size_t index)
 	}
 	if (isPotentialKeyword)
 	{
-		string name = getCurrentWord(line, i);          // bypass the entire name
+		std::string_view name = getCurrentWord(line, i);          // bypass the entire name
 		i += name.length() - 1;
 	}
 	return i;
@@ -726,11 +730,11 @@ size_t ASEnhancer::processSwitchBlock(string& line, size_t index)
  * @param unindent      the number of tabsets to erase.
  * @return              the number of characters erased.
  */
-int ASEnhancer::unindentLine(string& line, int unindent) const
+int ASEnhancer::unindentLine(std::string& line, int unindent) const
 {
 	size_t whitespace = line.find_first_not_of(" \t");
 
-	if (whitespace == string::npos)         // if line is blank
+	if (whitespace == std::string::npos)         // if line is blank
 		whitespace = line.length();         // must remove padding, if any
 
 	if (whitespace == 0)
