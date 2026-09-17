@@ -365,7 +365,7 @@ inline ID ConstructID(wxIntPtr i) { return ID(i); }
 // Just included to possibly set _LIBCPP_VERSION
 // The header <ciso646> is deprecated in C++17 and removed in C++20
 // and header <version> should be used instead. // patch 1511 2025/03/23
-#if defined(__cplusplus) && __cplusplus < 201703L
+#if defined(__cplusplus) && __cplusplus < 202002L
 #include <ciso646>
 #else
 #include <version>
