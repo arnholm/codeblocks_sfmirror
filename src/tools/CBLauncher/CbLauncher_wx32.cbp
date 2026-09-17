@@ -25,7 +25,7 @@
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 			<Add option="-D_UNICODE" />
 			<Add option="-DUNICODE" />

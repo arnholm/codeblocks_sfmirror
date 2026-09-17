@@ -54,7 +54,7 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,--enable-auto-import" />

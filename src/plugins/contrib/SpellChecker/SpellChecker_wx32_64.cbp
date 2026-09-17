@@ -107,7 +107,7 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-m64" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add option="-DHAVE_W32API_H" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />

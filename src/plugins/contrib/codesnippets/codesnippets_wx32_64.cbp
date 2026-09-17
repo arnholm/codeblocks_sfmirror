@@ -36,7 +36,7 @@
 		<Compiler>
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add option="-g" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />

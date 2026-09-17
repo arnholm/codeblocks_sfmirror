@@ -118,7 +118,7 @@
 			<Add option="-D_WIN64" />
 			<Add option="-DWXMAKINGDLL" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add directory="$(#WX32_64.include)" />
 			<Add directory="$(#WX32_64.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 		</Compiler>

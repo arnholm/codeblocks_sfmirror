@@ -163,7 +163,7 @@
 			<Add alias="All" targets="SmartIndentCpp;SmartIndentHDL;SmartIndentPascal;SmartIndentPython;SmartIndentLua;SmartIndentFortran;SmartIndentXML;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
 			<Add option="-fmessage-length=0" />

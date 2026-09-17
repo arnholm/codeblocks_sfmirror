@@ -33,7 +33,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-fno-strict-aliasing" />
 			<Add option="-Wno-write-strings" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add option="-m64" />
 			<Add option="-D_WIN64" />
 			<Add directory="lib" />

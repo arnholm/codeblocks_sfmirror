@@ -109,7 +109,7 @@
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
 			<Add option="-DwxUSE_UNICODE" />
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="DictionariesNeededDialog.cpp">
 			<Option target="plugin" />

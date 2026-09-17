@@ -90,7 +90,7 @@
 			<Add alias="All" targets="bzip2;zlib;help_plugin;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add option="-std=gnu++11" />
+			<Add option="-std=c++11" />
 			<Add directory="$(#WX32_64.include)" />
 			<Add directory="$(#WX32_64.lib)/gcc_dll$(WX_CFG)/msw$(WX_SUFFIX)" />
 			<Add directory="../../../include" />
