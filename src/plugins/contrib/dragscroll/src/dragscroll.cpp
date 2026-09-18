@@ -1904,8 +1904,8 @@ void MouseEventsHandler::OnMouseMotion(wxMouseEvent& event)
         // The movement is too small (could be jitter).
         // We do NOT set m_dragging to true yet.
         LOGIT("Movement inside deadzone (%d px sq), skipping.", currentDistanceSq);
-        //event.Skip(); // all seems to work ok without this //(ph 26/09/02)
-        //return;
+        event.Skip();
+        return;
     }
 
     // (ph 26/08/16)

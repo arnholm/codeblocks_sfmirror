@@ -318,12 +318,13 @@ private:
     DECLARE_EVENT_TABLE()
 };
 //----------------------------------------
-#define VERSION "1.5.01 26/09/02"
+#define VERSION "1.5.02 26/09/17"
 //----------------------------------------
 //versions
 // ----------------------------------------------------------------------------
 //  Modification History
 // ----------------------------------------------------------------------------
+// 1.5.02   2026/09/17 Re-instate dead zone (mouse jitter) checking (see DRAG_THRESHOLD_SQ)
 // 1.5.01   2026/09/02 Refactor Linux mouse events !commited
 // 1.5.00   2026/08/16 Restrict scroll to either horizontal or vertical !ccommited
 // 1.4.20   2026/05/19 Add notifying event DragScrollDragged !c
