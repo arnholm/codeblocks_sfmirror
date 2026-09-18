@@ -299,7 +299,7 @@ struct ClientCapabilities {
 
     /// Client supports snippets as insert text.
     /// textDocument.completion.completionItem.snippetSupport
-    //?bool CompletionSnippets = true;
+    //-bool CompletionSnippets = true;
     bool CompletionSnippets = false;     //CB does not support this yet
 
     bool CompletionDeprecated = true;

@@ -434,6 +434,9 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         wxArrayString GetCompileFileCommand(ProjectBuildTarget* target, ProjectFile* pf) const ;
         size_t GetCompilerDriverIncludesByFile(wxArrayString& resultArray, cbProject* pProject, wxString filename);
         wxString CreateLSPClientLogName(int pid, const cbProject* pProject);
+        wxString FindCompileCommandsJson(const wxString& sourceFilename); // (ph 26/08/18)
+        bool CopyFileContents(const wxString& sourcePath, const wxString& destinationPath, wxString* errorMessage = nullptr);
+
 
         // \brief Check if the command line is too long for the current running system and create a response file if necessary
         //
@@ -803,8 +806,11 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
     size_t GetNowMilliSeconds();
     size_t GetDurationMilliSeconds(int startMillis);
 
+    // Verify that the project that created this client owns this editors file
     bool ClientProjectOwnsFile(cbEditor* pcbEd, bool notify=true);
     cbProject* GetProjectFromEditor(cbEditor* pcbEd);
+    // Verify this file has an owning project (external #include files do not)
+    cbProject* FindFilesOwningProject(const wxString& filename);
 
     // array of user designated log messages to ignore
     // ----------------------------------------------------------------------------

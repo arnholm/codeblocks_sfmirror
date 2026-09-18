@@ -517,7 +517,7 @@ void ClassBrowser::ShowMenu(wxTreeCtrl* tree, wxTreeItemId id, cb_unused const w
             menu->AppendSeparator();
 
         // FIXME (ph#): Show inherited is causing loop when no inherited class //(2022/05/31)
-        //?menu->AppendCheckItem(idCBViewInheritance, _("Show inherited members"));
+        //-menu->AppendCheckItem(idCBViewInheritance, _("Show inherited members"));
         menu->AppendCheckItem(idCBExpandNS,        _("Auto-expand namespaces"));
         menu->Append         (idMenuRefreshTree,   _("&Refresh tree"));
 
@@ -1502,7 +1502,6 @@ void ClassBrowser::TreeOperation(ETreeOperator op, CCTreeItem* item)
       {
       case OpClear:
           m_targetTreeCtrl->Disable(); //fix trunk rev 12689 ticket 1152
-          //?m_targetTreeCtrl->Freeze();
           m_targetTreeCtrl->DeleteAllItems();
           m_targetNode.Unset();
           m_ClassBrowserCallAfterSemaphore.Post(); //say we did it;
@@ -1566,7 +1565,6 @@ void ClassBrowser::TreeOperation(ETreeOperator op, CCTreeItem* item)
           m_ClassBrowserCallAfterSemaphore.Post(); //say we did it;
           break;
       case OpEnd:
-          //?m_targetTreeCtrl->Thaw();
           m_targetTreeCtrl->Enable(); //fix rev 12689 ticket 1152
           m_ClassBrowserCallAfterSemaphore.Post(); //say we did it;
       }

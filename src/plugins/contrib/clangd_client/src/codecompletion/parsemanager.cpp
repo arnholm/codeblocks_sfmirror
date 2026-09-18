@@ -2788,7 +2788,7 @@ bool ParseManager::DoShowDiagnostics(wxString filename, int line)  //(Christo 20
     bool ret = false;
     wxString diagnostics;
 
-    { // <== codeblock == to contain mutex lock
+    { // <== codeblock == in order to contain mutex lock and release on exit
         std::lock_guard<std::mutex> lock(m_diagnosticsCacheMutex);
         DiagnosticsCache_t::const_iterator itr = m_diagnosticsCache.find(filename);
         if (itr != m_diagnosticsCache.end())

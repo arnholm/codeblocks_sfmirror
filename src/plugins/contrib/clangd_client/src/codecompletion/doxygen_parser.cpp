@@ -980,7 +980,7 @@ wxString DocumentationHelper::GenerateHTMLbyHover(const ClgdCCToken& cccToken, w
                 pCCToken->m_BaseArgs = hoverArgs;
                 pCCToken->m_ImplFileIdx = fileIdx;
                 pCCToken->m_ImplLineStart=1; // ?? is this what is  expected
-                pCCToken->m_ImplLineEnd = pControl->GetLineCount()-1; //?? is this what is expected
+                pCCToken->m_ImplLineEnd = pControl->GetLineCount()-1; // is this what is expected ??
                 pCCToken->m_Scope = ccTokenScope;
                 pCCToken->m_TokenKind = ccTokenKind;
                 pCCToken->m_IsLocal = true;

@@ -1644,7 +1644,7 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         FixMap_t::iterator it = FixesAvailable.find(cbFilename);
         if (it != FixesAvailable.end()) {
             it->second.clear();
-    }
+        }
 
         // Find the editor matching this files diagnostics
         EditorBase* pEdBase = pEdMgr->GetEditor(cbFilename);
@@ -1721,21 +1721,10 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         msg += wxString::Format(" (%zu more)", remainingToParse);
         CCLogger::Get()->DebugLog(msg);
         CCLogger::Get()->Log(msg);
-
     }
 
     // This could be a /publishDiagnostics response from a didClose() request. Idiot server!!
     if (lastLSP_Request.EndsWith("didClose") ) return;
-
-    // ----------------------------------------------------------------------------
-    // If this file belongs to the Proxy Poject of non-project files, return.
-    // We do this to avoid massive textdocument/diagnostics errors on external files
-    // because they were parsed/compiled by clangd with this projects compiler settings
-    // which may have nothing to do with an external file for which we have no compile info.
-    // ----------------------------------------------------------------------------
-    if (pProject == GetParseManager()->GetProxyProject()) return;
-    if (pProject != Manager::Get()->GetProjectManager()->GetActiveProject())
-        return; //editor has file not belonging to the active project.
 
     if (not pEditor)    // Background parsing response has no associated editor.
     {
@@ -1799,6 +1788,12 @@ void Parser::OnLSP_DiagnosticsResponse(wxCommandEvent& event)
         CCLogger::Get()->DebugLog(msg );
         cbMessageBox(msg);
     }
+
+    // If this is an unassociated/unowned file (no project), skip showing diagnostics. // (ph 26/08/23)
+    // Files external to the workspace don't have an owning project and
+    // clangd issues massive erroneous errors when it finds no compile info
+    if (not GetLSPClient()->FindFilesOwningProject(cbFilename))
+        diagnosticsKnt = 0;
 
     // fetch diagnostic messages the user has set to ignore; (set with right-click on LSP messages log)
     wxArrayString& rIgnoredDiagnostics = GetLSPClient()->GetLSP_IgnoredDiagnostics();
@@ -3602,7 +3597,7 @@ void Parser::OnLSP_WorkspaceApplyEdit(wxCommandEvent& event)
 
     const wxString editorFile = pEditor->GetFilename();
     wxFileName fn(editorFile);
-    const wxString editorBasePath(fn.GetPath());
+    //unused: const wxString editorBasePath(fn.GetPath());
 
     json* pJson = static_cast<json*>(event.GetClientData());
     if (!pJson->contains("params"))
@@ -3807,7 +3802,7 @@ void Parser::OnLSP_GoToPrevFunctionResponse(wxCommandEvent& event)  //response f
 
         if (not resultCount )
         {
-            cbMessageBox(_("LSP: No functions parsed in this file..."));
+            cbMessageBox(_("LSP: No functions parsed for this file..."));
             return;
         }
 
@@ -3816,7 +3811,7 @@ void Parser::OnLSP_GoToPrevFunctionResponse(wxCommandEvent& event)  //response f
         LSP_GetSymbolsByType(pJson, symbolsSet, LSP_VectorOfSymbolsFound);
         if (not LSP_VectorOfSymbolsFound.size())
         {
-            cbMessageBox(_("LSP: No functions parsed in this file..."));
+            cbMessageBox(_("LSP: No functions parsed for this file..."));
             return;
         }
         // Reverse search for line number < current line
@@ -3879,7 +3874,7 @@ void Parser::OnLSP_GoToNextFunctionResponse(wxCommandEvent& event)  //response f
 
         if (not resultCount )
         {
-            cbMessageBox(_("No functions parsed in this file..."));
+            cbMessageBox(_("No functions parsed for this file..."));
             return;
         }
 
@@ -3890,7 +3885,7 @@ void Parser::OnLSP_GoToNextFunctionResponse(wxCommandEvent& event)  //response f
         LSP_GetSymbolsByType(pJson, symbolsSet, LSP_VectorOfSymbolsFound);
         if (not LSP_VectorOfSymbolsFound.size())
         {
-            cbMessageBox(_("LSP: No functions parsed in this file..."));
+            cbMessageBox(_("LSP: No functions parsed for this file..."));
             return;
         }
         for (size_t ii=0; ii<LSP_VectorOfSymbolsFound.size(); ++ii)
@@ -3918,106 +3913,188 @@ void Parser::OnLSP_GoToNextFunctionResponse(wxCommandEvent& event)  //response f
     }
 }//end OnLSP_GoToNextFunctionResponse
 // ----------------------------------------------------------------------------
-void Parser::OnLSP_GoToFunctionResponse(wxCommandEvent& event)  //unused
+void Parser::OnLSP_GoToFunctionResponse(wxCommandEvent& event) // Perplexity // (ph 26/08/19)
 // ----------------------------------------------------------------------------
 {
-    // currently UNUSED. Using the older CC method to go to function instead.
-    // viz., CodeCompletion::OnGotoFunction() using the GoToFunctionDlg dialog
-    // ----------------------------------------------------------------------------
-    // textDocument/DocumentSymbol event
-    // ----------------------------------------------------------------------------
-    if (GetIsShuttingDown()) return;
+    // Refactored (2026/08/20) to accomodate data from external files
+    // or files opened and owned by non-active projects.
 
-    if (event.GetString().StartsWith("textDocument/documentSymbol") )
+    if (GetIsShuttingDown())
+        return;
+
+    if (!event.GetString().StartsWith("textDocument/documentSymbol"))
+        return;
+
     try
     {
-        //{"jsonrpc":"2.0","id":"textDocument/documentSymbol","result":[{"name":"wxbuildinfoformat","detail":"enum wxbuildinfoformat {}","kind":10,"range":{"start":{"line":19,"character":0},"end":{"line":20,"character":21}},"selectionRange":{"start":{"line":19,"character":5},"end":{"line":19,"character":22}},"children":[]},
-        //  {"name":"short_f","detail":"short_f","kind":22,"range":{"start":{"line":20,"character":4},"end":{"line":20,"character":11}},"selectionRange":{"start":{"line":20,"character":4},"end":{"line":20,"character":11}},"children":[]},
-        //  {"name":"long_f","detail":"long_f","kind":22,"range":{"start":{"line":20,"character":13},"end":{"line":20,"character":19}},"selectionRange":{"start":{"line":20,"character":13},"end":{"line":20,"character":19}},"children":[]},...{"name":...,...etc}]}
-        // *pJson points to contents of array "result";
-
         EditorManager* edMan = Manager::Get()->GetEditorManager();
-        cbEditor* ed = edMan->GetBuiltinActiveEditor();
+        cbEditor* ed = edMan ? edMan->GetBuiltinActiveEditor() : nullptr;
         if (!ed)
             return;
 
-        // GetClientData() contains ptr to json object
-        // dont free it, OnLSP_Event will free it as a unique_ptr
-        json* pJson = (json*)event.GetClientData();
-
-        json valueResult = pJson->at("result");
-        size_t resultCount = pJson->count("result");
-        size_t entryCount = valueResult.size();
-
-        if (not resultCount )
+        // GetClientData() contains a pointer to the LSP JSON response.
+        // Do not free it here: OnLSP_Event owns it via unique_ptr.
+        json* pJson = static_cast<json*>(event.GetClientData());
+        if (!pJson || !pJson->contains("result"))
         {
-            cbMessageBox(_("No functions parsed in this file..."));
+            cbMessageBox(_("LSP: Invalid document-symbol response."));
             return;
         }
 
-        //const size_t functionType = 12;; //defined in https://microsoft.github.io/language-server-protocol/specification
-        //const size_t classType    = 5; //defined in https://microsoft.github.io/language-server-protocol/specification
-        //const size_t methodType   = 6; //defined in https://microsoft.github.io/language-server-protocol/specification
+        const json& result = pJson->at("result");
+
+        // clangd normally returns DocumentSymbol[], but verify before use.
+        if (!result.is_array() || result.empty())
+        {
+            cbMessageBox(_("LSP: No symbols parsed in this file..."));
+            return;
+        }
 
         GotoFunctionDlg::Iterator iterator;
         size_t foundCount = 0;
 
-        for (size_t ii=0; ii<entryCount; ++ii)
+        // Recursive traversal is required because clangd returns a tree:
+        //
+        // namespace dap
+        //   class Client
+        //     method Initialize
+        //     method Launch
+        //
+        // A .cpp may look flat, while a .h/.hpp typically contains classes,
+        // namespaces, nested enums, constructors, methods, etc.
+        std::function<void(const json&, const wxString&)> AddSymbols;
+
+        AddSymbols =
+            [&](const json& symbols, const wxString& parentScope)
         {
-            size_t symbolType = valueResult[ii].at("kind").get<int>();
-            if ( (symbolType == LSP_SymbolKind::Function) or (symbolType == LSP_SymbolKind::Method)
-                    or (symbolType == LSP_SymbolKind::Constructor) or (symbolType == LSP_SymbolKind::Class)
-                    or (symbolType==LSP_SymbolKind::Namespace) )
+            if (!symbols.is_array())
+                return;
+
+            for (const json& symbol : symbols)
             {
-                foundCount += 1;
-                wxString symName   = GetwxUTF8Str(valueResult[ii].at("name").get<std::string>());
-                //- wxString symDetail = valueResult[ii].at("detail").get<std::string>(); CCLS only
-                int      symLine   = valueResult[ii].at("range").at("start").at("line").get<int>();
-                symLine += 1; //make 1 origin
+                if (!symbol.is_object())
+                    continue;
 
-                GotoFunctionDlg::FunctionToken ft;
-                // We need to clone the internal data of the strings to make them thread safe. // This probably not true for LSP response
-                ft.displayName = wxString(symName.c_str());
-                ft.name = wxString(symName.c_str());
-                ft.line =symLine;
-                ft.implLine = symLine;
-                //if (!token->m_FullType.empty())
-                //-ft.paramsAndreturnType = wxString((symDetail).c_str()); CCLS only
-                //ft.funcName = wxString((token->GetNamespace() + token->m_Name).c_str());
-                ft.funcName = wxString((symName).c_str());
-                iterator.AddToken(ft);
-            }//end if valueResult == functionType
-        }//endfor entryCount
+                const int symbolKind = symbol.value("kind", -1);
 
-        if (not foundCount )
+                const wxString symbolName =
+                    GetwxUTF8Str(symbol.value("name", std::string()));
+
+                if (symbolName.empty())
+                    continue;
+
+                // Used only for presentation/disambiguation in the dialog.
+                // Examples:
+                //   dap::Client::Initialize
+                //   MyNamespace::MyClass::MyMethod
+                wxString qualifiedName = symbolName;
+                if (!parentScope.empty())
+                    qualifiedName = parentScope + "::" + symbolName;
+
+                // A Go To Function dialog should normally contain callable
+                // symbols. Add Class/Namespace if you also want structural
+                // navigation entries in this dialog.
+                const bool isGotoFunctionSymbol =
+                    symbolKind == LSP_SymbolKind::Function ||
+                    symbolKind == LSP_SymbolKind::Method ||
+                    symbolKind == LSP_SymbolKind::Constructor;
+
+                if (isGotoFunctionSymbol)
+                {
+                    int line = -1;
+
+                    // selectionRange identifies the symbol name itself.
+                    // It is preferable to range, which can start at a
+                    // return type, template declaration, or access modifier.
+                    if (symbol.contains("selectionRange") &&
+                        symbol["selectionRange"].contains("start") &&
+                        symbol["selectionRange"]["start"].contains("line"))
+                    {
+                        line = symbol["selectionRange"]["start"]["line"].get<int>();
+                    }
+                    // Fallback for a server that omits selectionRange.
+                    else if (symbol.contains("range") &&
+                             symbol["range"].contains("start") &&
+                             symbol["range"]["start"].contains("line"))
+                    {
+                        line = symbol["range"]["start"]["line"].get<int>();
+                    }
+
+                    if (line >= 0)
+                    {
+                        GotoFunctionDlg::FunctionToken ft;
+
+                        // LSP lines are zero-origin; FunctionToken lines used
+                        // by this dialog are one-origin.
+                        ft.line = line + 1;
+                        ft.implLine = line + 1;
+
+                        // Keep name as the source-level symbol name for
+                        // GotoTokenPosition().
+                        ft.name = wxString(symbolName.c_str());
+
+                        // Use the fully-qualified name to prevent ambiguity
+                        // for overloads and repeated member names.
+                        ft.displayName = wxString(qualifiedName.c_str());
+                        ft.funcName = wxString(qualifiedName.c_str());
+
+                        // clangd supplies useful signatures in "detail",
+                        // e.g. "void (bool)" or "bool (wxString &, int)".
+                        if (symbol.contains("detail") &&
+                            symbol["detail"].is_string())
+                        {
+                            ft.paramsAndreturnType =
+                                GetwxUTF8Str(
+                                    symbol["detail"].get<std::string>());
+                        }
+
+                        iterator.AddToken(ft);
+                        ++foundCount;
+                    }
+                }
+
+                // This is the essential part missing from the original code.
+                // Traverse namespace, class, enum, and other nested symbols.
+                if (symbol.contains("children"))
+                    AddSymbols(symbol["children"], qualifiedName);
+            }
+        };
+
+        AddSymbols(result, wxEmptyString);
+
+        if (foundCount == 0)
         {
-            cbMessageBox(_("LSP: No functions parsed in this file..."));
+            cbMessageBox(_("LSP: No functions parsed ifor this file..."));
             return;
         }
 
-        //
         iterator.Sort();
+
         GotoFunctionDlg dlg(Manager::Get()->GetAppWindow(), &iterator);
         PlaceWindow(&dlg);
-        if (dlg.ShowModal() == wxID_OK)
-        {
-            int selection = dlg.GetSelection();
-            if (selection != wxNOT_FOUND)
-            {
-                const GotoFunctionDlg::FunctionToken *ft = iterator.GetToken(selection);
-                if (ed && ft)
-                    ed->GotoTokenPosition(ft->implLine - 1, ft->name);
-            }
-        }
 
-    }//endif textDocument/documentSymbol try
-    catch (std::exception &e)
+        if (dlg.ShowModal() != wxID_OK)
+            return;
+
+        const int selection = dlg.GetSelection();
+        if (selection == wxNOT_FOUND)
+            return;
+
+        const GotoFunctionDlg::FunctionToken* ft =
+            iterator.GetToken(selection);
+
+        if (ft)
+            ed->GotoTokenPosition(ft->implLine - 1, ft->name);
+    }
+    catch (const std::exception& e)
     {
-        wxString msg = wxString::Format("OnLSP_GoToFunctionResponse %s", e.what());
+        const wxString msg = wxString::Format(
+            "OnLSP_GoToFunctionResponse: %s", e.what());
+
         CCLogger::Get()->DebugLog(msg);
         cbMessageBox(msg);
     }
-}//end OnLSP_GoToFunctionResponse
+}
 
 // ----------------------------------------------------------------------------
 bool Parser::LSP_GetSymbolsByType(json* pJson, std::set<LSP_SymbolKind>& symbolset, std::vector<LSP_SymbolsTupleType>& LSP_VectorOfSymbolsFound)

@@ -65,7 +65,7 @@ namespace InsertClassMethodDlgHelper
                 if (not args.StartsWith('(')) args.Prepend('(');
                 if (not args.EndsWith(')')) args.Append(')');
                 str << token->m_FullType << _T(" ") << ns << token->m_Name << args;
-                //? str.Replace(_T("&"), _T("&&")); why?
+                //- str.Replace(_T("&"), _T("&&")); why?
                 if (clb->FindString(str) == wxNOT_FOUND) //avoiding duplicates?
                     clb->Append(str);
             }

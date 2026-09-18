@@ -25,10 +25,10 @@
 #endif
 
 //-----Release-Feature-Fix------------------
-#define VERSION wxT("1.2.153 26/8/09")
+#define VERSION wxT("1.2.155 26/8/23")
 //------------------------------------------
 // Release - Current development identifier
-// Feature - User interface level
+// Feature - User interface level change
 // Fix     - bug fix or non UI breaking addition
 // ----------------------------------------------------------------------------
 class AppVersion
@@ -51,6 +51,9 @@ class AppVersion
 // ----------------------------------------------------------------------------
 // Modifications
 // ----------------------------------------------------------------------------
+//1.2.155  2026/08/23 Skip showing diagnostics for external workspace unowned files.
+//1.2.154  2026/08/17 Fix missing parse output for non-active project files
+//              and .h .hpp (GoTo Function) dialog entries.
 //1.2.153   2026/08/09 Look for compiler master path in .conf 'user_sets' when 'sets' fails
 //1.2.152   2026/07/14 Fix crash in parser.cpp when there is no active process
 //                     Correct json.cpp macro spacing warnings

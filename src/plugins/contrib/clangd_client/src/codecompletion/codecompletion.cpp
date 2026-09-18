@@ -840,7 +840,7 @@ void ClgdCompletion::OnRelease(bool appShutDown)
         wxRemoveFile(compileCommandsFilename);
     }
 
-    // If the plugins is being disabled only (ie., CB is NOT shutting down)
+    // If the plugin is being disabled only (ie., CB is NOT shutting down)
     // emit a warning that CB should be reloaded to clear out resouces that may
     // conflict with enabling legacy CodeCompletion.
     if (not appShutDown)
@@ -2194,7 +2194,7 @@ void ClgdCompletion::OnGotoFunction(cb_unused wxCommandEvent& event)
         CC_LOCKER_TRACK_TT_MTX_UNLOCK(s_TokenTreeMutex)
         s_TokenTreeMutex_Owner = wxString();
         // ----------------------------------------------
-        cbMessageBox(_("No functions parsed in this file.\n(Empty symbols tree)."),
+        cbMessageBox(_("No functions parsed for this file.\n(Empty symbols tree)."),
                      wxString::Format("%s",__FUNCTION__));
     }
     else
@@ -2646,7 +2646,7 @@ void ClgdCompletion::OnCurrentProjectReparse(wxCommandEvent& event)
         GetParseManager()->ReparseCurrentProject();
         // Then create a new ProcessLanguageClient
         Parser* pParser = (Parser*)GetParseManager()->GetParserByProject(pProject);
-        // LSP_DidOpen() any active file in an editor belong to this project
+        // LSP_DidOpen() any active file in an editor belonging to this project
         if (pParser)
         {
             // The new parser has already queued files to be parsed.
@@ -4397,10 +4397,10 @@ void ClgdCompletion::OnEditorClosed(CodeBlocksEvent& event)
         return;
     }
 
-    wxString activeFile;
-    EditorBase* pEdBase = pEdMgr->GetActiveEditor();
-    if (pEdBase)
-        activeFile = pEdBase->GetFilename();
+    //wxString activeFile; // **Debugging**
+    //EditorBase* pEdBase = pEdMgr->GetActiveEditor();
+    //if (pEdBase)
+    //    activeFile = pEdBase->GetFilename();
 
     TRACE(_T("CodeCompletion::OnEditorClosed(): Closed editor's file is %s"), activeFile.wx_str());
 
@@ -5984,6 +5984,8 @@ void ClgdCompletion::OnFormatActiveFile(cb_unused wxCommandEvent& event)  // (ch
 void ClgdCompletion::OnRefactor(wxCommandEvent& event)
 // ----------------------------------------------------------------------------
 {
+    wxUnusedVar(event);
+
     cbEditor* pEditor = Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
     if (!pEditor)
         return;
