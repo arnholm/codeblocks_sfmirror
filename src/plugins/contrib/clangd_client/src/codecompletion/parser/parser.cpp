@@ -4064,7 +4064,7 @@ void Parser::OnLSP_GoToFunctionResponse(wxCommandEvent& event) // Perplexity // 
 
         if (foundCount == 0)
         {
-            cbMessageBox(_("LSP: No functions parsed ifor this file..."));
+            cbMessageBox(_("LSP: No functions parsed for this file..."));
             return;
         }
 
