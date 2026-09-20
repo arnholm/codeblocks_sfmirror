@@ -7,11 +7,10 @@
  * $HeadURL$
  */
 
+#include <cstring>
+#include <fstream>
 #include <stdio.h>
 #include <string>
-#include <fstream>
-
-#include <tinyxml.h>
 
 #if defined(__WIN32__) || defined(_WIN32) || defined(__WIN32) || defined(__WIN64) || defined(__WIN64__)
     #define WIN32_LEAN_AND_MEAN 1
@@ -140,6 +139,15 @@ bool GetProcessOutput(std::string& output, const std::string& cmd)
     return (WIFEXITED(ret) && (WEXITSTATUS(ret) == 0));
 }
 
+void TrimTrailingWhitespaces(std::string& str)
+{
+    size_t end = str.find_last_not_of(" \t\n\r");
+    if (end != std::string::npos)
+    {
+        str.erase(end + 1);
+    }
+}
+
 bool QueryVersionControl(const std::string& workingDir, std::string& vcsExecutable, std::string& revision, std::string& date)
 {
     revision = "0";
@@ -158,48 +166,27 @@ bool QueryVersionControl(const std::string& workingDir, std::string& vcsExecutab
         if (vcsExecutable.empty())
             vcsExecutable = "svn";
 
-        if (GetProcessOutput(output, vcsExecutable + " info --xml --non-interactive " + workingDir))
+        if (GetProcessOutput(output, vcsExecutable + " info --show-item=revision --non-interactive " + workingDir))
         {
-            TiXmlDocument doc;
-            doc.Parse(output.c_str());
+            revision = output;
+            TrimTrailingWhitespaces(revision);
 
-            if (doc.Error())
+            if (GetProcessOutput(output, vcsExecutable + " info --show-item=last-changed-date --non-interactive " + workingDir))
             {
-                puts("Warning: Invalid XML output from SVN executable.");
-                return false;
-            }
-
-            TiXmlHandle hCommit(&doc);
-            hCommit = hCommit.FirstChildElement("info").FirstChildElement("entry").FirstChildElement("commit");
-            if (const TiXmlElement* e = hCommit.ToElement())
-            {
-                revision = e->Attribute("revision") ? e->Attribute("revision") : "";
-                if (revision.empty())
-                    puts("Warning: Could not find 'revision' in SVN output.");
-
-                const TiXmlElement* d = e->FirstChildElement("date");
-                if (d && d->GetText())
+                date = output;
+                TrimTrailingWhitespaces(date);
+                std::string::size_type pos = date.find('T');
+                if (pos != std::string::npos)
                 {
-                    date = d->GetText();
-                    std::string::size_type pos = date.find('T');
-                    if (pos != std::string::npos)
-                    {
-                        date[pos] = ' ';
-                    }
-                    pos = date.rfind('.');
-                    if (pos != std::string::npos)
-                    {
-                        date = date.substr(0, pos);
-                    }
+                    date[pos] = ' ';
                 }
-                else
-                    puts("Warning: Could not find 'date' in SVN output.");
-
-                return true;
+                pos = date.rfind('.');
+                if (pos != std::string::npos)
+                {
+                    date = date.substr(0, pos);
+                }
             }
-            else
-                puts("Warning: Could not find '<info><entry><commit>' chain in SVN output.");
-            return false;
+            return true;
         }
     }
 
