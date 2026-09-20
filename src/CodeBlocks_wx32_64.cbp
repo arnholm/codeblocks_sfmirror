@@ -29,7 +29,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="txml" />
 				</Linker>
 			</Target>
 			<Target title="ConsoleRunner">

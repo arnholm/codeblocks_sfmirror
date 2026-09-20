@@ -37,7 +37,6 @@
 					<Add option="-Wl,--enable-auto-image-base" />
 					<Add option="-Wl,--no-undefined" />
 					<Add option="-mthreads" />
-					<Add library="txml" />
 				</Linker>
 			</Target>
 			<Target title="ConsoleRunner">
