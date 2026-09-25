@@ -1,9 +1,8 @@
-noinst_PROGRAMS = auto_revision
-auto_revision_SOURCES = autorevision.cpp
+# Build the autorevision tool using the build-system compiler.
+auto_revision$(EXEEXT): autorevision.cpp
+	$(CXX_FOR_BUILD) $(CXXCPPFLAGS_FOR_BUILD) $(CXXFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ $<
 
-CC = $(CC_FOR_BUILD)
-CFLAGS = $(CFLAGS_FOR_BUILD)
-CXX = $(CXX_FOR_BUILD)
+CLEANFILES = auto_revision$(EXEEXT)
 
 all-local: auto_revision$(EXEEXT)
-	./auto_revision +int +wx +t $(top_srcdir) $(top_builddir)/src/include/autorevision.h
+	./auto_revision$(EXEEXT) +int +wx +t $(top_srcdir) $(top_builddir)/src/include/autorevision.h
