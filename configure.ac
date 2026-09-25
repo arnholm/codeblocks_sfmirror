@@ -91,6 +91,11 @@ else
 	AC_MSG_RESULT(no)
 fi
 
+PKG_PROG_PKG_CONFIG
+if test -z "$PKG_CONFIG"; then
+    AC_MSG_ERROR([pkg-config was not found. Please install it to continue.])
+fi
+
 if test "x$DISABLE_SYS_LIBS" != "xyes"; then
 	PKG_CHECK_MODULES([zlib], [zlib], [HAVE_ZLIB=yes], [HAVE_ZLIB=no])
 else
@@ -139,8 +144,6 @@ ifdef([PKG_CHECK_MODULES],[],[
 		exit 1
 	])
 ])
-
-PKG_PROG_PKG_CONFIG
 
 if test "x$DISABLE_SYS_LIBS" != "xyes"; then
     PKG_CHECK_MODULES([TINYXML], [tinyxml], [HAVE_TINYXML=yes], [HAVE_TINYXML=no])
