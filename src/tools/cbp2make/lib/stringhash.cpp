@@ -152,17 +152,17 @@ hash_t jen_hash(const data_t *data, const size_t size, const hash_t magic)
  c += size;
  switch (l)
  {
-  case 11: c += ((hash_t)k[10]<<24);
-  case 10: c += ((hash_t)k[9]<<16);
-  case 9 : c += ((hash_t)k[8]<<8);
+  case 11: c += ((hash_t)k[10]<<24); [[fallthrough]];
+  case 10: c += ((hash_t)k[9]<<16);  [[fallthrough]];
+  case 9 : c += ((hash_t)k[8]<<8);   [[fallthrough]];
   // first byte of c reserved for length
-  case 8 : b += ((hash_t)k[7]<<24);
-  case 7 : b += ((hash_t)k[6]<<16);
-  case 6 : b += ((hash_t)k[5]<<8);
-  case 5 : b += k[4];
-  case 4 : a += ((hash_t)k[3]<<24);
-  case 3 : a += ((hash_t)k[2]<<16);
-  case 2 : a += ((hash_t)k[1]<<8);
+  case 8 : b += ((hash_t)k[7]<<24);  [[fallthrough]];
+  case 7 : b += ((hash_t)k[6]<<16);  [[fallthrough]];
+  case 6 : b += ((hash_t)k[5]<<8);   [[fallthrough]];
+  case 5 : b += k[4];                [[fallthrough]];
+  case 4 : a += ((hash_t)k[3]<<24);  [[fallthrough]];
+  case 3 : a += ((hash_t)k[2]<<16);  [[fallthrough]];
+  case 2 : a += ((hash_t)k[1]<<8);   [[fallthrough]];
   case 1 : a += k[0];
  }
  jen_mix(a,b,c);
