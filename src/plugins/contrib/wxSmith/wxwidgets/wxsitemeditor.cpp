@@ -37,6 +37,46 @@
 #include "../wxsproject.h"
 #include <logmanager.h>
 
+class PaletteWindow : public wxScrolledWindow
+{
+    public:
+        explicit PaletteWindow(wxWindow* parent, wxWindowID winid = wxID_ANY,
+                               const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                               long style = 0)
+            : wxScrolledWindow(parent, winid, pos, size, style)
+        {
+            SetScrollRate(1,0);
+            m_rowSizer = new wxBoxSizer(wxHORIZONTAL);
+            SetSizer(m_rowSizer);
+            Bind(wxEVT_SIZE, &PaletteWindow::OnSize, this);
+        }
+
+        void Add(wxWindow* window, int proportion, int flag)
+        {
+            m_rowSizer->Add(window, proportion, flag);
+        }
+
+    protected:
+        wxSizer* m_rowSizer;
+
+        void OnSize(wxSizeEvent& event)
+        {
+            event.Skip();
+            if (m_rowSizer)
+                FitInside();
+
+            wxWindow* parent = GetParent();
+            if (parent)
+            {
+                InvalidateBestSize();
+                parent->InvalidateBestSize();
+                wxWindow* topFrame = wxGetTopLevelParent(parent);
+                if (topFrame)
+                    topFrame->Layout();
+            }
+        }
+};
+
 namespace
 {
     const long wxsInsPointId   = wxNewId();
@@ -133,13 +173,13 @@ void wxsItemEditor::InitializeVisualStuff()
 
     // Creating content of editor window
     m_VertSizer = new wxBoxSizer(wxVERTICAL);
-    m_WidgetsSet = new wxNotebook(this,-1);
-    BuildPalette(m_WidgetsSet);
     m_ToolSpace = new wxsToolSpace(this,m_Data);
     m_VertSizer->Add(m_ToolSpace,0,wxEXPAND);
     m_HorizSizer = new wxBoxSizer(wxHORIZONTAL);
     m_VertSizer->Add(m_HorizSizer,1,wxEXPAND);
+    m_WidgetsSet = new wxNotebook(this,-1);
     m_VertSizer->Add(m_WidgetsSet,0,wxEXPAND);
+    BuildPalette(m_WidgetsSet);
 
     m_Content = new wxsItemEditorContent(this,m_Data,this);
     m_HorizSizer->Add(m_Content,1,wxEXPAND);
@@ -696,6 +736,7 @@ void wxsItemEditor::RebuildIcons()
     m_DelBtn->SetBitmapLabel(m_DelImg);
     m_PreviewBtn->SetBitmapLabel(m_PreviewImg);
     BuildPalette(m_WidgetsSet);
+    m_VertSizer->Layout();
     Layout();
 }
 
@@ -734,7 +775,7 @@ namespace
 void wxsItemEditor::BuildPalette(wxNotebook* Palette)
 {
     Palette->DeleteAllPages();
-    bool AllowNonXRCItems = (m_Data->GetPropertiesFilter() & flSource);
+    const bool AllowNonXRCItems = (m_Data->GetPropertiesFilter() & flSource);
 
     // First we need to split all widgets into groups
     // it will be done using multimap (map of arrays)
@@ -750,23 +791,19 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
         }
     }
 
-    for ( MapT::iterator i = Map.begin(); i!=Map.end(); ++i )
+    for ( MapT::iterator i = Map.begin(); i != Map.end(); ++i )
     {
         aoi.Add(&(i->second));
     }
 
-    const int PalIconSize = Manager::Get()->GetConfigManager(_T("wxsmith"))->ReadInt(_T("/paletteiconsize"),16L);
+    const int PalIconSize = Manager::Get()->GetConfigManager("wxsmith")->ReadInt("/paletteiconsize", 16L);
 
     for (size_t i = 0; i < aoi.Count(); ++i)
     {
         ItemsT* Items = aoi.Item(i);
         Items->Sort(PrioritySort);
-        wxScrolledWindow* CurrentPanel = new wxScrolledWindow(Palette,-1,wxDefaultPosition,wxDefaultSize,0/*wxALWAYS_SHOW_SB|wxHSCROLL*/);
-        CurrentPanel->SetScrollRate(1,0);
-        Palette->AddPage(CurrentPanel,Items->Item(0)->Category);
-        wxSizer* RowSizer = new wxBoxSizer(wxHORIZONTAL);
-
-        for (size_t j = Items->Count(); j-- > 0;)
+        PaletteWindow* CurrentPanel = new PaletteWindow(Palette);
+        for (size_t j = Items->Count(); j-- > 0; )
         {
             wxsItemInfo* Info = Items->Item(j);
             const wxBitmap& Icon = Info->GetIcon(PalIconSize);
@@ -776,23 +813,24 @@ void wxsItemEditor::BuildPalette(wxNotebook* Palette)
                 wxWindow* Btn;
                 if ( Icon.Ok() )
                 {
-                    Btn = new wxBitmapButton(CurrentPanel,-1,Icon,
-                              wxDefaultPosition,wxDefaultSize,wxBU_AUTODRAW,
+                    Btn = new wxBitmapButton(CurrentPanel, wxID_ANY, Icon,
+                              wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW,
                               wxDefaultValidator, Info->ClassName);
-                    RowSizer->Add(Btn,0,wxALIGN_CENTER);
+                    CurrentPanel->Add(Btn, 0, wxALIGN_CENTER);
                 }
                 else
                 {
-                    Btn = new wxButton(CurrentPanel,-1,Info->ClassName,
-                              wxDefaultPosition,wxDefaultSize,0,
-                              wxDefaultValidator,Info->ClassName);
-                    RowSizer->Add(Btn,0,wxGROW);
+                    Btn = new wxButton(CurrentPanel, wxID_ANY, Info->ClassName,
+                              wxDefaultPosition, wxDefaultSize, 0,
+                              wxDefaultValidator, Info->ClassName);
+                    CurrentPanel->Add(Btn, 0, wxGROW);
                 }
+
                 Btn->SetToolTip(Info->ClassName);
             }
         }
-        CurrentPanel->SetSizer(RowSizer);
-        RowSizer->FitInside(CurrentPanel);
+
+        Palette->AddPage(CurrentPanel, Items->Item(0)->Category);
     }
 }
 
