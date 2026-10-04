@@ -158,7 +158,7 @@ EditProjectGlobsDlg::~EditProjectGlobsDlg()
 }
 
 
-void EditProjectGlobsDlg::OnBrowseClick(wxCommandEvent& event)
+void EditProjectGlobsDlg::OnBrowseClick(cb_unused wxCommandEvent& event)
 {
     wxFileName path;
     const wxString basePath = Manager::Get()->GetProjectManager()->GetActiveProject()->GetBasePath();
@@ -221,7 +221,7 @@ ProjectGlob EditProjectGlobsDlg::WriteGlob()
     return m_GlobObj;
 }
 
-void EditProjectGlobsDlg::OnOtherClick(wxCommandEvent& event)
+void EditProjectGlobsDlg::OnOtherClick(cb_unused wxCommandEvent& event)
 {
     UserVariableManager *userMgr = Manager::Get()->GetUserVariableManager();
 
@@ -259,12 +259,12 @@ void EditProjectGlobsDlg::UpdateTargetCheckBox()
     }
 }
 
-void EditProjectGlobsDlg::OnTargetsToggled(wxCommandEvent& event)
+void EditProjectGlobsDlg::OnTargetsToggled(cb_unused wxCommandEvent& event)
 {
     UpdateTargetCheckBox();
 }
 
-void EditProjectGlobsDlg::OnAllNoneClick(wxCommandEvent& event)
+void EditProjectGlobsDlg::OnAllNoneClick(cb_unused wxCommandEvent& event)
 {
     wxCheckBoxState state = chkAllNone->Get3StateValue();
     if (state == wxCHK_CHECKED)

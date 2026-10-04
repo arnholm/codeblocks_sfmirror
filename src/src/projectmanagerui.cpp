@@ -1927,15 +1927,15 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
             if (!selections[i].IsOk())
                 continue;
 
-            FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(selections[i]);
-            if (!ftd)
+            FileTreeData* ftd_ = (FileTreeData*)m_pTree->GetItemData(selections[i]);
+            if (!ftd_)
                 continue;
 
-            cbProject* prj = ftd->GetProject();
-            if (!prj)
+            cbProject* prj_ = ftd_->GetProject();
+            if (!prj_)
                 continue;
 
-            projectMap.insert(std::pair <cbProject*, wxArrayTreeItemIds> (prj, wxArrayTreeItemIds())).first->second.Add(selections[i]);
+            projectMap.insert(std::pair <cbProject*, wxArrayTreeItemIds> (prj_, wxArrayTreeItemIds())).first->second.Add(selections[i]);
         }
 
         if (!projectMap.empty())
@@ -1943,24 +1943,24 @@ void ProjectManagerUI::OnRemoveFileFromProject(wxCommandEvent& event)
             // Remove files project by project
             for (std::map <cbProject*, wxArrayTreeItemIds>::const_iterator it = projectMap.begin(); it != projectMap.end(); ++it)
             {
-                cbProject* prj = it->first;
-                prj->BeginRemoveFiles();
+                cbProject* prj_ = it->first;
+                prj_->BeginRemoveFiles();
                 const size_t idCount = it->second.GetCount();
                 for (size_t i = 0; i < idCount; ++i)
                 {
-                    FileTreeData* ftd = (FileTreeData*)m_pTree->GetItemData(it->second[i]);
-                    ProjectFile* pf = ftd->GetProjectFile();
+                    FileTreeData* ftd__ = (FileTreeData*)m_pTree->GetItemData(it->second[i]);
+                    ProjectFile* pf = ftd__->GetProjectFile();
                     if (!pf)
                         continue;
 
-                    const wxString topLevelPath(prj->GetCommonTopLevelPath());
-                    pm->RemoveFileFromProject(pf, prj);
-                    prj->CalculateCommonTopLevelPath();
-                    if (prj->GetCommonTopLevelPath() == topLevelPath)
+                    const wxString topLevelPath(prj_->GetCommonTopLevelPath());
+                    pm->RemoveFileFromProject(pf, prj_);
+                    prj_->CalculateCommonTopLevelPath();
+                    if (prj_->GetCommonTopLevelPath() == topLevelPath)
                         m_pTree->Delete(selections[i]);
                 }
 
-                prj->EndRemoveFiles();
+                prj_->EndRemoveFiles();
             }
 
             RebuildTree();
@@ -2148,7 +2148,7 @@ void ProjectManagerUI::OnNotes(wxCommandEvent& WXUNUSED(event))
         prj->ShowNotes(false, true);
 }
 
-void ProjectManagerUI::OnOpenFileInSystemBrowser(wxCommandEvent& event)
+void ProjectManagerUI::OnOpenFileInSystemBrowser(cb_unused wxCommandEvent& event)
 {
     wxTreeItemId sel = GetTreeSelection();
     if (!sel.IsOk())

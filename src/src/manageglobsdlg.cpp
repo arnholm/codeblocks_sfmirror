@@ -121,7 +121,7 @@ void ManageGlobsDlg::PopulateList()
     }
 }
 
-void ManageGlobsDlg::OnAddClick(wxCommandEvent& event)
+void ManageGlobsDlg::OnAddClick(cb_unused wxCommandEvent& event)
 {
     ProjectGlob tmpGlob = ProjectGlob();
     EditProjectGlobsDlg dlg(m_Prj, tmpGlob, nullptr);
@@ -138,7 +138,7 @@ void ManageGlobsDlg::OnAddClick(wxCommandEvent& event)
     }
 }
 
-void ManageGlobsDlg::OnDeleteClick(wxCommandEvent& event)
+void ManageGlobsDlg::OnDeleteClick(cb_unused wxCommandEvent& event)
 {
     int item = -1;
     std::vector<TemporaryGlobHolder> itemsToDelete;
@@ -163,7 +163,7 @@ void ManageGlobsDlg::OnDeleteClick(wxCommandEvent& event)
     PopulateList();
 }
 
-void ManageGlobsDlg::OnEditClick(wxCommandEvent& event)
+void ManageGlobsDlg::OnEditClick(cb_unused wxCommandEvent& event)
 {
     EditSelectedItem();
 }
@@ -206,7 +206,7 @@ void ManageGlobsDlg::ReassignTargets(const ProjectGlob& glob)
     }
 }
 
-void ManageGlobsDlg::OnOkClick(wxCommandEvent& event)
+void ManageGlobsDlg::OnOkClick(cb_unused wxCommandEvent& event)
 {
     if (m_Prj != nullptr && GlobsChanged())
     {
@@ -242,19 +242,19 @@ bool ManageGlobsDlg::GlobsChanged()
     return m_OldGlobList != m_GlobList;
 }
 
-void ManageGlobsDlg::OnlstGlobsListItemSelect(wxListEvent& event)
+void ManageGlobsDlg::OnlstGlobsListItemSelect(cb_unused wxListEvent& event)
 {
     btnEdit->Enable();
     btnDelete->Enable();
 }
 
-void ManageGlobsDlg::OnlstGlobsListItemDeselect(wxListEvent& event)
+void ManageGlobsDlg::OnlstGlobsListItemDeselect(cb_unused wxListEvent& event)
 {
     btnEdit->Disable();
     btnDelete->Disable();
 }
 
-void ManageGlobsDlg::OnlstGlobsListItemActivated(wxListEvent& event)
+void ManageGlobsDlg::OnlstGlobsListItemActivated(cb_unused wxListEvent& event)
 {
     EditSelectedItem();
 }
