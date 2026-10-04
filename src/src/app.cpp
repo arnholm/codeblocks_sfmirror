@@ -647,6 +647,7 @@ bool CodeBlocksApp::OnInit()
     m_HasWorkSpace         = false;
     m_SafeMode             = false;
     m_BatchWindowAutoClose = true;
+    m_SilenceCompilerLog   = false;
     m_pSingleInstance      = nullptr;
 
     if (wxTheClipboard->IsOpened())
@@ -697,6 +698,9 @@ bool CodeBlocksApp::OnInit()
         if (!LoadConfig())
             return false;
 
+        if (m_SilenceCompilerLog) // Adjust according command line option
+            Manager::Get()->GetConfigManager("compiler")->Write("/silence_compiler_log", true);
+
         InitExceptionHandler();
 
         // set safe-mode appropriately
@@ -716,8 +720,7 @@ bool CodeBlocksApp::OnInit()
             DDEConnection* connection = nullptr;
             wxLogNull ln; // own error checking implemented -> avoid debug warnings
             connection = (DDEConnection *)client->MakeConnection("localhost",
-                                                                 wxString::Format(DDE_SERVICE,
-                                                                                  wxGetUserId()),
+                                                                 wxString::Format(DDE_SERVICE, wxGetUserId()),
                                                                  DDE_TOPIC);
             if (connection)
             {
@@ -1119,9 +1122,9 @@ int CodeBlocksApp::BatchJob()
 void CodeBlocksApp::OnCloseBatchBuildWindow(wxCloseEvent& evt)
 {
     cbCompilerPlugin *compiler = Manager::Get()->GetPluginManager()->GetFirstCompiler();
-    if(compiler != nullptr && compiler->IsRunning())
+    if (compiler != nullptr && compiler->IsRunning())
     {
-        if( cbMessageBox(_("Build still running. Do you want stop the build process?"), appglobals::AppName, wxICON_QUESTION | wxYES_NO, m_pBatchBuildDialog) == wxID_YES )
+        if ( cbMessageBox(_("Build still running. Do you want stop the build process?"), appglobals::AppName, wxICON_QUESTION | wxYES_NO, m_pBatchBuildDialog) == wxID_YES )
         {
             evt.Veto();
             compiler->KillProcess();
@@ -1310,11 +1313,11 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
         }
 
         // batch jobs
-        m_BatchNotify          = parser.Found("batch-build-notify");
+        m_BatchNotify          =  parser.Found("batch-build-notify");
         m_BatchWindowAutoClose = !parser.Found("no-batch-window-close");
-        m_Build                = parser.Found("build");
-        m_ReBuild              = parser.Found("rebuild");
-        m_Clean                = parser.Found("clean");
+        m_Build                =  parser.Found("build");
+        m_ReBuild              =  parser.Found("rebuild");
+        m_Clean                =  parser.Found("clean");
         parser.Found("target", &m_BatchTarget);
         parser.Found("script", &m_Script);
         // initial setting for batch flag (will be reset when ParseCmdLine() is called again).
@@ -1322,7 +1325,7 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
 
 
         if (parser.Found("silence-compiler-log"))
-            Manager::Get()->GetConfigManager("compiler")->Write("/silence_compiler_log", true);
+            m_SilenceCompilerLog = true;
         if (parser.Found("no-log") == false)
             Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::app_log);
         if (parser.Found("log-to-file"))

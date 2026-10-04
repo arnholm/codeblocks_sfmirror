@@ -157,6 +157,7 @@ class CodeBlocksApp : public wxApp
         bool m_Batch;
         bool m_BatchNotify;
         bool m_BatchWindowAutoClose; // default: true
+        bool m_SilenceCompilerLog;
         bool m_Build;
         bool m_ReBuild;
         bool m_Clean;
