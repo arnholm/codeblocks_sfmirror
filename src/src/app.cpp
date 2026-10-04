@@ -248,6 +248,8 @@ const wxCmdLineEntryDesc cmdLineDesc[] =
       wxCMD_LINE_VAL_STRING, wxCMD_LINE_NEEDS_SEPARATOR },
     { wxCMD_LINE_OPTION, CMD_ENTRY("p"),  CMD_ENTRY("personality"),           CMD_ENTRY("the personality to use: \"ask\" or <personality-name>"),
       wxCMD_LINE_VAL_STRING, wxCMD_LINE_NEEDS_SEPARATOR },
+    { wxCMD_LINE_SWITCH, CMD_ENTRY(""),   CMD_ENTRY("silence-compiler-log"),  CMD_ENTRY("silence (only) the compiler log, also in batch-build mode"),
+      wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_SWITCH, CMD_ENTRY(""),   CMD_ENTRY("no-log"),                CMD_ENTRY("turn off the application log"),
       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_SWITCH, CMD_ENTRY(""),   CMD_ENTRY("log-to-file"),           CMD_ENTRY("redirect application log to a file"),
@@ -469,9 +471,6 @@ bool CodeBlocksApp::LoadConfig()
 
     cfg->Write("data_path", data);
 
-    //m_HasDebugLog = Manager::Get()->GetConfigManager("message_manager")->ReadBool("/has_debug_log", false) || m_HasDebugLog;
-    //Manager::Get()->GetConfigManager("message_manager")->Write("/has_debug_log", m_HasDebugLog);
-
     return true;
 }
 
@@ -664,7 +663,7 @@ bool CodeBlocksApp::OnInit()
     // we'll do this once and for all at startup
     wxFileSystem::AddHandler(new wxZipFSHandler);
     wxFileSystem::AddHandler(new wxMemoryFSHandler);
-    wxToolBarAddOnXmlHandler *toolbarAddonHandler = new wxToolBarAddOnXmlHandler;
+    wxToolBarAddOnXmlHandler* toolbarAddonHandler = new wxToolBarAddOnXmlHandler;
     wxXmlResource::Get()->InsertHandler(toolbarAddonHandler);
     wxXmlResource::Get()->InsertHandler(new wxScrollingDialogXmlHandler);
     wxInitAllImageHandlers();
@@ -679,9 +678,9 @@ bool CodeBlocksApp::OnInit()
 
     try
     {
-    #if (wxUSE_ON_FATAL_EXCEPTION == 1)
+#if (wxUSE_ON_FATAL_EXCEPTION == 1)
         wxHandleFatalExceptions(true);
-    #endif
+#endif
 
         delete wxMessageOutput::Set(new cbMessageOutputNull); // No output. (suppress warnings about unknown options from plugins)
         if (ParseCmdLine(nullptr) == -1) // only abort if '--help' was passed in the command line
@@ -958,7 +957,10 @@ int CodeBlocksApp::OnExit()
 
         if (GetProcessHeaps_func && HeapSetInformation_func)
         {
-            ULONG  HeapFragValue = 2;
+            // Enable the low-fragmentation heap (LFH). Starting with Windows Vista,
+            // the LFH is enabled by default but this call does not cause an error.
+            // See: https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapsetinformation
+            ULONG HeapFragValue = 2; // Value for Heap Low Fragmentation
 
             int n = GetProcessHeaps_func(0, nullptr);
             HANDLE *h = new HANDLE[n];
@@ -1206,7 +1208,7 @@ void CodeBlocksApp::SetAutoFile(const wxString& file)
 int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLineString,
                                 const wxString &CWD)
 {
-    // code shamelessely taken from the console wxWindows sample :)
+    // code shamelessly taken from the console wxWindows sample :)
     bool filesInCmdLine = false;
 
 #if wxUSE_CMDLINE_PARSER
@@ -1294,9 +1296,9 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
 #else
         m_DDE = !parser.Found("no-ipc");
 #endif
-        m_SafeMode = parser.Found("safe-mode");
-        m_Splash = !parser.Found("no-splash-screen");
-        m_HasDebugLog = parser.Found("debug-log");
+        m_SafeMode     =  parser.Found("safe-mode");
+        m_Splash       = !parser.Found("no-splash-screen");
+        m_HasDebugLog  =  parser.Found("debug-log");
         m_CrashHandler = !parser.Found("no-crash-handler");
 
         wxLog::EnableLogging(parser.Found("verbose"));
@@ -1319,6 +1321,8 @@ int CodeBlocksApp::ParseCmdLine(MainFrame* handlerFrame, const wxString& CmdLine
         m_Batch = m_Build || m_ReBuild || m_Clean;
 
 
+        if (parser.Found("silence-compiler-log"))
+            Manager::Get()->GetConfigManager("compiler")->Write("/silence_compiler_log", true);
         if (parser.Found("no-log") == false)
             Manager::Get()->GetLogManager()->SetLog(new TextCtrlLogger, LogManager::app_log);
         if (parser.Found("log-to-file"))
