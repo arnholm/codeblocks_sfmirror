@@ -791,7 +791,7 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 	// Was this empty?
 	if ( !firstChild ) {
 		SetError( TIXML_ERROR_DOCUMENT_EMPTY, nullptr, nullptr, encoding );
-		return 0;
+		return nullptr;
 	}
 
 	// All is well.
