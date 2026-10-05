@@ -6,6 +6,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <atomic>
 #include <mutex>
 #include <chrono>
 
@@ -164,6 +165,11 @@ public:
      */
     void AddParse(const wxString& filename) override;
 
+    /** Notify parser that a previously opened file is activated
+     * @param filename input file name
+     */
+    void EditorActivated(cbEditor* pEd);
+
     /** Add one file to json mode Parsing
      * @param filenames input file name
      * @param json containing LSP symbols
@@ -299,6 +305,8 @@ private:
 
     /** All other batch parse files, like the normal headers/sources */
     StringList                m_BatchParseFiles;
+
+    std::atomic_bool          m_BatchParsingInProgress {false};
 
     /** Pre-defined macros, its a buffer queried from the compiler command line */
     wxString                  m_PredefinedMacros;

@@ -4312,6 +4312,15 @@ void ClgdCompletion::OnEditorActivated(CodeBlocksEvent& event)
         // switch ClassBrowser to this editor project/file via callback.
         // and update the namespace/function toolbar if needed.
         GetIdleCallbackHandler(pEdProject)->QueueCallback(this, &ClgdCompletion::NotifyParserEditorActivated, event);
+
+        if (!m_OnEditorOpenEventOccured)
+        {
+            Parser* pParser = GetParseManager()->GetParserByProject(pEdProject);
+            if (pParser)
+            {
+                pParser->EditorActivated(pEd);
+            }
+        }
     }
 
     // ----------------------------------------------------------------------------

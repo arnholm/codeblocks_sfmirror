@@ -374,6 +374,7 @@ const wxString Parser::GetPredefinedMacros() const
 void Parser::AddBatchParse(const StringList& filenames)
 // ----------------------------------------------------------------------------
 {
+    m_BatchParsingInProgress = true;
     // this function has the same logic as the previous function Parser::AddPriorityHeader
     // it just adds some files to a m_BatchParseFiles, and tick the m_BatchTimer timer.
     if (m_BatchTimer.IsRunning())
@@ -404,6 +405,7 @@ void Parser::ClearBatchParse()
 {
     if (m_BatchTimer.IsRunning())
         m_BatchTimer.Stop();
+    m_BatchParsingInProgress = false;
 
     // CC_LOCKER_TRACK_P_MTX_LOCK(ParserCommon::s_ParserMutex) deprecated
     // Nothing here that needs to be locked now
@@ -461,6 +463,30 @@ void Parser::AddParse(const wxString& filename)
     // ----------------------------------------------------------------------------
     CC_LOCKER_TRACK_P_MTX_UNLOCK(s_ParserMutex);
 }
+
+void Parser::EditorActivated(cbEditor* pEd)
+{
+    if (!m_BatchParsingInProgress)
+    {
+        return;
+    }
+    auto locker_result = CCLogger::Get()->GetTimedMutexLock(s_ParserMutex);
+    if (locker_result != true)
+    {
+        return;
+    }
+
+    s_ParserMutex_Owner = wxString::Format("%s %d", __FUNCTION__, __LINE__); /*record owner*/
+
+    StringList::iterator it = std::find(m_BatchParseFiles.begin(), m_BatchParseFiles.end(), pEd->GetFilename());
+    if (it != m_BatchParseFiles.end())
+    {
+        /* file in batch parse file list, bring it to front so that it will be parsed early*/
+        std::rotate(m_BatchParseFiles.begin(), it, std::next(it));
+    }
+    CC_LOCKER_TRACK_P_MTX_UNLOCK(s_ParserMutex);
+}
+
 // ----------------------------------------------------------------------------
 void Parser::LSP_OnClientInitialized(cbProject* pProject)
 // ----------------------------------------------------------------------------
@@ -1349,6 +1375,7 @@ void Parser::OnLSP_BatchTimer(cb_unused wxTimerEvent& event)
     }
     else
     {
+        m_BatchParsingInProgress = false;
         pClient->SetCompileCommandsPopulated(); //(christo 2024/06/26)
         wxString msg = "Background file parsing queue now empty.";
         CCLogger::Get()->DebugLog(msg);
