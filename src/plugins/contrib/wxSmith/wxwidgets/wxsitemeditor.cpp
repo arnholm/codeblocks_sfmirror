@@ -45,7 +45,7 @@ class PaletteWindow : public wxScrolledWindow
                                long style = 0)
             : wxScrolledWindow(parent, winid, pos, size, style)
         {
-            SetScrollRate(1,0);
+            SetScrollRate(1, 0);
             m_rowSizer = new wxBoxSizer(wxHORIZONTAL);
             SetSizer(m_rowSizer);
             Bind(wxEVT_SIZE, &PaletteWindow::OnSize, this);
@@ -57,7 +57,7 @@ class PaletteWindow : public wxScrolledWindow
         }
 
     protected:
-        wxSizer* m_rowSizer;
+        wxBoxSizer* m_rowSizer;
 
         void OnSize(wxSizeEvent& event)
         {
@@ -736,7 +736,6 @@ void wxsItemEditor::RebuildIcons()
     m_DelBtn->SetBitmapLabel(m_DelImg);
     m_PreviewBtn->SetBitmapLabel(m_PreviewImg);
     BuildPalette(m_WidgetsSet);
-    m_VertSizer->Layout();
     Layout();
 }
 
