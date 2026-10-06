@@ -67,7 +67,8 @@ void SmartIndentCpp::OnEditorHook(cbEditor* ed, wxScintillaEvent& event) const
     if ( BraceCompletionEnabled() )
         DoBraceCompletion(stc, ch);
 }
-void SmartIndentCpp::DoSmartIndent(cbEditor* ed, const wxChar &ch)const
+
+void SmartIndentCpp::DoSmartIndent(cbEditor* ed, const wxChar &ch) const
 {
     if (!ed)
         return;
@@ -87,13 +88,13 @@ void SmartIndentCpp::DoSmartIndent(cbEditor* ed, const wxChar &ch)const
 
     const int pos = stc->GetCurrentPos();
 
-    // Do not indent inside comments
+    // Do not indent inside block comments
     const int style = stc->GetStyleAt(pos);
-    if (stc->IsComment(style))
+    if (stc->IsComment(style) && (style != wxSCI_C_COMMENTLINE))
         return;
 
     // indent
-    if ( (ch == _T('\n')) || ( (stc->GetEOLMode() == wxSCI_EOL_CR) && (ch == _T('\r')) ) )
+    if ( (ch == '\n') || ( (stc->GetEOLMode() == wxSCI_EOL_CR) && (ch == '\r') ) )
     {
         stc->BeginUndoAction();
         // new-line: adjust indentation
