@@ -1704,7 +1704,7 @@ int cbMessageBox(const wxString& message, const wxString& caption, int style, wx
     {
         wxString Tmp(message);
 
-#if defined __WXMSW__ && wxCHECK_VERSION(3, 3, 0)
+#ifdef __WXMSW__
         // Workaround for last line being dark in dark mode (bug in native Windows message dialogs)
         // See ticket #1655
         if (cbIsDarkTheme() && (Tmp.Find('\n') != wxNOT_FOUND))
