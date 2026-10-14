@@ -92,7 +92,6 @@ namespace
     "                ",
     "                "};
 
-#if wxCHECK_VERSION(3, 3, 0)
     static const char * Properties_dark_xpm[] = {
     "16 16 2 1",
     "     c None",
@@ -134,7 +133,6 @@ namespace
     "    ..    ..    ",
     "                ",
     "                "};
-#endif
 
     const int placementManagementPane = 0;
     const int placementOnePane = 1;
@@ -278,13 +276,11 @@ void wxSmith::BuildBrowsers()
     // Bitmaps
     const char * const * Properties_xpm = Properties_light_xpm;
     const char * const * Events_xpm = Events_light_xpm;
-#if wxCHECK_VERSION(3, 3, 0)
-    if (wxSystemSettings::GetAppearance().IsDark())
+    if (cbIsDarkTheme())
     {
         Properties_xpm = Properties_dark_xpm;
         Events_xpm = Events_dark_xpm;
     }
-#endif
 
     PGManager->AddPage(_("Properties"), wxBitmap(Properties_xpm));
     PGManager->AddPage(_("Events"), wxBitmap(Events_xpm));

@@ -1702,22 +1702,31 @@ int cbMessageBox(const wxString& message, const wxString& caption, int style, wx
     // Cannot create a wxMessageDialog with a nullptr as parent
     if (!parent)
     {
-      // wxMessage*Box* returns any of: wxYES, wxNO, wxCANCEL, wxOK.
-      int answer = wxMessageBox(message, caption, style, parent, x, y);
-      switch (answer)
-      {
-        // map answer to the one of wxMessage*Dialog* to ensure compatibility
-        case (wxOK):
-          return wxID_OK;
-        case (wxCANCEL):
-          return wxID_CANCEL;
-        case (wxYES):
-          return wxID_YES;
-        case (wxNO):
-          return wxID_NO;
-        default:
-          return -1; // NOTE: Cannot happen unless wxWidgets API changes
-      }
+        wxString Tmp(message);
+
+#if defined __WXMSW__ && wxCHECK_VERSION(3, 3, 0)
+        // Workaround for last line being dark in dark mode (bug in native Windows message dialogs)
+        // See ticket #1655
+        if (cbIsDarkTheme() && (Tmp.Find('\n') != wxNOT_FOUND))
+            Tmp << "\n\n";
+#endif
+
+        // wxMessage*Box* returns any of: wxYES, wxNO, wxCANCEL, wxOK.
+        int answer = wxMessageBox(Tmp, caption, style, parent, x, y);
+        switch (answer)
+        {
+            // map answer to the one of wxMessage*Dialog* to ensure compatibility
+            case wxOK:
+                return wxID_OK;
+            case wxCANCEL:
+                return wxID_CANCEL;
+            case wxYES:
+                return wxID_YES;
+            case wxNO:
+                return wxID_NO;
+            default:
+                return -1; // NOTE: Cannot happen unless wxWidgets API changes
+        }
     }
 
     wxMessageDialog dlg(parent, message, caption, style, wxPoint(x,y));

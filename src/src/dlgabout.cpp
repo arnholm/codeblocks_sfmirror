@@ -93,11 +93,7 @@ dlgAbout::dlgAbout(wxWindow* parent)
                                    "any kind of functionality to the core program, through the use of "
                                    "plugins...\n");
 
-#if wxCHECK_VERSION(3, 3, 0)
-    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-    const bool isDark = false;
-#endif
+    const bool isDark = cbIsDarkTheme();
     const wxString file = ConfigManager::ReadDataPath() + (isDark ? "/images/splash_2503_dark.png" : "/images/splash_2503.png");
 
     wxImage im;

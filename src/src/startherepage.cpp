@@ -220,14 +220,8 @@ StartHerePage::StartHerePage(wxEvtHandler* owner, const RecentItemsList &project
                                 appglobals::AppWXAnsiUnicode,
                                 appglobals::AppBitType);
 
-#if wxCHECK_VERSION(3, 3, 0)
-    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-    const bool isDark = false;
-#endif
-
     // perform var substitution
-    buf.Replace("CB_IMAGE",             isDark ? "title_2503_dark.png" : "title_2503.png");
+    buf.Replace("CB_IMAGE",             cbIsDarkTheme() ? "title_2503_dark.png" : "title_2503.png");
     buf.Replace("CB_VAR_REVISION_INFO", revInfo);
     buf.Replace("CB_VAR_VERSION_VERB",  appglobals::AppActualVersionVerb);
     buf.Replace("CB_VAR_VERSION",       appglobals::AppActualVersion);

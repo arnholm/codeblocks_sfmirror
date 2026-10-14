@@ -38,12 +38,7 @@
 
 static wxString GetInitialInfo()
 {
-#if wxCHECK_VERSION(3, 3, 2)
-    const bool IsDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-    const bool IsDark = false;
-#endif
-
+    const bool IsDark = cbIsDarkTheme();
     wxString initialInfo;
 
     initialInfo << "<html><body><font color=\"" << (IsDark ? "#6666AA" : "#0000AA") << "\">";

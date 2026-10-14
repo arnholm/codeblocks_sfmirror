@@ -1561,11 +1561,7 @@ void wxKeyConfigPanel::BuildCtrls()
     m_pCurrCmdField = new wxStaticText(this, -1, wxT(""), wxDefaultPosition,
         wxSize(-1, 20), wxSIMPLE_BORDER | wxST_NO_AUTORESIZE | wxALIGN_CENTRE);
 
-#if wxCHECK_VERSION(3, 3, 0)
-    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-    const bool isDark = false;
-#endif
+    const bool isDark = cbIsDarkTheme();
 
     // we won't make it completely white (or black) because it must be clear to the user that this
     // is not a text control...

@@ -297,11 +297,7 @@ class Splash
         {
             if (show)
             {
-#if wxCHECK_VERSION(3, 3, 0)
-                const bool isDark = wxSystemSettings::GetAppearance().IsDark();
-#else
-                const bool isDark = false;
-#endif
+                const bool isDark = cbIsDarkTheme();
                 wxBitmap bmp = cbLoadBitmap(ConfigManager::ReadDataPath() + (isDark ? "/images/splash_2503_dark.png" : "/images/splash_2503.png"));
                 wxMemoryDC dc;
                 dc.SelectObject(bmp);
