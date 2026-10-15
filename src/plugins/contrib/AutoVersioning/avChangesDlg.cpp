@@ -54,9 +54,9 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
     btnDelete = new wxButton(this, ID_DELETE_BUTTON, _("Delete"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_DELETE_BUTTON"));
     btnDelete->SetToolTip(_("Deletes the selected row"));
     sizerButtons->Add(btnDelete, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer1->Add(sizerButtons, 0, wxALL|wxEXPAND, 5);
+    BoxSizer1->Add(sizerButtons, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
     grdChanges = new wxGrid(this, ID_CHANGES_GRID, wxDefaultPosition, wxDefaultSize, 0, _T("ID_CHANGES_GRID"));
-    BoxSizer1->Add(grdChanges, 1, wxALL|wxEXPAND, 5);
+    BoxSizer1->Add(grdChanges, 6, wxALL|wxEXPAND, 5);
     sizerConfirmation = new wxBoxSizer(wxHORIZONTAL);
     btnSave = new wxButton(this, ID_SAVE_BUTTON, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SAVE_BUTTON"));
     btnSave->SetDefault();
@@ -68,7 +68,7 @@ avChangesDlg::avChangesDlg(wxWindow* parent,wxWindowID /*id*/)
     btnCancel = new wxButton(this, ID_CANCEL_BUTTON, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CANCEL_BUTTON"));
     btnCancel->SetToolTip(_("Discards any change made"));
     sizerConfirmation->Add(btnCancel, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer1->Add(sizerConfirmation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
+    BoxSizer1->Add(sizerConfirmation, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5);
     SetSizer(BoxSizer1);
     BoxSizer1->SetSizeHints(this);
     Center();

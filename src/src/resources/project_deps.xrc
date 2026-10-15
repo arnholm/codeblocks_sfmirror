@@ -15,7 +15,7 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxChoice" name="cmbProject" />
-				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">
@@ -26,14 +26,16 @@
 				<border>8</border>
 			</object>
 			<object class="sizeritem">
-				<object class="wxCheckListBox" name="lstDeps" />
+				<object class="wxCheckListBox" name="lstDeps">
+					<size>320,200</size>
+				</object>
 				<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
 				<border>8</border>
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxStaticLine" name="ID_STATICLINE1" />
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

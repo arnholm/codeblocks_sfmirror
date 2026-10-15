@@ -40,17 +40,18 @@
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL</flag>
 				<border>5</border>
+				<option>1</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxGrid" name="ID_CHANGES_GRID" variable="grdChanges" member="yes">
 					<tooltip>List of changes</tooltip>
-					<minsize>600,300</minsize>
+					<minsize>600,-1</minsize>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
-				<option>1</option>
+				<option>6</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="sizerConfirmation" member="no">
@@ -87,6 +88,7 @@
 				</object>
 				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL</flag>
 				<border>5</border>
+				<option>1</option>
 			</object>
 		</object>
 	</object>
