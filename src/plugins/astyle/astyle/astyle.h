@@ -7,7 +7,7 @@
 #define ASTYLE_H
 
 // ignore size_t to int conversion warning for now
-#ifdef _WIN64
+#if defined(_MSC_VER) && defined(_WIN64)
 	#pragma warning( disable : 4267 )
 #endif
 
