@@ -1534,7 +1534,13 @@ void EditorManager::OnGenericContextMenuHandler(wxCommandEvent& event)
 
 void EditorManager::OnPageChanged(wxAuiNotebookEvent& event)
 {
-    EditorBase* eb = static_cast<EditorBase*>(m_pNotebook->GetPage(event.GetSelection()));
+    int selection = event.GetSelection();
+    if (wxNOT_FOUND == selection)
+    {
+        event.Skip();
+        return;
+    }
+    EditorBase* eb = static_cast<EditorBase*>(m_pNotebook->GetPage(selection));
     EditorBase* eb_old = nullptr;
     if (event.GetOldSelection()!=-1)
         eb_old = static_cast<EditorBase*>(m_pNotebook->GetPage(event.GetOldSelection()));

@@ -3252,7 +3252,13 @@ void BrowseTracker::OnPageChanged(wxAuiNotebookEvent& event)
         wxWindow*        wnd;
         cbNotebookStack* body;
         cbNotebookStack* tmp;
-        wnd = m_pNotebook->GetPage(event.GetSelection());
+        int selection = event.GetSelection();
+        if (wxNOT_FOUND == selection)
+        {
+            event.Skip();
+            return;
+        }
+        wnd = m_pNotebook->GetPage(selection);
         for (body = m_pNotebookStackHead; body->next != nullptr; body = body->next)
         {
             if (wnd == body->next->window)
