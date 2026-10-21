@@ -33,7 +33,7 @@
 											<checked>1</checked>
 											<handler function="Onm_ShowPredefinedClick" entry="EVT_CHECKBOX" />
 										</object>
-										<flag>wxEXPAND</flag>
+										<flag>wxALIGN_LEFT</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -41,7 +41,7 @@
 											<label>Show Pkg-Config entries</label>
 											<handler function="Onm_ShowPkgConfigClick" entry="EVT_CHECKBOX" />
 										</object>
-										<flag>wxBOTTOM|wxEXPAND</flag>
+										<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxPanel" name="InfoPanel">
+		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="yes">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
@@ -15,7 +16,7 @@
 				<object class="wxCheckBox" name="ID_CHECKBOX1" variable="chkSkip" member="yes">
 					<label>Skip this page next time</label>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 		</object>

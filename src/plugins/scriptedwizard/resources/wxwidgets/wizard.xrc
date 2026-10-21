@@ -54,7 +54,7 @@
 						<object class="wxCheckBox" name="chkWxConfPCH">
 							<label>Create and use precompiled header (PCH)</label>
 						</object>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxALL|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 					<object class="sizeritem">
@@ -140,7 +140,7 @@
 						<object class="wxCheckBox" name="chkWxUnixConfPCH">
 							<label>Create and use precompiled header (PCH)</label>
 						</object>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxALL|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 					<object class="sizeritem">
@@ -252,15 +252,15 @@
 				<flag>wxALL|wxEXPAND</flag>
 				<border>8</border>
 			</object>
-		<object class="sizeritem">
-			<object class="wxCheckBox" name="chkWxLinkWinSock2">
-				<label>Link with Winsock2 instead Winsock</label>
-				<tooltip>For static build only, needed by wxWidgets 3.1.6+</tooltip>
+			<object class="sizeritem">
+				<object class="wxCheckBox" name="chkWxLinkWinSock2">
+					<label>Link with Winsock2 instead Winsock</label>
+					<tooltip>For static build only, needed by wxWidgets 3.1.6+</tooltip>
+				</object>
+				<flag>wxALL</flag>
+				<border>8</border>
 			</object>
-			<flag>wxALL</flag>
-			<border>8</border>
 		</object>
-	</object>
 	</object>
 	<object class="wxPanel" name="WxAddLibMono">
 		<object class="wxStaticBoxSizer">

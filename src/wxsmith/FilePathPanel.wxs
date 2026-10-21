@@ -58,7 +58,7 @@
 					<label>Add file to active project</label>
 					<handler function="OnchkAddToProjectChange" entry="EVT_CHECKBOX" />
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

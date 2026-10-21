@@ -151,7 +151,7 @@
 						<object class="wxCheckBox" name="ID_CHECKBOX1">
 							<label>Add current date to item</label>
 						</object>
-						<flag>wxBOTTOM|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 						<border>8</border>
 					</object>
 				</object>

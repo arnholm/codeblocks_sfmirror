@@ -45,7 +45,7 @@
 											<label>Don&apos;t setup automatically</label>
 											<tooltip>If you check this option, lib__finder won&apos;t add settings of libraries automatically.&#x0A;Note that automatic setup is available only after applying extra patch to code::blocks available at forums.</tooltip>
 										</object>
-										<flag>wxEXPAND</flag>
+										<flag>wxALIGN_LEFT</flag>
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
@@ -152,9 +152,8 @@
 													<checked>1</checked>
 													<handler function="Onm_TreeClick" entry="EVT_CHECKBOX" />
 												</object>
-												<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+												<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
-												<option>1</option>
 											</object>
 											<object class="sizeritem">
 												<object class="wxButton" name="ID_BUTTON5" variable="Button1" member="yes">

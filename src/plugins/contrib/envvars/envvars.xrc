@@ -75,7 +75,7 @@
 						<object class="wxButton" name="btnAddEnvVar">
 							<label>Add</label>
 						</object>
-						<flag></flag>
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="btnEditEnvVar">
@@ -88,7 +88,7 @@
 						<object class="wxButton" name="btnDeleteEnvVar">
 							<label>Delete</label>
 						</object>
-						<flag></flag>
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="btnClearEnvVars">
@@ -101,7 +101,7 @@
 						<object class="wxButton" name="btnSetEnvVars">
 							<label>Set now</label>
 						</object>
-						<flag></flag>
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 					<object class="spacer">
 						<flag>wxALL|wxEXPAND</flag>
@@ -115,7 +115,7 @@
 				<object class="wxCheckBox" name="chkDebugLog">
 					<label>Enable full envvar debug output to the C::B debug console.</label>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 		</object>

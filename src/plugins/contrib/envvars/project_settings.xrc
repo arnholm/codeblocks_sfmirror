@@ -8,7 +8,7 @@
 					<label>Select environment variables set to be applied:</label>
 					<tooltip>Enable this option to select a specific environment variables set for this project.</tooltip>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

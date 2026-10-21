@@ -113,9 +113,8 @@
 													<label>Show as tree</label>
 													<checked>1</checked>
 												</object>
-												<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+												<flag>wxLEFT|wxRIGHT|wxALIGN_TOP</flag>
 												<border>5</border>
-												<option>1</option>
 											</object>
 										</object>
 										<flag>wxBOTTOM|wxEXPAND</flag>

@@ -15,6 +15,7 @@
 #include <wx/intl.h>
 #include <wx/radiobox.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/string.h>
 //*)
 
@@ -74,84 +75,84 @@ Execution::Execution(wxWindow* parent,wxWindowID id)
   wxStaticBoxSizer* sizAdvancedOptions;
   wxStaticBoxSizer* sizHeaderSets;
 
-  Create(parent, id, _("Header Fixup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+  Create(parent, id, _("Header Fixup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "id");
   sizMain = new wxBoxSizer(wxHORIZONTAL);
   sizLeft = new wxBoxSizer(wxVERTICAL);
   wxString __wxRadioBoxChoices_1[2] =
   {
-    _("Scan source files in project"),
-    _("Scan source files in workspace")
+  	_("Scan source files in project"),
+  	_("Scan source files in workspace")
   };
-  m_Scope = new wxRadioBox(this, ID_RB_SCOPE, _("Scope"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_SCOPE"));
+  m_Scope = new wxRadioBox(this, ID_RB_SCOPE, _("Scope"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, "ID_RB_SCOPE");
   m_Scope->SetSelection(0);
   m_Scope->SetToolTip(_("This will setup on what files to operate: All from active project or whole workspace."));
   sizLeft->Add(m_Scope, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
   wxString __wxRadioBoxChoices_2[2] =
   {
-    _("Use \"include.h\" (quotation marks)"),
-    _("Use <include.h> (brackets)")
+  	_("Use \"include.h\" (quotation marks)"),
+  	_("Use <include.h> (brackets)")
   };
-  m_Options = new wxRadioBox(this, ID_RB_OPTIONS, _("Options"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RB_OPTIONS"));
+  m_Options = new wxRadioBox(this, ID_RB_OPTIONS, _("Options"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 2, wxRA_SPECIFY_ROWS, wxDefaultValidator, "ID_RB_OPTIONS");
   m_Options->SetSelection(1);
   m_Options->SetToolTip(_("This will setup the way missing header files are included: By quotation mark or brackets."));
   sizLeft->Add(m_Options, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
   sizAdvancedOptions = new wxStaticBoxSizer(wxVERTICAL, this, _("Advanced options"));
-  m_Ignore = new wxCheckBox(this, ID_CHK_IGNORE, _("Ignore any existing includes / forward decls"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_IGNORE"));
+  m_Ignore = new wxCheckBox(sizAdvancedOptions->GetStaticBox(), ID_CHK_IGNORE, _("Ignore any existing includes / forward decls"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHK_IGNORE");
   m_Ignore->SetValue(false);
   m_Ignore->SetToolTip(_("This will work as if there were no includes / forward decls at all in the files (as \"from scratch\")."));
-  sizAdvancedOptions->Add(m_Ignore, 0, wxEXPAND, 5);
-  m_FwdDecl = new wxCheckBox(this, ID_CHK_FWD_DECL, _("Try to use forward declarations in header files"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_FWD_DECL"));
+  sizAdvancedOptions->Add(m_Ignore, 0, wxALIGN_LEFT, 5);
+  m_FwdDecl = new wxCheckBox(sizAdvancedOptions->GetStaticBox(), ID_CHK_FWD_DECL, _("Try to use forward declarations in header files"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHK_FWD_DECL");
   m_FwdDecl->SetValue(false);
   m_FwdDecl->SetToolTip(_("This will setup if forward declarations shall be used for objects apearing *only* as pointers/references in header files."));
-  sizAdvancedOptions->Add(m_FwdDecl, 0, wxTOP|wxEXPAND, 5);
-  m_ObsoleteLog = new wxCheckBox(this, ID_CHK_OBSOLETE_LOG, _("Show includes not required (only for known bindings)"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_OBSOLETE_LOG"));
+  sizAdvancedOptions->Add(m_FwdDecl, 0, wxTOP|wxALIGN_LEFT, 5);
+  m_ObsoleteLog = new wxCheckBox(sizAdvancedOptions->GetStaticBox(), ID_CHK_OBSOLETE_LOG, _("Show includes not required (only for known bindings)"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHK_OBSOLETE_LOG");
   m_ObsoleteLog->SetValue(false);
   m_ObsoleteLog->SetToolTip(_("This will show a list of included files in the log (protocol) which were found with unknown bindings that could *possibly* be removed."));
-  sizAdvancedOptions->Add(m_ObsoleteLog, 0, wxTOP|wxEXPAND, 5);
+  sizAdvancedOptions->Add(m_ObsoleteLog, 0, wxTOP|wxALIGN_LEFT, 5);
   wxString __wxRadioBoxChoices_3[3] =
   {
-    _("Process header files only"),
-    _("Process implementation files only"),
-    _("Process both files (2-step-fix up)")
+  	_("Process header files only"),
+  	_("Process implementation files only"),
+  	_("Process both files (2-step-fix up)")
   };
-  m_FileType = new wxRadioBox(this, ID_RDO_FILE_TYPE, _("File types to process:"), wxDefaultPosition, wxDefaultSize, 3, __wxRadioBoxChoices_3, 3, wxRA_SPECIFY_ROWS, wxDefaultValidator, _T("ID_RDO_FILE_TYPE"));
+  m_FileType = new wxRadioBox(sizAdvancedOptions->GetStaticBox(), ID_RDO_FILE_TYPE, _("File types to process:"), wxDefaultPosition, wxDefaultSize, 3, __wxRadioBoxChoices_3, 3, wxRA_SPECIFY_ROWS, wxDefaultValidator, "ID_RDO_FILE_TYPE");
   m_FileType->SetSelection(2);
   m_FileType->SetToolTip(_("This will setup on what file types the plugin shall operate: Header files, implementation files or both (after each other)."));
   sizAdvancedOptions->Add(m_FileType, 0, wxTOP|wxEXPAND, 5);
-  m_Protocol = new wxCheckBox(this, ID_CHK_DEBUG_LOG, _("Show full log of parser operations in a protocol."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_DEBUG_LOG"));
+  m_Protocol = new wxCheckBox(sizAdvancedOptions->GetStaticBox(), ID_CHK_DEBUG_LOG, _("Show full log of parser operations in a protocol."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHK_DEBUG_LOG");
   m_Protocol->SetValue(false);
   m_Protocol->SetToolTip(_("This will show *all* interesting parser operations in a protocol window in the end as summary."));
-  sizAdvancedOptions->Add(m_Protocol, 0, wxTOP|wxEXPAND, 5);
-  m_Simulation = new wxCheckBox(this, ID_CHK_SIMULATION, _("Only simulate (do *not* change any files)"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHK_SIMULATION"));
+  sizAdvancedOptions->Add(m_Protocol, 0, wxTOP|wxALIGN_LEFT, 5);
+  m_Simulation = new wxCheckBox(sizAdvancedOptions->GetStaticBox(), ID_CHK_SIMULATION, _("Only simulate (do *not* change any files)"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHK_SIMULATION");
   m_Simulation->SetValue(false);
   m_Simulation->SetToolTip(_("This will setup if all operation shall be simulated only - interesting in combination with full log (protocol) to analyse a project without modifications."));
-  sizAdvancedOptions->Add(m_Simulation, 0, wxTOP|wxEXPAND, 5);
+  sizAdvancedOptions->Add(m_Simulation, 0, wxTOP|wxALIGN_LEFT, 5);
   sizLeft->Add(sizAdvancedOptions, 0, wxALL|wxEXPAND, 5);
   sizMain->Add(sizLeft, 0, wxEXPAND, 5);
   sizRight = new wxBoxSizer(wxVERTICAL);
   sizHeaderSets = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Header sets"));
-  m_Sets = new wxCheckListBox(this, ID_LST_SETS, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LST_SETS"));
+  m_Sets = new wxCheckListBox(sizHeaderSets->GetStaticBox(), ID_LST_SETS, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, "ID_LST_SETS");
   sizHeaderSets->Add(m_Sets, 1, wxEXPAND, 5);
   sizAllNoneInvert = new wxBoxSizer(wxVERTICAL);
-  m_SelectAll = new wxButton(this, ID_BTN_SELECT_ALL, _("All"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BTN_SELECT_ALL"));
+  m_SelectAll = new wxButton(sizHeaderSets->GetStaticBox(), ID_BTN_SELECT_ALL, _("All"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, "ID_BTN_SELECT_ALL");
   m_SelectAll->SetToolTip(_("Select all."));
   sizAllNoneInvert->Add(m_SelectAll, 0, wxEXPAND, 5);
-  m_SelectNone = new wxButton(this, ID_BTN_SELECT_NONE, _("None"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BTN_SELECT_NONE"));
+  m_SelectNone = new wxButton(sizHeaderSets->GetStaticBox(), ID_BTN_SELECT_NONE, _("None"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, "ID_BTN_SELECT_NONE");
   m_SelectNone->SetToolTip(_("Select none."));
   sizAllNoneInvert->Add(m_SelectNone, 0, wxTOP|wxEXPAND, 5);
-  m_Invert = new wxButton(this, ID_BTN_INVERT, _("Invert"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BTN_INVERT"));
+  m_Invert = new wxButton(sizHeaderSets->GetStaticBox(), ID_BTN_INVERT, _("Invert"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, "ID_BTN_INVERT");
   m_Invert->SetToolTip(_("Invert selection."));
   sizAllNoneInvert->Add(m_Invert, 0, wxTOP|wxEXPAND, 5);
   sizHeaderSets->Add(sizAllNoneInvert, 0, wxLEFT|wxEXPAND, 5);
   sizRight->Add(sizHeaderSets, 1, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 5);
   sizExecute = new wxStaticBoxSizer(wxVERTICAL, this, _("Execute"));
-  m_Progress = new wxGauge(this, ID_GAU_PROGRESS, 100, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_GAU_PROGRESS"));
+  m_Progress = new wxGauge(sizExecute->GetStaticBox(), ID_GAU_PROGRESS, 100, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_GAU_PROGRESS");
   sizExecute->Add(m_Progress, 0, wxEXPAND, 5);
   sizRunExit = new wxBoxSizer(wxHORIZONTAL);
-  m_Run = new wxButton(this, ID_BTN_RUN, _("Run"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_RUN"));
+  m_Run = new wxButton(sizExecute->GetStaticBox(), ID_BTN_RUN, _("Run"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_BTN_RUN");
   m_Run->SetToolTip(_("Run the fixup plugin and begin parsing..."));
   sizRunExit->Add(m_Run, 1, wxALIGN_CENTER_VERTICAL, 5);
-  m_Exit = new wxButton(this, ID_BTN_EXIT, _("Exit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTN_EXIT"));
+  m_Exit = new wxButton(sizExecute->GetStaticBox(), ID_BTN_EXIT, _("Exit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_BTN_EXIT");
   m_Exit->SetToolTip(_("Exit the plugin without (further) modifications."));
   sizRunExit->Add(m_Exit, 1, wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
   sizExecute->Add(sizRunExit, 0, wxTOP|wxALIGN_CENTER_HORIZONTAL, 5);

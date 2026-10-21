@@ -46,7 +46,7 @@
 									<label>Ignore any existing includes / forward decls</label>
 									<tooltip>This will work as if there were no includes / forward decls at all in the files (as &quot;from scratch&quot;).</tooltip>
 								</object>
-								<flag>wxEXPAND</flag>
+								<flag>wxALIGN_LEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -54,7 +54,7 @@
 									<label>Try to use forward declarations in header files</label>
 									<tooltip>This will setup if forward declarations shall be used for objects apearing *only* as pointers/references in header files.</tooltip>
 								</object>
-								<flag>wxTOP|wxEXPAND</flag>
+								<flag>wxTOP|wxALIGN_LEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -62,7 +62,7 @@
 									<label>Show includes not required (only for known bindings)</label>
 									<tooltip>This will show a list of included files in the log (protocol) which were found with unknown bindings that could *possibly* be removed.</tooltip>
 								</object>
-								<flag>wxTOP|wxEXPAND</flag>
+								<flag>wxTOP|wxALIGN_LEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -86,7 +86,7 @@
 									<label>Show full log of parser operations in a protocol.</label>
 									<tooltip>This will show *all* interesting parser operations in a protocol window in the end as summary.</tooltip>
 								</object>
-								<flag>wxTOP|wxEXPAND</flag>
+								<flag>wxTOP|wxALIGN_LEFT</flag>
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
@@ -95,7 +95,7 @@
 									<tooltip>This will setup if all operation shall be simulated only - interesting in combination with full log (protocol) to analyse a project without modifications.</tooltip>
 									<handler function="OnChkSimulationClick" entry="EVT_CHECKBOX" />
 								</object>
-								<flag>wxTOP|wxEXPAND</flag>
+								<flag>wxTOP|wxALIGN_LEFT</flag>
 								<border>5</border>
 							</object>
 						</object>

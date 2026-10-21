@@ -239,14 +239,14 @@
 									<object class="wxCheckBox" name="chkCompile">
 										<label>Compile file</label>
 									</object>
-									<flag>wxALL|wxEXPAND</flag>
+									<flag>wxALL|wxALIGN_LEFT</flag>
 									<border>8</border>
 								</object>
 								<object class="sizeritem">
 									<object class="wxCheckBox" name="chkLink">
 										<label>Link file</label>
 									</object>
-									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 									<border>8</border>
 								</object>
 								<object class="sizeritem">

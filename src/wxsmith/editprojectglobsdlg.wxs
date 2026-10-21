@@ -134,7 +134,6 @@
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
-								<option>1</option>
 							</object>
 						</object>
 						<flag>wxTOP|wxRIGHT|wxEXPAND</flag>

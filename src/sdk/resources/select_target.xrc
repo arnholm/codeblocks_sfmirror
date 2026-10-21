@@ -27,7 +27,7 @@
 				<object class="wxCheckBox" name="chkSetAsDefaultExec">
 					<label>This target provides the project&apos;s main executable</label>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">
@@ -78,7 +78,7 @@
 						<object class="wxCheckBox" name="chkHostInTerminal">
 							<label>Run host in terminal</label>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 					</object>
 				</object>
 				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>

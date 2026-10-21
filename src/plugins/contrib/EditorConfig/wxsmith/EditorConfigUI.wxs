@@ -35,9 +35,8 @@
 							<label>Use tabs</label>
 							<enabled>0</enabled>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_TOP</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="ID_CHK_TAB_INDENTS" variable="chkTabIndents" member="yes">
@@ -45,7 +44,7 @@
 							<checked>1</checked>
 							<enabled>0</enabled>
 						</object>
-						<flag>wxLEFT|wxEXPAND</flag>
+						<flag>wxLEFT|wxALIGN_TOP</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>

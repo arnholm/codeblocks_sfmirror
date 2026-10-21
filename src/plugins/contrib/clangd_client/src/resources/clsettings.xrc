@@ -17,21 +17,21 @@
 											<object class="wxCheckBox" name="chkDisableSmartSense">
 												<label>Disable SmartSense</label>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkWhileTyping">
 												<label>Update parser when typing (on save otherwise)</label>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkAutoAddParentheses">
 												<label>Add parentheses after function name auto completion</label>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="spacer">
@@ -43,21 +43,21 @@
 											<object class="wxCheckBox" name="chkDetectImpl">
 												<label>Add function arguments&apos; types and names when autocompleted outside function</label>
 											</object>
-											<flag>wxLEFT|wxEXPAND</flag>
+											<flag>wxLEFT|wxALIGN_LEFT</flag>
 											<border>20</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkAddDoxgenComment">
 												<label>Add doxygen comment, when implementing the function method</label>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkEnableHeaders">
 												<label>Enable headers code-completion</label>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
@@ -65,21 +65,16 @@
 												<label>Disable pseudo semantic keyword highlighting</label>
 												<tooltip>If this is checked, member variables will not be highlighted in the editor.</tooltip>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
-
-                                        <!-- Begin clangd options for Code Completion icons -->
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkUseCompletionIcons">
 												<label>Enable Use Code Completion Icons</label>
-                                                <checked>0</checked>
 											</object>
-											<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
-                                        <!-- End clangd options for Code Completion icons -->
-
 										<object class="sizeritem">
 											<object class="wxFlexGridSizer">
 												<cols>2</cols>
@@ -292,7 +287,6 @@
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkParseOpenedOnly">
 												<label>Parse only opened project files. (Affects find declaration/references)</label>
-												<checked>0</checked>
 											</object>
 											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
@@ -336,7 +330,6 @@
 														<object class="sizeritem">
 															<object class="wxSpinCtrl" name="spnParsersWhileCompiling">
 																<value>0</value>
-																<min>0</min>
 																<max>16</max>
 																<style>wxSP_ARROW_KEYS</style>
 															</object>
@@ -355,8 +348,6 @@
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>
 								</object>
-
-                                <!-- Begin Clangd client options -->
 								<object class="sizeritem">
 									<object class="wxStaticBoxSizer">
 										<label>Specify clangd executable to use</label>
@@ -394,8 +385,6 @@
 											<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
 											<border>8</border>
 										</object>
-                                        <!-- End Clangd client options -->
-
 									</object>
 									<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
 									<border>8</border>
@@ -452,16 +441,13 @@
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>
 								</object>
-
-                            <!-- Begin clangd options for Code::Blocks logging -->
 								<object class="sizeritem">
 									<object class="wxStaticBoxSizer">
 										<label>Plugin logging to Code::Blocks logs</label>
-                                    <orient>wxHORIZONTAL</orient>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLogPluginInfo">
 												<label>Enable plugin Info logging</label>
-                                            <checked>1</checked>
+												<checked>1</checked>
 											</object>
 											<flag>wxBOTTOM|wxLEFT|wxRIGHT</flag>
 											<border>5</border>
@@ -469,25 +455,20 @@
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLogPluginDebug">
 												<label>Enable plugin Debug logging</label>
-                                            <checked>0</checked>
 											</object>
+											<flag>wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>
 								</object>
-                            <!-- End clangd options for Code::Blocks logging -->
-
-                            <!-- Begin clangd options for external client/server logging -->
 								<object class="sizeritem">
 									<object class="wxStaticBoxSizer">
 										<label>Clangd External client/server logging options</label>
-                                    <orient>wxHORIZONTAL</orient>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLogClangdClient">
 												<label>Enable Clangd Client logging</label>
-                                            <checked>0</checked>
 											</object>
 											<flag>wxBOTTOM|wxLEFT|wxRIGHT</flag>
 											<border>5</border>
@@ -495,25 +476,20 @@
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLogClangdServer">
 												<label>Enable Clangd Server logging</label>
-                                            <checked>0</checked>
 											</object>
+											<flag>wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>
 								</object>
-                            <!-- End clangd options for external client/server logging -->
-
-                            <!-- Begin clangd LSP messages log optons -->
 								<object class="sizeritem">
 									<object class="wxStaticBoxSizer">
 										<label>Clangd LSP messages tab options</label>
-                                    <orient>wxHORIZONTAL</orient>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLSPMsgsFocusOnSave">
 												<label>Focus tab when saving text</label>
-                                            <checked>0</checked>
 											</object>
 											<flag>wxBOTTOM|wxLEFT|wxRIGHT</flag>
 											<border>5</border>
@@ -521,16 +497,14 @@
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkLSPMsgsClearOnSave">
 												<label>Clear old tab messages when saving text</label>
-                                            <checked>0</checked>
 											</object>
+											<flag>wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>8</border>
 								</object>
-                            <!-- End clangd LSP messages log optons -->
-
 							</object>
 						</object>
 						<label>C/C++ parser (adv.)</label>
@@ -544,7 +518,7 @@
 										<label>Disable symbols browser</label>
 										<checked>1</checked>
 									</object>
-									<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+									<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 									<border>8</border>
 								</object>
 								<object class="sizeritem">
@@ -555,28 +529,28 @@
 											<object class="wxCheckBox" name="chkInheritance">
 												<label>Display inheritance info</label>
 											</object>
-											<flag>wxALL|wxEXPAND</flag>
+											<flag>wxALL|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkExpandNS">
 												<label>Automatically expand namespaces</label>
 											</object>
-											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkFloatCB">
 												<label>Display as free floating/docking window</label>
 											</object>
-											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
 											<object class="wxCheckBox" name="chkTreeMembers">
 												<label>Display member list in separate tree</label>
 											</object>
-											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>

@@ -43,7 +43,7 @@
 				<object class="wxCheckBox" name="chkLineNumbers">
 					<label>Print line numbers</label>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

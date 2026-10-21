@@ -10,8 +10,8 @@
 #include <sdk.h>
 #ifndef CB_PRECOMP
     //(*InternalHeadersPCH(InfoPanel)
-    #include <wx/intl.h>
     #include <wx/string.h>
+    #include <wx/intl.h>
     //*)
 #endif // CB_PRECOMP
 
@@ -31,13 +31,13 @@ END_EVENT_TABLE()
 InfoPanel::InfoPanel(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(InfoPanel)
-    Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
+    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "wxID_ANY");
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-    lblIntro = new wxStaticText(this, ID_STATICTEXT1, _("Welcome to the new console application wizard!\n\n\n\n\n\n\n\n\n\n\n\n\n\n"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    lblIntro = new wxStaticText(this, ID_STATICTEXT1, _("Welcome to the new console application wizard!\n\n\n\n\n\n\n\n\n\n\n\n\n\n"), wxDefaultPosition, wxDefaultSize, 0, "ID_STATICTEXT1");
     BoxSizer1->Add(lblIntro, 1, wxALL|wxEXPAND, 8);
-    chkSkip = new wxCheckBox(this, ID_CHECKBOX1, _("Skip this page next time"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+    chkSkip = new wxCheckBox(this, ID_CHECKBOX1, _("Skip this page next time"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHECKBOX1");
     chkSkip->SetValue(false);
-    BoxSizer1->Add(chkSkip, 0, wxALL|wxEXPAND, 8);
+    BoxSizer1->Add(chkSkip, 0, wxALL|wxALIGN_LEFT, 8);
     SetSizer(BoxSizer1);
     BoxSizer1->SetSizeHints(this);
     //*)

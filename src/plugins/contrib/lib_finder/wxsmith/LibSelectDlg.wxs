@@ -57,7 +57,7 @@
 					<label>Set up Global Variables</label>
 					<checked>1</checked>
 				</object>
-				<flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>10</border>
 			</object>
 			<object class="sizeritem">

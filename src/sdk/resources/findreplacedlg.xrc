@@ -150,28 +150,28 @@
 															<object class="wxCheckBox" name="chkMatchCase1">
 																<label>&amp;Match case</label>
 															</object>
-															<flag>wxALL|wxEXPAND</flag>
+															<flag>wxALL|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkRegEx1">
 																<label>Regular e&amp;xpression</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkAutoWrapSearch">
 																<label>A&amp;uto-wrap at EOF</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkMultiLine1">
 																<label>Multi-&amp;line search</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
@@ -179,7 +179,7 @@
 																<label>Ma&amp;ke EOLs consistent&#x0A;before search</label>
 																<tooltip>Slower but catches mixed line endings</tooltip>
 															</object>
-															<flag>wxALL|wxEXPAND</flag>
+															<flag>wxALL|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 													</object>
@@ -384,28 +384,28 @@
 															<object class="wxCheckBox" name="chkMatchCase2">
 																<label>&amp;Match case</label>
 															</object>
-															<flag>wxALL|wxEXPAND</flag>
+															<flag>wxALL|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkRegEx2">
 																<label>Regular e&amp;xpression</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkMultiLine2">
 																<label>Multi-&amp;line search</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkFixEOLs2">
 																<label>Ma&amp;ke EOLs consistent&#x0A;before search</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
@@ -413,14 +413,14 @@
 																<label>&amp;Delete previous search results</label>
 																<hidden>1</hidden>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 														<object class="sizeritem">
 															<object class="wxCheckBox" name="chkAutoOpen2">
 																<label>Open first result when finished</label>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 															<border>4</border>
 														</object>
 													</object>

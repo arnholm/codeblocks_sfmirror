@@ -136,7 +136,7 @@
 						<object class="wxStaticText" name="ID_STATICTEXT3">
 							<label>Plugin type:</label>
 						</object>
-						<flag />
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxComboBox" name="cmbPluginType">
@@ -149,7 +149,7 @@
 							<selection>1</selection>
 							<style>wxCB_READONLY</style>
 						</object>
-						<flag />
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
@@ -164,7 +164,7 @@
 							<label>Provides configuration dialog</label>
 							<tooltip>Check this if your plugin will have a configuration panel</tooltip>
 						</object>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxALL|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 					<object class="sizeritem">
@@ -172,7 +172,7 @@
 							<label>Creates menu entries</label>
 							<tooltip>Check this if it will add menu items in the application main menu</tooltip>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 					<object class="sizeritem">
@@ -180,7 +180,7 @@
 							<label>Creates popup menu entries</label>
 							<tooltip>Check this if it will add menu items in application popup menus</tooltip>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 					<object class="sizeritem">
@@ -188,7 +188,7 @@
 							<label>Creates toolbar</label>
 							<tooltip>Check this if it will create a new toolbar</tooltip>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>8</border>
 					</object>
 				</object>

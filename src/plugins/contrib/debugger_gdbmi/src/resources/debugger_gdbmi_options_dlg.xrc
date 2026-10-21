@@ -94,7 +94,7 @@
 							<label>Disable startup scripts (-nx) (GDB only)</label>
 							<tooltip>Disables autoloading of startup scripts (.gdbinit)</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 				</object>
 				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
@@ -110,48 +110,48 @@
 							<label>Watch function arguments</label>
 							<tooltip>Automatic watches are added for the current function&apos;s arguments</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkWatchLocals">
 							<label>Watch local variables</label>
 							<tooltip>Automatic watches are added for all the local variables of the current function</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkCatchExceptions">
 							<label>Catch C++ exceptions</label>
 						</object>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkTooltipEval">
 							<label>Evaluate expression under cursor</label>
 							<tooltip>While debugging, leaving the mouse over a variable (or the selection) evaluates it in a tooltip</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkAddForeignDirs">
 							<label>Add other open projects&apos; paths in the debugger&apos;s search list</label>
 							<tooltip>If enabled, the other open projects&apos; paths will be added in the debugger&apos;s search list</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkUsePrettyPrinters">
 							<label>Create project PrettyPrinters gdbinit file (when scripts enabled)</label>
 							<tooltip>If enabled, pretty-prints will display values of simple var structures</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkDoNotRun">
 							<label>Do *not* run the debugee</label>
 							<tooltip>If enabled, the debugger will not a send a run/continue command</tooltip>
 						</object>
-						<flag>wxEXPAND</flag>
+						<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
 					</object>
 				</object>
 				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>

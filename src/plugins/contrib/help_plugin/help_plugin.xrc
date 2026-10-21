@@ -102,21 +102,21 @@
 						<object class="wxCheckBox" name="chkDefault">
 							<label>This is the default help file (shortcut: F1)</label>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkExecute">
 							<label>This line represents a full command to be executed</label>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="chkEmbeddedViewer">
 							<label>Open this file with the embedded help viewer (only for HTML files)</label>
 						</object>
-						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">

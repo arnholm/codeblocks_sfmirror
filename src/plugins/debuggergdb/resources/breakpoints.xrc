@@ -10,14 +10,14 @@
 					<label>Enabled</label>
 					<checked>1</checked>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">
 				<object class="wxCheckBox" name="chkIgnore">
 					<label>Ignore count before break:</label>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">
@@ -39,7 +39,7 @@
 				<object class="wxCheckBox" name="chkExpr">
 					<label>Break when expression is true:</label>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

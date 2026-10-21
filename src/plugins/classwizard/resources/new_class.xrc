@@ -57,7 +57,7 @@
 															<label>Has destructor</label>
 															<checked>1</checked>
 														</object>
-														<flag>wxBOTTOM|wxEXPAND</flag>
+														<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -65,7 +65,7 @@
 															<label>Virtual destructor</label>
 															<checked>1</checked>
 														</object>
-														<flag>wxEXPAND</flag>
+														<flag>wxALIGN_LEFT</flag>
 													</object>
 												</object>
 												<flag>wxALL|wxEXPAND</flag>
@@ -78,14 +78,14 @@
 														<object class="wxCheckBox" name="chkHasCopyCtor">
 															<label>Has copy ctor</label>
 														</object>
-														<flag>wxBOTTOM|wxEXPAND</flag>
+														<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
 														<object class="wxCheckBox" name="chkHasAssignmentOp">
 															<label>Has assigment op.</label>
 														</object>
-														<flag>wxEXPAND</flag>
+														<flag>wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 												</object>
@@ -232,7 +232,7 @@
 															<label>Add &quot;Getter&quot; method</label>
 															<checked>1</checked>
 														</object>
-														<flag>wxBOTTOM|wxEXPAND</flag>
+														<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -240,7 +240,7 @@
 															<label>Add &quot;Setter&quot; method</label>
 															<checked>1</checked>
 														</object>
-														<flag>wxBOTTOM|wxEXPAND</flag>
+														<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -248,7 +248,7 @@
 															<label>Remove prefix:</label>
 															<checked>1</checked>
 														</object>
-														<flag>wxBOTTOM|wxEXPAND</flag>
+														<flag>wxBOTTOM|wxALIGN_LEFT</flag>
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
@@ -291,8 +291,7 @@
 												<object class="wxCheckBox" name="chkDocumentation">
 													<label>Add documentation where appropriate</label>
 												</object>
-												<flag>wxBOTTOM|wxEXPAND</flag>
-												<option>1</option>
+												<flag>wxBOTTOM|wxALIGN_TOP</flag>
 											</object>
 										</object>
 										<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
@@ -319,7 +318,7 @@
 									<label>Add paths to project</label>
 									<checked>1</checked>
 								</object>
-								<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_TOP</flag>
 								<border>5</border>
 							</object>
 							<object class="spacer">
@@ -332,7 +331,7 @@
 									<label>Use relative path</label>
 									<checked>1</checked>
 								</object>
-								<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+								<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_TOP</flag>
 								<border>5</border>
 							</object>
 							<object class="spacer">
@@ -348,7 +347,7 @@
 						<object class="wxCheckBox" name="chkCommonDir">
 							<label>Header and implementation file shall be in same folder</label>
 						</object>
-						<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -392,7 +391,7 @@
 						<object class="wxCheckBox" name="chkLowerCase">
 							<label>Header and implementation file shall always be lower case</label>
 						</object>
-						<flag>wxALL|wxEXPAND</flag>
+						<flag>wxALL|wxALIGN_LEFT</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">

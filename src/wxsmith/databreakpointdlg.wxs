@@ -10,7 +10,7 @@
 				<object class="wxCheckBox" name="ID_CHK_ENABLED" variable="m_enabled" member="yes">
 					<label>Enabled</label>
 				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT</flag>
 				<border>8</border>
 			</object>
 			<object class="sizeritem">

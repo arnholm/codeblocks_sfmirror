@@ -7,6 +7,7 @@
 #include <wx/intl.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/string.h>
 #include <wx/textctrl.h>
@@ -48,43 +49,43 @@ DefsDownloadDlg::DefsDownloadDlg(wxWindow* parent)
 	wxStaticBoxSizer* StaticBoxSizer2;
 	wxStaticBoxSizer* StaticBoxSizer3;
 
-	Create(parent, wxID_ANY, _("Download libraries definitions"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
+	Create(parent, wxID_ANY, _("Download libraries definitions"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, "wxID_ANY");
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, this, _("Download list"));
-	m_UsedLibraries = new wxListBox(this, ID_LISTBOX1, wxDefaultPosition, wxSize(156,290), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
+	m_UsedLibraries = new wxListBox(StaticBoxSizer1->GetStaticBox(), ID_LISTBOX1, wxDefaultPosition, wxSize(156,290), 0, 0, 0, wxDefaultValidator, "ID_LISTBOX1");
 	StaticBoxSizer1->Add(m_UsedLibraries, 1, wxALL|wxEXPAND, 5);
 	BoxSizer5->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer5, 3, wxEXPAND, 5);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
-	m_Add = new wxButton(this, ID_BUTTON1, _T("<"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON1"));
+	m_Add = new wxButton(this, ID_BUTTON1, "<", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, "ID_BUTTON1");
 	m_Add->Disable();
 	m_Add->SetToolTip(_("Add selected library to project"));
 	BoxSizer2->Add(m_Add, 1, wxEXPAND, 5);
-	m_Remove = new wxButton(this, ID_BUTTON2, _T(">"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, _T("ID_BUTTON2"));
+	m_Remove = new wxButton(this, ID_BUTTON2, ">", wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT, wxDefaultValidator, "ID_BUTTON2");
 	m_Remove->Disable();
 	m_Remove->SetToolTip(_("Remove selected library from project"));
 	BoxSizer2->Add(m_Remove, 1, wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer2, 0, wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, this, _("Known libraries"));
-	m_KnownLibrariesTree = new wxTreeCtrl(this, ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxBORDER_SUNKEN, wxDefaultValidator, _T("ID_TREECTRL1"));
+	m_KnownLibrariesTree = new wxTreeCtrl(StaticBoxSizer2->GetStaticBox(), ID_TREECTRL1, wxDefaultPosition, wxDefaultSize, wxTR_HIDE_ROOT|wxTR_SINGLE|wxTR_DEFAULT_STYLE|wxBORDER_SUNKEN, wxDefaultValidator, "ID_TREECTRL1");
 	StaticBoxSizer2->Add(m_KnownLibrariesTree, 1, wxALL|wxEXPAND, 5);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(StaticBoxSizer2->GetStaticBox(), ID_STATICTEXT1, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0, "ID_STATICTEXT1");
 	BoxSizer4->Add(StaticText1, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 5);
-	m_Filter = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	m_Filter = new wxTextCtrl(StaticBoxSizer2->GetStaticBox(), ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_TEXTCTRL2");
 	BoxSizer4->Add(m_Filter, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2->Add(BoxSizer4, 0, wxEXPAND, 5);
 	BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-	m_Tree = new wxCheckBox(this, ID_CHECKBOX1, _("Show as tree"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	m_Tree = new wxCheckBox(StaticBoxSizer2->GetStaticBox(), ID_CHECKBOX1, _("Show as tree"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_CHECKBOX1");
 	m_Tree->SetValue(true);
-	BoxSizer7->Add(m_Tree, 1, wxLEFT|wxRIGHT|wxEXPAND, 5);
+	BoxSizer7->Add(m_Tree, 0, wxLEFT|wxRIGHT|wxALIGN_TOP, 5);
 	StaticBoxSizer2->Add(BoxSizer7, 0, wxBOTTOM|wxEXPAND, 5);
 	BoxSizer3->Add(StaticBoxSizer2, 1, wxBOTTOM|wxEXPAND, 5);
 	StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, this, _("Configuration"));
-	Button1 = new wxButton(this, ID_BUTTON3, _("Servers"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	Button1 = new wxButton(StaticBoxSizer3->GetStaticBox(), ID_BUTTON3, _("Servers"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "ID_BUTTON3");
 	StaticBoxSizer3->Add(Button1, 0, wxALL|wxEXPAND, 5);
 	BoxSizer3->Add(StaticBoxSizer3, 0, wxEXPAND, 5);
 	BoxSizer6->Add(BoxSizer3, 4, wxALL|wxEXPAND, 5);
