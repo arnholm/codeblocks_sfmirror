@@ -1334,7 +1334,7 @@ bool Compiler::EvalXMLCondition(const wxXmlNode* node)
 
         wxString path;
         if (!masterPath.empty())
-            path = masterPath + wxPATH_SEP + masterPath + wxFILE_SEP_PATH + "bin" + wxPATH_SEP;
+            path = masterPath + wxPATH_SEP + masterPath + wxFILE_SEP_PATH + wxString("bin") + wxPATH_SEP;
 
         for (size_t i = 0; i < extraPaths.GetCount(); ++i)
             path << extraPaths[i] << wxPATH_SEP;

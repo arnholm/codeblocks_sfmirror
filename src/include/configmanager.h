@@ -144,7 +144,7 @@ public:
     * @par
     * So, code that looked like this in the old days:
     * @code
-    * wxString some_file = ConfigManager::GetScriptsFolder() + wxFILE_SEP_PATH + "startup.script";
+    * wxString some_file = ConfigManager::GetScriptsFolder() + wxFILE_SEP_PATH + wxString("startup.script");
     * @endcode
     * should be converted to this:
     * @code

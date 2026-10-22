@@ -3860,7 +3860,7 @@ void ClgdCompletion::CleanUpLSPLogs()
     // The index file contains log names for recent log files we want to keep for awhile.
     // They are usually the last active log files and will be removed from the index when
     // new logs are created.
-    wxString logIndexFilename(wxFileName::GetTempDir() + wxFILE_SEP_PATH + "CBclangd_LogsIndex.txt");
+    wxString logIndexFilename(wxFileName::GetTempDir() + wxFILE_SEP_PATH + wxString("CBclangd_LogsIndex.txt"));
     if ( wxFileExists(logIndexFilename))
     switch (1)
     {
@@ -3878,7 +3878,7 @@ void ClgdCompletion::CleanUpLSPLogs()
         wxString tempDirName = wxFileName::GetTempDir();
         wxArrayString logFilesVec;
 
-        wxString logFilename = wxFindFirstFile(tempDirName + wxFILE_SEP_PATH + "CBclangd_*-*.log", wxFILE);
+        wxString logFilename = wxFindFirstFile(tempDirName + wxFILE_SEP_PATH + wxString("CBclangd_*-*.log"), wxFILE);
         while(logFilename.Length())
         {
             logFilesVec.Add(logFilename);

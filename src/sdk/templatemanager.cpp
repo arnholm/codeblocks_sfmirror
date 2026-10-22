@@ -61,7 +61,7 @@ void TemplateManager::BuildToolsMenu(cb_unused wxMenu* menu)
 void TemplateManager::LoadUserTemplates()
 {
     m_UserTemplates.Clear();
-    wxString baseDir = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + "UserTemplates";
+    wxString baseDir = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + wxString("UserTemplates");
 
     if (!wxDirExists(baseDir)) // avoid warnings in debug builds
         return;
@@ -156,7 +156,7 @@ cbProject* TemplateManager::NewProjectFromUserTemplate(NewFromTemplateDlg& dlg, 
 
     wxBusyCursor busy;
 
-    wxString templ = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + "UserTemplates";
+    wxString templ = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + wxString("UserTemplates");
     templ << sep << dlg.GetSelectedUserTemplate();
     if (!wxDirExists(templ))
     {
@@ -251,7 +251,7 @@ void TemplateManager::SaveUserTemplate(cbProject* prj)
     }
 
     // create destination dir
-    wxString templ = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + "UserTemplates";
+    wxString templ = ConfigManager::GetConfigFolder() + wxFILE_SEP_PATH + wxString("UserTemplates");
     if (!CreateDirRecursively(templ, 0755))
     {
         cbMessageBox(_("Couldn't create directory for user templates:\n") + templ, _("Error"), wxICON_ERROR);

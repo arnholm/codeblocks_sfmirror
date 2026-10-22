@@ -119,10 +119,10 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                                 if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute("rmDirs", "0"))))
                                     break;
                             }
-                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
-                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)) )
+                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxString("bin")))
+                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + targ)) )
                             {
-                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + "bin", sm))
+                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + wxString("bin"), sm))
                                     break;
                             }
                         }
@@ -144,10 +144,10 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                                 if (AddPath(pathArray[i], sm, wxAtoi(compiler.GetRoot()->GetAttribute("rmDirs", "0"))))
                                     break;
                             }
-                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
-                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)) )
+                            else if (sm == master && (   (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxString("bin")))
+                                                      || wxFileExists(pathArray[i] + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + targ)) )
                             {
-                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + "bin", sm))
+                                if (AddPath(pathArray[i] + wxFILE_SEP_PATH + wxString("bin"), sm))
                                     break;
                             }
                         }
@@ -163,16 +163,16 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
                         if (!path.IsEmpty() &&
                              ((targ.IsEmpty() && wxDirExists(path)) ||
                               wxFileExists(path + wxFILE_SEP_PATH + targ) ||
-                              wxFileExists(path + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)))
+                              wxFileExists(path + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + targ)))
                         {
                             AddPath(path, sm);
                         }
                     }
                     else if ((targ.IsEmpty() && wxDirExists(value)) || wxFileExists(value + wxFILE_SEP_PATH + targ))
                         AddPath(value, sm);
-                    else if (sm == master && (  (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + "bin"))
-                                              || wxFileExists(value + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + targ)))
-                        AddPath(value + wxFILE_SEP_PATH + "bin", sm);
+                    else if (sm == master && (  (targ.IsEmpty() && wxDirExists(value + wxFILE_SEP_PATH + wxString("bin")))
+                                              || wxFileExists(value + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + targ)))
+                        AddPath(value + wxFILE_SEP_PATH + wxString("bin"), sm);
                 }
                 // **** Files
                 else if (node->GetAttribute("file", &value))
@@ -294,7 +294,7 @@ AutoDetectResult CompilerXML::AutoDetectInstallationDir()
     wxString master_path_without_macros(m_MasterPath);
     Manager::Get()->GetMacrosManager()->ReplaceMacros(master_path_without_macros);
 
-    if (   wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C)
+    if (   wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C)
         || wxFileExists(master_path_without_macros + wxFILE_SEP_PATH + m_Programs.C)
         || (GetID() == "null") ) // Special case so "No Compiler" is valid
     {

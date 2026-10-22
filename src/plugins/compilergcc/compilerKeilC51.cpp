@@ -61,19 +61,19 @@ AutoDetectResult CompilerKeilC51::AutoDetectInstallationDir()
             m_MasterPath = "C:\\Keil";
         }
 
-        m_MasterPath = m_MasterPath + wxFILE_SEP_PATH + "C51";
+        m_MasterPath = m_MasterPath + wxFILE_SEP_PATH + wxString("C51");
 
         if ( wxDirExists(m_MasterPath) )
         {
-            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "inc");
-            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + "lib");
-            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "bin");
+            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxString("inc"));
+            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + wxString("lib"));
+            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxString("bin"));
         }
     }
     else
         m_MasterPath="/usr/local"; // default
 
-    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
 }
 
 //------------------------------------------------------------

@@ -531,19 +531,19 @@ wxString ConfigManager::GetFolder(SearchDirs dir)
 
         case sdPluginsGlobal:
 #ifndef CB_AUTOCONF
-            return ConfigManager::data_path_global + wxFILE_SEP_PATH + "plugins";
+            return ConfigManager::data_path_global + wxFILE_SEP_PATH + wxString("plugins");
 #else
             return ConfigManager::plugin_path_global;
 #endif
 
         case sdPluginsUser:
-            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + "plugins";
+            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + wxString("plugins");
 
         case sdScriptsGlobal:
-            return ConfigManager::data_path_global + wxFILE_SEP_PATH + "scripts";
+            return ConfigManager::data_path_global + wxFILE_SEP_PATH + wxString("scripts");
 
         case sdScriptsUser:
-            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + "scripts";
+            return ConfigManager::data_path_user   + wxFILE_SEP_PATH + wxString("scripts");
 
         case sdDataGlobal:
             return ConfigManager::data_path_global;
@@ -1516,7 +1516,7 @@ void ConfigManager::InitPaths()
     }
 #endif
 
-    wxString dataPathUser = ConfigManager::config_folder + wxFILE_SEP_PATH + "share";
+    wxString dataPathUser = ConfigManager::config_folder + wxFILE_SEP_PATH + wxString("share");
 #ifdef __linux__
     if (!has_alternate_user_data_path)
     {
@@ -1526,7 +1526,7 @@ void ConfigManager::InitPaths()
     }
 #endif // __linux__
 
-    ConfigManager::data_path_user = dataPathUser + wxFILE_SEP_PATH + "codeblocks";
+    ConfigManager::data_path_user = dataPathUser + wxFILE_SEP_PATH + wxString("codeblocks");
 
     // if user- and global-datapath are the same (can happen in portable mode) we run in conflicts
     // so we extend the user-datapath with the users name
@@ -1555,8 +1555,8 @@ void ConfigManager::MigrateFolders()
         return;
 
     wxString oldConfigFolder = wxStandardPaths::Get().GetUserDataDir();
-    wxString oldDataFolder = oldConfigFolder + wxFILE_SEP_PATH + "share" + wxFILE_SEP_PATH + "codeblocks";
-    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), nullptr)) + wxFILE_SEP_PATH + "codeblocks";
+    wxString oldDataFolder = oldConfigFolder + wxFILE_SEP_PATH + wxString("share") + wxFILE_SEP_PATH + wxString("codeblocks");
+    wxString newDataFolder = wxString::FromUTF8(g_build_filename (g_get_user_data_dir(), nullptr)) + wxFILE_SEP_PATH + wxString("codeblocks");
     wxString msg;
     msg = F(_("The places where the configuration files and user-data files are stored\n"
               "have been changed to be more standard-conform.\n"
@@ -1577,7 +1577,7 @@ void ConfigManager::MigrateFolders()
         // make sure the target-folder exists
         CreateDirRecursively(newDataFolder);
         success = wxRenameFile(oldDataFolder, newDataFolder);
-        wxRmdir(oldConfigFolder + wxFILE_SEP_PATH + "share");
+        wxRmdir(oldConfigFolder + wxFILE_SEP_PATH + wxString("share"));
     }
     if (success)
     {

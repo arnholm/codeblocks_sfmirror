@@ -113,7 +113,7 @@ bool cbIsDetectedCygwinCompiler(void)
     {
         // found CygWin version 1.7 or newer; read it
         key.QueryValue("rootdir", masterPath);
-        if (wxDirExists(masterPath + wxFILE_SEP_PATH + "bin"))
+        if (wxDirExists(masterPath + wxFILE_SEP_PATH + wxString("bin")))
             present = true;
     }
     if (!present)
@@ -123,13 +123,13 @@ bool cbIsDetectedCygwinCompiler(void)
         {
             // found CygWin version 1.5 or older; read it
             key.QueryValue("native", masterPath);
-            if (wxDirExists(masterPath + wxFILE_SEP_PATH + "bin"))
+            if (wxDirExists(masterPath + wxFILE_SEP_PATH + wxString("bin")))
                 present = true;
         }
     }
 
     // Found registry keys or the default path is valid
-    if (present || wxDirExists(masterPath + wxFILE_SEP_PATH + "bin"))
+    if (present || wxDirExists(masterPath + wxFILE_SEP_PATH + wxString("bin")))
     {
         present = true;  // Set to true in case no registry found, but default directory exists.
         g_CygwinCompilerPathRoot = masterPath; // convert to wxString type for later use

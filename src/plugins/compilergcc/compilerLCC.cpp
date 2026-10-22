@@ -137,9 +137,9 @@ AutoDetectResult CompilerLCC::AutoDetectInstallationDir()
 
     if (!m_MasterPath.IsEmpty())
     {
-        AddIncludeDir   (m_MasterPath + wxFILE_SEP_PATH + "include");
-        AddLibDir       (m_MasterPath + wxFILE_SEP_PATH + "lib");
-        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "bin");
+        AddIncludeDir   (m_MasterPath + wxFILE_SEP_PATH + wxString("include"));
+        AddLibDir       (m_MasterPath + wxFILE_SEP_PATH + wxString("lib"));
+        m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxString("bin"));
     }
 
     m_RegistryUpdated = false; // Check the registry another time on IsValid()
@@ -153,7 +153,7 @@ bool CompilerLCC::IsValid()
     if (!m_RegistryUpdated)
     {
         wxString compiler = m_MasterPath + wxFILE_SEP_PATH
-                          + "bin" + wxFILE_SEP_PATH + m_Programs.C;
+                          + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C;
 
         if (wxFileExists(compiler))
         {

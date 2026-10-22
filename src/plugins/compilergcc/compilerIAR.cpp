@@ -63,7 +63,7 @@ AutoDetectResult CompilerIAR::AutoDetectInstallationDir()
                     keys.QueryValue("TargetDir", m_MasterPath);
                     if (!m_MasterPath.IsEmpty())
                     {
-                        if (wxFileExists(m_MasterPath + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C))
+                        if (wxFileExists(m_MasterPath + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C))
                             break;
                         m_MasterPath.Clear();
                     }
@@ -84,7 +84,7 @@ AutoDetectResult CompilerIAR::AutoDetectInstallationDir()
                     if ( filename.StartsWith("Embedded Workbench") )
                     {
                         wxFileName fn(dir.GetName() + wxFILE_SEP_PATH + filename + wxFILE_SEP_PATH +
-                                      m_Arch + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C);
+                                      m_Arch + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C);
                         if (   wxFileName::IsFileExecutable(fn.GetFullPath())
                             && (m_MasterPath.IsEmpty() || fn.GetPath() > m_MasterPath) )
                         {
@@ -103,9 +103,9 @@ AutoDetectResult CompilerIAR::AutoDetectInstallationDir()
 
         if ( wxDirExists(m_MasterPath) )
         {
-            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + "include");
-            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + "lib" + wxFILE_SEP_PATH + "clib");
-            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + "bin");
+            AddIncludeDir(m_MasterPath + wxFILE_SEP_PATH + wxString("include"));
+            AddLibDir(m_MasterPath + wxFILE_SEP_PATH + wxString("lib") + wxFILE_SEP_PATH + wxString("clib"));
+            m_ExtraPaths.Add(m_MasterPath + wxFILE_SEP_PATH + wxString("bin"));
         }
     }
     else
@@ -114,13 +114,13 @@ AutoDetectResult CompilerIAR::AutoDetectInstallationDir()
     }
     if (m_Arch == "8051")
     {
-        AddLinkerOption("-f \"" + m_MasterPath + wxFILE_SEP_PATH + "config" + wxFILE_SEP_PATH +
-                        "devices" + wxFILE_SEP_PATH + "_generic" + wxFILE_SEP_PATH +
-                        "lnk51ew_plain.xcl\"");
+        AddLinkerOption("-f \"" + m_MasterPath + wxFILE_SEP_PATH + wxString("config") + wxFILE_SEP_PATH +
+                        wxString("devices") + wxFILE_SEP_PATH + wxString("_generic") + wxFILE_SEP_PATH +
+                        wxString("lnk51ew_plain.xcl\""));
     }
     else // IAR
     {
         AddCompilerOption("--no_wrap_diagnostics");
     }
-    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + "bin" + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
+    return wxFileExists(m_MasterPath + wxFILE_SEP_PATH + wxString("bin") + wxFILE_SEP_PATH + m_Programs.C) ? adrDetected : adrGuessed;
 }
