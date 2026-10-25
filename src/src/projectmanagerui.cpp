@@ -608,7 +608,7 @@ void ProjectManagerUI::ReloadFileSystemWatcher(cbProject* prj)
         else
             newWatcher.watcher->Add(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
 
-        newWatcher.handler = [=](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
+        newWatcher.handler = [this](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
         newWatcher.watcher->Bind(wxEVT_FSWATCHER, newWatcher.handler, wxID_ANY, wxID_ANY, new FileSystemEventObject(prj, glob));
         projectWatches.push_back(std::move(newWatcher));
         refresh |= loader.UpdateGlob(glob);
@@ -668,7 +668,7 @@ void ProjectManagerUI::UpdateActiveProject(cbProject* oldProject, cbProject* new
             newWatcher.watcher->Add(fname, wxFSW_EVENT_CREATE | wxFSW_EVENT_DELETE | wxFSW_EVENT_RENAME);
         }
 
-        newWatcher.handler = [=](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
+        newWatcher.handler = [this](wxFileSystemWatcherEvent& evt) {this->OnFileSystemEvent(evt);};
         newWatcher.watcher->Bind(wxEVT_FSWATCHER, newWatcher.handler, wxID_ANY, wxID_ANY, new FileSystemEventObject(newProject, glob));
         projectWatches.push_back(std::move(newWatcher));
         refresh |= loader.UpdateGlob(glob);
