@@ -25,7 +25,7 @@
 					<Add option="-DHAVE_W32API_H" />
 					<Add option="-D__WXMSW__" />
 					<Add option="-DWXUSINGDLL" />
-					<Add option="-DcbDEBUG" />
+					<Add option="-DNO_cbDebug" />
 					<Add option="-DwxUSE_UNICODE" />
 				</Compiler>
 				<Linker>

@@ -342,6 +342,18 @@ void cbKeyBinder::OnAppStartupDone(CodeBlocksEvent& event)
         if (fnTempKeyMnuAccels.FileExists())
             wxRemoveFile(fnTempKeyMnuAccels.GetFullPath());
     #endif
+
+    #if defined(cbDEBUG)
+        // Test the code supporting the KeyPad wx3.2.6 key parser
+        static bool numpadTestsRun = false;
+
+        if (not numpadTestsRun)
+        {
+            numpadTestsRun = true;
+            TestNumpadConversions();
+        }
+    #endif
+
     return;
 }
 // ----------------------------------------------------------------------------
@@ -1209,4 +1221,10 @@ void cbKeyBinder::ReportThisFailure(const wxString& text)
 
     cbMessageBox(msg, "Keybinder Failure", wxOK, Manager::Get()->GetAppWindow());
     return ;
+}
+// ----------------------------------------------------------------------------
+void RunKeyBinderNumpadTests()
+// ----------------------------------------------------------------------------
+{
+    TestNumpadConversions();
 }

@@ -19,10 +19,12 @@
 #include <wx/menu.h>
 #include <wx/menuitem.h>
 #include <wx/string.h>
-#include "wx/statline.h"
+#include "wx/statline.h" // used no matter what clangd says
+#include "wx/accel.h"    // Support for wx3.2.6 NumKeyPad changes
+
 #include "keybinder.h"
 #include "menuutils.h"
-#include "wx/config.h"
+#include "wx/config.h"  // used no matter what clangd says
 #include "wx/tokenzr.h"
 
 #if defined(kbLOGGING)
@@ -51,6 +53,65 @@
 //    #include "cbproject.h"
 //    #include "logmanager.h"
 //#endif
+
+// ----------------------------------------------------------------------------
+namespace // Support for wx3.2.6 NumKeyPad changes
+// ----------------------------------------------------------------------------
+{
+    struct NumpadKeyName
+    {
+        int code;
+        const wxChar* name;
+        const wxChar* legacyName;
+    };
+
+    const NumpadKeyName numpadKeyNames[] =
+    {
+        { WXK_NUMPAD0,          wxT("KP_0"),         wxT("0 (numpad)") },
+        { WXK_NUMPAD1,          wxT("KP_1"),         wxT("1 (numpad)") },
+        { WXK_NUMPAD2,          wxT("KP_2"),         wxT("2 (numpad)") },
+        { WXK_NUMPAD3,          wxT("KP_3"),         wxT("3 (numpad)") },
+        { WXK_NUMPAD4,          wxT("KP_4"),         wxT("4 (numpad)") },
+        { WXK_NUMPAD5,          wxT("KP_5"),         wxT("5 (numpad)") },
+        { WXK_NUMPAD6,          wxT("KP_6"),         wxT("6 (numpad)") },
+        { WXK_NUMPAD7,          wxT("KP_7"),         wxT("7 (numpad)") },
+        { WXK_NUMPAD8,          wxT("KP_8"),         wxT("8 (numpad)") },
+        { WXK_NUMPAD9,          wxT("KP_9"),         wxT("9 (numpad)") },
+
+        { WXK_NUMPAD_SPACE,     wxT("KP_Space"),     wxT("SPACE (numpad)") },
+        { WXK_NUMPAD_TAB,       wxT("KP_Tab"),       wxT("TAB (numpad)") },
+        { WXK_NUMPAD_ENTER,     wxT("KP_Enter"),     wxT("ENTER (numpad)") },
+
+        { WXK_NUMPAD_F1,        wxT("KP_F1"),        wxT("F1 (numpad)") },
+        { WXK_NUMPAD_F2,        wxT("KP_F2"),        wxT("F2 (numpad)") },
+        { WXK_NUMPAD_F3,        wxT("KP_F3"),        wxT("F3 (numpad)") },
+        { WXK_NUMPAD_F4,        wxT("KP_F4"),        wxT("F4 (numpad)") },
+
+        { WXK_NUMPAD_LEFT,      wxT("KP_Left"),      wxT("LEFT (numpad)") },
+        { WXK_NUMPAD_UP,        wxT("KP_Up"),        wxT("UP (numpad)") },
+        { WXK_NUMPAD_RIGHT,     wxT("KP_Right"),     wxT("RIGHT (numpad)") },
+        { WXK_NUMPAD_DOWN,      wxT("KP_Down"),      wxT("DOWN (numpad)") },
+        { WXK_NUMPAD_HOME,      wxT("KP_Home"),      wxT("HOME (numpad)") },
+        { WXK_NUMPAD_PAGEUP,    wxT("KP_PageUp"),    wxT("PAGEUP (numpad)") },
+        { WXK_NUMPAD_PAGEDOWN,  wxT("KP_PageDown"),  wxT("PAGEDOWN (numpad)") },
+        { WXK_NUMPAD_END,       wxT("KP_End"),       wxT("END (numpad)") },
+        { WXK_NUMPAD_BEGIN,     wxT("KP_Begin"),     wxT("BEGIN (numpad)") },
+        { WXK_NUMPAD_INSERT,    wxT("KP_Insert"),    wxT("INSERT (numpad)") },
+        { WXK_NUMPAD_DELETE,    wxT("KP_Delete"),    wxT("DELETE (numpad)") },
+
+        { WXK_NUMPAD_EQUAL,     wxT("KP_Equal"),     wxT("= (numpad)") },
+        { WXK_NUMPAD_MULTIPLY,  wxT("KP_Multiply"),  wxT("* (numpad)") },
+        { WXK_NUMPAD_ADD,       wxT("KP_Add"),       wxT("+ (numpad)") },
+        { WXK_NUMPAD_SEPARATOR, wxT("KP_Separator"), wxT("SEPARATOR (numpad)") },
+        { WXK_NUMPAD_SUBTRACT,  wxT("KP_Subtract"),  wxT("- (numpad)") },
+        { WXK_NUMPAD_DECIMAL,   wxT("KP_Decimal"),   wxT(". (numpad)") },
+        { WXK_NUMPAD_DIVIDE,    wxT("KP_Divide"),    wxT("/ (numpad)") }
+    };
+
+    const size_t numpadKeyNameCount =
+        sizeof(numpadKeyNames) / sizeof(numpadKeyNames[0]);
+
+} // anonymous namespace
 
 
 // class definition for wxKeyProfile
@@ -113,96 +174,32 @@ END_EVENT_TABLE()
 // wxKeyBind STATIC utilities
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-wxString wxKeyBind::NumpadKeyCodeToString(int keyCode)
+wxString wxKeyBind::NumpadKeyCodeToString(int keyCode) // Support for wx3.2.6 NumKeyPad changes
 // ----------------------------------------------------------------------------
 {
-    wxString res;
-
-    switch (keyCode)
+    for (size_t i = 0; i < numpadKeyNameCount; ++i)
     {
-        // NUMPAD KEYS
-        // ---------------------------
-
-    case WXK_NUMPAD0:
-    case WXK_NUMPAD1:
-    case WXK_NUMPAD2:
-    case WXK_NUMPAD3:
-    case WXK_NUMPAD4:
-    case WXK_NUMPAD5:
-    case WXK_NUMPAD6:
-    case WXK_NUMPAD7:
-    case WXK_NUMPAD8:
-    case WXK_NUMPAD9:
-        res << wxString::Format(_T("%d"), keyCode - WXK_NUMPAD0);
-        break;
-
-    case WXK_NUMPAD_SPACE:
-        res << wxT("SPACE"); break;
-    case WXK_NUMPAD_TAB:
-        res << wxT("TAB"); break;
-    case WXK_NUMPAD_ENTER:
-        res << wxT("ENTER"); break;
-
-    case WXK_NUMPAD_F1:
-    case WXK_NUMPAD_F2:
-    case WXK_NUMPAD_F3:
-    case WXK_NUMPAD_F4:
-        res << wxT("F") << wxString::Format(_T("%d"), keyCode - WXK_NUMPAD_F1);
-        break;
-
-    case WXK_NUMPAD_LEFT:
-        res << wxT("LEFT"); break;
-    case WXK_NUMPAD_UP:
-        res << wxT("UP"); break;
-    case WXK_NUMPAD_RIGHT:
-        res << wxT("RIGHT"); break;
-    case WXK_NUMPAD_DOWN:
-        res << wxT("DOWN"); break;
-    case WXK_NUMPAD_HOME:
-        res << wxT("HOME"); break;
-    case WXK_NUMPAD_PAGEUP:
-        res << wxT("PAGEUP"); break;
-    case WXK_NUMPAD_PAGEDOWN:
-        res << wxT("PAGEDOWN"); break;
-    case WXK_NUMPAD_END:
-        res << wxT("END"); break;
-    case WXK_NUMPAD_BEGIN:
-        res << wxT("BEGIN"); break;
-    case WXK_NUMPAD_INSERT:
-        res << wxT("INSERT"); break;
-    case WXK_NUMPAD_DELETE:
-        res << wxT("DELETE"); break;
-    case WXK_NUMPAD_EQUAL:
-        res << wxT("="); break;
-    case WXK_NUMPAD_MULTIPLY:
-        res << wxT("*"); break;
-    case WXK_NUMPAD_ADD:
-        res << wxT("+"); break;
-    case WXK_NUMPAD_SEPARATOR:
-        res << wxT("SEPARATOR"); break;
-    case WXK_NUMPAD_SUBTRACT:
-        res << wxT("-"); break;
-    case WXK_NUMPAD_DECIMAL:
-        res << wxT("."); break;
-    case WXK_NUMPAD_DIVIDE:
-        res << wxT("/"); break;
-    default:
-        break;
+        if (numpadKeyNames[i].code == keyCode)
+            return wxString(numpadKeyNames[i].name);
     }
 
-    return res;
+    return wxEmptyString;
 }
+
 // ----------------------------------------------------------------------------
 wxString wxKeyBind::KeyCodeToString(int keyCode)
 // ----------------------------------------------------------------------------
 {
+    // Special-key codes must be recognized before character classification.
+    // Support for wx3.2.6 NumKeyPad changes
+    const wxString numpadName = NumpadKeyCodeToString(keyCode);
+    if (!numpadName.IsEmpty())
+        return numpadName;
+
     wxString res;
 
-    //wxLogMessage("KeyCodeToString_IN:keyCode[%d]char[%c]", keyCode, keyCode );
-
     switch (keyCode)
-    {
-        // IGNORED KEYS
+    {        // IGNORED KEYS
         // ---------------------------
     case WXK_START:
     case WXK_LBUTTON:
@@ -311,41 +308,25 @@ wxString wxKeyBind::KeyCodeToString(int keyCode)
     case WXK_HOME:
         res << wxT("HOME"); break;
 
-//+V.05 (Pecan#1#): wxIsalnm is excluding keys not num or a-z like }{ etc
-//+v.05 (Pecan#1#): Holding Alt shows ALT+3 A: added WXK_ALT: to above case
-//+v.05 (Pecan#1#): ALT +Ctrl Left/Right show in Dlg, up/Down dont. Printable?
-//               A: wxWidgets2.6.2 returns false on modifier keys for Ctrl+Alt+UP/DOWN combination.
-//                  It returns Ctrl+Alt+PRIOR instead of UP/DOWN and shows false for ctrl & alt.
-//                  Same is true for Ctrl+Shift+UP/Down.
-//                  Alt+Shift+Up/Down work ok.
+
     default:
-        // ASCII chars...
-        if (wxIsalnum(keyCode))
+        // Support for wx3.2.6 NumKeyPad changes
+        // Remaining ordinary keyboard characters are ASCII key codes.
+        // Do not reinterpret unknown wx special-key codes as Unicode text.
+        if (keyCode >= 0 && keyCode < 128 && wxIsprint(keyCode))
         {
-            res << (wxChar)keyCode;
-            break;
-
-        } else if ((res=NumpadKeyCodeToString(keyCode)) != wxEmptyString) {
-
-            res << wxT(" (numpad)");        // so it is clear it's different from other keys
-            break;
-
-        } else if (wxIsprint(keyCode)) { //v+0.5
-            res << (wxChar)keyCode;
-            break;
-
-        } else {
-
-            // we couldn't create a description for the given keycode...
-            wxLogDebug(wxT("wxKeyBind::KeyCodeToString - unknown key: [%d]"), keyCode);
+            res << static_cast<wxChar>(keyCode);
+        }
+        else
+        {
+            wxLogDebug(
+                wxT("wxKeyBind::KeyCodeToString - unknown key: [%d]"),
+                keyCode
+            );
             return wxEmptyString;
         }
-    }//default
-
-    //#if LOGGING
-    // wxLogMessage(_T("KeyCodeToStringOUT:keyCode[%d]char[%c]Desc[%s]"),
-    //            keyCode, keyCode, res.GetData() );
-    //#endif
+        break;
+    }
 
     return res;
 
@@ -354,53 +335,77 @@ wxString wxKeyBind::KeyCodeToString(int keyCode)
 int wxKeyBind::StringToKeyCode(const wxString &keyName)
 // ----------------------------------------------------------------------------
 {
-    // a function key ?
-    if (keyName.StartsWith(wxT("F")) && keyName.Len() > 1) {
+    // Support for wx3.2.6 NumKeyPad changes    2026/10/26
+    // Avoid accessing character 0 of an empty string.
+    if (keyName.IsEmpty())
+        return WXK_NONE;
 
-        long n;
-        keyName.Right(keyName.Len()-1).ToLong(&n);
-        return WXK_F1+n-1;
+    // Check keypad names before ordinary function keys.
+    // Accept both canonical "KP_..." names and legacy "... (numpad)" names.
+    for (size_t i = 0; i < numpadKeyNameCount; ++i)
+    {
+        if (keyName.CmpNoCase(numpadKeyNames[i].name) == 0 ||
+            keyName.CmpNoCase(numpadKeyNames[i].legacyName) == 0)
+        {
+            return numpadKeyNames[i].code;
+        }
     }
 
-    // a special key ?
-    if (keyName == wxT("BACK"))     return WXK_BACK;
-    if (keyName == wxT("ENTER"))    return WXK_RETURN;
-    if (keyName == wxT("RETURN"))   return WXK_RETURN;
-    if (keyName == wxT("TAB"))      return WXK_TAB;
-    if (keyName == wxT("ESCAPE"))   return WXK_ESCAPE;
-    if (keyName == wxT("SPACE"))    return WXK_SPACE;
-    if (keyName == wxT("DELETE"))   return WXK_DELETE;
+    // Alternative keypad navigation names.
+    if (keyName.CmpNoCase(wxT("KP_Prior")) == 0)
+        return WXK_NUMPAD_PAGEUP;
 
-    if (keyName == wxT("LEFT"))     return WXK_LEFT ;       //+v0.5
-    if (keyName == wxT("UP"))       return WXK_UP;          //+v0.5
-    if (keyName == wxT("RIGHT"))    return WXK_RIGHT;       //+v0.5
-    if (keyName == wxT("DOWN"))     return WXK_DOWN;        //+v0.5
-    if (keyName == wxT("HOME"))     return WXK_HOME;        //+v0.5
-    if (keyName == wxT("PAGEUP"))   return WXK_PAGEUP;      //+v0.5
-    if (keyName == wxT("PAGEDOWN")) return WXK_PAGEDOWN;    //+v0.5
-    if (keyName == wxT("END"))      return WXK_END;         //+v0.5
-    if (keyName == wxT("INSERT"))   return WXK_INSERT;      //+v0.5
-    if (keyName == wxT("DELETE"))   return WXK_DELETE;      //+v0.5
+    if (keyName.CmpNoCase(wxT("KP_Next")) == 0)
+        return WXK_NUMPAD_PAGEDOWN;
 
-    if (keyName == wxT("LEFT (numpad)"))     return WXK_NUMPAD_LEFT ;       //+v0.1-
-    if (keyName == wxT("UP (numpad)"))       return WXK_NUMPAD_UP;          //+v0.1-
-    if (keyName == wxT("RIGHT (numpad)"))    return WXK_NUMPAD_RIGHT;       //+v0.1-
-    if (keyName == wxT("DOWN (numpad)"))     return WXK_NUMPAD_DOWN;        //+v0.1-
-    if (keyName == wxT("HOME (numpad)"))     return WXK_NUMPAD_HOME;        //+v0.1-
-    if (keyName == wxT("PAGEUP (numpad)"))   return WXK_NUMPAD_PAGEUP;      //+v0.1-
-    if (keyName == wxT("PAGEDOWN (numpad)")) return WXK_NUMPAD_PAGEDOWN;    //+v0.1-
-    if (keyName == wxT("END (numpad)"))      return WXK_NUMPAD_END;         //+v0.1-
-    if (keyName == wxT("BEGIN (numpad)"))    return WXK_NUMPAD_BEGIN;       //+v0.1-
-    if (keyName == wxT("INSERT (numpad)"))   return WXK_NUMPAD_INSERT;      //+v0.1-
-    if (keyName == wxT("DELETE (numpad)"))   return WXK_NUMPAD_DELETE;      //+v0.1-
-    if (keyName == wxT("= (numpad)"))        return WXK_NUMPAD_EQUAL;       //+v0.1-
-    if (keyName == wxT("* (numpad)"))        return WXK_NUMPAD_MULTIPLY;    //+v0.1-
-    if (keyName == wxT("+ (numpad)"))        return WXK_NUMPAD_ADD;         //+v0.1-
-    if (keyName == wxT(". (numpad)"))        return WXK_NUMPAD_DECIMAL;     //+v0.1-
-    if (keyName == wxT("/ (numpad)"))        return WXK_NUMPAD_DIVIDE;      //+v0.1-
+    // An ordinary function key: F1 through F24.
+    if (keyName.Len() > 1 &&
+        keyName.Left(1).CmpNoCase(wxT("F")) == 0)
+    {
+        long n = 0;
+        const wxString number = keyName.Mid(1);
 
-    // it should be an ASCII key...
-    return (int)keyName.GetChar(0);
+        // Require digits only, and check conversion success and range.
+        if (number.find_first_not_of(wxT("0123456789")) == wxString::npos &&
+            number.ToLong(&n) &&
+            n >= 1 && n <= 24)
+        {
+            return WXK_F1 + static_cast<int>(n) - 1;
+        }
+
+        return WXK_NONE;
+    }
+
+    // Ordinary special keys.
+    if (keyName.CmpNoCase(wxT("BACK")) == 0)     return WXK_BACK;
+    if (keyName.CmpNoCase(wxT("ENTER")) == 0)    return WXK_RETURN;
+    if (keyName.CmpNoCase(wxT("RETURN")) == 0)   return WXK_RETURN;
+    if (keyName.CmpNoCase(wxT("TAB")) == 0)      return WXK_TAB;
+    if (keyName.CmpNoCase(wxT("ESCAPE")) == 0)   return WXK_ESCAPE;
+    if (keyName.CmpNoCase(wxT("SPACE")) == 0)    return WXK_SPACE;
+    if (keyName.CmpNoCase(wxT("DELETE")) == 0)   return WXK_DELETE;
+
+    if (keyName.CmpNoCase(wxT("LEFT")) == 0)     return WXK_LEFT;
+    if (keyName.CmpNoCase(wxT("UP")) == 0)       return WXK_UP;
+    if (keyName.CmpNoCase(wxT("RIGHT")) == 0)    return WXK_RIGHT;
+    if (keyName.CmpNoCase(wxT("DOWN")) == 0)     return WXK_DOWN;
+    if (keyName.CmpNoCase(wxT("HOME")) == 0)     return WXK_HOME;
+    if (keyName.CmpNoCase(wxT("PAGEUP")) == 0)   return WXK_PAGEUP;
+    if (keyName.CmpNoCase(wxT("PAGEDOWN")) == 0) return WXK_PAGEDOWN;
+    if (keyName.CmpNoCase(wxT("END")) == 0)      return WXK_END;
+    if (keyName.CmpNoCase(wxT("INSERT")) == 0)   return WXK_INSERT;
+
+    // Accept a single ASCII character only.
+    // Do not silently turn an unknown name such as "KP_Unknown" into 'K'.
+    if (keyName.Len() == 1)
+    {
+        const int keyCode = static_cast<int>(keyName.GetChar(0));
+
+        if (keyCode >= 0 && keyCode < 128)
+            return keyCode;
+    }
+
+    return WXK_NONE;
 }
 
 // ----------------------------------------------------------------------------
@@ -484,9 +489,13 @@ int wxKeyBind::GetKeyModifier(wxKeyEvent &event)
 wxString wxKeyBind::GetKeyStrokeString(wxKeyEvent &event)
 // ----------------------------------------------------------------------------
 {
-    // key stroke string = key modifiers (Ctrl, Alt or Shift) + key code
+    const int keyCode = event.GetKeyCode(); // Support for wx3.2.6 NumKeyPad changes
+
+    //- bug key stroke string = key modifiers (Ctrl, Alt or Shift) + key code
+    // was turning numpad key codes into unicode chars.
+
     return KeyModifierToString(GetKeyModifier(event)) +
-        KeyCodeToString(event.GetKeyCode());
+           KeyCodeToString(keyCode);
 }
 
 // ----------------------------------------------------------------------------
@@ -495,7 +504,9 @@ wxString wxKeyBind::GetKeyStrokeString(wxKeyEvent &event)
 
 bool wxKeyBind::MatchKey(const wxKeyEvent &key) const
 {
-    bool b = (key.GetKeyCode() == m_nKeyCode);
+
+
+    bool b = (key.GetKeyCode() == m_nKeyCode); // (ph 26/10/18) // bug:mangles laptop numpad nav keys
 
     // all the flags must match
     b &= (key.AltDown() == ((m_nFlags & wxACCEL_ALT) != 0));
@@ -1422,6 +1433,21 @@ bool wxKeyProfileArray::Load(wxConfigBase *p, const wxString &key)
 // ----------------------------------------------------------------------------
 void wxKeyMonitorTextCtrl::OnKey(wxKeyEvent &event)
 {
+    //    // **Debugging** // (ph 26/10/18)
+    //    const wxString stroke = wxKeyBind::GetKeyStrokeString(event);
+    //    wxString LogMessage; LogMessage =wxString::Format(
+    //        wxT("KeyBinder: %s code=%d ctrl=%d alt=%d shift=%d stroke=[%s]"),
+    //        event.GetEventType() == wxEVT_KEY_DOWN //code
+    //            ? wxT("DOWN") : wxT("UP"),          //ctrl
+    //        event.GetKeyCode(),
+    //        static_cast<int>(event.ControlDown()), //ctrl
+    //        static_cast<int>(event.AltDown()),      //alt
+    //        static_cast<int>(event.ShiftDown()),    //shift
+    //        stroke.c_str()                          //char
+    //    );
+    //    Manager::Get()->GetLogManager()->DebugLog(LogMessage);
+    // **Debugging** end
+
     // backspace cannot be used as shortcut key...
     if (event.GetKeyCode() == WXK_BACK) {
 
@@ -1461,6 +1487,16 @@ void wxKeyMonitorTextCtrl::OnKey(wxKeyEvent &event)
             {
                 wxAcceleratorEntry accelEntry;
                 bool ok = accelEntry.FromString(keyStrokeString);
+
+                // **Debugging** // (ph 26/10/18)
+                //    wxString LogMessage; LogMessage = wxString::Format(
+                //        wxT("KeyBinder: parse [%s] -> %d"),
+                //        keyStrokeString.c_str(),
+                //        static_cast<int>(ok)
+                //    );
+                //    Manager::Get()->GetLogManager()->DebugLog(LogMessage);
+                // **Debugging** end
+
                 if (not ok) { keyStrokeString.Clear(); break; }
             }
         }//switch
@@ -1561,7 +1597,11 @@ void wxKeyConfigPanel::BuildCtrls()
     m_pCurrCmdField = new wxStaticText(this, -1, wxT(""), wxDefaultPosition,
         wxSize(-1, 20), wxSIMPLE_BORDER | wxST_NO_AUTORESIZE | wxALIGN_CENTRE);
 
-    const bool isDark = cbIsDarkTheme();
+#if wxCHECK_VERSION(3, 3, 0)
+    const bool isDark = wxSystemSettings::GetAppearance().IsDark();
+#else
+    const bool isDark = false;
+#endif
 
     // we won't make it completely white (or black) because it must be clear to the user that this
     // is not a text control...
@@ -2581,3 +2621,33 @@ void wxKeyConfigPanel::OnKeyPressed(wxCommandEvent &)
     UpdateButtons();
 }
 // ----------------------------------------------------------------------------
+void TestNumpadConversions()
+// ----------------------------------------------------------------------------
+{
+    for (size_t i = 0; i < numpadKeyNameCount; ++i)
+    {
+        const NumpadKeyName& item = numpadKeyNames[i];
+
+        const wxString name = wxKeyBind::KeyCodeToString(item.code);
+        wxASSERT(name == item.name);
+
+        wxASSERT(wxKeyBind::StringToKeyCode(name) == item.code);
+        wxASSERT(
+            wxKeyBind::StringToKeyCode(wxString(item.legacyName))
+                == item.code
+        );
+
+        wxString shortcut = wxT("Ctrl-");
+        shortcut += name;
+
+        wxAcceleratorEntry entry;
+        const bool parsed = entry.FromString(shortcut);
+
+        wxASSERT_MSG(parsed, shortcut);
+        if (not parsed)
+            continue;
+
+        wxASSERT(entry.GetKeyCode() == item.code);
+        wxASSERT((entry.GetFlags() & wxACCEL_CTRL) != 0);
+    }
+}

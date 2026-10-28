@@ -55,6 +55,7 @@
 
 // defined later...
 class wxConfigBase;
+void TestNumpadConversions();
 
 
 
@@ -94,6 +95,8 @@ public:
     wxKeyBind(const wxKeyBind &tocopy) {
         DeepCopy(tocopy);
     }
+
+    wxKeyBind& operator=(const wxKeyBind&) = default;     // (ph 26/10/18)
 
     wxKeyBind(const wxString &key) {
         m_nFlags = StringToKeyModifier(key);
@@ -180,6 +183,7 @@ public:        // static utilities
     static wxString NumpadKeyCodeToString(int keyCode);
     static wxString KeyCodeToString(int keyCode);
     static wxString KeyModifierToString(int keyModifier);
+
 
     static int StringToKeyCode(const wxString &keyName);
     static int StringToKeyModifier(const wxString &keyModifier);

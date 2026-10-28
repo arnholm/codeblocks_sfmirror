@@ -26,7 +26,7 @@
 					<Add option="-D__WXMSW__" />
 					<Add option="-D_WIN$(#CB_BUILD.OSBITS)" />
 					<Add option="-DWXUSINGDLL" />
-					<Add option="-DcbDEBUG" />
+					<Add option="-DNO_cbDebug" />
 					<Add option="-DwxUSE_UNICODE" />
 					<Add option="$(#CB_BUILD.CFLAGS)" />
 					<Add option="-std=$(#CB_BUILD.CPP_STD)" />

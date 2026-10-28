@@ -23,7 +23,7 @@
 // Modified Keybinder for CodeBlocks KeyBnder v2.0
 
 // --Version-Rlease-Feature-Fix-------
-#define VERSION "2.0.20 24/04/29"
+#define VERSION "2.0.21 26/10/26"
 // -----------------------------------
 class wxKeyConfigPanel;
 class wxWindow;
@@ -123,9 +123,12 @@ class cbKeyBinder : public cbPlugin
 };//class cbKeyBinder
 
 #endif // CBKEYBINDER_H
+
+// Versions
 // ----------------------------------------------------------------------------
 // Versons Release.Interface change.fix
 // ----------------------------------------------------------------------------
+// 2026/10/26 2.0.21 Fix NumKeyPad usage by supporting wx3.21.6 mods
 // 2024/04/29 2.0.20 For C++20 change "==" comparisons to function const to avoid constipation errors.
 // ----------------------------------------------------------------------------
 // Commit   2.0.19 23/07/4

@@ -40,7 +40,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-std=c++11" />
-			<Add option="-DcbDEBUG" />
+			<Add option="-DNO_cbDebug" />
 			<Add option="-DCB_PRECOMP" />
 		</Compiler>
 		<Linker>

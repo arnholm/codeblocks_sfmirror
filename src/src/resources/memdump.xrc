@@ -60,7 +60,7 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxStaticText" name="ID_STATICTEXT3">
-					<label>(e.g. 0x401060, or &amp;&amp;variable, or $$eax)</label>
+					<label>(e.g. 0x401060, or &amp;&amp;variable, or $eax)</label>
 				</object>
 				<flag>wxLEFT|wxRIGHT</flag>
 				<border>4</border>

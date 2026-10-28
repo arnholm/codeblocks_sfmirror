@@ -3,7 +3,7 @@
     <SdkVersion major="1" minor="10" release="0" />
     <Plugin name="cbKeyBinder">
         <Value title="Keyboard shortcuts" />
-        <Value version="2.0.20 24/04/29" />
+        <Value version=" 2.0.21 26/10/18" />
         <Value description="Code::Blocks KeyBinder
 
 
