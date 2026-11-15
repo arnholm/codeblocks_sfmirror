@@ -132,7 +132,7 @@ bool ShellManager::QueryClose(ShellCtrlBase* sh)
 long ShellManager::LaunchProcess(const wxString &processcmd, const wxString &name, const wxString &type, const wxArrayString &options)
 {
     int id=wxNewId();
-    ShellCtrlBase *shell=GlobalShellRegistry().CreateControl(type,this,id,name,this);
+    ShellCtrlBase *shell = GlobalShellRegistry().CreateControl(type, m_nb, id, name, this);
     if(!shell)
     {
         cbMessageBox(wxString::Format(_("Console type %s not found in registry."),type));
