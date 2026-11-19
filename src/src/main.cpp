@@ -580,6 +580,12 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(idFileCloseProject,                  MainFrame::OnFileCloseProject)
     EVT_MENU(idFilePrint,                         MainFrame::OnFilePrint)
     EVT_MENU(idFileExit,                          MainFrame::OnFileQuit)
+#ifdef __WXOSX__
+    // The "Quit" item of the macOS application menu (and Cmd+Q) uses wxID_EXIT.
+    // If nobody handles it, wxOSX just calls ExitMainLoop(), which skips
+    // OnApplicationClose(): no config is saved and plugins are not released.
+    EVT_MENU(wxID_EXIT,                           MainFrame::OnFileQuit)
+#endif
     EVT_MENU(idFileNext,                          MainFrame::OnFileNext)
     EVT_MENU(idFilePrev,                          MainFrame::OnFilePrev)
 

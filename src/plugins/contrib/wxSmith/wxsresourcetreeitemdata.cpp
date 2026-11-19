@@ -29,7 +29,11 @@ wxsResourceTreeItemData::wxsResourceTreeItemData()
 
 wxsResourceTreeItemData::~wxsResourceTreeItemData()
 {
-    wxsResourceTree::Get()->InvalidateItemData(this);
+    // ~wxsResourceTree() clears the singleton before the base tree control
+    // deletes its items, so the tree may already be gone here (e.g. on exit).
+    wxsResourceTree* Tree = wxsResourceTree::Get();
+    if (Tree)
+        Tree->InvalidateItemData(this);
 }
 
 void wxsResourceTreeItemData::PopupMenu(wxMenu* Menu)
