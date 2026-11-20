@@ -1907,6 +1907,16 @@ void ClgdCompletion::LSP_DoAutocomplete(const CCToken& token, cbEditor* ed)
 void ClgdCompletion::EditorEventHook(cbEditor* editor, wxScintillaEvent& event)
 // ----------------------------------------------------------------------------
 {
+    bool bInsertedOrDeleted = ((event.GetModificationType() & wxSCI_MOD_INSERTTEXT)
+                               || (event.GetModificationType() & wxSCI_MOD_DELETETEXT));
+    bool bUpdateUi = (event.GetEventType() == wxEVT_SCI_UPDATEUI);
+
+    if (!bInsertedOrDeleted && !bUpdateUi)
+    {
+        event.Skip();
+        return;
+    }
+
     if (!IsAttached() || !m_InitDone)
     {
         event.Skip();
@@ -1922,30 +1932,10 @@ void ClgdCompletion::EditorEventHook(cbEditor* editor, wxScintillaEvent& event)
 
     cbStyledTextCtrl* control = editor->GetControl();
 
-    if      (event.GetEventType() == wxEVT_SCI_CHARADDED)
-    {   TRACE(_T("wxEVT_SCI_CHARADDED")); }
-    else if (event.GetEventType() == wxEVT_SCI_CHANGE)
-    {   TRACE(_T("wxEVT_SCI_CHANGE")); }
-    else if (event.GetEventType() == wxEVT_SCI_MODIFIED)
-    {   TRACE(_T("wxEVT_SCI_MODIFIED")); }
-    else if (event.GetEventType() == wxEVT_SCI_AUTOCOMP_SELECTION)
-    {   TRACE(_T("wxEVT_SCI_AUTOCOMP_SELECTION")); }
-    else if (event.GetEventType() == wxEVT_SCI_AUTOCOMP_CANCELLED)
-    {   TRACE(_T("wxEVT_SCI_AUTOCOMP_CANCELLED")); }
-
-    // if the user is modifying the editor, then CC should try to reparse the editor's content
-    // and update the token tree.
-    if (   GetParseManager()->GetParser().Options().whileTyping
-        && (   (event.GetModificationType() & wxSCI_MOD_INSERTTEXT)
-            || (event.GetModificationType() & wxSCI_MOD_DELETETEXT) ) )
-    {
-       // m_NeedReparse = true;
-    }
     // ----------------------------------------------------------------------------
     // Support for LSP code completion calls with keyboard dwell time (ph 2021/01/31)
     // ----------------------------------------------------------------------------
-    if (   ((event.GetModificationType() & wxSCI_MOD_INSERTTEXT)
-            || (event.GetModificationType() & wxSCI_MOD_DELETETEXT))
+    if ( bInsertedOrDeleted
             and (GetLSPClient(editor))
         )
     {
@@ -1974,7 +1964,7 @@ void ClgdCompletion::EditorEventHook(cbEditor* editor, wxScintillaEvent& event)
         }
         // wxEVT_SCI_UPDATEUI will be sent on caret's motion, but we are only interested in the
         // cases where line number is changed. Then we need to update the CC's toolbar.
-        if (event.GetEventType() == wxEVT_SCI_UPDATEUI)
+        if (bUpdateUi)
         {
             m_ToolbarNeedRefresh = true;
             TRACE(_T("CodeCompletion::EditorEventHook: Starting m_TimerToolbar."));
