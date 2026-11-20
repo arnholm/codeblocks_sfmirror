@@ -1471,15 +1471,22 @@ void ParseManager::SetProjectSearchDirs(cbProject &project, const wxArrayString 
     }
 }
 // ----------------------------------------------------------------------------
-void ParseManager::CreateClassBrowser()
+void ParseManager::CreateClassBrowserIfEnabled()
 // ----------------------------------------------------------------------------
 {
     ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     if (m_ClassBrowser || !cfg->ReadBool(_T("/use_symbols_browser"), false))
         return;
+    CreateClassBrowser();
+}
 
+// ----------------------------------------------------------------------------
+void ParseManager::CreateClassBrowser()
+// ----------------------------------------------------------------------------
+{
     TRACE(_T("ParseManager::CreateClassBrowser: Enter"));
 
+    ConfigManager* cfg = Manager::Get()->GetConfigManager("clangd_client");
     m_ClassBrowserIsFloating = cfg->ReadBool(_T("/as_floating_window"), false);
 
     if (m_ClassBrowserIsFloating)

@@ -240,6 +240,9 @@ public:
     /** create the class browser */
     void CreateClassBrowser();
 
+    /** create the class browser if enabled*/
+    void CreateClassBrowserIfEnabled();
+
     /** remove the class browser */
     void RemoveClassBrowser(bool appShutDown = false);
 

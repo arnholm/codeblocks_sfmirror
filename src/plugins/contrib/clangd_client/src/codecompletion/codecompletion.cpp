@@ -708,7 +708,7 @@ void ClgdCompletion::OnAttach()
     cbAssert(GetParseManager() != nullptr);
     GetParseManager()->SetNextHandler(this);
 
-    GetParseManager()->CreateClassBrowser();
+    GetParseManager()->CreateClassBrowserIfEnabled();
 
     // hook to editors
     // both ccmanager and cc have hooks, but they don't conflict. ccmanager are mainly
@@ -1261,12 +1261,13 @@ void ClgdCompletion::OnPluginAttached(CodeBlocksEvent& event)
                              "RESTART Code::Blocks to avoid crashes and effects of incompatibilities.");
             cbMessageBox(msg, _("ERROR"), wxOK, GetTopWxWindow());
         }
+        //wxString msg = info ? info->title : wxString(_("<Unknown plugin>"));
         //Manager::Get()->GetLogManager()->DebugLog(F(_T("%s plugin activated"), msg.wx_str())); // **Debugging**
-        if ( info->name.Lower() == "clangd_client" )
-        {
+        //if ( info->name.Lower() == "clangd_client" )
+        //{
             // This means that legacy CodeCompletion should be disabled.
             // But there's no way to do that from here.
-        }
+        //}
     }
 }
 // ----------------------------------------------------------------------------
