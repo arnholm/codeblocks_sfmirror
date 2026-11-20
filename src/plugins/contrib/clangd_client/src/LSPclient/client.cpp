@@ -3701,6 +3701,24 @@ void ProcessLanguageClient::CheckForTooLongCommandLine(wxString& executableCmd, 
 wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* pTarget, ProjectFile* pf) const
 // ----------------------------------------------------------------------------
 {
+    wxArrayString retArray;
+    if (not pTarget)
+        return retArray;
+
+    Compiler* compiler = CompilerFactory::GetCompiler(pTarget->GetCompilerID());
+    if (!compiler)
+    {
+        CCLogger::Get()->DebugLog(_("Can't access compiler for file."));
+        return retArray;
+    }
+    cbProject* pProject = pTarget->GetParentProject();
+    cb::shared_ptr<CompilerCommandGenerator> generator(compiler ? compiler->GetCommandGenerator(pProject) : nullptr);
+    retArray =  GetCompileFileCommand(pTarget, pf, std::move(generator));
+    return retArray;
+}
+
+wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* pTarget, ProjectFile* pf, cb::shared_ptr<CompilerCommandGenerator> generator) const
+{
     // This code lifted from directcommand.cpp
     wxArrayString retArray;
     wxArrayString ret_generatedArray;
@@ -3766,9 +3784,11 @@ wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* p
     {
         const CompilerTool* tool = compiler->GetCompilerTool(is_resource ? ctCompileResourceCmd : ctCompileObjectCmd, pf->file.GetExt());
 
+        cbProject* pProject = pTarget->GetParentProject();
+        cb::shared_ptr<CompilerCommandGenerator> generator(compiler ? compiler->GetCommandGenerator(pProject) : nullptr);
         // does it generate other files to compile?
         for (size_t i = 0; i < pf->generatedFiles.size(); ++i)
-            AppendArray(GetCompileFileCommand(pTarget, pf->generatedFiles[i]), ret_generatedArray); // recurse
+            AppendArray(GetCompileFileCommand(pTarget, pf->generatedFiles[i], generator), ret_generatedArray); // recurse
 
         pfCustomBuild& pcfb = pf->customBuild[compiler->GetID()];
         if (pcfb.useCustomBuildCommand)
@@ -3800,7 +3820,6 @@ wxArrayString ProcessLanguageClient::GetCompileFileCommand(ProjectBuildTarget* p
         CCLogger::Get()->DebugLog(wxString::Format(_T("GetCompileFileCommand[2]: source_file='%s'."),
                                                     source_file.wx_str()));
     #endif
-        cb::shared_ptr<CompilerCommandGenerator> generator(compiler ? compiler->GetCommandGenerator(pProject) : nullptr);
         generator->GenerateCommandLine(compiler_cmd, pTarget, pf, source_file, object,
                                           pfd.object_file_flat, pfd.dep_file);
     }

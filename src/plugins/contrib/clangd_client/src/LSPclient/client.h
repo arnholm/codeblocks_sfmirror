@@ -432,6 +432,7 @@ class ProcessLanguageClient : public wxEvtHandler, private LanguageClient
         void UpdateCompilationDatabase(cbProject* pProject, wxString filename);
         bool AddFileToCompileDBJson(cbProject* pProject, ProjectBuildTarget* pTarget, const wxString& argFullFilePath, json* pJson);
         wxArrayString GetCompileFileCommand(ProjectBuildTarget* target, ProjectFile* pf) const ;
+        wxArrayString GetCompileFileCommand(ProjectBuildTarget* target, ProjectFile* pf, cb::shared_ptr<class CompilerCommandGenerator> generator) const ;
         size_t GetCompilerDriverIncludesByFile(wxArrayString& resultArray, cbProject* pProject, wxString filename);
         wxString CreateLSPClientLogName(int pid, const cbProject* pProject);
         wxString FindCompileCommandsJson(const wxString& sourceFilename); // (ph 26/08/18)
