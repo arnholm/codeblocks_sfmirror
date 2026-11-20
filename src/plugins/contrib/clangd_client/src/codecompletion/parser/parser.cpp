@@ -2434,7 +2434,7 @@ wxString Parser::GetLineTextFromFile(const wxString& filename, const int lineNum
                 wxString msg(wxString::Format("%s():%d failed EncodingDetector for %s", __FUNCTION__, __LINE__, filename));
                 CCLogger::Get()->Log(msg);
                 pControl->SetText("");
-                return wxString();
+                return resultText;
             }
         pControl->SetText(detector.GetWxStr());
         }

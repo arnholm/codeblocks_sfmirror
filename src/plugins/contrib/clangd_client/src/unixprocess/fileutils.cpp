@@ -872,10 +872,10 @@ bool FileUtils::ParseURI(const wxString& uri, wxString& path, wxString& scheme, 
 
 wxString FileUtils::FilePathToURI(const wxString& filepath)
 {
+    wxString uri;
     if(filepath.StartsWith("file://")) {
-        return filepath;
+        uri = filepath;
     } else {
-        wxString uri;
         uri << "file://";
         if(!filepath.StartsWith("/")) {
             uri << "/";
@@ -884,8 +884,8 @@ wxString FileUtils::FilePathToURI(const wxString& filepath)
         file_part.Replace("\\", "/");
         file_part = EncodeURI(file_part);
         uri << file_part;
-        return uri;
     }
+    return uri;
 }
 
 wxString FileUtils::FilePathFromURI(const wxString& uri)
