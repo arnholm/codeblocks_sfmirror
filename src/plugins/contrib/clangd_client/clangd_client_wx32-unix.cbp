@@ -55,7 +55,7 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c++17" />
 			<Add option="-fPIC" />
 			<Add option="$(#CB_RELEASE_TYPE)" />
 			<Add option="-fmessage-length=0" />
